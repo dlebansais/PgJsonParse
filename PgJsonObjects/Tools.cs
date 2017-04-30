@@ -1,0 +1,222 @@
+﻿using System;
+using System.Globalization;
+using System.Reflection;
+
+namespace PgJsonObjects
+{
+    class Tools
+    {
+        public static bool TryParseFloat(string s, out float Value, out FloatFormat Format)
+        {
+            if (float.TryParse(s, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture.NumberFormat, out Value))
+            {
+                if (s == Value.ToString(CultureInfo.InvariantCulture.NumberFormat))
+                    Format = FloatFormat.Standard;
+
+                else if (s == Value.ToString("0.0#", CultureInfo.InvariantCulture.NumberFormat))
+                    Format = FloatFormat.WithEndingZero;
+
+                else
+                    Format = FloatFormat.Other;
+
+                return true;
+            }
+
+            Format = FloatFormat.Other;
+            return false;
+        }
+
+        public static string FloatToString(float Value, FloatFormat Format)
+        {
+            switch (Format)
+            {
+                default:
+                case FloatFormat.Other:
+                case FloatFormat.Standard:
+                    return Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
+
+                case FloatFormat.WithEndingZero:
+                    return Value.ToString("0.0#", CultureInfo.InvariantCulture.NumberFormat);
+            }
+        }
+
+        public static bool TryParseColor(string s, out uint Value)
+        {
+            if (s == null)
+            {
+                Value = 0;
+                return false;
+            }
+
+            System.Drawing.Color TryNamed = System.Drawing.Color.FromName(s);
+            if (TryNamed.ToArgb() != 0)
+            {
+                Value = (uint)TryNamed.ToArgb();
+                return true;
+            }
+
+            if (s.Length != 6)
+            {
+                Value = 0;
+                return false;
+            }
+
+            byte R, G, B;
+
+            if (!byte.TryParse(s.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture.NumberFormat, out R) ||
+                !byte.TryParse(s.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture.NumberFormat, out G) ||
+                !byte.TryParse(s.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture.NumberFormat, out B))
+            {
+                Value = 0;
+                return false;
+            }
+
+            System.Drawing.Color c = System.Drawing.Color.FromArgb(R, G, B);
+            Value = (uint)c.ToArgb();
+            return true;
+        }
+
+        public static string ColorToString(uint Value)
+        {
+            System.Drawing.Color c = System.Drawing.Color.FromArgb((int)Value);
+            return c.R.ToString("X02") + c.G.ToString("X02") + c.B.ToString("X02");
+        }
+
+        public static bool Scan(string s, string Format, params object[] args)
+        {
+            try
+            {
+                int argc = 0;
+                int i = 0;
+                int j = 0;
+
+                while (i < s.Length && j < Format.Length)
+                {
+                    if (Format[j] == '%' && Format[j + 1] == '%')
+                    {
+                        if (s[i++] != Format[j++])
+                            return false;
+                        j++;
+                    }
+
+                    else if (Format[j] == '%' && Format[j + 1] == 'd')
+                    {
+                        if (argc >= args.Length)
+                            return false;
+
+                        int Value = 0;
+                        int k = 0;
+                        int Sign = 0;
+                        while (i + k < s.Length && (Char.IsDigit(s[i + k]) || (k == 0 && (s[i + k] == '+' || s[i + k] == '-'))))
+                        {
+                            if (s[i + k] == '+')
+                                Sign = 1;
+                            else if (s[i + k] == '-')
+                                Sign = -1;
+                            else
+                                Value = Value * 10 + s[i + k] - '0';
+                            k++;
+                        }
+
+                        if (k == 0 || (k == 1 && Sign != 0))
+                            return false;
+
+                        if (k > 0 && i + k < s.Length && s[i + k] == '.')
+                            if (argc >= args.Length)
+                                return false;
+
+                        if (Sign != 0)
+                            Value *= Sign;
+
+                        args[argc++] = Value;
+
+                        i += k;
+                        j += 2;
+                    }
+
+                    else if (Format[j] == '%' && Format[j + 1] == 'f')
+                    {
+                        if (argc >= args.Length)
+                            return false;
+
+                        int Value = 0;
+                        bool IsDecimal = false;
+                        int Decimal = 0;
+                        int DecimalMax = 1;
+                        int k = 0;
+                        int Sign = 0;
+                        while (i + k < s.Length && (Char.IsDigit(s[i + k]) || (s[i + k] == '.' && k > 0) || (k == 0 && (s[i + k] == '+' || s[i + k] == '-'))))
+                        {
+                            if (s[i + k] == '+')
+                                Sign = 1;
+                            else if (s[i + k] == '-')
+                                Sign = -1;
+                            else if (s[i + k] == '.')
+                                IsDecimal = true;
+                            else if (IsDecimal)
+                            {
+                                DecimalMax *= 10;
+                                Decimal = Decimal * 10 + s[i + k] - '0';
+                            }
+                            else
+                                Value = Value * 10 + s[i + k] - '0';
+                            k++;
+                        }
+
+                        if (k == 0 || (k == 1 && Sign != 0))
+                            return false;
+
+                        if (Sign != 0)
+                            Value *= Sign;
+
+                        double FloatValue = Value + (double)Decimal / (double)DecimalMax;
+                        args[argc++] = FloatValue;
+
+                        i += k;
+                        j += 2;
+                    }
+
+                    else if (Format[j] == '%' && Format[j + 1] == '{')
+                    {
+                        if (argc >= args.Length)
+                            return false;
+
+                        int k = Format.IndexOf('}', j);
+                        string EnumTypeName = Format.Substring(j + 2, k - j - 2);
+                        Assembly Current = Assembly.GetExecutingAssembly();
+                        AssemblyName AssemblyName = Current.GetName();
+
+                        Type t = Current.GetType(AssemblyName.Name + "." + EnumTypeName);
+                        string[] Names = t.GetEnumNames();
+
+                        for (k = 0; k < Names.Length; k++)
+                            if (s.Length >= i + Names[k].Length && String.Compare(s.Substring(i, Names[k].Length), Names[k], true) == 0)
+                            {
+                                Array Values = t.GetEnumValues();
+                                args[argc++] = Values.GetValue(k);
+                                break;
+                            }
+
+                        if (k >= Names.Length)
+                            return false;
+
+                        i += Names[k].Length;
+                        j += 3 + EnumTypeName.Length;
+                    }
+
+                    else if (s[i++] != Format[j++])
+                        return false;
+                }
+
+                if (i < s.Length || j < Format.Length)
+                    return false;
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+}

@@ -1,0 +1,382 @@
+﻿<Window x:Class="PgJsonParse.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:Converters"
+        xmlns:app="clr-namespace:PgJsonParse"
+        Title="Project Gorgon - Json Parser">
+    <Window.Resources>
+        <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
+        <conv:IndexToObjectConverter x:Key="convIndexToObject"/>
+        <conv:FriendlyNameConverter x:Key="convFriendlyName"/>
+        <conv:FileNameToBitmapImageConverter x:Key="convFileNameToBitmapImage"/>
+        <app:ItemEffectTemplateSelector x:Key="ItemEffectTemplateSelector"/>
+        <app:ItemEffectGearTemplateSelector x:Key="ItemEffectGearTemplateSelector"/>
+        <RoutedCommand x:Key="StartApplicationCommand"/>
+        <RoutedCommand x:Key="ClearVersionListCommand"/>
+        <RoutedCommand x:Key="CancelCommand"/>
+        <RoutedCommand x:Key="AddPowerCommand"/>
+        <RoutedCommand x:Key="RemovePowerCommand"/>
+        <RoutedCommand x:Key="LoadBuildCommand"/>
+        <RoutedCommand x:Key="SaveBuildCommand"/>
+        <RoutedCommand x:Key="CopyBuildCommand"/>
+        <RoutedCommand x:Key="CrunchCommand"/>
+        <RoutedCommand x:Key="OpenProfileFolderCommand"/>
+        <CompositeCollection x:Key="VisibleHidden">
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="HiddenVisible">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="VisibleCollapsed">
+            <Visibility>Visible</Visibility>
+            <Visibility>Collapsed</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="CollapsedVisible">
+            <Visibility>Collapsed</Visibility>
+            <Visibility>Visible</Visibility>
+        </CompositeCollection>
+        <DataTemplate x:Key="AttributeLinkTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding FriendlyName}" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
+                <TextBlock>:</TextBlock>
+                <TextBlock Text="{Binding FriendlyEffect}" Width="150" Margin="5,0,0,0"/>
+                <TextBlock>Score :</TextBlock>
+                <TextBlock Text="{Binding FriendlyScore}" Width="150" Margin="5,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SimpleEffectTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="AttributeLinkGearTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding FriendlyName}" Foreground="White" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
+                <TextBlock Foreground="White">:</TextBlock>
+                <TextBlock Text="{Binding FriendlyEffect}" Foreground="White" Width="150" Margin="5,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SimpleEffectGearTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Description}" Foreground="White" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource StartApplicationCommand}" Executed="OnStartApplication"/>
+        <CommandBinding Command="{StaticResource ClearVersionListCommand}" Executed="OnClearVersionList"/>
+        <CommandBinding Command="{StaticResource CancelCommand}" Executed="OnCancel"/>
+        <CommandBinding Command="{StaticResource AddPowerCommand}" Executed="OnAddPower"/>
+        <CommandBinding Command="{StaticResource RemovePowerCommand}" Executed="OnRemovePower"/>
+        <CommandBinding Command="{StaticResource LoadBuildCommand}" Executed="OnLoadBuild"/>
+        <CommandBinding Command="{StaticResource SaveBuildCommand}" Executed="OnSaveBuild"/>
+        <CommandBinding Command="{StaticResource CopyBuildCommand}" Executed="OnCopyBuild"/>
+        <CommandBinding Command="{StaticResource CrunchCommand}" Executed="OnCrunch"/>
+        <CommandBinding Command="{StaticResource OpenProfileFolderCommand}" Executed="OnOpenProfileFolder"/>
+    </Window.CommandBindings>
+    <Grid>
+        <StackPanel Visibility="{Binding IsAtStartup, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderBrush="Green" BorderThickness="2">
+                <StackPanel Margin="20,20,20,20">
+                    <RadioButton IsChecked="{Binding LocateLastestVersion}" Checked="OnLocateLatestVersion" Content="Locate and download the latest version of the game"/>
+                    <StackPanel IsEnabled="{Binding IsVersionAvailableInCache}" Margin="0,10,0,0">
+                        <RadioButton IsChecked="{Binding UseSpecificVersion}" Checked="OnUseSpecificVersion" Content="Use this version:">
+                            <RadioButton.Style>
+                                <Style TargetType="{x:Type RadioButton}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Foreground" Value="{StaticResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                        </RadioButton>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                            <ComboBox ItemsSource="{Binding VersionList}" SelectedIndex="{Binding SelectedVersionIndex}" VerticalAlignment="Center" Width="50" Margin="0,0,0,0"/>
+                            <Button Command="{StaticResource ClearVersionListCommand}" VerticalAlignment="Stretch" Width="120" Margin="10,0,0,0">Clear List</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Button Command="{StaticResource StartApplicationCommand}" HorizontalAlignment="Center" Width="120" Margin="0,40,0,0">Start</Button>
+        </StackPanel>
+        <StackPanel Visibility="{Binding HasDownloadStarted, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderBrush="Orange" BorderThickness="2">
+                <StackPanel Margin="20,20,20,20">
+                    <Grid>
+                        <StackPanel Visibility="{Binding IsLocating, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}">
+                            <TextBlock>Locating latest version of the game...</TextBlock>
+                            <ProgressBar IsIndeterminate="True" Height="8" Margin="0,10,0,0"/>
+                        </StackPanel>
+                        <Grid Visibility="{Binding IsLocating, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden}, FallbackValue=Hidden}">
+                            <StackPanel Visibility="{Binding IsDownloading, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock>Downloading version</TextBlock>
+                                    <TextBlock Text="{Binding DownloadedVersion}" Margin="5,0,5,0"/>
+                                    <TextBlock>of the game...</TextBlock>
+                                </StackPanel>
+                                <ProgressBar Minimum="0" Maximum="1" Value="{Binding DownloadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding IsDownloading, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden}, FallbackValue=Hidden}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock>Version</TextBlock>
+                                    <TextBlock Text="{Binding DownloadedVersion}" Margin="5,0,5,0"/>
+                                    <TextBlock>loaded from cache</TextBlock>
+                                </StackPanel>
+                                <ProgressBar Minimum="0" Maximum="1" Value="{Binding DownloadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <StackPanel Visibility="{Binding IsJsonLoading, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}" Margin="0,20,0,0">
+                        <TextBlock>Parsing files...</TextBlock>
+                        <ProgressBar Minimum="0" Maximum="1" Value="{Binding LoadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
+                    </StackPanel>
+                    <Button Command="{StaticResource CancelCommand}" Visibility="{Binding IsOperationCanceled, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden}, FallbackValue=Visible}" HorizontalAlignment="Center" Width="120" Margin="0,40,0,0">Cancel</Button>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <TabControl Visibility="{Binding IsJsonLoaded, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}">
+            <TabItem Header="Warnings">
+                <DockPanel>
+                    <Border DockPanel.Dock="Top" BorderThickness="0" BorderBrush="{x:Null}">
+                        <TextBlock TextAlignment="Center" Margin="0,5,0,5">Downloaded content copyright © 2017, Elder Game, LLC</TextBlock>
+                    </Border>
+                    <Separator DockPanel.Dock="Top"/>
+                    <TextBox x:Name="textWarnings" IsReadOnly="True" VerticalScrollBarVisibility="Visible" BorderBrush="{x:Null}" BorderThickness="0" Margin="10,10,10,10"/>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Build Planer">
+                <TabItem.Resources>
+                    <DataTemplate x:Key="PowerSkillTemplate">
+                        <TextBlock Text="{Binding Converter={StaticResource convFriendlyName}}"/>
+                    </DataTemplate>
+                </TabItem.Resources>
+                <DockPanel Margin="10,10,10,10">
+                    <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+                        <GroupBox DockPanel.Dock="Left" VerticalAlignment="Center" Header="Skill Selection">
+                            <Grid Margin="5,5,5,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center">First Skill:</TextBlock>
+                                <ComboBox Grid.Column="1" Grid.Row="0" x:Name="comboFirstSkill" DockPanel.Dock="Left" SelectedIndex="{Binding SelectedFirstSkill}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="0,10,0,0">Max Level:</TextBlock>
+                                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding MaxLevelFirstSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">Second Skill:</TextBlock>
+                                <ComboBox Grid.Column="3" Grid.Row="0" x:Name="comboSecondSkill" DockPanel.Dock="Left" SelectedIndex="{Binding SelectedSecondSkill}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="10,10,0,0">Max Level:</TextBlock>
+                                <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding MaxLevelSecondSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="5,10,0,0"/>
+                                <Button Grid.Row="0" Width="1" Visibility="Hidden"/>
+                                <CheckBox Grid.Row="1" Width="1" Visibility="Hidden"/>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox DockPanel.Dock="Left" VerticalAlignment="Center" Header="Gear Selection" Margin="10,0,0,0">
+                            <Grid Margin="5,5,5,5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0">
+                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Profile:</TextBlock>
+                                    <Button DockPanel.Dock="Right" Command="{StaticResource OpenProfileFolderCommand}" VerticalAlignment="Center" Width="120" Height="24" Margin="10,0,0,0">Open Profile Folder</Button>
+                                    <ComboBox ItemsSource="{Binding WeightProfileList}" SelectedIndex="{Binding WeightProfileIndex}" SelectionChanged="OnProfileSelected" VerticalAlignment="Center" MinWidth="200" Margin="5,0,0,0"/>
+                                </DockPanel>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+                                    <CheckBox IsChecked="{Binding IgnoreUnobtainable}" Checked="OnIgnoreUnobtainableCheckChanged" Unchecked="OnIgnoreUnobtainableCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore unobtainable</CheckBox>
+                                    <CheckBox IsChecked="{Binding IgnoreNoAttribute}" Checked="OnIgnoreNoAttributeCheckChanged" Unchecked="OnIgnoreNoAttributeCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore items with no match</CheckBox>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                        <Button DockPanel.Dock="Right" Content="Copy to Clipboard" Command="{StaticResource CopyBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0"/>
+                        <Button DockPanel.Dock="Right" Content="Save profile..." Command="{StaticResource SaveBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0"/>
+                        <Button DockPanel.Dock="Right" Content="Load profile..." Command="{StaticResource LoadBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0"/>
+                    </DockPanel>
+                    <TabControl Margin="0,10,0,0">
+                        <TabControl.Resources>
+                            <DataTemplate x:Key="GearNameTemplate">
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                            <DataTemplate x:Key="PlanerHeaderTemplate">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding IconFileName, Converter={StaticResource convFileNameToBitmapImage}}"/>
+                                    <TextBlock Text="{Binding SlotName, Converter={StaticResource convFriendlyName}}" VerticalAlignment="Center" Margin="10,0,20,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                            <DataTemplate x:Key="PlanerTemplate">
+                                <Grid Margin="10,10,10,10">
+                                    <Grid.Resources>
+                                        <DataTemplate x:Key="PowerNameTemplate">
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="PowerNameTemplateWhite">
+                                            <TextBlock Text="{Binding Name}" Foreground="White" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                    </Grid.Resources>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="250"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" Margin="0,0,5,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Grid.Row="0" Visibility="{Binding SelectedIndex, ElementName=comboFirstSkill, Converter={StaticResource convIndexToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock FontWeight="Bold" Text="{Binding SelectedItem, ElementName=comboFirstSkill, Converter={StaticResource convFriendlyName}}"/>
+                                                <TextBlock FontWeight="Bold" Margin="5,0,0,0">mods</TextBlock>
+                                            </StackPanel>
+                                            <ListBox ItemsSource="{Binding AvailablePowerList1}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Margin="10,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="1" Visibility="{Binding SelectedIndex, ElementName=comboSecondSkill, Converter={StaticResource convIndexToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock FontWeight="Bold" Text="{Binding SelectedItem, ElementName=comboSecondSkill, Converter={StaticResource convFriendlyName}}"/>
+                                                <TextBlock FontWeight="Bold" Margin="5,0,0,0">mods</TextBlock>
+                                            </StackPanel>
+                                            <ListBox ItemsSource="{Binding AvailablePowerList2}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <Button Content="Add -&gt;" Command="{StaticResource AddPowerCommand}" Margin="0,0,0,5"/>
+                                        <Button Content="&lt;- Remove" Command="{StaticResource RemovePowerCommand}" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Margin="5,0,0,0" Background="Black">
+                                        <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
+                                            <Image Source="{Binding IconFileName, Converter={StaticResource convFileNameToBitmapImage}}"/>
+                                            <TextBlock Text="{Binding SelectedGearName, Converter={StaticResource convFriendlyName}}" VerticalAlignment="Center" Foreground="Red" FontSize="20" Margin="20,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Margin="40,20,10,10">
+                                            <TextBlock Text="{Binding SelectedGearDescription}" Foreground="White" TextWrapping="Wrap"/>
+                                            <ItemsControl ItemsSource="{Binding SelectedGearEffectDescriptionList}" ItemTemplateSelector="{StaticResource ItemEffectGearTemplateSelector}" Margin="0,10,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Margin="40,20,10,10">
+                                            <ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource PowerNameTemplateWhite}" SelectedIndex="{Binding SelectedPowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                                            <ListBox ItemsSource="{Binding SelectedPowerList2}" ItemTemplate="{StaticResource PowerNameTemplateWhite}" SelectedIndex="{Binding SelectedPowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <ListBox Grid.Column="3" x:Name="listGear" ItemsSource="{Binding SortedGearList}" ItemTemplate="{StaticResource GearNameTemplate}" SelectedIndex="{Binding SelectedGearIndex}" Margin="10,0,0,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </TabControl.Resources>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding HeadSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding HeadSlotPlaner}"/>
+                        </TabItem>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding ChestSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding ChestSlotPlaner}"/>
+                        </TabItem>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding LegSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding LegSlotPlaner}"/>
+                        </TabItem>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding HandSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding HandSlotPlaner}"/>
+                        </TabItem>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding FeetSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding FeetSlotPlaner}"/>
+                        </TabItem>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding RingSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding RingSlotPlaner}"/>
+                        </TabItem>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding NeckSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding NeckSlotPlaner}"/>
+                        </TabItem>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding MainHandSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding MainHandSlotPlaner}"/>
+                        </TabItem>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding OffHandSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding OffHandSlotPlaner}"/>
+                        </TabItem>
+                    </TabControl>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Advanced Search (under construction)" IsEnabled="False">
+                <DockPanel/>
+            </TabItem>
+            <TabItem Header="Cruncher (under construction)" IsEnabled="False">
+                <TabItem.Resources>
+                    <DataTemplate x:Key="CrunchSelectionTemplate">
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Text="{Binding PrimarySkill}"/>
+                                <TextBlock Margin="5,0,5,0">/</TextBlock>
+                                <TextBlock Text="{Binding SecondarySkill}"/>
+                            </StackPanel>
+                            <Expander>
+                                <Expander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0">DPS:</TextBlock>
+                                        <TextBlock Grid.Column="1" Text="{Binding BestDPSRounded}" Margin="5,0,10,0"/>
+                                        <TextBlock Grid.Column="2">Duration:</TextBlock>
+                                        <TextBlock Grid.Column="3" Text="{Binding BestFightDuration}" Margin="5,0,10,0"/>
+                                    </Grid>
+                                </Expander.Header>
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding AbilityList[0]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AbilityList[1]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding AbilityList[2]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding AbilityList[3]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding AbilityList[4]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="5" Grid.Row="0" Text="{Binding AbilityList[5]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding AbilityList[6]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding AbilityList[7]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding AbilityList[8]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding AbilityList[9]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding AbilityList[10]}" Margin="5,5,5,5"/>
+                                        <TextBlock Grid.Column="5" Grid.Row="1" Text="{Binding AbilityList[11]}" Margin="5,5,5,5"/>
+                                    </Grid>
+                                    <ItemsControl ItemsSource="{Binding BestSequenceAbilityList}" Margin="0,10,0,0"/>
+                                </StackPanel>
+                            </Expander>
+                        </DockPanel>
+                    </DataTemplate>
+                </TabItem.Resources>
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Margin="5,5,5,5">
+                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Category:</TextBlock>
+                        <ComboBox DockPanel.Dock="Left" SelectedIndex="{Binding CruncherCategoryIndex}" VerticalAlignment="Center" Margin="5,0,0,0">
+                            <ComboBoxItem>
+                                <TextBlock>DPS</TextBlock>
+                            </ComboBoxItem>
+                        </ComboBox>
+                        <Button DockPanel.Dock="Right" Command="{StaticResource CrunchCommand}" VerticalAlignment="Center" Width="120" Margin="0,0,5,0">Crunch!</Button>
+                        <ProgressBar Minimum="0" Maximum="1" Value="{Binding CrunchProgress, FallbackValue=0}" Visibility="{Binding IsCrunching, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}" Margin="10,0,10,0"/>
+                    </DockPanel>
+                    <Grid>
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding CrunchSelectionList}" ItemTemplate="{StaticResource CrunchSelectionTemplate}"/>
+                        </ScrollViewer>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

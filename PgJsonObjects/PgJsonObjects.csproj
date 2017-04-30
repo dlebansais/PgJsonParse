@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2D9E943B-7D22-469B-8DBE-500D23877B55}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PgJsonObjects</RootNamespace>
+    <AssemblyName>PgJsonObjects</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Build Planer\Attribute Weight.cs" />
+    <Compile Include="Build Planer\Planer Slot Gear.cs" />
+    <Compile Include="Build Planer\Planer Slot Power.cs" />
+    <Compile Include="Build Planer\Slot Planer.cs" />
+    <Compile Include="Build Planer\Weight Profile.cs" />
+    <Compile Include="Float Format.cs" />
+    <Compile Include="Json Generator.cs" />
+    <Compile Include="Parse Error Info.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Records\Ability\Ability Additional Result.cs" />
+    <Compile Include="Records\Ability\Ability Animation.cs" />
+    <Compile Include="Records\Ability\Ability Effect Conditional.cs" />
+    <Compile Include="Records\Ability\Ability Effect Parameters.cs" />
+    <Compile Include="Records\Ability\Ability Effect Target.cs" />
+    <Compile Include="Records\Ability\Ability Effect.cs" />
+    <Compile Include="Records\Ability\Ability Indicating Enabled.cs" />
+    <Compile Include="Records\Ability\Ability Item Keyword.cs" />
+    <Compile Include="Records\Ability\Ability Keyword.cs" />
+    <Compile Include="Records\Ability\Ability Pet Type.cs" />
+    <Compile Include="Records\Ability\Ability Projectile.cs" />
+    <Compile Include="Records\Ability\Ability PvX.cs" />
+    <Compile Include="Records\Ability\Ability Requirement.cs" />
+    <Compile Include="Records\Ability\Ability Target Particle.cs" />
+    <Compile Include="Records\Ability\Ability Target.cs" />
+    <Compile Include="Records\Ability\Ability.cs" />
+    <Compile Include="Records\Ability\Consumed Item.cs" />
+    <Compile Include="Records\Ability\Damage Type.cs" />
+    <Compile Include="Records\Ability\Deaths.cs" />
+    <Compile Include="Records\Ability\Special Value.cs" />
+    <Compile Include="Records\Ability\Target Effect Keyword.cs" />
+    <Compile Include="Records\Advancement Table\Advancement Table.cs" />
+    <Compile Include="Records\Advancement Table\Advancement.cs" />
+    <Compile Include="Records\Attribute\Attribute.cs" />
+    <Compile Include="Records\Attribute\DisplayType.cs" />
+    <Compile Include="Records\Directed Goal\Directed Goal.cs" />
+    <Compile Include="Records\Effect\Effect Display Mode.cs" />
+    <Compile Include="Records\Effect\Effect Keyword.cs" />
+    <Compile Include="Records\Effect\Effect Particle.cs" />
+    <Compile Include="Records\Effect\Effect Stacking Type.cs" />
+    <Compile Include="Records\Effect\Effect.cs" />
+    <Compile Include="Records\Generic Json Object.cs" />
+    <Compile Include="Records\Item\Animal Form.cs" />
+    <Compile Include="Records\Item\Appearance.cs" />
+    <Compile Include="Records\Item\Item Attribute Link.cs" />
+    <Compile Include="Records\Item\Item Effect.cs" />
+    <Compile Include="Records\Item\Item Keyword.cs" />
+    <Compile Include="Records\Item\Item Simple Effect.cs" />
+    <Compile Include="Records\Item\Item Skill Link.cs" />
+    <Compile Include="Records\Item\Item Slot.cs" />
+    <Compile Include="Records\Item\Item Use Requirement.cs" />
+    <Compile Include="Records\Item\Item Use Verb.cs" />
+    <Compile Include="Records\Item\Item.cs" />
+    <Compile Include="Records\Item\Other Requirement Type.cs" />
+    <Compile Include="Records\Item\Race.cs" />
+    <Compile Include="Records\Json Object Parser.cs" />
+    <Compile Include="Records\Power\Power Attribute Link.cs" />
+    <Compile Include="Records\Power\Power Effect.cs" />
+    <Compile Include="Records\Power\Power Simple Effect.cs" />
+    <Compile Include="Records\Power\Power Skill.cs" />
+    <Compile Include="Records\Power\Power Tier.cs" />
+    <Compile Include="Records\Power\Power.cs" />
+    <Compile Include="Records\Quest\Favor.cs" />
+    <Compile Include="Records\Quest\Map Area Name.cs" />
+    <Compile Include="Records\Quest\Map Spot Type.cs" />
+    <Compile Include="Records\Quest\Quest Keyword.cs" />
+    <Compile Include="Records\Quest\Quest Objective Type.cs" />
+    <Compile Include="Records\Quest\Quest Objective.cs" />
+    <Compile Include="Records\Quest\Quest Reward Item.cs" />
+    <Compile Include="Records\Quest\Quest Reward Xp.cs" />
+    <Compile Include="Records\Quest\Quest.cs" />
+    <Compile Include="Records\Recipe\Augment.cs" />
+    <Compile Include="Records\Recipe\Crafted Boost.cs" />
+    <Compile Include="Records\Recipe\Decompose Material.cs" />
+    <Compile Include="Records\Recipe\Decompose Skill.cs" />
+    <Compile Include="Records\Recipe\Disallowed State.cs" />
+    <Compile Include="Records\Recipe\Enhancement Effect.cs" />
+    <Compile Include="Records\Recipe\Recipe Action.cs" />
+    <Compile Include="Records\Recipe\Recipe Cost.cs" />
+    <Compile Include="Records\Recipe\Recipe Currency.cs" />
+    <Compile Include="Records\Recipe\Recipe Effect.cs" />
+    <Compile Include="Records\Recipe\Recipe Item Key.cs" />
+    <Compile Include="Records\Recipe\Recipe Item.cs" />
+    <Compile Include="Records\Recipe\Recipe Keyword.cs" />
+    <Compile Include="Records\Recipe\Recipe Required Hotspot.cs" />
+    <Compile Include="Records\Recipe\Recipe Result Effect.cs" />
+    <Compile Include="Records\Recipe\Recipe Usage Animation.cs" />
+    <Compile Include="Records\Recipe\Recipe.cs" />
+    <Compile Include="Records\Recipe\Server Info.cs" />
+    <Compile Include="Records\Recipe\Shamanic Slot Power.cs" />
+    <Compile Include="Records\Skill\Advancement Table Enum.cs" />
+    <Compile Include="Records\Skill\Level Cap Interaction.cs" />
+    <Compile Include="Records\Skill\Reward.cs" />
+    <Compile Include="Records\Skill\Skill Category.cs" />
+    <Compile Include="Records\Skill\Skill.cs" />
+    <Compile Include="Records\Skill\Xp Table Enum.cs" />
+    <Compile Include="Records\Xp Table\Xp Table.cs" />
+    <Compile Include="String To Enum Conversion.cs" />
+    <Compile Include="Tools.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
