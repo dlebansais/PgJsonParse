@@ -234,6 +234,8 @@ namespace PgJsonObjects
 
         public void RefreshGearList(ICollection<Item> ItemList, ICollection<Attribute> AttributeList, WeightProfile WeightProfile, bool IgnoreUnobtainable, bool IgnoreNoAttribute)
         {
+            Item OldSelectedGear = SelectedGearIndex >= 0 && SelectedGearIndex < SortedGearList.Count ? SortedGearList[SelectedGearIndex] : null;
+
             SortedGearList.Clear();
             GearWeightList.Clear();
 
@@ -275,6 +277,8 @@ namespace PgJsonObjects
                         GearWeightList.Add(new PlanerSlotGear(Effect, 0));
                 }
             }
+
+            SelectedGearIndex = SortedGearList.IndexOf(OldSelectedGear);
         }
 
         public void SelectGear(Item SlotItem)
