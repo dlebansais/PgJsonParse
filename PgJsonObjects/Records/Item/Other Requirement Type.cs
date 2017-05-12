@@ -21,6 +21,7 @@
         InGraveyard,
         Appearance,
         Or,
-        EquippedItemKeyword
+        EquippedItemKeyword,
+        GardenPlantMax,
     }
 }

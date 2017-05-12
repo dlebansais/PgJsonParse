@@ -13,8 +13,6 @@ namespace PgJsonObjects
             { "Description", ParseFieldDescription },
             { "Number", ParseFieldNumber },
             { "InteractionFlags", ParseFieldInteractionFlags },
-            { "MapName", ParseFieldMapName },
-            { "MapSpot", ParseFieldMapSpot },
             { "ItemName", ParseFieldItemName },
             { "MustCompleteEarlierObjectivesFirst", ParseFieldMustCompleteEarlierObjectivesFirst },
             { "InteractionFlag", ParseFieldInteractionFlag },
@@ -38,9 +36,6 @@ namespace PgJsonObjects
         public int Number { get { return RawNumber.HasValue ? RawNumber.Value : 0; } }
         private int? RawNumber;
         public List<string> InteractionFlagList { get; private set; }
-        public MapAreaName MapName { get; private set; }
-        public MapSpotType MapSpotType { get; private set; }
-        public string MapSpot { get; private set; }
         public Item QuestItem { get; private set; }
         private string RawItemName;
         private bool IsItemNameParsed;
@@ -135,63 +130,6 @@ namespace PgJsonObjects
                     InteractionFlagList.Add(AsString);
                 else
                     ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlags");
-            }
-        }
-
-        private static void ParseFieldMapName(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawMapName;
-            if ((RawMapName = Value as string) != null)
-                This.ParseMapName(RawMapName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective MapName");
-        }
-
-        private void ParseMapName(string RawMapName, ParseErrorInfo ErrorInfo)
-        {
-            if (RawMapName.StartsWith("Area"))
-            {
-                MapAreaName ParsedArea;
-                StringToEnumConversion<MapAreaName>.TryParse(RawMapName.Substring(4), out ParsedArea, ErrorInfo);
-                MapName = ParsedArea;
-            }
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective MapName");
-        }
-
-        private static void ParseFieldMapSpot(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawMapSpot;
-            if ((RawMapSpot = Value as string) != null)
-                This.ParseMapSpot(RawMapSpot, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective MapSpot");
-        }
-
-        private void ParseMapSpot(string RawMapSpot, ParseErrorInfo ErrorInfo)
-        {
-            if (RawMapSpot.StartsWith("NPC_"))
-            {
-                MapSpotType = MapSpotType.Npc;
-                MapSpot = RawMapSpot.Substring(4);
-            }
-
-            else if (RawMapSpot.StartsWith("Spawn_"))
-            {
-                MapSpotType = MapSpotType.Spawn;
-                MapSpot = RawMapSpot.Substring(6);
-            }
-
-            else if (RawMapSpot.StartsWith("GeneralArea_"))
-            {
-                MapSpotType = MapSpotType.GeneralArea;
-                MapSpot = RawMapSpot.Substring(12);
-            }
-
-            else
-            {
-                MapSpotType = MapSpotType.Misc;
-                MapSpot = RawMapSpot;
             }
         }
 
@@ -385,6 +323,30 @@ namespace PgJsonObjects
             Generator.OpenObject(Key);
 
             Generator.CloseObject();
+        }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                Result += Target + JsonGenerator.FieldSeparator;
+                Result += Description + JsonGenerator.FieldSeparator;
+                if (QuestItem != null)
+                    Result += QuestItem.TextContent + JsonGenerator.FieldSeparator;
+                Result += InteractionFlag + JsonGenerator.FieldSeparator;
+                Result += MinAmount + JsonGenerator.FieldSeparator;
+                Result += MinFavorReceived + JsonGenerator.FieldSeparator;
+                Result += MaxFavorReceived + JsonGenerator.FieldSeparator;
+                Result += StringParam + JsonGenerator.FieldSeparator;
+                Result += ResultItemKeyword + JsonGenerator.FieldSeparator;
+                Result += AbilityKeyword + JsonGenerator.FieldSeparator;
+                Result += MaxAmount + JsonGenerator.FieldSeparator;
+                Result += AnatomyType + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
         }
         #endregion
 

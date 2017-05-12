@@ -95,12 +95,18 @@ namespace PgJsonObjects
                 ParsedFields = null;
             }
         }
+
+        protected virtual void AdddWithFieldSeparator(ref string Result, string s)
+        {
+            Result += s + JsonGenerator.FieldSeparator;
+        }
         #endregion
 
         #region Client Interface
         public abstract void GenerateObjectContent(JsonGenerator Generator);
 
         public string Key { get; private set; }
+        public abstract string TextContent { get; }
 
         public virtual bool Connect(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
         {

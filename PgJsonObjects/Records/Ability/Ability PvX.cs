@@ -493,6 +493,19 @@ namespace PgJsonObjects
             }
         }
 
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                foreach (SpecialValue Item in SpecialValueList)
+                    Result += Item.TextContent + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
+        }
+
         private List<string> RawAttributesThatDeltaDamageList;
         private bool RawAttributesThatDeltaDamageListIsEmpty;
         private List<string> RawAttributesThatModDamageList;

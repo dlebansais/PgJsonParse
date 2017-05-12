@@ -6,6 +6,8 @@ namespace PgJsonObjects
     public class Quest : GenericJsonObject<Quest>
     {
         #region Constants
+        public const int SearchResultIconId = 2118;
+
         private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
         {
             { "InternalName", ParseFieldInternalName },
@@ -120,6 +122,8 @@ namespace PgJsonObjects
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         private int? RawLevel;
         public PowerSkill WorkOrderSkill { get; private set; }
+
+        public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion
 
         #region Client Interface
@@ -149,6 +153,7 @@ namespace PgJsonObjects
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
         {
             Name = RawName;
+            ErrorInfo.AddIconId(SearchResultIconId);
         }
 
         private static void ParseFieldDescription(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -971,6 +976,55 @@ namespace PgJsonObjects
 
             ErrorInfo.AddMissingKey(RawQuestName);
             return null;
+        }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                Result += Name + JsonGenerator.FieldSeparator;
+                Result += Description + JsonGenerator.FieldSeparator;
+
+                foreach (QuestObjective Item in QuestObjectiveList)
+                    Result += Item.TextContent + JsonGenerator.FieldSeparator;
+
+                foreach (QuestRewardItem Item in QuestRewardsItemList)
+                    Result += Item.TextContent + JsonGenerator.FieldSeparator;
+
+                if (PrerequisiteQuest != null)
+                    Result += PrerequisiteQuest.TextContent + JsonGenerator.FieldSeparator;
+                Result += FavorNpc + JsonGenerator.FieldSeparator;
+                Result += PrefaceText + JsonGenerator.FieldSeparator;
+                Result += SuccessText + JsonGenerator.FieldSeparator;
+                Result += MidwayText + JsonGenerator.FieldSeparator;
+                Result += RewardsFavor + JsonGenerator.FieldSeparator;
+
+                foreach (string RewardsRecipe in RewardsRecipeList)
+                    Result += RewardsRecipe + JsonGenerator.FieldSeparator;
+
+                Result += RewardsAbility + JsonGenerator.FieldSeparator;
+                Result += RequirementFavorNpc + JsonGenerator.FieldSeparator;
+                Result += RequirementQuest + JsonGenerator.FieldSeparator;
+                Result += RequirementGuildQuest + JsonGenerator.FieldSeparator;
+                if (RewardRecipe != null)
+                    Result += RewardRecipe.TextContent + JsonGenerator.FieldSeparator;
+
+                foreach (QuestRewardItem Item in PreGiveItemList)
+                    Result += Item.TextContent + JsonGenerator.FieldSeparator;
+
+                Result += RewardsNamedLootProfile + JsonGenerator.FieldSeparator;
+
+                foreach (string PreGiveRecipe in PreGiveRecipeList)
+                    Result += PreGiveRecipe + JsonGenerator.FieldSeparator;
+
+                if (RewardEffect != null)
+                    Result += RewardEffect.TextContent + JsonGenerator.FieldSeparator;
+                Result += GroupingName + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
         }
         #endregion
 

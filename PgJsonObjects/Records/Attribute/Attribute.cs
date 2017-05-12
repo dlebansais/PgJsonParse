@@ -177,6 +177,19 @@ namespace PgJsonObjects
                 return Result.Trim();
             }
         }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                Result += Label + JsonGenerator.FieldSeparator;
+                Result += Tooltip + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Ancestor Interface

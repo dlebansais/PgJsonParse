@@ -6,6 +6,8 @@ namespace PgJsonObjects
     public class JsonGenerator
     {
         public static bool UseJavaFormat = true;
+        public static char FieldSeparator = '§';
+        public static char ObjectSeparator = '|';
 
         public JsonGenerator()
         {

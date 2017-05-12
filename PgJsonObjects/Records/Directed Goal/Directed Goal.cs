@@ -5,6 +5,8 @@ namespace PgJsonObjects
     public class DirectedGoal : GenericJsonObject<DirectedGoal>
     {
         #region Constants
+        public const int SearchResultIconId = 2118;
+
         private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
         {
             { "Label", ParseFieldLabel },
@@ -35,6 +37,8 @@ namespace PgJsonObjects
         public int NeededRecipeCompletions { get { return RawNeededRecipeCompletions.HasValue ? RawNeededRecipeCompletions.Value : 0; } }
         private int? RawNeededRecipeCompletions;
         public string NeededNotoriety { get; private set; }
+
+        public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion
 
         #region Client Interface
@@ -50,6 +54,7 @@ namespace PgJsonObjects
         private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)
         {
             Label = RawLabel;
+            ErrorInfo.AddIconId(SearchResultIconId);
         }
 
         private static void ParseFieldZone(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
@@ -193,6 +198,26 @@ namespace PgJsonObjects
             Generator.AddString("NeededNotoriety", NeededNotoriety);
 
             Generator.CloseObject();
+        }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                Result += Label + JsonGenerator.FieldSeparator;
+                Result += Zone + JsonGenerator.FieldSeparator;
+                Result += Hint + JsonGenerator.FieldSeparator;
+                Result += NeededAbility + JsonGenerator.FieldSeparator;
+                Result += NeededInteractionFlag + JsonGenerator.FieldSeparator;
+                if (NeededRecipe != null)
+                    Result += NeededRecipe.TextContent + JsonGenerator.FieldSeparator;
+                Result += RawNeededRecipe + JsonGenerator.FieldSeparator;
+                Result += NeededNotoriety + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
         }
         #endregion
 

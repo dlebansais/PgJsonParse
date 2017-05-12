@@ -47,6 +47,7 @@ namespace PgJsonObjects
             { ItemUseVerb.MemorizeWorkOrder, "Memorize Work Order"},
             { ItemUseVerb.Equip, "Equip"},
             { ItemUseVerb.HuddleForWarmth, "Huddle For Warmth"},
+            { ItemUseVerb.AgeLiquor, "Age Liquor"},
         };
 
         private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
@@ -84,6 +85,9 @@ namespace PgJsonObjects
             { "UseRequirements", ParseFieldUseRequirements },
             { "UseVerb", ParseFieldUseVerb },
             { "Value", ParseFieldValue },
+            { "NumUses", ParseFieldNumUses },
+            { "UseAnimation", ParseFieldUseAnimation },
+            { "DestroyWhenUsedUp", ParseFieldDestroyWhenUsedUp },
         };
         #endregion
 
@@ -128,10 +132,7 @@ namespace PgJsonObjects
         private int? RawMetabolismCost;
         public string Name { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
-        public OtherRequirementType OtherRequirement { get; private set; }
-        public float CurHealth { get; private set; }
-        public Race RequiredRace { get; private set; }
-        public AnimalForm RequiredForm { get; private set; }
+        public List<AbilityRequirement> OtherRequirementList { get; private set; }
         public List<ItemSkillLink> SkillRequirementList { get; private set; }
         public double UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
         private double? RawUseDelay;
@@ -141,6 +142,13 @@ namespace PgJsonObjects
         public ItemUseVerb UseVerb { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         private double? RawValue;
+        public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
+        private int? RawNumUses;
+        public ItemUseAnimation UseAnimation { get; private set; }
+        public bool DestroyWhenUsedUp { get { return RawDestroyWhenUsedUp.HasValue && RawDestroyWhenUsedUp.Value; } }
+        private bool? RawDestroyWhenUsedUp;
+
+        public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         #endregion
 
         #region Client Interface
@@ -363,7 +371,13 @@ namespace PgJsonObjects
 
         private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)
         {
-            this.RawIconId = RawIconId;
+            if (RawIconId > 0)
+            {
+                this.RawIconId = RawIconId;
+                ErrorInfo.AddIconId(RawIconId);
+            }
+            else
+                this.RawIconId = null;
         }
 
         private static void ParseFieldInternalName(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -587,118 +601,9 @@ namespace PgJsonObjects
 
         public void ParseOtherRequirements(Dictionary<string, object> RawOtherRequirements, ParseErrorInfo ErrorInfo)
         {
-            if (!RawOtherRequirements.ContainsKey("T"))
-            {
-                ErrorInfo.AddMissingEnum("Item OtherRequirements", "T");
-                return;
-            }
-
-            string RequirementType = RawOtherRequirements["T"] as string;
-
-            OtherRequirementType RequirementTypeValue;
-            if (!StringToEnumConversion<OtherRequirementType>.TryParse(RequirementType, out RequirementTypeValue, ErrorInfo))
-                return;
-
-            switch (RequirementTypeValue)
-            {
-                case OtherRequirementType.CurHealth:
-                    if (RawOtherRequirements.ContainsKey("Health"))
-                    {
-                        string HealthRequirementString;
-                        int? HealthRequirementInt;
-
-                        if ((HealthRequirementString = RawOtherRequirements["Health"] as string) != null)
-                        {
-                            float NewCurHealth;
-                            FloatFormat NewCurHealthFormat;
-                            if (Tools.TryParseFloat(HealthRequirementString, out NewCurHealth, out NewCurHealthFormat) && NewCurHealthFormat == FloatFormat.Standard)
-                            {
-                                OtherRequirement = RequirementTypeValue;
-                                CurHealth = NewCurHealth;
-                                break;
-                            }
-                        }
-                        else if ((HealthRequirementInt = RawOtherRequirements["Health"] as int?) != null)
-                        {
-                            OtherRequirement = RequirementTypeValue;
-                            CurHealth = HealthRequirementInt.Value;
-                            break;
-                        }
-                    }
-
-                    ErrorInfo.AddInvalidObjectFormat("Item OtherRequirements Health");
-                    return;
-
-                case OtherRequirementType.Race:
-                    if (RawOtherRequirements.ContainsKey("AllowedRace"))
-                    {
-                        string RaceRequirement = RawOtherRequirements["AllowedRace"] as string;
-
-                        Race RaceValue;
-                        if (StringToEnumConversion<Race>.TryParse(RaceRequirement, out RaceValue, ErrorInfo))
-                        {
-                            OtherRequirement = RequirementTypeValue;
-                            RequiredRace = RaceValue;
-                            break;
-                        }
-                    }
-
-                    ErrorInfo.AddInvalidObjectFormat("Item OtherRequirements AllowedRace");
-                    return;
-
-                case OtherRequirementType.Appearance:
-                    if (RawOtherRequirements.ContainsKey("Appearance"))
-                    {
-                        if (RequiredAppearance == Appearance.Internal_None)
-                        {
-                            string AppearanceRequirement = RawOtherRequirements["Appearance"] as string;
-
-                            Appearance AppearanceValue;
-                            if (StringToEnumConversion<Appearance>.TryParse(AppearanceRequirement, out AppearanceValue, ErrorInfo))
-                            {
-                                OtherRequirement = RequirementTypeValue;
-                                RequiredAppearance = AppearanceValue;
-                                break;
-                            }
-                        }
-                    }
-
-                    ErrorInfo.AddInvalidObjectFormat("Item OtherRequirements Appearance");
-                    return;
-
-                case OtherRequirementType.HasEffectKeyword:
-                    if (RawOtherRequirements.ContainsKey("Keyword"))
-                    {
-                        string KeywordRequirement = RawOtherRequirements["Keyword"] as string;
-
-                        AnimalForm FormValue;
-                        if (StringToEnumConversion<AnimalForm>.TryParse(KeywordRequirement, out FormValue, ErrorInfo))
-                        {
-                            OtherRequirement = RequirementTypeValue;
-                            RequiredForm = FormValue;
-                            break;
-                        }
-                    }
-
-                    ErrorInfo.AddInvalidObjectFormat("Item OtherRequirements object");
-                    return;
-
-                case OtherRequirementType.IsAdmin:
-                case OtherRequirementType.IsLycanthrope:
-                case OtherRequirementType.FullMoon:
-                case OtherRequirementType.IsHardcore:
-                    OtherRequirement = RequirementTypeValue;
-                    break;
-
-                case OtherRequirementType.Or:
-                    OtherRequirement = RequirementTypeValue;
-                    break;
-
-                default:
-                    ErrorInfo.AddInvalidObjectFormat("Item OtherRequirements Keyword");
-                    OtherRequirement = RequirementTypeValue;
-                    break;
-            }
+            AbilityRequirement ParsedOtherRequirement;
+            JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
+            OtherRequirementList.Add(ParsedOtherRequirement);
         }
 
         private static void ParseFieldSkillReqs(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -881,6 +786,48 @@ namespace PgJsonObjects
             this.RawValue = RawValue;
         }
 
+        private static void ParseFieldNumUses(Item This, object NumUses, ParseErrorInfo ErrorInfo)
+        {
+            if (NumUses is int)
+                This.ParseNumUses((int)NumUses, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Item NumUses");
+        }
+
+        private void ParseNumUses(int RawNumUses, ParseErrorInfo ErrorInfo)
+        {
+            this.RawNumUses = RawNumUses;
+        }
+
+        private static void ParseFieldUseAnimation(Item This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawUseAnimation;
+            if ((RawUseAnimation = Value as string) != null)
+                This.ParseUseAnimation(RawUseAnimation, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Item UseAnimation");
+        }
+
+        private void ParseUseAnimation(string RawUseAnimation, ParseErrorInfo ErrorInfo)
+        {
+            ItemUseAnimation ParsedUseAnimation;
+            StringToEnumConversion<ItemUseAnimation>.TryParse(RawUseAnimation, out ParsedUseAnimation, ErrorInfo);
+            UseAnimation = ParsedUseAnimation;
+        }
+
+        private static void ParseFieldDestroyWhenUsedUp(Item This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is bool)
+                This.ParseDestroyWhenUsedUp((bool)Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Item DestroyWhenUsedUp");
+        }
+
+        private void ParseDestroyWhenUsedUp(bool RawDestroyWhenUsedUp, ParseErrorInfo ErrorInfo)
+        {
+            this.RawDestroyWhenUsedUp = RawDestroyWhenUsedUp;
+        }
+
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -943,35 +890,19 @@ namespace PgJsonObjects
             if (RequiredAppearance != Appearance.Internal_None)
                 Generator.AddString("RequiredAppearance", RequiredAppearance.ToString());
 
-            switch (OtherRequirement)
+            if (OtherRequirementList.Count > 1)
             {
-                case OtherRequirementType.IsAdmin:
-                case OtherRequirementType.IsLycanthrope:
-                    Generator.OpenObject("OtherRequirements");
-                    Generator.AddString("T", OtherRequirement.ToString());
-                    Generator.CloseObject();
-                    break;
+                Generator.OpenArray("OtherRequirements");
 
-                case OtherRequirementType.CurHealth:
-                    Generator.OpenObject("OtherRequirements");
-                    Generator.AddString("T", "CurHealth");
-                    Generator.AddFloat("Health", CurHealth);
-                    Generator.CloseObject();
-                    break;
+                foreach (AbilityRequirement Item in OtherRequirementList)
+                    Item.GenerateObjectContent(Generator);
 
-                case OtherRequirementType.Race:
-                    Generator.OpenObject("OtherRequirements");
-                    Generator.AddString("T", "Race");
-                    Generator.AddString("AllowedRace", RequiredRace.ToString());
-                    Generator.CloseObject();
-                    break;
-
-                case OtherRequirementType.HasEffectKeyword:
-                    Generator.OpenObject("OtherRequirements");
-                    Generator.AddString("T", "HasEffectKeyword");
-                    Generator.AddString("Keyword", RequiredForm.ToString());
-                    Generator.CloseObject();
-                    break;
+                Generator.CloseArray();
+            }
+            else if (OtherRequirementList.Count > 0)
+            {
+                AbilityRequirement Item = OtherRequirementList[0];
+                Item.GenerateObjectContent(Generator);
             }
 
             if (SkillRequirementList.Count > 0)
@@ -1080,6 +1011,36 @@ namespace PgJsonObjects
             return null;
         }
 
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                if (RawIconId.HasValue)
+                {
+                    foreach (KeyValuePair<string, Recipe> Entry in BestowRecipeTable)
+                        Result += Entry.Value.TextContent + JsonGenerator.FieldSeparator;
+
+                    if (BestowAbility != null)
+                        Result += BestowAbility.TextContent + JsonGenerator.FieldSeparator;
+                    Result += BestowQuest + JsonGenerator.FieldSeparator;
+                    Result += Description + JsonGenerator.FieldSeparator;
+                    Result += DroppedAppearance + JsonGenerator.FieldSeparator;
+                    Result += EquipAppearance + JsonGenerator.FieldSeparator;
+                    Result += MacGuffinQuestName + JsonGenerator.FieldSeparator;
+                    Result += Name + JsonGenerator.FieldSeparator;
+
+                    foreach (ItemSkillLink Link in SkillRequirementList)
+                        Result += Link.SkillName + JsonGenerator.FieldSeparator;
+
+                    Result += UseDelayAnimation + JsonGenerator.FieldSeparator;
+                }
+
+                return Result;
+            }
+        }
+
         private List<string> RawBestowRecipesList;
         private bool RawBestowRecipesListIsEmpty;
         private bool IsRawBestowAbilityParsed;
@@ -1100,10 +1061,13 @@ namespace PgJsonObjects
             RepeatedKeywordList = new List<ItemKeyword>();
             SkillRequirementList = new List<ItemSkillLink>();
             UseRequirementList = new List<ItemUseRequirement>();
+            OtherRequirementList = new List<AbilityRequirement>();
+            /*
             OtherRequirement = OtherRequirementType.Internal_None;
             CurHealth = 0;
             RequiredRace = Race.Internal_None;
             RequiredForm = AnimalForm.Internal_None;
+            */
             StockDye = null;
         }
 

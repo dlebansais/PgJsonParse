@@ -27,5 +27,6 @@
         PlayerBat,
         HolisticWellness,
         RetailManagement,
+        AlcoholTolerance,
     }
 }

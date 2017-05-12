@@ -18,5 +18,6 @@
         Gazluk,
         Cave2,
         MyconianCave,
+        GazlukKeep,
     }
 }

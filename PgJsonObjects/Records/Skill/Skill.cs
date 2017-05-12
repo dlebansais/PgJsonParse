@@ -57,9 +57,76 @@ namespace PgJsonObjects
         public bool AuxCombat { get { return RawAuxCombat.HasValue && RawAuxCombat.Value; } }
         private bool? RawAuxCombat;
         public List<SkillCategory> TSysCategoryList { get; private set; }
+
+        public static Dictionary<PowerSkill, Ability> BasicAttackTable { get; private set; }
+        public static Dictionary<PowerSkill, int> AnyIconTable { get; private set; }
+
+        public string SearchResultIconFileName
+        {
+            get
+            {
+                PowerSkill IconSkill = CombatSkill;
+
+                if (!BasicAttackTable.ContainsKey(IconSkill))
+                {
+                    foreach (PowerSkill SkillItem in CompatibleCombatSkillList)
+                        if (BasicAttackTable.ContainsKey(IconSkill))
+                        {
+                            IconSkill = SkillItem;
+                            break;
+                        }
+                }
+
+                if (!BasicAttackTable.ContainsKey(IconSkill))
+                {
+                    foreach (PowerSkill SkillItem in ParentList)
+                        if (BasicAttackTable.ContainsKey(IconSkill))
+                        {
+                            IconSkill = SkillItem;
+                            break;
+                        }
+                }
+
+                int IconId = BestIconIdForSkill(IconSkill);
+
+                if (IconId == 0)
+                    return null;
+
+                return "icon_" + IconId;
+            }
+        }
+
+        public static int BestIconIdForSkill(PowerSkill IconSkill)
+        {
+            int IconId = 0;
+
+            if (BasicAttackTable.ContainsKey(IconSkill))
+                IconId = BasicAttackTable[IconSkill].IconId;
+
+            if (IconId == 0 && AnyIconTable.ContainsKey(IconSkill))
+                IconId = AnyIconTable[IconSkill];
+
+            return IconId;
+        }
+        #endregion
+
+        #region Init
+        static Skill()
+        {
+            BasicAttackTable = new Dictionary<PowerSkill, Ability>();
+            AnyIconTable = new Dictionary<PowerSkill, int>();
+        }
         #endregion
 
         #region Client Interface
+        public override void Init(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
+        {
+            base.Init(EntryRaw, ErrorInfo);
+
+            if (Name == null)
+                Name = Key;
+        }
+
         private static void ParseFieldId(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
             if (Value is int)
@@ -521,6 +588,23 @@ namespace PgJsonObjects
 
             ErrorInfo.AddMissingKey(RawPowerSkill.ToString());
             return null;
+        }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                Result += Description + JsonGenerator.FieldSeparator;
+
+                foreach (Reward Item in RewardList)
+                    Result += Item.TextContent + JsonGenerator.FieldSeparator;
+
+                Result += Name + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
         }
         #endregion
 

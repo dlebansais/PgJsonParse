@@ -57,6 +57,19 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                foreach (KeyValuePair<int, Advancement> Entry in LevelTable)
+                    Result += Entry.Value.TextContent + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Ancestor Interface

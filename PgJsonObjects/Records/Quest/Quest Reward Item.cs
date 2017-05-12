@@ -54,6 +54,19 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                if (QuestItem != null)
+                    Result += QuestItem.TextContent + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Ancestor Interface

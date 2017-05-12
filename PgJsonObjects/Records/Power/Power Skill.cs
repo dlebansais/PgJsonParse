@@ -118,6 +118,10 @@
         Anatomy_Bears,
         BeastSpeech,
         ArtHistory,
+        Brewing,
+        Anatomy_Fey,
+        Anatomy_Dwarves,
+        IocaineResistance,
     }
 }
 

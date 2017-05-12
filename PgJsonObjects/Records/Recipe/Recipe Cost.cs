@@ -16,6 +16,27 @@ namespace PgJsonObjects
         public RecipeCurrency Currency { get; private set; }
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }
         private double? RawPrice;
+
+        public string CombinedCost
+        {
+            get
+            {
+                string Result = Price.ToString();
+
+                switch (Currency)
+                {
+                    case RecipeCurrency.GuildCredits:
+                        Result += " Guild Credit(s)";
+                        break;
+
+                    default:
+                        Result += " " + Currency.ToString();
+                        break;
+                }
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -58,6 +79,16 @@ namespace PgJsonObjects
             Generator.AddDouble("Price", RawPrice);
 
             Generator.CloseObject();
+        }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                return Result;
+            }
         }
         #endregion
 

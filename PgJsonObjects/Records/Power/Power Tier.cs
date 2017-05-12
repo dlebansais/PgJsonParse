@@ -57,6 +57,16 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Ancestor Interface

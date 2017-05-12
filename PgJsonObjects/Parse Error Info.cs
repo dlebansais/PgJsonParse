@@ -82,13 +82,7 @@ namespace PgJsonObjects
                 UnparsedFieldList.Add(Field);
         }
 
-        public void AddIcon(int IconId)
-        {
-            if (!IconList.Contains(IconId))
-                IconList.Add(IconId);
-        }
-
-        public void ParseIconId(string s)
+        public void LookForIconId(string s)
         {
             if (s == null)
                 return;
@@ -105,12 +99,22 @@ namespace PgJsonObjects
                 return;
 
             string IconIdString = s.Substring(IndexStart, IndexEnd - IndexStart);
+            ParseIconId(IconIdString);
+        }
 
+        public void ParseIconId(string IconIdString)
+        {
             int IconId;
             if (!int.TryParse(IconIdString, out IconId) || IconId <= 0)
                 return;
 
-            AddIcon(IconId);
+            AddIconId(IconId);
+        }
+
+        public void AddIconId(int IconId)
+        {
+            if (!IconList.Contains(IconId))
+                IconList.Add(IconId);
         }
 
         public string GetWarnings()

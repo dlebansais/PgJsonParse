@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Net;
+using System.Text;
 using System.Web.Script.Serialization;
 using System.Windows;
 
@@ -180,6 +180,33 @@ namespace PgJsonParse
 
             StringLine = "\t\t\"" + Field + "\": " + (Value.Value ? "true" : "false") + ",\n";
             return true;
+        }
+        #endregion
+
+        #region Index
+        public void CreateIndex(string IndexFilePath, IDictionary<string, T> ObjectTable)
+        {
+            try
+            {
+                if (File.Exists(IndexFilePath))
+                    return;
+
+                using (FileStream fs = new FileStream(IndexFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs, Encoding.UTF8))
+                    {
+                        foreach (KeyValuePair<string, T> Entry in ObjectTable)
+                        {
+                            string Content = Entry.Value.TextContent;
+                            sw.WriteLine(Content + JsonGenerator.ObjectSeparator + Entry.Key);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+
+            }
         }
         #endregion
 

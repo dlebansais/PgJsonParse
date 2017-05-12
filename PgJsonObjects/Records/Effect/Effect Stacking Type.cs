@@ -241,5 +241,7 @@
         MomentOfBravery,
         DisharmonyDebuff,
         DisharmonyDebuffB,
+        DrugWithdrawal_Alcohol,
+        Soberize,
     }
 }

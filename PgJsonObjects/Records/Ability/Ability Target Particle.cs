@@ -2,6 +2,7 @@
 {
     public enum AbilityTargetParticle
     {
+        Internal_None,
         WeaponHit,
         ComboHit,
         BigHit,

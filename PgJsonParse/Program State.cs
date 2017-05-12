@@ -6,6 +6,9 @@
         LocatingLastVersion,
         Downloading,
         Parsing,
+        ConnectingTables,
+        CreatingIndex,
+        LoadingIcons,
         Ready,
     }
 }

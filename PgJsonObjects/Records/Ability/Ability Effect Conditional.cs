@@ -18,5 +18,6 @@
         GazlukWarWizardArmor,
         GazlukNecromancerArmor,
         GazlukCabalistArmor,
+        AnyKnifeDamage,
     }
 }

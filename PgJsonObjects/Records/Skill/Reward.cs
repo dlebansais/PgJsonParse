@@ -95,6 +95,22 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                if (Ability != null)
+                    Result += Ability.TextContent + JsonGenerator.FieldSeparator;
+                Result += Notes + JsonGenerator.FieldSeparator;
+                if (Recipe != null)
+                    Result += Recipe.TextContent + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Ancestor Interface

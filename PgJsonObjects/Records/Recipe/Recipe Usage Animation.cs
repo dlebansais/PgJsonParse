@@ -6,5 +6,6 @@
         UseMeditationPillar,
         UseTeleportationCircle,
         BlacksmithHammering,
+        UseItem,
     }
 }

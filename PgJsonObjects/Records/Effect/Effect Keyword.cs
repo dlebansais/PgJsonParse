@@ -194,5 +194,8 @@
         PlayingSongOfBravery,
         PlayingSongOfDiscord,
         Mezzed,
+        DrugWithdrawal_Alcohol,
+        AlcoholPoisoning,
+        AlcoholInBody,
     }
 }

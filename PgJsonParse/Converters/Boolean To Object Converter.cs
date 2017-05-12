@@ -9,18 +9,16 @@ namespace Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool BooleanValue;
+            int IntValue;
 
-            if (value is bool)
-                BooleanValue = (bool)value;
-            else if (value is bool?)
-                BooleanValue = ((bool?)value).HasValue ? ((bool?)value).Value : false;
+            if (!(value is bool))
+                IntValue = 2;
             else
-                BooleanValue = false;
+                IntValue = ((bool)value) ? 1 : 0;
 
             CompositeCollection CollectionOfItems = parameter as CompositeCollection;
 
-            return BooleanValue ? CollectionOfItems[1] : CollectionOfItems[0];
+            return CollectionOfItems[IntValue];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

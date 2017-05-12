@@ -50,6 +50,8 @@ namespace PgJsonObjects
         public bool IsKeywordListEmpty { get; private set; }
         public List<AbilityKeyword> AbilityKeywordList { get; private set; }
         public bool IsAbilityKeywordListEmpty { get; private set; }
+
+        public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         #endregion
 
         #region Client Interface
@@ -91,7 +93,13 @@ namespace PgJsonObjects
 
         private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)
         {
-            this.RawIconId = RawIconId;
+            if (RawIconId > 0)
+            {
+                this.RawIconId = RawIconId;
+                ErrorInfo.AddIconId(RawIconId);
+            }
+            else
+                this.RawIconId = null;
         }
 
         private static void ParseFieldDisplayMode(Effect This, object Value, ParseErrorInfo ErrorInfo)
@@ -267,6 +275,23 @@ namespace PgJsonObjects
 
             ErrorInfo.AddMissingKey(RawEffectName);
             return null;
+        }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                if (RawIconId.HasValue)
+                {
+                    Result += Name + JsonGenerator.FieldSeparator;
+                    Result += Desc + JsonGenerator.FieldSeparator;
+                    Result += SpewText + JsonGenerator.FieldSeparator;
+                }
+
+                return Result;
+            }
         }
         #endregion
 

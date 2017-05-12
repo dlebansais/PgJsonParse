@@ -258,5 +258,6 @@
         TSysCraftedEquipment,
         CraftingEnhanceItem,
         AddItemTSysPower,
+        BrewItem,
     }
 }

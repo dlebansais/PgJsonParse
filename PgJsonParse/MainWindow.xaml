@@ -1,16 +1,21 @@
 ﻿<Window x:Class="PgJsonParse.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:conv="clr-namespace:Converters"
         xmlns:app="clr-namespace:PgJsonParse"
         Title="Project Gorgon - Json Parser">
     <Window.Resources>
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
         <conv:IndexToObjectConverter x:Key="convIndexToObject"/>
+        <conv:EnumToTextConverter x:Key="convEnumToText"/>
         <conv:FriendlyNameConverter x:Key="convFriendlyName"/>
         <conv:FileNameToBitmapImageConverter x:Key="convFileNameToBitmapImage"/>
-        <app:ItemEffectTemplateSelector x:Key="ItemEffectTemplateSelector"/>
-        <app:ItemEffectGearTemplateSelector x:Key="ItemEffectGearTemplateSelector"/>
+        <conv:IntConverter x:Key="convInt"/>
+        <conv:DoubleConverter x:Key="convDouble"/>
+        <app:ItemEffectGearTemplateSelector x:Key="selItemEffectGear"/>
+        <app:SearchResultTitleSelector x:Key="selSearchResultTitle"/>
+        <app:SearchResultContentSelector x:Key="selSearchResultContent"/>
         <RoutedCommand x:Key="StartApplicationCommand"/>
         <RoutedCommand x:Key="ClearVersionListCommand"/>
         <RoutedCommand x:Key="CancelCommand"/>
@@ -36,6 +41,15 @@
         <CompositeCollection x:Key="CollapsedVisible">
             <Visibility>Collapsed</Visibility>
             <Visibility>Visible</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="NoYes">
+            <sys:String>No</sys:String>
+            <sys:String>Yes</sys:String>
+        </CompositeCollection>
+        <CompositeCollection x:Key="NoYesNull">
+            <sys:String>No</sys:String>
+            <sys:String>Yes</sys:String>
+            <x:Static Member="sys:String.Empty"/>
         </CompositeCollection>
         <DataTemplate x:Key="AttributeLinkTemplate">
             <StackPanel Orientation="Horizontal">
@@ -129,10 +143,16 @@
                             </StackPanel>
                         </Grid>
                     </Grid>
-                    <StackPanel Visibility="{Binding IsJsonLoading, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}" Margin="0,20,0,0">
-                        <TextBlock>Parsing files...</TextBlock>
-                        <ProgressBar Minimum="0" Maximum="1" Value="{Binding LoadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
-                    </StackPanel>
+                    <Grid Visibility="{Binding IsJsonLoading, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}" Margin="0,20,0,0">
+                        <StackPanel Visibility="{Binding IsLoadingIcons, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden}, FallbackValue=Visible}">
+                            <TextBlock>Parsing files...</TextBlock>
+                            <ProgressBar Minimum="0" Maximum="1" Value="{Binding FileLoadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding IsLoadingIcons, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}">
+                            <TextBlock>Loading icons...</TextBlock>
+                            <ProgressBar Minimum="0" Maximum="1" Value="{Binding IconLoadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Grid>
                     <Button Command="{StaticResource CancelCommand}" Visibility="{Binding IsOperationCanceled, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden}, FallbackValue=Visible}" HorizontalAlignment="Center" Width="120" Margin="0,40,0,0">Cancel</Button>
                 </StackPanel>
             </Border>
@@ -258,7 +278,7 @@
                                         </StackPanel>
                                         <StackPanel Margin="40,20,10,10">
                                             <TextBlock Text="{Binding SelectedGearDescription}" Foreground="White" TextWrapping="Wrap"/>
-                                            <ItemsControl ItemsSource="{Binding SelectedGearEffectDescriptionList}" ItemTemplateSelector="{StaticResource ItemEffectGearTemplateSelector}" Margin="0,10,0,0"/>
+                                            <ItemsControl ItemsSource="{Binding SelectedGearEffectDescriptionList}" ItemTemplateSelector="{StaticResource selItemEffectGear}" Margin="0,10,0,0"/>
                                         </StackPanel>
                                         <StackPanel Margin="40,20,10,10">
                                             <ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource PowerNameTemplateWhite}" SelectedIndex="{Binding SelectedPowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
@@ -299,8 +319,349 @@
                     </TabControl>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Advanced Search (under construction)" IsEnabled="False">
-                <DockPanel/>
+            <TabItem Header="Advanced Search (experimental)">
+                <TabItem.Resources>
+                    <DataTemplate x:Key="SearchResultAbilityTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Ability:</TextBlock>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultAbilityContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Ability:</TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Separator DockPanel.Dock="Top" Margin="5,5,5,5"/>
+                            <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Animation:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Animation, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Can be on sidebar:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding CanBeOnSidebar, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYes}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Suppress monster shout:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding RawCanSuppressMonsterShout, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Can target untargettable:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding RawCanTargetUntargetableEnemies, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Cause(s) of death:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding CombinedCausesOfDeath, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Cost:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding CombinedCost, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Power On Combat Refresh: </TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding RawCombatRefreshBaseAmount, Converter={StaticResource convInt}, ConverterParameter=+, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Compatible skill:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="7"  Text="{Binding CompatibleSkill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Consumed Item:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding CombinedConsumedItem, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Damage Type:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="9"  Text="{Binding DamageType, Converter={StaticResource convEnumToText}, ConverterParameter=DamageTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Activation:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="10" Text="{Binding CombinedDelayLoop, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Description:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="11" Text="{Binding Description, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Appears enabled:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="12" Text="{Binding EffectKeywordsIndicatingEnabled, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityIndicatingEnabledTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Is Internal:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="13" Text="{Binding RawInternalAbility, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Is Harmless:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="14" Text="{Binding RawIsHarmless, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Error message:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="15" Text="{Binding ItemKeywordReqErrorMessage, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="16" TextAlignment="Right" Margin="0,10,0,0">Requirements:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="16" Text="{Binding CombinedRequirements, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Tooltip Extra Keywords:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="17" Text="{Binding ExtraKeywordsForTooltips, Converter={StaticResource convEnumToText}, ConverterParameter=TooltipsExtraKeywordsTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Keywords:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding CombinedKeywords, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Level:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding Level, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Pet type requirement:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding PetTypeTagReq, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityPetTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Max simultaneous pets:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding RawPetTypeTagReqMax, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Prerequisite:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding CombinedPrerequisite, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Projectile:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="5" Text="{Binding Projectile, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityProjectileTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Reset Time:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="6" Text="{Binding RawResetTime, Converter={StaticResource convDouble}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Shares Reset Timer With:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="7" Text="{Binding CombinedSharesResetTimerWith, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="8" Text="{Binding Skill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Special Info:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="9" Text="{Binding SpecialInfo}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Target:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="10" Text="{Binding Target, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityTargetTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Target Requirement:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="11" Text="{Binding TargetEffectKeywordReq, Converter={StaticResource convEnumToText}, ConverterParameter=TargetEffectKeywordTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Target Particle:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="12" Text="{Binding TargetParticle, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityTargetParticleTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Upgrade of:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="13" Text="{Binding UpgradeOf.Name, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Works In Combat:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="14" Text="{Binding RawWorksInCombat, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Works Underwater:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="15" Text="{Binding RawWorksUnderwater, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="16" TextAlignment="Right" Margin="0,10,0,0">Works While Falling:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="16" Text="{Binding RawWorksWhileFalling, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">TODO PvE and PvP damage</TextBlock>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultDirectedGoalTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Goal:</TextBlock>
+                            <TextBlock Text="{Binding Label}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultDirectedGoalContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Goal:</TextBlock>
+                                    <TextBlock Text="{Binding Label}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Grid>
+                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultEffectTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Effect:</TextBlock>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultEffectContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Effect:</TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Grid>
+                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultItemTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Item:</TextBlock>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultItemContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Item:</TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Grid>
+                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultQuestTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Quest:</TextBlock>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultQuestContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Quest:</TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Grid>
+                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultRecipeTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Recipe:</TextBlock>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultRecipeContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Recipe:</TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Grid>
+                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultSkillTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Skill:</TextBlock>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultSkillContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Skill:</TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Grid>
+                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultPowerTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Mod:</TextBlock>
+                            <TextBlock Text="{Binding ComposedName}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultPowerContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Mod:</TextBlock>
+                                    <TextBlock Text="{Binding ComposedName}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Grid>
+                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                </TabItem.Resources>
+                <DockPanel Margin="10,10,10,10">
+                    <DockPanel DockPanel.Dock="Left" Width="300">
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0">Search:</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding SearchTerms, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" KeyDown="OnSearchTermsEntered" Margin="5,0,0,0"/>
+                            <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding MustMatchCase}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Match case</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding MustMatchWholeWord}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Visibility="Collapsed" Margin="5,10,0,0">Match whole word</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding IncludeAbility}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Abilities</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding IncludeDirectedGoal}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Goals</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IncludeEffect}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Effects, buffs and debuffs</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding IncludeItem}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Items</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="7" IsChecked="{Binding IncludeQuest}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Quests</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="8" IsChecked="{Binding IncludeRecipe}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Recipes</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding IncludeSkill}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Skills</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="10" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects</CheckBox>
+                        </Grid>
+                        <Separator DockPanel.Dock="Top" Margin="5,10,5,10"/>
+                        <Expander DockPanel.Dock="Top" Header="Search instructions">
+                            <StackPanel>
+                                <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">Use AND or OR (case-sensitive, cannot be mixed) to separate terms for complex search. If neither is specified, the search is performed on the exact term, space included.</TextBlock>
+                                <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">Example:</TextBlock>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" FontStyle="Italic" Margin="0,5,0,0">cold damage AND ice</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="0" Margin="0,5,0,0">:</TextBlock>
+                                    <TextBlock Grid.Column="2" Grid.Row="0" TextWrapping="Wrap" Margin="5,5,0,0">search for occurences of "cold damage" and "ice" in the same entry.</TextBlock>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" FontStyle="Italic" Margin="0,5,0,0">nature OR fire OR crushing</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,5,0,0">:</TextBlock>
+                                    <TextBlock Grid.Column="2" Grid.Row="1" TextWrapping="Wrap" Margin="5,5,0,0">search for occurences of "nature", "fire" or "crushing" in any entry.</TextBlock>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" FontStyle="Italic" Margin="0,5,0,0">stuns opponent</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Margin="0,5,0,0">:</TextBlock>
+                                    <TextBlock Grid.Column="2" Grid.Row="2" TextWrapping="Wrap" Margin="5,5,0,0">search for occurences of "stun opponents" in any entry.</TextBlock>
+                                </Grid>
+                            </StackPanel>
+                        </Expander>
+                        <Separator DockPanel.Dock="Top" Margin="5,10,5,10"/>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Text="{Binding SearchResult.Count}"/>
+                            <TextBlock Margin="5,0,0,0"> found.</TextBlock>
+                        </StackPanel>
+                        <ScrollViewer Margin="0,10,0,0">
+                            <ListBox x:Name="listSearchResult" ItemsSource="{Binding SearchResult}" ItemTemplateSelector="{StaticResource selSearchResultTitle}" BorderBrush="{x:Null}" BorderThickness="0" Margin="0,10,0,0"/>
+                        </ScrollViewer>
+                    </DockPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Visible" Margin="10,0,10,0">
+                        <ContentControl Content="{Binding ElementName=listSearchResult, Path=SelectedItem}" ContentTemplateSelector="{StaticResource selSearchResultContent}"/>
+                    </ScrollViewer>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Cruncher (under construction)" IsEnabled="False">
                 <TabItem.Resources>

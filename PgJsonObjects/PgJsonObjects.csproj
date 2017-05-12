@@ -84,12 +84,14 @@
     <Compile Include="Records\Ability\Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Target Particle.cs" />
     <Compile Include="Records\Ability\Ability Target.cs" />
+    <Compile Include="Records\Ability\Ability Type Tag.cs" />
     <Compile Include="Records\Ability\Ability.cs" />
-    <Compile Include="Records\Ability\Consumed Item.cs" />
+    <Compile Include="Records\Ability\Consumed Items.cs" />
     <Compile Include="Records\Ability\Damage Type.cs" />
     <Compile Include="Records\Ability\Deaths.cs" />
     <Compile Include="Records\Ability\Special Value.cs" />
     <Compile Include="Records\Ability\Target Effect Keyword.cs" />
+    <Compile Include="Records\Ability\Tooltips Extra Keywords.cs" />
     <Compile Include="Records\Advancement Table\Advancement Table.cs" />
     <Compile Include="Records\Advancement Table\Advancement.cs" />
     <Compile Include="Records\Attribute\Attribute.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Records\Item\Item Simple Effect.cs" />
     <Compile Include="Records\Item\Item Skill Link.cs" />
     <Compile Include="Records\Item\Item Slot.cs" />
+    <Compile Include="Records\Item\Item Use Animation.cs" />
     <Compile Include="Records\Item\Item Use Requirement.cs" />
     <Compile Include="Records\Item\Item Use Verb.cs" />
     <Compile Include="Records\Item\Item.cs" />
@@ -123,7 +126,6 @@
     <Compile Include="Records\Power\Power.cs" />
     <Compile Include="Records\Quest\Favor.cs" />
     <Compile Include="Records\Quest\Map Area Name.cs" />
-    <Compile Include="Records\Quest\Map Spot Type.cs" />
     <Compile Include="Records\Quest\Quest Keyword.cs" />
     <Compile Include="Records\Quest\Quest Objective Type.cs" />
     <Compile Include="Records\Quest\Quest Objective.cs" />
@@ -145,9 +147,9 @@
     <Compile Include="Records\Recipe\Recipe Keyword.cs" />
     <Compile Include="Records\Recipe\Recipe Required Hotspot.cs" />
     <Compile Include="Records\Recipe\Recipe Result Effect.cs" />
+    <Compile Include="Records\Recipe\Recipe Result Key.cs" />
     <Compile Include="Records\Recipe\Recipe Usage Animation.cs" />
     <Compile Include="Records\Recipe\Recipe.cs" />
-    <Compile Include="Records\Recipe\Server Info.cs" />
     <Compile Include="Records\Recipe\Shamanic Slot Power.cs" />
     <Compile Include="Records\Skill\Advancement Table Enum.cs" />
     <Compile Include="Records\Skill\Level Cap Interaction.cs" />
@@ -157,6 +159,7 @@
     <Compile Include="Records\Skill\Xp Table Enum.cs" />
     <Compile Include="Records\Xp Table\Xp Table.cs" />
     <Compile Include="String To Enum Conversion.cs" />
+    <Compile Include="Text Maps.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

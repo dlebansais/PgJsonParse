@@ -14,7 +14,8 @@ namespace PgJsonObjects
             { "AttributesThatDelta", ParseFieldAttributesThatDelta },
             { "AttributesThatMod", ParseFieldAttributesThatMod },
             { "AttributesThatModBase", ParseFieldAttributesThatModBase },
-            { "RenderAsPercent", ParseFieldRenderAsPercent },
+            { "DisplayAsPercent", ParseFieldDisplayAsPercent },
+            { "SkipIfZero", ParseFieldSkipIfZero },
         };
         #endregion
 
@@ -26,8 +27,10 @@ namespace PgJsonObjects
         public Dictionary<string, Attribute> AttributesThatDeltaTable { get; private set; }
         public Dictionary<string, Attribute> AttributesThatModTable { get; private set; }
         public Dictionary<string, Attribute> AttributesThatModBaseTable { get; private set; }
-        public bool RenderAsPercent { get { return RawRenderAsPercent.HasValue && RawRenderAsPercent.Value; } }
-        private bool? RawRenderAsPercent;
+        public bool DisplayAsPercent { get { return RawDisplayAsPercent.HasValue && RawDisplayAsPercent.Value; } }
+        private bool? RawDisplayAsPercent;
+        public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
+        private bool? RawSkipIfZero;
         #endregion
 
         #region Client Interface
@@ -74,19 +77,6 @@ namespace PgJsonObjects
             this.RawValue = RawValue;
         }
 
-        private static void ParseFieldRenderAsPercent(SpecialValue This, object RenderAsPercent, ParseErrorInfo ErrorInfo)
-        {
-            if (RenderAsPercent is bool)
-                This.ParseRenderAsPercent((bool)RenderAsPercent, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("SpecialValue RenderAsPercent");
-        }
-
-        private void ParseRenderAsPercent(bool RawRenderAsPercent, ParseErrorInfo ErrorInfo)
-        {
-            this.RawRenderAsPercent = RawRenderAsPercent;
-        }
-
         private static void ParseFieldAttributesThatDelta(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
             ArrayList RawAttributesThatDelta;
@@ -129,6 +119,32 @@ namespace PgJsonObjects
             ParseStringTable(RawAttributesThatModBase, RawAttributesThatModBaseList, "AttributesThatModBase", ErrorInfo, out RawAttributesThatModBaseListIsEmpty);
         }
 
+        private static void ParseFieldDisplayAsPercent(SpecialValue This, object DisplayAsPercent, ParseErrorInfo ErrorInfo)
+        {
+            if (DisplayAsPercent is bool)
+                This.ParseDisplayAsPercent((bool)DisplayAsPercent, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("SpecialValue DisplayAsPercent");
+        }
+
+        private void ParseDisplayAsPercent(bool RawDisplayAsPercent, ParseErrorInfo ErrorInfo)
+        {
+            this.RawDisplayAsPercent = RawDisplayAsPercent;
+        }
+
+        private static void ParseFieldSkipIfZero(SpecialValue This, object SkipIfZero, ParseErrorInfo ErrorInfo)
+        {
+            if (SkipIfZero is bool)
+                This.ParseSkipIfZero((bool)SkipIfZero, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("SpecialValue SkipIfZero");
+        }
+
+        private void ParseSkipIfZero(bool RawSkipIfZero, ParseErrorInfo ErrorInfo)
+        {
+            this.RawSkipIfZero = RawSkipIfZero;
+        }
+
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -141,6 +157,19 @@ namespace PgJsonObjects
             Generator.AddList("AttributesThatModBase", RawAttributesThatModBaseList, RawAttributesThatModBaseListIsEmpty);
 
             Generator.CloseObject();
+        }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                Result += Label + JsonGenerator.FieldSeparator;
+                Result += Suffix + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
         }
 
         private List<string> RawAttributesThatDeltaList;

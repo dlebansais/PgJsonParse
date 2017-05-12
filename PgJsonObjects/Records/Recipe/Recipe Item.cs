@@ -182,6 +182,18 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                Result += Desc + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Ancestor Interface

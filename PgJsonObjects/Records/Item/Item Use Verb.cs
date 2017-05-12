@@ -40,6 +40,7 @@
         MemorizeWorkOrder,
         Equip,
         Activate,
-        HuddleForWarmth
+        HuddleForWarmth,
+        AgeLiquor,
     }
 }

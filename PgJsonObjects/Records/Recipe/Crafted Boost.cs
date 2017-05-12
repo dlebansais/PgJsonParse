@@ -46,5 +46,10 @@
         CraftedWinterGloves,
         CraftedWinterHelm,
         CraftedClub,
+        CraftedBardBoots,
+        CraftedBardPants,
+        CraftedBardShirt,
+        CraftedBardGloves,
+        CraftedBardHelm,
     }
 }

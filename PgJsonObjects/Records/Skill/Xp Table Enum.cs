@@ -30,5 +30,6 @@
         Transmutation,
         RetailManagement,
         AuxCraftingSkill,
+        AlcoholTolerance,
     }
 }

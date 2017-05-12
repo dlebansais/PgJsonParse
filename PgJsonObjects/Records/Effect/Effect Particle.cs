@@ -85,5 +85,6 @@
         ElectricityBurst,
         Shield_Healing,
         PurpleGlitterBuff,
+        DrinkAlcohol,
     }
 }

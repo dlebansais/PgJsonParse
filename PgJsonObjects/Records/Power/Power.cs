@@ -25,6 +25,40 @@ namespace PgJsonObjects
         public PowerSkill Skill { get; private set; }
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         private bool? RawIsUnavailable;
+
+        public string ComposedName
+        {
+            get
+            {
+                string Result = "";
+
+                if (Prefix != null)
+                    Result += Prefix;
+
+                if (Suffix != null)
+                {
+                    if (Result.Length > 0)
+                        Result += " ";
+
+                    Result += Suffix;
+                }
+
+                return Result;
+            }
+        }
+
+        public string SearchResultIconFileName
+        {
+            get
+            {
+                int IconId = PgJsonObjects.Skill.BestIconIdForSkill(Skill);
+
+                if (IconId == 0)
+                    return null;
+
+                return "icon_" + IconId;
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -182,6 +216,19 @@ namespace PgJsonObjects
                 return false;
 
             return true;
+        }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                Result += Prefix + JsonGenerator.FieldSeparator;
+                Result += Suffix + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
         }
         #endregion
 

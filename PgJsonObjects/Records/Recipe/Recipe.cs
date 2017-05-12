@@ -52,6 +52,9 @@ namespace PgJsonObjects
             { RecipeAction.InfuseSpirits, "Infuse Spirits" },
             { RecipeAction.CreateSpiritBelt, "Create Spirit Belt" },
             { RecipeAction.ApplyAugment, "Apply Augment" },
+            { RecipeAction.Brew, "Brew" },
+            { RecipeAction.PrepareCask, "Prepare Cask" },
+            { RecipeAction.SortGrass, "Sort Grass" },
         };
 
         private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
@@ -62,7 +65,6 @@ namespace PgJsonObjects
             { "InternalName", ParseFieldInternalName },
             { "Name", ParseFieldName },
             { "ResultItems", ParseFieldResultItems },
-            { "ServerInfo", ParseFieldServerInfo },
             { "Skill", ParseFieldSkill },
             { "SkillLevelReq", ParseFieldSkillLevelReq },
             { "ResultEffects", ParseFieldResultEffects },
@@ -91,7 +93,6 @@ namespace PgJsonObjects
         public string Name { get; private set; }
         public List<RecipeItem> ResultItemList { get; private set; }
         private bool EmptyResultItemList;
-        public ServerInfo ServerInfo { get; private set; }
         public PowerSkill Skill { get; private set; }
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         private int? RawSkillLevelReq;
@@ -103,7 +104,7 @@ namespace PgJsonObjects
         private int? RawUsageDelay;
         public string UsageDelayMessage { get; private set; }
         public RecipeUsageAnimation UsageAnimation { get; private set; }
-        public List<OtherRequirementType> OtherRequirementList { get; private set; }
+        public List<AbilityRequirement> OtherRequirementList { get; private set; }
         public float CurHealth { get; private set; }
         public Race RequiredRace { get; private set; }
         public AnimalForm RequiredForm { get; private set; }
@@ -118,6 +119,8 @@ namespace PgJsonObjects
         public int ResetTimeInSeconds { get { return RawResetTimeInSeconds.HasValue ? RawResetTimeInSeconds.Value : 0; } }
         private int? RawResetTimeInSeconds;
         public uint? DyeColor;
+
+        public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         #endregion
 
         #region Client Interface
@@ -133,7 +136,7 @@ namespace PgJsonObjects
         private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
         {
             Description = RawDescription;
-            ErrorInfo.ParseIconId(Description);
+            ErrorInfo.LookForIconId(Description);
         }
 
         private static void ParseFieldIconId(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -146,7 +149,15 @@ namespace PgJsonObjects
 
         private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)
         {
-            this.RawIconId = RawIconId;
+            if (RawIconId > 0)
+            {
+                this.RawIconId = RawIconId;
+                ErrorInfo.AddIconId(RawIconId);
+
+                UpdateAnySkillIcon();
+            }
+            else
+                this.RawIconId = null;
         }
 
         private static void ParseFieldIngredients(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -211,22 +222,6 @@ namespace PgJsonObjects
             EmptyResultItemList = (ResultItemList.Count == 0);
         }
 
-        private static void ParseFieldServerInfo(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            Dictionary<string, object> RawServerInfo;
-            if ((RawServerInfo = Value as Dictionary<string, object>) != null)
-                This.ParseServerInfo(RawServerInfo, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Recipe ServerInfo");
-        }
-
-        private void ParseServerInfo(Dictionary<string, object> RawServerInfo, ParseErrorInfo ErrorInfo)
-        {
-            ServerInfo ParsedServerInfo;
-            JsonObjectParser<ServerInfo>.InitAsSubitem("ServerInfo", RawServerInfo, out ParsedServerInfo, ErrorInfo);
-            ServerInfo = ParsedServerInfo;
-        }
-
         private static void ParseFieldSkill(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawSkill;
@@ -241,6 +236,8 @@ namespace PgJsonObjects
             PowerSkill ParsedSkill;
             StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedSkill, ErrorInfo);
             Skill = ParsedSkill;
+
+            UpdateAnySkillIcon();
         }
 
         private static void ParseFieldSkillLevelReq(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -393,169 +390,11 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Recipe OtherRequirements");
         }
 
-        public void ParseOtherRequirements(Dictionary<string, object> Requirements, ParseErrorInfo ErrorInfo)
+        public void ParseOtherRequirements(Dictionary<string, object> RawOtherRequirements, ParseErrorInfo ErrorInfo)
         {
-            if (!Requirements.ContainsKey("T"))
-            {
-                ErrorInfo.AddMissingEnum("Recipe OtherRequirements", "T");
-                return;
-            }
-
-            string RequirementString = Requirements["T"] as string;
-            if (RequirementString == null)
-            {
-                ErrorInfo.AddInvalidObjectFormat("OtherRequirements Type");
-                return;
-            }
-
-            OtherRequirementType RequirementTypeValue;
-            if (!StringToEnumConversion<OtherRequirementType>.TryParse(RequirementString, out RequirementTypeValue, ErrorInfo))
-                return;
-
-            switch (RequirementTypeValue)
-            {
-                case OtherRequirementType.CurHealth:
-                    if (Requirements.ContainsKey("Health"))
-                    {
-                        string HealthRequirement = Requirements["Health"] as string;
-                        if (HealthRequirement == null)
-                        {
-                            ErrorInfo.AddInvalidObjectFormat("OtherRequirements Health");
-                            return;
-                        }
-
-                        float NewCurHealth;
-                        FloatFormat NewCurHealthFormat;
-                        if (Tools.TryParseFloat(HealthRequirement, out NewCurHealth, out NewCurHealthFormat))
-                        {
-                            OtherRequirementList.Add(RequirementTypeValue);
-                            CurHealth = NewCurHealth;
-                            break;
-                        }
-                    }
-
-                    ErrorInfo.AddInvalidObjectFormat("Recipe OtherRequirements Health");
-                    break;
-
-                case OtherRequirementType.Race:
-                    if (Requirements.ContainsKey("AllowedRace"))
-                    {
-                        string RaceRequirement = Requirements["AllowedRace"] as string;
-                        if (RaceRequirement == null)
-                        {
-                            ErrorInfo.AddInvalidObjectFormat("OtherRequirements AllowedRace");
-                            return;
-                        }
-
-                        Race RaceValue;
-                        if (StringToEnumConversion<Race>.TryParse(RaceRequirement, out RaceValue, ErrorInfo))
-                        {
-                            OtherRequirementList.Add(RequirementTypeValue);
-                            RequiredRace = RaceValue;
-                            break;
-                        }
-                    }
-
-                    ErrorInfo.AddInvalidObjectFormat("Recipe OtherRequirements AllowedRace");
-                    break;
-
-                case OtherRequirementType.HasEffectKeyword:
-                    if (Requirements.ContainsKey("Keyword"))
-                    {
-                        string KeywordRequirement = Requirements["Keyword"] as string;
-                        if (KeywordRequirement == null)
-                        {
-                            ErrorInfo.AddInvalidObjectFormat("OtherRequirements Keyword");
-                            return;
-                        }
-
-                        AnimalForm FormValue;
-                        if (StringToEnumConversion<AnimalForm>.TryParse(KeywordRequirement, out FormValue, ErrorInfo))
-                        {
-                            OtherRequirementList.Add(RequirementTypeValue);
-                            RequiredForm = FormValue;
-                            break;
-                        }
-                    }
-
-                    ErrorInfo.AddInvalidObjectFormat("Recipe OtherRequirements Keyword");
-                    break;
-
-                case OtherRequirementType.DruidEventState:
-                    if (Requirements.ContainsKey("DisallowedStates"))
-                    {
-                        ArrayList DisallowedStates = Requirements["DisallowedStates"] as ArrayList;
-                        if (DisallowedStates == null || DisallowedStates.Count == 0)
-                        {
-                            ErrorInfo.AddInvalidObjectFormat("OtherRequirements DisallowedStates");
-                            return;
-                        }
-
-                        OtherRequirementList.Add(RequirementTypeValue);
-
-                        foreach (object StateObject in DisallowedStates)
-                        {
-                            string StateAsString = StateObject as string;
-                            if (StateAsString == null)
-                            {
-                                ErrorInfo.AddInvalidObjectFormat("OtherRequirements DisallowedStates");
-                                return;
-                            }
-
-                            DisallowedState DisallowedStateValue;
-                            if (StringToEnumConversion<DisallowedState>.TryParse(StateAsString, out DisallowedStateValue, ErrorInfo))
-                                DisallowedDruidStateList.Add(DisallowedStateValue);
-                        }
-
-                        break;
-                    }
-
-                    ErrorInfo.AddInvalidObjectFormat("Recipe OtherRequirements Keyword");
-                    break;
-
-                case OtherRequirementType.PetCount:
-                    if (Requirements.ContainsKey("PetTypeTag"))
-                    {
-                        string PetTypeTag = Requirements["PetTypeTag"] as string;
-                        if (PetTypeTag == null)
-                        {
-                            ErrorInfo.AddInvalidObjectFormat("OtherRequirements PetTypeTag");
-                            return;
-                        }
-
-                        RecipeKeyword KeywordValue;
-                        if (StringToEnumConversion<RecipeKeyword>.TryParse(PetTypeTag, out KeywordValue, ErrorInfo))
-                        {
-                            OtherRequirementList.Add(RequirementTypeValue);
-                            PetType = KeywordValue;
-
-                            if (Requirements.ContainsKey("MaxCount"))
-                            {
-                                int? MaxCount = Requirements["MaxCount"] as int?;
-                                if (!MaxCount.HasValue)
-                                {
-                                    ErrorInfo.AddInvalidObjectFormat("OtherRequirements PetType MaxCount");
-                                    return;
-                                }
-
-                                RawPetTypeMaxCount = MaxCount.Value;
-                            }
-                            break;
-                        }
-                    }
-
-                    ErrorInfo.AddInvalidObjectFormat("Recipe OtherRequirements Keyword");
-                    break;
-
-                case OtherRequirementType.IsAdmin:
-                case OtherRequirementType.IsLycanthrope:
-                case OtherRequirementType.FullMoon:
-                case OtherRequirementType.IsHardcore:
-
-                default:
-                    OtherRequirementList.Add(RequirementTypeValue);
-                    break;
-            }
+            AbilityRequirement ParsedOtherRequirement;
+            JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
+            OtherRequirementList.Add(ParsedOtherRequirement);
         }
 
         private static void ParseFieldCosts(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -665,6 +504,9 @@ namespace PgJsonObjects
                 return true;
 
             if (ParseAddItemPower(RawEffect, ErrorInfo, ref NewResultEffect))
+                return true;
+
+            if (ParseBrewItem(RawEffect, ErrorInfo, ref NewResultEffect))
                 return true;
 
             ErrorInfo.AddMissingEnum("RecipeEffect", RawEffect);
@@ -911,6 +753,72 @@ namespace PgJsonObjects
             return false;
         }
 
+        private bool ParseBrewItem(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
+        {
+            string BrewItemPattern = "BrewItem(";
+            if (RawEffect.StartsWith(BrewItemPattern) && RawEffect.EndsWith(")"))
+            {
+                RecipeEffect ConvertedRecipeEffect = RecipeEffect.BrewItem;
+                string Brewed = RawEffect.Substring(BrewItemPattern.Length, RawEffect.Length - BrewItemPattern.Length - 1);
+                string[] BrewedSplit = Brewed.Split(',');
+
+                if (BrewedSplit.Length == 3)
+                {
+                    int BrewPartCount;
+                    int BrewLevel;
+                    if (int.TryParse(BrewedSplit[0].Trim(), out BrewPartCount) && int.TryParse(BrewedSplit[1].Trim(), out BrewLevel))
+                    {
+                        string[] PartsAndResults = BrewedSplit[2].Trim().Split('=');
+                        if (PartsAndResults.Length == 2)
+                        {
+                            string[] Parts = PartsAndResults[0].Trim().Split('+');
+                            string[] Results = PartsAndResults[1].Trim().Split('+');
+
+                            if (Parts.Length > 0 && Parts[0].Trim().Length > 0 && Results.Length > 0 && Results[0].Trim().Length > 0)
+                            {
+                                List<RecipeItemKey> BrewPartList = new List<RecipeItemKey>();
+                                foreach (string RawPart in Parts)
+                                {
+                                    RecipeItemKey ParsedPart;
+                                    if (StringToEnumConversion<RecipeItemKey>.TryParse(RawPart, out ParsedPart, ErrorInfo))
+                                        BrewPartList.Add(ParsedPart);
+                                }
+
+                                List<RecipeResultKey> BrewResultList = new List<RecipeResultKey>();
+                                foreach (string RawResult in Results)
+                                {
+                                    RecipeResultKey ParsedResult;
+                                    if (StringToEnumConversion<RecipeResultKey>.TryParse(RawResult, out ParsedResult, ErrorInfo))
+                                        BrewResultList.Add(ParsedResult);
+                                }
+
+                                if (BrewPartList.Count > 0 && BrewResultList.Count > 0)
+                                {
+                                    NewResultEffect.Effect = ConvertedRecipeEffect;
+                                    NewResultEffect.BrewPartCount = BrewPartCount;
+                                    NewResultEffect.BrewLevel = BrewLevel;
+                                    NewResultEffect.BrewPartList = BrewPartList;
+                                    NewResultEffect.BrewResultList = BrewResultList;
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private void UpdateAnySkillIcon()
+        {
+            if (RawIconId.HasValue && Skill != PowerSkill.Internal_None)
+            {
+                if (!PgJsonObjects.Skill.AnyIconTable.ContainsKey(Skill))
+                    PgJsonObjects.Skill.AnyIconTable.Add(Skill, RawIconId.Value);
+            }
+        }
+
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -954,49 +862,19 @@ namespace PgJsonObjects
 
             Generator.AddString("Name", Name);
 
-            if (OtherRequirementList.Count > 0)
+            if (OtherRequirementList.Count > 1)
             {
-                Generator.OpenObject("OtherRequirements");
-                Generator.AddString("T", OtherRequirementList[0].ToString());
+                Generator.OpenArray("OtherRequirements");
 
-                switch (OtherRequirementList[0])
-                {
-                    default:
-                        break;
+                foreach (AbilityRequirement Item in OtherRequirementList)
+                    Item.GenerateObjectContent(Generator);
 
-                    case OtherRequirementType.CurHealth:
-                        Generator.AddString("Health", CurHealth.ToString());
-                        break;
-
-                    case OtherRequirementType.Race:
-                        Generator.AddString("AllowedRace", RequiredRace.ToString());
-                        break;
-
-                    case OtherRequirementType.HasEffectKeyword:
-                        Generator.AddString("HasEffectKeyword", RequiredForm.ToString());
-                        break;
-
-                    case OtherRequirementType.DruidEventState:
-                        Generator.OpenArray("DisallowedStates");
-                        foreach (DisallowedState State in DisallowedDruidStateList)
-                            Generator.AddString(null, StringToEnumConversion<DisallowedState>.ToString(State, null, DisallowedState.Internal_None));
-                        Generator.CloseArray();
-                        break;
-
-                    case OtherRequirementType.PetCount:
-                        Generator.AddString("PetTypeTag", PetType.ToString());
-                        Generator.AddInteger("MaxCount", RawPetTypeMaxCount);
-                        break;
-
-                    case OtherRequirementType.IsAdmin:
-                    case OtherRequirementType.IsLycanthrope:
-                    case OtherRequirementType.FullMoon:
-                    case OtherRequirementType.IsHardcore:
-                        Generator.AddString(null, OtherRequirementList[0].ToString());
-                        break;
-                }
-
-                Generator.CloseObject();
+                Generator.CloseArray();
+            }
+            else if (OtherRequirementList.Count > 0)
+            {
+                AbilityRequirement Item = OtherRequirementList[0];
+                Item.GenerateObjectContent(Generator);
             }
 
             if (ResultEffectList.Count > 0)
@@ -1022,9 +900,6 @@ namespace PgJsonObjects
             }
             else if (EmptyResultItemList)
                 Generator.AddEmptyArray("ResultItems");
-
-            if (ServerInfo != null)
-                ServerInfo.GenerateObjectContent(Generator);
 
             if (Skill != PowerSkill.Internal_None)
                 Generator.AddString("Skill", Skill.ToString());
@@ -1161,6 +1036,41 @@ namespace PgJsonObjects
             ErrorInfo.AddMissingKey(RawRecipeName);
             return null;
         }
+
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                if (RawIconId.HasValue)
+                {
+                    Result += Description + JsonGenerator.FieldSeparator;
+
+                    foreach (RecipeItem Item in IngredientList)
+                        Result += Item.TextContent + JsonGenerator.FieldSeparator;
+
+                    Result += Name + JsonGenerator.FieldSeparator;
+
+                    foreach (RecipeItem Item in ResultItemList)
+                        Result += Item.TextContent + JsonGenerator.FieldSeparator;
+
+                    foreach (RecipeResultEffect ResultEffect in ResultEffectList)
+                    {
+                        Result += ResultEffect.BoostedAnimal + JsonGenerator.FieldSeparator;
+                    }
+
+                    Result += UsageDelayMessage + JsonGenerator.FieldSeparator;
+
+                    foreach (RecipeCost Item in CostList)
+                        Result += Item.TextContent + JsonGenerator.FieldSeparator;
+
+                    Result += UsageAnimationEnd + JsonGenerator.FieldSeparator;
+                }
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Ancestor Interface
@@ -1172,7 +1082,7 @@ namespace PgJsonObjects
             CostList = new List<RecipeCost>();
             IngredientList = new List<RecipeItem>();
             KeywordList = new List<RecipeKeyword>();
-            OtherRequirementList = new List<OtherRequirementType>();
+            OtherRequirementList = new List<AbilityRequirement>();
             DisallowedDruidStateList = new List<DisallowedState>();
             ResultEffectList = new List<RecipeResultEffect>();
             ResultItemList = new List<RecipeItem>();
@@ -1197,9 +1107,6 @@ namespace PgJsonObjects
 
             foreach (RecipeItem Item in ResultItemList)
                 Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
-
-            if (ServerInfo != null)
-                Connected |= ServerInfo.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
 
             return Connected;
         }

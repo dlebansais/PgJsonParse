@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class RecipeResultEffect
     {
@@ -21,5 +23,9 @@
         public int ConsumedEnhancementPoints { get; set; }
         public ShamanicSlotPower SlotPower { get; set; }
         public int SlotPowerLevel { get; set; }
+        public int BrewPartCount { get; set; }
+        public int BrewLevel { get; set; }
+        public List<RecipeItemKey> BrewPartList { get; set; }
+        public List<RecipeResultKey> BrewResultList { get; set; }
     }
 }

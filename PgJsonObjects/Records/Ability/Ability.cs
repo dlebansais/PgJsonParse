@@ -7,15 +7,6 @@ namespace PgJsonObjects
     public class Ability : GenericJsonObject<Ability>
     {
         #region Constants
-        private static readonly Dictionary<AbilityItemKeyword, string> AbilityItemKeywordStringMap = new Dictionary<AbilityItemKeyword, string>()
-        {
-            { AbilityItemKeyword.form_Deer, "form:Deer" },
-            { AbilityItemKeyword.form_PotbellyPig, "form:PotbellyPig" },
-            { AbilityItemKeyword.form_Cow, "form:Cow" },
-            { AbilityItemKeyword.form_Spider, "form:Spider" },
-            { AbilityItemKeyword.form_GiantBat, "form:GiantBat" },
-        };
-
         private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
         {
             { "Animation", ParseFieldAnimation },
@@ -68,6 +59,7 @@ namespace PgJsonObjects
             { "WorksInCombat", ParseFieldWorksInCombat },
             { "WorksUnderwater", ParseFieldWorksUnderwater },
             { "WorksWhileFalling", ParseFieldWorksWhileFalling },
+            { "ExtraKeywordsForTooltips", ParseFieldExtraKeywordsForTooltips },
         };
         #endregion
 
@@ -77,38 +69,44 @@ namespace PgJsonObjects
         public Dictionary<string, Attribute> AttributesThatDeltaResetTimeTable { get; private set; }
         public Dictionary<string, Attribute> AttributesThatModPowerCostTable { get; private set; }
         public bool CanBeOnSidebar { get { return RawCanBeOnSidebar.HasValue && RawCanBeOnSidebar.Value; } }
-        private bool? RawCanBeOnSidebar;
+        public bool? RawCanBeOnSidebar { get; private set; }
         public bool CanSuppressMonsterShout { get { return RawCanSuppressMonsterShout.HasValue && RawCanSuppressMonsterShout.Value; } }
-        private bool? RawCanSuppressMonsterShout;
+        public bool? RawCanSuppressMonsterShout { get; private set; }
         public bool CanTargetUntargetableEnemies { get { return RawCanTargetUntargetableEnemies.HasValue && RawCanTargetUntargetableEnemies.Value; } }
-        private bool? RawCanTargetUntargetableEnemies;
+        public bool? RawCanTargetUntargetableEnemies { get; private set; }
         public List<Deaths> CausesOfDeathList { get; private set; }
-        public List<RecipeCost> CostList { get; set; }
+        public RecipeCurrency CostCurrency { get; private set; }
+        public double CostPrice { get; set; }
+        private List<RecipeCost> RawCostList;
         public int CombatRefreshBaseAmount { get { return RawCombatRefreshBaseAmount.HasValue ? RawCombatRefreshBaseAmount.Value : 0; } }
-        private int? RawCombatRefreshBaseAmount;
-        public List<PowerSkill> CompatibleSkillList { get; set; }
+        public int? RawCombatRefreshBaseAmount { get; private set; }
+        public PowerSkill CompatibleSkill { get; private set; }
+        private List<PowerSkill> RawCompatibleSkillList;
+        public Item ConsumedItem { get; private set; }
+        public ConsumedItems ConsumedItemKeyword { get; private set; }
+        private string RawConsumedItemKeyword;
+        private bool IsRawConsumedItemKeywordParsed;
         public double ConsumedItemChance { get { return RawConsumedItemChance.HasValue ? RawConsumedItemChance.Value : 0; } }
         private double? RawConsumedItemChance;
         public double ConsumedItemChanceToStickInCorpse { get { return RawConsumedItemChanceToStickInCorpse.HasValue ? RawConsumedItemChanceToStickInCorpse.Value : 0; } }
         private double? RawConsumedItemChanceToStickInCorpse;
         public int ConsumedItemCount { get { return RawConsumedItemCount.HasValue ? RawConsumedItemCount.Value : 0; } }
         private int? RawConsumedItemCount;
-        public ConsumedItem ConsumedItemKeyword { get; private set; }
         public DamageType DamageType { get; private set; }
         public bool DelayLoopIsAbortedIfAttacked { get { return RawDelayLoopIsAbortedIfAttacked.HasValue && RawDelayLoopIsAbortedIfAttacked.Value; } }
-        private bool? RawDelayLoopIsAbortedIfAttacked;
+        public bool? RawDelayLoopIsAbortedIfAttacked { get; private set; }
         public string DelayLoopMessage { get; private set; }
         public int DelayLoopTime { get { return RawDelayLoopTime.HasValue ? RawDelayLoopTime.Value : 0; } }
         private int? RawDelayLoopTime;
         public string Description { get; private set; }
-        public List<AbilityIndicatingEnabled> EffectKeywordsIndicatingEnabledList { get; private set; }
+        public AbilityIndicatingEnabled EffectKeywordsIndicatingEnabled { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         private int? RawIconId;
         public bool InternalAbility { get { return RawInternalAbility.HasValue && RawInternalAbility.Value; } }
-        private bool? RawInternalAbility;
+        public bool? RawInternalAbility { get; private set; }
         public string InternalName { get; private set; }
         public bool IsHarmless { get { return RawIsHarmless.HasValue && RawIsHarmless.Value; } }
-        private bool? RawIsHarmless;
+        public bool? RawIsHarmless { get; private set; }
         public string ItemKeywordReqErrorMessage { get; private set; }
         public List<AbilityItemKeyword> ItemKeywordReqList { get; private set; }
         public List<AbilityKeyword> KeywordList { get; private set; }
@@ -117,16 +115,18 @@ namespace PgJsonObjects
         public string Name { get; private set; }
         public AbilityPetType PetTypeTagReq { get; private set; }
         public int PetTypeTagReqMax { get; private set; }
-        private int? RawPetTypeTagReqMax;
+        public int? RawPetTypeTagReqMax { get; private set; }
         public Ability Prerequisite { get; private set; }
         public AbilityProjectile Projectile { get; private set; }
         public AbilityPvX PvE { get; private set; }
         public AbilityPvX PvP { get; private set; }
         public double ResetTime { get { return RawResetTime.HasValue ? RawResetTime.Value : 0; } }
-        private double? RawResetTime;
+        public double? RawResetTime { get; private set; }
         public string SelfParticle { get; private set; }
         public Ability SharesResetTimerWith { get; private set; }
         public PowerSkill Skill { get; private set; }
+        public Skill ConnectedSkill { get; private set; }
+        private bool IsSkillParsed;
         public List<AbilityRequirement> SpecialCasterRequirementList { get; private set; }
         public string SpecialInfo { get; private set; }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
@@ -136,15 +136,182 @@ namespace PgJsonObjects
         public AbilityTargetParticle TargetParticle { get; private set; }
         public Ability UpgradeOf { get; private set; }
         public bool WorksInCombat { get { return RawWorksInCombat.HasValue && RawWorksInCombat.Value; } }
-        private bool? RawWorksInCombat;
+        public bool? RawWorksInCombat { get; private set; }
         public bool WorksUnderwater { get { return RawWorksUnderwater.HasValue && RawWorksUnderwater.Value; } }
-        private bool? RawWorksUnderwater;
+        public bool? RawWorksUnderwater { get; private set; }
         public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
-        private bool? RawWorksWhileFalling;
+        public bool? RawWorksWhileFalling { get; private set; }
+        public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; private set; }
 
         public string DigitStrippedName { get; private set; }
         public int LineIndex { get; private set; }
         public List<AbilityAdditionalResult> AbilityAdditionalResultList { get; private set; }
+        public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
+
+        public string CombinedCausesOfDeath
+        {
+            get
+            {
+                if (CausesOfDeathList.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (Deaths Death in CausesOfDeathList)
+                    if (Death != Deaths.Internal_None)
+                    {
+                        if (Result.Length > 0)
+                            Result += ", ";
+
+                        Result += StringToEnumConversion<Deaths>.ToString(Death, TextMaps.CauseOfDeathTextMap);
+                    }
+
+                return Result;
+            }
+        }
+
+        public string CombinedCost
+        {
+            get
+            {
+                if (CostCurrency == RecipeCurrency.Internal_None)
+                    return "None";
+
+                return RawCostList[0].CombinedCost;
+            }
+        }
+
+        public string CombinedConsumedItem
+        {
+            get
+            {
+                if (RawConsumedItemKeyword == null || RawConsumedItemKeyword.Length == 0)
+                    return "None";
+
+                string Result = "";
+
+                if (RawConsumedItemCount.HasValue && RawConsumedItemCount.Value > 1)
+                    Result += RawConsumedItemCount.Value.ToString() + " ";
+
+                if (ConsumedItemKeyword != ConsumedItems.Internal_None)
+                    Result += TextMaps.ConsumedItemsTextMap[ConsumedItemKeyword];
+                else
+                    Result += ConsumedItem.Name;
+
+                if (RawConsumedItemChance.HasValue)
+                {
+                    int Percent = (int)(RawConsumedItemChance.Value * 100);
+                    Result += " (" + Percent + "% chance)";
+                }
+
+                if (RawConsumedItemChanceToStickInCorpse.HasValue)
+                {
+                    int Percent = (int)(RawConsumedItemChanceToStickInCorpse.Value * 100);
+                    Result += " (" + Percent + "% chance to stick in corpse)";
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedDelayLoop
+        {
+            get
+            {
+                if (RawDelayLoopTime == null || RawDelayLoopTime.Value == 0)
+                    return "Instant";
+
+                string Result = "";
+
+                if (DelayLoopMessage != null)
+                {
+                    Result = DelayLoopMessage + " (" + RawDelayLoopTime.Value.ToString() + "s";
+                    if (RawDelayLoopIsAbortedIfAttacked != null && RawDelayLoopIsAbortedIfAttacked.Value)
+                        Result += ", aborted if attacked";
+                    Result += ")";
+                }
+                else
+                {
+                    Result = RawDelayLoopTime.Value.ToString() + "s";
+                    if (RawDelayLoopIsAbortedIfAttacked != null && RawDelayLoopIsAbortedIfAttacked.Value)
+                        Result += ", aborted if attacked";
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedRequirements
+        {
+            get
+            {
+                if (ItemKeywordReqList.Count == 0 && SpecialCasterRequirementList.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += TextMaps.AbilityItemKeywordTextMap[Keyword];
+                }
+
+                foreach (AbilityRequirement Requirement in SpecialCasterRequirementList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += Requirement.CombinedRequirement;
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedKeywords
+        {
+            get
+            {
+                if (KeywordList.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (AbilityKeyword Keyword in KeywordList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += TextMaps.AbilityKeywordTextMap[Keyword];
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedPrerequisite
+        {
+            get
+            {
+                if (Prerequisite == null)
+                    return "None";
+                else
+                    return Prerequisite.Name;
+            }
+        }
+
+        public string CombinedSharesResetTimerWith
+        {
+            get
+            {
+                if (SharesResetTimerWith == null)
+                    return "None";
+                else
+                    return SharesResetTimerWith.Name;
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -272,7 +439,15 @@ namespace PgJsonObjects
         {
             List<RecipeCost> ParsedCostList;
             JsonObjectParser<RecipeCost>.InitAsSublist(RawCosts, out ParsedCostList, ErrorInfo);
-            CostList = ParsedCostList;
+            RawCostList = ParsedCostList;
+
+            if (RawCostList.Count > 0 && RawCostList[0].Price > 0)
+            {
+                CostCurrency = RawCostList[0].Currency;
+                CostPrice = RawCostList[0].Price;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("Ability Costs");
         }
 
         private static void ParseFieldCombatRefreshBaseAmount(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -299,7 +474,10 @@ namespace PgJsonObjects
 
         private void ParseCompatibleSkills(ArrayList RawCompatibleSkills, ParseErrorInfo ErrorInfo)
         {
-            StringToEnumConversion<PowerSkill>.ParseList(RawCompatibleSkills, CompatibleSkillList, ErrorInfo);
+            StringToEnumConversion<PowerSkill>.ParseList(RawCompatibleSkills, RawCompatibleSkillList, ErrorInfo);
+
+            if (RawCompatibleSkillList.Count > 0)
+                CompatibleSkill = RawCompatibleSkillList[0];
         }
 
         private static void ParseFieldConsumedItemChance(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -315,6 +493,10 @@ namespace PgJsonObjects
         private void ParseConsumedItemChance(double RawConsumedItemChance, ParseErrorInfo ErrorInfo)
         {
             this.RawConsumedItemChance = RawConsumedItemChance;
+
+            int Percent = (int)(RawConsumedItemChance * 100);
+            if (Percent <= 0 || Percent >= 100)
+                ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemChance");
         }
 
         private static void ParseFieldConsumedItemChanceToStickInCorpse(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -330,6 +512,10 @@ namespace PgJsonObjects
         private void ParseConsumedItemChanceToStickInCorpse(double RawConsumedItemChanceToStickInCorpse, ParseErrorInfo ErrorInfo)
         {
             this.RawConsumedItemChanceToStickInCorpse = RawConsumedItemChanceToStickInCorpse;
+
+            int Percent = (int)(RawConsumedItemChanceToStickInCorpse * 100);
+            if (Percent <= 0 || Percent >= 100)
+                ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemChanceToStickInCorpse");
         }
 
         private static void ParseFieldConsumedItemCount(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -343,6 +529,9 @@ namespace PgJsonObjects
         private void ParseConsumedItemCount(int RawConsumedItemCount, ParseErrorInfo ErrorInfo)
         {
             this.RawConsumedItemCount = RawConsumedItemCount;
+
+            if (RawConsumedItemCount < 1)
+                ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemCount");
         }
 
         private static void ParseFieldConsumedItemKeyword(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -356,9 +545,7 @@ namespace PgJsonObjects
 
         private void ParseConsumedItemKeyword(string RawConsumedItemKeyword, ParseErrorInfo ErrorInfo)
         {
-            ConsumedItem ParsedConsumedItem;
-            StringToEnumConversion<ConsumedItem>.TryParse(RawConsumedItemKeyword, null, ConsumedItem.Internal_None, ConsumedItem.Internal_Empty, out ParsedConsumedItem, ErrorInfo);
-            ConsumedItemKeyword = ParsedConsumedItem;
+            this.RawConsumedItemKeyword = RawConsumedItemKeyword;
         }
 
         private static void ParseFieldDamageType(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -415,6 +602,9 @@ namespace PgJsonObjects
         private void ParseDelayLoopTime(int RawDelayLoopTime, ParseErrorInfo ErrorInfo)
         {
             this.RawDelayLoopTime = RawDelayLoopTime;
+
+            if (RawDelayLoopTime < 0)
+                ErrorInfo.AddInvalidObjectFormat("Ability DelayLoopTime");
         }
 
         private static void ParseFieldDescription(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -442,7 +632,13 @@ namespace PgJsonObjects
 
         private void ParseEffectKeywordsIndicatingEnabled(ArrayList RawEffectKeywordsIndicatingEnabled, ParseErrorInfo ErrorInfo)
         {
+            List<AbilityIndicatingEnabled> EffectKeywordsIndicatingEnabledList = new List<AbilityIndicatingEnabled>();
             StringToEnumConversion<AbilityIndicatingEnabled>.ParseList(RawEffectKeywordsIndicatingEnabled, EffectKeywordsIndicatingEnabledList, ErrorInfo);
+
+            if (EffectKeywordsIndicatingEnabledList.Count > 1)
+                ErrorInfo.AddInvalidObjectFormat("Ability EffectKeywordsIndicatingEnabled");
+            else if (EffectKeywordsIndicatingEnabledList.Count > 0)
+                EffectKeywordsIndicatingEnabled = EffectKeywordsIndicatingEnabledList[0];
         }
 
         private static void ParseFieldIconId(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -455,7 +651,15 @@ namespace PgJsonObjects
 
         private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)
         {
-            this.RawIconId = RawIconId;
+            if (RawIconId > 0)
+            {
+                this.RawIconId = RawIconId;
+                ErrorInfo.AddIconId(RawIconId);
+            }
+            else
+                this.RawIconId = null;
+
+            UpdateAnySkillIcon();
         }
 
         private static void ParseFieldInternalAbility(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -540,7 +744,7 @@ namespace PgJsonObjects
 
         private void ParseItemKeywordReqs(ArrayList RawItemKeywordReqs, ParseErrorInfo ErrorInfo)
         {
-            StringToEnumConversion<AbilityItemKeyword>.ParseList(RawItemKeywordReqs, AbilityItemKeywordStringMap, ItemKeywordReqList, ErrorInfo);
+            StringToEnumConversion<AbilityItemKeyword>.ParseList(RawItemKeywordReqs, TextMaps.AbilityItemKeywordStringMap, ItemKeywordReqList, ErrorInfo);
         }
 
         private static void ParseFieldKeywords(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -555,6 +759,7 @@ namespace PgJsonObjects
         private void ParseKeywords(ArrayList RawKeywords, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<AbilityKeyword>.ParseList(RawKeywords, KeywordList, ErrorInfo);
+            UpdateBasicAttackTable();
         }
 
         private static void ParseFieldLevel(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -737,6 +942,9 @@ namespace PgJsonObjects
             PowerSkill ParsedPowerSkill;
             StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedPowerSkill, ErrorInfo);
             Skill = ParsedPowerSkill;
+
+            UpdateBasicAttackTable();
+            UpdateAnySkillIcon();
         }
 
         private static void ParseFieldSpecialCasterRequirements(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -889,6 +1097,25 @@ namespace PgJsonObjects
         private void ParseWorksWhileFalling(bool RawWorksWhileFalling, ParseErrorInfo ErrorInfo)
         {
             this.RawWorksWhileFalling = RawWorksWhileFalling;
+        }
+
+        private static void ParseFieldExtraKeywordsForTooltips(Ability This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            ArrayList RawExtraKeywordsForTooltips;
+            if ((RawExtraKeywordsForTooltips = Value as ArrayList) != null)
+                This.ParseExtraKeywordsForTooltips(RawExtraKeywordsForTooltips, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Ability ExtraKeywordsForTooltips");
+        }
+
+        private void ParseExtraKeywordsForTooltips(ArrayList RawExtraKeywordsForTooltips, ParseErrorInfo ErrorInfo)
+        {
+            List<TooltipsExtraKeywords> ExtraKeywordsForTooltipList = new List<TooltipsExtraKeywords>();
+            StringToEnumConversion<TooltipsExtraKeywords>.ParseList(RawExtraKeywordsForTooltips, ExtraKeywordsForTooltipList, ErrorInfo);
+            if (ExtraKeywordsForTooltipList.Count == 1)
+                ExtraKeywordsForTooltips = ExtraKeywordsForTooltipList[0];
+            else
+                ErrorInfo.AddInvalidObjectFormat("Ability ExtraKeywordsForTooltips");
         }
 
         public void ParseSpecialCasterRequirement(Dictionary<string, object> RawSpecialCasterRequirement, string ObjectKey, ParseErrorInfo ErrorInfo)
@@ -1947,6 +2174,15 @@ namespace PgJsonObjects
                 }
             }
 
+            else if (Tools.Scan(s, "Your Knife Base Damage is boosted by %d%% for your next attack", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.NextAttackDamage, TimeSpan.Zero);
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0], IsPercent = true });
+                AdditionalResult.Conditional = AbilityEffectConditional.AnyKnifeDamage;
+                AddResult(AdditionalResult);
+            }
+
             else if (Tools.Scan(s, "Your %{DamageType} Base Damage is boosted by %d%% for your next attack", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.NextAttackDamage, TimeSpan.Zero);
@@ -2019,7 +2255,7 @@ namespace PgJsonObjects
             else if (Tools.Scan(s, "Deals %d damage over %d seconds to wolfsbane-vulnerable targets", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.DoT, TimeSpan.FromSeconds((int)args[1]));
-                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0], DamageType = DamageType.Wolfbane });
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0], DamageType = this.DamageType });
                 AdditionalResult.Conditional = AbilityEffectConditional.WolfbaneVulnerable;
                 AddResult(AdditionalResult);
             }
@@ -2164,7 +2400,7 @@ namespace PgJsonObjects
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.Damage, TimeSpan.FromSeconds(666));
                 AdditionalResult.Target = AbilityEffectTarget.Sigil;
-                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0], DamageType= (DamageType)args[1] });
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0], DamageType = (DamageType)args[1] });
                 AddResult(AdditionalResult);
 
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.DoT, TimeSpan.FromSeconds((int)args[4]));
@@ -2461,6 +2697,31 @@ namespace PgJsonObjects
                 AddResult(AdditionalResult);
             }
 
+            else if (Tools.Scan(s, "For %d minutes, the target's liver metabolizes alcohol twice as fast as normal", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Instantly reduce target's blood alcohol level by one tier", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For %d minutes, the target's liver metabolizes alcohol three times faster than normal", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "You gain %d sprint speed and for %d seconds, all attacks deal +%d damage", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Target takes +%d damage from all direct attacks for %d seconds", args))
+            {
+                //TODO
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);
@@ -2471,6 +2732,24 @@ namespace PgJsonObjects
         private void AddResult(AbilityAdditionalResult AdditionalResult)
         {
             AbilityAdditionalResultList.Add(AdditionalResult);
+        }
+
+        private void UpdateBasicAttackTable()
+        {
+            if (KeywordList.Contains(AbilityKeyword.BasicAttack) && Skill != PowerSkill.Internal_None)
+            {
+                if (!PgJsonObjects.Skill.BasicAttackTable.ContainsKey(Skill))
+                    PgJsonObjects.Skill.BasicAttackTable.Add(Skill, this);
+            }
+        }
+
+        private void UpdateAnySkillIcon()
+        {
+            if (RawIconId.HasValue && Skill != PowerSkill.Internal_None)
+            {
+                if (!PgJsonObjects.Skill.AnyIconTable.ContainsKey(Skill))
+                    PgJsonObjects.Skill.AnyIconTable.Add(Skill, RawIconId.Value);
+            }
         }
 
         public override void GenerateObjectContent(JsonGenerator Generator)
@@ -2485,25 +2764,30 @@ namespace PgJsonObjects
             Generator.AddBoolean("CanSuppressMonsterShout", RawCanSuppressMonsterShout);
             Generator.AddBoolean("CanTargetUntargetableEnemies", RawCanTargetUntargetableEnemies);
             StringToEnumConversion<Deaths>.ListToString(Generator, "CausesOfDeath", CausesOfDeathList);
-            StringToEnumConversion<RecipeCost>.ListToString(Generator, "Costs", CostList);
+            StringToEnumConversion<RecipeCost>.ListToString(Generator, "Costs", RawCostList);
             Generator.AddInteger("CombatRefreshBaseAmount", RawCombatRefreshBaseAmount);
-            StringToEnumConversion<PowerSkill>.ListToString(Generator, "CompatibleSkills", CompatibleSkillList);
+            StringToEnumConversion<PowerSkill>.ListToString(Generator, "CompatibleSkills", RawCompatibleSkillList);
             Generator.AddDouble("ConsumedItemChance", RawConsumedItemChance);
             Generator.AddDouble("ConsumedItemChanceToStickInCorpse", RawConsumedItemChanceToStickInCorpse);
             Generator.AddInteger("ConsumedItemCount", RawConsumedItemCount);
-            Generator.AddString("ConsumedItemKeyword", StringToEnumConversion<ConsumedItem>.ToString(ConsumedItemKeyword, null, ConsumedItem.Internal_None, ConsumedItem.Internal_Empty));
+            Generator.AddString("ConsumedItemKeyword", RawConsumedItemKeyword);
             Generator.AddString("DamageType", StringToEnumConversion<DamageType>.ToString(DamageType, null, DamageType.Internal_None, DamageType.Internal_Empty));
             Generator.AddBoolean("DelayLoopIsAbortedIfAttacked", RawDelayLoopIsAbortedIfAttacked);
             Generator.AddString("DelayLoopMessage", DelayLoopMessage);
             Generator.AddInteger("DelayLoopTime", RawDelayLoopTime);
             Generator.AddString("Description", Description);
+
+            List<AbilityIndicatingEnabled> EffectKeywordsIndicatingEnabledList = new List<AbilityIndicatingEnabled>();
+            if (EffectKeywordsIndicatingEnabled != AbilityIndicatingEnabled.Internal_None)
+                EffectKeywordsIndicatingEnabledList.Add(EffectKeywordsIndicatingEnabled);
             StringToEnumConversion<AbilityIndicatingEnabled>.ListToString(Generator, "EffectKeywordsIndicatingEnabled", EffectKeywordsIndicatingEnabledList);
+
             Generator.AddInteger("IconID", RawIconId);
             Generator.AddBoolean("InternalAbility", RawInternalAbility);
             Generator.AddString("InternalName", InternalName);
             Generator.AddBoolean("IsHarmless", RawIsHarmless);
             Generator.AddString("ItemKeywordReqErrorMessage", ItemKeywordReqErrorMessage);
-            StringToEnumConversion<AbilityItemKeyword>.ListToString(Generator, "ItemKeywordReqs", ItemKeywordReqList, AbilityItemKeywordStringMap);
+            StringToEnumConversion<AbilityItemKeyword>.ListToString(Generator, "ItemKeywordReqs", ItemKeywordReqList, TextMaps.AbilityItemKeywordStringMap);
             StringToEnumConversion<AbilityKeyword>.ListToString(Generator, "Keywords", KeywordList);
             Generator.AddInteger("Level", RawLevel);
             Generator.AddString("Name", Name);
@@ -2586,6 +2870,92 @@ namespace PgJsonObjects
             }
         }
 
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                if (RawIconId.HasValue)
+                {
+                    if (Animation != AbilityAnimation.Internal_None)
+                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityAnimationTextMap[Animation]);
+
+                    if (CanBeOnSidebar)
+                        AdddWithFieldSeparator(ref Result, "Can Be On Sidebar");
+
+                    if (CanSuppressMonsterShout)
+                        AdddWithFieldSeparator(ref Result, "Suppress Monster Shout");
+
+                    if (CanTargetUntargetableEnemies)
+                        AdddWithFieldSeparator(ref Result, "Can Target Untargetable");
+
+                    foreach (RecipeCost Item in RawCostList)
+                        AdddWithFieldSeparator(ref Result, Item.TextContent);
+
+                    foreach (PowerSkill RawCompatibleSkill in RawCompatibleSkillList)
+                        if (RawCompatibleSkill != PowerSkill.Internal_None)
+                            AdddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RawCompatibleSkill]);
+
+                    if (RawConsumedItemKeyword != null && RawConsumedItemKeyword.Length > 0)
+                        if (ConsumedItemKeyword != ConsumedItems.Internal_None)
+                            AdddWithFieldSeparator(ref Result, TextMaps.ConsumedItemsTextMap[ConsumedItemKeyword]);
+                        else if (ConsumedItem != null)
+                            AdddWithFieldSeparator(ref Result, ConsumedItem.Name);
+
+                    AdddWithFieldSeparator(ref Result, DelayLoopMessage);
+                    AdddWithFieldSeparator(ref Result, Description);
+
+                    if (EffectKeywordsIndicatingEnabled != AbilityIndicatingEnabled.Internal_None)
+                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityIndicatingEnabledTextMap[EffectKeywordsIndicatingEnabled]);
+
+                    AdddWithFieldSeparator(ref Result, ItemKeywordReqErrorMessage);
+
+                    foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
+                        if (Keyword != AbilityItemKeyword.Internal_None)
+                            AdddWithFieldSeparator(ref Result, TextMaps.AbilityItemKeywordTextMap[Keyword]);
+
+                    foreach (AbilityKeyword Keyword in KeywordList)
+                        if (Keyword != AbilityKeyword.Internal_None)
+                            AdddWithFieldSeparator(ref Result, TextMaps.AbilityKeywordTextMap[Keyword]);
+
+                    AdddWithFieldSeparator(ref Result, Name);
+
+                    if (PetTypeTagReq != AbilityPetType.Internal_None)
+                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityPetTypeTextMap[PetTypeTagReq]);
+                    if (Prerequisite != null)
+                        AdddWithFieldSeparator(ref Result, Prerequisite.Name);
+                    if (Projectile != AbilityProjectile.Internal_None && Projectile != AbilityProjectile.Internal_Empty)
+                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityProjectileTextMap[Projectile]);
+                    if (PvE != null)
+                        AdddWithFieldSeparator(ref Result, PvE.TextContent);
+                    if (PvP != null)
+                        AdddWithFieldSeparator(ref Result, PvP.TextContent);
+                    if (SharesResetTimerWith != null)
+                        AdddWithFieldSeparator(ref Result, SharesResetTimerWith.Name);
+                    if (Skill != PowerSkill.Internal_None)
+                        AdddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
+
+                    foreach (AbilityRequirement Item in SpecialCasterRequirementList)
+                        AdddWithFieldSeparator(ref Result, Item.TextContent);
+
+                    AdddWithFieldSeparator(ref Result, SpecialInfo);
+                    if (Target != AbilityTarget.Internal_None)
+                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityTargetTextMap[Target]);
+                    if (TargetEffectKeywordReq != TargetEffectKeyword.Internal_None)
+                        AdddWithFieldSeparator(ref Result, TextMaps.TargetEffectKeywordTextMap[TargetEffectKeywordReq]);
+                    if (TargetParticle != AbilityTargetParticle.Internal_None)
+                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityTargetParticleTextMap[TargetParticle]);
+                    if (UpgradeOf != null)
+                        AdddWithFieldSeparator(ref Result, UpgradeOf.Name);
+                    if (ExtraKeywordsForTooltips != TooltipsExtraKeywords.Internal_None)
+                        AdddWithFieldSeparator(ref Result, TextMaps.TooltipsExtraKeywordsTextMap[ExtraKeywordsForTooltips]);
+                }
+
+                return Result;
+            }
+        }
+
         private List<string> RawAttributesThatDeltaPowerCostList;
         private bool RawAttributesThatDeltaPowerCostListIsEmpty;
         private List<string> RawAttributesThatDeltaResetTimeList;
@@ -2620,9 +2990,10 @@ namespace PgJsonObjects
             RawAttributesThatModPowerCostList = new List<string>();
             AttributesThatModPowerCostTable = new Dictionary<string, Attribute>();
             CausesOfDeathList = new List<Deaths>();
-            CostList = new List<RecipeCost>();
-            CompatibleSkillList = new List<PowerSkill>();
-            EffectKeywordsIndicatingEnabledList = new List<AbilityIndicatingEnabled>();
+            RawCostList = new List<RecipeCost>();
+            RawCompatibleSkillList = new List<PowerSkill>();
+            RawConsumedItemKeyword = null;
+            IsRawConsumedItemKeywordParsed = false;
             ItemKeywordReqList = new List<AbilityItemKeyword>();
             KeywordList = new List<AbilityKeyword>();
             SpecialCasterRequirementList = new List<AbilityRequirement>();
@@ -2650,6 +3021,21 @@ namespace PgJsonObjects
 
             SharesResetTimerWith = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsRawSharesResetTimerWithParsed, ref IsConnected);
             UpgradeOf = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawUpgradeOf, UpgradeOf, ref IsRawUpgradeOfParsed, ref IsConnected);
+
+            if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
+                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected);
+
+            if (RawConsumedItemKeyword != null && RawConsumedItemKeyword.Length > 0 && !IsRawConsumedItemKeywordParsed)
+            {
+                ConsumedItems ParsedConsumedItem;
+                if (StringToEnumConversion<ConsumedItems>.TryParse(RawConsumedItemKeyword, null, ConsumedItems.Internal_None, out ParsedConsumedItem, null))
+                {
+                    IsRawConsumedItemKeywordParsed = true;
+                    ConsumedItemKeyword = ParsedConsumedItem;
+                }
+                else
+                    ConsumedItem = Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawConsumedItemKeyword, ConsumedItem, ref IsRawConsumedItemKeywordParsed, ref IsConnected);
+            }
 
             return IsConnected;
         }

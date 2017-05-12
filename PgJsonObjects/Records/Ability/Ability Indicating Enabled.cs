@@ -2,6 +2,7 @@
 {
     public enum AbilityIndicatingEnabled
     {
+        Internal_None,
         WerewolfForm,
         WerewolfHowlMode,
         TriggeredAlchemyGolem,

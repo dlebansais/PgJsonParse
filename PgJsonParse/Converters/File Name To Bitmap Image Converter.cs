@@ -13,12 +13,18 @@ namespace Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string FileName = value as string;
+            string FileName;
 
-            string FilePath = Path.Combine(MainWindow.CurrentVersionCacheFolder, FileName);
-            FilePath = Path.ChangeExtension(FilePath, ".png");
+            if ((FileName = value as string) != null)
+            {
+                string FilePath = Path.Combine(MainWindow.CurrentVersionCacheFolder, FileName);
+                FilePath = Path.ChangeExtension(FilePath, ".png");
 
-            return new BitmapImage(new Uri(FilePath));
+                if (File.Exists(FilePath))
+                    return new BitmapImage(new Uri(FilePath));
+            }
+
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

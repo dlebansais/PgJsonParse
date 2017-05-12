@@ -20,8 +20,12 @@
         Acid,
         Darkness,
         Regeneration,
-        Knife,
-        Wolfbane,
+        //Knife,
+        //Wolfbane,
         Sonic,
+        Poison_direct,
+        Trauma_direct,
+        Poison_indirect,
+        Trauma_indirect,
     }
 }

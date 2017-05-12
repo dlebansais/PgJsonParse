@@ -6,5 +6,6 @@
         Rakshasa,
         Human,
         Elf,
+        Fae,
     }
 }

@@ -76,15 +76,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\Boolean To Object Converter.cs" />
+    <Compile Include="Converters\Double Converter.cs" />
+    <Compile Include="Converters\Enum To Text Converter.cs" />
     <Compile Include="Converters\File Name To Bitmap Image Converter.cs" />
     <Compile Include="Converters\Friendly Name Converter.cs" />
     <Compile Include="Converters\Index To Object Converter.cs" />
+    <Compile Include="Converters\Int Converter.cs" />
     <Compile Include="Crunch\Crunch Selection.cs" />
     <Compile Include="Crunch\Crunch Target.cs" />
-    <Compile Include="Item Effect Gear Template Selector.cs" />
-    <Compile Include="Item Effect Template Selector.cs" />
+    <Compile Include="Search Modes.cs" />
+    <Compile Include="Selectors\Item Effect Gear Template Selector.cs" />
     <Compile Include="Parser Version.cs" />
     <Compile Include="Program State.cs" />
+    <Compile Include="Selectors\Search Result Content Selector.cs" />
+    <Compile Include="Selectors\Search Result Title Selector.cs" />
     <Compile Include="Sequence.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
