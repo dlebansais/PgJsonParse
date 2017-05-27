@@ -869,37 +869,37 @@ namespace PgJsonParse
         private void OnConnectTables(ParseErrorInfo ErrorInfo)
         {
             foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Ability Item in AbilityList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Attribute Item in AttributeList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Effect Item in EffectList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Item Item in ItemList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Power Item in PowerList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Quest Item in QuestList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Recipe Item in RecipeList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Skill Item in SkillList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.XpTable Item in XpTableList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             CreateIndexes(ErrorInfo);
         }
@@ -1002,12 +1002,6 @@ namespace PgJsonParse
                     {
                         Parser<PgJsonObjects.Power> PowerParser = new Parser<PgJsonObjects.Power>();
                         PowerParser.CreateIndex(IndexFilePath, PowerTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.XpTable))
-                    {
-                        Parser<PgJsonObjects.XpTable> XpTableParser = new Parser<PgJsonObjects.XpTable>();
-                        XpTableParser.CreateIndex(IndexFilePath, XpTableTable);
                     }
 
                     FileTable.Remove(TypeIndex);
@@ -1187,7 +1181,22 @@ namespace PgJsonParse
                 if (PowerItem.TierEffectTable.Count == 0)
                     continue;
 
-                if (PowerItem.SlotList.Count == 0)
+                int CombatSlotCount = 0;
+                foreach (ItemSlot Slot in PowerItem.SlotList)
+                    switch (Slot)
+                    {
+                        case ItemSlot.Internal_None:
+                        case ItemSlot.None:
+                        case ItemSlot.Special1:
+                        case ItemSlot.Special2:
+                            break;
+
+                        default:
+                            CombatSlotCount++;
+                            break;
+                    }
+
+                if (CombatSlotCount == 0)
                     continue;
 
                 if (PowerItem.Skill == PowerSkill.Internal_None ||
@@ -1199,7 +1208,10 @@ namespace PgJsonParse
                 if (NewCombatSkillList.Contains(PowerItem.Skill))
                     continue;
 
-                NewCombatSkillList.Add(PowerItem.Skill);
+                if (PowerItem.Skill == PowerSkill.Carpentry)
+                    NewCombatSkillList.Add(PowerItem.Skill);
+                else
+                    NewCombatSkillList.Add(PowerItem.Skill);
             }
 
             NewCombatSkillList.Sort(SortSkillByName);
@@ -1750,6 +1762,8 @@ namespace PgJsonParse
             try
             {
                 string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, Entry.Value + "-index.txt");
+                if (!File.Exists(IndexFilePath))
+                    return;
 
                 using (FileStream fs = new FileStream(IndexFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
@@ -1978,7 +1992,7 @@ namespace PgJsonParse
             if (!SkillItem.Combat)
                 return false;
 
-            if (SkillItem.XpTable != XpTableEnum.TypicalCombatSkill && SkillItem.XpTable != XpTableEnum.TypicalCombatSkillExt)
+            if (SkillItem.XpTable.InternalName != "TypicalCombatSkill" && SkillItem.XpTable.InternalName != "TypicalCombatSkillExt")
                 return false;
 
             int AbilityCount = 0;

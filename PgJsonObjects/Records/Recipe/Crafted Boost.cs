@@ -2,6 +2,7 @@
 {
     public enum CraftedBoost
     {
+        Internal_None,
         CraftedLeatherBoots,
         CraftedEvasionBoots,
         CraftedSnailBoots,

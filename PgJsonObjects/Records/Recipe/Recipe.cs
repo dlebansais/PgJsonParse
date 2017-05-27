@@ -7,56 +7,6 @@ namespace PgJsonObjects
     public class Recipe : GenericJsonObject<Recipe>
     {
         #region Constants
-        public static readonly Dictionary<RecipeEffect, string> RecipeEffectStringMap = new Dictionary<RecipeEffect, string>()
-        {
-            { RecipeEffect.CreateGeologySurveyRedwall_GeologySurveySerbule0, "CreateGeologySurveyRedwall(GeologySurveySerbule0)" },
-            { RecipeEffect.CreateGeologySurveyBlue_GeologySurveySerbule1, "CreateGeologySurveyBlue(GeologySurveySerbule1)" },
-            { RecipeEffect.CreateGeologySurveyGreen_GeologySurveySerbule2, "CreateGeologySurveyGreen(GeologySurveySerbule2)" },
-            { RecipeEffect.CreateGeologySurveyWhite_GeologySurveySerbule4, "CreateGeologySurveyWhite(GeologySurveySerbule4)" },
-            { RecipeEffect.CreateGeologySurveyRedwall_GeologySurveySouthSerbule0, "CreateGeologySurveyRedwall(GeologySurveySouthSerbule0)" },
-            { RecipeEffect.CreateGeologySurveyOrange_GeologySurveySouthSerbule3, "CreateGeologySurveyOrange(GeologySurveySouthSerbule3)" },
-            { RecipeEffect.CreateGeologySurveyWhite_GeologySurveySouthSerbule4, "CreateGeologySurveyWhite(GeologySurveySouthSerbule4)" },
-            { RecipeEffect.CreateGeologySurveyBlue_GeologySurveyEltibule1, "CreateGeologySurveyBlue(GeologySurveyEltibule1)" },
-            { RecipeEffect.CreateGeologySurveyGreen_GeologySurveyEltibule2, "CreateGeologySurveyGreen(GeologySurveyEltibule2)" },
-            { RecipeEffect.CreateGeologySurveyOrange_GeologySurveyEltibule3, "CreateGeologySurveyOrange(GeologySurveyEltibule3)" },
-            { RecipeEffect.CreateGeologySurveyBlue_GeologySurveyKurMountains1, "CreateGeologySurveyBlue(GeologySurveyKurMountains1)" },
-            { RecipeEffect.CreateGeologySurveyGreen_GeologySurveyKurMountains2, "CreateGeologySurveyGreen(GeologySurveyKurMountains2)" },
-            { RecipeEffect.CreateGeologySurveyOrange_GeologySurveyKurMountains3, "CreateGeologySurveyOrange(GeologySurveyKurMountains3)" },
-            { RecipeEffect.CreateGeologySurveyWhite_GeologySurveyKurMountains4, "CreateGeologySurveyWhite(GeologySurveyKurMountains4)" },
-            { RecipeEffect.CreateMiningSurvey1X_MiningSurveyKurMountains1X, "CreateMiningSurvey1X(MiningSurveyKurMountains1X)" },
-            { RecipeEffect.CreateMiningSurvey2X_MiningSurveyKurMountains2X, "CreateMiningSurvey2X(MiningSurveyKurMountains2X)" },
-            { RecipeEffect.CreateMiningSurvey3X_MiningSurveyKurMountains3X, "CreateMiningSurvey3X(MiningSurveyKurMountains3X)" },
-            { RecipeEffect.CreateMiningSurvey1_MiningSurveySouthSerbule1, "CreateMiningSurvey1(MiningSurveySouthSerbule1)" },
-            { RecipeEffect.CreateMiningSurvey2_MiningSurveySouthSerbule2, "CreateMiningSurvey2(MiningSurveySouthSerbule2)" },
-            { RecipeEffect.CreateMiningSurvey3_MiningSurveyEltibule3, "CreateMiningSurvey3(MiningSurveyEltibule3)" },
-            { RecipeEffect.CreateMiningSurvey4_MiningSurveyEltibule4, "CreateMiningSurvey4(MiningSurveyEltibule4)" },
-            { RecipeEffect.CreateMiningSurvey5_MiningSurveyEltibule5, "CreateMiningSurvey5(MiningSurveyEltibule5)" },
-            { RecipeEffect.CreateMiningSurvey6_MiningSurveyEltibule6, "CreateMiningSurvey6(MiningSurveyEltibule6)" },
-            { RecipeEffect.CreateMiningSurvey4X_MiningSurveyIlmari4X, "CreateMiningSurvey4X(MiningSurveyIlmari4X)" },
-            { RecipeEffect.CreateMiningSurvey5X_MiningSurveyIlmari5X, "CreateMiningSurvey5X(MiningSurveyIlmari5X)" },
-            { RecipeEffect.CreateMiningSurvey6X_MiningSurveyIlmari6X, "CreateMiningSurvey6X(MiningSurveyIlmari6X)" },
-            { RecipeEffect.CreateMiningSurvey7X_MiningSurveyIlmari7X, "CreateMiningSurvey7X(MiningSurveyIlmari7X)" },
-        };
-        public static readonly Dictionary<RecipeAction, string> RecipeActionStringMap = new Dictionary<RecipeAction, string>()
-        {
-            { RecipeAction.DecomposeItem, "Decompose Item" },
-            { RecipeAction.RemoveAugment, "Remove Augment" },
-            { RecipeAction.DistillItem, "Distill Item" },
-            { RecipeAction.RepairItem, "Repair Item" },
-            { RecipeAction.CreateMap, "Create Map" },
-            { RecipeAction.CraftIceBlade, "Craft Ice Blade" },
-            { RecipeAction.StudySkull, "Study Skull" },
-            { RecipeAction.StudyEquipment, "Study Equipment" },
-            { RecipeAction.SayTheSooth, "Say the Sooth" },
-            { RecipeAction.MixDye, "Mix Dye" },
-            { RecipeAction.InfuseSpirits, "Infuse Spirits" },
-            { RecipeAction.CreateSpiritBelt, "Create Spirit Belt" },
-            { RecipeAction.ApplyAugment, "Apply Augment" },
-            { RecipeAction.Brew, "Brew" },
-            { RecipeAction.PrepareCask, "Prepare Cask" },
-            { RecipeAction.SortGrass, "Sort Grass" },
-        };
-
         private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
         {
             { "Description", ParseFieldDescription },
@@ -80,6 +30,10 @@ namespace PgJsonObjects
             { "UsageAnimationEnd", ParseFieldUsageAnimationEnd },
             { "ResetTimeInSeconds", ParseFieldResetTimeInSeconds },
             { "DyeColor", ParseFieldDyeColor },
+            { "RewardSkill", ParseFieldRewardSkill },
+            { "RewardSkillXp", ParseFieldRewardSkillXp },
+            { "RewardSkillXpFirstTime", ParseFieldRewardSkillXpFirstTime },
+
         };
         #endregion
 
@@ -95,32 +49,69 @@ namespace PgJsonObjects
         private bool EmptyResultItemList;
         public PowerSkill Skill { get; private set; }
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
-        private int? RawSkillLevelReq;
+        public int? RawSkillLevelReq { get; private set; }
         public List<RecipeResultEffect> ResultEffectList { get; private set; }
         public PowerSkill SortSkill { get; private set; }
         public List<RecipeKeyword> KeywordList { get; private set; }
         public RecipeAction ActionLabel { get; private set; }
         public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
-        private int? RawUsageDelay;
+        public int? RawUsageDelay { get; private set; }
         public string UsageDelayMessage { get; private set; }
         public RecipeUsageAnimation UsageAnimation { get; private set; }
         public List<AbilityRequirement> OtherRequirementList { get; private set; }
-        public float CurHealth { get; private set; }
-        public Race RequiredRace { get; private set; }
-        public AnimalForm RequiredForm { get; private set; }
-        public List<DisallowedState> DisallowedDruidStateList { get; private set; }
-        public RecipeKeyword PetType { get; private set; }
-        public int PetTypeMaxCount { get { return RawPetTypeMaxCount.HasValue ? RawPetTypeMaxCount.Value : 0; } }
-        private int? RawPetTypeMaxCount;
-        public List<RecipeCost> CostList { get; private set; }
+        public RecipeCost Cost { get; private set; }
         public int NumResultItems { get { return RawNumResultItems.HasValue ? RawNumResultItems.Value : 0; } }
-        private int? RawNumResultItems;
+        public int? RawNumResultItems { get; private set; }
         public string UsageAnimationEnd { get; private set; }
         public int ResetTimeInSeconds { get { return RawResetTimeInSeconds.HasValue ? RawResetTimeInSeconds.Value : 0; } }
-        private int? RawResetTimeInSeconds;
-        public uint? DyeColor;
+        public int? RawResetTimeInSeconds { get; private set; }
+        public uint? DyeColor { get; private set; }
+        public PowerSkill RewardSkill { get; private set; }
+        public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
+        public int? RawRewardSkillXp { get; private set; }
+        public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
+        public int? RawRewardSkillXpFirstTime { get; private set; }
 
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
+
+        public string CombinedKeywords
+        {
+            get
+            {
+                string Result = "";
+
+                foreach (RecipeKeyword Keyword in KeywordList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += TextMaps.RecipeKeywordTextMap[Keyword];
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedRequirements
+        {
+            get
+            {
+                if (OtherRequirementList.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (AbilityRequirement Requirement in OtherRequirementList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += Requirement.CombinedRequirement;
+                }
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -320,7 +311,7 @@ namespace PgJsonObjects
         private void ParseActionLabel(string RawActionLabel, ParseErrorInfo ErrorInfo)
         {
             RecipeAction ParsedActionLabel;
-            StringToEnumConversion<RecipeAction>.TryParse(RawActionLabel, RecipeActionStringMap, out ParsedActionLabel, ErrorInfo);
+            StringToEnumConversion<RecipeAction>.TryParse(RawActionLabel, TextMaps.RecipeActionStringMap, out ParsedActionLabel, ErrorInfo);
             ActionLabel = ParsedActionLabel;
         }
 
@@ -410,7 +401,13 @@ namespace PgJsonObjects
         {
             List<RecipeCost> ParsedCostList;
             JsonObjectParser<RecipeCost>.InitAsSublist(RawCosts, out ParsedCostList, ErrorInfo);
-            CostList = ParsedCostList;
+
+            if (ParsedCostList.Count == 0)
+                Cost = null;
+            else if (ParsedCostList.Count == 1)
+                Cost = ParsedCostList[0];
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe Costs");
         }
 
         private static void ParseFieldNumResultItems(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -471,18 +468,12 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidString("Item DyeColor", RawDyeColor);
         }
 
-
-
-
-
-
-
         private bool ParseResultEffect(string RawEffect, ParseErrorInfo ErrorInfo, out RecipeResultEffect NewResultEffect)
         {
             NewResultEffect = new RecipeResultEffect();
 
             RecipeEffect ConvertedRecipeEffect;
-            if (StringToEnumConversion<RecipeEffect>.TryParse(RawEffect, RecipeEffectStringMap, out ConvertedRecipeEffect, null))
+            if (StringToEnumConversion<RecipeEffect>.TryParse(RawEffect, TextMaps.RecipeEffectStringMap, out ConvertedRecipeEffect, null))
             {
                 NewResultEffect.Effect = ConvertedRecipeEffect;
                 return true;
@@ -625,7 +616,7 @@ namespace PgJsonObjects
                     int BoostLevel = 0;
                     bool IsCamouflaged = false;
                     int? AdditionalEnchantments = null;
-                    string BoostedAnimal = null;
+                    Appearance BoostedAnimal = Appearance.Internal_None;
 
                     string CraftedItem = CraftedSplit[0];
 
@@ -672,7 +663,13 @@ namespace PgJsonObjects
                     }
 
                     if (CraftedSplit.Length > 2)
-                        BoostedAnimal = CraftedSplit[2];
+                    {
+                        Appearance ParsedBoostedAnimal;
+                        if (StringToEnumConversion<Appearance>.TryParse(CraftedSplit[2], out ParsedBoostedAnimal, ErrorInfo))
+                            BoostedAnimal = ParsedBoostedAnimal;
+                        else
+                            return false;
+                    }
 
                     NewResultEffect.Effect = ConvertedRecipeEffect;
                     NewResultEffect.Boost = Boost;
@@ -810,12 +807,65 @@ namespace PgJsonObjects
             return false;
         }
 
+        private static void ParseFieldRewardSkill(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawRewardSkill;
+            if ((RawRewardSkill = Value as string) != null)
+                This.ParseRewardSkill(RawRewardSkill, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe RewardSkill");
+        }
+
+        private void ParseRewardSkill(string RawRewardSkill, ParseErrorInfo ErrorInfo)
+        {
+            PowerSkill ParsedRewardSkill;
+            StringToEnumConversion<PowerSkill>.TryParse(RawRewardSkill, out ParsedRewardSkill, ErrorInfo);
+            RewardSkill = ParsedRewardSkill;
+
+            UpdateAnySkillIcon();
+        }
+
+        private static void ParseFieldRewardSkillXp(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is int)
+                This.ParseRewardSkillXp((int)Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe RewardSkillXp");
+        }
+
+        private void ParseRewardSkillXp(int RawRewardSkillXp, ParseErrorInfo ErrorInfo)
+        {
+            this.RawRewardSkillXp = RawRewardSkillXp;
+        }
+
+        private static void ParseFieldRewardSkillXpFirstTime(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is int)
+                This.ParseRewardSkillXpFirstTime((int)Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe RewardSkillXpFirstTime");
+        }
+
+        private void ParseRewardSkillXpFirstTime(int RawRewardSkillXpFirstTime, ParseErrorInfo ErrorInfo)
+        {
+            this.RawRewardSkillXpFirstTime = RawRewardSkillXpFirstTime;
+        }
+
         private void UpdateAnySkillIcon()
         {
-            if (RawIconId.HasValue && Skill != PowerSkill.Internal_None)
+            if (RawIconId.HasValue)
             {
-                if (!PgJsonObjects.Skill.AnyIconTable.ContainsKey(Skill))
-                    PgJsonObjects.Skill.AnyIconTable.Add(Skill, RawIconId.Value);
+                if (Skill != PowerSkill.Internal_None)
+                {
+                    if (!PgJsonObjects.Skill.AnyIconTable.ContainsKey(Skill))
+                        PgJsonObjects.Skill.AnyIconTable.Add(Skill, RawIconId.Value);
+                }
+
+                else if (RewardSkill != PowerSkill.Internal_None)
+                {
+                    if (!PgJsonObjects.Skill.AnyIconTable.ContainsKey(RewardSkill))
+                        PgJsonObjects.Skill.AnyIconTable.Add(RewardSkill, RawIconId.Value);
+                }
             }
         }
 
@@ -823,8 +873,7 @@ namespace PgJsonObjects
         {
             Generator.OpenObject(Key);
 
-            Generator.AddString("ActionLabel", StringToEnumConversion<RecipeAction>.ToString(ActionLabel, RecipeActionStringMap, RecipeAction.Internal_None));
-            StringToEnumConversion<RecipeCost>.ListToString(Generator, "Costs", CostList);
+            Generator.AddString("ActionLabel", StringToEnumConversion<RecipeAction>.ToString(ActionLabel, TextMaps.RecipeActionStringMap, RecipeAction.Internal_None));
 
             Generator.AddString("Description", Description);
 
@@ -925,7 +974,7 @@ namespace PgJsonObjects
             switch (ResultEffect.Effect)
             {
                 default:
-                    Content = StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, RecipeEffectStringMap);
+                    Content = StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap);
                     break;
 
                 case RecipeEffect.DecomposeItemByTSysLevels:
@@ -954,17 +1003,17 @@ namespace PgJsonObjects
 
         public string GenerateDecomposeContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
         {
-            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, RecipeEffectStringMap) + "(" + ResultEffect.Material + "," + ResultEffect.Skill + ")";
+            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + "(" + ResultEffect.Material + "," + ResultEffect.Skill + ")";
         }
 
         public string GenerateExtractContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
         {
-            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, RecipeEffectStringMap) + "(" + ResultEffect.ExtractedAugment + "," + ResultEffect.Skill + "," + ResultEffect.Material + ")";
+            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + "(" + ResultEffect.ExtractedAugment + "," + ResultEffect.Skill + "," + ResultEffect.Material + ")";
         }
 
         public string GenerateRepairContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
         {
-            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, RecipeEffectStringMap) + "(" + Tools.FloatToString(ResultEffect.RepairMinEfficiency, ResultEffect.RepairMinEfficiencyFormat) + "," + Tools.FloatToString(ResultEffect.RepairMaxEfficiency, ResultEffect.RepairMaxEfficiencyFormat) + "," + ResultEffect.RepairCooldown + ")";
+            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + "(" + Tools.FloatToString(ResultEffect.RepairMinEfficiency, ResultEffect.RepairMinEfficiencyFormat) + "," + Tools.FloatToString(ResultEffect.RepairMaxEfficiency, ResultEffect.RepairMaxEfficiencyFormat) + "," + ResultEffect.RepairCooldown + ")";
         }
 
         public string GenerateCraftContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
@@ -979,15 +1028,15 @@ namespace PgJsonObjects
             if (ResultEffect.AdditionalEnchantments != null)
                 CraftedItem += "," + ResultEffect.AdditionalEnchantments.Value.ToString();
 
-            if (ResultEffect.BoostedAnimal != null)
+            if (ResultEffect.BoostedAnimal != Appearance.Internal_None)
                 CraftedItem += "," + ResultEffect.BoostedAnimal;
 
-            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, RecipeEffectStringMap) + "(" + CraftedItem + ")";
+            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + "(" + CraftedItem + ")";
         }
 
         public string GenerateEnhanceContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
         {
-            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, RecipeEffectStringMap) + ResultEffect.Enhancement.ToString() + "(" + ResultEffect.AddedQuantity.ToString(CultureInfo.InvariantCulture.NumberFormat) + "," + ResultEffect.ConsumedEnhancementPoints + ")";
+            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + ResultEffect.Enhancement.ToString() + "(" + ResultEffect.AddedQuantity.ToString(CultureInfo.InvariantCulture.NumberFormat) + "," + ResultEffect.ConsumedEnhancementPoints + ")";
         }
 
         public static bool ConnectTableByInternamName(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, List<string> ConnectedList, Dictionary<string, Recipe> ConnectedTable)
@@ -1045,27 +1094,29 @@ namespace PgJsonObjects
 
                 if (RawIconId.HasValue)
                 {
-                    Result += Description + JsonGenerator.FieldSeparator;
-
+                    AddWithFieldSeparator(ref Result, Name);
+                    AddWithFieldSeparator(ref Result, Description);
                     foreach (RecipeItem Item in IngredientList)
-                        Result += Item.TextContent + JsonGenerator.FieldSeparator;
-
-                    Result += Name + JsonGenerator.FieldSeparator;
-
+                        AddWithFieldSeparator(ref Result, Item.CombinedDescription);
                     foreach (RecipeItem Item in ResultItemList)
-                        Result += Item.TextContent + JsonGenerator.FieldSeparator;
-
-                    foreach (RecipeResultEffect ResultEffect in ResultEffectList)
-                    {
-                        Result += ResultEffect.BoostedAnimal + JsonGenerator.FieldSeparator;
-                    }
-
-                    Result += UsageDelayMessage + JsonGenerator.FieldSeparator;
-
-                    foreach (RecipeCost Item in CostList)
-                        Result += Item.TextContent + JsonGenerator.FieldSeparator;
-
-                    Result += UsageAnimationEnd + JsonGenerator.FieldSeparator;
+                        AddWithFieldSeparator(ref Result, Item.CombinedDescription);
+                    if (Skill != PowerSkill.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
+                    foreach (RecipeResultEffect Item in ResultEffectList)
+                        AddWithFieldSeparator(ref Result, Item.CombinedEffect);
+                    if (SortSkill != PowerSkill.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[SortSkill]);
+                    AddWithFieldSeparator(ref Result, CombinedKeywords);
+                    if (ActionLabel != RecipeAction.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.RecipeActionTextMap[ActionLabel]);
+                    AddWithFieldSeparator(ref Result, UsageDelayMessage);
+                    if (UsageAnimation != RecipeUsageAnimation.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.RecipeUsageAnimationTextMap[UsageAnimation]);
+                    AddWithFieldSeparator(ref Result, CombinedRequirements);
+                    if (Cost != null)
+                        AddWithFieldSeparator(ref Result, Cost.CombinedCost);
+                    if (RewardSkill != PowerSkill.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RewardSkill]);
                 }
 
                 return Result;
@@ -1079,34 +1130,28 @@ namespace PgJsonObjects
 
         protected override void InitializeFields()
         {
-            CostList = new List<RecipeCost>();
             IngredientList = new List<RecipeItem>();
             KeywordList = new List<RecipeKeyword>();
             OtherRequirementList = new List<AbilityRequirement>();
-            DisallowedDruidStateList = new List<DisallowedState>();
             ResultEffectList = new List<RecipeResultEffect>();
             ResultItemList = new List<RecipeItem>();
-            CurHealth = 0;
-            RequiredRace = Race.Internal_None;
-            RequiredForm = AnimalForm.Internal_None;
-            DisallowedDruidStateList = new List<DisallowedState>();
-            PetType = RecipeKeyword.Internal_None;
-            RawPetTypeMaxCount = null;
-            RawPetTypeMaxCount = 0;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool Connected = false;
 
-            foreach (RecipeCost Item in CostList)
-                Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
-
             foreach (RecipeItem Item in IngredientList)
-                Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (RecipeItem Item in ResultItemList)
-                Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (AbilityRequirement Item in OtherRequirementList)
+                Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            if (Cost != null)
+                Cost.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             return Connected;
         }

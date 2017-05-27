@@ -43,15 +43,79 @@ namespace PgJsonObjects
         public EffectParticle Particle { get; private set; }
         public EffectStackingType StackingType { get; private set; }
         public int StackingPriority { get { return RawStackingPriority.HasValue ? RawStackingPriority.Value : 0; } }
-        private int? RawStackingPriority;
-        public int Duration { get { return RawStackingPriority.HasValue ? RawStackingPriority.Value : 0; } }
-        private int? RawDuration;
+        public int? RawStackingPriority { get; private set; }
+        public int Duration { get { return RawDuration.HasValue ? RawDuration.Value : 0; } }
+        public int? RawDuration { get; private set; }
         public List<EffectKeyword> KeywordList { get; private set; }
         public bool IsKeywordListEmpty { get; private set; }
         public List<AbilityKeyword> AbilityKeywordList { get; private set; }
         public bool IsAbilityKeywordListEmpty { get; private set; }
 
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
+
+        public string CombinedSpewText
+        {
+            get
+            {
+                if (SpewText == null)
+                    return "";
+
+                string Result = SpewText;
+                Result  = Result.Replace("%NAME%", "Target");
+
+                return Result;
+            }
+        }
+
+        public string CombinedKeywords
+        {
+            get
+            {
+                if (KeywordList.Count == 0)
+                    return "None";
+
+                List<string> KeywordStringList = new List<string>();
+                foreach (EffectKeyword Item in KeywordList)
+                {
+                    string ItemText = TextMaps.EffectKeywordTextMap[Item];
+                    if (ItemText.Length > 0 && !KeywordStringList.Contains(ItemText))
+                        KeywordStringList.Add(ItemText);
+                }
+
+                string Result = "";
+
+                foreach (string Item in KeywordStringList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += Item;
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedAbilityKeywords
+        {
+            get
+            {
+                if (AbilityKeywordList.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (AbilityKeyword Keyword in AbilityKeywordList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += TextMaps.AbilityKeywordTextMap[Keyword];
+                }
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -285,9 +349,17 @@ namespace PgJsonObjects
 
                 if (RawIconId.HasValue)
                 {
-                    Result += Name + JsonGenerator.FieldSeparator;
-                    Result += Desc + JsonGenerator.FieldSeparator;
-                    Result += SpewText + JsonGenerator.FieldSeparator;
+                    AddWithFieldSeparator(ref Result, Name);
+                    AddWithFieldSeparator(ref Result, Desc);
+                    if (DisplayMode != EffectDisplayMode.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.EffectDisplayModeTextMap[DisplayMode]);
+                    AddWithFieldSeparator(ref Result, CombinedSpewText);
+                    if (Particle != EffectParticle.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.EffectParticleTextMap[Particle]);
+                    if (StackingType != EffectStackingType.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.EffectStackingTypeTextMap[StackingType]);
+                    AddWithFieldSeparator(ref Result, CombinedKeywords);
+                    AddWithFieldSeparator(ref Result, CombinedAbilityKeywords);
                 }
 
                 return Result;
@@ -307,7 +379,7 @@ namespace PgJsonObjects
             IsAbilityKeywordListEmpty = false;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }

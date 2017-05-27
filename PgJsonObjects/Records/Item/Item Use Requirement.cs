@@ -2,6 +2,7 @@
 {
     public enum ItemUseRequirement
     {
+        Internal_None,
         InWater,
         Dead,
         Beast,

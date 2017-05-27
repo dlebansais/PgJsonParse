@@ -13,6 +13,7 @@
         <conv:FileNameToBitmapImageConverter x:Key="convFileNameToBitmapImage"/>
         <conv:IntConverter x:Key="convInt"/>
         <conv:DoubleConverter x:Key="convDouble"/>
+        <conv:RgbColorToBrushConverter x:Key="convRgbColorToBrush"/>
         <app:ItemEffectGearTemplateSelector x:Key="selItemEffectGear"/>
         <app:SearchResultTitleSelector x:Key="selSearchResultTitle"/>
         <app:SearchResultContentSelector x:Key="selSearchResultContent"/>
@@ -456,8 +457,32 @@
                                     <TextBlock Text="{Binding Label}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Grid>
-                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            <Separator DockPanel.Dock="Top" Margin="5,5,5,5"/>
+                            <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Zone:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Zone}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Hint:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Hint}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Needed Skill:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding NeededSkill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Needed Skill Level:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding RawNeededSkillLevel, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Needed Ability:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding NeededAbility.Name, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Needed Recipe:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding CombinedNeededRecipe, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -477,8 +502,40 @@
                                     <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Grid>
-                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Desc}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Display Mode:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding DisplayMode, Converter={StaticResource convEnumToText}, ConverterParameter=EffectDisplayModeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Spew Text:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding CombinedSpewText, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Particle:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Particle, Converter={StaticResource convEnumToText}, ConverterParameter=EffectParticleTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Stacking Type:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding StackingType, Converter={StaticResource convEnumToText}, ConverterParameter=EffectStackingTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Stacking Priority:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding RawStackingPriority, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Duration:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding RawDuration, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Keywords:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding CombinedKeywords, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Ability Keywords:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding CombinedAbilityKeywords, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -498,8 +555,106 @@
                                     <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Grid>
-                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Bestow Recipes:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding CombinedBestowedRecipes}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Bestow Ability:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding CombinedBestowedAbility, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Bestow Quest:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding CombinedBestowedQuest, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Allow Prefix:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RawAllowPrefix, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Allow Suffix:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding RawAllowSuffix, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Craft Points:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding RawCraftPoints, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Crafting Target Level:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding RawCraftingTargetLevel, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Dropped Appearance:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding DroppedAppearance, Converter={StaticResource convEnumToText}, ConverterParameter=ItemDroppedAppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Effect description:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="9" Text="{Binding CombinedEffectDescription, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Dye Color:</TextBlock>
+                                <Rectangle Grid.Column="1" Grid.Row="10" Fill="{Binding DyeColor, Converter={StaticResource convRgbColorToBrush}, FallbackValue=Transparent}" HorizontalAlignment="Left" Width="50" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Slot:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="11" Text="{Binding EquipSlot, Converter={StaticResource convEnumToText}, ConverterParameter=ItemSlotTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Is Temporary:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="12" Text="{Binding RawIsTemporary, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Is Crafted:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="13" Text="{Binding RawIsCrafted, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Keywords:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="14" Text="{Binding CombinedKeywords, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Associated Quest:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="15" Text="{Binding MacGuffinQuestName.Name, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Max Carryable:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding RawMaxCarryable, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Max On Vendor:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding RawMaxOnVendor, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Max Stack Size:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding RawMaxStackSize, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Metabolism Cost:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding RawMetabolismCost, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Required Appearance:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding RequiredAppearance, Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Other Requirements:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="5" Text="{Binding CombinedRequirements, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Skill Requirements:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="6" Text="{Binding CombinedSkillRequirements, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Use Delay:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="7" Text="{Binding RawUseDelay, Converter={StaticResource convDouble}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Use Delay Animation:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="8" Text="{Binding UseDelayAnimation, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Use Animation:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="9" Text="{Binding UseAnimation, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Stock Dye:</TextBlock>
+                                <ItemsControl Grid.Column="3" Grid.Row="10" ItemsSource="{Binding StockDye}" HorizontalAlignment="Left" Margin="5,10,0,0">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Rectangle Fill="{Binding Converter={StaticResource convRgbColorToBrush}, FallbackValue=Transparent}" Width="50" Margin="0,0,10,0"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Grid.Column="2" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Use Requirements:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="11" Text="{Binding CombinedUseRequirements, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Use Verb:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="12" Text="{Binding UseVerb, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseVerbTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Value:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="13" Text="{Binding RawValue, Converter={StaticResource convDouble}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Number of Uses:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="14" Text="{Binding RawNumUses, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Destroy When Used Up:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="15" Text="{Binding RawDestroyWhenUsedUp, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -519,8 +674,127 @@
                                     <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Grid>
-                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Version:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding RawVersion, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Reuse Time:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding CombinedReuseTime, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Is Cancellable:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding RawIsCancellable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Quest Objectives:</TextBlock>
+                                <ItemsControl Grid.Column="1" Grid.Row="4" ItemsSource="{Binding QuestObjectiveList}" HorizontalAlignment="Left" Margin="5,10,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Summary}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">XP Rewards:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding CombinedRewardsXp, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Item Rewards:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding CombinedRewardsItem, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Prerequisite Quest:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding PrerequisiteQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Combat XP Reward:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding RawRewardCombatXP, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Favor NPC:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="9" Text="{Binding CombinedFavorNPC, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Preface Text:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="10" Text="{Binding PrefaceText, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Success Text:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="11" Text="{Binding SuccessText, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Midway Text:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="12" Text="{Binding MidwayText, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Favor Prerequisite:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="13" Text="{Binding PrerequisiteFavorLevel, Converter={StaticResource convEnumToText}, ConverterParameter=FavorTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Ability Reward:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="15" Text="{Binding RewardAbility.Name, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="16" TextAlignment="Right" Margin="0,10,0,0">Favor NPC Requirement:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="16" Text="{Binding CombinedRequirementFavorNPC, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Quest Requirement:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="17" Text="{Binding RequirementQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">Guild Quest Requirement:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="18" Text="{Binding RequirementGuildQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Skill Requirement:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="19" Text="{Binding CombinedRequirementSkill, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Favor Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding RawRewardFavor, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Skill XP Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding CombinedSkillXpReward, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Recipe Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding RewardRecipe.Name, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Guild XP Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding RawRewardGuildXp, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Guild Credit Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="5" Text="{Binding RawRewardGuildCredits, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Quest Items Given:</TextBlock>
+                                <ItemsControl Grid.Column="3" Grid.Row="6" ItemsSource="{Binding PreGiveItemList}" HorizontalAlignment="Left" Margin="5,10,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CombinedName}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Level:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="7" Text="{Binding RawTSysLevel, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Gold Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="8" Text="{Binding RawRewardGold, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Recipes Given:</TextBlock>
+                                <ItemsControl Grid.Column="3" Grid.Row="9" ItemsSource="{Binding PreGiveRecipeList}" HorizontalAlignment="Left" Margin="5,10,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Grid.Column="2" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Keywords:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="10" Text="{Binding CombinedKeywords, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Effect Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="11" Text="{Binding RewardEffect.Name, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Is Auto Preface:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="12" Text="{Binding RawIsAutoPreface, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Is Auto WrapUp:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="13" Text="{Binding RawIsAutoWrapUp, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Grouping Name:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="14" Text="{Binding GroupingName, Converter={StaticResource convEnumToText}, ConverterParameter=QuestGroupingNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Is Guild Quest:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="15" Text="{Binding RawIsGuildQuest, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="16" TextAlignment="Right" Margin="0,10,0,0">Expected Number Of Participants:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="16" Text="{Binding RawNumExpectedParticipants, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Level:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="17" Text="{Binding RawLevel, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">Work Order Skill:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="18" Text="{Binding WorkOrderSkill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -540,8 +814,83 @@
                                     <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Grid>
-                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Ingredients:</TextBlock>
+                                <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding IngredientList}" HorizontalAlignment="Left" Margin="5,10,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CombinedDescription}" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Result:</TextBlock>
+                                <ItemsControl Grid.Column="1" Grid.Row="2" ItemsSource="{Binding ResultItemList}" HorizontalAlignment="Left" Margin="5,10,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Item.Name}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Skill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Required Level:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RawSkillLevelReq, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Result Effects:</TextBlock>
+                                <ItemsControl Grid.Column="1" Grid.Row="5" ItemsSource="{Binding ResultEffectList}" HorizontalAlignment="Left" Margin="5,10,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CombinedEffect}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Sort Skill:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding SortSkill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Keywords:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding CombinedKeywords, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Action:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding ActionLabel, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeActionTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Usage Delay:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="9" Text="{Binding RawUsageDelay, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Usage Delay Message:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding UsageDelayMessage, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Usage Animation:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding UsageAnimation, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeUsageAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Other Requirements:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding CombinedRequirements, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Cost:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding Cost.CombinedCost, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Number of Resulting Items:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding RawNumResultItems, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Reset Time (in seconds):</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="5" Text="{Binding RawResetTimeInSeconds, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Dye Color:</TextBlock>
+                                <Rectangle Grid.Column="3" Grid.Row="6" Fill="{Binding DyeColor, Converter={StaticResource convRgbColorToBrush}, FallbackValue=Transparent}" HorizontalAlignment="Left" Width="50" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Reward Skill:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="7" Text="{Binding RewardSkill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">XP Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="8" Text="{Binding RawRewardSkillXp, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">First Time XP Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="9" Text="{Binding RawRewardSkillXpFirstTime, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -561,8 +910,63 @@
                                     <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Grid>
-                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" VerticalAlignment="Top">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Hide When Zero:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding RawHideWhenZero, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">XP Table:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding XpTable.InternalName, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Advancement Table:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding AdvancementTable.InternalName, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Combat:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RawCombat, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Compatible Skills:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding CombinedCompatibleSkills, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Max Bonus Levels:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding RawMaxBonusLevels, Converter={StaticResource convInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Parent Skill:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding ParentSkill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Skip Bonus Levels If Skill Unlearned:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding RawSkipBonusLevelsIfSkillUnlearned, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Is Auxiliary Combat Skill:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="9" Text="{Binding RawAuxCombat, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                </Grid>
+                                <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" TextAlignment="Right" Margin="0,0,0,0">Progress:</TextBlock>
+                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding CombinedRewardList}" HorizontalAlignment="Left" Margin="5,0,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -582,8 +986,46 @@
                                     <TextBlock Text="{Binding ComposedName}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Grid>
-                                <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center">Under construction</TextBlock>
+                            <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" VerticalAlignment="Top">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Prefix:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Prefix, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Suffix:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Suffix, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Slots:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding CombinedSlotList, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Skill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Is Unavailable:</TextBlock>
+                                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RawIsUnavailable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                </Grid>
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding CombinedTierList}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5,0,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,0,0,2"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -619,7 +1061,7 @@
                             <CheckBox Grid.Column="1" Grid.Row="7" IsChecked="{Binding IncludeQuest}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Quests</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="8" IsChecked="{Binding IncludeRecipe}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Recipes</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding IncludeSkill}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Skills</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="10" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="10" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects (mods)</CheckBox>
                         </Grid>
                         <Separator DockPanel.Dock="Top" Margin="5,10,5,10"/>
                         <Expander DockPanel.Dock="Top" Header="Search instructions">

@@ -64,6 +64,27 @@ namespace PgJsonObjects
                 return Result;
             }
         }
+
+        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, XpTable> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected)
+        {
+            if (IsRawXpTableParsed)
+                return ParsedXpTable;
+
+            IsRawXpTableParsed = true;
+
+            if (RawXpTableName == null)
+                return null;
+
+            foreach (KeyValuePair<string, XpTable> Entry in XpTableTable)
+                if (Entry.Value.InternalName == RawXpTableName)
+                {
+                    IsConnected = true;
+                    return Entry.Value;
+                }
+
+            ErrorInfo.AddMissingKey(RawXpTableName);
+            return null;
+        }
         #endregion
 
         #region Ancestor Interface
@@ -76,7 +97,7 @@ namespace PgJsonObjects
             IsXpAmountListEmpty = true;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }

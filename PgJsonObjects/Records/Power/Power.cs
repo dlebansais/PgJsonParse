@@ -21,10 +21,11 @@ namespace PgJsonObjects
         public string Prefix { get; private set; }
         public string Suffix { get; private set; }
         public Dictionary<int, PowerTier> TierEffectTable { get; private set; }
+        public List<string> CombinedTierList { get; private set; }
         public List<ItemSlot> SlotList { get; private set; }
         public PowerSkill Skill { get; private set; }
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
-        private bool? RawIsUnavailable;
+        public bool? RawIsUnavailable { get; private set; }
 
         public string ComposedName
         {
@@ -41,6 +42,24 @@ namespace PgJsonObjects
                         Result += " ";
 
                     Result += Suffix;
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedSlotList
+        {
+            get
+            {
+                string Result = "";
+
+                foreach (ItemSlot Slot in SlotList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += TextMaps.ItemSlotTextMap[Slot];
                 }
 
                 return Result;
@@ -224,8 +243,14 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                Result += Prefix + JsonGenerator.FieldSeparator;
-                Result += Suffix + JsonGenerator.FieldSeparator;
+                AddWithFieldSeparator(ref Result, ComposedName);
+                AddWithFieldSeparator(ref Result, CombinedSlotList);
+                if (Skill != PowerSkill.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
+                if (RawIsUnavailable.HasValue)
+                    AddWithFieldSeparator(ref Result, "Is Unavailable");
+                foreach (string Item in CombinedTierList)
+                    AddWithFieldSeparator(ref Result, Item);
 
                 return Result;
             }
@@ -242,12 +267,96 @@ namespace PgJsonObjects
             SlotList = new List<ItemSlot>();
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        private static string PrepareTier(int Level, string s)
+        {
+            return "Tier " + Level + ": " + s;
+        }
+
+        private static int SortByLevel(string s1, string s2)
+        {
+            int i1 = s1.IndexOf(':');
+            int i2 = s2.IndexOf(':');
+
+            int l1 = 0;
+            int.TryParse(s1.Substring(5, i1 - 5), out l1);
+            int l2 = 0;
+            int.TryParse(s2.Substring(5, i2 - 5), out l2);
+
+            if (l1 > l2)
+                return 1;
+            else if (l1 < l2)
+                return -1;
+            else
+                return 0;
+        }
+
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
             foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
-                IsConnected |= Entry.Value.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                IsConnected |= Entry.Value.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            if (CombinedTierList == null)
+            {
+                CombinedTierList = new List<string>();
+
+                foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
+                {
+                    int Tier = Entry.Key;
+
+                    foreach (PowerEffect Effect in Entry.Value.EffectList)
+                    {
+                        PowerAttributeLink AsPowerAttributeLink;
+                        PowerSimpleEffect AsPowerSimpleEffect;
+
+                        if ((AsPowerAttributeLink = Effect as PowerAttributeLink) != null)
+                        {
+                            if (AttributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
+                            {
+                                Attribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName];
+
+                                bool IsPercent = PowerAttribute.IsLabelWithPercent;
+                                string Label = PowerAttribute.LabelRippedOfPercent;
+                                string Name = Label;
+
+                                if (AsPowerAttributeLink.AttributeEffect != 0)
+                                {
+                                    float PowerValue = AsPowerAttributeLink.AttributeEffect;
+
+                                    if (IsPercent)
+                                    {
+                                        string PowerValueString = Tools.FloatToString(PowerValue * 100, AsPowerAttributeLink.AttributeEffectFormat);
+
+                                        if (PowerValue > 0)
+                                            PowerValueString = "+" + PowerValueString;
+
+                                        Name += " " + PowerValueString + "%";
+                                    }
+                                    else
+                                    {
+                                        string PowerValueString = Tools.FloatToString(PowerValue, AsPowerAttributeLink.AttributeEffectFormat);
+
+                                        if (PowerValue > 0)
+                                            PowerValueString = "+" + PowerValueString;
+
+                                        Name += " " + PowerValueString;
+                                    }
+                                }
+
+                                CombinedTierList.Add(PrepareTier(Entry.Key, Name));
+                            }
+                        }
+
+                        else if ((AsPowerSimpleEffect = Effect as PowerSimpleEffect) != null)
+                        {
+                            CombinedTierList.Add(PrepareTier(Entry.Key, AsPowerSimpleEffect.Description));
+                        }
+                    }
+                }
+
+                CombinedTierList.Sort(SortByLevel);
+            }
 
             return IsConnected;
         }

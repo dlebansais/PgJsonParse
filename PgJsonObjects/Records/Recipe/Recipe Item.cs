@@ -37,13 +37,17 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
+        public Item Item { get; private set; }
         public int ItemCode { get { return RawItemCode.HasValue ? RawItemCode.Value : 0; } }
         private int? RawItemCode;
+        private bool IsItemCodeParsed;
         public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 0; } }
         private int? RawStackSize;
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
         private double? RawPercentChance;
-        public List<RecipeItemKey> ItemKeyList { get; private set; }
+        public RecipeItemKey ItemKey { get; private set; }
+        private List<Item> MatchingKeyItemList;
+        private bool IsItemKeyParsed;
         public string Desc { get; private set; }
         public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
         private double? RawChanceToConsume;
@@ -51,6 +55,63 @@ namespace PgJsonObjects
         private double? RawDurabilityConsumed;
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
         private bool? RawAttuneToCrafter;
+
+        public string CombinedDescription
+        {
+            get
+            {
+                if (Item != null)
+                    return Item.Name;
+
+                string Result;
+
+                switch (ItemKey)
+                {
+                    case RecipeItemKey.EquipmentSlot_MainHand:
+                        return "Any Main Hand";
+                    case RecipeItemKey.EquipmentSlot_OffHand:
+                        return "Any Off Hand";
+                    case RecipeItemKey.EquipmentSlot_Hands:
+                        return "Any Hands";
+                    case RecipeItemKey.EquipmentSlot_Chest:
+                        return "Any Chest";
+                    case RecipeItemKey.EquipmentSlot_Legs:
+                        return "Any Legs";
+                    case RecipeItemKey.EquipmentSlot_Head:
+                        return "Any Head";
+                    case RecipeItemKey.EquipmentSlot_Feet:
+                        return "Any Feet";
+                    case RecipeItemKey.EquipmentSlot_Ring:
+                        return "Any Ring";
+                    case RecipeItemKey.EquipmentSlot_Necklace:
+                        return "Any Necklace";
+                    case RecipeItemKey.Rarity_Uncommon:
+                        return "Any uncommon item";
+                    case RecipeItemKey.Rarity_Rare:
+                        return "Any rare item";
+                    case RecipeItemKey.MinRarity_Exceptional:
+                        return "Any exceptional item or better";
+                    case RecipeItemKey.MinRarity_Uncommon:
+                        return "Any magical item";
+
+                    default:
+                        Result = "";
+
+                        foreach (Item Item in MatchingKeyItemList)
+                        {
+                            if (Result.Length > 0)
+                                Result += ", ";
+
+                            Result += Item.Name;
+                        }
+
+                        if (Result.Length > 0)
+                            Result = "One of: " + Result;
+
+                        return Result;
+                }
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -106,7 +167,16 @@ namespace PgJsonObjects
 
         private void ParseItemKeys(ArrayList RawItemKeys, ParseErrorInfo ErrorInfo)
         {
-            StringToEnumConversion<RecipeItemKey>.ParseList(RawItemKeys, RecipeItemKeyStringMap, ItemKeyList, ErrorInfo);
+            List<RecipeItemKey> ParsedItemKeyList = new List<RecipeItemKey>();
+            StringToEnumConversion<RecipeItemKey>.ParseList(RawItemKeys, RecipeItemKeyStringMap, ParsedItemKeyList, ErrorInfo);
+
+            if (ParsedItemKeyList.Count == 1)
+            {
+                ItemKey = ParsedItemKeyList[0];
+                IsItemKeyParsed = false;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("RecipeItem ItemKeys");
         }
 
         private static void ParseFieldDesc(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
@@ -170,8 +240,6 @@ namespace PgJsonObjects
         {
             Generator.OpenObject(null);
 
-            StringToEnumConversion<RecipeItemKey>.ListToString(Generator, "ItemKeys", ItemKeyList, RecipeItemKeyStringMap);
-
             Generator.AddInteger("ItemCode", RawItemCode);
             Generator.AddInteger("StackSize", RawStackSize);
             Generator.AddString("Desc", Desc);
@@ -202,12 +270,48 @@ namespace PgJsonObjects
 
         protected override void InitializeFields()
         {
-            ItemKeyList = new List<RecipeItemKey>();
+            MatchingKeyItemList = new List<Item>();
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
-            return false;
+            bool IsConnected = false;
+
+            Item = Item.ConnectByCode(ErrorInfo, ItemTable, RawItemCode, Item, ref IsItemCodeParsed, ref IsConnected);
+            if (Item == null)
+            {
+                switch (ItemKey)
+                {
+                    case RecipeItemKey.Internal_None:
+                        if (!IsItemKeyParsed)
+                        {
+                            IsItemKeyParsed = true;
+                            ErrorInfo.AddInvalidObjectFormat("Recipe Item");
+                        }
+                        break;
+
+                    case RecipeItemKey.EquipmentSlot_MainHand:
+                    case RecipeItemKey.EquipmentSlot_OffHand:
+                    case RecipeItemKey.EquipmentSlot_Hands:
+                    case RecipeItemKey.EquipmentSlot_Chest:
+                    case RecipeItemKey.EquipmentSlot_Legs:
+                    case RecipeItemKey.EquipmentSlot_Head:
+                    case RecipeItemKey.EquipmentSlot_Feet:
+                    case RecipeItemKey.EquipmentSlot_Ring:
+                    case RecipeItemKey.EquipmentSlot_Necklace:
+                    case RecipeItemKey.Rarity_Uncommon:
+                    case RecipeItemKey.Rarity_Rare:
+                    case RecipeItemKey.MinRarity_Exceptional:
+                    case RecipeItemKey.MinRarity_Uncommon:
+                        break;
+
+                    default:
+                        MatchingKeyItemList = Item.ConnectByKey(ErrorInfo, ItemTable, ItemKey, MatchingKeyItemList, ref IsItemKeyParsed, ref IsConnected);
+                        break;
+                }
+            }
+
+            return IsConnected;
         }
         #endregion
     }

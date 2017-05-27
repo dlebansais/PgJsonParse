@@ -2,6 +2,7 @@
 {
     public enum RecipeItemKey
     {
+        Internal_None,
         CheapMeat,
         HumanoidSkull,
         GreenCrystal,

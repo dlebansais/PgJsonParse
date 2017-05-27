@@ -35,31 +35,54 @@ namespace PgJsonObjects
         private int? RawId;
         public string Description { get; private set; }
         public bool HideWhenZero { get { return RawHideWhenZero.HasValue && RawHideWhenZero.Value; } }
-        private bool? RawHideWhenZero;
-        public XpTableEnum XpTable { get; private set; }
-        public AdvancementTableEnum AdvancementTable { get; private set; }
+        public bool? RawHideWhenZero { get; private set; }
+        public XpTable XpTable { get; private set; }
+        private string RawXpTable;
+        private bool IsRawXpTableParsed;
+        public AdvancementTable AdvancementTable { get; private set; }
+        private string RawAdvancementTable;
+        private bool IsRawAdvancementTableParsed;
         private bool IsRawAdvancementTableEmpty;
         public bool Combat { get { return RawCombat.HasValue && RawCombat.Value; } }
-        private bool? RawCombat;
+        public bool? RawCombat { get; private set; }
         public List<PowerSkill> CompatibleCombatSkillList { get; private set; }
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
-        private int? RawMaxBonusLevels;
+        public int? RawMaxBonusLevels { get; private set; }
         public List<LevelCapInteraction> InteractionFlagLevelCapList { get; private set; }
         public Dictionary<int, string> AdvancementHintTable { get; private set; }
         public List<Reward> RewardList { get; private set; }
         private bool EmptyRewardList;
         public Dictionary<int, string> ReportTable { get; private set; }
+        public List<string> CombinedRewardList { get; private set; }
         public string Name { get; private set; }
-        public List<PowerSkill> ParentList { get; private set; }
+        public PowerSkill ParentSkill { get; private set; }
         public bool EmptyParentList { get; private set; }
         public bool SkipBonusLevelsIfSkillUnlearned { get { return RawSkipBonusLevelsIfSkillUnlearned.HasValue && RawSkipBonusLevelsIfSkillUnlearned.Value; } }
-        private bool? RawSkipBonusLevelsIfSkillUnlearned;
+        public bool? RawSkipBonusLevelsIfSkillUnlearned { get; private set; }
         public bool AuxCombat { get { return RawAuxCombat.HasValue && RawAuxCombat.Value; } }
-        private bool? RawAuxCombat;
+        public bool? RawAuxCombat { get; private set; }
         public List<SkillCategory> TSysCategoryList { get; private set; }
 
         public static Dictionary<PowerSkill, Ability> BasicAttackTable { get; private set; }
         public static Dictionary<PowerSkill, int> AnyIconTable { get; private set; }
+
+        public string CombinedCompatibleSkills
+        {
+            get
+            {
+                string Result = "";
+
+                foreach (PowerSkill Item in CompatibleCombatSkillList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += TextMaps.PowerSkillTextMap[Item];
+                }
+
+                return Result;
+            }
+        }
 
         public string SearchResultIconFileName
         {
@@ -79,12 +102,8 @@ namespace PgJsonObjects
 
                 if (!BasicAttackTable.ContainsKey(IconSkill))
                 {
-                    foreach (PowerSkill SkillItem in ParentList)
-                        if (BasicAttackTable.ContainsKey(IconSkill))
-                        {
-                            IconSkill = SkillItem;
-                            break;
-                        }
+                    if (BasicAttackTable.ContainsKey(ParentSkill))
+                        IconSkill = ParentSkill;
                 }
 
                 int IconId = BestIconIdForSkill(IconSkill);
@@ -178,9 +197,9 @@ namespace PgJsonObjects
 
         private void ParseXpTable(string RawXpTable, ParseErrorInfo ErrorInfo)
         {
-            XpTableEnum ConvertedXpTable;
-            StringToEnumConversion<XpTableEnum>.TryParse(RawXpTable, out ConvertedXpTable, ErrorInfo);
-            XpTable = ConvertedXpTable;
+            this.RawXpTable = RawXpTable;
+            XpTable = null;
+            IsRawXpTableParsed = false;
         }
 
         private static void ParseFieldAdvancementTable(Skill This, object Value, ParseErrorInfo ErrorInfo)
@@ -195,9 +214,10 @@ namespace PgJsonObjects
 
         private void ParseAdvancementTable(string RawAdvancementTable, ParseErrorInfo ErrorInfo)
         {
-            AdvancementTableEnum ConvertedAdvancementTable;
-            StringToEnumConversion<AdvancementTableEnum>.TryParse(RawAdvancementTable, out ConvertedAdvancementTable, ErrorInfo);
-            AdvancementTable = ConvertedAdvancementTable;
+            this.RawAdvancementTable = RawAdvancementTable;
+            AdvancementTable = null;
+            IsRawAdvancementTableEmpty = false;
+            IsRawAdvancementTableParsed = false;
         }
 
         private static void ParseFieldCombat(Skill This, object Value, ParseErrorInfo ErrorInfo)
@@ -411,8 +431,20 @@ namespace PgJsonObjects
 
         private void ParseParents(ArrayList RawParents, ParseErrorInfo ErrorInfo)
         {
-            StringToEnumConversion<PowerSkill>.ParseList(RawParents, ParentList, ErrorInfo);
-            EmptyParentList = (ParentList.Count == 0);
+            List<PowerSkill> ParsedParentList = new List<PowerSkill>();
+            StringToEnumConversion<PowerSkill>.ParseList(RawParents, ParsedParentList, ErrorInfo);
+
+            if (ParsedParentList.Count == 0)
+                EmptyParentList = true;
+
+            else if (ParsedParentList.Count == 1)
+            {
+                EmptyParentList = false;
+                ParentSkill = ParsedParentList[0];
+            }
+
+            else
+                ErrorInfo.AddInvalidObjectFormat("Skill Parents");
         }
 
         private static void ParseFieldSkipBonusLevelsIfSkillUnlearned(Skill This, object Value, ParseErrorInfo ErrorInfo)
@@ -467,7 +499,7 @@ namespace PgJsonObjects
 
             if (IsRawAdvancementTableEmpty)
                 Generator.AddNull("AdvancementTable");
-            else if (AdvancementTable != AdvancementTableEnum.Internal_None)
+            else if (AdvancementTable != null)
                 Generator.AddString("AdvancementTable", AdvancementTable.ToString());
 
             if (TSysCategoryList.Count > 0)
@@ -492,13 +524,10 @@ namespace PgJsonObjects
 
             Generator.AddInteger("MaxBonusLevels", RawMaxBonusLevels);
 
-            if (ParentList.Count > 0)
+            if (ParentSkill != PowerSkill.Internal_None)
             {
                 Generator.OpenArray("Parents");
-
-                foreach (PowerSkill Parent in ParentList)
-                    Generator.AddString(null, Parent.ToString());
-
+                Generator.AddString(null, ParentSkill.ToString());
                 Generator.CloseArray();
             }
             else if (EmptyParentList)
@@ -596,12 +625,25 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                Result += Description + JsonGenerator.FieldSeparator;
-
-                foreach (Reward Item in RewardList)
-                    Result += Item.TextContent + JsonGenerator.FieldSeparator;
-
-                Result += Name + JsonGenerator.FieldSeparator;
+                AddWithFieldSeparator(ref Result, Name);
+                AddWithFieldSeparator(ref Result, Description);
+                if (RawHideWhenZero.HasValue)
+                    AddWithFieldSeparator(ref Result, "Hide When Zero");
+                if (XpTable != null)
+                    AddWithFieldSeparator(ref Result, XpTable.InternalName);
+                if (AdvancementTable != null)
+                    AddWithFieldSeparator(ref Result, AdvancementTable.InternalName);
+                if (RawCombat.HasValue)
+                    AddWithFieldSeparator(ref Result, "Combat");
+                AddWithFieldSeparator(ref Result, CombinedCompatibleSkills);
+                if (ParentSkill != PowerSkill.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[ParentSkill]);
+                if (RawSkipBonusLevelsIfSkillUnlearned.HasValue)
+                    AddWithFieldSeparator(ref Result, "Skip Bonus Levels If Skill Unlearned");
+                if (RawAuxCombat.HasValue)
+                    AddWithFieldSeparator(ref Result, "Is Auxiliary Combat Skill");
+                foreach (string Item in CombinedRewardList)
+                    AddWithFieldSeparator(ref Result, Item);
 
                 return Result;
             }
@@ -632,7 +674,6 @@ namespace PgJsonObjects
         {
             TSysCategoryList = new List<SkillCategory>();
             CompatibleCombatSkillList = new List<PowerSkill>();
-            ParentList = new List<PowerSkill>();
             InteractionFlagLevelCapList = new List<LevelCapInteraction>();
             AdvancementHintTable = new Dictionary<int, string>();
             RewardList = new List<Reward>();
@@ -640,9 +681,35 @@ namespace PgJsonObjects
             IsRawAdvancementTableEmpty = false;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        private static string PrepareReward(int Level, string s)
+        {
+            return "Level " + Level + ": " + s;
+        }
+
+        private static int SortByLevel(string s1, string s2)
+        {
+            int i1 = s1.IndexOf(':');
+            int i2 = s2.IndexOf(':');
+
+            int l1 = 0;
+            int.TryParse(s1.Substring(6, i1 - 6), out l1);
+            int l2 = 0;
+            int.TryParse(s2.Substring(6, i2 - 6), out l2);
+
+            if (l1 > l2)
+                return 1;
+            else if (l1 < l2)
+                return -1;
+            else
+                return 0;
+        }
+
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
+
+            XpTable = PgJsonObjects.XpTable.ConnectSingleProperty(ErrorInfo, XpTableTable, RawXpTable, XpTable, ref IsRawXpTableParsed, ref IsConnected);
+            AdvancementTable = PgJsonObjects.AdvancementTable.ConnectSingleProperty(ErrorInfo, AdvancementTableTable, RawAdvancementTable, AdvancementTable, ref IsRawAdvancementTableParsed, ref IsConnected);
 
             foreach (LevelCapInteraction Interaction in InteractionFlagLevelCapList)
                 if (!Interaction.IsParsed)
@@ -656,7 +723,27 @@ namespace PgJsonObjects
                 }
 
             foreach (Reward Item in RewardList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            if (CombinedRewardList == null)
+            {
+                CombinedRewardList = new List<string>();
+
+                foreach (LevelCapInteraction Item in InteractionFlagLevelCapList)
+                    if (Item.Link != null && Item.OtherLevel > 0)
+                        CombinedRewardList.Add(PrepareReward(Item.Level, "Unlock " + Item.Link.Name + " level " + Item.OtherLevel));
+
+                foreach (KeyValuePair<int, string> Entry in AdvancementHintTable)
+                    CombinedRewardList.Add(PrepareReward(Entry.Key, Entry.Value));
+
+                foreach (Reward Item in RewardList)
+                    CombinedRewardList.Add(PrepareReward(Item.RewardLevel, Item.CombinedReward));
+
+                foreach (KeyValuePair<int, string> Entry in ReportTable)
+                    CombinedRewardList.Add(PrepareReward(Entry.Key, Entry.Value));
+
+                CombinedRewardList.Sort(SortByLevel);
+            }
 
             return IsConnected;
         }

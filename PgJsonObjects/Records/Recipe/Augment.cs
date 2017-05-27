@@ -2,6 +2,7 @@
 {
     public enum Augment
     {
+        Internal_None,
         MainHandAugment,
         OffHandAugment,
         GloveAugment,

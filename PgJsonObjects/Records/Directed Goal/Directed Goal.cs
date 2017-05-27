@@ -29,7 +29,9 @@ namespace PgJsonObjects
         public PowerSkill NeededSkill { get; private set; }
         public int NeededSkillLevel { get { return RawNeededSkillLevel.HasValue ? RawNeededSkillLevel.Value : 0; } }
         private int? RawNeededSkillLevel;
-        public string NeededAbility { get; private set; }
+        public Ability NeededAbility { get; private set; }
+        public string RawNeededAbility { get; private set; }
+        private bool IsRawNeededAbilityParsed;
         public string NeededInteractionFlag { get; private set; }
         public Recipe NeededRecipe { get; private set; }
         private string RawNeededRecipe;
@@ -39,6 +41,23 @@ namespace PgJsonObjects
         public string NeededNotoriety { get; private set; }
 
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
+
+        public string CombinedNeededRecipe
+        {
+            get
+            {
+                if (NeededRecipe == null)
+                    return "";
+
+                string Result = NeededRecipe.Name;
+
+                if (RawNeededRecipeCompletions != null && RawNeededRecipeCompletions.Value > 0)
+                    Result += " (x" + RawNeededRecipeCompletions.Value.ToString() + ")";
+
+                return Result;
+            }
+        }
+
         #endregion
 
         #region Client Interface
@@ -125,7 +144,7 @@ namespace PgJsonObjects
 
         private void ParseNeededAbility(string RawNeededAbility, ParseErrorInfo ErrorInfo)
         {
-            NeededAbility = RawNeededAbility;
+            this.RawNeededAbility = RawNeededAbility;
         }
 
         private static void ParseFieldNeededInteractionFlag(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
@@ -192,7 +211,7 @@ namespace PgJsonObjects
             Generator.AddString("Hint", Hint);
             Generator.AddString("NeededSkill", StringToEnumConversion<PowerSkill>.ToString(NeededSkill, null, PowerSkill.Internal_None));
             Generator.AddInteger("NeededSkillLevel", RawNeededSkillLevel);
-            Generator.AddString("NeededAbility", NeededAbility);
+            Generator.AddString("NeededAbility", RawNeededAbility);
             Generator.AddString("NeededInteractionFlag", NeededInteractionFlag);
             Generator.AddInteger("NeededRecipeCompletions", RawNeededRecipeCompletions);
             Generator.AddString("NeededNotoriety", NeededNotoriety);
@@ -206,15 +225,14 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                Result += Label + JsonGenerator.FieldSeparator;
-                Result += Zone + JsonGenerator.FieldSeparator;
-                Result += Hint + JsonGenerator.FieldSeparator;
-                Result += NeededAbility + JsonGenerator.FieldSeparator;
-                Result += NeededInteractionFlag + JsonGenerator.FieldSeparator;
-                if (NeededRecipe != null)
-                    Result += NeededRecipe.TextContent + JsonGenerator.FieldSeparator;
-                Result += RawNeededRecipe + JsonGenerator.FieldSeparator;
-                Result += NeededNotoriety + JsonGenerator.FieldSeparator;
+                AddWithFieldSeparator(ref Result, Label);
+                AddWithFieldSeparator(ref Result, Zone);
+                AddWithFieldSeparator(ref Result, Hint);
+                if (NeededSkill != PowerSkill.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[NeededSkill]);
+                if (NeededAbility != null)
+                    AddWithFieldSeparator(ref Result, NeededAbility.Name);
+                AddWithFieldSeparator(ref Result, CombinedNeededRecipe);
 
                 return Result;
             }
@@ -229,12 +247,15 @@ namespace PgJsonObjects
         {
             NeededRecipe = null;
             IsRawNeededRecipeParsed = false;
+            NeededAbility = null;
+            IsRawNeededAbilityParsed = false;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
+            NeededAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawNeededAbility, NeededAbility, ref IsRawNeededAbilityParsed, ref IsConnected);
             NeededRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawNeededRecipe, NeededRecipe, ref IsRawNeededRecipeParsed, ref IsConnected);
 
             return IsConnected;

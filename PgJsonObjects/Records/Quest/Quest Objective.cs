@@ -52,6 +52,46 @@ namespace PgJsonObjects
         public string MaxAmount { get; private set; }
         public string AnatomyType { get; private set; }
         public ItemKeyword ItemKeyword { get; private set; }
+
+        public string Summary
+        {
+            get
+            {
+                switch (Type)
+                {
+                    default:
+                    case QuestObjectiveType.Internal_None:
+                        return null;
+                    case QuestObjectiveType.Kill:
+                    case QuestObjectiveType.Scripted:
+                    case QuestObjectiveType.MultipleInteractionFlags:
+                    case QuestObjectiveType.Collect:
+                    case QuestObjectiveType.InteractionFlag:
+                    case QuestObjectiveType.Deliver:
+                    case QuestObjectiveType.Have:
+                    case QuestObjectiveType.Harvest:
+                    case QuestObjectiveType.TipPlayer:
+                    case QuestObjectiveType.Special:
+                    case QuestObjectiveType.GiveGift:
+                    case QuestObjectiveType.UseItem:
+                    case QuestObjectiveType.UseRecipe:
+                    case QuestObjectiveType.KillElite:
+                    case QuestObjectiveType.SayInChat:
+                    case QuestObjectiveType.BeAttacked:
+                    case QuestObjectiveType.Bury:
+                    case QuestObjectiveType.UseAbility:
+                    case QuestObjectiveType.UniqueSpecial:
+                    case QuestObjectiveType.GuildGiveItem:
+                    case QuestObjectiveType.GuildKill:
+                    case QuestObjectiveType.DruidKill:
+                    case QuestObjectiveType.DruidScripted:
+                        if (Number > 1)
+                            return Description + " (" + Number + ")";
+                        else
+                            return Description;
+                }
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -362,7 +402,7 @@ namespace PgJsonObjects
             IsItemNameParsed = false;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 

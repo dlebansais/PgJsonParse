@@ -6,6 +6,7 @@ namespace PgJsonObjects
     {
         #region Properties
         public Dictionary<int, Advancement> LevelTable { get; private set; }
+        public string InternalName { get; private set; }
         #endregion
 
         #region Client Interface
@@ -48,6 +49,17 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key);
         }
 
+        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw)
+        {
+            base.InitializeKey(EntryRaw);
+
+            int Index = Key.LastIndexOf('_');
+            if (Index >= 0)
+                InternalName = Key.Substring(Index + 1);
+            else
+                InternalName = Key;
+        }
+
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -70,6 +82,27 @@ namespace PgJsonObjects
                 return Result;
             }
         }
+
+        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, AdvancementTable> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected)
+        {
+            if (IsRawAdvancementTableParsed)
+                return ParsedAdvancementTable;
+
+            IsRawAdvancementTableParsed = true;
+
+            if (RawAdvancementTableName == null)
+                return null;
+
+            foreach (KeyValuePair<string, AdvancementTable> Entry in AdvancementTableTable)
+                if (Entry.Value.InternalName == RawAdvancementTableName)
+                {
+                    IsConnected = true;
+                    return Entry.Value;
+                }
+
+            ErrorInfo.AddMissingKey(RawAdvancementTableName);
+            return null;
+        }
         #endregion
 
         #region Ancestor Interface
@@ -80,7 +113,7 @@ namespace PgJsonObjects
         {
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }

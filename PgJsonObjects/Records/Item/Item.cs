@@ -8,48 +8,6 @@ namespace PgJsonObjects
     public class Item : GenericJsonObject<Item>
     {
         #region Constants
-        private static readonly Dictionary<ItemUseVerb, string> UseVerbMap = new Dictionary<ItemUseVerb, string>()
-        {
-            { ItemUseVerb.Place, "Place"},
-            { ItemUseVerb.Fill, "Fill"},
-            { ItemUseVerb.Drink, "Drink"},
-            { ItemUseVerb.Learn, "Learn"},
-            { ItemUseVerb.LearnWord, "Learn Word"},
-            { ItemUseVerb.BlowWhistle, "Blow Whistle"},
-            { ItemUseVerb.Read, "Read"},
-            { ItemUseVerb.Eat, "Eat"},
-            { ItemUseVerb.Delouse, "Delouse"},
-            { ItemUseVerb.RubGem, "Rub Gem"},
-            { ItemUseVerb.PlayGame, "Play Game"},
-            { ItemUseVerb.EmptyPurse, "Empty Purse"},
-            { ItemUseVerb.ActivateRune, "Activate Rune"},
-            { ItemUseVerb.EmptySack, "Empty Sack"},
-            { ItemUseVerb.ReadBook, "Read Book"},
-            { ItemUseVerb.Plant, "Plant"},
-            { ItemUseVerb.Appreciate, "Appreciate"},
-            { ItemUseVerb.Deploy, "Deploy"},
-            { ItemUseVerb.Appraise, "Appraise"},
-            { ItemUseVerb.StudyPoetry, "Study Poetry"},
-            { ItemUseVerb.LaunchFirework, "Launch Firework"},
-            { ItemUseVerb.PopConfetti, "Pop Confetti"},
-            { ItemUseVerb.BreakDown, "Break Down"},
-            { ItemUseVerb.Apply, "Apply"},
-            { ItemUseVerb.Swallow, "Swallow"},
-            { ItemUseVerb.Inhale, "Inhale"},
-            { ItemUseVerb.Inject, "Inject"},
-            { ItemUseVerb.Fish, "Fish"},
-            { ItemUseVerb.AgeCheese, "Age Cheese"},
-            { ItemUseVerb.AgeCream, "Age Cream"},
-            { ItemUseVerb.CheckSurvey, "Check Survey"},
-            { ItemUseVerb.CheckNotes, "Check Notes"},
-            { ItemUseVerb.CheckMap, "Check Map"},
-            { ItemUseVerb.Translate, "Translate"},
-            { ItemUseVerb.MemorizeWorkOrder, "Memorize Work Order"},
-            { ItemUseVerb.Equip, "Equip"},
-            { ItemUseVerb.HuddleForWarmth, "Huddle For Warmth"},
-            { ItemUseVerb.AgeLiquor, "Age Liquor"},
-        };
-
         private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
         {
             { "BestowRecipes", ParseFieldBestowRecipes },
@@ -81,12 +39,12 @@ namespace PgJsonObjects
             { "SkillReqs", ParseFieldSkillReqs },
             { "UseDelay", ParseFieldUseDelay },
             { "UseDelayAnimation", ParseFieldUseDelayAnimation },
+            { "UseAnimation", ParseFieldUseAnimation },
             { "StockDye", ParseFieldStockDye },
             { "UseRequirements", ParseFieldUseRequirements },
             { "UseVerb", ParseFieldUseVerb },
             { "Value", ParseFieldValue },
             { "NumUses", ParseFieldNumUses },
-            { "UseAnimation", ParseFieldUseAnimation },
             { "DestroyWhenUsedUp", ParseFieldDestroyWhenUsedUp },
         };
         #endregion
@@ -95,60 +53,231 @@ namespace PgJsonObjects
         public Dictionary<string, Recipe> BestowRecipeTable { get; private set; }
         public Ability BestowAbility { get; private set; }
         private string RawBestowAbility;
-        public string BestowQuest { get; private set; }
+        private bool IsRawBestowAbilityParsed;
+        public Quest BestowQuest { get; private set; }
+        private string RawBestowQuest;
+        private bool IsRawBestowQuestParsed;
         public bool AllowPrefix { get { return RawAllowPrefix.HasValue && RawAllowPrefix.Value; } }
-        private bool? RawAllowPrefix;
+        public bool? RawAllowPrefix { get; private set; }
         public bool AllowSuffix { get { return RawAllowSuffix.HasValue && RawAllowSuffix.Value; } }
-        private bool? RawAllowSuffix;
+        public bool? RawAllowSuffix { get; private set; }
         public int CraftPoints { get { return RawCraftPoints.HasValue ? RawCraftPoints.Value : 0; } }
-        private int? RawCraftPoints;
+        public int? RawCraftPoints { get; private set; }
         public int CraftingTargetLevel { get { return RawCraftingTargetLevel.HasValue ? RawCraftingTargetLevel.Value : 0; } }
-        private int? RawCraftingTargetLevel;
+        public int? RawCraftingTargetLevel { get; private set; }
         public string Description { get; private set; }
-        public string DroppedAppearance { get; private set; }
-        public bool IsEffectDescriptionEmpty { get; private set; }
+        public ItemDroppedAppearance DroppedAppearance { get; private set; }
         public ObservableCollection<ItemEffect> EffectDescriptionList { get; private set; }
-        public uint? DyeColor;
+        public bool IsEffectDescriptionEmpty { get; private set; }
+        public uint? DyeColor { get; private set; }
         public string EquipAppearance { get; private set; }
         public ItemSlot EquipSlot { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         private int? RawIconId;
         public string InternalName { get; private set; }
         public bool IsTemporary { get { return RawIsTemporary.HasValue && RawIsTemporary.Value; } }
-        private bool? RawIsTemporary;
+        public bool? RawIsTemporary { get; private set; }
         public bool IsCrafted { get { return RawIsCrafted.HasValue && RawIsCrafted.Value; } }
-        private bool? RawIsCrafted;
+        public bool? RawIsCrafted { get; private set; }
         public Dictionary<ItemKeyword, float> KeywordTable { get; private set; }
+        public List<RecipeItemKey> ItemKeyList { get; private set; }
         public List<ItemKeyword> EmptyKeywordList { get; private set; }
         public List<ItemKeyword> RepeatedKeywordList { get; private set; }
-        public string MacGuffinQuestName { get; private set; }
+        public Quest MacGuffinQuestName { get; private set; }
+        private string RawMacGuffinQuestName;
+        private bool IsRawMacGuffinQuestNameParsed;
         public int MaxCarryable { get { return RawMaxCarryable.HasValue ? RawMaxCarryable.Value : 0; } }
-        private int? RawMaxCarryable;
+        public int? RawMaxCarryable { get; private set; }
         public int MaxOnVendor { get { return RawMaxOnVendor.HasValue ? RawMaxOnVendor.Value : 0; } }
-        private int? RawMaxOnVendor;
+        public int? RawMaxOnVendor { get; private set; }
         public int MaxStackSize { get { return RawMaxStackSize.HasValue ? RawMaxStackSize.Value : 0; } }
-        private int? RawMaxStackSize;
+        public int? RawMaxStackSize { get; private set; }
         public int MetabolismCost { get { return RawMetabolismCost.HasValue ? RawMetabolismCost.Value : 0; } }
-        private int? RawMetabolismCost;
+        public int? RawMetabolismCost { get; private set; }
         public string Name { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
         public List<AbilityRequirement> OtherRequirementList { get; private set; }
         public List<ItemSkillLink> SkillRequirementList { get; private set; }
         public double UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
-        private double? RawUseDelay;
-        public string UseDelayAnimation { get; private set; }
-        public uint[] StockDye { get; private set; }
+        public double? RawUseDelay { get; private set; }
+        public ItemUseAnimation UseDelayAnimation { get; private set; }
+        public ItemUseAnimation UseAnimation { get; private set; }
+        public List<uint> StockDye { get; private set; }
         public List<ItemUseRequirement> UseRequirementList { get; private set; }
         public ItemUseVerb UseVerb { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
-        private double? RawValue;
+        public double? RawValue { get; private set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
-        private int? RawNumUses;
-        public ItemUseAnimation UseAnimation { get; private set; }
+        public int? RawNumUses { get; private set; }
         public bool DestroyWhenUsedUp { get { return RawDestroyWhenUsedUp.HasValue && RawDestroyWhenUsedUp.Value; } }
-        private bool? RawDestroyWhenUsedUp;
+        public bool? RawDestroyWhenUsedUp { get; private set; }
 
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
+
+        public string CombinedBestowedRecipes
+        {
+            get
+            {
+                if (BestowRecipeTable.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (KeyValuePair<string, Recipe> Entry in BestowRecipeTable)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += Entry.Value.Name;
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedBestowedAbility
+        {
+            get
+            {
+                if (BestowAbility == null)
+                    return "None";
+
+                return BestowAbility.Name;
+            }
+        }
+
+        public string CombinedBestowedQuest
+        {
+            get
+            {
+                if (BestowQuest == null)
+                    return "None";
+
+                return BestowQuest.Name;
+            }
+        }
+
+        public string CombinedEffectDescription
+        {
+            get
+            {
+                if (EffectDescriptionList.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (ItemEffect ItemEffect in EffectDescriptionList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    ItemSimpleEffect AsItemSimpleEffect;
+                    ItemAttributeLink AsItemAttributeLink;
+
+                    if ((AsItemSimpleEffect = ItemEffect as ItemSimpleEffect) != null)
+                    {
+                        Result += AsItemSimpleEffect.Description;
+                    }
+
+                    else if ((AsItemAttributeLink = ItemEffect as ItemAttributeLink) != null)
+                    {
+                        Result += AsItemAttributeLink.FriendlyName + ": " + AsItemAttributeLink.FriendlyEffect;
+                    }
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedKeywords
+        {
+            get
+            {
+                if (KeywordTable.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (KeyValuePair<ItemKeyword, float> Entry in KeywordTable)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    if (EmptyKeywordList.Contains(Entry.Key) || Entry.Value == 0)
+                        Result += TextMaps.ItemKeywordTextMap[Entry.Key];
+                    else
+                        Result += TextMaps.ItemKeywordTextMap[Entry.Key] + " (" + Entry.Value.ToString() + ")";
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedRequirements
+        {
+            get
+            {
+                if (OtherRequirementList.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (AbilityRequirement Requirement in OtherRequirementList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    Result += Requirement.CombinedRequirement;
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedSkillRequirements
+        {
+            get
+            {
+                if (SkillRequirementList.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (ItemSkillLink Requirement in SkillRequirementList)
+                {
+                    if (Result.Length > 0)
+                        Result += ", ";
+
+                    if (Requirement.SkillLevel.HasValue)
+                        Result += Requirement.Link.Name + " (" + Requirement.SkillLevel.Value + ")";
+                    else
+                        Result += Requirement.Link.Name;
+                }
+
+                return Result;
+            }
+        }
+
+        public string CombinedUseRequirements
+        {
+            get
+            {
+                if (UseRequirementList.Count == 0)
+                    return "None";
+
+                string Result = "";
+
+                foreach (ItemUseRequirement Requirement in UseRequirementList)
+                {
+                    if (Result.Length > 0)
+                        Result += "\n";
+
+                    Result = TextMaps.ItemUseRequirementTextMap[Requirement];
+                }
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -193,7 +322,9 @@ namespace PgJsonObjects
 
         private void ParseBestowQuest(string RawBestowQuest, ParseErrorInfo ErrorInfo)
         {
-            BestowQuest = RawBestowQuest;
+            this.RawBestowQuest = RawBestowQuest;
+            BestowQuest = null;
+            IsRawBestowQuestParsed = false;
         }
 
         private static void ParseFieldAllowPrefix(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -273,7 +404,13 @@ namespace PgJsonObjects
 
         private void ParseDroppedAppearance(string RawDroppedAppearance, ParseErrorInfo ErrorInfo)
         {
-            DroppedAppearance = RawDroppedAppearance;
+            int index = RawDroppedAppearance.IndexOf('(');
+            if (index > 0)
+                RawDroppedAppearance = RawDroppedAppearance.Substring(0, index);
+
+            ItemDroppedAppearance ParsedDroppedAppearance;
+            StringToEnumConversion<ItemDroppedAppearance>.TryParse(RawDroppedAppearance, out ParsedDroppedAppearance, ErrorInfo);
+            DroppedAppearance = ParsedDroppedAppearance;
         }
 
         private static void ParseFieldEffectDescs(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -484,7 +621,13 @@ namespace PgJsonObjects
                             ErrorInfo.AddDuplicateString("Item Keywords", Name);
                     }
                     else
+                    {
                         KeywordTable.Add(Key, Value);
+
+                        RecipeItemKey ParsedKey;
+                        if (StringToEnumConversion<RecipeItemKey>.TryParse(KeyString, out ParsedKey, null))
+                            ItemKeyList.Add(ParsedKey);
+                    }
                 }
                 else
                 {
@@ -505,7 +648,9 @@ namespace PgJsonObjects
 
         private void ParseMacGuffinQuestName(string RawMacGuffinQuestName, ParseErrorInfo ErrorInfo)
         {
-            MacGuffinQuestName = RawMacGuffinQuestName;
+            this.RawMacGuffinQuestName = RawMacGuffinQuestName;
+            MacGuffinQuestName = null;
+            IsRawMacGuffinQuestNameParsed = false;
         }
 
         private static void ParseFieldMaxCarryable(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -668,7 +813,25 @@ namespace PgJsonObjects
 
         private void ParseUseDelayAnimation(string RawUseDelayAnimation, ParseErrorInfo ErrorInfo)
         {
-            UseDelayAnimation = RawUseDelayAnimation;
+            ItemUseAnimation ParsedUseDelayAnimation;
+            StringToEnumConversion<ItemUseAnimation>.TryParse(RawUseDelayAnimation, out ParsedUseDelayAnimation, ErrorInfo);
+            UseDelayAnimation = ParsedUseDelayAnimation;
+        }
+
+        private static void ParseFieldUseAnimation(Item This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawUseAnimation;
+            if ((RawUseAnimation = Value as string) != null)
+                This.ParseUseAnimation(RawUseAnimation, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Item UseAnimation");
+        }
+
+        private void ParseUseAnimation(string RawUseAnimation, ParseErrorInfo ErrorInfo)
+        {
+            ItemUseAnimation ParsedUseAnimation;
+            StringToEnumConversion<ItemUseAnimation>.TryParse(RawUseAnimation, out ParsedUseAnimation, ErrorInfo);
+            UseAnimation = ParsedUseAnimation;
         }
 
         private static void ParseFieldStockDye(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -685,7 +848,7 @@ namespace PgJsonObjects
             string[] Split = RawStockDye.Split(';');
             if (Split.Length == 1)
             {
-                StockDye = new uint[0];
+                StockDye = new List<uint>();
                 return;
             }
 
@@ -728,7 +891,9 @@ namespace PgJsonObjects
                 return;
             }
 
-            StockDye = ParsedColors;
+            StockDye = new List<uint>();
+            foreach (uint ParsedColor in ParsedColors)
+                StockDye.Add(ParsedColor);
         }
 
         private static void ParseFieldUseRequirements(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -767,7 +932,7 @@ namespace PgJsonObjects
         private void ParseUseVerb(string RawUseVerb, ParseErrorInfo ErrorInfo)
         {
             ItemUseVerb ParsedUseVerb;
-            StringToEnumConversion<ItemUseVerb>.TryParse(RawUseVerb, UseVerbMap, out ParsedUseVerb, ErrorInfo);
+            StringToEnumConversion<ItemUseVerb>.TryParse(RawUseVerb, TextMaps.UseVerbMap, out ParsedUseVerb, ErrorInfo);
             UseVerb = ParsedUseVerb;
         }
 
@@ -799,22 +964,6 @@ namespace PgJsonObjects
             this.RawNumUses = RawNumUses;
         }
 
-        private static void ParseFieldUseAnimation(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawUseAnimation;
-            if ((RawUseAnimation = Value as string) != null)
-                This.ParseUseAnimation(RawUseAnimation, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item UseAnimation");
-        }
-
-        private void ParseUseAnimation(string RawUseAnimation, ParseErrorInfo ErrorInfo)
-        {
-            ItemUseAnimation ParsedUseAnimation;
-            StringToEnumConversion<ItemUseAnimation>.TryParse(RawUseAnimation, out ParsedUseAnimation, ErrorInfo);
-            UseAnimation = ParsedUseAnimation;
-        }
-
         private static void ParseFieldDestroyWhenUsedUp(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
             if (Value is bool)
@@ -834,13 +983,13 @@ namespace PgJsonObjects
 
             Generator.AddList("BestowRecipes", RawBestowRecipesList, RawBestowRecipesListIsEmpty);
             Generator.AddString("BestowAbility", RawBestowAbility);
-            Generator.AddString("BestowQuest", BestowQuest);
+            Generator.AddString("BestowQuest", RawBestowQuest);
             Generator.AddBoolean("AllowPrefix", RawAllowPrefix);
             Generator.AddBoolean("AllowSuffix", RawAllowSuffix);
             Generator.AddInteger("CraftPoints", RawCraftPoints);
             Generator.AddInteger("CraftingTargetLevel", RawCraftingTargetLevel);
             Generator.AddString("Description", Description);
-            Generator.AddString("DroppedAppearance", DroppedAppearance);
+            Generator.AddString("DroppedAppearance", DroppedAppearance.ToString());
 
             if (EffectDescriptionList.Count > 0)
             {
@@ -880,7 +1029,7 @@ namespace PgJsonObjects
                 Generator.CloseArray();
             }
 
-            Generator.AddString("MacGuffinQuestName", MacGuffinQuestName);
+            Generator.AddString("MacGuffinQuestName", RawMacGuffinQuestName);
             Generator.AddInteger("MaxCarryable", RawMaxCarryable);
             Generator.AddInteger("MaxOnVendor", RawMaxOnVendor);
             Generator.AddInteger("MaxStackSize", RawMaxStackSize);
@@ -916,16 +1065,16 @@ namespace PgJsonObjects
             }
 
             Generator.AddDouble("UseDelay", RawUseDelay);
-            Generator.AddString("UseDelayAnimation", UseDelayAnimation);
+            Generator.AddString("UseDelayAnimation", UseDelayAnimation.ToString());
 
             if (StockDye != null)
             {
-                if (StockDye.Length == 0)
+                if (StockDye.Count == 0)
                     Generator.AddString("StockDye", "");
                 else
                 {
                     string StockDyeString = "";
-                    for (int i = 0; i < StockDye.Length; i++)
+                    for (int i = 0; i < StockDye.Count; i++)
                     {
                         uint c = StockDye[i];
                         if (i == 2 && c == 0xFF00FFFF)
@@ -949,7 +1098,7 @@ namespace PgJsonObjects
             }
 
             if (UseVerb != ItemUseVerb.Internal_None)
-                Generator.AddString("UseVerb", StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, UseVerbMap));
+                Generator.AddString("UseVerb", StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, TextMaps.UseVerbMap));
 
             Generator.AddDouble("Value", RawValue);
 
@@ -1011,6 +1160,52 @@ namespace PgJsonObjects
             return null;
         }
 
+        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected)
+        {
+            if (IsRawItemParsed)
+                return ParsedItem;
+
+            IsRawItemParsed = true;
+
+            if (RawItemCode == null)
+                return null;
+
+            string FullKey = "item_" + RawItemCode.Value;
+
+            foreach (KeyValuePair<string, Item> Entry in ItemTable)
+                if (Entry.Key == FullKey)
+                {
+                    IsConnected = true;
+                    return Entry.Value;
+                }
+
+            ErrorInfo.AddMissingKey(FullKey);
+            return null;
+        }
+
+        public static List<Item> ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected)
+        {
+            if (IsRawItemParsed)
+                return ItemList;
+
+            IsRawItemParsed = true;
+
+            if (ItemKey == RecipeItemKey.Internal_None)
+                return ItemList;
+
+            ItemList = new List<Item>();
+            IsConnected = true;
+
+            foreach (KeyValuePair<string, Item> Entry in ItemTable)
+                if (Entry.Value.ItemKeyList.Contains(ItemKey))
+                    ItemList.Add(Entry.Value);
+
+            if (ItemList.Count == 0)
+                ErrorInfo.AddMissingKey(ItemKey.ToString());
+
+            return ItemList;
+        }
+
         public override string TextContent
         {
             get
@@ -1019,22 +1214,40 @@ namespace PgJsonObjects
 
                 if (RawIconId.HasValue)
                 {
-                    foreach (KeyValuePair<string, Recipe> Entry in BestowRecipeTable)
-                        Result += Entry.Value.TextContent + JsonGenerator.FieldSeparator;
-
-                    if (BestowAbility != null)
-                        Result += BestowAbility.TextContent + JsonGenerator.FieldSeparator;
-                    Result += BestowQuest + JsonGenerator.FieldSeparator;
-                    Result += Description + JsonGenerator.FieldSeparator;
-                    Result += DroppedAppearance + JsonGenerator.FieldSeparator;
-                    Result += EquipAppearance + JsonGenerator.FieldSeparator;
-                    Result += MacGuffinQuestName + JsonGenerator.FieldSeparator;
-                    Result += Name + JsonGenerator.FieldSeparator;
-
-                    foreach (ItemSkillLink Link in SkillRequirementList)
-                        Result += Link.SkillName + JsonGenerator.FieldSeparator;
-
-                    Result += UseDelayAnimation + JsonGenerator.FieldSeparator;
+                    AddWithFieldSeparator(ref Result, Name);
+                    AddWithFieldSeparator(ref Result, Description);
+                    AddWithFieldSeparator(ref Result, CombinedBestowedRecipes);
+                    AddWithFieldSeparator(ref Result, CombinedBestowedAbility);
+                    AddWithFieldSeparator(ref Result, CombinedBestowedQuest);
+                    if (RawAllowPrefix.HasValue)
+                        AddWithFieldSeparator(ref Result, "Allow Prefix");
+                    if (RawAllowSuffix.HasValue)
+                        AddWithFieldSeparator(ref Result, "Allow Suffix");
+                    if (DroppedAppearance != ItemDroppedAppearance.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemDroppedAppearanceTextMap[DroppedAppearance]);
+                    AddWithFieldSeparator(ref Result, CombinedEffectDescription);
+                    if (EquipSlot != ItemSlot.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemSlotTextMap[EquipSlot]);
+                    if (RawIsTemporary.HasValue)
+                        AddWithFieldSeparator(ref Result, "Is Temporary");
+                    if (RawIsCrafted.HasValue)
+                        AddWithFieldSeparator(ref Result, "Is Crafted");
+                    AddWithFieldSeparator(ref Result, CombinedKeywords);
+                    if (MacGuffinQuestName != null)
+                        AddWithFieldSeparator(ref Result, MacGuffinQuestName.Name);
+                    if (RequiredAppearance != Appearance.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.AppearanceTextMap[RequiredAppearance]);
+                    AddWithFieldSeparator(ref Result, CombinedRequirements);
+                    AddWithFieldSeparator(ref Result, CombinedSkillRequirements);
+                    if (UseDelayAnimation != ItemUseAnimation.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseDelayAnimation]);
+                    if (UseAnimation != ItemUseAnimation.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseAnimation]);
+                    AddWithFieldSeparator(ref Result, CombinedUseRequirements);
+                    if (UseVerb != ItemUseVerb.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseVerbTextMap[UseVerb]);
+                    if (RawDestroyWhenUsedUp.HasValue)
+                        AddWithFieldSeparator(ref Result, "Destroy When Used Up");
                 }
 
                 return Result;
@@ -1043,7 +1256,6 @@ namespace PgJsonObjects
 
         private List<string> RawBestowRecipesList;
         private bool RawBestowRecipesListIsEmpty;
-        private bool IsRawBestowAbilityParsed;
         #endregion
 
         #region Ancestor Interface
@@ -1057,6 +1269,7 @@ namespace PgJsonObjects
             EffectDescriptionList = new ObservableCollection<ItemEffect>();
             IsEffectDescriptionEmpty = false;
             KeywordTable = new Dictionary<ItemKeyword, float>();
+            ItemKeyList = new List<RecipeItemKey>();
             EmptyKeywordList = new List<ItemKeyword>();
             RepeatedKeywordList = new List<ItemKeyword>();
             SkillRequirementList = new List<ItemSkillLink>();
@@ -1071,13 +1284,14 @@ namespace PgJsonObjects
             StockDye = null;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
             IsConnected |= Recipe.ConnectTableByInternamName(ErrorInfo, RecipeTable, RawBestowRecipesList, BestowRecipeTable);
 
             BestowAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawBestowAbility, BestowAbility, ref IsRawBestowAbilityParsed, ref IsConnected);
+            BestowQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawBestowQuest, BestowQuest, ref IsRawBestowQuestParsed, ref IsConnected);
 
             foreach (ItemEffect Effect in EffectDescriptionList)
             {
@@ -1092,6 +1306,8 @@ namespace PgJsonObjects
                     }
                 }
             }
+
+            MacGuffinQuestName = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawMacGuffinQuestName, MacGuffinQuestName, ref IsRawMacGuffinQuestNameParsed, ref IsConnected);
 
             foreach (ItemSkillLink ItemSkill in SkillRequirementList)
                 if (!ItemSkill.IsParsed)

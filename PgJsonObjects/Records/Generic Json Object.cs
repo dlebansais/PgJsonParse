@@ -10,7 +10,7 @@ namespace PgJsonObjects
 
         protected abstract Dictionary<string, FieldValueHandler> FieldTable { get; }
         protected abstract string FieldTableName { get; }
-        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable);
+        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable);
 
         protected static Dictionary<string, bool> ParsedFields;
 
@@ -53,7 +53,7 @@ namespace PgJsonObjects
                     FieldTable[Field.Key](this as T, Field.Value, ErrorInfo);
                 }
                 else
-                    ErrorInfo.AddInvalidObjectFormat(FieldTableName + " Field: " + Field.Key);
+                    ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
             }
         }
 
@@ -96,9 +96,10 @@ namespace PgJsonObjects
             }
         }
 
-        protected virtual void AdddWithFieldSeparator(ref string Result, string s)
+        protected virtual void AddWithFieldSeparator(ref string Result, string s)
         {
-            Result += s + JsonGenerator.FieldSeparator;
+            if (s != null)
+                Result += s + JsonGenerator.FieldSeparator;
         }
         #endregion
 
@@ -108,13 +109,13 @@ namespace PgJsonObjects
         public string Key { get; private set; }
         public abstract string TextContent { get; }
 
-        public virtual bool Connect(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        public virtual bool Connect(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             CheckUnparsedFields(ErrorInfo);
 
             bool IsConnected;
 
-            IsConnected = ConnectFields(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+            IsConnected = ConnectFields(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             return IsConnected;
         }

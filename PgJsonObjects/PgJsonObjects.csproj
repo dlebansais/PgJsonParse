@@ -106,6 +106,7 @@
     <Compile Include="Records\Item\Animal Form.cs" />
     <Compile Include="Records\Item\Appearance.cs" />
     <Compile Include="Records\Item\Item Attribute Link.cs" />
+    <Compile Include="Records\Item\Item Dropped Appearance.cs" />
     <Compile Include="Records\Item\Item Effect.cs" />
     <Compile Include="Records\Item\Item Keyword.cs" />
     <Compile Include="Records\Item\Item Simple Effect.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Records\Power\Power.cs" />
     <Compile Include="Records\Quest\Favor.cs" />
     <Compile Include="Records\Quest\Map Area Name.cs" />
+    <Compile Include="Records\Quest\Quest Grouping Name.cs" />
     <Compile Include="Records\Quest\Quest Keyword.cs" />
     <Compile Include="Records\Quest\Quest Objective Type.cs" />
     <Compile Include="Records\Quest\Quest Objective.cs" />
@@ -151,12 +153,10 @@
     <Compile Include="Records\Recipe\Recipe Usage Animation.cs" />
     <Compile Include="Records\Recipe\Recipe.cs" />
     <Compile Include="Records\Recipe\Shamanic Slot Power.cs" />
-    <Compile Include="Records\Skill\Advancement Table Enum.cs" />
     <Compile Include="Records\Skill\Level Cap Interaction.cs" />
     <Compile Include="Records\Skill\Reward.cs" />
     <Compile Include="Records\Skill\Skill Category.cs" />
     <Compile Include="Records\Skill\Skill.cs" />
-    <Compile Include="Records\Skill\Xp Table Enum.cs" />
     <Compile Include="Records\Xp Table\Xp Table.cs" />
     <Compile Include="String To Enum Conversion.cs" />
     <Compile Include="Text Maps.cs" />

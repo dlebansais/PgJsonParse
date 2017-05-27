@@ -14,6 +14,7 @@ namespace PgJsonObjects
             UnparsedSpecialInfoList = new List<string>();
             IconList = new List<int>();
             UnparsedFieldList = new List<string>();
+            MissingFieldList = new List<string>();
         }
 
         private List<string> InvalidObjectFormatList;
@@ -24,6 +25,7 @@ namespace PgJsonObjects
         private List<string> UnparsedSpecialInfoList;
         public List<int> IconList { get; private set; }
         private List<string> UnparsedFieldList;
+        private List<string> MissingFieldList;
 
         public void AddInvalidObjectFormat(string ObjectFormatName)
         {
@@ -80,6 +82,12 @@ namespace PgJsonObjects
         {
             if (!UnparsedFieldList.Contains(Field))
                 UnparsedFieldList.Add(Field);
+        }
+
+        public void AddMissingField(string Field)
+        {
+            if (!MissingFieldList.Contains(Field))
+                MissingFieldList.Add(Field);
         }
 
         public void LookForIconId(string s)
@@ -216,6 +224,16 @@ namespace PgJsonObjects
                     UnparsedField += Field + "\r\n";
 
                 Result += "Unparsed field info:\r\n" + UnparsedField + "\r\n";
+            }
+
+            if (MissingFieldList.Count > 0)
+            {
+                string MissingField = "";
+
+                foreach (string Field in MissingFieldList)
+                    MissingField += Field + "\r\n";
+
+                Result += "Missing field info:\r\n" + MissingField + "\r\n";
             }
 
             return Result;

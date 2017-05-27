@@ -2,6 +2,7 @@
 {
     public enum ItemKeyword
     {
+        Internal_None,
         BottledItem,
         EmptyBottle,
         Ingredient,

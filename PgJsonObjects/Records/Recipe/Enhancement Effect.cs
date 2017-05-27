@@ -2,6 +2,7 @@
 {
     public enum EnhancementEffect
     {
+        Internal_None,
         Pockets,
         DarknessMod,
         FireMod,

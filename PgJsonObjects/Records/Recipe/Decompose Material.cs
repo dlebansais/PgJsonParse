@@ -2,6 +2,7 @@
 {
     public enum DecomposeMaterial
     {
+        Internal_None,
         MainHandBead,
         OffHandBead,
         GloveBead,

@@ -2,6 +2,7 @@
 {
     public enum EffectKeyword
     {
+        Internal_None,
         Hyphen,
         Event,
         Debuff,

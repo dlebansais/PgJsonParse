@@ -18,6 +18,17 @@ namespace PgJsonObjects
         private bool IsRawItemParsed;
         public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 0; } }
         private int? RawStackSize;
+
+        public string CombinedName
+        {
+            get
+            {
+                if (StackSize > 1)
+                    return QuestItem.Name + " x" + StackSize;
+                else
+                    return QuestItem.Name;
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -80,7 +91,7 @@ namespace PgJsonObjects
             IsRawItemParsed = false;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 

@@ -2878,78 +2878,60 @@ namespace PgJsonObjects
 
                 if (RawIconId.HasValue)
                 {
+                    AddWithFieldSeparator(ref Result, Name);
                     if (Animation != AbilityAnimation.Internal_None)
-                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityAnimationTextMap[Animation]);
-
-                    if (CanBeOnSidebar)
-                        AdddWithFieldSeparator(ref Result, "Can Be On Sidebar");
-
-                    if (CanSuppressMonsterShout)
-                        AdddWithFieldSeparator(ref Result, "Suppress Monster Shout");
-
-                    if (CanTargetUntargetableEnemies)
-                        AdddWithFieldSeparator(ref Result, "Can Target Untargetable");
-
-                    foreach (RecipeCost Item in RawCostList)
-                        AdddWithFieldSeparator(ref Result, Item.TextContent);
-
-                    foreach (PowerSkill RawCompatibleSkill in RawCompatibleSkillList)
-                        if (RawCompatibleSkill != PowerSkill.Internal_None)
-                            AdddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RawCompatibleSkill]);
-
-                    if (RawConsumedItemKeyword != null && RawConsumedItemKeyword.Length > 0)
-                        if (ConsumedItemKeyword != ConsumedItems.Internal_None)
-                            AdddWithFieldSeparator(ref Result, TextMaps.ConsumedItemsTextMap[ConsumedItemKeyword]);
-                        else if (ConsumedItem != null)
-                            AdddWithFieldSeparator(ref Result, ConsumedItem.Name);
-
-                    AdddWithFieldSeparator(ref Result, DelayLoopMessage);
-                    AdddWithFieldSeparator(ref Result, Description);
-
+                        AddWithFieldSeparator(ref Result, TextMaps.AbilityAnimationTextMap[Animation]);
+                    if (RawCanBeOnSidebar.HasValue)
+                        AddWithFieldSeparator(ref Result, "Can Be On Sidebar");
+                    if (RawCanSuppressMonsterShout.HasValue)
+                        AddWithFieldSeparator(ref Result, "Suppress Monster Shout");
+                    if (RawCanTargetUntargetableEnemies.HasValue)
+                        AddWithFieldSeparator(ref Result, "Can Target Untargetable");
+                    AddWithFieldSeparator(ref Result, CombinedCausesOfDeath);
+                    AddWithFieldSeparator(ref Result, CombinedCost);
+                    if (CompatibleSkill != PowerSkill.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[CompatibleSkill]);
+                    AddWithFieldSeparator(ref Result, CombinedConsumedItem);
+                    if (DamageType != DamageType.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.DamageTypeTextMap[DamageType]);
+                    AddWithFieldSeparator(ref Result, CombinedDelayLoop);
+                    AddWithFieldSeparator(ref Result, Description);
                     if (EffectKeywordsIndicatingEnabled != AbilityIndicatingEnabled.Internal_None)
-                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityIndicatingEnabledTextMap[EffectKeywordsIndicatingEnabled]);
-
-                    AdddWithFieldSeparator(ref Result, ItemKeywordReqErrorMessage);
-
-                    foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
-                        if (Keyword != AbilityItemKeyword.Internal_None)
-                            AdddWithFieldSeparator(ref Result, TextMaps.AbilityItemKeywordTextMap[Keyword]);
-
-                    foreach (AbilityKeyword Keyword in KeywordList)
-                        if (Keyword != AbilityKeyword.Internal_None)
-                            AdddWithFieldSeparator(ref Result, TextMaps.AbilityKeywordTextMap[Keyword]);
-
-                    AdddWithFieldSeparator(ref Result, Name);
-
-                    if (PetTypeTagReq != AbilityPetType.Internal_None)
-                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityPetTypeTextMap[PetTypeTagReq]);
-                    if (Prerequisite != null)
-                        AdddWithFieldSeparator(ref Result, Prerequisite.Name);
-                    if (Projectile != AbilityProjectile.Internal_None && Projectile != AbilityProjectile.Internal_Empty)
-                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityProjectileTextMap[Projectile]);
-                    if (PvE != null)
-                        AdddWithFieldSeparator(ref Result, PvE.TextContent);
-                    if (PvP != null)
-                        AdddWithFieldSeparator(ref Result, PvP.TextContent);
-                    if (SharesResetTimerWith != null)
-                        AdddWithFieldSeparator(ref Result, SharesResetTimerWith.Name);
-                    if (Skill != PowerSkill.Internal_None)
-                        AdddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
-
-                    foreach (AbilityRequirement Item in SpecialCasterRequirementList)
-                        AdddWithFieldSeparator(ref Result, Item.TextContent);
-
-                    AdddWithFieldSeparator(ref Result, SpecialInfo);
-                    if (Target != AbilityTarget.Internal_None)
-                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityTargetTextMap[Target]);
-                    if (TargetEffectKeywordReq != TargetEffectKeyword.Internal_None)
-                        AdddWithFieldSeparator(ref Result, TextMaps.TargetEffectKeywordTextMap[TargetEffectKeywordReq]);
-                    if (TargetParticle != AbilityTargetParticle.Internal_None)
-                        AdddWithFieldSeparator(ref Result, TextMaps.AbilityTargetParticleTextMap[TargetParticle]);
-                    if (UpgradeOf != null)
-                        AdddWithFieldSeparator(ref Result, UpgradeOf.Name);
+                        AddWithFieldSeparator(ref Result, TextMaps.AbilityIndicatingEnabledTextMap[EffectKeywordsIndicatingEnabled]);
+                    if (RawInternalAbility.HasValue)
+                        AddWithFieldSeparator(ref Result, "Is Internal");
+                    if (RawIsHarmless.HasValue)
+                        AddWithFieldSeparator(ref Result, "Is Harmless");
+                    AddWithFieldSeparator(ref Result, ItemKeywordReqErrorMessage);
+                    AddWithFieldSeparator(ref Result, CombinedRequirements);
                     if (ExtraKeywordsForTooltips != TooltipsExtraKeywords.Internal_None)
-                        AdddWithFieldSeparator(ref Result, TextMaps.TooltipsExtraKeywordsTextMap[ExtraKeywordsForTooltips]);
+                        AddWithFieldSeparator(ref Result, TextMaps.TooltipsExtraKeywordsTextMap[ExtraKeywordsForTooltips]);
+                    AddWithFieldSeparator(ref Result, CombinedKeywords);
+                    AddWithFieldSeparator(ref Result, Name);
+                    if (PetTypeTagReq != AbilityPetType.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.AbilityPetTypeTextMap[PetTypeTagReq]);
+                    AddWithFieldSeparator(ref Result, CombinedPrerequisite);
+                    if (Projectile != AbilityProjectile.Internal_None && Projectile != AbilityProjectile.Internal_Empty)
+                        AddWithFieldSeparator(ref Result, TextMaps.AbilityProjectileTextMap[Projectile]);
+                    //TODO PvE, PvP
+                    AddWithFieldSeparator(ref Result, CombinedSharesResetTimerWith);
+                    if (Skill != PowerSkill.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
+                    AddWithFieldSeparator(ref Result, SpecialInfo);
+                    if (Target != AbilityTarget.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.AbilityTargetTextMap[Target]);
+                    if (TargetEffectKeywordReq != TargetEffectKeyword.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.TargetEffectKeywordTextMap[TargetEffectKeywordReq]);
+                    if (TargetParticle != AbilityTargetParticle.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.AbilityTargetParticleTextMap[TargetParticle]);
+                    if (UpgradeOf != null)
+                        AddWithFieldSeparator(ref Result, UpgradeOf.Name);
+                    if (RawWorksInCombat.HasValue)
+                        AddWithFieldSeparator(ref Result, "Works In Combat");
+                    if (RawWorksUnderwater.HasValue)
+                        AddWithFieldSeparator(ref Result, "Works Underwater");
+                    if (RawWorksWhileFalling.HasValue)
+                        AddWithFieldSeparator(ref Result, "Works While Falling");
                 }
 
                 return Result;
@@ -3000,7 +2982,7 @@ namespace PgJsonObjects
             AbilityAdditionalResultList = new List<AbilityAdditionalResult>();
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
@@ -3011,13 +2993,13 @@ namespace PgJsonObjects
             Prerequisite = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawPrerequisite, Prerequisite, ref IsRawPrerequisiteParsed, ref IsConnected);
 
             if (PvE != null)
-                IsConnected |= PvE.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                IsConnected |= PvE.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             if (PvP != null)
-                IsConnected |= PvP.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                IsConnected |= PvP.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (AbilityRequirement Item in SpecialCasterRequirementList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable);
+                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             SharesResetTimerWith = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsRawSharesResetTimerWithParsed, ref IsConnected);
             UpgradeOf = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawUpgradeOf, UpgradeOf, ref IsRawUpgradeOfParsed, ref IsConnected);
