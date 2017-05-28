@@ -95,18 +95,25 @@ namespace PgJsonObjects
                         return "Any magical item";
 
                     default:
-                        Result = "";
-
-                        foreach (Item Item in MatchingKeyItemList)
+                        if (MatchingKeyItemList.Count >= 10)
                         {
-                            if (Result.Length > 0)
-                                Result += ", ";
-
-                            Result += Item.Name;
+                            return "Any " + TextMaps.RecipeItemKeyTextMap[ItemKey];
                         }
+                        else
+                        {
+                            Result = "";
 
-                        if (Result.Length > 0)
-                            Result = "One of: " + Result;
+                            foreach (Item Item in MatchingKeyItemList)
+                            {
+                                if (Result.Length > 0)
+                                    Result += ", ";
+
+                                Result += Item.Name;
+                            }
+
+                            if (Result.Length > 0)
+                                Result = "One of: " + Result;
+                        }
 
                         return Result;
                 }
