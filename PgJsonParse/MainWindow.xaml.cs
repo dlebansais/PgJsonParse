@@ -1139,8 +1139,39 @@ namespace PgJsonParse
         }
 
         public ObservableCollection<PowerSkill> CombatSkillList { get; private set; }
-        public int MaxLevelFirstSkill { get; set; }
-        public int MaxLevelSecondSkill { get; set; }
+
+        public int MaxLevelFirstSkill
+        {
+            get { return _MaxLevelFirstSkill; }
+            set
+            {
+                if (_MaxLevelFirstSkill != value)
+                {
+                    _MaxLevelFirstSkill = value;
+                    NotifyThisPropertyChanged();
+
+                    RefreshBuildPlaner();
+                }
+            }
+        }
+        private int _MaxLevelFirstSkill;
+
+        public int MaxLevelSecondSkill
+        {
+            get { return _MaxLevelSecondSkill; }
+            set
+            {
+                if (_MaxLevelSecondSkill != value)
+                {
+                    _MaxLevelSecondSkill = value;
+                    NotifyThisPropertyChanged();
+
+                    RefreshBuildPlaner();
+                }
+            }
+        }
+        private int _MaxLevelSecondSkill;
+
         public int SelectedFirstSkill { get; set; }
         public int SelectedSecondSkill { get; set; }
         public SlotPlaner HeadSlotPlaner { get; private set; }
@@ -1242,6 +1273,9 @@ namespace PgJsonParse
 
         private void RefreshBuildPlaner()
         {
+            if (SlotPlanerList == null)
+                return;
+
             PowerSkill SelectAsFirst, SelectAsSecond;
 
             if (SelectedFirstSkill >= 0 && SelectedFirstSkill < CombatSkillList.Count)
@@ -1437,6 +1471,24 @@ namespace PgJsonParse
 
                 if (FieldName == "FirstSkill")
                 {
+                    int MaxLevelIndexStart = FieldValue.IndexOf(" (");
+                    if (MaxLevelIndexStart > 0)
+                    {
+                        int MaxLevelIndexEnd = FieldValue.IndexOf(")", MaxLevelIndexStart);
+                        if (MaxLevelIndexEnd > MaxLevelIndexStart + 2)
+                        {
+                            string MaxLevelValueString = FieldValue.Substring(MaxLevelIndexStart + 2, MaxLevelIndexEnd - MaxLevelIndexStart - 2);
+
+                            int MaxLevelValue;
+                            if (int.TryParse(MaxLevelValueString, out MaxLevelValue))
+                            {
+                                MaxLevelFirstSkill = MaxLevelValue;
+                            }
+                        }
+
+                        FieldValue = FieldValue.Substring(0, MaxLevelIndexStart);
+                    }
+
                     PowerSkill ConvertedPowerSkill;
                     if (StringToEnumConversion<PowerSkill>.TryParse(FieldValue, out ConvertedPowerSkill, null))
                     {
@@ -1452,6 +1504,24 @@ namespace PgJsonParse
 
                 else if (FieldName == "SecondSkill")
                 {
+                    int MaxLevelIndexStart = FieldValue.IndexOf(" (");
+                    if (MaxLevelIndexStart > 0)
+                    {
+                        int MaxLevelIndexEnd = FieldValue.IndexOf(")", MaxLevelIndexStart);
+                        if (MaxLevelIndexEnd > MaxLevelIndexStart + 2)
+                        {
+                            string MaxLevelValueString = FieldValue.Substring(MaxLevelIndexStart + 2, MaxLevelIndexEnd - MaxLevelIndexStart - 2);
+
+                            int MaxLevelValue;
+                            if (int.TryParse(MaxLevelValueString, out MaxLevelValue))
+                            {
+                                MaxLevelSecondSkill = MaxLevelValue;
+                            }
+                        }
+
+                        FieldValue = FieldValue.Substring(0, MaxLevelIndexStart);
+                    }
+
                     PowerSkill ConvertedPowerSkill;
                     if (StringToEnumConversion<PowerSkill>.TryParse(FieldValue, out ConvertedPowerSkill, null))
                     {
@@ -1550,13 +1620,13 @@ namespace PgJsonParse
             if (SelectedFirstSkill >= 0)
             {
                 string FirstSkillName = CombatSkillList[SelectedFirstSkill].ToString();
-                sw.WriteLine("FirstSkill" + "=" + FirstSkillName);
+                sw.WriteLine("FirstSkill" + "=" + FirstSkillName + " (" + MaxLevelFirstSkill + ")");
             }
 
             if (SelectedSecondSkill >= 0)
             {
                 string SecondSkillName = CombatSkillList[SelectedSecondSkill].ToString();
-                sw.WriteLine("SecondSkill" + "=" + SecondSkillName);
+                sw.WriteLine("SecondSkill" + "=" + SecondSkillName + " (" + MaxLevelSecondSkill + ")");
             }
 
             if (WeightProfileIndex >= 0)

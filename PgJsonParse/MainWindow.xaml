@@ -92,7 +92,7 @@
         <CommandBinding Command="{StaticResource OpenProfileFolderCommand}" Executed="OnOpenProfileFolder"/>
     </Window.CommandBindings>
     <Grid>
-        <StackPanel Visibility="{Binding IsAtStartup, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Visibility="{Binding IsAtStartup, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="350">
             <Border BorderBrush="Green" BorderThickness="2">
                 <StackPanel Margin="20,20,20,20">
                     <RadioButton IsChecked="{Binding LocateLastestVersion}" Checked="OnLocateLatestVersion" Content="Locate and download the latest version of the game"/>
@@ -117,7 +117,7 @@
             </Border>
             <Button Command="{StaticResource StartApplicationCommand}" HorizontalAlignment="Center" Width="120" Margin="0,40,0,0">Start</Button>
         </StackPanel>
-        <StackPanel Visibility="{Binding HasDownloadStarted, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Visibility="{Binding HasDownloadStarted, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="350">
             <Border BorderBrush="Orange" BorderThickness="2">
                 <StackPanel Margin="20,20,20,20">
                     <Grid>
