@@ -19,5 +19,6 @@
         GazlukNecromancerArmor,
         GazlukCabalistArmor,
         AnyKnifeDamage,
+        RemoveLongEar,
     }
 }

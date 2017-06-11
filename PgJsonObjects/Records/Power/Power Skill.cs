@@ -122,6 +122,7 @@
         Anatomy_Fey,
         Anatomy_Dwarves,
         IocaineResistance,
+        Rabbit,
     }
 }
 

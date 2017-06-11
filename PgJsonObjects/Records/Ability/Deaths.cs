@@ -126,5 +126,7 @@
         SonicDamage,
         BadMusic,
         LoudMusic,
+        RabbitScratch,
+        RabbitKick
     }
 }

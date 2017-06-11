@@ -56,6 +56,8 @@ namespace PgJsonObjects
         public List<string> CombinedRewardList { get; private set; }
         public string Name { get; private set; }
         public PowerSkill ParentSkill { get; private set; }
+        public Skill ConnectedParentSkill { get; private set; }
+        private bool IsParentSkillParsed;
         public bool EmptyParentList { get; private set; }
         public bool SkipBonusLevelsIfSkillUnlearned { get { return RawSkipBonusLevelsIfSkillUnlearned.HasValue && RawSkipBonusLevelsIfSkillUnlearned.Value; } }
         public bool? RawSkipBonusLevelsIfSkillUnlearned { get; private set; }
@@ -81,6 +83,17 @@ namespace PgJsonObjects
                 }
 
                 return Result;
+            }
+        }
+
+        public string CombinedParentSkill
+        {
+            get
+            {
+                if (ConnectedParentSkill == null)
+                    return TextMaps.PowerSkillTextMap[ParentSkill];
+                else
+                    return ConnectedParentSkill.Name;
             }
         }
 
@@ -615,7 +628,11 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            ErrorInfo.AddMissingKey(RawPowerSkill.ToString());
+            if (RawPowerSkill != PowerSkill.Unknown)
+                ErrorInfo.AddMissingKey(RawPowerSkill.ToString());
+            else
+                return null;
+
             return null;
         }
 
@@ -725,9 +742,15 @@ namespace PgJsonObjects
             foreach (Reward Item in RewardList)
                 IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
+            if (ParentSkill != PowerSkill.Internal_None && ParentSkill != PowerSkill.AnySkill && ParentSkill != PowerSkill.Unknown)
+                ConnectedParentSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, ParentSkill, ConnectedParentSkill, ref IsParentSkillParsed, ref IsConnected);
+
             if (CombinedRewardList == null)
             {
                 CombinedRewardList = new List<string>();
+
+                if (Name.Contains("Sushi"))
+                    CombinedRewardList = new List<string>();
 
                 foreach (LevelCapInteraction Item in InteractionFlagLevelCapList)
                     if (Item.Link != null && Item.OtherLevel > 0)

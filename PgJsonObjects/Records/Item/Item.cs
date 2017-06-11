@@ -114,6 +114,8 @@ namespace PgJsonObjects
 
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
 
+        public bool HasBestowedRecipes { get { return BestowRecipeTable.Count > 0; } }
+
         public string CombinedBestowedRecipes
         {
             get
@@ -213,6 +215,17 @@ namespace PgJsonObjects
             }
         }
 
+        public string CombinedMacGuffinQuestName
+        {
+            get
+            {
+                if (MacGuffinQuestName == null)
+                    return "None";
+
+                return MacGuffinQuestName.Name;
+            }
+        }
+
         public string CombinedRequirements
         {
             get
@@ -233,6 +246,8 @@ namespace PgJsonObjects
                 return Result;
             }
         }
+
+        public bool HasSkillRequirements {  get { return SkillRequirementList.Count > 0; } }
 
         public string CombinedSkillRequirements
         {
@@ -590,7 +605,7 @@ namespace PgJsonObjects
                         KeyString = Pairs[0].Trim();
                         ValueString = Pairs[1].Trim();
 
-                        if (!Tools.TryParseFloat(ValueString, out Value, out ValueFormat) || ValueFormat != FloatFormat.Standard)
+                        if (!Tools.TryParseFloat(ValueString, out Value, out ValueFormat))
                         {
                             ErrorInfo.AddInvalidString("Item Keywords", KeywordString);
                             continue;
@@ -618,7 +633,7 @@ namespace PgJsonObjects
                             RepeatedKeywordList.Add(Key);
 
                         else
-                            ErrorInfo.AddDuplicateString("Item Keywords", Name);
+                            ErrorInfo.AddDuplicateString("Item Keywords", Key.ToString());
                     }
                     else
                     {

@@ -34,6 +34,7 @@
         EvasionVsAll,
         JumpControl,
         ConsumeGrass,
+        ConsumeCarrot,
         ObtainGrass,
         ObtainMilk,
         HealFromAttack,

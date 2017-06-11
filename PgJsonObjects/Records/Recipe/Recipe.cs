@@ -48,10 +48,14 @@ namespace PgJsonObjects
         public List<RecipeItem> ResultItemList { get; private set; }
         private bool EmptyResultItemList;
         public PowerSkill Skill { get; private set; }
+        public Skill ConnectedSkill { get; private set; }
+        private bool IsSkillParsed;
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; private set; }
         public List<RecipeResultEffect> ResultEffectList { get; private set; }
         public PowerSkill SortSkill { get; private set; }
+        public Skill ConnectedSortSkill { get; private set; }
+        private bool IsSortSkillParsed;
         public List<RecipeKeyword> KeywordList { get; private set; }
         public RecipeAction ActionLabel { get; private set; }
         public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
@@ -67,12 +71,25 @@ namespace PgJsonObjects
         public int? RawResetTimeInSeconds { get; private set; }
         public uint? DyeColor { get; private set; }
         public PowerSkill RewardSkill { get; private set; }
+        public Skill ConnectedRewardSkill { get; private set; }
+        private bool IsRewardSkillParsed;
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get; private set; }
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
         public int? RawRewardSkillXpFirstTime { get; private set; }
 
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
+
+        public string CombinedSkill
+        {
+            get
+            {
+                if (ConnectedSkill == null)
+                    return TextMaps.PowerSkillTextMap[Skill];
+                else
+                    return ConnectedSkill.Name;
+            }
+        }
 
         public string CombinedKeywords
         {
@@ -110,6 +127,28 @@ namespace PgJsonObjects
                 }
 
                 return Result;
+            }
+        }
+
+        public string CombinedSortSkill
+        {
+            get
+            {
+                if (ConnectedSortSkill == null)
+                    return TextMaps.PowerSkillTextMap[SortSkill];
+                else
+                    return ConnectedSortSkill.Name;
+            }
+        }
+
+        public string CombinedRewardSkill
+        {
+            get
+            {
+                if (ConnectedRewardSkill == null)
+                    return TextMaps.PowerSkillTextMap[RewardSkill];
+                else
+                    return ConnectedRewardSkill.Name;
             }
         }
         #endregion
@@ -1139,21 +1178,30 @@ namespace PgJsonObjects
 
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
-            bool Connected = false;
+            bool IsConnected = false;
 
             foreach (RecipeItem Item in IngredientList)
-                Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (RecipeItem Item in ResultItemList)
-                Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
+                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected);
+
+            if (SortSkill != PowerSkill.Internal_None && SortSkill != PowerSkill.AnySkill && SortSkill != PowerSkill.Unknown)
+                ConnectedSortSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, SortSkill, ConnectedSortSkill, ref IsSortSkillParsed, ref IsConnected);
+
+            if (RewardSkill != PowerSkill.Internal_None && RewardSkill != PowerSkill.AnySkill && RewardSkill != PowerSkill.Unknown)
+                ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsRewardSkillParsed, ref IsConnected);
 
             foreach (AbilityRequirement Item in OtherRequirementList)
-                Connected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             if (Cost != null)
                 Cost.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
-            return Connected;
+            return IsConnected;
         }
         #endregion
     }

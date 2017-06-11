@@ -9,5 +9,6 @@
         Deer,
         Werewolf,
         GiantBat,
+        Rabbit,
     }
 }

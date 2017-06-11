@@ -46,7 +46,7 @@ namespace PgJsonObjects
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
         private double? RawPercentChance;
         public RecipeItemKey ItemKey { get; private set; }
-        private List<Item> MatchingKeyItemList;
+        public List<Item> MatchingKeyItemList { get; private set; }
         private bool IsItemKeyParsed;
         public string Desc { get; private set; }
         public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
@@ -55,6 +55,38 @@ namespace PgJsonObjects
         private double? RawDurabilityConsumed;
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
         private bool? RawAttuneToCrafter;
+
+        public bool IsLinkedDescription
+        {
+            get
+            {
+                if (IsSingleLinkLinkDescription)
+                    return true;
+
+                switch (ItemKey)
+                {
+                    case RecipeItemKey.EquipmentSlot_MainHand:
+                    case RecipeItemKey.EquipmentSlot_OffHand:
+                    case RecipeItemKey.EquipmentSlot_Hands:
+                    case RecipeItemKey.EquipmentSlot_Chest:
+                    case RecipeItemKey.EquipmentSlot_Legs:
+                    case RecipeItemKey.EquipmentSlot_Head:
+                    case RecipeItemKey.EquipmentSlot_Feet:
+                    case RecipeItemKey.EquipmentSlot_Ring:
+                    case RecipeItemKey.EquipmentSlot_Necklace:
+                    case RecipeItemKey.Rarity_Uncommon:
+                    case RecipeItemKey.Rarity_Rare:
+                    case RecipeItemKey.MinRarity_Exceptional:
+                    case RecipeItemKey.MinRarity_Uncommon:
+                        return false;
+
+                    default:
+                        return (MatchingKeyItemList.Count < 10);
+                }
+            }
+        }
+
+        public bool IsSingleLinkLinkDescription { get { return Item != null; } }
 
         public string CombinedDescription
         {

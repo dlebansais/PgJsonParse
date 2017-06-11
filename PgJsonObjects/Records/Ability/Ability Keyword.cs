@@ -429,5 +429,15 @@
         Disharmony,
         SongOfDiscordActivation,
         FireBolts,
+        Rabbit,
+        RabbitScratch,
+        Thump,
+        BunFuKick,
+        RabbitsFoot,
+        HareDash,
+        PlayDead,
+        LongEar,
+        CarrotPower,
+        SnowHareMode,
     }
 }

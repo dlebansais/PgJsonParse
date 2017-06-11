@@ -36,5 +36,7 @@
         BardLute,
         BardInstrument,
         BardHorn,
+        IceStaff,
+        form_Rabbit,
     }
 }

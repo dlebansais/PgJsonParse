@@ -13,6 +13,7 @@ namespace PgJsonObjects
             { AbilityItemKeyword.form_Cow, "form:Cow" },
             { AbilityItemKeyword.form_Spider, "form:Spider" },
             { AbilityItemKeyword.form_GiantBat, "form:GiantBat" },
+            { AbilityItemKeyword.form_Rabbit, "form:Rabbit" },
         };
 
         public static readonly Dictionary<ItemUseVerb, string> UseVerbMap = new Dictionary<ItemUseVerb, string>()
@@ -252,6 +253,7 @@ namespace PgJsonObjects
             { AbilityAnimation.Attack_Bard_BlastOfDespair, "Blast Of Despair" },
             { AbilityAnimation.Attack_Bard_ThunderousNote, "Thunderous Note" },
             { AbilityAnimation.Attack_Bard_Disharmony, "Disharmony" },
+            { AbilityAnimation.PlayingDead, "Playing Dead" },
         };
 
         public static readonly Dictionary<Deaths, string> CauseOfDeathTextMap = new Dictionary<Deaths, string>()
@@ -380,6 +382,8 @@ namespace PgJsonObjects
             { Deaths.SonicDamage, "Sonic Damage" },
             { Deaths.BadMusic, "Bad Music" },
             { Deaths.LoudMusic, "Loud Music" },
+            { Deaths.RabbitScratch, "Rabbit Scratch" },
+            { Deaths.RabbitKick, "Rabbit Kick" },
         };
 
         public static readonly Dictionary<PowerSkill, string> PowerSkillTextMap = new Dictionary<PowerSkill, string>()
@@ -504,6 +508,7 @@ namespace PgJsonObjects
             { PowerSkill.Anatomy_Fey, "Fey Anatomy" },
             { PowerSkill.Anatomy_Dwarves, "Dwarves Anatomy" },
             { PowerSkill.IocaineResistance, "Iocaine Resistance" },
+            { PowerSkill.Rabbit, "Rabbit" },
         };
 
         public static readonly Dictionary<ConsumedItems, string> ConsumedItemsTextMap = new Dictionary<ConsumedItems, string>()
@@ -512,6 +517,7 @@ namespace PgJsonObjects
             { ConsumedItems.Cheese, "Any cheese" },
             { ConsumedItems.HumanoidSkull, "Any humanoid skull" },
             { ConsumedItems.ImpressiveHumanoidSkull, "Any impressive humanoid skull" },
+            { ConsumedItems.RabbitFuel, "Any Rabbit Fuel" },
         };
 
         public static readonly Dictionary<DamageType, string> DamageTypeTextMap = new Dictionary<DamageType, string>()
@@ -591,6 +597,8 @@ namespace PgJsonObjects
             { AbilityItemKeyword.BardLute, "Wield a bard lute" },
             { AbilityItemKeyword.BardInstrument, "Wield a bard instrument" },
             { AbilityItemKeyword.BardHorn, "Wield a bard horn" },
+            { AbilityItemKeyword.IceStaff, "Wield an ice staff" },
+            { AbilityItemKeyword.form_Rabbit, "Rabbit only" },
         };
 
         public static readonly Dictionary<AbilityKeyword, string> AbilityKeywordTextMap = new Dictionary<AbilityKeyword, string>()
@@ -1022,6 +1030,16 @@ namespace PgJsonObjects
             { AbilityKeyword.Disharmony, "Disharmony" },
             { AbilityKeyword.SongOfDiscordActivation, "Song Of Discord Activation" },
             { AbilityKeyword.FireBolts, "Fire Bolts" },
+            { AbilityKeyword.Rabbit, "Rabbit" },
+            { AbilityKeyword.RabbitScratch, "Rabbit Scratch" },
+            { AbilityKeyword.Thump, "Thump" },
+            { AbilityKeyword.BunFuKick, "Bun Fu Kick" },
+            { AbilityKeyword.RabbitsFoot, "Rabbit's Foot" },
+            { AbilityKeyword.HareDash, "Hare Dash" },
+            { AbilityKeyword.PlayDead, "Play Dead" },
+            { AbilityKeyword.LongEar, "Long Ear" },
+            { AbilityKeyword.CarrotPower, "Carrot Power" },
+            { AbilityKeyword.SnowHareMode, "Snow Hare Mode" },
         };
 
         public static readonly Dictionary<AbilityPetType, string> AbilityPetTypeTextMap = new Dictionary<AbilityPetType, string>()
@@ -1090,6 +1108,7 @@ namespace PgJsonObjects
             { RecipeKeyword.Lint_NoResult, "No Result" },
             { RecipeKeyword.StorageCrateDruid, "Druid Storage Crate" },
             { RecipeKeyword.ShamanicInfusion, "Shamanic Infusion" },
+            { RecipeKeyword.ClownfishFillet, "Clownfish Fillet" },
         };
 
         public static readonly Dictionary<Appearance, string> AppearanceTextMap = new Dictionary<Appearance, string>()
@@ -1101,6 +1120,7 @@ namespace PgJsonObjects
             { Appearance.Deer, "Deer" },
             { Appearance.Werewolf, "Werewolf" },
             { Appearance.GiantBat, "Giant Bat" },
+            { Appearance.Rabbit, "Rabbit" },
         };
 
         public static readonly Dictionary<AbilityTarget, string> AbilityTargetTextMap = new Dictionary<AbilityTarget, string>()
@@ -1250,6 +1270,7 @@ namespace PgJsonObjects
             { EffectParticle.Shield_Healing, "Healing Shield" },
             { EffectParticle.PurpleGlitterBuff, "Purple Glitter Buff" },
             { EffectParticle.DrinkAlcohol, "Drink Alcohol" },
+            { EffectParticle.DeathPlumeFixedPosition, "Death Plume Fixed Position" },
         };
 
         public static readonly Dictionary<EffectStackingType, string> EffectStackingTypeTextMap = new Dictionary<EffectStackingType, string>()
@@ -1495,6 +1516,10 @@ namespace PgJsonObjects
             { EffectStackingType.DisharmonyDebuffB, "Disharmony Debuff (B)" },
             { EffectStackingType.DrugWithdrawal_Alcohol, "Alcohol Drug Withdrawal" },
             { EffectStackingType.Soberize, "Soberize" },
+            { EffectStackingType.RabbitsFoot, "Rabbit's Foot" },
+            { EffectStackingType.InnateColdProtection,"Innate Cold Protection" },
+            { EffectStackingType.RabbitsFootBurstEvade,"Rabbit's Foot Burst Evade" },
+            { EffectStackingType.RabbitsFootXP,"Rabbit's Foot XP" },
         };
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTextMap = new Dictionary<EffectKeyword, string>()
@@ -1695,6 +1720,9 @@ namespace PgJsonObjects
             { EffectKeyword.DrugWithdrawal_Alcohol, "Alcohol Drug Withdrawal" },
             { EffectKeyword.AlcoholPoisoning, "Alcohol Poisoning" },
             { EffectKeyword.AlcoholInBody, "Alcohol In Body" },
+            { EffectKeyword.Event_SummerExperience, "Summer Experience Event" },
+            { EffectKeyword.Event_RabbitInvasion,"Rabbit Invasion Event" },
+            { EffectKeyword.LongEar,"Long Ear" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -2581,6 +2609,11 @@ namespace PgJsonObjects
             { ItemKeyword.WineCask, "Wine Cask" },
             { ItemKeyword.BardArmor, "Bard Armor" },
             { ItemKeyword.GazlukOfficersRing, "Gazluk Officer's Ring" },
+            { ItemKeyword.RabbitFuel, "Rabbit Fuel" },
+            { ItemKeyword.Carrot, "Carrot" },
+            { ItemKeyword.GrilledDish, "Grilled Dish" },
+            { ItemKeyword.RabbitMalachite, "Rabbit Malachite" },
+            { ItemKeyword.IceStaff, "Ice Staff" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -2691,6 +2724,7 @@ namespace PgJsonObjects
             { QuestKeyword.DruidGroup, "Druid Group" },
             { QuestKeyword.WorkOrder, "Work Order" },
             { QuestKeyword.Lint_CannotComplete, "Cannot Complete" },
+            { QuestKeyword.EventQuest, "Event Quest" },
         };
 
         public static readonly Dictionary<QuestGroupingName, string> QuestGroupingNameTextMap = new Dictionary<QuestGroupingName, string>()
@@ -2744,6 +2778,7 @@ namespace PgJsonObjects
             { RecipeAction.Brew, "Brew" },
             { RecipeAction.PrepareCask, "Prepare Cask" },
             { RecipeAction.SortGrass, "Sort Grass" },
+            { RecipeAction.Grill, "Grill" },
         };
 
         public static readonly Dictionary<RecipeUsageAnimation, string> RecipeUsageAnimationTextMap = new Dictionary<RecipeUsageAnimation, string>()

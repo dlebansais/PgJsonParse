@@ -33,5 +33,6 @@
         Brew,
         PrepareCask,
         SortGrass,
+        Grill,
     }
 }

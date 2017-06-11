@@ -181,6 +181,23 @@ namespace PgJsonObjects
             }
         }
 
+        public bool IsConsumedItemDirect
+        {
+            get
+            {
+                if (RawConsumedItemKeyword == null || RawConsumedItemKeyword.Length == 0)
+                    return false;
+
+                if (ConsumedItemKeyword != ConsumedItems.Internal_None)
+                    return false;
+
+                if (ConsumedItem == null)
+                    return false;
+
+                return true;
+            }
+        }
+
         public string CombinedConsumedItem
         {
             get
@@ -195,7 +212,7 @@ namespace PgJsonObjects
 
                 if (ConsumedItemKeyword != ConsumedItems.Internal_None)
                     Result += TextMaps.ConsumedItemsTextMap[ConsumedItemKeyword];
-                else
+                else if (ConsumedItem != null)
                     Result += ConsumedItem.Name;
 
                 if (RawConsumedItemChance.HasValue)
@@ -310,6 +327,28 @@ namespace PgJsonObjects
                     return "None";
                 else
                     return SharesResetTimerWith.Name;
+            }
+        }
+
+        public string CombinedSkill
+        {
+            get
+            {
+                if (ConnectedSkill == null)
+                    return TextMaps.PowerSkillTextMap[Skill];
+                else
+                    return ConnectedSkill.Name;
+            }
+        }
+
+        public string CombinedUpgradeOf
+        {
+            get
+            {
+                if (UpgradeOf == null)
+                    return "None";
+                else
+                    return UpgradeOf.Name;
             }
         }
         #endregion
@@ -1373,10 +1412,10 @@ namespace PgJsonObjects
             else if (Tools.Scan(s, "Target flees for %d seconds", args))
                 AddResult(new AbilityAdditionalResult(AbilityEffect.Fear, TimeSpan.FromSeconds((int)args[0])));
 
-            else if (Tools.Scan(s, "You gain %d sprint speed for %d seconds", args))
+            else if (Tools.Scan(s, "You gain %f sprint speed for %d seconds", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.SprintSpeed, TimeSpan.FromSeconds((int)args[1]));
-                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0] });
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (double)args[0] });
                 AddResult(AdditionalResult);
             }
 
@@ -1458,6 +1497,14 @@ namespace PgJsonObjects
             else if (Tools.Scan(s, "Consumes %d Grass", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeGrass, TimeSpan.Zero);
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0] });
+                AddResult(AdditionalResult);
+            }
+
+            else if (Tools.Scan(s, "Consumes %d Carrot", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeCarrot, TimeSpan.Zero);
                 AdditionalResult.Target = AbilityEffectTarget.Self;
                 AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0] });
                 AddResult(AdditionalResult);
@@ -1714,6 +1761,13 @@ namespace PgJsonObjects
             }
 
             else if (Tools.Scan(s, "Target's speed is reduced by %d%% for %d seconds", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.SprintSpeed, TimeSpan.FromSeconds((int)args[1]));
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0], IsPercent = true });
+                AddResult(AdditionalResult);
+            }
+
+            else if (Tools.Scan(s, "Target's run speed is reduced by %d%% for %d seconds", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.SprintSpeed, TimeSpan.FromSeconds((int)args[1]));
                 AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0], IsPercent = true });
@@ -2486,6 +2540,16 @@ namespace PgJsonObjects
                 return;
             }
 
+            else if (Tools.Scan(s, "If Long Ear was active, it ends immediately", args))
+            {
+                if (AbilityAdditionalResultList.Count > 0)
+                {
+                    AdditionalResult = AbilityAdditionalResultList[AbilityAdditionalResultList.Count - 1];
+                    AdditionalResult.Conditional = AbilityEffectConditional.RemoveLongEar;
+                }
+                return;
+            }
+
             else if (Tools.Scan(s, "You gain %d%% Projectile Evasion for %d seconds", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.EvasionVsProjectile, TimeSpan.FromSeconds((int)args[1]));
@@ -2666,6 +2730,15 @@ namespace PgJsonObjects
                 AddResult(AdditionalResult);
             }
 
+            else if (Tools.Scan(s, "All nearby allies gain %d%% Melee Evasion for %d seconds", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.EvasionVsMelee, TimeSpan.FromSeconds((int)args[1]));
+                AdditionalResult.Target = AbilityEffectTarget.SelfAndAllies;
+                AdditionalResult.AoERange = PvE.AoE;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0], IsPercent = true });
+                AddResult(AdditionalResult);
+            }
+
             else if (Tools.Scan(s, "For %d seconds, target's attacks deal %d%% direct damage and cost %d Power", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.DamageBoost, TimeSpan.FromSeconds((int)args[0]));
@@ -2718,6 +2791,21 @@ namespace PgJsonObjects
             }
 
             else if (Tools.Scan(s, "Target takes +%d damage from all direct attacks for %d seconds", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Targets decide not to attack you for about %d seconds (unless you attack them first)", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For %d seconds, sprint speed is reduced by %d%% and monster-detection range is reduced by %d meters", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "+%d %{DamageType} Protection (direct and indirect) for %d minutes", args))
             {
                 //TODO
             }

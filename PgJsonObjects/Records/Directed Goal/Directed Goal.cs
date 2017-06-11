@@ -27,6 +27,8 @@ namespace PgJsonObjects
         public string Zone { get; private set; }
         public string Hint { get; private set; }
         public PowerSkill NeededSkill { get; private set; }
+        public Skill ConnectedNeededSkill { get; private set; }
+        private bool IsNeededSkillParsed;
         public int NeededSkillLevel { get { return RawNeededSkillLevel.HasValue ? RawNeededSkillLevel.Value : 0; } }
         private int? RawNeededSkillLevel;
         public Ability NeededAbility { get; private set; }
@@ -42,22 +44,56 @@ namespace PgJsonObjects
 
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
 
+        public string CombinedNeededSkill
+        {
+            get
+            {
+                if (ConnectedNeededSkill == null)
+                    return TextMaps.PowerSkillTextMap[NeededSkill];
+                else
+                    return ConnectedNeededSkill.Name;
+            }
+        }
+
+        public string CombinedNeededAbility
+        {
+            get
+            {
+                if (NeededAbility == null)
+                    return "None";
+                else
+                    return NeededAbility.Name;
+            }
+        }
+
+        public bool HasRecipeCompletions { get { return RawNeededRecipeCompletions != null && RawNeededRecipeCompletions.Value > 0; } }
+
         public string CombinedNeededRecipe
         {
             get
             {
                 if (NeededRecipe == null)
-                    return "";
+                    return "None";
 
-                string Result = NeededRecipe.Name;
+                string Completions = CombinedRecipeCompletions;
 
-                if (RawNeededRecipeCompletions != null && RawNeededRecipeCompletions.Value > 0)
-                    Result += " (x" + RawNeededRecipeCompletions.Value.ToString() + ")";
-
-                return Result;
+                if (Completions.Length > 0)
+                    return NeededRecipe.Name + " " + Completions;
+                else
+                    return NeededRecipe.Name;
             }
         }
 
+        public string CombinedRecipeCompletions
+        {
+            get
+            {
+                if (RawNeededRecipeCompletions != null && RawNeededRecipeCompletions.Value > 0)
+                    return "(x" + RawNeededRecipeCompletions.Value.ToString() + ")";
+                else
+                    return "";
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -118,6 +154,8 @@ namespace PgJsonObjects
             PowerSkill ParsedNeededSkill;
             StringToEnumConversion<PowerSkill>.TryParse(RawNeededSkill, out ParsedNeededSkill, ErrorInfo);
             NeededSkill = ParsedNeededSkill;
+            IsNeededSkillParsed = false;
+            ConnectedNeededSkill = null;
         }
 
         private static void ParseFieldNeededSkillLevel(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
@@ -257,6 +295,9 @@ namespace PgJsonObjects
 
             NeededAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawNeededAbility, NeededAbility, ref IsRawNeededAbilityParsed, ref IsConnected);
             NeededRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawNeededRecipe, NeededRecipe, ref IsRawNeededRecipeParsed, ref IsConnected);
+
+            if (NeededSkill != PowerSkill.Internal_None && NeededSkill != PowerSkill.AnySkill && NeededSkill != PowerSkill.Unknown)
+                ConnectedNeededSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, NeededSkill, ConnectedNeededSkill, ref IsNeededSkillParsed, ref IsConnected);
 
             return IsConnected;
         }

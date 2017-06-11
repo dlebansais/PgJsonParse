@@ -198,5 +198,8 @@
         DrugWithdrawal_Alcohol,
         AlcoholPoisoning,
         AlcoholInBody,
+        Event_SummerExperience,
+        Event_RabbitInvasion,
+        LongEar,
     }
 }

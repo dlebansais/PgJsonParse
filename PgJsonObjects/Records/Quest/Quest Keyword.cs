@@ -9,5 +9,6 @@
         DruidGroup,
         WorkOrder,
         Lint_CannotComplete,
+        EventQuest,
     }
 }

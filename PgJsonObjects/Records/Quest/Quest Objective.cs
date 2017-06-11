@@ -26,6 +26,7 @@ namespace PgJsonObjects
             { "MaxAmount", ParseFieldMaxAmount },
             { "AnatomyType", ParseFieldAnatomyType },
             { "ItemKeyword", ParseFieldItemKeyword },
+            { "Requirements", ParseFieldRequirements },
         };
         #endregion
 
@@ -46,50 +47,31 @@ namespace PgJsonObjects
         public string MinFavorReceived { get; private set; }
         public string MaxFavorReceived { get; private set; }
         public PowerSkill Skill { get; private set; }
+        public Skill ConnectedSkill { get; private set; }
+        private bool IsSkillParsed;
         public string StringParam { get; private set; }
         public string ResultItemKeyword { get; private set; }
         public string AbilityKeyword { get; private set; }
         public string MaxAmount { get; private set; }
         public string AnatomyType { get; private set; }
         public ItemKeyword ItemKeyword { get; private set; }
+        public int? MinHour { get; private set; }
+        public int? MaxHour { get; private set; }
 
-        public string Summary
+        public string FirstPart { get; private set; }
+        public string ItemLink { get; private set; }
+        public string SkillLink { get; private set; }
+        public string LastPart { get; private set; }
+        private bool IsSummaryReady;
+
+        public string CombinedTimeOfDayRequirement
         {
             get
             {
-                switch (Type)
-                {
-                    default:
-                    case QuestObjectiveType.Internal_None:
-                        return null;
-                    case QuestObjectiveType.Kill:
-                    case QuestObjectiveType.Scripted:
-                    case QuestObjectiveType.MultipleInteractionFlags:
-                    case QuestObjectiveType.Collect:
-                    case QuestObjectiveType.InteractionFlag:
-                    case QuestObjectiveType.Deliver:
-                    case QuestObjectiveType.Have:
-                    case QuestObjectiveType.Harvest:
-                    case QuestObjectiveType.TipPlayer:
-                    case QuestObjectiveType.Special:
-                    case QuestObjectiveType.GiveGift:
-                    case QuestObjectiveType.UseItem:
-                    case QuestObjectiveType.UseRecipe:
-                    case QuestObjectiveType.KillElite:
-                    case QuestObjectiveType.SayInChat:
-                    case QuestObjectiveType.BeAttacked:
-                    case QuestObjectiveType.Bury:
-                    case QuestObjectiveType.UseAbility:
-                    case QuestObjectiveType.UniqueSpecial:
-                    case QuestObjectiveType.GuildGiveItem:
-                    case QuestObjectiveType.GuildKill:
-                    case QuestObjectiveType.DruidKill:
-                    case QuestObjectiveType.DruidScripted:
-                        if (Number > 1)
-                            return Description + " (" + Number + ")";
-                        else
-                            return Description;
-                }
+                if (!MinHour.HasValue || !MaxHour.HasValue)
+                    return null;
+
+                return " (this step must be completed between " + MinHour.Value.ToString("D02") + ":00 and " + MaxHour.Value.ToString("D02") + ":00)";
             }
         }
         #endregion
@@ -358,6 +340,47 @@ namespace PgJsonObjects
             ItemKeyword = ParsedItemKeyword;
         }
 
+        private static void ParseFieldRequirements(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            Dictionary<string, object> AsDictionary;
+            if ((AsDictionary = Value as Dictionary<string, object>) != null)
+                This.ParseRequirements(AsDictionary, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+        }
+
+        private void ParseRequirements(Dictionary<string, object> RawRequirement, ParseErrorInfo ErrorInfo)
+        {
+            if (RawRequirement.ContainsKey("T"))
+            {
+                string RequirementType;
+                if ((RequirementType = RawRequirement["T"] as string) != null)
+                {
+                    if (RequirementType == "TimeOfDay")
+                    {
+                        if (RawRequirement.ContainsKey("MinHour") && RawRequirement.ContainsKey("MaxHour"))
+                        {
+                            if ((RawRequirement["MinHour"] is int) && (RawRequirement["MaxHour"] is int))
+                            {
+                                MinHour = (int)RawRequirement["MinHour"];
+                                MaxHour = (int)RawRequirement["MaxHour"];
+                            }
+                            else
+                                ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+                        }
+                        else
+                            ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+                    }
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+        }
+
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -407,8 +430,90 @@ namespace PgJsonObjects
             bool IsConnected = false;
 
             QuestItem = Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItemName, QuestItem, ref IsItemNameParsed, ref IsConnected);
+            ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected);
 
+            if (!IsSummaryReady)
+            {
+                PrepareSummary();
+                IsSummaryReady = true;
+            }
             return IsConnected;
+        }
+        #endregion
+
+        #region Implementation
+        private void PrepareSummary()
+        {
+            if (Type == QuestObjectiveType.Internal_None)
+                return;
+
+            List<string> Parts = new List<string>();
+            Parts.Add(Description);
+
+            int QuestNameIndex = -1;
+            int SkillIndex = -1;
+
+            if (QuestItem != null)
+                LocateSubstring(Parts, QuestItem.Name, out QuestNameIndex);
+
+            else if (ConnectedSkill != null)
+                LocateSubstring(Parts, TextMaps.PowerSkillTextMap[Skill], out SkillIndex);
+
+            if (Parts.Count > 0)
+            {
+                if (QuestNameIndex == 0)
+                    ItemLink = Parts[0];
+                else if (SkillIndex == 0)
+                    SkillLink = Parts[0];
+                else
+                    FirstPart = Parts[0];
+            }
+
+            if (Parts.Count > 1)
+            {
+                if (QuestNameIndex == 1)
+                    ItemLink = Parts[1];
+                else if (SkillIndex == 1)
+                    SkillLink = Parts[1];
+                else
+                    LastPart = Parts[1];
+            }
+
+            if (Parts.Count > 2)
+                LastPart = Parts[2];
+
+            if (LastPart != null && LastPart.Length > 0 && Number > 1)
+                LastPart += " (" + Number + ")";
+        }
+
+        private void LocateSubstring(List<string> Parts, string Substring, out int SubstringIndex)
+        {
+            int Index = Parts[0].ToLower().IndexOf(Substring.ToLower());
+            if (Index >= 0)
+            {
+                string First = Parts[0].Substring(0, Index).Trim();
+                string Last = Parts[0].Substring(Index + Substring.Length).Trim();
+
+                if (First.Length> 0)
+                {
+                    Parts[0] = First.Trim();
+                    Parts.Add(Substring);
+                    SubstringIndex = 1;
+
+                    if (Last.Length > 0 && Last != "s" && Last != "es")
+                        Parts.Add(Last.Trim());
+                }
+                else
+                {
+                    Parts[0] = Substring;
+                    SubstringIndex = 0;
+
+                    if (Last.Length > 0 && Last != "s" && Last != "es")
+                        Parts.Add(Last.Trim());
+                }
+            }
+            else
+                SubstringIndex = -1;
         }
         #endregion
     }

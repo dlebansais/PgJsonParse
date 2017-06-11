@@ -17,6 +17,14 @@ using System.Windows.Threading;
 using PgJsonObjects;
 using System.Globalization;
 using System.Collections;
+using System.Windows.Navigation;
+using System.Reflection;
+using System.Windows.Documents;
+using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace PgJsonParse
 {
@@ -65,6 +73,7 @@ namespace PgJsonParse
         public static string ApplicationFolder { get; private set; }
         public static string VersionCacheFolder { get; private set; }
         public static string CurrentVersionCacheFolder { get; private set; }
+        public static string IconFile { get; private set; }
         #endregion
 
         #region Startup Page
@@ -172,6 +181,8 @@ namespace PgJsonParse
 
             if (!Directory.Exists(VersionCacheFolder))
                 Directory.CreateDirectory(VersionCacheFolder);
+
+            IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
 
             InitVersionList();
 
@@ -390,6 +401,25 @@ namespace PgJsonParse
 
         private void InitCache()
         {
+            if (File.Exists(IconFile))
+            {
+                Bitmap bmp = new Bitmap(IconFile);
+                Icon = ImageSourceForBitmap(bmp);
+            }
+        }
+
+        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool DeleteObject([In] IntPtr hObject);
+
+        public ImageSource ImageSourceForBitmap(Bitmap bmp)
+        {
+            var handle = bmp.GetHbitmap();
+            try
+            {
+                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }
+            finally { DeleteObject(handle); }
         }
 
         private void LocateLatestVersion()
@@ -1071,6 +1101,11 @@ namespace PgJsonParse
                 string FilePath = Path.Combine(CurrentVersionCacheFolder, "icon_" + IconId + ".png");
                 if (!UpdateBinaryCacheFile(LoadedVersion, "icons", "icon_" + IconId, "png"))
                     break;
+
+                if (IconId == 5624)
+                {
+                    File.Copy(FilePath, IconFile, true);
+                }
             }
 
             LoadNextIcon(MissingIconList, LoadedCount, MaxCount, ErrorInfo);
@@ -1096,11 +1131,13 @@ namespace PgJsonParse
         #endregion
 
         #region Build Planer
+        public const int DefaultMaxLevel = 70;
+
         private void InitBuildPlaner()
         {
             CombatSkillList = new ObservableCollection<PowerSkill>();
-            MaxLevelFirstSkill = 70;
-            MaxLevelSecondSkill = 70;
+            MaxLevelFirstSkill = DefaultMaxLevel;
+            MaxLevelSecondSkill = DefaultMaxLevel;
             SelectedFirstSkill = -1;
             SelectedSecondSkill = -1;
             SlotPlanerList = new List<SlotPlaner>();
@@ -1299,7 +1336,7 @@ namespace PgJsonParse
             }
 
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
-                PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill);
+                PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill, DefaultMaxLevel);
         }
 
         private void RefreshWeightProfileList()
@@ -1423,12 +1460,18 @@ namespace PgJsonParse
         {
             SenderSlot.AddPower1();
             SenderSlot.AddPower2();
+            SenderSlot.AddPower3();
+            SenderSlot.AddPower4();
+            SenderSlot.AddPower5();
         }
 
         private void RemovePower(SlotPlaner SenderSlot)
         {
             SenderSlot.RemovePower1();
             SenderSlot.RemovePower2();
+            SenderSlot.RemovePower3();
+            SenderSlot.RemovePower4();
+            SenderSlot.RemovePower5();
         }
 
         private void LoadBuild()
@@ -1578,6 +1621,27 @@ namespace PgJsonParse
                                             break;
                                         }
 
+                                    foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList3)
+                                        if (PlanerSlot.Reference == SlotPower)
+                                        {
+                                            Planer.SelectPower3(PlanerSlot);
+                                            break;
+                                        }
+
+                                    foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList4)
+                                        if (PlanerSlot.Reference == SlotPower)
+                                        {
+                                            Planer.SelectPower4(PlanerSlot);
+                                            break;
+                                        }
+
+                                    foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList5)
+                                        if (PlanerSlot.Reference == SlotPower)
+                                        {
+                                            Planer.SelectPower5(PlanerSlot);
+                                            break;
+                                        }
+
                                     break;
                                 }
                         }
@@ -1655,6 +1719,30 @@ namespace PgJsonParse
                     sw.WriteLine(SlotName + "=" + Key);
                 }
 
+                foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList3)
+                {
+                    Power Reference = PlanerSlot.Reference;
+                    string Key = Reference.Key;
+
+                    sw.WriteLine(SlotName + "=" + Key);
+                }
+
+                foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList4)
+                {
+                    Power Reference = PlanerSlot.Reference;
+                    string Key = Reference.Key;
+
+                    sw.WriteLine(SlotName + "=" + Key);
+                }
+
+                foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList5)
+                {
+                    Power Reference = PlanerSlot.Reference;
+                    string Key = Reference.Key;
+
+                    sw.WriteLine(SlotName + "=" + Key);
+                }
+
                 if (Planer.SelectedGearIndex >= 0 && Planer.SelectedGearIndex < Planer.SortedGearList.Count)
                 {
                     Item PlanerItem = Planer.SortedGearList[Planer.SelectedGearIndex];
@@ -1694,6 +1782,30 @@ namespace PgJsonParse
                 }
 
                 foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList2)
+                {
+                    Power Reference = PlanerSlot.Reference;
+                    string Key = Reference.Key;
+
+                    Text += PlanerSlot.Name + "\r\n";
+                }
+
+                foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList3)
+                {
+                    Power Reference = PlanerSlot.Reference;
+                    string Key = Reference.Key;
+
+                    Text += PlanerSlot.Name + "\r\n";
+                }
+
+                foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList4)
+                {
+                    Power Reference = PlanerSlot.Reference;
+                    string Key = Reference.Key;
+
+                    Text += PlanerSlot.Name + "\r\n";
+                }
+
+                foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList5)
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
@@ -1757,6 +1869,71 @@ namespace PgJsonParse
         
         public ObservableCollection<object> SearchResult { get; private set; }
 
+        public object SearchSelectedItem
+        {
+            get { return _SearchSelectedItem; }
+            set
+            {
+                if (_SearchSelectedItem != value)
+                {
+                    _SearchSelectedItem = value;
+                    NotifyThisPropertyChanged();
+
+                    int Index = CurrentSearchItem != null ? SearchHistory.IndexOf(CurrentSearchItem) : -1;
+                    if (Index >= 0 && Index + 1 < SearchHistory.Count)
+                        SearchHistory.RemoveRange(Index + 1, SearchHistory.Count - Index - 1);
+
+                    SearchHistory.Add(value);
+                    CurrentSearchItem = value;
+                    IsBackwardEnabled = true;
+                    IsForwardEnabled = false;
+                }
+            }
+        }
+        private object _SearchSelectedItem;
+
+        public object CurrentSearchItem
+        {
+            get { return _CurrentSearchItem; }
+            set
+            {
+                if (_CurrentSearchItem != value)
+                {
+                    _CurrentSearchItem = value;
+                    NotifyThisPropertyChanged();
+                }
+            }
+        }
+        private object _CurrentSearchItem;
+
+        public bool IsBackwardEnabled
+        {
+            get { return _IsBackwardEnabled; }
+            private set
+            {
+                if (_IsBackwardEnabled != value)
+                {
+                    _IsBackwardEnabled = value;
+                    NotifyThisPropertyChanged();
+                }
+            }
+        }
+        public bool _IsBackwardEnabled;
+
+        public bool IsForwardEnabled
+        {
+            get { return _IsForwardEnabled; }
+            private set
+            {
+                if (_IsForwardEnabled != value)
+                {
+                    _IsForwardEnabled = value;
+                    NotifyThisPropertyChanged();
+                }
+            }
+        }
+        public bool _IsForwardEnabled;
+
         private void InitSearch()
         {
             SearchTerms = "";
@@ -1771,6 +1948,10 @@ namespace PgJsonParse
             IncludeSkill = true;
             IncludePower = true;
             SearchResult = new ObservableCollection<object>();
+            SearchHistory = new List<object>();
+            _CurrentSearchItem = null;
+            _IsBackwardEnabled = false;
+            _IsForwardEnabled = false;
         }
 
         private void OnSearchTermsEntered()
@@ -1817,6 +1998,11 @@ namespace PgJsonParse
             if (ValidTermList.Count > 0)
             {
                 SearchResult.Clear();
+                SearchHistory.Clear();
+                CurrentSearchItem = null;
+                IsBackwardEnabled = false;
+                IsForwardEnabled = false;
+
                 PerformSearch(ValidTermList, SearchMode);
             }
         }
@@ -1973,6 +2159,62 @@ namespace PgJsonParse
                     break;
             }
         }
+
+        private void OnBackward()
+        {
+            int Index = SearchHistory.IndexOf(CurrentSearchItem);
+            if (Index > 0)
+            {
+                CurrentSearchItem = SearchHistory[Index - 1];
+
+                if (Index == 1)
+                    IsBackwardEnabled = false;
+                IsForwardEnabled = true;
+            }
+        }
+
+        private void OnForward()
+        {
+            int Index = SearchHistory.IndexOf(CurrentSearchItem);
+            if (Index >= 0 && Index + 1 < SearchHistory.Count)
+            {
+                CurrentSearchItem = SearchHistory[Index + 1];
+
+                if (Index + 1 == SearchHistory.Count - 1)
+                    IsForwardEnabled= false;
+                IsBackwardEnabled = true;
+            }
+        }
+
+        private void OnRequestNavigate(object FromObject, string PropertyName)
+        {
+            object ToObject = null;
+
+            Type ObjectType = FromObject.GetType();
+
+            if (PropertyName== "hyperlink")
+                ToObject = FromObject;
+            else
+            {
+                PropertyInfo pi = ObjectType.GetProperty(PropertyName);
+                if (pi != null)
+                    ToObject = pi.GetValue(FromObject);
+            }
+
+            if (ToObject != null)
+            {
+                int Index = CurrentSearchItem != null ? SearchHistory.IndexOf(CurrentSearchItem) : -1;
+                if (Index >= 0 && Index + 1 < SearchHistory.Count)
+                    SearchHistory.RemoveRange(Index + 1, SearchHistory.Count - Index - 1);
+
+                SearchHistory.Add(ToObject);
+                CurrentSearchItem = ToObject;
+                IsBackwardEnabled = true;
+                IsForwardEnabled = false;
+            }
+        }
+
+        private List<object> SearchHistory;
         #endregion
 
         #region Cruncher
@@ -2460,6 +2702,27 @@ namespace PgJsonParse
         private void OnSearchCheckChanged(object sender, RoutedEventArgs e)
         {
             OnSearchCheckChanged();
+        }
+
+        private void OnBackward(object sender, ExecutedRoutedEventArgs e)
+        {
+            OnBackward();
+        }
+
+        private void OnForward(object sender, ExecutedRoutedEventArgs e)
+        {
+            OnForward();
+        }
+
+        private void OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Hyperlink hyperlink = e.OriginalSource as Hyperlink;
+            if (hyperlink != null && hyperlink.DataContext != null)
+            {
+                string[] Splitted = hyperlink.Name.Split('_');
+                if (Splitted.Length == 3 && Splitted[0] == "hyperlink" && Splitted[2].Length > 0)
+                    OnRequestNavigate(hyperlink.DataContext, Splitted[2]);
+            }
         }
         #endregion
 

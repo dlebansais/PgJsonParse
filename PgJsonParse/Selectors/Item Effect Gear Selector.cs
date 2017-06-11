@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace PgJsonParse
 {
-    public class ItemEffectGearTemplateSelector : DataTemplateSelector
+    public class ItemEffectGearSelector : DataTemplateSelector
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {

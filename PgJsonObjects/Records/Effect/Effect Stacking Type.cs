@@ -243,5 +243,9 @@
         DisharmonyDebuffB,
         DrugWithdrawal_Alcohol,
         Soberize,
+        RabbitsFoot,
+        InnateColdProtection,
+        RabbitsFootBurstEvade,
+        RabbitsFootXP,
     }
 }

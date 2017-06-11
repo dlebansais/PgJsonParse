@@ -43,7 +43,7 @@ namespace PgJsonObjects
                     Result = AddRewardString(Result, Notes);
 
                 if (Recipe != null)
-                    Result = AddRewardString(Result, "Recipe: " + Recipe);
+                    Result = AddRewardString(Result, "Recipe: " + Recipe.Name);
 
                 if (BonusToSkill != PowerSkill.Internal_None)
                     Result = AddRewardString(Result, "+1 " + TextMaps.PowerSkillTextMap[BonusToSkill]);

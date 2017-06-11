@@ -14,5 +14,6 @@
         Lint_NoResult,
         StorageCrateDruid,
         ShamanicInfusion,
+        ClownfishFillet,
     }
 }

@@ -144,5 +144,6 @@
         Attack_Bard_BlastOfDespair,
         Attack_Bard_ThunderousNote,
         Attack_Bard_Disharmony,
+        PlayingDead,
     }
 }

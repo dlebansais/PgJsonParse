@@ -86,5 +86,6 @@
         Shield_Healing,
         PurpleGlitterBuff,
         DrinkAlcohol,
+        DeathPlumeFixedPosition,
     }
 }

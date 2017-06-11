@@ -24,6 +24,8 @@ namespace PgJsonObjects
         public List<string> CombinedTierList { get; private set; }
         public List<ItemSlot> SlotList { get; private set; }
         public PowerSkill Skill { get; private set; }
+        public Skill ConnectedSkill { get; private set; }
+        private bool IsSkillParsed;
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; private set; }
 
@@ -45,6 +47,17 @@ namespace PgJsonObjects
                 }
 
                 return Result;
+            }
+        }
+
+        public string CombinedSkill
+        {
+            get
+            {
+                if (ConnectedSkill == null)
+                    return TextMaps.PowerSkillTextMap[Skill];
+                else
+                    return ConnectedSkill.Name;
             }
         }
 
@@ -296,6 +309,9 @@ namespace PgJsonObjects
 
             foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
                 IsConnected |= Entry.Value.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
+                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected);
 
             if (CombinedTierList == null)
             {

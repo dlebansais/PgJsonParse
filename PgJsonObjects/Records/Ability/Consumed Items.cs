@@ -6,5 +6,6 @@
         Cheese,
         HumanoidSkull,
         ImpressiveHumanoidSkull,
+        RabbitFuel,
     }
 }

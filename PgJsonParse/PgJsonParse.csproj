@@ -82,13 +82,15 @@
     <Compile Include="Converters\Friendly Name Converter.cs" />
     <Compile Include="Converters\Index To Object Converter.cs" />
     <Compile Include="Converters\Int Converter.cs" />
+    <Compile Include="Converters\Null To Object Converter.cs" />
     <Compile Include="Converters\Rgb Color To Brush Converter.cs" />
     <Compile Include="Crunch\Crunch Selection.cs" />
     <Compile Include="Crunch\Crunch Target.cs" />
     <Compile Include="Search Modes.cs" />
-    <Compile Include="Selectors\Item Effect Gear Template Selector.cs" />
+    <Compile Include="Selectors\Item Effect Gear Selector.cs" />
     <Compile Include="Parser Version.cs" />
     <Compile Include="Program State.cs" />
+    <Compile Include="Selectors\List Member Selector.cs" />
     <Compile Include="Selectors\Search Result Content Selector.cs" />
     <Compile Include="Selectors\Search Result Title Selector.cs" />
     <Compile Include="Sequence.cs" />
@@ -138,6 +140,10 @@
       <Project>{2d9e943b-7d22-469b-8dbe-500d23877b55}</Project>
       <Name>PgJsonObjects</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Redo.png" />
+    <Resource Include="Resources\Undo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

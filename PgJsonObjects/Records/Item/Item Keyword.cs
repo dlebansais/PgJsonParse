@@ -792,5 +792,10 @@
         WineCask,
         BardArmor,
         GazlukOfficersRing,
+        RabbitFuel,
+        Carrot,
+        GrilledDish,
+        RabbitMalachite,
+        IceStaff,
     }
 }

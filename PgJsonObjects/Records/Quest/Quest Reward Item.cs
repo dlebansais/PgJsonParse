@@ -18,6 +18,7 @@ namespace PgJsonObjects
         private bool IsRawItemParsed;
         public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 0; } }
         private int? RawStackSize;
+        public bool HasStackSize { get { return RawStackSize.HasValue && RawStackSize.Value > 1; } }
 
         public string CombinedName
         {
