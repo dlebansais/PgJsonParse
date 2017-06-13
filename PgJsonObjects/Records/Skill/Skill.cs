@@ -53,7 +53,7 @@ namespace PgJsonObjects
         public List<Reward> RewardList { get; private set; }
         private bool EmptyRewardList;
         public Dictionary<int, string> ReportTable { get; private set; }
-        public List<string> CombinedRewardList { get; private set; }
+        public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         public string Name { get; private set; }
         public PowerSkill ParentSkill { get; private set; }
         public Skill ConnectedParentSkill { get; private set; }
@@ -659,8 +659,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, "Skip Bonus Levels If Skill Unlearned");
                 if (RawAuxCombat.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Auxiliary Combat Skill");
-                foreach (string Item in CombinedRewardList)
-                    AddWithFieldSeparator(ref Result, Item);
+                foreach (SkillRewardCommon Item in CombinedRewardList)
+                    AddWithFieldSeparator(ref Result, Item.TextContent);
 
                 return Result;
             }
@@ -703,19 +703,11 @@ namespace PgJsonObjects
             return "Level " + Level + ": " + s;
         }
 
-        private static int SortByLevel(string s1, string s2)
+        private static int SortByLevel(SkillRewardCommon reward1, SkillRewardCommon reward2)
         {
-            int i1 = s1.IndexOf(':');
-            int i2 = s2.IndexOf(':');
-
-            int l1 = 0;
-            int.TryParse(s1.Substring(6, i1 - 6), out l1);
-            int l2 = 0;
-            int.TryParse(s2.Substring(6, i2 - 6), out l2);
-
-            if (l1 > l2)
+            if (reward1.RewardLevel > reward2.RewardLevel)
                 return 1;
-            else if (l1 < l2)
+            else if (reward1.RewardLevel < reward2.RewardLevel)
                 return -1;
             else
                 return 0;
@@ -747,23 +739,28 @@ namespace PgJsonObjects
 
             if (CombinedRewardList == null)
             {
-                CombinedRewardList = new List<string>();
-
-                if (Name.Contains("Sushi"))
-                    CombinedRewardList = new List<string>();
+                CombinedRewardList = new List<SkillRewardCommon>();
 
                 foreach (LevelCapInteraction Item in InteractionFlagLevelCapList)
-                    if (Item.Link != null && Item.OtherLevel > 0)
-                        CombinedRewardList.Add(PrepareReward(Item.Level, "Unlock " + Item.Link.Name + " level " + Item.OtherLevel));
+                    CombinedRewardList.Add(new SkillRewardUnlock(Item.Level, Item.Link, Item.OtherLevel));
 
                 foreach (KeyValuePair<int, string> Entry in AdvancementHintTable)
-                    CombinedRewardList.Add(PrepareReward(Entry.Key, Entry.Value));
+                    CombinedRewardList.Add(new SkillRewardMisc(Entry.Key, Entry.Value));
 
                 foreach (Reward Item in RewardList)
-                    CombinedRewardList.Add(PrepareReward(Item.RewardLevel, Item.CombinedReward));
+                {
+                    if (Item.Ability != null)
+                        CombinedRewardList.Add(new SkillRewardAbility(Item.RewardLevel, Item.Ability));
+                    if (Item.ConnectedBonusSkill != null)
+                        CombinedRewardList.Add(new SkillRewardBonusLevel(Item.RewardLevel, Item.ConnectedBonusSkill));
+                    if (Item.Recipe != null)
+                        CombinedRewardList.Add(new SkillRewardRecipe(Item.RewardLevel, Item.Recipe));
+                    if (Item.Notes != null)
+                        CombinedRewardList.Add(new SkillRewardMisc(Item.RewardLevel, Item.Notes));
+                }
 
                 foreach (KeyValuePair<int, string> Entry in ReportTable)
-                    CombinedRewardList.Add(PrepareReward(Entry.Key, Entry.Value));
+                    CombinedRewardList.Add(new SkillRewardMisc(Entry.Key, Entry.Value));
 
                 CombinedRewardList.Sort(SortByLevel);
             }

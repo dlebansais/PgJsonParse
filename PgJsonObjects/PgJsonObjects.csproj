@@ -159,6 +159,12 @@
     <Compile Include="Records\Skill\Level Cap Interaction.cs" />
     <Compile Include="Records\Skill\Reward.cs" />
     <Compile Include="Records\Skill\Skill Category.cs" />
+    <Compile Include="Records\Skill\Skill Reward Ability.cs" />
+    <Compile Include="Records\Skill\Skill Reward Bonus Level.cs" />
+    <Compile Include="Records\Skill\Skill Reward Common.cs" />
+    <Compile Include="Records\Skill\Skill Reward Misc.cs" />
+    <Compile Include="Records\Skill\Skill Reward Recipe.cs" />
+    <Compile Include="Records\Skill\Skill Reward Unlock.cs" />
     <Compile Include="Records\Skill\Skill.cs" />
     <Compile Include="Records\Xp Table\Xp Table.cs" />
     <Compile Include="String To Enum Conversion.cs" />

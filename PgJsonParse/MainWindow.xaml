@@ -19,6 +19,7 @@
         <app:ListMemberSelector x:Key="selListMember"/>
         <app:SearchResultTitleSelector x:Key="selSearchResultTitle"/>
         <app:SearchResultContentSelector x:Key="selSearchResultContent"/>
+        <app:SkillRewardSelector x:Key="selSkillReward"/>
         <RoutedCommand x:Key="StartApplicationCommand"/>
         <RoutedCommand x:Key="ClearVersionListCommand"/>
         <RoutedCommand x:Key="CancelCommand"/>
@@ -1436,18 +1437,71 @@
                                     <TextBlock Grid.Column="1" Grid.Row="9" Text="{Binding RawAuxCombat, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 </Grid>
                                 <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+                                    <Grid.Resources>
+                                        <DataTemplate x:Key="SkillRewardAbilityTemplate">
+                                            <TextBlock TextWrapping="Wrap">
+                                                <Span>
+                                                    <Run>Level </Run>
+                                                    <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
+                                                    <Run>, ability: </Run>
+                                                    <Hyperlink x:Name="hyperlink_SkillRewardAbility_Ability" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                        <TextBlock Text="{Binding Ability.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                    </Hyperlink>
+                                                </Span>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="SkillRewardBonusLevelTemplate">
+                                            <TextBlock TextWrapping="Wrap">
+                                                <Span>
+                                                    <Run>Level</Run>
+                                                    <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
+                                                    <Run>, +1 in </Run>
+                                                    <Hyperlink x:Name="hyperlink_SkillRewardBonusLevel_Skill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                        <TextBlock Text="{Binding Skill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                    </Hyperlink>
+                                                </Span>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="SkillRewardMiscTemplate">
+                                            <TextBlock TextWrapping="Wrap">
+                                                <Span>
+                                                    <Run Text="{Binding Text, Mode=OneWay}"/>
+                                                </Span>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="SkillRewardRecipeTemplate">
+                                            <TextBlock TextWrapping="Wrap">
+                                                <Span>
+                                                    <Run>Level </Run>
+                                                    <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
+                                                    <Run>, recipe: </Run>
+                                                    <Hyperlink x:Name="hyperlink_SkillRewardRecipe_Recipe" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                        <TextBlock Text="{Binding Recipe.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                    </Hyperlink>
+                                                </Span>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="SkillRewardUnlockTemplate">
+                                            <TextBlock TextWrapping="Wrap">
+                                                <Span>
+                                                    <Run>Level</Run>
+                                                    <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
+                                                    <Run>, unlock </Run>
+                                                    <Hyperlink x:Name="hyperlink_SkillRewardBonusLevel_Skill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                        <TextBlock Text="{Binding Skill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                    </Hyperlink>
+                                                    <Run> level </Run>
+                                                    <Run Text="{Binding Level, Mode=OneWay}"/>
+                                                </Span>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </Grid.Resources>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" TextAlignment="Right" Margin="0,0,0,0">Progress:</TextBlock>
-                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding CombinedRewardList}" HorizontalAlignment="Left" Margin="5,0,0,0">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
+                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding CombinedRewardList}" HorizontalAlignment="Left" ItemTemplateSelector="{StaticResource selSkillReward}" Margin="5,0,0,0"/>
                                 </Grid>
                             </Grid>
                         </DockPanel>

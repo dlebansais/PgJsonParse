@@ -93,6 +93,7 @@
     <Compile Include="Selectors\List Member Selector.cs" />
     <Compile Include="Selectors\Search Result Content Selector.cs" />
     <Compile Include="Selectors\Search Result Title Selector.cs" />
+    <Compile Include="Selectors\Skill Reward Selector.cs" />
     <Compile Include="Sequence.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

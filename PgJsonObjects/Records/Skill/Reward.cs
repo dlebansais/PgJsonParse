@@ -23,7 +23,9 @@ namespace PgJsonObjects
         public Recipe Recipe { get; private set; }
         private string RawRecipe;
         private bool IsRawRecipeParsed;
-        public PowerSkill BonusToSkill { get; private set; }
+        public PowerSkill BonusSkill { get; private set; }
+        public Skill ConnectedBonusSkill { get; private set; }
+        private bool IsBonusSkillParsed;
 
         private static string AddRewardString(string Result, string Reward)
         {
@@ -45,8 +47,8 @@ namespace PgJsonObjects
                 if (Recipe != null)
                     Result = AddRewardString(Result, "Recipe: " + Recipe.Name);
 
-                if (BonusToSkill != PowerSkill.Internal_None)
-                    Result = AddRewardString(Result, "+1 " + TextMaps.PowerSkillTextMap[BonusToSkill]);
+                if (BonusSkill != PowerSkill.Internal_None)
+                    Result = AddRewardString(Result, "+1 " + TextMaps.PowerSkillTextMap[BonusSkill]);
 
                 return Result;
             }
@@ -81,7 +83,7 @@ namespace PgJsonObjects
         {
             PowerSkill ParsedBonusToSkill;
             StringToEnumConversion<PowerSkill>.TryParse(RawBonusToSkill, out ParsedBonusToSkill, ErrorInfo);
-            BonusToSkill = ParsedBonusToSkill;
+            BonusSkill = ParsedBonusToSkill;
         }
 
         private static void ParseFieldRecipe(Reward This, object Value, ParseErrorInfo ErrorInfo)
@@ -119,7 +121,7 @@ namespace PgJsonObjects
             Generator.AddString("Ability", RawAbility);
             Generator.AddString("Notes", Notes);
             Generator.AddString("Recipe", RawRecipe);
-            Generator.AddString("BonusToSkill", StringToEnumConversion<PowerSkill>.ToString(BonusToSkill, null, PowerSkill.Internal_None));
+            Generator.AddString("BonusToSkill", StringToEnumConversion<PowerSkill>.ToString(BonusSkill, null, PowerSkill.Internal_None));
 
             Generator.CloseObject();
         }
@@ -168,6 +170,9 @@ namespace PgJsonObjects
 
             Ability = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawAbility, Ability, ref IsRawAbilityParsed, ref IsConnected);
             Recipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRecipe, Recipe, ref IsRawRecipeParsed, ref IsConnected);
+
+            if (BonusSkill != PowerSkill.Internal_None && BonusSkill != PowerSkill.AnySkill && BonusSkill != PowerSkill.Unknown)
+                ConnectedBonusSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, BonusSkill, ConnectedBonusSkill, ref IsBonusSkillParsed, ref IsConnected);
 
             return IsConnected;
         }
