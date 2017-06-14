@@ -99,9 +99,7 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="SimpleEffectGearTemplate">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Description}" Foreground="White" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
-            </StackPanel>
+            <TextBlock Text="{Binding Description}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="10,0,10,0"/>
         </DataTemplate>
         <CroppedBitmap x:Key="imgRedo" Source="pack://application:,,,/Resources/redo.png"/>
         <CroppedBitmap x:Key="imgUndo" Source="pack://application:,,,/Resources/undo.png"/>
