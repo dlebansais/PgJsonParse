@@ -9,11 +9,8 @@ namespace PgJsonObjects
         public PowerSimpleEffect(string Description)
         {
             Description = Description.Trim();
-
-            if (Description[0] == '<')
-                Description = Description.Trim();
-
             IconIdList = new List<int>();
+
             for(;;)
             {
                 if (IconIdList.Count > 0 && Description.Contains(IconIdPattern))
@@ -35,12 +32,13 @@ namespace PgJsonObjects
                 if (!int.TryParse(IdString, out Id))
                     break;
 
-                IconIdList.Add(Id);
+                if (!IconIdList.Contains(Id))
+                    IconIdList.Add(Id);
+
                 Description = Description.Substring(EndIndex + 1);
             }
 
             this.Description = Description;
-            IconIdList = new List<int>();
         }
 
         public string Description { get; private set; }

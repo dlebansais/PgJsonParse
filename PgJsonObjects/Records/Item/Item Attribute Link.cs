@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public class ItemAttributeLink : ItemEffect
     {
@@ -52,6 +50,11 @@ namespace PgJsonObjects
             return Link.GetHashCode();
         }
 
+        public string FriendlyNameAndEffect
+        {
+            get { return FriendlyName + " " + FriendlyEffect; }
+        }
+
         public string FriendlyName
         {
             get { return Link.LabelRippedOfPercent; }
@@ -73,7 +76,12 @@ namespace PgJsonObjects
                     AttributeEffectString += "%";
                 }
                 else
-                    AttributeEffectString  = AttributeEffect.ToString();
+                {
+                    AttributeEffectString = AttributeEffect.ToString();
+
+                    if (AttributeEffect > 0)
+                        AttributeEffectString = "+" + AttributeEffectString;
+                }
 
                 return AttributeEffectString;
             }

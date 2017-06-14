@@ -82,6 +82,7 @@
     <Compile Include="Converters\Friendly Name Converter.cs" />
     <Compile Include="Converters\Index To Object Converter.cs" />
     <Compile Include="Converters\Int Converter.cs" />
+    <Compile Include="Converters\Int To Object Converter.cs" />
     <Compile Include="Converters\Null To Object Converter.cs" />
     <Compile Include="Converters\Rgb Color To Brush Converter.cs" />
     <Compile Include="Crunch\Crunch Selection.cs" />

@@ -214,14 +214,43 @@ namespace PgJsonObjects
                     _SelectedGearIndex = value;
                     NotifyThisPropertyChanged();
                     NotifyPropertyChanged("SelectedGearName");
+                    NotifyPropertyChanged("SelectedGearIcon");
                     NotifyPropertyChanged("SelectedGearDescription");
                     NotifyPropertyChanged("SelectedGearEffectDescriptionList");
                 }
             }
         }
+
         public string SelectedGearName
         {
-            get { return _SelectedGearIndex >= 0 ? SortedGearList[_SelectedGearIndex].Name : SlotName; }
+            get
+            {
+                if (_SelectedGearIndex < 0)
+                    return SlotName;
+
+                string GearName = SortedGearList[_SelectedGearIndex].Name;
+
+                foreach (PlanerSlotPower Item in SelectedPowerList1)
+                    if (Item.Reference.Prefix != null || Item.Reference.Suffix != null)
+                    {
+                        GearName = Item.Reference.Prefix + " " + GearName;
+                        break;
+                    }
+
+                foreach (PlanerSlotPower Item in SelectedPowerList2)
+                    if (Item.Reference.Prefix != null || Item.Reference.Suffix != null)
+                    {
+                        GearName = GearName + " " + Item.Reference.Suffix;
+                        break;
+                    }
+
+                return GearName;
+            }
+        }
+
+        public string SelectedGearIcon
+        {
+            get { return _SelectedGearIndex >= 0 ? "icon_" + SortedGearList[_SelectedGearIndex].IconId : IconFileName; }
         }
         public string SelectedGearDescription
         {
@@ -232,6 +261,14 @@ namespace PgJsonObjects
             get { return _SelectedGearIndex >= 0 ? SortedGearList[_SelectedGearIndex].EffectDescriptionList : null; }
         }
         private int _SelectedGearIndex;
+
+        public int ColorIndex
+        {
+            get
+            {
+                return SelectedPowerList1.Count + SelectedPowerList2.Count + SelectedPowerList3.Count + SelectedPowerList4.Count + SelectedPowerList5.Count;
+            }
+        }
 
         public void RefreshCombatSkillList(IList<Power> PowerList, Dictionary<string, Attribute> AttributeTable, PowerSkill FirstSkill, int MaxLevelFirstSkill, PowerSkill SecondSkill, int MaxLevelSecondSkill, int MaxLevelGeneric)
         {
@@ -275,6 +312,9 @@ namespace PgJsonObjects
             foreach (Power PowerItem in PowerList)
                 if (PowerItem.IsValidForSlot(PowerSkill.ShamanicInfusion, Slot))
                     AvailablePowerList5.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelGeneric));
+
+            NotifyPropertyChanged("ColorIndex");
+            NotifyPropertyChanged("SelectedGearName");
         }
 
         public void AddPower1()
@@ -399,6 +439,9 @@ namespace PgJsonObjects
 
                 Destination.Add(Power);
                 DestinationIndex = Destination.Count - 1;
+
+                NotifyPropertyChanged("ColorIndex");
+                NotifyPropertyChanged("SelectedGearName");
             }
         }
 
@@ -411,6 +454,9 @@ namespace PgJsonObjects
 
                 AvailablePowerList1.RemoveAt(Index);
                 SelectedPowerList1.Add(Power);
+
+                NotifyPropertyChanged("ColorIndex");
+                NotifyPropertyChanged("SelectedGearName");
             }
         }
 
@@ -423,6 +469,9 @@ namespace PgJsonObjects
 
                 AvailablePowerList2.RemoveAt(Index);
                 SelectedPowerList2.Add(Power);
+
+                NotifyPropertyChanged("ColorIndex");
+                NotifyPropertyChanged("SelectedGearName");
             }
         }
 
@@ -435,6 +484,9 @@ namespace PgJsonObjects
 
                 AvailablePowerList3.RemoveAt(Index);
                 SelectedPowerList3.Add(Power);
+
+                NotifyPropertyChanged("ColorIndex");
+                NotifyPropertyChanged("SelectedGearName");
             }
         }
 
@@ -447,6 +499,9 @@ namespace PgJsonObjects
 
                 AvailablePowerList4.RemoveAt(Index);
                 SelectedPowerList4.Add(Power);
+
+                NotifyPropertyChanged("ColorIndex");
+                NotifyPropertyChanged("SelectedGearName");
             }
         }
 
@@ -459,6 +514,9 @@ namespace PgJsonObjects
 
                 AvailablePowerList5.RemoveAt(Index);
                 SelectedPowerList5.Add(Power);
+
+                NotifyPropertyChanged("ColorIndex");
+                NotifyPropertyChanged("SelectedGearName");
             }
         }
 
@@ -585,6 +643,19 @@ namespace PgJsonObjects
                 _SelectedPowerIndex5 = -1;
                 NotifyPropertyChanged("SelectedPowerIndex5");
             }
+        }
+
+        private void SelectPowerWithPrefixOrSuffix(ICollection<PlanerSlotPower> PowerList, ref PlanerSlotPower FirstPower)
+        {
+            if (FirstPower != null)
+                return;
+
+            foreach (PlanerSlotPower Item in PowerList)
+                if (Item.Reference.Prefix != null || Item.Reference.Suffix != null)
+                {
+                    FirstPower = Item;
+                    break;
+                }
         }
 
         #region Implementation of INotifyPropertyChanged

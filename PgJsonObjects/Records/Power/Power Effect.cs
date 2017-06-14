@@ -14,7 +14,7 @@
             if (Effect.StartsWith("{") && Effect.EndsWith("}"))
                 return TryParseAttributeLink(Effect.Substring(1, Effect.Length - 2), ErrorInfo, out Result);
             else
-                return TryParseSimple(Effect, out Result);
+                return TryParseSimple(Effect, ErrorInfo, out Result);
         }
 
         private static bool TryParseAttributeLink(string Effect, ParseErrorInfo ErrorInfo, out PowerEffect Result)
@@ -51,36 +51,36 @@
             if (!Tools.TryParseFloat(AttributeEffect, out ParsedEffect, out ParsedEffectFormat))
                 return false;
 
+            PowerAttributeLink NewPowerEffect;
+
             if (Split.Length == 3)
             {
                 string AttributeSkill = Split[2];
                 PowerSkill ConvertedPowerSkill;
                 if (StringToEnumConversion<PowerSkill>.TryParse(AttributeSkill, out ConvertedPowerSkill, ErrorInfo))
-                {
-                    Result = new PowerAttributeLink(AttributeName, ParsedEffect, ParsedEffectFormat, ConvertedPowerSkill);
-                    return true;
-                }
+                    NewPowerEffect = new PowerAttributeLink(AttributeName, ParsedEffect, ParsedEffectFormat, ConvertedPowerSkill);
                 else
-                {
-                    Result = new PowerAttributeLink(AttributeName, ParsedEffect, ParsedEffectFormat);
-                    return true;
-                }
+                    NewPowerEffect = new PowerAttributeLink(AttributeName, ParsedEffect, ParsedEffectFormat);
             }
             else
-            {
-                Result = new PowerAttributeLink(AttributeName, ParsedEffect, ParsedEffectFormat);
-                return true;
-            }
+                NewPowerEffect = new PowerAttributeLink(AttributeName, ParsedEffect, ParsedEffectFormat);
+
+            Result = NewPowerEffect;
+            return true;
         }
 
-        private static bool TryParseSimple(string Effect, out PowerEffect Result)
+        private static bool TryParseSimple(string Effect, ParseErrorInfo ErrorInfo, out PowerEffect Result)
         {
             Result = null;
 
             if (Effect.Contains("{") || Effect.Contains("}"))
                 return false;
 
-            Result = new PowerSimpleEffect(Effect);
+            PowerSimpleEffect NewPowerEffect = new PowerSimpleEffect(Effect);
+            foreach (int Id in NewPowerEffect.IconIdList)
+                ErrorInfo.AddIconId(Id);
+
+            Result = NewPowerEffect;
             return true;
         }
     }

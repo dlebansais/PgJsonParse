@@ -40,6 +40,7 @@ namespace PgJsonObjects
             List<PowerEffect> EffectList = LastPowerTier.EffectList;
 
             string Name = "";
+            List<int> CombinedIdList = new List<int>();
             foreach (PowerEffect EffectItem in EffectList)
             {
                 PowerAttributeLink AsPowerAttributeLink;
@@ -56,6 +57,7 @@ namespace PgJsonObjects
 
                         bool IsPercent = PowerAttribute.IsLabelWithPercent;
                         string Label = PowerAttribute.LabelRippedOfPercent;
+
                         Name += Label;
 
                         if (AsPowerAttributeLink.AttributeEffect != 0)
@@ -82,18 +84,31 @@ namespace PgJsonObjects
                             }
                         }
                     }
+
+                    foreach (int Id in AsPowerAttributeLink.AttributeLink.IconIdList)
+                        if (!CombinedIdList.Contains(Id))
+                            CombinedIdList.Add(Id);
                 }
 
                 else if ((AsPowerSimpleEffect = EffectItem as PowerSimpleEffect) != null)
                 {
                     Name += AsPowerSimpleEffect.Description.Trim();
+
+                    foreach (int Id in AsPowerSimpleEffect.IconIdList)
+                        if (!CombinedIdList.Contains(Id))
+                            CombinedIdList.Add(Id);
                 }
             }
 
             this.Name = Name;
+
+            IconFileNameList = new List<string>();
+            foreach (int Id in CombinedIdList)
+                IconFileNameList.Add("icon_" + Id);
         }
 
         public Power Reference { get; private set; }
         public string Name { get; private set; }
+        public List<string> IconFileNameList { get; private set; }
     }
 }

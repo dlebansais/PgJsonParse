@@ -12,6 +12,7 @@
         <conv:FriendlyNameConverter x:Key="convFriendlyName"/>
         <conv:FileNameToBitmapImageConverter x:Key="convFileNameToBitmapImage"/>
         <conv:IntConverter x:Key="convInt"/>
+        <conv:IntToObjectConverter x:Key="convIntToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
         <conv:DoubleConverter x:Key="convDouble"/>
         <conv:RgbColorToBrushConverter x:Key="convRgbColorToBrush"/>
@@ -57,6 +58,14 @@
             <sys:String>Yes</sys:String>
             <x:Static Member="sys:String.Empty"/>
         </CompositeCollection>
+        <CompositeCollection x:Key="ModColorCodes">
+            <SolidColorBrush>White</SolidColorBrush>
+            <SolidColorBrush>Lime</SolidColorBrush>
+            <SolidColorBrush>Cyan</SolidColorBrush>
+            <SolidColorBrush>#E68080</SolidColorBrush>
+            <SolidColorBrush>Magenta</SolidColorBrush>
+            <SolidColorBrush>Yellow</SolidColorBrush>
+        </CompositeCollection>
         <DataTemplate x:Key="AttributeLinkTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding FriendlyName}" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
@@ -73,9 +82,20 @@
         </DataTemplate>
         <DataTemplate x:Key="AttributeLinkGearTemplate">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding FriendlyName}" Foreground="White" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
-                <TextBlock Foreground="White">:</TextBlock>
-                <TextBlock Text="{Binding FriendlyEffect}" Foreground="White" Width="150" Margin="5,0,0,0"/>
+                <Ellipse Fill="LightBlue" VerticalAlignment="Top" Width="5" Height="5" Margin="15,10,5,0"/>
+                <ItemsControl ItemsSource="{Binding Link.IconFileNameList}" Margin="0,5,0,5">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Converter={StaticResource convFileNameToBitmapImage}}" Width="32" Height="32"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <TextBlock Text="{Binding FriendlyNameAndEffect}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="25,5,0,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="SimpleEffectGearTemplate">
@@ -247,14 +267,29 @@
                                         <DataTemplate x:Key="PowerNameTemplate">
                                             <TextBlock Text="{Binding Name}"/>
                                         </DataTemplate>
-                                        <DataTemplate x:Key="PowerNameTemplateWhite">
-                                            <TextBlock Text="{Binding Name}" Foreground="White" TextWrapping="Wrap"/>
+                                        <DataTemplate x:Key="FullPowerTemplate">
+                                            <DockPanel>
+                                                <Ellipse DockPanel.Dock="Left" Fill="LightBlue" VerticalAlignment="Top" Width="5" Height="5" Margin="9,12,7,0"/>
+                                                <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding IconFileNameList}" VerticalAlignment="Top" Margin="0,5,0,5">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Image Source="{Binding Converter={StaticResource convFileNameToBitmapImage}}" Width="32" Height="32"/>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                </ItemsControl>
+                                                <TextBlock Text="{Binding Name}" Foreground="Lime" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" VerticalAlignment="Top" Margin="30,3,0,0"/>
+                                            </DockPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="548"/>
                                         <ColumnDefinition Width="250"/>
                                     </Grid.ColumnDefinitions>
                                     <DockPanel Grid.Column="0" Margin="0,0,5,0">
@@ -308,23 +343,55 @@
                                         <Button Content="Add -&gt;" Command="{StaticResource AddPowerCommand}" Margin="0,0,0,5"/>
                                         <Button Content="&lt;- Remove" Command="{StaticResource RemovePowerCommand}" Margin="0,5,0,0"/>
                                     </StackPanel>
-                                    <StackPanel Grid.Column="2" Margin="5,0,0,0" Background="Black">
-                                        <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
-                                            <Image Source="{Binding IconFileName, Converter={StaticResource convFileNameToBitmapImage}}"/>
-                                            <TextBlock Text="{Binding SelectedGearName, Converter={StaticResource convFriendlyName}}" VerticalAlignment="Center" Foreground="Red" FontSize="20" Margin="20,0,0,0"/>
-                                        </StackPanel>
-                                        <StackPanel Margin="40,20,10,10">
-                                            <TextBlock Text="{Binding SelectedGearDescription}" Foreground="White" TextWrapping="Wrap"/>
+                                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible" Margin="10,0,0,0">
+                                        <StackPanel Background="Black">
+                                            <DockPanel Margin="10,10,10,0">
+                                                <Image DockPanel.Dock="Left" Source="{Binding SelectedGearIcon, Converter={StaticResource convFileNameToBitmapImage}}" Width="48" Height="48" VerticalAlignment="Top"/>
+                                                <StackPanel Margin="10,2,5,0">
+                                                    <TextBlock Text="{Binding SelectedGearName, Converter={StaticResource convFriendlyName}}" Foreground="{Binding ColorIndex, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource ModColorCodes}, FallbackValue=White}" FontSize="28" FontWeight="Bold" FontFamily="Times New Roman" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                                                    <TextBlock Text="{Binding SelectedGearDescription}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="1,5,0,0"/>
+                                                </StackPanel>
+                                            </DockPanel>
                                             <ItemsControl ItemsSource="{Binding SelectedGearEffectDescriptionList}" ItemTemplateSelector="{StaticResource selItemEffectGear}" Margin="0,10,0,0"/>
+                                            <StackPanel Margin="0,10,0,10">
+                                                <ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                </ListBox>
+                                                <ListBox ItemsSource="{Binding SelectedPowerList2}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                </ListBox>
+                                                <ListBox ItemsSource="{Binding SelectedPowerList3}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                </ListBox>
+                                                <ListBox ItemsSource="{Binding SelectedPowerList4}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                </ListBox>
+                                                <ListBox ItemsSource="{Binding SelectedPowerList5}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                </ListBox>
+                                            </StackPanel>
                                         </StackPanel>
-                                        <StackPanel Margin="40,20,10,10">
-                                            <ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource PowerNameTemplateWhite}" SelectedIndex="{Binding SelectedPowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-                                            <ListBox ItemsSource="{Binding SelectedPowerList2}" ItemTemplate="{StaticResource PowerNameTemplateWhite}" SelectedIndex="{Binding SelectedPowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-                                            <ListBox ItemsSource="{Binding SelectedPowerList3}" ItemTemplate="{StaticResource PowerNameTemplateWhite}" SelectedIndex="{Binding SelectedPowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-                                            <ListBox ItemsSource="{Binding SelectedPowerList4}" ItemTemplate="{StaticResource PowerNameTemplateWhite}" SelectedIndex="{Binding SelectedPowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-                                            <ListBox ItemsSource="{Binding SelectedPowerList5}" ItemTemplate="{StaticResource PowerNameTemplateWhite}" SelectedIndex="{Binding SelectedPowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-                                        </StackPanel>
-                                    </StackPanel>
+                                    </ScrollViewer>
                                     <ListBox Grid.Column="3" x:Name="listGear" ItemsSource="{Binding SortedGearList}" ItemTemplate="{StaticResource GearNameTemplate}" SelectedIndex="{Binding SelectedGearIndex}" Margin="10,0,0,0"/>
                                 </Grid>
                             </DataTemplate>

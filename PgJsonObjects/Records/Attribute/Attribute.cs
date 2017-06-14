@@ -24,6 +24,18 @@ namespace PgJsonObjects
         public DisplayType DisplayType { get; private set; }
         public bool IsHidden { get { return RawIsHidden.HasValue && RawIsHidden.Value; } }
         private bool? RawIsHidden;
+
+        public List<string> IconFileNameList
+        {
+            get
+            {
+                List<string> Result = new List<string>();
+                foreach (int Id in IconIdList)
+                    Result.Add("icon_" + Id);
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Client Interface
@@ -52,7 +64,15 @@ namespace PgJsonObjects
 
         private void ParseIconIds(ArrayList RawIconIds, ParseErrorInfo ErrorInfo)
         {
-            ParseIntTable(RawIconIds, IconIdList, "IconIds", ErrorInfo, out IsIconIdListEmpty);
+            List<int> RawIconIdList = new List<int>();
+            ParseIntTable(RawIconIds, RawIconIdList, "IconIds", ErrorInfo, out IsIconIdListEmpty);
+
+            foreach (int Id in RawIconIdList)
+                if (!IconIdList.Contains(Id))
+                {
+                    IconIdList.Add(Id);
+                    ErrorInfo.AddIconId(Id);
+                }
         }
 
         private static void ParseFieldTooltip(Attribute This, object Value, ParseErrorInfo ErrorInfo)

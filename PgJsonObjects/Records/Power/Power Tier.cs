@@ -98,6 +98,8 @@ namespace PgJsonObjects
                         Skill SkillLink = Skill.ConnectPowerSkill(ErrorInfo, SkillTable, AsPowerAttributeLink.AttributeSkill, AsPowerAttributeLink.SkillLink, ref IsSkillParsed, ref IsConnected);
 
                         AsPowerAttributeLink.SetLinks(AttributeLink, SkillLink);
+                        foreach (int Id in AttributeLink.IconIdList)
+                            ErrorInfo.AddIconId(Id);
                     }
                 }
             }
