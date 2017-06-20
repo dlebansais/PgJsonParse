@@ -931,6 +931,15 @@ namespace PgJsonParse
             foreach (PgJsonObjects.XpTable Item in XpTableList)
                 Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
+            bool Continue;
+            do
+            {
+                Continue = false;
+                foreach (PgJsonObjects.Recipe Item in RecipeList)
+                    Item.MeasurePerfectCottonRatio(ref Continue);
+            }
+            while (Continue);
+
             CreateIndexes(ErrorInfo);
         }
 
@@ -1307,7 +1316,7 @@ namespace PgJsonParse
             string s2 = skill2.ToString();
             return string.Compare(s1, s2);
         }
-
+        
         private void RefreshBuildPlaner()
         {
             if (SlotPlanerList == null)
@@ -2108,6 +2117,8 @@ namespace PgJsonParse
                     break;
             }
 
+            Result.Sort(SortByName);
+
             foreach (object o in Result)
                 SearchResult.Add(o);
         }
@@ -2212,6 +2223,42 @@ namespace PgJsonParse
                 IsBackwardEnabled = true;
                 IsForwardEnabled = false;
             }
+        }
+
+        private string GetObjectSortString(object o)
+        {
+            if (o is Ability)
+                return (o as Ability).Name;
+
+            if (o is DirectedGoal)
+                return (o as DirectedGoal).Label;
+
+            if (o is Effect)
+                return (o as Effect).Name;
+
+            if (o is Item)
+                return (o as Item).Name;
+
+            if (o is Quest)
+                return (o as Quest).Name;
+
+            if (o is Recipe)
+                return (o as Recipe).Name;
+
+            if (o is Skill)
+                return (o as Skill).Name;
+
+            if (o is Power)
+                return (o as Power).ComposedName;
+
+            return "";
+        }
+
+        private int SortByName(object o1, object o2)
+        {
+            string s1 = GetObjectSortString(o1);
+            string s2 = GetObjectSortString(o2);
+            return string.Compare(s1, s2);
         }
 
         private List<object> SearchHistory;

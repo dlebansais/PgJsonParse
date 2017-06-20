@@ -79,7 +79,7 @@ namespace PgJsonObjects
         public bool? RawIsTemporary { get; private set; }
         public bool IsCrafted { get { return RawIsCrafted.HasValue && RawIsCrafted.Value; } }
         public bool? RawIsCrafted { get; private set; }
-        public Dictionary<ItemKeyword, float> KeywordTable { get; private set; }
+        public Dictionary<ItemKeyword, List<float>> KeywordTable { get; private set; }
         public List<RecipeItemKey> ItemKeyList { get; private set; }
         public List<ItemKeyword> EmptyKeywordList { get; private set; }
         public List<ItemKeyword> RepeatedKeywordList { get; private set; }
@@ -113,8 +113,15 @@ namespace PgJsonObjects
         public bool? RawDestroyWhenUsedUp { get; private set; }
 
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
-
         public bool HasBestowedRecipes { get { return BestowRecipeTable.Count > 0; } }
+
+        public float PerfectCottonRatio { get; private set; }
+
+        public void SetPerfectCottonRatio(float PerfectCottonRatioFromRecipe)
+        {
+            if (float.IsNaN(PerfectCottonRatio))
+                PerfectCottonRatio = PerfectCottonRatioFromRecipe;
+        }
 
         public string CombinedBestowedRecipes
         {
@@ -200,15 +207,26 @@ namespace PgJsonObjects
 
                 string Result = "";
 
-                foreach (KeyValuePair<ItemKeyword, float> Entry in KeywordTable)
+                foreach (KeyValuePair<ItemKeyword, List<float>> Entry in KeywordTable)
                 {
                     if (Result.Length > 0)
                         Result += ", ";
 
-                    if (EmptyKeywordList.Contains(Entry.Key) || Entry.Value == 0)
+                    if (EmptyKeywordList.Contains(Entry.Key) || (Entry.Value.Count == 1 && float.IsNaN(Entry.Value[0])))
                         Result += TextMaps.ItemKeywordTextMap[Entry.Key];
                     else
-                        Result += TextMaps.ItemKeywordTextMap[Entry.Key] + " (" + Entry.Value.ToString() + ")";
+                    {
+                        string Values = "";
+                        foreach (float f in Entry.Value)
+                        {
+                            if (Values.Length > 0)
+                                Values += ", ";
+
+                            Values += f.ToString();
+                        }
+
+                        Result += TextMaps.ItemKeywordTextMap[Entry.Key] + " (" + Values + ")";
+                    }
                 }
 
                 return Result;
@@ -544,6 +562,11 @@ namespace PgJsonObjects
         private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
         {
             InternalName = RawInternalName;
+
+            if (InternalName == "PerfectCotton")
+                PerfectCottonRatio = 1.0F;
+            else
+                PerfectCottonRatio = float.NaN;
         }
 
         private static void ParseFieldIsTemporary(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -597,7 +620,7 @@ namespace PgJsonObjects
                     if (Pairs.Length == 1)
                     {
                         KeyString = KeywordString.Trim();
-                        Value = 0;
+                        Value = float.NaN;
                     }
 
                     else if (Pairs.Length == 2)
@@ -621,28 +644,20 @@ namespace PgJsonObjects
                     if (!StringToEnumConversion<ItemKeyword>.TryParse(KeyString, out Key, ErrorInfo))
                         continue;
 
+                    List<float> ValueList;
                     if (KeywordTable.ContainsKey(Key))
-                    {
-                        if (KeywordTable[Key] == 0.0)
-                        {
-                            EmptyKeywordList.Add(Key);
-                            KeywordTable[Key] = Value;
-                        }
-
-                        else if (KeywordTable[Key] == Value)
-                            RepeatedKeywordList.Add(Key);
-
-                        else
-                            ErrorInfo.AddDuplicateString("Item Keywords", Key.ToString());
-                    }
+                        ValueList = KeywordTable[Key];
                     else
                     {
-                        KeywordTable.Add(Key, Value);
+                        ValueList = new List<float>();
+                        KeywordTable.Add(Key, ValueList);
 
                         RecipeItemKey ParsedKey;
                         if (StringToEnumConversion<RecipeItemKey>.TryParse(KeyString, out ParsedKey, null))
                             ItemKeyList.Add(ParsedKey);
                     }
+
+                    ValueList.Add(Value);
                 }
                 else
                 {
@@ -1038,8 +1053,9 @@ namespace PgJsonObjects
             {
                 Generator.OpenArray("Keywords");
 
-                foreach (KeyValuePair<ItemKeyword, float> Entry in KeywordTable)
-                    GenerateKeywordLine(Generator, Entry);
+                foreach (KeyValuePair<ItemKeyword, List<float>> Entry in KeywordTable)
+                    foreach (float f in Entry.Value)
+                    GenerateKeywordLine(Generator, Entry.Key, f);
 
                 Generator.CloseArray();
             }
@@ -1120,15 +1136,15 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
-        private void GenerateKeywordLine(JsonGenerator Generator, KeyValuePair<ItemKeyword, float> Entry)
+        private void GenerateKeywordLine(JsonGenerator Generator, ItemKeyword EntryKey, float EntryValue)
         {
-            if (EmptyKeywordList.Contains(Entry.Key))
-                Generator.AddString(null, Entry.Key.ToString());
+            if (EmptyKeywordList.Contains(EntryKey))
+                Generator.AddString(null, EntryKey.ToString());
 
-            if (Entry.Value == 0)
-                Generator.AddString(null, Entry.Key.ToString());
+            if (float.IsNaN(EntryValue))
+                Generator.AddString(null, EntryKey.ToString());
             else
-                Generator.AddString(null, Entry.Key.ToString() + "=" + Entry.Value.ToString(CultureInfo.InvariantCulture.NumberFormat));
+                Generator.AddString(null, EntryKey.ToString() + "=" + EntryValue.ToString(CultureInfo.InvariantCulture.NumberFormat));
         }
 
         public float GetWeight(WeightProfile WeightProfile)
@@ -1283,7 +1299,7 @@ namespace PgJsonObjects
             BestowRecipeTable = new Dictionary<string, Recipe>();
             EffectDescriptionList = new ObservableCollection<ItemEffect>();
             IsEffectDescriptionEmpty = false;
-            KeywordTable = new Dictionary<ItemKeyword, float>();
+            KeywordTable = new Dictionary<ItemKeyword, List<float>>();
             ItemKeyList = new List<RecipeItemKey>();
             EmptyKeywordList = new List<ItemKeyword>();
             RepeatedKeywordList = new List<ItemKeyword>();

@@ -56,6 +56,23 @@ namespace PgJsonObjects
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
         private bool? RawAttuneToCrafter;
 
+        public float PerfectCottonRatio
+        {
+            get
+            {
+                if (Item != null)
+                    return Item.PerfectCottonRatio;
+                else
+                    return 0;
+            }
+        }
+
+        public void SetPerfectCottonRatio(float RecipePerfectCottonRatio)
+        {
+            if (Item != null && StackSize > 0)
+                Item.SetPerfectCottonRatio(RecipePerfectCottonRatio / StackSize);
+        }
+
         public bool IsLinkedDescription
         {
             get

@@ -79,6 +79,7 @@ namespace PgJsonObjects
         public int? RawRewardSkillXpFirstTime { get; private set; }
 
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
+        public double? PerfectCottonRatio { get; private set; }
 
         public string CombinedSkill
         {
@@ -1159,6 +1160,31 @@ namespace PgJsonObjects
                 }
 
                 return Result;
+            }
+        }
+
+        public void MeasurePerfectCottonRatio(ref bool Continue)
+        {
+            float RecipePerfectCottonRatio = 0;
+
+            if (InternalName == "CottonThread" || InternalName == "FineCottonYarn")
+                RecipePerfectCottonRatio = 0;
+
+            foreach (RecipeItem Item in IngredientList)
+                if (Item != null && !float.IsNaN(Item.PerfectCottonRatio) && Item.PerfectCottonRatio > 0)
+                {
+                    float AddedPerfectCottonRatio = Item.PerfectCottonRatio * Item.StackSize;
+                    RecipePerfectCottonRatio += AddedPerfectCottonRatio;
+                }
+
+            foreach (RecipeItem Item in ResultItemList)
+                if (Item != null)
+                    Item.SetPerfectCottonRatio(RecipePerfectCottonRatio);
+
+            if ((!PerfectCottonRatio.HasValue && RecipePerfectCottonRatio > 0) || (PerfectCottonRatio.HasValue && PerfectCottonRatio.Value != RecipePerfectCottonRatio))
+            {
+                PerfectCottonRatio = RecipePerfectCottonRatio;
+                Continue = true;
             }
         }
         #endregion
