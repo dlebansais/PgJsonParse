@@ -8,7 +8,9 @@ namespace PgJsonObjects
     public class Item : GenericJsonObject<Item>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "Item"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "BestowRecipes", ParseFieldBestowRecipes },
             { "BestowAbility", ParseFieldBestowAbility },
@@ -50,7 +52,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public Dictionary<string, Recipe> BestowRecipeTable { get; private set; }
+        public Dictionary<string, Recipe> BestowRecipeTable { get; } = new Dictionary<string, Recipe>();
         public Ability BestowAbility { get; private set; }
         private string RawBestowAbility;
         private bool IsRawBestowAbilityParsed;
@@ -67,7 +69,7 @@ namespace PgJsonObjects
         public int? RawCraftingTargetLevel { get; private set; }
         public string Description { get; private set; }
         public ItemDroppedAppearance DroppedAppearance { get; private set; }
-        public ObservableCollection<ItemEffect> EffectDescriptionList { get; private set; }
+        public ObservableCollection<ItemEffect> EffectDescriptionList { get; } = new ObservableCollection<ItemEffect>();
         public bool IsEffectDescriptionEmpty { get; private set; }
         public uint? DyeColor { get; private set; }
         public string EquipAppearance { get; private set; }
@@ -79,10 +81,10 @@ namespace PgJsonObjects
         public bool? RawIsTemporary { get; private set; }
         public bool IsCrafted { get { return RawIsCrafted.HasValue && RawIsCrafted.Value; } }
         public bool? RawIsCrafted { get; private set; }
-        public Dictionary<ItemKeyword, List<float>> KeywordTable { get; private set; }
-        public List<RecipeItemKey> ItemKeyList { get; private set; }
-        public List<ItemKeyword> EmptyKeywordList { get; private set; }
-        public List<ItemKeyword> RepeatedKeywordList { get; private set; }
+        public Dictionary<ItemKeyword, List<float>> KeywordTable { get; } = new Dictionary<ItemKeyword, List<float>>();
+        public List<RecipeItemKey> ItemKeyList { get; } = new List<RecipeItemKey>();
+        public List<ItemKeyword> EmptyKeywordList { get; } = new List<ItemKeyword>();
+        public List<ItemKeyword> RepeatedKeywordList { get; } = new List<ItemKeyword>();
         public Quest MacGuffinQuestName { get; private set; }
         private string RawMacGuffinQuestName;
         private bool IsRawMacGuffinQuestNameParsed;
@@ -96,14 +98,14 @@ namespace PgJsonObjects
         public int? RawMetabolismCost { get; private set; }
         public string Name { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
-        public List<AbilityRequirement> OtherRequirementList { get; private set; }
-        public List<ItemSkillLink> SkillRequirementList { get; private set; }
+        public List<AbilityRequirement> OtherRequirementList { get; } = new List<AbilityRequirement>();
+        public List<ItemSkillLink> SkillRequirementList { get; } = new List<ItemSkillLink>();
         public double UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
         public double? RawUseDelay { get; private set; }
         public ItemUseAnimation UseDelayAnimation { get; private set; }
         public ItemUseAnimation UseAnimation { get; private set; }
         public List<uint> StockDye { get; private set; }
-        public List<ItemUseRequirement> UseRequirementList { get; private set; }
+        public List<ItemUseRequirement> UseRequirementList { get; } = new List<ItemUseRequirement>();
         public ItemUseVerb UseVerb { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get; private set; }
@@ -1290,36 +1292,11 @@ namespace PgJsonObjects
             }
         }
 
-        private List<string> RawBestowRecipesList;
+        private List<string> RawBestowRecipesList { get; } = new List<string>();
         private bool RawBestowRecipesListIsEmpty;
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "Item"; } }
-
-        protected override void InitializeFields()
-        {
-            RawBestowRecipesList = new List<string>();
-            BestowRecipeTable = new Dictionary<string, Recipe>();
-            EffectDescriptionList = new ObservableCollection<ItemEffect>();
-            IsEffectDescriptionEmpty = false;
-            KeywordTable = new Dictionary<ItemKeyword, List<float>>();
-            ItemKeyList = new List<RecipeItemKey>();
-            EmptyKeywordList = new List<ItemKeyword>();
-            RepeatedKeywordList = new List<ItemKeyword>();
-            SkillRequirementList = new List<ItemSkillLink>();
-            UseRequirementList = new List<ItemUseRequirement>();
-            OtherRequirementList = new List<AbilityRequirement>();
-            /*
-            OtherRequirement = OtherRequirementType.Internal_None;
-            CurHealth = 0;
-            RequiredRace = Race.Internal_None;
-            RequiredForm = AnimalForm.Internal_None;
-            */
-            StockDye = null;
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;

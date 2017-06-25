@@ -6,7 +6,9 @@ namespace PgJsonObjects
     public class XpTable : GenericJsonObject<XpTable>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "XpTable"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "InternalName", ParseFieldInternalName },
             { "XpAmounts", ParseFieldXpAmounts },
@@ -15,8 +17,9 @@ namespace PgJsonObjects
 
         #region Properties
         public string InternalName { get; private set; }
-        public List<int> XpAmountList { get; private set; }
-        private bool IsXpAmountListEmpty;
+        public XpTableEnum EnumName { get; private set; }
+        public List<XpTableLevel> XpAmountList { get; } = new List<XpTableLevel>();
+        private bool IsXpAmountListEmpty = true;
 
         protected override string SortingName { get { return InternalName; } }
         #endregion
@@ -33,7 +36,11 @@ namespace PgJsonObjects
 
         private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
         {
+            XpTableEnum ParsedEnumName;
             InternalName = RawInternalName;
+
+            StringToEnumConversion<XpTableEnum>.TryParse(RawInternalName, out ParsedEnumName, ErrorInfo);
+            EnumName = ParsedEnumName;
         }
 
         private static void ParseFieldXpAmounts(XpTable This, object Value, ParseErrorInfo ErrorInfo)
@@ -47,7 +54,17 @@ namespace PgJsonObjects
 
         private void ParseXpAmounts(ArrayList RawXpAmounts, ParseErrorInfo ErrorInfo)
         {
-            ParseIntTable(RawXpAmounts, XpAmountList, "XpAmounts", ErrorInfo, out IsXpAmountListEmpty);
+            List<int> XpList = new List<int>();
+            ParseIntTable(RawXpAmounts, XpList, "XpAmounts", ErrorInfo, out IsXpAmountListEmpty);
+
+            int Level = 0;
+            int TotalXp = 0;
+            foreach (int Xp in XpList)
+            {
+                TotalXp += Xp;
+                Level++;
+                XpAmountList.Add(new XpTableLevel(Level, Xp, TotalXp));
+            }
         }
 
         public override void GenerateObjectContent(JsonGenerator Generator)
@@ -91,15 +108,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "XpTable"; } }
-
-        protected override void InitializeFields()
-        {
-            XpAmountList = new List<int>();
-            IsXpAmountListEmpty = true;
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;

@@ -5,7 +5,9 @@ namespace PgJsonObjects
     public class RecipeCost : GenericJsonObject<RecipeCost>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "RecipeCost"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Currency", ParseFieldCurrency },
             { "Price", ParseFieldPrice },
@@ -95,9 +97,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "RecipeCost"; } }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;

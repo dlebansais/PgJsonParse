@@ -6,6 +6,8 @@ namespace PgJsonObjects
     public class RecipeItem : GenericJsonObject<RecipeItem>
     {
         #region Constant
+        protected override string FieldTableName { get { return "RecipeItem"; } }
+
         public static readonly Dictionary<RecipeItemKey, string> RecipeItemKeyStringMap = new Dictionary<RecipeItemKey, string>()
         {
             { RecipeItemKey.EquipmentSlot_MainHand, "EquipmentSlot:MainHand" },
@@ -23,7 +25,7 @@ namespace PgJsonObjects
             { RecipeItemKey.MinRarity_Uncommon, "MinRarity:Uncommon" },
         };
 
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "ItemCode", ParseFieldItemCode },
             { "StackSize", ParseFieldStackSize },
@@ -46,7 +48,8 @@ namespace PgJsonObjects
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 1.0; } }
         private double? RawPercentChance;
         public RecipeItemKey ItemKey { get; private set; }
-        public List<Item> MatchingKeyItemList { get; private set; }
+        public List<Item> MatchingKeyItemList { get; } = new List<Item>();
+        private bool IsMatchingKeyItemListBuilt;
         private bool IsItemKeyParsed;
         public string Desc { get; private set; }
         public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 1.0; } }
@@ -339,14 +342,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "RecipeItem"; } }
-
-        protected override void InitializeFields()
-        {
-            MatchingKeyItemList = new List<Item>();
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -382,7 +377,14 @@ namespace PgJsonObjects
                         break;
 
                     default:
-                        MatchingKeyItemList = Item.ConnectByKey(ErrorInfo, ItemTable, ItemKey, MatchingKeyItemList, ref IsItemKeyParsed, ref IsConnected, this);
+                        if (!IsMatchingKeyItemListBuilt)
+                        {
+                            IsMatchingKeyItemListBuilt = true;
+
+                            List<Item> ParsedList = new List<Item>();
+                            ParsedList = Item.ConnectByKey(ErrorInfo, ItemTable, ItemKey, ParsedList, ref IsItemKeyParsed, ref IsConnected, this);
+                            MatchingKeyItemList.AddRange(ParsedList);
+                        }
                         break;
                 }
             }

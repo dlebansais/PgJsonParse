@@ -6,7 +6,9 @@ namespace PgJsonObjects
     public class SpecialValue : GenericJsonObject<SpecialValue>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "SpecialValue"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Label", ParseFieldLabel },
             { "Suffix", ParseFieldSuffix },
@@ -24,9 +26,9 @@ namespace PgJsonObjects
         public string Suffix { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         private double? RawValue;
-        public Dictionary<string, Attribute> AttributesThatDeltaTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatModTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatModBaseTable { get; private set; }
+        public Dictionary<string, Attribute> AttributesThatDeltaTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatModTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatModBaseTable { get; } = new Dictionary<string, Attribute>();
         public bool DisplayAsPercent { get { return RawDisplayAsPercent.HasValue && RawDisplayAsPercent.Value; } }
         private bool? RawDisplayAsPercent;
         public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
@@ -174,28 +176,15 @@ namespace PgJsonObjects
             }
         }
 
-        private List<string> RawAttributesThatDeltaList;
+        private List<string> RawAttributesThatDeltaList { get; } = new List<string>();
         private bool RawAttributesThatDeltaListIsEmpty;
-        private List<string> RawAttributesThatModList;
+        private List<string> RawAttributesThatModList { get; } = new List<string>();
         private bool RawAttributesThatModListIsEmpty;
-        private List<string> RawAttributesThatModBaseList;
+        private List<string> RawAttributesThatModBaseList { get; } = new List<string>();
         private bool RawAttributesThatModBaseListIsEmpty;
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "SpecialValue"; } }
-
-        protected override void InitializeFields()
-        {
-            RawAttributesThatDeltaList = new List<string>();
-            AttributesThatDeltaTable = new Dictionary<string, Attribute>();
-            RawAttributesThatModList = new List<string>();
-            AttributesThatModTable = new Dictionary<string, Attribute>();
-            RawAttributesThatModBaseList = new List<string>();
-            AttributesThatModBaseTable = new Dictionary<string, Attribute>();
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;

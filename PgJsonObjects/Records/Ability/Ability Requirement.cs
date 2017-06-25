@@ -6,7 +6,9 @@ namespace PgJsonObjects
     public class AbilityRequirement : GenericJsonObject<AbilityRequirement>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "AbilityRequirement"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "T", ParseFieldT },
             { "Keyword", ParseFieldKeyword },
@@ -37,9 +39,9 @@ namespace PgJsonObjects
         public double Health { get { return RawHealth.HasValue ? RawHealth.Value : 0; } }
         private double? RawHealth;
         public Race AllowedRace { get; private set; }
-        public List<Race> AllowedRaceList { get; private set; }
+        public List<Race> AllowedRaceList { get; } = new List<Race>();
         public Appearance Appearance { get; private set; }
-        public List<Appearance> AppearanceList { get; private set; }
+        public List<Appearance> AppearanceList { get; } = new List<Appearance>();
         public string ErrorMsg { get; private set; }
         public DisallowedState DisallowedState { get; private set; }
         public RecipeKeyword PetTypeTag { get; private set; }
@@ -527,18 +529,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "AbilityRequirement"; } }
-
-        protected override void InitializeFields()
-        {
-            AllowedRaceList = new List<Race>();
-            AppearanceList = new List<Appearance>();
-            RecipeKnown = null;
-            RawRecipeKnown = null;
-            IsRawRecipeKnownParsed = false;
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;

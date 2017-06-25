@@ -5,8 +5,10 @@ namespace PgJsonObjects
 {
     public class AbilityPvX : GenericJsonObject<AbilityPvX>
     {
-        #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        #region Parsing
+        protected override string FieldTableName { get { return "AbilityPvX"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Damage", ParseFieldDamage },
             { "ExtraDamageIfTargetVulnerable", ParseFieldExtraDamageIfTargetVulnerable },
@@ -62,15 +64,15 @@ namespace PgJsonObjects
         private double? RawRageMultiplier;
         public double Accuracy { get { return RawAccuracy.HasValue ? RawAccuracy.Value : 0; } }
         private double? RawAccuracy;
-        public Dictionary<string, Attribute> AttributesThatDeltaDamageTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatModDamageTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatModBaseDamageTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatDeltaTauntTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatModTauntTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatDeltaRageTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatModRageTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatDeltaRangeTable { get; private set; }
-        public List<SpecialValue> SpecialValueList { get; private set; }
+        public Dictionary<string, Attribute> AttributesThatDeltaDamageTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatModDamageTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatModBaseDamageTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatDeltaTauntTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatModTauntTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatDeltaRageTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatModRageTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatDeltaRangeTable { get; } = new Dictionary<string, Attribute>();
+        public List<SpecialValue> SpecialValueList { get; } = new List<SpecialValue>();
         public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
         private int? RawTauntDelta;
         public int TempTauntDelta { get { return RawTempTauntDelta.HasValue ? RawTempTauntDelta.Value : 0; } }
@@ -508,49 +510,25 @@ namespace PgJsonObjects
             }
         }
 
-        private List<string> RawAttributesThatDeltaDamageList;
+        private List<string> RawAttributesThatDeltaDamageList { get; } = new List<string>();
         private bool RawAttributesThatDeltaDamageListIsEmpty;
-        private List<string> RawAttributesThatModDamageList;
+        private List<string> RawAttributesThatModDamageList { get; } = new List<string>();
         private bool RawAttributesThatModDamageListIsEmpty;
-        private List<string> RawAttributesThatModBaseDamageList;
+        private List<string> RawAttributesThatModBaseDamageList { get; } = new List<string>();
         private bool RawAttributesThatModBaseDamageListIsEmpty;
-        private List<string> RawAttributesThatDeltaTauntList;
+        private List<string> RawAttributesThatDeltaTauntList { get; } = new List<string>();
         private bool RawAttributesThatDeltaTauntListIsEmpty;
-        private List<string> RawAttributesThatModTauntList;
+        private List<string> RawAttributesThatModTauntList { get; } = new List<string>();
         private bool RawAttributesThatModTauntListIsEmpty;
-        private List<string> RawAttributesThatDeltaRageList;
+        private List<string> RawAttributesThatDeltaRageList { get; } = new List<string>();
         private bool RawAttributesThatDeltaRageListIsEmpty;
-        private List<string> RawAttributesThatModRageList;
+        private List<string> RawAttributesThatModRageList { get; } = new List<string>();
         private bool RawAttributesThatModRageListIsEmpty;
-        private List<string> RawAttributesThatDeltaRangeList;
+        private List<string> RawAttributesThatDeltaRangeList { get; } = new List<string>();
         private bool RawAttributesThatDeltaRangeListIsEmpty;
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "AbilityPvX"; } }
-
-        protected override void InitializeFields()
-        {
-            RawAttributesThatDeltaDamageList = new List<string>();
-            AttributesThatDeltaDamageTable = new Dictionary<string, Attribute>();
-            RawAttributesThatModDamageList = new List<string>();
-            AttributesThatModDamageTable = new Dictionary<string, Attribute>();
-            RawAttributesThatModBaseDamageList = new List<string>();
-            AttributesThatModBaseDamageTable = new Dictionary<string, Attribute>();
-            RawAttributesThatDeltaTauntList = new List<string>();
-            AttributesThatDeltaTauntTable = new Dictionary<string, Attribute>();
-            RawAttributesThatModTauntList = new List<string>();
-            AttributesThatModTauntTable = new Dictionary<string, Attribute>();
-            RawAttributesThatDeltaRageList = new List<string>();
-            AttributesThatDeltaRageTable = new Dictionary<string, Attribute>();
-            RawAttributesThatModRageList = new List<string>();
-            AttributesThatModRageTable = new Dictionary<string, Attribute>();
-            RawAttributesThatDeltaRangeList = new List<string>();
-            AttributesThatDeltaRangeTable = new Dictionary<string, Attribute>();
-            SpecialValueList = new List<SpecialValue>();
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;

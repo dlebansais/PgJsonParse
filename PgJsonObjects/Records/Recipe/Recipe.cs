@@ -7,7 +7,9 @@ namespace PgJsonObjects
     public class Recipe : GenericJsonObject<Recipe>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "Recipe"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Description", ParseFieldDescription },
             { "IconId", ParseFieldIconId },
@@ -41,28 +43,28 @@ namespace PgJsonObjects
         public string Description { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         private int? RawIconId;
-        public List<RecipeItem> IngredientList { get; private set; }
+        public List<RecipeItem> IngredientList { get; } = new List<RecipeItem>();
         private bool EmptyIngredientList;
         public string InternalName { get; private set; }
         public string Name { get; private set; }
-        public List<RecipeItem> ResultItemList { get; private set; }
+        public List<RecipeItem> ResultItemList { get; } = new List<RecipeItem>();
         private bool EmptyResultItemList;
         public PowerSkill Skill { get; private set; }
         public Skill ConnectedSkill { get; private set; }
         private bool IsSkillParsed;
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; private set; }
-        public List<RecipeResultEffect> ResultEffectList { get; private set; }
+        public List<RecipeResultEffect> ResultEffectList { get; } = new List<RecipeResultEffect>();
         public PowerSkill SortSkill { get; private set; }
         public Skill ConnectedSortSkill { get; private set; }
         private bool IsSortSkillParsed;
-        public List<RecipeKeyword> KeywordList { get; private set; }
+        public List<RecipeKeyword> KeywordList { get; } = new List<RecipeKeyword>();
         public RecipeAction ActionLabel { get; private set; }
         public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
         public int? RawUsageDelay { get; private set; }
         public string UsageDelayMessage { get; private set; }
         public RecipeUsageAnimation UsageAnimation { get; private set; }
-        public List<AbilityRequirement> OtherRequirementList { get; private set; }
+        public List<AbilityRequirement> OtherRequirementList { get; } = new List<AbilityRequirement>();
         public RecipeCost Cost { get; private set; }
         public int NumResultItems { get { return RawNumResultItems.HasValue ? RawNumResultItems.Value : 0; } }
         public int? RawNumResultItems { get; private set; }
@@ -205,7 +207,7 @@ namespace PgJsonObjects
         {
             List<RecipeItem> ParsedIngredientList;
             JsonObjectParser<RecipeItem>.InitAsSublist(RawIngredients, out ParsedIngredientList, ErrorInfo);
-            IngredientList = ParsedIngredientList;
+            IngredientList.AddRange(ParsedIngredientList);
             EmptyIngredientList = (IngredientList.Count == 0);
         }
 
@@ -250,7 +252,7 @@ namespace PgJsonObjects
         {
             List<RecipeItem> ParsedResultItemList;
             JsonObjectParser<RecipeItem>.InitAsSublist(RawResultItems, out ParsedResultItemList, ErrorInfo);
-            ResultItemList = ParsedResultItemList;
+            ResultItemList.AddRange(ParsedResultItemList);
             EmptyResultItemList = (ResultItemList.Count == 0);
         }
 
@@ -1192,18 +1194,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "Recipe"; } }
-
-        protected override void InitializeFields()
-        {
-            IngredientList = new List<RecipeItem>();
-            KeywordList = new List<RecipeKeyword>();
-            OtherRequirementList = new List<AbilityRequirement>();
-            ResultEffectList = new List<RecipeResultEffect>();
-            ResultItemList = new List<RecipeItem>();
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;

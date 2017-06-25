@@ -6,7 +6,9 @@ namespace PgJsonObjects
     public class QuestObjective : GenericJsonObject<QuestObjective>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "QuestObjective"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Type", ParseFieldType },
             { "Target", ParseFieldTarget },
@@ -36,7 +38,7 @@ namespace PgJsonObjects
         public string Description { get; private set; }
         public int Number { get { return RawNumber.HasValue ? RawNumber.Value : 0; } }
         private int? RawNumber;
-        public List<string> InteractionFlagList { get; private set; }
+        public List<string> InteractionFlagList { get; } = new List<string>();
         public Item QuestItem { get; private set; }
         private string RawItemName;
         private bool IsItemNameParsed;
@@ -417,17 +419,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "QuestObjective"; } }
-
-        protected override void InitializeFields()
-        {
-            InteractionFlagList = new List<string>();
-            QuestItem = null;
-            RawItemName = null;
-            IsItemNameParsed = false;
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;

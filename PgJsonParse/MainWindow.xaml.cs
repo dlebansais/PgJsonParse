@@ -2787,5 +2787,13 @@ namespace PgJsonParse
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        private void OnContentTemplateLostFocus(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement AsFrameworkElement = sender as FrameworkElement;
+            System.Windows.Controls.Primitives.ToggleButton Button = AsFrameworkElement.FindName("buttonXpTable") as System.Windows.Controls.Primitives.ToggleButton;
+            if (Button.IsChecked.HasValue && Button.IsChecked.Value == true)
+                Button.IsChecked = false;
+        }
     }
 }

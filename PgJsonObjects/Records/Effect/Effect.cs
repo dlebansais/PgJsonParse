@@ -6,6 +6,8 @@ namespace PgJsonObjects
     public class Effect : GenericJsonObject<Effect>
     {
         #region Constants
+        protected override string FieldTableName { get { return "Effect"; } }
+
         public static readonly Dictionary<EffectStackingType, string> StackingTypeStringMap = new Dictionary<EffectStackingType, string>()
         {
             { EffectStackingType.LamiasGaze, "Lamia's Gaze" },
@@ -17,7 +19,7 @@ namespace PgJsonObjects
             { EffectKeyword.Hyphen, "-" },
         };
 
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Name", ParseFieldName },
             { "Desc", ParseFieldDesc },
@@ -46,9 +48,9 @@ namespace PgJsonObjects
         public int? RawStackingPriority { get; private set; }
         public int Duration { get { return RawDuration.HasValue ? RawDuration.Value : 0; } }
         public int? RawDuration { get; private set; }
-        public List<EffectKeyword> KeywordList { get; private set; }
+        public List<EffectKeyword> KeywordList { get; } = new List<EffectKeyword>();
         public bool IsKeywordListEmpty { get; private set; }
-        public List<AbilityKeyword> AbilityKeywordList { get; private set; }
+        public List<AbilityKeyword> AbilityKeywordList { get; } = new List<AbilityKeyword>();
         public bool IsAbilityKeywordListEmpty { get; private set; }
 
         protected override string SortingName { get { return Name; } }
@@ -370,17 +372,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "Effect"; } }
-
-        protected override void InitializeFields()
-        {
-            KeywordList = new List<EffectKeyword>();
-            IsKeywordListEmpty = false;
-            AbilityKeywordList = new List<AbilityKeyword>();
-            IsAbilityKeywordListEmpty = false;
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;

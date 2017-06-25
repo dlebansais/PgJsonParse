@@ -166,6 +166,8 @@
     <Compile Include="Records\Skill\Skill Reward Recipe.cs" />
     <Compile Include="Records\Skill\Skill Reward Unlock.cs" />
     <Compile Include="Records\Skill\Skill.cs" />
+    <Compile Include="Records\Xp Table\Xp Table Enum.cs" />
+    <Compile Include="Records\Xp Table\Xp Table Level.cs" />
     <Compile Include="Records\Xp Table\Xp Table.cs" />
     <Compile Include="String To Enum Conversion.cs" />
     <Compile Include="Text Maps.cs" />

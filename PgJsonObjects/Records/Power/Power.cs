@@ -6,7 +6,9 @@ namespace PgJsonObjects
     public class Power : GenericJsonObject<Power>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "Power"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Prefix", ParseFieldPrefix },
             { "Suffix", ParseFieldSuffix },
@@ -20,33 +22,41 @@ namespace PgJsonObjects
         #region Properties
         public string Prefix { get; private set; }
         public string Suffix { get; private set; }
-        public Dictionary<int, PowerTier> TierEffectTable { get; private set; }
-        public List<string> CombinedTierList { get; private set; }
-        public List<ItemSlot> SlotList { get; private set; }
+        public Dictionary<int, PowerTier> TierEffectTable { get; } = new Dictionary<int, PowerTier>();
+        public List<string> CombinedTierList { get; } = new List<string>();
+        private bool IsCombinedTierListBuilt;
+        public List<ItemSlot> SlotList { get; } = new List<ItemSlot>();
         public PowerSkill Skill { get; private set; }
         public Skill ConnectedSkill { get; private set; }
         private bool IsSkillParsed;
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; private set; }
 
-        protected override string SortingName { get { return (Prefix != null ? Prefix : "") + (Suffix != null ? Suffix : ""); } }
+        protected override string SortingName { get { return ComposedName; } }
 
         public string ComposedName
         {
             get
             {
-                string Result = "";
+                string Result;
 
-                if (Prefix != null)
-                    Result += Prefix;
-
-                if (Suffix != null)
+                if (Prefix != null || Suffix != null)
                 {
-                    if (Result.Length > 0)
-                        Result += " ";
+                    Result = "";
 
-                    Result += Suffix;
+                    if (Prefix != null)
+                        Result += Prefix;
+
+                    if (Suffix != null)
+                    {
+                        if (Result.Length > 0)
+                            Result += " ";
+
+                        Result += Suffix;
+                    }
                 }
+                else
+                    Result = "(no name)";
 
                 return Result;
             }
@@ -273,15 +283,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "Power"; } }
-
-        protected override void InitializeFields()
-        {
-            TierEffectTable = new Dictionary<int, PowerTier>();
-            SlotList = new List<ItemSlot>();
-        }
-
         private static string PrepareTier(int Level, string s)
         {
             return "Tier " + Level + ": " + s;
@@ -315,9 +316,9 @@ namespace PgJsonObjects
             if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
                 ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
 
-            if (CombinedTierList == null)
+            if (!IsCombinedTierListBuilt)
             {
-                CombinedTierList = new List<string>();
+                IsCombinedTierListBuilt = true;
 
                 foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
                 {

@@ -7,9 +7,9 @@ namespace PgJsonObjects
     public class Quest : GenericJsonObject<Quest>
     {
         #region Constants
-        public const int SearchResultIconId = 2118;
+        protected override string FieldTableName { get { return "Quest"; } }
 
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "InternalName", ParseFieldInternalName },
             { "Name", ParseFieldName },
@@ -51,6 +51,8 @@ namespace PgJsonObjects
             { "Level", ParseFieldLevel },
             { "WorkOrderSkill", ParseFieldWorkOrderSkill },
         };
+
+        public const int SearchResultIconId = 2118;
         #endregion
 
         #region Properties
@@ -64,9 +66,9 @@ namespace PgJsonObjects
         private int? RawReuseTimeMinutes;
         public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
         public bool? RawIsCancellable { get; private set; }
-        public List<QuestObjective> QuestObjectiveList { get; set; }
-        public List<QuestRewardXp> RewardsXPList { get; private set; }
-        public List<QuestRewardItem> QuestRewardsItemList { get; private set; }
+        public List<QuestObjective> QuestObjectiveList { get; } = new List<QuestObjective>();
+        public List<QuestRewardXp> RewardsXPList { get; } = new List<QuestRewardXp>();
+        public List<QuestRewardItem> QuestRewardsItemList { get; } = new List<QuestRewardItem>();
         public int ReuseTimeDays { get { return RawReuseTimeDays.HasValue ? RawReuseTimeDays.Value : 0; } }
         private int? RawReuseTimeDays;
         public Quest PrerequisiteQuest { get; private set; }
@@ -111,15 +113,15 @@ namespace PgJsonObjects
         public int? RawRewardGuildXp { get; private set; }
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
         public int? RawRewardGuildCredits { get; private set; }
-        public List<QuestRewardItem> PreGiveItemList { get; private set; }
+        public List<QuestRewardItem> PreGiveItemList { get; } = new List<QuestRewardItem>();
         public int TSysLevel { get { return RawTSysLevel.HasValue ? RawTSysLevel.Value : 0; } }
         public int? RawTSysLevel { get; private set; }
         public int RewardGold { get { return RawRewardGold.HasValue ? RawRewardGold.Value : 0; } }
         public int? RawRewardGold { get; private set; }
         public string RewardsNamedLootProfile { get; private set; }
         public List<Recipe> PreGiveRecipeList { get; private set; }
-        private List<string> RawPreGiveRecipeList;
-        public List<QuestKeyword> KeywordList { get; private set; }
+        private List<string> RawPreGiveRecipeList { get; } = new List<string>();
+        public List<QuestKeyword> KeywordList { get; } = new List<QuestKeyword>();
         public Effect RewardEffect { get; private set; }
         private string RawRewardEffect;
         private bool IsRawRewardEffectParsed;
@@ -544,7 +546,7 @@ namespace PgJsonObjects
         {
             List<QuestObjective> ParsedQuestObjectiveList;
             JsonObjectParser<QuestObjective>.InitAsSublist(RawObjectives, out ParsedQuestObjectiveList, ErrorInfo);
-            QuestObjectiveList = ParsedQuestObjectiveList;
+            QuestObjectiveList.AddRange(ParsedQuestObjectiveList);
         }
 
         private static void ParseFieldRewardsXP(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -589,7 +591,7 @@ namespace PgJsonObjects
         {
             List<QuestRewardItem> ParsedRewardItemList;
             JsonObjectParser<QuestRewardItem>.InitAsSublist(RawRewardsItems, out ParsedRewardItemList, ErrorInfo);
-            QuestRewardsItemList = ParsedRewardItemList;
+            QuestRewardsItemList.AddRange(ParsedRewardItemList);
         }
 
         private static void ParseFieldReuseTimeDays(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -1103,7 +1105,7 @@ namespace PgJsonObjects
         {
             List<QuestRewardItem> ParsedPreGiveItemList;
             JsonObjectParser<QuestRewardItem>.InitAsSublist(RawPreGiveItems, out ParsedPreGiveItemList, ErrorInfo);
-            PreGiveItemList = ParsedPreGiveItemList;
+            PreGiveItemList.AddRange(ParsedPreGiveItemList);
         }
 
         private static void ParseFieldTSysLevel(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -1404,37 +1406,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "Quest"; } }
-
-        protected override void InitializeFields()
-        {
-            QuestObjectiveList = new List<QuestObjective>();
-            QuestRewardsItemList = new List<QuestRewardItem>();
-            RewardsXPList = new List<QuestRewardXp>();
-            PreGiveItemList = new List<QuestRewardItem>();
-            PreGiveRecipeList = null;
-            RawPreGiveRecipeList = new List<string>();
-            KeywordList = new List<QuestKeyword>();
-            RewardSkill = PowerSkill.Internal_None;
-            RewardSkillXp = 0;
-            RewardRecipe = null;
-            RawRewardRecipe = null;
-            IsRawRewardRecipeParsed = false;
-            RequirementFavorNpc = null;
-            RequirementFavorLevel = Favor.Internal_None;
-            RequirementQuest = null;
-            RequirementGuildQuest = null;
-            RequirementSkill = PowerSkill.Internal_None;
-            RequirementSkillLevel = 0;
-            PrerequisiteQuest = null;
-            RawPrerequisiteQuest = null;
-            IsRawPrerequisiteParsed = false;
-            RewardEffect = null;
-            RawRewardEffect = null;
-            IsRawRewardEffectParsed = false;
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;

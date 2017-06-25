@@ -5,7 +5,9 @@ namespace PgJsonObjects
     public class Advancement : GenericJsonObject<Advancement>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "Advancement"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "VULNERABILITY", null },
             { "MITIGATION", null },
@@ -75,10 +77,10 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public Dictionary<DamageType, double> VulnerabilityTable { get; private set; }
-        public Dictionary<DamageType, double> MitigationTable { get; private set; }
-        public Dictionary<DamageType, double> DirectModTable { get; private set; }
-        public Dictionary<DamageType, double> IndirectModTable { get; private set; }
+        public Dictionary<DamageType, double> VulnerabilityTable { get; } = new Dictionary<DamageType, double>();
+        public Dictionary<DamageType, double> MitigationTable { get; } = new Dictionary<DamageType, double>();
+        public Dictionary<DamageType, double> DirectModTable { get; } = new Dictionary<DamageType, double>();
+        public Dictionary<DamageType, double> IndirectModTable { get; } = new Dictionary<DamageType, double>();
         public double NonCombatRegenHealthMod { get { return RawNonCombatRegenHealthMod.HasValue ? RawNonCombatRegenHealthMod.Value : 0; } }
         private double? RawNonCombatRegenHealthMod;
         public double CombatRegenHealthMod { get { return RawCombatRegenHealthMod.HasValue ? RawCombatRegenHealthMod.Value : 0; } }
@@ -1283,17 +1285,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "Advancement"; } }
-
-        protected override void InitializeFields()
-        {
-            VulnerabilityTable = new Dictionary<DamageType, double>();
-            MitigationTable = new Dictionary<DamageType, double>();
-            DirectModTable = new Dictionary<DamageType, double>();
-            IndirectModTable = new Dictionary<DamageType, double>();
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;

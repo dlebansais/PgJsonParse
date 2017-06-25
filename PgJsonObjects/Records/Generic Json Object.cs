@@ -41,10 +41,6 @@ namespace PgJsonObjects
             Key = EntryRaw.Key;
         }
 
-        protected virtual void InitializeFields()
-        {
-        }
-
         protected virtual void InitParsedFields()
         {
             if (ParsedFields == null)
@@ -174,7 +170,6 @@ namespace PgJsonObjects
         public virtual void Init(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
         {
             InitializeKey(EntryRaw);
-            InitializeFields();
 
             Dictionary<string, object> Fields;
             if ((Fields = EntryRaw.Value as Dictionary<string, object>) != null)

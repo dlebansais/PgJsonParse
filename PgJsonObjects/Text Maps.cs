@@ -3255,5 +3255,43 @@ namespace PgJsonObjects
             { RecipeItemKey.BrewingAnimalPartC5, "Brewing Animal Part" },
             { RecipeItemKey.BrewingGarnishC4, "Brewing Garnish" },
         };
+
+        public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
+        {
+            { XpTableEnum.Internal_None, "None" },
+            { XpTableEnum.TypicalCombatSkill, "Typical Combat Skill" },
+            { XpTableEnum.PetAdvancement, "Pet Advancement" },
+            { XpTableEnum.PetLoyalty, "Pet Loyalty" },
+            { XpTableEnum.Gourmand, "Gourmand" },
+            { XpTableEnum.Vocabulary, "Vocabulary" },
+            { XpTableEnum.GatheringSkill, "Gathering Skill" },
+            { XpTableEnum.CorpseActionSkill, "Corpse Action Skill #A" },
+            { XpTableEnum.PerformanceSkill, "Performance Skill" },
+            { XpTableEnum.AugmentBrewingSkill, "Augment Brewing Skill" },
+            { XpTableEnum.Gardening, "Gardening" },
+            { XpTableEnum.TypicalNoncombatSkill, "Typical Noncombat Skill #A" },
+            { XpTableEnum.Cooking, "Cooking" },
+            { XpTableEnum.CivicPride, "Civic Pride" },
+            { XpTableEnum.Industry, "Industry" },
+            { XpTableEnum.Transmutation, "Transmutation" },
+            { XpTableEnum.TypicalNoncombatSkillEx, "Typical Noncombat Skill #B" },
+            { XpTableEnum.Surveying, "Surveying" },
+            { XpTableEnum.CorpseActionSkillExt, "Corpse Action Skill #B" },
+            { XpTableEnum.RetailManagement, "Retail Management" },
+            { XpTableEnum.Guild, "Guild" },
+            { XpTableEnum.AuxCombatSkill, "Aux Combat Skill" },
+            { XpTableEnum.Lore, "Lore" },
+            { XpTableEnum.AuxCombatSkillEx, "Auxiliary Combat Skill #B" },
+            { XpTableEnum.AuxCraftingSkill, "Auxiliary Crafting Skill" },
+            { XpTableEnum.VeryCheapRecipe, "Very Cheap Recipe" },
+            { XpTableEnum.CheapRecipe, "Cheap Recipe" },
+            { XpTableEnum.AlcoholTolerance, "Alcohol Tolerance" },
+            { XpTableEnum.BeastSpeech, "Beast Speech" },
+            { XpTableEnum.Notoriety, "Notoriety" },
+            { XpTableEnum.Goblinese, "Goblinese" },
+            { XpTableEnum.Phrenology, "Phrenology" },
+            { XpTableEnum.DyeMaking, "Dye Making" },
+            { XpTableEnum.Hoplology, "Hoplology" },
+        };
     }
 }

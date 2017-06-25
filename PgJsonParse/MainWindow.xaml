@@ -146,7 +146,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap">
                                 <Hyperlink x:Name="hyperlink_DirectedGoal_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Label, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                 </Hyperlink>
                             </TextBlock>
                             <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -156,7 +156,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap">
                                 <Hyperlink x:Name="hyperlink_DirectedGoal_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Label, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                 </Hyperlink>
                             </TextBlock>
                         </StackPanel>
@@ -368,7 +368,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap">
                                 <Hyperlink x:Name="hyperlink_Power_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding ComposedName, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                 </Hyperlink>
                             </TextBlock>
                             <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -378,7 +378,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap">
                                 <Hyperlink x:Name="hyperlink_Power_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding ComposedName, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                 </Hyperlink>
                             </TextBlock>
                         </StackPanel>
@@ -400,6 +400,31 @@
         </DataTemplate>
         <CroppedBitmap x:Key="imgRedo" Source="pack://application:,,,/Resources/redo.png"/>
         <CroppedBitmap x:Key="imgUndo" Source="pack://application:,,,/Resources/undo.png"/>
+        <ControlTemplate x:Key="XpTableToggleButton" TargetType="ToggleButton">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="2" Background="White" BorderBrush="Black" BorderThickness="1"/>
+                <Border Grid.Column="0" CornerRadius="2,0,0,2" Margin="1" Background="White" BorderBrush="Black" BorderThickness="0,0,1,0"/>
+                <Path x:Name="Arrow" Grid.Column="1" Fill="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="DarkGray" />
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkGray" />
+                    <Setter Property="Foreground" Value="LightGray"/>
+                    <Setter TargetName="Arrow" Property="Fill" Value="Gray" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource StartApplicationCommand}" Executed="OnStartApplication"/>
@@ -1746,7 +1771,7 @@
                         </StackPanel>
                     </DataTemplate>
                     <DataTemplate x:Key="SearchResultSkillContentTemplate">
-                        <DockPanel>
+                        <DockPanel LostFocus="OnContentTemplateLostFocus">
                             <DockPanel DockPanel.Dock="Top">
                                 <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -1781,7 +1806,30 @@
                                     <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Hide When Zero:</TextBlock>
                                     <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding RawHideWhenZero, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                     <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">XP Table:</TextBlock>
-                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding XpTable.InternalName, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <Grid Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <DockPanel>
+                                            <ToggleButton x:Name="buttonXpTable" DockPanel.Dock="Right" Width="20" Height="20" Template="{StaticResource XpTableToggleButton}" ClickMode="Press"/>
+                                            <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding XpTable.EnumName, Converter={StaticResource convEnumToText}, ConverterParameter=XpTableEnumTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="0,0,10,0"/>
+                                        </DockPanel>
+                                        <Popup IsOpen="{Binding ElementName=buttonXpTable, Path=IsChecked}" Placement="Bottom" AllowsTransparency="False" Focusable="False">
+                                            <ScrollViewer Height="400" VerticalScrollBarVisibility="Visible">
+                                                <ListView ItemsSource="{Binding XpTable.XpAmountList}">
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="Focusable" Value="false"/>
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                    <ListView.View>
+                                                        <GridView>
+                                                            <GridViewColumn DisplayMemberBinding="{Binding Level}" Header="Level" Width="50"/>
+                                                            <GridViewColumn DisplayMemberBinding="{Binding Xp}" Header="XP" Width="50"/>
+                                                            <GridViewColumn DisplayMemberBinding="{Binding TotalXp}" Header="Total" Width="80"/>
+                                                        </GridView>
+                                                    </ListView.View>
+                                                </ListView>
+                                            </ScrollViewer>
+                                        </Popup>
+                                    </Grid>
                                     <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Advancement Table:</TextBlock>
                                     <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding AdvancementTable.InternalName, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                     <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Combat:</TextBlock>

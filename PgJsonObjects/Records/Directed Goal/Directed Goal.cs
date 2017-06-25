@@ -5,9 +5,9 @@ namespace PgJsonObjects
     public class DirectedGoal : GenericJsonObject<DirectedGoal>
     {
         #region Constants
-        public const int SearchResultIconId = 2118;
+        protected override string FieldTableName { get { return "DirectedGoal"; } }
 
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Label", ParseFieldLabel },
             { "Zone", ParseFieldZone },
@@ -20,6 +20,8 @@ namespace PgJsonObjects
             { "NeededRecipeCompletions", ParseFieldNeededRecipeCompletions },
             { "NeededNotoriety", ParseFieldNeededNotoriety },
         };
+
+        public const int SearchResultIconId = 2118;
         #endregion
 
         #region Properties
@@ -279,17 +281,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "DirectedGoal"; } }
-
-        protected override void InitializeFields()
-        {
-            NeededRecipe = null;
-            IsRawNeededRecipeParsed = false;
-            NeededAbility = null;
-            IsRawNeededAbilityParsed = false;
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;

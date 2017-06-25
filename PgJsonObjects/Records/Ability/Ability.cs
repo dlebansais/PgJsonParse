@@ -6,8 +6,10 @@ namespace PgJsonObjects
 {
     public class Ability : GenericJsonObject<Ability>
     {
-        #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        #region Parsing
+        protected override string FieldTableName { get { return "Ability"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Animation", ParseFieldAnimation },
             { "AttributesThatDeltaPowerCost", ParseFieldAttributesThatDeltaPowerCost },
@@ -65,23 +67,23 @@ namespace PgJsonObjects
 
         #region Properties
         public AbilityAnimation Animation { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatDeltaPowerCostTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatDeltaResetTimeTable { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatModPowerCostTable { get; private set; }
+        public Dictionary<string, Attribute> AttributesThatDeltaPowerCostTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatDeltaResetTimeTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatModPowerCostTable { get; } = new Dictionary<string, Attribute>();
         public bool CanBeOnSidebar { get { return RawCanBeOnSidebar.HasValue && RawCanBeOnSidebar.Value; } }
         public bool? RawCanBeOnSidebar { get; private set; }
         public bool CanSuppressMonsterShout { get { return RawCanSuppressMonsterShout.HasValue && RawCanSuppressMonsterShout.Value; } }
         public bool? RawCanSuppressMonsterShout { get; private set; }
         public bool CanTargetUntargetableEnemies { get { return RawCanTargetUntargetableEnemies.HasValue && RawCanTargetUntargetableEnemies.Value; } }
         public bool? RawCanTargetUntargetableEnemies { get; private set; }
-        public List<Deaths> CausesOfDeathList { get; private set; }
+        public List<Deaths> CausesOfDeathList { get; } = new List<Deaths>();
         public RecipeCurrency CostCurrency { get; private set; }
         public double CostPrice { get; set; }
-        private List<RecipeCost> RawCostList;
+        private List<RecipeCost> RawCostList { get; } = new List<RecipeCost>();
         public int CombatRefreshBaseAmount { get { return RawCombatRefreshBaseAmount.HasValue ? RawCombatRefreshBaseAmount.Value : 0; } }
         public int? RawCombatRefreshBaseAmount { get; private set; }
         public PowerSkill CompatibleSkill { get; private set; }
-        private List<PowerSkill> RawCompatibleSkillList;
+        private List<PowerSkill> RawCompatibleSkillList { get; } = new List<PowerSkill>();
         public Item ConsumedItem { get; private set; }
         public ConsumedItems ConsumedItemKeyword { get; private set; }
         private string RawConsumedItemKeyword;
@@ -108,8 +110,8 @@ namespace PgJsonObjects
         public bool IsHarmless { get { return RawIsHarmless.HasValue && RawIsHarmless.Value; } }
         public bool? RawIsHarmless { get; private set; }
         public string ItemKeywordReqErrorMessage { get; private set; }
-        public List<AbilityItemKeyword> ItemKeywordReqList { get; private set; }
-        public List<AbilityKeyword> KeywordList { get; private set; }
+        public List<AbilityItemKeyword> ItemKeywordReqList { get; } = new List<AbilityItemKeyword>();
+        public List<AbilityKeyword> KeywordList { get; } = new List<AbilityKeyword>();
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         private int? RawLevel;
         public string Name { get; private set; }
@@ -127,7 +129,7 @@ namespace PgJsonObjects
         public PowerSkill Skill { get; private set; }
         public Skill ConnectedSkill { get; private set; }
         private bool IsSkillParsed;
-        public List<AbilityRequirement> SpecialCasterRequirementList { get; private set; }
+        public List<AbilityRequirement> SpecialCasterRequirementList { get; } = new List<AbilityRequirement>();
         public string SpecialInfo { get; private set; }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
         private int? RawSpecialTargetingTypeReq;
@@ -145,7 +147,7 @@ namespace PgJsonObjects
 
         public string DigitStrippedName { get; private set; }
         public int LineIndex { get; private set; }
-        public List<AbilityAdditionalResult> AbilityAdditionalResultList { get; private set; }
+        public List<AbilityAdditionalResult> AbilityAdditionalResultList { get; } = new List<AbilityAdditionalResult>();
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
 
         protected override string SortingName { get { return Name; } }
@@ -480,7 +482,7 @@ namespace PgJsonObjects
         {
             List<RecipeCost> ParsedCostList;
             JsonObjectParser<RecipeCost>.InitAsSublist(RawCosts, out ParsedCostList, ErrorInfo);
-            RawCostList = ParsedCostList;
+            RawCostList.AddRange(ParsedCostList);
 
             if (RawCostList.Count > 0 && RawCostList[0].Price > 0)
             {
@@ -3029,11 +3031,11 @@ namespace PgJsonObjects
             }
         }
 
-        private List<string> RawAttributesThatDeltaPowerCostList;
+        private List<string> RawAttributesThatDeltaPowerCostList = new List<string>();
         private bool RawAttributesThatDeltaPowerCostListIsEmpty;
-        private List<string> RawAttributesThatDeltaResetTimeList;
+        private List<string> RawAttributesThatDeltaResetTimeList = new List<string>();
         private bool RawAttributesThatDeltaResetTimeListIsEmpty;
-        private List<string> RawAttributesThatModPowerCostList;
+        private List<string> RawAttributesThatModPowerCostList = new List<string>();
         private bool RawAttributesThatModPowerCostListIsEmpty;
         private string RawPrerequisite;
         private bool IsRawPrerequisiteParsed;
@@ -3051,28 +3053,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "Ability"; } }
-
-        protected override void InitializeFields()
-        {
-            RawAttributesThatDeltaPowerCostList = new List<string>();
-            AttributesThatDeltaPowerCostTable = new Dictionary<string, Attribute>();
-            RawAttributesThatDeltaResetTimeList = new List<string>();
-            AttributesThatDeltaResetTimeTable = new Dictionary<string, Attribute>();
-            RawAttributesThatModPowerCostList = new List<string>();
-            AttributesThatModPowerCostTable = new Dictionary<string, Attribute>();
-            CausesOfDeathList = new List<Deaths>();
-            RawCostList = new List<RecipeCost>();
-            RawCompatibleSkillList = new List<PowerSkill>();
-            RawConsumedItemKeyword = null;
-            IsRawConsumedItemKeywordParsed = false;
-            ItemKeywordReqList = new List<AbilityItemKeyword>();
-            KeywordList = new List<AbilityKeyword>();
-            SpecialCasterRequirementList = new List<AbilityRequirement>();
-            AbilityAdditionalResultList = new List<AbilityAdditionalResult>();
-        }
-
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;

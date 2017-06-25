@@ -7,7 +7,9 @@ namespace PgJsonObjects
     public class Skill : GenericJsonObject<Skill>
     {
         #region Constants
-        private Dictionary<string, FieldValueHandler> _FieldTable = new Dictionary<string, FieldValueHandler>()
+        protected override string FieldTableName { get { return "Skill"; } }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Id", ParseFieldId },
             { "Description", ParseFieldDescription },
@@ -45,14 +47,14 @@ namespace PgJsonObjects
         private bool IsRawAdvancementTableEmpty;
         public bool Combat { get { return RawCombat.HasValue && RawCombat.Value; } }
         public bool? RawCombat { get; private set; }
-        public List<PowerSkill> CompatibleCombatSkillList { get; private set; }
+        public List<PowerSkill> CompatibleCombatSkillList { get; } = new List<PowerSkill>();
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
         public int? RawMaxBonusLevels { get; private set; }
-        public List<LevelCapInteraction> InteractionFlagLevelCapList { get; private set; }
-        public Dictionary<int, string> AdvancementHintTable { get; private set; }
-        public List<Reward> RewardList { get; private set; }
+        public List<LevelCapInteraction> InteractionFlagLevelCapList { get; } = new List<LevelCapInteraction>();
+        public Dictionary<int, string> AdvancementHintTable { get; } = new Dictionary<int, string>();
+        public List<Reward> RewardList { get; } = new List<Reward>();
         private bool EmptyRewardList;
-        public Dictionary<int, string> ReportTable { get; private set; }
+        public Dictionary<int, string> ReportTable { get; } = new Dictionary<int, string>();
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         public string Name { get; private set; }
         public PowerSkill ParentSkill { get; private set; }
@@ -63,7 +65,7 @@ namespace PgJsonObjects
         public bool? RawSkipBonusLevelsIfSkillUnlearned { get; private set; }
         public bool AuxCombat { get { return RawAuxCombat.HasValue && RawAuxCombat.Value; } }
         public bool? RawAuxCombat { get; private set; }
-        public List<SkillCategory> TSysCategoryList { get; private set; }
+        public List<SkillCategory> TSysCategoryList { get; } = new List<SkillCategory>();
 
         public static Dictionary<PowerSkill, Ability> BasicAttackTable { get; private set; }
         public static Dictionary<PowerSkill, int> AnyIconTable { get; private set; }
@@ -679,9 +681,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return _FieldTable; } }
-        protected override string FieldTableName { get { return "Skill"; } }
-
         protected override void InitializeKey(KeyValuePair<string, object> EntryRaw)
         {
             base.InitializeKey(EntryRaw);
@@ -689,17 +688,6 @@ namespace PgJsonObjects
             PowerSkill ParsedPowerSkill;
             StringToEnumConversion<PowerSkill>.TryParse(Key, out ParsedPowerSkill, null);
             CombatSkill = ParsedPowerSkill;
-        }
-
-        protected override void InitializeFields()
-        {
-            TSysCategoryList = new List<SkillCategory>();
-            CompatibleCombatSkillList = new List<PowerSkill>();
-            InteractionFlagLevelCapList = new List<LevelCapInteraction>();
-            AdvancementHintTable = new Dictionary<int, string>();
-            RewardList = new List<Reward>();
-            ReportTable = new Dictionary<int, string>();
-            IsRawAdvancementTableEmpty = false;
         }
 
         private static string PrepareReward(int Level, string s)
