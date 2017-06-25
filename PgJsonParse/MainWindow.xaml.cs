@@ -899,37 +899,37 @@ namespace PgJsonParse
         private void OnConnectTables(ParseErrorInfo ErrorInfo)
         {
             foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Ability Item in AbilityList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Attribute Item in AttributeList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Effect Item in EffectList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Item Item in ItemList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Power Item in PowerList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Quest Item in QuestList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Recipe Item in RecipeList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Skill Item in SkillList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.XpTable Item in XpTableList)
-                Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             bool Continue;
             do
@@ -939,6 +939,39 @@ namespace PgJsonParse
                     Item.MeasurePerfectCottonRatio(ref Continue);
             }
             while (Continue);
+
+            foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.Ability Item in AbilityList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.Attribute Item in AttributeList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.Effect Item in EffectList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.Item Item in ItemList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.Power Item in PowerList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.Quest Item in QuestList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.Recipe Item in RecipeList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.Skill Item in SkillList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.XpTable Item in XpTableList)
+                Item.SortLinkBack();
 
             CreateIndexes(ErrorInfo);
         }
@@ -2117,7 +2150,7 @@ namespace PgJsonParse
                     break;
             }
 
-            Result.Sort(SortByName);
+            Result.Sort(GenericJsonObject.SortByName);
 
             foreach (object o in Result)
                 SearchResult.Add(o);
@@ -2223,42 +2256,6 @@ namespace PgJsonParse
                 IsBackwardEnabled = true;
                 IsForwardEnabled = false;
             }
-        }
-
-        private string GetObjectSortString(object o)
-        {
-            if (o is Ability)
-                return (o as Ability).Name;
-
-            if (o is DirectedGoal)
-                return (o as DirectedGoal).Label;
-
-            if (o is Effect)
-                return (o as Effect).Name;
-
-            if (o is Item)
-                return (o as Item).Name;
-
-            if (o is Quest)
-                return (o as Quest).Name;
-
-            if (o is Recipe)
-                return (o as Recipe).Name;
-
-            if (o is Skill)
-                return (o as Skill).Name;
-
-            if (o is Power)
-                return (o as Power).ComposedName;
-
-            return "";
-        }
-
-        private int SortByName(object o1, object o2)
-        {
-            string s1 = GetObjectSortString(o1);
-            string s2 = GetObjectSortString(o2);
-            return string.Compare(s1, s2);
         }
 
         private List<object> SearchHistory;

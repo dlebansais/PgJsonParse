@@ -320,7 +320,7 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
-        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Effect> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected)
+        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Effect> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawEffectParsed)
                 return ParsedEffect;
@@ -334,6 +334,7 @@ namespace PgJsonObjects
                 if (Entry.Value.Name == RawEffectName)
                 {
                     IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -379,7 +380,7 @@ namespace PgJsonObjects
             IsAbilityKeywordListEmpty = false;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }

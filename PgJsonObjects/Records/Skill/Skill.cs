@@ -593,7 +593,7 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
-        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected)
+        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
@@ -607,6 +607,7 @@ namespace PgJsonObjects
                 if (Entry.Key == RawSkillName)
                 {
                     IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -614,7 +615,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected)
+        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
@@ -625,6 +626,7 @@ namespace PgJsonObjects
                 if (Entry.Value.CombatSkill == RawPowerSkill)
                 {
                     IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -713,12 +715,12 @@ namespace PgJsonObjects
                 return 0;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
-            XpTable = PgJsonObjects.XpTable.ConnectSingleProperty(ErrorInfo, XpTableTable, RawXpTable, XpTable, ref IsRawXpTableParsed, ref IsConnected);
-            AdvancementTable = PgJsonObjects.AdvancementTable.ConnectSingleProperty(ErrorInfo, AdvancementTableTable, RawAdvancementTable, AdvancementTable, ref IsRawAdvancementTableParsed, ref IsConnected);
+            XpTable = PgJsonObjects.XpTable.ConnectSingleProperty(ErrorInfo, XpTableTable, RawXpTable, XpTable, ref IsRawXpTableParsed, ref IsConnected, this);
+            AdvancementTable = PgJsonObjects.AdvancementTable.ConnectSingleProperty(ErrorInfo, AdvancementTableTable, RawAdvancementTable, AdvancementTable, ref IsRawAdvancementTableParsed, ref IsConnected, this);
 
             foreach (LevelCapInteraction Interaction in InteractionFlagLevelCapList)
                 if (!Interaction.IsParsed)
@@ -726,16 +728,16 @@ namespace PgJsonObjects
                     IsConnected = true;
 
                     bool IsSkillParsed = false;
-                    Skill SkillLink = ConnectPowerSkill(ErrorInfo, SkillTable, Interaction.OtherSkill, Interaction.Link, ref IsSkillParsed, ref IsConnected);
+                    Skill SkillLink = ConnectPowerSkill(ErrorInfo, SkillTable, Interaction.OtherSkill, Interaction.Link, ref IsSkillParsed, ref IsConnected, this);
 
                     Interaction.SetLink(SkillLink);
                 }
 
             foreach (Reward Item in RewardList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             if (ParentSkill != PowerSkill.Internal_None && ParentSkill != PowerSkill.AnySkill && ParentSkill != PowerSkill.Unknown)
-                ConnectedParentSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, ParentSkill, ConnectedParentSkill, ref IsParentSkillParsed, ref IsConnected);
+                ConnectedParentSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, ParentSkill, ConnectedParentSkill, ref IsParentSkillParsed, ref IsConnected, this);
 
             if (CombinedRewardList == null)
             {

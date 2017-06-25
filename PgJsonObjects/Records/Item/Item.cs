@@ -115,11 +115,11 @@ namespace PgJsonObjects
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         public bool HasBestowedRecipes { get { return BestowRecipeTable.Count > 0; } }
 
-        public float PerfectCottonRatio { get; private set; }
+        public double PerfectCottonRatio { get; private set; }
 
-        public void SetPerfectCottonRatio(float PerfectCottonRatioFromRecipe)
+        public void SetPerfectCottonRatio(double PerfectCottonRatioFromRecipe)
         {
-            if (float.IsNaN(PerfectCottonRatio))
+            if (double.IsNaN(PerfectCottonRatio))
                 PerfectCottonRatio = PerfectCottonRatioFromRecipe;
         }
 
@@ -212,21 +212,19 @@ namespace PgJsonObjects
                     if (Result.Length > 0)
                         Result += ", ";
 
-                    if (EmptyKeywordList.Contains(Entry.Key) || (Entry.Value.Count == 1 && float.IsNaN(Entry.Value[0])))
-                        Result += TextMaps.ItemKeywordTextMap[Entry.Key];
-                    else
+                    Result += TextMaps.ItemKeywordTextMap[Entry.Key];
+
+                    string Values = "";
+                    foreach (float f in Entry.Value)
                     {
-                        string Values = "";
-                        foreach (float f in Entry.Value)
-                        {
-                            if (Values.Length > 0)
-                                Values += ", ";
+                        if (Values.Length > 0)
+                            Values += ", ";
 
-                            Values += f.ToString();
-                        }
-
-                        Result += TextMaps.ItemKeywordTextMap[Entry.Key] + " (" + Values + ")";
+                        Values += f.ToString();
                     }
+
+                    if (Values.Length > 0)
+                        Result += " (" + Values + ")";
                 }
 
                 return Result;
@@ -657,7 +655,8 @@ namespace PgJsonObjects
                             ItemKeyList.Add(ParsedKey);
                     }
 
-                    ValueList.Add(Value);
+                    if (!float.IsNaN(Value))
+                        ValueList.Add(Value);
                 }
                 else
                 {
@@ -1170,7 +1169,7 @@ namespace PgJsonObjects
             return Weight;
         }
 
-        public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected)
+        public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -1184,6 +1183,7 @@ namespace PgJsonObjects
                 if (Entry.Value.InternalName == RawItemName)
                 {
                     IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -1191,7 +1191,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected)
+        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -1207,6 +1207,7 @@ namespace PgJsonObjects
                 if (Entry.Key == FullKey)
                 {
                     IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -1214,7 +1215,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Item> ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected)
+        public static List<Item> ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -1229,7 +1230,10 @@ namespace PgJsonObjects
 
             foreach (KeyValuePair<string, Item> Entry in ItemTable)
                 if (Entry.Value.ItemKeyList.Contains(ItemKey))
+                {
+                    Entry.Value.AddLinkBack(LinkBack);
                     ItemList.Add(Entry.Value);
+                }
 
             if (ItemList.Count == 0)
                 ErrorInfo.AddMissingKey(ItemKey.ToString());
@@ -1315,14 +1319,14 @@ namespace PgJsonObjects
             StockDye = null;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
-            IsConnected |= Recipe.ConnectTableByInternamName(ErrorInfo, RecipeTable, RawBestowRecipesList, BestowRecipeTable);
+            IsConnected |= Recipe.ConnectTableByInternalName(ErrorInfo, RecipeTable, RawBestowRecipesList, BestowRecipeTable);
 
-            BestowAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawBestowAbility, BestowAbility, ref IsRawBestowAbilityParsed, ref IsConnected);
-            BestowQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawBestowQuest, BestowQuest, ref IsRawBestowQuestParsed, ref IsConnected);
+            BestowAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawBestowAbility, BestowAbility, ref IsRawBestowAbilityParsed, ref IsConnected, this);
+            BestowQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawBestowQuest, BestowQuest, ref IsRawBestowQuestParsed, ref IsConnected, this);
 
             foreach (ItemEffect Effect in EffectDescriptionList)
             {
@@ -1332,19 +1336,19 @@ namespace PgJsonObjects
                     if (!AsItemAttributeLink.IsParsed)
                     {
                         bool IsParsed = false;
-                        Attribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected);
+                        Attribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected, this);
                         AsItemAttributeLink.SetLink(Link);
                     }
                 }
             }
 
-            MacGuffinQuestName = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawMacGuffinQuestName, MacGuffinQuestName, ref IsRawMacGuffinQuestNameParsed, ref IsConnected);
+            MacGuffinQuestName = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawMacGuffinQuestName, MacGuffinQuestName, ref IsRawMacGuffinQuestNameParsed, ref IsConnected, this);
 
             foreach (ItemSkillLink ItemSkill in SkillRequirementList)
                 if (!ItemSkill.IsParsed)
                 {
                     bool IsParsed = false;
-                    Skill Link = Skill.ConnectSingleProperty(ErrorInfo, SkillTable, ItemSkill.SkillName, ItemSkill.Link, ref IsParsed, ref IsConnected);
+                    Skill Link = Skill.ConnectSingleProperty(ErrorInfo, SkillTable, ItemSkill.SkillName, ItemSkill.Link, ref IsParsed, ref IsConnected, this);
                     ItemSkill.SetLink(Link);
                 }
 

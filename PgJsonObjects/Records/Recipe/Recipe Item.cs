@@ -43,20 +43,22 @@ namespace PgJsonObjects
         private bool IsItemCodeParsed;
         public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 0; } }
         private int? RawStackSize;
-        public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
+        public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 1.0; } }
         private double? RawPercentChance;
         public RecipeItemKey ItemKey { get; private set; }
         public List<Item> MatchingKeyItemList { get; private set; }
         private bool IsItemKeyParsed;
         public string Desc { get; private set; }
-        public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
+        public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 1.0; } }
         private double? RawChanceToConsume;
         public double DurabilityConsumed { get { return RawDurabilityConsumed.HasValue ? RawDurabilityConsumed.Value : 0; } }
         private double? RawDurabilityConsumed;
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
         private bool? RawAttuneToCrafter;
 
-        public float PerfectCottonRatio
+        public Recipe ParentRecipe { get; private set; }
+
+        public double PerfectCottonRatio
         {
             get
             {
@@ -67,10 +69,10 @@ namespace PgJsonObjects
             }
         }
 
-        public void SetPerfectCottonRatio(float RecipePerfectCottonRatio)
+        public void SetPerfectCottonRatio(double RecipePerfectCottonRatio)
         {
             if (Item != null && StackSize > 0)
-                Item.SetPerfectCottonRatio(RecipePerfectCottonRatio / StackSize);
+                Item.SetPerfectCottonRatio((RecipePerfectCottonRatio * PercentChance) / StackSize);
         }
 
         public bool IsLinkedDescription
@@ -166,6 +168,21 @@ namespace PgJsonObjects
 
                         return Result;
                 }
+            }
+        }
+
+        public string ExtraInfo
+        {
+            get
+            {
+                if (StackSize > 1)
+                    return "x" + StackSize;
+                else if (RawChanceToConsume.HasValue && RawChanceToConsume.Value > 0 && RawChanceToConsume.Value < 1)
+                    return " (" + (RawChanceToConsume.Value* 100).ToString() + "% chance to consume)";
+                else if (RawDurabilityConsumed.HasValue && RawDurabilityConsumed.Value > 0 && RawDurabilityConsumed.Value < 1)
+                    return " (" + (RawDurabilityConsumed.Value * 100).ToString() + "% durability consumed)";
+                else
+                    return null;
             }
         }
         #endregion
@@ -329,11 +346,13 @@ namespace PgJsonObjects
             MatchingKeyItemList = new List<Item>();
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
-            Item = Item.ConnectByCode(ErrorInfo, ItemTable, RawItemCode, Item, ref IsItemCodeParsed, ref IsConnected);
+            ParentRecipe = Parent as Recipe;
+
+            Item = Item.ConnectByCode(ErrorInfo, ItemTable, RawItemCode, Item, ref IsItemCodeParsed, ref IsConnected, this);
             if (Item == null)
             {
                 switch (ItemKey)
@@ -362,7 +381,7 @@ namespace PgJsonObjects
                         break;
 
                     default:
-                        MatchingKeyItemList = Item.ConnectByKey(ErrorInfo, ItemTable, ItemKey, MatchingKeyItemList, ref IsItemKeyParsed, ref IsConnected);
+                        MatchingKeyItemList = Item.ConnectByKey(ErrorInfo, ItemTable, ItemKey, MatchingKeyItemList, ref IsItemKeyParsed, ref IsConnected, this);
                         break;
                 }
             }

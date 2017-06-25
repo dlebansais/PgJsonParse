@@ -289,15 +289,15 @@ namespace PgJsonObjects
             IsRawNeededAbilityParsed = false;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
-            NeededAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawNeededAbility, NeededAbility, ref IsRawNeededAbilityParsed, ref IsConnected);
-            NeededRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawNeededRecipe, NeededRecipe, ref IsRawNeededRecipeParsed, ref IsConnected);
+            NeededAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawNeededAbility, NeededAbility, ref IsRawNeededAbilityParsed, ref IsConnected, this);
+            NeededRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawNeededRecipe, NeededRecipe, ref IsRawNeededRecipeParsed, ref IsConnected, this);
 
             if (NeededSkill != PowerSkill.Internal_None && NeededSkill != PowerSkill.AnySkill && NeededSkill != PowerSkill.Unknown)
-                ConnectedNeededSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, NeededSkill, ConnectedNeededSkill, ref IsNeededSkillParsed, ref IsConnected);
+                ConnectedNeededSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, NeededSkill, ConnectedNeededSkill, ref IsNeededSkillParsed, ref IsConnected, this);
 
             return IsConnected;
         }

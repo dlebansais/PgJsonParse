@@ -1321,7 +1321,7 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
-        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Quest> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected)
+        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Quest> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;
@@ -1335,6 +1335,7 @@ namespace PgJsonObjects
                 if (Entry.Value.InternalName == RawQuestName)
                 {
                     IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -1433,36 +1434,36 @@ namespace PgJsonObjects
             IsRawRewardEffectParsed = false;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
             foreach (QuestObjective Item in QuestObjectiveList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (QuestRewardXp Item in RewardsXPList)
                 if (!Item.IsSkillParsed)
                 {
                     bool IsSkillParsed = false;
-                    Item.ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Item.Skill, Item.ConnectedSkill, ref IsSkillParsed, ref IsConnected);
+                    Item.ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Item.Skill, Item.ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
                     Item.IsSkillParsed = IsSkillParsed;
                 }
 
             foreach (QuestRewardItem Item in QuestRewardsItemList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (QuestRewardItem Item in PreGiveItemList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
-            PrerequisiteQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawPrerequisiteQuest, PrerequisiteQuest, ref IsRawPrerequisiteParsed, ref IsConnected);
-            RequirementQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementQuest, RequirementQuest, ref IsRawRequirementQuestParsed, ref IsConnected);
-            RequirementGuildQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementGuildQuest, RequirementGuildQuest, ref IsRawRequirementGuildQuestParsed, ref IsConnected);
-            RewardAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawRewardAbility, RewardAbility, ref IsRawRewardAbilityParsed, ref IsConnected);
-            RewardRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRewardRecipe, RewardRecipe, ref IsRawRewardRecipeParsed, ref IsConnected);
-            RewardEffect = Effect.ConnectSingleProperty(ErrorInfo, EffectTable, RawRewardEffect, RewardEffect, ref IsRawRewardEffectParsed, ref IsConnected);
-            ConnectedRequirementSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RequirementSkill, ConnectedRequirementSkill, ref IsConnectedRequirementSkillParsed, ref IsConnected);
-            ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsConnectedRewardSkillParsed, ref IsConnected);
-            ConnectedWorkOrderSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, WorkOrderSkill, ConnectedWorkOrderSkill, ref IsConnectedWorkOrderSkillParsed, ref IsConnected);
+            PrerequisiteQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawPrerequisiteQuest, PrerequisiteQuest, ref IsRawPrerequisiteParsed, ref IsConnected, this);
+            RequirementQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementQuest, RequirementQuest, ref IsRawRequirementQuestParsed, ref IsConnected, this);
+            RequirementGuildQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementGuildQuest, RequirementGuildQuest, ref IsRawRequirementGuildQuestParsed, ref IsConnected, this);
+            RewardAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawRewardAbility, RewardAbility, ref IsRawRewardAbilityParsed, ref IsConnected, this);
+            RewardRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRewardRecipe, RewardRecipe, ref IsRawRewardRecipeParsed, ref IsConnected, this);
+            RewardEffect = Effect.ConnectSingleProperty(ErrorInfo, EffectTable, RawRewardEffect, RewardEffect, ref IsRawRewardEffectParsed, ref IsConnected, this);
+            ConnectedRequirementSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RequirementSkill, ConnectedRequirementSkill, ref IsConnectedRequirementSkillParsed, ref IsConnected, this);
+            ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsConnectedRewardSkillParsed, ref IsConnected, this);
+            ConnectedWorkOrderSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, WorkOrderSkill, ConnectedWorkOrderSkill, ref IsConnectedWorkOrderSkillParsed, ref IsConnected, this);
 
             if (PreGiveRecipeList == null)
             {
@@ -1471,7 +1472,7 @@ namespace PgJsonObjects
                 {
                     Recipe PreGiveRecipe = null;
                     bool IsRawPreGiveRecipeParsed = false;
-                    PreGiveRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawPreGiveRecipe, PreGiveRecipe, ref IsRawPreGiveRecipeParsed, ref IsConnected);
+                    PreGiveRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawPreGiveRecipe, PreGiveRecipe, ref IsRawPreGiveRecipeParsed, ref IsConnected, this);
 
                     if (PreGiveRecipe != null)
                         PreGiveRecipeList.Add(PreGiveRecipe);

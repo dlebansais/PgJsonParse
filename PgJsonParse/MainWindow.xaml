@@ -17,6 +17,7 @@
         <conv:DoubleConverter x:Key="convDouble"/>
         <conv:RgbColorToBrushConverter x:Key="convRgbColorToBrush"/>
         <app:ItemEffectGearSelector x:Key="selItemEffectGear"/>
+        <app:LinkBackSelector x:Key="selLinkBack"/>
         <app:ListMemberSelector x:Key="selListMember"/>
         <app:SearchResultTitleSelector x:Key="selSearchResultTitle"/>
         <app:SearchResultContentSelector x:Key="selSearchResultContent"/>
@@ -100,6 +101,302 @@
         </DataTemplate>
         <DataTemplate x:Key="SimpleEffectGearTemplate">
             <TextBlock Text="{Binding Description}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="10,0,10,0"/>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackAbilityTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Ability_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Ability_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Abilities:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackDirectedGoalTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_DirectedGoal_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_DirectedGoal_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Goals:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackEffectTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Effect_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Effect_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Effects:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackItemTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Items:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackQuestTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Quests:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackRecipeTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Recipe_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Recipe_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Recipes:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackSkillTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Skill_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Skill_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Skills:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackPowerTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Power_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Power_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Mods:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
         </DataTemplate>
         <CroppedBitmap x:Key="imgRedo" Source="pack://application:,,,/Resources/redo.png"/>
         <CroppedBitmap x:Key="imgUndo" Source="pack://application:,,,/Resources/undo.png"/>
@@ -1343,11 +1640,14 @@
                                                             </StackPanel>
                                                         </DataTemplate>
                                                     </Grid.Resources>
-                                                    <TextBlock Visibility="{Binding IsSingleLinkLinkDescription, Converter={StaticResource convBooleanToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}" TextWrapping="Wrap">
-                                                        <Hyperlink x:Name="hyperlink_RecipeItem_Item" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                            <TextBlock Text="{Binding Item.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                                        </Hyperlink>
-                                                    </TextBlock>
+                                                    <StackPanel Visibility="{Binding IsSingleLinkLinkDescription, Converter={StaticResource convBooleanToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}" Orientation="Horizontal">
+                                                        <TextBlock TextWrapping="Wrap">
+                                                            <Hyperlink x:Name="hyperlink_RecipeItem_Item" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                                <TextBlock Text="{Binding Item.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                            </Hyperlink>
+                                                        </TextBlock>
+                                                        <TextBlock Text="{Binding ExtraInfo}" Margin="5,0,0,0"/>
+                                                    </StackPanel>
                                                     <ItemsControl Visibility="{Binding IsSingleLinkLinkDescription, Converter={StaticResource convBooleanToObject},ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Collapsed}" ItemsSource="{Binding MatchingKeyItemList,FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
                                                         <ItemsControl.ItemsPanel>
                                                             <ItemsPanelTemplate>
@@ -1730,7 +2030,15 @@
                         </ScrollViewer>
                     </DockPanel>
                     <ScrollViewer VerticalScrollBarVisibility="Visible" Margin="10,0,10,0">
-                        <ContentControl Content="{Binding CurrentSearchItem}" ContentTemplateSelector="{StaticResource selSearchResultContent}"/>
+                        <StackPanel>
+                            <ContentControl Content="{Binding CurrentSearchItem}" ContentTemplateSelector="{StaticResource selSearchResultContent}"/>
+                            <StackPanel Visibility="{Binding CurrentSearchItem, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}">
+                                <Separator Margin="0,5,0,5"/>
+                                <TextBlock Visibility="{Binding CurrentSearchItem.HasLinkBackTableEntries, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5">The following pages link here</TextBlock>
+                                <TextBlock Visibility="{Binding CurrentSearchItem.HasLinkBackTableEntries, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5">There are no pages with links to here</TextBlock>
+                            </StackPanel>
+                            <ItemsControl ItemsSource="{Binding CurrentSearchItem.LinkBackTable}" ItemTemplateSelector="{StaticResource selLinkBack}"/>
+                        </StackPanel>
                     </ScrollViewer>
                 </DockPanel>
             </TabItem>

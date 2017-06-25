@@ -2923,7 +2923,7 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
-        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected)
+        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawAbilityParsed)
                 return ParsedAbility;
@@ -2937,6 +2937,7 @@ namespace PgJsonObjects
                 if (Entry.Value.InternalName == RawAbilityName)
                 {
                     IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -3070,7 +3071,7 @@ namespace PgJsonObjects
             AbilityAdditionalResultList = new List<AbilityAdditionalResult>();
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
@@ -3078,22 +3079,22 @@ namespace PgJsonObjects
             IsConnected |= Attribute.ConnectTable(ErrorInfo, AttributeTable, RawAttributesThatDeltaResetTimeList, AttributesThatDeltaResetTimeTable);
             IsConnected |= Attribute.ConnectTable(ErrorInfo, AttributeTable, RawAttributesThatModPowerCostList, AttributesThatModPowerCostTable);
 
-            Prerequisite = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawPrerequisite, Prerequisite, ref IsRawPrerequisiteParsed, ref IsConnected);
+            Prerequisite = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawPrerequisite, Prerequisite, ref IsRawPrerequisiteParsed, ref IsConnected, this);
 
             if (PvE != null)
-                IsConnected |= PvE.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= PvE.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             if (PvP != null)
-                IsConnected |= PvP.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= PvP.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (AbilityRequirement Item in SpecialCasterRequirementList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
-            SharesResetTimerWith = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsRawSharesResetTimerWithParsed, ref IsConnected);
-            UpgradeOf = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawUpgradeOf, UpgradeOf, ref IsRawUpgradeOfParsed, ref IsConnected);
+            SharesResetTimerWith = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsRawSharesResetTimerWithParsed, ref IsConnected, this);
+            UpgradeOf = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawUpgradeOf, UpgradeOf, ref IsRawUpgradeOfParsed, ref IsConnected, this);
 
             if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
-                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected);
+                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
 
             if (RawConsumedItemKeyword != null && RawConsumedItemKeyword.Length > 0 && !IsRawConsumedItemKeywordParsed)
             {
@@ -3104,7 +3105,7 @@ namespace PgJsonObjects
                     ConsumedItemKeyword = ParsedConsumedItem;
                 }
                 else
-                    ConsumedItem = Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawConsumedItemKeyword, ConsumedItem, ref IsRawConsumedItemKeywordParsed, ref IsConnected);
+                    ConsumedItem = Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawConsumedItemKeyword, ConsumedItem, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
             }
 
             return IsConnected;

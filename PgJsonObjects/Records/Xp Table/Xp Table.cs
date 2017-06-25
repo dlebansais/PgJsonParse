@@ -65,7 +65,7 @@ namespace PgJsonObjects
             }
         }
 
-        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, XpTable> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected)
+        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, XpTable> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawXpTableParsed)
                 return ParsedXpTable;
@@ -79,6 +79,7 @@ namespace PgJsonObjects
                 if (Entry.Value.InternalName == RawXpTableName)
                 {
                     IsConnected = true;
+                    //Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -97,7 +98,7 @@ namespace PgJsonObjects
             IsXpAmountListEmpty = true;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }

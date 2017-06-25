@@ -1079,7 +1079,7 @@ namespace PgJsonObjects
             return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + ResultEffect.Enhancement.ToString() + "(" + ResultEffect.AddedQuantity.ToString(CultureInfo.InvariantCulture.NumberFormat) + "," + ResultEffect.ConsumedEnhancementPoints + ")";
         }
 
-        public static bool ConnectTableByInternamName(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, List<string> ConnectedList, Dictionary<string, Recipe> ConnectedTable)
+        public static bool ConnectTableByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, List<string> ConnectedList, Dictionary<string, Recipe> ConnectedTable)
         {
             bool Connected = false;
 
@@ -1105,7 +1105,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static Recipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, string RawRecipeName, Recipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected)
+        public static Recipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, string RawRecipeName, Recipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawRecipeParsed)
                 return ParsedRecipe;
@@ -1119,6 +1119,7 @@ namespace PgJsonObjects
                 if (Entry.Value.InternalName == RawRecipeName)
                 {
                     IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -1165,15 +1166,15 @@ namespace PgJsonObjects
 
         public void MeasurePerfectCottonRatio(ref bool Continue)
         {
-            float RecipePerfectCottonRatio = 0;
+            double RecipePerfectCottonRatio = 0;
 
             if (InternalName == "CottonThread" || InternalName == "FineCottonYarn")
                 RecipePerfectCottonRatio = 0;
 
             foreach (RecipeItem Item in IngredientList)
-                if (Item != null && !float.IsNaN(Item.PerfectCottonRatio) && Item.PerfectCottonRatio > 0)
+                if (Item != null && !double.IsNaN(Item.PerfectCottonRatio) && Item.PerfectCottonRatio > 0)
                 {
-                    float AddedPerfectCottonRatio = Item.PerfectCottonRatio * Item.StackSize;
+                    double AddedPerfectCottonRatio = Item.PerfectCottonRatio * Item.StackSize * Item.ChanceToConsume;
                     RecipePerfectCottonRatio += AddedPerfectCottonRatio;
                 }
 
@@ -1202,30 +1203,30 @@ namespace PgJsonObjects
             ResultItemList = new List<RecipeItem>();
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
             foreach (RecipeItem Item in IngredientList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (RecipeItem Item in ResultItemList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
-                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected);
+                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
 
             if (SortSkill != PowerSkill.Internal_None && SortSkill != PowerSkill.AnySkill && SortSkill != PowerSkill.Unknown)
-                ConnectedSortSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, SortSkill, ConnectedSortSkill, ref IsSortSkillParsed, ref IsConnected);
+                ConnectedSortSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, SortSkill, ConnectedSortSkill, ref IsSortSkillParsed, ref IsConnected, this);
 
             if (RewardSkill != PowerSkill.Internal_None && RewardSkill != PowerSkill.AnySkill && RewardSkill != PowerSkill.Unknown)
-                ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsRewardSkillParsed, ref IsConnected);
+                ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsRewardSkillParsed, ref IsConnected, this);
 
             foreach (AbilityRequirement Item in OtherRequirementList)
-                IsConnected |= Item.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             if (Cost != null)
-                Cost.Connect(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Cost.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             return IsConnected;
         }

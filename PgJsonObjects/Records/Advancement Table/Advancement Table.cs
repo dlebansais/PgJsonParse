@@ -83,7 +83,7 @@ namespace PgJsonObjects
             }
         }
 
-        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, AdvancementTable> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected)
+        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, AdvancementTable> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawAdvancementTableParsed)
                 return ParsedAdvancementTable;
@@ -97,6 +97,7 @@ namespace PgJsonObjects
                 if (Entry.Value.InternalName == RawAdvancementTableName)
                 {
                     IsConnected = true;
+                    //Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -113,7 +114,7 @@ namespace PgJsonObjects
         {
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }

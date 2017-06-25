@@ -91,6 +91,7 @@
     <Compile Include="Selectors\Item Effect Gear Selector.cs" />
     <Compile Include="Parser Version.cs" />
     <Compile Include="Program State.cs" />
+    <Compile Include="Selectors\Link Back Selector.cs" />
     <Compile Include="Selectors\List Member Selector.cs" />
     <Compile Include="Selectors\Search Result Content Selector.cs" />
     <Compile Include="Selectors\Search Result Title Selector.cs" />

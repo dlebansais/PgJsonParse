@@ -27,6 +27,8 @@ namespace PgJsonObjects
         public Skill ConnectedBonusSkill { get; private set; }
         private bool IsBonusSkillParsed;
 
+        public Skill ParentSkill { get; private set; }
+
         private static string AddRewardString(string Result, string Reward)
         {
             return (Result.Length > 0) ? (Result + ", " + Reward) : Reward;
@@ -164,15 +166,17 @@ namespace PgJsonObjects
             IsRawRecipeParsed = false;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
 
-            Ability = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawAbility, Ability, ref IsRawAbilityParsed, ref IsConnected);
-            Recipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRecipe, Recipe, ref IsRawRecipeParsed, ref IsConnected);
+            ParentSkill = Parent as Skill;
+
+            Ability = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawAbility, Ability, ref IsRawAbilityParsed, ref IsConnected, this);
+            Recipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRecipe, Recipe, ref IsRawRecipeParsed, ref IsConnected, this);
 
             if (BonusSkill != PowerSkill.Internal_None && BonusSkill != PowerSkill.AnySkill && BonusSkill != PowerSkill.Unknown)
-                ConnectedBonusSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, BonusSkill, ConnectedBonusSkill, ref IsBonusSkillParsed, ref IsConnected);
+                ConnectedBonusSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, BonusSkill, ConnectedBonusSkill, ref IsBonusSkillParsed, ref IsConnected, this);
 
             return IsConnected;
         }

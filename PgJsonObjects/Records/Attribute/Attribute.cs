@@ -163,7 +163,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static Attribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Attribute> AttributeTable, string RawAttributeName, Attribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected)
+        public static Attribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Attribute> AttributeTable, string RawAttributeName, Attribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, object LinkBack)
         {
             if (IsRawAttributeParsed)
                 return ParsedAttribute;
@@ -177,6 +177,7 @@ namespace PgJsonObjects
                 if (Entry.Key == RawAttributeName)
                 {
                     IsConnected = true;
+                    //Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 
@@ -222,7 +223,7 @@ namespace PgJsonObjects
             IsIconIdListEmpty = true;
         }
 
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }

@@ -1,16 +1,63 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public abstract class GenericJsonObject<T> where T: class
+    public class GenericJsonObject
     {
+        public static int SortByName(object o1, object o2)
+        {
+            string s1 = GetObjectSortString(o1);
+            string s2 = GetObjectSortString(o2);
+            return string.Compare(s1, s2);
+        }
+
+        private static string GetObjectSortString(object o)
+        {
+            if (o is Ability)
+                return (o as Ability).Name;
+
+            if (o is DirectedGoal)
+                return (o as DirectedGoal).Label;
+
+            if (o is Effect)
+                return (o as Effect).Name;
+
+            if (o is Item)
+                return (o as Item).Name;
+
+            if (o is Quest)
+                return (o as Quest).Name;
+
+            if (o is Recipe)
+                return (o as Recipe).Name;
+
+            if (o is Skill)
+                return (o as Skill).Name;
+
+            if (o is Power)
+                return (o as Power).ComposedName;
+
+            return "";
+        }
+    }
+
+    public abstract class GenericJsonObject<T>: GenericJsonObject where T: class
+    {
+        #region Init
+        public GenericJsonObject()
+        {
+            LinkBackTable = new Dictionary<Type, List<object>>();
+        }
+        #endregion
+
         #region Descendant Interface
         protected delegate void FieldValueHandler(T This, object Value, ParseErrorInfo ErrorInfo);
 
         protected abstract Dictionary<string, FieldValueHandler> FieldTable { get; }
         protected abstract string FieldTableName { get; }
-        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable);
+        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable);
 
         protected static Dictionary<string, bool> ParsedFields;
 
@@ -101,6 +148,35 @@ namespace PgJsonObjects
             if (s != null)
                 Result += s + JsonGenerator.FieldSeparator;
         }
+
+        public Dictionary<Type, List<object>> LinkBackTable { get; private set; }
+        public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
+
+        static List<Type> LinkBackTypeList = new List<Type>();
+
+        protected void AddLinkBack(object LinkBack)
+        {
+            if (LinkBack is RecipeItem)
+                LinkBack = (LinkBack as RecipeItem).ParentRecipe;
+            else if (LinkBack is QuestObjective)
+                LinkBack = (LinkBack as QuestObjective).ParentQuest;
+            else if (LinkBack is AbilityRequirement)
+                return;
+            else if (LinkBack is PowerTier)
+                return;
+            else if (LinkBack is QuestRewardItem)
+                LinkBack = (LinkBack as QuestRewardItem).ParentQuest;
+            else if (LinkBack is Reward)
+                LinkBack = (LinkBack as Reward).ParentSkill;
+
+            Type ObjectType = LinkBack.GetType();
+            if (!LinkBackTable.ContainsKey(ObjectType))
+                LinkBackTable.Add(ObjectType, new List<object>());
+
+            List<object> LinkBackList = LinkBackTable[ObjectType];
+            if (!LinkBackList.Contains(LinkBack))
+                LinkBackList.Add(LinkBack);
+        }
         #endregion
 
         #region Client Interface
@@ -109,13 +185,13 @@ namespace PgJsonObjects
         public string Key { get; private set; }
         public abstract string TextContent { get; }
 
-        public virtual bool Connect(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             CheckUnparsedFields(ErrorInfo);
 
             bool IsConnected;
 
-            IsConnected = ConnectFields(ErrorInfo, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+            IsConnected = ConnectFields(ErrorInfo, Parent, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             return IsConnected;
         }
@@ -130,6 +206,12 @@ namespace PgJsonObjects
                 ParseFields(Fields, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
+        }
+
+        public void SortLinkBack()
+        {
+            foreach (KeyValuePair<Type, List<object>> Entry in LinkBackTable)
+                Entry.Value.Sort(GenericJsonObject.SortByName);
         }
         #endregion
     }
