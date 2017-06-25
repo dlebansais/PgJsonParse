@@ -17,6 +17,8 @@ namespace PgJsonObjects
         public string InternalName { get; private set; }
         public List<int> XpAmountList { get; private set; }
         private bool IsXpAmountListEmpty;
+
+        protected override string SortingName { get { return InternalName; } }
         #endregion
 
         #region Client Interface
@@ -65,7 +67,7 @@ namespace PgJsonObjects
             }
         }
 
-        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, XpTable> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, object LinkBack)
+        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, XpTable> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawXpTableParsed)
                 return ParsedXpTable;

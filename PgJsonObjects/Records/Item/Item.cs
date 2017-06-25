@@ -112,6 +112,7 @@ namespace PgJsonObjects
         public bool DestroyWhenUsedUp { get { return RawDestroyWhenUsedUp.HasValue && RawDestroyWhenUsedUp.Value; } }
         public bool? RawDestroyWhenUsedUp { get; private set; }
 
+        protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         public bool HasBestowedRecipes { get { return BestowRecipeTable.Count > 0; } }
 
@@ -1169,7 +1170,7 @@ namespace PgJsonObjects
             return Weight;
         }
 
-        public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, object LinkBack)
+        public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -1191,7 +1192,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, object LinkBack)
+        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -1215,7 +1216,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Item> ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, object LinkBack)
+        public static List<Item> ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;

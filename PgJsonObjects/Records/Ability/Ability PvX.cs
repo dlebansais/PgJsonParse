@@ -79,6 +79,8 @@ namespace PgJsonObjects
         private int? RawRageCost;
         public double RageCostMod { get { return RawRageCostMod.HasValue ? RawRageCostMod.Value : 0; } }
         private double? RawRageCostMod;
+
+        protected override string SortingName { get { return null; } }
         #endregion
 
         #region Client Interface

@@ -4,43 +4,18 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class GenericJsonObject
+    public abstract class GenericJsonObject
     {
-        public static int SortByName(object o1, object o2)
+        #region Comparison
+        protected abstract string SortingName { get; }
+
+        public static int SortByName(GenericJsonObject o1, GenericJsonObject o2)
         {
-            string s1 = GetObjectSortString(o1);
-            string s2 = GetObjectSortString(o2);
-            return string.Compare(s1, s2);
+            string s1 = o1.SortingName;
+            string s2 = o2.SortingName;
+            return string.Compare(s1, s2, StringComparison.InvariantCulture);
         }
-
-        private static string GetObjectSortString(object o)
-        {
-            if (o is Ability)
-                return (o as Ability).Name;
-
-            if (o is DirectedGoal)
-                return (o as DirectedGoal).Label;
-
-            if (o is Effect)
-                return (o as Effect).Name;
-
-            if (o is Item)
-                return (o as Item).Name;
-
-            if (o is Quest)
-                return (o as Quest).Name;
-
-            if (o is Recipe)
-                return (o as Recipe).Name;
-
-            if (o is Skill)
-                return (o as Skill).Name;
-
-            if (o is Power)
-                return (o as Power).ComposedName;
-
-            return "";
-        }
+        #endregion
     }
 
     public abstract class GenericJsonObject<T>: GenericJsonObject where T: class
@@ -48,7 +23,7 @@ namespace PgJsonObjects
         #region Init
         public GenericJsonObject()
         {
-            LinkBackTable = new Dictionary<Type, List<object>>();
+            LinkBackTable = new Dictionary<Type, List<GenericJsonObject>>();
         }
         #endregion
 
@@ -149,12 +124,12 @@ namespace PgJsonObjects
                 Result += s + JsonGenerator.FieldSeparator;
         }
 
-        public Dictionary<Type, List<object>> LinkBackTable { get; private set; }
+        public Dictionary<Type, List<GenericJsonObject>> LinkBackTable { get; private set; }
         public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
 
         static List<Type> LinkBackTypeList = new List<Type>();
 
-        protected void AddLinkBack(object LinkBack)
+        protected void AddLinkBack(GenericJsonObject LinkBack)
         {
             if (LinkBack is RecipeItem)
                 LinkBack = (LinkBack as RecipeItem).ParentRecipe;
@@ -171,9 +146,9 @@ namespace PgJsonObjects
 
             Type ObjectType = LinkBack.GetType();
             if (!LinkBackTable.ContainsKey(ObjectType))
-                LinkBackTable.Add(ObjectType, new List<object>());
+                LinkBackTable.Add(ObjectType, new List<GenericJsonObject>());
 
-            List<object> LinkBackList = LinkBackTable[ObjectType];
+            List<GenericJsonObject> LinkBackList = LinkBackTable[ObjectType];
             if (!LinkBackList.Contains(LinkBack))
                 LinkBackList.Add(LinkBack);
         }
@@ -210,7 +185,7 @@ namespace PgJsonObjects
 
         public void SortLinkBack()
         {
-            foreach (KeyValuePair<Type, List<object>> Entry in LinkBackTable)
+            foreach (KeyValuePair<Type, List<GenericJsonObject>> Entry in LinkBackTable)
                 Entry.Value.Sort(GenericJsonObject.SortByName);
         }
         #endregion

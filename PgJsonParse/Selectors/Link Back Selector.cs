@@ -11,7 +11,7 @@ namespace PgJsonParse
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             FrameworkElement element = container as FrameworkElement;
-            KeyValuePair<Type, List<object>> ItemKeyValue = (KeyValuePair<Type, List<object>>)item;
+            KeyValuePair<Type, List<GenericJsonObject>> ItemKeyValue = (KeyValuePair<Type, List<GenericJsonObject>>)item;
 
             if (ItemKeyValue.Key == typeof(Ability))
             {

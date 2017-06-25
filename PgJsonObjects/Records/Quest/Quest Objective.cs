@@ -64,6 +64,7 @@ namespace PgJsonObjects
         public string LastPart { get; private set; }
         private bool IsSummaryReady;
 
+        protected override string SortingName { get { return null; } }
         public Quest ParentQuest { get; private set; }
 
         public string CombinedTimeOfDayRequirement

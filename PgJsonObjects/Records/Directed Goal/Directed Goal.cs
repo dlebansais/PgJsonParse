@@ -42,6 +42,7 @@ namespace PgJsonObjects
         private int? RawNeededRecipeCompletions;
         public string NeededNotoriety { get; private set; }
 
+        protected override string SortingName { get { return Label; } }
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
 
         public string CombinedNeededSkill

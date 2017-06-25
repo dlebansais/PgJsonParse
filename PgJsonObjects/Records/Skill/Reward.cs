@@ -27,6 +27,7 @@ namespace PgJsonObjects
         public Skill ConnectedBonusSkill { get; private set; }
         private bool IsBonusSkillParsed;
 
+        protected override string SortingName { get { return null; } }
         public Skill ParentSkill { get; private set; }
 
         private static string AddRewardString(string Result, string Reward)

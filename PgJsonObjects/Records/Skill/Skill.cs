@@ -68,6 +68,8 @@ namespace PgJsonObjects
         public static Dictionary<PowerSkill, Ability> BasicAttackTable { get; private set; }
         public static Dictionary<PowerSkill, int> AnyIconTable { get; private set; }
 
+        protected override string SortingName { get { return Name; } }
+
         public string CombinedCompatibleSkills
         {
             get
@@ -593,7 +595,7 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
-        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, object LinkBack)
+        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
@@ -615,7 +617,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, object LinkBack)
+        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;

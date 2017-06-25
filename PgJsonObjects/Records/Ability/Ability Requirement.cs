@@ -52,6 +52,8 @@ namespace PgJsonObjects
         public int Max { get { return RawMax.HasValue ? RawMax.Value : 0; } }
         private int? RawMax;
 
+        protected override string SortingName { get { return Name; } }
+
         public string CombinedRequirement
         {
             get

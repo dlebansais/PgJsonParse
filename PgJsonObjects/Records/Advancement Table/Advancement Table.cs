@@ -7,6 +7,8 @@ namespace PgJsonObjects
         #region Properties
         public Dictionary<int, Advancement> LevelTable { get; private set; }
         public string InternalName { get; private set; }
+
+        protected override string SortingName { get { return InternalName; } }
         #endregion
 
         #region Client Interface
@@ -83,7 +85,7 @@ namespace PgJsonObjects
             }
         }
 
-        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, AdvancementTable> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, object LinkBack)
+        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, AdvancementTable> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawAdvancementTableParsed)
                 return ParsedAdvancementTable;

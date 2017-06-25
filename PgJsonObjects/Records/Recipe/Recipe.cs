@@ -78,6 +78,7 @@ namespace PgJsonObjects
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
         public int? RawRewardSkillXpFirstTime { get; private set; }
 
+        protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         public double? PerfectCottonRatio { get; private set; }
 
@@ -1105,7 +1106,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static Recipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, string RawRecipeName, Recipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, object LinkBack)
+        public static Recipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, string RawRecipeName, Recipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawRecipeParsed)
                 return ParsedRecipe;

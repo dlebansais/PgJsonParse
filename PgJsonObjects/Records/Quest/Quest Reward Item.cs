@@ -20,6 +20,7 @@ namespace PgJsonObjects
         private int? RawStackSize;
         public bool HasStackSize { get { return RawStackSize.HasValue && RawStackSize.Value > 1; } }
 
+        protected override string SortingName { get { return null; } }
         public Quest ParentQuest { get; private set; }
 
         public string CombinedName

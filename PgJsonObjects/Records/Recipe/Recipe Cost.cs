@@ -17,6 +17,8 @@ namespace PgJsonObjects
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }
         private double? RawPrice;
 
+        protected override string SortingName { get { return null; } }
+
         public string CombinedCost
         {
             get

@@ -51,6 +51,7 @@ namespace PgJsonObjects
         public List<AbilityKeyword> AbilityKeywordList { get; private set; }
         public bool IsAbilityKeywordListEmpty { get; private set; }
 
+        protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
 
         public string CombinedSpewText
@@ -320,7 +321,7 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
-        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Effect> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, object LinkBack)
+        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Effect> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawEffectParsed)
                 return ParsedEffect;

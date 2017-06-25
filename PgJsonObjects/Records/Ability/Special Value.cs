@@ -31,6 +31,8 @@ namespace PgJsonObjects
         private bool? RawDisplayAsPercent;
         public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
         private bool? RawSkipIfZero;
+
+        protected override string SortingName { get { return Label; } }
         #endregion
 
         #region Client Interface

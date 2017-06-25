@@ -148,6 +148,8 @@ namespace PgJsonObjects
         public List<AbilityAdditionalResult> AbilityAdditionalResultList { get; private set; }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
 
+        protected override string SortingName { get { return Name; } }
+
         public string CombinedCausesOfDeath
         {
             get
@@ -2923,7 +2925,7 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
-        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, object LinkBack)
+        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawAbilityParsed)
                 return ParsedAbility;

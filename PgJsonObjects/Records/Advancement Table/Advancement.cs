@@ -201,6 +201,8 @@ namespace PgJsonObjects
         private double? RawShopLogDaysKept;
         public double ShopHiringNumFree { get { return RawShopHiringNumFree.HasValue ? RawShopHiringNumFree.Value : 0; } }
         private double? RawShopHiringNumFree;
+
+        protected override string SortingName { get { return null; } }
         #endregion
 
         #region Client Interface

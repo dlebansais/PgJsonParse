@@ -25,6 +25,8 @@ namespace PgJsonObjects
         public bool IsHidden { get { return RawIsHidden.HasValue && RawIsHidden.Value; } }
         private bool? RawIsHidden;
 
+        protected override string SortingName { get { return Label; } }
+
         public List<string> IconFileNameList
         {
             get
@@ -163,7 +165,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static Attribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Attribute> AttributeTable, string RawAttributeName, Attribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, object LinkBack)
+        public static Attribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Attribute> AttributeTable, string RawAttributeName, Attribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawAttributeParsed)
                 return ParsedAttribute;

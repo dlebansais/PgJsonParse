@@ -138,6 +138,7 @@ namespace PgJsonObjects
         public Skill ConnectedWorkOrderSkill { get; private set; }
         private bool IsConnectedWorkOrderSkillParsed;
 
+        protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
 
         public string CombinedReuseTime
@@ -1321,7 +1322,7 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
-        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Quest> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, object LinkBack)
+        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Quest> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;

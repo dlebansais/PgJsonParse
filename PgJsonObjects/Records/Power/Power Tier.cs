@@ -14,6 +14,7 @@ namespace PgJsonObjects
 
         #region Properties
         public List<PowerEffect> EffectList { get; set; }
+        protected override string SortingName { get { return null; } }
         #endregion
 
         #region Client Interface

@@ -29,6 +29,8 @@ namespace PgJsonObjects
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; private set; }
 
+        protected override string SortingName { get { return (Prefix != null ? Prefix : "") + (Suffix != null ? Suffix : ""); } }
+
         public string ComposedName
         {
             get

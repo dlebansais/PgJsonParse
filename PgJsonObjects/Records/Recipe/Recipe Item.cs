@@ -56,6 +56,7 @@ namespace PgJsonObjects
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
         private bool? RawAttuneToCrafter;
 
+        protected override string SortingName { get { return null; } }
         public Recipe ParentRecipe { get; private set; }
 
         public double PerfectCottonRatio
