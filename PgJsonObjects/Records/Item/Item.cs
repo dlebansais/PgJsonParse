@@ -7,51 +7,7 @@ namespace PgJsonObjects
 {
     public class Item : GenericJsonObject<Item>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "Item"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "BestowRecipes", ParseFieldBestowRecipes },
-            { "BestowAbility", ParseFieldBestowAbility },
-            { "BestowQuest", ParseFieldBestowQuest },
-            { "AllowPrefix", ParseFieldAllowPrefix },
-            { "AllowSuffix", ParseFieldAllowSuffix },
-            { "CraftPoints", ParseFieldCraftPoints },
-            { "CraftingTargetLevel", ParseFieldCraftingTargetLevel },
-            { "Description", ParseFieldDescription },
-            { "DroppedAppearance", ParseFieldDroppedAppearance },
-            { "EffectDescs", ParseFieldEffectDescs },
-            { "DyeColor", ParseFieldDyeColor },
-            { "EquipAppearance", ParseFieldEquipAppearance },
-            { "EquipSlot", ParseFieldEquipSlot },
-            { "IconId", ParseFieldIconId },
-            { "InternalName", ParseFieldInternalName },
-            { "IsTemporary", ParseFieldIsTemporary },
-            { "IsCrafted", ParseFieldIsCrafted },
-            { "Keywords", ParseFieldKeywords },
-            { "MacGuffinQuestName", ParseFieldMacGuffinQuestName },
-            { "MaxCarryable", ParseFieldMaxCarryable },
-            { "MaxOnVendor", ParseFieldMaxOnVendor },
-            { "MaxStackSize", ParseFieldMaxStackSize },
-            { "MetabolismCost", ParseFieldMetabolismCost },
-            { "Name", ParseFieldName },
-            { "RequiredAppearance", ParseFieldRequiredAppearance },
-            { "OtherRequirements", ParseFieldOtherRequirements },
-            { "SkillReqs", ParseFieldSkillReqs },
-            { "UseDelay", ParseFieldUseDelay },
-            { "UseDelayAnimation", ParseFieldUseDelayAnimation },
-            { "UseAnimation", ParseFieldUseAnimation },
-            { "StockDye", ParseFieldStockDye },
-            { "UseRequirements", ParseFieldUseRequirements },
-            { "UseVerb", ParseFieldUseVerb },
-            { "Value", ParseFieldValue },
-            { "NumUses", ParseFieldNumUses },
-            { "DestroyWhenUsedUp", ParseFieldDestroyWhenUsedUp },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public Dictionary<string, Recipe> BestowRecipeTable { get; } = new Dictionary<string, Recipe>();
         public Ability BestowAbility { get; private set; }
         private string RawBestowAbility;
@@ -113,7 +69,9 @@ namespace PgJsonObjects
         public int? RawNumUses { get; private set; }
         public bool DestroyWhenUsedUp { get { return RawDestroyWhenUsedUp.HasValue && RawDestroyWhenUsedUp.Value; } }
         public bool? RawDestroyWhenUsedUp { get; private set; }
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         public bool HasBestowedRecipes { get { return BestowRecipeTable.Count > 0; } }
@@ -314,7 +272,47 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "BestowRecipes", ParseFieldBestowRecipes },
+            { "BestowAbility", ParseFieldBestowAbility },
+            { "BestowQuest", ParseFieldBestowQuest },
+            { "AllowPrefix", ParseFieldAllowPrefix },
+            { "AllowSuffix", ParseFieldAllowSuffix },
+            { "CraftPoints", ParseFieldCraftPoints },
+            { "CraftingTargetLevel", ParseFieldCraftingTargetLevel },
+            { "Description", ParseFieldDescription },
+            { "DroppedAppearance", ParseFieldDroppedAppearance },
+            { "EffectDescs", ParseFieldEffectDescs },
+            { "DyeColor", ParseFieldDyeColor },
+            { "EquipAppearance", ParseFieldEquipAppearance },
+            { "EquipSlot", ParseFieldEquipSlot },
+            { "IconId", ParseFieldIconId },
+            { "InternalName", ParseFieldInternalName },
+            { "IsTemporary", ParseFieldIsTemporary },
+            { "IsCrafted", ParseFieldIsCrafted },
+            { "Keywords", ParseFieldKeywords },
+            { "MacGuffinQuestName", ParseFieldMacGuffinQuestName },
+            { "MaxCarryable", ParseFieldMaxCarryable },
+            { "MaxOnVendor", ParseFieldMaxOnVendor },
+            { "MaxStackSize", ParseFieldMaxStackSize },
+            { "MetabolismCost", ParseFieldMetabolismCost },
+            { "Name", ParseFieldName },
+            { "RequiredAppearance", ParseFieldRequiredAppearance },
+            { "OtherRequirements", ParseFieldOtherRequirements },
+            { "SkillReqs", ParseFieldSkillReqs },
+            { "UseDelay", ParseFieldUseDelay },
+            { "UseDelayAnimation", ParseFieldUseDelayAnimation },
+            { "UseAnimation", ParseFieldUseAnimation },
+            { "StockDye", ParseFieldStockDye },
+            { "UseRequirements", ParseFieldUseRequirements },
+            { "UseVerb", ParseFieldUseVerb },
+            { "Value", ParseFieldValue },
+            { "NumUses", ParseFieldNumUses },
+            { "DestroyWhenUsedUp", ParseFieldDestroyWhenUsedUp },
+        };
+
         private static void ParseFieldBestowRecipes(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
             ArrayList RawBestowRecipes;
@@ -1009,6 +1007,11 @@ namespace PgJsonObjects
             this.RawDestroyWhenUsedUp = RawDestroyWhenUsedUp;
         }
 
+        private List<string> RawBestowRecipesList { get; } = new List<string>();
+        private bool RawBestowRecipesListIsEmpty;
+        #endregion
+
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -1148,28 +1151,93 @@ namespace PgJsonObjects
             else
                 Generator.AddString(null, EntryKey.ToString() + "=" + EntryValue.ToString(CultureInfo.InvariantCulture.NumberFormat));
         }
+        #endregion
 
-        public float GetWeight(WeightProfile WeightProfile)
+        #region Indexing
+        public override string TextContent
         {
-            if (WeightProfile == null)
-                return 0;
-
-            float Weight = 0;
-
-            foreach (AttributeWeight AttributeWeight in WeightProfile.AttributeWeightList)
+            get
             {
-                foreach (ItemEffect Effect in EffectDescriptionList)
+                string Result = "";
+
+                if (RawIconId.HasValue)
                 {
-                    ItemAttributeLink AsItemAttributeLink;
-                    if ((AsItemAttributeLink = Effect as ItemAttributeLink) != null)
+                    AddWithFieldSeparator(ref Result, Name);
+                    AddWithFieldSeparator(ref Result, Description);
+                    AddWithFieldSeparator(ref Result, CombinedBestowedRecipes);
+                    AddWithFieldSeparator(ref Result, CombinedBestowedAbility);
+                    AddWithFieldSeparator(ref Result, CombinedBestowedQuest);
+                    if (RawAllowPrefix.HasValue)
+                        AddWithFieldSeparator(ref Result, "Allow Prefix");
+                    if (RawAllowSuffix.HasValue)
+                        AddWithFieldSeparator(ref Result, "Allow Suffix");
+                    if (DroppedAppearance != ItemDroppedAppearance.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemDroppedAppearanceTextMap[DroppedAppearance]);
+                    AddWithFieldSeparator(ref Result, CombinedEffectDescription);
+                    if (EquipSlot != ItemSlot.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemSlotTextMap[EquipSlot]);
+                    if (RawIsTemporary.HasValue)
+                        AddWithFieldSeparator(ref Result, "Is Temporary");
+                    if (RawIsCrafted.HasValue)
+                        AddWithFieldSeparator(ref Result, "Is Crafted");
+                    AddWithFieldSeparator(ref Result, CombinedKeywords);
+                    if (MacGuffinQuestName != null)
+                        AddWithFieldSeparator(ref Result, MacGuffinQuestName.Name);
+                    if (RequiredAppearance != Appearance.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.AppearanceTextMap[RequiredAppearance]);
+                    AddWithFieldSeparator(ref Result, CombinedRequirements);
+                    AddWithFieldSeparator(ref Result, CombinedSkillRequirements);
+                    if (UseDelayAnimation != ItemUseAnimation.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseDelayAnimation]);
+                    if (UseAnimation != ItemUseAnimation.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseAnimation]);
+                    AddWithFieldSeparator(ref Result, CombinedUseRequirements);
+                    if (UseVerb != ItemUseVerb.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseVerbTextMap[UseVerb]);
+                    if (RawDestroyWhenUsedUp.HasValue)
+                        AddWithFieldSeparator(ref Result, "Destroy When Used Up");
+                }
+
+                return Result;
+            }
+        }
+        #endregion
+
+        #region Connecting Objects
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        {
+            bool IsConnected = false;
+
+            IsConnected |= Recipe.ConnectTableByInternalName(ErrorInfo, RecipeTable, RawBestowRecipesList, BestowRecipeTable);
+
+            BestowAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawBestowAbility, BestowAbility, ref IsRawBestowAbilityParsed, ref IsConnected, this);
+            BestowQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawBestowQuest, BestowQuest, ref IsRawBestowQuestParsed, ref IsConnected, this);
+
+            foreach (ItemEffect Effect in EffectDescriptionList)
+            {
+                ItemAttributeLink AsItemAttributeLink;
+                if ((AsItemAttributeLink = Effect as ItemAttributeLink) != null)
+                {
+                    if (!AsItemAttributeLink.IsParsed)
                     {
-                        if (AsItemAttributeLink.Link == AttributeWeight.Attribute)
-                            Weight += AsItemAttributeLink.AttributeEffect * AttributeWeight.Weight;
+                        bool IsParsed = false;
+                        Attribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected, this);
+                        AsItemAttributeLink.SetLink(Link);
                     }
                 }
             }
 
-            return Weight;
+            MacGuffinQuestName = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawMacGuffinQuestName, MacGuffinQuestName, ref IsRawMacGuffinQuestNameParsed, ref IsConnected, this);
+
+            foreach (ItemSkillLink ItemSkill in SkillRequirementList)
+                if (!ItemSkill.IsParsed)
+                {
+                    bool IsParsed = false;
+                    Skill Link = Skill.ConnectSingleProperty(ErrorInfo, SkillTable, ItemSkill.SkillName, ItemSkill.Link, ref IsParsed, ref IsConnected, this);
+                    ItemSkill.SetLink(Link);
+                }
+
+            return IsConnected;
         }
 
         public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
@@ -1243,95 +1311,35 @@ namespace PgJsonObjects
 
             return ItemList;
         }
-
-        public override string TextContent
-        {
-            get
-            {
-                string Result = "";
-
-                if (RawIconId.HasValue)
-                {
-                    AddWithFieldSeparator(ref Result, Name);
-                    AddWithFieldSeparator(ref Result, Description);
-                    AddWithFieldSeparator(ref Result, CombinedBestowedRecipes);
-                    AddWithFieldSeparator(ref Result, CombinedBestowedAbility);
-                    AddWithFieldSeparator(ref Result, CombinedBestowedQuest);
-                    if (RawAllowPrefix.HasValue)
-                        AddWithFieldSeparator(ref Result, "Allow Prefix");
-                    if (RawAllowSuffix.HasValue)
-                        AddWithFieldSeparator(ref Result, "Allow Suffix");
-                    if (DroppedAppearance != ItemDroppedAppearance.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemDroppedAppearanceTextMap[DroppedAppearance]);
-                    AddWithFieldSeparator(ref Result, CombinedEffectDescription);
-                    if (EquipSlot != ItemSlot.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemSlotTextMap[EquipSlot]);
-                    if (RawIsTemporary.HasValue)
-                        AddWithFieldSeparator(ref Result, "Is Temporary");
-                    if (RawIsCrafted.HasValue)
-                        AddWithFieldSeparator(ref Result, "Is Crafted");
-                    AddWithFieldSeparator(ref Result, CombinedKeywords);
-                    if (MacGuffinQuestName != null)
-                        AddWithFieldSeparator(ref Result, MacGuffinQuestName.Name);
-                    if (RequiredAppearance != Appearance.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.AppearanceTextMap[RequiredAppearance]);
-                    AddWithFieldSeparator(ref Result, CombinedRequirements);
-                    AddWithFieldSeparator(ref Result, CombinedSkillRequirements);
-                    if (UseDelayAnimation != ItemUseAnimation.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseDelayAnimation]);
-                    if (UseAnimation != ItemUseAnimation.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseAnimation]);
-                    AddWithFieldSeparator(ref Result, CombinedUseRequirements);
-                    if (UseVerb != ItemUseVerb.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseVerbTextMap[UseVerb]);
-                    if (RawDestroyWhenUsedUp.HasValue)
-                        AddWithFieldSeparator(ref Result, "Destroy When Used Up");
-                }
-
-                return Result;
-            }
-        }
-
-        private List<string> RawBestowRecipesList { get; } = new List<string>();
-        private bool RawBestowRecipesListIsEmpty;
         #endregion
 
-        #region Ancestor Interface
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        #region Crunching
+        public float GetWeight(WeightProfile WeightProfile)
         {
-            bool IsConnected = false;
+            if (WeightProfile == null)
+                return 0;
 
-            IsConnected |= Recipe.ConnectTableByInternalName(ErrorInfo, RecipeTable, RawBestowRecipesList, BestowRecipeTable);
+            float Weight = 0;
 
-            BestowAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawBestowAbility, BestowAbility, ref IsRawBestowAbilityParsed, ref IsConnected, this);
-            BestowQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawBestowQuest, BestowQuest, ref IsRawBestowQuestParsed, ref IsConnected, this);
-
-            foreach (ItemEffect Effect in EffectDescriptionList)
+            foreach (AttributeWeight AttributeWeight in WeightProfile.AttributeWeightList)
             {
-                ItemAttributeLink AsItemAttributeLink;
-                if ((AsItemAttributeLink = Effect as ItemAttributeLink) != null)
+                foreach (ItemEffect Effect in EffectDescriptionList)
                 {
-                    if (!AsItemAttributeLink.IsParsed)
+                    ItemAttributeLink AsItemAttributeLink;
+                    if ((AsItemAttributeLink = Effect as ItemAttributeLink) != null)
                     {
-                        bool IsParsed = false;
-                        Attribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected, this);
-                        AsItemAttributeLink.SetLink(Link);
+                        if (AsItemAttributeLink.Link == AttributeWeight.Attribute)
+                            Weight += AsItemAttributeLink.AttributeEffect * AttributeWeight.Weight;
                     }
                 }
             }
 
-            MacGuffinQuestName = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawMacGuffinQuestName, MacGuffinQuestName, ref IsRawMacGuffinQuestNameParsed, ref IsConnected, this);
-
-            foreach (ItemSkillLink ItemSkill in SkillRequirementList)
-                if (!ItemSkill.IsParsed)
-                {
-                    bool IsParsed = false;
-                    Skill Link = Skill.ConnectSingleProperty(ErrorInfo, SkillTable, ItemSkill.SkillName, ItemSkill.Link, ref IsParsed, ref IsConnected, this);
-                    ItemSkill.SetLink(Link);
-                }
-
-            return IsConnected;
+            return Weight;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "Item"; } }
         #endregion
     }
 }

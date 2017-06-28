@@ -6,66 +6,7 @@ namespace PgJsonObjects
 {
     public class Ability : GenericJsonObject<Ability>
     {
-        #region Parsing
-        protected override string FieldTableName { get { return "Ability"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Animation", ParseFieldAnimation },
-            { "AttributesThatDeltaPowerCost", ParseFieldAttributesThatDeltaPowerCost },
-            { "AttributesThatDeltaResetTime", ParseFieldAttributesThatDeltaResetTime },
-            { "AttributesThatModPowerCost", ParseFieldAttributesThatModPowerCost },
-            { "CanBeOnSidebar", ParseFieldCanBeOnSidebar },
-            { "CanSuppressMonsterShout", ParseFieldCanSuppressMonsterShout },
-            { "CanTargetUntargetableEnemies", ParseFieldCanTargetUntargetableEnemies },
-            { "CausesOfDeath", ParseFieldCausesOfDeath },
-            { "Costs", ParseFieldCosts },
-            { "CombatRefreshBaseAmount", ParseFieldCombatRefreshBaseAmount },
-            { "CompatibleSkills", ParseFieldCompatibleSkills },
-            { "ConsumedItemChance", ParseFieldConsumedItemChance },
-            { "ConsumedItemChanceToStickInCorpse", ParseFieldConsumedItemChanceToStickInCorpse },
-            { "ConsumedItemCount", ParseFieldConsumedItemCount },
-            { "ConsumedItemKeyword", ParseFieldConsumedItemKeyword },
-            { "DamageType", ParseFieldDamageType },
-            { "DelayLoopIsAbortedIfAttacked", ParseFieldDelayLoopIsAbortedIfAttacked },
-            { "DelayLoopMessage", ParseFieldDelayLoopMessage },
-            { "DelayLoopTime", ParseFieldDelayLoopTime },
-            { "Description", ParseFieldDescription },
-            { "EffectKeywordsIndicatingEnabled", ParseFieldEffectKeywordsIndicatingEnabled },
-            { "IconID", ParseFieldIconId },
-            { "InternalAbility", ParseFieldInternalAbility },
-            { "InternalName", ParseFieldInternalName },
-            { "IsHarmless", ParseFieldIsHarmless },
-            { "ItemKeywordReqErrorMessage", ParseFieldItemKeywordReqErrorMessage },
-            { "ItemKeywordReqs", ParseFieldItemKeywordReqs },
-            { "Keywords", ParseFieldKeywords },
-            { "Level", ParseFieldLevel },
-            { "Name", ParseFieldName },
-            { "PetTypeTagReq", ParseFieldPetTypeTagReq },
-            { "PetTypeTagReqMax", ParseFieldPetTypeTagReqMax },
-            { "Prerequisite", ParseFieldPrerequisite },
-            { "Projectile", ParseFieldProjectile },
-            { "PvE", ParseFieldPvE },
-            { "PvP", ParseFieldPvP },
-            { "ResetTime", ParseFieldResetTime },
-            { "SelfParticle", ParseFieldSelfParticle },
-            { "SharesResetTimerWith", ParseFieldSharesResetTimerWith },
-            { "Skill", ParseFieldSkill },
-            { "SpecialCasterRequirements", ParseFieldSpecialCasterRequirements },
-            { "SpecialInfo", ParseFieldSpecialInfo },
-            { "SpecialTargetingTypeReq", ParseFieldSpecialTargetingTypeReq },
-            { "Target", ParseFieldTarget },
-            { "TargetEffectKeywordReq", ParseFieldTargetEffectKeywordReq },
-            { "TargetParticle", ParseFieldTargetParticle },
-            { "UpgradeOf", ParseFieldUpgradeOf },
-            { "WorksInCombat", ParseFieldWorksInCombat },
-            { "WorksUnderwater", ParseFieldWorksUnderwater },
-            { "WorksWhileFalling", ParseFieldWorksWhileFalling },
-            { "ExtraKeywordsForTooltips", ParseFieldExtraKeywordsForTooltips },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public AbilityAnimation Animation { get; private set; }
         public Dictionary<string, Attribute> AttributesThatDeltaPowerCostTable { get; } = new Dictionary<string, Attribute>();
         public Dictionary<string, Attribute> AttributesThatDeltaResetTimeTable { get; } = new Dictionary<string, Attribute>();
@@ -144,7 +85,9 @@ namespace PgJsonObjects
         public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
         public bool? RawWorksWhileFalling { get; private set; }
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; private set; }
+        #endregion
 
+        #region Indirect Properties
         public string DigitStrippedName { get; private set; }
         public int LineIndex { get; private set; }
         public List<AbilityAdditionalResult> AbilityAdditionalResultList { get; } = new List<AbilityAdditionalResult>();
@@ -357,7 +300,62 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Animation", ParseFieldAnimation },
+            { "AttributesThatDeltaPowerCost", ParseFieldAttributesThatDeltaPowerCost },
+            { "AttributesThatDeltaResetTime", ParseFieldAttributesThatDeltaResetTime },
+            { "AttributesThatModPowerCost", ParseFieldAttributesThatModPowerCost },
+            { "CanBeOnSidebar", ParseFieldCanBeOnSidebar },
+            { "CanSuppressMonsterShout", ParseFieldCanSuppressMonsterShout },
+            { "CanTargetUntargetableEnemies", ParseFieldCanTargetUntargetableEnemies },
+            { "CausesOfDeath", ParseFieldCausesOfDeath },
+            { "Costs", ParseFieldCosts },
+            { "CombatRefreshBaseAmount", ParseFieldCombatRefreshBaseAmount },
+            { "CompatibleSkills", ParseFieldCompatibleSkills },
+            { "ConsumedItemChance", ParseFieldConsumedItemChance },
+            { "ConsumedItemChanceToStickInCorpse", ParseFieldConsumedItemChanceToStickInCorpse },
+            { "ConsumedItemCount", ParseFieldConsumedItemCount },
+            { "ConsumedItemKeyword", ParseFieldConsumedItemKeyword },
+            { "DamageType", ParseFieldDamageType },
+            { "DelayLoopIsAbortedIfAttacked", ParseFieldDelayLoopIsAbortedIfAttacked },
+            { "DelayLoopMessage", ParseFieldDelayLoopMessage },
+            { "DelayLoopTime", ParseFieldDelayLoopTime },
+            { "Description", ParseFieldDescription },
+            { "EffectKeywordsIndicatingEnabled", ParseFieldEffectKeywordsIndicatingEnabled },
+            { "IconID", ParseFieldIconId },
+            { "InternalAbility", ParseFieldInternalAbility },
+            { "InternalName", ParseFieldInternalName },
+            { "IsHarmless", ParseFieldIsHarmless },
+            { "ItemKeywordReqErrorMessage", ParseFieldItemKeywordReqErrorMessage },
+            { "ItemKeywordReqs", ParseFieldItemKeywordReqs },
+            { "Keywords", ParseFieldKeywords },
+            { "Level", ParseFieldLevel },
+            { "Name", ParseFieldName },
+            { "PetTypeTagReq", ParseFieldPetTypeTagReq },
+            { "PetTypeTagReqMax", ParseFieldPetTypeTagReqMax },
+            { "Prerequisite", ParseFieldPrerequisite },
+            { "Projectile", ParseFieldProjectile },
+            { "PvE", ParseFieldPvE },
+            { "PvP", ParseFieldPvP },
+            { "ResetTime", ParseFieldResetTime },
+            { "SelfParticle", ParseFieldSelfParticle },
+            { "SharesResetTimerWith", ParseFieldSharesResetTimerWith },
+            { "Skill", ParseFieldSkill },
+            { "SpecialCasterRequirements", ParseFieldSpecialCasterRequirements },
+            { "SpecialInfo", ParseFieldSpecialInfo },
+            { "SpecialTargetingTypeReq", ParseFieldSpecialTargetingTypeReq },
+            { "Target", ParseFieldTarget },
+            { "TargetEffectKeywordReq", ParseFieldTargetEffectKeywordReq },
+            { "TargetParticle", ParseFieldTargetParticle },
+            { "UpgradeOf", ParseFieldUpgradeOf },
+            { "WorksInCombat", ParseFieldWorksInCombat },
+            { "WorksUnderwater", ParseFieldWorksUnderwater },
+            { "WorksWhileFalling", ParseFieldWorksWhileFalling },
+            { "ExtraKeywordsForTooltips", ParseFieldExtraKeywordsForTooltips },
+        };
+
         private static void ParseFieldAnimation(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawAnimation;
@@ -2843,7 +2841,9 @@ namespace PgJsonObjects
                     PgJsonObjects.Skill.AnyIconTable.Add(Skill, RawIconId.Value);
             }
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -2926,43 +2926,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
-        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
-        {
-            if (IsRawAbilityParsed)
-                return ParsedAbility;
-
-            IsRawAbilityParsed = true;
-
-            if (RawAbilityName == null)
-                return null;
-
-            foreach (KeyValuePair<string, Ability> Entry in AbilityTable)
-                if (Entry.Value.InternalName == RawAbilityName)
-                {
-                    IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
-                }
-
-            ErrorInfo.AddMissingKey(RawAbilityName);
-            return null;
-        }
-
-        public bool IsAbilityValidForCrunch
-        {
-            get
-            {
-                if (!RawResetTime.HasValue)
-                    return false;
-
-                if (PvE == null)
-                    return false;
-
-                return true;
-            }
-        }
-
+        #region Indexing
         public override string TextContent
         {
             get
@@ -3045,14 +3011,7 @@ namespace PgJsonObjects
         private bool IsRawUpgradeOfParsed;
         #endregion
 
-        #region Overrides
-        public override string ToString()
-        {
-            return Name;
-        }
-        #endregion
-
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -3091,6 +3050,53 @@ namespace PgJsonObjects
             }
 
             return IsConnected;
+        }
+
+        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawAbilityParsed)
+                return ParsedAbility;
+
+            IsRawAbilityParsed = true;
+
+            if (RawAbilityName == null)
+                return null;
+
+            foreach (KeyValuePair<string, Ability> Entry in AbilityTable)
+                if (Entry.Value.InternalName == RawAbilityName)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            ErrorInfo.AddMissingKey(RawAbilityName);
+            return null;
+        }
+        #endregion
+
+        #region Crunching
+        public bool IsAbilityValidForCrunch
+        {
+            get
+            {
+                if (!RawResetTime.HasValue)
+                    return false;
+
+                if (PvE == null)
+                    return false;
+
+                return true;
+            }
+        }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "Ability"; } }
+
+        public override string ToString()
+        {
+            return Name;
         }
         #endregion
     }

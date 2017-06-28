@@ -5,20 +5,7 @@ namespace PgJsonObjects
 {
     public class Attribute : GenericJsonObject<Attribute>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "Attribute"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Label", ParseFieldLabel },
-            { "IconIds", ParseFieldIconIds },
-            { "Tooltip", ParseFieldTooltip },
-            { "DisplayType", ParseFieldDisplayType },
-            { "IsHidden", ParseFieldIsHidden },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public string Label { get; private set; }
         public List<int> IconIdList { get; } = new List<int>();
         private bool IsIconIdListEmpty = true;
@@ -26,7 +13,9 @@ namespace PgJsonObjects
         public DisplayType DisplayType { get; private set; }
         public bool IsHidden { get { return RawIsHidden.HasValue && RawIsHidden.Value; } }
         private bool? RawIsHidden;
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return Label; } }
 
         public List<string> IconFileNameList
@@ -40,9 +29,32 @@ namespace PgJsonObjects
                 return Result;
             }
         }
+
+        public bool IsLabelWithPercent
+        {
+            get { return Label.EndsWith("%"); }
+        }
+
+        public string LabelRippedOfPercent
+        {
+            get
+            {
+                string Result = IsLabelWithPercent ? Label.Substring(0, Label.Length - 1) : Label;
+                return Result.Trim();
+            }
+        }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Label", ParseFieldLabel },
+            { "IconIds", ParseFieldIconIds },
+            { "Tooltip", ParseFieldTooltip },
+            { "DisplayType", ParseFieldDisplayType },
+            { "IsHidden", ParseFieldIsHidden },
+        };
+
         private static void ParseFieldLabel(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawLabel;
@@ -121,7 +133,9 @@ namespace PgJsonObjects
         {
             this.RawIsHidden = RawIsHidden;
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -143,6 +157,28 @@ namespace PgJsonObjects
             Generator.AddBoolean("IsHidden", RawIsHidden);
 
             Generator.CloseObject();
+        }
+        #endregion
+
+        #region Indexing
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                Result += Label + JsonGenerator.FieldSeparator;
+                Result += Tooltip + JsonGenerator.FieldSeparator;
+
+                return Result;
+            }
+        }
+        #endregion
+
+        #region Connecting Objects
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        {
+            return false;
         }
 
         public static bool ConnectTable(ParseErrorInfo ErrorInfo, Dictionary<string, Attribute> AttributeTable, List<string> ConnectedList, Dictionary<string, Attribute> ConnectedTable)
@@ -188,40 +224,10 @@ namespace PgJsonObjects
             ErrorInfo.AddMissingKey(RawAttributeName);
             return null;
         }
-
-        public bool IsLabelWithPercent
-        {
-            get { return Label.EndsWith("%"); }
-        }
-
-        public string LabelRippedOfPercent
-        {
-            get
-            {
-                string Result = IsLabelWithPercent ? Label.Substring(0, Label.Length - 1) : Label;
-                return Result.Trim();
-            }
-        }
-
-        public override string TextContent
-        {
-            get
-            {
-                string Result = "";
-
-                Result += Label + JsonGenerator.FieldSeparator;
-                Result += Tooltip + JsonGenerator.FieldSeparator;
-
-                return Result;
-            }
-        }
         #endregion
 
-        #region Ancestor Interface
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
-        {
-            return false;
-        }
+        #region Debugging
+        protected override string FieldTableName { get { return "Attribute"; } }
         #endregion
     }
 }

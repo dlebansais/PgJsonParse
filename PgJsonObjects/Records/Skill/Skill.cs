@@ -6,32 +6,7 @@ namespace PgJsonObjects
 {
     public class Skill : GenericJsonObject<Skill>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "Skill"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Id", ParseFieldId },
-            { "Description", ParseFieldDescription },
-            { "HideWhenZero", ParseFieldHideWhenZero },
-            { "XpTable", ParseFieldXpTable },
-            { "AdvancementTable", ParseFieldAdvancementTable },
-            { "Combat", ParseFieldCombat },
-            { "CompatibleCombatSkills", ParseFieldCompatibleCombatSkills },
-            { "MaxBonusLevels", ParseFieldMaxBonusLevels },
-            { "InteractionFlagLevelCaps", ParseFieldInteractionFlagLevelCaps },
-            { "AdvancementHints", ParseFieldAdvancementHints },
-            { "Rewards", ParseFieldRewards },
-            { "Reports", ParseFieldReports },
-            { "Name", ParseFieldName },
-            { "Parents", ParseFieldParents },
-            { "SkipBonusLevelsIfSkillUnlearned", ParseFieldSkipBonusLevelsIfSkillUnlearned },
-            { "AuxCombat", ParseFieldAuxCombat },
-            { "TSysCategories", ParseFieldTSysCategories },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public PowerSkill CombatSkill { get; private set; }
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         private int? RawId;
@@ -66,7 +41,9 @@ namespace PgJsonObjects
         public bool AuxCombat { get { return RawAuxCombat.HasValue && RawAuxCombat.Value; } }
         public bool? RawAuxCombat { get; private set; }
         public List<SkillCategory> TSysCategoryList { get; } = new List<SkillCategory>();
+        #endregion
 
+        #region Indirect Properties
         public static Dictionary<PowerSkill, Ability> BasicAttackTable { get; private set; }
         public static Dictionary<PowerSkill, int> AnyIconTable { get; private set; }
 
@@ -144,6 +121,11 @@ namespace PgJsonObjects
 
             return IconId;
         }
+
+        /*private static string PrepareReward(int Level, string s)
+        {
+            return "Level " + Level + ": " + s;
+        }*/
         #endregion
 
         #region Init
@@ -154,7 +136,37 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw)
+        {
+            base.InitializeKey(EntryRaw);
+
+            PowerSkill ParsedPowerSkill;
+            StringToEnumConversion<PowerSkill>.TryParse(Key, out ParsedPowerSkill, null);
+            CombatSkill = ParsedPowerSkill;
+        }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Id", ParseFieldId },
+            { "Description", ParseFieldDescription },
+            { "HideWhenZero", ParseFieldHideWhenZero },
+            { "XpTable", ParseFieldXpTable },
+            { "AdvancementTable", ParseFieldAdvancementTable },
+            { "Combat", ParseFieldCombat },
+            { "CompatibleCombatSkills", ParseFieldCompatibleCombatSkills },
+            { "MaxBonusLevels", ParseFieldMaxBonusLevels },
+            { "InteractionFlagLevelCaps", ParseFieldInteractionFlagLevelCaps },
+            { "AdvancementHints", ParseFieldAdvancementHints },
+            { "Rewards", ParseFieldRewards },
+            { "Reports", ParseFieldReports },
+            { "Name", ParseFieldName },
+            { "Parents", ParseFieldParents },
+            { "SkipBonusLevelsIfSkillUnlearned", ParseFieldSkipBonusLevelsIfSkillUnlearned },
+            { "AuxCombat", ParseFieldAuxCombat },
+            { "TSysCategories", ParseFieldTSysCategories },
+        };
+
         public override void Init(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
         {
             base.Init(EntryRaw, ErrorInfo);
@@ -503,7 +515,9 @@ namespace PgJsonObjects
         {
             StringToEnumConversion<SkillCategory>.ParseList(RawTSysCategories, TSysCategoryList, ErrorInfo);
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -596,52 +610,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
-        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
-        {
-            if (IsRawSkillParsed)
-                return ParsedSkill;
-
-            IsRawSkillParsed = true;
-
-            if (RawSkillName == null)
-                return null;
-
-            foreach (KeyValuePair<string, Skill> Entry in SkillTable)
-                if (Entry.Key == RawSkillName)
-                {
-                    IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
-                }
-
-            ErrorInfo.AddMissingKey(RawSkillName);
-            return null;
-        }
-
-        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
-        {
-            if (IsRawSkillParsed)
-                return ParsedSkill;
-
-            IsRawSkillParsed = true;
-
-            foreach (KeyValuePair<string, Skill> Entry in SkillTable)
-                if (Entry.Value.CombatSkill == RawPowerSkill)
-                {
-                    IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
-                }
-
-            if (RawPowerSkill != PowerSkill.Unknown)
-                ErrorInfo.AddMissingKey(RawPowerSkill.ToString());
-            else
-                return null;
-
-            return null;
-        }
-
+        #region Indexing
         public override string TextContent
         {
             get
@@ -673,38 +644,7 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Overrides
-        public override string ToString()
-        {
-            return Key;
-        }
-        #endregion
-
-        #region Ancestor Interface
-        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw)
-        {
-            base.InitializeKey(EntryRaw);
-
-            PowerSkill ParsedPowerSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(Key, out ParsedPowerSkill, null);
-            CombatSkill = ParsedPowerSkill;
-        }
-
-        private static string PrepareReward(int Level, string s)
-        {
-            return "Level " + Level + ": " + s;
-        }
-
-        private static int SortByLevel(SkillRewardCommon reward1, SkillRewardCommon reward2)
-        {
-            if (reward1.RewardLevel > reward2.RewardLevel)
-                return 1;
-            else if (reward1.RewardLevel < reward2.RewardLevel)
-                return -1;
-            else
-                return 0;
-        }
-
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -758,6 +698,71 @@ namespace PgJsonObjects
             }
 
             return IsConnected;
+        }
+
+        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawSkillParsed)
+                return ParsedSkill;
+
+            IsRawSkillParsed = true;
+
+            if (RawSkillName == null)
+                return null;
+
+            foreach (KeyValuePair<string, Skill> Entry in SkillTable)
+                if (Entry.Key == RawSkillName)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            ErrorInfo.AddMissingKey(RawSkillName);
+            return null;
+        }
+
+        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawSkillParsed)
+                return ParsedSkill;
+
+            IsRawSkillParsed = true;
+
+            foreach (KeyValuePair<string, Skill> Entry in SkillTable)
+                if (Entry.Value.CombatSkill == RawPowerSkill)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            if (RawPowerSkill != PowerSkill.Unknown)
+                ErrorInfo.AddMissingKey(RawPowerSkill.ToString());
+            else
+                return null;
+
+            return null;
+        }
+
+        private static int SortByLevel(SkillRewardCommon reward1, SkillRewardCommon reward2)
+        {
+            if (reward1.RewardLevel > reward2.RewardLevel)
+                return 1;
+            else if (reward1.RewardLevel < reward2.RewardLevel)
+                return -1;
+            else
+                return 0;
+        }
+
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "Skill"; } }
+
+        public override string ToString()
+        {
+            return Key;
         }
         #endregion
     }

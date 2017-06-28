@@ -4,27 +4,7 @@ namespace PgJsonObjects
 {
     public class DirectedGoal : GenericJsonObject<DirectedGoal>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "DirectedGoal"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Label", ParseFieldLabel },
-            { "Zone", ParseFieldZone },
-            { "Hint", ParseFieldHint },
-            { "NeededSkill", ParseFieldNeededSkill },
-            { "NeededSkillLevel", ParseFieldNeededSkillLevel },
-            { "NeededAbility", ParseFieldNeededAbility },
-            { "NeededInteractionFlag", ParseFieldNeededInteractionFlag },
-            { "NeededRecipe", ParseFieldNeededRecipe },
-            { "NeededRecipeCompletions", ParseFieldNeededRecipeCompletions },
-            { "NeededNotoriety", ParseFieldNeededNotoriety },
-        };
-
-        public const int SearchResultIconId = 2118;
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public string Label { get; private set; }
         public string Zone { get; private set; }
         public string Hint { get; private set; }
@@ -43,8 +23,11 @@ namespace PgJsonObjects
         public int NeededRecipeCompletions { get { return RawNeededRecipeCompletions.HasValue ? RawNeededRecipeCompletions.Value : 0; } }
         private int? RawNeededRecipeCompletions;
         public string NeededNotoriety { get; private set; }
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return Label; } }
+        public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
 
         public string CombinedNeededSkill
@@ -99,7 +82,21 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Label", ParseFieldLabel },
+            { "Zone", ParseFieldZone },
+            { "Hint", ParseFieldHint },
+            { "NeededSkill", ParseFieldNeededSkill },
+            { "NeededSkillLevel", ParseFieldNeededSkillLevel },
+            { "NeededAbility", ParseFieldNeededAbility },
+            { "NeededInteractionFlag", ParseFieldNeededInteractionFlag },
+            { "NeededRecipe", ParseFieldNeededRecipe },
+            { "NeededRecipeCompletions", ParseFieldNeededRecipeCompletions },
+            { "NeededNotoriety", ParseFieldNeededNotoriety },
+        };
+
         private static void ParseFieldLabel(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawLabel;
@@ -242,7 +239,9 @@ namespace PgJsonObjects
         {
             NeededNotoriety = RawNeededNotoriety;
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -259,7 +258,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -280,7 +281,7 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -293,6 +294,10 @@ namespace PgJsonObjects
 
             return IsConnected;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "DirectedGoal"; } }
         #endregion
     }
 }

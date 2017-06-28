@@ -5,37 +5,7 @@ namespace PgJsonObjects
 {
     public class Effect : GenericJsonObject<Effect>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "Effect"; } }
-
-        public static readonly Dictionary<EffectStackingType, string> StackingTypeStringMap = new Dictionary<EffectStackingType, string>()
-        {
-            { EffectStackingType.LamiasGaze, "Lamia's Gaze" },
-            { EffectStackingType.One, "1" },
-        };
-
-        public static readonly Dictionary<EffectKeyword, string> KeywordStringMap = new Dictionary<EffectKeyword, string>()
-        {
-            { EffectKeyword.Hyphen, "-" },
-        };
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Name", ParseFieldName },
-            { "Desc", ParseFieldDesc },
-            { "IconId", ParseFieldIconId },
-            { "DisplayMode", ParseFieldDisplayMode },
-            { "SpewText", ParseFieldSpewText },
-            { "Particle", ParseFieldParticle },
-            { "StackingType", ParseFieldStackingType },
-            { "StackingPriority", ParseFieldStackingPriority },
-            { "Duration", ParseFieldDuration },
-            { "Keywords", ParseFieldKeywords },
-            { "AbilityKeywords", ParseFieldAbilityKeywords },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public string Name { get; private set; }
         public string Desc { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
@@ -52,7 +22,9 @@ namespace PgJsonObjects
         public bool IsKeywordListEmpty { get; private set; }
         public List<AbilityKeyword> AbilityKeywordList { get; } = new List<AbilityKeyword>();
         public bool IsAbilityKeywordListEmpty { get; private set; }
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
 
@@ -121,7 +93,33 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Name", ParseFieldName },
+            { "Desc", ParseFieldDesc },
+            { "IconId", ParseFieldIconId },
+            { "DisplayMode", ParseFieldDisplayMode },
+            { "SpewText", ParseFieldSpewText },
+            { "Particle", ParseFieldParticle },
+            { "StackingType", ParseFieldStackingType },
+            { "StackingPriority", ParseFieldStackingPriority },
+            { "Duration", ParseFieldDuration },
+            { "Keywords", ParseFieldKeywords },
+            { "AbilityKeywords", ParseFieldAbilityKeywords },
+        };
+
+        public static readonly Dictionary<EffectStackingType, string> StackingTypeStringMap = new Dictionary<EffectStackingType, string>()
+        {
+            { EffectStackingType.LamiasGaze, "Lamia's Gaze" },
+            { EffectStackingType.One, "1" },
+        };
+
+        public static readonly Dictionary<EffectKeyword, string> KeywordStringMap = new Dictionary<EffectKeyword, string>()
+        {
+            { EffectKeyword.Hyphen, "-" },
+        };
+
         private static void ParseFieldName(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawName;
@@ -297,7 +295,9 @@ namespace PgJsonObjects
             StringToEnumConversion<AbilityKeyword>.ParseList(RawAbilityKeywords, AbilityKeywordList, ErrorInfo);
             IsAbilityKeywordListEmpty = (RawAbilityKeywords != null && RawAbilityKeywords.Count == 0);
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -322,29 +322,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
-        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Effect> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, GenericJsonObject LinkBack)
-        {
-            if (IsRawEffectParsed)
-                return ParsedEffect;
-
-            IsRawEffectParsed = true;
-
-            if (RawEffectName == null)
-                return null;
-
-            foreach (KeyValuePair<string, Effect> Entry in EffectTable)
-                if (Entry.Value.Name == RawEffectName)
-                {
-                    IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
-                }
-
-            ErrorInfo.AddMissingKey(RawEffectName);
-            return null;
-        }
-
+        #region Indexing
         public override string TextContent
         {
             get
@@ -371,11 +351,37 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }
+
+        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Effect> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawEffectParsed)
+                return ParsedEffect;
+
+            IsRawEffectParsed = true;
+
+            if (RawEffectName == null)
+                return null;
+
+            foreach (KeyValuePair<string, Effect> Entry in EffectTable)
+                if (Entry.Value.Name == RawEffectName)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            ErrorInfo.AddMissingKey(RawEffectName);
+            return null;
+        }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "Effect"; } }
         #endregion
     }
 }

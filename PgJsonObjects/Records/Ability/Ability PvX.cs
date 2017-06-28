@@ -5,40 +5,7 @@ namespace PgJsonObjects
 {
     public class AbilityPvX : GenericJsonObject<AbilityPvX>
     {
-        #region Parsing
-        protected override string FieldTableName { get { return "AbilityPvX"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Damage", ParseFieldDamage },
-            { "ExtraDamageIfTargetVulnerable", ParseFieldExtraDamageIfTargetVulnerable },
-            { "HealthSpecificDamage", ParseFieldHealthSpecificDamage },
-            { "ArmorSpecificDamage", ParseFieldArmorSpecificDamage },
-            { "Range", ParseFieldRange },
-            { "PowerCost", ParseFieldPowerCost },
-            { "MetabolismCost", ParseFieldMetabolismCost },
-            { "ArmorMitigationRatio", ParseFieldArmorMitigationRatio },
-            { "AoE", ParseFieldAoE },
-            { "RageBoost", ParseFieldRageBoost },
-            { "RageMultiplier", ParseFieldRageMultiplier },
-            { "Accuracy", ParseFieldAccuracy },
-            { "AttributesThatDeltaDamage", ParseFieldAttributesThatDeltaDamage},
-            { "AttributesThatModDamage", ParseFieldAttributesThatModDamage },
-            { "AttributesThatModBaseDamage", ParseFieldAttributesThatModBaseDamage },
-            { "AttributesThatDeltaTaunt", ParseFieldAttributesThatDeltaTaunt },
-            { "AttributesThatModTaunt", ParseFieldAttributesThatModTaunt },
-            { "AttributesThatDeltaRage", ParseFieldAttributesThatDeltaRage },
-            { "AttributesThatModRage", ParseFieldAttributesThatModRage },
-            { "AttributesThatDeltaRange", ParseFieldAttributesThatDeltaRange },
-            { "SpecialValues", ParseFieldSpecialValues },
-            { "TauntDelta", ParseFieldTauntDelta },
-            { "TempTauntDelta", ParseFieldTempTauntDelta },
-            { "RageCost", ParseFieldRageCost },
-            { "RageCostMod", ParseFieldRageCostMod },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public int Damage { get { return RawDamage.HasValue ? RawDamage.Value : 0; } }
         private int? RawDamage;
         public int ExtraDamageIfTargetVulnerable { get { return RawExtraDamageIfTargetVulnerable.HasValue ? RawExtraDamageIfTargetVulnerable.Value : 0; } }
@@ -81,11 +48,42 @@ namespace PgJsonObjects
         private int? RawRageCost;
         public double RageCostMod { get { return RawRageCostMod.HasValue ? RawRageCostMod.Value : 0; } }
         private double? RawRageCostMod;
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return null; } }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Damage", ParseFieldDamage },
+            { "ExtraDamageIfTargetVulnerable", ParseFieldExtraDamageIfTargetVulnerable },
+            { "HealthSpecificDamage", ParseFieldHealthSpecificDamage },
+            { "ArmorSpecificDamage", ParseFieldArmorSpecificDamage },
+            { "Range", ParseFieldRange },
+            { "PowerCost", ParseFieldPowerCost },
+            { "MetabolismCost", ParseFieldMetabolismCost },
+            { "ArmorMitigationRatio", ParseFieldArmorMitigationRatio },
+            { "AoE", ParseFieldAoE },
+            { "RageBoost", ParseFieldRageBoost },
+            { "RageMultiplier", ParseFieldRageMultiplier },
+            { "Accuracy", ParseFieldAccuracy },
+            { "AttributesThatDeltaDamage", ParseFieldAttributesThatDeltaDamage},
+            { "AttributesThatModDamage", ParseFieldAttributesThatModDamage },
+            { "AttributesThatModBaseDamage", ParseFieldAttributesThatModBaseDamage },
+            { "AttributesThatDeltaTaunt", ParseFieldAttributesThatDeltaTaunt },
+            { "AttributesThatModTaunt", ParseFieldAttributesThatModTaunt },
+            { "AttributesThatDeltaRage", ParseFieldAttributesThatDeltaRage },
+            { "AttributesThatModRage", ParseFieldAttributesThatModRage },
+            { "AttributesThatDeltaRange", ParseFieldAttributesThatDeltaRange },
+            { "SpecialValues", ParseFieldSpecialValues },
+            { "TauntDelta", ParseFieldTauntDelta },
+            { "TempTauntDelta", ParseFieldTempTauntDelta },
+            { "RageCost", ParseFieldRageCost },
+            { "RageCostMod", ParseFieldRageCostMod },
+        };
+
         private static void ParseFieldDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
             if (Value is int)
@@ -441,6 +439,25 @@ namespace PgJsonObjects
             this.RawRageCostMod = RawRageCostMod;
         }
 
+        private List<string> RawAttributesThatDeltaDamageList { get; } = new List<string>();
+        private bool RawAttributesThatDeltaDamageListIsEmpty;
+        private List<string> RawAttributesThatModDamageList { get; } = new List<string>();
+        private bool RawAttributesThatModDamageListIsEmpty;
+        private List<string> RawAttributesThatModBaseDamageList { get; } = new List<string>();
+        private bool RawAttributesThatModBaseDamageListIsEmpty;
+        private List<string> RawAttributesThatDeltaTauntList { get; } = new List<string>();
+        private bool RawAttributesThatDeltaTauntListIsEmpty;
+        private List<string> RawAttributesThatModTauntList { get; } = new List<string>();
+        private bool RawAttributesThatModTauntListIsEmpty;
+        private List<string> RawAttributesThatDeltaRageList { get; } = new List<string>();
+        private bool RawAttributesThatDeltaRageListIsEmpty;
+        private List<string> RawAttributesThatModRageList { get; } = new List<string>();
+        private bool RawAttributesThatModRageListIsEmpty;
+        private List<string> RawAttributesThatDeltaRangeList { get; } = new List<string>();
+        private bool RawAttributesThatDeltaRangeListIsEmpty;
+        #endregion
+
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -496,7 +513,9 @@ namespace PgJsonObjects
                 Generator.CloseArray();
             }
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -509,26 +528,9 @@ namespace PgJsonObjects
                 return Result;
             }
         }
-
-        private List<string> RawAttributesThatDeltaDamageList { get; } = new List<string>();
-        private bool RawAttributesThatDeltaDamageListIsEmpty;
-        private List<string> RawAttributesThatModDamageList { get; } = new List<string>();
-        private bool RawAttributesThatModDamageListIsEmpty;
-        private List<string> RawAttributesThatModBaseDamageList { get; } = new List<string>();
-        private bool RawAttributesThatModBaseDamageListIsEmpty;
-        private List<string> RawAttributesThatDeltaTauntList { get; } = new List<string>();
-        private bool RawAttributesThatDeltaTauntListIsEmpty;
-        private List<string> RawAttributesThatModTauntList { get; } = new List<string>();
-        private bool RawAttributesThatModTauntListIsEmpty;
-        private List<string> RawAttributesThatDeltaRageList { get; } = new List<string>();
-        private bool RawAttributesThatDeltaRageListIsEmpty;
-        private List<string> RawAttributesThatModRageList { get; } = new List<string>();
-        private bool RawAttributesThatModRageListIsEmpty;
-        private List<string> RawAttributesThatDeltaRangeList { get; } = new List<string>();
-        private bool RawAttributesThatDeltaRangeListIsEmpty;
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -547,6 +549,10 @@ namespace PgJsonObjects
 
             return IsConnected;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "AbilityPvX"; } }
         #endregion
     }
 }

@@ -5,34 +5,7 @@ namespace PgJsonObjects
 {
     public class QuestObjective : GenericJsonObject<QuestObjective>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "QuestObjective"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Type", ParseFieldType },
-            { "Target", ParseFieldTarget },
-            { "Description", ParseFieldDescription },
-            { "Number", ParseFieldNumber },
-            { "InteractionFlags", ParseFieldInteractionFlags },
-            { "ItemName", ParseFieldItemName },
-            { "MustCompleteEarlierObjectivesFirst", ParseFieldMustCompleteEarlierObjectivesFirst },
-            { "InteractionFlag", ParseFieldInteractionFlag },
-            { "MinAmount", ParseFieldMinAmount },
-            { "MinFavorReceived", ParseFieldMinFavorReceived },
-            { "MaxFavorReceived", ParseFieldMaxFavorReceived },
-            { "Skill", ParseFieldSkill },
-            { "StringParam", ParseFieldStringParam },
-            { "ResultItemKeyword", ParseFieldResultItemKeyword },
-            { "AbilityKeyword", ParseFieldAbilityKeyword },
-            { "MaxAmount", ParseFieldMaxAmount },
-            { "AnatomyType", ParseFieldAnatomyType },
-            { "ItemKeyword", ParseFieldItemKeyword },
-            { "Requirements", ParseFieldRequirements },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public QuestObjectiveType Type { get; private set; }
         public string Target { get; private set; }
         public string Description { get; private set; }
@@ -59,7 +32,9 @@ namespace PgJsonObjects
         public ItemKeyword ItemKeyword { get; private set; }
         public int? MinHour { get; private set; }
         public int? MaxHour { get; private set; }
+        #endregion
 
+        #region Indirect Properties
         public string FirstPart { get; private set; }
         public string ItemLink { get; private set; }
         public string SkillLink { get; private set; }
@@ -81,7 +56,30 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Type", ParseFieldType },
+            { "Target", ParseFieldTarget },
+            { "Description", ParseFieldDescription },
+            { "Number", ParseFieldNumber },
+            { "InteractionFlags", ParseFieldInteractionFlags },
+            { "ItemName", ParseFieldItemName },
+            { "MustCompleteEarlierObjectivesFirst", ParseFieldMustCompleteEarlierObjectivesFirst },
+            { "InteractionFlag", ParseFieldInteractionFlag },
+            { "MinAmount", ParseFieldMinAmount },
+            { "MinFavorReceived", ParseFieldMinFavorReceived },
+            { "MaxFavorReceived", ParseFieldMaxFavorReceived },
+            { "Skill", ParseFieldSkill },
+            { "StringParam", ParseFieldStringParam },
+            { "ResultItemKeyword", ParseFieldResultItemKeyword },
+            { "AbilityKeyword", ParseFieldAbilityKeyword },
+            { "MaxAmount", ParseFieldMaxAmount },
+            { "AnatomyType", ParseFieldAnatomyType },
+            { "ItemKeyword", ParseFieldItemKeyword },
+            { "Requirements", ParseFieldRequirements },
+        };
+
         private static void ParseFieldType(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawType;
@@ -385,14 +383,18 @@ namespace PgJsonObjects
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
 
             Generator.CloseObject();
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -418,7 +420,7 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -435,9 +437,7 @@ namespace PgJsonObjects
             }
             return IsConnected;
         }
-        #endregion
 
-        #region Implementation
         private void PrepareSummary()
         {
             if (Type == QuestObjectiveType.Internal_None)
@@ -490,7 +490,7 @@ namespace PgJsonObjects
                 string First = Parts[0].Substring(0, Index).Trim();
                 string Last = Parts[0].Substring(Index + Substring.Length).Trim();
 
-                if (First.Length> 0)
+                if (First.Length > 0)
                 {
                     Parts[0] = First.Trim();
                     Parts.Add(Substring);
@@ -511,6 +511,10 @@ namespace PgJsonObjects
             else
                 SubstringIndex = -1;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "QuestObjective"; } }
         #endregion
     }
 }

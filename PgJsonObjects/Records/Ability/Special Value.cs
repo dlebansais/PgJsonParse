@@ -5,23 +5,7 @@ namespace PgJsonObjects
 {
     public class SpecialValue : GenericJsonObject<SpecialValue>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "SpecialValue"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Label", ParseFieldLabel },
-            { "Suffix", ParseFieldSuffix },
-            { "Value", ParseFieldValue },
-            { "AttributesThatDelta", ParseFieldAttributesThatDelta },
-            { "AttributesThatMod", ParseFieldAttributesThatMod },
-            { "AttributesThatModBase", ParseFieldAttributesThatModBase },
-            { "DisplayAsPercent", ParseFieldDisplayAsPercent },
-            { "SkipIfZero", ParseFieldSkipIfZero },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public string Label { get; private set; }
         public string Suffix { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
@@ -33,11 +17,25 @@ namespace PgJsonObjects
         private bool? RawDisplayAsPercent;
         public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
         private bool? RawSkipIfZero;
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return Label; } }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Label", ParseFieldLabel },
+            { "Suffix", ParseFieldSuffix },
+            { "Value", ParseFieldValue },
+            { "AttributesThatDelta", ParseFieldAttributesThatDelta },
+            { "AttributesThatMod", ParseFieldAttributesThatMod },
+            { "AttributesThatModBase", ParseFieldAttributesThatModBase },
+            { "DisplayAsPercent", ParseFieldDisplayAsPercent },
+            { "SkipIfZero", ParseFieldSkipIfZero },
+        };
+
         private static void ParseFieldLabel(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawLabel;
@@ -149,6 +147,15 @@ namespace PgJsonObjects
             this.RawSkipIfZero = RawSkipIfZero;
         }
 
+        private List<string> RawAttributesThatDeltaList { get; } = new List<string>();
+        private bool RawAttributesThatDeltaListIsEmpty;
+        private List<string> RawAttributesThatModList { get; } = new List<string>();
+        private bool RawAttributesThatModListIsEmpty;
+        private List<string> RawAttributesThatModBaseList { get; } = new List<string>();
+        private bool RawAttributesThatModBaseListIsEmpty;
+        #endregion
+
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -162,7 +169,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -175,16 +184,9 @@ namespace PgJsonObjects
                 return Result;
             }
         }
-
-        private List<string> RawAttributesThatDeltaList { get; } = new List<string>();
-        private bool RawAttributesThatDeltaListIsEmpty;
-        private List<string> RawAttributesThatModList { get; } = new List<string>();
-        private bool RawAttributesThatModListIsEmpty;
-        private List<string> RawAttributesThatModBaseList { get; } = new List<string>();
-        private bool RawAttributesThatModBaseListIsEmpty;
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -195,6 +197,10 @@ namespace PgJsonObjects
 
             return IsConnected;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "SpecialValue"; } }
         #endregion
     }
 }

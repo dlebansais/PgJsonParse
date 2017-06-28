@@ -5,21 +5,7 @@ namespace PgJsonObjects
 {
     public class Power : GenericJsonObject<Power>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "Power"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Prefix", ParseFieldPrefix },
-            { "Suffix", ParseFieldSuffix },
-            { "Tiers", ParseFieldTiers },
-            { "Slots", ParseFieldSlots },
-            { "Skill", ParseFieldSkill },
-            { "IsUnavailable", ParseFieldIsUnavailable },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public string Prefix { get; private set; }
         public string Suffix { get; private set; }
         public Dictionary<int, PowerTier> TierEffectTable { get; } = new Dictionary<int, PowerTier>();
@@ -31,7 +17,9 @@ namespace PgJsonObjects
         private bool IsSkillParsed;
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; private set; }
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return ComposedName; } }
 
         public string ComposedName
@@ -105,7 +93,17 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Prefix", ParseFieldPrefix },
+            { "Suffix", ParseFieldSuffix },
+            { "Tiers", ParseFieldTiers },
+            { "Slots", ParseFieldSlots },
+            { "Skill", ParseFieldSkill },
+            { "IsUnavailable", ParseFieldIsUnavailable },
+        };
+
         private static void ParseFieldPrefix(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawPrefix;
@@ -223,7 +221,9 @@ namespace PgJsonObjects
         {
             this.RawIsUnavailable = RawIsUnavailable;
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -244,24 +244,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
-        public bool IsValidForSlot(PowerSkill Skill, ItemSlot Slot)
-        {
-            if (this.Skill != Skill)
-                return false;
-
-            if (IsUnavailable)
-                return false;
-
-            if (TierEffectTable.Count == 0)
-                return false;
-
-            if (!SlotList.Contains(Slot))
-                return false;
-
-            return true;
-        }
-
+        #region Indexing
         public override string TextContent
         {
             get
@@ -282,30 +267,7 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
-        private static string PrepareTier(int Level, string s)
-        {
-            return "Tier " + Level + ": " + s;
-        }
-
-        private static int SortByLevel(string s1, string s2)
-        {
-            int i1 = s1.IndexOf(':');
-            int i2 = s2.IndexOf(':');
-
-            int l1 = 0;
-            int.TryParse(s1.Substring(5, i1 - 5), out l1);
-            int l2 = 0;
-            int.TryParse(s2.Substring(5, i2 - 5), out l2);
-
-            if (l1 > l2)
-                return 1;
-            else if (l1 < l2)
-                return -1;
-            else
-                return 0;
-        }
-
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -379,6 +341,52 @@ namespace PgJsonObjects
 
             return IsConnected;
         }
+
+        private static int SortByLevel(string s1, string s2)
+        {
+            int i1 = s1.IndexOf(':');
+            int i2 = s2.IndexOf(':');
+
+            int l1 = 0;
+            int.TryParse(s1.Substring(5, i1 - 5), out l1);
+            int l2 = 0;
+            int.TryParse(s2.Substring(5, i2 - 5), out l2);
+
+            if (l1 > l2)
+                return 1;
+            else if (l1 < l2)
+                return -1;
+            else
+                return 0;
+        }
+
+        private static string PrepareTier(int Level, string s)
+        {
+            return "Tier " + Level + ": " + s;
+        }
+        #endregion
+
+        #region Crunching
+        public bool IsValidForSlot(PowerSkill Skill, ItemSlot Slot)
+        {
+            if (this.Skill != Skill)
+                return false;
+
+            if (IsUnavailable)
+                return false;
+
+            if (TierEffectTable.Count == 0)
+                return false;
+
+            if (!SlotList.Contains(Slot))
+                return false;
+
+            return true;
+        }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "Power"; } }
         #endregion
     }
 }

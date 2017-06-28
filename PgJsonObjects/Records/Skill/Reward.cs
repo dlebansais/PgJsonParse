@@ -4,19 +4,7 @@ namespace PgJsonObjects
 {
     public class Reward : GenericJsonObject<Reward>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "Reward"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Ability", ParseFieldAbility },
-            { "BonusToSkill", ParseFieldBonusToSkill },
-            { "Recipe", ParseFieldRecipe },
-            { "Notes", ParseFieldNotes },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public int RewardLevel { get; private set; }
         public Ability Ability { get; private set; }
         private string RawAbility;
@@ -28,7 +16,9 @@ namespace PgJsonObjects
         public PowerSkill BonusSkill { get; private set; }
         public Skill ConnectedBonusSkill { get; private set; }
         private bool IsBonusSkillParsed;
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return null; } }
         public Skill ParentSkill { get; private set; }
 
@@ -60,7 +50,24 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw)
+        {
+            base.InitializeKey(EntryRaw);
+
+            int ParsedRewardLevel;
+            if (int.TryParse(Key, out ParsedRewardLevel))
+                RewardLevel = ParsedRewardLevel;
+        }
+
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Ability", ParseFieldAbility },
+            { "BonusToSkill", ParseFieldBonusToSkill },
+            { "Recipe", ParseFieldRecipe },
+            { "Notes", ParseFieldNotes },
+        };
+
         private static void ParseFieldAbility(Reward This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawAbility;
@@ -118,7 +125,9 @@ namespace PgJsonObjects
         {
             Notes = RawNotes;
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -130,7 +139,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -148,16 +159,7 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
-        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw)
-        {
-            base.InitializeKey(EntryRaw);
-
-            int ParsedRewardLevel;
-            if (int.TryParse(Key, out ParsedRewardLevel))
-                RewardLevel = ParsedRewardLevel;
-        }
-
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -172,6 +174,10 @@ namespace PgJsonObjects
 
             return IsConnected;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "Reward"; } }
         #endregion
     }
 }

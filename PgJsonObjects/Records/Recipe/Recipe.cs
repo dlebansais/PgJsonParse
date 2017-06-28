@@ -6,40 +6,7 @@ namespace PgJsonObjects
 {
     public class Recipe : GenericJsonObject<Recipe>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "Recipe"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Description", ParseFieldDescription },
-            { "IconId", ParseFieldIconId },
-            { "Ingredients", ParseFieldIngredients },
-            { "InternalName", ParseFieldInternalName },
-            { "Name", ParseFieldName },
-            { "ResultItems", ParseFieldResultItems },
-            { "Skill", ParseFieldSkill },
-            { "SkillLevelReq", ParseFieldSkillLevelReq },
-            { "ResultEffects", ParseFieldResultEffects },
-            { "SortSkill", ParseFieldSortSkill },
-            { "Keywords", ParseFieldKeywords },
-            { "ActionLabel", ParseFieldActionLabel },
-            { "UsageDelay", ParseFieldUsageDelay },
-            { "UsageDelayMessage", ParseFieldUsageDelayMessage },
-            { "UsageAnimation", ParseFieldUsageAnimation },
-            { "OtherRequirements", ParseFieldOtherRequirements },
-            { "Costs", ParseFieldCosts },
-            { "NumResultItems", ParseFieldNumResultItems },
-            { "UsageAnimationEnd", ParseFieldUsageAnimationEnd },
-            { "ResetTimeInSeconds", ParseFieldResetTimeInSeconds },
-            { "DyeColor", ParseFieldDyeColor },
-            { "RewardSkill", ParseFieldRewardSkill },
-            { "RewardSkillXp", ParseFieldRewardSkillXp },
-            { "RewardSkillXpFirstTime", ParseFieldRewardSkillXpFirstTime },
-
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public string Description { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         private int? RawIconId;
@@ -79,7 +46,9 @@ namespace PgJsonObjects
         public int? RawRewardSkillXp { get; private set; }
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
         public int? RawRewardSkillXpFirstTime { get; private set; }
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         public double? PerfectCottonRatio { get; private set; }
@@ -157,7 +126,35 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Description", ParseFieldDescription },
+            { "IconId", ParseFieldIconId },
+            { "Ingredients", ParseFieldIngredients },
+            { "InternalName", ParseFieldInternalName },
+            { "Name", ParseFieldName },
+            { "ResultItems", ParseFieldResultItems },
+            { "Skill", ParseFieldSkill },
+            { "SkillLevelReq", ParseFieldSkillLevelReq },
+            { "ResultEffects", ParseFieldResultEffects },
+            { "SortSkill", ParseFieldSortSkill },
+            { "Keywords", ParseFieldKeywords },
+            { "ActionLabel", ParseFieldActionLabel },
+            { "UsageDelay", ParseFieldUsageDelay },
+            { "UsageDelayMessage", ParseFieldUsageDelayMessage },
+            { "UsageAnimation", ParseFieldUsageAnimation },
+            { "OtherRequirements", ParseFieldOtherRequirements },
+            { "Costs", ParseFieldCosts },
+            { "NumResultItems", ParseFieldNumResultItems },
+            { "UsageAnimationEnd", ParseFieldUsageAnimationEnd },
+            { "ResetTimeInSeconds", ParseFieldResetTimeInSeconds },
+            { "DyeColor", ParseFieldDyeColor },
+            { "RewardSkill", ParseFieldRewardSkill },
+            { "RewardSkillXp", ParseFieldRewardSkillXp },
+            { "RewardSkillXpFirstTime", ParseFieldRewardSkillXpFirstTime },
+        };
+
         private static void ParseFieldDescription(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawDescription;
@@ -911,7 +908,9 @@ namespace PgJsonObjects
                 }
             }
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -1081,6 +1080,75 @@ namespace PgJsonObjects
         {
             return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + ResultEffect.Enhancement.ToString() + "(" + ResultEffect.AddedQuantity.ToString(CultureInfo.InvariantCulture.NumberFormat) + "," + ResultEffect.ConsumedEnhancementPoints + ")";
         }
+        #endregion
+
+        #region Indexing
+        public override string TextContent
+        {
+            get
+            {
+                string Result = "";
+
+                if (RawIconId.HasValue)
+                {
+                    AddWithFieldSeparator(ref Result, Name);
+                    AddWithFieldSeparator(ref Result, Description);
+                    foreach (RecipeItem Item in IngredientList)
+                        AddWithFieldSeparator(ref Result, Item.CombinedDescription);
+                    foreach (RecipeItem Item in ResultItemList)
+                        AddWithFieldSeparator(ref Result, Item.CombinedDescription);
+                    if (Skill != PowerSkill.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
+                    foreach (RecipeResultEffect Item in ResultEffectList)
+                        AddWithFieldSeparator(ref Result, Item.CombinedEffect);
+                    if (SortSkill != PowerSkill.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[SortSkill]);
+                    AddWithFieldSeparator(ref Result, CombinedKeywords);
+                    if (ActionLabel != RecipeAction.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.RecipeActionTextMap[ActionLabel]);
+                    AddWithFieldSeparator(ref Result, UsageDelayMessage);
+                    if (UsageAnimation != RecipeUsageAnimation.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.RecipeUsageAnimationTextMap[UsageAnimation]);
+                    AddWithFieldSeparator(ref Result, CombinedRequirements);
+                    if (Cost != null)
+                        AddWithFieldSeparator(ref Result, Cost.CombinedCost);
+                    if (RewardSkill != PowerSkill.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RewardSkill]);
+                }
+
+                return Result;
+            }
+        }
+        #endregion
+
+        #region Connecting Objects
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        {
+            bool IsConnected = false;
+
+            foreach (RecipeItem Item in IngredientList)
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (RecipeItem Item in ResultItemList)
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
+                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
+
+            if (SortSkill != PowerSkill.Internal_None && SortSkill != PowerSkill.AnySkill && SortSkill != PowerSkill.Unknown)
+                ConnectedSortSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, SortSkill, ConnectedSortSkill, ref IsSortSkillParsed, ref IsConnected, this);
+
+            if (RewardSkill != PowerSkill.Internal_None && RewardSkill != PowerSkill.AnySkill && RewardSkill != PowerSkill.Unknown)
+                ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsRewardSkillParsed, ref IsConnected, this);
+
+            foreach (AbilityRequirement Item in OtherRequirementList)
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            if (Cost != null)
+                Cost.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            return IsConnected;
+        }
 
         public static bool ConnectTableByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, List<string> ConnectedList, Dictionary<string, Recipe> ConnectedTable)
         {
@@ -1129,44 +1197,9 @@ namespace PgJsonObjects
             ErrorInfo.AddMissingKey(RawRecipeName);
             return null;
         }
+        #endregion
 
-        public override string TextContent
-        {
-            get
-            {
-                string Result = "";
-
-                if (RawIconId.HasValue)
-                {
-                    AddWithFieldSeparator(ref Result, Name);
-                    AddWithFieldSeparator(ref Result, Description);
-                    foreach (RecipeItem Item in IngredientList)
-                        AddWithFieldSeparator(ref Result, Item.CombinedDescription);
-                    foreach (RecipeItem Item in ResultItemList)
-                        AddWithFieldSeparator(ref Result, Item.CombinedDescription);
-                    if (Skill != PowerSkill.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
-                    foreach (RecipeResultEffect Item in ResultEffectList)
-                        AddWithFieldSeparator(ref Result, Item.CombinedEffect);
-                    if (SortSkill != PowerSkill.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[SortSkill]);
-                    AddWithFieldSeparator(ref Result, CombinedKeywords);
-                    if (ActionLabel != RecipeAction.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.RecipeActionTextMap[ActionLabel]);
-                    AddWithFieldSeparator(ref Result, UsageDelayMessage);
-                    if (UsageAnimation != RecipeUsageAnimation.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.RecipeUsageAnimationTextMap[UsageAnimation]);
-                    AddWithFieldSeparator(ref Result, CombinedRequirements);
-                    if (Cost != null)
-                        AddWithFieldSeparator(ref Result, Cost.CombinedCost);
-                    if (RewardSkill != PowerSkill.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RewardSkill]);
-                }
-
-                return Result;
-            }
-        }
-
+        #region Recursive Components Sum
         public void MeasurePerfectCottonRatio(ref bool Continue)
         {
             double RecipePerfectCottonRatio = 0;
@@ -1193,34 +1226,8 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
-        {
-            bool IsConnected = false;
-
-            foreach (RecipeItem Item in IngredientList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
-
-            foreach (RecipeItem Item in ResultItemList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
-
-            if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
-                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
-
-            if (SortSkill != PowerSkill.Internal_None && SortSkill != PowerSkill.AnySkill && SortSkill != PowerSkill.Unknown)
-                ConnectedSortSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, SortSkill, ConnectedSortSkill, ref IsSortSkillParsed, ref IsConnected, this);
-
-            if (RewardSkill != PowerSkill.Internal_None && RewardSkill != PowerSkill.AnySkill && RewardSkill != PowerSkill.Unknown)
-                ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsRewardSkillParsed, ref IsConnected, this);
-
-            foreach (AbilityRequirement Item in OtherRequirementList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
-
-            if (Cost != null)
-                Cost.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
-
-            return IsConnected;
-        }
+        #region Debugging
+        protected override string FieldTableName { get { return "Recipe"; } }
         #endregion
     }
 }

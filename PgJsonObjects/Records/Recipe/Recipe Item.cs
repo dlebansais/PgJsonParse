@@ -5,40 +5,7 @@ namespace PgJsonObjects
 {
     public class RecipeItem : GenericJsonObject<RecipeItem>
     {
-        #region Constant
-        protected override string FieldTableName { get { return "RecipeItem"; } }
-
-        public static readonly Dictionary<RecipeItemKey, string> RecipeItemKeyStringMap = new Dictionary<RecipeItemKey, string>()
-        {
-            { RecipeItemKey.EquipmentSlot_MainHand, "EquipmentSlot:MainHand" },
-            { RecipeItemKey.EquipmentSlot_OffHand, "EquipmentSlot:OffHand" },
-            { RecipeItemKey.EquipmentSlot_Hands, "EquipmentSlot:Hands" },
-            { RecipeItemKey.EquipmentSlot_Chest, "EquipmentSlot:Chest" },
-            { RecipeItemKey.EquipmentSlot_Legs, "EquipmentSlot:Legs" },
-            { RecipeItemKey.EquipmentSlot_Head, "EquipmentSlot:Head" },
-            { RecipeItemKey.EquipmentSlot_Feet, "EquipmentSlot:Feet" },
-            { RecipeItemKey.EquipmentSlot_Ring, "EquipmentSlot:Ring" },
-            { RecipeItemKey.EquipmentSlot_Necklace, "EquipmentSlot:Necklace" },
-            { RecipeItemKey.Rarity_Uncommon, "Rarity:Uncommon" },
-            { RecipeItemKey.Rarity_Rare, "Rarity:Rare" },
-            { RecipeItemKey.MinRarity_Exceptional, "MinRarity:Exceptional" },
-            { RecipeItemKey.MinRarity_Uncommon, "MinRarity:Uncommon" },
-        };
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "ItemCode", ParseFieldItemCode },
-            { "StackSize", ParseFieldStackSize },
-            { "PercentChance", ParseFieldPercentChance },
-            { "ItemKeys", ParseFieldItemKeys },
-            { "Desc", ParseFieldDesc },
-            { "ChanceToConsume", ParseFieldChanceToConsume },
-            { "DurabilityConsumed", ParseFieldDurabilityConsumed },
-            { "AttuneToCrafter", ParseFieldAttuneToCrafter },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public Item Item { get; private set; }
         public int ItemCode { get { return RawItemCode.HasValue ? RawItemCode.Value : 0; } }
         private int? RawItemCode;
@@ -58,7 +25,9 @@ namespace PgJsonObjects
         private double? RawDurabilityConsumed;
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
         private bool? RawAttuneToCrafter;
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return null; } }
         public Recipe ParentRecipe { get; private set; }
 
@@ -191,7 +160,36 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "ItemCode", ParseFieldItemCode },
+            { "StackSize", ParseFieldStackSize },
+            { "PercentChance", ParseFieldPercentChance },
+            { "ItemKeys", ParseFieldItemKeys },
+            { "Desc", ParseFieldDesc },
+            { "ChanceToConsume", ParseFieldChanceToConsume },
+            { "DurabilityConsumed", ParseFieldDurabilityConsumed },
+            { "AttuneToCrafter", ParseFieldAttuneToCrafter },
+        };
+
+        public static readonly Dictionary<RecipeItemKey, string> RecipeItemKeyStringMap = new Dictionary<RecipeItemKey, string>()
+        {
+            { RecipeItemKey.EquipmentSlot_MainHand, "EquipmentSlot:MainHand" },
+            { RecipeItemKey.EquipmentSlot_OffHand, "EquipmentSlot:OffHand" },
+            { RecipeItemKey.EquipmentSlot_Hands, "EquipmentSlot:Hands" },
+            { RecipeItemKey.EquipmentSlot_Chest, "EquipmentSlot:Chest" },
+            { RecipeItemKey.EquipmentSlot_Legs, "EquipmentSlot:Legs" },
+            { RecipeItemKey.EquipmentSlot_Head, "EquipmentSlot:Head" },
+            { RecipeItemKey.EquipmentSlot_Feet, "EquipmentSlot:Feet" },
+            { RecipeItemKey.EquipmentSlot_Ring, "EquipmentSlot:Ring" },
+            { RecipeItemKey.EquipmentSlot_Necklace, "EquipmentSlot:Necklace" },
+            { RecipeItemKey.Rarity_Uncommon, "Rarity:Uncommon" },
+            { RecipeItemKey.Rarity_Rare, "Rarity:Rare" },
+            { RecipeItemKey.MinRarity_Exceptional, "MinRarity:Exceptional" },
+            { RecipeItemKey.MinRarity_Uncommon, "MinRarity:Uncommon" },
+        };
+
         private static void ParseFieldItemCode(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
             if (Value is int)
@@ -312,7 +310,9 @@ namespace PgJsonObjects
         {
             this.RawAttuneToCrafter = RawAttuneToCrafter;
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(null);
@@ -327,7 +327,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -341,7 +343,7 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -391,6 +393,10 @@ namespace PgJsonObjects
 
             return IsConnected;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "RecipeItem"; } }
         #endregion
     }
 }

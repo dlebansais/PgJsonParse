@@ -5,31 +5,7 @@ namespace PgJsonObjects
 {
     public class AbilityRequirement : GenericJsonObject<AbilityRequirement>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "AbilityRequirement"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "T", ParseFieldT },
-            { "Keyword", ParseFieldKeyword },
-            { "Name", ParseFieldName },
-            { "Item", ParseFieldItem },
-            { "Count", ParseFieldCount },
-            { "Health", ParseFieldHealth },
-            { "AllowedRace", ParseFieldAllowedRace },
-            { "Appearance", ParseFieldAppearance },
-            { "List", ParseFieldList },
-            { "ErrorMsg", ParseFieldErrorMsg },
-            { "DisallowedStates", ParseFieldDisallowedStates },
-            { "PetTypeTag", ParseFieldPetTypeTag },
-            { "MaxCount", ParseFieldMaxCount },
-            { "Recipe", ParseFieldRecipe },
-            { "TypeTag", ParseFieldTypeTag },
-            { "Max", ParseFieldMax },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public OtherRequirementType T { get; private set; }
         public AbilityKeyword Keyword { get; private set; }
         public string Name { get; private set; }
@@ -53,7 +29,9 @@ namespace PgJsonObjects
         public AbilityTypeTag TypeTag { get; private set; }
         public int Max { get { return RawMax.HasValue ? RawMax.Value : 0; } }
         private int? RawMax;
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return Name; } }
 
         public string CombinedRequirement
@@ -165,7 +143,27 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "T", ParseFieldT },
+            { "Keyword", ParseFieldKeyword },
+            { "Name", ParseFieldName },
+            { "Item", ParseFieldItem },
+            { "Count", ParseFieldCount },
+            { "Health", ParseFieldHealth },
+            { "AllowedRace", ParseFieldAllowedRace },
+            { "Appearance", ParseFieldAppearance },
+            { "List", ParseFieldList },
+            { "ErrorMsg", ParseFieldErrorMsg },
+            { "DisallowedStates", ParseFieldDisallowedStates },
+            { "PetTypeTag", ParseFieldPetTypeTag },
+            { "MaxCount", ParseFieldMaxCount },
+            { "Recipe", ParseFieldRecipe },
+            { "TypeTag", ParseFieldTypeTag },
+            { "Max", ParseFieldMax },
+        };
+
         private static void ParseFieldT(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawT;
@@ -495,6 +493,11 @@ namespace PgJsonObjects
             this.RawMax = RawMax;
         }
 
+        private string RawItem;
+        private bool IsRawItemParsed;
+        #endregion
+
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -507,7 +510,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -523,12 +528,9 @@ namespace PgJsonObjects
                 return Result;
             }
         }
-
-        private string RawItem;
-        private bool IsRawItemParsed;
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -540,6 +542,10 @@ namespace PgJsonObjects
 
             return IsConnected;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "AbilityRequirement"; } }
         #endregion
     }
 }

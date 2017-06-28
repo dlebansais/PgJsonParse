@@ -4,21 +4,13 @@ namespace PgJsonObjects
 {
     public class RecipeCost : GenericJsonObject<RecipeCost>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "RecipeCost"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "Currency", ParseFieldCurrency },
-            { "Price", ParseFieldPrice },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public RecipeCurrency Currency { get; private set; }
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }
         private double? RawPrice;
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return null; } }
 
         public string CombinedCost
@@ -43,7 +35,13 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "Currency", ParseFieldCurrency },
+            { "Price", ParseFieldPrice },
+        };
+
         private static void ParseFieldCurrency(RecipeCost This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawCurrency;
@@ -74,7 +72,9 @@ namespace PgJsonObjects
         {
             this.RawPrice = RawPrice;
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -84,7 +84,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -96,11 +98,15 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "RecipeCost"; } }
         #endregion
     }
 }

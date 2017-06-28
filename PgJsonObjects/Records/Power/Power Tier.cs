@@ -5,21 +5,20 @@ namespace PgJsonObjects
 {
     public class PowerTier : GenericJsonObject<PowerTier>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "PowerTier"; } }
+        #region Direct Properties
+        public List<PowerEffect> EffectList { get; } = new List<PowerEffect>();
+        #endregion
 
+        #region Indirect Properties
+        protected override string SortingName { get { return null; } }
+        #endregion
+
+        #region Parsing
         protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "EffectDescs", ParseFieldEffectDescs },
         };
-        #endregion
 
-        #region Properties
-        public List<PowerEffect> EffectList { get; } = new List<PowerEffect>();
-        protected override string SortingName { get { return null; } }
-        #endregion
-
-        #region Client Interface
         private static void ParseFieldEffectDescs(PowerTier This, object Value, ParseErrorInfo ErrorInfo)
         {
             ArrayList RawEffectDescs;
@@ -46,7 +45,9 @@ namespace PgJsonObjects
                     ErrorInfo.AddInvalidObjectFormat("PowerTier EffectDescs");
             }
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -60,7 +61,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -72,7 +75,7 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -101,6 +104,10 @@ namespace PgJsonObjects
 
             return IsConnected;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "PowerTier"; } }
         #endregion
     }
 }

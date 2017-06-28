@@ -4,79 +4,7 @@ namespace PgJsonObjects
 {
     public class Advancement : GenericJsonObject<Advancement>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "Advancement"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "VULNERABILITY", null },
-            { "MITIGATION", null },
-            { "MOD_INDIRECT", null },
-            { "MOD_DIRECT", null },
-            { "NONCOMBAT_REGEN_HEALTH_MOD", ParseFieldNonCombatRegenHealthMod },
-            { "COMBAT_REGEN_HEALTH_MOD", ParseFieldCombatRegenHealthMod },
-            { "COMBAT_REGEN_HEALTH_DELTA", ParseFieldCombatRegenHealthDelta },
-            { "NONCOMBAT_REGEN_ARMOR_MOD", ParseFieldNonCombatRegenArmorMod },
-            { "NONCOMBAT_REGEN_ARMOR_DELTA", ParseFieldNonCombatRegenArmordelta },
-            { "COMBAT_REGEN_ARMOR_MOD", ParseFieldCombatRegenArmorMod },
-            { "NONCOMBAT_REGEN_POWER_MOD", ParseFieldNonCombatRegenPowerMod },
-            { "COMBAT_REGEN_POWER_MOD", ParseFieldCombatRegenPowerMod },
-            { "NONCOMBAT_REGEN_RAGE_MOD", ParseFieldNonCombatRegenRageMod },
-            { "COMBAT_REGEN_RAGE_MOD", ParseFieldCombatRegenRageMod },
-            { "MENTAL_DEFENSE_RATING", ParseFieldMentalDefenseRating },
-            { "SPRINT_BOOST", ParseFieldSprintBoost },
-            { "TAUNT_MOD", ParseFieldTauntMod },
-            { "IGNORE_CHANCE_FEAR", ParseFieldIgnoreChanceFear },
-            { "IGNORE_CHANCE_MEZ", ParseFieldIgnoreChanceMezz },
-            { "IGNORE_CHANCE_KNOCKBACK", ParseFieldIgnoreChanceKnockback },
-            { "EVASION_CHANCE", ParseFieldEvasionChance },
-            { "LOOT_BOOST_CHANCE_UNCOMMON", ParseFieldLootBoostChanceUncommon },
-            { "LOOT_BOOST_CHANCE_RARE", ParseFieldLootBoostChanceRare },
-            { "LOOT_BOOST_CHANCE_EXCEPTIONAL", ParseFieldLootBoostChanceExceptional },
-            { "LOOT_BOOST_CHANCE_EPIC", ParseFieldLootBoostChanceEpic },
-            { "LOOT_BOOST_CHANCE_LEGENDARY", ParseFieldLootBoostChanceLegendary },
-            { "MAX_HEALTH", ParseFieldMaxHealth },
-            { "MAX_ARMOR", ParseFieldMaxArmor },
-            { "MAX_RAGE", ParseFieldMaxRage },
-            { "MAX_POWER", ParseFieldMaxPower },
-            { "MAX_BREATH", ParseFieldMaxBreath },
-            { "BOOST_UNIVERSAL_DIRECT", ParseFieldBoostUniversalDirect },
-            { "BOOST_ABILITY_RAGEATTACK", ParseFieldBoostAbilityRageAttack },
-            { "MOD_ABILITY_RAGEATTACK", ParseFieldModAbilityRageAttack },
-            { "MONSTER_COMBAT_XP_VALUE", ParseFieldMonsterCombatXpValue },
-            { "COMBAT_REGEN_ARMOR_DELTA", ParseFieldCombatRegenArmorDelta },
-            { "COMBAT_REGEN_POWER_DELTA", ParseFieldCombatRegenDelta },
-            { "MAX_INVENTORY_SIZE", ParseFieldMaxInventorySize },
-            { "MAX_METABOLISM", ParseFieldMaxMetabolism },
-            { "NPC_MOD_FAVORFROMGIFTS", ParseFieldNpcModFavorFromGifts },
-            { "NPC_MOD_FAVORFROMHANGOUTS", ParseFieldNpcModFavorFromHangouts },
-            { "NPC_MOD_MAXSALESVALUE", ParseFieldNpcModMaxSalesValue },
-            { "NPC_MOD_TRAININGCOST", ParseFieldNpcModTrainingCost },
-            { "HIGH_CLEANLINESS_XP_EARNED_MOD", ParseFieldHighCleanlinessXpEarnedMod },
-            { "LOW_CLEANLINESS_XP_EARNED_MOD", ParseFieldLowCleanlinessXpEarnedMod },
-            { "MAX_ARMOR_MITIGATION_RATIO", ParseFieldMaxArmorMitigationRatio },
-            { "SHOW_CLEANLINESS_INDICATORS", ParseFieldShowCleanlinessIndicators },
-            { "HIGH_COMMUNITY_XP_EARNED_MOD", ParseFieldHighCommunityXpEarnedMod },
-            { "LOW_COMMUNITY_XP_EARNED_MOD", ParseFieldLowCommunityXpEarnedMod },
-            { "SHOW_COMMUNITY_INDICATORS", ParseFieldShowCommunityIndicators },
-            { "HIGH_PEACEABLENESS_XP_EARNED_MOD", ParseFieldHighPeaceblenessXpEarnedMod },
-            { "LOW_PEACEABLENESS_XP_EARNED_MOD", ParseFieldLowPeaceblenessXpEarnedMod },
-            { "SHOW_PEACEABLENESS_INDICATORS", ParseFieldShowPeaceblenessIndicators },
-            { "STAFF_ARMOR_AUTOHEAL", ParseFieldStaffArmorAutoHeal },
-            { "MAX_MAP_PINS_PER_AREA", ParseFieldMaxMapPinsPerArea },
-            { "MAX_MAP_PIN_ICONS", ParseFieldMaxMapPinIcons },
-            { "WORKORDER_COIN_REWARD_MOD", ParseFieldWorkOrderCoinRewardMod },
-            { "MAX_ACTIVE_WORKORDERS", ParseFieldMaxActiveWorkOrders },
-            { "PLAYER_ORDERS_MAX_ACTIVE", ParseFieldPlayerOrdersMaxActive },
-            { "SHOP_INVENTORY_SIZE_DELTA", ParseFieldShopInventorySizeDelta },
-            { "MAIL_SHOP_NUMFREE", ParseFieldMailShopNumFree },
-            { "SHOP_HIRING_MAX_PREPAY_DAYS", ParseFieldShopHiringMaxPrepDays },
-            { "SHOP_LOG_DAYSKEPT", ParseFieldShopLogDaysKept },
-            { "SHOP_HIRING_NUMFREE", ParseFieldShopHiringNumFree },
-        };
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public Dictionary<DamageType, double> VulnerabilityTable { get; } = new Dictionary<DamageType, double>();
         public Dictionary<DamageType, double> MitigationTable { get; } = new Dictionary<DamageType, double>();
         public Dictionary<DamageType, double> DirectModTable { get; } = new Dictionary<DamageType, double>();
@@ -203,11 +131,81 @@ namespace PgJsonObjects
         private double? RawShopLogDaysKept;
         public double ShopHiringNumFree { get { return RawShopHiringNumFree.HasValue ? RawShopHiringNumFree.Value : 0; } }
         private double? RawShopHiringNumFree;
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return null; } }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "VULNERABILITY", null },
+            { "MITIGATION", null },
+            { "MOD_INDIRECT", null },
+            { "MOD_DIRECT", null },
+            { "NONCOMBAT_REGEN_HEALTH_MOD", ParseFieldNonCombatRegenHealthMod },
+            { "COMBAT_REGEN_HEALTH_MOD", ParseFieldCombatRegenHealthMod },
+            { "COMBAT_REGEN_HEALTH_DELTA", ParseFieldCombatRegenHealthDelta },
+            { "NONCOMBAT_REGEN_ARMOR_MOD", ParseFieldNonCombatRegenArmorMod },
+            { "NONCOMBAT_REGEN_ARMOR_DELTA", ParseFieldNonCombatRegenArmordelta },
+            { "COMBAT_REGEN_ARMOR_MOD", ParseFieldCombatRegenArmorMod },
+            { "NONCOMBAT_REGEN_POWER_MOD", ParseFieldNonCombatRegenPowerMod },
+            { "COMBAT_REGEN_POWER_MOD", ParseFieldCombatRegenPowerMod },
+            { "NONCOMBAT_REGEN_RAGE_MOD", ParseFieldNonCombatRegenRageMod },
+            { "COMBAT_REGEN_RAGE_MOD", ParseFieldCombatRegenRageMod },
+            { "MENTAL_DEFENSE_RATING", ParseFieldMentalDefenseRating },
+            { "SPRINT_BOOST", ParseFieldSprintBoost },
+            { "TAUNT_MOD", ParseFieldTauntMod },
+            { "IGNORE_CHANCE_FEAR", ParseFieldIgnoreChanceFear },
+            { "IGNORE_CHANCE_MEZ", ParseFieldIgnoreChanceMezz },
+            { "IGNORE_CHANCE_KNOCKBACK", ParseFieldIgnoreChanceKnockback },
+            { "EVASION_CHANCE", ParseFieldEvasionChance },
+            { "LOOT_BOOST_CHANCE_UNCOMMON", ParseFieldLootBoostChanceUncommon },
+            { "LOOT_BOOST_CHANCE_RARE", ParseFieldLootBoostChanceRare },
+            { "LOOT_BOOST_CHANCE_EXCEPTIONAL", ParseFieldLootBoostChanceExceptional },
+            { "LOOT_BOOST_CHANCE_EPIC", ParseFieldLootBoostChanceEpic },
+            { "LOOT_BOOST_CHANCE_LEGENDARY", ParseFieldLootBoostChanceLegendary },
+            { "MAX_HEALTH", ParseFieldMaxHealth },
+            { "MAX_ARMOR", ParseFieldMaxArmor },
+            { "MAX_RAGE", ParseFieldMaxRage },
+            { "MAX_POWER", ParseFieldMaxPower },
+            { "MAX_BREATH", ParseFieldMaxBreath },
+            { "BOOST_UNIVERSAL_DIRECT", ParseFieldBoostUniversalDirect },
+            { "BOOST_ABILITY_RAGEATTACK", ParseFieldBoostAbilityRageAttack },
+            { "MOD_ABILITY_RAGEATTACK", ParseFieldModAbilityRageAttack },
+            { "MONSTER_COMBAT_XP_VALUE", ParseFieldMonsterCombatXpValue },
+            { "COMBAT_REGEN_ARMOR_DELTA", ParseFieldCombatRegenArmorDelta },
+            { "COMBAT_REGEN_POWER_DELTA", ParseFieldCombatRegenDelta },
+            { "MAX_INVENTORY_SIZE", ParseFieldMaxInventorySize },
+            { "MAX_METABOLISM", ParseFieldMaxMetabolism },
+            { "NPC_MOD_FAVORFROMGIFTS", ParseFieldNpcModFavorFromGifts },
+            { "NPC_MOD_FAVORFROMHANGOUTS", ParseFieldNpcModFavorFromHangouts },
+            { "NPC_MOD_MAXSALESVALUE", ParseFieldNpcModMaxSalesValue },
+            { "NPC_MOD_TRAININGCOST", ParseFieldNpcModTrainingCost },
+            { "HIGH_CLEANLINESS_XP_EARNED_MOD", ParseFieldHighCleanlinessXpEarnedMod },
+            { "LOW_CLEANLINESS_XP_EARNED_MOD", ParseFieldLowCleanlinessXpEarnedMod },
+            { "MAX_ARMOR_MITIGATION_RATIO", ParseFieldMaxArmorMitigationRatio },
+            { "SHOW_CLEANLINESS_INDICATORS", ParseFieldShowCleanlinessIndicators },
+            { "HIGH_COMMUNITY_XP_EARNED_MOD", ParseFieldHighCommunityXpEarnedMod },
+            { "LOW_COMMUNITY_XP_EARNED_MOD", ParseFieldLowCommunityXpEarnedMod },
+            { "SHOW_COMMUNITY_INDICATORS", ParseFieldShowCommunityIndicators },
+            { "HIGH_PEACEABLENESS_XP_EARNED_MOD", ParseFieldHighPeaceblenessXpEarnedMod },
+            { "LOW_PEACEABLENESS_XP_EARNED_MOD", ParseFieldLowPeaceblenessXpEarnedMod },
+            { "SHOW_PEACEABLENESS_INDICATORS", ParseFieldShowPeaceblenessIndicators },
+            { "STAFF_ARMOR_AUTOHEAL", ParseFieldStaffArmorAutoHeal },
+            { "MAX_MAP_PINS_PER_AREA", ParseFieldMaxMapPinsPerArea },
+            { "MAX_MAP_PIN_ICONS", ParseFieldMaxMapPinIcons },
+            { "WORKORDER_COIN_REWARD_MOD", ParseFieldWorkOrderCoinRewardMod },
+            { "MAX_ACTIVE_WORKORDERS", ParseFieldMaxActiveWorkOrders },
+            { "PLAYER_ORDERS_MAX_ACTIVE", ParseFieldPlayerOrdersMaxActive },
+            { "SHOP_INVENTORY_SIZE_DELTA", ParseFieldShopInventorySizeDelta },
+            { "MAIL_SHOP_NUMFREE", ParseFieldMailShopNumFree },
+            { "SHOP_HIRING_MAX_PREPAY_DAYS", ParseFieldShopHiringMaxPrepDays },
+            { "SHOP_LOG_DAYSKEPT", ParseFieldShopLogDaysKept },
+            { "SHOP_HIRING_NUMFREE", ParseFieldShopHiringNumFree },
+        };
+
         protected override bool IsCustomFieldParsed(KeyValuePair<string, object> Field, ParseErrorInfo ErrorInfo)
         {
             if (ParseDamageTypeEntry(Field, "VULN_", null, VulnerabilityTable, ErrorInfo))
@@ -1192,13 +1190,9 @@ namespace PgJsonObjects
         {
             this.RawShopHiringNumFree = RawShopHiringNumFree;
         }
+        #endregion
 
-        private void GenerateDamageTypeContent(JsonGenerator Generator, string StartPattern, string EndPattern, Dictionary<DamageType, double> DamageTypeTable)
-        {
-            foreach (KeyValuePair<DamageType, double> Entry in DamageTypeTable)
-                Generator.AddDouble(StartPattern + Entry.Key.ToString().ToUpper() + EndPattern, Entry.Value);
-        }
-
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -1273,6 +1267,14 @@ namespace PgJsonObjects
             Generator.CloseObject();
         }
 
+        private void GenerateDamageTypeContent(JsonGenerator Generator, string StartPattern, string EndPattern, Dictionary<DamageType, double> DamageTypeTable)
+        {
+            foreach (KeyValuePair<DamageType, double> Entry in DamageTypeTable)
+                Generator.AddDouble(StartPattern + Entry.Key.ToString().ToUpper() + EndPattern, Entry.Value);
+        }
+        #endregion
+
+        #region Indexing
         public override string TextContent
         {
             get
@@ -1284,11 +1286,15 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             return false;
         }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "Advancement"; } }
         #endregion
     }
 }

@@ -6,56 +6,7 @@ namespace PgJsonObjects
 {
     public class Quest : GenericJsonObject<Quest>
     {
-        #region Constants
-        protected override string FieldTableName { get { return "Quest"; } }
-
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "InternalName", ParseFieldInternalName },
-            { "Name", ParseFieldName },
-            { "Description", ParseFieldDescription },
-            { "Version", ParseFieldVersion },
-            { "RequirementsToSustain", ParseFieldRequirementsToSustain },
-            { "ReuseTime_Minutes", ParseFieldReuseTimeMinutes },
-            { "IsCancellable", ParseFieldIsCancellable },
-            { "Objectives", ParseFieldObjectives },
-            { "Rewards_XP", ParseFieldRewardsXP },
-            { "Rewards_Items", ParseFieldRewardsItems },
-            { "ReuseTime_Days", ParseFieldReuseTimeDays },
-            { "PrerequisiteQuest", ParseFieldPrerequisiteQuest },
-            { "ReuseTime_Hours", ParseFieldReuseTimeHours },
-            { "Reward_CombatXP", ParseFieldRewardCombatXP },
-            { "FavorNpc", ParseFieldFavorNpc },
-            { "PrefaceText", ParseFieldPrefaceText },
-            { "SuccessText", ParseFieldSuccessText },
-            { "MidwayText", ParseFieldMidwayText },
-            { "PrerequisiteFavorLevel", ParseFieldPrerequisiteFavorLevel },
-            { "Rewards_Favor", ParseFieldRewardsFavor },
-            { "Rewards_Recipes", ParseFieldRewardsRecipes },
-            { "Rewards_Ability", ParseFieldRewardsAbility },
-            { "Requirements", ParseFieldRequirements },
-            { "Reward_Favor", ParseFieldRewardFavor },
-            { "Rewards", ParseFieldRewards },
-            { "PreGiveItems", ParseFieldPreGiveItems },
-            { "TSysLevel", ParseFieldTSysLevel },
-            { "Reward_Gold", ParseFieldRewardGold },
-            { "Rewards_NamedLootProfile", ParseFieldRewardsNamedLootProfile },
-            { "PreGiveRecipes", ParseFieldPreGiveRecipes },
-            { "Keywords", ParseFieldKeywords },
-            { "Rewards_Effects", ParseFieldRewardsEffects },
-            { "IsAutoPreface", ParseFieldIsAutoPreface },
-            { "IsAutoWrapUp", ParseFieldIsAutoWrapUp },
-            { "GroupingName", ParseFieldGroupingName },
-            { "IsGuildQuest", ParseFieldIsGuildQuest },
-            { "NumExpectedParticipants", ParseFieldNumExpectedParticipants },
-            { "Level", ParseFieldLevel },
-            { "WorkOrderSkill", ParseFieldWorkOrderSkill },
-        };
-
-        public const int SearchResultIconId = 2118;
-        #endregion
-
-        #region Properties
+        #region Direct Properties
         public string InternalName { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
@@ -139,8 +90,11 @@ namespace PgJsonObjects
         public PowerSkill WorkOrderSkill { get; private set; }
         public Skill ConnectedWorkOrderSkill { get; private set; }
         private bool IsConnectedWorkOrderSkillParsed;
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return Name; } }
+        public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
 
         public string CombinedReuseTime
@@ -390,7 +344,50 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Parsing
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        {
+            { "InternalName", ParseFieldInternalName },
+            { "Name", ParseFieldName },
+            { "Description", ParseFieldDescription },
+            { "Version", ParseFieldVersion },
+            { "RequirementsToSustain", ParseFieldRequirementsToSustain },
+            { "ReuseTime_Minutes", ParseFieldReuseTimeMinutes },
+            { "IsCancellable", ParseFieldIsCancellable },
+            { "Objectives", ParseFieldObjectives },
+            { "Rewards_XP", ParseFieldRewardsXP },
+            { "Rewards_Items", ParseFieldRewardsItems },
+            { "ReuseTime_Days", ParseFieldReuseTimeDays },
+            { "PrerequisiteQuest", ParseFieldPrerequisiteQuest },
+            { "ReuseTime_Hours", ParseFieldReuseTimeHours },
+            { "Reward_CombatXP", ParseFieldRewardCombatXP },
+            { "FavorNpc", ParseFieldFavorNpc },
+            { "PrefaceText", ParseFieldPrefaceText },
+            { "SuccessText", ParseFieldSuccessText },
+            { "MidwayText", ParseFieldMidwayText },
+            { "PrerequisiteFavorLevel", ParseFieldPrerequisiteFavorLevel },
+            { "Rewards_Favor", ParseFieldRewardsFavor },
+            { "Rewards_Recipes", ParseFieldRewardsRecipes },
+            { "Rewards_Ability", ParseFieldRewardsAbility },
+            { "Requirements", ParseFieldRequirements },
+            { "Reward_Favor", ParseFieldRewardFavor },
+            { "Rewards", ParseFieldRewards },
+            { "PreGiveItems", ParseFieldPreGiveItems },
+            { "TSysLevel", ParseFieldTSysLevel },
+            { "Reward_Gold", ParseFieldRewardGold },
+            { "Rewards_NamedLootProfile", ParseFieldRewardsNamedLootProfile },
+            { "PreGiveRecipes", ParseFieldPreGiveRecipes },
+            { "Keywords", ParseFieldKeywords },
+            { "Rewards_Effects", ParseFieldRewardsEffects },
+            { "IsAutoPreface", ParseFieldIsAutoPreface },
+            { "IsAutoWrapUp", ParseFieldIsAutoWrapUp },
+            { "GroupingName", ParseFieldGroupingName },
+            { "IsGuildQuest", ParseFieldIsGuildQuest },
+            { "NumExpectedParticipants", ParseFieldNumExpectedParticipants },
+            { "Level", ParseFieldLevel },
+            { "WorkOrderSkill", ParseFieldWorkOrderSkill },
+        };
+
         private static void ParseFieldInternalName(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawInternalName;
@@ -1316,36 +1313,18 @@ namespace PgJsonObjects
             StringToEnumConversion<PowerSkill>.TryParse(RawWorkOrderSkill, out ParsedSkill, ErrorInfo);
             WorkOrderSkill = ParsedSkill;
         }
+        #endregion
 
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
 
             Generator.CloseObject();
         }
+        #endregion
 
-        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Quest> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
-        {
-            if (IsRawQuestParsed)
-                return ParsedQuest;
-
-            IsRawQuestParsed = true;
-
-            if (RawQuestName == null)
-                return null;
-
-            foreach (KeyValuePair<string, Quest> Entry in QuestTable)
-                if (Entry.Value.InternalName == RawQuestName)
-                {
-                    IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
-                }
-
-            ErrorInfo.AddMissingKey(RawQuestName);
-            return null;
-        }
-
+        #region Indexing
         public override string TextContent
         {
             get
@@ -1405,7 +1384,7 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
+        #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
             bool IsConnected = false;
@@ -1452,6 +1431,32 @@ namespace PgJsonObjects
             }
             return IsConnected;
         }
+
+        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Quest> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawQuestParsed)
+                return ParsedQuest;
+
+            IsRawQuestParsed = true;
+
+            if (RawQuestName == null)
+                return null;
+
+            foreach (KeyValuePair<string, Quest> Entry in QuestTable)
+                if (Entry.Value.InternalName == RawQuestName)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            ErrorInfo.AddMissingKey(RawQuestName);
+            return null;
+        }
+        #endregion
+
+        #region Debugging
+        protected override string FieldTableName { get { return "Quest"; } }
         #endregion
     }
 }

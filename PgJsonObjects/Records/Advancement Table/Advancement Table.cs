@@ -4,16 +4,16 @@ namespace PgJsonObjects
 {
     public class AdvancementTable : GenericJsonObject<AdvancementTable>
     {
-        protected override string FieldTableName { get { return "AdvancementTable"; } }
-
-        #region Properties
+        #region Direct Properties
         public Dictionary<int, Advancement> LevelTable { get; private set; }
         public string InternalName { get; private set; }
+        #endregion
 
+        #region Indirect Properties
         protected override string SortingName { get { return InternalName; } }
         #endregion
 
-        #region Client Interface
+        #region Parsing
         public override void Init(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
         {
             InitializeKey(EntryRaw);
@@ -64,6 +64,10 @@ namespace PgJsonObjects
                 InternalName = Key;
         }
 
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return null; } }
+        #endregion
+
+        #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -73,7 +77,9 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
+        #endregion
 
+        #region Indexing
         public override string TextContent
         {
             get
@@ -85,6 +91,13 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Connecting Objects
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        {
+            return false;
         }
 
         public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, AdvancementTable> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, GenericJsonObject LinkBack)
@@ -110,13 +123,8 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Ancestor Interface
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return null; } }
-
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
-        {
-            return false;
-        }
+        #region Debugging
+        protected override string FieldTableName { get { return "AdvancementTable"; } }
         #endregion
     }
 }
