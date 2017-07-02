@@ -82,27 +82,6 @@ namespace PgJsonObjects
             }
         }
 
-        public string CombinedRequirements
-        {
-            get
-            {
-                if (OtherRequirementList.Count == 0)
-                    return "None";
-
-                string Result = "";
-
-                foreach (AbilityRequirement Requirement in OtherRequirementList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += Requirement.CombinedRequirement;
-                }
-
-                return Result;
-            }
-        }
-
         public string CombinedSortSkill
         {
             get
@@ -425,7 +404,9 @@ namespace PgJsonObjects
         {
             AbilityRequirement ParsedOtherRequirement;
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
-            OtherRequirementList.Add(ParsedOtherRequirement);
+
+            AbilityRequirement ConvertedAbilityRequirement = ParsedOtherRequirement.ToSpecificAbilityRequirement(ErrorInfo);
+            OtherRequirementList.Add(ConvertedAbilityRequirement);
         }
 
         private static void ParseFieldCosts(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -1109,7 +1090,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, UsageDelayMessage);
                     if (UsageAnimation != RecipeUsageAnimation.Internal_None)
                         AddWithFieldSeparator(ref Result, TextMaps.RecipeUsageAnimationTextMap[UsageAnimation]);
-                    AddWithFieldSeparator(ref Result, CombinedRequirements);
+                    foreach (AbilityRequirement Requirement in OtherRequirementList)
+                        AddWithFieldSeparator(ref Result, Requirement.TextContent);
                     if (Cost != null)
                         AddWithFieldSeparator(ref Result, Cost.CombinedCost);
                     if (RewardSkill != PowerSkill.Internal_None)

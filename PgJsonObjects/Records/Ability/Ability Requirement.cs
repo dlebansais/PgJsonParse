@@ -5,145 +5,80 @@ namespace PgJsonObjects
 {
     public class AbilityRequirement : GenericJsonObject<AbilityRequirement>
     {
-        #region Direct Properties
-        public OtherRequirementType T { get; private set; }
-        public AbilityKeyword Keyword { get; private set; }
-        public string Name { get; private set; }
-        public Item Item { get; private set; }
-        public double Count { get { return RawCount.HasValue ? RawCount.Value : 0; } }
-        private double? RawCount;
-        public double Health { get { return RawHealth.HasValue ? RawHealth.Value : 0; } }
-        private double? RawHealth;
-        public Race AllowedRace { get; private set; }
-        public List<Race> AllowedRaceList { get; } = new List<Race>();
-        public Appearance Appearance { get; private set; }
-        public List<Appearance> AppearanceList { get; } = new List<Appearance>();
-        public string ErrorMsg { get; private set; }
-        public DisallowedState DisallowedState { get; private set; }
-        public RecipeKeyword PetTypeTag { get; private set; }
-        public double MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }
-        private double? RawMaxCount;
-        public Recipe RecipeKnown { get; private set; }
-        private string RawRecipeKnown;
-        private bool IsRawRecipeKnownParsed;
-        public AbilityTypeTag TypeTag { get; private set; }
-        public int Max { get { return RawMax.HasValue ? RawMax.Value : 0; } }
-        private int? RawMax;
-        #endregion
-
         #region Indirect Properties
-        protected override string SortingName { get { return Name; } }
-
-        public string CombinedRequirement
-        {
-            get
-            {
-                string Result;
-
-                switch (T)
-                {
-                    case OtherRequirementType.IsAdmin:
-                        return "Game Admin Only";
-
-                    case OtherRequirementType.IsLycanthrope:
-                        return "Be a Lycanthrope";
-
-                    case OtherRequirementType.CurHealth:
-                        return "Health >= " + Health;
-
-                    case OtherRequirementType.Race:
-                        return "Be a " + TextMaps.RaceTextMap[AllowedRace];
-
-                    case OtherRequirementType.HasEffectKeyword:
-                        return "Effect " + TextMaps.AbilityKeywordTextMap[Keyword] + " is active";
-
-                    case OtherRequirementType.FullMoon:
-                        return "Full Moon";
-
-                    case OtherRequirementType.IsHardcore:
-                        return "Be Hardcore";
-
-                    case OtherRequirementType.DruidEventState:
-                        return "During druid event";
-
-                    case OtherRequirementType.PetCount:
-                        return "Max " + MaxCount + " " + TextMaps.RecipeKeywordTextMap[PetTypeTag];
-
-                    case OtherRequirementType.RecipeKnown:
-                        return "Knows recipe " + RecipeKnown.Name;
-
-                    case OtherRequirementType.IsNotInCombat:
-                        return "Out of combat";
-
-                    case OtherRequirementType.IsLongtimeAnimal:
-                        return "Animal for a long time";
-
-                    case OtherRequirementType.InHotspot:
-                        return Name;
-
-                    case OtherRequirementType.HasInventorySpaceFor:
-                        return "Has inventory space for " + Item.Name;
-
-                    case OtherRequirementType.IsVegetarian:
-                        return "Is Vegetarian";
-
-                    case OtherRequirementType.InGraveyard:
-                        return "In Graveyard";
-
-                    case OtherRequirementType.Appearance:
-                        return "Looks like: " + TextMaps.AppearanceTextMap[Appearance];
-
-                    case OtherRequirementType.Or:
-                        Result = "";
-
-                        if (AppearanceList.Count > 0)
-                        {
-                            Result += "Looks like ";
-
-                            for (int i = 0; i < AppearanceList.Count; i++)
-                            {
-                                if (i > 0 && i + 1 < AppearanceList.Count)
-                                    Result += ", ";
-                                else if (i + 1 >= AppearanceList.Count)
-                                    Result += " or ";
-
-                                Result += TextMaps.AppearanceTextMap[AppearanceList[i]];
-                            }
-                        }
-
-                        if (AllowedRaceList.Count > 0)
-                        {
-                            if (Result.Length == 0)
-                                Result += "Is ";
-                            else
-                                Result += ", or is ";
-
-                            for (int i = 0; i < AllowedRaceList.Count; i++)
-                            {
-                                if (i > 0 && i + 1 < AllowedRaceList.Count)
-                                    Result += ", ";
-                                else if (i + 1 >= AllowedRaceList.Count)
-                                    Result += " or ";
-
-                                Result += TextMaps.RaceTextMap[AllowedRaceList[i]];
-                            }
-                        }
-
-                        return "Either " + Result;
-
-                    case OtherRequirementType.EquippedItemKeyword:
-                        return "Has " + Count + " " + TextMaps.AbilityKeywordTextMap[Keyword] + " items equipped";
-
-                    case OtherRequirementType.GardenPlantMax:
-                        return "Max allowed: " + Max;
-                }
-
-                return "";
-            }
-        }
+        protected override string SortingName { get { return null; } }
         #endregion
 
         #region Parsing
+        public AbilityRequirement ToSpecificAbilityRequirement(ParseErrorInfo ErrorInfo)
+        {
+            switch (T)
+            {
+                case OtherRequirementType.IsAdmin:
+                    return new IsAdminAbilityRequirement();
+
+                case OtherRequirementType.IsLycanthrope:
+                    return new IsLycanthropeAbilityRequirement();
+
+                case OtherRequirementType.CurHealth:
+                    return new CurHealthAbilityRequirement(RawHealth);
+
+                case OtherRequirementType.Race:
+                    return new RaceAbilityRequirement(RawAllowedRace, RawAllowedRaceList, ErrorInfo);
+
+                case OtherRequirementType.HasEffectKeyword:
+                    return new HasEffectKeywordAbilityRequirement(RawKeyword, ErrorInfo);
+
+                case OtherRequirementType.FullMoon:
+                    return new FullMoonAbilityRequirement();
+
+                case OtherRequirementType.IsHardcore:
+                    return new IsHardcoreAbilityRequirement();
+
+                case OtherRequirementType.DruidEventState:
+                    return new DruidEventStateAbilityRequirement(RawDisallowedState, ErrorInfo);
+
+                case OtherRequirementType.PetCount:
+                    return new PetCountAbilityRequirement(RawPetTypeTag, RawMaxCount, ErrorInfo);
+
+                case OtherRequirementType.RecipeKnown:
+                    return new RecipeKnownAbilityRequirement(RawRecipeKnown);
+
+                case OtherRequirementType.IsNotInCombat:
+                    return new IsNotInCombatAbilityRequirement();
+
+                case OtherRequirementType.IsLongtimeAnimal:
+                    return new IsLongtimeAnimalAbilityRequirement();
+
+                case OtherRequirementType.InHotspot:
+                    return new InHotspotAbilityRequirement(RawName);
+
+                case OtherRequirementType.HasInventorySpaceFor:
+                    return new HasInventorySpaceForAbilityRequirement(RawItem);
+
+                case OtherRequirementType.IsVegetarian:
+                    return new IsVegetarianAbilityRequirement();
+
+                case OtherRequirementType.InGraveyard:
+                    return new InGraveyardAbilityRequirement();
+
+                case OtherRequirementType.Appearance:
+                    return new AppearanceAbilityRequirement(RawAppearance, RawAppearanceList, ErrorInfo);
+
+                case OtherRequirementType.Or:
+                    return new OrAbilityRequirement(OrList, RawErrorMsg);
+
+                case OtherRequirementType.EquippedItemKeyword:
+                    return new EquippedItemKeywordAbilityRequirement(RawKeyword, RawCount, ErrorInfo);
+
+                case OtherRequirementType.GardenPlantMax:
+                    return new GardenPlantMaxAbilityRequirement(RawTypeTag, RawMax, ErrorInfo);
+
+                default:
+                    return null;
+            }
+        }
+
         protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "T", ParseFieldT },
@@ -191,9 +126,7 @@ namespace PgJsonObjects
 
         private void ParseKeyword(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
-            AbilityKeyword ParsedKeyword;
-            StringToEnumConversion<AbilityKeyword>.TryParse(RawKeyword, out ParsedKeyword, ErrorInfo);
-            Keyword = ParsedKeyword;
+            this.RawKeyword = RawKeyword;
         }
 
         private static void ParseFieldName(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -207,7 +140,7 @@ namespace PgJsonObjects
 
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
         {
-            Name = RawName;
+            this.RawName = RawName;
         }
 
         private static void ParseFieldItem(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -222,7 +155,6 @@ namespace PgJsonObjects
         private void ParseItem(string RawItem, ParseErrorInfo ErrorInfo)
         {
             this.RawItem = RawItem;
-            IsRawItemParsed = false;
         }
 
         private static void ParseFieldCount(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -266,23 +198,18 @@ namespace PgJsonObjects
 
         private void ParseAllowedRace(string RawAllowedRace, ParseErrorInfo ErrorInfo)
         {
-            if (AllowedRaceList.Count != 0)
+            if (RawAllowedRaceList.Count != 0)
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement AllowedRace & AllowedRaceList");
-
-            Race ParsedAllowedRace;
-            StringToEnumConversion<Race>.TryParse(RawAllowedRace, out ParsedAllowedRace, ErrorInfo);
-            AllowedRace = ParsedAllowedRace;
+            else
+                this.RawAllowedRace = RawAllowedRace;
         }
 
         private void ParseAllowedRaceList(string RawAllowedRace, ParseErrorInfo ErrorInfo)
         {
-            if (AllowedRace != Race.Internal_None)
+            if (this.RawAllowedRace != null)
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement AllowedRace & AllowedRaceList");
-
-            Race ParsedAllowedRace;
-            StringToEnumConversion<Race>.TryParse(RawAllowedRace, out ParsedAllowedRace, ErrorInfo);
-
-            AllowedRaceList.Add(ParsedAllowedRace);
+            else
+                RawAllowedRaceList.Add(RawAllowedRace);
         }
 
         private static void ParseFieldAppearance(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -296,92 +223,38 @@ namespace PgJsonObjects
 
         private void ParseAppearance(string RawAppearance, ParseErrorInfo ErrorInfo)
         {
-            if (AllowedRaceList.Count != 0)
+            if (RawAppearanceList.Count != 0)
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Appearance & AppearanceList");
-
-            Appearance ParsedAppearance;
-            StringToEnumConversion<Appearance>.TryParse(RawAppearance, out ParsedAppearance, ErrorInfo);
-            Appearance = ParsedAppearance;
+            else
+                this.RawAppearance = RawAppearance;
         }
 
         private void ParseAppearanceList(string RawAppearance, ParseErrorInfo ErrorInfo)
         {
-            if (Appearance != Appearance.Internal_None)
+            if (this.RawAppearance != null)
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Appearance & AppearanceList");
-
-            Appearance ParsedAppearance;
-            StringToEnumConversion<Appearance>.TryParse(RawAppearance, out ParsedAppearance, ErrorInfo);
-
-            AppearanceList.Add(ParsedAppearance);
+            else
+                RawAppearanceList.Add(RawAppearance);
         }
 
         private static void ParseFieldList(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (This.T != OtherRequirementType.Or)
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List");
-
+            ArrayList AsArrayList;
+            if ((AsArrayList = Value as ArrayList) != null)
+                This.ParseList(AsArrayList, ErrorInfo);
             else
-            {
-                ArrayList RawList;
-                Dictionary<string, object> AsDictionary;
-
-                if ((RawList = Value as ArrayList) != null)
-                {
-                    foreach (object Item in RawList)
-                    {
-                        if ((AsDictionary = Item as Dictionary<string, object>) != null)
-                            This.ParseList(AsDictionary, ErrorInfo);
-                    }
-                }
-
-                else if ((AsDictionary = Value as Dictionary<string, object>) != null)
-                    This.ParseList(AsDictionary, ErrorInfo);
-
-                else
-                    ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List");
-            }
+                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List");
         }
 
-        private void ParseList(Dictionary<string, object> RawList, ParseErrorInfo ErrorInfo)
+        private void ParseList(ArrayList RawList, ParseErrorInfo ErrorInfo)
         {
-            OtherRequirementType T = OtherRequirementType.Internal_None;
+            List<AbilityRequirement> ParsedAbilityRequirementList;
+            JsonObjectParser<AbilityRequirement>.InitAsSublist(RawList, out ParsedAbilityRequirementList, ErrorInfo);
 
-            foreach (KeyValuePair<string, object> Entry in RawList)
+            foreach (AbilityRequirement Item in ParsedAbilityRequirementList)
             {
-                string ValueString;
-
-                if ((ValueString = Entry.Value as string) != null)
-                {
-                    if (Entry.Key == "T")
-                    {
-                        if (T != OtherRequirementType.Internal_None)
-                        {
-                            ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List (twice T)");
-                            break;
-                        }
-
-                        OtherRequirementType ParsedT;
-                        StringToEnumConversion<OtherRequirementType>.TryParse(ValueString, out ParsedT, ErrorInfo);
-                        T = ParsedT;
-                    }
-
-                    else if (Entry.Key == "AllowedRace")
-                        if (T == OtherRequirementType.Race)
-                            ParseAllowedRaceList(ValueString, ErrorInfo);
-                        else
-                            ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List AllowedRace");
-
-                    else if (Entry.Key == "Appearance")
-                        if (T == OtherRequirementType.Appearance)
-                            ParseAppearanceList(ValueString, ErrorInfo);
-                        else
-                            ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List Appearance");
-
-                    else
-                        ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List");
-                }
-                else
-                    ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List");
+                AbilityRequirement ConvertedAbilityRequirement = Item.ToSpecificAbilityRequirement(ErrorInfo);
+                OrList.Add(ConvertedAbilityRequirement);
             }
         }
 
@@ -396,7 +269,7 @@ namespace PgJsonObjects
 
         private void ParseErrorMsg(string RawErrorMsg, ParseErrorInfo ErrorInfo)
         {
-            ErrorMsg = RawErrorMsg;
+            this.RawErrorMsg = RawErrorMsg;
         }
 
         private static void ParseFieldDisallowedStates(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -410,13 +283,18 @@ namespace PgJsonObjects
 
         private void ParseDisallowedStates(ArrayList RawDisallowedStates, ParseErrorInfo ErrorInfo)
         {
-            List<DisallowedState> ParsedDisallowedStates = new List<DisallowedState>();
-            StringToEnumConversion<DisallowedState>.ParseList(RawDisallowedStates, ParsedDisallowedStates, ErrorInfo);
-
-            if (ParsedDisallowedStates.Count == 1)
-                DisallowedState = ParsedDisallowedStates[0];
-            else
+            if (RawDisallowedStates.Count != 1)
+            {
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement DisallowedStates");
+                return;
+            }
+
+            RawDisallowedState = RawDisallowedStates[0] as string;
+            if (RawDisallowedState == null)
+            {
+                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement DisallowedStates");
+                return;
+            }
         }
 
         private static void ParseFieldPetTypeTag(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -430,9 +308,7 @@ namespace PgJsonObjects
 
         private void ParsePetTypeTag(string RawPetTypeTag, ParseErrorInfo ErrorInfo)
         {
-            RecipeKeyword ParsedPetTypeTag;
-            StringToEnumConversion<RecipeKeyword>.TryParse(RawPetTypeTag, out ParsedPetTypeTag, ErrorInfo);
-            PetTypeTag = ParsedPetTypeTag;
+            this.RawPetTypeTag = RawPetTypeTag;
         }
 
         private static void ParseFieldMaxCount(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -475,9 +351,7 @@ namespace PgJsonObjects
 
         private void ParseTypeTag(string RawTypeTag, ParseErrorInfo ErrorInfo)
         {
-            AbilityTypeTag ParsedTypeTag;
-            StringToEnumConversion<AbilityTypeTag>.TryParse(RawTypeTag, out ParsedTypeTag, ErrorInfo);
-            TypeTag = ParsedTypeTag;
+            this.RawTypeTag = RawTypeTag;
         }
 
         private static void ParseFieldMax(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -493,20 +367,30 @@ namespace PgJsonObjects
             this.RawMax = RawMax;
         }
 
+        private OtherRequirementType T;
+        private double? RawHealth;
+        private List<string> RawAllowedRaceList { get; } = new List<string>();
+        private string RawAllowedRace;
+        private string RawKeyword;
+        private string RawDisallowedState;
+        private string RawPetTypeTag;
+        private double? RawMaxCount;
+        private string RawRecipeKnown;
+        private string RawName;
         private string RawItem;
-        private bool IsRawItemParsed;
+        private List<string> RawAppearanceList { get; } = new List<string>();
+        private string RawAppearance;
+        private List<AbilityRequirement> OrList { get; } = new List<AbilityRequirement>();
+        private string RawErrorMsg;
+        private double? RawCount;
+        private string RawTypeTag;
+        private int? RawMax;
         #endregion
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
-
-            Generator.AddString("T", T.ToString());
-            Generator.AddString("Keyword", Keyword.ToString());
-            Generator.AddString("Name", Name);
-            Generator.AddString("Item", RawItem);
-            Generator.AddDouble("Count", RawCount);
 
             Generator.CloseObject();
         }
@@ -515,32 +399,14 @@ namespace PgJsonObjects
         #region Indexing
         public override string TextContent
         {
-            get
-            {
-                string Result = "";
-
-                AddWithFieldSeparator(ref Result, T.ToString());
-                AddWithFieldSeparator(ref Result, Name);
-
-                if (Item != null)
-                    AddWithFieldSeparator(ref Result, Item.TextContent);
-
-                return Result;
-            }
+            get { return ""; }
         }
         #endregion
 
         #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
-            bool IsConnected = false;
-
-            Item = PgJsonObjects.Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItem, Item, ref IsRawItemParsed, ref IsConnected, this);
-            RecipeKnown = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRecipeKnown, RecipeKnown, ref IsRawRecipeKnownParsed, ref IsConnected, this);
-            if (T == OtherRequirementType.RecipeKnown && RecipeKnown == null)
-                RecipeKnown = null;
-
-            return IsConnected;
+            return false;
         }
         #endregion
 

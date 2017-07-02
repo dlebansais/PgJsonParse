@@ -500,19 +500,6 @@ namespace PgJsonObjects
 
             Generator.CloseObject();
         }
-
-        private void GenerateListContent(JsonGenerator Generator, string ArrayName, List<string> ConnectedList, bool IsListEmpty)
-        {
-            if (ConnectedList.Count > 0 || IsListEmpty)
-            {
-                Generator.OpenArray(ArrayName);
-
-                foreach (string s in ConnectedList)
-                    Generator.AddString(null, s);
-
-                Generator.CloseArray();
-            }
-        }
         #endregion
 
         #region Indexing

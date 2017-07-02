@@ -203,27 +203,6 @@ namespace PgJsonObjects
             }
         }
 
-        public string CombinedRequirements
-        {
-            get
-            {
-                if (OtherRequirementList.Count == 0)
-                    return "None";
-
-                string Result = "";
-
-                foreach (AbilityRequirement Requirement in OtherRequirementList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += Requirement.CombinedRequirement;
-                }
-
-                return Result;
-            }
-        }
-
         public bool HasSkillRequirements {  get { return SkillRequirementList.Count > 0; } }
 
         public string CombinedSkillRequirements
@@ -778,7 +757,9 @@ namespace PgJsonObjects
         {
             AbilityRequirement ParsedOtherRequirement;
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
-            OtherRequirementList.Add(ParsedOtherRequirement);
+
+            AbilityRequirement ConvertedAbilityRequirement = ParsedOtherRequirement.ToSpecificAbilityRequirement(ErrorInfo);
+            OtherRequirementList.Add(ConvertedAbilityRequirement);
         }
 
         private static void ParseFieldSkillReqs(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -1185,7 +1166,8 @@ namespace PgJsonObjects
                         AddWithFieldSeparator(ref Result, MacGuffinQuestName.Name);
                     if (RequiredAppearance != Appearance.Internal_None)
                         AddWithFieldSeparator(ref Result, TextMaps.AppearanceTextMap[RequiredAppearance]);
-                    AddWithFieldSeparator(ref Result, CombinedRequirements);
+                    foreach (AbilityRequirement Requirement in OtherRequirementList)
+                        AddWithFieldSeparator(ref Result, Requirement.TextContent);
                     AddWithFieldSeparator(ref Result, CombinedSkillRequirements);
                     if (UseDelayAnimation != ItemUseAnimation.Internal_None)
                         AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseDelayAnimation]);

@@ -3293,5 +3293,29 @@ namespace PgJsonObjects
             { XpTableEnum.DyeMaking, "Dye Making" },
             { XpTableEnum.Hoplology, "Hoplology" },
         };
+
+        public static readonly Dictionary<AbilityTypeTag, string> AbilityTypeTagTextMap = new Dictionary<AbilityTypeTag, string>()
+        {
+            { AbilityTypeTag.Internal_None, "None" },
+            { AbilityTypeTag.SummonedPotato, "Potato" },
+            { AbilityTypeTag.SummonedOnion, "Onion" },
+            { AbilityTypeTag.SummonedCabbage, "Cabbage" },
+            { AbilityTypeTag.SummonedBeet, "Beet" },
+            { AbilityTypeTag.SummonedSquash, "Squash" },
+            { AbilityTypeTag.SummonedBroccoli, "Broccoli" },
+            { AbilityTypeTag.SummonedCarrot, "Carrot" },
+            { AbilityTypeTag.SummonedPumpkin, "Pumpkin" },
+            { AbilityTypeTag.SummonedPepper, "Pepper" },
+            { AbilityTypeTag.SummonedCorn, "Corn" },
+            { AbilityTypeTag.SummonedFlower, "Flower" },
+            { AbilityTypeTag.SummonedGrass, "Grass" },
+            { AbilityTypeTag.SummonedCotton, "Cotton" },
+        };
+
+        public static readonly Dictionary<DisallowedState, string> DisallowedStateTextMap = new Dictionary<DisallowedState, string>()
+        {
+            { DisallowedState.Internal_None, "None" },
+            { DisallowedState.Calm, "Calm" },
+        };
     }
 }

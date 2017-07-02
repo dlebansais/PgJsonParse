@@ -95,6 +95,8 @@ namespace PgJsonObjects
 
         protected override string SortingName { get { return Name; } }
 
+        public List<AbilityRequirement> CombinedRequirementList { get; } = new List<AbilityRequirement>();
+
         public string CombinedCausesOfDeath
         {
             get
@@ -199,35 +201,6 @@ namespace PgJsonObjects
                     Result = RawDelayLoopTime.Value.ToString() + "s";
                     if (RawDelayLoopIsAbortedIfAttacked != null && RawDelayLoopIsAbortedIfAttacked.Value)
                         Result += ", aborted if attacked";
-                }
-
-                return Result;
-            }
-        }
-
-        public string CombinedRequirements
-        {
-            get
-            {
-                if (ItemKeywordReqList.Count == 0 && SpecialCasterRequirementList.Count == 0)
-                    return "None";
-
-                string Result = "";
-
-                foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += TextMaps.AbilityItemKeywordTextMap[Keyword];
-                }
-
-                foreach (AbilityRequirement Requirement in SpecialCasterRequirementList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += Requirement.CombinedRequirement;
                 }
 
                 return Result;
@@ -1164,6 +1137,7 @@ namespace PgJsonObjects
             AbilityRequirement ParsedSpecialCasterRequirement;
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("SpecialCasterRequirement", RawSpecialCasterRequirement, out ParsedSpecialCasterRequirement, ErrorInfo);
 
+            AbilityRequirement ConvertedAbilityRequirement = ParsedSpecialCasterRequirement.ToSpecificAbilityRequirement(ErrorInfo);
             SpecialCasterRequirementList.Add(ParsedSpecialCasterRequirement);
         }
 
@@ -2962,7 +2936,8 @@ namespace PgJsonObjects
                     if (RawIsHarmless.HasValue)
                         AddWithFieldSeparator(ref Result, "Is Harmless");
                     AddWithFieldSeparator(ref Result, ItemKeywordReqErrorMessage);
-                    AddWithFieldSeparator(ref Result, CombinedRequirements);
+                    foreach (AbilityRequirement Requirement in CombinedRequirementList)
+                        AddWithFieldSeparator(ref Result, Requirement.TextContent);
                     if (ExtraKeywordsForTooltips != TooltipsExtraKeywords.Internal_None)
                         AddWithFieldSeparator(ref Result, TextMaps.TooltipsExtraKeywordsTextMap[ExtraKeywordsForTooltips]);
                     AddWithFieldSeparator(ref Result, CombinedKeywords);
@@ -3047,6 +3022,15 @@ namespace PgJsonObjects
                 }
                 else
                     ConsumedItem = Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawConsumedItemKeyword, ConsumedItem, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
+            }
+
+            if (CombinedRequirementList.Count == 0 && (SpecialCasterRequirementList.Count > 0 || ItemKeywordReqList.Count > 0))
+            {
+                foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
+                    CombinedRequirementList.Add(new InternalAbilityRequirement(Keyword));
+
+                foreach (AbilityRequirement Item in SpecialCasterRequirementList)
+                    CombinedRequirementList.Add(Item);
             }
 
             return IsConnected;
