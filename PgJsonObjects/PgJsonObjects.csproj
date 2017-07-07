@@ -86,6 +86,7 @@
     <Compile Include="Records\Ability\Ability PvX.cs" />
     <Compile Include="Records\Ability\Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\Appearance Ability Requirement.cs" />
+    <Compile Include="Records\Ability\Consumed Item\Consumed Item By Keyword.cs" />
     <Compile Include="Records\Ability\Ability Requirement\CurHealth Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\DruidEventState Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\EquippedItemKeyword Ability Requirement.cs" />
@@ -111,6 +112,8 @@
     <Compile Include="Records\Ability\Ability Type Tag.cs" />
     <Compile Include="Records\Ability\Ability.cs" />
     <Compile Include="Records\Ability\Consumed Items.cs" />
+    <Compile Include="Records\Ability\Consumed Item\Consumed Item Direct.cs" />
+    <Compile Include="Records\Ability\Consumed Item\Consumed Item.cs" />
     <Compile Include="Records\Ability\Damage Type.cs" />
     <Compile Include="Records\Ability\Deaths.cs" />
     <Compile Include="Records\Ability\Special Value.cs" />
@@ -155,6 +158,19 @@
     <Compile Include="Records\Quest\Quest Keyword.cs" />
     <Compile Include="Records\Quest\Quest Objective Type.cs" />
     <Compile Include="Records\Quest\Quest Objective.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Anatomy.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Item.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Deliver.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Give Gift.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Guild Give Item.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Interaction Flag.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Kill.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Multiple Interaction Flags.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Kill Target.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Special.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Tip Player.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Use Ability.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Use Recipe.cs" />
     <Compile Include="Records\Quest\Quest Reward Item.cs" />
     <Compile Include="Records\Quest\Quest Reward Xp.cs" />
     <Compile Include="Records\Quest\Quest.cs" />

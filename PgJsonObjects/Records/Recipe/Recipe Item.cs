@@ -31,23 +31,6 @@ namespace PgJsonObjects
         protected override string SortingName { get { return null; } }
         public Recipe ParentRecipe { get; private set; }
 
-        public double PerfectCottonRatio
-        {
-            get
-            {
-                if (Item != null)
-                    return Item.PerfectCottonRatio;
-                else
-                    return 0;
-            }
-        }
-
-        public void SetPerfectCottonRatio(double RecipePerfectCottonRatio)
-        {
-            if (Item != null && StackSize > 0)
-                Item.SetPerfectCottonRatio((RecipePerfectCottonRatio * PercentChance) / StackSize);
-        }
-
         public bool IsLinkedDescription
         {
             get
@@ -392,6 +375,25 @@ namespace PgJsonObjects
             }
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Recursive Components Sum
+        public double PerfectCottonRatio
+        {
+            get
+            {
+                if (Item != null)
+                    return Item.PerfectCottonRatio;
+                else
+                    return 0;
+            }
+        }
+
+        public void SetPerfectCottonRatio(double RecipePerfectCottonRatio)
+        {
+            if (Item != null && StackSize > 0)
+                Item.SetPerfectCottonRatio((RecipePerfectCottonRatio * PercentChance) / StackSize);
         }
         #endregion
 

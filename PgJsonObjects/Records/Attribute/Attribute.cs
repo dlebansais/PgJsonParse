@@ -17,18 +17,7 @@ namespace PgJsonObjects
 
         #region Indirect Properties
         protected override string SortingName { get { return Label; } }
-
-        public List<string> IconFileNameList
-        {
-            get
-            {
-                List<string> Result = new List<string>();
-                foreach (int Id in IconIdList)
-                    Result.Add("icon_" + Id);
-
-                return Result;
-            }
-        }
+        public List<string> IconFileNameList { get; } = new List<string>();
 
         public bool IsLabelWithPercent
         {
@@ -42,6 +31,12 @@ namespace PgJsonObjects
                 string Result = IsLabelWithPercent ? Label.Substring(0, Label.Length - 1) : Label;
                 return Result.Trim();
             }
+        }
+
+        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        {
+            foreach (int Id in IconIdList)
+                IconFileNameList.Add("icon_" + Id);
         }
         #endregion
 
@@ -167,8 +162,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                Result += Label + JsonGenerator.FieldSeparator;
-                Result += Tooltip + JsonGenerator.FieldSeparator;
+                AddWithFieldSeparator(ref Result, Label);
+                AddWithFieldSeparator(ref Result, Tooltip);
 
                 return Result;
             }
@@ -221,7 +216,9 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            ErrorInfo.AddMissingKey(RawAttributeName);
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawAttributeName);
+
             return null;
         }
         #endregion

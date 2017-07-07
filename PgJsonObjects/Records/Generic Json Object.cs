@@ -36,7 +36,7 @@ namespace PgJsonObjects
 
         protected static Dictionary<string, bool> ParsedFields;
 
-        protected virtual void InitializeKey(KeyValuePair<string, object> EntryRaw)
+        protected virtual void InitializeKey(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
         {
             Key = EntryRaw.Key;
         }
@@ -169,13 +169,17 @@ namespace PgJsonObjects
 
         public virtual void Init(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
         {
-            InitializeKey(EntryRaw);
+            InitializeKey(EntryRaw, ErrorInfo);
 
             Dictionary<string, object> Fields;
             if ((Fields = EntryRaw.Value as Dictionary<string, object>) != null)
                 ParseFields(Fields, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
+        }
+
+        public virtual void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        {
         }
 
         public void SortLinkBack()

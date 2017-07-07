@@ -137,12 +137,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw)
+        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
         {
-            base.InitializeKey(EntryRaw);
+            base.InitializeKey(EntryRaw, ErrorInfo);
 
             PowerSkill ParsedPowerSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(Key, out ParsedPowerSkill, null);
+            StringToEnumConversion<PowerSkill>.TryParse(Key, out ParsedPowerSkill, ErrorInfo);
             CombatSkill = ParsedPowerSkill;
         }
 
@@ -737,7 +737,7 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            if (RawPowerSkill != PowerSkill.Unknown)
+            if (RawPowerSkill != PowerSkill.Internal_None && RawPowerSkill != PowerSkill.Unknown)
                 ErrorInfo.AddMissingKey(RawPowerSkill.ToString());
             else
                 return null;

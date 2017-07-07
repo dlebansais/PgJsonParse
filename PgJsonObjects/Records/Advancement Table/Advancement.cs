@@ -1277,12 +1277,7 @@ namespace PgJsonObjects
         #region Indexing
         public override string TextContent
         {
-            get
-            {
-                string Result = "";
-
-                return Result;
-            }
+            get { return ""; }
         }
         #endregion
 

@@ -178,8 +178,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                Result += Label + JsonGenerator.FieldSeparator;
-                Result += Suffix + JsonGenerator.FieldSeparator;
+                AddWithFieldSeparator(ref Result, Label);
+                AddWithFieldSeparator(ref Result, Suffix);
 
                 return Result;
             }

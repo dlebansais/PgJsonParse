@@ -12,7 +12,7 @@ namespace PgJsonObjects
         public Skill ConnectedNeededSkill { get; private set; }
         private bool IsNeededSkillParsed;
         public int NeededSkillLevel { get { return RawNeededSkillLevel.HasValue ? RawNeededSkillLevel.Value : 0; } }
-        private int? RawNeededSkillLevel;
+        public int? RawNeededSkillLevel { get; private set; }
         public Ability NeededAbility { get; private set; }
         public string RawNeededAbility { get; private set; }
         private bool IsRawNeededAbilityParsed;
@@ -21,7 +21,7 @@ namespace PgJsonObjects
         private string RawNeededRecipe;
         private bool IsRawNeededRecipeParsed;
         public int NeededRecipeCompletions { get { return RawNeededRecipeCompletions.HasValue ? RawNeededRecipeCompletions.Value : 0; } }
-        private int? RawNeededRecipeCompletions;
+        public int? RawNeededRecipeCompletions { get; private set; }
         public string NeededNotoriety { get; private set; }
         #endregion
 
@@ -29,57 +29,6 @@ namespace PgJsonObjects
         protected override string SortingName { get { return Label; } }
         public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
-
-        public string CombinedNeededSkill
-        {
-            get
-            {
-                if (ConnectedNeededSkill == null)
-                    return TextMaps.PowerSkillTextMap[NeededSkill];
-                else
-                    return ConnectedNeededSkill.Name;
-            }
-        }
-
-        public string CombinedNeededAbility
-        {
-            get
-            {
-                if (NeededAbility == null)
-                    return "None";
-                else
-                    return NeededAbility.Name;
-            }
-        }
-
-        public bool HasRecipeCompletions { get { return RawNeededRecipeCompletions != null && RawNeededRecipeCompletions.Value > 0; } }
-
-        public string CombinedNeededRecipe
-        {
-            get
-            {
-                if (NeededRecipe == null)
-                    return "None";
-
-                string Completions = CombinedRecipeCompletions;
-
-                if (Completions.Length > 0)
-                    return NeededRecipe.Name + " " + Completions;
-                else
-                    return NeededRecipe.Name;
-            }
-        }
-
-        public string CombinedRecipeCompletions
-        {
-            get
-            {
-                if (RawNeededRecipeCompletions != null && RawNeededRecipeCompletions.Value > 0)
-                    return "(x" + RawNeededRecipeCompletions.Value.ToString() + ")";
-                else
-                    return "";
-            }
-        }
         #endregion
 
         #region Parsing
@@ -274,7 +223,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[NeededSkill]);
                 if (NeededAbility != null)
                     AddWithFieldSeparator(ref Result, NeededAbility.Name);
-                AddWithFieldSeparator(ref Result, CombinedNeededRecipe);
+                if (NeededRecipe != null)
+                    AddWithFieldSeparator(ref Result, NeededRecipe.Name);
 
                 return Result;
             }

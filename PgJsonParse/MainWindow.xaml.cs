@@ -25,6 +25,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Controls.Primitives;
 
 namespace PgJsonParse
 {
@@ -939,6 +940,41 @@ namespace PgJsonParse
                     Item.MeasurePerfectCottonRatio(ref Continue);
             }
             while (Continue);
+
+            foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.Ability Item in AbilityList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.Attribute Item in AttributeList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.Effect Item in EffectList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.Item Item in ItemList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.Power Item in PowerList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.Quest Item in QuestList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.Recipe Item in RecipeList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.Skill Item in SkillList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.XpTable Item in XpTableList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+
 
             foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
                 Item.SortLinkBack();
@@ -2768,6 +2804,24 @@ namespace PgJsonParse
                     OnRequestNavigate(hyperlink.DataContext, Splitted[2]);
             }
         }
+
+        private void OnXpTableButtonChecked(object sender, RoutedEventArgs e)
+        {
+            XpTableButton = sender as ToggleButton;
+        }
+
+        private void OnContentTemplateLostFocus(object sender, RoutedEventArgs e)
+        {
+            CloseXpTable();
+        }
+
+        public void CloseXpTable()
+        {
+            if (XpTableButton != null && XpTableButton.IsChecked.HasValue && XpTableButton.IsChecked.Value == true)
+                XpTableButton.IsChecked = false;
+        }
+
+        private ToggleButton XpTableButton;
         #endregion
 
         #region Implementation of INotifyPropertyChanged
@@ -2787,13 +2841,5 @@ namespace PgJsonParse
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
-
-        private void OnContentTemplateLostFocus(object sender, RoutedEventArgs e)
-        {
-            FrameworkElement AsFrameworkElement = sender as FrameworkElement;
-            System.Windows.Controls.Primitives.ToggleButton Button = AsFrameworkElement.FindName("buttonXpTable") as System.Windows.Controls.Primitives.ToggleButton;
-            if (Button.IsChecked.HasValue && Button.IsChecked.Value == true)
-                Button.IsChecked = false;
-        }
     }
 }

@@ -51,9 +51,9 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw)
+        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
         {
-            base.InitializeKey(EntryRaw);
+            base.InitializeKey(EntryRaw, ErrorInfo);
 
             int ParsedRewardLevel;
             if (int.TryParse(Key, out ParsedRewardLevel))

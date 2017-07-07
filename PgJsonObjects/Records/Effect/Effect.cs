@@ -20,6 +20,7 @@ namespace PgJsonObjects
         public int? RawDuration { get; private set; }
         public List<EffectKeyword> KeywordList { get; } = new List<EffectKeyword>();
         public bool IsKeywordListEmpty { get; private set; }
+        public bool HasTSysKeyword { get; private set; }
         public List<AbilityKeyword> AbilityKeywordList { get; } = new List<AbilityKeyword>();
         public bool IsAbilityKeywordListEmpty { get; private set; }
         #endregion
@@ -27,70 +28,6 @@ namespace PgJsonObjects
         #region Indirect Properties
         protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
-
-        public string CombinedSpewText
-        {
-            get
-            {
-                if (SpewText == null)
-                    return "";
-
-                string Result = SpewText;
-                Result  = Result.Replace("%NAME%", "Target");
-
-                return Result;
-            }
-        }
-
-        public string CombinedKeywords
-        {
-            get
-            {
-                if (KeywordList.Count == 0)
-                    return "None";
-
-                List<string> KeywordStringList = new List<string>();
-                foreach (EffectKeyword Item in KeywordList)
-                {
-                    string ItemText = TextMaps.EffectKeywordTextMap[Item];
-                    if (ItemText.Length > 0 && !KeywordStringList.Contains(ItemText))
-                        KeywordStringList.Add(ItemText);
-                }
-
-                string Result = "";
-
-                foreach (string Item in KeywordStringList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += Item;
-                }
-
-                return Result;
-            }
-        }
-
-        public string CombinedAbilityKeywords
-        {
-            get
-            {
-                if (AbilityKeywordList.Count == 0)
-                    return "None";
-
-                string Result = "";
-
-                foreach (AbilityKeyword Keyword in AbilityKeywordList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += TextMaps.AbilityKeywordTextMap[Keyword];
-                }
-
-                return Result;
-            }
-        }
         #endregion
 
         #region Parsing
@@ -277,8 +214,15 @@ namespace PgJsonObjects
 
         private void ParseKeywords(ArrayList RawKeywords, ParseErrorInfo ErrorInfo)
         {
-            StringToEnumConversion<EffectKeyword>.ParseList(RawKeywords, KeywordStringMap, KeywordList, ErrorInfo);
-            IsKeywordListEmpty = (RawKeywords != null && RawKeywords.Count == 0);
+            List<EffectKeyword> ParsedKeywordList = new List<EffectKeyword>();
+            StringToEnumConversion<EffectKeyword>.ParseList(RawKeywords, KeywordStringMap, ParsedKeywordList, ErrorInfo);
+            foreach (EffectKeyword Item in ParsedKeywordList)
+                if (Item != EffectKeyword.TSys)
+                    KeywordList.Add(Item);
+                else
+                    HasTSysKeyword = true;
+
+            IsKeywordListEmpty = (RawKeywords != null && ParsedKeywordList.Count == 0);
         }
 
         private static void ParseFieldAbilityKeywords(Effect This, object Value, ParseErrorInfo ErrorInfo)
@@ -331,20 +275,19 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                if (RawIconId.HasValue)
-                {
-                    AddWithFieldSeparator(ref Result, Name);
-                    AddWithFieldSeparator(ref Result, Desc);
-                    if (DisplayMode != EffectDisplayMode.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.EffectDisplayModeTextMap[DisplayMode]);
-                    AddWithFieldSeparator(ref Result, CombinedSpewText);
-                    if (Particle != EffectParticle.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.EffectParticleTextMap[Particle]);
-                    if (StackingType != EffectStackingType.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.EffectStackingTypeTextMap[StackingType]);
-                    AddWithFieldSeparator(ref Result, CombinedKeywords);
-                    AddWithFieldSeparator(ref Result, CombinedAbilityKeywords);
-                }
+                AddWithFieldSeparator(ref Result, Name);
+                AddWithFieldSeparator(ref Result, Desc);
+                if (DisplayMode != EffectDisplayMode.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.EffectDisplayModeTextMap[DisplayMode]);
+                AddWithFieldSeparator(ref Result, SpewText);
+                if (Particle != EffectParticle.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.EffectParticleTextMap[Particle]);
+                if (StackingType != EffectStackingType.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.EffectStackingTypeTextMap[StackingType]);
+                foreach(EffectKeyword Keyword in KeywordList)
+                    AddWithFieldSeparator(ref Result, TextMaps.EffectKeywordTextMap[Keyword]);
+                foreach (AbilityKeyword Keyword in AbilityKeywordList)
+                    AddWithFieldSeparator(ref Result, TextMaps.AbilityKeywordTextMap[Keyword]);
 
                 return Result;
             }
@@ -375,7 +318,9 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            ErrorInfo.AddMissingKey(RawEffectName);
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawEffectName);
+
             return null;
         }
         #endregion

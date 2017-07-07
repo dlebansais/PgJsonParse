@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace PgJsonParse
@@ -7,11 +8,27 @@ namespace PgJsonParse
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            FrameworkElement element = container as FrameworkElement;
-            string TemplateName = item.GetType().Name + "Template";
+            if (item == null)
+                return null;
 
-            DataTemplate Result = element.TryFindResource(TemplateName) as DataTemplate;
-            return Result;
+            FrameworkElement element = container as FrameworkElement;
+            Type ItemType = item.GetType();
+
+            DataTemplate Result = null;
+
+            while (ItemType != null && Result == null)
+            {
+                string TemplateName = ItemType.Name + "Template";
+
+                Result = element.TryFindResource(TemplateName) as DataTemplate;
+                if (Result == null)
+                    ItemType = ItemType.BaseType;
+            }
+
+            if (Result != null)
+                return Result;
+            else
+                return null;
         }
     }
 }

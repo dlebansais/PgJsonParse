@@ -16,7 +16,7 @@ namespace PgJsonObjects
         #region Parsing
         public override void Init(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
         {
-            InitializeKey(EntryRaw);
+            InitializeKey(EntryRaw, ErrorInfo);
 
             LevelTable = new Dictionary<int, Advancement>();
 
@@ -53,9 +53,9 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key);
         }
 
-        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw)
+        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
         {
-            base.InitializeKey(EntryRaw);
+            base.InitializeKey(EntryRaw, ErrorInfo);
 
             int Index = Key.LastIndexOf('_');
             if (Index >= 0)
@@ -82,15 +82,7 @@ namespace PgJsonObjects
         #region Indexing
         public override string TextContent
         {
-            get
-            {
-                string Result = "";
-
-                foreach (KeyValuePair<int, Advancement> Entry in LevelTable)
-                    Result += Entry.Value.TextContent + JsonGenerator.FieldSeparator;
-
-                return Result;
-            }
+            get { return ""; }
         }
         #endregion
 
@@ -118,7 +110,9 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            ErrorInfo.AddMissingKey(RawAdvancementTableName);
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawAdvancementTableName);
+
             return null;
         }
         #endregion

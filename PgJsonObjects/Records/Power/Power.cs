@@ -9,8 +9,6 @@ namespace PgJsonObjects
         public string Prefix { get; private set; }
         public string Suffix { get; private set; }
         public Dictionary<int, PowerTier> TierEffectTable { get; } = new Dictionary<int, PowerTier>();
-        public List<string> CombinedTierList { get; } = new List<string>();
-        private bool IsCombinedTierListBuilt;
         public List<ItemSlot> SlotList { get; } = new List<ItemSlot>();
         public PowerSkill Skill { get; private set; }
         public Skill ConnectedSkill { get; private set; }
@@ -21,6 +19,7 @@ namespace PgJsonObjects
 
         #region Indirect Properties
         protected override string SortingName { get { return ComposedName; } }
+        public List<string> CombinedTierList { get; } = new List<string>();
 
         public string ComposedName
         {
@@ -50,35 +49,6 @@ namespace PgJsonObjects
             }
         }
 
-        public string CombinedSkill
-        {
-            get
-            {
-                if (ConnectedSkill == null)
-                    return TextMaps.PowerSkillTextMap[Skill];
-                else
-                    return ConnectedSkill.Name;
-            }
-        }
-
-        public string CombinedSlotList
-        {
-            get
-            {
-                string Result = "";
-
-                foreach (ItemSlot Slot in SlotList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += TextMaps.ItemSlotTextMap[Slot];
-                }
-
-                return Result;
-            }
-        }
-
         public string SearchResultIconFileName
         {
             get
@@ -90,6 +60,88 @@ namespace PgJsonObjects
 
                 return "icon_" + IconId;
             }
+        }
+
+        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        {
+            foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
+            {
+                int Tier = Entry.Key;
+
+                foreach (PowerEffect Effect in Entry.Value.EffectList)
+                {
+                    PowerAttributeLink AsPowerAttributeLink;
+                    PowerSimpleEffect AsPowerSimpleEffect;
+
+                    if ((AsPowerAttributeLink = Effect as PowerAttributeLink) != null)
+                    {
+                        if (AttributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
+                        {
+                            Attribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName];
+
+                            bool IsPercent = PowerAttribute.IsLabelWithPercent;
+                            string Label = PowerAttribute.LabelRippedOfPercent;
+                            string Name = Label;
+
+                            if (AsPowerAttributeLink.AttributeEffect != 0)
+                            {
+                                float PowerValue = AsPowerAttributeLink.AttributeEffect;
+
+                                if (IsPercent)
+                                {
+                                    string PowerValueString = Tools.FloatToString(PowerValue * 100, AsPowerAttributeLink.AttributeEffectFormat);
+
+                                    if (PowerValue > 0)
+                                        PowerValueString = "+" + PowerValueString;
+
+                                    Name += " " + PowerValueString + "%";
+                                }
+                                else
+                                {
+                                    string PowerValueString = Tools.FloatToString(PowerValue, AsPowerAttributeLink.AttributeEffectFormat);
+
+                                    if (PowerValue > 0)
+                                        PowerValueString = "+" + PowerValueString;
+
+                                    Name += " " + PowerValueString;
+                                }
+                            }
+
+                            CombinedTierList.Add(PrepareTier(Entry.Key, Name));
+                        }
+                    }
+
+                    else if ((AsPowerSimpleEffect = Effect as PowerSimpleEffect) != null)
+                    {
+                        CombinedTierList.Add(PrepareTier(Entry.Key, AsPowerSimpleEffect.Description));
+                    }
+                }
+            }
+
+            CombinedTierList.Sort(SortByLevel);
+        }
+
+        private static int SortByLevel(string s1, string s2)
+        {
+            int i1 = s1.IndexOf(':');
+            int i2 = s2.IndexOf(':');
+
+            int l1 = 0;
+            int.TryParse(s1.Substring(5, i1 - 5), out l1);
+            int l2 = 0;
+            int.TryParse(s2.Substring(5, i2 - 5), out l2);
+
+            if (l1 > l2)
+                return 1;
+            else if (l1 < l2)
+                return -1;
+            else
+                return 0;
+        }
+
+        private static string PrepareTier(int Level, string s)
+        {
+            return "Tier " + Level + ": " + s;
         }
         #endregion
 
@@ -254,7 +306,8 @@ namespace PgJsonObjects
                 string Result = "";
 
                 AddWithFieldSeparator(ref Result, ComposedName);
-                AddWithFieldSeparator(ref Result, CombinedSlotList);
+                foreach (ItemSlot Slot in SlotList)
+                    AddWithFieldSeparator(ref Result, TextMaps.ItemSlotTextMap[Slot]);
                 if (Skill != PowerSkill.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
                 if (RawIsUnavailable.HasValue)
@@ -278,91 +331,7 @@ namespace PgJsonObjects
             if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
                 ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
 
-            if (!IsCombinedTierListBuilt)
-            {
-                IsCombinedTierListBuilt = true;
-
-                foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
-                {
-                    int Tier = Entry.Key;
-
-                    foreach (PowerEffect Effect in Entry.Value.EffectList)
-                    {
-                        PowerAttributeLink AsPowerAttributeLink;
-                        PowerSimpleEffect AsPowerSimpleEffect;
-
-                        if ((AsPowerAttributeLink = Effect as PowerAttributeLink) != null)
-                        {
-                            if (AttributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
-                            {
-                                Attribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName];
-
-                                bool IsPercent = PowerAttribute.IsLabelWithPercent;
-                                string Label = PowerAttribute.LabelRippedOfPercent;
-                                string Name = Label;
-
-                                if (AsPowerAttributeLink.AttributeEffect != 0)
-                                {
-                                    float PowerValue = AsPowerAttributeLink.AttributeEffect;
-
-                                    if (IsPercent)
-                                    {
-                                        string PowerValueString = Tools.FloatToString(PowerValue * 100, AsPowerAttributeLink.AttributeEffectFormat);
-
-                                        if (PowerValue > 0)
-                                            PowerValueString = "+" + PowerValueString;
-
-                                        Name += " " + PowerValueString + "%";
-                                    }
-                                    else
-                                    {
-                                        string PowerValueString = Tools.FloatToString(PowerValue, AsPowerAttributeLink.AttributeEffectFormat);
-
-                                        if (PowerValue > 0)
-                                            PowerValueString = "+" + PowerValueString;
-
-                                        Name += " " + PowerValueString;
-                                    }
-                                }
-
-                                CombinedTierList.Add(PrepareTier(Entry.Key, Name));
-                            }
-                        }
-
-                        else if ((AsPowerSimpleEffect = Effect as PowerSimpleEffect) != null)
-                        {
-                            CombinedTierList.Add(PrepareTier(Entry.Key, AsPowerSimpleEffect.Description));
-                        }
-                    }
-                }
-
-                CombinedTierList.Sort(SortByLevel);
-            }
-
             return IsConnected;
-        }
-
-        private static int SortByLevel(string s1, string s2)
-        {
-            int i1 = s1.IndexOf(':');
-            int i2 = s2.IndexOf(':');
-
-            int l1 = 0;
-            int.TryParse(s1.Substring(5, i1 - 5), out l1);
-            int l2 = 0;
-            int.TryParse(s2.Substring(5, i2 - 5), out l2);
-
-            if (l1 > l2)
-                return 1;
-            else if (l1 < l2)
-                return -1;
-            else
-                return 0;
-        }
-
-        private static string PrepareTier(int Level, string s)
-        {
-            return "Tier " + Level + ": " + s;
         }
         #endregion
 

@@ -12,27 +12,6 @@ namespace PgJsonObjects
 
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
-
-        public string CombinedCost
-        {
-            get
-            {
-                string Result = Price.ToString();
-
-                switch (Currency)
-                {
-                    case RecipeCurrency.GuildCredits:
-                        Result += " Guild Credit(s)";
-                        break;
-
-                    default:
-                        Result += " " + Currency.ToString();
-                        break;
-                }
-
-                return Result;
-            }
-        }
         #endregion
 
         #region Parsing

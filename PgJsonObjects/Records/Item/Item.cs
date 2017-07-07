@@ -74,181 +74,6 @@ namespace PgJsonObjects
         #region Indirect Properties
         protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
-        public bool HasBestowedRecipes { get { return BestowRecipeTable.Count > 0; } }
-
-        public double PerfectCottonRatio { get; private set; }
-
-        public void SetPerfectCottonRatio(double PerfectCottonRatioFromRecipe)
-        {
-            if (double.IsNaN(PerfectCottonRatio))
-                PerfectCottonRatio = PerfectCottonRatioFromRecipe;
-        }
-
-        public string CombinedBestowedRecipes
-        {
-            get
-            {
-                if (BestowRecipeTable.Count == 0)
-                    return "None";
-
-                string Result = "";
-
-                foreach (KeyValuePair<string, Recipe> Entry in BestowRecipeTable)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += Entry.Value.Name;
-                }
-
-                return Result;
-            }
-        }
-
-        public string CombinedBestowedAbility
-        {
-            get
-            {
-                if (BestowAbility == null)
-                    return "None";
-
-                return BestowAbility.Name;
-            }
-        }
-
-        public string CombinedBestowedQuest
-        {
-            get
-            {
-                if (BestowQuest == null)
-                    return "None";
-
-                return BestowQuest.Name;
-            }
-        }
-
-        public string CombinedEffectDescription
-        {
-            get
-            {
-                if (EffectDescriptionList.Count == 0)
-                    return "None";
-
-                string Result = "";
-
-                foreach (ItemEffect ItemEffect in EffectDescriptionList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    ItemSimpleEffect AsItemSimpleEffect;
-                    ItemAttributeLink AsItemAttributeLink;
-
-                    if ((AsItemSimpleEffect = ItemEffect as ItemSimpleEffect) != null)
-                    {
-                        Result += AsItemSimpleEffect.Description;
-                    }
-
-                    else if ((AsItemAttributeLink = ItemEffect as ItemAttributeLink) != null)
-                    {
-                        Result += AsItemAttributeLink.FriendlyName + ": " + AsItemAttributeLink.FriendlyEffect;
-                    }
-                }
-
-                return Result;
-            }
-        }
-
-        public string CombinedKeywords
-        {
-            get
-            {
-                if (KeywordTable.Count == 0)
-                    return "None";
-
-                string Result = "";
-
-                foreach (KeyValuePair<ItemKeyword, List<float>> Entry in KeywordTable)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += TextMaps.ItemKeywordTextMap[Entry.Key];
-
-                    string Values = "";
-                    foreach (float f in Entry.Value)
-                    {
-                        if (Values.Length > 0)
-                            Values += ", ";
-
-                        Values += f.ToString();
-                    }
-
-                    if (Values.Length > 0)
-                        Result += " (" + Values + ")";
-                }
-
-                return Result;
-            }
-        }
-
-        public string CombinedMacGuffinQuestName
-        {
-            get
-            {
-                if (MacGuffinQuestName == null)
-                    return "None";
-
-                return MacGuffinQuestName.Name;
-            }
-        }
-
-        public bool HasSkillRequirements {  get { return SkillRequirementList.Count > 0; } }
-
-        public string CombinedSkillRequirements
-        {
-            get
-            {
-                if (SkillRequirementList.Count == 0)
-                    return "None";
-
-                string Result = "";
-
-                foreach (ItemSkillLink Requirement in SkillRequirementList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    if (Requirement.SkillLevel.HasValue)
-                        Result += Requirement.Link.Name + " (" + Requirement.SkillLevel.Value + ")";
-                    else
-                        Result += Requirement.Link.Name;
-                }
-
-                return Result;
-            }
-        }
-
-        public string CombinedUseRequirements
-        {
-            get
-            {
-                if (UseRequirementList.Count == 0)
-                    return "None";
-
-                string Result = "";
-
-                foreach (ItemUseRequirement Requirement in UseRequirementList)
-                {
-                    if (Result.Length > 0)
-                        Result += "\n";
-
-                    Result = TextMaps.ItemUseRequirementTextMap[Requirement];
-                }
-
-                return Result;
-            }
-        }
         #endregion
 
         #region Parsing
@@ -1141,44 +966,58 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                if (RawIconId.HasValue)
+                AddWithFieldSeparator(ref Result, Name);
+                AddWithFieldSeparator(ref Result, Description);
+                foreach (KeyValuePair<string, Recipe> Entry in BestowRecipeTable)
+                    AddWithFieldSeparator(ref Result, Entry.Value.Name);
+                if (BestowAbility != null)
+                    AddWithFieldSeparator(ref Result, BestowAbility.Name);
+                if (BestowQuest != null)
+                    AddWithFieldSeparator(ref Result, BestowQuest.Name);
+                if (RawAllowPrefix.HasValue)
+                    AddWithFieldSeparator(ref Result, "Allow Prefix");
+                if (RawAllowSuffix.HasValue)
+                    AddWithFieldSeparator(ref Result, "Allow Suffix");
+                if (DroppedAppearance != ItemDroppedAppearance.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.ItemDroppedAppearanceTextMap[DroppedAppearance]);
+
+                foreach (ItemEffect ItemEffect in EffectDescriptionList)
                 {
-                    AddWithFieldSeparator(ref Result, Name);
-                    AddWithFieldSeparator(ref Result, Description);
-                    AddWithFieldSeparator(ref Result, CombinedBestowedRecipes);
-                    AddWithFieldSeparator(ref Result, CombinedBestowedAbility);
-                    AddWithFieldSeparator(ref Result, CombinedBestowedQuest);
-                    if (RawAllowPrefix.HasValue)
-                        AddWithFieldSeparator(ref Result, "Allow Prefix");
-                    if (RawAllowSuffix.HasValue)
-                        AddWithFieldSeparator(ref Result, "Allow Suffix");
-                    if (DroppedAppearance != ItemDroppedAppearance.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemDroppedAppearanceTextMap[DroppedAppearance]);
-                    AddWithFieldSeparator(ref Result, CombinedEffectDescription);
-                    if (EquipSlot != ItemSlot.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemSlotTextMap[EquipSlot]);
-                    if (RawIsTemporary.HasValue)
-                        AddWithFieldSeparator(ref Result, "Is Temporary");
-                    if (RawIsCrafted.HasValue)
-                        AddWithFieldSeparator(ref Result, "Is Crafted");
-                    AddWithFieldSeparator(ref Result, CombinedKeywords);
-                    if (MacGuffinQuestName != null)
-                        AddWithFieldSeparator(ref Result, MacGuffinQuestName.Name);
-                    if (RequiredAppearance != Appearance.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.AppearanceTextMap[RequiredAppearance]);
-                    foreach (AbilityRequirement Requirement in OtherRequirementList)
-                        AddWithFieldSeparator(ref Result, Requirement.TextContent);
-                    AddWithFieldSeparator(ref Result, CombinedSkillRequirements);
-                    if (UseDelayAnimation != ItemUseAnimation.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseDelayAnimation]);
-                    if (UseAnimation != ItemUseAnimation.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseAnimation]);
-                    AddWithFieldSeparator(ref Result, CombinedUseRequirements);
-                    if (UseVerb != ItemUseVerb.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.ItemUseVerbTextMap[UseVerb]);
-                    if (RawDestroyWhenUsedUp.HasValue)
-                        AddWithFieldSeparator(ref Result, "Destroy When Used Up");
+                    ItemSimpleEffect AsItemSimpleEffect;
+                    ItemAttributeLink AsItemAttributeLink;
+
+                    if ((AsItemSimpleEffect = ItemEffect as ItemSimpleEffect) != null)
+                        AddWithFieldSeparator(ref Result, AsItemSimpleEffect.Description);
+
+                    else if ((AsItemAttributeLink = ItemEffect as ItemAttributeLink) != null)
+                        AddWithFieldSeparator(ref Result, AsItemAttributeLink.FriendlyName + ":" + AsItemAttributeLink.FriendlyEffect);
                 }
+                if (EquipSlot != ItemSlot.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.ItemSlotTextMap[EquipSlot]);
+                if (RawIsTemporary.HasValue)
+                    AddWithFieldSeparator(ref Result, "Is Temporary");
+                if (RawIsCrafted.HasValue)
+                    AddWithFieldSeparator(ref Result, "Is Crafted");
+                foreach (KeyValuePair<ItemKeyword, List<float>> Entry in KeywordTable)
+                    AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[Entry.Key]);
+                if (MacGuffinQuestName != null)
+                    AddWithFieldSeparator(ref Result, MacGuffinQuestName.Name);
+                if (RequiredAppearance != Appearance.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.AppearanceTextMap[RequiredAppearance]);
+                foreach (AbilityRequirement Requirement in OtherRequirementList)
+                    AddWithFieldSeparator(ref Result, Requirement.TextContent);
+                foreach (ItemSkillLink Requirement in SkillRequirementList)
+                    AddWithFieldSeparator(ref Result, Requirement.Link.Name);
+                if (UseDelayAnimation != ItemUseAnimation.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseDelayAnimation]);
+                if (UseAnimation != ItemUseAnimation.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseAnimation]);
+                foreach (ItemUseRequirement Requirement in UseRequirementList)
+                    AddWithFieldSeparator(ref Result, TextMaps.ItemUseRequirementTextMap[Requirement]);
+                if (UseVerb != ItemUseVerb.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.ItemUseVerbTextMap[UseVerb]);
+                if (RawDestroyWhenUsedUp.HasValue)
+                    AddWithFieldSeparator(ref Result, "Destroy When Used Up");
 
                 return Result;
             }
@@ -1240,7 +1079,9 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            ErrorInfo.AddMissingKey(RawItemName);
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawItemName);
+
             return null;
         }
 
@@ -1264,7 +1105,9 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            ErrorInfo.AddMissingKey(FullKey);
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(FullKey);
+
             return null;
         }
 
@@ -1288,8 +1131,39 @@ namespace PgJsonObjects
                     ItemList.Add(Entry.Value);
                 }
 
-            if (ItemList.Count == 0)
+            if (ItemList.Count == 0 && ErrorInfo != null)
                 ErrorInfo.AddMissingKey(ItemKey.ToString());
+
+            return ItemList;
+        }
+
+        public static List<Item> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, ItemKeyword Keyword, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawItemParsed)
+                return ItemList;
+
+            IsRawItemParsed = true;
+
+            if (Keyword == ItemKeyword.Internal_None)
+                return ItemList;
+
+            ItemList = new List<Item>();
+            IsConnected = true;
+
+            foreach (KeyValuePair<string, Item> ItemEntry in ItemTable)
+            {
+                foreach (KeyValuePair<ItemKeyword, List<float>> KeywordEntry in ItemEntry.Value.KeywordTable)
+                {
+                    if (KeywordEntry.Key == Keyword)
+                    {
+                        ItemEntry.Value.AddLinkBack(LinkBack);
+                        ItemList.Add(ItemEntry.Value);
+                    }
+                }
+            }
+
+            if (ItemList.Count == 0 && ErrorInfo != null)
+                ErrorInfo.AddMissingKey(Keyword.ToString());
 
             return ItemList;
         }
@@ -1317,6 +1191,16 @@ namespace PgJsonObjects
             }
 
             return Weight;
+        }
+        #endregion
+
+        #region Recursive Components Sum
+        public double PerfectCottonRatio { get; private set; }
+
+        public void SetPerfectCottonRatio(double PerfectCottonRatioFromRecipe)
+        {
+            if (double.IsNaN(PerfectCottonRatio))
+                PerfectCottonRatio = PerfectCottonRatioFromRecipe;
         }
         #endregion
 

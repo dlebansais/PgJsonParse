@@ -510,7 +510,23 @@ namespace PgJsonObjects
                 string Result = "";
 
                 foreach (SpecialValue Item in SpecialValueList)
-                    Result += Item.TextContent + JsonGenerator.FieldSeparator;
+                {
+                    string FieldContent = "";
+
+                    if (Item.Label != null)
+                        FieldContent += Item.Label;
+
+                    if (Item.Suffix != null)
+                    {
+                        if (FieldContent.Length > 0)
+                            FieldContent += " ";
+
+                        FieldContent += Item.Suffix;
+                    }
+
+                    if (FieldContent.Length > 0)
+                        AddWithFieldSeparator(ref Result, FieldContent);
+                }
 
                 return Result;
             }

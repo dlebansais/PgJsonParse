@@ -543,7 +543,12 @@ namespace PgJsonObjects
         {
             List<QuestObjective> ParsedQuestObjectiveList;
             JsonObjectParser<QuestObjective>.InitAsSublist(RawObjectives, out ParsedQuestObjectiveList, ErrorInfo);
-            QuestObjectiveList.AddRange(ParsedQuestObjectiveList);
+
+            foreach (QuestObjective Objective in ParsedQuestObjectiveList)
+            {
+                QuestObjective ConvertedQuestObjective = Objective.ToSpecificQuestObjective(ErrorInfo);
+                QuestObjectiveList.Add(ConvertedQuestObjective);
+            }
         }
 
         private static void ParseFieldRewardsXP(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -656,29 +661,65 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Quest FavorNpc");
         }
 
+        public static bool TryParseNPC(string s, out MapAreaName ParsedArea, out string NpcName, ParseErrorInfo ErrorInfo)
+        {
+            ParsedArea = MapAreaName.Internal_None;
+            NpcName = null;
+
+            if (s.Length == 0)
+                return false;
+
+            string[] AreaNpc = s.Split('/');
+            if (AreaNpc.Length == 2)
+            {
+                string RawMapName = AreaNpc[0];
+                if (RawMapName.StartsWith("Area"))
+                    StringToEnumConversion<MapAreaName>.TryParse(RawMapName.Substring(4), out ParsedArea, ErrorInfo);
+                else
+                    return false;
+
+                string Npc = AreaNpc[1];
+                if (Npc.ToUpper().StartsWith("NPC_"))
+                    NpcName = Npc.Substring(4);
+                else if (Npc == "WerewolfAltar")
+                    NpcName = "Werewolf Altar";
+                else
+                    return false;
+            }
+            else
+                return false;
+
+            return true;
+        }
+
+        public static bool TryParseNPC(string s, out string NpcName, ParseErrorInfo ErrorInfo)
+        {
+            NpcName = null;
+
+            if (s.Length == 0)
+                return false;
+
+            if (s.ToUpper().StartsWith("NPC_"))
+                NpcName = s.Substring(4);
+            else if (s == "WerewolfAltar")
+                NpcName = "Werewolf Altar";
+            else
+                return false;
+
+            return true;
+        }
+
         private void ParseFavorNpc(string RawFavorNpc, ParseErrorInfo ErrorInfo)
         {
             if (RawFavorNpc.Length == 0)
                 return;
 
-            string[] AreaNpc = RawFavorNpc.Split('/');
-            if (AreaNpc.Length == 2)
+            MapAreaName ParsedArea;
+            string NpcName;
+            if (TryParseNPC(RawFavorNpc, out ParsedArea, out NpcName, ErrorInfo))
             {
-                string RawMapName = AreaNpc[0];
-                if (RawMapName.StartsWith("Area"))
-                {
-                    MapAreaName ParsedArea;
-                    StringToEnumConversion<MapAreaName>.TryParse(RawMapName.Substring(4), out ParsedArea, ErrorInfo);
-                    FavorNpcArea = ParsedArea;
-                }
-                else
-                    ErrorInfo.AddInvalidObjectFormat("Quest FavorNpc");
-
-                FavorNpc = AreaNpc[1];
-                if (FavorNpc.ToUpper().StartsWith("NPC_"))
-                    FavorNpc = FavorNpc.Substring(4);
-                else if (FavorNpc == "WerewolfAltar")
-                    FavorNpc = "Werewolf Altar";
+                FavorNpcArea = ParsedArea;
+                FavorNpc = NpcName;
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("Quest FavorNpc");

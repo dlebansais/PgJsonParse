@@ -32,7 +32,7 @@ namespace PgJsonObjects
         public string UsageDelayMessage { get; private set; }
         public RecipeUsageAnimation UsageAnimation { get; private set; }
         public List<AbilityRequirement> OtherRequirementList { get; } = new List<AbilityRequirement>();
-        public RecipeCost Cost { get; private set; }
+        public List<RecipeCost> CostList { get; } = new List<RecipeCost>();
         public int NumResultItems { get { return RawNumResultItems.HasValue ? RawNumResultItems.Value : 0; } }
         public int? RawNumResultItems { get; private set; }
         public string UsageAnimationEnd { get; private set; }
@@ -422,13 +422,7 @@ namespace PgJsonObjects
         {
             List<RecipeCost> ParsedCostList;
             JsonObjectParser<RecipeCost>.InitAsSublist(RawCosts, out ParsedCostList, ErrorInfo);
-
-            if (ParsedCostList.Count == 0)
-                Cost = null;
-            else if (ParsedCostList.Count == 1)
-                Cost = ParsedCostList[0];
-            else
-                ErrorInfo.AddInvalidObjectFormat("Recipe Costs");
+            CostList.AddRange(ParsedCostList);
         }
 
         private static void ParseFieldNumResultItems(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -1092,8 +1086,8 @@ namespace PgJsonObjects
                         AddWithFieldSeparator(ref Result, TextMaps.RecipeUsageAnimationTextMap[UsageAnimation]);
                     foreach (AbilityRequirement Requirement in OtherRequirementList)
                         AddWithFieldSeparator(ref Result, Requirement.TextContent);
-                    if (Cost != null)
-                        AddWithFieldSeparator(ref Result, Cost.CombinedCost);
+                    foreach (RecipeCost Item in CostList)
+                        AddWithFieldSeparator(ref Result, TextMaps.RecipeCurrencyTextMap[Item.Currency]);
                     if (RewardSkill != PowerSkill.Internal_None)
                         AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RewardSkill]);
                 }
@@ -1126,8 +1120,8 @@ namespace PgJsonObjects
             foreach (AbilityRequirement Item in OtherRequirementList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
-            if (Cost != null)
-                Cost.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+            foreach (RecipeCost Item in CostList)
+                Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             return IsConnected;
         }
@@ -1178,6 +1172,32 @@ namespace PgJsonObjects
 
             ErrorInfo.AddMissingKey(RawRecipeName);
             return null;
+        }
+
+        public static List<Recipe> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, RecipeKeyword Keyword, List<Recipe> RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawRecipeParsed)
+                return RecipeList;
+
+            IsRawRecipeParsed = true;
+
+            if (Keyword == RecipeKeyword.Internal_None)
+                return RecipeList;
+
+            RecipeList = new List<Recipe>();
+            IsConnected = true;
+
+            foreach (KeyValuePair<string, Recipe> RecipeEntry in RecipeTable)
+                if (RecipeEntry.Value.KeywordList.Contains(Keyword))
+                {
+                    RecipeEntry.Value.AddLinkBack(LinkBack);
+                    RecipeList.Add(RecipeEntry.Value);
+                }
+
+            if (RecipeList.Count == 0 && ErrorInfo != null)
+                ErrorInfo.AddMissingKey(Keyword.ToString());
+
+            return RecipeList;
         }
         #endregion
 

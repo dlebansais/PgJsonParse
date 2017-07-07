@@ -5,58 +5,133 @@ namespace PgJsonObjects
 {
     public class QuestObjective : GenericJsonObject<QuestObjective>
     {
-        #region Direct Properties
-        public QuestObjectiveType Type { get; private set; }
-        public string Target { get; private set; }
-        public string Description { get; private set; }
-        public int Number { get { return RawNumber.HasValue ? RawNumber.Value : 0; } }
-        private int? RawNumber;
-        public List<string> InteractionFlagList { get; } = new List<string>();
-        public Item QuestItem { get; private set; }
-        private string RawItemName;
-        private bool IsItemNameParsed;
-        public bool MustCompleteEarlierObjectivesFirst { get { return RawMustCompleteEarlierObjectivesFirst.HasValue && RawMustCompleteEarlierObjectivesFirst.Value; } }
-        private bool? RawMustCompleteEarlierObjectivesFirst;
-        public string InteractionFlag { get; private set; }
-        public string MinAmount { get; private set; }
-        public string MinFavorReceived { get; private set; }
-        public string MaxFavorReceived { get; private set; }
-        public PowerSkill Skill { get; private set; }
-        public Skill ConnectedSkill { get; private set; }
-        private bool IsSkillParsed;
-        public string StringParam { get; private set; }
-        public string ResultItemKeyword { get; private set; }
-        public string AbilityKeyword { get; private set; }
-        public string MaxAmount { get; private set; }
-        public string AnatomyType { get; private set; }
-        public ItemKeyword ItemKeyword { get; private set; }
-        public int? MinHour { get; private set; }
-        public int? MaxHour { get; private set; }
-        #endregion
-
-        #region Indirect Properties
-        public string FirstPart { get; private set; }
-        public string ItemLink { get; private set; }
-        public string SkillLink { get; private set; }
-        public string LastPart { get; private set; }
-        private bool IsSummaryReady;
-
-        protected override string SortingName { get { return null; } }
-        public Quest ParentQuest { get; private set; }
-
-        public string CombinedTimeOfDayRequirement
+        #region Init
+        public QuestObjective()
         {
-            get
-            {
-                if (!MinHour.HasValue || !MaxHour.HasValue)
-                    return null;
+        }
 
-                return " (this step must be completed between " + MinHour.Value.ToString("D02") + ":00 and " + MaxHour.Value.ToString("D02") + ":00)";
-            }
+        public QuestObjective(string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
+        {
+            this.Description = Description;
+            this.RawNumber = RawNumber;
+            this.RawMustCompleteEarlierObjectivesFirst = RawMustCompleteEarlierObjectivesFirst;
+            this.MinHour = MinHour;
+            this.MaxHour = MaxHour;
         }
         #endregion
 
+        #region Direct Properties
+        public QuestObjectiveType Type { get; private set; }
+        public string Description { get; private set; }
+        public int Number { get { return RawNumber.HasValue ? RawNumber.Value : 1; } }
+        public int? RawNumber { get; private set; }
+        public bool MustCompleteEarlierObjectivesFirst { get { return RawMustCompleteEarlierObjectivesFirst.HasValue && RawMustCompleteEarlierObjectivesFirst.Value; } }
+        public bool? RawMustCompleteEarlierObjectivesFirst;
+        public int? MinHour { get; private set; }
+        public int? MaxHour { get; private set; }
+        private int? RawMinAmount;
+        private int? RawMaxAmount;
+        private QuestObjectiveKillTarget KillTarget;
+        private ItemKeyword ItemTarget;
+        private RecipeKeyword RecipeTarget;
+        private AbilityKeyword AbilityTarget;
+        private string AbilityKeyword;
+        private List<string> InteractionFlagList = new List<string>();
+        private string RawItemName;
+        private string InteractionFlag;
+        private MapAreaName DeliverNpcArea;
+        private string DeliverNpcName;
+        private float? RawMinFavorReceived;
+        private float? RawMaxFavorReceived;
+        private PowerSkill Skill;
+        private string StringParam;
+        private ItemKeyword ResultItemKeyword;
+        private PowerSkill AnatomyType;
+        private ItemKeyword ItemKeyword;
+        #endregion
+
+        #region Indirect Properties
+        protected override string SortingName { get { return null; } }
+        public Quest ParentQuest { get; private set; }
+        #endregion
+
         #region Parsing
+        public QuestObjective ToSpecificQuestObjective(ParseErrorInfo ErrorInfo)
+        {
+            switch (Type)
+            {
+                case QuestObjectiveType.Kill:
+                case QuestObjectiveType.KillElite:
+                    return new QuestObjectiveKill(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, KillTarget, AbilityKeyword);
+
+                case QuestObjectiveType.TipPlayer:
+                    return new QuestObjectiveTipPlayer(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount);
+
+                case QuestObjectiveType.Special:
+                    return new QuestObjectiveSpecial(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount, RawMaxAmount, StringParam);
+
+                case QuestObjectiveType.MultipleInteractionFlags:
+                    return new QuestObjectiveMultipleInteractionFlags(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, InteractionFlagList);
+
+                case QuestObjectiveType.Deliver:
+                    if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
+                        return new QuestObjectiveDeliver(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcName, RawItemName);
+                    else
+                        return this;
+
+                case QuestObjectiveType.Collect:
+                case QuestObjectiveType.Have:
+                case QuestObjectiveType.Harvest:
+                case QuestObjectiveType.UseItem:
+                    if (RawItemName != null && ItemTarget == ItemKeyword.Internal_None)
+                        return new QuestObjectiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawItemName);
+                    else if (RawItemName == null && ItemTarget != ItemKeyword.Internal_None)
+                        return new QuestObjectiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, ItemTarget);
+                    else
+                        return this;
+
+                case QuestObjectiveType.GuildGiveItem:
+                    if (RawItemName != null && ItemKeyword == ItemKeyword.Internal_None)
+                        return new QuestObjectiveGuildGiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcName, RawItemName);
+                    else if (RawItemName == null && ItemKeyword != ItemKeyword.Internal_None)
+                        return new QuestObjectiveGuildGiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcName, ItemKeyword);
+                    else
+                        return this;
+
+                case QuestObjectiveType.InteractionFlag:
+                    return new QuestObjectiveInteractionFlag(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, InteractionFlag);
+
+                case QuestObjectiveType.GiveGift:
+                    return new QuestObjectiveGiveGift(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinFavorReceived, RawMaxFavorReceived);
+
+                case QuestObjectiveType.UseRecipe:
+                    return new QuestObjectiveUseRecipe(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, Skill, RecipeTarget, ResultItemKeyword);
+
+                case QuestObjectiveType.BeAttacked:
+                case QuestObjectiveType.Bury:
+                    return new QuestObjectiveAnatomy(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, AnatomyType);
+
+                case QuestObjectiveType.UseAbility:
+                    return new QuestObjectiveUseAbility(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, AbilityTarget);
+
+                case QuestObjectiveType.Scripted:
+                case QuestObjectiveType.SayInChat:
+                case QuestObjectiveType.UniqueSpecial:
+                case QuestObjectiveType.GuildKill:
+                case QuestObjectiveType.DruidKill:
+                case QuestObjectiveType.DruidScripted:
+                    return this;
+
+                default:
+                    return this;
+            }
+        }
+
+        public static readonly Dictionary<QuestObjectiveKillTarget, string> KillTargetStringMap = new Dictionary<QuestObjectiveKillTarget, string>()
+        {
+            { QuestObjectiveKillTarget.Any, "*" },
+        };
+
         protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Type", ParseFieldType },
@@ -107,7 +182,70 @@ namespace PgJsonObjects
 
         private void ParseTarget(string RawTarget, ParseErrorInfo ErrorInfo)
         {
-            Target = RawTarget;
+            if (Type == QuestObjectiveType.Kill || Type == QuestObjectiveType.KillElite)
+            {
+                QuestObjectiveKillTarget ParsedTarget;
+                StringToEnumConversion<QuestObjectiveKillTarget>.TryParse(RawTarget, KillTargetStringMap, out ParsedTarget, ErrorInfo);
+                KillTarget = ParsedTarget;
+            }
+
+            else if (Type == QuestObjectiveType.Deliver)
+            {
+                MapAreaName ParsedArea;
+                string ParsedNpcName;
+                if (Quest.TryParseNPC(RawTarget, out ParsedArea, out ParsedNpcName, ErrorInfo))
+                {
+                    DeliverNpcArea = ParsedArea;
+                    DeliverNpcName = ParsedNpcName;
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (for deliver)");
+            }
+
+            else if (Type == QuestObjectiveType.GuildGiveItem)
+            {
+                string ParsedNpcName;
+                if (Quest.TryParseNPC(RawTarget, out ParsedNpcName, ErrorInfo))
+                    DeliverNpcName = ParsedNpcName;
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (for Guild Give Item)");
+            }
+
+            else if (Type == QuestObjectiveType.Harvest ||
+                Type == QuestObjectiveType.Collect ||
+                Type == QuestObjectiveType.Have ||
+                Type == QuestObjectiveType.UseItem)
+            {
+                ItemKeyword ParsedTarget;
+                StringToEnumConversion<ItemKeyword>.TryParse(RawTarget, out ParsedTarget, ErrorInfo);
+                ItemTarget = ParsedTarget;
+            }
+
+            else if (Type == QuestObjectiveType.UseRecipe)
+            {
+                RecipeKeyword ParsedTarget;
+                StringToEnumConversion<RecipeKeyword>.TryParse(RawTarget, out ParsedTarget, ErrorInfo);
+                RecipeTarget = ParsedTarget;
+            }
+
+            else if (Type == QuestObjectiveType.UseAbility)
+            {
+                AbilityKeyword ParsedTarget;
+                StringToEnumConversion<AbilityKeyword>.TryParse(RawTarget, out ParsedTarget, ErrorInfo);
+                AbilityTarget = ParsedTarget;
+            }
+
+            else if (Type == QuestObjectiveType.Special ||
+                Type == QuestObjectiveType.UniqueSpecial ||
+                Type == QuestObjectiveType.GuildKill ||
+                Type == QuestObjectiveType.DruidKill ||
+                Type == QuestObjectiveType.DruidScripted ||
+                Type == QuestObjectiveType.InteractionFlag ||
+                Type == QuestObjectiveType.SayInChat)
+                return;
+
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (Type)");
         }
 
         private static void ParseFieldDescription(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -129,12 +267,13 @@ namespace PgJsonObjects
             if (Value is int)
                 This.ParseNumber((int)Value, ErrorInfo);
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective  Number");
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective Number");
         }
 
         private void ParseNumber(int RawNumber, ParseErrorInfo ErrorInfo)
         {
-            this.RawNumber = RawNumber;
+            if (RawNumber != 1)
+                this.RawNumber = RawNumber;
         }
 
         private static void ParseFieldInteractionFlags(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -148,14 +287,22 @@ namespace PgJsonObjects
 
         private void ParseInteractionFlags(ArrayList RawInteractionFlags, ParseErrorInfo ErrorInfo)
         {
-            foreach (object RawInteractionFlag in RawInteractionFlags)
+            if (Type == QuestObjectiveType.MultipleInteractionFlags)
             {
-                string AsString;
-                if ((AsString = RawInteractionFlag as string) != null)
-                    InteractionFlagList.Add(AsString);
-                else
-                    ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlags");
+                foreach (object RawInteractionFlag in RawInteractionFlags)
+                {
+                    string AsString;
+                    if ((AsString = RawInteractionFlag as string) != null)
+                        InteractionFlagList.Add(AsString);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlags");
+                        break;
+                    }
+                }
             }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlags (Type)");
         }
 
         private static void ParseFieldItemName(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -169,7 +316,15 @@ namespace PgJsonObjects
 
         private void ParseItemName(string RawItemName, ParseErrorInfo ErrorInfo)
         {
-            this.RawItemName = RawItemName;
+            if (Type == QuestObjectiveType.Collect ||
+                Type == QuestObjectiveType.Deliver ||
+                Type == QuestObjectiveType.Have ||
+                Type == QuestObjectiveType.Harvest ||
+                Type == QuestObjectiveType.UseItem ||
+                Type == QuestObjectiveType.GuildGiveItem)
+                this.RawItemName = RawItemName;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective ItemName (Type)");
         }
 
         private static void ParseFieldMustCompleteEarlierObjectivesFirst(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -196,7 +351,10 @@ namespace PgJsonObjects
 
         private void ParseInteractionFlag(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
         {
-            InteractionFlag = RawInteractionFlag;
+            if (Type == QuestObjectiveType.InteractionFlag)
+                InteractionFlag = RawInteractionFlag;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlag (Type)");
         }
 
         private static void ParseFieldMinAmount(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -210,7 +368,16 @@ namespace PgJsonObjects
 
         private void ParseMinAmount(string RawMinAmount, ParseErrorInfo ErrorInfo)
         {
-            MinAmount = RawMinAmount;
+            if (Type == QuestObjectiveType.Special || Type == QuestObjectiveType.TipPlayer)
+            {
+                int ParsedMinAmount;
+                if (int.TryParse(RawMinAmount, out ParsedMinAmount))
+                    this.RawMinAmount = ParsedMinAmount;
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestObjective MinAmount");
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective MinAmount (Type)");
         }
 
         private static void ParseFieldMinFavorReceived(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -224,7 +391,17 @@ namespace PgJsonObjects
 
         private void ParseMinFavorReceived(string RawMinFavorReceived, ParseErrorInfo ErrorInfo)
         {
-            MinFavorReceived = RawMinFavorReceived;
+            if (Type == QuestObjectiveType.GiveGift)
+            {
+                float ParsedMinFavorReceived;
+                FloatFormat Format;
+                if (Tools.TryParseFloat(RawMinFavorReceived, out ParsedMinFavorReceived, out Format))
+                    this.RawMinFavorReceived = ParsedMinFavorReceived;
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestObjective MinFavorReceived");
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective MinFavorReceived (Type)");
         }
 
         private static void ParseFieldMaxFavorReceived(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -238,7 +415,17 @@ namespace PgJsonObjects
 
         private void ParseMaxFavorReceived(string RawMaxFavorReceived, ParseErrorInfo ErrorInfo)
         {
-            MaxFavorReceived = RawMaxFavorReceived;
+            if (Type == QuestObjectiveType.GiveGift)
+            {
+                float ParsedMaxFavorReceived;
+                FloatFormat Format;
+                if (Tools.TryParseFloat(RawMaxFavorReceived, out ParsedMaxFavorReceived, out Format))
+                    this.RawMaxFavorReceived = ParsedMaxFavorReceived;
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestObjective MaxFavorReceived");
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective MaxFavorReceived (Type)");
         }
 
         private static void ParseFieldSkill(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -252,9 +439,14 @@ namespace PgJsonObjects
 
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
         {
-            PowerSkill ParsedSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedSkill, ErrorInfo);
-            Skill = ParsedSkill;
+            if (Type == QuestObjectiveType.UseRecipe)
+            {
+                PowerSkill ParsedSkill;
+                StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedSkill, ErrorInfo);
+                Skill = ParsedSkill;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective Skill (Type)");
         }
 
         private static void ParseFieldStringParam(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -268,7 +460,10 @@ namespace PgJsonObjects
 
         private void ParseStringParam(string RawStringParam, ParseErrorInfo ErrorInfo)
         {
-            StringParam = RawStringParam;
+            if (Type == QuestObjectiveType.Special)
+                StringParam = RawStringParam;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective StringParam (Type");
         }
 
         private static void ParseFieldResultItemKeyword(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -282,7 +477,14 @@ namespace PgJsonObjects
 
         private void ParseResultItemKeyword(string RawResultItemKeyword, ParseErrorInfo ErrorInfo)
         {
-            ResultItemKeyword = RawResultItemKeyword;
+            if (Type == QuestObjectiveType.UseRecipe)
+            {
+                ItemKeyword ParsedResultItemKeyword;
+                StringToEnumConversion<ItemKeyword>.TryParse(RawResultItemKeyword, out ParsedResultItemKeyword, ErrorInfo);
+                ResultItemKeyword = ParsedResultItemKeyword;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective ResultItemKeyword (Type)");
         }
 
         private static void ParseFieldAbilityKeyword(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -296,7 +498,10 @@ namespace PgJsonObjects
 
         private void ParseAbilityKeyword(string RawAbilityKeyword, ParseErrorInfo ErrorInfo)
         {
-            AbilityKeyword = RawAbilityKeyword;
+            if (Type == QuestObjectiveType.Kill)
+                AbilityKeyword = RawAbilityKeyword;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective AbilityKeyword (Type)");
         }
 
         private static void ParseFieldMaxAmount(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -310,7 +515,16 @@ namespace PgJsonObjects
 
         private void ParseMaxAmount(string RawMaxAmount, ParseErrorInfo ErrorInfo)
         {
-            MaxAmount = RawMaxAmount;
+            if (Type == QuestObjectiveType.Special)
+            {
+                int ParsedMaxAmount;
+                if (int.TryParse(RawMaxAmount, out ParsedMaxAmount))
+                    this.RawMaxAmount = ParsedMaxAmount;
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestObjective MaxAmount");
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective MaxAmount (Type)");
         }
 
         private static void ParseFieldAnatomyType(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -324,7 +538,14 @@ namespace PgJsonObjects
 
         private void ParseAnatomyType(string RawAnatomyType, ParseErrorInfo ErrorInfo)
         {
-            AnatomyType = RawAnatomyType;
+            if (Type == QuestObjectiveType.BeAttacked || Type == QuestObjectiveType.Bury)
+            {
+                PowerSkill ParsedAnatomyType;
+                StringToEnumConversion<PowerSkill>.TryParse("Anatomy_" + RawAnatomyType, out ParsedAnatomyType, ErrorInfo);
+                AnatomyType = ParsedAnatomyType;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective AnatomyType (Type)");
         }
 
         private static void ParseFieldItemKeyword(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -338,9 +559,14 @@ namespace PgJsonObjects
 
         private void ParseItemKeyword(string RawItemKeyword, ParseErrorInfo ErrorInfo)
         {
-            ItemKeyword ParsedItemKeyword;
-            StringToEnumConversion<ItemKeyword>.TryParse(RawItemKeyword, out ParsedItemKeyword, ErrorInfo);
-            ItemKeyword = ParsedItemKeyword;
+            if (Type == QuestObjectiveType.GuildGiveItem)
+            {
+                ItemKeyword ParsedItemKeyword;
+                StringToEnumConversion<ItemKeyword>.TryParse(RawItemKeyword, out ParsedItemKeyword, ErrorInfo);
+                ItemKeyword = ParsedItemKeyword;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective ItemKeyword (Type)");
         }
 
         private static void ParseFieldRequirements(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -401,19 +627,7 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                Result += Target + JsonGenerator.FieldSeparator;
-                Result += Description + JsonGenerator.FieldSeparator;
-                if (QuestItem != null)
-                    Result += QuestItem.TextContent + JsonGenerator.FieldSeparator;
-                Result += InteractionFlag + JsonGenerator.FieldSeparator;
-                Result += MinAmount + JsonGenerator.FieldSeparator;
-                Result += MinFavorReceived + JsonGenerator.FieldSeparator;
-                Result += MaxFavorReceived + JsonGenerator.FieldSeparator;
-                Result += StringParam + JsonGenerator.FieldSeparator;
-                Result += ResultItemKeyword + JsonGenerator.FieldSeparator;
-                Result += AbilityKeyword + JsonGenerator.FieldSeparator;
-                Result += MaxAmount + JsonGenerator.FieldSeparator;
-                Result += AnatomyType + JsonGenerator.FieldSeparator;
+                AddWithFieldSeparator(ref Result, Description);
 
                 return Result;
             }
@@ -427,89 +641,7 @@ namespace PgJsonObjects
 
             ParentQuest = Parent as Quest;
 
-            QuestItem = Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItemName, QuestItem, ref IsItemNameParsed, ref IsConnected, this);
-            ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
-
-            if (!IsSummaryReady)
-            {
-                PrepareSummary();
-                IsSummaryReady = true;
-            }
             return IsConnected;
-        }
-
-        private void PrepareSummary()
-        {
-            if (Type == QuestObjectiveType.Internal_None)
-                return;
-
-            List<string> Parts = new List<string>();
-            Parts.Add(Description);
-
-            int QuestNameIndex = -1;
-            int SkillIndex = -1;
-
-            if (QuestItem != null)
-                LocateSubstring(Parts, QuestItem.Name, out QuestNameIndex);
-
-            else if (ConnectedSkill != null)
-                LocateSubstring(Parts, TextMaps.PowerSkillTextMap[Skill], out SkillIndex);
-
-            if (Parts.Count > 0)
-            {
-                if (QuestNameIndex == 0)
-                    ItemLink = Parts[0];
-                else if (SkillIndex == 0)
-                    SkillLink = Parts[0];
-                else
-                    FirstPart = Parts[0];
-            }
-
-            if (Parts.Count > 1)
-            {
-                if (QuestNameIndex == 1)
-                    ItemLink = Parts[1];
-                else if (SkillIndex == 1)
-                    SkillLink = Parts[1];
-                else
-                    LastPart = Parts[1];
-            }
-
-            if (Parts.Count > 2)
-                LastPart = Parts[2];
-
-            if (LastPart != null && LastPart.Length > 0 && Number > 1)
-                LastPart += " (" + Number + ")";
-        }
-
-        private void LocateSubstring(List<string> Parts, string Substring, out int SubstringIndex)
-        {
-            int Index = Parts[0].ToLower().IndexOf(Substring.ToLower());
-            if (Index >= 0)
-            {
-                string First = Parts[0].Substring(0, Index).Trim();
-                string Last = Parts[0].Substring(Index + Substring.Length).Trim();
-
-                if (First.Length > 0)
-                {
-                    Parts[0] = First.Trim();
-                    Parts.Add(Substring);
-                    SubstringIndex = 1;
-
-                    if (Last.Length > 0 && Last != "s" && Last != "es")
-                        Parts.Add(Last.Trim());
-                }
-                else
-                {
-                    Parts[0] = Substring;
-                    SubstringIndex = 0;
-
-                    if (Last.Length > 0 && Last != "s" && Last != "es")
-                        Parts.Add(Last.Trim());
-                }
-            }
-            else
-                SubstringIndex = -1;
         }
         #endregion
 

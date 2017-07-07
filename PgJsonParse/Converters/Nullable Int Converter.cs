@@ -4,24 +4,15 @@ using System.Windows.Data;
 
 namespace Converters
 {
-    [ValueConversion(typeof(int), typeof(string))]
-    public class IntConverter : IValueConverter
+    [ValueConversion(typeof(int?), typeof(string))]
+    public class NullableIntConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int IntValue;
+            if (value == null)
+                return "";
 
-            if (value is int)
-                IntValue = (int)value;
-
-            else
-            {
-                int? NullableIntValue = (int?)value;
-                if (NullableIntValue == null)
-                    return "";
-
-                IntValue = NullableIntValue.Value;
-            }
+            int IntValue = (int)value;
 
             string Result = "";
 
