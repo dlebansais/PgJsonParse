@@ -1056,6 +1056,9 @@ namespace PgJsonObjects
                     bool IsParsed = false;
                     Skill Link = Skill.ConnectSingleProperty(ErrorInfo, SkillTable, ItemSkill.SkillName, ItemSkill.Link, ref IsParsed, ref IsConnected, this);
                     ItemSkill.SetLink(Link);
+
+                    if (!KeywordTable.ContainsKey(ItemKeyword.Decoction))
+                        PgJsonObjects.Skill.UpdateAnySkillIcon(Link.CombatSkill, RawIconId);
                 }
 
             return IsConnected;

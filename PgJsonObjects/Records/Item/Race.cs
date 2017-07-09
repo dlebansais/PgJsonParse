@@ -7,5 +7,7 @@
         Human,
         Elf,
         Fae,
+        Orc,
+        Dwarf
     }
 }

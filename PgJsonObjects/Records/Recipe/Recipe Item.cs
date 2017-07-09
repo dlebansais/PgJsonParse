@@ -11,136 +11,25 @@ namespace PgJsonObjects
         private int? RawItemCode;
         private bool IsItemCodeParsed;
         public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 0; } }
-        private int? RawStackSize;
-        public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 1.0; } }
-        private double? RawPercentChance;
+        public int? RawStackSize { get; private set; }
+        public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
+        public double? RawPercentChance { get; private set; }
         public RecipeItemKey ItemKey { get; private set; }
         public List<Item> MatchingKeyItemList { get; } = new List<Item>();
         private bool IsMatchingKeyItemListBuilt;
         private bool IsItemKeyParsed;
         public string Desc { get; private set; }
-        public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 1.0; } }
-        private double? RawChanceToConsume;
+        public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
+        public double? RawChanceToConsume { get; private set; }
         public double DurabilityConsumed { get { return RawDurabilityConsumed.HasValue ? RawDurabilityConsumed.Value : 0; } }
-        private double? RawDurabilityConsumed;
+        public double? RawDurabilityConsumed { get; private set; }
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
-        private bool? RawAttuneToCrafter;
+        public bool? RawAttuneToCrafter { get; private set; }
         #endregion
 
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
         public Recipe ParentRecipe { get; private set; }
-
-        public bool IsLinkedDescription
-        {
-            get
-            {
-                if (IsSingleLinkLinkDescription)
-                    return true;
-
-                switch (ItemKey)
-                {
-                    case RecipeItemKey.EquipmentSlot_MainHand:
-                    case RecipeItemKey.EquipmentSlot_OffHand:
-                    case RecipeItemKey.EquipmentSlot_Hands:
-                    case RecipeItemKey.EquipmentSlot_Chest:
-                    case RecipeItemKey.EquipmentSlot_Legs:
-                    case RecipeItemKey.EquipmentSlot_Head:
-                    case RecipeItemKey.EquipmentSlot_Feet:
-                    case RecipeItemKey.EquipmentSlot_Ring:
-                    case RecipeItemKey.EquipmentSlot_Necklace:
-                    case RecipeItemKey.Rarity_Uncommon:
-                    case RecipeItemKey.Rarity_Rare:
-                    case RecipeItemKey.MinRarity_Exceptional:
-                    case RecipeItemKey.MinRarity_Uncommon:
-                        return false;
-
-                    default:
-                        return (MatchingKeyItemList.Count < 10);
-                }
-            }
-        }
-
-        public bool IsSingleLinkLinkDescription { get { return Item != null; } }
-
-        public string CombinedDescription
-        {
-            get
-            {
-                if (Item != null)
-                    return Item.Name;
-
-                string Result;
-
-                switch (ItemKey)
-                {
-                    case RecipeItemKey.EquipmentSlot_MainHand:
-                        return "Any Main Hand";
-                    case RecipeItemKey.EquipmentSlot_OffHand:
-                        return "Any Off Hand";
-                    case RecipeItemKey.EquipmentSlot_Hands:
-                        return "Any Hands";
-                    case RecipeItemKey.EquipmentSlot_Chest:
-                        return "Any Chest";
-                    case RecipeItemKey.EquipmentSlot_Legs:
-                        return "Any Legs";
-                    case RecipeItemKey.EquipmentSlot_Head:
-                        return "Any Head";
-                    case RecipeItemKey.EquipmentSlot_Feet:
-                        return "Any Feet";
-                    case RecipeItemKey.EquipmentSlot_Ring:
-                        return "Any Ring";
-                    case RecipeItemKey.EquipmentSlot_Necklace:
-                        return "Any Necklace";
-                    case RecipeItemKey.Rarity_Uncommon:
-                        return "Any uncommon item";
-                    case RecipeItemKey.Rarity_Rare:
-                        return "Any rare item";
-                    case RecipeItemKey.MinRarity_Exceptional:
-                        return "Any exceptional item or better";
-                    case RecipeItemKey.MinRarity_Uncommon:
-                        return "Any magical item";
-
-                    default:
-                        if (MatchingKeyItemList.Count >= 10)
-                        {
-                            return "Any " + TextMaps.RecipeItemKeyTextMap[ItemKey];
-                        }
-                        else
-                        {
-                            Result = "";
-
-                            foreach (Item Item in MatchingKeyItemList)
-                            {
-                                if (Result.Length > 0)
-                                    Result += ", ";
-
-                                Result += Item.Name;
-                            }
-
-                            if (Result.Length > 0)
-                                Result = "One of: " + Result;
-                        }
-
-                        return Result;
-                }
-            }
-        }
-
-        public string ExtraInfo
-        {
-            get
-            {
-                if (StackSize > 1)
-                    return "x" + StackSize;
-                else if (RawChanceToConsume.HasValue && RawChanceToConsume.Value > 0 && RawChanceToConsume.Value < 1)
-                    return " (" + (RawChanceToConsume.Value* 100).ToString() + "% chance to consume)";
-                else if (RawDurabilityConsumed.HasValue && RawDurabilityConsumed.Value > 0 && RawDurabilityConsumed.Value < 1)
-                    return " (" + (RawDurabilityConsumed.Value * 100).ToString() + "% durability consumed)";
-                else
-                    return null;
-            }
-        }
         #endregion
 
         #region Parsing
@@ -196,7 +85,10 @@ namespace PgJsonObjects
 
         private void ParseStackSize(int RawStackSize, ParseErrorInfo ErrorInfo)
         {
-            this.RawStackSize = RawStackSize;
+            if (RawStackSize > 1)
+                this.RawStackSize = RawStackSize;
+            else if (RawStackSize < 1)
+                ErrorInfo.AddInvalidObjectFormat("RecipeItem StackSize");
         }
 
         private static void ParseFieldPercentChance(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
@@ -319,7 +211,15 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                Result += Desc + JsonGenerator.FieldSeparator;
+                if (Item != null)
+                    AddWithFieldSeparator(ref Result, Item.Name);
+                if (ItemKey != RecipeItemKey.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.RecipeItemKeyTextMap[ItemKey]);
+                foreach (Item Item in MatchingKeyItemList)
+                    AddWithFieldSeparator(ref Result, Item.Name);
+                AddWithFieldSeparator(ref Result, Desc);
+                if (AttuneToCrafter)
+                    AddWithFieldSeparator(ref Result, "Is Attuned To Crafter");
 
                 return Result;
             }

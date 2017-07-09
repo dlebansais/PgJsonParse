@@ -51,58 +51,6 @@ namespace PgJsonObjects
         #region Indirect Properties
         protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
-        public double? PerfectCottonRatio { get; private set; }
-
-        public string CombinedSkill
-        {
-            get
-            {
-                if (ConnectedSkill == null)
-                    return TextMaps.PowerSkillTextMap[Skill];
-                else
-                    return ConnectedSkill.Name;
-            }
-        }
-
-        public string CombinedKeywords
-        {
-            get
-            {
-                string Result = "";
-
-                foreach (RecipeKeyword Keyword in KeywordList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += TextMaps.RecipeKeywordTextMap[Keyword];
-                }
-
-                return Result;
-            }
-        }
-
-        public string CombinedSortSkill
-        {
-            get
-            {
-                if (ConnectedSortSkill == null)
-                    return TextMaps.PowerSkillTextMap[SortSkill];
-                else
-                    return ConnectedSortSkill.Name;
-            }
-        }
-
-        public string CombinedRewardSkill
-        {
-            get
-            {
-                if (ConnectedRewardSkill == null)
-                    return TextMaps.PowerSkillTextMap[RewardSkill];
-                else
-                    return ConnectedRewardSkill.Name;
-            }
-        }
         #endregion
 
         #region Parsing
@@ -164,7 +112,8 @@ namespace PgJsonObjects
                 this.RawIconId = RawIconId;
                 ErrorInfo.AddIconId(RawIconId);
 
-                UpdateAnySkillIcon();
+                PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
+                PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, this.RawIconId);
             }
             else
                 this.RawIconId = null;
@@ -183,7 +132,16 @@ namespace PgJsonObjects
         {
             List<RecipeItem> ParsedIngredientList;
             JsonObjectParser<RecipeItem>.InitAsSublist(RawIngredients, out ParsedIngredientList, ErrorInfo);
-            IngredientList.AddRange(ParsedIngredientList);
+
+            foreach (RecipeItem ParsedIngredient in ParsedIngredientList)
+                if (ParsedIngredient.AttuneToCrafter)
+                {
+                    ErrorInfo.AddInvalidObjectFormat("Recipe Ingredients");
+                    break;
+                }
+                else
+                    IngredientList.Add(ParsedIngredient);
+
             EmptyIngredientList = (IngredientList.Count == 0);
         }
 
@@ -247,7 +205,7 @@ namespace PgJsonObjects
             StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedSkill, ErrorInfo);
             Skill = ParsedSkill;
 
-            UpdateAnySkillIcon();
+            PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
         }
 
         private static void ParseFieldSkillLevelReq(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -837,7 +795,7 @@ namespace PgJsonObjects
             StringToEnumConversion<PowerSkill>.TryParse(RawRewardSkill, out ParsedRewardSkill, ErrorInfo);
             RewardSkill = ParsedRewardSkill;
 
-            UpdateAnySkillIcon();
+            PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, this.RawIconId);
         }
 
         private static void ParseFieldRewardSkillXp(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -864,24 +822,6 @@ namespace PgJsonObjects
         private void ParseRewardSkillXpFirstTime(int RawRewardSkillXpFirstTime, ParseErrorInfo ErrorInfo)
         {
             this.RawRewardSkillXpFirstTime = RawRewardSkillXpFirstTime;
-        }
-
-        private void UpdateAnySkillIcon()
-        {
-            if (RawIconId.HasValue)
-            {
-                if (Skill != PowerSkill.Internal_None)
-                {
-                    if (!PgJsonObjects.Skill.AnyIconTable.ContainsKey(Skill))
-                        PgJsonObjects.Skill.AnyIconTable.Add(Skill, RawIconId.Value);
-                }
-
-                else if (RewardSkill != PowerSkill.Internal_None)
-                {
-                    if (!PgJsonObjects.Skill.AnyIconTable.ContainsKey(RewardSkill))
-                        PgJsonObjects.Skill.AnyIconTable.Add(RewardSkill, RawIconId.Value);
-                }
-            }
         }
         #endregion
 
@@ -1064,33 +1004,31 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                if (RawIconId.HasValue)
-                {
-                    AddWithFieldSeparator(ref Result, Name);
-                    AddWithFieldSeparator(ref Result, Description);
-                    foreach (RecipeItem Item in IngredientList)
-                        AddWithFieldSeparator(ref Result, Item.CombinedDescription);
-                    foreach (RecipeItem Item in ResultItemList)
-                        AddWithFieldSeparator(ref Result, Item.CombinedDescription);
-                    if (Skill != PowerSkill.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
-                    foreach (RecipeResultEffect Item in ResultEffectList)
-                        AddWithFieldSeparator(ref Result, Item.CombinedEffect);
-                    if (SortSkill != PowerSkill.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[SortSkill]);
-                    AddWithFieldSeparator(ref Result, CombinedKeywords);
-                    if (ActionLabel != RecipeAction.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.RecipeActionTextMap[ActionLabel]);
-                    AddWithFieldSeparator(ref Result, UsageDelayMessage);
-                    if (UsageAnimation != RecipeUsageAnimation.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.RecipeUsageAnimationTextMap[UsageAnimation]);
-                    foreach (AbilityRequirement Requirement in OtherRequirementList)
-                        AddWithFieldSeparator(ref Result, Requirement.TextContent);
-                    foreach (RecipeCost Item in CostList)
-                        AddWithFieldSeparator(ref Result, TextMaps.RecipeCurrencyTextMap[Item.Currency]);
-                    if (RewardSkill != PowerSkill.Internal_None)
-                        AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RewardSkill]);
-                }
+                AddWithFieldSeparator(ref Result, Name);
+                AddWithFieldSeparator(ref Result, Description);
+                foreach (RecipeItem Ingredient in IngredientList)
+                    AddWithFieldSeparator(ref Result, Ingredient.TextContent);
+                foreach (RecipeItem ResultItem in ResultItemList)
+                    AddWithFieldSeparator(ref Result, ResultItem.TextContent);
+                if (ConnectedSkill != null)
+                    AddWithFieldSeparator(ref Result, ConnectedSkill.Name);
+                foreach (RecipeResultEffect Item in ResultEffectList)
+                    AddWithFieldSeparator(ref Result, Item.CombinedEffect);
+                if (ConnectedSortSkill != null)
+                    AddWithFieldSeparator(ref Result, ConnectedSortSkill.Name);
+                foreach (RecipeKeyword Keyword in KeywordList)
+                    AddWithFieldSeparator(ref Result, TextMaps.RecipeKeywordTextMap[Keyword]);
+                if (ActionLabel != RecipeAction.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.RecipeActionTextMap[ActionLabel]);
+                AddWithFieldSeparator(ref Result, UsageDelayMessage);
+                if (UsageAnimation != RecipeUsageAnimation.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.RecipeUsageAnimationTextMap[UsageAnimation]);
+                foreach (AbilityRequirement Requirement in OtherRequirementList)
+                    AddWithFieldSeparator(ref Result, Requirement.TextContent);
+                foreach (RecipeCost Item in CostList)
+                    AddWithFieldSeparator(ref Result, TextMaps.RecipeCurrencyTextMap[Item.Currency]);
+                if (ConnectedRewardSkill != null)
+                    AddWithFieldSeparator(ref Result, ConnectedRewardSkill.Name);
 
                 return Result;
             }
@@ -1226,6 +1164,8 @@ namespace PgJsonObjects
                 Continue = true;
             }
         }
+
+        public double? PerfectCottonRatio { get; private set; }
         #endregion
 
         #region Debugging

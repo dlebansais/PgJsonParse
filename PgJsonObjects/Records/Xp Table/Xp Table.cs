@@ -78,12 +78,7 @@ namespace PgJsonObjects
         #region Indexing
         public override string TextContent
         {
-            get
-            {
-                string Result = "";
-
-                return Result;
-            }
+            get { return ""; }
         }
         #endregion
 
@@ -107,7 +102,6 @@ namespace PgJsonObjects
                 if (Entry.Value.InternalName == RawXpTableName)
                 {
                     IsConnected = true;
-                    //Entry.Value.AddLinkBack(LinkBack);
                     return Entry.Value;
                 }
 

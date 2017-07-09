@@ -84,11 +84,15 @@
     <Compile Include="Converters\Float List To String Converter.cs" />
     <Compile Include="Converters\Friendly Name Converter.cs" />
     <Compile Include="Converters\Index To Object Converter.cs" />
+    <Compile Include="Converters\Int Threshold Converter.cs" />
     <Compile Include="Converters\Int To Object Converter.cs" />
+    <Compile Include="Converters\Is Enum In Set Converter.cs" />
     <Compile Include="Converters\Multi String Converter.cs" />
+    <Compile Include="Converters\Nullable TimeSpan To Duration Converter.cs" />
     <Compile Include="Converters\Nullable Int To Time Converter.cs" />
     <Compile Include="Converters\Null To Object Converter.cs" />
     <Compile Include="Converters\Nullable Int Converter.cs" />
+    <Compile Include="Converters\Or Converter.cs" />
     <Compile Include="Converters\Replace Macro Converter.cs" />
     <Compile Include="Converters\Rgb Color To Brush Converter.cs" />
     <Compile Include="Crunch\Crunch Selection.cs" />
@@ -154,6 +158,9 @@
   <ItemGroup>
     <Resource Include="Resources\Redo.png" />
     <Resource Include="Resources\Undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Locked.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

@@ -517,11 +517,11 @@ namespace PgJsonObjects
             {
                 this.RawIconId = RawIconId;
                 ErrorInfo.AddIconId(RawIconId);
+
+                PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
             }
             else
                 this.RawIconId = null;
-
-            UpdateAnySkillIcon();
         }
 
         private static void ParseFieldInternalAbility(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -604,7 +604,8 @@ namespace PgJsonObjects
         private void ParseKeywords(ArrayList RawKeywords, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<AbilityKeyword>.ParseList(RawKeywords, KeywordList, ErrorInfo);
-            UpdateBasicAttackTable();
+            if (KeywordList.Contains(AbilityKeyword.BasicAttack))
+                PgJsonObjects.Skill.UpdateBasicAttackTable(Skill, this);
         }
 
         private static void ParseFieldLevel(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -788,8 +789,9 @@ namespace PgJsonObjects
             StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedPowerSkill, ErrorInfo);
             Skill = ParsedPowerSkill;
 
-            UpdateBasicAttackTable();
-            UpdateAnySkillIcon();
+            PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
+            if (KeywordList.Contains(AbilityKeyword.BasicAttack))
+                PgJsonObjects.Skill.UpdateBasicAttackTable(Skill, this);
         }
 
         private static void ParseFieldSpecialCasterRequirements(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -2627,24 +2629,6 @@ namespace PgJsonObjects
         private void AddResult(AbilityAdditionalResult AdditionalResult)
         {
             AbilityAdditionalResultList.Add(AdditionalResult);
-        }
-
-        private void UpdateBasicAttackTable()
-        {
-            if (KeywordList.Contains(AbilityKeyword.BasicAttack) && Skill != PowerSkill.Internal_None)
-            {
-                if (!PgJsonObjects.Skill.BasicAttackTable.ContainsKey(Skill))
-                    PgJsonObjects.Skill.BasicAttackTable.Add(Skill, this);
-            }
-        }
-
-        private void UpdateAnySkillIcon()
-        {
-            if (RawIconId.HasValue && Skill != PowerSkill.Internal_None)
-            {
-                if (!PgJsonObjects.Skill.AnyIconTable.ContainsKey(Skill))
-                    PgJsonObjects.Skill.AnyIconTable.Add(Skill, RawIconId.Value);
-            }
         }
         #endregion
 

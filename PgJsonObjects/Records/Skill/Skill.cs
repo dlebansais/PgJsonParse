@@ -44,64 +44,91 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public static Dictionary<PowerSkill, Ability> BasicAttackTable { get; private set; }
-        public static Dictionary<PowerSkill, int> AnyIconTable { get; private set; }
-
-        protected override string SortingName { get { return Name; } }
-
-        public string CombinedCompatibleSkills
+        private static Dictionary<PowerSkill, int> HardcodedSkillIconTable = new Dictionary<PowerSkill, int>()
         {
-            get
-            {
-                string Result = "";
+            { PowerSkill.Mining, 5297 },
+            { PowerSkill.Anatomy, 5055},
+            { PowerSkill.AlcoholTolerance, 5744 },
+            { PowerSkill.Skinning, 5171 },
+            { PowerSkill.Performance, 5380 },
+            { PowerSkill.Cartography, 4004 },
+            { PowerSkill.Augmentation, 5492 },
+        };
 
-                foreach (PowerSkill Item in CompatibleCombatSkillList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
+        private static Dictionary<PowerSkill, Ability> BasicAttackTable = new Dictionary<PowerSkill, Ability>();
+        private static Dictionary<PowerSkill, int> AnyIconTable = new Dictionary<PowerSkill, int>();
+        protected override string SortingName { get { return Name; } }
+        public int IconId { get; private set; }
 
-                    Result += TextMaps.PowerSkillTextMap[Item];
-                }
-
-                return Result;
-            }
+        public static void UpdateBasicAttackTable(PowerSkill Skill, Ability Ability)
+        {
+            if (Skill != PowerSkill.Internal_None && Ability != null)
+                if (!PgJsonObjects.Skill.BasicAttackTable.ContainsKey(Skill))
+                    PgJsonObjects.Skill.BasicAttackTable.Add(Skill, Ability);
         }
 
-        public string CombinedParentSkill
+        public static void UpdateAnySkillIcon(PowerSkill Skill, int? RawIconId)
         {
-            get
+            if (Skill != PowerSkill.Internal_None && RawIconId.HasValue)
+                if (!AnyIconTable.ContainsKey(Skill))
+                    AnyIconTable.Add(Skill, RawIconId.Value);
+        }
+
+        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        {
+            PowerSkill IconSkill = CombatSkill;
+
+            if (HardcodedSkillIconTable.ContainsKey(IconSkill))
             {
-                if (ConnectedParentSkill == null)
-                    return TextMaps.PowerSkillTextMap[ParentSkill];
-                else
-                    return ConnectedParentSkill.Name;
+                IconId = HardcodedSkillIconTable[IconSkill];
+                return;
             }
+
+            if (!BasicAttackTable.ContainsKey(IconSkill))
+            {
+                foreach (PowerSkill SkillItem in CompatibleCombatSkillList)
+                    if (BasicAttackTable.ContainsKey(IconSkill))
+                    {
+                        IconSkill = SkillItem;
+                        break;
+                    }
+            }
+
+            if (!BasicAttackTable.ContainsKey(IconSkill))
+            {
+                if (BasicAttackTable.ContainsKey(ParentSkill))
+                    IconSkill = ParentSkill;
+            }
+
+            if (!BasicAttackTable.ContainsKey(IconSkill) && !AnyIconTable.ContainsKey(IconSkill))
+            {
+                if (ConnectedParentSkill != null && (ConnectedParentSkill.IconId != 0 || HardcodedSkillIconTable.ContainsKey(ParentSkill)))
+                    IconSkill = ParentSkill;
+
+                else
+                {
+                    foreach (SkillRewardCommon Reward in CombinedRewardList)
+                    {
+                        SkillRewardBonusLevel AsBonusLevelReward;
+                        if ((AsBonusLevelReward = Reward as SkillRewardBonusLevel) != null)
+                            if (AnyIconTable.ContainsKey(AsBonusLevelReward.Skill.CombatSkill) && AsBonusLevelReward.Skill.IconId != 0)
+                            {
+                                AnyIconTable.Add(IconSkill, AsBonusLevelReward.Skill.IconId);
+                                break;
+                            }
+                    }
+                }
+            }
+
+            IconId = BestIconIdForSkill(IconSkill);
+            if (IconId == 0)
+                IconId = 0;
         }
 
         public string SearchResultIconFileName
         {
             get
             {
-                PowerSkill IconSkill = CombatSkill;
-
-                if (!BasicAttackTable.ContainsKey(IconSkill))
-                {
-                    foreach (PowerSkill SkillItem in CompatibleCombatSkillList)
-                        if (BasicAttackTable.ContainsKey(IconSkill))
-                        {
-                            IconSkill = SkillItem;
-                            break;
-                        }
-                }
-
-                if (!BasicAttackTable.ContainsKey(IconSkill))
-                {
-                    if (BasicAttackTable.ContainsKey(ParentSkill))
-                        IconSkill = ParentSkill;
-                }
-
-                int IconId = BestIconIdForSkill(IconSkill);
-
                 if (IconId == 0)
                     return null;
 
@@ -119,20 +146,10 @@ namespace PgJsonObjects
             if (IconId == 0 && AnyIconTable.ContainsKey(IconSkill))
                 IconId = AnyIconTable[IconSkill];
 
+            if (HardcodedSkillIconTable.ContainsKey(IconSkill))
+                IconId = HardcodedSkillIconTable[IconSkill];
+
             return IconId;
-        }
-
-        /*private static string PrepareReward(int Level, string s)
-        {
-            return "Level " + Level + ": " + s;
-        }*/
-        #endregion
-
-        #region Init
-        static Skill()
-        {
-            BasicAttackTable = new Dictionary<PowerSkill, Ability>();
-            AnyIconTable = new Dictionary<PowerSkill, int>();
         }
         #endregion
 
@@ -629,7 +646,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, AdvancementTable.InternalName);
                 if (RawCombat.HasValue)
                     AddWithFieldSeparator(ref Result, "Combat");
-                AddWithFieldSeparator(ref Result, CombinedCompatibleSkills);
+                foreach (PowerSkill Item in CompatibleCombatSkillList)
+                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Item]);
                 if (ParentSkill != PowerSkill.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[ParentSkill]);
                 if (RawSkipBonusLevelsIfSkillUnlearned.HasValue)
@@ -677,22 +695,22 @@ namespace PgJsonObjects
                     CombinedRewardList.Add(new SkillRewardUnlock(Item.Level, Item.Link, Item.OtherLevel));
 
                 foreach (KeyValuePair<int, string> Entry in AdvancementHintTable)
-                    CombinedRewardList.Add(new SkillRewardMisc(Entry.Key, Entry.Value));
+                    CombinedRewardList.Add(new SkillRewardMisc(Entry.Key, new List<Race>(), Entry.Value));
 
                 foreach (Reward Item in RewardList)
                 {
                     if (Item.Ability != null)
-                        CombinedRewardList.Add(new SkillRewardAbility(Item.RewardLevel, Item.Ability));
+                        CombinedRewardList.Add(new SkillRewardAbility(Item.RewardLevel, Item.RaceRestrictionList, Item.Ability));
                     if (Item.ConnectedBonusSkill != null)
-                        CombinedRewardList.Add(new SkillRewardBonusLevel(Item.RewardLevel, Item.ConnectedBonusSkill));
+                        CombinedRewardList.Add(new SkillRewardBonusLevel(Item.RewardLevel, Item.RaceRestrictionList, Item.ConnectedBonusSkill));
                     if (Item.Recipe != null)
-                        CombinedRewardList.Add(new SkillRewardRecipe(Item.RewardLevel, Item.Recipe));
+                        CombinedRewardList.Add(new SkillRewardRecipe(Item.RewardLevel, Item.RaceRestrictionList, Item.Recipe));
                     if (Item.Notes != null)
-                        CombinedRewardList.Add(new SkillRewardMisc(Item.RewardLevel, Item.Notes));
+                        CombinedRewardList.Add(new SkillRewardMisc(Item.RewardLevel, Item.RaceRestrictionList, Item.Notes));
                 }
 
                 foreach (KeyValuePair<int, string> Entry in ReportTable)
-                    CombinedRewardList.Add(new SkillRewardMisc(Entry.Key, Entry.Value));
+                    CombinedRewardList.Add(new SkillRewardMisc(Entry.Key, new List<Race>(), Entry.Value));
 
                 CombinedRewardList.Sort(SortByLevel);
             }
@@ -754,7 +772,6 @@ namespace PgJsonObjects
             else
                 return 0;
         }
-
         #endregion
 
         #region Debugging

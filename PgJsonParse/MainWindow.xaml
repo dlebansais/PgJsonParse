@@ -4,6 +4,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:conv="clr-namespace:Converters"
         xmlns:app="clr-namespace:PgJsonParse"
+        xmlns:obj="clr-namespace:PgJsonObjects;assembly=PgJsonObjects"
         Title="Project Gorgon - Json Parser">
     <Window.Resources>
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
@@ -19,9 +20,13 @@
         <conv:RgbColorToBrushConverter x:Key="convRgbColorToBrush"/>
         <conv:ReplaceMacroConverter x:Key="convReplaceMacro"/>
         <conv:AndConverter x:Key="convAnd"/>
+        <conv:OrConverter x:Key="convOr"/>
         <conv:NullableIntToTimeConverter x:Key="convNullableIntToTime"/>
         <conv:MultiStringConverter x:Key="convMultiString"/>
         <conv:ConstantConverter x:Key="convConstant"/>
+        <conv:NullableTimeSpanToDurationConverter x:Key="convNullableTimeSpanToDuration"/>
+        <conv:IsEnumInSetConverter x:Key="convIsEnumInSet"/>
+        <conv:IntThresholdConverter x:Key="convIntThreshold"/>
         <app:ItemEffectGearSelector x:Key="selItemEffectGear"/>
         <app:LinkBackSelector x:Key="selLinkBack"/>
         <app:ListMemberSelector x:Key="selListMember"/>
@@ -88,6 +93,30 @@
             <sys:Boolean>False</sys:Boolean>
             <sys:Boolean>True</sys:Boolean>
         </CompositeCollection>
+        <CompositeCollection x:Key="RecipeItemKey_EquipmentSlot">
+            <obj:RecipeItemKey>EquipmentSlot_MainHand</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_OffHand</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Hands</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Chest</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Legs</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Head</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Feet</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Ring</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Necklace</obj:RecipeItemKey>
+        </CompositeCollection>
+        <CompositeCollection x:Key="RecipeItemKey_Rarity">
+            <obj:RecipeItemKey>Rarity_Uncommon</obj:RecipeItemKey>
+            <obj:RecipeItemKey>Rarity_Rare</obj:RecipeItemKey>
+        </CompositeCollection>
+        <CompositeCollection x:Key="RecipeItemKey_MinRarityUncommon">
+            <obj:RecipeItemKey>MinRarity_Uncommon</obj:RecipeItemKey>
+        </CompositeCollection>
+        <CompositeCollection x:Key="RecipeItemKey_MinRarityExceptional">
+            <obj:RecipeItemKey>MinRarity_Exceptional</obj:RecipeItemKey>
+        </CompositeCollection>
+        <CroppedBitmap x:Key="imgRedo" Source="pack://application:,,,/Resources/redo.png"/>
+        <CroppedBitmap x:Key="imgUndo" Source="pack://application:,,,/Resources/undo.png"/>
+        <CroppedBitmap x:Key="imgAttuned" Source="pack://application:,,,/Resources/Locked.png"/>
         <DataTemplate x:Key="AttributeLinkTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding FriendlyName}" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
@@ -929,17 +958,7 @@
                         </ItemsControl>
                     </Expander>
                     <Expander Header="{Binding ResultItemKeyword, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap}" Visibility="{Binding ResultItemList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Top" Margin="10,0,0,0">
-                        <ItemsControl ItemsSource="{Binding ResultItemList,FallbackValue={x:Null}}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <ItemsControl ItemsSource="{Binding ResultItemList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource setTypeToTemplateName}"/>
                     </Expander>
                     <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
                         <Expander VerticalAlignment="Center" Width="0"/>
@@ -1061,8 +1080,136 @@
                 </TextBlock>
             </WrapPanel>
         </DataTemplate>
-        <CroppedBitmap x:Key="imgRedo" Source="pack://application:,,,/Resources/redo.png"/>
-        <CroppedBitmap x:Key="imgUndo" Source="pack://application:,,,/Resources/undo.png"/>
+        <DataTemplate x:Key="RecipeItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Image Visibility="{Binding AttuneToCrafter, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Source="{StaticResource imgAttuned}" ToolTip="This item is attuned to the crafter" Width="6" Height="8" Margin="0,0,5,0"/>
+                <Grid>
+                    <StackPanel Visibility="{Binding Item, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
+                        <TextBlock TextWrapping="Wrap">
+                        <Hyperlink x:Name="hyperlink_RecipeItem_Item" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                            <TextBlock Text="{Binding Item.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                        </Hyperlink>
+                    </TextBlock>
+                        <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock>x</TextBlock>
+                            <TextBlock Text="{Binding StackSize, FallbackValue={x:Null}}"/>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding RawChanceToConsume, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock>(</TextBlock>
+                            <TextBlock Text="{Binding ChanceToConsume, Converter={StaticResource convDouble}, ConverterParameter=%, FallbackValue={x:Null}}" Margin="0,0,5,0"/>
+                            <TextBlock>chance to consume)</TextBlock>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding RawDurabilityConsumed, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock>(</TextBlock>
+                            <TextBlock Text="{Binding DurabilityConsumed, Converter={StaticResource convDouble}, ConverterParameter=%, FallbackValue={x:Null}}" Margin="0,0,5,0"/>
+                            <TextBlock>durability consumed)</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid Visibility="{Binding Item, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Visibility>
+                                <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
+                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="False"/>
+                                </MultiBinding>
+                            </StackPanel.Visibility>
+                            <TextBlock>Any</TextBlock>
+                            <TextBlock Text="{Binding ItemKey, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Visibility>
+                                <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
+                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="False"/>
+                                </MultiBinding>
+                            </StackPanel.Visibility>
+                            <TextBlock>Any</TextBlock>
+                            <TextBlock Text="{Binding ItemKey, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
+                            <TextBlock>item</TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Visibility>
+                                <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
+                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityUncommon}" FallbackValue="False"/>
+                                </MultiBinding>
+                            </StackPanel.Visibility>
+                            <TextBlock>Any magical item</TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Visibility>
+                                <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
+                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityExceptional}" FallbackValue="False"/>
+                                </MultiBinding>
+                            </StackPanel.Visibility>
+                            <TextBlock>Any exceptional item or better</TextBlock>
+                        </StackPanel>
+                        <Grid>
+                            <Grid.Visibility>
+                                <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource VisibleCollapsed}" FallbackValue="Visible">
+                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="False"/>
+                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="False"/>
+                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityUncommon}" FallbackValue="False"/>
+                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityExceptional}" FallbackValue="False"/>
+                                </MultiBinding>
+                            </Grid.Visibility>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Visibility>
+                                    <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
+                                        <Binding Path="MatchingKeyItemList.Count" Converter="{StaticResource convIntThreshold}" ConverterParameter="10" FallbackValue="False"/>
+                                    </MultiBinding>
+                                </StackPanel.Visibility>
+                                <TextBlock>Any</TextBlock>
+                                <TextBlock Text="{Binding ItemKey, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                            </StackPanel>
+                            <Grid>
+                                <Grid.Visibility>
+                                    <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource VisibleCollapsed}" FallbackValue="Visible">
+                                        <Binding Path="MatchingKeyItemList.Count" Converter="{StaticResource convIntThreshold}" ConverterParameter="10" FallbackValue="False"/>
+                                    </MultiBinding>
+                                </Grid.Visibility>
+                                <Grid.Resources>
+                                    <DataTemplate x:Key="ItemTemplateFirst">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="0,0,5,0">One of</TextBlock>
+                                            <TextBlock TextWrapping="Wrap">
+                                            <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                            </Hyperlink>
+                                        </TextBlock>
+                                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                    <DataTemplate x:Key="ItemTemplate">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock TextWrapping="Wrap">
+                                            <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                            </Hyperlink>
+                                        </TextBlock>
+                                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                    <DataTemplate x:Key="ItemTemplateLast">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock TextWrapping="Wrap">
+                                            <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                            </Hyperlink>
+                                        </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Grid.Resources>
+                                <ItemsControl ItemsSource="{Binding MatchingKeyItemList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
         <ControlTemplate x:Key="XpTableToggleButton" TargetType="ToggleButton">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -2086,7 +2233,7 @@
                                 <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Version:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding RawVersion, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Reuse Time:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding CombinedReuseTime, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding RawReuseTime, Converter={StaticResource convNullableTimeSpanToDuration}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Is Cancellable:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding RawIsCancellable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Quest Objectives:</TextBlock>
@@ -2119,8 +2266,7 @@
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <TextBlock Visibility="{Binding HasRewardsXp, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedRewardsXp, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <ItemsControl Visibility="{Binding HasRewardsXp, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" ItemsSource="{Binding RewardsXPList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                    <ItemsControl ItemsSource="{Binding RewardsXPList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel/>
@@ -2138,7 +2284,7 @@
                                                             <TextBlock Text="{Binding QuestItem.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                                         </Hyperlink>
                                                     </TextBlock>
-                                                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                                                <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                                                     <TextBlock>x</TextBlock>
                                                     <TextBlock Text="{Binding StackSize}"/>
                                                 </StackPanel>
@@ -2152,15 +2298,14 @@
                                                             <TextBlock Text="{Binding QuestItem.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                                         </Hyperlink>
                                                     </TextBlock>
-                                                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                                                <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                                                     <TextBlock>x</TextBlock>
                                                     <TextBlock Text="{Binding StackSize}"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <TextBlock Visibility="{Binding HasRewardItems, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedRewardsItem, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <ItemsControl Visibility="{Binding HasRewardItems, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" ItemsSource="{Binding QuestRewardsItemList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                    <ItemsControl ItemsSource="{Binding QuestRewardsItemList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel/>
@@ -2169,18 +2314,19 @@
                                     </ItemsControl>
                                 </Grid>
                                 <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Prerequisite Quest:</TextBlock>
-                                <Grid Grid.Column="1" Grid.Row="7" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding PrerequisiteQuest, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedPrerequisiteQuest, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding PrerequisiteQuest, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Quest_PrerequisiteQuest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding PrerequisiteQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </Grid>
+                                <TextBlock Grid.Column="1" Grid.Row="7" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Quest_PrerequisiteQuest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding PrerequisiteQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Combat XP Reward:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding RawRewardCombatXP, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Favor NPC:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="9" Text="{Binding CombinedFavorNPC, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <StackPanel Grid.Column="1" Grid.Row="9" Visibility="{Binding FavorNpc, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,10,0,0">
+                                    <TextBlock Text="{Binding FavorNpc, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    <TextBlock Margin="5,0,5,0">in</TextBlock>
+                                    <TextBlock Text="{Binding FavorNpcArea, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </StackPanel>
                                 <TextBlock Grid.Column="0" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Preface Text:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="10" Text="{Binding PrefaceText, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Success Text:</TextBlock>
@@ -2190,71 +2336,60 @@
                                 <TextBlock Grid.Column="0" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Favor Prerequisite:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="13" Text="{Binding PrerequisiteFavorLevel, Converter={StaticResource convEnumToText}, ConverterParameter=FavorTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Ability Reward:</TextBlock>
-                                <Grid Grid.Column="1" Grid.Row="15" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding RewardAbility, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedRewardAbility, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding RewardAbility, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Quest_RewardAbility" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding RewardAbility.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </Grid>
+                                <TextBlock Grid.Column="1" Grid.Row="15" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Quest_RewardAbility" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding RewardAbility.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="16" TextAlignment="Right" Margin="0,10,0,0">Favor NPC Requirement:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="16" Text="{Binding CombinedRequirementFavorNPC, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <StackPanel Grid.Column="1" Grid.Row="16" Visibility="{Binding RequirementFavorNpc, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,10,0,0">
+                                    <TextBlock Margin="0,0,5,0">At least</TextBlock>
+                                    <TextBlock Text="{Binding RequirementFavorLevel, Converter={StaticResource convEnumToText}, ConverterParameter=FavorTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    <TextBlock Margin="5,0,5,0">with</TextBlock>
+                                    <TextBlock Text="{Binding RequirementFavorNpc, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    <TextBlock Margin="5,0,5,0">in</TextBlock>
+                                    <TextBlock Text="{Binding RequirementFavorNpcArea, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </StackPanel>
                                 <TextBlock Grid.Column="0" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Quest Requirement:</TextBlock>
-                                <Grid Grid.Column="1" Grid.Row="17" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding RequirementQuest, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedRequirementQuest, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding RequirementQuest, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Quest_RequirementQuest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding RequirementQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </Grid>
+                                <TextBlock Grid.Column="1" Grid.Row="17" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Quest_RequirementQuest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding RequirementQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">Guild Quest Requirement:</TextBlock>
-                                <Grid Grid.Column="1" Grid.Row="18" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding RequirementGuildQuest, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedRequirementGuildQuest, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding RequirementGuildQuest, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Quest_RequirementGuildQuest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding RequirementGuildQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Column="1" Grid.Row="18" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Quest_RequirementGuildQuest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding RequirementGuildQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Skill Requirement:</TextBlock>
+                                <StackPanel Grid.Column="1" Grid.Row="19" Visibility="{Binding ConnectedRequirementSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,10,0,0">
+                                    <TextBlock TextWrapping="Wrap">
+                                        <Hyperlink x:Name="hyperlink_Quest_ConnectedRequirementSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                            <TextBlock Text="{Binding ConnectedRequirementSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                         </Hyperlink>
                                     </TextBlock>
-                                </Grid>
-                                <TextBlock Grid.Column="0" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Skill Requirement:</TextBlock>
-                                <Grid Grid.Column="1" Grid.Row="19" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding HasRequirementSkill, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedRequirementSkill, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <StackPanel Visibility="{Binding HasRequirementSkill, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
-                                        <TextBlock TextWrapping="Wrap">
-                                            <Hyperlink x:Name="hyperlink_Quest_ConnectedRequirementSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                <TextBlock Text="{Binding ConnectedRequirementSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                            </Hyperlink>
-                                        </TextBlock>
-                                        <TextBlock Margin="5,0,5,0">at level</TextBlock>
-                                        <TextBlock Text="{Binding RequirementSkillLevel}" />
-                                    </StackPanel>
-                                </Grid>
+                                    <TextBlock Margin="5,0,5,0">at level</TextBlock>
+                                    <TextBlock Text="{Binding RequirementSkillLevel}" />
+                                </StackPanel>
                                 <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Favor Reward:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding RawRewardFavor, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Skill XP Reward:</TextBlock>
-                                <Grid Grid.Column="3" Grid.Row="1" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding HasSkillXpReward, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedSkillXpReward, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <StackPanel Visibility="{Binding HasSkillXpReward, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
-                                        <TextBlock Text="{Binding RewardSkillXp}" />
-                                        <TextBlock Margin="5,0,5,0">XP in</TextBlock>
-                                        <TextBlock TextWrapping="Wrap">
-                                            <Hyperlink x:Name="hyperlink_Quest_ConnectedRewardSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                <TextBlock Text="{Binding ConnectedRewardSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                            </Hyperlink>
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Grid>
-                                <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Recipe Reward:</TextBlock>
-                                <Grid Grid.Column="3" Grid.Row="2" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding RewardRecipe, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedRewardRecipe, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding RewardRecipe, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Quest_RewardRecipe" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding RewardRecipe.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                <StackPanel Grid.Column="3" Grid.Row="1" Visibility="{Binding ConnectedRewardSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,10,0,0">
+                                    <TextBlock Text="{Binding RewardSkillXp}"/>
+                                    <TextBlock Margin="5,0,5,0">XP in</TextBlock>
+                                    <TextBlock TextWrapping="Wrap">
+                                        <Hyperlink x:Name="hyperlink_Quest_ConnectedRewardSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                            <TextBlock Text="{Binding ConnectedRewardSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                         </Hyperlink>
                                     </TextBlock>
-                                </Grid>
+                                </StackPanel>
+                                <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Recipe Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="2" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Quest_RewardRecipe" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding RewardRecipe.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Guild XP Reward:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding RawRewardGuildXp, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Guild Credit Reward:</TextBlock>
@@ -2269,7 +2404,7 @@
                                                             <TextBlock Text="{Binding QuestItem.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                                         </Hyperlink>
                                                     </TextBlock>
-                                                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                                                <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                                                     <TextBlock>x</TextBlock>
                                                     <TextBlock Text="{Binding StackSize}"/>
                                                 </StackPanel>
@@ -2283,15 +2418,14 @@
                                                             <TextBlock Text="{Binding QuestItem.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                                         </Hyperlink>
                                                     </TextBlock>
-                                                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                                                <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                                                     <TextBlock>x</TextBlock>
                                                     <TextBlock Text="{Binding StackSize}"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <TextBlock Visibility="{Binding HasPreGiveItemList, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedPreGiveItemList, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <ItemsControl Visibility="{Binding HasPreGiveItemList, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" ItemsSource="{Binding PreGiveItemList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                    <ItemsControl ItemsSource="{Binding PreGiveItemList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel/>
@@ -2326,8 +2460,7 @@
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <TextBlock Visibility="{Binding HasPreGiveRecipeList, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedPreGiveRecipeList, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <ItemsControl Visibility="{Binding HasPreGiveRecipeList, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" ItemsSource="{Binding PreGiveRecipeList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                    <ItemsControl ItemsSource="{Binding PreGiveRecipeList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel/>
@@ -2336,16 +2469,32 @@
                                     </ItemsControl>
                                 </Grid>
                                 <TextBlock Grid.Column="2" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Keywords:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="10" Text="{Binding CombinedKeywords, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Effect Reward:</TextBlock>
-                                <Grid Grid.Column="3" Grid.Row="11" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding RewardEffect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedRewardEffect, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding RewardEffect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Quest_RewardEffect" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding RewardEffect.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        </Hyperlink>
-                                    </TextBlock>
+                                <Grid Grid.Column="3" Grid.Row="10" Margin="5,10,0,0">
+                                    <Grid.Resources>
+                                        <DataTemplate x:Key="ItemTemplate">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=QuestKeywordTextMap}"/>
+                                                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="ItemTemplateLast">
+                                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=QuestKeywordTextMap}"/>
+                                        </DataTemplate>
+                                    </Grid.Resources>
+                                    <ItemsControl ItemsSource="{Binding KeywordList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
                                 </Grid>
+                                <TextBlock Grid.Column="2" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Effect Reward:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="11" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Quest_RewardEffect" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding RewardEffect.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Is Auto Preface:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="12" Text="{Binding RawIsAutoPreface, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Is Auto WrapUp:</TextBlock>
@@ -2359,14 +2508,11 @@
                                 <TextBlock Grid.Column="2" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Level:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="17" Text="{Binding RawLevel, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">Work Order Skill:</TextBlock>
-                                <Grid Grid.Column="3" Grid.Row="18" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding ConnectedWorkOrderSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedWorkOrderSkill, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding ConnectedWorkOrderSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Quest_ConnectedWorkOrderSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding ConnectedWorkOrderSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </Grid>
+                                <TextBlock Grid.Column="3" Grid.Row="18" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Quest_ConnectedWorkOrderSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding ConnectedWorkOrderSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Requirement to sustain:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="19" Text="{Binding RequirementToSustain, Converter={StaticResource convEnumToText}, ConverterParameter=EffectKeywordTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                             </Grid>
@@ -2411,85 +2557,15 @@
                                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Ingredients:</TextBlock>
-                                <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding IngredientList}" HorizontalAlignment="Left" Margin="5,10,0,0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <TextBlock Visibility="{Binding IsLinkedDescription, Converter={StaticResource convBooleanToObject},ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedDescription}" TextWrapping="Wrap"/>
-                                                <Grid Visibility="{Binding IsLinkedDescription, Converter={StaticResource convBooleanToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
-                                                    <Grid.Resources>
-                                                        <DataTemplate x:Key="ItemTemplateFirst">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Margin="0,0,5,0">One of</TextBlock>
-                                                                <TextBlock TextWrapping="Wrap">
-                                                                    <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                                        <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                                                    </Hyperlink>
-                                                                </TextBlock>
-                                                                <TextBlock Margin="0,0,5,0">,</TextBlock>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                        <DataTemplate x:Key="ItemTemplate">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock TextWrapping="Wrap">
-                                                                    <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                                        <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                                                    </Hyperlink>
-                                                                </TextBlock>
-                                                                <TextBlock Margin="0,0,5,0">,</TextBlock>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                        <DataTemplate x:Key="ItemTemplateLast">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock TextWrapping="Wrap">
-                                                                    <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                                        <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                                                    </Hyperlink>
-                                                                </TextBlock>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                    </Grid.Resources>
-                                                    <StackPanel Visibility="{Binding IsSingleLinkLinkDescription, Converter={StaticResource convBooleanToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}" Orientation="Horizontal">
-                                                        <TextBlock TextWrapping="Wrap">
-                                                            <Hyperlink x:Name="hyperlink_RecipeItem_Item" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                                <TextBlock Text="{Binding Item.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                                            </Hyperlink>
-                                                        </TextBlock>
-                                                        <TextBlock Text="{Binding ExtraInfo}" Margin="5,0,0,0"/>
-                                                    </StackPanel>
-                                                    <ItemsControl Visibility="{Binding IsSingleLinkLinkDescription, Converter={StaticResource convBooleanToObject},ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Collapsed}" ItemsSource="{Binding MatchingKeyItemList,FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
-                                                        <ItemsControl.ItemsPanel>
-                                                            <ItemsPanelTemplate>
-                                                                <WrapPanel/>
-                                                            </ItemsPanelTemplate>
-                                                        </ItemsControl.ItemsPanel>
-                                                    </ItemsControl>
-                                                </Grid>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding IngredientList}" ItemTemplateSelector="{StaticResource setTypeToTemplateName}" HorizontalAlignment="Left" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Result:</TextBlock>
-                                <ItemsControl Grid.Column="1" Grid.Row="2" ItemsSource="{Binding ResultItemList}" HorizontalAlignment="Left" Margin="5,10,0,0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap">
-                                                <Hyperlink x:Name="hyperlink_RecipeItem_Item" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                    <TextBlock Text="{Binding Item.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                                </Hyperlink>
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                <ItemsControl Grid.Column="1" Grid.Row="2" ItemsSource="{Binding ResultItemList}" ItemTemplateSelector="{StaticResource setTypeToTemplateName}" HorizontalAlignment="Left" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
-                                <Grid Grid.Column="1" Grid.Row="3" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding ConnectedSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedSkill, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding ConnectedSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding ConnectedSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </Grid>
+                                <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding ConnectedSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Required Level:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RawSkillLevelReq, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Result Effects:</TextBlock>
@@ -2501,16 +2577,32 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                                 <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Sort Skill:</TextBlock>
-                                <Grid Grid.Column="1" Grid.Row="6" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding ConnectedSortSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedSortSkill, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding ConnectedSortSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Recipe_ConnectedSortSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding ConnectedSortSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </Grid>
+                                <TextBlock Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Recipe_ConnectedSortSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding ConnectedSortSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Keywords:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding CombinedKeywords, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <Grid Grid.Column="1" Grid.Row="7" Margin="5,10,0,0">
+                                    <Grid.Resources>
+                                        <DataTemplate x:Key="ItemTemplate">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RecipeKeywordTextMap}"/>
+                                                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="ItemTemplateLast">
+                                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RecipeKeywordTextMap}"/>
+                                        </DataTemplate>
+                                    </Grid.Resources>
+                                    <ItemsControl ItemsSource="{Binding KeywordList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </Grid>
                                 <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Action:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding ActionLabel, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeActionTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Usage Delay:</TextBlock>
@@ -2538,14 +2630,11 @@
                                 <TextBlock Grid.Column="2" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Dye Color:</TextBlock>
                                 <Rectangle Grid.Column="3" Grid.Row="6" Fill="{Binding DyeColor, Converter={StaticResource convRgbColorToBrush}, FallbackValue=Transparent}" HorizontalAlignment="Left" Width="50" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Reward Skill:</TextBlock>
-                                <Grid Grid.Column="3" Grid.Row="7" Margin="5,10,0,0">
-                                    <TextBlock Visibility="{Binding ConnectedRewardSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedRewardSkill, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Visibility="{Binding ConnectedRewardSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_Recipe_ConnectedRewardSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding ConnectedRewardSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </Grid>
+                                <TextBlock Grid.Column="3" Grid.Row="7" TextWrapping="Wrap" Margin="5,10,0,0">
+                                    <Hyperlink x:Name="hyperlink_Recipe_ConnectedRewardSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding ConnectedRewardSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">XP Reward:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="8" Text="{Binding RawRewardSkillXp, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">First Time XP Reward:</TextBlock>
@@ -2623,18 +2712,34 @@
                                     <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Combat:</TextBlock>
                                     <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RawCombat, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                     <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Compatible Skills:</TextBlock>
-                                    <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding CombinedCompatibleSkills, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                    <Grid Grid.Column="1" Grid.Row="5" Margin="5,10,0,0">
+                                        <Grid.Resources>
+                                            <DataTemplate x:Key="ItemTemplate">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap}"/>
+                                                    <TextBlock Margin="0,0,5,0">,</TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                            <DataTemplate x:Key="ItemTemplateLast">
+                                                <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap}"/>
+                                            </DataTemplate>
+                                        </Grid.Resources>
+                                        <ItemsControl ItemsSource="{Binding CompatibleCombatSkillList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                    </Grid>
                                     <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Max Bonus Levels:</TextBlock>
                                     <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding RawMaxBonusLevels, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                     <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Parent Skill:</TextBlock>
-                                    <Grid Grid.Column="1" Grid.Row="7" Margin="5,10,0,0">
-                                        <TextBlock Visibility="{Binding ConnectedParentSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding CombinedParentSkill, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                        <TextBlock Visibility="{Binding ConnectedParentSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                            <Hyperlink x:Name="hyperlink_Recipe_ConnectedParentSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                <TextBlock Text="{Binding ConnectedParentSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                            </Hyperlink>
-                                        </TextBlock>
-                                    </Grid>
+                                    <TextBlock Grid.Column="1" Grid.Row="7" TextWrapping="Wrap" Margin="5,10,0,0">
+                                        <Hyperlink x:Name="hyperlink_Recipe_ConnectedParentSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                            <TextBlock Text="{Binding ConnectedParentSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                        </Hyperlink>
+                                    </TextBlock>
                                     <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Skip Bonus Levels If Skill Unlearned:</TextBlock>
                                     <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding RawSkipBonusLevelsIfSkillUnlearned, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                     <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Is Auxiliary Combat Skill:</TextBlock>
@@ -2643,47 +2748,143 @@
                                 <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
                                     <Grid.Resources>
                                         <DataTemplate x:Key="SkillRewardAbilityTemplate">
-                                            <TextBlock TextWrapping="Wrap">
-                                                <Span>
-                                                    <Run>Level </Run>
-                                                    <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
-                                                    <Run>, ability: </Run>
-                                                    <Hyperlink x:Name="hyperlink_SkillRewardAbility_Ability" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                        <TextBlock Text="{Binding Ability.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                                    </Hyperlink>
-                                                </Span>
-                                            </TextBlock>
+                                            <WrapPanel>
+                                                <TextBlock TextWrapping="Wrap" Margin="0,0,5,0">
+                                                    <Span>
+                                                        <Run>Level </Run>
+                                                        <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
+                                                        <Run>, ability: </Run>
+                                                        <Hyperlink x:Name="hyperlink_SkillRewardAbility_Ability" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                            <TextBlock Text="{Binding Ability.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                        </Hyperlink>
+                                                    </Span>
+                                                </TextBlock>
+                                                <StackPanel Visibility="{Binding RaceRestrictionList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
+                                                    <StackPanel.Resources>
+                                                        <DataTemplate x:Key="ItemTemplate">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" FontStyle="Italic"/>
+                                                                <TextBlock FontStyle="Italic" Margin="0,0,5,0">,</TextBlock>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                        <DataTemplate x:Key="ItemTemplateLast">
+                                                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" FontStyle="Italic"/>
+                                                        </DataTemplate>
+                                                    </StackPanel.Resources>
+                                                    <TextBlock FontStyle="Italic">(Only if</TextBlock>
+                                                    <ItemsControl ItemsSource="{Binding RaceRestrictionList}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                    </ItemsControl>
+                                                    <TextBlock FontStyle="Italic">)</TextBlock>
+                                                </StackPanel>
+                                            </WrapPanel>
                                         </DataTemplate>
                                         <DataTemplate x:Key="SkillRewardBonusLevelTemplate">
-                                            <TextBlock TextWrapping="Wrap">
-                                                <Span>
-                                                    <Run>Level</Run>
-                                                    <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
-                                                    <Run>, +1 in </Run>
-                                                    <Hyperlink x:Name="hyperlink_SkillRewardBonusLevel_Skill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                        <TextBlock Text="{Binding Skill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                                    </Hyperlink>
-                                                </Span>
-                                            </TextBlock>
+                                            <WrapPanel>
+                                                <TextBlock TextWrapping="Wrap" Margin="0,0,5,0">
+                                                    <Span>
+                                                        <Run>Level</Run>
+                                                        <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
+                                                        <Run>, +1 in </Run>
+                                                        <Hyperlink x:Name="hyperlink_SkillRewardBonusLevel_Skill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                            <TextBlock Text="{Binding Skill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                        </Hyperlink>
+                                                    </Span>
+                                                </TextBlock>
+                                                <StackPanel Visibility="{Binding RaceRestrictionList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
+                                                    <StackPanel.Resources>
+                                                        <DataTemplate x:Key="ItemTemplate">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" FontStyle="Italic"/>
+                                                                <TextBlock FontStyle="Italic" Margin="0,0,5,0">,</TextBlock>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                        <DataTemplate x:Key="ItemTemplateLast">
+                                                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" FontStyle="Italic"/>
+                                                        </DataTemplate>
+                                                    </StackPanel.Resources>
+                                                    <TextBlock FontStyle="Italic">(Only if</TextBlock>
+                                                    <ItemsControl ItemsSource="{Binding RaceRestrictionList}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                    </ItemsControl>
+                                                    <TextBlock FontStyle="Italic">)</TextBlock>
+                                                </StackPanel>
+                                            </WrapPanel>
                                         </DataTemplate>
                                         <DataTemplate x:Key="SkillRewardMiscTemplate">
-                                            <TextBlock TextWrapping="Wrap">
-                                                <Span>
-                                                    <Run Text="{Binding Text, Mode=OneWay}"/>
-                                                </Span>
-                                            </TextBlock>
+                                            <WrapPanel>
+                                                <TextBlock TextWrapping="Wrap" Margin="0,0,5,0">
+                                                    <Span>
+                                                        <Run Text="{Binding Text, Mode=OneWay}"/>
+                                                    </Span>
+                                                </TextBlock>
+                                                <StackPanel Visibility="{Binding RaceRestrictionList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
+                                                    <StackPanel.Resources>
+                                                        <DataTemplate x:Key="ItemTemplate">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" FontStyle="Italic"/>
+                                                                <TextBlock FontStyle="Italic" Margin="0,0,5,0">,</TextBlock>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                        <DataTemplate x:Key="ItemTemplateLast">
+                                                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" FontStyle="Italic"/>
+                                                        </DataTemplate>
+                                                    </StackPanel.Resources>
+                                                    <TextBlock FontStyle="Italic">(Only if</TextBlock>
+                                                    <ItemsControl ItemsSource="{Binding RaceRestrictionList}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                    </ItemsControl>
+                                                    <TextBlock FontStyle="Italic">)</TextBlock>
+                                                </StackPanel>
+                                            </WrapPanel>
                                         </DataTemplate>
                                         <DataTemplate x:Key="SkillRewardRecipeTemplate">
-                                            <TextBlock TextWrapping="Wrap">
-                                                <Span>
-                                                    <Run>Level </Run>
-                                                    <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
-                                                    <Run>, recipe: </Run>
-                                                    <Hyperlink x:Name="hyperlink_SkillRewardRecipe_Recipe" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                        <TextBlock Text="{Binding Recipe.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                                    </Hyperlink>
-                                                </Span>
-                                            </TextBlock>
+                                            <WrapPanel>
+                                                <TextBlock TextWrapping="Wrap" Margin="0,0,5,0">
+                                                    <Span>
+                                                        <Run>Level </Run>
+                                                        <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
+                                                        <Run>, recipe: </Run>
+                                                        <Hyperlink x:Name="hyperlink_SkillRewardRecipe_Recipe" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                            <TextBlock Text="{Binding Recipe.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                        </Hyperlink>
+                                                    </Span>
+                                                </TextBlock>
+                                                <StackPanel Visibility="{Binding RaceRestrictionList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
+                                                    <StackPanel.Resources>
+                                                        <DataTemplate x:Key="ItemTemplate">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" FontStyle="Italic"/>
+                                                                <TextBlock FontStyle="Italic" Margin="0,0,5,0">,</TextBlock>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                        <DataTemplate x:Key="ItemTemplateLast">
+                                                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" FontStyle="Italic"/>
+                                                        </DataTemplate>
+                                                    </StackPanel.Resources>
+                                                    <TextBlock FontStyle="Italic">(Only if</TextBlock>
+                                                    <ItemsControl ItemsSource="{Binding RaceRestrictionList}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                    </ItemsControl>
+                                                    <TextBlock FontStyle="Italic">)</TextBlock>
+                                                </StackPanel>
+                                            </WrapPanel>
                                         </DataTemplate>
                                         <DataTemplate x:Key="SkillRewardUnlockTemplate">
                                             <TextBlock TextWrapping="Wrap">

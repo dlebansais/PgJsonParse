@@ -23,16 +23,17 @@ namespace Converters
                 DoubleValue = NullableDoubleValue.Value;
             }
 
-            string Result = "";
-
             string AsString;
             if ((AsString = parameter as string) != null)
+            {
                 if (AsString == "+" && DoubleValue > 0)
-                    Result += "+";
+                    return "+" + DoubleValue.ToString();
 
-            Result += DoubleValue.ToString();
+                else if (AsString == "%" && DoubleValue >= 0 && DoubleValue <= 1.0)
+                    return (DoubleValue * 100).ToString() + "%";
+            }
 
-            return Result;
+            return DoubleValue.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

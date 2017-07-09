@@ -8,25 +8,13 @@ namespace PgJsonObjects
         public Item QuestItem { get; private set; }
         private string RawItem;
         private bool IsRawItemParsed;
-        public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 0; } }
-        private int? RawStackSize;
-        public bool HasStackSize { get { return RawStackSize.HasValue && RawStackSize.Value > 1; } }
+        public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 1; } }
+        public int? RawStackSize { get; private set; }
         #endregion
 
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
         public Quest ParentQuest { get; private set; }
-
-        public string CombinedName
-        {
-            get
-            {
-                if (StackSize > 1)
-                    return QuestItem.Name + " x" + StackSize;
-                else
-                    return QuestItem.Name;
-            }
-        }
         #endregion
 
         #region Parsing
@@ -60,7 +48,10 @@ namespace PgJsonObjects
 
         private void ParseStackSize(int RawStackSize, ParseErrorInfo ErrorInfo)
         {
-            this.RawStackSize = RawStackSize;
+            if (RawStackSize > 1)
+                this.RawStackSize = RawStackSize;
+            else if (RawStackSize < 1)
+                ErrorInfo.AddInvalidObjectFormat("QuestRewardItem StackSize");
         }
         #endregion
 
@@ -81,7 +72,7 @@ namespace PgJsonObjects
                 string Result = "";
 
                 if (QuestItem != null)
-                    Result += QuestItem.TextContent + JsonGenerator.FieldSeparator;
+                    AddWithFieldSeparator(ref Result, QuestItem.Name);
 
                 return Result;
             }

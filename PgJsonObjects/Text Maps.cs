@@ -1121,6 +1121,8 @@ namespace PgJsonObjects
             { Race.Human, "Human" },
             { Race.Elf, "Elf" },
             { Race.Fae, "Fae" },
+            { Race.Orc, "Orc" },
+            { Race.Dwarf, "Dwarf" },
         };
 
         public static readonly Dictionary<RecipeKeyword, string> RecipeKeywordTextMap = new Dictionary<RecipeKeyword, string>()
@@ -3246,7 +3248,7 @@ namespace PgJsonObjects
             { RecipeItemKey.NecklaceAugment, "Necklace Augment" },
             { RecipeItemKey.RingAugment, "Ring Augment" },
             { RecipeItemKey.Knife, "Knife" },
-            { RecipeItemKey.EquipmentSlot_MainHand, "Main Hand " },
+            { RecipeItemKey.EquipmentSlot_MainHand, "Main Hand" },
             { RecipeItemKey.EquipmentSlot_OffHand, "Off Hand" },
             { RecipeItemKey.EquipmentSlot_Hands, "Hands" },
             { RecipeItemKey.EquipmentSlot_Chest, "Chest" },

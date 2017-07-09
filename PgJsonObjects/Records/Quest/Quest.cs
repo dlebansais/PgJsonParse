@@ -13,20 +13,15 @@ namespace PgJsonObjects
         public int Version { get { return RawVersion.HasValue ? RawVersion.Value : 0; } }
         public int? RawVersion { get; private set; }
         public EffectKeyword RequirementToSustain { get; private set; }
-        public int ReuseTimeMinutes { get { return RawReuseTimeMinutes.HasValue ? RawReuseTimeMinutes.Value : 0; } }
-        private int? RawReuseTimeMinutes;
         public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
         public bool? RawIsCancellable { get; private set; }
         public List<QuestObjective> QuestObjectiveList { get; } = new List<QuestObjective>();
         public List<QuestRewardXp> RewardsXPList { get; } = new List<QuestRewardXp>();
         public List<QuestRewardItem> QuestRewardsItemList { get; } = new List<QuestRewardItem>();
-        public int ReuseTimeDays { get { return RawReuseTimeDays.HasValue ? RawReuseTimeDays.Value : 0; } }
-        private int? RawReuseTimeDays;
+        public TimeSpan? RawReuseTime { get; private set; }
         public Quest PrerequisiteQuest { get; private set; }
         private string RawPrerequisiteQuest;
         private bool IsRawPrerequisiteParsed;
-        public int ReuseTimeHours { get { return RawReuseTimeHours.HasValue ? RawReuseTimeHours.Value : 0; } }
-        private int? RawReuseTimeHours;
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get; private set; }
         public string FavorNpc { get; private set; }
@@ -50,13 +45,15 @@ namespace PgJsonObjects
         public PowerSkill RequirementSkill { get; private set; }
         public Skill ConnectedRequirementSkill { get; private set; }
         private bool IsConnectedRequirementSkillParsed;
-        public int RequirementSkillLevel { get; private set; }
+        public int RequirementSkillLevel { get { return RawRequirementSkillLevel.HasValue ? RawRequirementSkillLevel.Value : 0; } }
+        public int? RawRequirementSkillLevel { get; private set; }
         public int RewardFavor { get { return RawRewardFavor.HasValue ? RawRewardFavor.Value : 0; } }
         public int? RawRewardFavor { get; private set; }
         public PowerSkill RewardSkill { get; private set; }
         public Skill ConnectedRewardSkill { get; private set; }
         private bool IsConnectedRewardSkillParsed;
-        public int RewardSkillXp { get; private set; }
+        public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
+        public int? RawRewardSkillXp { get; private set; }
         public Recipe RewardRecipe { get; private set; }
         private string RawRewardRecipe;
         private bool IsRawRewardRecipeParsed;
@@ -70,7 +67,7 @@ namespace PgJsonObjects
         public int RewardGold { get { return RawRewardGold.HasValue ? RawRewardGold.Value : 0; } }
         public int? RawRewardGold { get; private set; }
         public string RewardsNamedLootProfile { get; private set; }
-        public List<Recipe> PreGiveRecipeList { get; private set; }
+        public List<Recipe> PreGiveRecipeList { get; private set; } = new List<Recipe>();
         private List<string> RawPreGiveRecipeList { get; } = new List<string>();
         public List<QuestKeyword> KeywordList { get; } = new List<QuestKeyword>();
         public Effect RewardEffect { get; private set; }
@@ -96,252 +93,6 @@ namespace PgJsonObjects
         protected override string SortingName { get { return Name; } }
         public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
-
-        public string CombinedReuseTime
-        {
-            get
-            {
-                TimeSpan ReuseTime = TimeSpan.Zero;
-                if (RawReuseTimeDays.HasValue && RawReuseTimeDays.Value > 0)
-                    ReuseTime += TimeSpan.FromDays(RawReuseTimeDays.Value);
-                if (RawReuseTimeHours.HasValue && RawReuseTimeHours.Value > 0)
-                    ReuseTime += TimeSpan.FromHours(RawReuseTimeHours.Value);
-                if (RawReuseTimeMinutes.HasValue && RawReuseTimeMinutes.Value > 0)
-                    ReuseTime += TimeSpan.FromMinutes(RawReuseTimeMinutes.Value);
-
-                if (ReuseTime.Ticks > 0)
-                    return ReuseTime.ToString();
-                else
-                    return "";
-            }
-        }
-
-        public bool HasRewardsXp { get { return RewardsXPList.Count > 0; } }
-
-        public string CombinedRewardsXp
-        {
-            get
-            {
-                string Result = "";
-
-                foreach (QuestRewardXp Reward in RewardsXPList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += TextMaps.PowerSkillTextMap[Reward.Skill] + " (" + Reward.Xp + " XP)";
-                }
-
-                return Result;
-            }
-        }
-
-        public bool HasRewardItems { get { return QuestRewardsItemList.Count > 0; } }
-
-        public string CombinedRewardsItem
-        {
-            get
-            {
-                string Result = "";
-
-                foreach (QuestRewardItem Reward in QuestRewardsItemList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += Reward.QuestItem.Name;
-                    if (Reward.StackSize > 0)
-                        Result += " x" + Reward.StackSize;
-                }
-
-                return Result;
-            }
-        }
-
-        public string CombinedPrerequisiteQuest
-        {
-            get
-            {
-                if (PrerequisiteQuest == null)
-                    return "None";
-
-                return PrerequisiteQuest.Name;
-            }
-        }
-
-        public string CombinedRewardAbility
-        {
-            get
-            {
-                if (RewardAbility == null)
-                    return "None";
-
-                return RewardAbility.Name;
-            }
-        }
-
-        public string CombinedFavorNPC
-        {
-            get
-            {
-                if (FavorNpcArea == MapAreaName.Internal_None || FavorNpc == null || FavorNpc.Length == 0)
-                    return "";
-
-                return FavorNpc + " in " + TextMaps.MapAreaNameTextMap[FavorNpcArea];
-            }
-        }
-
-        public string CombinedRequirementFavorNPC
-        {
-            get
-            {
-                if (RequirementFavorNpcArea == MapAreaName.Internal_None || RequirementFavorNpc == null || RequirementFavorNpc.Length == 0)
-                    return "";
-
-                return "At least " + TextMaps.FavorTextMap[RequirementFavorLevel] + " with " + RequirementFavorNpc + " in " + TextMaps.MapAreaNameTextMap[RequirementFavorNpcArea];
-            }
-        }
-
-        public string CombinedRequirementQuest
-        {
-            get
-            {
-                if (RequirementQuest == null)
-                    return "None";
-
-                return RequirementQuest.Name;
-            }
-        }
-
-        public string CombinedRequirementGuildQuest
-        {
-            get
-            {
-                if (RequirementGuildQuest == null)
-                    return "None";
-
-                return RequirementGuildQuest.Name;
-            }
-        }
-
-        public bool HasRequirementSkill { get { return RequirementSkill != PowerSkill.Internal_None && RequirementSkillLevel > 0; } }
-
-        public string CombinedRequirementSkill
-        {
-            get
-            {
-                if (RequirementSkill == PowerSkill.Internal_None || RequirementSkillLevel == 0)
-                    return "None";
-
-                return TextMaps.PowerSkillTextMap[RequirementSkill] + " at level " + RequirementSkillLevel;
-            }
-        }
-
-        public bool HasSkillXpReward { get { return RewardSkill != PowerSkill.Internal_None && RewardSkillXp > 0; } }
-
-        public string CombinedSkillXpReward
-        {
-            get
-            {
-                if (RewardSkill == PowerSkill.Internal_None || RewardSkillXp == 0)
-                    return "None";
-
-                return RewardSkillXp + " XP in " + TextMaps.PowerSkillTextMap[RewardSkill];
-            }
-        }
-
-        public string CombinedRewardRecipe
-        {
-            get
-            {
-                if (RewardRecipe == null)
-                    return "None";
-
-                return RewardRecipe.Name;
-            }
-        }
-
-        public string CombinedRewardEffect
-        {
-            get
-            {
-                if (RewardEffect == null)
-                    return "None";
-
-                return RewardEffect.Name;
-            }
-        }
-
-        public string CombinedKeywords
-        {
-            get
-            {
-                string Result = "";
-
-                foreach (QuestKeyword Keyword in KeywordList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += TextMaps.QuestKeywordTextMap[Keyword];
-                }
-
-                return Result;
-            }
-        }
-
-        public bool HasPreGiveItemList { get { return PreGiveItemList.Count > 0; } }
-
-        public string CombinedPreGiveItemList
-        {
-            get
-            {
-                string Result = "";
-
-                foreach (QuestRewardItem Reward in PreGiveItemList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += Reward.QuestItem.Name;
-                    if (Reward.StackSize > 0)
-                        Result += " x" + Reward.StackSize;
-                }
-
-                return Result;
-            }
-        }
-
-        public bool HasPreGiveRecipeList { get { return PreGiveRecipeList.Count > 0; } }
-
-        public string CombinedPreGiveRecipeList
-        {
-            get
-            {
-                string Result = "";
-
-                foreach (Recipe Item in PreGiveRecipeList)
-                {
-                    if (Result.Length > 0)
-                        Result += ", ";
-
-                    Result += Item.Name;
-                }
-
-                return Result;
-            }
-        }
-
-        public string CombinedWorkOrderSkill
-        {
-            get
-            {
-                if (ConnectedWorkOrderSkill == null)
-                    return "None";
-
-                return ConnectedWorkOrderSkill.Name;
-            }
-        }
         #endregion
 
         #region Parsing
@@ -514,7 +265,10 @@ namespace PgJsonObjects
 
         private void ParseReuseTimeMinutes(int RawReuseTimeMinutes, ParseErrorInfo ErrorInfo)
         {
-            this.RawReuseTimeMinutes = RawReuseTimeMinutes;
+            if (!RawReuseTime.HasValue)
+                RawReuseTime = TimeSpan.FromMinutes(RawReuseTimeMinutes);
+            else
+                RawReuseTime += TimeSpan.FromMinutes(RawReuseTimeMinutes);
         }
 
         private static void ParseFieldIsCancellable(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -606,7 +360,10 @@ namespace PgJsonObjects
 
         private void ParseReuseTimeDays(int RawReuseTimeDays, ParseErrorInfo ErrorInfo)
         {
-            this.RawReuseTimeDays = RawReuseTimeDays;
+            if (!RawReuseTime.HasValue)
+                RawReuseTime = TimeSpan.FromDays(RawReuseTimeDays);
+            else
+                RawReuseTime += TimeSpan.FromDays(RawReuseTimeDays);
         }
 
         private static void ParseFieldPrerequisiteQuest(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -633,7 +390,10 @@ namespace PgJsonObjects
 
         private void ParseReuseTimeHours(int RawReuseTimeHours, ParseErrorInfo ErrorInfo)
         {
-            this.RawReuseTimeHours = RawReuseTimeHours;
+            if (!RawReuseTime.HasValue)
+                RawReuseTime = TimeSpan.FromHours(RawReuseTimeHours);
+            else
+                RawReuseTime += TimeSpan.FromHours(RawReuseTimeHours);
         }
 
         private static void ParseFieldRewardCombatXP(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -659,54 +419,6 @@ namespace PgJsonObjects
                 This.ParseFavorNpc(RawFavorNpc, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Quest FavorNpc");
-        }
-
-        public static bool TryParseNPC(string s, out MapAreaName ParsedArea, out string NpcName, ParseErrorInfo ErrorInfo)
-        {
-            ParsedArea = MapAreaName.Internal_None;
-            NpcName = null;
-
-            if (s.Length == 0)
-                return false;
-
-            string[] AreaNpc = s.Split('/');
-            if (AreaNpc.Length == 2)
-            {
-                string RawMapName = AreaNpc[0];
-                if (RawMapName.StartsWith("Area"))
-                    StringToEnumConversion<MapAreaName>.TryParse(RawMapName.Substring(4), out ParsedArea, ErrorInfo);
-                else
-                    return false;
-
-                string Npc = AreaNpc[1];
-                if (Npc.ToUpper().StartsWith("NPC_"))
-                    NpcName = Npc.Substring(4);
-                else if (Npc == "WerewolfAltar")
-                    NpcName = "Werewolf Altar";
-                else
-                    return false;
-            }
-            else
-                return false;
-
-            return true;
-        }
-
-        public static bool TryParseNPC(string s, out string NpcName, ParseErrorInfo ErrorInfo)
-        {
-            NpcName = null;
-
-            if (s.Length == 0)
-                return false;
-
-            if (s.ToUpper().StartsWith("NPC_"))
-                NpcName = s.Substring(4);
-            else if (s == "WerewolfAltar")
-                NpcName = "Werewolf Altar";
-            else
-                return false;
-
-            return true;
         }
 
         private void ParseFavorNpc(string RawFavorNpc, ParseErrorInfo ErrorInfo)
@@ -886,38 +598,24 @@ namespace PgJsonObjects
                         {
                             if (RequirementFavorNpc == null && RequirementFavorLevel == Favor.Internal_None)
                             {
-                                string RawRequirementFavorNpc = RawRequirement["Npc"] as string;
-
                                 Favor ParsedFavor;
                                 StringToEnumConversion<Favor>.TryParse(RawRequirement["Level"] as string, out ParsedFavor, ErrorInfo);
                                 RequirementFavorLevel = ParsedFavor;
 
-                                if (RawRequirementFavorNpc == null)
-                                    ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                                else
+                                if (RequirementFavorLevel != Favor.Internal_None)
                                 {
-                                    string[] AreaNpc = RawRequirementFavorNpc.Split('/');
-                                    if (AreaNpc.Length == 2)
+                                    MapAreaName ParsedArea;
+                                    string NpcName;
+                                    if (TryParseNPC(RawRequirement["Npc"] as string, out ParsedArea, out NpcName, ErrorInfo))
                                     {
-                                        string RawMapName = AreaNpc[0];
-                                        if (RawMapName.StartsWith("Area"))
-                                        {
-                                            MapAreaName ParsedArea;
-                                            StringToEnumConversion<MapAreaName>.TryParse(RawMapName.Substring(4), out ParsedArea, ErrorInfo);
-                                            RequirementFavorNpcArea = ParsedArea;
-                                        }
-                                        else
-                                            ErrorInfo.AddInvalidObjectFormat("Quest FavorNpc");
-
-                                        RequirementFavorNpc = AreaNpc[1];
-                                        if (RequirementFavorNpc.ToUpper().StartsWith("NPC_"))
-                                            RequirementFavorNpc = RequirementFavorNpc.Substring(4);
-                                        else if (RequirementFavorNpc == "WerewolfAltar")
-                                            RequirementFavorNpc = "Werewolf Altar";
+                                        RequirementFavorNpcArea = ParsedArea;
+                                        RequirementFavorNpc = NpcName;
                                     }
                                     else
                                         ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
                                 }
+                                else
+                                    ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
                             }
                             else
                                 ErrorInfo.AddDuplicateString("Quest", "FavorLevelRequirements");
@@ -974,16 +672,21 @@ namespace PgJsonObjects
                     {
                         if (RawRequirement.ContainsKey("Skill") && RawRequirement.ContainsKey("Level"))
                         {
-                            if (RequirementSkill == PowerSkill.Internal_None)
+                            if (RequirementSkill == PowerSkill.Internal_None && !RawRequirementSkillLevel.HasValue)
                             {
                                 PowerSkill ParsedSkill;
                                 StringToEnumConversion<PowerSkill>.TryParse(RawRequirement["Skill"] as string, out ParsedSkill, ErrorInfo);
                                 RequirementSkill = ParsedSkill;
 
-                                if (RawRequirement["Level"] is int)
-                                    RequirementSkillLevel = (int)RawRequirement["Level"];
+                                if (RequirementSkill != PowerSkill.Internal_None)
+                                {
+                                    if (RawRequirement["Level"] is int)
+                                        RawRequirementSkillLevel = (int)RawRequirement["Level"];
+                                    else
+                                        ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
+                                }
                                 else
-                                    ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
+                                    ErrorInfo.AddDuplicateString("Quest", "SkillRequirements");
                             }
                             else
                                 ErrorInfo.AddDuplicateString("Quest", "SkillRequirements");
@@ -1034,16 +737,21 @@ namespace PgJsonObjects
                     {
                         if (RawReward.ContainsKey("Skill") && RawReward.ContainsKey("Xp"))
                         {
-                            if (RewardSkill == PowerSkill.Internal_None)
+                            if (RewardSkill == PowerSkill.Internal_None && !RawRewardSkillXp.HasValue)
                             {
                                 PowerSkill ParsedSkill;
                                 StringToEnumConversion<PowerSkill>.TryParse(RawReward["Skill"] as string, out ParsedSkill, ErrorInfo);
                                 RewardSkill = ParsedSkill;
 
-                                if (RawReward["Xp"] is int)
-                                    RewardSkillXp = (int)RawReward["Xp"];
+                                if (RewardSkill != PowerSkill.Internal_None)
+                                {
+                                    if (RawReward["Xp"] is int)
+                                        RawRewardSkillXp = (int)RawReward["Xp"];
+                                    else
+                                        ErrorInfo.AddDuplicateString("Quest", "SkillRewards");
+                                }
                                 else
-                                    ErrorInfo.AddInvalidObjectFormat("Quest Rewards");
+                                    ErrorInfo.AddDuplicateString("Quest", "SkillRewards");
                             }
                             else
                                 ErrorInfo.AddDuplicateString("Quest", "SkillRewards");
@@ -1354,6 +1062,54 @@ namespace PgJsonObjects
             StringToEnumConversion<PowerSkill>.TryParse(RawWorkOrderSkill, out ParsedSkill, ErrorInfo);
             WorkOrderSkill = ParsedSkill;
         }
+
+        public static bool TryParseNPC(string s, out MapAreaName ParsedArea, out string NpcName, ParseErrorInfo ErrorInfo)
+        {
+            ParsedArea = MapAreaName.Internal_None;
+            NpcName = null;
+
+            if (s.Length == 0)
+                return false;
+
+            string[] AreaNpc = s.Split('/');
+            if (AreaNpc.Length == 2)
+            {
+                string RawMapName = AreaNpc[0];
+                if (RawMapName.StartsWith("Area"))
+                    StringToEnumConversion<MapAreaName>.TryParse(RawMapName.Substring(4), out ParsedArea, ErrorInfo);
+                else
+                    return false;
+
+                string Npc = AreaNpc[1];
+                if (Npc.ToUpper().StartsWith("NPC_"))
+                    NpcName = Npc.Substring(4);
+                else if (Npc == "WerewolfAltar")
+                    NpcName = "Werewolf Altar";
+                else
+                    return false;
+            }
+            else
+                return false;
+
+            return true;
+        }
+
+        public static bool TryParseNPC(string s, out string NpcName, ParseErrorInfo ErrorInfo)
+        {
+            NpcName = null;
+
+            if (s.Length == 0)
+                return false;
+
+            if (s.ToUpper().StartsWith("NPC_"))
+                NpcName = s.Substring(4);
+            else if (s == "WerewolfAltar")
+                NpcName = "Werewolf Altar";
+            else
+                return false;
+
+            return true;
+        }
         #endregion
 
         #region Json Reconstruction
@@ -1374,18 +1130,23 @@ namespace PgJsonObjects
 
                 AddWithFieldSeparator(ref Result, Name);
                 AddWithFieldSeparator(ref Result, Description);
-                AddWithFieldSeparator(ref Result, CombinedReuseTime);
                 if (RequirementToSustain != EffectKeyword.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.EffectKeywordTextMap[RequirementToSustain]);
                 if (RawIsCancellable.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Cancellable");
                 foreach (QuestObjective Item in QuestObjectiveList)
                     AddWithFieldSeparator(ref Result, Item.Description);
-                AddWithFieldSeparator(ref Result, CombinedRewardsXp);
-                AddWithFieldSeparator(ref Result, CombinedRewardsItem);
+                foreach (QuestRewardXp Reward in RewardsXPList)
+                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Reward.Skill]);
+                foreach (QuestRewardItem Reward in QuestRewardsItemList)
+                    AddWithFieldSeparator(ref Result, Reward.QuestItem.Name);
                 if (PrerequisiteQuest != null)
                     AddWithFieldSeparator(ref Result, PrerequisiteQuest.Name);
-                AddWithFieldSeparator(ref Result, CombinedFavorNPC);
+                if (FavorNpc != null)
+                {
+                    AddWithFieldSeparator(ref Result, FavorNpc);
+                    AddWithFieldSeparator(ref Result, TextMaps.MapAreaNameTextMap[FavorNpcArea]);
+                }
                 AddWithFieldSeparator(ref Result, PrefaceText);
                 AddWithFieldSeparator(ref Result, SuccessText);
                 AddWithFieldSeparator(ref Result, MidwayText);
@@ -1393,20 +1154,28 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.FavorTextMap[PrerequisiteFavorLevel]);
                 if (RewardAbility != null)
                     AddWithFieldSeparator(ref Result, RewardAbility.Name);
-                AddWithFieldSeparator(ref Result, CombinedRequirementFavorNPC);
+                if (RequirementFavorNpc != null)
+                {
+                    AddWithFieldSeparator(ref Result, TextMaps.FavorTextMap[RequirementFavorLevel]);
+                    AddWithFieldSeparator(ref Result, RequirementFavorNpc);
+                    AddWithFieldSeparator(ref Result, TextMaps.MapAreaNameTextMap[RequirementFavorNpcArea]);
+                }
                 if (RequirementQuest != null)
                     AddWithFieldSeparator(ref Result, RequirementQuest.Name);
                 if (RequirementGuildQuest != null)
                     AddWithFieldSeparator(ref Result, RequirementGuildQuest.Name);
-                AddWithFieldSeparator(ref Result, CombinedRequirementSkill);
-                AddWithFieldSeparator(ref Result, CombinedSkillXpReward);
+                if (ConnectedRequirementSkill != null)
+                    AddWithFieldSeparator(ref Result, ConnectedRequirementSkill.Name);
+                if (ConnectedRewardSkill != null)
+                    AddWithFieldSeparator(ref Result, ConnectedRewardSkill.Name);
                 if (RewardRecipe != null)
                     AddWithFieldSeparator(ref Result, RewardRecipe.Name);
                 foreach (QuestRewardItem Item in PreGiveItemList)
-                    AddWithFieldSeparator(ref Result, Item.CombinedName);
+                    AddWithFieldSeparator(ref Result, Item.QuestItem.Name);
                 foreach (Recipe Item in PreGiveRecipeList)
                     AddWithFieldSeparator(ref Result, Item.Name);
-                AddWithFieldSeparator(ref Result, CombinedKeywords);
+                foreach (QuestKeyword Keyword in KeywordList)
+                    AddWithFieldSeparator(ref Result, TextMaps.QuestKeywordTextMap[Keyword]);
                 if (RewardEffect != null)
                     AddWithFieldSeparator(ref Result, RewardEffect.Name);
                 if (RawIsAutoPreface.HasValue)
@@ -1457,19 +1226,22 @@ namespace PgJsonObjects
             ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsConnectedRewardSkillParsed, ref IsConnected, this);
             ConnectedWorkOrderSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, WorkOrderSkill, ConnectedWorkOrderSkill, ref IsConnectedWorkOrderSkillParsed, ref IsConnected, this);
 
-            if (PreGiveRecipeList == null)
+            List<string> ToRemove = new List<string>();
+            foreach (string RawPreGiveRecipe in RawPreGiveRecipeList)
             {
-                PreGiveRecipeList = new List<Recipe>();
-                foreach (string RawPreGiveRecipe in RawPreGiveRecipeList)
+                Recipe PreGiveRecipe = null;
+                bool IsRawPreGiveRecipeParsed = false;
+                PreGiveRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawPreGiveRecipe, PreGiveRecipe, ref IsRawPreGiveRecipeParsed, ref IsConnected, this);
+                if (PreGiveRecipe != null)
                 {
-                    Recipe PreGiveRecipe = null;
-                    bool IsRawPreGiveRecipeParsed = false;
-                    PreGiveRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawPreGiveRecipe, PreGiveRecipe, ref IsRawPreGiveRecipeParsed, ref IsConnected, this);
-
-                    if (PreGiveRecipe != null)
-                        PreGiveRecipeList.Add(PreGiveRecipe);
+                    ToRemove.Add(RawPreGiveRecipe);
+                    PreGiveRecipeList.Add(PreGiveRecipe);
                 }
             }
+
+            foreach (string RawPreGiveRecipe in ToRemove)
+                RawPreGiveRecipeList.Remove(RawPreGiveRecipe);
+
             return IsConnected;
         }
 

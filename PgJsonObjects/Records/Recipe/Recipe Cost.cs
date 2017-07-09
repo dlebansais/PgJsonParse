@@ -72,6 +72,9 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
+                if (Currency != RecipeCurrency.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.RecipeCurrencyTextMap[Currency]);
+
                 return Result;
             }
         }

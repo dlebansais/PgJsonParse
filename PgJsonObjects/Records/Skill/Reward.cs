@@ -6,6 +6,7 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public int RewardLevel { get; private set; }
+        public List<Race> RaceRestrictionList { get; private set; } = new List<Race>();
         public Ability Ability { get; private set; }
         private string RawAbility;
         private bool IsRawAbilityParsed;
@@ -21,33 +22,6 @@ namespace PgJsonObjects
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
         public Skill ParentSkill { get; private set; }
-
-        private static string AddRewardString(string Result, string Reward)
-        {
-            return (Result.Length > 0) ? (Result + ", " + Reward) : Reward;
-        }
-
-        public string CombinedReward
-        {
-            get
-            {
-                string Result = "";
-
-                if (Ability != null)
-                    Result = AddRewardString(Result, "Ability: " + Ability.Name);
-
-                if (Notes != null)
-                    Result = AddRewardString(Result, Notes);
-
-                if (Recipe != null)
-                    Result = AddRewardString(Result, "Recipe: " + Recipe.Name);
-
-                if (BonusSkill != PowerSkill.Internal_None)
-                    Result = AddRewardString(Result, "+1 " + TextMaps.PowerSkillTextMap[BonusSkill]);
-
-                return Result;
-            }
-        }
         #endregion
 
         #region Parsing
@@ -55,9 +29,25 @@ namespace PgJsonObjects
         {
             base.InitializeKey(EntryRaw, ErrorInfo);
 
-            int ParsedRewardLevel;
-            if (int.TryParse(Key, out ParsedRewardLevel))
-                RewardLevel = ParsedRewardLevel;
+            string[] SplitKey = Key.Split('_');
+
+            if (SplitKey.Length >= 1)
+            {
+                int ParsedRewardLevel;
+                if (int.TryParse(SplitKey[0], out ParsedRewardLevel))
+                    RewardLevel = ParsedRewardLevel;
+                else
+                    ErrorInfo.AddInvalidObjectFormat("Reward Level");
+
+                for (int i = 1; i < SplitKey.Length; i++)
+                {
+                    Race ParsedRace;
+                    if (StringToEnumConversion<Race>.TryParse(SplitKey[i], out ParsedRace, ErrorInfo))
+                        RaceRestrictionList.Add(ParsedRace);
+                }
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("Reward");
         }
 
         protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
@@ -149,10 +139,10 @@ namespace PgJsonObjects
                 string Result = "";
 
                 if (Ability != null)
-                    Result += Ability.TextContent + JsonGenerator.FieldSeparator;
-                Result += Notes + JsonGenerator.FieldSeparator;
+                    AddWithFieldSeparator(ref Result, Ability.Name);
+                AddWithFieldSeparator(ref Result, Notes);
                 if (Recipe != null)
-                    Result += Recipe.TextContent + JsonGenerator.FieldSeparator;
+                    AddWithFieldSeparator(ref Result, Recipe.Name);
 
                 return Result;
             }
