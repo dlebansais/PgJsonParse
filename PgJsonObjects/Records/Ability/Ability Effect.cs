@@ -136,5 +136,6 @@
         DamageEngaged,
         PowerCostReduction,
         Rezz,
+        ConsumeMushroomTurret,
     }
 }

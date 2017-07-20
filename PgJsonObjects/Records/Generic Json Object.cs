@@ -75,6 +75,34 @@ namespace PgJsonObjects
             }
         }
 
+        protected virtual void ParseFields(ArrayList ArrayFields, ParseErrorInfo ErrorInfo)
+        {
+            InitParsedFields();
+
+            foreach (object ArrayField in ArrayFields)
+            {
+                Dictionary<string, object> Fields;
+                if ((Fields = ArrayField as Dictionary<string, object>) != null)
+                {
+                    foreach (KeyValuePair<string, object> Field in Fields)
+                    {
+                        if (IsCustomFieldParsed(Field, ErrorInfo))
+                            continue;
+
+                        else if (FieldTable.ContainsKey(Field.Key))
+                        {
+                            ParsedFields[Field.Key] = true;
+                            FieldTable[Field.Key](this as T, Field.Value, ErrorInfo);
+                        }
+                        else
+                            ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
+                    }
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
+            }
+        }
+
         protected void ParseStringTable(ArrayList RawArray, List<string> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
         {
             foreach (object Item in RawArray)
@@ -127,6 +155,9 @@ namespace PgJsonObjects
 
         protected void AddLinkBack(GenericJsonObject LinkBack)
         {
+            if (LinkBack == null)
+                return;
+
             if (LinkBack is RecipeItem)
                 LinkBack = (LinkBack as RecipeItem).ParentRecipe;
             else if (LinkBack is QuestObjective)
@@ -172,8 +203,11 @@ namespace PgJsonObjects
             InitializeKey(EntryRaw, ErrorInfo);
 
             Dictionary<string, object> Fields;
+            ArrayList ArrayFields;
             if ((Fields = EntryRaw.Value as Dictionary<string, object>) != null)
                 ParseFields(Fields, ErrorInfo);
+            else if ((ArrayFields = EntryRaw.Value as ArrayList) != null)
+                ParseFields(ArrayFields, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
         }

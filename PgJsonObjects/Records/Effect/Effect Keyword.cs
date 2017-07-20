@@ -201,5 +201,7 @@
         Event_SummerExperience,
         Event_RabbitInvasion,
         LongEar,
+        MummyDisease,
+        BarutisCurse,
     }
 }

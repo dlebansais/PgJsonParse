@@ -439,5 +439,8 @@
         LongEar,
         CarrotPower,
         SnowHareMode,
+        MushroomTurret,
+        MeleeKnife,
+        BunFuBlitz,
     }
 }

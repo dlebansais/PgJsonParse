@@ -251,6 +251,15 @@
         MeditationBreath20,
         MeditationPower30,
         MeditationDeathAvoidance50,
+        BindToTeleportCircle1,
+        SaveCurrentTeleportCircle,
+        TeleportToBoundTeleportCircle1,
+        BindToTeleportCircle2,
+        TeleportToBoundTeleportCircle2,
+        BindToMushroomCircle1,
+        SaveCurrentMushroomCircle,
+        TeleportToBoundMushroomCircle1,
+        TeleportToLastUsedMushroomCircle,
 
         DecomposeItemByTSysLevels,
         ExtractTSysPower,
@@ -259,5 +268,6 @@
         CraftingEnhanceItem,
         AddItemTSysPower,
         BrewItem,
+        AdjustRecipeReuseTime,
     }
 }

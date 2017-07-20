@@ -56,6 +56,7 @@ namespace PgJsonObjects
             { ItemUseVerb.Equip, "Equip"},
             { ItemUseVerb.HuddleForWarmth, "Huddle For Warmth"},
             { ItemUseVerb.AgeLiquor, "Age Liquor"},
+            { ItemUseVerb.CleanOffDust, "Clean Off Dust" }
         };
 
         public static readonly Dictionary<RecipeEffect, string> RecipeEffectStringMap = new Dictionary<RecipeEffect, string>()
@@ -254,6 +255,7 @@ namespace PgJsonObjects
             { AbilityAnimation.Attack_Bard_ThunderousNote, "Thunderous Note" },
             { AbilityAnimation.Attack_Bard_Disharmony, "Disharmony" },
             { AbilityAnimation.PlayingDead, "Playing Dead" },
+            { AbilityAnimation.Attack_IceMagic_FreezeSolid, "Freeze Solid" },
         };
 
         public static readonly Dictionary<Deaths, string> DeathsTextMap = new Dictionary<Deaths, string>()
@@ -384,6 +386,8 @@ namespace PgJsonObjects
             { Deaths.LoudMusic, "Loud Music" },
             { Deaths.RabbitScratch, "Rabbit Scratch" },
             { Deaths.RabbitKick, "Rabbit Kick" },
+            { Deaths.MummyDisease, "Mummy Disease" },
+            { Deaths.MummyWrap, "Mummy Wrap" },
         };
 
         public static readonly Dictionary<PowerSkill, string> PowerSkillTextMap = new Dictionary<PowerSkill, string>()
@@ -1069,6 +1073,9 @@ namespace PgJsonObjects
             { AbilityKeyword.LongEar, "Long Ear" },
             { AbilityKeyword.CarrotPower, "Carrot Power" },
             { AbilityKeyword.SnowHareMode, "Snow Hare Mode" },
+            { AbilityKeyword.MushroomTurret, "Mushroom Turret" },
+            { AbilityKeyword.MeleeKnife, "Melee Knife" },
+            { AbilityKeyword.BunFuBlitz, "Bun-Fu Blitz" },
         };
 
         public static readonly Dictionary<AbilityPetType, string> AbilityPetTypeTextMap = new Dictionary<AbilityPetType, string>()
@@ -1140,6 +1147,7 @@ namespace PgJsonObjects
             { RecipeKeyword.StorageCrateDruid, "Druid Storage Crate" },
             { RecipeKeyword.ShamanicInfusion, "Shamanic Infusion" },
             { RecipeKeyword.ClownfishFillet, "Clownfish Fillet" },
+            { RecipeKeyword.MushroomTeleport, "Mushroom Teleport" },
         };
 
         public static readonly Dictionary<Appearance, string> AppearanceTextMap = new Dictionary<Appearance, string>()
@@ -1485,7 +1493,7 @@ namespace PgJsonObjects
             { EffectStackingType.NotSoSmart, "Not So Smart" },
             { EffectStackingType.BruisingBlow, "Bruising Blow" },
             { EffectStackingType.WerewolfHowlBuff, "Werewolf Howl Buff" },
-            { EffectStackingType.SeeRed, "See Red" }, 
+            { EffectStackingType.SeeRed, "See Red" },
             { EffectStackingType.StrategicPreparation, "Strategic Preparation" },
             { EffectStackingType.PoisonAirCurse, "Poison Air Curse" },
             { EffectStackingType.RedCrystalCurse, "Red Crystal Curse" },
@@ -1548,9 +1556,14 @@ namespace PgJsonObjects
             { EffectStackingType.DrugWithdrawal_Alcohol, "Alcohol Drug Withdrawal" },
             { EffectStackingType.Soberize, "Soberize" },
             { EffectStackingType.RabbitsFoot, "Rabbit's Foot" },
-            { EffectStackingType.InnateColdProtection,"Innate Cold Protection" },
-            { EffectStackingType.RabbitsFootBurstEvade,"Rabbit's Foot Burst Evade" },
-            { EffectStackingType.RabbitsFootXP,"Rabbit's Foot XP" },
+            { EffectStackingType.InnateColdProtection, "Innate Cold Protection" },
+            { EffectStackingType.RabbitsFootBurstEvade, "Rabbit's Foot Burst Evade" },
+            { EffectStackingType.RabbitsFootXP, "Rabbit's Foot XP" },
+            { EffectStackingType.ToxinResist, "Toxin Resistance" },
+            { EffectStackingType.PoetryAppreciation4, "Poetry Appreciation (4)" },
+            { EffectStackingType.PostCoitalBliss, "Post Coital Bliss" },
+            { EffectStackingType.AdminGiftSpeed, "Admin Gift Speed" },
+            { EffectStackingType.BarutisCurse, "Barutis Curse" },
         };
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTextMap = new Dictionary<EffectKeyword, string>()
@@ -1753,7 +1766,9 @@ namespace PgJsonObjects
             { EffectKeyword.AlcoholInBody, "Alcohol In Body" },
             { EffectKeyword.Event_SummerExperience, "Summer Experience Event" },
             { EffectKeyword.Event_RabbitInvasion,"Rabbit Invasion Event" },
-            { EffectKeyword.LongEar,"Long Ear" },
+            { EffectKeyword.LongEar, "Long Ear" },
+            { EffectKeyword.MummyDisease, "Mummy Disease" },
+            { EffectKeyword.BarutisCurse, "Barutis Curse" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -2645,6 +2660,30 @@ namespace PgJsonObjects
             { ItemKeyword.GrilledDish, "Grilled Dish" },
             { ItemKeyword.RabbitMalachite, "Rabbit Malachite" },
             { ItemKeyword.IceStaff, "Ice Staff" },
+            { ItemKeyword.MummyWrapping, "Mummy Wrapping" },
+            { ItemKeyword.Xogrite, "Xogrite" },
+            { ItemKeyword.DelicateTackHammer, "Delicate Tack Hammer" },
+            { ItemKeyword.SnackingBread, "Snacking Bread" },
+            { ItemKeyword.RawMushroom, "Raw Mushroom" },
+            { ItemKeyword.Mushroom14, "Mushroom #14" },
+            { ItemKeyword.Mushroom15, "Mushroom #15" },
+            { ItemKeyword.MushroomTurret1, "Mushroom Turret #1" },
+            { ItemKeyword.MushroomTurret2, "Mushroom Turret #2" },
+            { ItemKeyword.MushroomTurret3, "Mushroom Turret #3" },
+            { ItemKeyword.MushroomTurret4, "Mushroom Turret #4" },
+            { ItemKeyword.MushroomTurret5, "Mushroom Turret #5" },
+            { ItemKeyword.MushroomTurret6, "Mushroom Turret #6" },
+            { ItemKeyword.MushroomTurret7, "Mushroom Turret #7" },
+            { ItemKeyword.MushroomSubstrate, "Mushroom Substrate" },
+            { ItemKeyword.MushroomSubstrate_Dirt, "MushroomSubstrate (Dirt)" },
+            { ItemKeyword.MushroomSubstrate_Bone, "MushroomSubstrate (Bone)" },
+            { ItemKeyword.MushroomSubstrate_Meat, "MushroomSubstrate (Meat)" },
+            { ItemKeyword.MushroomSubstrate_Organs, "MushroomSubstrate (Organs)" },
+            { ItemKeyword.MushroomSubstrate_Limbs, "MushroomSubstrate (Limbs)" },
+            { ItemKeyword.MushroomSubstrate_Exotic, "MushroomSubstrate (Exotic)" },
+            { ItemKeyword.MushroomBox, "Mushroom Box" },
+            { ItemKeyword.MushroomGrowBox, "Mushroom Grow Box" },
+            { ItemKeyword.ResistancePotion, "Resistance Potion" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -2709,6 +2748,8 @@ namespace PgJsonObjects
             { ItemUseVerb.Activate, "Activate"},
             { ItemUseVerb.HuddleForWarmth, "Huddle For Warmth"},
             { ItemUseVerb.AgeLiquor, "Age Liquor"},
+            { ItemUseVerb.CleanOffDust, "Clean Off Dust"},
+
         };
 
         public static readonly Dictionary<MapAreaName, string> MapAreaNameTextMap = new Dictionary<MapAreaName, string>()
@@ -3072,6 +3113,15 @@ namespace PgJsonObjects
             { RecipeEffect.MeditationBreath20, "Meditation Breath 20" },
             { RecipeEffect.MeditationPower30, "Meditation Power 30" },
             { RecipeEffect.MeditationDeathAvoidance50, "Meditation Death Avoidance 50" },
+            { RecipeEffect.BindToTeleportCircle1, "Bind To Teleport Circle #1" },
+            { RecipeEffect.SaveCurrentTeleportCircle, "Save Current Teleport Circle" },
+            { RecipeEffect.TeleportToBoundTeleportCircle1, "Teleport To Bound Teleport Circle #1" },
+            { RecipeEffect.BindToTeleportCircle2, "Bind To Teleport Circle #2" },
+            { RecipeEffect.TeleportToBoundTeleportCircle2, "Teleport To Bound Teleport Circle #2" },
+            { RecipeEffect.BindToMushroomCircle1, "Bind To Mushroom Circle #1" },
+            { RecipeEffect.SaveCurrentMushroomCircle, "Save Current Mushroom Circle" },
+            { RecipeEffect.TeleportToBoundMushroomCircle1, "Teleport To Bound Mushroom Circle #1" },
+            { RecipeEffect.TeleportToLastUsedMushroomCircle, "Teleport To Last Used Mushroom Circle" },
         };
 
         public static readonly Dictionary<DecomposeMaterial, string> DecomposeMaterialTextMap = new Dictionary<DecomposeMaterial, string>()
@@ -3130,7 +3180,7 @@ namespace PgJsonObjects
             { CraftedBoost.CraftedWinterCoat, "Winter Coat" },
             { CraftedBoost.CraftedClothShirt, "Cloth Shirt" },
             { CraftedBoost.CraftedSnailCoat, "Snail Coat" },
-            { CraftedBoost.CraftedCowBarding, "Cow Barding" }, 
+            { CraftedBoost.CraftedCowBarding, "Cow Barding" },
             { CraftedBoost.CraftedSpringFairyShirt, "Spring Fairy Shirt" },
             { CraftedBoost.CraftedWerewolfChest, "Werewolf Chest" },
             { CraftedBoost.CraftedSpiderChest, "Spider Chest" },
@@ -3285,6 +3335,9 @@ namespace PgJsonObjects
             { RecipeItemKey.BrewingGarnishB4, "Brewing Garnish" },
             { RecipeItemKey.BrewingAnimalPartC5, "Brewing Animal Part" },
             { RecipeItemKey.BrewingGarnishC4, "Brewing Garnish" },
+            { RecipeItemKey.Meat, "Meat" },
+            { RecipeItemKey.BodyOrgan, "BodyOrgan" },
+            { RecipeItemKey.CorpseLimb, "CorpseLimb" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
@@ -3422,6 +3475,37 @@ namespace PgJsonObjects
             { QuestObjectiveKillTarget.ExtraTag_EltibuleBoar, "Eltibule Boar" },
             { QuestObjectiveKillTarget.CunningWolf, "Cunning Wolf" },
             { QuestObjectiveKillTarget.PoisonSlug2, "Poison Slug" },
+            { QuestObjectiveKillTarget.Mummy, "Mummy" },
+            { QuestObjectiveKillTarget.Baruti, "Baruti" },
+            { QuestObjectiveKillTarget.TalSaka, "Tal Saka" },
+            { QuestObjectiveKillTarget.GazlukCaveSnail, "Gazluk Cave Snail" },
+            { QuestObjectiveKillTarget.GazlukCaveColdSlime, "Gazluk Cave Cold Slime" },
+            { QuestObjectiveKillTarget.Murklinger, "Murklinger" },
+        };
+
+        public static readonly Dictionary<MoonPhases, string> MoonPhasesTextMap = new Dictionary<MoonPhases, string>()
+        {
+            { MoonPhases.Internal_None, "" },
+            { MoonPhases.QuarterMoon, "Quarter Moon" },
+            { MoonPhases.WaxingGibbousMoon, "Waxing Gibbous Moon" },
+            { MoonPhases.FullMoon, "Full Moon" },
+            { MoonPhases.WaningGibbousMoon, "Waning Gibbous Moon" },
+            { MoonPhases.LastQuarterMoon, "Last Quarter Moon" },
+            { MoonPhases.WaningCrescentMoon, "Waning Crescent Moon" },
+            { MoonPhases.NewMoon, "New Moon" },
+            { MoonPhases.WaxingCrescentMoon, "Waxing Crescent Moon" },
+        };
+
+        public static readonly Dictionary<SourceTypes, string> SourceTypesTextMap = new Dictionary<SourceTypes, string>()
+        {
+            { SourceTypes.Internal_None, "" },
+            { SourceTypes.AutomaticFromSkill, "Automatic From Skill" },
+            { SourceTypes.Item, "Item" },
+            { SourceTypes.Training, "Training" },
+            { SourceTypes.Effect, "Effect" },
+            { SourceTypes.Quest, "Quest" },
+            { SourceTypes.Gift, "Gift" },
+            { SourceTypes.HangOut, "HangOut" },
         };
     }
 }

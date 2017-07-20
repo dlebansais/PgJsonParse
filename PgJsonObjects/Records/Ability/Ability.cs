@@ -92,6 +92,7 @@ namespace PgJsonObjects
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         public List<AbilityRequirement> CombinedRequirementList { get; } = new List<AbilityRequirement>();
         public ConsumedItem ConsumedItem { get; private set; }
+        public AbilitySource Source { get; private set; }
 
         public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
         {
@@ -126,6 +127,15 @@ namespace PgJsonObjects
                 if (StringToEnumConversion<ConsumedItems>.TryParse(RawConsumedItemKeyword, null, ConsumedItems.Internal_None, out ParsedConsumedItem, null))
                     ConsumedItem = new ConsumedItemByKeyword(ParsedConsumedItem, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
             }
+        }
+
+        public void SetSource(AbilitySource Source, ParseErrorInfo ErrorInfo)
+        {
+            if (this.Source == null)
+                this.Source = Source;
+
+            else if (this.Source != Source)
+                ErrorInfo.AddInvalidObjectFormat("Ability Source");
         }
         #endregion
 
@@ -1316,6 +1326,62 @@ namespace PgJsonObjects
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeCarrot, TimeSpan.Zero);
                 AdditionalResult.Target = AbilityEffectTarget.Self;
                 AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0] });
+                AddResult(AdditionalResult);
+            }
+
+            else if (Tools.Scan(s, "Consumes one Basic Mushroom Turret", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeMushroomTurret, TimeSpan.Zero);
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = 1 });
+                AddResult(AdditionalResult);
+            }
+
+            else if (Tools.Scan(s, "Consumes one Potent Mushroom Turret", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeMushroomTurret, TimeSpan.Zero);
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = 1 });
+                AddResult(AdditionalResult);
+            }
+
+            else if (Tools.Scan(s, "Consumes one Deadly Mushroom Turret", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeMushroomTurret, TimeSpan.Zero);
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = 1 });
+                AddResult(AdditionalResult);
+            }
+
+            else if (Tools.Scan(s, "Consumes one Malevolent Mushroom Turret", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeMushroomTurret, TimeSpan.Zero);
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = 1 });
+                AddResult(AdditionalResult);
+            }
+
+            else if (Tools.Scan(s, "Consumes one Horrific Mushroom Turret", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeMushroomTurret, TimeSpan.Zero);
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = 1 });
+                AddResult(AdditionalResult);
+            }
+
+            else if (Tools.Scan(s, "Consumes one Disastrous Mushroom Turret", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeMushroomTurret, TimeSpan.Zero);
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = 1 });
+                AddResult(AdditionalResult);
+            }
+
+            else if (Tools.Scan(s, "Consumes one Nightmarish Mushroom Turret", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeMushroomTurret, TimeSpan.Zero);
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = 1 });
                 AddResult(AdditionalResult);
             }
 
@@ -2770,8 +2836,8 @@ namespace PgJsonObjects
                 //TODO PvE, PvP
                 if (SharesResetTimerWith != null)
                     AddWithFieldSeparator(ref Result, SharesResetTimerWith.Name);
-                if (Skill != PowerSkill.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
+                if (ConnectedSkill != null)
+                    AddWithFieldSeparator(ref Result, ConnectedSkill.Name);
                 AddWithFieldSeparator(ref Result, SpecialInfo);
                 if (Target != AbilityTarget.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.AbilityTargetTextMap[Target]);
@@ -2888,6 +2954,28 @@ namespace PgJsonObjects
                 ErrorInfo.AddMissingKey(Keyword.ToString());
 
             return AbilityList;
+        }
+
+        public static Ability ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, int AbilityId, Ability Ability, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawAbilityParsed)
+                return Ability;
+
+            IsRawAbilityParsed = true;
+            string RawAbilityId = "ability_" + AbilityId;
+
+            foreach (KeyValuePair<string, Ability> Entry in AbilityTable)
+                if (Entry.Value.Key == RawAbilityId)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawAbilityId);
+
+            return null;
         }
         #endregion
 

@@ -1263,7 +1263,32 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            ErrorInfo.AddMissingKey(RawQuestName);
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawQuestName);
+
+            return null;
+        }
+
+        public static Quest ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Quest> QuestTable, int QuestId, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawQuestParsed)
+                return ParsedQuest;
+
+            IsRawQuestParsed = true;
+
+            string RawQuestId = "quest_" + QuestId;
+
+            foreach (KeyValuePair<string, Quest> Entry in QuestTable)
+                if (Entry.Value.Key == RawQuestId)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawQuestId);
+
             return null;
         }
         #endregion

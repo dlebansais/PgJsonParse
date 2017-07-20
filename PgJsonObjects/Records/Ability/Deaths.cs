@@ -127,6 +127,8 @@
         BadMusic,
         LoudMusic,
         RabbitScratch,
-        RabbitKick
+        RabbitKick,
+        MummyDisease,
+        MummyWrap,
     }
 }

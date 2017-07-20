@@ -28,6 +28,8 @@ namespace PgJsonObjects
         public int BrewLevel { get; set; }
         public List<RecipeItemKey> BrewPartList { get; set; }
         public List<RecipeResultKey> BrewResultList { get; set; }
+        public int AdjustedReuseTime { get; set; }
+        public MoonPhases MoonPhase { get; set; }
 
         public string CombinedEffect
         {
@@ -83,6 +85,9 @@ namespace PgJsonObjects
 
                     case RecipeEffect.BrewItem:
                         return "Brewed drink";
+
+                    case RecipeEffect.AdjustRecipeReuseTime:
+                        return "Adjust Recipe Reuse Time, " + AdjustedReuseTime + "s during " + MoonPhase;
                 }
             }
         }

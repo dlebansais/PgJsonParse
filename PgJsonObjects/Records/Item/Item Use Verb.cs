@@ -42,5 +42,6 @@
         Activate,
         HuddleForWarmth,
         AgeLiquor,
+        CleanOffDust,
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public enum AbilityAnimation
+    public enum AbilityAnimation 
     {
         Internal_None,
         Attack_Unarmed_Punch,
@@ -145,5 +145,6 @@
         Attack_Bard_ThunderousNote,
         Attack_Bard_Disharmony,
         PlayingDead,
+        Attack_IceMagic_FreezeSolid,
     }
 }

@@ -87,8 +87,13 @@ namespace PgJsonObjects
         {
             if (RawStackSize > 1)
                 this.RawStackSize = RawStackSize;
-            else if (RawStackSize < 1)
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem StackSize");
+            else
+            {
+                this.RawStackSize = 1;
+
+                if (RawStackSize < 0)
+                    ErrorInfo.AddInvalidObjectFormat("RecipeItem StackSize");
+            }
         }
 
         private static void ParseFieldPercentChance(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)

@@ -247,5 +247,10 @@
         InnateColdProtection,
         RabbitsFootBurstEvade,
         RabbitsFootXP,
+        ToxinResist,
+        PoetryAppreciation4,
+        PostCoitalBliss,
+        AdminGiftSpeed,
+        BarutisCurse,
     }
 }

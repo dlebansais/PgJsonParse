@@ -88,5 +88,8 @@
         BrewingGarnishB4,
         BrewingAnimalPartC5,
         BrewingGarnishC4,
+        Meat,
+        BodyOrgan,
+        CorpseLimb,
     }
 }

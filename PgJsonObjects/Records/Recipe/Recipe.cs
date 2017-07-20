@@ -46,11 +46,24 @@ namespace PgJsonObjects
         public int? RawRewardSkillXp { get; private set; }
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
         public int? RawRewardSkillXpFirstTime { get; private set; }
+        public Recipe SharesResetTimerWith { get; private set; }
+        private string RawSharesResetTimerWith;
+        private bool IsSharesResetTimerWithParsed;
         #endregion
 
         #region Indirect Properties
         protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
+        public RecipeSource Source { get; private set; }
+
+        public void SetSource(RecipeSource Source, ParseErrorInfo ErrorInfo)
+        {
+            if (this.Source == null)
+                this.Source = Source;
+
+            else if (this.Source != Source)
+                ErrorInfo.AddInvalidObjectFormat("Recipe Source");
+        }
         #endregion
 
         #region Parsing
@@ -80,6 +93,7 @@ namespace PgJsonObjects
             { "RewardSkill", ParseFieldRewardSkill },
             { "RewardSkillXp", ParseFieldRewardSkillXp },
             { "RewardSkillXpFirstTime", ParseFieldRewardSkillXpFirstTime },
+            { "SharesResetTimerWith", ParseFieldSharesResetTimerWith },
         };
 
         private static void ParseFieldDescription(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -473,6 +487,9 @@ namespace PgJsonObjects
             if (ParseBrewItem(RawEffect, ErrorInfo, ref NewResultEffect))
                 return true;
 
+            if (ParseAdjustRecipeReuseTime(RawEffect, ErrorInfo, ref NewResultEffect))
+                return true;
+
             ErrorInfo.AddMissingEnum("RecipeEffect", RawEffect);
             return false;
         }
@@ -780,6 +797,32 @@ namespace PgJsonObjects
             return false;
         }
 
+        private bool ParseAdjustRecipeReuseTime(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
+        {
+            string AdjustRecipeReuseTimePattern = "AdjustRecipeReuseTime(";
+            if (RawEffect.StartsWith(AdjustRecipeReuseTimePattern) && RawEffect.EndsWith(")"))
+            {
+                RecipeEffect ConvertedRecipeEffect = RecipeEffect.AdjustRecipeReuseTime;
+                string Adjusted = RawEffect.Substring(AdjustRecipeReuseTimePattern.Length, RawEffect.Length - AdjustRecipeReuseTimePattern.Length - 1);
+                string[] AdjustedSplit = Adjusted.Split(',');
+
+                if (AdjustedSplit.Length == 2)
+                {
+                    int AdjustedReuseTime;
+                    MoonPhases MoonPhase;
+                    if (int.TryParse(AdjustedSplit[0].Trim(), out AdjustedReuseTime) && StringToEnumConversion<MoonPhases>.TryParse(AdjustedSplit[1].Trim(), out MoonPhase, ErrorInfo))
+                    {
+                        NewResultEffect.Effect = ConvertedRecipeEffect;
+                        NewResultEffect.AdjustedReuseTime = AdjustedReuseTime;
+                        NewResultEffect.MoonPhase = MoonPhase;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         private static void ParseFieldRewardSkill(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawRewardSkill;
@@ -822,6 +865,20 @@ namespace PgJsonObjects
         private void ParseRewardSkillXpFirstTime(int RawRewardSkillXpFirstTime, ParseErrorInfo ErrorInfo)
         {
             this.RawRewardSkillXpFirstTime = RawRewardSkillXpFirstTime;
+        }
+
+        private static void ParseFieldSharesResetTimerWith(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawSharesResetTimerWith;
+            if ((RawSharesResetTimerWith = Value as string) != null)
+                This.ParseSharesResetTimerWith(RawSharesResetTimerWith, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe SharesResetTimerWith");
+        }
+
+        private void ParseSharesResetTimerWith(string RawSharesResetTimerWith, ParseErrorInfo ErrorInfo)
+        {
+            this.RawSharesResetTimerWith = RawSharesResetTimerWith;
         }
         #endregion
 
@@ -1029,6 +1086,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.RecipeCurrencyTextMap[Item.Currency]);
                 if (ConnectedRewardSkill != null)
                     AddWithFieldSeparator(ref Result, ConnectedRewardSkill.Name);
+                if (SharesResetTimerWith != null)
+                    AddWithFieldSeparator(ref Result, SharesResetTimerWith.Name);
 
                 return Result;
             }
@@ -1060,6 +1119,9 @@ namespace PgJsonObjects
 
             foreach (RecipeCost Item in CostList)
                 Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            if (RawSharesResetTimerWith != null)
+                SharesResetTimerWith = PgJsonObjects.Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsSharesResetTimerWithParsed, ref IsConnected, this);
 
             return IsConnected;
         }
@@ -1136,6 +1198,28 @@ namespace PgJsonObjects
                 ErrorInfo.AddMissingKey(Keyword.ToString());
 
             return RecipeList;
+        }
+
+        public static Recipe ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, int RecipeId, Recipe Recipe, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawRecipeParsed)
+                return Recipe;
+
+            IsRawRecipeParsed = true;
+            string RawRecipeId = "recipe_" + RecipeId;
+
+            foreach (KeyValuePair<string, Recipe> Entry in RecipeTable)
+                if (Entry.Value.Key == RawRecipeId)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawRecipeId);
+
+            return null;
         }
         #endregion
 

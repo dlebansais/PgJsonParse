@@ -1082,6 +1082,14 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
+            foreach (KeyValuePair<string, Item> Entry in ItemTable)
+                if (Entry.Value.Name == RawItemName)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawItemName);
 

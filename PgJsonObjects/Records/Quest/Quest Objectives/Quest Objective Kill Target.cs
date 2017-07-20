@@ -67,5 +67,11 @@
         ExtraTag_EltibuleBoar,
         CunningWolf,
         PoisonSlug2,
+        Mummy,
+        Baruti,
+        TalSaka,
+        GazlukCaveSnail,
+        GazlukCaveColdSlime,
+        Murklinger,
     }
 }

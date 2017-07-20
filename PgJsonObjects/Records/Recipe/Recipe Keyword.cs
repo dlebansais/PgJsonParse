@@ -15,5 +15,6 @@
         StorageCrateDruid,
         ShamanicInfusion,
         ClownfishFillet,
+        MushroomTeleport,
     }
 }

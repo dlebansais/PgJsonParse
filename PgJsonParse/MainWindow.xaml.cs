@@ -51,6 +51,8 @@ namespace PgJsonParse
         #region Properties
         public ObservableCollection<PgJsonObjects.Ability> AbilityList { get; private set; }
         private Dictionary<string, PgJsonObjects.Ability> AbilityTable;
+        public ObservableCollection<PgJsonObjects.AbilitySource> AbilitySourceList { get; private set; }
+        private Dictionary<string, PgJsonObjects.AbilitySource> AbilitySourceTable;
         public ObservableCollection<PgJsonObjects.AdvancementTable> AdvancementTableList { get; private set; }
         private Dictionary<string, PgJsonObjects.AdvancementTable> AdvancementTableTable;
         public ObservableCollection<PgJsonObjects.Quest> QuestList { get; private set; }
@@ -67,6 +69,8 @@ namespace PgJsonParse
         private Dictionary<string, PgJsonObjects.Effect> EffectTable;
         public ObservableCollection<PgJsonObjects.Recipe> RecipeList { get; private set; }
         private Dictionary<string, PgJsonObjects.Recipe> RecipeTable;
+        public ObservableCollection<PgJsonObjects.RecipeSource> RecipeSourceList { get; private set; }
+        private Dictionary<string, PgJsonObjects.RecipeSource> RecipeSourceTable;
         public ObservableCollection<PgJsonObjects.Skill> SkillList { get; private set; }
         private Dictionary<string, PgJsonObjects.Skill> SkillTable;
         public ObservableCollection<PgJsonObjects.Power> PowerList { get; private set; }
@@ -360,6 +364,7 @@ namespace PgJsonParse
         private static readonly Dictionary<Type, string> JsonFileTable = new Dictionary<Type,string>()
         {
             { typeof(PgJsonObjects.Ability), "abilities" },
+            { typeof(PgJsonObjects.AbilitySource), "sources_abilities" },
             { typeof(PgJsonObjects.AdvancementTable), "advancementtables" },
             { typeof(PgJsonObjects.Attribute), "attributes" },
             { typeof(PgJsonObjects.DirectedGoal), "directedgoals" },
@@ -367,6 +372,7 @@ namespace PgJsonParse
             { typeof(PgJsonObjects.Item), "items" },
             { typeof(PgJsonObjects.Quest), "quests" },
             { typeof(PgJsonObjects.Recipe), "recipes" },
+            { typeof(PgJsonObjects.RecipeSource), "sources_recipes" },
             { typeof(PgJsonObjects.Skill), "skills" },
             //{ typeof(PgJsonObjects.String), "strings" },
             { typeof(PgJsonObjects.Power), "tsysclientinfo" },
@@ -461,7 +467,6 @@ namespace PgJsonParse
             Version = 0;
 
             bool Success = false;
-            string FileName = JsonFileTable[typeof(PgJsonObjects.Attribute)];
 
             HttpWebRequest Request = HttpWebRequest.Create("http://client.projectgorgon.com/fileversion.txt") as HttpWebRequest;
             using (WebResponse Response = Request.GetResponse())
@@ -683,6 +688,8 @@ namespace PgJsonParse
         {
             AbilityList = new ObservableCollection<PgJsonObjects.Ability>();
             AbilityTable = new Dictionary<string, PgJsonObjects.Ability>();
+            AbilitySourceList = new ObservableCollection<PgJsonObjects.AbilitySource>();
+            AbilitySourceTable = new Dictionary<string, PgJsonObjects.AbilitySource>();
             AdvancementTableList = new ObservableCollection<PgJsonObjects.AdvancementTable>();
             AdvancementTableTable = new Dictionary<string, PgJsonObjects.AdvancementTable>();
             DirectedGoalList = new ObservableCollection<PgJsonObjects.DirectedGoal>();
@@ -697,6 +704,8 @@ namespace PgJsonParse
             AttributeTable = new Dictionary<string, PgJsonObjects.Attribute>();
             RecipeList = new ObservableCollection<PgJsonObjects.Recipe>();
             RecipeTable = new Dictionary<string, PgJsonObjects.Recipe>();
+            RecipeSourceList = new ObservableCollection<PgJsonObjects.RecipeSource>();
+            RecipeSourceTable = new Dictionary<string, PgJsonObjects.RecipeSource>();
             ItemList = new ObservableCollection<PgJsonObjects.Item>();
             ItemTable = new Dictionary<string, PgJsonObjects.Item>();
             PowerList = new ObservableCollection<PgJsonObjects.Power>();
@@ -775,6 +784,16 @@ namespace PgJsonParse
                             AbilityTable.Add(Item.Key, Item);
                     }
 
+                    else if (TypeIndex == typeof(PgJsonObjects.AbilitySource))
+                    {
+                        Parser<PgJsonObjects.AbilitySource> AbilitySourceParser = new Parser<PgJsonObjects.AbilitySource>();
+                        AbilitySourceParser.LoadRaw(FilePath, AbilitySourceList, ErrorInfo);
+
+                        AbilitySourceTable.Clear();
+                        foreach (AbilitySource Item in AbilitySourceList)
+                            AbilitySourceTable.Add(Item.Key, Item);
+                    }
+
                     else if (TypeIndex == typeof(PgJsonObjects.AdvancementTable))
                     {
                         Parser<PgJsonObjects.AdvancementTable> AdvancementTableParser = new Parser<PgJsonObjects.AdvancementTable>();
@@ -845,6 +864,16 @@ namespace PgJsonParse
                             RecipeTable.Add(Item.Key, Item);
                     }
 
+                    else if (TypeIndex == typeof(PgJsonObjects.RecipeSource))
+                    {
+                        Parser<PgJsonObjects.RecipeSource> RecipeSourceParser = new Parser<PgJsonObjects.RecipeSource>();
+                        RecipeSourceParser.LoadRaw(FilePath, RecipeSourceList, ErrorInfo);
+
+                        RecipeSourceTable.Clear();
+                        foreach (RecipeSource Item in RecipeSourceList)
+                            RecipeSourceTable.Add(Item.Key, Item);
+                    }
+
                     else if (TypeIndex == typeof(PgJsonObjects.Skill))
                     {
                         Parser<PgJsonObjects.Skill> SkillParser = new Parser<PgJsonObjects.Skill>();
@@ -905,6 +934,9 @@ namespace PgJsonParse
             foreach (PgJsonObjects.Ability Item in AbilityList)
                 Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
+            foreach (PgJsonObjects.AbilitySource Item in AbilitySourceList)
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
             foreach (PgJsonObjects.Attribute Item in AttributeList)
                 Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
@@ -924,6 +956,9 @@ namespace PgJsonParse
                 Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Recipe Item in RecipeList)
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.RecipeSource Item in RecipeSourceList)
                 Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Skill Item in SkillList)
@@ -947,6 +982,9 @@ namespace PgJsonParse
             foreach (PgJsonObjects.Ability Item in AbilityList)
                 Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
+            foreach (PgJsonObjects.AbilitySource Item in AbilitySourceList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
             foreach (PgJsonObjects.Attribute Item in AttributeList)
                 Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
@@ -966,6 +1004,9 @@ namespace PgJsonParse
                 Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Recipe Item in RecipeList)
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
+            foreach (PgJsonObjects.RecipeSource Item in RecipeSourceList)
                 Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
             foreach (PgJsonObjects.Skill Item in SkillList)
@@ -982,6 +1023,9 @@ namespace PgJsonParse
             foreach (PgJsonObjects.Ability Item in AbilityList)
                 Item.SortLinkBack();
 
+            foreach (PgJsonObjects.AbilitySource Item in AbilitySourceList)
+                Item.SortLinkBack();
+
             foreach (PgJsonObjects.Attribute Item in AttributeList)
                 Item.SortLinkBack();
 
@@ -1001,6 +1045,9 @@ namespace PgJsonParse
                 Item.SortLinkBack();
 
             foreach (PgJsonObjects.Recipe Item in RecipeList)
+                Item.SortLinkBack();
+
+            foreach (PgJsonObjects.RecipeSource Item in RecipeSourceList)
                 Item.SortLinkBack();
 
             foreach (PgJsonObjects.Skill Item in SkillList)
