@@ -92,9 +92,9 @@ namespace PgJsonObjects
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         public List<AbilityRequirement> CombinedRequirementList { get; } = new List<AbilityRequirement>();
         public ConsumedItem ConsumedItem { get; private set; }
-        public AbilitySource Source { get; private set; }
+        public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
 
-        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, ParseErrorInfo ErrorInfo)
         {
             string DigitStrippedName = InternalName;
             string LineIndexString = "";
@@ -129,13 +129,15 @@ namespace PgJsonObjects
             }
         }
 
-        public void SetSource(AbilitySource Source, ParseErrorInfo ErrorInfo)
+        public void SetSource(GenericSource Source, ParseErrorInfo ErrorInfo)
         {
-            if (this.Source == null)
-                this.Source = Source;
+            if (Source == null)
+                return;
 
-            else if (this.Source != Source)
+            if (SourceList.Contains(Source))
                 ErrorInfo.AddInvalidObjectFormat("Ability Source");
+            else
+                SourceList.Add(Source);
         }
         #endregion
 
@@ -981,7 +983,7 @@ namespace PgJsonObjects
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("SpecialCasterRequirement", RawSpecialCasterRequirement, out ParsedSpecialCasterRequirement, ErrorInfo);
 
             AbilityRequirement ConvertedAbilityRequirement = ParsedSpecialCasterRequirement.ToSpecificAbilityRequirement(ErrorInfo);
-            SpecialCasterRequirementList.Add(ParsedSpecialCasterRequirement);
+            SpecialCasterRequirementList.Add(ConvertedAbilityRequirement);
         }
 
         public void ParseCompleteSpecialInfo(string s, ParseErrorInfo ErrorInfo)

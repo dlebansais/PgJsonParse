@@ -977,43 +977,43 @@ namespace PgJsonParse
             while (Continue);
 
             foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.Ability Item in AbilityList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.AbilitySource Item in AbilitySourceList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.Attribute Item in AttributeList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.Effect Item in EffectList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.Item Item in ItemList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.Power Item in PowerList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.Quest Item in QuestList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.Recipe Item in RecipeList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.RecipeSource Item in RecipeSourceList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.Skill Item in SkillList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
             foreach (PgJsonObjects.XpTable Item in XpTableList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, ErrorInfo);
 
 
 

@@ -86,8 +86,18 @@
     <Compile Include="Records\Ability\Ability PvX.cs" />
     <Compile Include="Records\Ability\Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\Appearance Ability Requirement.cs" />
-    <Compile Include="Records\Ability\Source Types.cs" />
     <Compile Include="Records\Ability\Ability Source.cs" />
+    <Compile Include="Records\Recipe\Recipe Source.cs" />
+    <Compile Include="Records\Source\Effect Source.cs" />
+    <Compile Include="Records\Source\Generic Source.cs" />
+    <Compile Include="Records\Source\Gift Source.cs" />
+    <Compile Include="Records\Source\HangOut Source.cs" />
+    <Compile Include="Records\Source\Item Source.cs" />
+    <Compile Include="Records\Source\Misc Source.cs" />
+    <Compile Include="Records\Source\Quest Source.cs" />
+    <Compile Include="Records\Source\Recipe Effect Source.cs" />
+    <Compile Include="Records\Source\Skillup Source.cs" />
+    <Compile Include="Records\Source\Source Types.cs" />
     <Compile Include="Records\Ability\Consumed Item\Consumed Item By Keyword.cs" />
     <Compile Include="Records\Ability\Ability Requirement\CurHealth Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\DruidEventState Ability Requirement.cs" />
@@ -193,7 +203,6 @@
     <Compile Include="Records\Recipe\Recipe Required Hotspot.cs" />
     <Compile Include="Records\Recipe\Recipe Result Effect.cs" />
     <Compile Include="Records\Recipe\Recipe Result Key.cs" />
-    <Compile Include="Records\Recipe\Recipe Source.cs" />
     <Compile Include="Records\Recipe\Recipe Usage Animation.cs" />
     <Compile Include="Records\Recipe\Recipe.cs" />
     <Compile Include="Records\Recipe\Shamanic Slot Power.cs" />
@@ -207,6 +216,7 @@
     <Compile Include="Records\Skill\Skill Reward Recipe.cs" />
     <Compile Include="Records\Skill\Skill Reward Unlock.cs" />
     <Compile Include="Records\Skill\Skill.cs" />
+    <Compile Include="Records\Source\Training Source.cs" />
     <Compile Include="Records\Xp Table\Xp Table Enum.cs" />
     <Compile Include="Records\Xp Table\Xp Table Level.cs" />
     <Compile Include="Records\Xp Table\Xp Table.cs" />

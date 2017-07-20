@@ -54,15 +54,17 @@ namespace PgJsonObjects
         #region Indirect Properties
         protected override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
-        public RecipeSource Source { get; private set; }
+        public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
 
-        public void SetSource(RecipeSource Source, ParseErrorInfo ErrorInfo)
+        public void SetSource(GenericSource Source, ParseErrorInfo ErrorInfo)
         {
-            if (this.Source == null)
-                this.Source = Source;
+            if (Source == null)
+                return;
 
-            else if (this.Source != Source)
+            if (SourceList.Contains(Source))
                 ErrorInfo.AddInvalidObjectFormat("Recipe Source");
+            else
+                SourceList.Add(Source);
         }
         #endregion
 
@@ -1170,7 +1172,17 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            ErrorInfo.AddMissingKey(RawRecipeName);
+            foreach (KeyValuePair<string, Recipe> Entry in RecipeTable)
+                if (Entry.Value.Name == RawRecipeName)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawRecipeName);
+
             return null;
         }
 

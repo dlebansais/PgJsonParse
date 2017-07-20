@@ -272,7 +272,7 @@ namespace PgJsonObjects
                             IsMatchingKeyItemListBuilt = true;
 
                             List<Item> ParsedList = new List<Item>();
-                            ParsedList = Item.ConnectByKey(ErrorInfo, ItemTable, ItemKey, ParsedList, ref IsItemKeyParsed, ref IsConnected, this);
+                            ParsedList = Item.ConnectByItemKey(ErrorInfo, ItemTable, ItemKey, ParsedList, ref IsItemKeyParsed, ref IsConnected, this);
                             MatchingKeyItemList.AddRange(ParsedList);
                         }
                         break;

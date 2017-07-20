@@ -1122,7 +1122,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Item> ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static List<Item> ConnectByItemKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -1177,6 +1177,29 @@ namespace PgJsonObjects
                 ErrorInfo.AddMissingKey(Keyword.ToString());
 
             return ItemList;
+        }
+
+        public static Item ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, int ItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawItemParsed)
+                return ParsedItem;
+
+            IsRawItemParsed = true;
+
+            string RawItemId = "item_" + ItemId;
+
+            foreach (KeyValuePair<string, Item> Entry in ItemTable)
+                if (Entry.Value.Key == RawItemId)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawItemId);
+
+            return null;
         }
         #endregion
 

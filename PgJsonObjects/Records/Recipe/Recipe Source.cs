@@ -15,9 +15,11 @@ namespace PgJsonObjects
         public Item ConnectedItem { get; private set; }
         private string RawItemName;
         private bool IsItemNameParsed;
-        private int RawItemTypeId;
+        private int? RawItemTypeId;
         private string RawNpcName;
+        public Effect ConnectedEffect { get; private set; }
         private string RawEffectName;
+        private bool IsEffectParsed;
         public Quest ConnectedQuest { get; private set; }
         private string RawQuestName;
         private int? RawQuestId;
@@ -26,6 +28,88 @@ namespace PgJsonObjects
 
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
+
+        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, ParseErrorInfo ErrorInfo)
+        {
+            if (ConnectedRecipe != null)
+            {
+                GenericSource ConvertedSource = ToSpecificSource(ErrorInfo);
+                if (ConvertedSource != null)
+                    ConnectedRecipe.SetSource(ConvertedSource, ErrorInfo);
+            }
+        }
+
+        private GenericSource ToSpecificSource(ParseErrorInfo ErrorInfo)
+        {
+            switch (Type)
+            {
+                case SourceTypes.AutomaticFromSkill:
+                    if (ConnectedSkillTypeId != null)
+                        return new SkillupSource(ConnectedSkillTypeId);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Recipe Source (AutomaticFromSkill)");
+                        return null;
+                    }
+
+                case SourceTypes.Item:
+                    if (ConnectedItem != null)
+                        return new ItemSource(ConnectedItem);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Recipe Source (Item)");
+                        return null;
+                    }
+
+                case SourceTypes.Training:
+                    if (RawNpcName != null)
+                        return new TrainingSource(RawNpcName);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Recipe Source (Training)");
+                        return null;
+                    }
+
+                case SourceTypes.Effect:
+                    if (ConnectedEffect != null)
+                        return new EffectSource(ConnectedEffect);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Recipe Source (Effect)");
+                        return null;
+                    }
+
+                case SourceTypes.Quest:
+                    if (ConnectedQuest != null)
+                        return new QuestSource(ConnectedQuest);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Recipe Source (Quest)");
+                        return null;
+                    }
+
+                case SourceTypes.Gift:
+                    if (RawNpcName != null)
+                        return new GiftSource(RawNpcName);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Recipe Source (Gift)");
+                        return null;
+                    }
+
+                case SourceTypes.HangOut:
+                    if (RawNpcName != null)
+                        return new HangOutSource(RawNpcName);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Recipe Source (HangOut)");
+                        return null;
+                    }
+
+                default:
+                    return null;
+            }
+        }
         #endregion
 
         #region Parsing
@@ -81,9 +165,14 @@ namespace PgJsonObjects
 
         private void ParseSkillTypeId(string RawSkillTypeId, ParseErrorInfo ErrorInfo)
         {
-            PowerSkill ParsedSkillTypeId;
-            StringToEnumConversion<PowerSkill>.TryParse(RawSkillTypeId, out ParsedSkillTypeId, ErrorInfo);
-            SkillTypeId = ParsedSkillTypeId;
+            if (Type == SourceTypes.AutomaticFromSkill)
+            {
+                PowerSkill ParsedSkillTypeId;
+                StringToEnumConversion<PowerSkill>.TryParse(RawSkillTypeId, out ParsedSkillTypeId, ErrorInfo);
+                SkillTypeId = ParsedSkillTypeId;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("RecipeSource SkillTypeId (type)");
         }
 
         private static void ParseFieldItemName(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
@@ -97,7 +186,10 @@ namespace PgJsonObjects
 
         private void ParseItemName(string RawItemName, ParseErrorInfo ErrorInfo)
         {
-            this.RawItemName = RawItemName;
+            if (Type == SourceTypes.Item)
+                this.RawItemName = RawItemName;
+            else
+                ErrorInfo.AddInvalidObjectFormat("RecipeSource ItemName (type)");
         }
 
         private static void ParseFieldItemTypeId(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
@@ -110,7 +202,10 @@ namespace PgJsonObjects
 
         private void ParseItemTypeId(int RawItemTypeId, ParseErrorInfo ErrorInfo)
         {
-            this.RawItemTypeId = RawItemTypeId;
+            if (Type == SourceTypes.Item)
+                this.RawItemTypeId = RawItemTypeId;
+            else
+                ErrorInfo.AddInvalidObjectFormat("RecipeSource ItemTypeId (type)");
         }
 
         private static void ParseFieldNpcName(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
@@ -124,7 +219,10 @@ namespace PgJsonObjects
 
         private void ParseNpcName(string RawNpcName, ParseErrorInfo ErrorInfo)
         {
-            this.RawNpcName = RawNpcName;
+            if (Type == SourceTypes.Training || Type == SourceTypes.Gift || Type == SourceTypes.HangOut)
+                this.RawNpcName = RawNpcName;
+            else
+                ErrorInfo.AddInvalidObjectFormat("RecipeSource NpcName (type)");
         }
 
         private static void ParseFieldEffectName(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
@@ -138,7 +236,10 @@ namespace PgJsonObjects
 
         private void ParseEffectName(string RawEffectName, ParseErrorInfo ErrorInfo)
         {
-            this.RawEffectName = RawEffectName;
+            if (Type == SourceTypes.Effect)
+                this.RawEffectName = RawEffectName;
+            else
+                ErrorInfo.AddInvalidObjectFormat("RecipeSource EffectName (type)");
         }
 
         private static void ParseFieldQuestName(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
@@ -152,7 +253,10 @@ namespace PgJsonObjects
 
         private void ParseQuestName(string RawQuestName, ParseErrorInfo ErrorInfo)
         {
-            this.RawQuestName = RawQuestName;
+            if (Type == SourceTypes.Quest)
+                this.RawQuestName = RawQuestName;
+            else
+                ErrorInfo.AddInvalidObjectFormat("RecipeSource QuestName (type)");
         }
 
         private static void ParseFieldQuestId(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
@@ -165,7 +269,10 @@ namespace PgJsonObjects
 
         private void ParseQuestId(int RawQuestId, ParseErrorInfo ErrorInfo)
         {
-            this.RawQuestId = RawQuestId;
+            if (Type == SourceTypes.Quest)
+                this.RawQuestId = RawQuestId;
+            else
+                ErrorInfo.AddInvalidObjectFormat("RecipeSource QuestId (type)");
         }
         #endregion
 
@@ -192,6 +299,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, ConnectedSkillTypeId.Name);
                 if (ConnectedItem != null)
                     AddWithFieldSeparator(ref Result, ConnectedItem.Name);
+                if (ConnectedEffect != null)
+                    AddWithFieldSeparator(ref Result, ConnectedEffect.Name);
                 if (ConnectedQuest != null)
                     AddWithFieldSeparator(ref Result, ConnectedQuest.Name);
 
@@ -206,17 +315,18 @@ namespace PgJsonObjects
             bool IsConnected = false;
 
             if (RawRecipeId.HasValue)
-            {
                 ConnectedRecipe = PgJsonObjects.Recipe.ConnectByKey(ErrorInfo, RecipeTable, RawRecipeId.Value, ConnectedRecipe, ref IsRecipeIdParsed, ref IsConnected, null);
-                if (ConnectedRecipe != null)
-                    ConnectedRecipe.SetSource(this, ErrorInfo);
-            }
 
             if (SkillTypeId != PowerSkill.Internal_None && SkillTypeId != PowerSkill.AnySkill && SkillTypeId != PowerSkill.Unknown)
                 ConnectedSkillTypeId = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, SkillTypeId, ConnectedSkillTypeId, ref IsSkillTypeIdParsed, ref IsConnected, ConnectedRecipe);
 
-            if (RawItemName != null)
+            if (RawItemTypeId.HasValue)
+                ConnectedItem = PgJsonObjects.Item.ConnectByKey(ErrorInfo, ItemTable, RawItemTypeId.Value, ConnectedItem, ref IsItemNameParsed, ref IsConnected, ConnectedRecipe);
+            else if (RawItemName != null)
                 ConnectedItem = PgJsonObjects.Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItemName, ConnectedItem, ref IsItemNameParsed, ref IsConnected, ConnectedRecipe);
+
+            if (RawEffectName != null)
+                ConnectedEffect = PgJsonObjects.Effect.ConnectSingleProperty(ErrorInfo, EffectTable, RawEffectName, ConnectedEffect, ref IsEffectParsed, ref IsConnected, ConnectedRecipe);
 
             if (RawQuestId.HasValue)
                 ConnectedQuest = PgJsonObjects.Quest.ConnectByKey(ErrorInfo, QuestTable, RawQuestId.Value, ConnectedQuest, ref IsQuestNameParsed, ref IsConnected, ConnectedRecipe);

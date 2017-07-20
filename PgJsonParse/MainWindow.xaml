@@ -1190,10 +1190,10 @@
                                     <DataTemplate x:Key="ItemTemplateLast">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock TextWrapping="Wrap">
-                                            <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                            </Hyperlink>
-                                        </TextBlock>
+                                                <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                </Hyperlink>
+                                            </TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
                                 </Grid.Resources>
@@ -1208,6 +1208,80 @@
                         </Grid>
                     </Grid>
                 </Grid>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="EffectSourceTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Obtained with the</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,0,5,0">
+                    <Hyperlink x:Name="hyperlink_EffectSource_Effect" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding Effect.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>effect</TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="GiftSourceTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Gift from</TextBlock>
+                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="HangOutSourceTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Hangout from</TextBlock>
+                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ItemSourceTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Obtained using</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                    <Hyperlink x:Name="hyperlink_ItemSource_Item" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding Item.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="MiscSourceTemplate">
+            <TextBlock>varies</TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="QuestSourceTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Complete the</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,0,5,0">
+                    <Hyperlink x:Name="hyperlink_QuestSource_Quest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding Quest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>quest</TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="RecipeEffectSourceTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Use the</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,0,5,0">
+                    <Hyperlink x:Name="hyperlink_RecipeEffectSource_Recipe" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding Recipe.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>recipe</TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SkillupSourceTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Learned while progressing in</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                    <Hyperlink x:Name="hyperlink_SkillupSource_Skill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding Skill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TrainingSourceTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Training from</TextBlock>
+                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
             </StackPanel>
         </DataTemplate>
         <ControlTemplate x:Key="XpTableToggleButton" TargetType="ToggleButton">
@@ -1751,6 +1825,8 @@
                                 <TextBlock Grid.Column="3" Grid.Row="15" Text="{Binding RawWorksUnderwater, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="16" TextAlignment="Right" Margin="0,10,0,0">Works While Falling:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="16" Text="{Binding RawWorksWhileFalling, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Source:</TextBlock>
+                                <ItemsControl Grid.Column="3" Grid.Row="17" ItemsSource="{Binding SourceList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource setTypeToTemplateName}" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">TODO PvE and PvP damage</TextBlock>
                             </Grid>
                         </DockPanel>
@@ -2639,6 +2715,8 @@
                                 <TextBlock Grid.Column="3" Grid.Row="8" Text="{Binding RawRewardSkillXp, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">First Time XP Reward:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="9" Text="{Binding RawRewardSkillXpFirstTime, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Source:</TextBlock>
+                                <ItemsControl Grid.Column="3" Grid.Row="10" ItemsSource="{Binding SourceList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource setTypeToTemplateName}" Margin="5,10,0,0"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
