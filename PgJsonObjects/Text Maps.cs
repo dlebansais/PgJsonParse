@@ -3486,13 +3486,13 @@ namespace PgJsonObjects
         public static readonly Dictionary<MoonPhases, string> MoonPhasesTextMap = new Dictionary<MoonPhases, string>()
         {
             { MoonPhases.Internal_None, "" },
+            { MoonPhases.NewMoon, "New Moon" },
+            { MoonPhases.WaningCrescentMoon, "Waning Crescent Moon" },
             { MoonPhases.QuarterMoon, "Quarter Moon" },
             { MoonPhases.WaxingGibbousMoon, "Waxing Gibbous Moon" },
             { MoonPhases.FullMoon, "Full Moon" },
             { MoonPhases.WaningGibbousMoon, "Waning Gibbous Moon" },
             { MoonPhases.LastQuarterMoon, "Last Quarter Moon" },
-            { MoonPhases.WaningCrescentMoon, "Waning Crescent Moon" },
-            { MoonPhases.NewMoon, "New Moon" },
             { MoonPhases.WaxingCrescentMoon, "Waxing Crescent Moon" },
         };
 

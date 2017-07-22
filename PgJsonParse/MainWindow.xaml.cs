@@ -390,7 +390,6 @@ namespace PgJsonParse
             { ItemSlot.MainHand, "icon_15001" },
             { ItemSlot.OffHand, "icon_5382" },
         };
-        private const int VersionCheckStartingPoint = 260;
 
         public int DownloadedVersion
         {
@@ -549,6 +548,11 @@ namespace PgJsonParse
                         DownloadProgress = ((double)(Index + 1)) / (double)Total;
 
                         FileTable.Remove(TypeIndex);
+
+                        string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, JsonFileTable[TypeIndex] + "-index.txt");
+                        if (File.Exists(IndexFilePath))
+                            File.Delete(IndexFilePath);
+
                         UpdateCacheNextJsonFile(FileTable);
                     }
                 }

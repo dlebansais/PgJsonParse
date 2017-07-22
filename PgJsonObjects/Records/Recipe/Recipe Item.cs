@@ -14,9 +14,8 @@ namespace PgJsonObjects
         public int? RawStackSize { get; private set; }
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
         public double? RawPercentChance { get; private set; }
-        public RecipeItemKey ItemKey { get; private set; }
+        public List<RecipeItemKey> ItemKeyList { get; private set; } = new List<RecipeItemKey>();
         public List<Item> MatchingKeyItemList { get; } = new List<Item>();
-        private bool IsMatchingKeyItemListBuilt;
         private bool IsItemKeyParsed;
         public string Desc { get; private set; }
         public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
@@ -125,13 +124,7 @@ namespace PgJsonObjects
             List<RecipeItemKey> ParsedItemKeyList = new List<RecipeItemKey>();
             StringToEnumConversion<RecipeItemKey>.ParseList(RawItemKeys, RecipeItemKeyStringMap, ParsedItemKeyList, ErrorInfo);
 
-            if (ParsedItemKeyList.Count == 1)
-            {
-                ItemKey = ParsedItemKeyList[0];
-                IsItemKeyParsed = false;
-            }
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem ItemKeys");
+            ItemKeyList.AddRange(ParsedItemKeyList);
         }
 
         private static void ParseFieldDesc(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
@@ -218,7 +211,7 @@ namespace PgJsonObjects
 
                 if (Item != null)
                     AddWithFieldSeparator(ref Result, Item.Name);
-                if (ItemKey != RecipeItemKey.Internal_None)
+                foreach (RecipeItemKey ItemKey in ItemKeyList)
                     AddWithFieldSeparator(ref Result, TextMaps.RecipeItemKeyTextMap[ItemKey]);
                 foreach (Item Item in MatchingKeyItemList)
                     AddWithFieldSeparator(ref Result, Item.Name);
@@ -239,43 +232,44 @@ namespace PgJsonObjects
             ParentRecipe = Parent as Recipe;
 
             Item = Item.ConnectByCode(ErrorInfo, ItemTable, RawItemCode, Item, ref IsItemCodeParsed, ref IsConnected, this);
-            if (Item == null)
+            if (Item == null && !IsItemKeyParsed)
             {
-                switch (ItemKey)
+                if (ItemKeyList.Count == 0)
                 {
-                    case RecipeItemKey.Internal_None:
-                        if (!IsItemKeyParsed)
+                    IsItemKeyParsed = true;
+                    ErrorInfo.AddInvalidObjectFormat("Recipe Item");
+                }
+                else
+                {
+                    foreach (RecipeItemKey ItemKey in ItemKeyList)
+                    {
+                        switch (ItemKey)
                         {
-                            IsItemKeyParsed = true;
-                            ErrorInfo.AddInvalidObjectFormat("Recipe Item");
+                            case RecipeItemKey.EquipmentSlot_MainHand:
+                            case RecipeItemKey.EquipmentSlot_OffHand:
+                            case RecipeItemKey.EquipmentSlot_Hands:
+                            case RecipeItemKey.EquipmentSlot_Chest:
+                            case RecipeItemKey.EquipmentSlot_Legs:
+                            case RecipeItemKey.EquipmentSlot_Head:
+                            case RecipeItemKey.EquipmentSlot_Feet:
+                            case RecipeItemKey.EquipmentSlot_Ring:
+                            case RecipeItemKey.EquipmentSlot_Necklace:
+                            case RecipeItemKey.Rarity_Uncommon:
+                            case RecipeItemKey.Rarity_Rare:
+                            case RecipeItemKey.MinRarity_Exceptional:
+                            case RecipeItemKey.MinRarity_Uncommon:
+                                break;
+
+                            default:
+                                List<Item> ParsedList = new List<Item>();
+                                ParsedList = Item.ConnectByItemKey(ErrorInfo, ItemTable, ItemKey, ParsedList, ref IsItemKeyParsed, ref IsConnected, this);
+
+                                foreach (Item Item in ParsedList)
+                                    if (!MatchingKeyItemList.Contains(Item))
+                                        MatchingKeyItemList.Add(Item);
+                                break;
                         }
-                        break;
-
-                    case RecipeItemKey.EquipmentSlot_MainHand:
-                    case RecipeItemKey.EquipmentSlot_OffHand:
-                    case RecipeItemKey.EquipmentSlot_Hands:
-                    case RecipeItemKey.EquipmentSlot_Chest:
-                    case RecipeItemKey.EquipmentSlot_Legs:
-                    case RecipeItemKey.EquipmentSlot_Head:
-                    case RecipeItemKey.EquipmentSlot_Feet:
-                    case RecipeItemKey.EquipmentSlot_Ring:
-                    case RecipeItemKey.EquipmentSlot_Necklace:
-                    case RecipeItemKey.Rarity_Uncommon:
-                    case RecipeItemKey.Rarity_Rare:
-                    case RecipeItemKey.MinRarity_Exceptional:
-                    case RecipeItemKey.MinRarity_Uncommon:
-                        break;
-
-                    default:
-                        if (!IsMatchingKeyItemListBuilt)
-                        {
-                            IsMatchingKeyItemListBuilt = true;
-
-                            List<Item> ParsedList = new List<Item>();
-                            ParsedList = Item.ConnectByItemKey(ErrorInfo, ItemTable, ItemKey, ParsedList, ref IsItemKeyParsed, ref IsConnected, this);
-                            MatchingKeyItemList.AddRange(ParsedList);
-                        }
-                        break;
+                    }
                 }
             }
 

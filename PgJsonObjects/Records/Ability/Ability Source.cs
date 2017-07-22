@@ -18,12 +18,11 @@ namespace PgJsonObjects
         private int? RawItemTypeId;
         private string RawNpcName;
         public Effect ConnectedEffect { get; private set; }
+        public Recipe ConnectedRecipeEffect { get; private set; }
         private string RawEffectName;
         private bool IsEffectParsed;
-        private bool IsMiscEffect;
-        public Recipe ConnectedRecipeEffect { get; private set; }
-        private string RawRecipeName;
         private bool IsRecipeParsed;
+        private bool IsMiscEffect;
         public Quest ConnectedQuest { get; private set; }
         private string RawQuestName;
         private int? RawQuestId;
@@ -140,11 +139,11 @@ namespace PgJsonObjects
         {
             { "Type", ParseFieldType },
             { "SkillTypeId", ParseFieldSkillTypeId },
-            { "ItemName", ParseFieldItemName },
             { "ItemTypeId", ParseFieldItemTypeId },
             { "NpcName", ParseFieldNpcName },
+            { "Npc", ParseFieldNpc },
             { "EffectName", ParseFieldEffectName },
-            { "QuestName", ParseFieldQuestName },
+            { "EffectTypeId", ParseFieldEffectTypeId },
             { "QuestId", ParseFieldQuestId },
         };
 
@@ -235,6 +234,19 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource NpcName (type)");
         }
 
+        private static void ParseFieldNpc(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawNpcName;
+            if ((RawNpcName = Value as string) != null)
+                This.ParseNpc(RawNpcName, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("AbilitySource NpcName");
+        }
+
+        private void ParseNpc(string RawNpcName, ParseErrorInfo ErrorInfo)
+        {
+        }
+
         private static void ParseFieldEffectName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawEffectName;
@@ -250,6 +262,19 @@ namespace PgJsonObjects
                 this.RawEffectName = RawEffectName;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource EffectName (type)");
+        }
+
+        private static void ParseFieldEffectTypeId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawEffectTypeId;
+            if ((RawEffectTypeId = Value as string) != null)
+                This.ParseEffectTypeId(RawEffectTypeId, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("AbilitySource EffectTypeId");
+        }
+
+        private void ParseEffectTypeId(string RawEffectTypeId, ParseErrorInfo ErrorInfo)
+        {
         }
 
         private static void ParseFieldQuestName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
@@ -330,27 +355,8 @@ namespace PgJsonObjects
             {
                 ConnectedAbility = PgJsonObjects.Ability.ConnectByKey(ErrorInfo, AbilityTable, RawAbilityId.Value, ConnectedAbility, ref IsAbilityIdParsed, ref IsConnected, null);
 
-                if (RawEffectName != null)
-                {
-                    if (RawEffectName == "Learn Ability")
-                        IsMiscEffect = true;
-
-                    else if (RawEffectName.EndsWith("Research") && ConnectedAbility != null && ConnectedAbility.RawLevel.HasValue)
-                    {
-                        int Level = ConnectedAbility.Level;
-                        if (Level > 0 && Level < 5)
-                            Level = 1;
-
-                        if (RawEffectName.StartsWith("Newbie "))
-                            RawRecipeName = "Introductory " + RawEffectName.Substring(7);
-
-                        else if (Level == 0)
-                            RawRecipeName = "Introductory " + RawEffectName;
-
-                        else
-                            RawRecipeName = RawEffectName + " Level " + Level;
-                    }
-                }
+                if (RawEffectName == "Learn Ability")
+                    IsMiscEffect = true;
             }
 
             if (SkillTypeId != PowerSkill.Internal_None && SkillTypeId != PowerSkill.AnySkill && SkillTypeId != PowerSkill.Unknown)
@@ -361,10 +367,13 @@ namespace PgJsonObjects
             else if (RawItemName != null)
                 ConnectedItem = PgJsonObjects.Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItemName, ConnectedItem, ref IsItemNameParsed, ref IsConnected, ConnectedAbility);
 
-            if (RawRecipeName != null)
-                ConnectedRecipeEffect = PgJsonObjects.Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRecipeName, ConnectedRecipeEffect, ref IsRecipeParsed, ref IsConnected, ConnectedAbility);
-            else if (RawEffectName != null && !IsMiscEffect)
-                ConnectedEffect = PgJsonObjects.Effect.ConnectSingleProperty(ErrorInfo, EffectTable, RawEffectName, ConnectedEffect, ref IsEffectParsed, ref IsConnected, ConnectedAbility);
+            if (RawEffectName != null && ConnectedRecipeEffect == null && ConnectedEffect == null)
+            {
+                ConnectedRecipeEffect = PgJsonObjects.Recipe.ConnectSingleProperty(null, RecipeTable, RawEffectName, ConnectedRecipeEffect, ref IsRecipeParsed, ref IsConnected, ConnectedAbility);
+                ConnectedEffect = PgJsonObjects.Effect.ConnectSingleProperty(null, EffectTable, RawEffectName, ConnectedEffect, ref IsEffectParsed, ref IsConnected, ConnectedAbility);
+                if (ConnectedRecipeEffect == null && ConnectedEffect == null && !IsMiscEffect)
+                    ErrorInfo.AddMissingKey(RawEffectName);
+            }
 
             if (RawQuestId.HasValue)
                 ConnectedQuest = PgJsonObjects.Quest.ConnectByKey(ErrorInfo, QuestTable, RawQuestId.Value, ConnectedQuest, ref IsQuestNameParsed, ref IsConnected, ConnectedAbility);

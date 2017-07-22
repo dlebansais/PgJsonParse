@@ -1,6 +1,7 @@
 ﻿using PgJsonObjects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -197,8 +198,15 @@ namespace PgJsonParse
                     {
                         foreach (KeyValuePair<string, T> Entry in ObjectTable)
                         {
-                            string Content = Entry.Value.TextContent;
-                            sw.WriteLine(Content + JsonGenerator.ObjectSeparator + Entry.Key);
+                            try
+                            {
+                                string Content = Entry.Value.TextContent;
+                                sw.WriteLine(Content + JsonGenerator.ObjectSeparator + Entry.Key);
+                            }
+                            catch
+                            {
+                                Debug.Print("Failed to write index for " + Entry.Value.ToString());
+                            }
                         }
                     }
                 }

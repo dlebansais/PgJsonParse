@@ -550,6 +550,9 @@ namespace PgJsonObjects
 
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
         {
+            if (Key == "item_45040")
+                Name = RawName;
+
             Name = RawName;
         }
 
@@ -1061,6 +1064,9 @@ namespace PgJsonObjects
                         PgJsonObjects.Skill.UpdateAnySkillIcon(Link.CombatSkill, RawIconId);
                 }
 
+            foreach (AbilityRequirement Item in OtherRequirementList)
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+
             return IsConnected;
         }
 
@@ -1240,6 +1246,11 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Item"; } }
+
+        public override string ToString()
+        {
+            return Name;
+        }
         #endregion
     }
 }
