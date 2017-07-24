@@ -124,7 +124,10 @@ namespace PgJsonObjects
             List<RecipeItemKey> ParsedItemKeyList = new List<RecipeItemKey>();
             StringToEnumConversion<RecipeItemKey>.ParseList(RawItemKeys, RecipeItemKeyStringMap, ParsedItemKeyList, ErrorInfo);
 
-            ItemKeyList.AddRange(ParsedItemKeyList);
+            if (ParsedItemKeyList.Count > 1)
+                ItemKeyList.AddRange(ParsedItemKeyList);
+            else
+                ItemKeyList.AddRange(ParsedItemKeyList);
         }
 
         private static void ParseFieldDesc(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)

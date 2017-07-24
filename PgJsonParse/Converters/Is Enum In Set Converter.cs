@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -9,13 +11,24 @@ namespace Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int IntValue = (int)value;
+            List<int> EnumList = new List<int>();
+
+            IEnumerable AsCollection;
+            if ((AsCollection = value as IEnumerable) != null)
+            {
+                foreach (int Enum in AsCollection)
+                    if (!EnumList.Contains(Enum))
+                        EnumList.Add(Enum);
+            }
+            else
+                EnumList.Add((int)value);
+
             CompositeCollection CollectionOfItems = parameter as CompositeCollection;
 
             foreach (object Item in CollectionOfItems)
             {
                 int ItemValue = (int)Item;
-                if (ItemValue == IntValue)
+                if (EnumList.Contains(ItemValue))
                     return true;
             }
 

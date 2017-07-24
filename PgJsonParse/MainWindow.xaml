@@ -1097,7 +1097,7 @@
                         <StackPanel Visibility="{Binding RawChanceToConsume, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock>(</TextBlock>
                             <TextBlock Text="{Binding ChanceToConsume, Converter={StaticResource convDouble}, ConverterParameter=%, FallbackValue={x:Null}}" Margin="0,0,5,0"/>
-                            <TextBlock>chance to consume)</TextBlock>
+                            <TextBlock>chance item will be consumed)</TextBlock>
                         </StackPanel>
                         <StackPanel Visibility="{Binding RawDurabilityConsumed, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock>(</TextBlock>
@@ -1109,26 +1109,26 @@
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Visibility>
                                 <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="False"/>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="False"/>
                                 </MultiBinding>
                             </StackPanel.Visibility>
                             <TextBlock>Any</TextBlock>
-                            <TextBlock Text="{Binding ItemKey, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                            <TextBlock Text="{Binding ItemKeyList, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Visibility>
                                 <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="False"/>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="False"/>
                                 </MultiBinding>
                             </StackPanel.Visibility>
                             <TextBlock>Any</TextBlock>
-                            <TextBlock Text="{Binding ItemKey, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
+                            <TextBlock Text="{Binding ItemKeyList, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
                             <TextBlock>item</TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Visibility>
                                 <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityUncommon}" FallbackValue="False"/>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityUncommon}" FallbackValue="False"/>
                                 </MultiBinding>
                             </StackPanel.Visibility>
                             <TextBlock>Any magical item</TextBlock>
@@ -1136,7 +1136,7 @@
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Visibility>
                                 <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityExceptional}" FallbackValue="False"/>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityExceptional}" FallbackValue="False"/>
                                 </MultiBinding>
                             </StackPanel.Visibility>
                             <TextBlock>Any exceptional item or better</TextBlock>
@@ -1144,10 +1144,10 @@
                         <Grid>
                             <Grid.Visibility>
                                 <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource VisibleCollapsed}" FallbackValue="Visible">
-                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="False"/>
-                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="False"/>
-                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityUncommon}" FallbackValue="False"/>
-                                    <Binding Path="ItemKey" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityExceptional}" FallbackValue="False"/>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="False"/>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="False"/>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityUncommon}" FallbackValue="False"/>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityExceptional}" FallbackValue="False"/>
                                 </MultiBinding>
                             </Grid.Visibility>
                             <StackPanel Orientation="Horizontal">
@@ -1157,7 +1157,7 @@
                                     </MultiBinding>
                                 </StackPanel.Visibility>
                                 <TextBlock>Any</TextBlock>
-                                <TextBlock Text="{Binding ItemKey, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                                <TextBlock Text="{Binding ItemKeyList, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
                             </StackPanel>
                             <Grid>
                                 <Grid.Visibility>
