@@ -1088,7 +1088,7 @@ namespace PgJsonParse
             }
 
             else if (FileTable.Count == 0)
-                LoadIcons(ErrorInfo);
+                CreateMushroomIndex(ErrorInfo);
 
             else
             {
@@ -1172,6 +1172,36 @@ namespace PgJsonParse
                     CancelOperation();
                 }
             }
+        }
+
+        private void CreateMushroomIndex(ParseErrorInfo ErrorInfo)
+        {
+            string MushroomNameFile = Path.Combine(ApplicationFolder, "Mushrooms.txt");
+
+            List<string> MushroomNameList = new List<string>();
+            foreach (KeyValuePair<string, Item> Entry in ItemTable)
+            {
+                Item Item = Entry.Value;
+                if (Item.KeywordTable.ContainsKey(ItemKeyword.RawMushroom))
+                    MushroomNameList.Add(Item.Name);
+            }
+
+            try
+            {
+                using (FileStream fs = new FileStream(MushroomNameFile, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
+                    {
+                        foreach (string MushroomName in MushroomNameList)
+                            sw.WriteLine(MushroomName);
+                    }
+                }
+            }
+            catch
+            {
+            }
+
+            LoadIcons(ErrorInfo);
         }
 
         private void LoadIcons(ParseErrorInfo ErrorInfo)
@@ -2286,8 +2316,11 @@ namespace PgJsonParse
                     SingleTermResult.Add((GenericJsonObject)ObjectTable[Key]);
 
                 MatchIndex = KeyIndex;
+
                 if (MatchIndex + Term.Length >= TextContent.Length)
                     break;
+
+                MatchIndex--;
             }
         }
 
