@@ -246,13 +246,13 @@ namespace PgJsonParse
             StartOperation();
 
             if (LocateLastestVersion)
-                LocateLatestVersion();
+                StartCacheThread();
             else
             {
                 int Version = VersionList[SelectedVersionIndex];
                 DownloadedVersion = Version;
                 LoadedVersion = Version;
-                Load();
+                CreateLoadThread();
             }
         }
         #endregion
@@ -428,7 +428,13 @@ namespace PgJsonParse
             finally { DeleteObject(handle); }
         }
 
-        private void LocateLatestVersion()
+        private void StartCacheThread()
+        {
+            Thread CacheThread = new Thread(new ThreadStart(ExecuteCacheThread));
+            CacheThread.Start();
+        }
+
+        private void ExecuteCacheThread()
         {
             ProgramState = ProgramState.LocatingLastVersion;
             CheckVersionOnServer(false);
@@ -436,22 +442,24 @@ namespace PgJsonParse
 
         private void CheckVersionOnServer(bool TopVersionFound)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckVersionOnServerHandler(OnCheckVersionOnServer), TopVersionFound);
-        }
-
-        private delegate void CheckVersionOnServerHandler(bool TopVersionFound);
-        private void OnCheckVersionOnServer(bool TopVersionFound)
-        {
-            if (IsOperationCanceled)
-            {
-                ProgramState = ProgramState.StartupScreen;
-                return;
-            }
+            Stopwatch CheckWatch = new Stopwatch();
+            CheckWatch.Start();
 
             int Version;
             if (VersionCheckedOnServer(out Version))
             {
+                TimeSpan Remaining = TimeSpan.FromSeconds(4) - CheckWatch.Elapsed;
+                if (Remaining.TotalMilliseconds > 0)
+                    Thread.Sleep(Remaining);
+
+                if (IsOperationCanceled)
+                {
+                    ProgramState = ProgramState.StartupScreen;
+                    return;
+                }
+
                 DownloadedVersion = Version;
+                CurrentVersionCacheFolder = Path.Combine(VersionCacheFolder, DownloadedVersion.ToString());
                 UpdateCache();
             }
             else
@@ -487,136 +495,76 @@ namespace PgJsonParse
         {
             ProgramState = ProgramState.Downloading;
 
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new StartUpdateCacheHandler(OnStartUpdateCache));
-        }
-
-        private delegate void StartUpdateCacheHandler();
-        private void OnStartUpdateCache()
-        {
-            Dictionary<Type, string> JsonFileTable = new Dictionary<Type, string>();
-            foreach (KeyValuePair<Type, string> Entry in MainWindow.JsonFileTable)
-                JsonFileTable.Add(Entry.Key, Entry.Value);
-
-            UpdateCacheNextJsonFile(JsonFileTable);
-        }
-
-        private void UpdateCacheNextJsonFile(Dictionary<Type, string> FileTable)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new UpdateCacheNextJsonFileHandler(OnUpdateCacheNextJsonFile), FileTable);
-        }
-
-        private delegate void UpdateCacheNextJsonFileHandler(Dictionary<Type, string> FileTable);
-        private void OnUpdateCacheNextJsonFile(Dictionary<Type, string> FileTable)
-        {
-            if (IsOperationCanceled)
+            int Index = 0;
+            int Total = JsonFileTable.Count + IconFileTable.Count;
+            foreach (KeyValuePair<Type, string> Entry in JsonFileTable)
             {
-                ProgramState = ProgramState.StartupScreen;
-                return;
-            }
+                UpdateJsonFileInCache(Entry.Key, Entry.Value, Index++, Total);
 
-            else if (FileTable.Count == 0)
-            {
-                Dictionary<ItemSlot, string> IconFileTable = new Dictionary<ItemSlot, string>();
-                foreach (KeyValuePair<ItemSlot, string> Entry in MainWindow.IconFileTable)
-                    IconFileTable.Add(Entry.Key, Entry.Value);
-
-                UpdateCacheNextIconFile(IconFileTable);
-            }
-
-            else
-            {
-                try
+                if (IsOperationCanceled)
                 {
-                    Type TypeIndex = null;
-                    foreach (KeyValuePair<Type, string> Entry in FileTable)
-                    {
-                        TypeIndex = Entry.Key;
-                        break;
-                    }
-
-                    string FileName = FileTable[TypeIndex];
-                    if (!UpdateTextCacheFile(DownloadedVersion, "data", FileName, "json"))
-                    {
-                        MessageBox.Show("Failed to download JSON file " + FileName + " for version " + DownloadedVersion);
-                        CancelOperation();
-                    }
-                    else
-                    {
-                        Thread.Sleep(100);
-                        int Total = JsonFileTable.Count + IconFileTable.Count;
-                        int Index = JsonFileTable.Count - FileTable.Count;
-                        DownloadProgress = ((double)(Index + 1)) / (double)Total;
-
-                        FileTable.Remove(TypeIndex);
-
-                        string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, JsonFileTable[TypeIndex] + "-index.txt");
-                        if (File.Exists(IndexFilePath))
-                            File.Delete(IndexFilePath);
-
-                        UpdateCacheNextJsonFile(FileTable);
-                    }
+                    ProgramState = ProgramState.StartupScreen;
+                    return;
                 }
-                catch (Exception e)
+            }
+
+            foreach (KeyValuePair<ItemSlot, string> Entry in IconFileTable)
+            {
+                UpdateIconFileInCache(Entry.Key, Entry.Value, Index++, Total);
+
+                if (IsOperationCanceled)
                 {
-                    MessageBox.Show(e.Message);
+                    ProgramState = ProgramState.StartupScreen;
+                    return;
+                }
+            }
+
+            LoadedVersion = DownloadedVersion;
+
+            CreateLoadThread();
+        }
+
+        private void UpdateJsonFileInCache(Type TypeIndex, string FileName, int Index, int Total)
+        {
+            try
+            {
+                if (!UpdateTextCacheFile(DownloadedVersion, "data", FileName, "json"))
+                {
+                    MessageBox.Show("Failed to download JSON file " + FileName + " for version " + DownloadedVersion);
                     CancelOperation();
                 }
-            }
-        }
-
-        private void UpdateCacheNextIconFile(Dictionary<ItemSlot, string> FileTable)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new UpdateCacheNextIconFileHandler(OnUpdateCacheNextIconFile), FileTable);
-        }
-
-        private delegate void UpdateCacheNextIconFileHandler(Dictionary<ItemSlot, string> FileTable);
-        private void OnUpdateCacheNextIconFile(Dictionary<ItemSlot, string> FileTable)
-        {
-            if (IsOperationCanceled)
-            {
-                ProgramState = ProgramState.StartupScreen;
-                return;
-            }
-
-            else if (FileTable.Count == 0)
-            {
-                LoadedVersion = DownloadedVersion;
-                Load();
-            }
-
-            else
-            {
-                try
+                else
                 {
-                    ItemSlot TypeIndex = ItemSlot.Internal_None;
-                    foreach (KeyValuePair<ItemSlot, string> Entry in FileTable)
-                    {
-                        TypeIndex = Entry.Key;
-                        break;
-                    }
+                    DownloadProgress = ((double)(Index + 1)) / (double)Total;
 
-                    string FileName = FileTable[TypeIndex];
-                    if (!UpdateBinaryCacheFile(DownloadedVersion, "icons", FileName, "png"))
-                    {
-                        MessageBox.Show("Failed to download icon file " + FileName + " for version " + DownloadedVersion);
-                        CancelOperation();
-                    }
-                    else
-                    {
-                        Thread.Sleep(100);
-                        int Total = JsonFileTable.Count + IconFileTable.Count;
-                        int Index = JsonFileTable.Count + IconFileTable.Count - FileTable.Count;
-                        DownloadProgress = ((double)(Index + 1)) / (double)Total;
-
-                        FileTable.Remove(TypeIndex);
-                        UpdateCacheNextIconFile(FileTable);
-                    }
+                    string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, JsonFileTable[TypeIndex] + "-index.txt");
+                    if (File.Exists(IndexFilePath))
+                        File.Delete(IndexFilePath);
                 }
-                catch (Exception e)
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                CancelOperation();
+            }
+        }
+
+        private void UpdateIconFileInCache(ItemSlot TypeIndex, string FileName, int Index, int Total)
+        {
+            try
+            {
+                if (!UpdateBinaryCacheFile(DownloadedVersion, "icons", FileName, "png"))
                 {
-                    MessageBox.Show(e.Message);
+                    MessageBox.Show("Failed to download icon file " + FileName + " for version " + DownloadedVersion);
                     CancelOperation();
                 }
+                else
+                    DownloadProgress = ((double)(Index + 1)) / (double)Total;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                CancelOperation();
             }
         }
 
@@ -732,7 +680,27 @@ namespace PgJsonParse
         }
         public int _LoadedVersion;
 
-        private void Load()
+        public string WarningText
+        {
+            get { return _WarningText; }
+            set
+            {
+                if (_WarningText != value)
+                {
+                    _WarningText = value;
+                    NotifyThisPropertyChanged();
+                }
+            }
+        }
+        public string _WarningText;
+
+        private void CreateLoadThread()
+        {
+            Thread LoadThread = new Thread(new ThreadStart(ExecuteLoadThread));
+            LoadThread.Start();
+        }
+
+        private void ExecuteLoadThread()
         {
             ProgramState = ProgramState.Parsing;
             DownloadProgress = 1.0;
@@ -741,197 +709,172 @@ namespace PgJsonParse
 
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
 
-            Dictionary<Type, string> FileTable = new Dictionary<Type, string>();
+            int Index = 0;
+            int Total = JsonFileTable.Count;
+
             foreach (KeyValuePair<Type, string> Entry in JsonFileTable)
-                FileTable.Add(Entry.Key, Entry.Value);
-
-            LoadNextFile(FileTable, ErrorInfo);
-        }
-
-        private void LoadNextFile(Dictionary<Type, string> FileTable, ParseErrorInfo ErrorInfo)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new LoadNextFileHandler(OnLoadNextFile), FileTable, ErrorInfo);
-        }
-
-        private delegate void LoadNextFileHandler(Dictionary<Type, string> FileTable, ParseErrorInfo ErrorInfo);
-        private void OnLoadNextFile(Dictionary<Type, string> FileTable, ParseErrorInfo ErrorInfo)
-        {
-            if (IsOperationCanceled)
             {
-                ProgramState = ProgramState.StartupScreen;
-                return;
+                LoadNextFile(Entry.Key, Entry.Value, ErrorInfo, Index++, Total);
+
+                if (IsOperationCanceled)
+                {
+                    ProgramState = ProgramState.StartupScreen;
+                    return;
+                }
             }
 
-            else if (FileTable.Count == 0)
-                ConnectTables(ErrorInfo);
+            ConnectTables(ErrorInfo);
+        }
 
-            else
+        private void LoadNextFile(Type TypeIndex, string FileName, ParseErrorInfo ErrorInfo, int Index, int Total)
+        {
+            try
             {
-                try
+                string FilePath = Path.Combine(CurrentVersionCacheFolder, FileName + ".json");
+
+                if (TypeIndex == typeof(PgJsonObjects.Ability))
                 {
-                    Type TypeIndex = null;
-                    foreach (KeyValuePair<Type, string> Entry in FileTable)
-                    {
-                        TypeIndex = Entry.Key;
-                        break;
-                    }
+                    Parser<PgJsonObjects.Ability> AbilityParser = new Parser<PgJsonObjects.Ability>();
+                    AbilityParser.LoadRaw(FilePath, AbilityList, ErrorInfo);
 
-                    string FilePath = Path.Combine(CurrentVersionCacheFolder, JsonFileTable[TypeIndex] + ".json");
-
-                    if (TypeIndex == typeof(PgJsonObjects.Ability))
-                    {
-                        Parser<PgJsonObjects.Ability> AbilityParser = new Parser<PgJsonObjects.Ability>();
-                        AbilityParser.LoadRaw(FilePath, AbilityList, ErrorInfo);
-
-                        AbilityTable.Clear();
-                        foreach (Ability Item in AbilityList)
-                            AbilityTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.AbilitySource))
-                    {
-                        Parser<PgJsonObjects.AbilitySource> AbilitySourceParser = new Parser<PgJsonObjects.AbilitySource>();
-                        AbilitySourceParser.LoadRaw(FilePath, AbilitySourceList, ErrorInfo);
-
-                        AbilitySourceTable.Clear();
-                        foreach (AbilitySource Item in AbilitySourceList)
-                            AbilitySourceTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.AdvancementTable))
-                    {
-                        Parser<PgJsonObjects.AdvancementTable> AdvancementTableParser = new Parser<PgJsonObjects.AdvancementTable>();
-                        AdvancementTableParser.LoadRaw(FilePath, AdvancementTableList, ErrorInfo);
-
-                        AdvancementTableTable.Clear();
-                        foreach (AdvancementTable Item in AdvancementTableList)
-                            AdvancementTableTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Attribute))
-                    {
-                        Parser<PgJsonObjects.Attribute> AttributeParser = new Parser<PgJsonObjects.Attribute>();
-                        AttributeParser.LoadRaw(FilePath, AttributeList, ErrorInfo);
-
-                        AttributeTable.Clear();
-                        foreach (PgJsonObjects.Attribute Item in AttributeList)
-                            AttributeTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.DirectedGoal))
-                    {
-                        Parser<PgJsonObjects.DirectedGoal> DirectedGoalParser = new Parser<PgJsonObjects.DirectedGoal>();
-                        DirectedGoalParser.LoadRaw(FilePath, DirectedGoalList, ErrorInfo);
-
-                        DirectedGoalTable.Clear();
-                        foreach (DirectedGoal Item in DirectedGoalList)
-                            DirectedGoalTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Effect))
-                    {
-                        Parser<PgJsonObjects.Effect> EffectParser = new Parser<PgJsonObjects.Effect>();
-                        EffectParser.LoadRaw(FilePath, EffectList, ErrorInfo);
-
-                        EffectTable.Clear();
-                        foreach (PgJsonObjects.Effect Item in EffectList)
-                            EffectTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Item))
-                    {
-                        Parser<PgJsonObjects.Item> ItemParser = new Parser<PgJsonObjects.Item>();
-                        ItemParser.LoadRaw(FilePath, ItemList, ErrorInfo);
-
-                        ItemTable.Clear();
-                        foreach (PgJsonObjects.Item Item in ItemList)
-                            ItemTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Quest))
-                    {
-                        Parser<PgJsonObjects.Quest> QuestParser = new Parser<PgJsonObjects.Quest>();
-                        QuestParser.LoadRaw(FilePath, QuestList, ErrorInfo);
-
-                        QuestTable.Clear();
-                        foreach (PgJsonObjects.Quest Item in QuestList)
-                            QuestTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Recipe))
-                    {
-                        Parser<PgJsonObjects.Recipe> RecipeParser = new Parser<PgJsonObjects.Recipe>();
-                        RecipeParser.LoadRaw(FilePath, RecipeList, ErrorInfo);
-
-                        RecipeTable.Clear();
-                        foreach (Recipe Item in RecipeList)
-                            RecipeTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.RecipeSource))
-                    {
-                        Parser<PgJsonObjects.RecipeSource> RecipeSourceParser = new Parser<PgJsonObjects.RecipeSource>();
-                        RecipeSourceParser.LoadRaw(FilePath, RecipeSourceList, ErrorInfo);
-
-                        RecipeSourceTable.Clear();
-                        foreach (RecipeSource Item in RecipeSourceList)
-                            RecipeSourceTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Skill))
-                    {
-                        Parser<PgJsonObjects.Skill> SkillParser = new Parser<PgJsonObjects.Skill>();
-                        SkillParser.LoadRaw(FilePath, SkillList, ErrorInfo);
-
-                        SkillTable.Clear();
-                        foreach (PgJsonObjects.Skill Item in SkillList)
-                            SkillTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Power))
-                    {
-                        Parser<PgJsonObjects.Power> PowerParser = new Parser<PgJsonObjects.Power>();
-                        PowerParser.LoadRaw(FilePath, PowerList, ErrorInfo);
-
-                        PowerTable.Clear();
-                        foreach (PgJsonObjects.Power Item in PowerList)
-                            PowerTable.Add(Item.Key, Item);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.XpTable))
-                    {
-                        Parser<PgJsonObjects.XpTable> XpTableParser = new Parser<PgJsonObjects.XpTable>();
-                        XpTableParser.LoadRaw(FilePath, XpTableList, ErrorInfo);
-
-                        XpTableTable.Clear();
-                        foreach (XpTable Item in XpTableList)
-                            XpTableTable.Add(Item.Key, Item);
-                    }
-
-                    Thread.Sleep(100);
-                    int Index = JsonFileTable.Count - FileTable.Count;
-                    FileLoadProgress = ((double)(Index + 1)) / (double)JsonFileTable.Count;
-
-                    FileTable.Remove(TypeIndex);
-                    LoadNextFile(FileTable, ErrorInfo);
+                    AbilityTable.Clear();
+                    foreach (Ability Item in AbilityList)
+                        AbilityTable.Add(Item.Key, Item);
                 }
-                catch (Exception e)
+
+                else if (TypeIndex == typeof(PgJsonObjects.AbilitySource))
                 {
-                    MessageBox.Show(e.Message);
-                    CancelOperation();
+                    Parser<PgJsonObjects.AbilitySource> AbilitySourceParser = new Parser<PgJsonObjects.AbilitySource>();
+                    AbilitySourceParser.LoadRaw(FilePath, AbilitySourceList, ErrorInfo);
+
+                    AbilitySourceTable.Clear();
+                    foreach (AbilitySource Item in AbilitySourceList)
+                        AbilitySourceTable.Add(Item.Key, Item);
                 }
+
+                else if (TypeIndex == typeof(PgJsonObjects.AdvancementTable))
+                {
+                    Parser<PgJsonObjects.AdvancementTable> AdvancementTableParser = new Parser<PgJsonObjects.AdvancementTable>();
+                    AdvancementTableParser.LoadRaw(FilePath, AdvancementTableList, ErrorInfo);
+
+                    AdvancementTableTable.Clear();
+                    foreach (AdvancementTable Item in AdvancementTableList)
+                        AdvancementTableTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Attribute))
+                {
+                    Parser<PgJsonObjects.Attribute> AttributeParser = new Parser<PgJsonObjects.Attribute>();
+                    AttributeParser.LoadRaw(FilePath, AttributeList, ErrorInfo);
+
+                    AttributeTable.Clear();
+                    foreach (PgJsonObjects.Attribute Item in AttributeList)
+                        AttributeTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.DirectedGoal))
+                {
+                    Parser<PgJsonObjects.DirectedGoal> DirectedGoalParser = new Parser<PgJsonObjects.DirectedGoal>();
+                    DirectedGoalParser.LoadRaw(FilePath, DirectedGoalList, ErrorInfo);
+
+                    DirectedGoalTable.Clear();
+                    foreach (DirectedGoal Item in DirectedGoalList)
+                        DirectedGoalTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Effect))
+                {
+                    Parser<PgJsonObjects.Effect> EffectParser = new Parser<PgJsonObjects.Effect>();
+                    EffectParser.LoadRaw(FilePath, EffectList, ErrorInfo);
+
+                    EffectTable.Clear();
+                    foreach (PgJsonObjects.Effect Item in EffectList)
+                        EffectTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Item))
+                {
+                    Parser<PgJsonObjects.Item> ItemParser = new Parser<PgJsonObjects.Item>();
+                    ItemParser.LoadRaw(FilePath, ItemList, ErrorInfo);
+
+                    ItemTable.Clear();
+                    foreach (PgJsonObjects.Item Item in ItemList)
+                        ItemTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Quest))
+                {
+                    Parser<PgJsonObjects.Quest> QuestParser = new Parser<PgJsonObjects.Quest>();
+                    QuestParser.LoadRaw(FilePath, QuestList, ErrorInfo);
+
+                    QuestTable.Clear();
+                    foreach (PgJsonObjects.Quest Item in QuestList)
+                        QuestTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Recipe))
+                {
+                    Parser<PgJsonObjects.Recipe> RecipeParser = new Parser<PgJsonObjects.Recipe>();
+                    RecipeParser.LoadRaw(FilePath, RecipeList, ErrorInfo);
+
+                    RecipeTable.Clear();
+                    foreach (Recipe Item in RecipeList)
+                        RecipeTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.RecipeSource))
+                {
+                    Parser<PgJsonObjects.RecipeSource> RecipeSourceParser = new Parser<PgJsonObjects.RecipeSource>();
+                    RecipeSourceParser.LoadRaw(FilePath, RecipeSourceList, ErrorInfo);
+
+                    RecipeSourceTable.Clear();
+                    foreach (RecipeSource Item in RecipeSourceList)
+                        RecipeSourceTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Skill))
+                {
+                    Parser<PgJsonObjects.Skill> SkillParser = new Parser<PgJsonObjects.Skill>();
+                    SkillParser.LoadRaw(FilePath, SkillList, ErrorInfo);
+
+                    SkillTable.Clear();
+                    foreach (PgJsonObjects.Skill Item in SkillList)
+                        SkillTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Power))
+                {
+                    Parser<PgJsonObjects.Power> PowerParser = new Parser<PgJsonObjects.Power>();
+                    PowerParser.LoadRaw(FilePath, PowerList, ErrorInfo);
+
+                    PowerTable.Clear();
+                    foreach (PgJsonObjects.Power Item in PowerList)
+                        PowerTable.Add(Item.Key, Item);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.XpTable))
+                {
+                    Parser<PgJsonObjects.XpTable> XpTableParser = new Parser<PgJsonObjects.XpTable>();
+                    XpTableParser.LoadRaw(FilePath, XpTableList, ErrorInfo);
+
+                    XpTableTable.Clear();
+                    foreach (XpTable Item in XpTableList)
+                        XpTableTable.Add(Item.Key, Item);
+                }
+
+                FileLoadProgress = ((double)(Index + 1)) / (double)Total;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                CancelOperation();
             }
         }
 
         private void ConnectTables(ParseErrorInfo ErrorInfo)
         {
             ProgramState = ProgramState.ConnectingTables;
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new ConnectTablesHandler(OnConnectTables), ErrorInfo);
-        }
 
-        private delegate void ConnectTablesHandler(ParseErrorInfo ErrorInfo);
-        private void OnConnectTables(ParseErrorInfo ErrorInfo)
-        {
             foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
                 Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
 
@@ -1065,112 +1008,93 @@ namespace PgJsonParse
 
         private void CreateIndexes(ParseErrorInfo ErrorInfo)
         {
-            Dictionary<Type, string> FileTable = new Dictionary<Type, string>();
-            foreach (KeyValuePair<Type, string> Entry in JsonFileTable)
-                FileTable.Add(Entry.Key, Entry.Value);
-
             ProgramState = ProgramState.CreatingIndex;
-            CreateNextIndex(FileTable, ErrorInfo);
-        }
 
-        private void CreateNextIndex(Dictionary<Type, string> FileTable, ParseErrorInfo ErrorInfo)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CreateIndexHandler(OnCreateNextIndex), FileTable, ErrorInfo);
-        }
-
-        private delegate void CreateIndexHandler(Dictionary<Type, string> FileTable, ParseErrorInfo ErrorInfo);
-        private void OnCreateNextIndex(Dictionary<Type, string> FileTable, ParseErrorInfo ErrorInfo)
-        {
-            if (IsOperationCanceled)
+            foreach (KeyValuePair<Type, string> Entry in JsonFileTable)
             {
-                ProgramState = ProgramState.StartupScreen;
-                return;
+                CreateNextIndex(Entry.Key, Entry.Value, ErrorInfo);
+
+                if (IsOperationCanceled)
+                {
+                    ProgramState = ProgramState.StartupScreen;
+                    return;
+                }
             }
 
-            else if (FileTable.Count == 0)
-                CreateMushroomIndex(ErrorInfo);
+            CreateMushroomIndex(ErrorInfo);
+            LoadIcons(ErrorInfo);
+        }
 
-            else
+        private void CreateNextIndex(Type TypeIndex, string FileName, ParseErrorInfo ErrorInfo)
+        { 
+            try
             {
-                try
+                string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, FileName + "-index.txt");
+
+                if (TypeIndex == typeof(PgJsonObjects.Ability))
                 {
-                    Type TypeIndex = null;
-                    foreach (KeyValuePair<Type, string> Entry in FileTable)
-                    {
-                        TypeIndex = Entry.Key;
-                        break;
-                    }
-
-                    string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, JsonFileTable[TypeIndex] + "-index.txt");
-
-                    if (TypeIndex == typeof(PgJsonObjects.Ability))
-                    {
-                        Parser<PgJsonObjects.Ability> AbilityParser = new Parser<PgJsonObjects.Ability>();
-                        AbilityParser.CreateIndex(IndexFilePath, AbilityTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.AdvancementTable))
-                    {
-                        Parser<PgJsonObjects.AdvancementTable> AdvancementTableParser = new Parser<PgJsonObjects.AdvancementTable>();
-                        AdvancementTableParser.CreateIndex(IndexFilePath, AdvancementTableTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Attribute))
-                    {
-                        Parser<PgJsonObjects.Attribute> AttributeParser = new Parser<PgJsonObjects.Attribute>();
-                        AttributeParser.CreateIndex(IndexFilePath, AttributeTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.DirectedGoal))
-                    {
-                        Parser<PgJsonObjects.DirectedGoal> DirectedGoalParser = new Parser<PgJsonObjects.DirectedGoal>();
-                        DirectedGoalParser.CreateIndex(IndexFilePath, DirectedGoalTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Effect))
-                    {
-                        Parser<PgJsonObjects.Effect> EffectParser = new Parser<PgJsonObjects.Effect>();
-                        EffectParser.CreateIndex(IndexFilePath, EffectTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Item))
-                    {
-                        Parser<PgJsonObjects.Item> ItemParser = new Parser<PgJsonObjects.Item>();
-                        ItemParser.CreateIndex(IndexFilePath, ItemTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Quest))
-                    {
-                        Parser<PgJsonObjects.Quest> QuestParser = new Parser<PgJsonObjects.Quest>();
-                        QuestParser.CreateIndex(IndexFilePath, QuestTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Recipe))
-                    {
-                        Parser<PgJsonObjects.Recipe> RecipeParser = new Parser<PgJsonObjects.Recipe>();
-                        RecipeParser.CreateIndex(IndexFilePath, RecipeTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Skill))
-                    {
-                        Parser<PgJsonObjects.Skill> SkillParser = new Parser<PgJsonObjects.Skill>();
-                        SkillParser.CreateIndex(IndexFilePath, SkillTable);
-                    }
-
-                    else if (TypeIndex == typeof(PgJsonObjects.Power))
-                    {
-                        Parser<PgJsonObjects.Power> PowerParser = new Parser<PgJsonObjects.Power>();
-                        PowerParser.CreateIndex(IndexFilePath, PowerTable);
-                    }
-
-                    FileTable.Remove(TypeIndex);
-                    CreateNextIndex(FileTable, ErrorInfo);
+                    Parser<PgJsonObjects.Ability> AbilityParser = new Parser<PgJsonObjects.Ability>();
+                    AbilityParser.CreateIndex(IndexFilePath, AbilityTable);
                 }
-                catch (Exception e)
+
+                else if (TypeIndex == typeof(PgJsonObjects.AdvancementTable))
                 {
-                    MessageBox.Show(e.Message);
-                    CancelOperation();
+                    Parser<PgJsonObjects.AdvancementTable> AdvancementTableParser = new Parser<PgJsonObjects.AdvancementTable>();
+                    AdvancementTableParser.CreateIndex(IndexFilePath, AdvancementTableTable);
                 }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Attribute))
+                {
+                    Parser<PgJsonObjects.Attribute> AttributeParser = new Parser<PgJsonObjects.Attribute>();
+                    AttributeParser.CreateIndex(IndexFilePath, AttributeTable);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.DirectedGoal))
+                {
+                    Parser<PgJsonObjects.DirectedGoal> DirectedGoalParser = new Parser<PgJsonObjects.DirectedGoal>();
+                    DirectedGoalParser.CreateIndex(IndexFilePath, DirectedGoalTable);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Effect))
+                {
+                    Parser<PgJsonObjects.Effect> EffectParser = new Parser<PgJsonObjects.Effect>();
+                    EffectParser.CreateIndex(IndexFilePath, EffectTable);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Item))
+                {
+                    Parser<PgJsonObjects.Item> ItemParser = new Parser<PgJsonObjects.Item>();
+                    ItemParser.CreateIndex(IndexFilePath, ItemTable);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Quest))
+                {
+                    Parser<PgJsonObjects.Quest> QuestParser = new Parser<PgJsonObjects.Quest>();
+                    QuestParser.CreateIndex(IndexFilePath, QuestTable);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Recipe))
+                {
+                    Parser<PgJsonObjects.Recipe> RecipeParser = new Parser<PgJsonObjects.Recipe>();
+                    RecipeParser.CreateIndex(IndexFilePath, RecipeTable);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Skill))
+                {
+                    Parser<PgJsonObjects.Skill> SkillParser = new Parser<PgJsonObjects.Skill>();
+                    SkillParser.CreateIndex(IndexFilePath, SkillTable);
+                }
+
+                else if (TypeIndex == typeof(PgJsonObjects.Power))
+                {
+                    Parser<PgJsonObjects.Power> PowerParser = new Parser<PgJsonObjects.Power>();
+                    PowerParser.CreateIndex(IndexFilePath, PowerTable);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                CancelOperation();
             }
         }
 
@@ -1200,8 +1124,6 @@ namespace PgJsonParse
             catch
             {
             }
-
-            LoadIcons(ErrorInfo);
         }
 
         private void LoadIcons(ParseErrorInfo ErrorInfo)
@@ -1229,7 +1151,7 @@ namespace PgJsonParse
             if (MissingIconList.Count > 0)
                 Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new LoadNextIconHandler(OnLoadNextIcon), MissingIconList, LoadedCount, MaxCount, ErrorInfo);
             else
-                CompleteLoading(ErrorInfo);
+                Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CompleteLoadingHandler(OnCompleteLoading), ErrorInfo);
         }
 
         private delegate void LoadNextIconHandler(List<int> MissingIconList, int LoadedCount, int MaxCount, ParseErrorInfo ErrorInfo);
@@ -1270,16 +1192,17 @@ namespace PgJsonParse
             LoadNextIcon(MissingIconList, LoadedCount, MaxCount, ErrorInfo);
         }
 
-        private void CompleteLoading(ParseErrorInfo ErrorInfo)
+        private delegate void CompleteLoadingHandler(ParseErrorInfo ErrorInfo);
+        private void OnCompleteLoading(ParseErrorInfo ErrorInfo)
         {
             string Warnings = ErrorInfo.GetWarnings();
             if (Warnings.Length > 0)
             {
                 Debug.Print(Warnings);
-                textWarnings.Text = Warnings;
+                WarningText = Warnings;
             }
             else
-                textWarnings.Text = "Files loaded and parsed, no warnings.";
+                WarningText = "Files loaded and parsed, no warnings.";
 
             StopOperation();
             ProgramState = ProgramState.Ready;

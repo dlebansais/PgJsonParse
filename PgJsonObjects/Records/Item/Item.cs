@@ -550,12 +550,6 @@ namespace PgJsonObjects
 
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
         {
-            if (Key == "item_45040")
-                Name = RawName;
-
-            if (RawName.EndsWith("Lucky Belt of The Crypt Keeper"))
-                Name = RawName;
-
             Name = RawName;
         }
 
