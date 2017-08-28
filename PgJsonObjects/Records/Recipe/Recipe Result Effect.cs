@@ -6,7 +6,9 @@ namespace PgJsonObjects
     public class RecipeResultEffect
     {
         public RecipeEffect Effect { get; set; }
-        public DecomposeMaterial Material { get; set; }
+        //public DecomposeMaterial Material { get; set; }
+        public int MinLevel { get; set; }
+        public int MaxLevel { get; set; }
         public DecomposeSkill Skill { get; set; }
         public Augment ExtractedAugment { get; set; }
         public float RepairMinEfficiency { get; set; }
@@ -42,14 +44,14 @@ namespace PgJsonObjects
                     default:
                         return TextMaps.RecipeEffectTextMap[Effect];
 
-                    case RecipeEffect.DecomposeItemByTSysLevels:
-                        return "Decompose to create " + TextMaps.DecomposeMaterialTextMap[Material] + " with " + TextMaps.DecomposeSkillTextMap[Skill];
+                    //case RecipeEffect.DecomposeItemByTSysLevels:
+                    //    return "Decompose to create " + TextMaps.DecomposeMaterialTextMap[Material] + " with " + TextMaps.DecomposeSkillTextMap[Skill];
 
                     case RecipeEffect.ExtractTSysPower:
-                        return "Extract " + TextMaps.AugmentTextMap[ExtractedAugment] + " using " + TextMaps.DecomposeMaterialTextMap[Material] + " with " + TextMaps.DecomposeSkillTextMap[Skill];
+                        return "Extract " + TextMaps.AugmentTextMap[ExtractedAugment] + " using material level " + MinLevel + "-" + MaxLevel + " with " + TextMaps.DecomposeSkillTextMap[Skill];
 
                     case RecipeEffect.RepairItemDurability:
-                        return "Repair Between " + (RepairMinEfficiency * 100) + "% and " + (RepairMaxEfficiency * 100) + "% Of Item Durability, with a cooldown of " + TimeSpan.FromHours(RepairCooldown).ToString();
+                        return "Repair Between " + (RepairMinEfficiency * 100) + "% and " + (RepairMaxEfficiency * 100) + "% Of Item Durability, with a cooldown of " + TimeSpan.FromHours(RepairCooldown).ToString() + ", items in level range " + MinLevel + "-" + MaxLevel;
 
                     case RecipeEffect.TSysCraftedEquipment:
                         Result = "Craft " + TextMaps.CraftedBoostTextMap[Boost] + " Tier " + BoostLevel;

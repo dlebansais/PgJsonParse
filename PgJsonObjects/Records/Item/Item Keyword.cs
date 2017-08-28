@@ -821,5 +821,14 @@
         MushroomBox,
         MushroomGrowBox,
         ResistancePotion,
+        FoodOrCookingIngredient,
+        HippoTooth,
+        ScrayStinger,
+        Grapes,
+        PoetryStyle,
+        PoetryTier,
+        RecitablePoetry,
+        PerfectSpruceWood,
+        CalligraphyBench,
     }
 }

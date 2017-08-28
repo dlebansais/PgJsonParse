@@ -7,5 +7,6 @@
         Read,
         Eat,
         UseItem,
+        Pickup,
     }
 }

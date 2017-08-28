@@ -252,5 +252,12 @@
         PostCoitalBliss,
         AdminGiftSpeed,
         BarutisCurse,
+        PoetryAppreciationGeneric,
+        PoetryAppreciationSomber,
+        PoetryAppreciationTragic,
+        PoetryAppreciationFunny,
+        PoetryAppreciationWise,
+        TongueAcid,
+        TastsBoon,
     }
 }

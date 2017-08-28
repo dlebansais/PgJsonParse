@@ -1898,6 +1898,14 @@ namespace PgJsonObjects
                 AddResult(AdditionalResult);
             }
 
+            else if (Tools.Scan(s, "Target takes %d %{DamageType} damage after an %d second delay", args))
+            {
+                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.DelayedDamage, TimeSpan.FromSeconds((int)args[2]));
+                AdditionalResult.Target = AbilityEffectTarget.Self;
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0], DamageType = (DamageType)args[1] });
+                AddResult(AdditionalResult);
+            }
+
             else if (Tools.Scan(s, "This damage is aborted if target is standing in water", args))
                 return;
 
@@ -2683,6 +2691,11 @@ namespace PgJsonObjects
             }
 
             else if (Tools.Scan(s, "+%d %{DamageType} Protection (direct and indirect) for %d minutes", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Target is stunned after a %d second delay", args))
             {
                 //TODO
             }

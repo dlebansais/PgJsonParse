@@ -43,5 +43,6 @@
         HuddleForWarmth,
         AgeLiquor,
         CleanOffDust,
+        TakeSoilSample,
     }
 }

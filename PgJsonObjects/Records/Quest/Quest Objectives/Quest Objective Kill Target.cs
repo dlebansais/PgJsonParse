@@ -73,5 +73,11 @@
         GazlukCaveSnail,
         GazlukCaveColdSlime,
         Murklinger,
+        LoggingCampOverseer,
+        RanalonGuard,
+        RanalonGardener,
+        PrayingRanalon,
+        RanalonPrayermaster,
+        WildChicken,
     }
 }

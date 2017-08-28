@@ -87,5 +87,7 @@
         PurpleGlitterBuff,
         DrinkAlcohol,
         DeathPlumeFixedPosition,
+        StoneImmobilize,
+        EarthStormSmall,
     }
 }

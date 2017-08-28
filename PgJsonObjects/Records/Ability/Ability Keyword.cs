@@ -442,5 +442,6 @@
         MushroomTurret,
         MeleeKnife,
         BunFuBlitz,
+        BunFuStrike,
     }
 }

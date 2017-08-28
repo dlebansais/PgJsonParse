@@ -59,6 +59,8 @@ namespace PgJsonObjects
             { RecipeItemKey.Rarity_Rare, "Rarity:Rare" },
             { RecipeItemKey.MinRarity_Exceptional, "MinRarity:Exceptional" },
             { RecipeItemKey.MinRarity_Uncommon, "MinRarity:Uncommon" },
+            { RecipeItemKey.Rarity_Exceptional, "Rarity:Exceptional" },
+            { RecipeItemKey.MinRarity_Epic, "MinRarity:Epic" },
         };
 
         private static void ParseFieldItemCode(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)

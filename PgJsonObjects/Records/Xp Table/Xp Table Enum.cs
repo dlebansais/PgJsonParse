@@ -36,5 +36,6 @@
         Phrenology,
         DyeMaking,
         Hoplology,
+        Oratory,
     }
 }

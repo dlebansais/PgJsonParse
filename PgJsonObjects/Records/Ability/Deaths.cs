@@ -130,5 +130,7 @@
         RabbitKick,
         MummyDisease,
         MummyWrap,
+        IceShards,
+        EarthRoot,
     }
 }

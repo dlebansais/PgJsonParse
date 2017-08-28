@@ -91,5 +91,7 @@
         Meat,
         BodyOrgan,
         CorpseLimb,
+        Rarity_Exceptional,
+        MinRarity_Epic,
     }
 }

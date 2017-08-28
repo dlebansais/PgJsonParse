@@ -468,8 +468,8 @@ namespace PgJsonObjects
                 return true;
             }
 
-            if (ParseDecomposeEffect(RawEffect, ErrorInfo, ref NewResultEffect))
-                return true;
+            //if (ParseDecomposeEffect(RawEffect, ErrorInfo, ref NewResultEffect))
+            //    return true;
 
             if (ParseExtractEffect(RawEffect, ErrorInfo, ref NewResultEffect))
                 return true;
@@ -496,6 +496,7 @@ namespace PgJsonObjects
             return false;
         }
 
+        /*
         private bool ParseDecomposeEffect(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
         {
             string DecomposePattern = "DecomposeItemByTSysLevels(";
@@ -522,6 +523,7 @@ namespace PgJsonObjects
 
             return false;
         }
+        */
 
         private bool ParseExtractEffect(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
         {
@@ -532,19 +534,22 @@ namespace PgJsonObjects
                 string Extracted = RawEffect.Substring(ExtractPattern.Length, RawEffect.Length - ExtractPattern.Length - 1);
                 string[] ExtractedSplit = Extracted.Split(',');
 
-                if (ExtractedSplit.Length == 3)
+                if (ExtractedSplit.Length == 4)
                 {
                     Augment ConvertedAugment;
                     DecomposeSkill ConvertedSkill;
-                    DecomposeMaterial ConvertedMaterial;
+                    int MinLevel, MaxLevel;
+                    //DecomposeMaterial ConvertedMaterial;
                     if (StringToEnumConversion<Augment>.TryParse(ExtractedSplit[0], out ConvertedAugment, ErrorInfo) &&
                         StringToEnumConversion<DecomposeSkill>.TryParse(ExtractedSplit[1], out ConvertedSkill, ErrorInfo) &&
-                        StringToEnumConversion<DecomposeMaterial>.TryParse(ExtractedSplit[2], out ConvertedMaterial, ErrorInfo))
+                        int.TryParse(ExtractedSplit[2], out MinLevel) &&
+                        int.TryParse(ExtractedSplit[3], out MaxLevel))
                     {
                         NewResultEffect.Effect = ConvertedRecipeEffect;
                         NewResultEffect.ExtractedAugment = ConvertedAugment;
                         NewResultEffect.Skill = ConvertedSkill;
-                        NewResultEffect.Material = ConvertedMaterial;
+                        NewResultEffect.MinLevel = MinLevel;
+                        NewResultEffect.MaxLevel = MaxLevel;
                         return true;
                     }
                 }
@@ -562,16 +567,19 @@ namespace PgJsonObjects
                 string Repaired = RawEffect.Substring(RepairPattern.Length, RawEffect.Length - RepairPattern.Length - 1);
                 string[] RepairedSplit = Repaired.Split(',');
 
-                if (RepairedSplit.Length == 3)
+                if (RepairedSplit.Length == 5)
                 {
                     float RepairMinEfficiency;
                     FloatFormat RepairMinEfficiencyFormat;
                     float RepairMaxEfficiency;
                     FloatFormat RepairMaxEfficiencyFormat;
                     int RepairCooldown;
+                    int MinLevel, MaxLevel;
                     if (Tools.TryParseFloat(RepairedSplit[0], out RepairMinEfficiency, out RepairMinEfficiencyFormat) &&
                         Tools.TryParseFloat(RepairedSplit[1], out RepairMaxEfficiency, out RepairMaxEfficiencyFormat) &&
-                        int.TryParse(RepairedSplit[2], out RepairCooldown))
+                        int.TryParse(RepairedSplit[2], out RepairCooldown) &&
+                        int.TryParse(RepairedSplit[3], out MinLevel) &&
+                        int.TryParse(RepairedSplit[4], out MaxLevel))
                     {
                         NewResultEffect.Effect = ConvertedRecipeEffect;
                         NewResultEffect.RepairMinEfficiency = RepairMinEfficiency;
@@ -579,6 +587,8 @@ namespace PgJsonObjects
                         NewResultEffect.RepairMaxEfficiency = RepairMaxEfficiency;
                         NewResultEffect.RepairMaxEfficiencyFormat = RepairMaxEfficiencyFormat;
                         NewResultEffect.RepairCooldown = RepairCooldown;
+                        NewResultEffect.MinLevel = MinLevel;
+                        NewResultEffect.MaxLevel = MaxLevel;
                         return true;
                     }
                 }
@@ -993,9 +1003,9 @@ namespace PgJsonObjects
                     Content = StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap);
                     break;
 
-                case RecipeEffect.DecomposeItemByTSysLevels:
+                /*case RecipeEffect.DecomposeItemByTSysLevels:
                     Content = GenerateDecomposeContent(Generator, ResultEffect);
-                    break;
+                    break;*/
 
                 case RecipeEffect.ExtractTSysPower:
                     Content = GenerateExtractContent(Generator, ResultEffect);
@@ -1017,19 +1027,19 @@ namespace PgJsonObjects
             Generator.AddString(null, Content);
         }
 
-        public string GenerateDecomposeContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
+        /*public string GenerateDecomposeContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
         {
             return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + "(" + ResultEffect.Material + "," + ResultEffect.Skill + ")";
-        }
+        }*/
 
         public string GenerateExtractContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
         {
-            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + "(" + ResultEffect.ExtractedAugment + "," + ResultEffect.Skill + "," + ResultEffect.Material + ")";
+            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + "(" + ResultEffect.ExtractedAugment + "," + ResultEffect.Skill + "," + ResultEffect.MinLevel + "," + ResultEffect .MaxLevel + ")";
         }
 
         public string GenerateRepairContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
         {
-            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + "(" + Tools.FloatToString(ResultEffect.RepairMinEfficiency, ResultEffect.RepairMinEfficiencyFormat) + "," + Tools.FloatToString(ResultEffect.RepairMaxEfficiency, ResultEffect.RepairMaxEfficiencyFormat) + "," + ResultEffect.RepairCooldown + ")";
+            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + "(" + Tools.FloatToString(ResultEffect.RepairMinEfficiency, ResultEffect.RepairMinEfficiencyFormat) + "," + Tools.FloatToString(ResultEffect.RepairMaxEfficiency, ResultEffect.RepairMaxEfficiencyFormat) + "," + ResultEffect.RepairCooldown + "," + ResultEffect.MinLevel + "," + ResultEffect.MaxLevel + ")";
         }
 
         public string GenerateCraftContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)

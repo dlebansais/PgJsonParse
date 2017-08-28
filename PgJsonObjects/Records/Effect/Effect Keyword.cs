@@ -1,7 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public enum EffectKeyword
-    {
+    public enum EffectKeyword {
         Internal_None,
         Hyphen,
         Event,
@@ -203,5 +202,9 @@
         LongEar,
         MummyDisease,
         BarutisCurse,
+        Rotbelly,
+        FrogFever,
+        Healing,
+        HardcoreBuff,
     }
 }
