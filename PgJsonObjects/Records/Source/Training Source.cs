@@ -3,14 +3,16 @@
     public class TrainingSource : GenericSource
     {
         #region Init
-        public TrainingSource(string NpcName)
+        public TrainingSource(string NpcName, GameNpc Npc)
         {
             this.NpcName = NpcName;
+            this.Npc = Npc;
         }
         #endregion
 
         #region Properties
         public string NpcName { get; private set; }
+        public GameNpc Npc { get; private set; }
         #endregion
     }
 }

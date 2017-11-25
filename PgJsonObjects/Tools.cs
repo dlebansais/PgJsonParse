@@ -92,14 +92,38 @@ namespace PgJsonObjects
 
                 while (i < s.Length && j < Format.Length)
                 {
-                    if (Format[j] == '%' && Format[j + 1] == '%')
+                    if (Format[j] == '%' && j + 1 < Format.Length && Format[j + 1] == '%')
                     {
                         if (s[i++] != Format[j++])
                             return false;
                         j++;
                     }
 
-                    else if (Format[j] == '%' && Format[j + 1] == 'd')
+                    else if (Format[j] == '%' && j + 1 < Format.Length && Format[j + 1] == 's')
+                    {
+                        if (j + 3 >= Format.Length)
+                            return false;
+                        if (Format[j + 2] != '{')
+                            return false;
+                        int EndTerm = Format.IndexOf('}', j + 3);
+                        if (EndTerm < 0)
+                            return false;
+                        string Term = Format.Substring(j + 3, EndTerm - j - 3);
+
+                        int TermIndex = s.IndexOf(Term, i);
+                        if (TermIndex < 0)
+                            return false;
+
+                        string Value = s.Substring(i, TermIndex - i - 1);
+                        if (argc >= args.Length)
+                            return false;
+                        args[argc++] = Value;
+
+                        i += Value.Length;
+                        j = EndTerm + 1;
+                    }
+
+                    else if (Format[j] == '%' && j + 1 < Format.Length && Format[j + 1] == 'd')
                     {
                         if (argc >= args.Length)
                             return false;
@@ -134,7 +158,7 @@ namespace PgJsonObjects
                         j += 2;
                     }
 
-                    else if (Format[j] == '%' && Format[j + 1] == 'f')
+                    else if (Format[j] == '%' && j + 1 < Format.Length && Format[j + 1] == 'f')
                     {
                         if (argc >= args.Length)
                             return false;
@@ -176,7 +200,7 @@ namespace PgJsonObjects
                         j += 2;
                     }
 
-                    else if (Format[j] == '%' && Format[j + 1] == '{')
+                    else if (Format[j] == '%' && j + 1 < Format.Length && Format[j + 1] == '{')
                     {
                         if (argc >= args.Length)
                             return false;

@@ -40,6 +40,7 @@ namespace PgJsonObjects
         private string RawItemName;
         private string InteractionFlag;
         private MapAreaName DeliverNpcArea;
+        private string DeliverNpcId;
         private string DeliverNpcName;
         private float? RawMinFavorReceived;
         private float? RawMaxFavorReceived;
@@ -48,6 +49,8 @@ namespace PgJsonObjects
         private ItemKeyword ResultItemKeyword;
         private PowerSkill AnatomyType;
         private ItemKeyword ItemKeyword;
+        private MonsterTypeTag MonsterTypeTag;
+        private EffectKeyword EffectRequirement;
         #endregion
 
         #region Indirect Properties
@@ -62,7 +65,7 @@ namespace PgJsonObjects
             {
                 case QuestObjectiveType.Kill:
                 case QuestObjectiveType.KillElite:
-                    return new QuestObjectiveKill(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, KillTarget, AbilityKeyword);
+                    return new QuestObjectiveKill(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, KillTarget, AbilityKeyword, EffectRequirement);
 
                 case QuestObjectiveType.TipPlayer:
                     return new QuestObjectiveTipPlayer(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount);
@@ -75,7 +78,7 @@ namespace PgJsonObjects
 
                 case QuestObjectiveType.Deliver:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
-                        return new QuestObjectiveDeliver(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcName, RawItemName);
+                        return new QuestObjectiveDeliver(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName);
                     else
                         return this;
 
@@ -92,9 +95,9 @@ namespace PgJsonObjects
 
                 case QuestObjectiveType.GuildGiveItem:
                     if (RawItemName != null && ItemKeyword == ItemKeyword.Internal_None)
-                        return new QuestObjectiveGuildGiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcName, RawItemName);
+                        return new QuestObjectiveGuildGiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcId, DeliverNpcName, RawItemName);
                     else if (RawItemName == null && ItemKeyword != ItemKeyword.Internal_None)
-                        return new QuestObjectiveGuildGiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcName, ItemKeyword);
+                        return new QuestObjectiveGuildGiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcId, DeliverNpcName, ItemKeyword);
                     else
                         return this;
 
@@ -113,6 +116,14 @@ namespace PgJsonObjects
 
                 case QuestObjectiveType.UseAbility:
                     return new QuestObjectiveUseAbility(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, AbilityTarget);
+
+                case QuestObjectiveType.Loot:
+                    if (RawItemName != null && ItemTarget == ItemKeyword.Internal_None)
+                        return new QuestObjectiveLoot(Description, RawItemName, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
+                    else if (RawItemName == null && ItemTarget != ItemKeyword.Internal_None)
+                        return new QuestObjectiveLoot(Description, ItemTarget, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
+                    else
+                        return this;
 
                 case QuestObjectiveType.Scripted:
                 case QuestObjectiveType.SayInChat:
@@ -153,6 +164,7 @@ namespace PgJsonObjects
             { "AnatomyType", ParseFieldAnatomyType },
             { "ItemKeyword", ParseFieldItemKeyword },
             { "Requirements", ParseFieldRequirements },
+            { "MonsterTypeTag", ParseFieldMonsterTypeTag },
         };
 
         private static void ParseFieldType(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -192,10 +204,12 @@ namespace PgJsonObjects
             else if (Type == QuestObjectiveType.Deliver)
             {
                 MapAreaName ParsedArea;
+                string ParsedNpcId;
                 string ParsedNpcName;
-                if (Quest.TryParseNPC(RawTarget, out ParsedArea, out ParsedNpcName, ErrorInfo))
+                if (Quest.TryParseNPC(RawTarget, out ParsedArea, out ParsedNpcId, out ParsedNpcName, ErrorInfo))
                 {
                     DeliverNpcArea = ParsedArea;
+                    DeliverNpcId = ParsedNpcId;
                     DeliverNpcName = ParsedNpcName;
                 }
                 else
@@ -204,9 +218,13 @@ namespace PgJsonObjects
 
             else if (Type == QuestObjectiveType.GuildGiveItem)
             {
+                string ParsedNpcId;
                 string ParsedNpcName;
-                if (Quest.TryParseNPC(RawTarget, out ParsedNpcName, ErrorInfo))
+                if (Quest.TryParseNPC(RawTarget, out ParsedNpcId, out ParsedNpcName, ErrorInfo))
+                {
+                    DeliverNpcId = ParsedNpcId;
                     DeliverNpcName = ParsedNpcName;
+                }
                 else
                     ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (for Guild Give Item)");
             }
@@ -214,6 +232,7 @@ namespace PgJsonObjects
             else if (Type == QuestObjectiveType.Harvest ||
                 Type == QuestObjectiveType.Collect ||
                 Type == QuestObjectiveType.Have ||
+                Type == QuestObjectiveType.Loot ||
                 Type == QuestObjectiveType.UseItem)
             {
                 ItemKeyword ParsedTarget;
@@ -321,6 +340,7 @@ namespace PgJsonObjects
                 Type == QuestObjectiveType.Have ||
                 Type == QuestObjectiveType.Harvest ||
                 Type == QuestObjectiveType.UseItem ||
+                Type == QuestObjectiveType.Loot ||
                 Type == QuestObjectiveType.GuildGiveItem)
                 this.RawItemName = RawItemName;
             else
@@ -578,6 +598,27 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
         }
 
+        private static void ParseFieldMonsterTypeTag(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawMonsterTypeTag;
+            if ((RawMonsterTypeTag = Value as string) != null)
+                This.ParseMonsterTypeTag(RawMonsterTypeTag, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective MonsterTypeTag");
+        }
+
+        private void ParseMonsterTypeTag(string RawMonsterTypeTag, ParseErrorInfo ErrorInfo)
+        {
+            if (Type == QuestObjectiveType.Loot)
+            {
+                MonsterTypeTag ParsedMonsterTypeTag;
+                StringToEnumConversion<MonsterTypeTag>.TryParse(RawMonsterTypeTag, out ParsedMonsterTypeTag, ErrorInfo);
+                MonsterTypeTag = ParsedMonsterTypeTag;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective MonsterTypeTag (Type)");
+        }
+
         private void ParseRequirements(Dictionary<string, object> RawRequirement, ParseErrorInfo ErrorInfo)
         {
             if (RawRequirement.ContainsKey("T"))
@@ -593,6 +634,22 @@ namespace PgJsonObjects
                             {
                                 MinHour = (int)RawRequirement["MinHour"];
                                 MaxHour = (int)RawRequirement["MaxHour"];
+                            }
+                            else
+                                ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+                        }
+                        else
+                            ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+                    }
+                    else if (RequirementType == "HasEffectKeyword")
+                    {
+                        if (RawRequirement.ContainsKey("Keyword"))
+                        {
+                            string EffectKeyword = RawRequirement["Keyword"] as string;
+                            EffectKeyword ParsedEffectKeyword;
+                            if (StringToEnumConversion<EffectKeyword>.TryParse(EffectKeyword, out ParsedEffectKeyword, ErrorInfo))
+                            {
+                                EffectRequirement = ParsedEffectKeyword;
                             }
                             else
                                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
@@ -635,7 +692,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
 

@@ -94,7 +94,7 @@ namespace PgJsonObjects
         public ConsumedItem ConsumedItem { get; private set; }
         public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
 
-        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable, ParseErrorInfo ErrorInfo)
         {
             string DigitStrippedName = InternalName;
             string LineIndexString = "";
@@ -2700,6 +2700,36 @@ namespace PgJsonObjects
                 //TODO
             }
 
+            else if (Tools.Scan(s, "If target succumbs to fear, it flees for %d seconds", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "You must be wearing a %s{to use this} to use this ability", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "You must be wearing an %s{to use this} to use this ability", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "After using this ability, you take %d% more damage from all attacks for %d seconds", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "You evade %d% of all attacks", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Your movement speed is %d", args))
+            {
+                //TODO
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);
@@ -2888,7 +2918,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
 
@@ -2899,13 +2929,13 @@ namespace PgJsonObjects
             Prerequisite = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawPrerequisite, Prerequisite, ref IsRawPrerequisiteParsed, ref IsConnected, this);
 
             if (PvE != null)
-                IsConnected |= PvE.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= PvE.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
 
             if (PvP != null)
-                IsConnected |= PvP.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= PvP.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
 
             foreach (AbilityRequirement Item in SpecialCasterRequirementList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
 
             SharesResetTimerWith = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsRawSharesResetTimerWithParsed, ref IsConnected, this);
             UpgradeOf = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawUpgradeOf, UpgradeOf, ref IsRawUpgradeOfParsed, ref IsConnected, this);
@@ -2914,10 +2944,10 @@ namespace PgJsonObjects
                 ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
 
             foreach (RecipeCost Item in CostList)
-                Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+                Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
 
             ConsumedItemLink = Item.ConnectSingleProperty(null, ItemTable, RawConsumedItemKeyword, ConsumedItemLink, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
-
+            
             return IsConnected;
         }
 

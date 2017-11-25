@@ -3,6 +3,7 @@
     public enum ItemKeyword
     {
         Internal_None,
+        Any,
         BottledItem,
         EmptyBottle,
         Ingredient,
@@ -830,5 +831,24 @@
         RecitablePoetry,
         PerfectSpruceWood,
         CalligraphyBench,
+        PumpkinPie,
+        Candy,
+        HalloweenCandy,
+        KajichMedallion1,
+        KajichMedallion2,
+        KajichMedallion3,
+        KajichMedallion4,
+        KajichMedallion5,
+        KajichMedallion6,
+        KajichMedallion7,
+        KajichMedallion8,
+        IlthHaleRing1,
+        IlthHaleRing2,
+        IlthHaleRing3,
+        IlthHaleRing4,
+        IlthHaleRing5,
+        IlthHaleRing6,
+        IlthHaleRing7,
+        IlthHaleRing8,
     }
 }

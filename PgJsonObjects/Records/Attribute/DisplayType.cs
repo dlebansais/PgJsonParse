@@ -6,5 +6,12 @@
         AsDeltaIfNonZero,
         AsPercent,
         AsDoubleTimes100,
+        AsInt,
+        AsBuffDelta,
+        AsDebuffDelta,
+        AsBuffMod,
+        AsDebuffMod,
+        AsDouble,
+        AsBool,
     }
 }

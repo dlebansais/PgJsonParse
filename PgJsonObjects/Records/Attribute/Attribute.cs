@@ -13,6 +13,8 @@ namespace PgJsonObjects
         public DisplayType DisplayType { get; private set; }
         public bool IsHidden { get { return RawIsHidden.HasValue && RawIsHidden.Value; } }
         private bool? RawIsHidden;
+        public DisplayRule DisplayRule { get; private set; }
+        public double? RawDefaultValue { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -33,7 +35,7 @@ namespace PgJsonObjects
             }
         }
 
-        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable, ParseErrorInfo ErrorInfo)
         {
             foreach (int Id in IconIdList)
                 IconFileNameList.Add("icon_" + Id);
@@ -48,6 +50,8 @@ namespace PgJsonObjects
             { "Tooltip", ParseFieldTooltip },
             { "DisplayType", ParseFieldDisplayType },
             { "IsHidden", ParseFieldIsHidden },
+            { "DisplayRule", ParseFieldDisplayRule },
+            { "DefaultValue", ParseFieldDefaultValue },
         };
 
         private static void ParseFieldLabel(Attribute This, object Value, ParseErrorInfo ErrorInfo)
@@ -128,6 +132,37 @@ namespace PgJsonObjects
         {
             this.RawIsHidden = RawIsHidden;
         }
+
+        private static void ParseFieldDisplayRule(Attribute This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawDisplayRule;
+            if ((RawDisplayRule = Value as string) != null)
+                This.ParseDisplayRule(RawDisplayRule, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Attribute DisplayRule");
+        }
+
+        private void ParseDisplayRule(string RawDisplayRule, ParseErrorInfo ErrorInfo)
+        {
+            DisplayRule ParsedDisplayRule;
+            StringToEnumConversion<DisplayRule>.TryParse(RawDisplayRule, out ParsedDisplayRule, ErrorInfo);
+            DisplayRule = ParsedDisplayRule;
+        }
+
+        private static void ParseFieldDefaultValue(Attribute This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is int)
+                This.ParseDefaultValue((int)Value, ErrorInfo);
+            else if (Value is decimal)
+                This.ParseDefaultValue(decimal.ToDouble((decimal)Value), ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Attribute DefaultValue");
+        }
+
+        private void ParseDefaultValue(double RawDefaultValue, ParseErrorInfo ErrorInfo)
+        {
+            this.RawDefaultValue = RawDefaultValue;
+        }
         #endregion
 
         #region Json Reconstruction
@@ -165,13 +200,16 @@ namespace PgJsonObjects
                 AddWithFieldSeparator(ref Result, Label);
                 AddWithFieldSeparator(ref Result, Tooltip);
 
+                if (DisplayRule != DisplayRule.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.DisplayRuleTextMap[DisplayRule]);
+
                 return Result;
             }
         }
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             return false;
         }

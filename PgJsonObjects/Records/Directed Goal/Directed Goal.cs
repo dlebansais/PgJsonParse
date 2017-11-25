@@ -5,24 +5,16 @@ namespace PgJsonObjects
     public class DirectedGoal : GenericJsonObject<DirectedGoal>
     {
         #region Direct Properties
+        public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
+        private int? RawId;
         public string Label { get; private set; }
         public string Zone { get; private set; }
-        public string Hint { get; private set; }
-        public PowerSkill NeededSkill { get; private set; }
-        public Skill ConnectedNeededSkill { get; private set; }
-        private bool IsNeededSkillParsed;
-        public int NeededSkillLevel { get { return RawNeededSkillLevel.HasValue ? RawNeededSkillLevel.Value : 0; } }
-        public int? RawNeededSkillLevel { get; private set; }
-        public Ability NeededAbility { get; private set; }
-        public string RawNeededAbility { get; private set; }
-        private bool IsRawNeededAbilityParsed;
-        public string NeededInteractionFlag { get; private set; }
-        public Recipe NeededRecipe { get; private set; }
-        private string RawNeededRecipe;
-        private bool IsRawNeededRecipeParsed;
-        public int NeededRecipeCompletions { get { return RawNeededRecipeCompletions.HasValue ? RawNeededRecipeCompletions.Value : 0; } }
-        public int? RawNeededRecipeCompletions { get; private set; }
-        public string NeededNotoriety { get; private set; }
+        public bool IsCategoryGate { get { return RawIsCategoryGate.HasValue ? RawIsCategoryGate.Value : false; } }
+        public bool? RawIsCategoryGate { get; private set; }
+        public string LargeHint { get; private set; }
+        public string SmallHint { get; private set; }
+        public int CategoryGateId { get { return RawCategoryGateId.HasValue ? RawCategoryGateId.Value : 0; } }
+        public int? RawCategoryGateId { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -34,17 +26,27 @@ namespace PgJsonObjects
         #region Parsing
         protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
+            { "Id", ParseFieldId },
             { "Label", ParseFieldLabel },
             { "Zone", ParseFieldZone },
-            { "Hint", ParseFieldHint },
-            { "NeededSkill", ParseFieldNeededSkill },
-            { "NeededSkillLevel", ParseFieldNeededSkillLevel },
-            { "NeededAbility", ParseFieldNeededAbility },
-            { "NeededInteractionFlag", ParseFieldNeededInteractionFlag },
-            { "NeededRecipe", ParseFieldNeededRecipe },
-            { "NeededRecipeCompletions", ParseFieldNeededRecipeCompletions },
-            { "NeededNotoriety", ParseFieldNeededNotoriety },
+            { "IsCategoryGate", ParseFieldIsCategoryGate },
+            { "LargeHint", ParseFieldLargeHint },
+            { "SmallHint", ParseFieldSmallHint },
+            { "CategoryGateId", ParseFieldCategoryGateId },
         };
+
+        private static void ParseFieldId(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is int)
+                This.ParseId((int)Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("DirectedGoal Id");
+        }
+
+        private void ParseId(int RawId, ParseErrorInfo ErrorInfo)
+        {
+            this.RawId = RawId;
+        }
 
         private static void ParseFieldLabel(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
@@ -75,118 +77,58 @@ namespace PgJsonObjects
             Zone = RawZone;
         }
 
-        private static void ParseFieldHint(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
+        private static void ParseFieldIsCategoryGate(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawHint;
-            if ((RawHint = Value as string) != null)
-                This.ParseHint(RawHint, ErrorInfo);
+            if (Value is bool)
+                This.ParseIsCategoryGate((bool)Value, ErrorInfo);
             else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal Hint");
+                ErrorInfo.AddInvalidObjectFormat("DirectedGoal IsCategoryGate");
         }
 
-        private void ParseHint(string RawHint, ParseErrorInfo ErrorInfo)
+        private void ParseIsCategoryGate(bool RawIsCategoryGate, ParseErrorInfo ErrorInfo)
         {
-            Hint = RawHint;
+            this.RawIsCategoryGate = RawIsCategoryGate;
         }
 
-        private static void ParseFieldNeededSkill(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
+        private static void ParseFieldLargeHint(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawNeededSkill;
-            if ((RawNeededSkill = Value as string) != null)
-                This.ParseNeededSkill(RawNeededSkill, ErrorInfo);
+            string RawLargeHint;
+            if ((RawLargeHint = Value as string) != null)
+                This.ParseLargeHint(RawLargeHint, ErrorInfo);
             else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal NeededSkill");
+                ErrorInfo.AddInvalidObjectFormat("DirectedGoal LargeHint");
         }
 
-        private void ParseNeededSkill(string RawNeededSkill, ParseErrorInfo ErrorInfo)
+        private void ParseLargeHint(string RawLargeHint, ParseErrorInfo ErrorInfo)
         {
-            PowerSkill ParsedNeededSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(RawNeededSkill, out ParsedNeededSkill, ErrorInfo);
-            NeededSkill = ParsedNeededSkill;
-            IsNeededSkillParsed = false;
-            ConnectedNeededSkill = null;
+            LargeHint = RawLargeHint;
         }
 
-        private static void ParseFieldNeededSkillLevel(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
+        private static void ParseFieldSmallHint(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawSmallHint;
+            if ((RawSmallHint = Value as string) != null)
+                This.ParseSmallHint(RawSmallHint, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("DirectedGoal SmallHint");
+        }
+
+        private void ParseSmallHint(string RawSmallHint, ParseErrorInfo ErrorInfo)
+        {
+            SmallHint = RawSmallHint;
+        }
+
+        private static void ParseFieldCategoryGateId(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
             if (Value is int)
-                This.ParseNeededSkillLevel((int)Value, ErrorInfo);
+                This.ParseCategoryGateId((int)Value, ErrorInfo);
             else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal NeededSkillLevel");
+                ErrorInfo.AddInvalidObjectFormat("DirectedGoal CategoryGateId");
         }
 
-        private void ParseNeededSkillLevel(int RawNeededSkillLevel, ParseErrorInfo ErrorInfo)
+        private void ParseCategoryGateId(int RawCategoryGateId, ParseErrorInfo ErrorInfo)
         {
-            this.RawNeededSkillLevel = RawNeededSkillLevel;
-        }
-
-        private static void ParseFieldNeededAbility(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawNeededAbility;
-            if ((RawNeededAbility = Value as string) != null)
-                This.ParseNeededAbility(RawNeededAbility, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal NeededAbility");
-        }
-
-        private void ParseNeededAbility(string RawNeededAbility, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNeededAbility = RawNeededAbility;
-        }
-
-        private static void ParseFieldNeededInteractionFlag(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawNeededInteractionFlag;
-            if ((RawNeededInteractionFlag = Value as string) != null)
-                This.ParseNeededInteractionFlag(RawNeededInteractionFlag, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal NeededInteractionFlag");
-        }
-
-        private void ParseNeededInteractionFlag(string RawNeededInteractionFlag, ParseErrorInfo ErrorInfo)
-        {
-            NeededInteractionFlag = RawNeededInteractionFlag;
-        }
-
-        private static void ParseFieldNeededRecipe(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawNeededRecipe;
-            if ((RawNeededRecipe = Value as string) != null)
-                This.ParseNeededRecipe(RawNeededRecipe, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal NeededRecipe");
-        }
-
-        private void ParseNeededRecipe(string RawNeededRecipe, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNeededRecipe = RawNeededRecipe;
-        }
-
-        private static void ParseFieldNeededRecipeCompletions(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            if (Value is int)
-                This.ParseNeededRecipeCompletions((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal NeededRecipeCompletions");
-        }
-
-        private void ParseNeededRecipeCompletions(int RawNeededRecipeCompletions, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNeededRecipeCompletions = RawNeededRecipeCompletions;
-        }
-
-        private static void ParseFieldNeededNotoriety(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawNeededNotoriety;
-            if ((RawNeededNotoriety = Value as string) != null)
-                This.ParseNeededNotoriety(RawNeededNotoriety, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal NeededNotoriety");
-        }
-
-        private void ParseNeededNotoriety(string RawNeededNotoriety, ParseErrorInfo ErrorInfo)
-        {
-            NeededNotoriety = RawNeededNotoriety;
+            this.RawCategoryGateId = RawCategoryGateId;
         }
         #endregion
 
@@ -197,13 +139,6 @@ namespace PgJsonObjects
 
             Generator.AddString("Label", Label);
             Generator.AddString("Zone", Zone);
-            Generator.AddString("Hint", Hint);
-            Generator.AddString("NeededSkill", StringToEnumConversion<PowerSkill>.ToString(NeededSkill, null, PowerSkill.Internal_None));
-            Generator.AddInteger("NeededSkillLevel", RawNeededSkillLevel);
-            Generator.AddString("NeededAbility", RawNeededAbility);
-            Generator.AddString("NeededInteractionFlag", NeededInteractionFlag);
-            Generator.AddInteger("NeededRecipeCompletions", RawNeededRecipeCompletions);
-            Generator.AddString("NeededNotoriety", NeededNotoriety);
 
             Generator.CloseObject();
         }
@@ -218,13 +153,11 @@ namespace PgJsonObjects
 
                 AddWithFieldSeparator(ref Result, Label);
                 AddWithFieldSeparator(ref Result, Zone);
-                AddWithFieldSeparator(ref Result, Hint);
-                if (NeededSkill != PowerSkill.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[NeededSkill]);
-                if (NeededAbility != null)
-                    AddWithFieldSeparator(ref Result, NeededAbility.Name);
-                if (NeededRecipe != null)
-                    AddWithFieldSeparator(ref Result, NeededRecipe.Name);
+                AddWithFieldSeparator(ref Result, LargeHint);
+                AddWithFieldSeparator(ref Result, SmallHint);
+
+                if (RawIsCategoryGate.HasValue && RawIsCategoryGate.Value)
+                    AddWithFieldSeparator(ref Result, "Is Category Gate");
 
                 return Result;
             }
@@ -232,15 +165,9 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
-
-            NeededAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawNeededAbility, NeededAbility, ref IsRawNeededAbilityParsed, ref IsConnected, this);
-            NeededRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawNeededRecipe, NeededRecipe, ref IsRawNeededRecipeParsed, ref IsConnected, this);
-
-            if (NeededSkill != PowerSkill.Internal_None && NeededSkill != PowerSkill.AnySkill && NeededSkill != PowerSkill.Unknown)
-                ConnectedNeededSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, NeededSkill, ConnectedNeededSkill, ref IsNeededSkillParsed, ref IsConnected, this);
 
             return IsConnected;
         }

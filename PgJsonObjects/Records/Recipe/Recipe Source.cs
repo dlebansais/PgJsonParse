@@ -16,7 +16,10 @@ namespace PgJsonObjects
         private string RawItemName;
         private bool IsItemNameParsed;
         private int? RawItemTypeId;
+        private string RawNpcId;
         private string RawNpcName;
+        private bool IsNpcParsed;
+        public GameNpc Npc { get; private set; }
         public Effect ConnectedEffect { get; private set; }
         private string RawEffectName;
         private bool IsEffectParsed;
@@ -29,7 +32,7 @@ namespace PgJsonObjects
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
 
-        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable, ParseErrorInfo ErrorInfo)
         {
             if (ConnectedRecipe != null)
             {
@@ -63,7 +66,7 @@ namespace PgJsonObjects
 
                 case SourceTypes.Training:
                     if (RawNpcName != null)
-                        return new TrainingSource(RawNpcName);
+                        return new TrainingSource(RawNpcName, Npc);
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("Recipe Source (Training)");
@@ -90,7 +93,7 @@ namespace PgJsonObjects
 
                 case SourceTypes.Gift:
                     if (RawNpcName != null)
-                        return new GiftSource(RawNpcName);
+                        return new GiftSource(RawNpcName, Npc);
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("Recipe Source (Gift)");
@@ -99,7 +102,7 @@ namespace PgJsonObjects
 
                 case SourceTypes.HangOut:
                     if (RawNpcName != null)
-                        return new HangOutSource(RawNpcName);
+                        return new HangOutSource(RawNpcName, Npc);
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("Recipe Source (HangOut)");
@@ -227,15 +230,24 @@ namespace PgJsonObjects
 
         private static void ParseFieldNpc(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawNpcName;
-            if ((RawNpcName = Value as string) != null)
-                This.ParseNpc(RawNpcName, ErrorInfo);
+            string RawNpc;
+            if ((RawNpc = Value as string) != null)
+                This.ParseNpc(RawNpc, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource NpcName");
         }
 
-        private void ParseNpc(string RawNpcName, ParseErrorInfo ErrorInfo)
+        private void ParseNpc(string RawNpc, ParseErrorInfo ErrorInfo)
         {
+            string ParsedNpcId;
+            string ParsedNpcName;
+            if (Quest.TryParseNPC(RawNpc, out ParsedNpcId, out ParsedNpcName, ErrorInfo))
+            {
+                RawNpcId = ParsedNpcId;
+                RawNpcName = ParsedNpcName;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("RecipeSource Npc");
         }
 
         private static void ParseFieldEffectName(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
@@ -336,7 +348,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
 
@@ -358,6 +370,14 @@ namespace PgJsonObjects
                 ConnectedQuest = PgJsonObjects.Quest.ConnectByKey(ErrorInfo, QuestTable, RawQuestId.Value, ConnectedQuest, ref IsQuestNameParsed, ref IsConnected, ConnectedRecipe);
             else if (RawQuestName != null)
                 ConnectedQuest = PgJsonObjects.Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawQuestName, ConnectedQuest, ref IsQuestNameParsed, ref IsConnected, ConnectedRecipe);
+
+            Npc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, RawNpcId, Npc, ref IsNpcParsed, ref IsConnected, ConnectedRecipe);
+            if (RawNpcId != null && Npc == null)
+            {
+                SpecialNpc ParsedSpecialNpc;
+                if (StringToEnumConversion<SpecialNpc>.TryParse(RawNpcId, out ParsedSpecialNpc, ErrorInfo))
+                    RawNpcName = TextMaps.SpecialNpcTextMap[ParsedSpecialNpc];
+            }
 
             return IsConnected;
         }

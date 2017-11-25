@@ -55,6 +55,7 @@ namespace PgJsonObjects
             { RecipeItemKey.EquipmentSlot_Feet, "EquipmentSlot:Feet" },
             { RecipeItemKey.EquipmentSlot_Ring, "EquipmentSlot:Ring" },
             { RecipeItemKey.EquipmentSlot_Necklace, "EquipmentSlot:Necklace" },
+            { RecipeItemKey.Rarity_Common, "Rarity:Common" },
             { RecipeItemKey.Rarity_Uncommon, "Rarity:Uncommon" },
             { RecipeItemKey.Rarity_Rare, "Rarity:Rare" },
             { RecipeItemKey.MinRarity_Exceptional, "MinRarity:Exceptional" },
@@ -230,7 +231,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
 
@@ -259,6 +260,7 @@ namespace PgJsonObjects
                             case RecipeItemKey.EquipmentSlot_Feet:
                             case RecipeItemKey.EquipmentSlot_Ring:
                             case RecipeItemKey.EquipmentSlot_Necklace:
+                            case RecipeItemKey.Rarity_Common:
                             case RecipeItemKey.Rarity_Uncommon:
                             case RecipeItemKey.Rarity_Rare:
                             case RecipeItemKey.MinRarity_Exceptional:

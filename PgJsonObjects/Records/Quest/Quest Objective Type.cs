@@ -26,5 +26,6 @@
         GuildKill,
         DruidKill,
         DruidScripted,
+        Loot,
     }
 }

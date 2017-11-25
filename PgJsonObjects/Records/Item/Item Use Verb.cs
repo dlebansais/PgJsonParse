@@ -44,5 +44,6 @@
         AgeLiquor,
         CleanOffDust,
         TakeSoilSample,
+        EmptyBottle,
     }
 }

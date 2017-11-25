@@ -3,14 +3,15 @@
     public enum Favor
     {
         Internal_None,
+        Hated,
+        Despised,
+        Tolerated,
         Neutral,
         Comfortable,
         Friends,
-        Hated,
         CloseFriends,
-        Tolerated,
-        Despised,
+        BestFriends,
         LikeFamily,
-        Soulmate,
+        SoulMates,
     }
 }

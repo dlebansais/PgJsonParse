@@ -16,7 +16,10 @@ namespace PgJsonObjects
         private string RawItemName;
         private bool IsItemNameParsed;
         private int? RawItemTypeId;
+        private string RawNpcId;
         private string RawNpcName;
+        private bool IsNpcParsed;
+        public GameNpc Npc { get; private set; }
         public Effect ConnectedEffect { get; private set; }
         public Recipe ConnectedRecipeEffect { get; private set; }
         private string RawEffectName;
@@ -32,7 +35,7 @@ namespace PgJsonObjects
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
 
-        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable, ParseErrorInfo ErrorInfo)
         {
             if (ConnectedAbility != null)
             {
@@ -65,7 +68,7 @@ namespace PgJsonObjects
 
                 case SourceTypes.Training:
                     if (RawNpcName != null)
-                        return new TrainingSource(RawNpcName);
+                        return new TrainingSource(RawNpcName, Npc);
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("Ability Source (Training)");
@@ -99,7 +102,7 @@ namespace PgJsonObjects
 
                 case SourceTypes.Gift:
                     if (RawNpcName != null)
-                        return new GiftSource(RawNpcName);
+                        return new GiftSource(RawNpcName, Npc);
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("Ability Source (Gift)");
@@ -108,7 +111,7 @@ namespace PgJsonObjects
 
                 case SourceTypes.HangOut:
                     if (RawNpcName != null)
-                        return new HangOutSource(RawNpcName);
+                        return new HangOutSource(RawNpcName, Npc);
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("Ability Source (HangOut)");
@@ -236,15 +239,24 @@ namespace PgJsonObjects
 
         private static void ParseFieldNpc(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawNpcName;
-            if ((RawNpcName = Value as string) != null)
-                This.ParseNpc(RawNpcName, ErrorInfo);
+            string RawNpc;
+            if ((RawNpc = Value as string) != null)
+                This.ParseNpc(RawNpc, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource NpcName");
         }
 
-        private void ParseNpc(string RawNpcName, ParseErrorInfo ErrorInfo)
+        private void ParseNpc(string RawNpc, ParseErrorInfo ErrorInfo)
         {
+            string ParsedNpcId;
+            string ParsedNpcName;
+            if (Quest.TryParseNPC(RawNpc, out ParsedNpcId, out ParsedNpcName, ErrorInfo))
+            {
+                RawNpcId = ParsedNpcId;
+                RawNpcName = ParsedNpcName;
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (for deliver)");
         }
 
         private static void ParseFieldEffectName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
@@ -347,7 +359,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
 
@@ -380,7 +392,39 @@ namespace PgJsonObjects
             else if (RawQuestName != null)
                 ConnectedQuest = PgJsonObjects.Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawQuestName, ConnectedQuest, ref IsQuestNameParsed, ref IsConnected, ConnectedAbility);
 
+            Npc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, RawNpcId, Npc, ref IsNpcParsed, ref IsConnected, ConnectedAbility);
+            if (RawNpcId != null && Npc == null)
+            {
+                SpecialNpc ParsedSpecialNpc;
+                if (StringToEnumConversion<SpecialNpc>.TryParse(RawNpcId, out ParsedSpecialNpc, ErrorInfo))
+                    RawNpcName = TextMaps.SpecialNpcTextMap[ParsedSpecialNpc];
+            }
+
             return IsConnected;
+        }
+
+        public static AbilitySource ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, AbilitySource> AbilitySourceTable, string AbilitySourceKey, AbilitySource ParsedAbilitySource, ref bool IsRawAbilitySourceParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawAbilitySourceParsed)
+                return ParsedAbilitySource;
+
+            IsRawAbilitySourceParsed = true;
+
+            if (AbilitySourceKey == null)
+                return null;
+
+            foreach (KeyValuePair<string, AbilitySource> Entry in AbilitySourceTable)
+                if (Entry.Value.Key == AbilitySourceKey)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(AbilitySourceKey);
+
+            return null;
         }
         #endregion
 

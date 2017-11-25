@@ -16,5 +16,8 @@
         ShamanicInfusion,
         ClownfishFillet,
         MushroomTeleport,
+        CandiedApple,
+        JackOLantern,
+        PumpkinSpiceTea,
     }
 }

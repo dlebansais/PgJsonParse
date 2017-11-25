@@ -25,6 +25,18 @@ namespace PgJsonParse
                 return Result;
             }
 
+            else if (ItemKeyValue.Key == typeof(GameNpc))
+            {
+                DataTemplate Result = element.TryFindResource("LinkBackGameNpcTemplate") as DataTemplate;
+                return Result;
+            }
+
+            else if (ItemKeyValue.Key == typeof(StorageVault))
+            {
+                DataTemplate Result = element.TryFindResource("LinkBackStorageVaultTemplate") as DataTemplate;
+                return Result;
+            }
+
             else if (ItemKeyValue.Key == typeof(Effect))
             {
                 DataTemplate Result = element.TryFindResource("LinkBackEffectTemplate") as DataTemplate;

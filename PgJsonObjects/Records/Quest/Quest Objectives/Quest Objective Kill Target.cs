@@ -79,5 +79,18 @@
         PrayingRanalon,
         RanalonPrayermaster,
         WildChicken,
+        GuardScray,
+        RanalonStoneShaper,
+        Ghost,
+        Zombie,
+        LordSerbule,
+        Ghoul,
+        FaceOfDeath,
+        Mortimer,
+        Maligno,
+        Empusa,
+        Anhinda,
+        SkeletonMage,
+        Ursula,
     }
 }

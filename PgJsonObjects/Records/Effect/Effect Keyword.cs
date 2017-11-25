@@ -206,5 +206,6 @@
         FrogFever,
         Healing,
         HardcoreBuff,
+        Event_HalloweenEvent,
     }
 }

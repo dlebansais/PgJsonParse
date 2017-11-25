@@ -50,25 +50,20 @@ namespace PgJsonObjects
         public int? RawMaxOnVendor { get; private set; }
         public int MaxStackSize { get { return RawMaxStackSize.HasValue ? RawMaxStackSize.Value : 0; } }
         public int? RawMaxStackSize { get; private set; }
-        public int MetabolismCost { get { return RawMetabolismCost.HasValue ? RawMetabolismCost.Value : 0; } }
-        public int? RawMetabolismCost { get; private set; }
         public string Name { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
-        public List<AbilityRequirement> OtherRequirementList { get; } = new List<AbilityRequirement>();
         public List<ItemSkillLink> SkillRequirementList { get; } = new List<ItemSkillLink>();
-        public double UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
-        public double? RawUseDelay { get; private set; }
-        public ItemUseAnimation UseDelayAnimation { get; private set; }
-        public ItemUseAnimation UseAnimation { get; private set; }
         public List<uint> StockDye { get; private set; }
-        public List<ItemUseRequirement> UseRequirementList { get; } = new List<ItemUseRequirement>();
-        public ItemUseVerb UseVerb { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get; private set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
         public int? RawNumUses { get; private set; }
         public bool DestroyWhenUsedUp { get { return RawDestroyWhenUsedUp.HasValue && RawDestroyWhenUsedUp.Value; } }
         public bool? RawDestroyWhenUsedUp { get; private set; }
+        public List<ItemBehavior> BehaviorList { get; } = new List<ItemBehavior>();
+        public string DynamicCraftingSummary { get; private set; }
+        public bool IsSkillReqsDefaults { get { return RawIsSkillReqsDefaults.HasValue && RawIsSkillReqsDefaults.Value; } }
+        public bool? RawIsSkillReqsDefaults { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -101,20 +96,16 @@ namespace PgJsonObjects
             { "MaxCarryable", ParseFieldMaxCarryable },
             { "MaxOnVendor", ParseFieldMaxOnVendor },
             { "MaxStackSize", ParseFieldMaxStackSize },
-            { "MetabolismCost", ParseFieldMetabolismCost },
             { "Name", ParseFieldName },
             { "RequiredAppearance", ParseFieldRequiredAppearance },
-            { "OtherRequirements", ParseFieldOtherRequirements },
             { "SkillReqs", ParseFieldSkillReqs },
-            { "UseDelay", ParseFieldUseDelay },
-            { "UseDelayAnimation", ParseFieldUseDelayAnimation },
-            { "UseAnimation", ParseFieldUseAnimation },
             { "StockDye", ParseFieldStockDye },
-            { "UseRequirements", ParseFieldUseRequirements },
-            { "UseVerb", ParseFieldUseVerb },
             { "Value", ParseFieldValue },
             { "NumUses", ParseFieldNumUses },
             { "DestroyWhenUsedUp", ParseFieldDestroyWhenUsedUp },
+            { "Behaviors", ParseFieldBehaviors},
+            { "DynamicCraftingSummary", ParseFieldDynamicCraftingSummary},
+            { "IsSkillReqsDefaults", ParseFieldIsSkillReqsDefaults },
         };
 
         private static void ParseFieldBestowRecipes(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -526,19 +517,6 @@ namespace PgJsonObjects
             this.RawMaxStackSize = RawMaxStackSize;
         }
 
-        private static void ParseFieldMetabolismCost(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            if (Value is int)
-                This.ParseMetabolismCost((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item MetabolismCost");
-        }
-
-        private void ParseMetabolismCost(int RawMetabolismCost, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMetabolismCost = RawMetabolismCost;
-        }
-
         private static void ParseFieldName(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
             string RawName;
@@ -567,24 +545,6 @@ namespace PgJsonObjects
             Appearance ParsedAppearance;
             StringToEnumConversion<Appearance>.TryParse(RawRequiredAppearance, out ParsedAppearance, ErrorInfo);
             RequiredAppearance = ParsedAppearance;
-        }
-
-        private static void ParseFieldOtherRequirements(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            Dictionary<string, object> RawOtherRequirements;
-            if ((RawOtherRequirements = Value as Dictionary<string, object>) != null)
-                This.ParseOtherRequirements(RawOtherRequirements, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item OtherRequirements");
-        }
-
-        public void ParseOtherRequirements(Dictionary<string, object> RawOtherRequirements, ParseErrorInfo ErrorInfo)
-        {
-            AbilityRequirement ParsedOtherRequirement;
-            JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
-
-            AbilityRequirement ConvertedAbilityRequirement = ParsedOtherRequirement.ToSpecificAbilityRequirement(ErrorInfo);
-            OtherRequirementList.Add(ConvertedAbilityRequirement);
         }
 
         private static void ParseFieldSkillReqs(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -621,53 +581,6 @@ namespace PgJsonObjects
 
             foreach (KeyValuePair<string, ItemSkillLink> ItemSkillEntry in SkillRequirementTable)
                 SkillRequirementList.Add(ItemSkillEntry.Value);
-        }
-
-        private static void ParseFieldUseDelay(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            if (Value is int)
-                This.ParseUseDelay((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseUseDelay(decimal.ToDouble((decimal)Value), ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item UseDelay");
-        }
-
-        private void ParseUseDelay(double RawUseDelay, ParseErrorInfo ErrorInfo)
-        {
-            this.RawUseDelay = RawUseDelay;
-        }
-
-        private static void ParseFieldUseDelayAnimation(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawUseDelayAnimation;
-            if ((RawUseDelayAnimation = Value as string) != null)
-                This.ParseUseDelayAnimation(RawUseDelayAnimation, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item UseDelayAnimation");
-        }
-
-        private void ParseUseDelayAnimation(string RawUseDelayAnimation, ParseErrorInfo ErrorInfo)
-        {
-            ItemUseAnimation ParsedUseDelayAnimation;
-            StringToEnumConversion<ItemUseAnimation>.TryParse(RawUseDelayAnimation, out ParsedUseDelayAnimation, ErrorInfo);
-            UseDelayAnimation = ParsedUseDelayAnimation;
-        }
-
-        private static void ParseFieldUseAnimation(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawUseAnimation;
-            if ((RawUseAnimation = Value as string) != null)
-                This.ParseUseAnimation(RawUseAnimation, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item UseAnimation");
-        }
-
-        private void ParseUseAnimation(string RawUseAnimation, ParseErrorInfo ErrorInfo)
-        {
-            ItemUseAnimation ParsedUseAnimation;
-            StringToEnumConversion<ItemUseAnimation>.TryParse(RawUseAnimation, out ParsedUseAnimation, ErrorInfo);
-            UseAnimation = ParsedUseAnimation;
         }
 
         private static void ParseFieldStockDye(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -732,46 +645,6 @@ namespace PgJsonObjects
                 StockDye.Add(ParsedColor);
         }
 
-        private static void ParseFieldUseRequirements(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ArrayList RawUseRequirements;
-            if ((RawUseRequirements = Value as ArrayList) != null)
-                This.ParseUseRequirements(RawUseRequirements, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item UseRequirements");
-        }
-
-        private void ParseUseRequirements(ArrayList RawUseRequirements, ParseErrorInfo ErrorInfo)
-        {
-            foreach (string RawUseRequirement in RawUseRequirements)
-            {
-                ItemUseRequirement UseRequirementValue;
-                if (StringToEnumConversion<ItemUseRequirement>.TryParse(RawUseRequirement, out UseRequirementValue, ErrorInfo))
-                {
-                    if (!UseRequirementList.Contains(UseRequirementValue))
-                        UseRequirementList.Add(UseRequirementValue);
-                    else
-                        ErrorInfo.AddDuplicateString("Item UseRequirements", RawUseRequirement);
-                }
-            }
-        }
-
-        private static void ParseFieldUseVerb(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            string RawUseVerb;
-            if ((RawUseVerb = Value as string) != null)
-                This.ParseUseVerb(RawUseVerb, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item UseVerb");
-        }
-
-        private void ParseUseVerb(string RawUseVerb, ParseErrorInfo ErrorInfo)
-        {
-            ItemUseVerb ParsedUseVerb;
-            StringToEnumConversion<ItemUseVerb>.TryParse(RawUseVerb, TextMaps.UseVerbMap, out ParsedUseVerb, ErrorInfo);
-            UseVerb = ParsedUseVerb;
-        }
-
         private static void ParseFieldValue(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
             if (Value is int)
@@ -811,6 +684,53 @@ namespace PgJsonObjects
         private void ParseDestroyWhenUsedUp(bool RawDestroyWhenUsedUp, ParseErrorInfo ErrorInfo)
         {
             this.RawDestroyWhenUsedUp = RawDestroyWhenUsedUp;
+        }
+
+        private static void ParseFieldBehaviors(Item This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is ArrayList)
+                This.ParseBehaviors(Value as ArrayList, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Item Behaviors");
+        }
+
+        private void ParseBehaviors(ArrayList RawBehaviors, ParseErrorInfo ErrorInfo)
+        {
+            List<ItemBehavior> ParsedBehaviorList;
+            JsonObjectParser<ItemBehavior>.InitAsSublist(RawBehaviors, out ParsedBehaviorList, ErrorInfo);
+
+            foreach (ItemBehavior ParsedBehavior in ParsedBehaviorList)
+            {
+                ParsedBehavior.SetLinkBack(this);
+                BehaviorList.Add(ParsedBehavior);
+            }
+        }
+
+        private static void ParseFieldDynamicCraftingSummary(Item This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawDynamicCraftingSummary;
+            if ((RawDynamicCraftingSummary = Value as string) != null)
+                This.ParseDynamicCraftingSummary(RawDynamicCraftingSummary, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Item DynamicCraftingSummary");
+        }
+
+        private void ParseDynamicCraftingSummary(string RawDynamicCraftingSummary, ParseErrorInfo ErrorInfo)
+        {
+            DynamicCraftingSummary = RawDynamicCraftingSummary;
+        }
+
+        private static void ParseFieldIsSkillReqsDefaults(Item This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is bool)
+                This.ParseIsSkillReqsDefaults((bool)Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Item IsSkillReqsDefaults");
+        }
+
+        private void ParseIsSkillReqsDefaults(bool RawIsSkillReqsDefaults, ParseErrorInfo ErrorInfo)
+        {
+            this.RawIsSkillReqsDefaults = RawIsSkillReqsDefaults;
         }
 
         private List<string> RawBestowRecipesList { get; } = new List<string>();
@@ -875,26 +795,10 @@ namespace PgJsonObjects
             Generator.AddInteger("MaxCarryable", RawMaxCarryable);
             Generator.AddInteger("MaxOnVendor", RawMaxOnVendor);
             Generator.AddInteger("MaxStackSize", RawMaxStackSize);
-            Generator.AddFloat("MetabolismCost", RawMetabolismCost);
             Generator.AddString("Name", Name);
 
             if (RequiredAppearance != Appearance.Internal_None)
                 Generator.AddString("RequiredAppearance", RequiredAppearance.ToString());
-
-            if (OtherRequirementList.Count > 1)
-            {
-                Generator.OpenArray("OtherRequirements");
-
-                foreach (AbilityRequirement Item in OtherRequirementList)
-                    Item.GenerateObjectContent(Generator);
-
-                Generator.CloseArray();
-            }
-            else if (OtherRequirementList.Count > 0)
-            {
-                AbilityRequirement Item = OtherRequirementList[0];
-                Item.GenerateObjectContent(Generator);
-            }
 
             if (SkillRequirementList.Count > 0)
             {
@@ -905,9 +809,6 @@ namespace PgJsonObjects
 
                 Generator.CloseObject();
             }
-
-            Generator.AddDouble("UseDelay", RawUseDelay);
-            Generator.AddString("UseDelayAnimation", UseDelayAnimation.ToString());
 
             if (StockDye != null)
             {
@@ -928,19 +829,6 @@ namespace PgJsonObjects
                     Generator.AddString("StockDye", StockDyeString);
                 }
             }
-
-            if (UseRequirementList.Count > 0)
-            {
-                Generator.OpenArray("UseRequirements");
-
-                foreach (ItemUseRequirement UseRequirement in UseRequirementList)
-                    Generator.AddString(null, UseRequirement.ToString());
-
-                Generator.CloseArray();
-            }
-
-            if (UseVerb != ItemUseVerb.Internal_None)
-                Generator.AddString("UseVerb", StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, TextMaps.UseVerbMap));
 
             Generator.AddDouble("Value", RawValue);
 
@@ -1004,20 +892,14 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, MacGuffinQuestName.Name);
                 if (RequiredAppearance != Appearance.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.AppearanceTextMap[RequiredAppearance]);
-                foreach (AbilityRequirement Requirement in OtherRequirementList)
-                    AddWithFieldSeparator(ref Result, Requirement.TextContent);
                 foreach (ItemSkillLink Requirement in SkillRequirementList)
                     AddWithFieldSeparator(ref Result, Requirement.Link.Name);
-                if (UseDelayAnimation != ItemUseAnimation.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseDelayAnimation]);
-                if (UseAnimation != ItemUseAnimation.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.ItemUseAnimationTextMap[UseAnimation]);
-                foreach (ItemUseRequirement Requirement in UseRequirementList)
-                    AddWithFieldSeparator(ref Result, TextMaps.ItemUseRequirementTextMap[Requirement]);
-                if (UseVerb != ItemUseVerb.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.ItemUseVerbTextMap[UseVerb]);
                 if (RawDestroyWhenUsedUp.HasValue)
                     AddWithFieldSeparator(ref Result, "Destroy When Used Up");
+                foreach (ItemBehavior Behavior in BehaviorList)
+                    AddWithFieldSeparator(ref Result, Behavior.TextContent);
+                if (RawIsSkillReqsDefaults.HasValue)
+                    AddWithFieldSeparator(ref Result, "Is Skill Requirement The Default");
 
                 return Result;
             }
@@ -1025,7 +907,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
 
@@ -1061,8 +943,8 @@ namespace PgJsonObjects
                         PgJsonObjects.Skill.UpdateAnySkillIcon(Link.CombatSkill, RawIconId);
                 }
 
-            foreach (AbilityRequirement Item in OtherRequirementList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable);
+            foreach (ItemBehavior Behavior in BehaviorList)
+                IsConnected |= Behavior.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
 
             return IsConnected;
         }
@@ -1184,12 +1066,15 @@ namespace PgJsonObjects
 
         public static Item ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, int ItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
+            return ConnectById(ErrorInfo, ItemTable, "item_" + ItemId, ParsedItem, ref IsRawItemParsed, ref IsConnected, LinkBack);
+        }
+
+        public static Item ConnectById(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, string RawItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
             if (IsRawItemParsed)
                 return ParsedItem;
 
             IsRawItemParsed = true;
-
-            string RawItemId = "item_" + ItemId;
 
             foreach (KeyValuePair<string, Item> Entry in ItemTable)
                 if (Entry.Value.Key == RawItemId)

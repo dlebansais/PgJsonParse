@@ -105,11 +105,15 @@
             <obj:RecipeItemKey>EquipmentSlot_Necklace</obj:RecipeItemKey>
         </CompositeCollection>
         <CompositeCollection x:Key="RecipeItemKey_Rarity">
+            <obj:RecipeItemKey>Rarity_Common</obj:RecipeItemKey>
             <obj:RecipeItemKey>Rarity_Uncommon</obj:RecipeItemKey>
             <obj:RecipeItemKey>Rarity_Rare</obj:RecipeItemKey>
         </CompositeCollection>
         <CompositeCollection x:Key="RecipeItemKey_MinRarityUncommon">
             <obj:RecipeItemKey>MinRarity_Uncommon</obj:RecipeItemKey>
+        </CompositeCollection>
+        <CompositeCollection x:Key="RecipeItemKey_MinRarityRare">
+            <obj:RecipeItemKey>MinRarity_Rare</obj:RecipeItemKey>
         </CompositeCollection>
         <CompositeCollection x:Key="RecipeItemKey_MinRarityExceptional">
             <obj:RecipeItemKey>MinRarity_Exceptional</obj:RecipeItemKey>
@@ -217,6 +221,80 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" TextAlignment="Right">Goals:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackGameNpcTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_GameNpc_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_GameNpc_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Npc:</TextBlock>
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LinkBackStorageVaultTemplate">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_StorageVault_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding NpcFriendlyName, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_StorageVault_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                    <TextBlock Text="{Binding NpcFriendlyName, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextAlignment="Right">Storage:</TextBlock>
                 <ItemsControl Grid.Column="1" ItemsSource="{Binding Value}" ItemTemplateSelector="{StaticResource selListMember}" Margin="5,0,0,0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -505,10 +583,10 @@
         </DataTemplate>
         <DataTemplate x:Key="GardenPlantMaxAbilityRequirementTemplate">
             <StackPanel Orientation="Horizontal">
-                <TextBlock>Maximum summoned:</TextBlock>
+                <TextBlock>Maximum summoned</TextBlock>
                 <TextBlock Text="{Binding TypeTag, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityTypeTagTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
                 <TextBlock>x</TextBlock>
-                <TextBlock Text="{Binding Count}"/>
+                <TextBlock Text="{Binding Max}"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="HasEffectKeywordAbilityRequirementTemplate">
@@ -722,6 +800,10 @@
                 </StackPanel>
                 <TextBlock>, x</TextBlock>
                 <TextBlock Text="{Binding Number}"/>
+                <StackPanel Visibility="{Binding HasEffectRequirement, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
+                    <TextBlock>, under effect</TextBlock>
+                    <TextBlock Text="{Binding EffectRequirement, Converter={StaticResource convEnumToText},ConverterParameter=EffectKeywordTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                </StackPanel>
                 <TextBlock>)</TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -787,7 +869,11 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Description}" Margin="0,0,5,0"/>
                 <TextBlock>(</TextBlock>
-                <TextBlock Text="{Binding DeliverNpcName}" Margin="0,0,5,0"/>
+                <TextBlock TextWrapping="Wrap" Margin="0,0,5,0">
+                    <Hyperlink x:Name="hyperlink_QuestObjectiveDeliver_DeliverNpc" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding DeliverNpc.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
                 <TextBlock>in</TextBlock>
                 <TextBlock Text="{Binding DeliverNpcArea, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap}" Margin="5,0,0,0"/>
                 <TextBlock>)</TextBlock>
@@ -870,6 +956,12 @@
                         <TextBlock>x</TextBlock>
                         <TextBlock Text="{Binding Number}"/>
                     </StackPanel>
+                    <TextBlock Margin="5,0,5,0">to</TextBlock>
+                    <TextBlock TextWrapping="Wrap">
+                        <Hyperlink x:Name="hyperlink_QuestObjectiveGuildGiveItem_DeliverNpc" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                            <TextBlock Text="{Binding DeliverNpc.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                        </Hyperlink>
+                    </TextBlock>
                     <TextBlock>)</TextBlock>
                 </StackPanel>
             </WrapPanel>
@@ -1080,6 +1172,68 @@
                 </TextBlock>
             </WrapPanel>
         </DataTemplate>
+        <DataTemplate x:Key="QuestObjectiveLootTemplate">
+            <WrapPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                        <Expander Width="0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Description}" VerticalAlignment="Center"/>
+                        <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">(</TextBlock>
+                        <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,5,0">
+                            <TextBlock>x</TextBlock>
+                            <TextBlock Text="{Binding Number}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding QuestItem, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top">
+                        <Expander Width="0" VerticalAlignment="Center"/>
+                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">
+                            <Hyperlink x:Name="hyperlink_QuestObjectiveItem_QuestItem" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                <TextBlock Text="{Binding QuestItem.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                            </Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                    <Expander Header="{Binding ItemTarget, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap}" Visibility="{Binding ItemList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Top">
+                        <ItemsControl ItemsSource="{Binding ItemList, FallbackValue={x:Null}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap">
+                                        <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                            <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding HasMonsterTypeTag, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Top" Margin="5,0,0,0">
+                        <Expander Width="0" VerticalAlignment="Center"/>
+                        <TextBlock VerticalAlignment="Center" Margin="0,0,5,0">from</TextBlock>
+                        <TextBlock Text="{Binding MonsterTypeTag, Converter={StaticResource convEnumToText}, ConverterParameter=MonsterTypeTagTextMap}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                        <Expander Width="0" VerticalAlignment="Center"/>
+                        <TextBlock VerticalAlignment="Center">)</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
+                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
+                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource convMultiString}">
+                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
+                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
+                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
+                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
+                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </WrapPanel>
+        </DataTemplate>
         <DataTemplate x:Key="RecipeItemTemplate">
             <StackPanel Orientation="Horizontal">
                 <Image Visibility="{Binding AttuneToCrafter, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Source="{StaticResource imgAttuned}" ToolTip="This item is attuned to the crafter" Width="6" Height="8" Margin="0,0,5,0"/>
@@ -1224,13 +1378,23 @@
         <DataTemplate x:Key="GiftSourceTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Gift from</TextBlock>
-                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                <TextBlock Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}" TextWrapping="Wrap" Margin="5,0,0,0">
+                    <Hyperlink x:Name="hyperlink_GiftSource_Npc" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding Npc.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" Margin="5,0,0,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="HangOutSourceTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Hangout from</TextBlock>
-                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                <TextBlock Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}" TextWrapping="Wrap" Margin="5,0,0,0">
+                    <Hyperlink x:Name="hyperlink_HangOutSource_Npc" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding Npc.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" Margin="5,0,0,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="ItemSourceTemplate">
@@ -1281,8 +1445,323 @@
         <DataTemplate x:Key="TrainingSourceTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Training from</TextBlock>
-                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                <TextBlock Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}" TextWrapping="Wrap" Margin="5,0,0,0">
+                    <Hyperlink x:Name="hyperlink_TrainingSource_Npc" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding Npc.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" Margin="5,0,0,0"/>
             </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="AbilityServerInfoEffectTemplate">
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
+                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
+                        <TextBlock>(</TextBlock>
+                        <TextBlock Text="{Binding Level}"/>
+                        <TextBlock>)</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Learn Ability:</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Margin="5,10,0,0">
+                    <Hyperlink x:Name="hyperlink_ServerInfo_BestowAbility" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                        <TextBlock Text="{Binding BestowAbility.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="DrinkEffectServerInfoEffectTemplate">
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
+                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
+                        <TextBlock>(</TextBlock>
+                        <TextBlock Text="{Binding Level}"/>
+                        <TextBlock>)</TextBlock>
+                    </StackPanel>
+                    <TextBlock Margin="5,0,0,0">(</TextBlock>
+                    <TextBlock Text="{Binding DrinkATValue}"/>
+                    <TextBlock Margin="0,0,5,0">,</TextBlock>
+                    <TextBlock Text="{Binding AlcoholPowerValue}"/>
+                    <TextBlock>)</TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="IntervalServerInfoEffectTemplate">
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
+                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
+                        <TextBlock>(</TextBlock>
+                        <TextBlock Text="{Binding Level}"/>
+                        <TextBlock>)</TextBlock>
+                    </StackPanel>
+                    <TextBlock Margin="5,0,5,0">(between</TextBlock>
+                    <TextBlock Text="{Binding LowValue}"/>
+                    <TextBlock Margin="5,0,5,0">and</TextBlock>
+                    <TextBlock Text="{Binding HighValue}"/>
+                    <TextBlock>)</TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PoetryServerInfoEffectTemplate">
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
+                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
+                        <TextBlock>(</TextBlock>
+                        <TextBlock Text="{Binding Level}"/>
+                        <TextBlock>)</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Poetry XP:</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PoetryXpValue}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Recital XP:</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding RecitalXpValue}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="SimpleServerInfoEffectTemplate">
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
+                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
+                        <TextBlock>(</TextBlock>
+                        <TextBlock Text="{Binding Level}"/>
+                        <TextBlock>)</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="SkillAndLevelServerInfoEffectTemplate">
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
+                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
+                        <TextBlock>(</TextBlock>
+                        <TextBlock Text="{Binding Level}"/>
+                        <TextBlock>)</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
+                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="5,10,0,0">
+                    <TextBlock TextWrapping="Wrap">
+                        <Hyperlink x:Name="hyperlink_SkillAndLevelServerInfoEffect_ConnectedSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                            <TextBlock Text="{Binding ConnectedSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="5,0,0,0">(</TextBlock>
+                    <TextBlock Text="{Binding SkillLevel}"/>
+                    <TextBlock>)</TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ValueServerInfoEffectTemplate">
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
+                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
+                        <TextBlock>(</TextBlock>
+                        <TextBlock Text="{Binding Level}"/>
+                        <TextBlock>)</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Value:</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Value}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ServerInfoTemplate">
+            <StackPanel>
+                <Grid>
+                    <Grid.Visibility>
+                        <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible">
+                            <Binding Path="GiveItemList.Count" Converter="{StaticResource convIntThreshold}" ConverterParameter="1" FallbackValue="False"/>
+                        </MultiBinding>
+                    </Grid.Visibility>
+                    <Grid.Resources>
+                        <DataTemplate x:Key="ItemTemplate">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
+                                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                        <DataTemplate x:Key="ItemTemplateLast">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Hyperlink x:Name="hyperlink_Item_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                        <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" TextAlignment="Right" Margin="0,0,0,0">Give Item(s):</TextBlock>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5,0,0,0">
+                        <ItemsControl ItemsSource="{Binding GiveItemList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <StackPanel Visibility="{Binding RawNumItemsToGive, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock>(x</TextBlock>
+                            <TextBlock Text="{Binding NumItemsToGive}"/>
+                            <TextBlock>)</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                <Grid Margin="0,10,0,0">
+                    <Grid.Visibility>
+                        <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible">
+                            <Binding Path="RequiredHotspot" Converter="{StaticResource convIntThreshold}" ConverterParameter="1" FallbackValue="False"/>
+                        </MultiBinding>
+                    </Grid.Visibility>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" TextAlignment="Right">Required Hotspot:</TextBlock>
+                    <TextBlock Grid.Column="1" Text="{Binding RequiredHotspot, Converter={StaticResource convEnumToText}, ConverterParameter=ItemRequiredHotspotTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                </Grid>
+                <Grid Margin="0,10,0,0">
+                    <Grid.Visibility>
+                        <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible">
+                            <Binding Path="OtherRequirementList.Count" Converter="{StaticResource convIntThreshold}" ConverterParameter="1" FallbackValue="False"/>
+                        </MultiBinding>
+                    </Grid.Visibility>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" TextAlignment="Right">Other Requirements:</TextBlock>
+                    <ItemsControl Grid.Column="1" ItemsSource="{Binding OtherRequirementList}" ItemTemplateSelector="{StaticResource setTypeToTemplateName}" Margin="5,0,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </Grid>
+                <ItemsControl ItemsSource="{Binding ServerInfoEffectList}" ItemTemplateSelector="{StaticResource setTypeToTemplateName}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ItemBehaviorTemplate">
+            <Expander Header="{Binding UseVerb, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseVerbTextMap, FallbackValue={x:Null}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,10,0,0">Use Delay Animation:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding UseDelayAnimation, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Use Animation:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding UseAnimation, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Use Requirements:</TextBlock>
+                    <Grid Grid.Column="1" Grid.Row="2" Margin="5,10,0,0">
+                        <Grid.Resources>
+                            <DataTemplate x:Key="ItemTemplate">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseRequirementTextMap}"/>
+                                    <TextBlock Margin="0,0,5,0">,</TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                            <DataTemplate x:Key="ItemTemplateLast">
+                                <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseRequirementTextMap}"/>
+                            </DataTemplate>
+                        </Grid.Resources>
+                        <ItemsControl ItemsSource="{Binding UseRequirementList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
+                    <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Metabolism Cost:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding RawMetabolismCost, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Use Delay:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RawUseDelay, Converter={StaticResource convDouble}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <ContentControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Content="{Binding ServerInfo}" ContentTemplate="{StaticResource ServerInfoTemplate}" Margin="0,10,0,0"/>
+                </Grid>
+            </Expander>
         </DataTemplate>
         <ControlTemplate x:Key="XpTableToggleButton" TargetType="ToggleButton">
             <Grid>
@@ -1858,39 +2337,196 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Zone:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Zone}" TextWrapping="Wrap" Margin="5,0,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Hint:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Hint}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Needed Skill:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_DirectedGoal_ConnectedNeededSkill" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                        <TextBlock Text="{Binding ConnectedNeededSkill.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    </Hyperlink>
-                                </TextBlock>
-                                <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Needed Skill Level:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding RawNeededSkillLevel, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Needed Ability:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_DirectedGoal_NeededAbility" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                        <TextBlock Text="{Binding NeededAbility.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    </Hyperlink>
-                                </TextBlock>
-                                <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Needed Recipe:</TextBlock>
-                                <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" Margin="5,10,0,0">
-                                    <TextBlock TextWrapping="Wrap">
-                                        <Hyperlink x:Name="hyperlink_DirectedGoal_NeededRecipe" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                            <TextBlock Text="{Binding NeededRecipe.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Large Hint:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding LargeHint}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Small Hint:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding SmallHint}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Is Category Gate:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Visibility="{Binding RawIsCategoryGate, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Text="{Binding IsCategoryGate, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYes}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultGameNpcTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Npc:</TextBlock>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="NpcPreferenceTemplate">
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0">
+                                <TextBlock Text="{Binding PreferenceType}" Margin="0,0,5,0"/>
+                                <TextBlock>(Give</TextBlock>
+                                <TextBlock Text="{Binding Preference}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock>):</TextBlock>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+                                <StackPanel.Resources>
+                                    <DataTemplate x:Key="ItemTemplateFirst">
+                                        <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </DataTemplate>
+                                    <DataTemplate x:Key="ItemTemplate">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock>,</TextBlock>
+                                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </StackPanel.Resources>
+                                <ItemsControl ItemsSource="{Binding ItemKeywordList}" ItemTemplateSelector="{StaticResource selListMember}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding MinValueRequirement, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
+                                    <TextBlock>(Min Value:</TextBlock>
+                                    <TextBlock Text="{Binding MinValueRequirement}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                    <TextBlock>)</TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding SkillRequirement, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
+                                    <TextBlock>(Required Skill:</TextBlock>
+                                    <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                                        <Hyperlink x:Name="hyperlink_Skill_SkillRequirement" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                            <TextBlock Text="{Binding SkillRequirement.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                         </Hyperlink>
                                     </TextBlock>
-                                    <StackPanel Orientation="Horizontal" Visibility="{Binding RawNeededRecipeCompletions, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
-                                        <TextBlock>x</TextBlock>
-                                        <TextBlock Text="{Binding NeededRecipeCompletions, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    </StackPanel>
+                                    <TextBlock>)</TextBlock>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding SlotRequirement, Converter={StaticResource convIntToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
+                                    <TextBlock>(Slot:</TextBlock>
+                                    <TextBlock Text="{Binding SlotRequirement, Converter={StaticResource convEnumToText}, ConverterParameter=ItemSlotTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                    <TextBlock>)</TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding RarityRequirement, Converter={StaticResource convIntToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
+                                    <TextBlock>(Rarity:</TextBlock>
+                                    <TextBlock Text="{Binding RarityRequirement, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                    <TextBlock>)</TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding MinRarityRequirement, Converter={StaticResource convIntToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
+                                    <TextBlock>(Minimum Rarity:</TextBlock>
+                                    <TextBlock Text="{Binding MinRarityRequirement, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                    <TextBlock>)</TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultGameNpcContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Npc:</TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Separator DockPanel.Dock="Top" Margin="5,5,5,5"/>
+                            <Grid DockPanel.Dock="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Area:</TextBlock>
+                                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
+                                    <TextBlock Text="{Binding AreaName, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    <TextBlock Margin="5,0,0,0">(</TextBlock>
+                                    <TextBlock Text="{Binding AreaFriendlyName}" TextWrapping="Wrap"/>
+                                    <TextBlock>)</TextBlock>
+                                </StackPanel>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding LikeList}" ItemTemplate="{StaticResource NpcPreferenceTemplate}" Margin="0,0,0,0"/>
+                                <ItemsControl Grid.Column="1" Grid.Row="2" ItemsSource="{Binding HateList}" ItemTemplate="{StaticResource NpcPreferenceTemplate}" Margin="20,0,0,0"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultStorageVaultTitleTemplate">
+                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                            <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Storage:</TextBlock>
+                            <TextBlock Text="{Binding NpcFriendlyName}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="SearchResultStorageVaultContentTemplate">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Goal:</TextBlock>
+                                    <TextBlock Text="{Binding NpcFriendlyName}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Separator DockPanel.Dock="Top" Margin="5,5,5,5"/>
+                            <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Area:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Area, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Grouping:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Grouping, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Number of slots:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding NumSlots}" Visibility="{Binding RawNumSlots, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Has Associated Npc:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding RawHasAssociatedNpc, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Slots with Favor:</TextBlock>
+                                <Grid Grid.Column="1" Grid.Row="4" Margin="5,10,0,0">
+                                    <Grid.Resources>
+                                        <DataTemplate x:Key="ItemTemplateFirst">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Key, Converter={StaticResource convEnumToText}, ConverterParameter=FavorTextMap, FallbackValue={x:Null}}"/>
+                                                <TextBlock Text="{Binding Value}" Margin="5,0,0,0"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="ItemTemplate">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock>,</TextBlock>
+                                                <TextBlock Text="{Binding Key, Converter={StaticResource convEnumToText}, ConverterParameter=FavorTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                                <TextBlock Text="{Binding Value}" Margin="5,0,0,0"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </Grid.Resources>
+                                    <ItemsControl ItemsSource="{Binding FavorLevelTable}" ItemTemplateSelector="{StaticResource selListMember}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </Grid>
+                                <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Required Item:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding RequiredItemKeyword, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Requirement Description:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding RequirementDescription}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Interaction Requirement:</TextBlock>
+                                <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding InteractionFlagRequirement}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -2023,8 +2659,6 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -2108,67 +2742,22 @@
                                 <TextBlock Grid.Column="1" Grid.Row="11" Text="{Binding EquipSlot, Converter={StaticResource convEnumToText}, ConverterParameter=ItemSlotTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Is Temporary:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="12" Text="{Binding RawIsTemporary, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Is Crafted:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="13" Text="{Binding RawIsCrafted, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Keywords:</TextBlock>
-                                <Grid Grid.Column="1" Grid.Row="14" Margin="5,10,0,0">
-                                    <Grid.Resources>
-                                        <DataTemplate x:Key="ItemTemplateFirst">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Key, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap, FallbackValue={x:Null}}"/>
-                                                <StackPanel Visibility="{Binding Value.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
-                                                    <TextBlock>(</TextBlock>
-                                                    <TextBlock Text="{Binding Value, Converter={StaticResource convFloatListToString}}"/>
-                                                    <TextBlock>)</TextBlock>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                        <DataTemplate x:Key="ItemTemplate">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock>,</TextBlock>
-                                                <TextBlock Text="{Binding Key, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
-                                                <StackPanel Visibility="{Binding Value.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
-                                                    <TextBlock>(</TextBlock>
-                                                    <TextBlock Text="{Binding Value, Converter={StaticResource convFloatListToString}}"/>
-                                                    <TextBlock>)</TextBlock>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding KeywordTable, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                </Grid>
-                                <TextBlock Grid.Column="0" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Associated Quest:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="15" TextWrapping="Wrap" Margin="5,10,0,0">
+                                <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,10,0,0">Associated Quest:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="0" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Item_MacGuffinQuestName" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
                                         <TextBlock Text="{Binding MacGuffinQuestName.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                     </Hyperlink>
                                 </TextBlock>
-                                <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Max Carryable:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding RawMaxCarryable, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Max On Vendor:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding RawMaxOnVendor, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Max Stack Size:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding RawMaxStackSize, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Metabolism Cost:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding RawMetabolismCost, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,0,0,0">Max Carryable:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding RawMaxCarryable, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Max On Vendor:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding RawMaxOnVendor, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Max Stack Size:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding RawMaxStackSize, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Required Appearance:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding RequiredAppearance, Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Other Requirements:</TextBlock>
-                                <ItemsControl Grid.Column="3" Grid.Row="5" ItemsSource="{Binding OtherRequirementList}" ItemTemplateSelector="{StaticResource setTypeToTemplateName}" Margin="5,10,0,0">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
-                                <TextBlock Grid.Column="2" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Skill Requirements:</TextBlock>
-                                <Grid Grid.Column="3" Grid.Row="6" Margin="5,10,0,0">
+                                <TextBlock Grid.Column="2" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Skill Requirements:</TextBlock>
+                                <Grid Grid.Column="3" Grid.Row="5" Margin="5,10,0,0">
                                     <Grid.Resources>
                                         <DataTemplate x:Key="ItemTemplate">
                                             <StackPanel Orientation="Horizontal">
@@ -2208,14 +2797,8 @@
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
                                 </Grid>
-                                <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Use Delay:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="7" Text="{Binding RawUseDelay, Converter={StaticResource convDouble}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Use Delay Animation:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="8" Text="{Binding UseDelayAnimation, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Use Animation:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="9" Text="{Binding UseAnimation, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Stock Dye:</TextBlock>
-                                <ItemsControl Grid.Column="3" Grid.Row="10" ItemsSource="{Binding StockDye}" HorizontalAlignment="Left" Margin="5,10,0,0">
+                                <TextBlock Grid.Column="2" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Stock Dye:</TextBlock>
+                                <ItemsControl Grid.Column="3" Grid.Row="6" ItemsSource="{Binding StockDye}" HorizontalAlignment="Left" Margin="5,10,0,0">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -2227,20 +2810,40 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <TextBlock Grid.Column="2" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Use Requirements:</TextBlock>
+                                <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Value:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="7" Text="{Binding RawValue, Converter={StaticResource convDouble}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Number of Uses:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="8" Text="{Binding RawNumUses, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Destroy When Used Up:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="9" Text="{Binding RawDestroyWhenUsedUp, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Is Crafted:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="10" Text="{Binding RawIsCrafted, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Keywords:</TextBlock>
                                 <Grid Grid.Column="3" Grid.Row="11" Margin="5,10,0,0">
                                     <Grid.Resources>
-                                        <DataTemplate x:Key="ItemTemplate">
+                                        <DataTemplate x:Key="ItemTemplateFirst">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseRequirementTextMap}"/>
-                                                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                                                <TextBlock Text="{Binding Key, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap, FallbackValue={x:Null}}"/>
+                                                <StackPanel Visibility="{Binding Value.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                                                    <TextBlock>(</TextBlock>
+                                                    <TextBlock Text="{Binding Value, Converter={StaticResource convFloatListToString}}"/>
+                                                    <TextBlock>)</TextBlock>
+                                                </StackPanel>
                                             </StackPanel>
                                         </DataTemplate>
-                                        <DataTemplate x:Key="ItemTemplateLast">
-                                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseRequirementTextMap}"/>
+                                        <DataTemplate x:Key="ItemTemplate">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock>,</TextBlock>
+                                                <TextBlock Text="{Binding Key, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                                                <StackPanel Visibility="{Binding Value.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                                                    <TextBlock>(</TextBlock>
+                                                    <TextBlock Text="{Binding Value, Converter={StaticResource convFloatListToString}}"/>
+                                                    <TextBlock>)</TextBlock>
+                                                </StackPanel>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding UseRequirementList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                    <ItemsControl ItemsSource="{Binding KeywordTable, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel/>
@@ -2248,14 +2851,19 @@
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
                                 </Grid>
-                                <TextBlock Grid.Column="2" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Use Verb:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="12" Text="{Binding UseVerb, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseVerbTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Value:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="13" Text="{Binding RawValue, Converter={StaticResource convDouble}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Number of Uses:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="14" Text="{Binding RawNumUses, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Destroy When Used Up:</TextBlock>
-                                <TextBlock Grid.Column="3" Grid.Row="15" Text="{Binding RawDestroyWhenUsedUp, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <StackPanel Grid.Column="0" Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
+                                    <TextBlock VerticalAlignment="Center">Behaviors:</TextBlock>
+                                    <Expander Width="0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <ScrollViewer Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="13" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" VerticalAlignment="Top" Margin="5,10,0,0">
+                                    <ItemsControl ItemsSource="{Binding BehaviorList, FallbackValue={x:Null}}" ItemTemplate="{StaticResource ItemBehaviorTemplate}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -2283,6 +2891,7 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -2389,20 +2998,27 @@
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
                                 </Grid>
-                                <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Prerequisite Quest:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="7" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_Quest_PrerequisiteQuest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                        <TextBlock Text="{Binding PrerequisiteQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    </Hyperlink>
-                                </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Combat XP Reward:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding RawRewardCombatXP, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Favor NPC:</TextBlock>
-                                <StackPanel Grid.Column="1" Grid.Row="9" Visibility="{Binding FavorNpc, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,10,0,0">
-                                    <TextBlock Text="{Binding FavorNpc, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    <TextBlock Margin="5,0,5,0">in</TextBlock>
-                                    <TextBlock Text="{Binding FavorNpcArea, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                </StackPanel>
+                                <Grid Grid.Column="1" Grid.Row="9" Visibility="{Binding FavorNpc, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,10,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock TextWrapping="Wrap">
+                                            <Hyperlink x:Name="hyperlink_Quest_FavorNpc" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                <TextBlock Text="{Binding FavorNpc.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                            </Hyperlink>
+                                        </TextBlock>
+                                        <TextBlock Margin="5,0,5,0">in</TextBlock>
+                                        <TextBlock Text="{Binding FavorNpcArea, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="1" Grid.Row="9" Visibility="{Binding FavorNpc, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Collapsed}" Margin="5,10,0,0">
+                                    <StackPanel Orientation="Horizontal" Visibility="{Binding FavorNpcName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
+                                        <TextBlock Text="{Binding FavorNpcName, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                        <TextBlock Margin="5,0,5,0">in</TextBlock>
+                                        <TextBlock Text="{Binding FavorNpcArea, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Grid>
                                 <TextBlock Grid.Column="0" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Preface Text:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="10" Text="{Binding PrefaceText, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Success Text:</TextBlock>
@@ -2422,16 +3038,45 @@
                                     <TextBlock Margin="0,0,5,0">At least</TextBlock>
                                     <TextBlock Text="{Binding RequirementFavorLevel, Converter={StaticResource convEnumToText}, ConverterParameter=FavorTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                     <TextBlock Margin="5,0,5,0">with</TextBlock>
-                                    <TextBlock Text="{Binding RequirementFavorNpc, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                        <Hyperlink x:Name="hyperlink_Quest_RequirementFavorNpc" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                            <TextBlock Text="{Binding RequirementFavorNpc.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                        </Hyperlink>
+                                    </TextBlock>
                                     <TextBlock Margin="5,0,5,0">in</TextBlock>
                                     <TextBlock Text="{Binding RequirementFavorNpcArea, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                 </StackPanel>
                                 <TextBlock Grid.Column="0" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Quest Requirement:</TextBlock>
-                                <TextBlock Grid.Column="1" Grid.Row="17" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_Quest_RequirementQuest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                        <TextBlock Text="{Binding RequirementQuest.Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
-                                    </Hyperlink>
-                                </TextBlock>
+                                <Grid Grid.Column="1" Grid.Row="17" Margin="5,10,0,0">
+                                    <Grid.Resources>
+                                        <DataTemplate x:Key="ItemTemplate">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock TextWrapping="Wrap">
+                                                    <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                        <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="ItemTemplateLast">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock TextWrapping="Wrap">
+                                                    <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                        <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </Grid.Resources>
+                                    <ItemsControl ItemsSource="{Binding RequirementQuestList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </Grid>
                                 <TextBlock Grid.Column="0" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">Guild Quest Requirement:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="18" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Quest_RequirementGuildQuest" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
@@ -2448,6 +3093,37 @@
                                     <TextBlock Margin="5,0,5,0">at level</TextBlock>
                                     <TextBlock Text="{Binding RequirementSkillLevel}" />
                                 </StackPanel>
+                                <TextBlock Grid.Column="0" Grid.Row="20" TextAlignment="Right" Margin="0,10,0,0">Follow Up Quests:</TextBlock>
+                                <Grid Grid.Column="1" Grid.Row="20" Margin="5,10,0,0">
+                                    <Grid.Resources>
+                                        <DataTemplate x:Key="ItemTemplate">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock TextWrapping="Wrap">
+                                                    <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                        <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="ItemTemplateLast">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock TextWrapping="Wrap">
+                                                    <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                        <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </Grid.Resources>
+                                    <ItemsControl ItemsSource="{Binding FollowUpQuestList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </Grid>
                                 <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Favor Reward:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding RawRewardFavor, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Skill XP Reward:</TextBlock>
@@ -2591,6 +3267,8 @@
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Requirement to sustain:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="19" Text="{Binding RequirementToSustain, Converter={StaticResource convEnumToText}, ConverterParameter=EffectKeywordTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="20" TextAlignment="Right" Margin="0,10,0,0">Displayed Location:</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="20" Text="{Binding DisplayedLocation, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -3094,6 +3772,8 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0">Search:</TextBlock>
                             <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding SearchTerms, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" KeyDown="OnSearchTermsEntered" Margin="5,0,0,0"/>
@@ -3101,12 +3781,14 @@
                             <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding MustMatchWholeWord}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Visibility="Collapsed" Margin="5,10,0,0">Match whole word</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding IncludeAbility}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Abilities</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding IncludeDirectedGoal}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Goals</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IncludeEffect}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Effects, buffs and debuffs</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding IncludeItem}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Items</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="7" IsChecked="{Binding IncludeQuest}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Quests</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="8" IsChecked="{Binding IncludeRecipe}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Recipes</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding IncludeSkill}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Skills</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="10" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects (mods)</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IncludeGameNpc}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Npc</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding IncludeStorageVault}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Storage</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="7" IsChecked="{Binding IncludeEffect}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Effects, buffs and debuffs</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="8" IsChecked="{Binding IncludeItem}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Items</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding IncludeQuest}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Quests</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="10" IsChecked="{Binding IncludeRecipe}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Recipes</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="11" IsChecked="{Binding IncludeSkill}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Skills</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="12" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects (mods)</CheckBox>
                         </Grid>
                         <Separator DockPanel.Dock="Top" Margin="5,10,5,10"/>
                         <Expander DockPanel.Dock="Top" Header="Search instructions">

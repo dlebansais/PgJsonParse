@@ -12,6 +12,8 @@ namespace PgJsonParse
 
             Ability AsAbility;
             DirectedGoal AsDirectedGoal;
+            GameNpc AsGameNpc;
+            StorageVault AsStorageVault;
             Effect AsEffect;
             Item AsItem;
             Quest AsQuest;
@@ -28,6 +30,18 @@ namespace PgJsonParse
             else if ((AsDirectedGoal = item as DirectedGoal) != null)
             {
                 DataTemplate Result = element.TryFindResource("SearchResultDirectedGoalTitleTemplate") as DataTemplate;
+                return Result;
+            }
+
+            else if ((AsGameNpc = item as GameNpc) != null)
+            {
+                DataTemplate Result = element.TryFindResource("SearchResultGameNpcTitleTemplate") as DataTemplate;
+                return Result;
+            }
+
+            else if ((AsStorageVault = item as StorageVault) != null)
+            {
+                DataTemplate Result = element.TryFindResource("SearchResultStorageVaultTitleTemplate") as DataTemplate;
                 return Result;
             }
 
