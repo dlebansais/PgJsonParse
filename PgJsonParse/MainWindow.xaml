@@ -118,6 +118,10 @@
         <CompositeCollection x:Key="RecipeItemKey_MinRarityExceptional">
             <obj:RecipeItemKey>MinRarity_Exceptional</obj:RecipeItemKey>
         </CompositeCollection>
+        <CompositeCollection x:Key="GreenRed">
+            <SolidColorBrush>Green</SolidColorBrush>
+            <SolidColorBrush>Red</SolidColorBrush>
+        </CompositeCollection>
         <CroppedBitmap x:Key="imgRedo" Source="pack://application:,,,/Resources/redo.png"/>
         <CroppedBitmap x:Key="imgUndo" Source="pack://application:,,,/Resources/undo.png"/>
         <CroppedBitmap x:Key="imgAttuned" Source="pack://application:,,,/Resources/Locked.png"/>
@@ -2390,6 +2394,36 @@
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                 </ItemsControl>
+                                <ToggleButton x:Name="buttonFavor" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" Margin="5,0,5,0" Click="OnFavorButtonClicked">
+                                    <Image Source="{Binding Path=FavorIcon, RelativeSource={RelativeSource AncestorType={x:Type app:MainWindow}}}" Width="12" Height="12"/>
+                                </ToggleButton>
+                                <Popup IsOpen="{Binding ElementName=buttonFavor, Path=IsChecked}" Placement="Bottom" AllowsTransparency="False" Focusable="False" MaxHeight="400" Opened="OnFavorPopupOpened">
+                                    <ListView ItemsSource="{Binding ItemFavorList}" ScrollViewer.VerticalScrollBarVisibility="Visible" GridViewColumnHeader.Click="OnGridViewColumnHeaderClick">
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="Focusable" Value="false"/>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+                                        <ListView.Resources>
+                                            <DataTemplate x:Key="GiftItemTemplate">
+                                                <TextBlock TextWrapping="NoWrap">
+                                                    <Hyperlink x:Name="hyperlink_Gift_Item" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                        <TextBlock Text="{Binding Item.Name, FallbackValue={x:Null}}" TextWrapping="NoWrap"/>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                            <DataTemplate x:Key="GiftValueTemplate">
+                                                <TextBlock Text="{Binding Value, FallbackValue={x:Null}}" Foreground="{Binding IsHated, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRed}, FallbackValue=Black}"/>
+                                            </DataTemplate>
+                                        </ListView.Resources>
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn CellTemplate="{StaticResource GiftItemTemplate}" Header="Name" Width="200"/>
+                                                <GridViewColumn CellTemplate="{StaticResource GiftValueTemplate}" Header="Value" Width="50"/>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </Popup>
                                 <StackPanel Orientation="Horizontal" Visibility="{Binding MinValueRequirement, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
                                     <TextBlock>(Min Value:</TextBlock>
                                     <TextBlock Text="{Binding MinValueRequirement}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -2438,8 +2472,6 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Area:</TextBlock>

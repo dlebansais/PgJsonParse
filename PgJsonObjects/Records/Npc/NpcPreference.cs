@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace PgJsonObjects
 {
@@ -35,6 +36,68 @@ namespace PgJsonObjects
                     return "";
             }
         }
+
+        private bool IsItemFavorListParsed;
+        private bool IsSortIncreasing;
+        public ObservableCollection<Gift> ItemFavorList { get; private set; } = new ObservableCollection<Gift>();
+
+        public void SortByValue()
+        {
+            IsSortIncreasing = !IsSortIncreasing;
+
+            List<Gift> CurrentList = new List<Gift>(ItemFavorList);
+
+            if (IsSortIncreasing)
+                CurrentList.Sort(SortGiftByIncreasingValue);
+            else
+                CurrentList.Sort(SortGiftByDecreasingValue);
+
+            ItemFavorList.Clear();
+            foreach (Gift Item in CurrentList)
+                ItemFavorList.Add(Item);
+        }
+
+        private static int SortGiftByIncreasingValue(Gift g1, Gift g2)
+        {
+            if (g1.Value > g2.Value)
+                return 1;
+            else if (g1.Value < g2.Value)
+                return -1;
+            else
+                return 0;
+        }
+
+        private static int SortGiftByDecreasingValue(Gift g1, Gift g2)
+        {
+            return -SortGiftByIncreasingValue(g1, g2);
+        }
+
+        public void SortByName()
+        {
+            IsSortIncreasing = !IsSortIncreasing;
+
+            List<Gift> CurrentList = new List<Gift>(ItemFavorList);
+
+            if (IsSortIncreasing)
+                CurrentList.Sort(SortGiftByIncreasingName);
+            else
+                CurrentList.Sort(SortGiftByDecreasingName);
+
+            ItemFavorList.Clear();
+            foreach (Gift Item in CurrentList)
+                ItemFavorList.Add(Item);
+        }
+
+        private static int SortGiftByIncreasingName(Gift g1, Gift g2)
+        {
+            return string.Compare(g1.Item.Name, g2.Item.Name);
+        }
+
+        private static int SortGiftByDecreasingName(Gift g1, Gift g2)
+        {
+            return -SortGiftByIncreasingName(g1, g2);
+        }
+
         protected override string SortingName { get { return Key; } }
         public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
@@ -178,8 +241,8 @@ namespace PgJsonObjects
 
                 AddWithFieldSeparator(ref Result, PreferenceType);
 
-                foreach (ItemKeyword Item in ItemKeywordList)
-                    AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[Item]);
+                foreach (ItemKeyword Keyword in ItemKeywordList)
+                    AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[Keyword]);
 
                 if (SkillRequirement != null)
                     AddWithFieldSeparator(ref Result, SkillRequirement.Name);
@@ -195,7 +258,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
 
@@ -203,6 +266,45 @@ namespace PgJsonObjects
                 ItemKeywordList.Add(ItemKeyword.Any);
 
             SkillRequirement = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkillRequirement, SkillRequirement, ref IsSkillParsed, ref IsConnected, Parent as GameNpc);
+
+            List<Item> ItemList = new List<Item>();
+            foreach (ItemKeyword Keyword in ItemKeywordList)
+            {
+                if (Keyword == ItemKeyword.Internal_None)
+                    continue;
+
+                ItemList.Clear();
+
+                if (Keyword == ItemKeyword.Any)
+                {
+                    if (MinValueRequirement.HasValue)
+                    {
+                        foreach (KeyValuePair<string, Item> Entry in ItemTable)
+                            if (Entry.Value.Value >= MinValueRequirement.Value)
+                                ItemList.Add(Entry.Value);
+                    }
+                    else if (SlotRequirement != ItemSlot.Internal_None)
+                    {
+                        foreach (KeyValuePair<string, Item> Entry in ItemTable)
+                            if (Entry.Value.EquipSlot == SlotRequirement)
+                                ItemList.Add(Entry.Value);
+                    }
+                }
+                else
+                    ItemList = Item.ConnectByKeyword(ErrorInfo, ItemTable, Keyword, ItemList, ref IsItemFavorListParsed, ref IsConnected, Parent as GameNpc);
+
+                foreach (Item Item in ItemList)
+                {
+                    if (MinValueRequirement.HasValue && Item.Value < MinValueRequirement.Value)
+                        continue;
+
+                    if (SlotRequirement != ItemSlot.Internal_None && Item.EquipSlot != SlotRequirement)
+                        continue;
+
+                    double Value = Preference * Item.Value;
+                    ItemFavorList.Add(new Gift(Keyword, Item, Value));
+                }
+            }
 
             return IsConnected;
         }

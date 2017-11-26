@@ -87,6 +87,8 @@ namespace PgJsonParse
         public static string VersionCacheFolder { get; private set; }
         public static string CurrentVersionCacheFolder { get; private set; }
         public static string IconFile { get; private set; }
+        public static string FavorIconFile { get; private set; }
+        public ImageSource FavorIcon { get; private set; }
         #endregion
 
         #region Startup Page
@@ -196,6 +198,7 @@ namespace PgJsonParse
                 Directory.CreateDirectory(VersionCacheFolder);
 
             IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
+            FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
 
             InitVersionList();
 
@@ -423,6 +426,11 @@ namespace PgJsonParse
             {
                 Bitmap bmp = new Bitmap(IconFile);
                 Icon = ImageSourceForBitmap(bmp);
+            }
+            if (File.Exists(FavorIconFile))
+            {
+                Bitmap bmp = new Bitmap(FavorIconFile);
+                FavorIcon = ImageSourceForBitmap(bmp);
             }
         }
 
@@ -936,55 +944,55 @@ namespace PgJsonParse
             ProgramState = ProgramState.ConnectingTables;
 
             foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.Ability Item in AbilityList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.AbilitySource Item in AbilitySourceList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.Attribute Item in AttributeList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.GameArea Item in GameAreaList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.GameNpc Item in GameNpcList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.StorageVault Item in StorageVaultList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.Effect Item in EffectList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.Item Item in ItemList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.ItemUses Item in ItemUsesList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.Power Item in PowerList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.Quest Item in QuestList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.Recipe Item in RecipeList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.RecipeSource Item in RecipeSourceList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.Skill Item in SkillList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             foreach (PgJsonObjects.XpTable Item in XpTableList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
 
             bool Continue;
             do
@@ -996,55 +1004,55 @@ namespace PgJsonParse
             while (Continue);
 
             foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.Ability Item in AbilityList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.AbilitySource Item in AbilitySourceList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.Attribute Item in AttributeList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.GameArea Item in GameAreaList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.GameNpc Item in GameNpcList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.StorageVault Item in StorageVaultList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.Effect Item in EffectList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.Item Item in ItemList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.ItemUses Item in ItemUsesList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.Power Item in PowerList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.Quest Item in QuestList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.Recipe Item in RecipeList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.RecipeSource Item in RecipeSourceList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.Skill Item in SkillList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
             foreach (PgJsonObjects.XpTable Item in XpTableList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable, ErrorInfo);
+                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
 
 
 
@@ -1304,9 +1312,9 @@ namespace PgJsonParse
                     break;
 
                 if (IconId == 5624)
-                {
                     File.Copy(FilePath, IconFile, true);
-                }
+                else if (IconId == 102)
+                    File.Copy(FilePath, FavorIconFile, true);
             }
 
             LoadNextIcon(MissingIconList, LoadedCount, MaxCount, ErrorInfo);
@@ -2958,7 +2966,37 @@ namespace PgJsonParse
                 XpTableButton.IsChecked = false;
         }
 
+        private void OnGridViewColumnHeaderClick(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader Header = e.OriginalSource as GridViewColumnHeader;
+            if (Header == null)
+                return;
+
+            string ColumnName = Header.Content as string;
+            FrameworkElement Ctrl = sender as FrameworkElement;
+            NpcPreference Favor = Ctrl.DataContext as NpcPreference;
+
+            if (ColumnName == "Name")
+                Favor.SortByName();
+            else if (ColumnName == "Value")
+                Favor.SortByValue();
+        }
+
+        private void OnFavorButtonClicked(object sender, RoutedEventArgs e)
+        {
+            ToggleButton NewFavorButton = sender as ToggleButton;
+            if (FavorButton != null && FavorButton != NewFavorButton && FavorButton.IsChecked.HasValue && FavorButton.IsChecked.Value)
+                FavorButton.IsChecked = false;
+
+            FavorButton = NewFavorButton;
+        }
+
+        private void OnFavorPopupOpened(object sender, EventArgs e)
+        {
+        }
+
         private ToggleButton XpTableButton;
+        private ToggleButton FavorButton;
         #endregion
 
         #region Implementation of INotifyPropertyChanged

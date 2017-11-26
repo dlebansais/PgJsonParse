@@ -106,6 +106,7 @@
     <Compile Include="Records\Item\Server Info Effect\Value Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info.cs" />
     <Compile Include="Records\Npc\GameNpc.cs" />
+    <Compile Include="Records\Npc\Gift.cs" />
     <Compile Include="Records\Npc\NpcPreference.cs" />
     <Compile Include="Records\Quest\Monster Type Tag.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Loot.cs" />

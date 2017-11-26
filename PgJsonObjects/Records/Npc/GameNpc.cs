@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PgJsonObjects
 {
@@ -14,6 +15,8 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
+        private bool IsMatchingVaultParsed;
+        public StorageVault MatchingVault { get; private set; }
         protected override string SortingName { get { return Name; } }
         public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
@@ -148,14 +151,34 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
 
-            foreach (NpcPreference Preference in LikeList)
-                IsConnected = Preference.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+            List<Item> HatedGiftList = new List<Item>();
+
             foreach (NpcPreference Preference in HateList)
-                IsConnected = Preference.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, AbilitySourceTable);
+            {
+                IsConnected = Preference.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                foreach (Gift Gift in Preference.ItemFavorList)
+                    if (!HatedGiftList.Contains(Gift.Item))
+                        HatedGiftList.Add(Gift.Item);
+            }
+
+            foreach (NpcPreference Preference in LikeList)
+            {
+                IsConnected = Preference.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+
+                foreach (Item Item in HatedGiftList)
+                    foreach (Gift Gift in Preference.ItemFavorList)
+                        if (Gift.Item == Item)
+                        {
+                            Gift.SetHated();
+                            break;
+                        }
+            }
+
+            MatchingVault = StorageVault.ConnectByKey(null, StorageVaultTable, Key, MatchingVault, ref IsMatchingVaultParsed, ref IsConnected, this);
 
             return IsConnected;
         }
@@ -178,8 +201,8 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            //if (ErrorInfo != null)
-            //    ErrorInfo.AddMissingKey(GameNpcKey);
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(GameNpcKey);
 
             return null;
         }

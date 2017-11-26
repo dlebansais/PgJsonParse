@@ -7,6 +7,8 @@ namespace PgJsonObjects
         #region Direct Properties
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         private int? RawId;
+        private bool IsGameNpcParsed;
+        public GameNpc MatchingNpc { get; private set; }
         public string NpcFriendlyName { get; private set; }
         public MapAreaName Area { get; private set; }
         public int NumSlots { get { return RawNumSlots.HasValue ? RawNumSlots.Value : 0; } }
@@ -287,11 +289,37 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
         {
             bool IsConnected = false;
 
+            MatchingNpc = GameNpc.ConnectByKey(null, GameNpcTable, Key, MatchingNpc, ref IsGameNpcParsed, ref IsConnected, this);
+
             return IsConnected;
+        }
+
+        public static StorageVault ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, StorageVault> StorageVaultTable, string StorageVaultKey, StorageVault ParsedStorageVault, ref bool IsRawStorageVaultParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawStorageVaultParsed)
+                return ParsedStorageVault;
+
+            IsRawStorageVaultParsed = true;
+
+            if (StorageVaultKey == null)
+                return null;
+
+            foreach (KeyValuePair<string, StorageVault> Entry in StorageVaultTable)
+                if (Entry.Value.Key == StorageVaultKey)
+                {
+                    IsConnected = true;
+                    Entry.Value.AddLinkBack(LinkBack);
+                    return Entry.Value;
+                }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(StorageVaultKey);
+
+            return null;
         }
         #endregion
 
