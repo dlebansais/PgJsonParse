@@ -850,5 +850,6 @@
         IlthHaleRing6,
         IlthHaleRing7,
         IlthHaleRing8,
+        TitleScroll,
     }
 }

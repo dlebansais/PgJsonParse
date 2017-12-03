@@ -64,6 +64,8 @@ namespace PgJsonObjects
         public string DynamicCraftingSummary { get; private set; }
         public bool IsSkillReqsDefaults { get { return RawIsSkillReqsDefaults.HasValue && RawIsSkillReqsDefaults.Value; } }
         public bool? RawIsSkillReqsDefaults { get; private set; }
+        public int BestowTitle { get { return RawBestowTitle.HasValue ? RawBestowTitle.Value : 0; } }
+        public int? RawBestowTitle { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -106,6 +108,7 @@ namespace PgJsonObjects
             { "Behaviors", ParseFieldBehaviors},
             { "DynamicCraftingSummary", ParseFieldDynamicCraftingSummary},
             { "IsSkillReqsDefaults", ParseFieldIsSkillReqsDefaults },
+            { "BestowTitle", ParseFieldBestowTitle },
         };
 
         private static void ParseFieldBestowRecipes(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -731,6 +734,19 @@ namespace PgJsonObjects
         private void ParseIsSkillReqsDefaults(bool RawIsSkillReqsDefaults, ParseErrorInfo ErrorInfo)
         {
             this.RawIsSkillReqsDefaults = RawIsSkillReqsDefaults;
+        }
+
+        private static void ParseFieldBestowTitle(Item This, object BestowTitle, ParseErrorInfo ErrorInfo)
+        {
+            if (BestowTitle is int)
+                This.ParseBestowTitle((int)BestowTitle, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Item BestowTitle");
+        }
+
+        private void ParseBestowTitle(int RawBestowTitle, ParseErrorInfo ErrorInfo)
+        {
+            this.RawBestowTitle = RawBestowTitle;
         }
 
         private List<string> RawBestowRecipesList { get; } = new List<string>();

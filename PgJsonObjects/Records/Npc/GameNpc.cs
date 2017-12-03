@@ -201,8 +201,8 @@ namespace PgJsonObjects
                     return Entry.Value;
                 }
 
-            if (ErrorInfo != null)
-                ErrorInfo.AddMissingKey(GameNpcKey);
+            //if (ErrorInfo != null)
+            //    ErrorInfo.AddMissingKey(GameNpcKey);
 
             return null;
         }

@@ -82,6 +82,7 @@ namespace PgJsonObjects
         public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
         public bool? RawWorksWhileFalling { get; private set; }
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; private set; }
+        public Ability AbilityGroup { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -195,6 +196,7 @@ namespace PgJsonObjects
             { "WorksUnderwater", ParseFieldWorksUnderwater },
             { "WorksWhileFalling", ParseFieldWorksWhileFalling },
             { "ExtraKeywordsForTooltips", ParseFieldExtraKeywordsForTooltips },
+            { "AbilityGroup", ParseFieldAbilityGroup },
         };
 
         private static void ParseFieldAnimation(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -975,6 +977,22 @@ namespace PgJsonObjects
                 ExtraKeywordsForTooltips = ExtraKeywordsForTooltipList[0];
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability ExtraKeywordsForTooltips");
+        }
+
+        private static void ParseFieldAbilityGroup(Ability This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawAbilityGroup;
+            if ((RawAbilityGroup = Value as string) != null)
+                This.ParseAbilityGroup(RawAbilityGroup, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Ability AbilityGroup");
+        }
+
+        private void ParseAbilityGroup(string RawAbilityGroup, ParseErrorInfo ErrorInfo)
+        {
+            this.RawAbilityGroup = RawAbilityGroup;
+            AbilityGroup = null;
+            IsRawAbilityGroupParsed = false;
         }
 
         public void ParseSpecialCasterRequirement(Dictionary<string, object> RawSpecialCasterRequirement, string ObjectKey, ParseErrorInfo ErrorInfo)
@@ -2786,6 +2804,7 @@ namespace PgJsonObjects
             Generator.AddString("PetTypeTagReq", StringToEnumConversion<AbilityPetType>.ToString(PetTypeTagReq));
             Generator.AddInteger("PetTypeTagReqMax", RawPetTypeTagReqMax);
             Generator.AddString("Prerequisite", RawPrerequisite);
+            Generator.AddString("AbilityGroup", RawAbilityGroup);
             Generator.AddString("Projectile", StringToEnumConversion<AbilityProjectile>.ToString(Projectile, null, AbilityProjectile.Internal_None, AbilityProjectile.Internal_Empty));
 
             if (PvE != null)
@@ -2898,6 +2917,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, "Works Underwater");
                 if (RawWorksWhileFalling.HasValue)
                     AddWithFieldSeparator(ref Result, "Works While Falling");
+                if (AbilityGroup != null)
+                    AddWithFieldSeparator(ref Result, AbilityGroup.Name);
 
                 return Result;
             }
@@ -2915,6 +2936,8 @@ namespace PgJsonObjects
         private bool IsRawSharesResetTimerWithParsed;
         private string RawUpgradeOf;
         private bool IsRawUpgradeOfParsed;
+        private string RawAbilityGroup;
+        private bool IsRawAbilityGroupParsed;
         #endregion
 
         #region Connecting Objects
@@ -2927,6 +2950,7 @@ namespace PgJsonObjects
             IsConnected |= Attribute.ConnectTable(ErrorInfo, AttributeTable, RawAttributesThatModPowerCostList, AttributesThatModPowerCostTable);
 
             Prerequisite = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawPrerequisite, Prerequisite, ref IsRawPrerequisiteParsed, ref IsConnected, this);
+            AbilityGroup = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawAbilityGroup, AbilityGroup, ref IsRawAbilityGroupParsed, ref IsConnected, this);
 
             if (PvE != null)
                 IsConnected |= PvE.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);

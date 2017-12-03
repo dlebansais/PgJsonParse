@@ -259,5 +259,7 @@
         PoetryAppreciationWise,
         TongueAcid,
         TastsBoon,
+        SpecialEventMeal,
+        SpecialEventSnack,
     }
 }

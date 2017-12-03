@@ -1620,6 +1620,8 @@ namespace PgJsonObjects
             { EffectStackingType.PoetryAppreciationWise, "Poetry Appreciation Wise" },
             { EffectStackingType.TongueAcid, "Tongue Acid" },
             { EffectStackingType.TastsBoon, "Tast's Boon" },
+            { EffectStackingType.SpecialEventMeal, "Special Event Meal" },
+            { EffectStackingType.SpecialEventSnack, "Special Event Snack" },
         };
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTextMap = new Dictionary<EffectKeyword, string>()
@@ -2774,6 +2776,7 @@ namespace PgJsonObjects
             { ItemKeyword.IlthHaleRing6, "IlthHaleRing #6" },
             { ItemKeyword.IlthHaleRing7, "IlthHaleRing #7" },
             { ItemKeyword.IlthHaleRing8, "IlthHaleRing #8" },
+            { ItemKeyword.TitleScroll, "Title Scroll" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -3448,7 +3451,7 @@ namespace PgJsonObjects
             { RecipeItemKey.BodyOrgan, "BodyOrgan" },
             { RecipeItemKey.CorpseLimb, "CorpseLimb" },
             { RecipeItemKey.Rarity_Exceptional, "Rarity: Exceptional" },
-            { RecipeItemKey.MinRarity_Epic, "Minimum Rarity: Epic" },
+            { RecipeItemKey.Crossbow, "Crossbow" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
@@ -3612,6 +3615,7 @@ namespace PgJsonObjects
             { QuestObjectiveKillTarget.Anhinda, "Anhinda" },
             { QuestObjectiveKillTarget.SkeletonMage, "Skeleton Mage" },
             { QuestObjectiveKillTarget.Ursula, "Ursula" },
+            { QuestObjectiveKillTarget.BonfirePuck, "Bonfire Puck" },
         };
 
         public static readonly Dictionary<MoonPhases, string> MoonPhasesTextMap = new Dictionary<MoonPhases, string>()

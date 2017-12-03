@@ -92,5 +92,6 @@
         Anhinda,
         SkeletonMage,
         Ursula,
+        BonfirePuck,
     }
 }

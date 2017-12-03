@@ -143,7 +143,7 @@ namespace PgJsonObjects
             { "Type", ParseFieldType },
             { "SkillTypeId", ParseFieldSkillTypeId },
             { "ItemTypeId", ParseFieldItemTypeId },
-            { "NpcName", ParseFieldNpcName },
+            //{ "NpcName", ParseFieldNpcName }, //TODO: clean this up if the field doesn't come back
             { "Npc", ParseFieldNpc },
             { "EffectName", ParseFieldEffectName },
             { "EffectTypeId", ParseFieldEffectTypeId },
