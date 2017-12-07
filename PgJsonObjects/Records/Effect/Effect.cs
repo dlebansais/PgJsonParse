@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -295,12 +296,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             return false;
         }
 
-        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Effect> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawEffectParsed)
                 return ParsedEffect;
@@ -310,13 +311,16 @@ namespace PgJsonObjects
             if (RawEffectName == null)
                 return null;
 
-            foreach (KeyValuePair<string, Effect> Entry in EffectTable)
-                if (Entry.Value.Name == RawEffectName)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in EffectTable)
+            {
+                Effect EffectValue = Entry.Value as Effect;
+                if (EffectValue.Name == RawEffectName)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    EffectValue.AddLinkBack(LinkBack);
+                    return EffectValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawEffectName);

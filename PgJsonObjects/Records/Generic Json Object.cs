@@ -4,6 +4,15 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
+    public interface IGenericJsonObject
+    {
+        string Key { get; }
+        bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables);
+        void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo);
+        void SortLinkBack();
+        string TextContent { get; }
+    }
+
     public abstract class GenericJsonObject
     {
         #region Comparison
@@ -18,7 +27,8 @@ namespace PgJsonObjects
         #endregion
     }
 
-    public abstract class GenericJsonObject<T>: GenericJsonObject where T: class
+    public abstract class GenericJsonObject<T>: GenericJsonObject, IGenericJsonObject
+        where T: class
     {
         #region Init
         public GenericJsonObject()
@@ -32,7 +42,7 @@ namespace PgJsonObjects
 
         protected abstract Dictionary<string, FieldValueHandler> FieldTable { get; }
         protected abstract string FieldTableName { get; }
-        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable);
+        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables);
 
         protected static Dictionary<string, bool> ParsedFields;
 
@@ -187,13 +197,13 @@ namespace PgJsonObjects
         public string Key { get; private set; }
         public abstract string TextContent { get; }
 
-        public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             CheckUnparsedFields(ErrorInfo);
 
             bool IsConnected;
 
-            IsConnected = ConnectFields(ErrorInfo, Parent, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+            IsConnected = ConnectFields(ErrorInfo, Parent, AllTables);
 
             return IsConnected;
         }
@@ -212,8 +222,9 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
         }
 
-        public virtual void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable, ParseErrorInfo ErrorInfo)
+        public virtual void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
         {
+
         }
 
         public void SortLinkBack()

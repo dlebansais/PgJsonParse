@@ -98,6 +98,7 @@
     <Compile Include="Converters\Rgb Color To Brush Converter.cs" />
     <Compile Include="Crunch\Crunch Selection.cs" />
     <Compile Include="Crunch\Crunch Target.cs" />
+    <Compile Include="ObjectDefinition.cs" />
     <Compile Include="Search Modes.cs" />
     <Compile Include="Selectors\Type To Template Name Selector.cs" />
     <Compile Include="Selectors\Item Effect Gear Selector.cs" />

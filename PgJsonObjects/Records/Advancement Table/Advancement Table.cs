@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -87,12 +88,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             return false;
         }
 
-        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, AdvancementTable> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawAdvancementTableParsed)
                 return ParsedAdvancementTable;
@@ -102,13 +103,16 @@ namespace PgJsonObjects
             if (RawAdvancementTableName == null)
                 return null;
 
-            foreach (KeyValuePair<string, AdvancementTable> Entry in AdvancementTableTable)
-                if (Entry.Value.InternalName == RawAdvancementTableName)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in AdvancementTableTable)
+            {
+                AdvancementTable AdvancementTableValue = Entry.Value as AdvancementTable;
+                if (AdvancementTableValue.InternalName == RawAdvancementTableName)
                 {
                     IsConnected = true;
                     //Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    return AdvancementTableValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawAdvancementTableName);

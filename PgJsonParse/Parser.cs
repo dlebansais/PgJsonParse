@@ -1,5 +1,6 @@
 ﻿using PgJsonObjects;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -10,7 +11,14 @@ using System.Windows;
 
 namespace PgJsonParse
 {
-    public class Parser<T> where T : GenericJsonObject<T>, new()
+    public interface IParser
+    {
+        void LoadRaw(string FilePath, ICollection ObjectList, ParseErrorInfo ErrorInfo);
+        void CreateIndex(string IndexFilePath, IDictionary<string, IGenericJsonObject> ObjectTable);
+    }
+
+    public class Parser<T> : IParser
+        where T : GenericJsonObject<T>, new()
     {
         #region Init
         public Parser()
@@ -23,8 +31,9 @@ namespace PgJsonParse
         #endregion
 
         #region Client Interface
-        public void LoadRaw(string FilePath, ICollection<T> ObjectList, ParseErrorInfo ErrorInfo)
+        public void LoadRaw(string FilePath, ICollection GenericObjectList, ParseErrorInfo ErrorInfo)
         {
+            ICollection<T> ObjectList = GenericObjectList as ICollection<T>;
             ObjectList.Clear();
 
             string Content = LoadContent(FilePath);
@@ -185,7 +194,7 @@ namespace PgJsonParse
         #endregion
 
         #region Index
-        public void CreateIndex(string IndexFilePath, IDictionary<string, T> ObjectTable)
+        public void CreateIndex(string IndexFilePath, IDictionary<string, IGenericJsonObject> ObjectTable)
         {
             try
             {
@@ -196,7 +205,7 @@ namespace PgJsonParse
                 {
                     using (StreamWriter sw = new StreamWriter(fs, Encoding.UTF8))
                     {
-                        foreach (KeyValuePair<string, T> Entry in ObjectTable)
+                        foreach (KeyValuePair<string, IGenericJsonObject> Entry in ObjectTable)
                         {
                             try
                             {

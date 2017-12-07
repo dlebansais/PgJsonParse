@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -289,16 +290,17 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected = false;
+            Dictionary<string, IGenericJsonObject> GameNpcTable = AllTables[typeof(GameNpc)];
 
             MatchingNpc = GameNpc.ConnectByKey(null, GameNpcTable, Key, MatchingNpc, ref IsGameNpcParsed, ref IsConnected, this);
 
             return IsConnected;
         }
 
-        public static StorageVault ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, StorageVault> StorageVaultTable, string StorageVaultKey, StorageVault ParsedStorageVault, ref bool IsRawStorageVaultParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static StorageVault ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> StorageVaultTable, string StorageVaultKey, StorageVault ParsedStorageVault, ref bool IsRawStorageVaultParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawStorageVaultParsed)
                 return ParsedStorageVault;
@@ -308,13 +310,16 @@ namespace PgJsonObjects
             if (StorageVaultKey == null)
                 return null;
 
-            foreach (KeyValuePair<string, StorageVault> Entry in StorageVaultTable)
-                if (Entry.Value.Key == StorageVaultKey)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in StorageVaultTable)
+            {
+                StorageVault StorageVaultValue = Entry.Value as StorageVault;
+                if (StorageVaultValue.Key == StorageVaultKey)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    StorageVaultValue.AddLinkBack(LinkBack);
+                    return StorageVaultValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(StorageVaultKey);

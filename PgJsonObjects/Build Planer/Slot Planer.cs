@@ -270,7 +270,7 @@ namespace PgJsonObjects
             }
         }
 
-        public void RefreshCombatSkillList(IList<Power> PowerList, Dictionary<string, Attribute> AttributeTable, PowerSkill FirstSkill, int MaxLevelFirstSkill, PowerSkill SecondSkill, int MaxLevelSecondSkill, int MaxLevelGeneric)
+        public void RefreshCombatSkillList(IList<Power> PowerList, Dictionary<string, IGenericJsonObject> AttributeTable, PowerSkill FirstSkill, int MaxLevelFirstSkill, PowerSkill SecondSkill, int MaxLevelSecondSkill, int MaxLevelGeneric)
         {
             AvailablePowerList1.Clear();
             AvailablePowerList2.Clear();

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -923,9 +924,14 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected = false;
+            Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
+            Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
+            Dictionary<string, IGenericJsonObject> AbilityTable = AllTables[typeof(Ability)];
+            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IGenericJsonObject> QuestTable = AllTables[typeof(Quest)];
 
             IsConnected |= Recipe.ConnectTableByInternalName(ErrorInfo, RecipeTable, RawBestowRecipesList, BestowRecipeTable);
 
@@ -960,12 +966,12 @@ namespace PgJsonObjects
                 }
 
             foreach (ItemBehavior Behavior in BehaviorList)
-                IsConnected |= Behavior.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Behavior.Connect(ErrorInfo, this, AllTables);
 
             return IsConnected;
         }
 
-        public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -975,21 +981,27 @@ namespace PgJsonObjects
             if (RawItemName == null)
                 return null;
 
-            foreach (KeyValuePair<string, Item> Entry in ItemTable)
-                if (Entry.Value.InternalName == RawItemName)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            {
+                Item ItemValue = Entry.Value as Item;
+                if (ItemValue.InternalName == RawItemName)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    ItemValue.AddLinkBack(LinkBack);
+                    return ItemValue;
                 }
+            }
 
-            foreach (KeyValuePair<string, Item> Entry in ItemTable)
-                if (Entry.Value.Name == RawItemName)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            {
+                Item ItemValue = Entry.Value as Item;
+                if (ItemValue.Name == RawItemName)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    ItemValue.AddLinkBack(LinkBack);
+                    return ItemValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawItemName);
@@ -997,7 +1009,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -1009,12 +1021,14 @@ namespace PgJsonObjects
 
             string FullKey = "item_" + RawItemCode.Value;
 
-            foreach (KeyValuePair<string, Item> Entry in ItemTable)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
                 if (Entry.Key == FullKey)
                 {
+                    Item ItemValue = Entry.Value as Item;
+
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    ItemValue.AddLinkBack(LinkBack);
+                    return ItemValue;
                 }
 
             if (ErrorInfo != null)
@@ -1023,7 +1037,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Item> ConnectByItemKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static List<Item> ConnectByItemKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -1036,12 +1050,15 @@ namespace PgJsonObjects
             ItemList = new List<Item>();
             IsConnected = true;
 
-            foreach (KeyValuePair<string, Item> Entry in ItemTable)
-                if (Entry.Value.ItemKeyList.Contains(ItemKey))
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            {
+                Item ItemValue = Entry.Value as Item;
+                if (ItemValue.ItemKeyList.Contains(ItemKey))
                 {
-                    Entry.Value.AddLinkBack(LinkBack);
-                    ItemList.Add(Entry.Value);
+                    ItemValue.AddLinkBack(LinkBack);
+                    ItemList.Add(ItemValue);
                 }
+            }
 
             if (ItemList.Count == 0 && ErrorInfo != null)
                 ErrorInfo.AddMissingKey(ItemKey.ToString());
@@ -1049,7 +1066,7 @@ namespace PgJsonObjects
             return ItemList;
         }
 
-        public static List<Item> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, ItemKeyword Keyword, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static List<Item> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, ItemKeyword Keyword, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -1062,14 +1079,15 @@ namespace PgJsonObjects
             ItemList = new List<Item>();
             IsConnected = true;
 
-            foreach (KeyValuePair<string, Item> ItemEntry in ItemTable)
+            foreach (KeyValuePair<string, IGenericJsonObject> ItemEntry in ItemTable)
             {
-                foreach (KeyValuePair<ItemKeyword, List<float>> KeywordEntry in ItemEntry.Value.KeywordTable)
+                Item ItemValue = ItemEntry.Value as Item;
+                foreach (KeyValuePair<ItemKeyword, List<float>> KeywordEntry in ItemValue.KeywordTable)
                 {
                     if (KeywordEntry.Key == Keyword)
                     {
-                        ItemEntry.Value.AddLinkBack(LinkBack);
-                        ItemList.Add(ItemEntry.Value);
+                        ItemValue.AddLinkBack(LinkBack);
+                        ItemList.Add(ItemValue);
                     }
                 }
             }
@@ -1080,25 +1098,28 @@ namespace PgJsonObjects
             return ItemList;
         }
 
-        public static Item ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, int ItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Item ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int ItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             return ConnectById(ErrorInfo, ItemTable, "item_" + ItemId, ParsedItem, ref IsRawItemParsed, ref IsConnected, LinkBack);
         }
 
-        public static Item ConnectById(ParseErrorInfo ErrorInfo, Dictionary<string, Item> ItemTable, string RawItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Item ConnectById(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
 
             IsRawItemParsed = true;
 
-            foreach (KeyValuePair<string, Item> Entry in ItemTable)
-                if (Entry.Value.Key == RawItemId)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            {
+                Item ItemValue = Entry.Value as Item;
+                if (ItemValue.Key == RawItemId)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    ItemValue.AddLinkBack(LinkBack);
+                    return ItemValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawItemId);

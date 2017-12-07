@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -62,8 +63,10 @@ namespace PgJsonObjects
             }
         }
 
-        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
         {
+            Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
+
             foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
             {
                 int Tier = Entry.Key;
@@ -77,7 +80,7 @@ namespace PgJsonObjects
                     {
                         if (AttributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
                         {
-                            Attribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName];
+                            Attribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName] as Attribute;
 
                             bool IsPercent = PowerAttribute.IsLabelWithPercent;
                             string Label = PowerAttribute.LabelRippedOfPercent;
@@ -321,12 +324,13 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected = false;
+            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
             foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
-                IsConnected |= Entry.Value.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Entry.Value.Connect(ErrorInfo, this, AllTables);
 
             if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
                 ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);

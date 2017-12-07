@@ -95,7 +95,7 @@ namespace PgJsonObjects
         public ConsumedItem ConsumedItem { get; private set; }
         public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
 
-        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
         {
             string DigitStrippedName = InternalName;
             string LineIndexString = "";
@@ -2941,9 +2941,13 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected = false;
+            Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
+            Dictionary<string, IGenericJsonObject> ItemTable = AllTables[typeof(Item)];
+            Dictionary<string, IGenericJsonObject> AbilityTable = AllTables[typeof(Ability)];
+            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
             IsConnected |= Attribute.ConnectTable(ErrorInfo, AttributeTable, RawAttributesThatDeltaPowerCostList, AttributesThatDeltaPowerCostTable);
             IsConnected |= Attribute.ConnectTable(ErrorInfo, AttributeTable, RawAttributesThatDeltaResetTimeList, AttributesThatDeltaResetTimeTable);
@@ -2953,13 +2957,13 @@ namespace PgJsonObjects
             AbilityGroup = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawAbilityGroup, AbilityGroup, ref IsRawAbilityGroupParsed, ref IsConnected, this);
 
             if (PvE != null)
-                IsConnected |= PvE.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= PvE.Connect(ErrorInfo, this, AllTables);
 
             if (PvP != null)
-                IsConnected |= PvP.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= PvP.Connect(ErrorInfo, this, AllTables);
 
             foreach (AbilityRequirement Item in SpecialCasterRequirementList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             SharesResetTimerWith = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsRawSharesResetTimerWithParsed, ref IsConnected, this);
             UpgradeOf = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawUpgradeOf, UpgradeOf, ref IsRawUpgradeOfParsed, ref IsConnected, this);
@@ -2968,14 +2972,14 @@ namespace PgJsonObjects
                 ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
 
             foreach (RecipeCost Item in CostList)
-                Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, this, AllTables);
 
             ConsumedItemLink = Item.ConnectSingleProperty(null, ItemTable, RawConsumedItemKeyword, ConsumedItemLink, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
             
             return IsConnected;
         }
 
-        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawAbilityParsed)
                 return ParsedAbility;
@@ -2985,13 +2989,16 @@ namespace PgJsonObjects
             if (RawAbilityName == null)
                 return null;
 
-            foreach (KeyValuePair<string, Ability> Entry in AbilityTable)
-                if (Entry.Value.InternalName == RawAbilityName)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in AbilityTable)
+            {
+                Ability AbilityValue = Entry.Value as Ability;
+                if (AbilityValue.InternalName == RawAbilityName)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    AbilityValue.AddLinkBack(LinkBack);
+                    return AbilityValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawAbilityName);
@@ -2999,7 +3006,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Ability> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, AbilityKeyword Keyword, List<Ability> AbilityList, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static List<Ability> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, AbilityKeyword Keyword, List<Ability> AbilityList, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawAbilityParsed)
                 return AbilityList;
@@ -3012,12 +3019,15 @@ namespace PgJsonObjects
             AbilityList = new List<Ability>();
             IsConnected = true;
 
-            foreach (KeyValuePair<string, Ability> AbilityEntry in AbilityTable)
-                if (AbilityEntry.Value.KeywordList.Contains(Keyword))
+            foreach (KeyValuePair<string, IGenericJsonObject> AbilityEntry in AbilityTable)
+            {
+                Ability AbilityValue = AbilityEntry.Value as Ability;
+                if (AbilityValue.KeywordList.Contains(Keyword))
                 {
-                    AbilityEntry.Value.AddLinkBack(LinkBack);
-                    AbilityList.Add(AbilityEntry.Value);
+                    AbilityValue.AddLinkBack(LinkBack);
+                    AbilityList.Add(AbilityValue);
                 }
+            }
 
             if (AbilityList.Count == 0 && ErrorInfo != null)
                 ErrorInfo.AddMissingKey(Keyword.ToString());
@@ -3025,7 +3035,7 @@ namespace PgJsonObjects
             return AbilityList;
         }
 
-        public static Ability ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Ability> AbilityTable, int AbilityId, Ability Ability, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Ability ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, int AbilityId, Ability Ability, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawAbilityParsed)
                 return Ability;
@@ -3033,13 +3043,16 @@ namespace PgJsonObjects
             IsRawAbilityParsed = true;
             string RawAbilityId = "ability_" + AbilityId;
 
-            foreach (KeyValuePair<string, Ability> Entry in AbilityTable)
-                if (Entry.Value.Key == RawAbilityId)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in AbilityTable)
+            {
+                Ability AbilityValue = Entry.Value as Ability;
+                if (AbilityValue.Key == RawAbilityId)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    AbilityValue.AddLinkBack(LinkBack);
+                    return AbilityValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawAbilityId);

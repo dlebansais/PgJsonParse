@@ -1262,12 +1262,18 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected = false;
+            Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
+            Dictionary<string, IGenericJsonObject> AbilityTable = AllTables[typeof(Ability)];
+            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IGenericJsonObject> QuestTable = AllTables[typeof(Quest)];
+            Dictionary<string, IGenericJsonObject> EffectTable = AllTables[typeof(Effect)];
+            Dictionary<string, IGenericJsonObject> GameNpcTable = AllTables[typeof(GameNpc)];
 
             foreach (QuestObjective Item in QuestObjectiveList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             foreach (QuestRewardXp Item in RewardsXPList)
                 if (!Item.IsSkillParsed)
@@ -1278,10 +1284,10 @@ namespace PgJsonObjects
                 }
 
             foreach (QuestRewardItem Item in QuestRewardsItemList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             foreach (QuestRewardItem Item in PreGiveItemList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             if (!IsRawRequirementQuestParsed)
             {
@@ -1359,7 +1365,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Quest> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;
@@ -1369,13 +1375,16 @@ namespace PgJsonObjects
             if (RawQuestName == null)
                 return null;
 
-            foreach (KeyValuePair<string, Quest> Entry in QuestTable)
-                if (Entry.Value.InternalName == RawQuestName)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in QuestTable)
+            {
+                Quest QuestValue = Entry.Value as Quest;
+                if (QuestValue.InternalName == RawQuestName)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    QuestValue.AddLinkBack(LinkBack);
+                    return QuestValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawQuestName);
@@ -1383,7 +1392,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Quest ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Quest> QuestTable, int QuestId, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Quest ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, int QuestId, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;
@@ -1392,13 +1401,16 @@ namespace PgJsonObjects
 
             string RawQuestId = "quest_" + QuestId;
 
-            foreach (KeyValuePair<string, Quest> Entry in QuestTable)
-                if (Entry.Value.Key == RawQuestId)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in QuestTable)
+            {
+                Quest QuestValue = Entry.Value as Quest;
+                if (QuestValue.Key == RawQuestId)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    QuestValue.AddLinkBack(LinkBack);
+                    return QuestValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawQuestId);

@@ -49,40 +49,28 @@ namespace PgJsonParse
         #endregion
 
         #region Properties
-        public ObservableCollection<PgJsonObjects.Ability> AbilityList { get; private set; }
-        private Dictionary<string, PgJsonObjects.Ability> AbilityTable;
-        public ObservableCollection<PgJsonObjects.AbilitySource> AbilitySourceList { get; private set; }
-        private Dictionary<string, PgJsonObjects.AbilitySource> AbilitySourceTable;
-        public ObservableCollection<PgJsonObjects.AdvancementTable> AdvancementTableList { get; private set; }
-        private Dictionary<string, PgJsonObjects.AdvancementTable> AdvancementTableTable;
-        public ObservableCollection<PgJsonObjects.Quest> QuestList { get; private set; }
-        private Dictionary<string, PgJsonObjects.Quest> QuestTable;
-        public ObservableCollection<PgJsonObjects.DirectedGoal> DirectedGoalList { get; private set; }
-        private Dictionary<string, PgJsonObjects.DirectedGoal> DirectedGoalTable;
-        public ObservableCollection<PgJsonObjects.GameArea> GameAreaList { get; private set; }
-        private Dictionary<string, PgJsonObjects.GameArea> GameAreaTable;
-        public ObservableCollection<PgJsonObjects.GameNpc> GameNpcList { get; private set; }
-        private Dictionary<string, PgJsonObjects.GameNpc> GameNpcTable;
-        public ObservableCollection<PgJsonObjects.StorageVault> StorageVaultList { get; private set; }
-        private Dictionary<string, PgJsonObjects.StorageVault> StorageVaultTable;
-        public ObservableCollection<PgJsonObjects.XpTable> XpTableList { get; private set; }
-        private Dictionary<string, PgJsonObjects.XpTable> XpTableTable;
-        public ObservableCollection<PgJsonObjects.Attribute> AttributeList { get; private set; }
-        private Dictionary<string, PgJsonObjects.Attribute> AttributeTable;
-        public ObservableCollection<PgJsonObjects.Item> ItemList { get; private set; }
-        private Dictionary<string, PgJsonObjects.Item> ItemTable;
-        public ObservableCollection<PgJsonObjects.ItemUses> ItemUsesList { get; private set; }
-        private Dictionary<string, PgJsonObjects.ItemUses> ItemUsesTable;
-        public ObservableCollection<PgJsonObjects.Effect> EffectList { get; private set; }
-        private Dictionary<string, PgJsonObjects.Effect> EffectTable;
-        public ObservableCollection<PgJsonObjects.Recipe> RecipeList { get; private set; }
-        private Dictionary<string, PgJsonObjects.Recipe> RecipeTable;
-        public ObservableCollection<PgJsonObjects.RecipeSource> RecipeSourceList { get; private set; }
-        private Dictionary<string, PgJsonObjects.RecipeSource> RecipeSourceTable;
-        public ObservableCollection<PgJsonObjects.Skill> SkillList { get; private set; }
-        private Dictionary<string, PgJsonObjects.Skill> SkillTable;
-        public ObservableCollection<PgJsonObjects.Power> PowerList { get; private set; }
-        private Dictionary<string, PgJsonObjects.Power> PowerTable;
+        public Dictionary<Type, IObjectDefinition> Definitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()
+        {
+            { typeof(Ability), new ObjectDefinition<Ability>("abilities") },
+            { typeof(AbilitySource), new ObjectDefinition<AbilitySource>("sources_abilities") },
+            { typeof(AdvancementTable), new ObjectDefinition<AdvancementTable>("advancementtables") },
+            { typeof(PgJsonObjects.Attribute), new ObjectDefinition<PgJsonObjects.Attribute>("attributes") },
+            { typeof(DirectedGoal), new ObjectDefinition<DirectedGoal>("directedgoals") },
+            { typeof(GameArea), new ObjectDefinition<GameArea>("areas") },
+            { typeof(GameNpc), new ObjectDefinition<GameNpc>("npcs") },
+            { typeof(StorageVault), new ObjectDefinition<StorageVault>("storagevaults") },
+            { typeof(Effect), new ObjectDefinition<Effect>("effects") },
+            { typeof(Item), new ObjectDefinition<Item>("items") },
+            { typeof(ItemUses), new ObjectDefinition<ItemUses>("itemuses") },
+            { typeof(Quest), new ObjectDefinition<Quest>("quests") },
+            { typeof(Recipe), new ObjectDefinition<Recipe>("recipes") },
+            { typeof(RecipeSource), new ObjectDefinition<RecipeSource>("sources_recipes") },
+            { typeof(Skill), new ObjectDefinition<Skill>("skills") },
+            //{ typeof(PgJsonObjects.String), new ObjectDefinition<PgJsonObjects.String>("strings") },
+            { typeof(Power), new ObjectDefinition<Power>("tsysclientinfo") },
+            { typeof(XpTable), new ObjectDefinition<XpTable>("xptables") },
+        };
+
         public static string ApplicationFolder { get; private set; }
         public static string VersionCacheFolder { get; private set; }
         public static string CurrentVersionCacheFolder { get; private set; }
@@ -372,37 +360,16 @@ namespace PgJsonParse
         #endregion
 
         #region Cache
-        private static readonly Dictionary<Type, string> JsonFileTable = new Dictionary<Type,string>()
-        {
-            { typeof(PgJsonObjects.Ability), "abilities" },
-            { typeof(PgJsonObjects.AbilitySource), "sources_abilities" },
-            { typeof(PgJsonObjects.AdvancementTable), "advancementtables" },
-            { typeof(PgJsonObjects.Attribute), "attributes" },
-            { typeof(PgJsonObjects.DirectedGoal), "directedgoals" },
-            { typeof(PgJsonObjects.GameArea), "areas" },
-            { typeof(PgJsonObjects.GameNpc), "npcs" },
-            { typeof(PgJsonObjects.StorageVault), "storagevaults" },
-            { typeof(PgJsonObjects.Effect), "effects" },
-            { typeof(PgJsonObjects.Item), "items" },
-            { typeof(PgJsonObjects.ItemUses), "itemuses" },
-            { typeof(PgJsonObjects.Quest), "quests" },
-            { typeof(PgJsonObjects.Recipe), "recipes" },
-            { typeof(PgJsonObjects.RecipeSource), "sources_recipes" },
-            { typeof(PgJsonObjects.Skill), "skills" },
-            //{ typeof(PgJsonObjects.String), "strings" },
-            { typeof(PgJsonObjects.Power), "tsysclientinfo" },
-            { typeof(PgJsonObjects.XpTable), "xptables" },
-        };
         private static readonly Dictionary<ItemSlot, string> IconFileTable = new Dictionary<ItemSlot, string>()
         {
-            { ItemSlot.Head, "icon_16002" },
-            { ItemSlot.Chest, "icon_12006" },
-            { ItemSlot.Legs, "icon_11011" },
-            { ItemSlot.Hands, "icon_13005" },
-            { ItemSlot.Feet, "icon_10015" },
-            { ItemSlot.Ring, "icon_17002" },
-            { ItemSlot.Necklace, "icon_17001" },
-            { ItemSlot.MainHand, "icon_15001" },
+            { ItemSlot.Head, "icon_16110" },
+            { ItemSlot.Chest, "icon_12110" },
+            { ItemSlot.Legs, "icon_11110" },
+            { ItemSlot.Hands, "icon_13110" },
+            { ItemSlot.Feet, "icon_10110" },
+            { ItemSlot.Ring, "icon_17202" },
+            { ItemSlot.Necklace, "icon_17101" },
+            { ItemSlot.MainHand, "icon_15014" },
             { ItemSlot.OffHand, "icon_5382" },
         };
 
@@ -516,10 +483,10 @@ namespace PgJsonParse
             ProgramState = ProgramState.Downloading;
 
             int Index = 0;
-            int Total = JsonFileTable.Count + IconFileTable.Count;
-            foreach (KeyValuePair<Type, string> Entry in JsonFileTable)
+            int Total = Definitions.Count + IconFileTable.Count;
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
             {
-                UpdateJsonFileInCache(Entry.Key, Entry.Value, Index++, Total);
+                UpdateJsonFileInCache(Entry.Value, Index++, Total);
 
                 if (IsOperationCanceled)
                 {
@@ -544,20 +511,20 @@ namespace PgJsonParse
             CreateLoadThread();
         }
 
-        private void UpdateJsonFileInCache(Type TypeIndex, string FileName, int Index, int Total)
+        private void UpdateJsonFileInCache(IObjectDefinition Definition, int Index, int Total)
         {
             try
             {
-                if (!UpdateTextCacheFile(DownloadedVersion, "data", FileName, "json"))
+                if (!UpdateTextCacheFile(DownloadedVersion, "data", Definition.JsonFileName, "json"))
                 {
-                    MessageBox.Show("Failed to download JSON file " + FileName + " for version " + DownloadedVersion);
+                    MessageBox.Show("Failed to download JSON file " + Definition.JsonFileName + " for version " + DownloadedVersion);
                     CancelOperation();
                 }
                 else
                 {
                     DownloadProgress = ((double)(Index + 1)) / (double)Total;
 
-                    string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, JsonFileTable[TypeIndex] + "-index.txt");
+                    string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, Definition.JsonFileName + "-index.txt");
                     if (File.Exists(IndexFilePath))
                         File.Delete(IndexFilePath);
                 }
@@ -658,40 +625,6 @@ namespace PgJsonParse
         #region Loading
         private void InitLoad()
         {
-            AbilityList = new ObservableCollection<PgJsonObjects.Ability>();
-            AbilityTable = new Dictionary<string, PgJsonObjects.Ability>();
-            AbilitySourceList = new ObservableCollection<PgJsonObjects.AbilitySource>();
-            AbilitySourceTable = new Dictionary<string, PgJsonObjects.AbilitySource>();
-            AdvancementTableList = new ObservableCollection<PgJsonObjects.AdvancementTable>();
-            AdvancementTableTable = new Dictionary<string, PgJsonObjects.AdvancementTable>();
-            DirectedGoalList = new ObservableCollection<PgJsonObjects.DirectedGoal>();
-            DirectedGoalTable = new Dictionary<string, PgJsonObjects.DirectedGoal>();
-            GameAreaList = new ObservableCollection<PgJsonObjects.GameArea>();
-            GameAreaTable = new Dictionary<string, PgJsonObjects.GameArea>();
-            GameNpcList = new ObservableCollection<PgJsonObjects.GameNpc>();
-            GameNpcTable = new Dictionary<string, PgJsonObjects.GameNpc>();
-            StorageVaultList = new ObservableCollection<PgJsonObjects.StorageVault>();
-            StorageVaultTable = new Dictionary<string, PgJsonObjects.StorageVault>();
-            QuestList = new ObservableCollection<PgJsonObjects.Quest>();
-            QuestTable = new Dictionary<string, PgJsonObjects.Quest>();
-            XpTableList = new ObservableCollection<PgJsonObjects.XpTable>();
-            XpTableTable = new Dictionary<string, PgJsonObjects.XpTable>();
-            EffectList = new ObservableCollection<PgJsonObjects.Effect>();
-            EffectTable = new Dictionary<string, PgJsonObjects.Effect>();
-            AttributeList = new ObservableCollection<PgJsonObjects.Attribute>();
-            AttributeTable = new Dictionary<string, PgJsonObjects.Attribute>();
-            RecipeList = new ObservableCollection<PgJsonObjects.Recipe>();
-            RecipeTable = new Dictionary<string, PgJsonObjects.Recipe>();
-            RecipeSourceList = new ObservableCollection<PgJsonObjects.RecipeSource>();
-            RecipeSourceTable = new Dictionary<string, PgJsonObjects.RecipeSource>();
-            ItemList = new ObservableCollection<PgJsonObjects.Item>();
-            ItemTable = new Dictionary<string, PgJsonObjects.Item>();
-            ItemUsesList = new ObservableCollection<PgJsonObjects.ItemUses>();
-            ItemUsesTable = new Dictionary<string, PgJsonObjects.ItemUses>();
-            PowerList = new ObservableCollection<PgJsonObjects.Power>();
-            PowerTable = new Dictionary<string, PgJsonObjects.Power>();
-            SkillList = new ObservableCollection<PgJsonObjects.Skill>();
-            SkillTable = new Dictionary<string, PgJsonObjects.Skill>();
         }
 
         public int LoadedVersion
@@ -738,11 +671,11 @@ namespace PgJsonParse
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
 
             int Index = 0;
-            int Total = JsonFileTable.Count;
+            int Total = Definitions.Count;
 
-            foreach (KeyValuePair<Type, string> Entry in JsonFileTable)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
             {
-                LoadNextFile(Entry.Key, Entry.Value, ErrorInfo, Index++, Total);
+                LoadNextFile(Entry.Value, ErrorInfo, Index++, Total);
 
                 if (IsOperationCanceled)
                 {
@@ -754,181 +687,20 @@ namespace PgJsonParse
             ConnectTables(ErrorInfo);
         }
 
-        private void LoadNextFile(Type TypeIndex, string FileName, ParseErrorInfo ErrorInfo, int Index, int Total)
+        private void LoadNextFile(IObjectDefinition Definition, ParseErrorInfo ErrorInfo, int Index, int Total)
         {
             try
             {
-                string FilePath = Path.Combine(CurrentVersionCacheFolder, FileName + ".json");
+                string FilePath = Path.Combine(CurrentVersionCacheFolder, Definition.JsonFileName + ".json");
 
-                if (TypeIndex == typeof(PgJsonObjects.Ability))
-                {
-                    Parser<PgJsonObjects.Ability> AbilityParser = new Parser<PgJsonObjects.Ability>();
-                    AbilityParser.LoadRaw(FilePath, AbilityList, ErrorInfo);
+                IParser FileParser = Definition.FileParser;
+                IList ObjectList = Definition.ObjectList;
+                Dictionary<string, IGenericJsonObject> ObjectTable = Definition.ObjectTable;
+                FileParser.LoadRaw(FilePath, ObjectList, ErrorInfo);
 
-                    AbilityTable.Clear();
-                    foreach (Ability Item in AbilityList)
-                        AbilityTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.AbilitySource))
-                {
-                    Parser<PgJsonObjects.AbilitySource> AbilitySourceParser = new Parser<PgJsonObjects.AbilitySource>();
-                    AbilitySourceParser.LoadRaw(FilePath, AbilitySourceList, ErrorInfo);
-
-                    AbilitySourceTable.Clear();
-                    foreach (AbilitySource Item in AbilitySourceList)
-                        AbilitySourceTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.AdvancementTable))
-                {
-                    Parser<PgJsonObjects.AdvancementTable> AdvancementTableParser = new Parser<PgJsonObjects.AdvancementTable>();
-                    AdvancementTableParser.LoadRaw(FilePath, AdvancementTableList, ErrorInfo);
-
-                    AdvancementTableTable.Clear();
-                    foreach (AdvancementTable Item in AdvancementTableList)
-                        AdvancementTableTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Attribute))
-                {
-                    Parser<PgJsonObjects.Attribute> AttributeParser = new Parser<PgJsonObjects.Attribute>();
-                    AttributeParser.LoadRaw(FilePath, AttributeList, ErrorInfo);
-
-                    AttributeTable.Clear();
-                    foreach (PgJsonObjects.Attribute Item in AttributeList)
-                        AttributeTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.DirectedGoal))
-                {
-                    Parser<PgJsonObjects.DirectedGoal> DirectedGoalParser = new Parser<PgJsonObjects.DirectedGoal>();
-                    DirectedGoalParser.LoadRaw(FilePath, DirectedGoalList, ErrorInfo);
-
-                    DirectedGoalTable.Clear();
-                    foreach (DirectedGoal Item in DirectedGoalList)
-                        DirectedGoalTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.GameArea))
-                {
-                    Parser<PgJsonObjects.GameArea> GameAreaParser = new Parser<PgJsonObjects.GameArea>();
-                    GameAreaParser.LoadRaw(FilePath, GameAreaList, ErrorInfo);
-
-                    GameAreaTable.Clear();
-                    foreach (GameArea Item in GameAreaList)
-                        GameAreaTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.GameNpc))
-                {
-                    Parser<PgJsonObjects.GameNpc> GameNpcParser = new Parser<PgJsonObjects.GameNpc>();
-                    GameNpcParser.LoadRaw(FilePath, GameNpcList, ErrorInfo);
-
-                    GameNpcTable.Clear();
-                    foreach (GameNpc Item in GameNpcList)
-                        GameNpcTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.StorageVault))
-                {
-                    Parser<PgJsonObjects.StorageVault> StorageVaultParser = new Parser<PgJsonObjects.StorageVault>();
-                    StorageVaultParser.LoadRaw(FilePath, StorageVaultList, ErrorInfo);
-
-                    StorageVaultTable.Clear();
-                    foreach (StorageVault Item in StorageVaultList)
-                        StorageVaultTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Effect))
-                {
-                    Parser<PgJsonObjects.Effect> EffectParser = new Parser<PgJsonObjects.Effect>();
-                    EffectParser.LoadRaw(FilePath, EffectList, ErrorInfo);
-
-                    EffectTable.Clear();
-                    foreach (PgJsonObjects.Effect Item in EffectList)
-                        EffectTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Item))
-                {
-                    Parser<PgJsonObjects.Item> ItemParser = new Parser<PgJsonObjects.Item>();
-                    ItemParser.LoadRaw(FilePath, ItemList, ErrorInfo);
-
-                    ItemTable.Clear();
-                    foreach (PgJsonObjects.Item Item in ItemList)
-                        ItemTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.ItemUses))
-                {
-                    Parser<PgJsonObjects.ItemUses> ItemUsesParser = new Parser<PgJsonObjects.ItemUses>();
-                    ItemUsesParser.LoadRaw(FilePath, ItemUsesList, ErrorInfo);
-
-                    ItemUsesTable.Clear();
-                    foreach (ItemUses Item in ItemUsesList)
-                        ItemUsesTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Quest))
-                {
-                    Parser<PgJsonObjects.Quest> QuestParser = new Parser<PgJsonObjects.Quest>();
-                    QuestParser.LoadRaw(FilePath, QuestList, ErrorInfo);
-
-                    QuestTable.Clear();
-                    foreach (PgJsonObjects.Quest Item in QuestList)
-                        QuestTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Recipe))
-                {
-                    Parser<PgJsonObjects.Recipe> RecipeParser = new Parser<PgJsonObjects.Recipe>();
-                    RecipeParser.LoadRaw(FilePath, RecipeList, ErrorInfo);
-
-                    RecipeTable.Clear();
-                    foreach (Recipe Item in RecipeList)
-                        RecipeTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.RecipeSource))
-                {
-                    Parser<PgJsonObjects.RecipeSource> RecipeSourceParser = new Parser<PgJsonObjects.RecipeSource>();
-                    RecipeSourceParser.LoadRaw(FilePath, RecipeSourceList, ErrorInfo);
-
-                    RecipeSourceTable.Clear();
-                    foreach (RecipeSource Item in RecipeSourceList)
-                        RecipeSourceTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Skill))
-                {
-                    Parser<PgJsonObjects.Skill> SkillParser = new Parser<PgJsonObjects.Skill>();
-                    SkillParser.LoadRaw(FilePath, SkillList, ErrorInfo);
-
-                    SkillTable.Clear();
-                    foreach (PgJsonObjects.Skill Item in SkillList)
-                        SkillTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Power))
-                {
-                    Parser<PgJsonObjects.Power> PowerParser = new Parser<PgJsonObjects.Power>();
-                    PowerParser.LoadRaw(FilePath, PowerList, ErrorInfo);
-
-                    PowerTable.Clear();
-                    foreach (PgJsonObjects.Power Item in PowerList)
-                        PowerTable.Add(Item.Key, Item);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.XpTable))
-                {
-                    Parser<PgJsonObjects.XpTable> XpTableParser = new Parser<PgJsonObjects.XpTable>();
-                    XpTableParser.LoadRaw(FilePath, XpTableList, ErrorInfo);
-
-                    XpTableTable.Clear();
-                    foreach (XpTable Item in XpTableList)
-                        XpTableTable.Add(Item.Key, Item);
-                }
+                ObjectTable.Clear();
+                foreach (IGenericJsonObject Item in ObjectList)
+                    ObjectTable.Add(Item.Key, Item);
 
                 FileLoadProgress = ((double)(Index + 1)) / (double)Total;
             }
@@ -943,169 +715,45 @@ namespace PgJsonParse
         {
             ProgramState = ProgramState.ConnectingTables;
 
-            foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+            Dictionary<Type, IList> AllLists = new Dictionary<Type, IList>();
+            Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables = new Dictionary<Type, Dictionary<string, IGenericJsonObject>>();
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            {
+                IObjectDefinition Definition = Entry.Value;
+                AllLists.Add(Entry.Key, Definition.ObjectList);
+                AllTables.Add(Entry.Key, Definition.ObjectTable);
+            }
 
-            foreach (PgJsonObjects.Ability Item in AbilityList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            {
+                IObjectDefinition Definition = Entry.Value;
+                foreach (IGenericJsonObject Item in Definition.ObjectList)
+                    Item.Connect(ErrorInfo, null, AllTables);
+            }
 
-            foreach (PgJsonObjects.AbilitySource Item in AbilitySourceList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.Attribute Item in AttributeList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.GameArea Item in GameAreaList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.GameNpc Item in GameNpcList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.StorageVault Item in StorageVaultList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.Effect Item in EffectList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.Item Item in ItemList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.ItemUses Item in ItemUsesList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.Power Item in PowerList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.Quest Item in QuestList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.Recipe Item in RecipeList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.RecipeSource Item in RecipeSourceList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.Skill Item in SkillList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
-            foreach (PgJsonObjects.XpTable Item in XpTableList)
-                Item.Connect(ErrorInfo, null, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
-
+            IObjectDefinition RecipeDefinition = Definitions[typeof(Recipe)];
             bool Continue;
             do
             {
                 Continue = false;
-                foreach (PgJsonObjects.Recipe Item in RecipeList)
+                foreach (Recipe Item in RecipeDefinition.ObjectList)
                     Item.MeasurePerfectCottonRatio(ref Continue);
             }
             while (Continue);
 
-            foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            {
+                IObjectDefinition Definition = Entry.Value;
+                foreach (IGenericJsonObject Item in Definition.ObjectList)
+                    Item.SetIndirectProperties(AllTables, ErrorInfo);
+            }
 
-            foreach (PgJsonObjects.Ability Item in AbilityList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.AbilitySource Item in AbilitySourceList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.Attribute Item in AttributeList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.GameArea Item in GameAreaList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.GameNpc Item in GameNpcList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.StorageVault Item in StorageVaultList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.Effect Item in EffectList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.Item Item in ItemList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.ItemUses Item in ItemUsesList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.Power Item in PowerList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.Quest Item in QuestList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.Recipe Item in RecipeList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.RecipeSource Item in RecipeSourceList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.Skill Item in SkillList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-            foreach (PgJsonObjects.XpTable Item in XpTableList)
-                Item.SetIndirectProperties(AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable, ErrorInfo);
-
-
-
-            foreach (PgJsonObjects.AdvancementTable Item in AdvancementTableList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.Ability Item in AbilityList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.AbilitySource Item in AbilitySourceList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.Attribute Item in AttributeList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.DirectedGoal Item in DirectedGoalList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.GameArea Item in GameAreaList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.GameNpc Item in GameNpcList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.StorageVault Item in StorageVaultList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.Effect Item in EffectList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.Item Item in ItemList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.ItemUses Item in ItemUsesList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.Power Item in PowerList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.Quest Item in QuestList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.Recipe Item in RecipeList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.RecipeSource Item in RecipeSourceList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.Skill Item in SkillList)
-                Item.SortLinkBack();
-
-            foreach (PgJsonObjects.XpTable Item in XpTableList)
-                Item.SortLinkBack();
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            {
+                IObjectDefinition Definition = Entry.Value;
+                foreach (IGenericJsonObject Item in Definition.ObjectList)
+                    Item.SortLinkBack();
+            }
 
             CreateIndexes(ErrorInfo);
         }
@@ -1114,9 +762,9 @@ namespace PgJsonParse
         {
             ProgramState = ProgramState.CreatingIndex;
 
-            foreach (KeyValuePair<Type, string> Entry in JsonFileTable)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
             {
-                CreateNextIndex(Entry.Key, Entry.Value, ErrorInfo);
+                CreateNextIndex(Entry.Value, ErrorInfo);
 
                 if (IsOperationCanceled)
                 {
@@ -1129,95 +777,14 @@ namespace PgJsonParse
             LoadIcons(ErrorInfo);
         }
 
-        private void CreateNextIndex(Type TypeIndex, string FileName, ParseErrorInfo ErrorInfo)
+        private void CreateNextIndex(IObjectDefinition Definition, ParseErrorInfo ErrorInfo)
         { 
             try
             {
-                string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, FileName + "-index.txt");
-
-                if (TypeIndex == typeof(PgJsonObjects.Ability))
-                {
-                    Parser<PgJsonObjects.Ability> AbilityParser = new Parser<PgJsonObjects.Ability>();
-                    AbilityParser.CreateIndex(IndexFilePath, AbilityTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.AdvancementTable))
-                {
-                    Parser<PgJsonObjects.AdvancementTable> AdvancementTableParser = new Parser<PgJsonObjects.AdvancementTable>();
-                    AdvancementTableParser.CreateIndex(IndexFilePath, AdvancementTableTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Attribute))
-                {
-                    Parser<PgJsonObjects.Attribute> AttributeParser = new Parser<PgJsonObjects.Attribute>();
-                    AttributeParser.CreateIndex(IndexFilePath, AttributeTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.DirectedGoal))
-                {
-                    Parser<PgJsonObjects.DirectedGoal> DirectedGoalParser = new Parser<PgJsonObjects.DirectedGoal>();
-                    DirectedGoalParser.CreateIndex(IndexFilePath, DirectedGoalTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.GameArea))
-                {
-                    Parser<PgJsonObjects.GameArea> GameAreaParser = new Parser<PgJsonObjects.GameArea>();
-                    GameAreaParser.CreateIndex(IndexFilePath, GameAreaTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.GameNpc))
-                {
-                    Parser<PgJsonObjects.GameNpc> GameNpcParser = new Parser<PgJsonObjects.GameNpc>();
-                    GameNpcParser.CreateIndex(IndexFilePath, GameNpcTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.StorageVault))
-                {
-                    Parser<PgJsonObjects.StorageVault> StorageVaultParser = new Parser<PgJsonObjects.StorageVault>();
-                    StorageVaultParser.CreateIndex(IndexFilePath, StorageVaultTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Effect))
-                {
-                    Parser<PgJsonObjects.Effect> EffectParser = new Parser<PgJsonObjects.Effect>();
-                    EffectParser.CreateIndex(IndexFilePath, EffectTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Item))
-                {
-                    Parser<PgJsonObjects.Item> ItemParser = new Parser<PgJsonObjects.Item>();
-                    ItemParser.CreateIndex(IndexFilePath, ItemTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.ItemUses))
-                {
-                    Parser<PgJsonObjects.ItemUses> ItemUsesParser = new Parser<PgJsonObjects.ItemUses>();
-                    ItemUsesParser.CreateIndex(IndexFilePath, ItemUsesTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Quest))
-                {
-                    Parser<PgJsonObjects.Quest> QuestParser = new Parser<PgJsonObjects.Quest>();
-                    QuestParser.CreateIndex(IndexFilePath, QuestTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Recipe))
-                {
-                    Parser<PgJsonObjects.Recipe> RecipeParser = new Parser<PgJsonObjects.Recipe>();
-                    RecipeParser.CreateIndex(IndexFilePath, RecipeTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Skill))
-                {
-                    Parser<PgJsonObjects.Skill> SkillParser = new Parser<PgJsonObjects.Skill>();
-                    SkillParser.CreateIndex(IndexFilePath, SkillTable);
-                }
-
-                else if (TypeIndex == typeof(PgJsonObjects.Power))
-                {
-                    Parser<PgJsonObjects.Power> PowerParser = new Parser<PgJsonObjects.Power>();
-                    PowerParser.CreateIndex(IndexFilePath, PowerTable);
-                }
+                string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, Definition.JsonFileName + "-index.txt");
+                IParser FileParser = Definition.FileParser;
+                Dictionary<string, IGenericJsonObject> ObjectTable = Definition.ObjectTable;
+                FileParser.CreateIndex(IndexFilePath, ObjectTable);
             }
             catch (Exception e)
             {
@@ -1231,9 +798,12 @@ namespace PgJsonParse
             string MushroomNameFile = Path.Combine(ApplicationFolder, "Mushrooms.txt");
 
             List<string> MushroomNameList = new List<string>();
-            foreach (KeyValuePair<string, Item> Entry in ItemTable)
+            IObjectDefinition ItemDefinition = Definitions[typeof(Item)];
+            Dictionary<string, IGenericJsonObject> ItemTable = ItemDefinition.ObjectTable;
+
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
             {
-                Item Item = Entry.Value;
+                Item Item = Entry.Value as Item;
                 if (Item.KeywordTable.ContainsKey(ItemKeyword.RawMushroom))
                     MushroomNameList.Add(Item.Name);
             }
@@ -1451,6 +1021,9 @@ namespace PgJsonParse
 
             List<PowerSkill> NewCombatSkillList = new List<PowerSkill>();
 
+            IObjectDefinition PowerDefinition = Definitions[typeof(Power)];
+            IList PowerList = PowerDefinition.ObjectList;
+
             foreach (Power PowerItem in PowerList)
             {
                 if (PowerItem.IsUnavailable)
@@ -1545,6 +1118,11 @@ namespace PgJsonParse
                 SelectAsSecond = PowerSkill.Internal_None;
             }
 
+            IObjectDefinition PowerDefinition = Definitions[typeof(Power)];
+            IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
+            IObjectDefinition AttributeDefinition = Definitions[typeof(PgJsonObjects.Attribute)];
+            Dictionary<string, IGenericJsonObject> AttributeTable = AttributeDefinition.ObjectTable;
+
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
                 PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill, DefaultMaxLevel);
         }
@@ -1552,6 +1130,9 @@ namespace PgJsonParse
         private void RefreshWeightProfileList()
         {
             WeightProfileList.Clear();
+
+            IObjectDefinition AttributeDefinition = Definitions[typeof(PgJsonObjects.Attribute)];
+            IList<PgJsonObjects.Attribute> AttributeList = AttributeDefinition.ObjectList as IList<PgJsonObjects.Attribute>;
 
             if (!File.Exists(DefaultProfileName))
             {
@@ -1661,6 +1242,11 @@ namespace PgJsonParse
         {
             WeightProfile SelectedProfile = (WeightProfileIndex >= 0 && WeightProfileIndex < WeightProfileList.Count) ? WeightProfileList[WeightProfileIndex] : null;
             ItemAttributeLink.SetSelectedProfile(SelectedProfile);
+
+            IObjectDefinition AttributeDefinition = Definitions[typeof(PgJsonObjects.Attribute)];
+            IList<PgJsonObjects.Attribute> AttributeList = AttributeDefinition.ObjectList as IList<PgJsonObjects.Attribute>;
+            IObjectDefinition ItemDefinition = Definitions[typeof(Item)];
+            IList<Item> ItemList = ItemDefinition.ObjectList as IList<Item>;
 
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
                 PlanerItem.RefreshGearList(ItemList, AttributeList, SelectedProfile, IgnoreUnobtainable, IgnoreNoAttribute);
@@ -1807,12 +1393,17 @@ namespace PgJsonParse
 
                 else
                 {
+                    IObjectDefinition PowerDefinition = Definitions[typeof(Power)];
+                    Dictionary<string, IGenericJsonObject> PowerTable = PowerDefinition.ObjectTable;
+                    IObjectDefinition ItemDefinition = Definitions[typeof(Item)];
+                    Dictionary<string, IGenericJsonObject> ItemTable = ItemDefinition.ObjectTable;
+
                     ItemSlot ParsedSlot;
                     if (StringToEnumConversion<ItemSlot>.TryParse(FieldName, out ParsedSlot, null))
                     {
                         if (PowerTable.ContainsKey(FieldValue))
                         {
-                            Power SlotPower = PowerTable[FieldValue];
+                            Power SlotPower = PowerTable[FieldValue] as Power;
 
                             foreach (SlotPlaner Planer in SlotPlanerList)
                                 if (Planer.Slot == ParsedSlot)
@@ -1857,7 +1448,7 @@ namespace PgJsonParse
                         }
                         else if (ItemTable.ContainsKey(FieldValue))
                         {
-                            Item SlotItem = ItemTable[FieldValue];
+                            Item SlotItem = ItemTable[FieldValue] as Item;
 
                             foreach (SlotPlaner Planer in SlotPlanerList)
                                 if (Planer.Slot == ParsedSlot)
@@ -2223,15 +1814,15 @@ namespace PgJsonParse
 
         private void PerformSearch(List<string> TermList, SearchModes SearchMode)
         {
-            foreach (KeyValuePair<Type, string> Entry in JsonFileTable)
-                PerformSearch(TermList, Entry, SearchMode);
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+                PerformSearch(TermList, Entry.Value, SearchMode);
         }
 
-        private void PerformSearch(List<string> TermList, KeyValuePair<Type, string> Entry, SearchModes SearchMode)
+        private void PerformSearch(List<string> TermList, IObjectDefinition Definition, SearchModes SearchMode)
         {
             try
             {
-                string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, Entry.Value + "-index.txt");
+                string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, Definition.JsonFileName + "-index.txt");
                 if (!File.Exists(IndexFilePath))
                     return;
 
@@ -2241,37 +1832,8 @@ namespace PgJsonParse
                     {
                         string TextContent = sr.ReadToEnd();
 
-                        Type TypeIndex = Entry.Key;
-
-                        if (TypeIndex == typeof(PgJsonObjects.Ability) && IncludeAbility)
-                            PerformSearch(TermList, AbilityTable, TextContent, SearchMode);
-
-                        else if (TypeIndex == typeof(PgJsonObjects.DirectedGoal) && IncludeDirectedGoal)
-                            PerformSearch(TermList, DirectedGoalTable, TextContent, SearchMode);
-
-                        else if (TypeIndex == typeof(PgJsonObjects.GameNpc) && IncludeGameNpc)
-                            PerformSearch(TermList, GameNpcTable, TextContent, SearchMode);
-
-                        else if (TypeIndex == typeof(PgJsonObjects.StorageVault) && IncludeStorageVault)
-                            PerformSearch(TermList, StorageVaultTable, TextContent, SearchMode);
-
-                        else if (TypeIndex == typeof(PgJsonObjects.Effect) && IncludeEffect)
-                            PerformSearch(TermList, EffectTable, TextContent, SearchMode);
-
-                        else if (TypeIndex == typeof(PgJsonObjects.Item) && IncludeItem)
-                            PerformSearch(TermList, ItemTable, TextContent, SearchMode);
-
-                        else if (TypeIndex == typeof(PgJsonObjects.Quest) && IncludeQuest)
-                            PerformSearch(TermList, QuestTable, TextContent, SearchMode);
-
-                        else if (TypeIndex == typeof(PgJsonObjects.Recipe) && IncludeRecipe)
-                            PerformSearch(TermList, RecipeTable, TextContent, SearchMode);
-
-                        else if (TypeIndex == typeof(PgJsonObjects.Skill) && IncludeSkill)
-                            PerformSearch(TermList, SkillTable, TextContent, SearchMode);
-
-                        else if (TypeIndex == typeof(PgJsonObjects.Power) && IncludePower)
-                            PerformSearch(TermList, PowerTable, TextContent, SearchMode);
+                        Dictionary<string, IGenericJsonObject> ObjectTable = Definition.ObjectTable;
+                        PerformSearch(TermList, ObjectTable, TextContent, SearchMode);
                     }
                 }
             }
@@ -2488,6 +2050,9 @@ namespace PgJsonParse
 
             CrunchSelectionList.Clear();
 
+            IObjectDefinition SkillDefinition = Definitions[typeof(Skill)];
+            IList<Skill> SkillList = SkillDefinition.ObjectList as IList<Skill>;
+
             List<Skill> CombatSkillList = new List<Skill>();
             foreach (Skill SkillItem in SkillList)
                 if (IsCombatSkill(SkillItem))
@@ -2531,6 +2096,9 @@ namespace PgJsonParse
 
             if (SkillItem.XpTable.InternalName != "TypicalCombatSkill" && SkillItem.XpTable.InternalName != "TypicalCombatSkillExt")
                 return false;
+
+            IObjectDefinition AbilityDefinition = Definitions[typeof(Ability)];
+            IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
             int AbilityCount = 0;
             foreach (Ability Item in AbilityList)
@@ -2643,6 +2211,8 @@ namespace PgJsonParse
                 MaxLevel = int.MaxValue;
 
             Dictionary <Ability, List<Ability>> AbilitiesSortedByLineName = new Dictionary<Ability, List<Ability>>();
+            IObjectDefinition AbilityDefinition = Definitions[typeof(Ability)];
+            IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
             foreach (Ability AbilityItem in AbilityList)
             {
@@ -2709,6 +2279,9 @@ namespace PgJsonParse
 
         private Ability AbilityPrevious(Ability AbilityItem)
         {
+            IObjectDefinition AbilityDefinition = Definitions[typeof(Ability)];
+            IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
+
             if (AbilityItem.UpgradeOf != null)
                 return AbilityItem.UpgradeOf;
 
@@ -2737,6 +2310,8 @@ namespace PgJsonParse
         private Dictionary<ItemSlot, List<Power>> SelectGear(Skill PrimarySkill, Skill SecondarySkill)
         {
             Dictionary<ItemSlot, List<Power>> Gear = new Dictionary<ItemSlot, List<Power>>();
+            IObjectDefinition PowerDefinition = Definitions[typeof(Power)];
+            IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
 
             List<ItemSlot> SlotList = new List<ItemSlot>()
             {

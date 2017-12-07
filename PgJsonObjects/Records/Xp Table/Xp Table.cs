@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -83,12 +84,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             return false;
         }
 
-        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, XpTable> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawXpTableParsed)
                 return ParsedXpTable;
@@ -98,12 +99,15 @@ namespace PgJsonObjects
             if (RawXpTableName == null)
                 return null;
 
-            foreach (KeyValuePair<string, XpTable> Entry in XpTableTable)
-                if (Entry.Value.InternalName == RawXpTableName)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in XpTableTable)
+            {
+                XpTable XpTableValue = Entry.Value as XpTable;
+                if (XpTableValue.InternalName == RawXpTableName)
                 {
                     IsConnected = true;
-                    return Entry.Value;
+                    return XpTableValue;
                 }
+            }
 
             ErrorInfo.AddMissingKey(RawXpTableName);
             return null;

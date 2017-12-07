@@ -74,7 +74,7 @@ namespace PgJsonObjects
                     AnyIconTable.Add(Skill, RawIconId.Value);
         }
 
-        public override void SetIndirectProperties(Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
         {
             PowerSkill IconSkill = CombatSkill;
 
@@ -663,9 +663,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected = false;
+            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IGenericJsonObject> XpTableTable = AllTables[typeof(XpTable)];
+            Dictionary<string, IGenericJsonObject> AdvancementTableTable = AllTables[typeof(AdvancementTable)];
 
             XpTable = PgJsonObjects.XpTable.ConnectSingleProperty(ErrorInfo, XpTableTable, RawXpTable, XpTable, ref IsRawXpTableParsed, ref IsConnected, this);
             AdvancementTable = PgJsonObjects.AdvancementTable.ConnectSingleProperty(ErrorInfo, AdvancementTableTable, RawAdvancementTable, AdvancementTable, ref IsRawAdvancementTableParsed, ref IsConnected, this);
@@ -682,7 +685,7 @@ namespace PgJsonObjects
                 }
 
             foreach (Reward Item in RewardList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             if (ParentSkill != PowerSkill.Internal_None && ParentSkill != PowerSkill.AnySkill && ParentSkill != PowerSkill.Unknown)
                 ConnectedParentSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, ParentSkill, ConnectedParentSkill, ref IsParentSkillParsed, ref IsConnected, this);
@@ -718,7 +721,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
@@ -728,32 +731,38 @@ namespace PgJsonObjects
             if (RawSkillName == null)
                 return null;
 
-            foreach (KeyValuePair<string, Skill> Entry in SkillTable)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in SkillTable)
+            {
+                Skill SkillValue = Entry.Value as Skill;
                 if (Entry.Key == RawSkillName)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    SkillValue.AddLinkBack(LinkBack);
+                    return SkillValue;
                 }
+            }
 
             ErrorInfo.AddMissingKey(RawSkillName);
             return null;
         }
 
-        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, Skill> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
 
             IsRawSkillParsed = true;
 
-            foreach (KeyValuePair<string, Skill> Entry in SkillTable)
-                if (Entry.Value.CombatSkill == RawPowerSkill)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in SkillTable)
+            {
+                Skill SkillValue = Entry.Value as Skill;
+                if (SkillValue.CombatSkill == RawPowerSkill)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    SkillValue.AddLinkBack(LinkBack);
+                    return SkillValue;
                 }
+            }
 
             if (RawPowerSkill != PowerSkill.Internal_None && RawPowerSkill != PowerSkill.Unknown)
                 ErrorInfo.AddMissingKey(RawPowerSkill.ToString());

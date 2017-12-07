@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -1107,15 +1108,17 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected = false;
+            Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
+            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
             foreach (RecipeItem Item in IngredientList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             foreach (RecipeItem Item in ResultItemList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
                 ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
@@ -1127,10 +1130,10 @@ namespace PgJsonObjects
                 ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsRewardSkillParsed, ref IsConnected, this);
 
             foreach (AbilityRequirement Item in OtherRequirementList)
-                IsConnected |= Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             foreach (RecipeCost Item in CostList)
-                Item.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                Item.Connect(ErrorInfo, this, AllTables);
 
             if (RawSharesResetTimerWith != null)
                 SharesResetTimerWith = PgJsonObjects.Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsSharesResetTimerWithParsed, ref IsConnected, this);
@@ -1138,24 +1141,27 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static bool ConnectTableByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, List<string> ConnectedList, Dictionary<string, Recipe> ConnectedTable)
+        public static bool ConnectTableByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, List<string> ConnectedList, Dictionary<string, Recipe> ConnectedTable)
         {
             bool Connected = false;
 
             foreach (string s in ConnectedList)
             {
                 bool Found = false;
-                foreach (KeyValuePair<string, Recipe> Entry in RecipeTable)
-                    if (Entry.Value.InternalName == s)
+                foreach (KeyValuePair<string, IGenericJsonObject> Entry in RecipeTable)
+                {
+                    Recipe RecipeValue = Entry.Value as Recipe;
+                    if (RecipeValue.InternalName == s)
                     {
                         Found = true;
                         Connected = true;
                         if (ConnectedTable.ContainsKey(s))
                             ErrorInfo.AddDuplicateString("Recipe", s);
                         else
-                            ConnectedTable.Add(Entry.Key, Entry.Value);
+                            ConnectedTable.Add(Entry.Key, RecipeValue);
                         break;
                     }
+                }
 
                 if (!Found)
                     ErrorInfo.AddMissingKey(s);
@@ -1164,7 +1170,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static Recipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, string RawRecipeName, Recipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Recipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, string RawRecipeName, Recipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawRecipeParsed)
                 return ParsedRecipe;
@@ -1174,21 +1180,27 @@ namespace PgJsonObjects
             if (RawRecipeName == null)
                 return null;
 
-            foreach (KeyValuePair<string, Recipe> Entry in RecipeTable)
-                if (Entry.Value.InternalName == RawRecipeName)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in RecipeTable)
+            {
+                Recipe RecipeValue = Entry.Value as Recipe;
+                if (RecipeValue.InternalName == RawRecipeName)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    RecipeValue.AddLinkBack(LinkBack);
+                    return RecipeValue;
                 }
+            }
 
-            foreach (KeyValuePair<string, Recipe> Entry in RecipeTable)
-                if (Entry.Value.Name == RawRecipeName)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in RecipeTable)
+            {
+                Recipe RecipeValue = Entry.Value as Recipe;
+                if (RecipeValue.Name == RawRecipeName)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    RecipeValue.AddLinkBack(LinkBack);
+                    return RecipeValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawRecipeName);
@@ -1196,7 +1208,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Recipe> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, RecipeKeyword Keyword, List<Recipe> RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static List<Recipe> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, RecipeKeyword Keyword, List<Recipe> RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawRecipeParsed)
                 return RecipeList;
@@ -1209,12 +1221,15 @@ namespace PgJsonObjects
             RecipeList = new List<Recipe>();
             IsConnected = true;
 
-            foreach (KeyValuePair<string, Recipe> RecipeEntry in RecipeTable)
-                if (RecipeEntry.Value.KeywordList.Contains(Keyword))
+            foreach (KeyValuePair<string, IGenericJsonObject> RecipeEntry in RecipeTable)
+            {
+                Recipe RecipeValue = RecipeEntry.Value as Recipe;
+                if (RecipeValue.KeywordList.Contains(Keyword))
                 {
-                    RecipeEntry.Value.AddLinkBack(LinkBack);
-                    RecipeList.Add(RecipeEntry.Value);
+                    RecipeValue.AddLinkBack(LinkBack);
+                    RecipeList.Add(RecipeValue);
                 }
+            }
 
             if (RecipeList.Count == 0 && ErrorInfo != null)
                 ErrorInfo.AddMissingKey(Keyword.ToString());
@@ -1222,7 +1237,7 @@ namespace PgJsonObjects
             return RecipeList;
         }
 
-        public static Recipe ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, Recipe> RecipeTable, int RecipeId, Recipe Recipe, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Recipe ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, int RecipeId, Recipe Recipe, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawRecipeParsed)
                 return Recipe;
@@ -1230,13 +1245,16 @@ namespace PgJsonObjects
             IsRawRecipeParsed = true;
             string RawRecipeId = "recipe_" + RecipeId;
 
-            foreach (KeyValuePair<string, Recipe> Entry in RecipeTable)
-                if (Entry.Value.Key == RawRecipeId)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in RecipeTable)
+            {
+                Recipe RecipeValue = Entry.Value as Recipe;
+                if (RecipeValue.Key == RawRecipeId)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    RecipeValue.AddLinkBack(LinkBack);
+                    return RecipeValue;
                 }
+            }
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingKey(RawRecipeId);

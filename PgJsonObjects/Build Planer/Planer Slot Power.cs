@@ -4,7 +4,7 @@ namespace PgJsonObjects
 {
     public class PlanerSlotPower
     {
-        public PlanerSlotPower(Power Reference, Dictionary<string, Attribute> AttributeTable, int MaxLevelFirstSkill)
+        public PlanerSlotPower(Power Reference, Dictionary<string, IGenericJsonObject> AttributeTable, int MaxLevelFirstSkill)
         {
             this.Reference = Reference;
 
@@ -53,7 +53,7 @@ namespace PgJsonObjects
                 {
                     if (AttributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
                     {
-                        Attribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName];
+                        Attribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName] as Attribute;
 
                         bool IsPercent = PowerAttribute.IsLabelWithPercent;
                         string Label = PowerAttribute.LabelRippedOfPercent;

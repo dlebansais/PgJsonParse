@@ -2669,7 +2669,7 @@
                     <DataTemplate x:Key="SearchResultItemContentTemplate">
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <Image DockPanel.Dock="Left" ToolTip="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Item:</TextBlock>
                                     <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>

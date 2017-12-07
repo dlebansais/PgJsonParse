@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -258,9 +259,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected = false;
+            Dictionary<string, IGenericJsonObject> ItemTable = AllTables[typeof(Item)];
+            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
             if (ItemKeywordList.Count == 0)
                 ItemKeywordList.Add(ItemKeyword.Any);
@@ -279,15 +282,21 @@ namespace PgJsonObjects
                 {
                     if (MinValueRequirement.HasValue)
                     {
-                        foreach (KeyValuePair<string, Item> Entry in ItemTable)
-                            if (Entry.Value.Value >= MinValueRequirement.Value)
-                                ItemList.Add(Entry.Value);
+                        foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+                        {
+                            Item ItemValue = Entry.Value as Item;
+                            if (ItemValue.Value >= MinValueRequirement.Value)
+                                ItemList.Add(ItemValue);
+                        }
                     }
                     else if (SlotRequirement != ItemSlot.Internal_None)
                     {
-                        foreach (KeyValuePair<string, Item> Entry in ItemTable)
-                            if (Entry.Value.EquipSlot == SlotRequirement)
-                                ItemList.Add(Entry.Value);
+                        foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+                        {
+                            Item ItemValue = Entry.Value as Item;
+                            if (ItemValue.EquipSlot == SlotRequirement)
+                                ItemList.Add(ItemValue);
+                        }
                     }
                 }
                 else

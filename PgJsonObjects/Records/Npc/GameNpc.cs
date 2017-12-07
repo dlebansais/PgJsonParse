@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -151,15 +152,17 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<string, Ability> AbilityTable, Dictionary<string, Attribute> AttributeTable, Dictionary<string, Item> ItemTable, Dictionary<string, Recipe> RecipeTable, Dictionary<string, Skill> SkillTable, Dictionary<string, Quest> QuestTable, Dictionary<string, Effect> EffectTable, Dictionary<string, XpTable> XpTableTable, Dictionary<string, AdvancementTable> AdvancementTableTable, Dictionary<string, GameNpc> GameNpcTable, Dictionary<string, StorageVault> StorageVaultTable, Dictionary<string, AbilitySource> AbilitySourceTable)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected = false;
+            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IGenericJsonObject> StorageVaultTable = AllTables[typeof(StorageVault)];
 
             List<Item> HatedGiftList = new List<Item>();
 
             foreach (NpcPreference Preference in HateList)
             {
-                IsConnected = Preference.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected = Preference.Connect(ErrorInfo, this, AllTables);
                 foreach (Gift Gift in Preference.ItemFavorList)
                     if (!HatedGiftList.Contains(Gift.Item))
                         HatedGiftList.Add(Gift.Item);
@@ -167,7 +170,7 @@ namespace PgJsonObjects
 
             foreach (NpcPreference Preference in LikeList)
             {
-                IsConnected = Preference.Connect(ErrorInfo, this, AbilityTable, AttributeTable, ItemTable, RecipeTable, SkillTable, QuestTable, EffectTable, XpTableTable, AdvancementTableTable, GameNpcTable, StorageVaultTable, AbilitySourceTable);
+                IsConnected = Preference.Connect(ErrorInfo, this, AllTables);
 
                 foreach (Item Item in HatedGiftList)
                     foreach (Gift Gift in Preference.ItemFavorList)
@@ -183,7 +186,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static GameNpc ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, GameNpc> GameNpcTable, string GameNpcKey, GameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static GameNpc ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> GameNpcTable, string GameNpcKey, GameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawGameNpcParsed)
                 return ParsedGameNpc;
@@ -193,13 +196,16 @@ namespace PgJsonObjects
             if (GameNpcKey == null)
                 return null;
 
-            foreach (KeyValuePair<string, GameNpc> Entry in GameNpcTable)
-                if (Entry.Value.Key == GameNpcKey)
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in GameNpcTable)
+            {
+                GameNpc GameNpcValue = Entry.Value as GameNpc;
+                if (GameNpcValue.Key == GameNpcKey)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    GameNpcValue.AddLinkBack(LinkBack);
+                    return GameNpcValue;
                 }
+            }
 
             //if (ErrorInfo != null)
             //    ErrorInfo.AddMissingKey(GameNpcKey);
