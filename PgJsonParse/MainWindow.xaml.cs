@@ -77,6 +77,15 @@ namespace PgJsonParse
         public static string IconFile { get; private set; }
         public static string FavorIconFile { get; private set; }
         public ImageSource FavorIcon { get; private set; }
+
+        public bool CheckLastVersionOnStartup { get; private set; }
+        private static readonly string CheckLastVersionOnStartupSettingName = "CheckLastVersionOnStartup";
+        public bool DownloadLastVersionOnStartup { get; private set; }
+        private static readonly string DownloadLastVersionOnStartupSettingName = "DownloadLastVersionOnStartup";
+        public bool OverwriteIconFile { get; private set; }
+        private static readonly string OverwriteIconFileSettingName = "OverwriteIconFile";
+        public bool KeepRecentVersions { get; private set; }
+        private static readonly string KeepRecentVersionsSettingName = "KeepRecentVersions";
         #endregion
 
         #region Startup Page
