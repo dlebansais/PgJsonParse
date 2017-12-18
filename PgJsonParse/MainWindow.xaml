@@ -2499,7 +2499,7 @@
                                 <ToggleButton x:Name="buttonFavor" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" Margin="5,0,5,0" Click="OnFavorButtonClicked">
                                     <Image Source="{Binding Path=FavorIcon, RelativeSource={RelativeSource AncestorType={x:Type app:MainWindow}}}" Width="12" Height="12"/>
                                 </ToggleButton>
-                                <Popup IsOpen="{Binding ElementName=buttonFavor, Path=IsChecked}" Placement="Bottom" AllowsTransparency="False" Focusable="False" MaxHeight="400" Opened="OnFavorPopupOpened">
+                                <Popup IsOpen="{Binding ElementName=buttonFavor, Path=IsChecked}" Placement="Bottom" AllowsTransparency="False" Focusable="False" StaysOpen="False" MaxHeight="400" Opened="OnFavorPopupOpened">
                                     <ListView ItemsSource="{Binding ItemFavorList}" ScrollViewer.VerticalScrollBarVisibility="Visible" GridViewColumnHeader.Click="OnGridViewColumnHeaderClick">
                                         <ListView.ItemContainerStyle>
                                             <Style TargetType="ListViewItem">
@@ -3529,7 +3529,7 @@
                                             <ToggleButton x:Name="buttonXpTable" DockPanel.Dock="Right" Width="20" Height="20" Template="{StaticResource XpTableToggleButton}" ClickMode="Press" Checked="OnXpTableButtonChecked"/>
                                             <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding XpTable.EnumName, Converter={StaticResource convEnumToText}, ConverterParameter=XpTableEnumTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="0,0,10,0"/>
                                         </DockPanel>
-                                        <Popup IsOpen="{Binding ElementName=buttonXpTable, Path=IsChecked}" Placement="Bottom" AllowsTransparency="False" Focusable="False" MaxHeight="400">
+                                        <Popup IsOpen="{Binding ElementName=buttonXpTable, Path=IsChecked}" Placement="Bottom" AllowsTransparency="False" Focusable="False" StaysOpen="False" MaxHeight="400">
                                             <ListView ItemsSource="{Binding XpTable.XpAmountList}" ScrollViewer.VerticalScrollBarVisibility="Visible">
                                                 <ListView.ItemContainerStyle>
                                                     <Style TargetType="ListViewItem">

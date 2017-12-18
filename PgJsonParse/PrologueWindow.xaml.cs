@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -400,7 +401,7 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const int PARSER_VERSION = 292;
+        public const double PARSER_VERSION = 292.0;
 
         private void InitParserCheck()
         {
@@ -467,8 +468,8 @@ namespace PgJsonParse
                                     if (ParserTagVersion.ToLower().StartsWith("v"))
                                         ParserTagVersion = ParserTagVersion.Substring(1);
 
-                                    int ReleasedParserVersion;
-                                    if (int.TryParse(ParserTagVersion, out ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
+                                    double ReleasedParserVersion;
+                                    if (double.TryParse(ParserTagVersion, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture.NumberFormat, out ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
                                         FoundUpdate = true;
                                 }
                             }
