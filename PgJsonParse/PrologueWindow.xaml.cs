@@ -577,10 +577,16 @@ namespace PgJsonParse
         private async void OnDownloadVersion(GameVersionInfo VersionInfo)
         {
             IsGlobalInteractionEnabled = false;
+            App.SetState(this, TaskbarProgress.TaskbarStates.Normal);
 
+            VersionInfo.ProgressChanged += OnFileDownloadProgressChanged;
             bool Success = await Task.Run(() => { return ExecuteDownloadVersion(VersionInfo); });
+            VersionInfo.ProgressChanged -= OnFileDownloadProgressChanged;
+
             if (Success)
             {
+                App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
+
                 if (StartAutomatically)
                 {
                     await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new StartHandler(OnStart), VersionInfo);
@@ -588,7 +594,10 @@ namespace PgJsonParse
                 }
             }
             else
+            {
+                App.SetState(this, TaskbarProgress.TaskbarStates.Error);
                 StatusMessage = "Unable to download version files.";
+            }
 
             IsGlobalInteractionEnabled = true;
         }
@@ -716,7 +725,10 @@ namespace PgJsonParse
             ParseProgress = 0;
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
 
+            App.SetState(this, TaskbarProgress.TaskbarStates.Normal);
             bool Success = await Task.Run(() => { return ExecuteParse(VersionInfo, ErrorInfo); });
+            App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
+
             if (!Success)
             {
                 IsParsing = false;
@@ -837,6 +849,8 @@ namespace PgJsonParse
 
                 ParseProgress = (ProgressIndex * 100.0) / ObjectList.Definitions.Count;
                 ProgressIndex++;
+
+                App.SetValue(this, ParseProgress, 100.0);
             }
 
             return ConnectTables(VersionFolder, IconFolder, ErrorInfo);
@@ -1046,15 +1060,35 @@ namespace PgJsonParse
         {
             IsGlobalInteractionEnabled = false;
             IsIconStateUpdated = true;
+            App.SetState(this, TaskbarProgress.TaskbarStates.Normal);
 
+            VersionInfo.ProgressChanged += OnIconDownloadProgressChanged;
             bool Success = await Task.Run(() => { return ExecuteDownloadIcons(VersionInfo); });
+            VersionInfo.ProgressChanged -= OnIconDownloadProgressChanged;
+
             if (Success)
             {
+                App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
+
+                string IconFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString());
+                string IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
+                string SourceIconFile = Path.Combine(IconFolder, "icon_5624.png");
+                string FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
+                string SourceFavorIconFile = Path.Combine(IconFolder, "icon_102.png");
+
+                if (File.Exists(SourceIconFile))
+                    File.Copy(SourceIconFile, IconFile, true);
+                if (File.Exists(SourceFavorIconFile))
+                    File.Copy(SourceFavorIconFile, FavorIconFile, true);
+
                 if (StartAutomatically)
                     await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new StartHandler(OnStart), VersionInfo);
             }
             else
+            {
+                App.SetState(this, TaskbarProgress.TaskbarStates.Error);
                 StatusMessage = "Failed to download icons.";
+            }
 
             UpdateWindowIcon();
 
@@ -1117,6 +1151,7 @@ namespace PgJsonParse
 
         private async void OnCheckVersion(object sender, ExecutedRoutedEventArgs e)
         {
+            App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckVersionHandler(OnCheckVersion));
         }
 
@@ -1129,6 +1164,7 @@ namespace PgJsonParse
 
         private async void OnDownloadVersion(object sender, ExecutedRoutedEventArgs e)
         {
+            App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new DownloadVersionHandler(OnDownloadVersion), VersionInfoFromControl(e));
         }
 
@@ -1139,11 +1175,13 @@ namespace PgJsonParse
 
         private void OnDeleteVersion(object sender, ExecutedRoutedEventArgs e)
         {
+            App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             OnDeleteVersion(VersionInfoFromControl(e));
         }
 
         private async void OnDownloadIcons(object sender, ExecutedRoutedEventArgs e)
         {
+            App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new DownloadIconsHandler(OnDownloadIcons), VersionInfoFromControl(e));
         }
 
@@ -1154,6 +1192,7 @@ namespace PgJsonParse
 
         private async void OnStart(object sender, ExecutedRoutedEventArgs e)
         {
+            App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new StartHandler(OnStart), VersionInfoFromControl(e));
         }
 
@@ -1197,6 +1236,18 @@ namespace PgJsonParse
             System.Diagnostics.Process.Start(ReleasePageAddress);
         }
 
+        private void OnFileDownloadProgressChanged(object sender, EventArgs e)
+        {
+            GameVersionInfo VersionInfo = sender as GameVersionInfo;
+            App.SetValue(this, VersionInfo.FileDownloadProgress, 100.0);
+        }
+
+        private void OnIconDownloadProgressChanged(object sender, EventArgs e)
+        {
+            GameVersionInfo VersionInfo = sender as GameVersionInfo;
+            App.SetValue(this, VersionInfo.IconDownloadProgress, 100.0);
+        }
+
         private void OnPopupClosed(object sender, EventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
@@ -1234,6 +1285,7 @@ namespace PgJsonParse
 
         private void OnClose(object sender, ExecutedRoutedEventArgs e)
         {
+            App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             Close();
         }
 

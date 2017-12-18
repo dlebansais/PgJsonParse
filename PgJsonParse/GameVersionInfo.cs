@@ -7,6 +7,7 @@ using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 
 namespace PgJsonParse
 {
@@ -114,6 +115,9 @@ namespace PgJsonParse
 
                 FileDownloadProgress = (ProgressIndex * 100.0) / FileList.Count;
                 ProgressIndex++;
+
+                NotifyProgressChanged();
+                Thread.Sleep(0);
             }
 
             Tools.MinimalSleep(Watch);
@@ -251,6 +255,9 @@ namespace PgJsonParse
 
                 DownloadedList.Add(IconId);
                 ProgressIndex++;
+
+                NotifyProgressChanged();
+                Thread.Sleep(0);
             }
 
             Tools.MinimalSleep(Watch);
@@ -296,6 +303,15 @@ namespace PgJsonParse
         }
 
         private bool IsIconDownloadCancelled;
+        #endregion
+
+        #region Events
+        public event EventHandler ProgressChanged;
+
+        private void NotifyProgressChanged()
+        {
+            ProgressChanged?.Invoke(this, EventArgs.Empty);
+        }
         #endregion
 
         #region Debugging

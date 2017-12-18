@@ -1,5 +1,8 @@
 ﻿using Microsoft.Win32;
+using System;
 using System.Windows;
+using System.Windows.Interop;
+using static TaskbarProgress;
 
 namespace PgJsonParse
 {
@@ -103,6 +106,32 @@ namespace PgJsonParse
         }
 
         private static RegistryKey SettingKey = null;
+        #endregion
+
+        #region Progress
+        public static void SetState(Window window, TaskbarStates taskbarState)
+        {
+            window.Dispatcher.BeginInvoke(new SetStateHandler(OnSetState), window, taskbarState);
+        }
+
+        public delegate void SetStateHandler(Window window, TaskbarStates taskbarState);
+        public static void OnSetState(Window window, TaskbarStates taskbarState)
+        {
+            IntPtr windowHandle = new WindowInteropHelper(window).Handle;
+            TaskbarProgress.SetState(windowHandle, taskbarState);
+        }
+
+        public static void SetValue(Window window, double progressValue, double progressMax)
+        {
+            window.Dispatcher.BeginInvoke(new SetValueHandler(OnSetValue), window, progressValue, progressMax);
+        }
+
+        public delegate void SetValueHandler(Window window, double progressValue, double progressMax);
+        public static void OnSetValue(Window window, double progressValue, double progressMax)
+        {
+            IntPtr windowHandle = new WindowInteropHelper(window).Handle;
+            TaskbarProgress.SetValue(windowHandle, progressValue, progressMax);
+        }
         #endregion
     }
 }
