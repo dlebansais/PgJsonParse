@@ -400,7 +400,7 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const int PARSER_VERSION = 290;
+        public const int PARSER_VERSION = 292;
 
         private void InitParserCheck()
         {
