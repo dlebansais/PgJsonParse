@@ -77,6 +77,12 @@ namespace PgJsonParse
             return Value.HasValue ? Value.Value : Default;
         }
 
+        public static int GetSettingEnum(string ValueName, int Default, int Max)
+        {
+            int? Value = GetSettingKey(ValueName) as int?;
+            return Value.HasValue ? (Value.Value >= 0 && Value.Value <= Max ? Value.Value : 0) : Default;
+        }
+
         public static void SetSettingInt(string ValueName, int Value)
         {
             SetSettingKey(ValueName, Value, RegistryValueKind.DWord);
@@ -97,14 +103,6 @@ namespace PgJsonParse
         }
 
         private static RegistryKey SettingKey = null;
-        #endregion
-
-        #region Events
-        private void OnDeactivated(object sender, System.EventArgs e)
-        {
-            MainWindow AsMainWindow = MainWindow as MainWindow;
-            AsMainWindow.CloseXpTable();
-        }
         #endregion
     }
 }

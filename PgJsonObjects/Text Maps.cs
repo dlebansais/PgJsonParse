@@ -110,6 +110,7 @@ namespace PgJsonObjects
             { RecipeAction.Brew, "Brew" },
             { RecipeAction.PrepareCask, "Prepare Cask" },
             { RecipeAction.SortGrass, "Sort Grass" },
+            { RecipeAction.TapKeg, "Tap Keg" },
         };
 
         public static readonly Dictionary<MapAreaName, string> MapAreaNameStringMap = new Dictionary<MapAreaName, string>()
@@ -1832,6 +1833,7 @@ namespace PgJsonObjects
             { EffectKeyword.Healing, "Healing" },
             { EffectKeyword.HardcoreBuff, "Hardcore Buff" },
             { EffectKeyword.Event_HalloweenEvent, "Halloween Event" },
+            { EffectKeyword.Event_Christmas, "Christmas Event" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -2777,6 +2779,11 @@ namespace PgJsonObjects
             { ItemKeyword.IlthHaleRing7, "IlthHaleRing #7" },
             { ItemKeyword.IlthHaleRing8, "IlthHaleRing #8" },
             { ItemKeyword.TitleScroll, "Title Scroll" },
+            { ItemKeyword.AlcoholLevel, "Alcohol Level" },
+            { ItemKeyword.Plate, "Plate" },
+            { ItemKeyword.BeerTap, "Beer Tap" },
+            { ItemKeyword.GingerbreadHuman, "Gingerbread Human" },
+            { ItemKeyword.AlcoholBarrel, "Alcohol Barrel" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -2952,6 +2959,7 @@ namespace PgJsonObjects
             { RecipeAction.PrepareCask, "Prepare Cask" },
             { RecipeAction.SortGrass, "Sort Grass" },
             { RecipeAction.Grill, "Grill" },
+            { RecipeAction.TapKeg, "Tap Keg" },
         };
 
         public static readonly Dictionary<RecipeUsageAnimation, string> RecipeUsageAnimationTextMap = new Dictionary<RecipeUsageAnimation, string>()
@@ -3232,6 +3240,7 @@ namespace PgJsonObjects
             { RecipeEffect.DecomposeFeetItemIntoAugmentResources, "Decompose Feet Item Into Augment Resources" },
             { RecipeEffect.DecomposeRingItemIntoAugmentResources, "Decompose Ring Item Into Augment Resources" },
             { RecipeEffect.DecomposeNecklaceItemIntoAugmentResources, "Decompose Necklace Item Into Augment Resources" },
+            { RecipeEffect.DeployBeerBarrel, "Deploy Beer Barrel" },
         };
 
         public static readonly Dictionary<DecomposeMaterial, string> DecomposeMaterialTextMap = new Dictionary<DecomposeMaterial, string>()
@@ -3451,7 +3460,9 @@ namespace PgJsonObjects
             { RecipeItemKey.BodyOrgan, "BodyOrgan" },
             { RecipeItemKey.CorpseLimb, "CorpseLimb" },
             { RecipeItemKey.Rarity_Exceptional, "Rarity: Exceptional" },
+            { RecipeItemKey.MinRarity_Epic, "Epic" },
             { RecipeItemKey.Crossbow, "Crossbow" },
+            { RecipeItemKey.AlcoholBarrel, "Alcohol Barrel" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
@@ -4194,6 +4205,11 @@ namespace PgJsonObjects
             { ServerInfoEffectType.TSys_HammerBuckleHealChance, "Hammer Buckle Heal Chance" },
             { ServerInfoEffectType.BeltBuckleDurabilityFast, "Belt Buckle Fast Durability" },
             { ServerInfoEffectType.TSys_PoundFireEquipmentUnique, "Unique Pound Fire Equipment" },
+            { ServerInfoEffectType.GingerbreadHuman, "Gingerbread Human" },
+            { ServerInfoEffectType.NormalCandyCane,"Normal Candy Cane" },
+            { ServerInfoEffectType.LemonCandyCane,"Lemon Candy Cane" },
+            { ServerInfoEffectType.SpearmintCandyCane,"Spearmint Candy Cane" },
+            { ServerInfoEffectType.GrapeCandyCane,"Grape Candy Cane" },
         };
 
         public static readonly Dictionary<ItemRequiredHotspot, string> ItemRequiredHotspotTextMap = new Dictionary<ItemRequiredHotspot, string>()

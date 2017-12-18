@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -17,11 +18,21 @@ namespace Converters
 
             if ((FileName = value as string) != null)
             {
-                string FilePath = Path.Combine(MainWindow.CurrentVersionCacheFolder, FileName);
-                FilePath = Path.ChangeExtension(FilePath, ".png");
+                App CurrentApp = App.Current as App;
+                foreach (Window w in CurrentApp.Windows)
+                {
+                    MainWindow AsMainWindow;
+                    if ((AsMainWindow = w as MainWindow) != null)
+                    {
+                        GameVersionInfo SelectedVersion = AsMainWindow.LoadedVersion;
+                        string IconCacheFolder = AsMainWindow.IconCacheFolder;
+                        string FilePath = Path.Combine(IconCacheFolder, FileName);
+                        FilePath = Path.ChangeExtension(FilePath, ".png");
 
-                if (File.Exists(FilePath))
-                    return new BitmapImage(new Uri(FilePath));
+                        if (File.Exists(FilePath))
+                            return new BitmapImage(new Uri(FilePath));
+                    }
+                }
             }
 
             return null;

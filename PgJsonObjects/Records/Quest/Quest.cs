@@ -12,7 +12,6 @@ namespace PgJsonObjects
         public string Description { get; private set; }
         public int Version { get { return RawVersion.HasValue ? RawVersion.Value : 0; } }
         public int? RawVersion { get; private set; }
-        public EffectKeyword RequirementToSustain { get; private set; }
         public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
         public bool? RawIsCancellable { get; private set; }
         public List<QuestObjective> QuestObjectiveList { get; } = new List<QuestObjective>();
@@ -33,23 +32,6 @@ namespace PgJsonObjects
         public Ability RewardAbility { get; private set; }
         private string RawRewardAbility;
         private bool IsRawRewardAbilityParsed;
-        public string RequirementFavorNpcId { get; private set; }
-        public string RequirementFavorNpcName { get; private set; }
-        private bool IsRequirementFavorNpcParsed;
-        public GameNpc RequirementFavorNpc { get; private set; }
-        public MapAreaName RequirementFavorNpcArea { get; private set; }
-        public Favor RequirementFavorLevel { get; private set; }
-        public List<Quest> RequirementQuestList { get; private set; } = new List<Quest>();
-        private List<string> RawRequirementQuestList = new List<string>();
-        private bool IsRawRequirementQuestParsed;
-        public Quest RequirementGuildQuest { get; private set; }
-        public string RawRequirementGuildQuest { get; private set; }
-        private bool IsRawRequirementGuildQuestParsed;
-        public PowerSkill RequirementSkill { get; private set; }
-        public Skill ConnectedRequirementSkill { get; private set; }
-        private bool IsConnectedRequirementSkillParsed;
-        public int RequirementSkillLevel { get { return RawRequirementSkillLevel.HasValue ? RawRequirementSkillLevel.Value : 0; } }
-        public int? RawRequirementSkillLevel { get; private set; }
         public int RewardFavor { get { return RawRewardFavor.HasValue ? RawRewardFavor.Value : 0; } }
         public int? RawRewardFavor { get; private set; }
         public PowerSkill RewardSkill { get; private set; }
@@ -76,6 +58,7 @@ namespace PgJsonObjects
         public Effect RewardEffect { get; private set; }
         private string RawRewardEffect;
         private bool IsRawRewardEffectParsed;
+        private List<string> RawRewardInteractionFlags = new List<string>();
         public bool IsAutoPreface { get { return RawIsAutoPreface.HasValue && RawIsAutoPreface.Value; } }
         public bool? RawIsAutoPreface { get; private set; }
         public bool IsAutoWrapUp { get { return RawIsAutoWrapUp.HasValue && RawIsAutoWrapUp.Value; } }
@@ -93,6 +76,8 @@ namespace PgJsonObjects
         public MapAreaName DisplayedLocation { get; private set; }
         public List<Quest> FollowUpQuestList { get; private set; } = new List<Quest>();
         private List<string> RawFollowUpQuestList = new List<string>();
+        public List<QuestRequirement> QuestRequirementList { get; private set; } = new List<QuestRequirement>();
+        public List<QuestRequirement> QuestRequirementToSustainList { get; private set; } = new List<QuestRequirement>();
         #endregion
 
         #region Indirect Properties
@@ -229,37 +214,14 @@ namespace PgJsonObjects
             }
         }
 
-        private void ParseRequirementToSustainAsDictionary(Dictionary<string, object> RawRequirement, ParseErrorInfo ErrorInfo)
+        private void ParseRequirementToSustainAsDictionary(Dictionary<string, object> RawRequirements, ParseErrorInfo ErrorInfo)
         {
-            if (RawRequirement.ContainsKey("T"))
-            {
-                string RequirementType;
-                if ((RequirementType = RawRequirement["T"] as string) != null)
-                {
-                    if (RequirementType == "HasEffectKeyword")
-                    {
-                        if (RawRequirement.ContainsKey("Keyword"))
-                        {
-                            if (RequirementToSustain == EffectKeyword.Internal_None)
-                            {
-                                EffectKeyword ParsedEffectKeyword;
-                                StringToEnumConversion<EffectKeyword>.TryParse(RawRequirement["Keyword"] as string, out ParsedEffectKeyword, ErrorInfo);
-                                RequirementToSustain = ParsedEffectKeyword;
-                            }
-                            else
-                                ErrorInfo.AddDuplicateString("Quest", "RequirementsToSustain");
-                        }
-                        else
-                            ErrorInfo.AddInvalidObjectFormat("Quest RequirementsToSustain");
-                    }
-                    else
-                        ErrorInfo.AddInvalidObjectFormat("Quest RequirementsToSustain");
-                }
-                else
-                    ErrorInfo.AddInvalidObjectFormat("Quest RequirementsToSustain");
-            }
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest RequirementsToSustain");
+            QuestRequirement ParsedQuestRequirement;
+            JsonObjectParser<QuestRequirement>.InitAsSubitem("Requirements", RawRequirements, out ParsedQuestRequirement, ErrorInfo);
+
+            QuestRequirement ConvertedQuestRequirement = ParsedQuestRequirement.ToSpecificQuestRequirement(ErrorInfo);
+            if (ConvertedQuestRequirement != null)
+                QuestRequirementToSustainList.Add(ConvertedQuestRequirement);
         }
 
         private static void ParseFieldReuseTimeMinutes(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -578,128 +540,27 @@ namespace PgJsonObjects
             foreach (object RawRequirement in RawRequirements)
             {
                 Dictionary<string, object> AsDictionary;
+                ArrayList AsArrayList;
+
                 if ((AsDictionary = RawRequirement as Dictionary<string, object>) != null)
                     ParseRequirementAsDictionary(AsDictionary, ErrorInfo);
+
+                else if ((AsArrayList = RawRequirement as ArrayList) != null)
+                    ParseRequirements(AsArrayList, ErrorInfo);
+
                 else
                     ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
             }
         }
 
-        private void ParseRequirementAsDictionary(Dictionary<string, object> RawRequirement, ParseErrorInfo ErrorInfo)
+        private void ParseRequirementAsDictionary(Dictionary<string, object> RawRequirements, ParseErrorInfo ErrorInfo)
         {
-            if (RawRequirement.ContainsKey("T"))
-            {
-                string RequirementType;
-                if ((RequirementType = RawRequirement["T"] as string) != null)
-                {
-                    if (RequirementType == "MinFavorLevel")
-                    {
-                        if (RawRequirement.ContainsKey("Npc") && RawRequirement.ContainsKey("Level"))
-                        {
-                            if (RequirementFavorNpcName == null && RequirementFavorLevel == Favor.Internal_None)
-                            {
-                                Favor ParsedFavor;
-                                StringToEnumConversion<Favor>.TryParse(RawRequirement["Level"] as string, out ParsedFavor, ErrorInfo);
-                                RequirementFavorLevel = ParsedFavor;
+            QuestRequirement ParsedQuestRequirement;
+            JsonObjectParser<QuestRequirement>.InitAsSubitem("Requirements", RawRequirements, out ParsedQuestRequirement, ErrorInfo);
 
-                                if (RequirementFavorLevel != Favor.Internal_None)
-                                {
-                                    MapAreaName ParsedArea;
-                                    string NpcId;
-                                    string NpcName;
-                                    if (TryParseNPC(RawRequirement["Npc"] as string, out ParsedArea, out NpcId, out NpcName, ErrorInfo))
-                                    {
-                                        RequirementFavorNpcArea = ParsedArea;
-                                        RequirementFavorNpcId = NpcId;
-                                        RequirementFavorNpcName = NpcName;
-                                    }
-                                    else
-                                        ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                                }
-                                else
-                                    ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                            }
-                            else
-                                ErrorInfo.AddDuplicateString("Quest", "FavorLevelRequirements");
-                        }
-                        else
-                            ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                    }
-
-                    else if (RequirementType == "QuestCompleted")
-                    {
-                        if (RawRequirement.ContainsKey("Quest"))
-                        {
-                            string RawRequirementQuest = RawRequirement["Quest"] as string;
-                            if (RawRequirementQuest == null)
-                                ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                            else
-                            {
-                                RawRequirementQuestList.Add(RawRequirementQuest);
-                                IsRawRequirementQuestParsed = false;
-                            }
-                        }
-                        else
-                            ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                    }
-
-                    else if (RequirementType == "GuildQuestCompleted")
-                    {
-                        if (RawRequirement.ContainsKey("Quest"))
-                        {
-                            if (RawRequirementGuildQuest == null)
-                            {
-                                RawRequirementGuildQuest = RawRequirement["Quest"] as string;
-                                if (RawRequirementGuildQuest == null)
-                                    ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                                else
-                                {
-                                    RequirementGuildQuest = null;
-                                    IsRawRequirementGuildQuestParsed = false;
-                                }
-                            }
-                            else
-                                ErrorInfo.AddDuplicateString("Quest", "QuestRequirements");
-                        }
-                        else
-                            ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                    }
-
-                    else if (RequirementType == "MinSkillLevel")
-                    {
-                        if (RawRequirement.ContainsKey("Skill") && RawRequirement.ContainsKey("Level"))
-                        {
-                            if (RequirementSkill == PowerSkill.Internal_None && !RawRequirementSkillLevel.HasValue)
-                            {
-                                PowerSkill ParsedSkill;
-                                StringToEnumConversion<PowerSkill>.TryParse(RawRequirement["Skill"] as string, out ParsedSkill, ErrorInfo);
-                                RequirementSkill = ParsedSkill;
-
-                                if (RequirementSkill != PowerSkill.Internal_None)
-                                {
-                                    if (RawRequirement["Level"] is int)
-                                        RawRequirementSkillLevel = (int)RawRequirement["Level"];
-                                    else
-                                        ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                                }
-                                else
-                                    ErrorInfo.AddDuplicateString("Quest", "SkillRequirements");
-                            }
-                            else
-                                ErrorInfo.AddDuplicateString("Quest", "SkillRequirements");
-                        }
-                        else
-                            ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                    }
-
-                    else
-                        ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-                }
-                else
-                    ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
-            }
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest Requirements");
+            QuestRequirement ConvertedQuestRequirement = ParsedQuestRequirement.ToSpecificQuestRequirement(ErrorInfo);
+            if (ConvertedQuestRequirement != null)
+                QuestRequirementList.Add(ConvertedQuestRequirement);
         }
 
         private static void ParseFieldRewards(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -954,7 +815,22 @@ namespace PgJsonObjects
                 {
                     string AsString;
                     if ((AsString = RawRewardRecipe as string) != null)
-                        RawRewardEffect = AsString;
+                    {
+                        if (AsString.StartsWith("SetInteractionFlag("))
+                        {
+                            int IndexEnd = AsString.IndexOf(')');
+                            if (IndexEnd >= 19)
+                            {
+                                string RawRewardInteractionFlag = AsString.Substring(19, IndexEnd - 19);
+                                if (!RawRewardInteractionFlags.Contains(RawRewardInteractionFlag))
+                                    RawRewardInteractionFlags.Add(RawRewardInteractionFlag);
+                            }
+                            else
+                                RawRewardEffect = AsString;
+                        }
+                        else
+                            RawRewardEffect = AsString;
+                    }
                     else
                         ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
                 }
@@ -1184,8 +1060,6 @@ namespace PgJsonObjects
 
                 AddWithFieldSeparator(ref Result, Name);
                 AddWithFieldSeparator(ref Result, Description);
-                if (RequirementToSustain != EffectKeyword.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.EffectKeywordTextMap[RequirementToSustain]);
                 if (RawIsCancellable.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Cancellable");
                 foreach (QuestObjective Item in QuestObjectiveList)
@@ -1211,24 +1085,6 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.FavorTextMap[PrerequisiteFavorLevel]);
                 if (RewardAbility != null)
                     AddWithFieldSeparator(ref Result, RewardAbility.Name);
-                if (RequirementFavorNpc != null)
-                {
-                    AddWithFieldSeparator(ref Result, TextMaps.FavorTextMap[RequirementFavorLevel]);
-                    AddWithFieldSeparator(ref Result, RequirementFavorNpc.Name);
-                    AddWithFieldSeparator(ref Result, TextMaps.MapAreaNameTextMap[RequirementFavorNpcArea]);
-                }
-                else if (RequirementFavorNpcName != null)
-                {
-                    AddWithFieldSeparator(ref Result, TextMaps.FavorTextMap[RequirementFavorLevel]);
-                    AddWithFieldSeparator(ref Result, RequirementFavorNpcName);
-                    AddWithFieldSeparator(ref Result, TextMaps.MapAreaNameTextMap[RequirementFavorNpcArea]);
-                }
-                foreach (Quest RequirementQuest in RequirementQuestList)
-                    AddWithFieldSeparator(ref Result, RequirementQuest.Name);
-                if (RequirementGuildQuest != null)
-                    AddWithFieldSeparator(ref Result, RequirementGuildQuest.Name);
-                if (ConnectedRequirementSkill != null)
-                    AddWithFieldSeparator(ref Result, ConnectedRequirementSkill.Name);
                 if (ConnectedRewardSkill != null)
                     AddWithFieldSeparator(ref Result, ConnectedRewardSkill.Name);
                 if (RewardRecipe != null)
@@ -1289,32 +1145,9 @@ namespace PgJsonObjects
             foreach (QuestRewardItem Item in PreGiveItemList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
-            if (!IsRawRequirementQuestParsed)
-            {
-                IsRawRequirementQuestParsed = true;
-
-                int Index = 0;
-                while (Index < RawRequirementQuestList.Count)
-                {
-                    Quest RequirementQuest = null;
-                    bool IsParsed = false;
-                    RequirementQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementQuestList[0], RequirementQuest, ref IsParsed, ref IsConnected, this);
-
-                    if (RequirementQuest != null)
-                    {
-                        RawRequirementQuestList.RemoveAt(0);
-                        RequirementQuestList.Add(RequirementQuest);
-                    }
-                    else
-                        Index++;
-                }
-            }
-
-            RequirementGuildQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementGuildQuest, RequirementGuildQuest, ref IsRawRequirementGuildQuestParsed, ref IsConnected, this);
             RewardAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawRewardAbility, RewardAbility, ref IsRawRewardAbilityParsed, ref IsConnected, this);
             RewardRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRewardRecipe, RewardRecipe, ref IsRawRewardRecipeParsed, ref IsConnected, this);
             RewardEffect = Effect.ConnectSingleProperty(ErrorInfo, EffectTable, RawRewardEffect, RewardEffect, ref IsRawRewardEffectParsed, ref IsConnected, this);
-            ConnectedRequirementSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RequirementSkill, ConnectedRequirementSkill, ref IsConnectedRequirementSkillParsed, ref IsConnected, this);
             ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsConnectedRewardSkillParsed, ref IsConnected, this);
             ConnectedWorkOrderSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, WorkOrderSkill, ConnectedWorkOrderSkill, ref IsConnectedWorkOrderSkillParsed, ref IsConnected, this);
 
@@ -1354,12 +1187,35 @@ namespace PgJsonObjects
                     FavorNpcName = TextMaps.SpecialNpcTextMap[ParsedSpecialNpc];
             }
 
-            RequirementFavorNpc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, RequirementFavorNpcId, RequirementFavorNpc, ref IsRequirementFavorNpcParsed, ref IsConnected, this);
-            if (RequirementFavorNpcId != null && RequirementFavorNpc == null)
+            foreach (QuestRequirement Requirement in QuestRequirementList)
+                Requirement.Connect(ErrorInfo, this, AllTables);
+
+            foreach (QuestRequirement Requirement in QuestRequirementToSustainList)
+                Requirement.Connect(ErrorInfo, this, AllTables);
+
+            bool InteractionFlagRemoved = true;
+            while (InteractionFlagRemoved)
             {
-                SpecialNpc ParsedSpecialNpc;
-                if (StringToEnumConversion<SpecialNpc>.TryParse(RequirementFavorNpcId, out ParsedSpecialNpc, ErrorInfo))
-                    RequirementFavorNpcName = TextMaps.SpecialNpcTextMap[ParsedSpecialNpc];
+                InteractionFlagRemoved = false;
+
+                foreach (string RawRewardInteractionFlag in RawRewardInteractionFlags)
+                {
+                    foreach (QuestObjective QuestObjective in QuestObjectiveList)
+                    {
+                        QuestObjectiveInteractionFlag AsQuestObjectiveInteractionFlag;
+                        if ((AsQuestObjectiveInteractionFlag = QuestObjective as QuestObjectiveInteractionFlag) != null)
+                        {
+                            if (AsQuestObjectiveInteractionFlag.InteractionFlag == RawRewardInteractionFlag)
+                            {
+                                RawRewardInteractionFlags.Remove(RawRewardInteractionFlag);
+                                InteractionFlagRemoved = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (InteractionFlagRemoved)
+                        break;
+                }
             }
 
             return IsConnected;

@@ -545,5 +545,10 @@
         TSys_HammerBuckleHealChance,
         BeltBuckleDurabilityFast,
         TSys_PoundFireEquipmentUnique,
+        GingerbreadHuman,
+        NormalCandyCane,
+        LemonCandyCane,
+        SpearmintCandyCane,
+        GrapeCandyCane,
     }
 }

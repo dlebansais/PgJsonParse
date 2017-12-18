@@ -851,5 +851,10 @@
         IlthHaleRing7,
         IlthHaleRing8,
         TitleScroll,
+        AlcoholLevel,
+        Plate,
+        BeerTap,
+        GingerbreadHuman,
+        AlcoholBarrel,
     }
 }

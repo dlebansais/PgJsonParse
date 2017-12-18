@@ -1,0 +1,598 @@
+﻿<Window x:Class="PgJsonParse.PrologueWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:app="clr-namespace:PgJsonParse"
+        xmlns:conv="clr-namespace:Converters"
+        xmlns:ctrl="clr-namespace:CustomControls"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        MouseLeftButtonDown="OnMouseLeftButtonDown"
+        Closed="OnWindowClosed">
+    <Window.Resources>
+        <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
+        <conv:EnumToIntConverter x:Key="convEnumToInt"/>
+        <conv:EnumToObjectConverter x:Key="convEnumToObject"/>
+        <conv:NullToObjectConverter x:Key="convNullToObject"/>
+        <conv:IntToObjectConverter x:Key="convIntToObject"/>
+        <sys:Double x:Key="Column0">20</sys:Double>
+        <sys:Double x:Key="Column1">50</sys:Double>
+        <sys:Double x:Key="Column2">210</sys:Double>
+        <sys:Double x:Key="Column1And2">260</sys:Double>
+        <sys:Double x:Key="Column3">120</sys:Double>
+        <sys:Double x:Key="Column1To3">380</sys:Double>
+        <sys:Double x:Key="Column4">20</sys:Double>
+        <sys:Double x:Key="AllColumns">400</sys:Double>
+        <sys:Double x:Key="AllColumnsAndMargin">426</sys:Double>
+        <sys:Double x:Key="AllColumnsAndButton">451</sys:Double>
+        <CompositeCollection x:Key="VisibleHidden">
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="HiddenVisible">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="VisibleCollapsed">
+            <Visibility>Visible</Visibility>
+            <Visibility>Collapsed</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="CollapsedVisible">
+            <Visibility>Collapsed</Visibility>
+            <Visibility>Visible</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="HiddenHiddenVisible">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="VersionCheckState_Unchecked">
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="VersionCheckState_Checking">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="VersionCheckState_CheckFailed">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="VersionCheckState_Known">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="VersionCheckState_Checkable">
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="DownloadState_NotDownloaded">
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="DownloadState_Downloading">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="DownloadState_FailedToDownload">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="DownloadState_DownloadCanceled">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="DownloadState_Downloaded">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="DownloadState_Downloadable">
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="YellowGreen">
+            <SolidColorBrush>#EDDE3F</SolidColorBrush>
+            <SolidColorBrush>#39AA56</SolidColorBrush>
+        </CompositeCollection>
+        <CompositeCollection x:Key="VersionCheckState_Color">
+            <SolidColorBrush>DarkGray</SolidColorBrush>
+            <SolidColorBrush>#EDDE3F</SolidColorBrush>
+            <SolidColorBrush>#DB4545</SolidColorBrush>
+            <SolidColorBrush>#39AA56</SolidColorBrush>
+        </CompositeCollection>
+        <CompositeCollection x:Key="GlobalDownloadState_Color">
+            <SolidColorBrush>DarkGray</SolidColorBrush>
+            <SolidColorBrush>#EDDE3F</SolidColorBrush>
+            <SolidColorBrush>#DB4545</SolidColorBrush>
+            <SolidColorBrush>DarkGray</SolidColorBrush>
+            <SolidColorBrush>#39AA56</SolidColorBrush>
+        </CompositeCollection>
+        <CompositeCollection x:Key="GlobalDownloadState_VersionColor">
+            <SolidColorBrush>Black</SolidColorBrush>
+            <SolidColorBrush>Black</SolidColorBrush>
+            <SolidColorBrush>Black</SolidColorBrush>
+            <SolidColorBrush>Black</SolidColorBrush>
+            <SolidColorBrush>#39AA56</SolidColorBrush>
+        </CompositeCollection>
+        <CompositeCollection x:Key="GlobalDownloadState_StartColor">
+            <SolidColorBrush>DarkGray</SolidColorBrush>
+            <SolidColorBrush>DarkGray</SolidColorBrush>
+            <SolidColorBrush>DarkGray</SolidColorBrush>
+            <SolidColorBrush>DarkGray</SolidColorBrush>
+            <SolidColorBrush>#39AA56</SolidColorBrush>
+        </CompositeCollection>
+        <CompositeCollection x:Key="GlobalDownloadState_ParsingColor">
+            <SolidColorBrush>#EDDE3F</SolidColorBrush>
+            <SolidColorBrush>#EDDE3F</SolidColorBrush>
+            <SolidColorBrush>#EDDE3F</SolidColorBrush>
+            <SolidColorBrush>#EDDE3F</SolidColorBrush>
+            <SolidColorBrush>#39AA56</SolidColorBrush>
+        </CompositeCollection>
+        <RoutedCommand x:Key="CommandClose"/>
+        <RoutedCommand x:Key="CommandCheckVersion"/>
+        <RoutedCommand x:Key="CommandDownloadVersion"/>
+        <RoutedCommand x:Key="CommandCancelDownloadVersion"/>
+        <RoutedCommand x:Key="CommandDownloadIcons"/>
+        <RoutedCommand x:Key="CommandCancelDownloadIcons"/>
+        <RoutedCommand x:Key="CommandStart"/>
+        <RoutedCommand x:Key="CommandCancelStart"/>
+        <RoutedCommand x:Key="CommandDeleteVersion"/>
+        <BitmapImage x:Key="imgRecycle" UriSource="pack://application:,,,/Resources/recycle.png"/>
+        <BitmapImage x:Key="imgIconInfo" UriSource="pack://application:,,,/Resources/icon_info.png"/>
+        <BitmapImage x:Key="imgCancel" UriSource="pack://application:,,,/Resources/cancel.png"/>
+        <BitmapImage x:Key="imgDropDown" UriSource="pack://application:,,,/Resources/dropdown.png"/>
+        <BitmapImage x:Key="imgClose" UriSource="pack://application:,,,/Resources/close.png"/>
+        <BitmapImage x:Key="imgDownload" UriSource="pack://application:,,,/Resources/download.png"/>
+        <BitmapImage x:Key="imgStart" UriSource="pack://application:,,,/Resources/start.png"/>
+        <BitmapImage x:Key="imgSearch" UriSource="pack://application:,,,/Resources/search.png"/>
+        <BitmapImage x:Key="imgSetting" UriSource="pack://application:,,,/Resources/setting.png"/>
+        <BitmapImage x:Key="imgDevice" UriSource="pack://application:,,,/Resources/device.png"/>
+        <DataTemplate x:Key="GameVersionInfoTemplate">
+            <Border BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="1,1,1,1" Background="White">
+                <DockPanel>
+                    <Button DockPanel.Dock="Left" Command="{StaticResource CommandDeleteVersion}" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="0,0,1,0">
+                        <Button.Visibility>
+                            <Binding Path="ShowDeleteButton" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
+                        </Button.Visibility>
+                        <Button.IsEnabled>
+                            <Binding Path="IsGlobalInteractionEnabled" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}"/>
+                        </Button.IsEnabled>
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <Image Source="{StaticResource imgRecycle}" Width="16" Height="16"/>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                            <TextBlock TextAlignment="Right" VerticalAlignment="Center" Width="{StaticResource Column1}">Version:</TextBlock>
+                            <TextBlock Text="{Binding Version}" VerticalAlignment="Center" Foreground="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_VersionColor}}" Width="{StaticResource Column2}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,10,5">
+                            <TextBlock TextAlignment="Right" VerticalAlignment="Center" Width="{StaticResource Column1}">Files:</TextBlock>
+                            <Grid Width="{StaticResource Column2}" VerticalAlignment="Center" Margin="5,0,10,0">
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_NotDownloaded}}">Not downloaded.</TextBlock>
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloading}}">Downloading, please wait...</TextBlock>
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_FailedToDownload}}">Failed to download.</TextBlock>
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_DownloadCanceled}}">Download canceled.</TextBlock>
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}">Downloaded.</TextBlock>
+                            </Grid>
+                            <Grid Width="{StaticResource Column3}" VerticalAlignment="Center">
+                                <Button Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloadable}}" Command="{StaticResource CommandDownloadVersion}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="1,0,20,0">
+                                    <Button.IsEnabled>
+                                        <Binding Path="IsGlobalInteractionEnabled" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}"/>
+                                    </Button.IsEnabled>
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Image Source="{StaticResource imgDownload}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
+                                            <TextBlock VerticalAlignment="Center">Download</TextBlock>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <DockPanel Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloading}}" VerticalAlignment="Center">
+                                    <Button DockPanel.Dock="Right" Command="{StaticResource CommandCancelDownloadVersion}" VerticalAlignment="Center">
+                                        <Button.Template>
+                                            <ControlTemplate>
+                                                <Image Source="{StaticResource imgCancel}" Width="13" Height="13"/>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Border BorderBrush="Black" BorderThickness="1,1,1,1" Height="12" Margin="1,0,6,0">
+                                        <ProgressBar Value="{Binding FileDownloadProgress, Mode=OneWay}" Minimum="0" Maximum="100" Background="White" Foreground="#EDDE3F"/>
+                                    </Border>
+                                </DockPanel>
+                                <Button Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}" Command="{StaticResource CommandStart}" VerticalAlignment="Center" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_StartColor}}" HorizontalContentAlignment="Left" Height="30" Margin="1,0,20,0">
+                                    <Button.IsEnabled>
+                                        <Binding Path="IsGlobalInteractionEnabled" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}"/>
+                                    </Button.IsEnabled>
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Image Source="{StaticResource imgStart}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
+                                            <TextBlock VerticalAlignment="Center">Start</TextBlock>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,10,5">
+                            <StackPanel.Visibility>
+                                <Binding Path="IsIconStateUpdated" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource HiddenVisible}" FallbackValue="Hidden"/>
+                            </StackPanel.Visibility>
+                            <TextBlock TextAlignment="Right" Width="{StaticResource Column1}" VerticalAlignment="Center">Icons:</TextBlock>
+                            <Grid Width="{StaticResource Column2}" VerticalAlignment="Center" Margin="5,0,10,0">
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_NotDownloaded}}">Not downloaded.</TextBlock>
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloading}}">Downloading, please wait...</TextBlock>
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_FailedToDownload}}">Failed to download.</TextBlock>
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_DownloadCanceled}}">Download canceled.</TextBlock>
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}">Downloaded.</TextBlock>
+                            </Grid>
+                            <Grid Width="{StaticResource Column3}" VerticalAlignment="Center">
+                                <Button Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloadable}}" Command="{StaticResource CommandDownloadIcons}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="1,0,20,0">
+                                    <Button.IsEnabled>
+                                        <Binding Path="IsGlobalInteractionEnabled" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}"/>
+                                    </Button.IsEnabled>
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Image Source="{StaticResource imgDownload}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
+                                            <TextBlock VerticalAlignment="Center">Download</TextBlock>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <DockPanel Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloading}}" VerticalAlignment="Center">
+                                    <Button DockPanel.Dock="Right" Command="{StaticResource CommandCancelDownloadIcons}" VerticalAlignment="Center">
+                                        <Button.Template>
+                                            <ControlTemplate>
+                                                <Image Source="{StaticResource imgCancel}" Width="13" Height="13"/>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Border BorderBrush="Black" BorderThickness="1,1,1,1" Height="12" Margin="1,0,6,0">
+                                        <ProgressBar Value="{Binding IconDownloadProgress, Mode=OneWay}" Minimum="0" Maximum="100" Background="White" Foreground="#EDDE3F"/>
+                                    </Border>
+                                </DockPanel>
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="GameVersionInfoShortTemplate">
+            <Border BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="1,1,1,1">
+                <DockPanel>
+                    <Grid DockPanel.Dock="Left" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}">
+                        <Grid.Visibility>
+                            <Binding Path="ShowDeleteButton" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
+                        </Grid.Visibility>
+                    </Grid>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                            <TextBlock TextAlignment="Right" VerticalAlignment="Center" Width="{StaticResource Column1}">Version:</TextBlock>
+                            <TextBlock Text="{Binding Version}" VerticalAlignment="Center" Foreground="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_VersionColor}}" Width="{StaticResource Column2}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,10,5">
+                            <TextBlock TextAlignment="Right" VerticalAlignment="Center" Width="{StaticResource Column1}">Files:</TextBlock>
+                            <Grid Width="{StaticResource Column2}" VerticalAlignment="Center" Margin="5,0,10,0">
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_NotDownloaded}}">Not downloaded.</TextBlock>
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloading}}">Downloading, please wait...</TextBlock>
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_FailedToDownload}}">Failed to download.</TextBlock>
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_DownloadCanceled}}">Download canceled.</TextBlock>
+                                <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}">Downloaded.</TextBlock>
+                            </Grid>
+                            <Grid Width="{StaticResource Column3}" VerticalAlignment="Center">
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,10,5">
+                            <StackPanel.Visibility>
+                                <Binding Path="IsIconStateUpdated" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource HiddenVisible}" FallbackValue="Hidden"/>
+                            </StackPanel.Visibility>
+                            <TextBlock TextAlignment="Right" Width="{StaticResource Column1}" VerticalAlignment="Center">Icons:</TextBlock>
+                            <Grid Width="{StaticResource Column2}" VerticalAlignment="Center" Margin="5,0,10,0">
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_NotDownloaded}}">Not downloaded.</TextBlock>
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloading}}">Downloading, please wait...</TextBlock>
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_FailedToDownload}}">Failed to download.</TextBlock>
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_DownloadCanceled}}">Download canceled.</TextBlock>
+                                <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}">Downloaded.</TextBlock>
+                            </Grid>
+                            <Grid Width="{StaticResource Column3}" VerticalAlignment="Center">
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource CommandClose}" Executed="OnClose"/>
+        <CommandBinding Command="{StaticResource CommandCheckVersion}" Executed="OnCheckVersion"/>
+        <CommandBinding Command="{StaticResource CommandDownloadVersion}" Executed="OnDownloadVersion"/>
+        <CommandBinding Command="{StaticResource CommandCancelDownloadVersion}" Executed="OnCancelDownloadVersion"/>
+        <CommandBinding Command="{StaticResource CommandDownloadIcons}" Executed="OnDownloadIcons"/>
+        <CommandBinding Command="{StaticResource CommandCancelDownloadIcons}" Executed="OnCancelDownloadIcons"/>
+        <CommandBinding Command="{StaticResource CommandStart}" Executed="OnStart"/>
+        <CommandBinding Command="{StaticResource CommandCancelStart}" Executed="OnCancelStart"/>
+        <CommandBinding Command="{StaticResource CommandDeleteVersion}" Executed="OnDeleteVersion"/>
+    </Window.CommandBindings>
+    <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2">
+        <Grid>
+            <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
+                <Grid>
+                    <StackPanel Visibility="{Binding IsParsing, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible},FallbackValue=Hidden}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Center">Parsing, please wait...</TextBlock>
+                        <Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Center" Height="12" Width="{StaticResource Column3}" Margin="10,0,0,0">
+                            <ProgressBar Value="{Binding ParseProgress, Mode=OneWay}" Minimum="0" Maximum="100" Background="White" Foreground="{Binding SelectedVersion.GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_ParsingColor}}"/>
+                        </Border>
+                        <Button Command="{StaticResource CommandCancelStart}" VerticalAlignment="Center" Margin="6,0,0,0">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Source="{StaticResource imgCancel}" Width="13" Height="13"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                    <DockPanel Visibility="{Binding IsParsing, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden},FallbackValue=Visible}">
+                        <DockPanel DockPanel.Dock="Bottom" Visibility="{Binding StatusMessage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}" HorizontalAlignment="Left" Width="{StaticResource AllColumnsAndMargin}" ToolTip="{Binding LastExceptionMessage}" Margin="0,10,0,0">
+                            <Image Source="{StaticResource imgIconInfo}" DockPanel.Dock="Left" Visibility="{Binding LastExceptionMessage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}" VerticalAlignment="Center" Width="16" Height="16" Margin="1,0,10,0"/>
+                            <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center"/>
+                        </DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <Grid DockPanel.Dock="Right" Width="{StaticResource Column4}"/>
+                            <Border Margin="0,2,10,10" BorderBrush="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Color}}" BorderThickness="1,1,1,1" Background="White">
+                                <StackPanel Orientation="Horizontal">
+                                    <Grid Width="{StaticResource Column0}">
+                                        <Grid.Visibility>
+                                            <Binding Path="ShowDeleteButton" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
+                                        </Grid.Visibility>
+                                    </Grid>
+                                    <Grid Width="1">
+                                        <Grid.Visibility>
+                                            <Binding Path="ShowDeleteButton" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource VisibleCollapsed}" FallbackValue="Collapsed"/>
+                                        </Grid.Visibility>
+                                    </Grid>
+                                    <Grid Width="{StaticResource Column1And2}" VerticalAlignment="Center" Margin="0,0,15,0">
+                                        <TextBlock Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Unchecked}}" HorizontalAlignment="Center">The latest version has not been checked.</TextBlock>
+                                        <TextBlock Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Checking}}" HorizontalAlignment="Center">Checking what the latest version of the game is.</TextBlock>
+                                        <TextBlock Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_CheckFailed}}" HorizontalAlignment="Center">Unable to check game version.</TextBlock>
+                                        <StackPanel Orientation="Horizontal" Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Known}}" HorizontalAlignment="Center">
+                                            <TextBlock>The latest version of the game is</TextBlock>
+                                            <TextBlock Text="{Binding LatestVersion}" Margin="5,0,0,0"/>
+                                            <TextBlock>.</TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Width="{StaticResource Column3}" VerticalAlignment="Center" Margin="0,5,9,5">
+                                        <Button Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Checkable}}" Command="{StaticResource CommandCheckVersion}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="0,0,21,0">
+                                            <Button.IsEnabled>
+                                                <Binding Path="IsGlobalInteractionEnabled"/>
+                                            </Button.IsEnabled>
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                    <Image Source="{StaticResource imgSearch}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
+                                                    <TextBlock VerticalAlignment="Center">Check Now</TextBlock>
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                        <ctrl:BusyIndicator Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Checking}}" HorizontalAlignment="Center" Width="12" Height="12" Margin="0,0,21,0"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </DockPanel>
+                        <DockPanel x:Name="stackVersions" Visibility="{Binding SelectedVersion, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource HiddenVisible}}" VerticalAlignment="Center">
+                            <ToggleButton x:Name="buttonVersions" DockPanel.Dock="Right" Visibility="{Binding VersionList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource HiddenHiddenVisible}}" VerticalAlignment="Bottom" Checked="OnToggleButtonChecked" Unchecked="OnToggleButtonUnchecked" Width="{StaticResource Column4}" BorderThickness="0" Background="#F4F4F4" Margin="2,0,0,0">
+                                <ToggleButton.IsEnabled>
+                                    <Binding Path="IsGlobalInteractionEnabled"/>
+                                </ToggleButton.IsEnabled>
+                                <Image Source="{StaticResource imgDropDown}" Width="16" Height="16" Margin="0,0,0,4"/>
+                            </ToggleButton>
+                            <ContentControl Content="{Binding SelectedVersion}" ContentTemplate="{StaticResource GameVersionInfoTemplate}"/>
+                        </DockPanel>
+                        <Popup IsOpen="{Binding ElementName=buttonVersions, Path=IsChecked, Mode=OneWay}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-21" PlacementTarget="{Binding ElementName=stackVersions}" AllowsTransparency="False" Closed="OnPopupClosed" MaxHeight="400">
+                            <ListBox BorderThickness="0" ItemsSource="{Binding VersionList}" ItemTemplate="{StaticResource GameVersionInfoShortTemplate}" SelectedIndex="{Binding CachedVersionIndex}" SelectionChanged="OnPopupSelectionChanged" MouseLeftButtonUp="OnPopupMouseLeftButtonUp">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="Margin" Value="0"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </Popup>
+                    </DockPanel>
+                </Grid>
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TabControl}">
+                            <Setter Property="BorderThickness" Value="0,2,0,0"/>
+                            <Setter Property="BorderBrush" Value="DarkGray"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabControl">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Row="1">
+                                                <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                                                    <Border Background="Transparent">
+                                                        <ContentPresenter ContentSource="SelectedContent"/>
+                                                    </Border>
+                                                </Border>
+                                            </Grid>
+                                            <TabPanel Grid.Row="0" IsItemsHost="true"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                <Setter Property="BorderBrush" Value="Black"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                <Setter Property="BorderBrush" Value="Black"/>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                    <Condition Property="IsMouseOver" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Foreground" Value="Black"/>
+                                                <Setter Property="BorderBrush" Value="DarkGray"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                        <Grid Margin="0,0,10,-2">
+                                            <Grid>
+                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                                            </Grid>
+                                            <Border BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" MinWidth="65"/>
+                                            </Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="{x:Type CheckBox}">
+                            <Setter Property="FontWeight" Value="Normal"/>
+                        </Style>
+                        <Style TargetType="{x:Type RadioButton}">
+                            <Setter Property="FontWeight" Value="Normal"/>
+                        </Style>
+                    </Grid.Resources>
+                    <TabControl SelectedIndex="{Binding LastSelectedSetting}" MinWidth="190" MinHeight="120">
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{StaticResource imgDownload}" Width="16" Height="16"/>
+                                    <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,0">Startup</TextBlock>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid VerticalAlignment="Top" Margin="6,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="setting0"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <CheckBox Grid.Row="0" IsChecked="{Binding CheckLastVersionOnStartup}" Margin="0,0,0,0">Check Lastest Version</CheckBox>
+                                <CheckBox Grid.Row="1" IsChecked="{Binding DownloadNewVersionsAutomatically}" Margin="0,10,0,0">Download latest version</CheckBox>
+                                <CheckBox Grid.Row="3" IsChecked="{Binding StartAutomatically}" Margin="0,10,0,0">Start when ready</CheckBox>
+                                <CheckBox Grid.Row="4" IsChecked="{Binding CheckNewParserOnStartup}" Margin="0,10,0,0">Check for the latest parser</CheckBox>
+                            </Grid>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{StaticResource imgSetting}" Width="16" Height="16"/>
+                                    <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,0">General</TextBlock>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid VerticalAlignment="Top" Margin="6,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="setting0"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <CheckBox Grid.Row="0" IsChecked="{Binding ShowDeleteButton}" Margin="0,0,0,0">Show the Delete button</CheckBox>
+                                <TextBlock Grid.Row="1" FontWeight="Normal" Margin="0,10,0,0">When some icons are missing:</TextBlock>
+                                <RadioButton Grid.Row="2" IsChecked="{Binding AskToIgnoreMissingIcons}" Margin="5,5,0,0">Ask me what to do</RadioButton>
+                                <RadioButton Grid.Row="3" IsChecked="{Binding DownloadMissingIcons}" Margin="5,5,0,0">Download them</RadioButton>
+                                <RadioButton Grid.Row="4" IsChecked="{Binding IgnoreMissingIcons}" Margin="5,5,0,0">Ignore and continue</RadioButton>
+                            </Grid>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{StaticResource imgDevice}" Width="16" Height="16"/>
+                                    <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,0">Storage</TextBlock>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid VerticalAlignment="Top" Margin="6,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="setting0"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <CheckBox Grid.Row="0" IsChecked="{Binding KeepRecentVersions}" Margin="0,0,0,0">Keep all downloaded versions</CheckBox>
+                                <CheckBox Grid.Row="1" IsChecked="{Binding ShareIconFiles}" Checked="OnIconSharingChanged" Unchecked="OnIconSharingChanged" Margin="0,10,0,0">Share icons between versions</CheckBox>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </StackPanel>
+            <Button Command="{StaticResource CommandClose}" Background="#F4F4F4" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1,0,0,1">
+                <Button.Content>
+                    <Image Source="{StaticResource imgClose}" Width="16" Height="16"/>
+                </Button.Content>
+            </Button>
+            <Grid Visibility="{Binding StatusMessage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}">
+                <DockPanel Visibility="{Binding IsNewParserAvailable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Bottom" Margin="10,0,10,10">
+                    <Image Source="{StaticResource imgIconInfo}" DockPanel.Dock="Left" VerticalAlignment="Center" Width="16" Height="16" Margin="1,0,10,0"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="A new version of the parser is available at"/>
+                        <TextBlock Margin="5,0,0,0">
+                        <Hyperlink RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                            <TextBlock Text="{Binding ReleasePageAddress}" TextWrapping="NoWrap"/>
+                        </Hyperlink>
+                    </TextBlock>
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

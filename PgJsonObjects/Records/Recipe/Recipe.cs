@@ -1072,37 +1072,44 @@ namespace PgJsonObjects
         {
             get
             {
-                string Result = "";
+                try
+                {
+                    string Result = "";
 
-                AddWithFieldSeparator(ref Result, Name);
-                AddWithFieldSeparator(ref Result, Description);
-                foreach (RecipeItem Ingredient in IngredientList)
-                    AddWithFieldSeparator(ref Result, Ingredient.TextContent);
-                foreach (RecipeItem ResultItem in ResultItemList)
-                    AddWithFieldSeparator(ref Result, ResultItem.TextContent);
-                if (ConnectedSkill != null)
-                    AddWithFieldSeparator(ref Result, ConnectedSkill.Name);
-                foreach (RecipeResultEffect Item in ResultEffectList)
-                    AddWithFieldSeparator(ref Result, Item.CombinedEffect);
-                if (ConnectedSortSkill != null)
-                    AddWithFieldSeparator(ref Result, ConnectedSortSkill.Name);
-                foreach (RecipeKeyword Keyword in KeywordList)
-                    AddWithFieldSeparator(ref Result, TextMaps.RecipeKeywordTextMap[Keyword]);
-                if (ActionLabel != RecipeAction.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.RecipeActionTextMap[ActionLabel]);
-                AddWithFieldSeparator(ref Result, UsageDelayMessage);
-                if (UsageAnimation != RecipeUsageAnimation.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.RecipeUsageAnimationTextMap[UsageAnimation]);
-                foreach (AbilityRequirement Requirement in OtherRequirementList)
-                    AddWithFieldSeparator(ref Result, Requirement.TextContent);
-                foreach (RecipeCost Item in CostList)
-                    AddWithFieldSeparator(ref Result, TextMaps.RecipeCurrencyTextMap[Item.Currency]);
-                if (ConnectedRewardSkill != null)
-                    AddWithFieldSeparator(ref Result, ConnectedRewardSkill.Name);
-                if (SharesResetTimerWith != null)
-                    AddWithFieldSeparator(ref Result, SharesResetTimerWith.Name);
+                    AddWithFieldSeparator(ref Result, Name);
+                    AddWithFieldSeparator(ref Result, Description);
+                    foreach (RecipeItem Ingredient in IngredientList)
+                        AddWithFieldSeparator(ref Result, Ingredient.TextContent);
+                    foreach (RecipeItem ResultItem in ResultItemList)
+                        AddWithFieldSeparator(ref Result, ResultItem.TextContent);
+                    if (ConnectedSkill != null)
+                        AddWithFieldSeparator(ref Result, ConnectedSkill.Name);
+                    foreach (RecipeResultEffect Item in ResultEffectList)
+                        AddWithFieldSeparator(ref Result, Item.CombinedEffect);
+                    if (ConnectedSortSkill != null)
+                        AddWithFieldSeparator(ref Result, ConnectedSortSkill.Name);
+                    foreach (RecipeKeyword Keyword in KeywordList)
+                        AddWithFieldSeparator(ref Result, TextMaps.RecipeKeywordTextMap[Keyword]);
+                    if (ActionLabel != RecipeAction.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.RecipeActionTextMap[ActionLabel]);
+                    AddWithFieldSeparator(ref Result, UsageDelayMessage);
+                    if (UsageAnimation != RecipeUsageAnimation.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.RecipeUsageAnimationTextMap[UsageAnimation]);
+                    foreach (AbilityRequirement Requirement in OtherRequirementList)
+                        AddWithFieldSeparator(ref Result, Requirement.TextContent);
+                    foreach (RecipeCost Item in CostList)
+                        AddWithFieldSeparator(ref Result, TextMaps.RecipeCurrencyTextMap[Item.Currency]);
+                    if (ConnectedRewardSkill != null)
+                        AddWithFieldSeparator(ref Result, ConnectedRewardSkill.Name);
+                    if (SharesResetTimerWith != null)
+                        AddWithFieldSeparator(ref Result, SharesResetTimerWith.Name);
 
-                return Result;
+                    return Result;
+                }
+                catch
+                {
+                    throw;
+                }
             }
         }
         #endregion

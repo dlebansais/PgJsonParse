@@ -197,12 +197,13 @@ namespace PgJsonObjects
             get
             {
                 string Result = "";
-
+                /*
                 AddWithFieldSeparator(ref Result, Label);
                 AddWithFieldSeparator(ref Result, Tooltip);
 
                 if (DisplayRule != DisplayRule.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.DisplayRuleTextMap[DisplayRule]);
+                */
 
                 return Result;
             }

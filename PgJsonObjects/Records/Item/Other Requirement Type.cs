@@ -23,5 +23,10 @@
         Or,
         EquippedItemKeyword,
         GardenPlantMax,
+        QuestCompleted,
+        MinFavorLevel,
+        MinSkillLevel,
+        GuildQuestCompleted,
+        RuntimeBehaviorRuleSet,
     }
 }

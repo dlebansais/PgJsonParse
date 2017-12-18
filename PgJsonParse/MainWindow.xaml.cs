@@ -49,43 +49,13 @@ namespace PgJsonParse
         #endregion
 
         #region Properties
-        public Dictionary<Type, IObjectDefinition> Definitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()
-        {
-            { typeof(Ability), new ObjectDefinition<Ability>("abilities") },
-            { typeof(AbilitySource), new ObjectDefinition<AbilitySource>("sources_abilities") },
-            { typeof(AdvancementTable), new ObjectDefinition<AdvancementTable>("advancementtables") },
-            { typeof(PgJsonObjects.Attribute), new ObjectDefinition<PgJsonObjects.Attribute>("attributes") },
-            { typeof(DirectedGoal), new ObjectDefinition<DirectedGoal>("directedgoals") },
-            { typeof(GameArea), new ObjectDefinition<GameArea>("areas") },
-            { typeof(GameNpc), new ObjectDefinition<GameNpc>("npcs") },
-            { typeof(StorageVault), new ObjectDefinition<StorageVault>("storagevaults") },
-            { typeof(Effect), new ObjectDefinition<Effect>("effects") },
-            { typeof(Item), new ObjectDefinition<Item>("items") },
-            { typeof(ItemUses), new ObjectDefinition<ItemUses>("itemuses") },
-            { typeof(Quest), new ObjectDefinition<Quest>("quests") },
-            { typeof(Recipe), new ObjectDefinition<Recipe>("recipes") },
-            { typeof(RecipeSource), new ObjectDefinition<RecipeSource>("sources_recipes") },
-            { typeof(Skill), new ObjectDefinition<Skill>("skills") },
-            //{ typeof(PgJsonObjects.String), new ObjectDefinition<PgJsonObjects.String>("strings") },
-            { typeof(Power), new ObjectDefinition<Power>("tsysclientinfo") },
-            { typeof(XpTable), new ObjectDefinition<XpTable>("xptables") },
-        };
-
-        public static string ApplicationFolder { get; private set; }
-        public static string VersionCacheFolder { get; private set; }
-        public static string CurrentVersionCacheFolder { get; private set; }
-        public static string IconFile { get; private set; }
-        public static string FavorIconFile { get; private set; }
+        public string ApplicationFolder { get; set; }
+        public string VersionCacheFolder { get; set; }
+        public string IconCacheFolder { get; set; }
+        public string CurrentVersionCacheFolder { get; set; }
+        public string IconFile { get; set; }
+        public string FavorIconFile { get; set; }
         public ImageSource FavorIcon { get; private set; }
-
-        public bool CheckLastVersionOnStartup { get; private set; }
-        private static readonly string CheckLastVersionOnStartupSettingName = "CheckLastVersionOnStartup";
-        public bool DownloadLastVersionOnStartup { get; private set; }
-        private static readonly string DownloadLastVersionOnStartupSettingName = "DownloadLastVersionOnStartup";
-        public bool OverwriteIconFile { get; private set; }
-        private static readonly string OverwriteIconFileSettingName = "OverwriteIconFile";
-        public bool KeepRecentVersions { get; private set; }
-        private static readonly string KeepRecentVersionsSettingName = "KeepRecentVersions";
         #endregion
 
         #region Startup Page
@@ -249,8 +219,14 @@ namespace PgJsonParse
             }
         }
 
-        void StartApplication()
+        public void StartApplication()
         {
+            ProgramState = ProgramState.Ready;
+            RefreshCombatSkillList();
+            RefreshWeightProfileList();
+            RefreshGearPlaner();
+
+/*
             StartOperation();
 
             if (LocateLastestVersion)
@@ -262,6 +238,7 @@ namespace PgJsonParse
                 LoadedVersion = Version;
                 CreateLoadThread();
             }
+*/
         }
         #endregion
 
@@ -492,8 +469,8 @@ namespace PgJsonParse
             ProgramState = ProgramState.Downloading;
 
             int Index = 0;
-            int Total = Definitions.Count + IconFileTable.Count;
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            int Total = ObjectList.Definitions.Count + IconFileTable.Count;
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 UpdateJsonFileInCache(Entry.Value, Index++, Total);
 
@@ -515,7 +492,7 @@ namespace PgJsonParse
                 }
             }
 
-            LoadedVersion = DownloadedVersion;
+            //LoadedVersion = DownloadedVersion;
 
             CreateLoadThread();
         }
@@ -636,7 +613,7 @@ namespace PgJsonParse
         {
         }
 
-        public int LoadedVersion
+        public GameVersionInfo LoadedVersion
         {
             get { return _LoadedVersion; }
             set
@@ -648,7 +625,7 @@ namespace PgJsonParse
                 }
             }
         }
-        public int _LoadedVersion;
+        public GameVersionInfo _LoadedVersion;
 
         public string WarningText
         {
@@ -680,9 +657,9 @@ namespace PgJsonParse
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
 
             int Index = 0;
-            int Total = Definitions.Count;
+            int Total = ObjectList.Definitions.Count;
 
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 LoadNextFile(Entry.Value, ErrorInfo, Index++, Total);
 
@@ -726,21 +703,21 @@ namespace PgJsonParse
 
             Dictionary<Type, IList> AllLists = new Dictionary<Type, IList>();
             Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables = new Dictionary<Type, Dictionary<string, IGenericJsonObject>>();
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition Definition = Entry.Value;
                 AllLists.Add(Entry.Key, Definition.ObjectList);
                 AllTables.Add(Entry.Key, Definition.ObjectTable);
             }
 
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition Definition = Entry.Value;
                 foreach (IGenericJsonObject Item in Definition.ObjectList)
                     Item.Connect(ErrorInfo, null, AllTables);
             }
 
-            IObjectDefinition RecipeDefinition = Definitions[typeof(Recipe)];
+            IObjectDefinition RecipeDefinition = ObjectList.Definitions[typeof(Recipe)];
             bool Continue;
             do
             {
@@ -750,14 +727,14 @@ namespace PgJsonParse
             }
             while (Continue);
 
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition Definition = Entry.Value;
                 foreach (IGenericJsonObject Item in Definition.ObjectList)
                     Item.SetIndirectProperties(AllTables, ErrorInfo);
             }
 
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition Definition = Entry.Value;
                 foreach (IGenericJsonObject Item in Definition.ObjectList)
@@ -771,7 +748,7 @@ namespace PgJsonParse
         {
             ProgramState = ProgramState.CreatingIndex;
 
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 CreateNextIndex(Entry.Value, ErrorInfo);
 
@@ -807,7 +784,7 @@ namespace PgJsonParse
             string MushroomNameFile = Path.Combine(ApplicationFolder, "Mushrooms.txt");
 
             List<string> MushroomNameList = new List<string>();
-            IObjectDefinition ItemDefinition = Definitions[typeof(Item)];
+            IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
             Dictionary<string, IGenericJsonObject> ItemTable = ItemDefinition.ObjectTable;
 
             foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
@@ -887,7 +864,7 @@ namespace PgJsonParse
                 LoadedCount++;
 
                 string FilePath = Path.Combine(CurrentVersionCacheFolder, "icon_" + IconId + ".png");
-                if (!UpdateBinaryCacheFile(LoadedVersion, "icons", "icon_" + IconId, "png"))
+                if (!UpdateBinaryCacheFile(LoadedVersion.Version, "icons", "icon_" + IconId, "png"))
                     break;
 
                 if (IconId == 5624)
@@ -1030,7 +1007,7 @@ namespace PgJsonParse
 
             List<PowerSkill> NewCombatSkillList = new List<PowerSkill>();
 
-            IObjectDefinition PowerDefinition = Definitions[typeof(Power)];
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
             IList PowerList = PowerDefinition.ObjectList;
 
             foreach (Power PowerItem in PowerList)
@@ -1127,9 +1104,9 @@ namespace PgJsonParse
                 SelectAsSecond = PowerSkill.Internal_None;
             }
 
-            IObjectDefinition PowerDefinition = Definitions[typeof(Power)];
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
             IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
-            IObjectDefinition AttributeDefinition = Definitions[typeof(PgJsonObjects.Attribute)];
+            IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
             Dictionary<string, IGenericJsonObject> AttributeTable = AttributeDefinition.ObjectTable;
 
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
@@ -1140,7 +1117,7 @@ namespace PgJsonParse
         {
             WeightProfileList.Clear();
 
-            IObjectDefinition AttributeDefinition = Definitions[typeof(PgJsonObjects.Attribute)];
+            IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
             IList<PgJsonObjects.Attribute> AttributeList = AttributeDefinition.ObjectList as IList<PgJsonObjects.Attribute>;
 
             if (!File.Exists(DefaultProfileName))
@@ -1252,9 +1229,9 @@ namespace PgJsonParse
             WeightProfile SelectedProfile = (WeightProfileIndex >= 0 && WeightProfileIndex < WeightProfileList.Count) ? WeightProfileList[WeightProfileIndex] : null;
             ItemAttributeLink.SetSelectedProfile(SelectedProfile);
 
-            IObjectDefinition AttributeDefinition = Definitions[typeof(PgJsonObjects.Attribute)];
+            IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
             IList<PgJsonObjects.Attribute> AttributeList = AttributeDefinition.ObjectList as IList<PgJsonObjects.Attribute>;
-            IObjectDefinition ItemDefinition = Definitions[typeof(Item)];
+            IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
             IList<Item> ItemList = ItemDefinition.ObjectList as IList<Item>;
 
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
@@ -1402,9 +1379,9 @@ namespace PgJsonParse
 
                 else
                 {
-                    IObjectDefinition PowerDefinition = Definitions[typeof(Power)];
+                    IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
                     Dictionary<string, IGenericJsonObject> PowerTable = PowerDefinition.ObjectTable;
-                    IObjectDefinition ItemDefinition = Definitions[typeof(Item)];
+                    IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
                     Dictionary<string, IGenericJsonObject> ItemTable = ItemDefinition.ObjectTable;
 
                     ItemSlot ParsedSlot;
@@ -1823,7 +1800,7 @@ namespace PgJsonParse
 
         private void PerformSearch(List<string> TermList, SearchModes SearchMode)
         {
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
                 PerformSearch(TermList, Entry.Value, SearchMode);
         }
 
@@ -2059,7 +2036,7 @@ namespace PgJsonParse
 
             CrunchSelectionList.Clear();
 
-            IObjectDefinition SkillDefinition = Definitions[typeof(Skill)];
+            IObjectDefinition SkillDefinition = ObjectList.Definitions[typeof(Skill)];
             IList<Skill> SkillList = SkillDefinition.ObjectList as IList<Skill>;
 
             List<Skill> CombatSkillList = new List<Skill>();
@@ -2106,7 +2083,7 @@ namespace PgJsonParse
             if (SkillItem.XpTable.InternalName != "TypicalCombatSkill" && SkillItem.XpTable.InternalName != "TypicalCombatSkillExt")
                 return false;
 
-            IObjectDefinition AbilityDefinition = Definitions[typeof(Ability)];
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
             IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
             int AbilityCount = 0;
@@ -2220,7 +2197,7 @@ namespace PgJsonParse
                 MaxLevel = int.MaxValue;
 
             Dictionary <Ability, List<Ability>> AbilitiesSortedByLineName = new Dictionary<Ability, List<Ability>>();
-            IObjectDefinition AbilityDefinition = Definitions[typeof(Ability)];
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
             IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
             foreach (Ability AbilityItem in AbilityList)
@@ -2288,7 +2265,7 @@ namespace PgJsonParse
 
         private Ability AbilityPrevious(Ability AbilityItem)
         {
-            IObjectDefinition AbilityDefinition = Definitions[typeof(Ability)];
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
             IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
             if (AbilityItem.UpgradeOf != null)
@@ -2319,7 +2296,7 @@ namespace PgJsonParse
         private Dictionary<ItemSlot, List<Power>> SelectGear(Skill PrimarySkill, Skill SecondarySkill)
         {
             Dictionary<ItemSlot, List<Power>> Gear = new Dictionary<ItemSlot, List<Power>>();
-            IObjectDefinition PowerDefinition = Definitions[typeof(Power)];
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
             IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
 
             List<ItemSlot> SlotList = new List<ItemSlot>()

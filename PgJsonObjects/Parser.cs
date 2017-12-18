@@ -1,5 +1,4 @@
-﻿using PgJsonObjects;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Web.Script.Serialization;
 using System.Windows;
 
-namespace PgJsonParse
+namespace PgJsonObjects
 {
     public interface IParser
     {
@@ -210,7 +209,8 @@ namespace PgJsonParse
                             try
                             {
                                 string Content = Entry.Value.TextContent;
-                                sw.WriteLine(Content + JsonGenerator.ObjectSeparator + Entry.Key);
+                                if (Content.Length > 0)
+                                    sw.WriteLine(Content + JsonGenerator.ObjectSeparator + Entry.Key);
                             }
                             catch
                             {

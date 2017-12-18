@@ -81,6 +81,8 @@
     <Compile Include="Converters\Constant Converter.cs" />
     <Compile Include="Converters\Double Converter.cs" />
     <Compile Include="Converters\Enum To Text Converter.cs" />
+    <Compile Include="Converters\EnumToIntConverter.cs" />
+    <Compile Include="Converters\EnumToObjectConverter.cs" />
     <Compile Include="Converters\File Name To Bitmap Image Converter.cs" />
     <Compile Include="Converters\Float List To String Converter.cs" />
     <Compile Include="Converters\Friendly Name Converter.cs" />
@@ -93,12 +95,18 @@
     <Compile Include="Converters\Nullable Int To Time Converter.cs" />
     <Compile Include="Converters\Null To Object Converter.cs" />
     <Compile Include="Converters\Nullable Int Converter.cs" />
+    <Compile Include="Converters\NullableBooleanToObjectConverter.cs" />
     <Compile Include="Converters\Or Converter.cs" />
     <Compile Include="Converters\Replace Macro Converter.cs" />
     <Compile Include="Converters\Rgb Color To Brush Converter.cs" />
     <Compile Include="Crunch\Crunch Selection.cs" />
     <Compile Include="Crunch\Crunch Target.cs" />
-    <Compile Include="ObjectDefinition.cs" />
+    <Compile Include="DownloadState.cs" />
+    <Compile Include="GameVersionInfo.cs" />
+    <Compile Include="MissingIconsAction.cs" />
+    <Compile Include="PrologueWindow.xaml.cs">
+      <DependentUpon>PrologueWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Search Modes.cs" />
     <Compile Include="Selectors\Type To Template Name Selector.cs" />
     <Compile Include="Selectors\Item Effect Gear Selector.cs" />
@@ -110,6 +118,9 @@
     <Compile Include="Selectors\Search Result Title Selector.cs" />
     <Compile Include="Selectors\Skill Reward Selector.cs" />
     <Compile Include="Sequence.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="VersionCheckState.cs" />
+    <Compile Include="Controls\BusyIndicator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -122,9 +133,16 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PrologueWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BusyIndicator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -163,6 +181,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Locked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cancel.png" />
+    <Resource Include="Resources\close.png" />
+    <Resource Include="Resources\device.png" />
+    <Resource Include="Resources\download.png" />
+    <Resource Include="Resources\dropdown.png" />
+    <Resource Include="Resources\icon_info.png" />
+    <Resource Include="Resources\recycle.png" />
+    <Resource Include="Resources\search.png" />
+    <Resource Include="Resources\setting.png" />
+    <Resource Include="Resources\start.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">

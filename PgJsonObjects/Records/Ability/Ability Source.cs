@@ -339,7 +339,7 @@ namespace PgJsonObjects
             get
             {
                 string Result = "";
-
+                /*
                 AddWithFieldSeparator(ref Result, TextMaps.SourceTypesTextMap[Type]);
                 if (ConnectedAbility != null)
                     AddWithFieldSeparator(ref Result, ConnectedAbility.Name);
@@ -353,6 +353,7 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, ConnectedRecipeEffect.Name);
                 if (ConnectedQuest != null)
                     AddWithFieldSeparator(ref Result, ConnectedQuest.Name);
+                */
 
                 return Result;
             }

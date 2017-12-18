@@ -1,9 +1,8 @@
-﻿using PgJsonObjects;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace PgJsonParse
+namespace PgJsonObjects
 {
     public interface IObjectDefinition
     {

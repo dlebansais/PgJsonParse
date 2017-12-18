@@ -96,5 +96,6 @@
         Rarity_Exceptional,
         MinRarity_Epic,
         Crossbow,
+        AlcoholBarrel,
     }
 }

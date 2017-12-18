@@ -269,6 +269,7 @@
         DecomposeFeetItemIntoAugmentResources,
         DecomposeRingItemIntoAugmentResources,
         DecomposeNecklaceItemIntoAugmentResources,
+        DeployBeerBarrel,
 
         //DecomposeItemByTSysLevels,
         ExtractTSysPower,

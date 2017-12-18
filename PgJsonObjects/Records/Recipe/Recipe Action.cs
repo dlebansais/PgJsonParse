@@ -34,5 +34,6 @@
         PrepareCask,
         SortGrass,
         Grill,
+        TapKeg,
     }
 }

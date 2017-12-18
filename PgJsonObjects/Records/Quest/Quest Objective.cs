@@ -37,9 +37,9 @@ namespace PgJsonObjects
         private RecipeKeyword RecipeTarget;
         private AbilityKeyword AbilityTarget;
         private string AbilityKeyword;
-        private List<string> InteractionFlagList = new List<string>();
+        public List<string> RawInteractionFlagList = new List<string>();
         private string RawItemName;
-        private string InteractionFlag;
+        public string RawInteractionFlag;
         private MapAreaName DeliverNpcArea;
         private string DeliverNpcId;
         private string DeliverNpcName;
@@ -75,7 +75,7 @@ namespace PgJsonObjects
                     return new QuestObjectiveSpecial(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount, RawMaxAmount, StringParam);
 
                 case QuestObjectiveType.MultipleInteractionFlags:
-                    return new QuestObjectiveMultipleInteractionFlags(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, InteractionFlagList);
+                    return new QuestObjectiveMultipleInteractionFlags(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawInteractionFlagList);
 
                 case QuestObjectiveType.Deliver:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
@@ -103,7 +103,7 @@ namespace PgJsonObjects
                         return this;
 
                 case QuestObjectiveType.InteractionFlag:
-                    return new QuestObjectiveInteractionFlag(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, InteractionFlag);
+                    return new QuestObjectiveInteractionFlag(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawInteractionFlag);
 
                 case QuestObjectiveType.GiveGift:
                     return new QuestObjectiveGiveGift(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinFavorReceived, RawMaxFavorReceived);
@@ -313,7 +313,7 @@ namespace PgJsonObjects
                 {
                     string AsString;
                     if ((AsString = RawInteractionFlag as string) != null)
-                        InteractionFlagList.Add(AsString);
+                        RawInteractionFlagList.Add(AsString);
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlags");
@@ -373,7 +373,7 @@ namespace PgJsonObjects
         private void ParseInteractionFlag(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
         {
             if (Type == QuestObjectiveType.InteractionFlag)
-                InteractionFlag = RawInteractionFlag;
+                this.RawInteractionFlag = RawInteractionFlag;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlag (Type)");
         }

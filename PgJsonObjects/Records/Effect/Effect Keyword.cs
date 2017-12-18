@@ -207,5 +207,6 @@
         Healing,
         HardcoreBuff,
         Event_HalloweenEvent,
+        Event_Christmas,
     }
 }
