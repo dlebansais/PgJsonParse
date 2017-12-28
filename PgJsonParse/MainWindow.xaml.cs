@@ -348,11 +348,11 @@ namespace PgJsonParse
         #region Cache
         private static readonly Dictionary<ItemSlot, string> IconFileTable = new Dictionary<ItemSlot, string>()
         {
-            { ItemSlot.Head, "icon_16110" },
+            { ItemSlot.Head, "icon_16010" },
             { ItemSlot.Chest, "icon_12110" },
             { ItemSlot.Legs, "icon_11110" },
             { ItemSlot.Hands, "icon_13110" },
-            { ItemSlot.Feet, "icon_10110" },
+            { ItemSlot.Feet, "icon_10017" },
             { ItemSlot.Ring, "icon_17202" },
             { ItemSlot.Necklace, "icon_17101" },
             { ItemSlot.MainHand, "icon_15014" },
