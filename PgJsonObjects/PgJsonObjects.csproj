@@ -109,6 +109,11 @@
     <Compile Include="Records\Item\Server Info Effect\Skill And Level Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Value Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info.cs" />
+    <Compile Include="Records\Lore Book\Lore Book Category.cs" />
+    <Compile Include="Records\Lore Book\Lore Book Info.cs" />
+    <Compile Include="Records\Lore Book\Lore Book Keyword.cs" />
+    <Compile Include="Records\Lore Book\Lore Book Visibility.cs" />
+    <Compile Include="Records\Lore Book\Lore Book.cs" />
     <Compile Include="Records\Npc\GameNpc.cs" />
     <Compile Include="Records\Npc\Gift.cs" />
     <Compile Include="Records\Npc\NpcPreference.cs" />

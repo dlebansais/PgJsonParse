@@ -4260,5 +4260,36 @@ namespace PgJsonObjects
             { SpecialNpc.NPC_DyeMonster, "Dye Monster" },
             { SpecialNpc.NPC_Bahdba, "Bahdba" },
         };
+
+        public static readonly Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap = new Dictionary<LoreBookKeyword, string>()
+        {
+            { LoreBookKeyword.Internal_None, "None" },
+            { LoreBookKeyword.AreaSerbule, "Serbule" },
+            { LoreBookKeyword.AreaEltibule, "Eltibule" },
+            { LoreBookKeyword.AreaTomb1, "Khyrulek's Crypt" },
+            { LoreBookKeyword.AreaNewbieIsland, "Anagoge Island" },
+            { LoreBookKeyword.AreaSerbule2, "Serbule Hills" },
+            { LoreBookKeyword.AreaCave1, "Hogan's Keep" },
+            { LoreBookKeyword.AreaGazlukCaves, "Gazluk Dungeons" },
+            { LoreBookKeyword.AreaCave2, "Wolf Cave" },
+            { LoreBookKeyword.Loot, "Loot" },
+        };
+
+        public static readonly Dictionary<LoreBookVisibility, string> LoreBookVisibilityTextMap = new Dictionary<LoreBookVisibility, string>()
+        {
+            { LoreBookVisibility.Internal_None, "None" },
+            { LoreBookVisibility.HiddenUntilFound, "Hidden Until Found" },
+            { LoreBookVisibility.GhostedUntilFound, "Ghosted Until Found" },
+        };
+
+        public static readonly Dictionary<LoreBookCategory, string> LoreBookCategoryTextMap = new Dictionary<LoreBookCategory, string>()
+        {
+            { LoreBookCategory.Internal_None, "None" },
+            { LoreBookCategory.Stories, "Stories" },
+            { LoreBookCategory.Gods, "Gods" },
+            { LoreBookCategory.History, "History" },
+            { LoreBookCategory.Plot, "Plot" },
+            { LoreBookCategory.Misc, "Misc" },
+        };
     }
 }

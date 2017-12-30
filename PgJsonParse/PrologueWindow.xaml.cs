@@ -268,10 +268,32 @@ namespace PgJsonParse
                 {
                     _VersionCheckState = value;
                     NotifyThisPropertyChanged();
+                    NotifyPropertyChanged(nameof(IsLatestVersionSelectable));
                 }
             }
         }
         private VersionCheckState _VersionCheckState;
+
+        public bool IsLatestVersionSelectable
+        {
+            get
+            {
+                if (VersionCheckState != VersionCheckState.Known)
+                    return false;
+
+                if (LatestVersion == null)
+                    return false;
+
+                GameVersionInfo VersionInfo = SelectedVersion;
+                if (VersionInfo == null)
+                    return false;
+
+                if (VersionInfo.Version.ToString() == LatestVersion)
+                    return false;
+
+                return true;
+            }
+        }
 
         public string LatestVersion
         {
@@ -282,6 +304,7 @@ namespace PgJsonParse
                 {
                     _LatestVersion = value;
                     NotifyThisPropertyChanged();
+                    NotifyPropertyChanged(nameof(IsLatestVersionSelectable));
                 }
             }
         }
@@ -398,10 +421,24 @@ namespace PgJsonParse
 
             IsGlobalInteractionEnabled = true;
         }
+
+        private void OnSelectVersion()
+        {
+            IsGlobalInteractionEnabled = false;
+
+            for (int i = 0; i < VersionList.Count; i++)
+            {
+                GameVersionInfo VersionInfo = VersionList[i];
+                if (VersionInfo.Version.ToString() == LatestVersion)
+                    CachedVersionIndex = i;
+            }
+
+            IsGlobalInteractionEnabled = true;
+        }
         #endregion
 
         #region Parser Check
-        public const double PARSER_VERSION = 292.0;
+        public const double PARSER_VERSION = 293.0;
 
         private void InitParserCheck()
         {
@@ -493,10 +530,6 @@ namespace PgJsonParse
         {
             _CachedVersionIndex = -1;
 
-            JsonFileList = new List<string>();
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-                JsonFileList.Add(Entry.Value.JsonFileName);
-
             UpdateCachedVersion();
         }
 
@@ -513,6 +546,7 @@ namespace PgJsonParse
                     _CachedVersionIndex = value;
                     NotifyThisPropertyChanged();
                     NotifyPropertyChanged(nameof(SelectedVersion));
+                    NotifyPropertyChanged(nameof(IsLatestVersionSelectable));
                 }
             }
         }
@@ -536,7 +570,13 @@ namespace PgJsonParse
                         if (int.TryParse(FolderName, out Version) && Version > 0)
                         {
                             string[] Files = Directory.GetFiles(SubFolder, "*.json");
-                            DownloadState FileDownloadState = Files.Length >= JsonFileList.Count ? DownloadState.Downloaded : DownloadState.NotDownloaded;
+
+                            int DowloadableCount = 0;
+                            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+                                if (Entry.Value.MinVersion >= Version)
+                                    DowloadableCount++;
+
+                            DownloadState FileDownloadState = Files.Length >= DowloadableCount ? DownloadState.Downloaded : DownloadState.NotDownloaded;
                             DownloadState IconDownloadState = IsLastIconLoadedForVersion(Version) ? DownloadState.Downloaded : DownloadState.NotDownloaded;
 
                             GameVersionInfo NewVersion = new GameVersionInfo(Version, FileDownloadState, IconDownloadState);
@@ -607,6 +647,11 @@ namespace PgJsonParse
         {
             string VersionFolder = InitFolder(Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString()));
 
+            List<string> JsonFileList = new List<string>();
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+                if (Entry.Value.MinVersion <= VersionInfo.Version)
+                    JsonFileList.Add(Entry.Value.JsonFileName);
+
             string LastExceptionMessage;
             bool Success = VersionInfo.DownloadFiles(JsonFileList, VersionFolder, out LastExceptionMessage);
             this.LastExceptionMessage = LastExceptionMessage;
@@ -646,8 +691,6 @@ namespace PgJsonParse
                 LastExceptionMessage = e.Message;
             }
         }
-
-        private List<string> JsonFileList;
         #endregion
 
         #region Parsing
@@ -666,6 +709,7 @@ namespace PgJsonParse
                     _IsParsing = value;
                     NotifyThisPropertyChanged();
                     NotifyPropertyChanged(nameof(SelectedVersion));
+                    NotifyPropertyChanged(nameof(IsLatestVersionSelectable));
                 }
             }
         }
@@ -681,6 +725,7 @@ namespace PgJsonParse
                     _IsParsingCancelable = value;
                     NotifyThisPropertyChanged();
                     NotifyPropertyChanged(nameof(SelectedVersion));
+                    NotifyPropertyChanged(nameof(IsLatestVersionSelectable));
                 }
             }
         }
@@ -842,11 +887,14 @@ namespace PgJsonParse
             int ProgressIndex = 0;
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
-                if (!LoadNextFile(Entry.Value, VersionFolder, ErrorInfo))
-                    return false;
+                if (Entry.Value.MinVersion <= VersionInfo.Version)
+                {
+                    if (!LoadNextFile(Entry.Value, VersionFolder, ErrorInfo))
+                        return false;
 
-                if (ParseCancellationTokenSource.IsCancellationRequested)
-                    return false;
+                    if (ParseCancellationTokenSource.IsCancellationRequested)
+                        return false;
+                }
 
                 ParseProgress = (ProgressIndex * 100.0) / ObjectList.Definitions.Count;
                 ProgressIndex++;
@@ -1154,6 +1202,12 @@ namespace PgJsonParse
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckVersionHandler(OnCheckVersion));
+        }
+
+        private void OnSelectVersion(object sender, ExecutedRoutedEventArgs e)
+        {
+            App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
+            OnSelectVersion();
         }
 
         private GameVersionInfo VersionInfoFromControl(ExecutedRoutedEventArgs e)

@@ -67,6 +67,10 @@ namespace PgJsonObjects
         public bool? RawIsSkillReqsDefaults { get; private set; }
         public int BestowTitle { get { return RawBestowTitle.HasValue ? RawBestowTitle.Value : 0; } }
         public int? RawBestowTitle { get; private set; }
+        public int BestowLoreBook { get { return RawBestowLoreBook.HasValue ? RawBestowLoreBook.Value : 0; } }
+        public int? RawBestowLoreBook { get; private set; }
+        public LoreBook ConnectedLoreBook { get; private set; }
+        private bool IsLoreBookParsed;
         #endregion
 
         #region Indirect Properties
@@ -110,6 +114,7 @@ namespace PgJsonObjects
             { "DynamicCraftingSummary", ParseFieldDynamicCraftingSummary},
             { "IsSkillReqsDefaults", ParseFieldIsSkillReqsDefaults },
             { "BestowTitle", ParseFieldBestowTitle },
+            { "BestowLoreBook", ParseFieldBestowLoreBook },
         };
 
         private static void ParseFieldBestowRecipes(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -750,6 +755,19 @@ namespace PgJsonObjects
             this.RawBestowTitle = RawBestowTitle;
         }
 
+        private static void ParseFieldBestowLoreBook(Item This, object BestowLoreBook, ParseErrorInfo ErrorInfo)
+        {
+            if (BestowLoreBook is int)
+                This.ParseBestowLoreBook((int)BestowLoreBook, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Item BestowLoreBook");
+        }
+
+        private void ParseBestowLoreBook(int RawBestowLoreBook, ParseErrorInfo ErrorInfo)
+        {
+            this.RawBestowLoreBook = RawBestowLoreBook;
+        }
+
         private List<string> RawBestowRecipesList { get; } = new List<string>();
         private bool RawBestowRecipesListIsEmpty;
         #endregion
@@ -932,6 +950,7 @@ namespace PgJsonObjects
             Dictionary<string, IGenericJsonObject> AbilityTable = AllTables[typeof(Ability)];
             Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
             Dictionary<string, IGenericJsonObject> QuestTable = AllTables[typeof(Quest)];
+            Dictionary<string, IGenericJsonObject> LoreBookTable = AllTables[typeof(LoreBook)];
 
             IsConnected |= Recipe.ConnectTableByInternalName(ErrorInfo, RecipeTable, RawBestowRecipesList, BestowRecipeTable);
 
@@ -967,6 +986,9 @@ namespace PgJsonObjects
 
             foreach (ItemBehavior Behavior in BehaviorList)
                 IsConnected |= Behavior.Connect(ErrorInfo, this, AllTables);
+
+            if (RawBestowLoreBook.HasValue)
+                ConnectedLoreBook = LoreBook.ConnectSingleProperty(ErrorInfo, LoreBookTable, BestowLoreBook, ConnectedLoreBook, ref IsLoreBookParsed, ref IsConnected, this);
 
             return IsConnected;
         }

@@ -162,6 +162,7 @@
         </CompositeCollection>
         <RoutedCommand x:Key="CommandClose"/>
         <RoutedCommand x:Key="CommandCheckVersion"/>
+        <RoutedCommand x:Key="CommandSelectVersion"/>
         <RoutedCommand x:Key="CommandDownloadVersion"/>
         <RoutedCommand x:Key="CommandCancelDownloadVersion"/>
         <RoutedCommand x:Key="CommandDownloadIcons"/>
@@ -336,6 +337,7 @@
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource CommandClose}" Executed="OnClose"/>
         <CommandBinding Command="{StaticResource CommandCheckVersion}" Executed="OnCheckVersion"/>
+        <CommandBinding Command="{StaticResource CommandSelectVersion}" Executed="OnSelectVersion"/>
         <CommandBinding Command="{StaticResource CommandDownloadVersion}" Executed="OnDownloadVersion"/>
         <CommandBinding Command="{StaticResource CommandCancelDownloadVersion}" Executed="OnCancelDownloadVersion"/>
         <CommandBinding Command="{StaticResource CommandDownloadIcons}" Executed="OnDownloadIcons"/>
@@ -403,6 +405,17 @@
                                             </Button.Content>
                                         </Button>
                                         <ctrl:BusyIndicator Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Checking}}" HorizontalAlignment="Center" Width="12" Height="12" Margin="0,0,21,0"/>
+                                        <Button Visibility="{Binding IsLatestVersionSelectable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Command="{StaticResource CommandSelectVersion}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="0,0,21,0">
+                                            <Button.IsEnabled>
+                                                <Binding Path="IsGlobalInteractionEnabled"/>
+                                            </Button.IsEnabled>
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                    <Image Source="{StaticResource imgDropDown}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
+                                                    <TextBlock VerticalAlignment="Center">Select</TextBlock>
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
                                     </Grid>
                                 </StackPanel>
                             </Border>
