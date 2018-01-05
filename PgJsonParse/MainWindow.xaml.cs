@@ -1655,7 +1655,8 @@ namespace PgJsonParse
         public bool IncludeRecipe { get; set; }
         public bool IncludeSkill { get; set; }
         public bool IncludePower { get; set; }
-        
+        public bool IncludeLoreBook { get; set; }
+
         public ObservableCollection<object> SearchResult { get; private set; }
 
         public object SearchSelectedItem
@@ -1738,6 +1739,7 @@ namespace PgJsonParse
             IncludeRecipe = true;
             IncludeSkill = true;
             IncludePower = true;
+            IncludeLoreBook = true;
             SearchResult = new ObservableCollection<object>();
             SearchHistory = new List<object>();
             _CurrentSearchItem = null;
@@ -1801,7 +1803,22 @@ namespace PgJsonParse
         private void PerformSearch(List<string> TermList, SearchModes SearchMode)
         {
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-                PerformSearch(TermList, Entry.Value, SearchMode);
+            {
+                Type EntryType = Entry.Key;
+
+                if ((EntryType == typeof(Ability) && IncludeAbility) ||
+                    (EntryType == typeof(DirectedGoal) && IncludeDirectedGoal) ||
+                    (EntryType == typeof(GameNpc) && IncludeGameNpc) ||
+                    (EntryType == typeof(StorageVault) && IncludeStorageVault) ||
+                    (EntryType == typeof(Effect) && IncludeEffect) ||
+                    (EntryType == typeof(Item) && IncludeItem) ||
+                    (EntryType == typeof(Quest) && IncludeQuest) ||
+                    (EntryType == typeof(Recipe) && IncludeRecipe) ||
+                    (EntryType == typeof(Skill) && IncludeSkill) ||
+                    (EntryType == typeof(Power) && IncludePower) ||
+                    (EntryType == typeof(LoreBook) && IncludeLoreBook))
+                    PerformSearch(TermList, Entry.Value, SearchMode);
+            }
         }
 
         private void PerformSearch(List<string> TermList, IObjectDefinition Definition, SearchModes SearchMode)

@@ -3927,6 +3927,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0">Search:</TextBlock>
                             <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding SearchTerms, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" KeyDown="OnSearchTermsEntered" Margin="5,0,0,0"/>
@@ -3942,6 +3943,7 @@
                             <CheckBox Grid.Column="1" Grid.Row="10" IsChecked="{Binding IncludeRecipe}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Recipes</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="11" IsChecked="{Binding IncludeSkill}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Skills</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="12" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects (mods)</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="13" IsChecked="{Binding IncludeLoreBook}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Lore Books</CheckBox>
                         </Grid>
                         <Separator DockPanel.Dock="Top" Margin="5,10,5,10"/>
                         <Expander DockPanel.Dock="Top" Header="Search instructions">
