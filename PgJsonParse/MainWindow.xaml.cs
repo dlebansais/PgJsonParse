@@ -1024,8 +1024,8 @@ namespace PgJsonParse
                     {
                         case ItemSlot.Internal_None:
                         case ItemSlot.None:
-                        case ItemSlot.Special1:
-                        case ItemSlot.Special2:
+                        //case ItemSlot.Special1:
+                        //case ItemSlot.Special2:
                             break;
 
                         default:

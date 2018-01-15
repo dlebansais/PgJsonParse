@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
+    public static class StringToEnumConversion
+    {
+        public static Dictionary<Type, bool[]> KnownParsedEnumtable { get; private set; } = new Dictionary<Type, bool[]>();
+    }
+
     public static class StringToEnumConversion<T>
     {
         public static bool TryParse(string StringValue, out T EnumValue, ParseErrorInfo ErrorInfo)
@@ -31,8 +36,24 @@ namespace PgJsonObjects
             if (StringValue == null)
                 return false;
 
+            bool[] ParsedEnums;
+            if (!StringToEnumConversion.KnownParsedEnumtable.ContainsKey(typeof(T)))
+            {
+                ParsedEnums = new bool[EnumNames.Length];
+                StringToEnumConversion.KnownParsedEnumtable.Add(typeof(T), ParsedEnums);
+            }
+            else
+                ParsedEnums = StringToEnumConversion.KnownParsedEnumtable[typeof(T)];
+
             if (StringValue.Length == 0 && !EmptyValue.Equals(DefaultValue))
             {
+                for (int i = 0; i < EnumValues.Length; i++)
+                    if ((int)EnumValues.GetValue(i) == (int)(object)EmptyValue)
+                    {
+                        ParsedEnums[i] = true;
+                        break;
+                    }
+
                 EnumValue = EmptyValue;
                 return true;
             }
@@ -45,6 +66,7 @@ namespace PgJsonObjects
                 if (TrimmedStringValue == EnumName)
                 {
                     EnumValue = (T)EnumValues.GetValue(i);
+                    ParsedEnums[i] = true;
                     Found = true;
                     break;
                 }
@@ -58,6 +80,14 @@ namespace PgJsonObjects
                     {
                         EnumValue = Entry.Key;
                         Found = true;
+
+                        for (int i = 0; i < EnumValues.Length; i++)
+                            if ((int)EnumValues.GetValue(i) == (int)(object)EnumValue)
+                            {
+                                ParsedEnums[i] = true;
+                                break;
+                            }
+
                         break;
                     }
                 }

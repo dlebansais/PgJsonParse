@@ -14,8 +14,8 @@
         OffHand,
         Waist,
         None,
-        Special1,
-        Special2,
+        //Special1,
+        //Special2,
         OffHandShield,
         Racial,
     }

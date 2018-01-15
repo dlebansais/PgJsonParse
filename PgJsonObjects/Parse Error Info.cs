@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -235,6 +236,37 @@ namespace PgJsonObjects
 
                 Result += "Missing field info:\r\n" + MissingField + "\r\n";
             }
+
+            string AllNotEnumerated = "";
+            foreach (KeyValuePair<Type, bool[]> Entry in StringToEnumConversion.KnownParsedEnumtable)
+            {
+                string NotEnumerated = "";
+                string[] EnumNames = Entry.Key.GetEnumNames();
+                for (int i = 1; i < Entry.Value.Length; i++)
+                    if (!Entry.Value[i])
+                    {
+                        if (Entry.Key == typeof(ItemKeyword) && i == (int)ItemKeyword.Any)
+                            continue;
+                        if (Entry.Key == typeof(RecipeItemKey) && (i == (int)RecipeItemKey.Rarity_Common || i == (int)RecipeItemKey.MinRarity_Rare))
+                            continue;
+                        if (Entry.Key == typeof(RecipeEffect) && (i >= (int)RecipeEffect.ExtractTSysPower))
+                            continue;
+
+                        if (NotEnumerated.Length > 0)
+                            NotEnumerated += "\n";
+                        NotEnumerated += "\t\t" + EnumNames[i];
+                    }
+
+                if (NotEnumerated.Length > 0)
+                {
+                    if (AllNotEnumerated.Length == 0)
+                        AllNotEnumerated += "The following enums have not been found:\n";
+
+                    AllNotEnumerated += "\t" + Entry.Key.Name + "\n" + NotEnumerated + "\n";
+                }
+            }
+
+            Result += AllNotEnumerated;
 
             return Result;
         }

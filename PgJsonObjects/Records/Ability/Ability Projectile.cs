@@ -3,7 +3,7 @@
     public enum AbilityProjectile
     {
         Internal_None,
-        Internal_Empty,
+        //Internal_Empty,
         Projectile_Warmthball,
         Projectile_Fireball,
         Projectile_HotFireball,

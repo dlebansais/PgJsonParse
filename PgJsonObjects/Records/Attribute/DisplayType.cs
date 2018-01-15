@@ -3,7 +3,7 @@
     public enum DisplayType
     {
         Internal_None,
-        AsDeltaIfNonZero,
+        //AsDeltaIfNonZero,
         AsPercent,
         AsDoubleTimes100,
         AsInt,

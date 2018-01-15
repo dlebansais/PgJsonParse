@@ -216,6 +216,8 @@ namespace PgJsonObjects
             {
                 if (RarityString == "Common")
                     RarityRequirement = RecipeItemKey.Rarity_Common;
+                else if (RarityString == "Uncommon")
+                    RarityRequirement = RecipeItemKey.Rarity_Uncommon;
                 else
                     ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(Rarity)");
             }

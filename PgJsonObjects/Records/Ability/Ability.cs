@@ -707,7 +707,7 @@ namespace PgJsonObjects
         private void ParseProjectile(string RawProjectile, ParseErrorInfo ErrorInfo)
         {
             AbilityProjectile ParsedAbilityProjectile;
-            StringToEnumConversion<AbilityProjectile>.TryParse(RawProjectile, null, AbilityProjectile.Internal_None, AbilityProjectile.Internal_Empty, out ParsedAbilityProjectile, ErrorInfo);
+            StringToEnumConversion<AbilityProjectile>.TryParse(RawProjectile, out ParsedAbilityProjectile, ErrorInfo);
             Projectile = ParsedAbilityProjectile;
         }
 
@@ -2805,7 +2805,7 @@ namespace PgJsonObjects
             Generator.AddInteger("PetTypeTagReqMax", RawPetTypeTagReqMax);
             Generator.AddString("Prerequisite", RawPrerequisite);
             Generator.AddString("AbilityGroup", RawAbilityGroup);
-            Generator.AddString("Projectile", StringToEnumConversion<AbilityProjectile>.ToString(Projectile, null, AbilityProjectile.Internal_None, AbilityProjectile.Internal_Empty));
+            Generator.AddString("Projectile", StringToEnumConversion<AbilityProjectile>.ToString(Projectile));
 
             if (PvE != null)
                 PvE.GenerateObjectContent(Generator);
@@ -2895,7 +2895,7 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.AbilityPetTypeTextMap[PetTypeTagReq]);
                 if (Prerequisite != null)
                     AddWithFieldSeparator(ref Result, Prerequisite.Name);
-                if (Projectile != AbilityProjectile.Internal_None && Projectile != AbilityProjectile.Internal_Empty)
+                if (Projectile != AbilityProjectile.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.AbilityProjectileTextMap[Projectile]);
                 //TODO PvE, PvP
                 if (SharesResetTimerWith != null)
