@@ -438,7 +438,7 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const double PARSER_VERSION = 293.0;
+        public const double PARSER_VERSION = 294.0;
 
         private void InitParserCheck()
         {
@@ -1187,6 +1187,34 @@ namespace PgJsonParse
                 IsIconStateUpdated = false;
         }
 
+        private void OnDeleteIcons()
+        {
+            if (!ShareIconFiles)
+                return;
+
+            if (MessageBox.Show("This will delete all shared icons, are you sure?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                return;
+
+            string IconFolder = IconCacheFolder;
+
+            try
+            {
+                if (Directory.Exists(IconCacheFolder))
+                    Directory.Delete(IconCacheFolder, true);
+            }
+            catch (Exception e)
+            {
+                StatusMessage = "Error deleting files.";
+                LastExceptionMessage = e.Message;
+            }
+
+            LoadedIconCount = 0;
+            LastIconId = null;
+            IsIconStateUpdated = false;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new IconSharingChangedHandler(OnIconSharingChanged));
+        }
+
         private int LoadedIconCount;
         private List<int> MissingIconList;
         private Dictionary<int, bool> IconTable;
@@ -1232,6 +1260,12 @@ namespace PgJsonParse
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             OnDeleteVersion(VersionInfoFromControl(e));
+        }
+
+        private void OnDeleteIcons(object sender, ExecutedRoutedEventArgs e)
+        {
+            App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
+            OnDeleteIcons();
         }
 
         private async void OnDownloadIcons(object sender, ExecutedRoutedEventArgs e)

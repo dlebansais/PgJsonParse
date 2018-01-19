@@ -1196,6 +1196,7 @@ namespace PgJsonObjects
             { RecipeKeyword.CandiedApple, "Candied Apple" },
             { RecipeKeyword.JackOLantern, "Jack O'Lantern" },
             { RecipeKeyword.PumpkinSpiceTea, "Pumpkin Spice Tea" },
+            { RecipeKeyword.NotIncludedInDynamicUsageListings, "Not Included In Dynamic Usage Listings" },
         };
 
         public static readonly Dictionary<Appearance, string> AppearanceTextMap = new Dictionary<Appearance, string>()
@@ -3463,6 +3464,12 @@ namespace PgJsonObjects
             { RecipeItemKey.MinRarity_Epic, "Epic" },
             { RecipeItemKey.Crossbow, "Crossbow" },
             { RecipeItemKey.AlcoholBarrel, "Alcohol Barrel" },
+            { RecipeItemKey.MinTSysPrereq_0, "Prerequisite: Min Level 0" },
+            { RecipeItemKey.MaxTSysPrereq_30, "Prerequisite: Max Level 30" },
+            { RecipeItemKey.MinTSysPrereq_31, "Prerequisite: Min Level 31" },
+            { RecipeItemKey.MaxTSysPrereq_60, "Prerequisite: Max Level 60" },
+            { RecipeItemKey.MinTSysPrereq_61, "Prerequisite: Min Level 61" },
+            { RecipeItemKey.MaxTSysPrereq_90, "Prerequisite: Max Level 90" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
@@ -3673,7 +3680,6 @@ namespace PgJsonObjects
             { ServerInfoEffectType.PolymorphDeerPermanent, "Polymorph Deer Permanent" },
             { ServerInfoEffectType.DispelDeer, "Dispe lDeer" },
             { ServerInfoEffectType.PulseEvent, "Pulse Event" },
-            { ServerInfoEffectType.KhyruleksJournal, "Khyrulek's Journal" },
             { ServerInfoEffectType.RaiseSkillToLevel, "Raise Skill To Level" },
             { ServerInfoEffectType.AdminSuperSpeed, "Admin Super Speed" },
             { ServerInfoEffectType.UrsulasCurse, "Ursula's Curse" },

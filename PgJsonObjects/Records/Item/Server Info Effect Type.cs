@@ -13,7 +13,6 @@
         PolymorphDeerPermanent,
         DispelDeer,
         PulseEvent,
-        KhyruleksJournal,
         RaiseSkillToLevel,
         AdminSuperSpeed,
         UrsulasCurse,

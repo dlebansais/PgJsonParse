@@ -97,5 +97,11 @@
         MinRarity_Epic,
         Crossbow,
         AlcoholBarrel,
+        MinTSysPrereq_0,
+        MaxTSysPrereq_30,
+        MinTSysPrereq_31,
+        MaxTSysPrereq_60,
+        MinTSysPrereq_61,
+        MaxTSysPrereq_90,
     }
 }

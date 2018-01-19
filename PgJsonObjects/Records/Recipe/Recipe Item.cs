@@ -63,6 +63,12 @@ namespace PgJsonObjects
             { RecipeItemKey.MinRarity_Uncommon, "MinRarity:Uncommon" },
             { RecipeItemKey.Rarity_Exceptional, "Rarity:Exceptional" },
             { RecipeItemKey.MinRarity_Epic, "MinRarity:Epic" },
+            { RecipeItemKey.MinTSysPrereq_0, "MinTSysPrereq:0" },
+            { RecipeItemKey.MaxTSysPrereq_30, "MaxTSysPrereq:30" },
+            { RecipeItemKey.MinTSysPrereq_31, "MinTSysPrereq:31" },
+            { RecipeItemKey.MaxTSysPrereq_60, "MaxTSysPrereq:60" },
+            { RecipeItemKey.MinTSysPrereq_61, "MinTSysPrereq:61" },
+            { RecipeItemKey.MaxTSysPrereq_90, "MaxTSysPrereq:90" },
         };
 
         private static void ParseFieldItemCode(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
@@ -267,6 +273,12 @@ namespace PgJsonObjects
                             case RecipeItemKey.Rarity_Rare:
                             case RecipeItemKey.MinRarity_Exceptional:
                             case RecipeItemKey.MinRarity_Uncommon:
+                            case RecipeItemKey.MinTSysPrereq_0:
+                            case RecipeItemKey.MaxTSysPrereq_30:
+                            case RecipeItemKey.MinTSysPrereq_31:
+                            case RecipeItemKey.MaxTSysPrereq_60:
+                            case RecipeItemKey.MinTSysPrereq_61:
+                            case RecipeItemKey.MaxTSysPrereq_90:
                                 break;
 
                             default:

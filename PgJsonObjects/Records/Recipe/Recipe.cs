@@ -50,6 +50,10 @@ namespace PgJsonObjects
         public Recipe SharesResetTimerWith { get; private set; }
         private string RawSharesResetTimerWith;
         private bool IsSharesResetTimerWithParsed;
+        public string ItemMenuLabel { get; private set; }
+        public ItemKeyword RecipeItemKeyword { get; private set; }
+        public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
+        public bool? RawIsItemMenuKeywordReqSufficient { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -97,6 +101,9 @@ namespace PgJsonObjects
             { "RewardSkillXp", ParseFieldRewardSkillXp },
             { "RewardSkillXpFirstTime", ParseFieldRewardSkillXpFirstTime },
             { "SharesResetTimerWith", ParseFieldSharesResetTimerWith },
+            { "ItemMenuLabel", ParseFieldItemMenuLabel },
+            { "ItemMenuKeywordReq", ParseFieldItemMenuKeywordReq },
+            { "IsItemMenuKeywordReqSufficient", ParseFieldIsItemMenuKeywordReqSufficient },
         };
 
         private static void ParseFieldDescription(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -893,6 +900,49 @@ namespace PgJsonObjects
         {
             this.RawSharesResetTimerWith = RawSharesResetTimerWith;
         }
+
+        private static void ParseFieldItemMenuLabel(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawItemMenuLabel;
+            if ((RawItemMenuLabel = Value as string) != null)
+                This.ParseItemMenuLabel(RawItemMenuLabel, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe ItemMenuLabel");
+        }
+
+        private void ParseItemMenuLabel(string RawItemMenuLabel, ParseErrorInfo ErrorInfo)
+        {
+            ItemMenuLabel = RawItemMenuLabel;
+        }
+
+        private static void ParseFieldItemMenuKeywordReq(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawItemMenuKeywordReq;
+            if ((RawItemMenuKeywordReq = Value as string) != null)
+                This.ParseItemMenuKeywordReq(RawItemMenuKeywordReq, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe ItemMenuKeywordReq");
+        }
+
+        private void ParseItemMenuKeywordReq(string RawItemMenuKeywordReq, ParseErrorInfo ErrorInfo)
+        {
+            ItemKeyword ParsedItemKeyword;
+            StringToEnumConversion<ItemKeyword>.TryParse(RawItemMenuKeywordReq, out ParsedItemKeyword, ErrorInfo);
+            RecipeItemKeyword = ParsedItemKeyword;
+        }
+
+        private static void ParseFieldIsItemMenuKeywordReqSufficient(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is bool)
+                This.ParseIsItemMenuKeywordReqSufficient((bool)Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe IsItemMenuKeywordReqSufficient");
+        }
+
+        private void ParseIsItemMenuKeywordReqSufficient(bool RawIsItemMenuKeywordReqSufficient, ParseErrorInfo ErrorInfo)
+        {
+            this.RawIsItemMenuKeywordReqSufficient = RawIsItemMenuKeywordReqSufficient;
+        }
         #endregion
 
         #region Json Reconstruction
@@ -1103,6 +1153,9 @@ namespace PgJsonObjects
                         AddWithFieldSeparator(ref Result, ConnectedRewardSkill.Name);
                     if (SharesResetTimerWith != null)
                         AddWithFieldSeparator(ref Result, SharesResetTimerWith.Name);
+                    AddWithFieldSeparator(ref Result, ItemMenuLabel);
+                    if (RecipeItemKeyword != ItemKeyword.Internal_None)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[RecipeItemKeyword]);
 
                     return Result;
                 }

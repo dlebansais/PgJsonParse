@@ -19,5 +19,6 @@
         CandiedApple,
         JackOLantern,
         PumpkinSpiceTea,
+        NotIncludedInDynamicUsageListings,
     }
 }

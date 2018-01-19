@@ -19,6 +19,7 @@
         <conv:EnumToObjectConverter x:Key="convEnumToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
         <conv:IntToObjectConverter x:Key="convIntToObject"/>
+        <conv:AndConverter x:Key="convAnd"/>
         <sys:Double x:Key="Column0">20</sys:Double>
         <sys:Double x:Key="Column1">50</sys:Double>
         <sys:Double x:Key="Column2">210</sys:Double>
@@ -160,6 +161,10 @@
             <SolidColorBrush>#EDDE3F</SolidColorBrush>
             <SolidColorBrush>#39AA56</SolidColorBrush>
         </CompositeCollection>
+        <CompositeCollection x:Key="FalseTrue">
+            <sys:Boolean>False</sys:Boolean>
+            <sys:Boolean>True</sys:Boolean>
+        </CompositeCollection>
         <RoutedCommand x:Key="CommandClose"/>
         <RoutedCommand x:Key="CommandCheckVersion"/>
         <RoutedCommand x:Key="CommandSelectVersion"/>
@@ -170,6 +175,7 @@
         <RoutedCommand x:Key="CommandStart"/>
         <RoutedCommand x:Key="CommandCancelStart"/>
         <RoutedCommand x:Key="CommandDeleteVersion"/>
+        <RoutedCommand x:Key="CommandDeleteIcons"/>
         <BitmapImage x:Key="imgRecycle" UriSource="pack://application:,,,/Resources/recycle.png"/>
         <BitmapImage x:Key="imgIconInfo" UriSource="pack://application:,,,/Resources/icon_info.png"/>
         <BitmapImage x:Key="imgCancel" UriSource="pack://application:,,,/Resources/cancel.png"/>
@@ -345,6 +351,7 @@
         <CommandBinding Command="{StaticResource CommandStart}" Executed="OnStart"/>
         <CommandBinding Command="{StaticResource CommandCancelStart}" Executed="OnCancelStart"/>
         <CommandBinding Command="{StaticResource CommandDeleteVersion}" Executed="OnDeleteVersion"/>
+        <CommandBinding Command="{StaticResource CommandDeleteIcons}" Executed="OnDeleteIcons"/>
     </Window.CommandBindings>
     <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2">
         <Grid>
@@ -582,7 +589,21 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <CheckBox Grid.Row="0" IsChecked="{Binding KeepRecentVersions}" Margin="0,0,0,0">Keep all downloaded versions</CheckBox>
-                                <CheckBox Grid.Row="1" IsChecked="{Binding ShareIconFiles}" Checked="OnIconSharingChanged" Unchecked="OnIconSharingChanged" Margin="0,10,0,0">Share icons between versions</CheckBox>
+                                <CheckBox x:Name="checkShareIcons" Grid.Row="1" IsChecked="{Binding ShareIconFiles}" Checked="OnIconSharingChanged" Unchecked="OnIconSharingChanged" Margin="0,10,0,0">Share icons between versions</CheckBox>
+                                <Button Grid.Row="2" Grid.RowSpan="3" Command="{StaticResource CommandDeleteIcons}" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="20,10,0,0">
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource FalseTrue}">
+                                            <Binding Path="IsGlobalInteractionEnabled"/>
+                                            <Binding ElementName="checkShareIcons" Path="IsChecked"/>
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Image Source="{StaticResource imgRecycle}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
+                                            <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">Clear All Icons</TextBlock>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
                             </Grid>
                         </TabItem>
                     </TabControl>
@@ -599,10 +620,10 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="A new version of the parser is available at"/>
                         <TextBlock Margin="5,0,0,0">
-                        <Hyperlink RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                            <TextBlock Text="{Binding ReleasePageAddress}" TextWrapping="NoWrap"/>
-                        </Hyperlink>
-                    </TextBlock>
+                            <Hyperlink RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                <TextBlock Text="{Binding ReleasePageAddress}" TextWrapping="NoWrap"/>
+                            </Hyperlink>
+                        </TextBlock>
                     </StackPanel>
                 </DockPanel>
             </Grid>
