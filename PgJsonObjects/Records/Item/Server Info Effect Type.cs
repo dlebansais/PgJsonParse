@@ -549,5 +549,6 @@
         LemonCandyCane,
         SpearmintCandyCane,
         GrapeCandyCane,
+        WolfsbaneMuffin,
     }
 }

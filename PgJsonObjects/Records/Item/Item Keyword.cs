@@ -856,5 +856,6 @@
         BeerTap,
         GingerbreadHuman,
         AlcoholBarrel,
+        InstantSnack,
     }
 }

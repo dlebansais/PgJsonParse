@@ -3492,6 +3492,13 @@
                                 <ItemsControl Grid.Column="3" Grid.Row="10" ItemsSource="{Binding SourceList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selTypeToTemplateName}" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Is Item Menu Keyword Requirement Sufficient:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="11" Text="{Binding RawIsItemMenuKeywordReqSufficient, Converter={StaticResource convNullableBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Column="2" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Item Menu Category:</TextBlock>
+                                <StackPanel Grid.Column="3" Grid.Row="12" Orientation="Horizontal" Visibility="{Binding RawItemMenuCategory,Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,10,0,0">
+                                    <TextBlock Text="{Binding RawItemMenuCategory}" Margin="0,0,5,0"/>
+                                    <TextBlock>(</TextBlock>
+                                    <TextBlock Text="{Binding ItemMenuCategoryLevel}"/>
+                                    <TextBlock>)</TextBlock>
+                                </StackPanel>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>

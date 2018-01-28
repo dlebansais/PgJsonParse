@@ -20,5 +20,9 @@
         JackOLantern,
         PumpkinSpiceTea,
         NotIncludedInDynamicUsageListings,
+        MealRecipe,
+        InstantSnackRecipe,
+        SnackRecipe,
+        Lint_MealCategory,
     }
 }

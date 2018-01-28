@@ -2785,6 +2785,7 @@ namespace PgJsonObjects
             { ItemKeyword.BeerTap, "Beer Tap" },
             { ItemKeyword.GingerbreadHuman, "Gingerbread Human" },
             { ItemKeyword.AlcoholBarrel, "Alcohol Barrel" },
+            { ItemKeyword.InstantSnack, "Instant Snack" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -4216,6 +4217,7 @@ namespace PgJsonObjects
             { ServerInfoEffectType.LemonCandyCane,"Lemon Candy Cane" },
             { ServerInfoEffectType.SpearmintCandyCane,"Spearmint Candy Cane" },
             { ServerInfoEffectType.GrapeCandyCane,"Grape Candy Cane" },
+            { ServerInfoEffectType.WolfsbaneMuffin,"Wolfsbane Muffin" },
         };
 
         public static readonly Dictionary<ItemRequiredHotspot, string> ItemRequiredHotspotTextMap = new Dictionary<ItemRequiredHotspot, string>()

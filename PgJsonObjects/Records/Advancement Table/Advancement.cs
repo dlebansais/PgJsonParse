@@ -90,6 +90,8 @@ namespace PgJsonObjects
         private double? RawNpcModMaxSalesValue;
         public double NpcModTrainingCost { get { return RawNpcModTrainingCost.HasValue ? RawNpcModTrainingCost.Value : 0; } }
         private double? RawNpcModTrainingCost;
+        public int NumInventoryFolders { get { return RawNumInventoryFolders.HasValue ? RawNumInventoryFolders.Value : 0; } }
+        private int? RawNumInventoryFolders;
         public double HighCleanlinessXpEarnedMod { get { return RawHighCleanlinessXpEarnedMod.HasValue ? RawHighCleanlinessXpEarnedMod.Value : 0; } }
         private double? RawHighCleanlinessXpEarnedMod;
         public double LowCleanlinessXpEarnedMod { get { return RawLowCleanlinessXpEarnedMod.HasValue ? RawLowCleanlinessXpEarnedMod.Value : 0; } }
@@ -184,6 +186,7 @@ namespace PgJsonObjects
             { "NPC_MOD_FAVORFROMHANGOUTS", ParseFieldNpcModFavorFromHangouts },
             { "NPC_MOD_MAXSALESVALUE", ParseFieldNpcModMaxSalesValue },
             { "NPC_MOD_TRAININGCOST", ParseFieldNpcModTrainingCost },
+            { "NUM_INVENTORY_FOLDERS", ParseFieldNumInventoryFolders },
             { "HIGH_CLEANLINESS_XP_EARNED_MOD", ParseFieldHighCleanlinessXpEarnedMod },
             { "LOW_CLEANLINESS_XP_EARNED_MOD", ParseFieldLowCleanlinessXpEarnedMod },
             { "MAX_ARMOR_MITIGATION_RATIO", ParseFieldMaxArmorMitigationRatio },
@@ -877,6 +880,19 @@ namespace PgJsonObjects
             this.RawNpcModTrainingCost = RawNpcModTrainingCost;
         }
 
+        private static void ParseFieldNumInventoryFolders(Advancement This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is int)
+                This.ParseNumInventoryFolders((int)Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NumInventoryFolders");
+        }
+
+        private void ParseNumInventoryFolders(int RawNumInventoryFolders, ParseErrorInfo ErrorInfo)
+        {
+            this.RawNumInventoryFolders = RawNumInventoryFolders;
+        }
+        
         private static void ParseFieldHighCleanlinessXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
             if (Value is int)
@@ -1243,6 +1259,7 @@ namespace PgJsonObjects
             Generator.AddDouble("NpcModFavorFromHangouts", RawNpcModFavorFromHangouts);
             Generator.AddDouble("NpcModMaxSalesValue", RawNpcModMaxSalesValue);
             Generator.AddDouble("NpcModTrainingCost", RawNpcModTrainingCost);
+            Generator.AddDouble("NumInventoryFolders", RawNumInventoryFolders);
             Generator.AddDouble("HighCleanlinessXpEarnedMod", RawHighCleanlinessXpEarnedMod);
             Generator.AddDouble("LowCleanlinessXpEarnedMod", RawLowCleanlinessXpEarnedMod);
             Generator.AddDouble("MaxArmorMitigationRatio", RawMaxArmorMitigationRatio);

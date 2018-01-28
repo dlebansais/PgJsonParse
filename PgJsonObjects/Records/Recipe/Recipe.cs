@@ -54,6 +54,9 @@ namespace PgJsonObjects
         public ItemKeyword RecipeItemKeyword { get; private set; }
         public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
         public bool? RawIsItemMenuKeywordReqSufficient { get; private set; }
+        public string RawItemMenuCategory { get; private set; }
+        public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
+        public int? RawItemMenuCategoryLevel { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -103,7 +106,9 @@ namespace PgJsonObjects
             { "SharesResetTimerWith", ParseFieldSharesResetTimerWith },
             { "ItemMenuLabel", ParseFieldItemMenuLabel },
             { "ItemMenuKeywordReq", ParseFieldItemMenuKeywordReq },
-            { "IsItemMenuKeywordReqSufficient", ParseFieldIsItemMenuKeywordReqSufficient },
+            { "IsItemMenuKeywordReqSufficient", ParseFieldIsItemMenuKeywordReqSufficient},
+            { "ItemMenuCategory", ParseFieldItemMenuCategory },
+            { "ItemMenuCategoryLevel", ParseFieldItemMenuCategoryLevel },
         };
 
         private static void ParseFieldDescription(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -943,6 +948,37 @@ namespace PgJsonObjects
         {
             this.RawIsItemMenuKeywordReqSufficient = RawIsItemMenuKeywordReqSufficient;
         }
+
+        private static void ParseFieldItemMenuCategory(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawItemMenuCategory;
+            if ((RawItemMenuCategory = Value as string) != null)
+                This.ParseItemMenuCategory(RawItemMenuCategory, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe ItemMenuCategory");
+        }
+
+        private void ParseItemMenuCategory(string RawItemMenuCategory, ParseErrorInfo ErrorInfo)
+        {
+            if (RawItemMenuCategory == "TSysExtract")
+                this.RawItemMenuCategory = "Extract";
+
+            else if (RawItemMenuCategory == "TSysDistill")
+                this.RawItemMenuCategory = "Distill";
+        }
+
+        private static void ParseFieldItemMenuCategoryLevel(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            if (Value is int)
+                This.ParseItemMenuCategoryLevel((int)Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Recipe ItemMenuCategoryLevel");
+        }
+
+        private void ParseItemMenuCategoryLevel(int RawItemMenuCategoryLevel, ParseErrorInfo ErrorInfo)
+        {
+            this.RawItemMenuCategoryLevel = RawItemMenuCategoryLevel;
+        }
         #endregion
 
         #region Json Reconstruction
@@ -1156,6 +1192,7 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, ItemMenuLabel);
                     if (RecipeItemKeyword != ItemKeyword.Internal_None)
                         AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[RecipeItemKeyword]);
+                    AddWithFieldSeparator(ref Result, RawItemMenuCategory);
 
                     return Result;
                 }
