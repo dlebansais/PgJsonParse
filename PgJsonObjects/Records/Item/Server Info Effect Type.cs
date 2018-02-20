@@ -550,5 +550,6 @@
         SpearmintCandyCane,
         GrapeCandyCane,
         WolfsbaneMuffin,
+        JerkyLembasBrick,
     }
 }

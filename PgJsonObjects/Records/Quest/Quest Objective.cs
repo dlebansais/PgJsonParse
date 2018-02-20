@@ -134,6 +134,12 @@ namespace PgJsonObjects
                 case QuestObjectiveType.DruidScripted:
                     return this;
 
+                case QuestObjectiveType.ScriptedReceiveItem:
+                    if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
+                        return new QuestObjectiveScriptedReceiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName);
+                    else
+                        return this;
+
                 default:
                     return this;
             }
@@ -166,6 +172,7 @@ namespace PgJsonObjects
             { "ItemKeyword", ParseFieldItemKeyword },
             { "Requirements", ParseFieldRequirements },
             { "MonsterTypeTag", ParseFieldMonsterTypeTag },
+            { "Item", ParseFieldItem },
         };
 
         private static void ParseFieldType(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -215,6 +222,21 @@ namespace PgJsonObjects
                 }
                 else
                     ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (for deliver)");
+            }
+
+            else if (Type == QuestObjectiveType.ScriptedReceiveItem)
+            {
+                MapAreaName ParsedArea;
+                string ParsedNpcId;
+                string ParsedNpcName;
+                if (Quest.TryParseNPC(RawTarget, out ParsedArea, out ParsedNpcId, out ParsedNpcName, ErrorInfo))
+                {
+                    DeliverNpcArea = ParsedArea;
+                    DeliverNpcId = ParsedNpcId;
+                    DeliverNpcName = ParsedNpcName;
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (for scripted receive item)");
             }
 
             else if (Type == QuestObjectiveType.GuildGiveItem)
@@ -666,6 +688,23 @@ namespace PgJsonObjects
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+        }
+
+        private static void ParseFieldItem(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawItemName;
+            if ((RawItemName = Value as string) != null)
+                This.ParseItem(RawItemName, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective Item");
+        }
+
+        private void ParseItem(string RawItemName, ParseErrorInfo ErrorInfo)
+        {
+            if (Type == QuestObjectiveType.ScriptedReceiveItem)
+                this.RawItemName = RawItemName;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective Item (Type)");
         }
         #endregion
 

@@ -75,6 +75,9 @@ namespace PgJsonObjects
                 case OtherRequirementType.GardenPlantMax:
                     return new GardenPlantMaxAbilityRequirement(RawTypeTag, RawMax, ErrorInfo);
 
+                case OtherRequirementType.InteractionFlagSet:
+                    return new InteractionFlagSetAbilityRequirement(RawInteractionFlag);
+
                 default:
                     return null;
             }
@@ -98,6 +101,7 @@ namespace PgJsonObjects
             { "Recipe", ParseFieldRecipe },
             { "TypeTag", ParseFieldTypeTag },
             { "Max", ParseFieldMax },
+            { "InteractionFlag", ParseFieldInteractionFlag },
         };
 
         private static void ParseFieldT(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -255,7 +259,8 @@ namespace PgJsonObjects
             foreach (AbilityRequirement Item in ParsedAbilityRequirementList)
             {
                 AbilityRequirement ConvertedAbilityRequirement = Item.ToSpecificAbilityRequirement(ErrorInfo);
-                OrList.Add(ConvertedAbilityRequirement);
+                if (ConvertedAbilityRequirement != null)
+                    OrList.Add(ConvertedAbilityRequirement);
             }
         }
 
@@ -368,6 +373,20 @@ namespace PgJsonObjects
             this.RawMax = RawMax;
         }
 
+        private static void ParseFieldInteractionFlag(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawInteractionFlag;
+            if ((RawInteractionFlag = Value as string) != null)
+                This.ParseInteractionFlag(RawInteractionFlag, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement InteractionFlag");
+        }
+
+        private void ParseInteractionFlag(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
+        {
+            this.RawInteractionFlag = RawInteractionFlag;
+        }
+
         private OtherRequirementType T;
         private double? RawHealth;
         private List<string> RawAllowedRaceList { get; } = new List<string>();
@@ -385,6 +404,7 @@ namespace PgJsonObjects
         private string RawErrorMsg;
         private double? RawCount;
         private string RawTypeTag;
+        private string RawInteractionFlag;
         private int? RawMax;
         #endregion
 

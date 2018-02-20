@@ -41,7 +41,8 @@ namespace PgJsonObjects
             if (ConnectedAbility != null)
             {
                 GenericSource ConvertedSource = ToSpecificSource(ErrorInfo);
-                ConnectedAbility.SetSource(ConvertedSource, ErrorInfo);
+                if (ConvertedSource != null)
+                    ConnectedAbility.SetSource(ConvertedSource, ErrorInfo);
             }
         }
 

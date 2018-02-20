@@ -230,7 +230,8 @@ namespace PgJsonObjects
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
 
             AbilityRequirement ConvertedAbilityRequirement = ParsedOtherRequirement.ToSpecificAbilityRequirement(ErrorInfo);
-            OtherRequirementList.Add(ConvertedAbilityRequirement);
+            if (ConvertedAbilityRequirement != null)
+                OtherRequirementList.Add(ConvertedAbilityRequirement);
         }
 
         private ServerInfoEffect ParseEffectString(string RawEffect, ParseErrorInfo ErrorInfo)

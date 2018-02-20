@@ -27,5 +27,6 @@
         DruidKill,
         DruidScripted,
         Loot,
+        ScriptedReceiveItem,
     }
 }

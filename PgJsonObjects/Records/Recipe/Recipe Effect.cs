@@ -176,7 +176,7 @@
         GiveTeleportationXp,
         //SetBindPosition1,
         //TeleportToBindPosition1,
-        AlchemyHealthRegenHeartAttack,
+        //AlchemyHealthRegenHeartAttack,
         TeleportToEntrypoint,
         TeleportToLastUsedTeleportSpot,
         TeleportToSpontaneousSpot,
@@ -270,6 +270,8 @@
         DecomposeRingItemIntoAugmentResources,
         DecomposeNecklaceItemIntoAugmentResources,
         DeployBeerBarrel,
+        SpawnPlayerPortal1,
+        SpawnPlayerPortal2,
 
         //DecomposeItemByTSysLevels,
         ExtractTSysPower,

@@ -28,5 +28,6 @@
         MinSkillLevel,
         GuildQuestCompleted,
         RuntimeBehaviorRuleSet,
+        InteractionFlagSet,
     }
 }

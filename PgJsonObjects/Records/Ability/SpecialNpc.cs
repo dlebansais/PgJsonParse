@@ -24,7 +24,7 @@
         NPC_Pennoc,
         NPC_Lakrea,
         NPC_DyePlaceholder,
-        NPC_RecordsGolem,
+        //NPC_RecordsGolem,
         NPC_DyeMonster,
         NPC_Bahdba,
     }

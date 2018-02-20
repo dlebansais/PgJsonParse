@@ -59,6 +59,9 @@ namespace PgJsonObjects
         private string RawRewardEffect;
         private bool IsRawRewardEffectParsed;
         private List<string> RawRewardInteractionFlags = new List<string>();
+        private string RawRewardEnsureLoreBook;
+        private bool IsRawLoreBookParsed;
+        public LoreBook RewardLoreBook { get; private set; }
         public bool IsAutoPreface { get { return RawIsAutoPreface.HasValue && RawIsAutoPreface.Value; } }
         public bool? RawIsAutoPreface { get; private set; }
         public bool IsAutoWrapUp { get { return RawIsAutoWrapUp.HasValue && RawIsAutoWrapUp.Value; } }
@@ -270,7 +273,8 @@ namespace PgJsonObjects
             foreach (QuestObjective Objective in ParsedQuestObjectiveList)
             {
                 QuestObjective ConvertedQuestObjective = Objective.ToSpecificQuestObjective(ErrorInfo);
-                QuestObjectiveList.Add(ConvertedQuestObjective);
+                if (ConvertedQuestObjective != null)
+                    QuestObjectiveList.Add(ConvertedQuestObjective);
             }
         }
 
@@ -828,6 +832,22 @@ namespace PgJsonObjects
                             else
                                 RawRewardEffect = AsString;
                         }
+
+                        else if (AsString.StartsWith("EnsureLoreBookKnown("))
+                        {
+                            int IndexEnd = AsString.IndexOf(')');
+                            if (IndexEnd >= 20)
+                            {
+                                string RawRewardEnsureLoreBook = AsString.Substring(20, IndexEnd - 20);
+                                if (this.RawRewardEnsureLoreBook == null)
+                                    this.RawRewardEnsureLoreBook = RawRewardEnsureLoreBook;
+                                else
+                                    ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+                            }
+                            else
+                                ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+                        }
+
                         else
                             RawRewardEffect = AsString;
                     }
@@ -1127,6 +1147,7 @@ namespace PgJsonObjects
             Dictionary<string, IGenericJsonObject> QuestTable = AllTables[typeof(Quest)];
             Dictionary<string, IGenericJsonObject> EffectTable = AllTables[typeof(Effect)];
             Dictionary<string, IGenericJsonObject> GameNpcTable = AllTables[typeof(GameNpc)];
+            Dictionary<string, IGenericJsonObject> LoreBookTable = AllTables[typeof(LoreBook)];
 
             foreach (QuestObjective Item in QuestObjectiveList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
@@ -1217,6 +1238,9 @@ namespace PgJsonObjects
                         break;
                 }
             }
+
+            if (RawRewardEnsureLoreBook != null)
+                RewardLoreBook = LoreBook.ConnectByInternalName(ErrorInfo, LoreBookTable, RawRewardEnsureLoreBook, RewardLoreBook, ref IsRawLoreBookParsed, ref IsConnected, this);
 
             return IsConnected;
         }

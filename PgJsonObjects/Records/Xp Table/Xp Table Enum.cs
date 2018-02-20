@@ -37,5 +37,6 @@
         DyeMaking,
         Hoplology,
         Oratory,
+        Cartography,
     }
 }

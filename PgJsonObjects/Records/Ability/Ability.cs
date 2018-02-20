@@ -1001,7 +1001,8 @@ namespace PgJsonObjects
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("SpecialCasterRequirement", RawSpecialCasterRequirement, out ParsedSpecialCasterRequirement, ErrorInfo);
 
             AbilityRequirement ConvertedAbilityRequirement = ParsedSpecialCasterRequirement.ToSpecificAbilityRequirement(ErrorInfo);
-            SpecialCasterRequirementList.Add(ConvertedAbilityRequirement);
+            if (ConvertedAbilityRequirement != null)
+                SpecialCasterRequirementList.Add(ConvertedAbilityRequirement);
         }
 
         public void ParseCompleteSpecialInfo(string s, ParseErrorInfo ErrorInfo)
