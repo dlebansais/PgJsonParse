@@ -438,7 +438,7 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const double PARSER_VERSION = 298.0;
+        public const double PARSER_VERSION = 298.1;
 
         private void InitParserCheck()
         {
