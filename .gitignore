@@ -11,3 +11,7 @@
 /PgJsonObjects/obj
 /PgJsonParse/bin
 /PgJsonParse/obj
+/.vs/PgJsonParse/v15/Server/sqlite3/db.lock
+/.vs/PgJsonParse/v15/Server/sqlite3/storage.ide
+/.vs/PgJsonParse/v15/Server/sqlite3/storage.ide-shm
+/.vs/PgJsonParse/v15/Server/sqlite3/storage.ide-wal

@@ -95,6 +95,16 @@ namespace PgJsonObjects
                 case OtherRequirementType.IsLongtimeAnimal:
                     return new IsLongTimeAnimalQuestRequirement();
 
+                case OtherRequirementType.InteractionFlagSet:
+                    if (RequirementInteractionFlag != null)
+                        return new InteractionFlagSetQuestRequirement(RequirementInteractionFlag);
+
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("QuestRequirement InteractionFlag");
+                        return null;
+                    }
+
                 default:
                     ErrorInfo.AddInvalidObjectFormat("QuestRequirement (T=" + T + ")");
                     return null;
@@ -111,6 +121,7 @@ namespace PgJsonObjects
             { "Skill", ParseFieldSkill },
             { "List", ParseFieldList },
             { "Rule", ParseFieldRule },
+            { "InteractionFlag", ParseFieldInteractionFlag },
         };
 
         private static void ParseFieldT(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -308,6 +319,23 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Rule (" + T + ")");
         }
 
+        private static void ParseFieldInteractionFlag(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            string RawInteractionFlag;
+            if ((RawInteractionFlag = Value as string) != null)
+                This.ParseInteractionFlag(RawInteractionFlag, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement InteractionFlag");
+        }
+
+        private void ParseInteractionFlag(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
+        {
+            if (T == OtherRequirementType.InteractionFlagSet)
+                RequirementInteractionFlag = RawInteractionFlag;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement InteractionFlag (" + T + ")");
+        }
+
         private OtherRequirementType T;
         private Favor RequirementFavorLevel;
         private int? RawRequirementSkillLevel;
@@ -319,6 +347,7 @@ namespace PgJsonObjects
         private PowerSkill RequirementSkill;
         private List<QuestRequirement> RequirementOrList = new List<QuestRequirement>();
         private string RequirementRule;
+        private string RequirementInteractionFlag;
         #endregion
 
         #region Json Reconstruction

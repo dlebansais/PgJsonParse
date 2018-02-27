@@ -233,6 +233,30 @@ namespace PgJsonObjects
 
             return null;
         }
+
+        public static LoreBook ConnectByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, string RawLoreBookName, LoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        {
+            if (IsRawLoreBookParsed)
+                return ParsedLoreBook;
+
+            IsRawLoreBookParsed = true;
+
+            foreach (KeyValuePair<string, IGenericJsonObject> Entry in LoreBookTable)
+            {
+                LoreBook LoreBookValue = Entry.Value as LoreBook;
+                if (LoreBookValue.InternalName == RawLoreBookName)
+                {
+                    IsConnected = true;
+                    LoreBookValue.AddLinkBack(LinkBack);
+                    return LoreBookValue;
+                }
+            }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawLoreBookName);
+
+            return null;
+        }
         #endregion
 
         #region Debugging

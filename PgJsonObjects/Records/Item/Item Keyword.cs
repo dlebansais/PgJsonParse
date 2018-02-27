@@ -857,5 +857,6 @@
         GingerbreadHuman,
         AlcoholBarrel,
         InstantSnack,
+        FamiliarRecallCollar,
     }
 }

@@ -438,7 +438,7 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const double PARSER_VERSION = 295.0;
+        public const double PARSER_VERSION = 298.0;
 
         private void InitParserCheck()
         {
@@ -484,6 +484,9 @@ namespace PgJsonParse
 
             try
             {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
                 HttpWebRequest Request = WebRequest.Create(ReleasePageAddress) as HttpWebRequest;
                 using (WebResponse Response = Request.GetResponse())
                 {

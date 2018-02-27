@@ -393,7 +393,8 @@ namespace PgJsonObjects
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
 
             AbilityRequirement ConvertedAbilityRequirement = ParsedOtherRequirement.ToSpecificAbilityRequirement(ErrorInfo);
-            OtherRequirementList.Add(ConvertedAbilityRequirement);
+            if (ConvertedAbilityRequirement != null)
+                OtherRequirementList.Add(ConvertedAbilityRequirement);
         }
 
         private static void ParseFieldCosts(Recipe This, object Value, ParseErrorInfo ErrorInfo)

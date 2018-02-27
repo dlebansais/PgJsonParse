@@ -111,6 +111,7 @@ namespace PgJsonObjects
             { RecipeAction.PrepareCask, "Prepare Cask" },
             { RecipeAction.SortGrass, "Sort Grass" },
             { RecipeAction.TapKeg, "Tap Keg" },
+            { RecipeAction.RendSpaceTime, "Rend Space-Time" },
         };
 
         public static readonly Dictionary<MapAreaName, string> MapAreaNameStringMap = new Dictionary<MapAreaName, string>()
@@ -1121,6 +1122,7 @@ namespace PgJsonObjects
             { AbilityKeyword.IlthHaleRing7, "IlthHaleRing #7" },
             { AbilityKeyword.IlthHaleRing8, "IlthHaleRing #8" },
             { AbilityKeyword.Echolocation, "IlthHaleRing #9" },
+            { AbilityKeyword.FamiliarRecallCollar, "Familiar Recall Collar" },
         };
 
         public static readonly Dictionary<AbilityPetType, string> AbilityPetTypeTextMap = new Dictionary<AbilityPetType, string>()
@@ -1197,6 +1199,10 @@ namespace PgJsonObjects
             { RecipeKeyword.JackOLantern, "Jack O'Lantern" },
             { RecipeKeyword.PumpkinSpiceTea, "Pumpkin Spice Tea" },
             { RecipeKeyword.NotIncludedInDynamicUsageListings, "Not Included In Dynamic Usage Listings" },
+            { RecipeKeyword.MealRecipe, "Meal Recipe" },
+            { RecipeKeyword.InstantSnackRecipe, "Instant Snack Recipe" },
+            { RecipeKeyword.SnackRecipe, "Snack Recipe" },
+            { RecipeKeyword.Lint_MealCategory, "Meal Category" },
         };
 
         public static readonly Dictionary<Appearance, string> AppearanceTextMap = new Dictionary<Appearance, string>()
@@ -2786,6 +2792,7 @@ namespace PgJsonObjects
             { ItemKeyword.GingerbreadHuman, "Gingerbread Human" },
             { ItemKeyword.AlcoholBarrel, "Alcohol Barrel" },
             { ItemKeyword.InstantSnack, "Instant Snack" },
+            { ItemKeyword.FamiliarRecallCollar, "Familiar Recall Collar" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -2962,6 +2969,7 @@ namespace PgJsonObjects
             { RecipeAction.SortGrass, "Sort Grass" },
             //{ RecipeAction.Grill, "Grill" },
             { RecipeAction.TapKeg, "Tap Keg" },
+            { RecipeAction.RendSpaceTime, "Rend Space-Time" },
         };
 
         public static readonly Dictionary<RecipeUsageAnimation, string> RecipeUsageAnimationTextMap = new Dictionary<RecipeUsageAnimation, string>()
@@ -3149,7 +3157,7 @@ namespace PgJsonObjects
             { RecipeEffect.GiveTeleportationXp, "Give Teleportation Xp" },
             //{ RecipeEffect.SetBindPosition1, "Set Bind Position 1" },
             //{ RecipeEffect.TeleportToBindPosition1, "Teleport To Bind Position 1" },
-            { RecipeEffect.AlchemyHealthRegenHeartAttack, "Alchemy Health Regen Heart Attack" },
+            //{ RecipeEffect.AlchemyHealthRegenHeartAttack, "Alchemy Health Regen Heart Attack" },
             { RecipeEffect.TeleportToEntrypoint, "Teleport To Entry Point" },
             { RecipeEffect.TeleportToLastUsedTeleportSpot, "Teleport To Last Used Teleport Spot" },
             { RecipeEffect.TeleportToSpontaneousSpot, "Teleport To Spontaneous Spot" },
@@ -3243,6 +3251,8 @@ namespace PgJsonObjects
             { RecipeEffect.DecomposeRingItemIntoAugmentResources, "Decompose Ring Item Into Augment Resources" },
             { RecipeEffect.DecomposeNecklaceItemIntoAugmentResources, "Decompose Necklace Item Into Augment Resources" },
             { RecipeEffect.DeployBeerBarrel, "Deploy Beer Barrel" },
+            { RecipeEffect.SpawnPlayerPortal1, "Spawn Player Portal #1" },
+            { RecipeEffect.SpawnPlayerPortal2, "Spawn Player Portal #2" },
         };
 
         public static readonly Dictionary<DecomposeMaterial, string> DecomposeMaterialTextMap = new Dictionary<DecomposeMaterial, string>()
@@ -3510,6 +3520,7 @@ namespace PgJsonObjects
             { XpTableEnum.DyeMaking, "Dye Making" },
             { XpTableEnum.Hoplology, "Hoplology" },
             { XpTableEnum.Oratory, "Oratory" },
+            { XpTableEnum.Cartography, "Cartography" },
         };
 
         public static readonly Dictionary<AbilityTypeTag, string> AbilityTypeTagTextMap = new Dictionary<AbilityTypeTag, string>()
@@ -4218,6 +4229,7 @@ namespace PgJsonObjects
             { ServerInfoEffectType.SpearmintCandyCane,"Spearmint Candy Cane" },
             { ServerInfoEffectType.GrapeCandyCane,"Grape Candy Cane" },
             { ServerInfoEffectType.WolfsbaneMuffin,"Wolfsbane Muffin" },
+            { ServerInfoEffectType.JerkyLembasBrick,"Jerky Lembas Brick" },
         };
 
         public static readonly Dictionary<ItemRequiredHotspot, string> ItemRequiredHotspotTextMap = new Dictionary<ItemRequiredHotspot, string>()
@@ -4264,7 +4276,7 @@ namespace PgJsonObjects
             { SpecialNpc.NPC_Pennoc, "Pennoc" },
             { SpecialNpc.NPC_Lakrea, "Lakrea" },
             { SpecialNpc.NPC_DyePlaceholder, "Dye Placeholder" },
-            { SpecialNpc.NPC_RecordsGolem, "Record's Golem" },
+            //{ SpecialNpc.NPC_RecordsGolem, "Record's Golem" },
             { SpecialNpc.NPC_DyeMonster, "Dye Monster" },
             { SpecialNpc.NPC_Bahdba, "Bahdba" },
         };

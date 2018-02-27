@@ -74,6 +74,7 @@
     <Compile Include="Records\Ability\Ability PvX.cs" />
     <Compile Include="Records\Ability\Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\Appearance Ability Requirement.cs" />
+    <Compile Include="Records\Ability\Ability Requirement\Interaction Flag Set Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Source.cs" />
     <Compile Include="Records\Ability\SpecialNpc.cs" />
     <Compile Include="Records\Area\GameArea.cs" />
@@ -103,8 +104,10 @@
     <Compile Include="Records\Npc\NpcPreference.cs" />
     <Compile Include="Records\Quest\Monster Type Tag.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Loot.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Scripted Receive Item.cs" />
     <Compile Include="Records\Quest\Quest Requirements\Guild Quest Completed Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\Has Effect Keyword Quest Requirement.cs" />
+    <Compile Include="Records\Quest\Quest Requirements\Interaction Flag Set Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\Is Long Time Animal Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\Min Favor Level Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\Min Skill Level Quest Requirement.cs" />
