@@ -57,6 +57,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\ApplicationCommand.cs" />
+    <Compile Include="Commands\ExecutedEventArgs.cs" />
     <Compile Include="Converters\And Converter.cs" />
     <Compile Include="Converters\Boolean To Object Converter.cs" />
     <Compile Include="Converters\Constant Converter.cs" />

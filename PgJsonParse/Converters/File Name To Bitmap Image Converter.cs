@@ -30,7 +30,21 @@ namespace Converters
                         FilePath = Path.ChangeExtension(FilePath, ".png");
 
                         if (File.Exists(FilePath))
-                            return new BitmapImage(new Uri(FilePath));
+                        {
+                            Uri uri;
+                            BitmapImage img;
+
+                            try
+                            {
+                                uri = new Uri(FilePath);
+                                img = new BitmapImage(uri);
+                                return img;
+                            }
+                            catch
+                            {
+                                return null;
+                            }
+                        }
                     }
                 }
             }

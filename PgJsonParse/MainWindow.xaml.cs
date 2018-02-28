@@ -45,6 +45,24 @@ namespace PgJsonParse
             InitGearPlaner();
             InitSearch();
             InitCruncher();
+
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ApplicationCommand.Subscribe(this, "StartApplicationCommand", OnStartApplication);
+            ApplicationCommand.Subscribe(this, "ClearVersionListCommand", OnClearVersionList);
+            ApplicationCommand.Subscribe(this, "CancelCommand", OnCancel);
+            ApplicationCommand.Subscribe(this, "AddPowerCommand", OnAddPower);
+            ApplicationCommand.Subscribe(this, "RemovePowerCommand", OnRemovePower);
+            ApplicationCommand.Subscribe(this, "LoadBuildCommand", OnLoadBuild);
+            ApplicationCommand.Subscribe(this, "SaveBuildCommand", OnSaveBuild);
+            ApplicationCommand.Subscribe(this, "CopyBuildCommand", OnCopyBuild);
+            ApplicationCommand.Subscribe(this, "CrunchCommand", OnCrunch);
+            ApplicationCommand.Subscribe(this, "OpenProfileFolderCommand", OnOpenProfileFolder);
+            ApplicationCommand.Subscribe(this, "BackwardCommand", OnBackward);
+            ApplicationCommand.Subscribe(this, "ForwardCommand", OnForward);
         }
         #endregion
 
@@ -2420,12 +2438,12 @@ namespace PgJsonParse
         #endregion
 
         #region Events
-        private void OnClearVersionList(object sender, ExecutedRoutedEventArgs e)
+        private void OnClearVersionList(object sender, EventArgs e)
         {
             ClearVersionList();
         }
 
-        private void OnStartApplication(object sender, ExecutedRoutedEventArgs e)
+        private void OnStartApplication(object sender, EventArgs e)
         {
             StartApplication();
         }
@@ -2442,7 +2460,7 @@ namespace PgJsonParse
             UseSpecificVersion = true;
         }
 
-        private void OnCancel(object sender, ExecutedRoutedEventArgs e)
+        private void OnCancel(object sender, EventArgs e)
         {
             CancelOperation();
         }
@@ -2452,41 +2470,39 @@ namespace PgJsonParse
             RefreshBuildPlaner();
         }
 
-        private void OnAddPower(object sender, ExecutedRoutedEventArgs e)
+        private void OnAddPower(object sender, EventArgs e)
         {
-            FrameworkElement SourceControl = e.OriginalSource as FrameworkElement;
-            SlotPlaner SenderSlot = SourceControl.DataContext as SlotPlaner;
+            SlotPlaner SenderSlot = (e as ExecutedEventArgs).Parameter as SlotPlaner;
             AddPower(SenderSlot);
         }
 
-        private void OnRemovePower(object sender, ExecutedRoutedEventArgs e)
+        private void OnRemovePower(object sender, EventArgs e)
         {
-            FrameworkElement SourceControl = e.OriginalSource as FrameworkElement;
-            SlotPlaner SenderSlot = SourceControl.DataContext as SlotPlaner;
+            SlotPlaner SenderSlot = (e as ExecutedEventArgs).Parameter as SlotPlaner;
             RemovePower(SenderSlot);
         }
 
-        private void OnLoadBuild(object sender, ExecutedRoutedEventArgs e)
+        private void OnLoadBuild(object sender, EventArgs e)
         {
             LoadBuild();
         }
 
-        private void OnSaveBuild(object sender, ExecutedRoutedEventArgs e)
+        private void OnSaveBuild(object sender, EventArgs e)
         {
             SaveBuild();
         }
 
-        private void OnCopyBuild(object sender, ExecutedRoutedEventArgs e)
+        private void OnCopyBuild(object sender, EventArgs e)
         {
             CopyBuild();
         }
 
-        private void OnCrunch(object sender, ExecutedRoutedEventArgs e)
+        private void OnCrunch(object sender, EventArgs e)
         {
             Crunch();
         }
 
-        private void OnOpenProfileFolder(object sender, ExecutedRoutedEventArgs e)
+        private void OnOpenProfileFolder(object sender, EventArgs e)
         {
             Process Explorer = new Process();
             Explorer.StartInfo.FileName = "explorer.exe";
@@ -2507,12 +2523,12 @@ namespace PgJsonParse
             OnSearchCheckChanged();
         }
 
-        private void OnBackward(object sender, ExecutedRoutedEventArgs e)
+        private void OnBackward(object sender, EventArgs e)
         {
             OnBackward();
         }
 
-        private void OnForward(object sender, ExecutedRoutedEventArgs e)
+        private void OnForward(object sender, EventArgs e)
         {
             OnForward();
         }

@@ -35,18 +35,18 @@
         <app:SearchResultContentSelector x:Key="selSearchResultContent"/>
         <app:SkillRewardSelector x:Key="selSkillReward"/>
         <app:TypeToTemplateNameSelector x:Key="selTypeToTemplateName"/>
-        <RoutedCommand x:Key="StartApplicationCommand"/>
-        <RoutedCommand x:Key="ClearVersionListCommand"/>
-        <RoutedCommand x:Key="CancelCommand"/>
-        <RoutedCommand x:Key="AddPowerCommand"/>
-        <RoutedCommand x:Key="RemovePowerCommand"/>
-        <RoutedCommand x:Key="LoadBuildCommand"/>
-        <RoutedCommand x:Key="SaveBuildCommand"/>
-        <RoutedCommand x:Key="CopyBuildCommand"/>
-        <RoutedCommand x:Key="CrunchCommand"/>
-        <RoutedCommand x:Key="OpenProfileFolderCommand"/>
-        <RoutedCommand x:Key="BackwardCommand"/>
-        <RoutedCommand x:Key="ForwardCommand"/>
+        <app:ApplicationCommand x:Key="StartApplicationCommand"/>
+        <app:ApplicationCommand x:Key="ClearVersionListCommand"/>
+        <app:ApplicationCommand x:Key="CancelCommand"/>
+        <app:ApplicationCommand x:Key="AddPowerCommand"/>
+        <app:ApplicationCommand x:Key="RemovePowerCommand"/>
+        <app:ApplicationCommand x:Key="LoadBuildCommand"/>
+        <app:ApplicationCommand x:Key="SaveBuildCommand"/>
+        <app:ApplicationCommand x:Key="CopyBuildCommand"/>
+        <app:ApplicationCommand x:Key="CrunchCommand"/>
+        <app:ApplicationCommand x:Key="OpenProfileFolderCommand"/>
+        <app:ApplicationCommand x:Key="BackwardCommand"/>
+        <app:ApplicationCommand x:Key="ForwardCommand"/>
         <CompositeCollection x:Key="VisibleHidden">
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>
@@ -1939,20 +1939,6 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
-    <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource StartApplicationCommand}" Executed="OnStartApplication"/>
-        <CommandBinding Command="{StaticResource ClearVersionListCommand}" Executed="OnClearVersionList"/>
-        <CommandBinding Command="{StaticResource CancelCommand}" Executed="OnCancel"/>
-        <CommandBinding Command="{StaticResource AddPowerCommand}" Executed="OnAddPower"/>
-        <CommandBinding Command="{StaticResource RemovePowerCommand}" Executed="OnRemovePower"/>
-        <CommandBinding Command="{StaticResource LoadBuildCommand}" Executed="OnLoadBuild"/>
-        <CommandBinding Command="{StaticResource SaveBuildCommand}" Executed="OnSaveBuild"/>
-        <CommandBinding Command="{StaticResource CopyBuildCommand}" Executed="OnCopyBuild"/>
-        <CommandBinding Command="{StaticResource CrunchCommand}" Executed="OnCrunch"/>
-        <CommandBinding Command="{StaticResource OpenProfileFolderCommand}" Executed="OnOpenProfileFolder"/>
-        <CommandBinding Command="{StaticResource BackwardCommand}" Executed="OnBackward"/>
-        <CommandBinding Command="{StaticResource ForwardCommand}" Executed="OnForward"/>
-    </Window.CommandBindings>
     <Grid>
         <StackPanel Visibility="{Binding IsAtStartup, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="350">
             <Grid/>
@@ -2151,8 +2137,8 @@
                                         </Grid>
                                     </DockPanel>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <Button Content="Add -&gt;" Command="{StaticResource AddPowerCommand}" Margin="0,0,0,5"/>
-                                        <Button Content="&lt;- Remove" Command="{StaticResource RemovePowerCommand}" Margin="0,5,0,0"/>
+                                        <Button Content="Add -&gt;" Command="{StaticResource AddPowerCommand}" CommandParameter="{Binding}" Margin="0,0,0,5"/>
+                                        <Button Content="&lt;- Remove" Command="{StaticResource RemovePowerCommand}" CommandParameter="{Binding}" Margin="0,5,0,0"/>
                                     </StackPanel>
                                     <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible" Margin="10,0,0,0">
                                         <StackPanel Background="Black">
