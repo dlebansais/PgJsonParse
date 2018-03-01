@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Windows;
-using System.Windows.Interop;
-using static TaskbarProgress;
+using Taskbar;
 
 namespace PgJsonParse
 {
