@@ -35,18 +35,6 @@
         <app:SearchResultContentSelector x:Key="selSearchResultContent"/>
         <app:SkillRewardSelector x:Key="selSkillReward"/>
         <app:TypeToTemplateNameSelector x:Key="selTypeToTemplateName"/>
-        <app:ApplicationCommand x:Key="StartApplicationCommand"/>
-        <app:ApplicationCommand x:Key="ClearVersionListCommand"/>
-        <app:ApplicationCommand x:Key="CancelCommand"/>
-        <app:ApplicationCommand x:Key="AddPowerCommand"/>
-        <app:ApplicationCommand x:Key="RemovePowerCommand"/>
-        <app:ApplicationCommand x:Key="LoadBuildCommand"/>
-        <app:ApplicationCommand x:Key="SaveBuildCommand"/>
-        <app:ApplicationCommand x:Key="CopyBuildCommand"/>
-        <app:ApplicationCommand x:Key="CrunchCommand"/>
-        <app:ApplicationCommand x:Key="OpenProfileFolderCommand"/>
-        <app:ApplicationCommand x:Key="BackwardCommand"/>
-        <app:ApplicationCommand x:Key="ForwardCommand"/>
         <CompositeCollection x:Key="VisibleHidden">
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
@@ -6,18 +7,29 @@ namespace PgJsonParse
 {
     public class ApplicationCommand : ICommand
     {
-        public static void Subscribe(FrameworkElement element, string resourceName, EventHandler handler)
+        public static void SubscribeToGlobalCommand(string resourceName, EventHandler handler)
         {
-            ApplicationCommand Command = element.Resources[resourceName] as ApplicationCommand;
+            ApplicationCommand Command = Application.Current.Resources[resourceName] as ApplicationCommand;
             Command.Subscribe(handler);
         }
 
-        private void Subscribe(EventHandler handler)
+        public static void SubscribeToGuiCommand(string resourceName, EventHandler handler)
         {
-            Executed += handler;
+            ApplicationCommand Command = Application.Current.Resources[resourceName] as ApplicationCommand;
+            Command.Subscribe(handler);
+        }
 
-            IsSubscribed = true;
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        public void Subscribe(EventHandler handler)
+        {
+            Debug.Assert(!IsSubscribed);
+
+            if (!IsSubscribed)
+            {
+                Executed += handler;
+
+                IsSubscribed = true;
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public event EventHandler CanExecuteChanged;

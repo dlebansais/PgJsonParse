@@ -165,17 +165,6 @@
             <sys:Boolean>False</sys:Boolean>
             <sys:Boolean>True</sys:Boolean>
         </CompositeCollection>
-        <RoutedCommand x:Key="CommandClose"/>
-        <RoutedCommand x:Key="CommandCheckVersion"/>
-        <RoutedCommand x:Key="CommandSelectVersion"/>
-        <RoutedCommand x:Key="CommandDownloadVersion"/>
-        <RoutedCommand x:Key="CommandCancelDownloadVersion"/>
-        <RoutedCommand x:Key="CommandDownloadIcons"/>
-        <RoutedCommand x:Key="CommandCancelDownloadIcons"/>
-        <RoutedCommand x:Key="CommandStart"/>
-        <RoutedCommand x:Key="CommandCancelStart"/>
-        <RoutedCommand x:Key="CommandDeleteVersion"/>
-        <RoutedCommand x:Key="CommandDeleteIcons"/>
         <BitmapImage x:Key="imgRecycle" UriSource="pack://application:,,,/Resources/recycle.png"/>
         <BitmapImage x:Key="imgIconInfo" UriSource="pack://application:,,,/Resources/icon_info.png"/>
         <BitmapImage x:Key="imgCancel" UriSource="pack://application:,,,/Resources/cancel.png"/>
@@ -189,7 +178,7 @@
         <DataTemplate x:Key="GameVersionInfoTemplate">
             <Border BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="1,1,1,1" Background="White">
                 <DockPanel>
-                    <Button DockPanel.Dock="Left" Command="{StaticResource CommandDeleteVersion}" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="0,0,1,0">
+                    <Button DockPanel.Dock="Left" Command="{StaticResource DeleteVersionCommand}" CommandParameter="{Binding}" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="0,0,1,0">
                         <Button.Visibility>
                             <Binding Path="ShowDeleteButton" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
                         </Button.Visibility>
@@ -217,7 +206,7 @@
                                 <TextBlock Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}">Downloaded.</TextBlock>
                             </Grid>
                             <Grid Width="{StaticResource Column3}" VerticalAlignment="Center">
-                                <Button Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloadable}}" Command="{StaticResource CommandDownloadVersion}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="1,0,20,0">
+                                <Button Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloadable}}" Command="{StaticResource DownloadVersionCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="1,0,20,0">
                                     <Button.IsEnabled>
                                         <Binding Path="IsGlobalInteractionEnabled" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}"/>
                                     </Button.IsEnabled>
@@ -229,7 +218,7 @@
                                     </Button.Content>
                                 </Button>
                                 <DockPanel Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloading}}" VerticalAlignment="Center">
-                                    <Button DockPanel.Dock="Right" Command="{StaticResource CommandCancelDownloadVersion}" VerticalAlignment="Center">
+                                    <Button DockPanel.Dock="Right" Command="{StaticResource CancelDownloadVersionCommand}" CommandParameter="{Binding}" VerticalAlignment="Center">
                                         <Button.Template>
                                             <ControlTemplate>
                                                 <Image Source="{StaticResource imgCancel}" Width="13" Height="13"/>
@@ -240,7 +229,7 @@
                                         <ProgressBar Value="{Binding FileDownloadProgress, Mode=OneWay}" Minimum="0" Maximum="100" Background="White" Foreground="#EDDE3F"/>
                                     </Border>
                                 </DockPanel>
-                                <Button Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}" Command="{StaticResource CommandStart}" VerticalAlignment="Center" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_StartColor}}" HorizontalContentAlignment="Left" Height="30" Margin="1,0,20,0">
+                                <Button Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}" Command="{StaticResource StartCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_StartColor}}" HorizontalContentAlignment="Left" Height="30" Margin="1,0,20,0">
                                     <Button.IsEnabled>
                                         <Binding Path="IsGlobalInteractionEnabled" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}"/>
                                     </Button.IsEnabled>
@@ -266,7 +255,7 @@
                                 <TextBlock Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}">Downloaded.</TextBlock>
                             </Grid>
                             <Grid Width="{StaticResource Column3}" VerticalAlignment="Center">
-                                <Button Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloadable}}" Command="{StaticResource CommandDownloadIcons}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="1,0,20,0">
+                                <Button Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloadable}}" Command="{StaticResource DownloadIconsCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="1,0,20,0">
                                     <Button.IsEnabled>
                                         <Binding Path="IsGlobalInteractionEnabled" RelativeSource="{RelativeSource AncestorType={x:Type app:PrologueWindow}}"/>
                                     </Button.IsEnabled>
@@ -278,7 +267,7 @@
                                     </Button.Content>
                                 </Button>
                                 <DockPanel Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloading}}" VerticalAlignment="Center">
-                                    <Button DockPanel.Dock="Right" Command="{StaticResource CommandCancelDownloadIcons}" VerticalAlignment="Center">
+                                    <Button DockPanel.Dock="Right" Command="{StaticResource CancelDownloadIconsCommand}" CommandParameter="{Binding}" VerticalAlignment="Center">
                                         <Button.Template>
                                             <ControlTemplate>
                                                 <Image Source="{StaticResource imgCancel}" Width="13" Height="13"/>
@@ -340,19 +329,6 @@
             </Border>
         </DataTemplate>
     </Window.Resources>
-    <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource CommandClose}" Executed="OnClose"/>
-        <CommandBinding Command="{StaticResource CommandCheckVersion}" Executed="OnCheckVersion"/>
-        <CommandBinding Command="{StaticResource CommandSelectVersion}" Executed="OnSelectVersion"/>
-        <CommandBinding Command="{StaticResource CommandDownloadVersion}" Executed="OnDownloadVersion"/>
-        <CommandBinding Command="{StaticResource CommandCancelDownloadVersion}" Executed="OnCancelDownloadVersion"/>
-        <CommandBinding Command="{StaticResource CommandDownloadIcons}" Executed="OnDownloadIcons"/>
-        <CommandBinding Command="{StaticResource CommandCancelDownloadIcons}" Executed="OnCancelDownloadIcons"/>
-        <CommandBinding Command="{StaticResource CommandStart}" Executed="OnStart"/>
-        <CommandBinding Command="{StaticResource CommandCancelStart}" Executed="OnCancelStart"/>
-        <CommandBinding Command="{StaticResource CommandDeleteVersion}" Executed="OnDeleteVersion"/>
-        <CommandBinding Command="{StaticResource CommandDeleteIcons}" Executed="OnDeleteIcons"/>
-    </Window.CommandBindings>
     <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2">
         <Grid>
             <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
@@ -362,7 +338,7 @@
                         <Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Center" Height="12" Width="{StaticResource Column3}" Margin="10,0,0,0">
                             <ProgressBar Value="{Binding ParseProgress, Mode=OneWay}" Minimum="0" Maximum="100" Background="White" Foreground="{Binding SelectedVersion.GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_ParsingColor}}"/>
                         </Border>
-                        <Button Command="{StaticResource CommandCancelStart}" VerticalAlignment="Center" Margin="6,0,0,0">
+                        <Button Command="{StaticResource CancelStartCommand}" VerticalAlignment="Center" Margin="6,0,0,0">
                             <Button.Template>
                                 <ControlTemplate>
                                     <Image Source="{StaticResource imgCancel}" Width="13" Height="13"/>
@@ -400,7 +376,7 @@
                                         </StackPanel>
                                     </Grid>
                                     <Grid Width="{StaticResource Column3}" VerticalAlignment="Center" Margin="0,5,9,5">
-                                        <Button Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Checkable}}" Command="{StaticResource CommandCheckVersion}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="0,0,21,0">
+                                        <Button Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Checkable}}" Command="{StaticResource CheckVersionCommand}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="0,0,21,0">
                                             <Button.IsEnabled>
                                                 <Binding Path="IsGlobalInteractionEnabled"/>
                                             </Button.IsEnabled>
@@ -412,7 +388,7 @@
                                             </Button.Content>
                                         </Button>
                                         <ctrl:BusyIndicator Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Checking}}" HorizontalAlignment="Center" Width="12" Height="12" Margin="0,0,21,0"/>
-                                        <Button Visibility="{Binding IsLatestVersionSelectable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Command="{StaticResource CommandSelectVersion}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="0,0,21,0">
+                                        <Button Visibility="{Binding IsLatestVersionSelectable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Command="{StaticResource SelectVersionCommand}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="0,0,21,0">
                                             <Button.IsEnabled>
                                                 <Binding Path="IsGlobalInteractionEnabled"/>
                                             </Button.IsEnabled>
@@ -590,7 +566,7 @@
                                 </Grid.RowDefinitions>
                                 <CheckBox Grid.Row="0" IsChecked="{Binding KeepRecentVersions}" Margin="0,0,0,0">Keep all downloaded versions</CheckBox>
                                 <CheckBox x:Name="checkShareIcons" Grid.Row="1" IsChecked="{Binding ShareIconFiles}" Checked="OnIconSharingChanged" Unchecked="OnIconSharingChanged" Margin="0,10,0,0">Share icons between versions</CheckBox>
-                                <Button Grid.Row="2" Grid.RowSpan="3" Command="{StaticResource CommandDeleteIcons}" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="20,10,0,0">
+                                <Button Grid.Row="2" Grid.RowSpan="3" Command="{StaticResource DeleteIconsCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="20,10,0,0">
                                     <Button.IsEnabled>
                                         <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource FalseTrue}">
                                             <Binding Path="IsGlobalInteractionEnabled"/>
@@ -609,7 +585,7 @@
                     </TabControl>
                 </Grid>
             </StackPanel>
-            <Button Command="{StaticResource CommandClose}" Background="#F4F4F4" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1,0,0,1">
+            <Button Command="{StaticResource CloseCommand}" Background="#F4F4F4" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1,0,0,1">
                 <Button.Content>
                     <Image Source="{StaticResource imgClose}" Width="16" Height="16"/>
                 </Button.Content>

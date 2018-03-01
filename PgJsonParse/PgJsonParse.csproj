@@ -105,6 +105,10 @@
     <Compile Include="Tools.cs" />
     <Compile Include="VersionCheckState.cs" />
     <Compile Include="Controls\BusyIndicator.cs" />
+    <Page Include="Commands\GlobalCommands.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

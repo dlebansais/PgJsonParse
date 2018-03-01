@@ -45,11 +45,28 @@ namespace PgJsonParse
 
                 else if (CheckNewParserOnStartup)
                     Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckParserHandler(OnCheckParser));
+
+                Loaded += OnLoaded;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message + "\r\n" + e.StackTrace);
             }
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ApplicationCommand.SubscribeToGlobalCommand("CloseCommand", OnClose);
+            ApplicationCommand.SubscribeToGlobalCommand("CheckVersionCommand", OnCheckVersion);
+            ApplicationCommand.SubscribeToGlobalCommand("SelectVersionCommand", OnSelectVersion);
+            ApplicationCommand.SubscribeToGlobalCommand("DownloadVersionCommand", OnDownloadVersion);
+            ApplicationCommand.SubscribeToGlobalCommand("CancelDownloadVersionCommand", OnCancelDownloadVersion);
+            ApplicationCommand.SubscribeToGlobalCommand("DownloadIconsCommand", OnDownloadIcons);
+            ApplicationCommand.SubscribeToGlobalCommand("CancelDownloadIconsCommand", OnCancelDownloadIcons);
+            ApplicationCommand.SubscribeToGlobalCommand("StartCommand", OnStart);
+            ApplicationCommand.SubscribeToGlobalCommand("CancelStartCommand", OnCancelStart);
+            ApplicationCommand.SubscribeToGlobalCommand("DeleteVersionCommand", OnDeleteVersion);
+            ApplicationCommand.SubscribeToGlobalCommand("DeleteIconsCommand", OnDeleteIcons);
         }
         #endregion
 
@@ -1229,66 +1246,65 @@ namespace PgJsonParse
             DragMove();
         }
 
-        private async void OnCheckVersion(object sender, ExecutedRoutedEventArgs e)
+        private async void OnCheckVersion(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckVersionHandler(OnCheckVersion));
         }
 
-        private void OnSelectVersion(object sender, ExecutedRoutedEventArgs e)
+        private void OnSelectVersion(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             OnSelectVersion();
         }
 
-        private GameVersionInfo VersionInfoFromControl(ExecutedRoutedEventArgs e)
+        private GameVersionInfo VersionInfoFromControl(EventArgs e)
         {
-            FrameworkElement Ctrl = e.OriginalSource as FrameworkElement;
-            GameVersionInfo VersionInfo = Ctrl?.DataContext as GameVersionInfo;
+            GameVersionInfo VersionInfo = (e as ExecutedEventArgs).Parameter as GameVersionInfo;
             return VersionInfo;
         }
 
-        private async void OnDownloadVersion(object sender, ExecutedRoutedEventArgs e)
+        private async void OnDownloadVersion(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new DownloadVersionHandler(OnDownloadVersion), VersionInfoFromControl(e));
         }
 
-        private void OnCancelDownloadVersion(object sender, ExecutedRoutedEventArgs e)
+        private void OnCancelDownloadVersion(object sender, EventArgs e)
         {
             OnCancelDownloadVersion(VersionInfoFromControl(e));
         }
 
-        private void OnDeleteVersion(object sender, ExecutedRoutedEventArgs e)
+        private void OnDeleteVersion(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             OnDeleteVersion(VersionInfoFromControl(e));
         }
 
-        private void OnDeleteIcons(object sender, ExecutedRoutedEventArgs e)
+        private void OnDeleteIcons(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             OnDeleteIcons();
         }
 
-        private async void OnDownloadIcons(object sender, ExecutedRoutedEventArgs e)
+        private async void OnDownloadIcons(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new DownloadIconsHandler(OnDownloadIcons), VersionInfoFromControl(e));
         }
 
-        private void OnCancelDownloadIcons(object sender, ExecutedRoutedEventArgs e)
+        private void OnCancelDownloadIcons(object sender, EventArgs e)
         {
             OnCancelDownloadIcons(VersionInfoFromControl(e));
         }
 
-        private async void OnStart(object sender, ExecutedRoutedEventArgs e)
+        private async void OnStart(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new StartHandler(OnStart), VersionInfoFromControl(e));
         }
 
-        private void OnCancelStart(object sender, ExecutedRoutedEventArgs e)
+        private void OnCancelStart(object sender, EventArgs e)
         {
             CancelParse();
         }
@@ -1375,7 +1391,7 @@ namespace PgJsonParse
             Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new IconSharingChangedHandler(OnIconSharingChanged));
         }
 
-        private void OnClose(object sender, ExecutedRoutedEventArgs e)
+        private void OnClose(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
             Close();

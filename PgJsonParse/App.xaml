@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:PgJsonParse"
              StartupUri="PrologueWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Commands/GlobalCommands.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

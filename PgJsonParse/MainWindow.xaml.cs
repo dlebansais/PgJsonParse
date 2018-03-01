@@ -52,18 +52,18 @@ namespace PgJsonParse
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ApplicationCommand.Subscribe(this, "StartApplicationCommand", OnStartApplication);
-            ApplicationCommand.Subscribe(this, "ClearVersionListCommand", OnClearVersionList);
-            ApplicationCommand.Subscribe(this, "CancelCommand", OnCancel);
-            ApplicationCommand.Subscribe(this, "AddPowerCommand", OnAddPower);
-            ApplicationCommand.Subscribe(this, "RemovePowerCommand", OnRemovePower);
-            ApplicationCommand.Subscribe(this, "LoadBuildCommand", OnLoadBuild);
-            ApplicationCommand.Subscribe(this, "SaveBuildCommand", OnSaveBuild);
-            ApplicationCommand.Subscribe(this, "CopyBuildCommand", OnCopyBuild);
-            ApplicationCommand.Subscribe(this, "CrunchCommand", OnCrunch);
-            ApplicationCommand.Subscribe(this, "OpenProfileFolderCommand", OnOpenProfileFolder);
-            ApplicationCommand.Subscribe(this, "BackwardCommand", OnBackward);
-            ApplicationCommand.Subscribe(this, "ForwardCommand", OnForward);
+            ApplicationCommand.SubscribeToGlobalCommand("StartApplicationCommand", OnStartApplication);
+            ApplicationCommand.SubscribeToGlobalCommand("ClearVersionListCommand", OnClearVersionList);
+            ApplicationCommand.SubscribeToGlobalCommand("CancelCommand", OnCancel);
+            ApplicationCommand.SubscribeToGlobalCommand("AddPowerCommand", OnAddPower);
+            ApplicationCommand.SubscribeToGlobalCommand("RemovePowerCommand", OnRemovePower);
+            ApplicationCommand.SubscribeToGlobalCommand("LoadBuildCommand", OnLoadBuild);
+            ApplicationCommand.SubscribeToGlobalCommand("SaveBuildCommand", OnSaveBuild);
+            ApplicationCommand.SubscribeToGlobalCommand("CopyBuildCommand", OnCopyBuild);
+            ApplicationCommand.SubscribeToGlobalCommand("CrunchCommand", OnCrunch);
+            ApplicationCommand.SubscribeToGlobalCommand("OpenProfileFolderCommand", OnOpenProfileFolder);
+            ApplicationCommand.SubscribeToGlobalCommand("BackwardCommand", OnBackward);
+            ApplicationCommand.SubscribeToGlobalCommand("ForwardCommand", OnForward);
         }
         #endregion
 
