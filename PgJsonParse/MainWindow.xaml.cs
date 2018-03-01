@@ -1,31 +1,32 @@
 ﻿using Microsoft.Win32;
+using PgJsonObjects;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Threading;
-using PgJsonObjects;
-using System.Globalization;
-using System.Collections;
-using System.Windows.Navigation;
-using System.Reflection;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
-using System.Drawing;
-using System.Runtime.InteropServices;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Controls.Primitives;
+using System.Windows.Navigation;
+using System.Windows.Threading;
 
 namespace PgJsonParse
 {
@@ -186,6 +187,7 @@ namespace PgJsonParse
             FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
 
             InitVersionList();
+            UpdateTaskbarShortcut();
 
             if (IsVersionAvailableInCache)
             {
@@ -243,20 +245,91 @@ namespace PgJsonParse
             RefreshCombatSkillList();
             RefreshWeightProfileList();
             RefreshGearPlaner();
+        }
 
-/*
-            StartOperation();
-
-            if (LocateLastestVersion)
-                StartCacheThread();
-            else
+        private void UpdateTaskbarShortcut()
+        {
+            try
             {
-                int Version = VersionList[SelectedVersionIndex];
-                DownloadedVersion = Version;
-                LoadedVersion = Version;
-                CreateLoadThread();
+                if (!File.Exists(IconFile))
+                    return;
+
+                string IconFileAsIco = Path.ChangeExtension(IconFile, "ico");
+                if (!File.Exists(IconFileAsIco))
+                {
+                    Bitmap FileBitmap = new Bitmap(IconFile, true);
+                    Bitmap ResourceBitmap = new Bitmap(App.GetResourceStream(new Uri("pack://application:,,,/Resources/mainicon.p")).Stream);
+                    if (AreBitmapsEqual(FileBitmap, ResourceBitmap))
+                    {
+                        Icon ResourceIcon = new Icon(App.GetResourceStream(new Uri("pack://application:,,,/Resources/mainicon.i")).Stream);
+                        using (FileStream fs = new FileStream(IconFileAsIco, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            ResourceIcon.Save(fs);
+                        }
+                    }
+                }
+
+                if (!File.Exists(IconFileAsIco))
+                    return;
+
+                string RoamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string TaskbarShortcutPath = Path.Combine(RoamingPath, @"Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar");
+                string ShortcutFileName = "PgJsonParse.lnk";
+                string PgJsonParseShortcut = Path.Combine(TaskbarShortcutPath, ShortcutFileName);
+
+                if (!File.Exists(PgJsonParseShortcut))
+                    return;
+
+                Shell32.Shell Shell = new Shell32.Shell();
+                Shell32.Folder Folder = Shell.NameSpace(TaskbarShortcutPath);
+                Shell32.FolderItem Item = Folder.ParseName(ShortcutFileName);
+                Shell32.ShellLinkObject Link = (Shell32.ShellLinkObject)Item.GetLink;
+                string OldLocation = null;
+                Link.GetIconLocation(out OldLocation);
+                if (string.IsNullOrEmpty(OldLocation))
+                {
+                    Link.SetIconLocation(IconFileAsIco, 0);
+                    Link.Save();
+                }
             }
-*/
+            catch
+            {
+
+            }
+        }
+
+        public static bool AreBitmapsEqual(Bitmap b1, Bitmap b2)
+        {
+            if (b1.Size != b2.Size)
+                return false;
+
+            BitmapData bd1 = b1.LockBits(new Rectangle(new System.Drawing.Point(0, 0), b1.Size), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            BitmapData bd2 = b2.LockBits(new Rectangle(new System.Drawing.Point(0, 0), b2.Size), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            try
+            {
+                IntPtr bd1scan0 = bd1.Scan0;
+                IntPtr bd2scan0 = bd2.Scan0;
+
+                int stride = bd1.Stride;
+                int len = stride * b1.Height;
+
+                byte[] bd1scan0bytes = new byte[len];
+                Marshal.Copy(bd1scan0, bd1scan0bytes, 0, len);
+                byte[] bd2scan0bytes = new byte[len];
+                Marshal.Copy(bd2scan0, bd2scan0bytes, 0, len);
+
+                for (int i = 0; i < len; i++)
+                    if (bd1scan0bytes[i] != bd2scan0bytes[i])
+                        return false;
+
+                return true;
+            }
+            finally
+            {
+                b1.UnlockBits(bd1);
+                b2.UnlockBits(bd2);
+            }
         }
         #endregion
 
