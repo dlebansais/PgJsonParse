@@ -117,8 +117,7 @@ namespace PgJsonParse
         public delegate void SetStateHandler(Window window, TaskbarStates taskbarState);
         public static void OnSetState(Window window, TaskbarStates taskbarState)
         {
-            IntPtr windowHandle = new WindowInteropHelper(window).Handle;
-            TaskbarProgress.SetState(windowHandle, taskbarState);
+            TaskbarProgress.SetState(window, taskbarState);
         }
 
         public static void SetValue(Window window, double progressValue, double progressMax)
@@ -129,8 +128,7 @@ namespace PgJsonParse
         public delegate void SetValueHandler(Window window, double progressValue, double progressMax);
         public static void OnSetValue(Window window, double progressValue, double progressMax)
         {
-            IntPtr windowHandle = new WindowInteropHelper(window).Handle;
-            TaskbarProgress.SetValue(windowHandle, progressValue, progressMax);
+            TaskbarProgress.SetValue(window, progressValue, progressMax);
         }
         #endregion
     }

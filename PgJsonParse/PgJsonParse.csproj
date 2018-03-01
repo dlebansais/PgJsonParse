@@ -101,7 +101,7 @@
     <Compile Include="Selectors\Search Result Title Selector.cs" />
     <Compile Include="Selectors\Skill Reward Selector.cs" />
     <Compile Include="Sequence.cs" />
-    <Compile Include="TaskbarProgress.cs" />
+    <Compile Include="Taskbar\TaskbarProgress.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="VersionCheckState.cs" />
     <Compile Include="Controls\BusyIndicator.cs" />

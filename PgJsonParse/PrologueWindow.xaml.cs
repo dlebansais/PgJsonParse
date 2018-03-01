@@ -41,10 +41,10 @@ namespace PgJsonParse
                 InitIcons();
 
                 if (CheckLastVersionOnStartup)
-                    Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckVersionHandler(OnCheckVersion));
+                    Dispatcher.BeginInvoke(new Action(OnCheckVersion));
 
                 else if (CheckNewParserOnStartup)
-                    Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckParserHandler(OnCheckParser));
+                    Dispatcher.BeginInvoke(new Action(OnCheckParser));
 
                 Loaded += OnLoaded;
             }
@@ -136,7 +136,7 @@ namespace PgJsonParse
                     NotifyThisPropertyChanged();
 
                     if (StatusMessage == null && value == true && !IsParserUpdateChecked)
-                        Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckParserHandler(OnCheckParser));
+                        Dispatcher.BeginInvoke(new Action(OnCheckParser));
                 }
             }
         }
@@ -327,7 +327,6 @@ namespace PgJsonParse
         }
         private string _LatestVersion;
 
-        private delegate void CheckVersionHandler();
         private async void OnCheckVersion()
         {
             IsGlobalInteractionEnabled = false;
@@ -413,25 +412,25 @@ namespace PgJsonParse
                     CachedVersionIndex = i;
 
                 if (CheckNewParserOnStartup)
-                    await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckParserHandler(OnCheckParser));
+                    await Dispatcher.BeginInvoke(new Action(OnCheckParser));
 
                 if (DownloadNewVersionsAutomatically)
                 {
                     CachedVersionIndex = VersionList.IndexOf(NewVersion);
-                    await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new DownloadVersionHandler(OnDownloadVersion), NewVersion);
+                    await Dispatcher.BeginInvoke(new DownloadVersionHandler(OnDownloadVersion), NewVersion);
                     return;
                 }
             }
             else
             {
                 if (CheckNewParserOnStartup)
-                    await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckParserHandler(OnCheckParser));
+                    await Dispatcher.BeginInvoke(new Action(OnCheckParser));
 
                 GameVersionInfo VersionInfo = SelectedVersion;
 
                 if (StartAutomatically)
                 {
-                    await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new StartHandler(OnStart), VersionInfo);
+                    await Dispatcher.BeginInvoke(new StartHandler(OnStart), VersionInfo);
                     return;
                 }
             }
@@ -481,10 +480,9 @@ namespace PgJsonParse
 
         private void OnCheckNewParser()
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckParserHandler(OnCheckParser));
+            Dispatcher.BeginInvoke(new Action(OnCheckParser));
         }
 
-        private delegate void CheckParserHandler();
         private async void OnCheckParser()
         {
             IsParserUpdateChecked = true;
@@ -650,7 +648,7 @@ namespace PgJsonParse
 
                 if (StartAutomatically)
                 {
-                    await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new StartHandler(OnStart), VersionInfo);
+                    await Dispatcher.BeginInvoke(new StartHandler(OnStart), VersionInfo);
                     return;
                 }
             }
@@ -1092,7 +1090,7 @@ namespace PgJsonParse
             IsParsingCancelable = false;
             Dlg.Close();
             Dlg = null;
-            await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new DownloadIconsHandler(OnDownloadIcons), VersionInfo);
+            await Dispatcher.BeginInvoke(new DownloadIconsHandler(OnDownloadIcons), VersionInfo);
         }
 
         private CancellationTokenSource ParseCancellationTokenSource;
@@ -1151,7 +1149,7 @@ namespace PgJsonParse
                     File.Copy(SourceFavorIconFile, FavorIconFile, true);
 
                 if (StartAutomatically)
-                    await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new StartHandler(OnStart), VersionInfo);
+                    await Dispatcher.BeginInvoke(new StartHandler(OnStart), VersionInfo);
             }
             else
             {
@@ -1184,7 +1182,6 @@ namespace PgJsonParse
             VersionInfo.CancelDownloadIcons();
         }
 
-        private delegate void IconSharingChangedHandler();
         private void OnIconSharingChanged()
         {
             bool IsSharedIconsDownloaded = false;
@@ -1232,7 +1229,7 @@ namespace PgJsonParse
             LastIconId = null;
             IsIconStateUpdated = false;
 
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new IconSharingChangedHandler(OnIconSharingChanged));
+            Dispatcher.BeginInvoke(new Action(OnIconSharingChanged));
         }
 
         private int LoadedIconCount;
@@ -1249,7 +1246,7 @@ namespace PgJsonParse
         private async void OnCheckVersion(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
-            await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CheckVersionHandler(OnCheckVersion));
+            await Dispatcher.BeginInvoke(new Action(OnCheckVersion));
         }
 
         private void OnSelectVersion(object sender, EventArgs e)
@@ -1267,7 +1264,7 @@ namespace PgJsonParse
         private async void OnDownloadVersion(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
-            await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new DownloadVersionHandler(OnDownloadVersion), VersionInfoFromControl(e));
+            await Dispatcher.BeginInvoke(new DownloadVersionHandler(OnDownloadVersion), VersionInfoFromControl(e));
         }
 
         private void OnCancelDownloadVersion(object sender, EventArgs e)
@@ -1290,7 +1287,7 @@ namespace PgJsonParse
         private async void OnDownloadIcons(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
-            await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new DownloadIconsHandler(OnDownloadIcons), VersionInfoFromControl(e));
+            await Dispatcher.BeginInvoke(new DownloadIconsHandler(OnDownloadIcons), VersionInfoFromControl(e));
         }
 
         private void OnCancelDownloadIcons(object sender, EventArgs e)
@@ -1301,7 +1298,7 @@ namespace PgJsonParse
         private async void OnStart(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarProgress.TaskbarStates.NoProgress);
-            await Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new StartHandler(OnStart), VersionInfoFromControl(e));
+            await Dispatcher.BeginInvoke(new StartHandler(OnStart), VersionInfoFromControl(e));
         }
 
         private void OnCancelStart(object sender, EventArgs e)
@@ -1364,14 +1361,14 @@ namespace PgJsonParse
                 Mouse.Capture(this);
             }
             else
-                Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new ClosePopupsHandler(ClosePopups));
+                Dispatcher.BeginInvoke(new Action(ClosePopups));
         }
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             Mouse.RemoveMouseUpHandler(this, OnMouseUp);
             Mouse.Capture(null);
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new ClosePopupsHandler(ClosePopups));
+            Dispatcher.BeginInvoke(new Action(ClosePopups));
 
             e.Handled = false;
         }
@@ -1388,7 +1385,7 @@ namespace PgJsonParse
 
         private void OnIconSharingChanged(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new IconSharingChangedHandler(OnIconSharingChanged));
+            Dispatcher.BeginInvoke(new Action(OnIconSharingChanged));
         }
 
         private void OnClose(object sender, EventArgs e)

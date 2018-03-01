@@ -924,9 +924,9 @@ namespace PgJsonParse
         private void LoadNextIcon(List<int> MissingIconList, int LoadedCount, int MaxCount, ParseErrorInfo ErrorInfo)
         {
             if (MissingIconList.Count > 0)
-                Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new LoadNextIconHandler(OnLoadNextIcon), MissingIconList, LoadedCount, MaxCount, ErrorInfo);
+                Dispatcher.BeginInvoke(new LoadNextIconHandler(OnLoadNextIcon), MissingIconList, LoadedCount, MaxCount, ErrorInfo);
             else
-                Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CompleteLoadingHandler(OnCompleteLoading), ErrorInfo);
+                Dispatcher.BeginInvoke(new CompleteLoadingHandler(OnCompleteLoading), ErrorInfo);
         }
 
         private delegate void LoadNextIconHandler(List<int> MissingIconList, int LoadedCount, int MaxCount, ParseErrorInfo ErrorInfo);
@@ -2152,7 +2152,7 @@ namespace PgJsonParse
                 if (IsCombatSkill(SkillItem))
                         CombatSkillList.Add(SkillItem);
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new CrunchSkillsHandler(OnCrunchSkills), CombatSkillList, 0, 0);
+            Dispatcher.BeginInvoke(new CrunchSkillsHandler(OnCrunchSkills), CombatSkillList, 0, 0);
         }
 
         private delegate void CrunchSkillsHandler(List<Skill> CombatSkillList, int i, int j);
@@ -2176,9 +2176,9 @@ namespace PgJsonParse
             }
 
             if (j + 1 < CombatSkillList.Count)
-                Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CrunchSkillsHandler(OnCrunchSkills), CombatSkillList, i, j + 1);
+                Dispatcher.BeginInvoke(new CrunchSkillsHandler(OnCrunchSkills), CombatSkillList, i, j + 1);
             else if (i + 1 < CombatSkillList.Count)
-                Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new CrunchSkillsHandler(OnCrunchSkills), CombatSkillList, i + 1, 0);
+                Dispatcher.BeginInvoke(new CrunchSkillsHandler(OnCrunchSkills), CombatSkillList, i + 1, 0);
             else
                 IsCrunching = false;
         }
