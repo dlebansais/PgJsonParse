@@ -19,7 +19,6 @@
         <conv:EnumToObjectConverter x:Key="convEnumToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
         <conv:IntToObjectConverter x:Key="convIntToObject"/>
-        <conv:AndConverter x:Key="convAnd"/>
         <sys:Double x:Key="Column0">20</sys:Double>
         <sys:Double x:Key="Column1">50</sys:Double>
         <sys:Double x:Key="Column2">210</sys:Double>
@@ -951,13 +950,7 @@
                                 </Grid.RowDefinitions>
                                 <CheckBox Grid.Row="0" IsChecked="{Binding KeepRecentVersions}" Margin="0,0,0,0">Keep all downloaded versions</CheckBox>
                                 <CheckBox x:Name="checkShareIcons" Grid.Row="1" IsChecked="{Binding ShareIconFiles}" Checked="OnIconSharingChanged" Unchecked="OnIconSharingChanged" Margin="0,10,0,0">Share icons between versions</CheckBox>
-                                <Button Grid.Row="2" Grid.RowSpan="3" Command="{StaticResource DeleteIconsCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="20,10,0,0">
-                                    <Button.IsEnabled>
-                                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource FalseTrue}">
-                                            <Binding Path="IsGlobalInteractionEnabled"/>
-                                            <Binding ElementName="checkShareIcons" Path="IsChecked"/>
-                                        </MultiBinding>
-                                    </Button.IsEnabled>
+                                <Button Grid.Row="2" Grid.RowSpan="3" Command="{StaticResource DeleteIconsCommand}" IsEnabled="{Binding CanDeleteSharedIcons}" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="20,10,0,0">
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                             <Image Source="{StaticResource imgRecycle}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>

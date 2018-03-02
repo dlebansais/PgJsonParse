@@ -59,7 +59,6 @@
     </ApplicationDefinition>
     <Compile Include="Commands\ApplicationCommand.cs" />
     <Compile Include="Commands\ExecutedEventArgs.cs" />
-    <Compile Include="Converters\And Converter.cs" />
     <Compile Include="Converters\Boolean To Object Converter.cs" />
     <Compile Include="Converters\Constant Converter.cs" />
     <Compile Include="Converters\Double Converter.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="Converters\Null To Object Converter.cs" />
     <Compile Include="Converters\Nullable Int Converter.cs" />
     <Compile Include="Converters\NullableBooleanToObjectConverter.cs" />
-    <Compile Include="Converters\Or Converter.cs" />
     <Compile Include="Converters\Replace Macro Converter.cs" />
     <Compile Include="Converters\Rgb Color To Brush Converter.cs" />
     <Compile Include="Crunch\Crunch Selection.cs" />

@@ -20,8 +20,6 @@
         <conv:DoubleConverter x:Key="convDouble"/>
         <conv:RgbColorToBrushConverter x:Key="convRgbColorToBrush"/>
         <conv:ReplaceMacroConverter x:Key="convReplaceMacro"/>
-        <conv:AndConverter x:Key="convAnd"/>
-        <conv:OrConverter x:Key="convOr"/>
         <conv:NullableIntToTimeConverter x:Key="convNullableIntToTime"/>
         <conv:MultiStringConverter x:Key="convMultiString"/>
         <conv:ConstantConverter x:Key="convConstant"/>

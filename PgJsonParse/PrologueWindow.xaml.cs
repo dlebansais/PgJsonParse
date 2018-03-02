@@ -85,6 +85,7 @@ namespace PgJsonParse
                 {
                     _IsGlobalInteractionEnabled = value;
                     NotifyThisPropertyChanged();
+                    NotifyPropertyChanged(nameof(CanDeleteSharedIcons));
                 }
             }
         }
@@ -118,10 +119,29 @@ namespace PgJsonParse
         }
         private bool _ShowDeleteButton;
 
+        public bool ShareIconFiles
+        {
+            get { return _ShareIconFiles; }
+            set
+            {
+                if (_ShareIconFiles != value)
+                {
+                    _ShareIconFiles = value;
+                    NotifyThisPropertyChanged();
+                    NotifyPropertyChanged(nameof(CanDeleteSharedIcons));
+                }
+            }
+        }
+        private bool _ShareIconFiles;
+
+        public bool CanDeleteSharedIcons
+        {
+            get { return ShareIconFiles && IsGlobalInteractionEnabled; }
+        }
+
         public bool CheckLastVersionOnStartup { get; set; }
         public bool DownloadNewVersionsAutomatically { get; set; }
         public int DefaultSelectedVersion { get; set; }
-        public bool ShareIconFiles { get; set; }
         public bool KeepRecentVersions { get; set; }
         public bool StartAutomatically { get; set; }
         public int LastSelectedSetting { get; set; }
