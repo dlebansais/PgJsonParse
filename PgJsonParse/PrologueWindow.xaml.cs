@@ -1339,7 +1339,7 @@ namespace PgJsonParse
 
         private void OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            System.Diagnostics.Process.Start(ReleasePageAddress);
+            Process.Start(ReleasePageAddress);
         }
 
         private void OnFileDownloadProgressChanged(object sender, EventArgs e)
