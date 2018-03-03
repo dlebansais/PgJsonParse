@@ -547,27 +547,27 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="AppearanceAbilityRequirementTemplate">
-            <DataTemplate.Resources>
-                <DataTemplate x:Key="ItemTemplateFirst">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock>Look like</TextBlock>
-                        <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate x:Key="ItemTemplate">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock>,</TextBlock>
-                        <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate x:Key="ItemTemplateLast">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5,0,0,0">or</TextBlock>
-                        <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </DataTemplate.Resources>
             <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplateFirst">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>Look like</TextBlock>
+                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>,</TextBlock>
+                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,0,0,0">or</TextBlock>
+                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
                 <StackPanel Visibility="{Binding AppearanceList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisibleCollapsed}, FallbackValue=Collapsed}" Orientation="Horizontal">
                     <TextBlock Text="Look like"/>
                     <TextBlock Text="{Binding AppearanceList[0], Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -657,21 +657,21 @@
             <TextBlock>Is Vegetarian</TextBlock>
         </DataTemplate>
         <DataTemplate x:Key="OrAbilityRequirementTemplate">
-            <DataTemplate.Resources>
-                <DataTemplate x:Key="ItemTemplateFirst">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Visibility="Hidden">or</TextBlock>
-                        <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource selTypeToTemplateName}" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate x:Key="ItemTemplate">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock>or</TextBlock>
-                        <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource selTypeToTemplateName}" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </DataTemplate.Resources>
             <StackPanel>
+                <StackPanel.Resources>
+                    <DataTemplate x:Key="ItemTemplateFirst">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Visibility="Hidden">or</TextBlock>
+                            <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource selTypeToTemplateName}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>or</TextBlock>
+                            <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource selTypeToTemplateName}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </StackPanel.Resources>
                 <ItemsControl ItemsSource="{Binding OrList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}"/>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <TextBlock>Error Message:</TextBlock>
@@ -687,27 +687,27 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="RaceAbilityRequirementTemplate">
-            <DataTemplate.Resources>
-                <DataTemplate x:Key="ItemTemplateFirst">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock>Be</TextBlock>
-                        <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate x:Key="ItemTemplate">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock>,</TextBlock>
-                        <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate x:Key="ItemTemplateLast">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5,0,0,0">or</TextBlock>
-                        <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </DataTemplate.Resources>
             <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplateFirst">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>Be</TextBlock>
+                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>,</TextBlock>
+                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,0,0,0">or</TextBlock>
+                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
                 <StackPanel Visibility="{Binding AllowedRaceList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisibleCollapsed}, FallbackValue=Collapsed}" Orientation="Horizontal">
                     <TextBlock Text="Be"/>
                     <TextBlock Text="{Binding AllowedRaceList[0], Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -1639,81 +1639,87 @@
             </Expander>
         </DataTemplate>
         <DataTemplate x:Key="OrQuestRequirementTemplate">
-            <DataTemplate.Resources>
-                <DataTemplate x:Key="ItemTemplateFirst">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Visibility="Hidden">or</TextBlock>
-                        <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource selTypeToTemplateName}" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate x:Key="ItemTemplate">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock>or</TextBlock>
-                        <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource selTypeToTemplateName}" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </DataTemplate.Resources>
-            <ItemsControl ItemsSource="{Binding OrList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}"/>
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplateFirst">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Visibility="Hidden">or</TextBlock>
+                            <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource selTypeToTemplateName}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>or</TextBlock>
+                            <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource selTypeToTemplateName}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <ItemsControl ItemsSource="{Binding OrList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}"/>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="GuildQuestCompletedQuestRequirementTemplate">
-            <DataTemplate.Resources>
-                <DataTemplate x:Key="ItemTemplate">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock TextWrapping="Wrap">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
                                 <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                             </Hyperlink>
                         </TextBlock>
-                        <TextBlock Margin="0,0,5,0">,</TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate x:Key="ItemTemplateLast">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
                                 <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                             </Hyperlink>
                         </TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-            </DataTemplate.Resources>
-            <ItemsControl ItemsSource="{Binding QuestList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <ItemsControl ItemsSource="{Binding QuestList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="QuestCompletedQuestRequirementTemplate">
-            <DataTemplate.Resources>
-                <DataTemplate x:Key="ItemTemplate">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock TextWrapping="Wrap">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="ItemTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
                                 <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                             </Hyperlink>
                         </TextBlock>
-                        <TextBlock Margin="0,0,5,0">,</TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate x:Key="ItemTemplateLast">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock Margin="0,0,5,0">,</TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ItemTemplateLast">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap">
                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
                                 <TextBlock Text="{Binding Name, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                             </Hyperlink>
                         </TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-            </DataTemplate.Resources>
-            <ItemsControl ItemsSource="{Binding QuestList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <ItemsControl ItemsSource="{Binding QuestList, FallbackValue={x:Null}}" ItemTemplateSelector="{StaticResource selListMember}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="HasEffectKeywordQuestRequirementTemplate">
             <StackPanel Orientation="Horizontal">
