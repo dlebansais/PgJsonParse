@@ -20,12 +20,25 @@
         <conv:DoubleConverter x:Key="convDouble"/>
         <conv:RgbColorToBrushConverter x:Key="convRgbColorToBrush"/>
         <conv:ReplaceMacroConverter x:Key="convReplaceMacro"/>
-        <conv:NullableIntToTimeConverter x:Key="convNullableIntToTime"/>
-        <conv:MultiStringConverter x:Key="convMultiString"/>
-        <conv:ConstantConverter x:Key="convConstant"/>
         <conv:NullableTimeSpanToDurationConverter x:Key="convNullableTimeSpanToDuration"/>
-        <conv:IsEnumInSetConverter x:Key="convIsEnumInSet"/>
-        <conv:IntThresholdConverter x:Key="convIntThreshold"/>
+        <conv:ValueConverterGroup x:Key="convchainIsEnumInSetVisibility">
+            <conv:IsEnumInSetConverter/>
+            <conv:BooleanToVisibilityConverter/>
+        </conv:ValueConverterGroup>
+        <conv:ValueConverterGroup x:Key="convchainNotIsEnumInSetVisibility">
+            <conv:IsEnumInSetConverter/>
+            <conv:BooleanInvertedConverter/>
+            <conv:BooleanToVisibilityConverter/>
+        </conv:ValueConverterGroup>
+        <conv:ValueConverterGroup x:Key="convchainIntThresholdVisibility">
+            <conv:IntThresholdConverter/>
+            <conv:BooleanToVisibilityConverter/>
+        </conv:ValueConverterGroup>
+        <conv:ValueConverterGroup x:Key="convchainNotIntThresholdVisibility">
+            <conv:IntThresholdConverter/>
+            <conv:BooleanInvertedConverter/>
+            <conv:BooleanToVisibilityConverter/>
+        </conv:ValueConverterGroup>
         <app:ItemEffectGearSelector x:Key="selItemEffectGear"/>
         <app:LinkBackSelector x:Key="selLinkBack"/>
         <app:ListMemberSelector x:Key="selListMember"/>
@@ -33,54 +46,54 @@
         <app:SearchResultContentSelector x:Key="selSearchResultContent"/>
         <app:SkillRewardSelector x:Key="selSkillReward"/>
         <app:TypeToTemplateNameSelector x:Key="selTypeToTemplateName"/>
-        <CompositeCollection x:Key="VisibleHidden">
+        <app:CustomCompositeCollection x:Key="VisibleHidden">
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="HiddenVisible">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="HiddenVisible">
             <Visibility>Hidden</Visibility>
             <Visibility>Visible</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="VisibleCollapsed">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="CollapsedVisible">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="CollapsedVisible">
             <Visibility>Collapsed</Visibility>
             <Visibility>Visible</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="CollapsedVisibleCollapsed">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="CollapsedVisibleCollapsed">
             <Visibility>Collapsed</Visibility>
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="CollapsedCollapsedVisible">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="CollapsedCollapsedVisible">
             <Visibility>Collapsed</Visibility>
             <Visibility>Collapsed</Visibility>
             <Visibility>Visible</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="NoYes">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="NoYes">
             <sys:String>No</sys:String>
             <sys:String>Yes</sys:String>
-        </CompositeCollection>
-        <CompositeCollection x:Key="NoYesNull">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="NoYesNull">
             <sys:String>No</sys:String>
             <sys:String>Yes</sys:String>
             <x:Static Member="sys:String.Empty"/>
-        </CompositeCollection>
-        <CompositeCollection x:Key="ModColorCodes">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="ModColorCodes">
             <SolidColorBrush>White</SolidColorBrush>
             <SolidColorBrush>Lime</SolidColorBrush>
             <SolidColorBrush>Cyan</SolidColorBrush>
             <SolidColorBrush>#E68080</SolidColorBrush>
             <SolidColorBrush>Magenta</SolidColorBrush>
             <SolidColorBrush>Yellow</SolidColorBrush>
-        </CompositeCollection>
-        <CompositeCollection x:Key="FalseTrue">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="FalseTrue">
             <sys:Boolean>False</sys:Boolean>
             <sys:Boolean>True</sys:Boolean>
-        </CompositeCollection>
-        <CompositeCollection x:Key="RecipeItemKey_EquipmentSlot">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="RecipeItemKey_EquipmentSlot">
             <obj:RecipeItemKey>EquipmentSlot_MainHand</obj:RecipeItemKey>
             <obj:RecipeItemKey>EquipmentSlot_OffHand</obj:RecipeItemKey>
             <obj:RecipeItemKey>EquipmentSlot_Hands</obj:RecipeItemKey>
@@ -90,25 +103,41 @@
             <obj:RecipeItemKey>EquipmentSlot_Feet</obj:RecipeItemKey>
             <obj:RecipeItemKey>EquipmentSlot_Ring</obj:RecipeItemKey>
             <obj:RecipeItemKey>EquipmentSlot_Necklace</obj:RecipeItemKey>
-        </CompositeCollection>
-        <CompositeCollection x:Key="RecipeItemKey_Rarity">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="RecipeItemKey_Rarity">
             <obj:RecipeItemKey>Rarity_Common</obj:RecipeItemKey>
             <obj:RecipeItemKey>Rarity_Uncommon</obj:RecipeItemKey>
             <obj:RecipeItemKey>Rarity_Rare</obj:RecipeItemKey>
-        </CompositeCollection>
-        <CompositeCollection x:Key="RecipeItemKey_MinRarityUncommon">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="RecipeItemKey_MinRarityUncommon">
             <obj:RecipeItemKey>MinRarity_Uncommon</obj:RecipeItemKey>
-        </CompositeCollection>
-        <CompositeCollection x:Key="RecipeItemKey_MinRarityRare">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="RecipeItemKey_MinRarityRare">
             <obj:RecipeItemKey>MinRarity_Rare</obj:RecipeItemKey>
-        </CompositeCollection>
-        <CompositeCollection x:Key="RecipeItemKey_MinRarityExceptional">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="RecipeItemKey_MinRarityExceptional">
             <obj:RecipeItemKey>MinRarity_Exceptional</obj:RecipeItemKey>
-        </CompositeCollection>
-        <CompositeCollection x:Key="GreenRed">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="RecipeItemKey_AnyMagical">
+            <obj:RecipeItemKey>EquipmentSlot_MainHand</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_OffHand</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Hands</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Chest</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Legs</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Head</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Feet</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Ring</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Necklace</obj:RecipeItemKey>
+            <obj:RecipeItemKey>Rarity_Common</obj:RecipeItemKey>
+            <obj:RecipeItemKey>Rarity_Uncommon</obj:RecipeItemKey>
+            <obj:RecipeItemKey>Rarity_Rare</obj:RecipeItemKey>
+            <obj:RecipeItemKey>MinRarity_Uncommon</obj:RecipeItemKey>
+            <obj:RecipeItemKey>MinRarity_Exceptional</obj:RecipeItemKey>
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="GreenRed">
             <SolidColorBrush>Green</SolidColorBrush>
             <SolidColorBrush>Red</SolidColorBrush>
-        </CompositeCollection>
+        </app:CustomCompositeCollection>
         <CroppedBitmap x:Key="imgRedo" Source="pack://application:,,,/Resources/redo.png"/>
         <CroppedBitmap x:Key="imgUndo" Source="pack://application:,,,/Resources/undo.png"/>
         <CroppedBitmap x:Key="imgAttuned" Source="pack://application:,,,/Resources/Locked.png"/>
@@ -764,23 +793,7 @@
                         <TextBlock>)</TextBlock>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" FontStyle="Italic">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                        </MultiBinding>
-                    </TextBlock.Visibility>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource convMultiString}">
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
-                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveKillTemplate">
@@ -830,23 +843,7 @@
                         <TextBlock>)</TextBlock>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" FontStyle="Italic">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                        </MultiBinding>
-                    </TextBlock.Visibility>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource convMultiString}">
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
-                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveMultipleInteractionFlagsTemplate">
@@ -917,23 +914,7 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                        </MultiBinding>
-                    </TextBlock.Visibility>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource convMultiString}">
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
-                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveGuildGiveItemTemplate">
@@ -963,23 +944,7 @@
         <DataTemplate x:Key="QuestObjectiveInteractionFlagTemplate">
             <WrapPanel>
                 <TextBlock Text="{Binding Description}" Margin="0,0,5,0"/>
-                <TextBlock TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                        </MultiBinding>
-                    </TextBlock.Visibility>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource convMultiString}">
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
-                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveGiveGiftTemplate">
@@ -995,23 +960,7 @@
                     <TextBlock Text="{Binding MaxFavorReceived}" Margin="5,0,0,0"/>
                     <TextBlock>)</TextBlock>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                        </MultiBinding>
-                    </TextBlock.Visibility>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource convMultiString}">
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
-                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveUseRecipeTemplate">
@@ -1055,23 +1004,7 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                        </MultiBinding>
-                    </TextBlock.Visibility>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource convMultiString}">
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
-                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveUseAbilityTemplate">
@@ -1103,23 +1036,7 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                        </MultiBinding>
-                    </TextBlock.Visibility>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource convMultiString}">
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
-                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveAnatomyTemplate">
@@ -1147,23 +1064,7 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                        </MultiBinding>
-                    </TextBlock.Visibility>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource convMultiString}">
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
-                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveLootTemplate">
@@ -1209,23 +1110,7 @@
                         <TextBlock VerticalAlignment="Center">)</TextBlock>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                            <Binding Path="MinHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullToObject}" ConverterParameter="{StaticResource FalseTrue}" FallbackValue="False"/>
-                        </MultiBinding>
-                    </TextBlock.Visibility>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource convMultiString}">
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter="(this step must be completed between "/>
-                            <Binding Path="MinHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=" and "/>
-                            <Binding Path="MaxHour" Converter="{StaticResource convNullableIntToTime}"/>
-                            <Binding Converter="{StaticResource convConstant}" ConverterParameter=")"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveScriptedReceiveItemTemplate">
@@ -1275,18 +1160,14 @@
                     <Grid Visibility="{Binding Item, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Visibility>
-                                <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="False"/>
-                                </MultiBinding>
+                                <Binding Path="ItemKeyList" Converter="{StaticResource convchainIsEnumInSetVisibility}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="Collapsed"/>
                             </StackPanel.Visibility>
                             <TextBlock>Any</TextBlock>
                             <TextBlock Text="{Binding ItemKeyList, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Visibility>
-                                <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="False"/>
-                                </MultiBinding>
+                                <Binding Path="ItemKeyList" Converter="{StaticResource convchainIsEnumInSetVisibility}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="Collapsed"/>
                             </StackPanel.Visibility>
                             <TextBlock>Any</TextBlock>
                             <TextBlock Text="{Binding ItemKeyList, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
@@ -1294,43 +1175,30 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Visibility>
-                                <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityUncommon}" FallbackValue="False"/>
-                                </MultiBinding>
+                                <Binding Path="ItemKeyList" Converter="{StaticResource convchainIsEnumInSetVisibility}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityUncommon}" FallbackValue="Collapsed"/>
                             </StackPanel.Visibility>
                             <TextBlock>Any magical item</TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Visibility>
-                                <MultiBinding Converter="{StaticResource convAnd}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityExceptional}" FallbackValue="False"/>
-                                </MultiBinding>
+                                <Binding Path="ItemKeyList" Converter="{StaticResource convchainIsEnumInSetVisibility}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityExceptional}" FallbackValue="Collapsed"/>
                             </StackPanel.Visibility>
                             <TextBlock>Any exceptional item or better</TextBlock>
                         </StackPanel>
                         <Grid>
                             <Grid.Visibility>
-                                <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource VisibleCollapsed}" FallbackValue="Visible">
-                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="False"/>
-                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="False"/>
-                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityUncommon}" FallbackValue="False"/>
-                                    <Binding Path="ItemKeyList" Converter="{StaticResource convIsEnumInSet}" ConverterParameter="{StaticResource RecipeItemKey_MinRarityExceptional}" FallbackValue="False"/>
-                                </MultiBinding>
+                                <Binding Path="ItemKeyList" Converter="{StaticResource convchainNotIsEnumInSetVisibility}" ConverterParameter="{StaticResource RecipeItemKey_AnyMagical}" FallbackValue="False"/>
                             </Grid.Visibility>
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel.Visibility>
-                                    <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Collapsed">
-                                        <Binding Path="MatchingKeyItemList.Count" Converter="{StaticResource convIntThreshold}" ConverterParameter="10" FallbackValue="False"/>
-                                    </MultiBinding>
+                                    <Binding Path="MatchingKeyItemList.Count" Converter="{StaticResource convchainIntThresholdVisibility}" ConverterParameter="10" FallbackValue="False"/>
                                 </StackPanel.Visibility>
                                 <TextBlock>Any</TextBlock>
                                 <TextBlock Text="{Binding ItemKeyList, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
                             </StackPanel>
                             <Grid>
                                 <Grid.Visibility>
-                                    <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource VisibleCollapsed}" FallbackValue="Visible">
-                                        <Binding Path="MatchingKeyItemList.Count" Converter="{StaticResource convIntThreshold}" ConverterParameter="10" FallbackValue="False"/>
-                                    </MultiBinding>
+                                    <Binding Path="MatchingKeyItemList.Count" Converter="{StaticResource convchainNotIntThresholdVisibility}" ConverterParameter="10" FallbackValue="False"/>
                                 </Grid.Visibility>
                                 <Grid.Resources>
                                     <DataTemplate x:Key="ItemTemplateFirst">
@@ -1648,9 +1516,7 @@
             <StackPanel>
                 <Grid>
                     <Grid.Visibility>
-                        <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible">
-                            <Binding Path="GiveItemList.Count" Converter="{StaticResource convIntThreshold}" ConverterParameter="1"/>
-                        </MultiBinding>
+                        <Binding Path="GiveItemList.Count" Converter="{StaticResource convchainIntThresholdVisibility}" ConverterParameter="1" FallbackValue="False"/>
                     </Grid.Visibility>
                     <Grid.Resources>
                         <DataTemplate x:Key="ItemTemplate">
@@ -1695,9 +1561,7 @@
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.Visibility>
-                        <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible">
-                            <Binding Path="RequiredHotspot" Converter="{StaticResource convIntThreshold}" ConverterParameter="1" FallbackValue="False"/>
-                        </MultiBinding>
+                        <Binding Path="RequiredHotspot" Converter="{StaticResource convchainIntThresholdVisibility}" ConverterParameter="1" FallbackValue="False"/>
                     </Grid.Visibility>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="110"/>
@@ -1708,9 +1572,7 @@
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.Visibility>
-                        <MultiBinding Converter="{StaticResource convOr}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible">
-                            <Binding Path="OtherRequirementList.Count" Converter="{StaticResource convIntThreshold}" ConverterParameter="1" FallbackValue="False"/>
-                        </MultiBinding>
+                        <Binding Path="OtherRequirementList.Count" Converter="{StaticResource convchainIntThresholdVisibility}" ConverterParameter="1" FallbackValue="False"/>
                     </Grid.Visibility>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="110"/>

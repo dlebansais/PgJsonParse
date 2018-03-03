@@ -60,7 +60,8 @@
     <Compile Include="Commands\ApplicationCommand.cs" />
     <Compile Include="Commands\ExecutedEventArgs.cs" />
     <Compile Include="Converters\Boolean To Object Converter.cs" />
-    <Compile Include="Converters\Constant Converter.cs" />
+    <Compile Include="Converters\BooleanInvertedConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\Double Converter.cs" />
     <Compile Include="Converters\Enum To Text Converter.cs" />
     <Compile Include="Converters\EnumToIntConverter.cs" />
@@ -72,9 +73,7 @@
     <Compile Include="Converters\Int Threshold Converter.cs" />
     <Compile Include="Converters\Int To Object Converter.cs" />
     <Compile Include="Converters\Is Enum In Set Converter.cs" />
-    <Compile Include="Converters\Multi String Converter.cs" />
     <Compile Include="Converters\Nullable TimeSpan To Duration Converter.cs" />
-    <Compile Include="Converters\Nullable Int To Time Converter.cs" />
     <Compile Include="Converters\Null To Object Converter.cs" />
     <Compile Include="Converters\Nullable Int Converter.cs" />
     <Compile Include="Converters\NullableBooleanToObjectConverter.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="Converters\Rgb Color To Brush Converter.cs" />
     <Compile Include="Crunch\Crunch Selection.cs" />
     <Compile Include="Crunch\Crunch Target.cs" />
+    <Compile Include="CustomCompositeCollection.cs" />
     <Compile Include="DownloadState.cs" />
     <Compile Include="GameVersionInfo.cs" />
     <Compile Include="MissingIconsAction.cs" />
@@ -102,6 +102,7 @@
     <Compile Include="Taskbar\TaskbarProgress.cs" />
     <Compile Include="Taskbar\TaskbarStates.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="VersionCheckState.cs" />
     <Compile Include="Controls\BusyIndicator.cs" />
     <Page Include="Commands\GlobalCommands.xaml">

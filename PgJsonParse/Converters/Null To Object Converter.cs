@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PgJsonParse;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -9,7 +10,7 @@ namespace Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            CompositeCollection CollectionOfItems = parameter as CompositeCollection;
+            CustomCompositeCollection CollectionOfItems = parameter as CustomCompositeCollection;
             return CollectionOfItems[value == null ? 0 : 1];
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PgJsonParse;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -16,7 +17,7 @@ namespace Converters
             else
                 IntValue = ((bool)value) ? 1 : 0;
 
-            CompositeCollection CollectionOfItems = parameter as CompositeCollection;
+            CustomCompositeCollection CollectionOfItems = parameter as CustomCompositeCollection;
 
             return CollectionOfItems[IntValue];
         }

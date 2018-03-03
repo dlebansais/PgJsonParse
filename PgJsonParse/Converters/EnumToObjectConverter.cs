@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PgJsonParse;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -13,7 +14,7 @@ namespace Converters
         public object Convert(object value, Type target_type, object parameter, CultureInfo culture)
         {
             int EnumValue = (int)value;
-            CompositeCollection ObjectList = parameter as CompositeCollection;
+            CustomCompositeCollection ObjectList = parameter as CustomCompositeCollection;
             return ObjectList[EnumValue];
         }
 

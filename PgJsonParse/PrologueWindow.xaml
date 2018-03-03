@@ -29,141 +29,141 @@
         <sys:Double x:Key="AllColumns">400</sys:Double>
         <sys:Double x:Key="AllColumnsAndMargin">426</sys:Double>
         <sys:Double x:Key="AllColumnsAndButton">451</sys:Double>
-        <CompositeCollection x:Key="VisibleHidden">
+        <app:CustomCompositeCollection x:Key="VisibleHidden">
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="HiddenVisible">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="HiddenVisible">
             <Visibility>Hidden</Visibility>
             <Visibility>Visible</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="VisibleCollapsed">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="CollapsedVisible">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="CollapsedVisible">
             <Visibility>Collapsed</Visibility>
             <Visibility>Visible</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="HiddenHiddenVisible">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="HiddenHiddenVisible">
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Visible</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="VersionCheckState_Unchecked">
-            <Visibility>Visible</Visibility>
-            <Visibility>Hidden</Visibility>
-            <Visibility>Hidden</Visibility>
-            <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="VersionCheckState_Checking">
-            <Visibility>Hidden</Visibility>
-            <Visibility>Visible</Visibility>
-            <Visibility>Hidden</Visibility>
-            <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="VersionCheckState_CheckFailed">
-            <Visibility>Hidden</Visibility>
-            <Visibility>Hidden</Visibility>
-            <Visibility>Visible</Visibility>
-            <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="VersionCheckState_Known">
-            <Visibility>Hidden</Visibility>
-            <Visibility>Hidden</Visibility>
-            <Visibility>Hidden</Visibility>
-            <Visibility>Visible</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="VersionCheckState_Checkable">
-            <Visibility>Visible</Visibility>
-            <Visibility>Hidden</Visibility>
-            <Visibility>Visible</Visibility>
-            <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="DownloadState_NotDownloaded">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="VersionCheckState_Unchecked">
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="VersionCheckState_Checking">
             <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="DownloadState_Downloading">
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="VersionCheckState_CheckFailed">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="VersionCheckState_Known">
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="VersionCheckState_Checkable">
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="DownloadState_NotDownloaded">
+            <Visibility>Visible</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+            <Visibility>Hidden</Visibility>
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="DownloadState_Downloading">
             <Visibility>Hidden</Visibility>
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="DownloadState_FailedToDownload">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="DownloadState_FailedToDownload">
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="DownloadState_DownloadCanceled">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="DownloadState_DownloadCanceled">
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="DownloadState_Downloaded">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="DownloadState_Downloaded">
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Visible</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="DownloadState_Downloadable">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="DownloadState_Downloadable">
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>
             <Visibility>Visible</Visibility>
             <Visibility>Visible</Visibility>
             <Visibility>Hidden</Visibility>
-        </CompositeCollection>
-        <CompositeCollection x:Key="YellowGreen">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="YellowGreen">
             <SolidColorBrush>#EDDE3F</SolidColorBrush>
             <SolidColorBrush>#39AA56</SolidColorBrush>
-        </CompositeCollection>
-        <CompositeCollection x:Key="VersionCheckState_Color">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="VersionCheckState_Color">
             <SolidColorBrush>DarkGray</SolidColorBrush>
             <SolidColorBrush>#EDDE3F</SolidColorBrush>
             <SolidColorBrush>#DB4545</SolidColorBrush>
             <SolidColorBrush>#39AA56</SolidColorBrush>
-        </CompositeCollection>
-        <CompositeCollection x:Key="GlobalDownloadState_Color">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="GlobalDownloadState_Color">
             <SolidColorBrush>DarkGray</SolidColorBrush>
             <SolidColorBrush>#EDDE3F</SolidColorBrush>
             <SolidColorBrush>#DB4545</SolidColorBrush>
             <SolidColorBrush>DarkGray</SolidColorBrush>
             <SolidColorBrush>#39AA56</SolidColorBrush>
-        </CompositeCollection>
-        <CompositeCollection x:Key="GlobalDownloadState_VersionColor">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="GlobalDownloadState_VersionColor">
             <SolidColorBrush>Black</SolidColorBrush>
             <SolidColorBrush>Black</SolidColorBrush>
             <SolidColorBrush>Black</SolidColorBrush>
             <SolidColorBrush>Black</SolidColorBrush>
             <SolidColorBrush>#39AA56</SolidColorBrush>
-        </CompositeCollection>
-        <CompositeCollection x:Key="GlobalDownloadState_StartColor">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="GlobalDownloadState_StartColor">
             <SolidColorBrush>DarkGray</SolidColorBrush>
             <SolidColorBrush>DarkGray</SolidColorBrush>
             <SolidColorBrush>DarkGray</SolidColorBrush>
             <SolidColorBrush>DarkGray</SolidColorBrush>
             <SolidColorBrush>#39AA56</SolidColorBrush>
-        </CompositeCollection>
-        <CompositeCollection x:Key="GlobalDownloadState_ParsingColor">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="GlobalDownloadState_ParsingColor">
             <SolidColorBrush>#EDDE3F</SolidColorBrush>
             <SolidColorBrush>#EDDE3F</SolidColorBrush>
             <SolidColorBrush>#EDDE3F</SolidColorBrush>
             <SolidColorBrush>#EDDE3F</SolidColorBrush>
             <SolidColorBrush>#39AA56</SolidColorBrush>
-        </CompositeCollection>
-        <CompositeCollection x:Key="FalseTrue">
+        </app:CustomCompositeCollection>
+        <app:CustomCompositeCollection x:Key="FalseTrue">
             <sys:Boolean>False</sys:Boolean>
             <sys:Boolean>True</sys:Boolean>
-        </CompositeCollection>
+        </app:CustomCompositeCollection>
         <BitmapImage x:Key="imgRecycle" UriSource="pack://application:,,,/Resources/recycle.png"/>
         <BitmapImage x:Key="imgIconInfo" UriSource="pack://application:,,,/Resources/icon_info.png"/>
         <BitmapImage x:Key="imgCancel" UriSource="pack://application:,,,/Resources/cancel.png"/>

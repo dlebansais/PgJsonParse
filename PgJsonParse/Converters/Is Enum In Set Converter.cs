@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PgJsonParse;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,7 +24,7 @@ namespace Converters
             else
                 EnumList.Add((int)value);
 
-            CompositeCollection CollectionOfItems = parameter as CompositeCollection;
+            CustomCompositeCollection CollectionOfItems = parameter as CustomCompositeCollection;
 
             foreach (object Item in CollectionOfItems)
             {
