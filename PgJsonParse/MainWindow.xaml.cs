@@ -16,7 +16,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -39,9 +38,7 @@ namespace PgJsonParse
             DataContext = this;
 
             InitStartupPage();
-            InitOperations();
             InitCache();
-            InitLoad();
             InitBuildPlaner();
             InitGearPlaner();
             InitSearch();
@@ -52,9 +49,6 @@ namespace PgJsonParse
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ApplicationCommand.SubscribeToGlobalCommand("StartApplicationCommand", OnStartApplication);
-            ApplicationCommand.SubscribeToGlobalCommand("ClearVersionListCommand", OnClearVersionList);
-            ApplicationCommand.SubscribeToGlobalCommand("CancelCommand", OnCancel);
             ApplicationCommand.SubscribeToGlobalCommand("AddPowerCommand", OnAddPower);
             ApplicationCommand.SubscribeToGlobalCommand("RemovePowerCommand", OnRemovePower);
             ApplicationCommand.SubscribeToGlobalCommand("LoadBuildCommand", OnLoadBuild);
@@ -75,104 +69,39 @@ namespace PgJsonParse
         public string IconFile { get; set; }
         public string FavorIconFile { get; set; }
         public ImageSource FavorIcon { get; private set; }
+
+        public GameVersionInfo LoadedVersion
+        {
+            get { return _LoadedVersion; }
+            set
+            {
+                if (_LoadedVersion != value)
+                {
+                    _LoadedVersion = value;
+                    NotifyThisPropertyChanged();
+                }
+            }
+        }
+        public GameVersionInfo _LoadedVersion;
+
+        public string WarningText
+        {
+            get { return _WarningText; }
+            set
+            {
+                if (_WarningText != value)
+                {
+                    _WarningText = value;
+                    NotifyThisPropertyChanged();
+                }
+            }
+        }
+        public string _WarningText;
         #endregion
 
         #region Startup Page
-        public ProgramState ProgramState
-        {
-            get { return _ProgramState; }
-            set
-            {
-                if (_ProgramState != value)
-                {
-                    _ProgramState = value;
-                    NotifyThisPropertyChanged();
-                    NotifyPropertyChanged("IsAtStartup");
-                    NotifyPropertyChanged("IsLocating");
-                    NotifyPropertyChanged("HasDownloadStarted");
-                    NotifyPropertyChanged("IsDownloading");
-                    NotifyPropertyChanged("IsParsing");
-                    NotifyPropertyChanged("IsJsonLoading");
-                    NotifyPropertyChanged("IsLoadingIcons");
-                    NotifyPropertyChanged("IsJsonLoaded");
-                }
-            }
-        }
-        private ProgramState _ProgramState;
-
-        public bool IsAtStartup { get { return ProgramState == ProgramState.StartupScreen; } }
-        public bool IsLocating { get { return ProgramState == ProgramState.LocatingLastVersion; } }
-        public bool HasDownloadStarted { get { return ProgramState >= ProgramState.LocatingLastVersion; } }
-        public bool IsDownloading { get { return ProgramState == ProgramState.Downloading; } }
-        public bool IsParsing { get { return ProgramState == ProgramState.Parsing; } }
-        public bool IsJsonLoading { get { return ProgramState >= ProgramState.Parsing && ProgramState < ProgramState.Ready; } }
-        public bool IsLoadingIcons { get { return ProgramState == ProgramState.LoadingIcons; } }
-        public bool IsJsonLoaded { get { return ProgramState == ProgramState.Ready; } }
-
-        public bool LocateLastestVersion
-        {
-            get { return _LocateLastestVersion; }
-            set
-            {
-                if (_LocateLastestVersion != value)
-                {
-                    _LocateLastestVersion = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public bool _LocateLastestVersion;
-
-        public bool UseSpecificVersion
-        {
-            get { return _UseSpecificVersion; }
-            set
-            {
-                if (_UseSpecificVersion != value)
-                {
-                    _UseSpecificVersion = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public bool _UseSpecificVersion;
-
-        public int SelectedVersionIndex
-        {
-            get { return _SelectedVersionIndex; }
-            set
-            {
-                if (_SelectedVersionIndex != value)
-                {
-                    _SelectedVersionIndex = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public int _SelectedVersionIndex;
-
-        public bool IsVersionAvailableInCache
-        {
-            get { return _IsVersionAvailableInCache; }
-            set
-            {
-                if (_IsVersionAvailableInCache != value)
-                {
-                    _IsVersionAvailableInCache = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public bool _IsVersionAvailableInCache;
-
-        public ObservableCollection<int> VersionList { get; private set; }
-
         private void InitStartupPage()
         {
-            _ProgramState = ProgramState.StartupScreen;
-            _IsVersionAvailableInCache = false;
-            VersionList = new ObservableCollection<int>();
-
             ApplicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PgJsonParse");
 
             if (!Directory.Exists(ApplicationFolder))
@@ -186,62 +115,11 @@ namespace PgJsonParse
             IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
             FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
 
-            InitVersionList();
             UpdateTaskbarShortcut();
-
-            if (IsVersionAvailableInCache)
-            {
-                _LocateLastestVersion = false;
-                _UseSpecificVersion = true;
-                _SelectedVersionIndex = VersionList.Count - 1;
-            }
-            else
-            {
-                _LocateLastestVersion = true;
-                _UseSpecificVersion = false;
-                _SelectedVersionIndex = -1;
-            }
-        }
-
-        private void InitVersionList()
-        {
-            string[] SubFolders = Directory.GetDirectories(VersionCacheFolder);
-            if (SubFolders != null)
-            {
-                foreach (string SubFolder in SubFolders)
-                {
-                    string FolderName = Path.GetFileName(SubFolder);
-
-                    int Version;
-                    if (int.TryParse(FolderName, out Version) && Version > 0)
-                        VersionList.Add(Version);
-                }
-            }
-
-            IsVersionAvailableInCache = (VersionList.Count > 0);
-        }
-
-        void ClearVersionList()
-        {
-            if (MessageBox.Show("You are going to clear the local, downloaded version of previous versions of the game files. Some of them may not be available anymore. Continue?", "Confirmation", MessageBoxButton.OKCancel, MessageBoxImage.Warning) != MessageBoxResult.OK)
-                return;
-
-            VersionList.Clear();
-            IsVersionAvailableInCache = false;
-            LocateLastestVersion = true;
-            UseSpecificVersion = false;
-
-            string[] SubFolders = Directory.GetDirectories(VersionCacheFolder);
-            if (SubFolders != null)
-            {
-                foreach (string SubFolder in SubFolders)
-                    Directory.Delete(SubFolder, true);
-            }
         }
 
         public void StartApplication()
         {
-            ProgramState = ProgramState.Ready;
             RefreshCombatSkillList();
             RefreshWeightProfileList();
             RefreshGearPlaner();
@@ -333,109 +211,6 @@ namespace PgJsonParse
         }
         #endregion
 
-        #region Operations
-        private void InitOperations()
-        {
-            _IsOperationStarted = false;
-            _IsOperationCanceled = false;
-            _DownloadProgress = 0;
-            _FileLoadProgress = 0;
-            _IconLoadProgress = 0;
-        }
-
-        public bool IsOperationStarted
-        {
-            get { return _IsOperationStarted; }
-            set
-            {
-                if (_IsOperationStarted != value)
-                {
-                    _IsOperationStarted = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public bool _IsOperationStarted;
-
-        public bool IsOperationCanceled
-        {
-            get { return _IsOperationCanceled; }
-            set
-            {
-                if (_IsOperationCanceled != value)
-                {
-                    _IsOperationCanceled = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public bool _IsOperationCanceled;
-
-        public double DownloadProgress
-        {
-            get { return _DownloadProgress; }
-            set
-            {
-                if (_DownloadProgress != value)
-                {
-                    _DownloadProgress = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public double _DownloadProgress;
-
-        public double FileLoadProgress
-        {
-            get { return _FileLoadProgress; }
-            set
-            {
-                if (_FileLoadProgress != value)
-                {
-                    _FileLoadProgress = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public double _FileLoadProgress;
-
-        public double IconLoadProgress
-        {
-            get { return _IconLoadProgress; }
-            set
-            {
-                if (_IconLoadProgress != value)
-                {
-                    _IconLoadProgress = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public double _IconLoadProgress;
-
-        private void StartOperation()
-        {
-            DownloadProgress = 0;
-            FileLoadProgress = 0;
-            IconLoadProgress = 0;
-            IsOperationStarted = true;
-            IsOperationCanceled = false;
-        }
-
-        private void StopOperation()
-        {
-            IsOperationStarted = false;
-            IsOperationCanceled = false;
-        }
-
-        private void CancelOperation()
-        {
-            IsOperationStarted = false;
-            IsOperationCanceled = true;
-            ProgramState = ProgramState.StartupScreen;
-        }
-        #endregion
-
         #region Cache
         private static readonly Dictionary<ItemSlot, string> IconFileTable = new Dictionary<ItemSlot, string>()
         {
@@ -449,20 +224,6 @@ namespace PgJsonParse
             { ItemSlot.MainHand, "icon_15014" },
             { ItemSlot.OffHand, "icon_5382" },
         };
-
-        public int DownloadedVersion
-        {
-            get { return _DownloadedVersion; }
-            set
-            {
-                if (_DownloadedVersion != value)
-                {
-                    _DownloadedVersion = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public int _DownloadedVersion;
 
         private void InitCache()
         {
@@ -490,500 +251,6 @@ namespace PgJsonParse
                 return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             }
             finally { DeleteObject(handle); }
-        }
-
-        private void StartCacheThread()
-        {
-            Thread CacheThread = new Thread(new ThreadStart(ExecuteCacheThread));
-            CacheThread.Start();
-        }
-
-        private void ExecuteCacheThread()
-        {
-            ProgramState = ProgramState.LocatingLastVersion;
-            CheckVersionOnServer(false);
-        }
-
-        private void CheckVersionOnServer(bool TopVersionFound)
-        {
-            Stopwatch CheckWatch = new Stopwatch();
-            CheckWatch.Start();
-
-            int Version;
-            if (VersionCheckedOnServer(out Version))
-            {
-                TimeSpan Remaining = TimeSpan.FromSeconds(4) - CheckWatch.Elapsed;
-                if (Remaining.TotalMilliseconds > 0)
-                    Thread.Sleep(Remaining);
-
-                if (IsOperationCanceled)
-                {
-                    ProgramState = ProgramState.StartupScreen;
-                    return;
-                }
-
-                DownloadedVersion = Version;
-                CurrentVersionCacheFolder = Path.Combine(VersionCacheFolder, DownloadedVersion.ToString());
-                UpdateCache();
-            }
-            else
-            {
-                MessageBox.Show("Unable to connect to the game server");
-                CancelOperation();
-            }
-        }
-
-        private bool VersionCheckedOnServer(out int Version)
-        {
-            Version = 0;
-
-            bool Success = false;
-
-            HttpWebRequest Request = HttpWebRequest.Create("http://client.projectgorgon.com/fileversion.txt") as HttpWebRequest;
-            using (WebResponse Response = Request.GetResponse())
-            {
-                using (Stream ResponseStream = Response.GetResponseStream())
-                {
-                    using (StreamReader Reader = new StreamReader(ResponseStream, Encoding.ASCII))
-                    {
-                        string Content = Reader.ReadToEnd();
-                        Success = int.TryParse(Content, out Version);
-                    }
-                }
-            }
-
-            return Success;
-        }
-
-        private void UpdateCache()
-        {
-            ProgramState = ProgramState.Downloading;
-
-            int Index = 0;
-            int Total = ObjectList.Definitions.Count + IconFileTable.Count;
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                UpdateJsonFileInCache(Entry.Value, Index++, Total);
-
-                if (IsOperationCanceled)
-                {
-                    ProgramState = ProgramState.StartupScreen;
-                    return;
-                }
-            }
-
-            foreach (KeyValuePair<ItemSlot, string> Entry in IconFileTable)
-            {
-                UpdateIconFileInCache(Entry.Key, Entry.Value, Index++, Total);
-
-                if (IsOperationCanceled)
-                {
-                    ProgramState = ProgramState.StartupScreen;
-                    return;
-                }
-            }
-
-            //LoadedVersion = DownloadedVersion;
-
-            CreateLoadThread();
-        }
-
-        private void UpdateJsonFileInCache(IObjectDefinition Definition, int Index, int Total)
-        {
-            try
-            {
-                if (!UpdateTextCacheFile(DownloadedVersion, "data", Definition.JsonFileName, "json"))
-                {
-                    MessageBox.Show("Failed to download JSON file " + Definition.JsonFileName + " for version " + DownloadedVersion);
-                    CancelOperation();
-                }
-                else
-                {
-                    DownloadProgress = ((double)(Index + 1)) / (double)Total;
-
-                    string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, Definition.JsonFileName + "-index.txt");
-                    if (File.Exists(IndexFilePath))
-                        File.Delete(IndexFilePath);
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                CancelOperation();
-            }
-        }
-
-        private void UpdateIconFileInCache(ItemSlot TypeIndex, string FileName, int Index, int Total)
-        {
-            try
-            {
-                if (!UpdateBinaryCacheFile(DownloadedVersion, "icons", FileName, "png"))
-                {
-                    MessageBox.Show("Failed to download icon file " + FileName + " for version " + DownloadedVersion);
-                    CancelOperation();
-                }
-                else
-                    DownloadProgress = ((double)(Index + 1)) / (double)Total;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                CancelOperation();
-            }
-        }
-
-        private bool UpdateTextCacheFile(int Version, string Location, string FileName, string Extension)
-        {
-            bool Success = false;
-
-            HttpWebRequest Request = HttpWebRequest.Create("http://cdn.projectgorgon.com/v" + Version + "/" + Location + "/" + FileName + "." + Extension) as HttpWebRequest;
-            using (WebResponse Response = Request.GetResponse())
-            {
-                using (Stream ResponseStream = Response.GetResponseStream())
-                {
-                    using (StreamReader Reader = new StreamReader(ResponseStream, Encoding.ASCII))
-                    {
-                        string Result = Reader.ReadToEnd();
-                        if (Result != null && Result.Length >= 256)
-                        {
-                            Success = true;
-
-                            string FolderPath = Path.Combine(VersionCacheFolder, Version.ToString());
-                            if (!Directory.Exists(FolderPath))
-                                Directory.CreateDirectory(FolderPath);
-
-                            string FilePath = Path.Combine(FolderPath, FileName + "." + Extension);
-
-                            using (FileStream fs = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                            {
-                                using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
-                                {
-                                    sw.Write(Result);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return Success;
-        }
-
-        private bool UpdateBinaryCacheFile(int Version, string Location, string FileName, string Extension)
-        {
-            bool Success = false;
-
-            HttpWebRequest Request = HttpWebRequest.Create("http://cdn.projectgorgon.com/v" + Version + "/" + Location + "/" + FileName + "." + Extension) as HttpWebRequest;
-            using (WebResponse Response = Request.GetResponse())
-            {
-                using (Stream ResponseStream = Response.GetResponseStream())
-                {
-                    using (BinaryReader Reader = new BinaryReader(ResponseStream))
-                    {
-                        string FolderPath = Path.Combine(VersionCacheFolder, Version.ToString());
-                        if (!Directory.Exists(FolderPath))
-                            Directory.CreateDirectory(FolderPath);
-
-                        string FilePath = Path.Combine(FolderPath, FileName + "." + Extension);
-
-                        using (FileStream fs = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                        {
-                            ResponseStream.CopyTo(fs);
-                            Success = true;
-                        }
-                    }
-                }
-            }
-
-            return Success;
-        }
-        #endregion
-
-        #region Loading
-        private void InitLoad()
-        {
-        }
-
-        public GameVersionInfo LoadedVersion
-        {
-            get { return _LoadedVersion; }
-            set
-            {
-                if (_LoadedVersion != value)
-                {
-                    _LoadedVersion = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public GameVersionInfo _LoadedVersion;
-
-        public string WarningText
-        {
-            get { return _WarningText; }
-            set
-            {
-                if (_WarningText != value)
-                {
-                    _WarningText = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        public string _WarningText;
-
-        private void CreateLoadThread()
-        {
-            Thread LoadThread = new Thread(new ThreadStart(ExecuteLoadThread));
-            LoadThread.Start();
-        }
-
-        private void ExecuteLoadThread()
-        {
-            ProgramState = ProgramState.Parsing;
-            DownloadProgress = 1.0;
-
-            CurrentVersionCacheFolder = Path.Combine(VersionCacheFolder, LoadedVersion.ToString());
-
-            ParseErrorInfo ErrorInfo = new ParseErrorInfo();
-
-            int Index = 0;
-            int Total = ObjectList.Definitions.Count;
-
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                LoadNextFile(Entry.Value, ErrorInfo, Index++, Total);
-
-                if (IsOperationCanceled)
-                {
-                    ProgramState = ProgramState.StartupScreen;
-                    return;
-                }
-            }
-
-            ConnectTables(ErrorInfo);
-        }
-
-        private void LoadNextFile(IObjectDefinition Definition, ParseErrorInfo ErrorInfo, int Index, int Total)
-        {
-            try
-            {
-                string FilePath = Path.Combine(CurrentVersionCacheFolder, Definition.JsonFileName + ".json");
-
-                IParser FileParser = Definition.FileParser;
-                IList ObjectList = Definition.ObjectList;
-                Dictionary<string, IGenericJsonObject> ObjectTable = Definition.ObjectTable;
-                FileParser.LoadRaw(FilePath, ObjectList, ErrorInfo);
-
-                ObjectTable.Clear();
-                foreach (IGenericJsonObject Item in ObjectList)
-                    ObjectTable.Add(Item.Key, Item);
-
-                FileLoadProgress = ((double)(Index + 1)) / (double)Total;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                CancelOperation();
-            }
-        }
-
-        private void ConnectTables(ParseErrorInfo ErrorInfo)
-        {
-            ProgramState = ProgramState.ConnectingTables;
-
-            Dictionary<Type, IList> AllLists = new Dictionary<Type, IList>();
-            Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables = new Dictionary<Type, Dictionary<string, IGenericJsonObject>>();
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                IObjectDefinition Definition = Entry.Value;
-                AllLists.Add(Entry.Key, Definition.ObjectList);
-                AllTables.Add(Entry.Key, Definition.ObjectTable);
-            }
-
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                IObjectDefinition Definition = Entry.Value;
-                foreach (IGenericJsonObject Item in Definition.ObjectList)
-                    Item.Connect(ErrorInfo, null, AllTables);
-            }
-
-            IObjectDefinition RecipeDefinition = ObjectList.Definitions[typeof(Recipe)];
-            bool Continue;
-            do
-            {
-                Continue = false;
-                foreach (Recipe Item in RecipeDefinition.ObjectList)
-                    Item.MeasurePerfectCottonRatio(ref Continue);
-            }
-            while (Continue);
-
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                IObjectDefinition Definition = Entry.Value;
-                foreach (IGenericJsonObject Item in Definition.ObjectList)
-                    Item.SetIndirectProperties(AllTables, ErrorInfo);
-            }
-
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                IObjectDefinition Definition = Entry.Value;
-                foreach (IGenericJsonObject Item in Definition.ObjectList)
-                    Item.SortLinkBack();
-            }
-
-            CreateIndexes(ErrorInfo);
-        }
-
-        private void CreateIndexes(ParseErrorInfo ErrorInfo)
-        {
-            ProgramState = ProgramState.CreatingIndex;
-
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                CreateNextIndex(Entry.Value, ErrorInfo);
-
-                if (IsOperationCanceled)
-                {
-                    ProgramState = ProgramState.StartupScreen;
-                    return;
-                }
-            }
-
-            CreateMushroomIndex(ErrorInfo);
-            LoadIcons(ErrorInfo);
-        }
-
-        private void CreateNextIndex(IObjectDefinition Definition, ParseErrorInfo ErrorInfo)
-        { 
-            try
-            {
-                string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, Definition.JsonFileName + "-index.txt");
-                IParser FileParser = Definition.FileParser;
-                Dictionary<string, IGenericJsonObject> ObjectTable = Definition.ObjectTable;
-                FileParser.CreateIndex(IndexFilePath, ObjectTable);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                CancelOperation();
-            }
-        }
-
-        private void CreateMushroomIndex(ParseErrorInfo ErrorInfo)
-        {
-            string MushroomNameFile = Path.Combine(ApplicationFolder, "Mushrooms.txt");
-
-            List<string> MushroomNameList = new List<string>();
-            IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
-            Dictionary<string, IGenericJsonObject> ItemTable = ItemDefinition.ObjectTable;
-
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
-            {
-                Item Item = Entry.Value as Item;
-                if (Item.KeywordTable.ContainsKey(ItemKeyword.RawMushroom))
-                    MushroomNameList.Add(Item.Name);
-            }
-
-            try
-            {
-                using (FileStream fs = new FileStream(MushroomNameFile, FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
-                    {
-                        foreach (string MushroomName in MushroomNameList)
-                            sw.WriteLine(MushroomName);
-                    }
-                }
-            }
-            catch
-            {
-            }
-        }
-
-        private void LoadIcons(ParseErrorInfo ErrorInfo)
-        {
-            List<int> MissingIconList = new List<int>();
-            foreach (int IconId in ErrorInfo.IconList)
-            {
-                string FilePath = Path.Combine(CurrentVersionCacheFolder, "icon_" + IconId + ".png");
-                if (!File.Exists(FilePath))
-                    MissingIconList.Add(IconId);
-            }
-
-            if (MissingIconList.Count > 0)
-            {
-                if (MessageBox.Show("There are " + MissingIconList.Count + " icon(s) not downloaded yet, would you like to get them now?", "Loading", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-                    MissingIconList.Clear();
-            }
-
-            ProgramState = ProgramState.LoadingIcons;
-            LoadNextIcon(MissingIconList, 0, MissingIconList.Count, ErrorInfo);
-        }
-
-        private void LoadNextIcon(List<int> MissingIconList, int LoadedCount, int MaxCount, ParseErrorInfo ErrorInfo)
-        {
-            if (MissingIconList.Count > 0)
-                Dispatcher.BeginInvoke(new LoadNextIconHandler(OnLoadNextIcon), MissingIconList, LoadedCount, MaxCount, ErrorInfo);
-            else
-                Dispatcher.BeginInvoke(new CompleteLoadingHandler(OnCompleteLoading), ErrorInfo);
-        }
-
-        private delegate void LoadNextIconHandler(List<int> MissingIconList, int LoadedCount, int MaxCount, ParseErrorInfo ErrorInfo);
-        private void OnLoadNextIcon(List<int> MissingIconList, int LoadedCount, int MaxCount, ParseErrorInfo ErrorInfo)
-        {
-            if (IsOperationCanceled)
-            {
-                ProgramState = ProgramState.StartupScreen;
-                return;
-            }
-
-            IconLoadProgress = ((double)LoadedCount) / (double)MaxCount;
-
-            List<int> LoadedIconList = new List<int>();
-
-            for (int i = 0; i < 10 && MissingIconList.Count > 0; i++)
-            {
-                int IconId = MissingIconList[0];
-
-                LoadedIconList.Add(IconId);
-                MissingIconList.RemoveAt(0);
-            }
-
-            foreach (int IconId in LoadedIconList)
-            {
-                LoadedCount++;
-
-                string FilePath = Path.Combine(CurrentVersionCacheFolder, "icon_" + IconId + ".png");
-                if (!UpdateBinaryCacheFile(LoadedVersion.Version, "icons", "icon_" + IconId, "png"))
-                    break;
-
-                if (IconId == 5624)
-                    File.Copy(FilePath, IconFile, true);
-                else if (IconId == 102)
-                    File.Copy(FilePath, FavorIconFile, true);
-            }
-
-            LoadNextIcon(MissingIconList, LoadedCount, MaxCount, ErrorInfo);
-        }
-
-        private delegate void CompleteLoadingHandler(ParseErrorInfo ErrorInfo);
-        private void OnCompleteLoading(ParseErrorInfo ErrorInfo)
-        {
-            string Warnings = ErrorInfo.GetWarnings();
-            if (Warnings.Length > 0)
-            {
-                Debug.Print(Warnings);
-                WarningText = Warnings;
-            }
-            else
-                WarningText = "Files loaded and parsed, no warnings.";
-
-            StopOperation();
-            ProgramState = ProgramState.Ready;
-            RefreshCombatSkillList();
-            RefreshWeightProfileList();
-            RefreshGearPlaner();
         }
         #endregion
 
@@ -2511,33 +1778,6 @@ namespace PgJsonParse
         #endregion
 
         #region Events
-        private void OnClearVersionList(object sender, EventArgs e)
-        {
-            ClearVersionList();
-        }
-
-        private void OnStartApplication(object sender, EventArgs e)
-        {
-            StartApplication();
-        }
-
-        private void OnLocateLatestVersion(object sender, RoutedEventArgs e)
-        {
-            LocateLastestVersion = true;
-            UseSpecificVersion = false;
-        }
-
-        private void OnUseSpecificVersion(object sender, RoutedEventArgs e)
-        {
-            LocateLastestVersion = false;
-            UseSpecificVersion = true;
-        }
-
-        private void OnCancel(object sender, EventArgs e)
-        {
-            CancelOperation();
-        }
-
         private void OnRefreshBuildPlaner(object sender, SelectionChangedEventArgs e)
         {
             RefreshBuildPlaner();

@@ -79,7 +79,7 @@
         <app:CustomCompositeCollection x:Key="NoYesNull">
             <sys:String>No</sys:String>
             <sys:String>Yes</sys:String>
-            <x:Static Member="sys:String.Empty"/>
+            <sys:String>&#x2009;</sys:String>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="ModColorCodes">
             <SolidColorBrush>White</SolidColorBrush>
@@ -138,9 +138,9 @@
             <SolidColorBrush>Green</SolidColorBrush>
             <SolidColorBrush>Red</SolidColorBrush>
         </app:CustomCompositeCollection>
-        <CroppedBitmap x:Key="imgRedo" Source="pack://application:,,,/Resources/redo.png"/>
-        <CroppedBitmap x:Key="imgUndo" Source="pack://application:,,,/Resources/undo.png"/>
-        <CroppedBitmap x:Key="imgAttuned" Source="pack://application:,,,/Resources/Locked.png"/>
+        <BitmapImage x:Key="imgRedo" UriSource="pack://application:,,,/Resources/redo.png"/>
+        <BitmapImage x:Key="imgUndo" UriSource="pack://application:,,,/Resources/undo.png"/>
+        <BitmapImage x:Key="imgAttuned" UriSource="pack://application:,,,/Resources/Locked.png"/>
         <DataTemplate x:Key="AttributeLinkTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding FriendlyName}" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
@@ -166,7 +166,7 @@
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                            <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
@@ -1763,6 +1763,67 @@
         </DataTemplate>
         <ControlTemplate x:Key="XpTableToggleButton" TargetType="ToggleButton">
             <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="Fill" Duration="0">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <SolidColorBrush>DarkGray</SolidColorBrush>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="MouseOver">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="Fill" Duration="0">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <SolidColorBrush>Black</SolidColorBrush>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="Fill" Duration="0">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <SolidColorBrush>DarkGray</SolidColorBrush>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                    <VisualStateGroup x:Name="CheckStates">
+                        <VisualState x:Name="Unchecked">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background" Duration="0">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <SolidColorBrush>White</SolidColorBrush>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Checked">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background" Duration="0">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <SolidColorBrush>LightGray</SolidColorBrush>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="20" />
@@ -1771,74 +1832,16 @@
                 <Border Grid.Column="0" CornerRadius="2,0,0,2" Margin="1" Background="White" BorderBrush="Black" BorderThickness="0,0,1,0"/>
                 <Path x:Name="Arrow" Grid.Column="1" Fill="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
             </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="DarkGray" />
-                </Trigger>
-                <Trigger Property="ToggleButton.IsChecked" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
-                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkGray" />
-                    <Setter Property="Foreground" Value="LightGray"/>
-                    <Setter TargetName="Arrow" Property="Fill" Value="Gray" />
-                </Trigger>
-            </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
     <Grid>
-        <StackPanel Visibility="{Binding IsAtStartup, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="350">
-            <Grid/>
-        </StackPanel>
-        <StackPanel Visibility="{Binding HasDownloadStarted, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="350">
-            <Border BorderBrush="Orange" BorderThickness="2">
-                <StackPanel Margin="20,20,20,20">
-                    <Grid>
-                        <StackPanel Visibility="{Binding IsLocating, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}">
-                            <TextBlock>Locating latest version of the game...</TextBlock>
-                            <ProgressBar IsIndeterminate="True" Height="8" Margin="0,10,0,0"/>
-                        </StackPanel>
-                        <Grid Visibility="{Binding IsLocating, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden}, FallbackValue=Hidden}">
-                            <StackPanel Visibility="{Binding IsDownloading, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Visible}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>Downloading version</TextBlock>
-                                    <TextBlock Text="{Binding DownloadedVersion}" Margin="5,0,5,0"/>
-                                    <TextBlock>of the game...</TextBlock>
-                                </StackPanel>
-                                <ProgressBar Minimum="0" Maximum="1" Value="{Binding DownloadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
-                            </StackPanel>
-                            <StackPanel Visibility="{Binding IsDownloading, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden}, FallbackValue=Hidden}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>Version</TextBlock>
-                                    <TextBlock Text="{Binding DownloadedVersion}" Margin="5,0,5,0"/>
-                                    <TextBlock>loaded from cache</TextBlock>
-                                </StackPanel>
-                                <ProgressBar Minimum="0" Maximum="1" Value="{Binding DownloadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
-                    <Grid Visibility="{Binding IsJsonLoading, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}" Margin="0,20,0,0">
-                        <StackPanel Visibility="{Binding IsLoadingIcons, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden}, FallbackValue=Visible}">
-                            <TextBlock>Parsing files...</TextBlock>
-                            <ProgressBar Minimum="0" Maximum="1" Value="{Binding FileLoadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
-                        </StackPanel>
-                        <StackPanel Visibility="{Binding IsLoadingIcons, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}">
-                            <TextBlock>Loading icons...</TextBlock>
-                            <ProgressBar Minimum="0" Maximum="1" Value="{Binding IconLoadProgress, FallbackValue=0}" IsEnabled="{Binding IsOperationStarted}" Height="8" Margin="0,10,0,0"/>
-                        </StackPanel>
-                    </Grid>
-                    <Button Command="{StaticResource CancelCommand}" Visibility="{Binding IsOperationCanceled, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleHidden}, FallbackValue=Visible}" HorizontalAlignment="Center" Width="120" Margin="0,40,0,0">Cancel</Button>
-                </StackPanel>
-            </Border>
-        </StackPanel>
-        <TabControl Visibility="{Binding IsJsonLoaded, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}">
+        <TabControl>
             <TabItem Header="Warnings">
                 <DockPanel>
                     <Border DockPanel.Dock="Top" BorderThickness="0" BorderBrush="{x:Null}">
                         <TextBlock TextAlignment="Center" Margin="0,5,0,5">Downloaded content copyright © 2017, Elder Game, LLC</TextBlock>
                     </Border>
-                    <Separator DockPanel.Dock="Top"/>
+                    <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2"/>
                     <TextBox Text="{Binding WarningText, Mode=OneWay}" IsReadOnly="True" VerticalScrollBarVisibility="Visible" BorderBrush="{x:Null}" BorderThickness="0" Margin="10,10,10,10"/>
                 </DockPanel>
             </TabItem>
@@ -1850,47 +1853,54 @@
                 </TabItem.Resources>
                 <DockPanel Margin="10,10,10,10">
                     <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-                        <GroupBox DockPanel.Dock="Left" VerticalAlignment="Center" Header="Skill Selection">
-                            <Grid Margin="5,5,5,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center">First Skill:</TextBlock>
-                                <ComboBox Grid.Column="1" Grid.Row="0" x:Name="comboFirstSkill" DockPanel.Dock="Left" SelectedIndex="{Binding SelectedFirstSkill}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="0,10,0,0">Max Level:</TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding MaxLevelFirstSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="5,10,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">Second Skill:</TextBlock>
-                                <ComboBox Grid.Column="3" Grid.Row="0" x:Name="comboSecondSkill" DockPanel.Dock="Left" SelectedIndex="{Binding SelectedSecondSkill}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
-                                <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="10,10,0,0">Max Level:</TextBlock>
-                                <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding MaxLevelSecondSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="5,10,0,0"/>
-                                <Button Grid.Row="0" Width="1" Visibility="Hidden"/>
-                                <CheckBox Grid.Row="1" Width="1" Visibility="Hidden"/>
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox DockPanel.Dock="Left" VerticalAlignment="Center" Header="Gear Selection" Margin="10,0,0,0">
-                            <Grid Margin="5,5,5,5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <DockPanel Grid.Row="0">
-                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Profile:</TextBlock>
-                                    <Button DockPanel.Dock="Right" Command="{StaticResource OpenProfileFolderCommand}" VerticalAlignment="Center" Width="120" Height="24" Margin="10,0,0,0">Open Profile Folder</Button>
-                                    <ComboBox ItemsSource="{Binding WeightProfileList}" SelectedIndex="{Binding WeightProfileIndex}" SelectionChanged="OnProfileSelected" VerticalAlignment="Center" MinWidth="200" Margin="5,0,0,0"/>
-                                </DockPanel>
-                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
-                                    <CheckBox IsChecked="{Binding IgnoreUnobtainable}" Checked="OnIgnoreUnobtainableCheckChanged" Unchecked="OnIgnoreUnobtainableCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore unobtainable</CheckBox>
-                                    <CheckBox IsChecked="{Binding IgnoreNoAttribute}" Checked="OnIgnoreNoAttributeCheckChanged" Unchecked="OnIgnoreNoAttributeCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore items with no match</CheckBox>
-                                </StackPanel>
-                            </Grid>
-                        </GroupBox>
+                        <Grid DockPanel.Dock="Left" VerticalAlignment="Center">
+                            <Border BorderBrush="LightGray" BorderThickness="1,1,1,1" CornerRadius="2,2,2,2" Margin="0,8,0,0" Padding="2,7,2,3">
+                                <Grid Margin="5,5,5,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center">First Skill:</TextBlock>
+                                    <ComboBox Grid.Column="1" Grid.Row="0" x:Name="comboFirstSkill" DockPanel.Dock="Left" SelectedIndex="{Binding SelectedFirstSkill}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="0,10,0,0">Max Level:</TextBlock>
+                                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding MaxLevelFirstSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="5,10,0,0"/>
+                                    <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">Second Skill:</TextBlock>
+                                    <ComboBox Grid.Column="3" Grid.Row="0" x:Name="comboSecondSkill" DockPanel.Dock="Left" SelectedIndex="{Binding SelectedSecondSkill}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
+                                    <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="10,10,0,0">Max Level:</TextBlock>
+                                    <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding MaxLevelSecondSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="5,10,0,0"/>
+                                    <Button Grid.Row="0" Width="1" Visibility="Hidden"/>
+                                    <CheckBox Grid.Row="1" Width="1" Visibility="Hidden"/>
+                                </Grid>
+                            </Border>
+                            <TextBlock Background="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,0,0,0" Padding="2,0,2,0">Skill Selection</TextBlock>
+                        </Grid>
+                        <Grid DockPanel.Dock="Left" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <Border BorderBrush="LightGray" BorderThickness="1,1,1,1" CornerRadius="2,2,2,2" Margin="0,8,0,0" Padding="2,7,2,3">
+                                <Grid Margin="5,5,5,5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <DockPanel Grid.Row="0">
+                                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Profile:</TextBlock>
+                                        <Button DockPanel.Dock="Right" Command="{StaticResource OpenProfileFolderCommand}" VerticalAlignment="Center" Width="120" Height="24" Margin="10,0,0,0">Open Profile Folder</Button>
+                                        <ComboBox ItemsSource="{Binding WeightProfileList}" SelectedIndex="{Binding WeightProfileIndex}" SelectionChanged="OnProfileSelected" VerticalAlignment="Center" MinWidth="200" Margin="5,0,0,0"/>
+                                    </DockPanel>
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+                                        <CheckBox IsChecked="{Binding IgnoreUnobtainable}" Checked="OnIgnoreUnobtainableCheckChanged" Unchecked="OnIgnoreUnobtainableCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore unobtainable</CheckBox>
+                                        <CheckBox IsChecked="{Binding IgnoreNoAttribute}" Checked="OnIgnoreNoAttributeCheckChanged" Unchecked="OnIgnoreNoAttributeCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore items with no match</CheckBox>
+                                    </StackPanel>
+                                    <TextBox Grid.Row="1" Width="1" Visibility="Hidden"/>
+                                </Grid>
+                            </Border>
+                            <TextBlock Background="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,0,0,0" Padding="2,0,2,0">Gear Selection</TextBlock>
+                        </Grid>
                         <Button DockPanel.Dock="Right" Content="Copy to Clipboard" Command="{StaticResource CopyBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0"/>
                         <Button DockPanel.Dock="Right" Content="Save profile..." Command="{StaticResource SaveBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0"/>
                         <Button DockPanel.Dock="Right" Content="Load profile..." Command="{StaticResource LoadBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0"/>
@@ -1923,7 +1933,7 @@
                                                     </ItemsControl.ItemTemplate>
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
-                                                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                                                            <StackPanel Orientation="Horizontal"/>
                                                         </ItemsPanelTemplate>
                                                     </ItemsControl.ItemsPanel>
                                                 </ItemsControl>
@@ -2089,7 +2099,7 @@
                                     <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Separator DockPanel.Dock="Top" Margin="5,5,5,5"/>
+                            <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,5,5,5"/>
                             <Grid VerticalAlignment="Top" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -2294,7 +2304,7 @@
                                     <TextBlock Text="{Binding Label}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Separator DockPanel.Dock="Top" Margin="5,5,5,5"/>
+                            <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,5,5,5"/>
                             <Grid VerticalAlignment="Top" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -2354,7 +2364,7 @@
                                 <ItemsControl ItemsSource="{Binding ItemKeywordList}" ItemTemplateSelector="{StaticResource selListMember}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                                            <StackPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                 </ItemsControl>
@@ -2362,31 +2372,50 @@
                                     <Image Source="{Binding Path=FavorIcon, RelativeSource={RelativeSource AncestorType={x:Type app:MainWindow}}}" Width="12" Height="12"/>
                                 </ToggleButton>
                                 <Popup IsOpen="{Binding ElementName=buttonFavor, Path=IsChecked}" Placement="Bottom" AllowsTransparency="False" Focusable="False" StaysOpen="False" MaxHeight="400" Opened="OnFavorPopupOpened">
-                                    <ListView ItemsSource="{Binding ItemFavorList}" ScrollViewer.VerticalScrollBarVisibility="Visible" GridViewColumnHeader.Click="OnGridViewColumnHeaderClick">
-                                        <ListView.ItemContainerStyle>
-                                            <Style TargetType="ListViewItem">
-                                                <Setter Property="Focusable" Value="false"/>
-                                            </Style>
-                                        </ListView.ItemContainerStyle>
-                                        <ListView.Resources>
-                                            <DataTemplate x:Key="GiftItemTemplate">
-                                                <TextBlock TextWrapping="NoWrap">
-                                                    <Hyperlink x:Name="hyperlink_Gift_Item" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
-                                                        <TextBlock Text="{Binding Item.Name, FallbackValue={x:Null}}" TextWrapping="NoWrap"/>
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                            </DataTemplate>
-                                            <DataTemplate x:Key="GiftValueTemplate">
-                                                <TextBlock Text="{Binding Value, FallbackValue={x:Null}}" Foreground="{Binding IsHated, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRed}, FallbackValue=Black}"/>
-                                            </DataTemplate>
-                                        </ListView.Resources>
-                                        <ListView.View>
-                                            <GridView>
-                                                <GridViewColumn CellTemplate="{StaticResource GiftItemTemplate}" Header="Name" Width="200"/>
-                                                <GridViewColumn CellTemplate="{StaticResource GiftValueTemplate}" Header="Value" Width="50"/>
-                                            </GridView>
-                                        </ListView.View>
-                                    </ListView>
+                                    <Border BorderBrush="DarkGray" BorderThickness="1">
+                                        <ScrollViewer>
+                                            <ScrollViewer.Resources>
+                                                <DataTemplate x:Key="GiftTemplate">
+                                                    <Grid HorizontalAlignment="Center">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="200"/>
+                                                            <ColumnDefinition Width="50"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" TextWrapping="NoWrap">
+                                                        <Hyperlink x:Name="hyperlink_Gift_Item" RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                                                            <TextBlock Text="{Binding Item.Name, FallbackValue={x:Null}}" TextWrapping="NoWrap"/>
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                        <TextBlock Grid.Column="1" Text="{Binding Value, FallbackValue={x:Null}}" Foreground="{Binding IsHated, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRed}, FallbackValue=Black}"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ScrollViewer.Resources>
+                                            <DockPanel>
+                                                <Border DockPanel.Dock="Top" BorderBrush="DarkGray" BorderThickness="0,0,0,1" Background="LightGray">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="202"/>
+                                                            <ColumnDefinition Width="52"/>
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border Grid.Column="0" BorderBrush="DarkGray" BorderThickness="0,0,1,0" Background="LightGray" Padding="0,1,0,1">
+                                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Name</TextBlock>
+                                                        </Border>
+                                                        <Border Grid.Column="1" BorderBrush="DarkGray" BorderThickness="0,0,1,0" Background="LightGray" Padding="0,1,0,1">
+                                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Value</TextBlock>
+                                                        </Border>
+                                                    </Grid>
+                                                </Border>
+                                                <ListBox ItemsSource="{Binding ItemFavorList}" ItemTemplate="{StaticResource GiftTemplate}" BorderBrush="Transparent" BorderThickness="0,0,0,0">
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="Focusable" Value="false"/>
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                </ListBox>
+                                            </DockPanel>
+                                        </ScrollViewer>
+                                    </Border>
                                 </Popup>
                                 <StackPanel Orientation="Horizontal" Visibility="{Binding MinValueRequirement, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
                                     <TextBlock>(Min Value:</TextBlock>
@@ -2429,7 +2458,7 @@
                                     <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Separator DockPanel.Dock="Top" Margin="5,5,5,5"/>
+                            <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,5,5,5"/>
                             <Grid DockPanel.Dock="Top" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -2468,7 +2497,7 @@
                                     <TextBlock Text="{Binding NpcFriendlyName}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Separator DockPanel.Dock="Top" Margin="5,5,5,5"/>
+                            <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,5,5,5"/>
                             <Grid VerticalAlignment="Top" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -2746,7 +2775,7 @@
                                     <ItemsControl ItemsSource="{Binding BehaviorList, FallbackValue={x:Null}}" ItemTemplate="{StaticResource ItemBehaviorTemplate}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <VirtualizingStackPanel Orientation="Horizontal"/>
+                                                <StackPanel Orientation="Horizontal"/>
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
@@ -2810,7 +2839,7 @@
                                 <ItemsControl Grid.Column="3" Grid.Row="6" ItemsSource="{Binding StockDye}" HorizontalAlignment="Left" Margin="5,10,0,0">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                                            <StackPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
@@ -3419,20 +3448,52 @@
                                             <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding XpTable.EnumName, Converter={StaticResource convEnumToText}, ConverterParameter=XpTableEnumTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="0,0,10,0"/>
                                         </DockPanel>
                                         <Popup IsOpen="{Binding ElementName=buttonXpTable, Path=IsChecked}" Placement="Bottom" AllowsTransparency="False" Focusable="False" StaysOpen="False" MaxHeight="400">
-                                            <ListView ItemsSource="{Binding XpTable.XpAmountList}" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                                <ListView.ItemContainerStyle>
-                                                    <Style TargetType="ListViewItem">
-                                                        <Setter Property="Focusable" Value="false"/>
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
-                                                <ListView.View>
-                                                    <GridView>
-                                                        <GridViewColumn DisplayMemberBinding="{Binding Xp}" Header="XP to reach" Width="100"/>
-                                                        <GridViewColumn DisplayMemberBinding="{Binding Level}" Header="Level" Width="50"/>
-                                                        <GridViewColumn DisplayMemberBinding="{Binding TotalXp}" Header="Total" Width="80"/>
-                                                    </GridView>
-                                                </ListView.View>
-                                            </ListView>
+                                            <Border BorderBrush="DarkGray" BorderThickness="1">
+                                                <ScrollViewer>
+                                                    <ScrollViewer.Resources>
+                                                        <DataTemplate x:Key="XpTemplate">
+                                                            <Grid HorizontalAlignment="Center">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="100"/>
+                                                                    <ColumnDefinition Width="50"/>
+                                                                    <ColumnDefinition Width="80"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Grid.Column="0" Text="{Binding Xp}"/>
+                                                                <TextBlock Grid.Column="1" Text="{Binding Level}"/>
+                                                                <TextBlock Grid.Column="2" Text="{Binding TotalXp}"/>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ScrollViewer.Resources>
+                                                    <DockPanel>
+                                                        <Border DockPanel.Dock="Top" BorderBrush="DarkGray" BorderThickness="0,0,0,1" Background="LightGray">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="102"/>
+                                                                    <ColumnDefinition Width="52"/>
+                                                                    <ColumnDefinition Width="82"/>
+                                                                    <ColumnDefinition/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Border Grid.Column="0" BorderBrush="DarkGray" BorderThickness="0,0,1,0" Background="LightGray" Padding="0,1,0,1">
+                                                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">XP to reach</TextBlock>
+                                                                </Border>
+                                                                <Border Grid.Column="1" BorderBrush="DarkGray" BorderThickness="0,0,1,0" Background="LightGray" Padding="0,1,0,1">
+                                                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Level</TextBlock>
+                                                                </Border>
+                                                                <Border Grid.Column="2" BorderBrush="DarkGray" BorderThickness="0,0,1,0" Background="LightGray" Padding="0,1,0,1">
+                                                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Total</TextBlock>
+                                                                </Border>
+                                                            </Grid>
+                                                        </Border>
+                                                        <ListBox ItemsSource="{Binding XpTable.XpAmountList}" ItemTemplate="{StaticResource XpTemplate}" BorderBrush="Transparent" BorderThickness="0,0,0,0">
+                                                            <ListBox.ItemContainerStyle>
+                                                                <Style TargetType="ListBoxItem">
+                                                                    <Setter Property="Focusable" Value="false"/>
+                                                                </Style>
+                                                            </ListBox.ItemContainerStyle>
+                                                        </ListBox>
+                                                    </DockPanel>
+                                                </ScrollViewer>
+                                            </Border>
                                         </Popup>
                                     </Grid>
                                     <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Advancement Table:</TextBlock>
@@ -3740,7 +3801,7 @@
                                     <TextBlock Text="{Binding Title}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Separator DockPanel.Dock="Top" Margin="5,5,5,5"/>
+                            <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,5,5,5"/>
                             <Grid VerticalAlignment="Top" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -3828,7 +3889,7 @@
                             <CheckBox Grid.Column="1" Grid.Row="12" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects (mods)</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="13" IsChecked="{Binding IncludeLoreBook}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Lore Books</CheckBox>
                         </Grid>
-                        <Separator DockPanel.Dock="Top" Margin="5,10,5,10"/>
+                        <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,10,5,10"/>
                         <Expander DockPanel.Dock="Top" Header="Search instructions">
                             <StackPanel>
                                 <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">Use AND or OR (case-sensitive, cannot be mixed) to separate terms for complex search. If neither is specified, the search is performed on the exact term, space included.</TextBlock>
@@ -3856,7 +3917,7 @@
                                 </Grid>
                             </StackPanel>
                         </Expander>
-                        <Separator DockPanel.Dock="Top" Margin="5,10,5,10"/>
+                        <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,10,5,10"/>
                         <DockPanel DockPanel.Dock="Top">
                             <Grid DockPanel.Dock="Right" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
@@ -3887,7 +3948,7 @@
                         <StackPanel>
                             <ContentControl Content="{Binding CurrentSearchItem}" ContentTemplateSelector="{StaticResource selSearchResultContent}"/>
                             <StackPanel Visibility="{Binding CurrentSearchItem, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}">
-                                <Separator Margin="0,5,0,5"/>
+                                <Border BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="0,5,0,5"/>
                                 <TextBlock Visibility="{Binding CurrentSearchItem.HasLinkBackTableEntries, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5">The following pages link here</TextBlock>
                                 <TextBlock Visibility="{Binding CurrentSearchItem.HasLinkBackTableEntries, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5">There are no pages with links to here</TextBlock>
                             </StackPanel>
@@ -3962,7 +4023,7 @@
                             </ComboBoxItem>
                         </ComboBox>
                         <Button DockPanel.Dock="Right" Command="{StaticResource CrunchCommand}" VerticalAlignment="Center" Width="120" Margin="0,0,5,0">Crunch!</Button>
-                        <ProgressBar Minimum="0" Maximum="1" Value="{Binding CrunchProgress, FallbackValue=0}" Visibility="{Binding IsCrunching, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}" Margin="10,0,10,0"/>
+                        <!-- <ProgressBar Minimum="0" Maximum="1" Value="{Binding CrunchProgress, FallbackValue=0}" Visibility="{Binding IsCrunching, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}, FallbackValue=Hidden}" Margin="10,0,10,0"/> -->
                     </DockPanel>
                     <Grid>
                         <ScrollViewer>
