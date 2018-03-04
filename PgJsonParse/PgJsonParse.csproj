@@ -89,6 +89,7 @@
       <DependentUpon>PrologueWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Search Modes.cs" />
+    <Compile Include="Selectors\DataTemplateSelector.cs" />
     <Compile Include="Selectors\Type To Template Name Selector.cs" />
     <Compile Include="Selectors\Item Effect Gear Selector.cs" />
     <Compile Include="Parser Version.cs" />

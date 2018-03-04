@@ -1,6 +1,5 @@
 ﻿using PgJsonObjects;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace PgJsonParse
 {
@@ -15,18 +14,18 @@ namespace PgJsonParse
 
             if ((AsItemAttributeLink = item as ItemAttributeLink) != null)
             {
-                DataTemplate Result = element.TryFindResource("AttributeLinkGearTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "AttributeLinkGearTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsItemSimpleEffect = item as ItemSimpleEffect) != null)
             {
-                DataTemplate Result = element.TryFindResource("SimpleEffectGearTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SimpleEffectGearTemplate") as DataTemplate;
                 return Result;
             }
 
             else
-                return null;
+                return base.SelectTemplate(item, container);
         }
     }
 }

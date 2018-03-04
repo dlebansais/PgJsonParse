@@ -33,20 +33,23 @@ namespace PgJsonParse
 
             if (IsFirst)
             {
-                Result = element.TryFindResource("ItemTemplateFirst") as DataTemplate;
+                Result = TryFindResource(element, "ItemTemplateFirst") as DataTemplate;
                 if (Result != null)
                     return Result;
             }
 
             if (IsLast)
             {
-                Result = element.TryFindResource("ItemTemplateLast") as DataTemplate;
+                Result = TryFindResource(element, "ItemTemplateLast") as DataTemplate;
                 if (Result != null)
                     return Result;
             }
 
-            Result = element.TryFindResource("ItemTemplate") as DataTemplate;
-            return Result;
+            Result = TryFindResource(element, "ItemTemplate") as DataTemplate;
+            if (Result != null)
+                return Result;
+            else
+                return base.SelectTemplate(item, container);
         }
     }
 }

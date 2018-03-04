@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace PgJsonParse
 {
@@ -20,7 +19,7 @@ namespace PgJsonParse
             {
                 string TemplateName = ItemType.Name + "Template";
 
-                Result = element.TryFindResource(TemplateName) as DataTemplate;
+                Result = TryFindResource(element, TemplateName) as DataTemplate;
                 if (Result == null)
                     ItemType = ItemType.BaseType;
             }
@@ -28,7 +27,7 @@ namespace PgJsonParse
             if (Result != null)
                 return Result;
             else
-                return null;
+                return base.SelectTemplate(item, container);
         }
     }
 }

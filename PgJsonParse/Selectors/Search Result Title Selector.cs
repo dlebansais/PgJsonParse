@@ -1,6 +1,5 @@
 ﻿using PgJsonObjects;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace PgJsonParse
 {
@@ -24,72 +23,72 @@ namespace PgJsonParse
 
             if ((AsAbility = item as Ability) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultAbilityTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultAbilityTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsDirectedGoal = item as DirectedGoal) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultDirectedGoalTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultDirectedGoalTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsGameNpc = item as GameNpc) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultGameNpcTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultGameNpcTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsStorageVault = item as StorageVault) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultStorageVaultTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultStorageVaultTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsEffect = item as Effect) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultEffectTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultEffectTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsItem = item as Item) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultItemTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultItemTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsQuest = item as Quest) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultQuestTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultQuestTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsRecipe = item as Recipe) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultRecipeTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultRecipeTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsSkill = item as Skill) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultSkillTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultSkillTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsPower = item as Power) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultPowerTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultPowerTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsLoreBook = item as LoreBook) != null)
             {
-                DataTemplate Result = element.TryFindResource("SearchResultLoreBookTitleTemplate") as DataTemplate;
+                DataTemplate Result = TryFindResource(element, "SearchResultLoreBookTitleTemplate") as DataTemplate;
                 return Result;
             }
 
             else
-                return null;
+                return base.SelectTemplate(item, container);
         }
     }
 }
