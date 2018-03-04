@@ -19,7 +19,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Windows.Threading;
-using Taskbar;
+using Tools;
 
 namespace PgJsonParse
 {
@@ -372,6 +372,23 @@ namespace PgJsonParse
 
             try
             {
+                string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
+
+                using (WebClient client = new WebClient())
+                {
+                    string Content = client.DownloadString(RequestUri);
+                    if (int.TryParse(Content, out Version))
+                    {
+                        StatusMessage = null;
+                        LastExceptionMessage = null;
+                        Tools.MinimalSleep(Watch);
+                    }
+                    else
+                        throw new Exception(RequestUri + " is invalid.");
+                }
+
+
+
                 HttpWebRequest Request = WebRequest.Create("http://client.projectgorgon.com/fileversion.txt") as HttpWebRequest;
                 using (WebResponse Response = Request.GetResponse())
                 {

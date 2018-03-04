@@ -102,7 +102,7 @@
     <Compile Include="Sequence.cs" />
     <Compile Include="Taskbar\TaskbarProgress.cs" />
     <Compile Include="Taskbar\TaskbarStates.cs" />
-    <Compile Include="Tools.cs" />
+    <Compile Include="Tools\Tools.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="VersionCheckState.cs" />
     <Compile Include="Controls\BusyIndicator.cs" />
