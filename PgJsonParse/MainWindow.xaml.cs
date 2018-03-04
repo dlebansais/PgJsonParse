@@ -1418,10 +1418,9 @@ namespace PgJsonParse
                 if (IsCombatSkill(SkillItem))
                         CombatSkillList.Add(SkillItem);
 
-            Dispatcher.BeginInvoke(new CrunchSkillsHandler(OnCrunchSkills), CombatSkillList, 0, 0);
+            Dispatcher.BeginInvoke(new Action(() => OnCrunchSkills(CombatSkillList, 0, 0)));
         }
 
-        private delegate void CrunchSkillsHandler(List<Skill> CombatSkillList, int i, int j);
         private void OnCrunchSkills(List<Skill> CombatSkillList, int i, int j)
         {
             CrunchProgress = ((double)(i * CombatSkillList.Count + j)) / ((double)(CombatSkillList.Count * CombatSkillList.Count));
@@ -1442,9 +1441,9 @@ namespace PgJsonParse
             }
 
             if (j + 1 < CombatSkillList.Count)
-                Dispatcher.BeginInvoke(new CrunchSkillsHandler(OnCrunchSkills), CombatSkillList, i, j + 1);
+                Dispatcher.BeginInvoke(new Action(() => OnCrunchSkills(CombatSkillList, i, j + 1)));
             else if (i + 1 < CombatSkillList.Count)
-                Dispatcher.BeginInvoke(new CrunchSkillsHandler(OnCrunchSkills), CombatSkillList, i + 1, 0);
+                Dispatcher.BeginInvoke(new Action(() => OnCrunchSkills(CombatSkillList, i + 1, 0)));
             else
                 IsCrunching = false;
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System;
 using System.Windows;
 using Taskbar;
 
@@ -109,10 +110,9 @@ namespace PgJsonParse
         #region Progress
         public static void SetState(Window window, TaskbarStates taskbarState)
         {
-            window.Dispatcher.BeginInvoke(new SetStateHandler(OnSetState), window, taskbarState);
+            window.Dispatcher.BeginInvoke(new Action(() => OnSetState(window, taskbarState)));
         }
 
-        public delegate void SetStateHandler(Window window, TaskbarStates taskbarState);
         public static void OnSetState(Window window, TaskbarStates taskbarState)
         {
             TaskbarProgress.SetState(window, taskbarState);
@@ -120,10 +120,9 @@ namespace PgJsonParse
 
         public static void SetValue(Window window, double progressValue, double progressMax)
         {
-            window.Dispatcher.BeginInvoke(new SetValueHandler(OnSetValue), window, progressValue, progressMax);
+            window.Dispatcher.BeginInvoke(new Action(() => OnSetValue(window, progressValue, progressMax)));
         }
 
-        public delegate void SetValueHandler(Window window, double progressValue, double progressMax);
         public static void OnSetValue(Window window, double progressValue, double progressMax)
         {
             TaskbarProgress.SetValue(window, progressValue, progressMax);
