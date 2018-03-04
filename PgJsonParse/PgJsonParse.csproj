@@ -103,7 +103,7 @@
     <Compile Include="Tools\ImageConversion.cs" />
     <Compile Include="Tools\Taskbar\TaskbarProgress.cs" />
     <Compile Include="Tools\Taskbar\TaskbarStates.cs" />
-    <Compile Include="Tools\Tools.cs" />
+    <Compile Include="Tools\UserUI.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="Tools\WebClientTool.cs" />
     <Compile Include="VersionCheckState.cs" />
