@@ -373,41 +373,15 @@ namespace PgJsonParse
             try
             {
                 string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
-
-                using (WebClient client = new WebClient())
+                string Content = WebClientTool.DownloadText(RequestUri);
+                if (int.TryParse(Content, out Version))
                 {
-                    string Content = client.DownloadString(RequestUri);
-                    if (int.TryParse(Content, out Version))
-                    {
-                        StatusMessage = null;
-                        LastExceptionMessage = null;
-                        Tools.MinimalSleep(Watch);
-                    }
-                    else
-                        throw new Exception(RequestUri + " is invalid.");
+                    StatusMessage = null;
+                    LastExceptionMessage = null;
+                    UserUI.MinimalSleep(Watch);
                 }
-
-
-
-                HttpWebRequest Request = WebRequest.Create("http://client.projectgorgon.com/fileversion.txt") as HttpWebRequest;
-                using (WebResponse Response = Request.GetResponse())
-                {
-                    using (Stream ResponseStream = Response.GetResponseStream())
-                    {
-                        using (StreamReader Reader = new StreamReader(ResponseStream, Encoding.ASCII))
-                        {
-                            string Content = Reader.ReadToEnd();
-                            if (int.TryParse(Content, out Version))
-                            {
-                                StatusMessage = null;
-                                LastExceptionMessage = null;
-                                Tools.MinimalSleep(Watch);
-                            }
-                            else
-                                throw new Exception(Request.RequestUri + " is invalid.");
-                        }
-                    }
-                }
+                else
+                    throw new Exception(RequestUri + " is invalid.");
             }
             catch (Exception e)
             {
@@ -540,33 +514,22 @@ namespace PgJsonParse
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                HttpWebRequest Request = WebRequest.Create(ReleasePageAddress) as HttpWebRequest;
-                using (WebResponse Response = Request.GetResponse())
+                string Content = WebClientTool.DownloadText(ReleasePageAddress);
+                string Pattern = @"<a href=""/dlebansais/PgJsonParse/releases/tag/";
+                int Index = Content.IndexOf(Pattern);
+                if (Index >= 0)
                 {
-                    using (Stream ResponseStream = Response.GetResponseStream())
+                    string ParserTagVersion = Content.Substring(Index + Pattern.Length, 20);
+                    int EndIndex = ParserTagVersion.IndexOf('"');
+                    if (EndIndex > 0)
                     {
-                        using (StreamReader Reader = new StreamReader(ResponseStream, Encoding.ASCII))
-                        {
-                            string Content = Reader.ReadToEnd();
+                        ParserTagVersion = ParserTagVersion.Substring(0, EndIndex);
+                        if (ParserTagVersion.ToLower().StartsWith("v"))
+                            ParserTagVersion = ParserTagVersion.Substring(1);
 
-                            string Pattern = @"<a href=""/dlebansais/PgJsonParse/releases/tag/";
-                            int Index = Content.IndexOf(Pattern);
-                            if (Index >= 0)
-                            {
-                                string ParserTagVersion = Content.Substring(Index + Pattern.Length, 20);
-                                int EndIndex = ParserTagVersion.IndexOf('"');
-                                if (EndIndex > 0)
-                                {
-                                    ParserTagVersion = ParserTagVersion.Substring(0, EndIndex);
-                                    if (ParserTagVersion.ToLower().StartsWith("v"))
-                                        ParserTagVersion = ParserTagVersion.Substring(1);
-
-                                    double ReleasedParserVersion;
-                                    if (double.TryParse(ParserTagVersion, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture.NumberFormat, out ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
-                                        FoundUpdate = true;
-                                }
-                            }
-                        }
+                        double ReleasedParserVersion;
+                        if (double.TryParse(ParserTagVersion, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture.NumberFormat, out ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
+                            FoundUpdate = true;
                     }
                 }
             }
@@ -1143,7 +1106,7 @@ namespace PgJsonParse
 
         private void UpdateWindowIcon()
         {
-            Icon = Tools.IconFileToImageSource(Path.Combine(ApplicationFolder, "mainicon.png"));
+            Icon = ImageConversion.IconFileToImageSource(Path.Combine(ApplicationFolder, "mainicon.png"));
         }
 
         private bool IsLastIconLoadedForVersion(int Version)

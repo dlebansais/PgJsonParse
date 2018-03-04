@@ -8,6 +8,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using Tools;
 
 namespace PgJsonParse
 {
@@ -120,7 +121,7 @@ namespace PgJsonParse
                 Thread.Sleep(0);
             }
 
-            Tools.MinimalSleep(Watch);
+            UserUI.MinimalSleep(Watch);
 
             return true;
         }
@@ -134,28 +135,18 @@ namespace PgJsonParse
             }
 
             bool Success = false;
-
-            HttpWebRequest Request = WebRequest.Create("http://cdn.projectgorgon.com/v" + Version + "/" + SourceLocation + "/" + FileName + "." + Extension) as HttpWebRequest;
-            using (WebResponse Response = Request.GetResponse())
+            string RequestUri = "http://cdn.projectgorgon.com/v" + Version + "/" + SourceLocation + "/" + FileName + "." + Extension;
+            string Content = WebClientTool.DownloadText(RequestUri);
+            if (Content != null && Content.Length >= 256)
             {
-                using (Stream ResponseStream = Response.GetResponseStream())
-                {
-                    using (StreamReader Reader = new StreamReader(ResponseStream, Encoding.ASCII))
-                    {
-                        string Content = Reader.ReadToEnd();
-                        if (Content != null && Content.Length >= 256)
-                        {
-                            string FilePath = Path.Combine(DestinationFolder, FileName + "." + Extension);
+                string FilePath = Path.Combine(DestinationFolder, FileName + "." + Extension);
 
-                            using (FileStream fs = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                            {
-                                using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
-                                {
-                                    sw.Write(Content);
-                                    Success = true;
-                                }
-                            }
-                        }
+                using (FileStream fs = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
+                    {
+                        sw.Write(Content);
+                        Success = true;
                     }
                 }
             }
@@ -260,7 +251,7 @@ namespace PgJsonParse
                 Thread.Sleep(0);
             }
 
-            Tools.MinimalSleep(Watch);
+            UserUI.MinimalSleep(Watch);
 
             return true;
         }
@@ -273,28 +264,9 @@ namespace PgJsonParse
                 return false;
             }
 
-            bool Success = false;
-
-            HttpWebRequest Request = WebRequest.Create("http://cdn.projectgorgon.com/v" + Version + "/" + SourceLocation + "/" + IconName + "." + Extension) as HttpWebRequest;
-            using (WebResponse Response = Request.GetResponse())
-            {
-                using (Stream ResponseStream = Response.GetResponseStream())
-                {
-                    using (BinaryReader Reader = new BinaryReader(ResponseStream))
-                    {
-                        if (!Directory.Exists(DestinationFolder))
-                            Directory.CreateDirectory(DestinationFolder);
-
-                        string IconPath = Path.Combine(DestinationFolder, IconName + "." + Extension);
-
-                        using (FileStream fs = new FileStream(IconPath, FileMode.Create, FileAccess.Write, FileShare.None))
-                        {
-                            ResponseStream.CopyTo(fs);
-                            Success = true;
-                        }
-                    }
-                }
-            }
+            string RequestUri = "http://cdn.projectgorgon.com/v" + Version + "/" + SourceLocation + "/" + IconName + "." + Extension;
+            string IconPath = Path.Combine(DestinationFolder, IconName + "." + Extension);
+            bool Success = WebClientTool.DownloadDataToFile(RequestUri, IconPath, 256);
 
             if (!Success)
                 IconDownloadState = DownloadState.FailedToDownload;

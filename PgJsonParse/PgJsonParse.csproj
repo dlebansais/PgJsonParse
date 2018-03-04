@@ -18,7 +18,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;USE_HTTPREQUEST</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -100,10 +100,12 @@
     <Compile Include="Selectors\Search Result Title Selector.cs" />
     <Compile Include="Selectors\Skill Reward Selector.cs" />
     <Compile Include="Sequence.cs" />
-    <Compile Include="Taskbar\TaskbarProgress.cs" />
-    <Compile Include="Taskbar\TaskbarStates.cs" />
+    <Compile Include="Tools\ImageConversion.cs" />
+    <Compile Include="Tools\Taskbar\TaskbarProgress.cs" />
+    <Compile Include="Tools\Taskbar\TaskbarStates.cs" />
     <Compile Include="Tools\Tools.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />
+    <Compile Include="Tools\WebClientTool.cs" />
     <Compile Include="VersionCheckState.cs" />
     <Compile Include="Controls\BusyIndicator.cs" />
     <Page Include="Commands\GlobalCommands.xaml">

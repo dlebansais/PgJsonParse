@@ -9,28 +9,10 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace PgJsonParse
+namespace Tools
 {
-    public class Tools
+    public static class UserUI
     {
-        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DeleteObject([In] IntPtr hObject);
-
-        public static ImageSource IconFileToImageSource(string IconFile)
-        {
-            if (!File.Exists(IconFile))
-                return null;
-
-            Bitmap bmp = new Bitmap(IconFile);
-            var handle = bmp.GetHbitmap();
-            try
-            {
-                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            }
-            finally { DeleteObject(handle); }
-        }
-
         public static void MinimalSleep(Stopwatch Watch)
         {
             MinimalSleep(Watch, TimeSpan.FromSeconds(4));
