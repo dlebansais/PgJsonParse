@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 using System.Reflection;
 
@@ -48,13 +49,14 @@ namespace PgJsonObjects
                 return false;
             }
 
-            System.Drawing.Color TryNamed = System.Drawing.Color.FromName(s);
+#if SUPPORT_COLORNAMES
+            Color TryNamed = Color.FromName(s);
             if (TryNamed.ToArgb() != 0)
             {
                 Value = (uint)TryNamed.ToArgb();
                 return true;
             }
-
+#endif
             if (s.Length != 6)
             {
                 Value = 0;
@@ -71,14 +73,17 @@ namespace PgJsonObjects
                 return false;
             }
 
-            System.Drawing.Color c = System.Drawing.Color.FromArgb(R, G, B);
-            Value = (uint)c.ToArgb();
+            Color c = Color.FromArgb(0xFF, R, G, B);
+            Value = (0xFF000000 + ((uint)R << 16) + ((uint)G << 8) + ((uint)B << 0));
             return true;
         }
 
         public static string ColorToString(uint Value)
         {
-            System.Drawing.Color c = System.Drawing.Color.FromArgb((int)Value);
+            byte R = (byte)((Value >> 16) & 0xFF);
+            byte G = (byte)((Value >> 8) & 0xFF);
+            byte B = (byte)((Value >> 0) & 0xFF);
+            Color c = Color.FromArgb(0xFF, R, G, B);
             return c.R.ToString("X02") + c.G.ToString("X02") + c.B.ToString("X02");
         }
 

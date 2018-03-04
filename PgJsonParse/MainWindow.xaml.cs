@@ -25,6 +25,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using Tools;
 
 namespace PgJsonParse
 {
@@ -114,7 +115,7 @@ namespace PgJsonParse
             IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
             FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
 
-            UpdateTaskbarShortcut();
+            TaskbarShortcut.UpdateTaskbarShortcut(IconFile, "mainicon.p", "mainicon.i");
         }
 
         public void StartApplication()
@@ -122,91 +123,6 @@ namespace PgJsonParse
             RefreshCombatSkillList();
             RefreshWeightProfileList();
             RefreshGearPlaner();
-        }
-
-        private void UpdateTaskbarShortcut()
-        {
-            try
-            {
-                if (!File.Exists(IconFile))
-                    return;
-
-                string IconFileAsIco = Path.ChangeExtension(IconFile, "ico");
-                if (!File.Exists(IconFileAsIco))
-                {
-                    Bitmap FileBitmap = new Bitmap(IconFile, true);
-                    Bitmap ResourceBitmap = new Bitmap(App.GetResourceStream(new Uri("pack://application:,,,/Resources/mainicon.p")).Stream);
-                    if (AreBitmapsEqual(FileBitmap, ResourceBitmap))
-                    {
-                        Icon ResourceIcon = new Icon(App.GetResourceStream(new Uri("pack://application:,,,/Resources/mainicon.i")).Stream);
-                        using (FileStream fs = new FileStream(IconFileAsIco, FileMode.Create, FileAccess.Write, FileShare.None))
-                        {
-                            ResourceIcon.Save(fs);
-                        }
-                    }
-                }
-
-                if (!File.Exists(IconFileAsIco))
-                    return;
-
-                string RoamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                string TaskbarShortcutPath = Path.Combine(RoamingPath, @"Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar");
-                string ShortcutFileName = "PgJsonParse.lnk";
-                string PgJsonParseShortcut = Path.Combine(TaskbarShortcutPath, ShortcutFileName);
-
-                if (!File.Exists(PgJsonParseShortcut))
-                    return;
-
-                Shell32.Shell Shell = new Shell32.Shell();
-                Shell32.Folder Folder = Shell.NameSpace(TaskbarShortcutPath);
-                Shell32.FolderItem Item = Folder.ParseName(ShortcutFileName);
-                Shell32.ShellLinkObject Link = (Shell32.ShellLinkObject)Item.GetLink;
-                string OldLocation = null;
-                Link.GetIconLocation(out OldLocation);
-                if (string.IsNullOrEmpty(OldLocation))
-                {
-                    Link.SetIconLocation(IconFileAsIco, 0);
-                    Link.Save();
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
-        public static bool AreBitmapsEqual(Bitmap b1, Bitmap b2)
-        {
-            if (b1.Size != b2.Size)
-                return false;
-
-            BitmapData bd1 = b1.LockBits(new Rectangle(new System.Drawing.Point(0, 0), b1.Size), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            BitmapData bd2 = b2.LockBits(new Rectangle(new System.Drawing.Point(0, 0), b2.Size), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            try
-            {
-                IntPtr bd1scan0 = bd1.Scan0;
-                IntPtr bd2scan0 = bd2.Scan0;
-
-                int stride = bd1.Stride;
-                int len = stride * b1.Height;
-
-                byte[] bd1scan0bytes = new byte[len];
-                Marshal.Copy(bd1scan0, bd1scan0bytes, 0, len);
-                byte[] bd2scan0bytes = new byte[len];
-                Marshal.Copy(bd2scan0, bd2scan0bytes, 0, len);
-
-                for (int i = 0; i < len; i++)
-                    if (bd1scan0bytes[i] != bd2scan0bytes[i])
-                        return false;
-
-                return true;
-            }
-            finally
-            {
-                b1.UnlockBits(bd1);
-                b2.UnlockBits(bd2);
-            }
         }
         #endregion
 
@@ -226,30 +142,8 @@ namespace PgJsonParse
 
         private void InitCache()
         {
-            if (File.Exists(IconFile))
-            {
-                Bitmap bmp = new Bitmap(IconFile);
-                Icon = ImageSourceForBitmap(bmp);
-            }
-            if (File.Exists(FavorIconFile))
-            {
-                Bitmap bmp = new Bitmap(FavorIconFile);
-                FavorIcon = ImageSourceForBitmap(bmp);
-            }
-        }
-
-        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DeleteObject([In] IntPtr hObject);
-
-        public ImageSource ImageSourceForBitmap(Bitmap bmp)
-        {
-            var handle = bmp.GetHbitmap();
-            try
-            {
-                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            }
-            finally { DeleteObject(handle); }
+            ImageConversion.UpdateWindowIconUsingFile(this, IconFile);
+            FavorIcon = ImageConversion.IconFileToImageSource(FavorIconFile);
         }
         #endregion
 
@@ -1467,7 +1361,7 @@ namespace PgJsonParse
             if (AbilityCount < 6)
                 return false;
 
-            //Debug.Print(SkillItem.ToString() + ": " + SkillItem.XpTable + ", " + AbilityCount);
+            //Debug.WriteLine(SkillItem.ToString() + ": " + SkillItem.XpTable + ", " + AbilityCount);
 
             return true;
         }
@@ -1477,7 +1371,7 @@ namespace PgJsonParse
             if (PrimarySkill.CompatibleCombatSkillList.Contains(SecondarySkill.CombatSkill) && SecondarySkill.CompatibleCombatSkillList.Contains(PrimarySkill.CombatSkill))
                 return true;
 
-            //Debug.Print("Incompatible skills: " + PrimarySkill.Key + " and " + SecondarySkill.Key);
+            //Debug.WriteLine("Incompatible skills: " + PrimarySkill.Key + " and " + SecondarySkill.Key);
 
             return false;
         }
@@ -1615,7 +1509,7 @@ namespace PgJsonParse
 
             foreach (Ability Ability in LineAbilityList)
                 if (Ability.SpecialInfo != null && Ability.SpecialInfo.Length > 0 && Ability.AbilityAdditionalResultList.Count == 0)
-                    Debug.Print(Ability.SpecialInfo);
+                    Debug.WriteLine(Ability.SpecialInfo);
 
             return LineAbilityList;
         }

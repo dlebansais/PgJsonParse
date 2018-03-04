@@ -535,7 +535,7 @@ namespace PgJsonParse
             }
             catch (Exception e)
             {
-                Debug.Print(e.Message);
+                Debug.WriteLine(e.Message);
             }
 
             return FoundUpdate;
@@ -874,7 +874,7 @@ namespace PgJsonParse
             string Warnings = ErrorInfo.GetWarnings();
             if (Warnings.Length > 0)
             {
-                Debug.Print(Warnings);
+                Debug.WriteLine(Warnings);
                 Dlg.WarningText = Warnings;
             }
             else
@@ -1106,7 +1106,7 @@ namespace PgJsonParse
 
         private void UpdateWindowIcon()
         {
-            Icon = ImageConversion.IconFileToImageSource(Path.Combine(ApplicationFolder, "mainicon.png"));
+            ImageConversion.UpdateWindowIconUsingFile(this, Path.Combine(ApplicationFolder, "mainicon.png"));
         }
 
         private bool IsLastIconLoadedForVersion(int Version)
@@ -1304,34 +1304,24 @@ namespace PgJsonParse
             CancelParse();
         }
 
-        private void SetOpenPopupButton(ToggleButton Button)
-        {
-            OpenPopupButton = Button;
-        }
-
-        private void ClearOpenPopupButton()
-        {
-            OpenPopupButton = null;
-        }
-
         private void OnToggleButtonChecked(object sender, RoutedEventArgs e)
         {
-            SetOpenPopupButton(sender as ToggleButton);
+            PopupHandler.SetOpenPopupButton(sender as ToggleButton);
         }
 
         private void OnToggleButtonUnchecked(object sender, RoutedEventArgs e)
         {
-            ClearOpenPopupButton();
+            PopupHandler.ClearOpenPopupButton();
         }
 
         private void OnPopupSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ClosePopups();
+            PopupHandler.OnPopupSelectionChanged();
         }
 
         private void OnPopupMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ClosePopups();
+            PopupHandler.OnPopupMouseLeftButtonUp();
         }
 
         private void OnRequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -1353,31 +1343,7 @@ namespace PgJsonParse
 
         private void OnPopupClosed(object sender, EventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                Mouse.AddMouseUpHandler(this, OnMouseUp);
-                Mouse.Capture(this);
-            }
-            else
-                Dispatcher.BeginInvoke(new Action(ClosePopups));
-        }
-
-        private void OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Mouse.RemoveMouseUpHandler(this, OnMouseUp);
-            Mouse.Capture(null);
-            Dispatcher.BeginInvoke(new Action(ClosePopups));
-
-            e.Handled = false;
-        }
-
-        public void ClosePopups()
-        {
-            if (OpenPopupButton != null && OpenPopupButton.IsChecked.HasValue && OpenPopupButton.IsChecked.Value == true)
-            {
-                OpenPopupButton.IsChecked = false;
-                ClearOpenPopupButton();
-            }
+            PopupHandler.OnPopupClosed(this);
         }
 
         private void OnIconSharingChanged(object sender, RoutedEventArgs e)
@@ -1398,8 +1364,6 @@ namespace PgJsonParse
 
             SaveSettings();
         }
-
-        private ToggleButton OpenPopupButton;
         #endregion
 
         #region Implementation of INotifyPropertyChanged

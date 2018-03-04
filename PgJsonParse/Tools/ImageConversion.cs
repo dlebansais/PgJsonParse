@@ -28,5 +28,10 @@ namespace Tools
             }
             finally { DeleteObject(handle); }
         }
+
+        public static void UpdateWindowIconUsingFile(Window window, string FileName)
+        {
+            window.Icon = IconFileToImageSource(FileName);
+        }
     }
 }

@@ -214,7 +214,7 @@ namespace PgJsonObjects
                             }
                             catch
                             {
-                                Debug.Print("Failed to write index for " + Entry.Value.ToString());
+                                Debug.WriteLine("Failed to write index for " + Entry.Value.ToString());
                             }
                         }
                     }

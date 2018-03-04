@@ -3,6 +3,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 #else
+using System.IO;
+using System.Net;
 #endif
 
 namespace Tools
@@ -24,10 +26,8 @@ namespace Tools
                 }
             }
 #else
-            using (WebClient client = new WebClient())
-            {
-                return client.DownloadString(address);
-            }
+            WebClient client = new WebClient();
+            return client.DownloadString(address);
 #endif
         }
 
@@ -57,10 +57,19 @@ namespace Tools
 
             return true;
 #else
-            using (WebClient client = new WebClient())
+            WebClient client = new WebClient();
+            string Content = client.DownloadString(address);
+            if (Content.Length < minLength)
+                return false;
+
+            using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                return client.DownloadString(address);
+                using (BinaryWriter bw = new BinaryWriter(fs))
+                {
+                    bw.Write(Content);
+                }
             }
+            return true;
 #endif
         }
     }
