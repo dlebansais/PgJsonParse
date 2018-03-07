@@ -518,14 +518,14 @@ namespace PgJsonObjects
 
             else if (Split.Length != 4)
             {
-                ErrorInfo.AddInvalidString("Item StockDye", RawStockDye);
+                ErrorInfo.AddInvalidString("Item StockDye (1)", RawStockDye);
                 StockDye = null;
                 return;
             }
 
             if (Split[0].Length != 0)
             {
-                ErrorInfo.AddInvalidString("Item StockDye", RawStockDye);
+                ErrorInfo.AddInvalidString("Item StockDye (2)", RawStockDye);
                 StockDye = null;
                 return;
             }
@@ -537,22 +537,23 @@ namespace PgJsonObjects
             {
                 string ColorPrefix = "Color" + i.ToString() + "=";
                 if (!Split[i].StartsWith(ColorPrefix))
-                    break;
+                {
+                    ErrorInfo.AddInvalidString("Item StockDye (3) [i=" + i + "]", RawStockDye);
+                    StockDye = null;
+                    return;
+                }
 
                 string ColorString = Split[i].Substring(ColorPrefix.Length);
 
                 uint ParsedColor;
                 if (!Tools.TryParseColor(ColorString, out ParsedColor))
-                    break;
+                {
+                    ErrorInfo.AddInvalidString("Item StockDye (4) [i=" + i + "]", RawStockDye);
+                    StockDye = null;
+                    return;
+                }
 
                 ParsedColors[i - 1] = ParsedColor;
-            }
-
-            if (i < Split.Length)
-            {
-                ErrorInfo.AddInvalidString("Item StockDye", RawStockDye);
-                StockDye = null;
-                return;
             }
 
             StockDye = new List<uint>();
