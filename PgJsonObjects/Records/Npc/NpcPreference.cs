@@ -113,46 +113,40 @@ namespace PgJsonObjects
 
         private static void ParseFieldKeywords(NpcPreference This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawKeywords;
-            if ((RawKeywords = Value as ArrayList) != null)
-                This.ParseKeywords(RawKeywords, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("NpcPreference Keywords");
+            ParseFieldValueStringArray(Value, ErrorInfo, "NpcPreference Keywords", This.ParseKeywords);
         }
 
-        private void ParseKeywords(ArrayList RawKeywords, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
-            foreach (object RawKeyword in RawKeywords)
+            if (RawKeyword.StartsWith("MinValue:"))
+                return ParseKeywordAsMinValue(RawKeyword.Substring(9), ErrorInfo);
+            else if (RawKeyword.StartsWith("SkillPrereq:"))
+                return ParseKeywordAsSkillRequirement(RawKeyword.Substring(12), ErrorInfo);
+            else if (RawKeyword.StartsWith("EquipmentSlot:"))
+                return ParseKeywordAsEquipmentSlot(RawKeyword.Substring(14), ErrorInfo);
+            else if (RawKeyword.StartsWith("MinRarity:"))
+                return ParseKeywordAsMinRarity(RawKeyword.Substring(10), ErrorInfo);
+            else if (RawKeyword.StartsWith("Rarity:"))
+                return ParseKeywordAsRarity(RawKeyword.Substring(7), ErrorInfo);
+            else
             {
-                string AsString;
-                if ((AsString = RawKeyword as string) != null)
+                ItemKeyword ParsedItemKeyword;
+                if (StringToEnumConversion<ItemKeyword>.TryParse(RawKeyword, out ParsedItemKeyword, ErrorInfo))
                 {
-                    if (AsString.StartsWith("MinValue:"))
-                        ParseKeywordAsMinValue(AsString.Substring(9), ErrorInfo);
-                    else if (AsString.StartsWith("SkillPrereq:"))
-                        ParseKeywordAsSkillRequirement(AsString.Substring(12), ErrorInfo);
-                    else if (AsString.StartsWith("EquipmentSlot:"))
-                        ParseKeywordAsEquipmentSlot(AsString.Substring(14), ErrorInfo);
-                    else if (AsString.StartsWith("MinRarity:"))
-                        ParseKeywordAsMinRarity(AsString.Substring(10), ErrorInfo);
-                    else if (AsString.StartsWith("Rarity:"))
-                        ParseKeywordAsRarity(AsString.Substring(7), ErrorInfo);
-                    else
-                    {
-                        ItemKeyword ParsedItemKeyword;
-                        if (StringToEnumConversion<ItemKeyword>.TryParse(AsString, out ParsedItemKeyword, ErrorInfo))
-                            ItemKeywordList.Add(ParsedItemKeyword);
-                    }
+                    ItemKeywordList.Add(ParsedItemKeyword);
+                    return true;
                 }
+                else
+                    return false;
             }
         }
 
         private static void ParseFieldPref(NpcPreference This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParsePref((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParsePref(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParsePref((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParsePref((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref");
         }
@@ -162,40 +156,54 @@ namespace PgJsonObjects
             RawPreference = RawPref;
         }
 
-        private void ParseKeywordAsMinValue(string MinValueString, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywordAsMinValue(string MinValueString, ParseErrorInfo ErrorInfo)
         {
             int MinValueRequirement;
             if (int.TryParse(MinValueString, out MinValueRequirement))
+            {
                 this.MinValueRequirement = MinValueRequirement;
+                return true;
+            }
             else
+            {
                 ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(MinValue)");
+                return false;
+            }
         }
 
-        private void ParseKeywordAsSkillRequirement(string SkillRequirementString, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywordAsSkillRequirement(string SkillRequirementString, ParseErrorInfo ErrorInfo)
         {
             if (RawSkillRequirement == PowerSkill.Internal_None)
             {
                 PowerSkill ParsedSkill;
                 StringToEnumConversion<PowerSkill>.TryParse(SkillRequirementString, out ParsedSkill, ErrorInfo);
                 RawSkillRequirement = ParsedSkill;
+                return true;
             }
             else
+            {
                 ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(SkillPrereq)");
+                return false;
+            }
         }
 
-        private void ParseKeywordAsEquipmentSlot(string EquipmentSlotString, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywordAsEquipmentSlot(string EquipmentSlotString, ParseErrorInfo ErrorInfo)
         {
             if (SlotRequirement == ItemSlot.Internal_None)
             {
                 ItemSlot ParsedSlot;
                 StringToEnumConversion<ItemSlot>.TryParse(EquipmentSlotString, out ParsedSlot, ErrorInfo);
                 SlotRequirement = ParsedSlot;
+                return true;
             }
             else
+            {
                 ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(EquipmentSlot)");
+                return false;
+            }
         }
 
-        private void ParseKeywordAsMinRarity(string MinRarityString, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywordAsMinRarity(string MinRarityString, ParseErrorInfo ErrorInfo)
         {
             if (RarityRequirement == RecipeItemKey.Internal_None)
             {
@@ -204,13 +212,21 @@ namespace PgJsonObjects
                 else if (MinRarityString == "Rare")
                     MinRarityRequirement = RecipeItemKey.MinRarity_Rare;
                 else
+                {
                     ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(MinRarity)");
+                    return false;
+                }
+
+                return true;
             }
             else
+            {
                 ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(MinRarity)");
+                return false;
+            }
         }
 
-        private void ParseKeywordAsRarity(string RarityString, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywordAsRarity(string RarityString, ParseErrorInfo ErrorInfo)
         {
             if (RarityRequirement == RecipeItemKey.Internal_None)
             {
@@ -219,10 +235,18 @@ namespace PgJsonObjects
                 else if (RarityString == "Uncommon")
                     RarityRequirement = RecipeItemKey.Rarity_Uncommon;
                 else
+                {
                     ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(Rarity)");
+                    return false;
+                }
+
+                return true;
             }
             else
+            {
                 ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(Rarity)");
+                return false;
+            }
         }
         #endregion
 

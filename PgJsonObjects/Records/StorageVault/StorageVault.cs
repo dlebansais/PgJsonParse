@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -46,24 +47,17 @@ namespace PgJsonObjects
 
         private static void ParseFieldID(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseID((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault ID");
+            ParseFieldValueLong(Value, ErrorInfo, "StorageVault ID", This.ParseID);
         }
 
-        private void ParseID(int RawId, ParseErrorInfo ErrorInfo)
+        private void ParseID(long RawId, ParseErrorInfo ErrorInfo)
         {
-            this.RawId = RawId;
+            this.RawId = (int)RawId;
         }
 
         private static void ParseFieldNpcFriendlyName(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawNpcFriendlyName;
-            if ((RawNpcFriendlyName = Value as string) != null)
-                This.ParseNpcFriendlyName(RawNpcFriendlyName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault NpcFriendlyName");
+            ParseFieldValueString(Value, ErrorInfo, "StorageVault NpcFriendlyName", This.ParseNpcFriendlyName);
         }
 
         private void ParseNpcFriendlyName(string RawNpcFriendlyName, ParseErrorInfo ErrorInfo)
@@ -73,11 +67,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldArea(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawArea;
-            if ((RawArea = Value as string) != null)
-                This.ParseArea(RawArea, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault Area");
+            ParseFieldValueString(Value, ErrorInfo, "StorageVault Area", This.ParseArea);
         }
 
         private void ParseArea(string RawArea, ParseErrorInfo ErrorInfo)
@@ -98,15 +88,12 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumSlots(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseNumSlots((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault NumSlots");
+            ParseFieldValueLong(Value, ErrorInfo, "StorageVault NumSlots", This.ParseNumSlots);
         }
 
-        private void ParseNumSlots(int RawNumSlots, ParseErrorInfo ErrorInfo)
+        private void ParseNumSlots(long RawNumSlots, ParseErrorInfo ErrorInfo)
         {
-            this.RawNumSlots = RawNumSlots;
+            this.RawNumSlots = (int)RawNumSlots;
         }
 
         private static void ParseFieldHasAssociatedNpc(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
@@ -124,21 +111,22 @@ namespace PgJsonObjects
 
         private static void ParseFieldLevels(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, object> RawLevels;
-            if ((RawLevels = Value as Dictionary<string, object>) != null)
-                This.ParseLevels(RawLevels, ErrorInfo);
+            JObject AsJObject;
+            if ((AsJObject = Value as JObject) != null)
+                This.ParseLevels(AsJObject, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("StorageVault Levels");
         }
 
-        private void ParseLevels(Dictionary<string, object> RawLevels, ParseErrorInfo ErrorInfo)
+        private void ParseLevels(JObject RawLevels, ParseErrorInfo ErrorInfo)
         {
-            foreach (KeyValuePair<string, object> Entry in RawLevels)
+            foreach (KeyValuePair<string, JToken> Entry in RawLevels)
             {
                 int FavorLevel;
+                JValue AsJValue;
 
-                if (Entry.Value is int)
-                    FavorLevel = (int)Entry.Value;
+                if (((AsJValue = Entry.Value as JValue) != null) && AsJValue.Type == JTokenType.Integer)
+                    FavorLevel = (int)(long)AsJValue.Value;
                 else
                 {
                     ErrorInfo.AddInvalidObjectFormat("StorageVault Levels");
@@ -155,11 +143,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequiredItemKeyword(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawRequiredItemKeyword;
-            if ((RawRequiredItemKeyword = Value as string) != null)
-                This.ParseRequiredItemKeyword(RawRequiredItemKeyword, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault RequiredItemKeyword");
+            ParseFieldValueString(Value, ErrorInfo, "StorageVault RequiredItemKeyword", This.ParseRequiredItemKeyword);
         }
 
         private void ParseRequiredItemKeyword(string RawRequiredItemKeyword, ParseErrorInfo ErrorInfo)
@@ -171,11 +155,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequirementDescription(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawRequirementDescription;
-            if ((RawRequirementDescription = Value as string) != null)
-                This.ParseRequirementDescription(RawRequirementDescription, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault RequirementDescription");
+            ParseFieldValueString(Value, ErrorInfo, "StorageVault RequirementDescription", This.ParseRequirementDescription);
         }
 
         private void ParseRequirementDescription(string RawRequirementDescription, ParseErrorInfo ErrorInfo)
@@ -185,11 +165,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldGrouping(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawGrouping;
-            if ((RawGrouping = Value as string) != null)
-                This.ParseGrouping(RawGrouping, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault Grouping");
+            ParseFieldValueString(Value, ErrorInfo, "StorageVault Grouping", This.ParseRequirementDescription);
         }
 
         private void ParseGrouping(string RawGrouping, ParseErrorInfo ErrorInfo)
@@ -210,26 +186,27 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequirements(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, object> AsDictionary;
-            if ((AsDictionary = Value as Dictionary<string, object>) != null)
-                This.ParseRequirements(AsDictionary, ErrorInfo);
+            JObject AsJObject;
+            if ((AsJObject = Value as JObject) != null)
+                This.ParseRequirements(AsJObject, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
         }
 
-        private void ParseRequirements(Dictionary<string, object> RawRequirement, ParseErrorInfo ErrorInfo)
+        private void ParseRequirements(JObject RawRequirement, ParseErrorInfo ErrorInfo)
         {
             if (RawRequirement.ContainsKey("T"))
             {
-                string RequirementType;
-                if ((RequirementType = RawRequirement["T"] as string) != null)
+                JValue AsJValue;
+                if (((AsJValue = RawRequirement["T"] as JValue) != null) && AsJValue.Type == JTokenType.String)
                 {
+                    string RequirementType = AsJValue.Value as string;
                     if (RequirementType == "InteractionFlagSet")
                     {
                         if (RawRequirement.ContainsKey("InteractionFlag"))
                         {
-                            string InteractionFlag = RawRequirement["InteractionFlag"] as string;
-                            if (InteractionFlag == "Ivyn_Gave_Passcode")
+                            JValue InteractionFlag = RawRequirement["InteractionFlag"] as JValue;
+                            if (InteractionFlag != null && InteractionFlag.Type == JTokenType.String && InteractionFlag.Value as string == "Ivyn_Gave_Passcode")
                             {
                                 InteractionFlagRequirement = "Ivyn Gave Passcode";
                             }

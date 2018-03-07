@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -57,11 +58,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLabel(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawLabel;
-            if ((RawLabel = Value as string) != null)
-                This.ParseLabel(RawLabel, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Attribute Label");
+            ParseFieldValueString(Value, ErrorInfo, "Attribute Label", This.ParseLabel);
         }
 
         private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)
@@ -71,14 +68,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldIconIds(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawIconIds;
-            if ((RawIconIds = Value as ArrayList) != null)
+            JArray RawIconIds;
+            if ((RawIconIds = Value as JArray) != null)
                 This.ParseIconIds(RawIconIds, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Attribute IconIds");
         }
 
-        private void ParseIconIds(ArrayList RawIconIds, ParseErrorInfo ErrorInfo)
+        private void ParseIconIds(JArray RawIconIds, ParseErrorInfo ErrorInfo)
         {
             List<int> RawIconIdList = new List<int>();
             ParseIntTable(RawIconIds, RawIconIdList, "IconIds", ErrorInfo, out IsIconIdListEmpty);
@@ -93,11 +90,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldTooltip(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawTooltip;
-            if ((RawTooltip = Value as string) != null)
-                This.ParseTooltip(RawTooltip, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Attribute Tooltip");
+            ParseFieldValueString(Value, ErrorInfo, "Attribute Tooltip", This.ParseTooltip);
         }
 
         private void ParseTooltip(string RawTooltip, ParseErrorInfo ErrorInfo)
@@ -107,11 +100,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDisplayType(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDisplayType;
-            if ((RawDisplayType = Value as string) != null)
-                This.ParseDisplayType(RawDisplayType, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Attribute DisplayType");
+            ParseFieldValueString(Value, ErrorInfo, "Attribute DisplayType", This.ParseDisplayType);
         }
 
         private void ParseDisplayType(string RawDisplayType, ParseErrorInfo ErrorInfo)
@@ -136,11 +125,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDisplayRule(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDisplayRule;
-            if ((RawDisplayRule = Value as string) != null)
-                This.ParseDisplayRule(RawDisplayRule, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Attribute DisplayRule");
+            ParseFieldValueString(Value, ErrorInfo, "Attribute DisplayRule", This.ParseDisplayRule);
         }
 
         private void ParseDisplayRule(string RawDisplayRule, ParseErrorInfo ErrorInfo)
@@ -152,10 +137,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldDefaultValue(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseDefaultValue((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseDefaultValue(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseDefaultValue((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseDefaultValue((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Attribute DefaultValue");
         }

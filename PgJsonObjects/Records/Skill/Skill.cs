@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -194,24 +195,17 @@ namespace PgJsonObjects
 
         private static void ParseFieldId(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseId((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Skill Id");
+            ParseFieldValueLong(Value, ErrorInfo, "Skill Id", This.ParseId);
         }
 
-        private void ParseId(int RawId, ParseErrorInfo ErrorInfo)
+        private void ParseId(long RawId, ParseErrorInfo ErrorInfo)
         {
-            this.RawId = RawId;
+            this.RawId = (int)RawId;
         }
 
         private static void ParseFieldDescription(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDescription;
-            if ((RawDescription = Value as string) != null)
-                This.ParseDescription(RawDescription, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Skill Description");
+            ParseFieldValueString(Value, ErrorInfo, "Skill Description", This.ParseDescription);
         }
 
         private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
@@ -234,11 +228,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldXpTable(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawXpTable;
-            if ((RawXpTable = Value as string) != null)
-                This.ParseXpTable(RawXpTable, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Skill XpTable");
+            ParseFieldValueString(Value, ErrorInfo, "Skill XpTable", This.ParseXpTable);
         }
 
         private void ParseXpTable(string RawXpTable, ParseErrorInfo ErrorInfo)
@@ -250,10 +240,9 @@ namespace PgJsonObjects
 
         private static void ParseFieldAdvancementTable(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawAdvancementTable;
-
-            if ((RawAdvancementTable = Value as string) != null)
-                This.ParseAdvancementTable(RawAdvancementTable, ErrorInfo);
+            JValue RawAdvancementTable;
+            if (((RawAdvancementTable = Value as JValue) != null) && RawAdvancementTable.Type == JTokenType.String)
+                This.ParseAdvancementTable(RawAdvancementTable.Value as string, ErrorInfo);
             else
                 This.IsRawAdvancementTableEmpty = true;
         }
@@ -281,45 +270,43 @@ namespace PgJsonObjects
 
         private static void ParseFieldCompatibleCombatSkills(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawCompatibleCombatSkills;
-            if ((RawCompatibleCombatSkills = Value as ArrayList) != null)
+            JArray RawCompatibleCombatSkills;
+            if ((RawCompatibleCombatSkills = Value as JArray) != null)
                 This.ParseCompatibleCombatSkills(RawCompatibleCombatSkills, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Skill CompatibleCombatSkills");
         }
 
-        private void ParseCompatibleCombatSkills(ArrayList RawCompatibleCombatSkills, ParseErrorInfo ErrorInfo)
+        private void ParseCompatibleCombatSkills(JArray RawCompatibleCombatSkills, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<PowerSkill>.ParseList(RawCompatibleCombatSkills, CompatibleCombatSkillList, ErrorInfo);
         }
 
         private static void ParseFieldMaxBonusLevels(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseMaxBonusLevels((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Skill MaxBonusLevels");
+            ParseFieldValueLong(Value, ErrorInfo, "Skill MaxBonusLevels", This.ParseMaxBonusLevels);
         }
 
-        private void ParseMaxBonusLevels(int RawMaxBonusLevels, ParseErrorInfo ErrorInfo)
+        private void ParseMaxBonusLevels(long RawMaxBonusLevels, ParseErrorInfo ErrorInfo)
         {
-            this.RawMaxBonusLevels = RawMaxBonusLevels;
+            this.RawMaxBonusLevels = (int)RawMaxBonusLevels;
         }
 
         private static void ParseFieldInteractionFlagLevelCaps(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, object> RawInteractionFlagLevelCaps;
-            if ((RawInteractionFlagLevelCaps = Value as Dictionary<string, object>) != null)
+            JObject RawInteractionFlagLevelCaps;
+            if ((RawInteractionFlagLevelCaps = Value as JObject) != null)
                 This.ParseInteractionFlagLevelCaps(RawInteractionFlagLevelCaps, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Skill InteractionFlagLevelCaps");
         }
 
-        private void ParseInteractionFlagLevelCaps(Dictionary<string, object> InteractionFlagLevelCaps, ParseErrorInfo ErrorInfo)
+        private void ParseInteractionFlagLevelCaps(JObject InteractionFlagLevelCaps, ParseErrorInfo ErrorInfo)
         {
-            foreach (KeyValuePair<string, object> RawEntry in InteractionFlagLevelCaps)
+            foreach (KeyValuePair<string, JToken> RawEntry in InteractionFlagLevelCaps)
             {
-                if (!(RawEntry.Value is int))
+                JValue AsJValue;
+                if (((AsJValue = RawEntry.Value as JValue) == null) || AsJValue.Type != JTokenType.Integer)
                 {
                     ErrorInfo.AddInvalidObjectFormat("Skill InteractionFlagLevelCaps");
                     break;
@@ -365,7 +352,7 @@ namespace PgJsonObjects
                     break;
                 }
 
-                int Level = (int)RawEntry.Value;
+                int Level = (int)(long)AsJValue.Value;
                 LevelCapInteraction NewInteraction = new LevelCapInteraction(ConvertedPowerSkill, OtherLevel, Level);
                 InteractionFlagLevelCapList.Add(NewInteraction);
             }
@@ -373,20 +360,22 @@ namespace PgJsonObjects
 
         private static void ParseFieldAdvancementHints(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, object> RawAdvancementHints;
-            if ((RawAdvancementHints = Value as Dictionary<string, object>) != null)
+            JObject RawAdvancementHints;
+            if ((RawAdvancementHints = Value as JObject) != null)
                 This.ParseAdvancementHints(RawAdvancementHints, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Skill AdvancementHints");
         }
 
-        private void ParseAdvancementHints(Dictionary<string, object> RawAdvancementHints, ParseErrorInfo ErrorInfo)
+        private void ParseAdvancementHints(JObject RawAdvancementHints, ParseErrorInfo ErrorInfo)
         {
-            foreach (KeyValuePair<string, object> RawEntry in RawAdvancementHints)
+            foreach (KeyValuePair<string, JToken> RawEntry in RawAdvancementHints)
             {
-                string Description;
-                if ((Description = RawEntry.Value as string) != null)
+                JValue AsJValue;
+                if (((AsJValue = RawEntry.Value as JValue) != null) && AsJValue.Type == JTokenType.String)
                 {
+                    string Description = AsJValue.Value as string;
+
                     int Level;
                     if (int.TryParse(RawEntry.Key, out Level) && Level > 0)
                         AdvancementHintTable.Add(Level, Description);
@@ -400,19 +389,19 @@ namespace PgJsonObjects
 
         private static void ParseFieldRewards(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, object> RawRewards;
-            if ((RawRewards = Value as Dictionary<string, object>) != null)
+            JObject RawRewards;
+            if ((RawRewards = Value as JObject) != null)
                 This.ParseRewards(RawRewards, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Skill Rewards");
         }
 
-        private void ParseRewards(Dictionary<string, object> RawRewards, ParseErrorInfo ErrorInfo)
+        private void ParseRewards(JObject RawRewards, ParseErrorInfo ErrorInfo)
         {
-            foreach (KeyValuePair<string, object> Entry in RawRewards)
+            foreach (KeyValuePair<string, JToken> Entry in RawRewards)
             {
-                Dictionary<string, object> RawValue;
-                if ((RawValue = Entry.Value as Dictionary<string, object>) != null)
+                JObject RawValue;
+                if ((RawValue = Entry.Value as JObject) != null)
                 {
                     Reward Subitem;
                     JsonObjectParser<Reward>.InitAsSubitem(Entry.Key, RawValue, out Subitem, ErrorInfo);
@@ -427,20 +416,22 @@ namespace PgJsonObjects
 
         private static void ParseFieldReports(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, object> RawReports;
-            if ((RawReports = Value as Dictionary<string, object>) != null)
+            JObject RawReports;
+            if ((RawReports = Value as JObject) != null)
                 This.ParseReports(RawReports, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Skill Reports");
         }
 
-        private void ParseReports(Dictionary<string, object> RawReports, ParseErrorInfo ErrorInfo)
+        private void ParseReports(JObject RawReports, ParseErrorInfo ErrorInfo)
         {
-            foreach (KeyValuePair<string, object> RawEntry in RawReports)
+            foreach (KeyValuePair<string, JToken> RawEntry in RawReports)
             {
-                string RawValue;
-                if ((RawValue = RawEntry.Value as string) != null)
+                JValue AsJValue;
+                if (((AsJValue = RawEntry.Value as JValue) != null) && AsJValue.Type == JTokenType.String)
                 {
+                    string RawValue = AsJValue.Value as string;
+
                     int KeyLevel;
                     if (int.TryParse(RawEntry.Key, out KeyLevel) || KeyLevel <= 0)
                         ReportTable.Add(KeyLevel, RawValue);
@@ -454,11 +445,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldName(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawName;
-            if ((RawName = Value as string) != null)
-                This.ParseName(RawName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Skill Name");
+            ParseFieldValueString(Value, ErrorInfo, "Skill Name", This.ParseName);
         }
 
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
@@ -468,14 +455,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldParents(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawParents;
-            if ((RawParents = Value as ArrayList) != null)
+            JArray RawParents;
+            if ((RawParents = Value as JArray) != null)
                 This.ParseParents(RawParents, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Skill Parents");
         }
 
-        private void ParseParents(ArrayList RawParents, ParseErrorInfo ErrorInfo)
+        private void ParseParents(JArray RawParents, ParseErrorInfo ErrorInfo)
         {
             List<PowerSkill> ParsedParentList = new List<PowerSkill>();
             StringToEnumConversion<PowerSkill>.ParseList(RawParents, ParsedParentList, ErrorInfo);
@@ -521,14 +508,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldTSysCategories(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawTSysCategories;
-            if ((RawTSysCategories = Value as ArrayList) != null)
+            JArray RawTSysCategories;
+            if ((RawTSysCategories = Value as JArray) != null)
                 This.ParseTSysCategories(RawTSysCategories, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Skill TSysCategories");
         }
 
-        private void ParseTSysCategories(ArrayList RawTSysCategories, ParseErrorInfo ErrorInfo)
+        private void ParseTSysCategories(JArray RawTSysCategories, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<SkillCategory>.ParseList(RawTSysCategories, TSysCategoryList, ErrorInfo);
         }

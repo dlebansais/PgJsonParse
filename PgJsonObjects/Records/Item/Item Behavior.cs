@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -59,30 +60,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldServerInfo(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawServerInfo;
-            Dictionary<string, object> AsDictionary;
-
-            if ((RawServerInfo = Value as ArrayList) != null)
-                This.ParseServerInfo(RawServerInfo, ErrorInfo);
-            else if ((AsDictionary = Value as Dictionary<string, object>) != null)
-                This.ParseServerInfoAsDictionary(AsDictionary, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ItemBehavior ServerInfo");
+            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "ItemBehavior ServerInfo", This.ParseServerInfo);
         }
 
-        private void ParseServerInfo(ArrayList RawServerInfo, ParseErrorInfo ErrorInfo)
-        {
-            foreach (object ServerInfo in RawServerInfo)
-            {
-                Dictionary<string, object> AsDictionary;
-                if ((AsDictionary = ServerInfo as Dictionary<string, object>) != null)
-                    ParseServerInfoAsDictionary(AsDictionary, ErrorInfo);
-                else
-                    ErrorInfo.AddInvalidObjectFormat("ItemBehavior ServerInfo");
-            }
-        }
-
-        private void ParseServerInfoAsDictionary(Dictionary<string, object> RawServerInfo, ParseErrorInfo ErrorInfo)
+        private void ParseServerInfo(JObject RawServerInfo, ParseErrorInfo ErrorInfo)
         {
             ServerInfo ParsedServerInfo;
             JsonObjectParser<ServerInfo>.InitAsSubitem(Key, RawServerInfo, out ParsedServerInfo, ErrorInfo);
@@ -98,27 +79,19 @@ namespace PgJsonObjects
 
         private static void ParseFieldUseRequirements(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawUseRequirements;
-            if ((RawUseRequirements = Value as ArrayList) != null)
-                This.ParseUseRequirements(RawUseRequirements, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ItemBehavior UseRequirements");
+            ParseFieldValueStringArray(Value, ErrorInfo, "ItemBehavior UseRequirements", This.ParseUseRequirements);
         }
 
-        private void ParseUseRequirements(ArrayList RawUseRequirements, ParseErrorInfo ErrorInfo)
+        private bool ParseUseRequirements(string RawUseRequirement, ParseErrorInfo ErrorInfo)
         {
-            foreach (object RawUseRequirement in RawUseRequirements)
+            ItemUseRequirement ParsedUseRequirement;
+            if (StringToEnumConversion<ItemUseRequirement>.TryParse(RawUseRequirement, out ParsedUseRequirement, ErrorInfo))
             {
-                string UseRequirement;
-                if ((UseRequirement = RawUseRequirement as string) != null)
-                {
-                    ItemUseRequirement ParsedUseRequirement;
-                    StringToEnumConversion<ItemUseRequirement>.TryParse(UseRequirement, out ParsedUseRequirement, ErrorInfo);
-                    UseRequirementList.Add(ParsedUseRequirement);
-                }
-                else
-                    ErrorInfo.AddInvalidObjectFormat("ItemBehavior UseRequirements");
+                UseRequirementList.Add(ParsedUseRequirement);
+                return true;
             }
+
+            return false;
         }
 
         private static void ParseFieldUseAnimation(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
@@ -155,23 +128,20 @@ namespace PgJsonObjects
 
         private static void ParseFieldMetabolismCost(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseMetabolismCost((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ItemBehavior MetabolismCost");
+            ParseFieldValueLong(Value, ErrorInfo, "ItemBehavior MetabolismCost", This.ParseMetabolismCost);
         }
 
-        private void ParseMetabolismCost(int RawMetabolismCost, ParseErrorInfo ErrorInfo)
+        private void ParseMetabolismCost(long RawMetabolismCost, ParseErrorInfo ErrorInfo)
         {
-            this.RawMetabolismCost = RawMetabolismCost;
+            this.RawMetabolismCost = (int)RawMetabolismCost;
         }
 
         private static void ParseFieldUseDelay(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseUseDelay((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseUseDelay(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseUseDelay((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseUseDelay((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("ItemBehavior UseDelay");
         }

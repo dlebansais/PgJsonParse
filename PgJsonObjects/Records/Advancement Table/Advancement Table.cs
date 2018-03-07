@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -21,37 +22,48 @@ namespace PgJsonObjects
 
             LevelTable = new Dictionary<int, Advancement>();
 
-            Dictionary<string, object> Levels;
-            if ((Levels = EntryRaw.Value as Dictionary<string, object>) != null)
+            JObject AsJObject;
+            Dictionary<string, JObject> Levels;
+            if ((AsJObject = EntryRaw.Value as JObject) != null)
             {
-                foreach (KeyValuePair<string, object> Level in Levels)
+                foreach (KeyValuePair<string, JToken> Token in AsJObject)
                 {
-                    string RawLevel = Level.Key;
-                    if (RawLevel.StartsWith("Level_"))
-                    {
-                        int EntryLevel;
-                        if (int.TryParse(RawLevel.Substring(6), out EntryLevel))
-                        {
-                            Dictionary<string, object> Fields;
-                            if ((Fields = Level.Value as Dictionary<string, object>) != null)
-                            {
-                                Advancement ParsedAdvancement;
-                                JsonObjectParser<Advancement>.InitAsSubitem(RawLevel, Fields, out ParsedAdvancement, ErrorInfo);
-                                LevelTable.Add(EntryLevel, ParsedAdvancement);
-                            }
-                            else
-                                ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key);
-
-                        }
-                        else
-                            ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key + ", " + RawLevel);
-                    }
+                    JObject AsSubObject;
+                    if ((AsSubObject = Token.Value as JObject) != null)
+                        Init(Token.Key, AsSubObject, ErrorInfo);
                     else
-                        ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key + ", " + RawLevel);
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key);
+                        break;
+                    }
                 }
+            }
+
+            else if ((Levels = EntryRaw.Value as Dictionary<string, JObject>) != null)
+            {
+                foreach (KeyValuePair<string, JObject> Level in Levels)
+                    Init(Level.Key, Level.Value, ErrorInfo);
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key);
+        }
+
+        private void Init(string LevelKey, JObject LevelValue, ParseErrorInfo ErrorInfo)
+        {
+            if (LevelKey.StartsWith("Level_"))
+            {
+                int EntryLevel;
+                if (int.TryParse(LevelKey.Substring(6), out EntryLevel))
+                {
+                    Advancement ParsedAdvancement;
+                    JsonObjectParser<Advancement>.InitAsSubitem(LevelKey, LevelValue, out ParsedAdvancement, ErrorInfo);
+                    LevelTable.Add(EntryLevel, ParsedAdvancement);
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key + ", " + LevelKey);
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key + ", " + LevelKey);
         }
 
         protected override void InitializeKey(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -38,24 +39,17 @@ namespace PgJsonObjects
 
         private static void ParseFieldId(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseId((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal Id");
+            ParseFieldValueLong(Value, ErrorInfo, "DirectedGoal Id", This.ParseId);
         }
 
-        private void ParseId(int RawId, ParseErrorInfo ErrorInfo)
+        private void ParseId(long RawId, ParseErrorInfo ErrorInfo)
         {
-            this.RawId = RawId;
+            this.RawId = (int)RawId;
         }
 
         private static void ParseFieldLabel(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawLabel;
-            if ((RawLabel = Value as string) != null)
-                This.ParseLabel(RawLabel, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal Label");
+            ParseFieldValueString(Value, ErrorInfo, "DirectedGoal Label", This.ParseLabel);
         }
 
         private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)
@@ -66,11 +60,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldZone(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawZone;
-            if ((RawZone = Value as string) != null)
-                This.ParseZone(RawZone, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal Zone");
+            ParseFieldValueString(Value, ErrorInfo, "DirectedGoal Zone", This.ParseZone);
         }
 
         private void ParseZone(string RawZone, ParseErrorInfo ErrorInfo)
@@ -93,11 +83,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLargeHint(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawLargeHint;
-            if ((RawLargeHint = Value as string) != null)
-                This.ParseLargeHint(RawLargeHint, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal LargeHint");
+            ParseFieldValueString(Value, ErrorInfo, "DirectedGoal LargeHint", This.ParseLargeHint);
         }
 
         private void ParseLargeHint(string RawLargeHint, ParseErrorInfo ErrorInfo)
@@ -107,11 +93,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSmallHint(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawSmallHint;
-            if ((RawSmallHint = Value as string) != null)
-                This.ParseSmallHint(RawSmallHint, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal SmallHint");
+            ParseFieldValueString(Value, ErrorInfo, "DirectedGoal SmallHint", This.ParseSmallHint);
         }
 
         private void ParseSmallHint(string RawSmallHint, ParseErrorInfo ErrorInfo)
@@ -121,15 +103,12 @@ namespace PgJsonObjects
 
         private static void ParseFieldCategoryGateId(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseCategoryGateId((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal CategoryGateId");
+            ParseFieldValueLong(Value, ErrorInfo, "DirectedGoal CategoryGateId", This.ParseCategoryGateId);
         }
 
-        private void ParseCategoryGateId(int RawCategoryGateId, ParseErrorInfo ErrorInfo)
+        private void ParseCategoryGateId(long RawCategoryGateId, ParseErrorInfo ErrorInfo)
         {
-            this.RawCategoryGateId = RawCategoryGateId;
+            this.RawCategoryGateId = (int)RawCategoryGateId;
         }
         #endregion
 

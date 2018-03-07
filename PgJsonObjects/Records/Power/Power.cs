@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -161,11 +162,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldPrefix(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawPrefix;
-            if ((RawPrefix = Value as string) != null)
-                This.ParsePrefix(RawPrefix, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Power Prefix");
+            ParseFieldValueString(Value, ErrorInfo, "Power Prefix", This.ParsePrefix);
         }
 
         private void ParsePrefix(string RawPrefix, ParseErrorInfo ErrorInfo)
@@ -175,11 +172,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSuffix(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawSuffix;
-            if ((RawSuffix = Value as string) != null)
-                This.ParseSuffix(RawSuffix, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Power Suffix");
+            ParseFieldValueString(Value, ErrorInfo, "Power Suffix", This.ParseSuffix);
         }
 
         private void ParseSuffix(string RawSuffix, ParseErrorInfo ErrorInfo)
@@ -189,17 +182,18 @@ namespace PgJsonObjects
 
         private static void ParseFieldTiers(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, object> RawTiers;
-            if ((RawTiers = Value as Dictionary<string, object>) != null)
+            JObject RawTiers;
+            if ((RawTiers = Value as JObject) != null)
                 This.ParseTiers(RawTiers, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Power Tiers");
         }
 
-        private void ParseTiers(Dictionary<string, object> RawTiers, ParseErrorInfo ErrorInfo)
+        private void ParseTiers(JObject RawTiers, ParseErrorInfo ErrorInfo)
         {
             int TierOffset = int.MaxValue;
-            foreach (KeyValuePair<string, object> Entry in RawTiers)
+
+            foreach (KeyValuePair<string, JToken> Entry in RawTiers)
             {
                 if (!Entry.Key.Contains("id_"))
                     break;
@@ -219,8 +213,8 @@ namespace PgJsonObjects
                 if (!RawTiers.ContainsKey(Key))
                     break;
 
-                Dictionary<string, object> RawValue;
-                if ((RawValue = RawTiers[Key] as Dictionary<string, object>) != null)
+                JObject RawValue;
+                if ((RawValue = RawTiers[Key] as JObject) != null)
                 {
                     PowerTier Subitem;
                     JsonObjectParser<PowerTier>.InitAsSubitem(Key, RawValue, out Subitem, ErrorInfo);
@@ -236,25 +230,21 @@ namespace PgJsonObjects
 
         private static void ParseFieldSlots(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawSlots;
-            if ((RawSlots = Value as ArrayList) != null)
+            JArray RawSlots;
+            if ((RawSlots = Value as JArray) != null)
                 This.ParseSlots(RawSlots, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Power Slots");
         }
 
-        private void ParseSlots(ArrayList RawSlots, ParseErrorInfo ErrorInfo)
+        private void ParseSlots(JArray RawSlots, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<ItemSlot>.ParseList(RawSlots, SlotList, ErrorInfo);
         }
 
         private static void ParseFieldSkill(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawSkill;
-            if ((RawSkill = Value as string) != null)
-                This.ParseSkill(RawSkill, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Power Skill");
+            ParseFieldValueString(Value, ErrorInfo, "Power Skill", This.ParseSkill);
         }
 
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)

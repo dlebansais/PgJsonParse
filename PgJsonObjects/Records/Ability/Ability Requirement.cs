@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -106,11 +107,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldT(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawT;
-            if ((RawT = Value as string) != null)
-                This.ParseT(RawT, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement T");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement T", This.ParseT);
         }
 
         private void ParseT(string RawT, ParseErrorInfo ErrorInfo)
@@ -122,11 +119,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldKeyword(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawKeyword;
-            if ((RawKeyword = Value as string) != null)
-                This.ParseKeyword(RawKeyword, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Keyword");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Keyword", This.ParseKeyword);
         }
 
         private void ParseKeyword(string RawKeyword, ParseErrorInfo ErrorInfo)
@@ -136,11 +129,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldName(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawName;
-            if ((RawName = Value as string) != null)
-                This.ParseName(RawName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Name");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Name", This.ParseName);
         }
 
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
@@ -150,11 +139,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItem(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawItem;
-            if ((RawItem = Value as string) != null)
-                This.ParseItem(RawItem, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Item");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Item", This.ParseItem);
         }
 
         private void ParseItem(string RawItem, ParseErrorInfo ErrorInfo)
@@ -164,10 +149,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldCount(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseCount((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseCount(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseCount((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseCount((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Count");
         }
@@ -179,10 +164,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldHealth(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseHealth((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseHealth(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseHealth((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseHealth((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Health");
         }
@@ -194,11 +179,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAllowedRace(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawAllowedRace;
-            if ((RawAllowedRace = Value as string) != null)
-                This.ParseAllowedRace(RawAllowedRace, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement AllowedRace");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement AllowedRace", This.ParseAllowedRace);
         }
 
         private void ParseAllowedRace(string RawAllowedRace, ParseErrorInfo ErrorInfo)
@@ -219,11 +200,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAppearance(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawAppearance;
-            if ((RawAppearance = Value as string) != null)
-                This.ParseAppearance(RawAppearance, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Appearance");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Appearance", This.ParseAppearance);
         }
 
         private void ParseAppearance(string RawAppearance, ParseErrorInfo ErrorInfo)
@@ -244,14 +221,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldList(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList AsArrayList;
-            if ((AsArrayList = Value as ArrayList) != null)
-                This.ParseList(AsArrayList, ErrorInfo);
+            JArray AsJArray;
+            if ((AsJArray = Value as JArray) != null)
+                This.ParseList(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List");
         }
 
-        private void ParseList(ArrayList RawList, ParseErrorInfo ErrorInfo)
+        private void ParseList(JArray RawList, ParseErrorInfo ErrorInfo)
         {
             List<AbilityRequirement> ParsedAbilityRequirementList;
             JsonObjectParser<AbilityRequirement>.InitAsSublist(RawList, out ParsedAbilityRequirementList, ErrorInfo);
@@ -266,11 +243,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldErrorMsg(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawErrorMsg;
-            if ((RawErrorMsg = Value as string) != null)
-                This.ParseErrorMsg(RawErrorMsg, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement ErrorMsg");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement ErrorMsg", This.ParseErrorMsg);
         }
 
         private void ParseErrorMsg(string RawErrorMsg, ParseErrorInfo ErrorInfo)
@@ -280,36 +253,26 @@ namespace PgJsonObjects
 
         private static void ParseFieldDisallowedStates(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawDisallowedStates;
-            if ((RawDisallowedStates = Value as ArrayList) != null)
-                This.ParseDisallowedStates(RawDisallowedStates, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement DisallowedStates");
+            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityRequirement DisallowedStates", This.ParseDisallowedStates);
         }
 
-        private void ParseDisallowedStates(ArrayList RawDisallowedStates, ParseErrorInfo ErrorInfo)
+        private bool ParseDisallowedStates(string RawDisallowedState, ParseErrorInfo ErrorInfo)
         {
-            if (RawDisallowedStates.Count != 1)
+            if (this.RawDisallowedState == null)
             {
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement DisallowedStates");
-                return;
+                this.RawDisallowedState = RawDisallowedState;
+                return true;
             }
-
-            RawDisallowedState = RawDisallowedStates[0] as string;
-            if (RawDisallowedState == null)
+            else
             {
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement DisallowedStates");
-                return;
+                return false;
             }
         }
 
         private static void ParseFieldPetTypeTag(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawPetTypeTag;
-            if ((RawPetTypeTag = Value as string) != null)
-                This.ParsePetTypeTag(RawPetTypeTag, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement PetTypeTag");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement PetTypeTag", This.ParsePetTypeTag);
         }
 
         private void ParsePetTypeTag(string RawPetTypeTag, ParseErrorInfo ErrorInfo)
@@ -319,10 +282,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxCount(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseMaxCount((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseMaxCount(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseMaxCount((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseMaxCount((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement MaxCount");
         }
@@ -334,11 +297,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRecipe(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawRecipe;
-            if ((RawRecipe = Value as string) != null)
-                This.ParseRecipe(RawRecipe, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Recipe");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Recipe", This.ParseRecipe);
         }
 
         private void ParseRecipe(string RawRecipe, ParseErrorInfo ErrorInfo)
@@ -348,11 +307,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldTypeTag(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawTypeTag;
-            if ((RawTypeTag = Value as string) != null)
-                This.ParseTypeTag(RawTypeTag, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement TypeTag");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement TypeTag", This.ParseTypeTag);
         }
 
         private void ParseTypeTag(string RawTypeTag, ParseErrorInfo ErrorInfo)
@@ -362,24 +317,17 @@ namespace PgJsonObjects
 
         private static void ParseFieldMax(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseMax((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Max");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityRequirement Max", This.ParseMax);
         }
 
-        private void ParseMax(int RawMax, ParseErrorInfo ErrorInfo)
+        private void ParseMax(long RawMax, ParseErrorInfo ErrorInfo)
         {
-            this.RawMax = RawMax;
+            this.RawMax = (int)RawMax;
         }
 
         private static void ParseFieldInteractionFlag(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawInteractionFlag;
-            if ((RawInteractionFlag = Value as string) != null)
-                This.ParseInteractionFlag(RawInteractionFlag, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement InteractionFlag");
+            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement InteractionFlag", This.ParseInteractionFlag);
         }
 
         private void ParseInteractionFlag(string RawInteractionFlag, ParseErrorInfo ErrorInfo)

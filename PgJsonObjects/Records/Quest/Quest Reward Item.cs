@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -27,11 +28,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItem(QuestRewardItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawItem;
-            if ((RawItem = Value as string) != null)
-                This.ParseItem(RawItem, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestRewardItem Item");
+            ParseFieldValueString(Value, ErrorInfo, "QuestRequirement Item", This.ParseItem);
         }
 
         private void ParseItem(string RawItem, ParseErrorInfo ErrorInfo)
@@ -41,16 +38,16 @@ namespace PgJsonObjects
 
         private static void ParseFieldStackSize(QuestRewardItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseStackSize((int)Value, ErrorInfo);
+            if (Value is long)
+                This.ParseStackSize((long)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRewardItem StackSize");
         }
 
-        private void ParseStackSize(int RawStackSize, ParseErrorInfo ErrorInfo)
+        private void ParseStackSize(long RawStackSize, ParseErrorInfo ErrorInfo)
         {
             if (RawStackSize > 1)
-                this.RawStackSize = RawStackSize;
+                this.RawStackSize = (int)RawStackSize;
             else if (RawStackSize < 1)
                 ErrorInfo.AddInvalidObjectFormat("QuestRewardItem StackSize");
         }

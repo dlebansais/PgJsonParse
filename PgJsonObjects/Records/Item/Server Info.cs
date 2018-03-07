@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -127,58 +128,35 @@ namespace PgJsonObjects
 
         private static void ParseFieldEffects(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawEffects;
-            if ((RawEffects = Value as ArrayList) != null)
-                This.ParseEffects(RawEffects, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+            ParseFieldValueStringArray(Value, ErrorInfo, "ServerInfo Effects", This.ParseEffects);
         }
 
-        private void ParseEffects(ArrayList RawEffects, ParseErrorInfo ErrorInfo)
+        private bool ParseEffects(string RawEffect, ParseErrorInfo ErrorInfo)
         {
-            foreach (object Effect in RawEffects)
+            ServerInfoEffect NewEffect = ParseEffectString(RawEffect, ErrorInfo);
+            if (NewEffect != null)
             {
-                string AsString;
-                if ((AsString = Effect as string) != null)
-                {
-                    ServerInfoEffect NewEffect = ParseEffectString(AsString, ErrorInfo);
-                    if (NewEffect != null)
-                        ServerInfoEffectList.Add(NewEffect);
-                }
-                    
-                else
-                    ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                ServerInfoEffectList.Add(NewEffect);
+                return true;
             }
+            else
+                return false;
         }
 
         private static void ParseFieldGiveItems(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawGiveItems;
-            if ((RawGiveItems = Value as ArrayList) != null)
-                This.ParseGiveItems(RawGiveItems, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ServerInfo GiveItems");
+            ParseFieldValueStringArray(Value, ErrorInfo, "ServerInfo GiveItems", This.ParseGiveItems);
         }
 
-        private void ParseGiveItems(ArrayList RawGiveItems, ParseErrorInfo ErrorInfo)
+        private bool ParseGiveItems(string RawGiveItem, ParseErrorInfo ErrorInfo)
         {
-            foreach (object Effect in RawGiveItems)
-            {
-                string ItemName;
-                if ((ItemName = Effect as string) != null)
-                    RawItemNameList.Add(ItemName);
-                else
-                    ErrorInfo.AddInvalidObjectFormat("ServerInfo GiveItems");
-            }
+            RawItemNameList.Add(RawGiveItem);
+            return true;
         }
 
         private static void ParseFieldRequiredHotspot(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawRequiredHotspot;
-            if ((RawRequiredHotspot = Value as string) != null)
-                This.ParseRequiredHotspot(RawRequiredHotspot, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ServerInfo RequiredHotspot");
+            ParseFieldValueString(Value, ErrorInfo, "ServerInfo RequiredHotspot", This.ParseRequiredHotspot);
         }
 
         private void ParseRequiredHotspot(string RawRequiredHotspot, ParseErrorInfo ErrorInfo)
@@ -190,41 +168,38 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumItemsToGive(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseNumItemsToGive((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ServerInfo NumItemsToGive");
+            ParseFieldValueLong(Value, ErrorInfo, "ServerInfo NumItemsToGive", This.ParseNumItemsToGive);
         }
 
-        private void ParseNumItemsToGive(int RawNumItemsToGive, ParseErrorInfo ErrorInfo)
+        private void ParseNumItemsToGive(long RawNumItemsToGive, ParseErrorInfo ErrorInfo)
         {
-            this.RawNumItemsToGive = RawNumItemsToGive;
+            this.RawNumItemsToGive = (int)RawNumItemsToGive;
         }
 
         private static void ParseFieldOtherRequirements(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
         {
             ArrayList AsArrayList;
-            Dictionary<string, object> AsDictionary;
+            JObject AsJObject;
 
             if ((AsArrayList = Value as ArrayList) != null)
             {
                 foreach (object Item in AsArrayList)
                 {
-                    if ((AsDictionary = Item as Dictionary<string, object>) != null)
-                        This.ParseOtherRequirements(AsDictionary, ErrorInfo);
+                    if ((AsJObject = Item as JObject) != null)
+                        This.ParseOtherRequirements(AsJObject, ErrorInfo);
                     else
                         ErrorInfo.AddInvalidObjectFormat("ServerInfo OtherRequirements");
                 }
             }
 
-            else if ((AsDictionary = Value as Dictionary<string, object>) != null)
-                This.ParseOtherRequirements(AsDictionary, ErrorInfo);
+            else if ((AsJObject = Value as JObject) != null)
+                This.ParseOtherRequirements(AsJObject, ErrorInfo);
 
             else
                 ErrorInfo.AddInvalidObjectFormat("ServerInfo OtherRequirements");
         }
 
-        public void ParseOtherRequirements(Dictionary<string, object> RawOtherRequirements, ParseErrorInfo ErrorInfo)
+        public void ParseOtherRequirements(JObject RawOtherRequirements, ParseErrorInfo ErrorInfo)
         {
             AbilityRequirement ParsedOtherRequirement;
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);

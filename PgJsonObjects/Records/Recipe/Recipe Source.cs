@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -144,11 +145,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldType(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawType;
-            if ((RawType = Value as string) != null)
-                This.ParseType(RawType, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource Type");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeSource Type", This.ParseType);
         }
 
         private void ParseType(string RawType, ParseErrorInfo ErrorInfo)
@@ -160,11 +157,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSkillTypeId(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawSkillTypeId;
-            if ((RawSkillTypeId = Value as string) != null)
-                This.ParseSkillTypeId(RawSkillTypeId, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource SkillTypeId");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeSource SkillTypeId", This.ParseSkillTypeId);
         }
 
         private void ParseSkillTypeId(string RawSkillTypeId, ParseErrorInfo ErrorInfo)
@@ -181,11 +174,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemName(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawItemName;
-            if ((RawItemName = Value as string) != null)
-                This.ParseItemName(RawItemName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource ItemName");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeSource ItemName", This.ParseItemName);
         }
 
         private void ParseItemName(string RawItemName, ParseErrorInfo ErrorInfo)
@@ -198,27 +187,20 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemTypeId(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseItemTypeId((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource ItemTypeId");
+            ParseFieldValueLong(Value, ErrorInfo, "RecipeSource ItemTypeId", This.ParseItemTypeId);
         }
 
-        private void ParseItemTypeId(int RawItemTypeId, ParseErrorInfo ErrorInfo)
+        private void ParseItemTypeId(long RawItemTypeId, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.Item)
-                this.RawItemTypeId = RawItemTypeId;
+                this.RawItemTypeId = (int)RawItemTypeId;
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource ItemTypeId (type)");
         }
 
         private static void ParseFieldNpcName(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawNpcName;
-            if ((RawNpcName = Value as string) != null)
-                This.ParseNpcName(RawNpcName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource NpcName");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeSource NpcName", This.ParseNpcName);
         }
 
         private void ParseNpcName(string RawNpcName, ParseErrorInfo ErrorInfo)
@@ -231,11 +213,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNpc(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawNpc;
-            if ((RawNpc = Value as string) != null)
-                This.ParseNpc(RawNpc, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource NpcName");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeSource Npc", This.ParseNpc);
         }
 
         private void ParseNpc(string RawNpc, ParseErrorInfo ErrorInfo)
@@ -253,11 +231,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldEffectName(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawEffectName;
-            if ((RawEffectName = Value as string) != null)
-                This.ParseEffectName(RawEffectName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource EffectName");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeSource EffectName", This.ParseEffectName);
         }
 
         private void ParseEffectName(string RawEffectName, ParseErrorInfo ErrorInfo)
@@ -270,11 +244,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldEffectTypeId(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawEffectTypeId;
-            if ((RawEffectTypeId = Value as string) != null)
-                This.ParseEffectTypeId(RawEffectTypeId, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource EffectTypeId");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeSource EffectTypeId", This.ParseEffectTypeId);
         }
 
         private void ParseEffectTypeId(string RawEffectTypeId, ParseErrorInfo ErrorInfo)
@@ -283,11 +253,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldQuestName(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawQuestName;
-            if ((RawQuestName = Value as string) != null)
-                This.ParseQuestName(RawQuestName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource QuestName");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeSource QuestName", This.ParseQuestName);
         }
 
         private void ParseQuestName(string RawQuestName, ParseErrorInfo ErrorInfo)
@@ -300,16 +266,13 @@ namespace PgJsonObjects
 
         private static void ParseFieldQuestId(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseQuestId((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource QuestId");
+            ParseFieldValueLong(Value, ErrorInfo, "RecipeSource QuestId", This.ParseQuestId);
         }
 
-        private void ParseQuestId(int RawQuestId, ParseErrorInfo ErrorInfo)
+        private void ParseQuestId(long RawQuestId, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.Quest)
-                this.RawQuestId = RawQuestId;
+                this.RawQuestId = (int)RawQuestId;
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource QuestId (type)");
         }

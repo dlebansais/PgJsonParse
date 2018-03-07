@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -40,11 +41,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldFriendlyName(GameArea This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawFriendlyName;
-            if ((RawFriendlyName = Value as string) != null)
-                This.ParseFriendlyName(RawFriendlyName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Area FriendlyName");
+            ParseFieldValueString(Value, ErrorInfo, "Area FriendlyName", This.ParseFriendlyName);
         }
 
         private void ParseFriendlyName(string RawFriendlyName, ParseErrorInfo ErrorInfo)
@@ -56,11 +53,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldShortFriendlyName(GameArea This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawShortFriendlyName;
-            if ((RawShortFriendlyName = Value as string) != null)
-                This.ParseShortFriendlyName(RawShortFriendlyName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Area ShortFriendlyName");
+            ParseFieldValueString(Value, ErrorInfo, "Area ShortFriendlyName", This.ParseShortFriendlyName);
         }
 
         private void ParseShortFriendlyName(string RawShortFriendlyName, ParseErrorInfo ErrorInfo)

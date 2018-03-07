@@ -24,24 +24,13 @@ namespace PgJsonObjects
 
         private static void ParseFieldRecipesThatUseItem(ItemUses This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawRecipesThatUseItem;
-            if ((RawRecipesThatUseItem = Value as ArrayList) != null)
-                This.ParseRecipesThatUseItem(RawRecipesThatUseItem, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ItemUses RecipesThatUseItem");
+            ParseFieldValueLongArray(Value, ErrorInfo, "ItemUses RecipesThatUseItem", This.ParseRecipesThatUseItem);
         }
 
-        private void ParseRecipesThatUseItem(ArrayList RawRecipesThatUseItem, ParseErrorInfo ErrorInfo)
+        private bool ParseRecipesThatUseItem(long RecipeThatUseItem, ParseErrorInfo ErrorInfo)
         {
-            foreach (object Item in RawRecipesThatUseItem)
-            {
-                if (Item is int)
-                {
-                    RecipesThatUseItemList.Add((int)Item);
-                }
-                else
-                    ErrorInfo.AddInvalidObjectFormat("ItemUses RecipesThatUseItem");
-            }
+            RecipesThatUseItemList.Add((int)RecipeThatUseItem);
+            return true;
         }
         #endregion
 

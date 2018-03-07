@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -26,11 +27,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldInternalName(XpTable This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawInternalName;
-            if ((RawInternalName = Value as string) != null)
-                This.ParseInternalName(RawInternalName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("XpTable InternalName");
+            ParseFieldValueString(Value, ErrorInfo, "XpTable InternalName", This.ParseInternalName);
         }
 
         private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
@@ -44,14 +41,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldXpAmounts(XpTable This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawXpAmounts;
-            if ((RawXpAmounts = Value as ArrayList) != null)
+            JArray RawXpAmounts;
+            if ((RawXpAmounts = Value as JArray) != null)
                 This.ParseXpAmounts(RawXpAmounts, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("XpTable XpAmounts");
         }
 
-        private void ParseXpAmounts(ArrayList RawXpAmounts, ParseErrorInfo ErrorInfo)
+        private void ParseXpAmounts(JArray RawXpAmounts, ParseErrorInfo ErrorInfo)
         {
             List<int> XpList = new List<int>();
             ParseIntTable(RawXpAmounts, XpList, "XpAmounts", ErrorInfo, out IsXpAmountListEmpty);

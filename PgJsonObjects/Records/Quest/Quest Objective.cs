@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -188,11 +189,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldType(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawType;
-            if ((RawType = Value as string) != null)
-                This.ParseType(RawType, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective Type");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective Type", This.ParseType);
         }
 
         private void ParseType(string RawType, ParseErrorInfo ErrorInfo)
@@ -204,11 +201,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldTarget(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawTarget;
-            if ((RawTarget = Value as string) != null)
-                This.ParseTarget(RawTarget, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective Target");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective Target", This.ParseTarget);
         }
 
         private void ParseTarget(string RawTarget, ParseErrorInfo ErrorInfo)
@@ -303,11 +296,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDescription(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDescription;
-            if ((RawDescription = Value as string) != null)
-                This.ParseDescription(RawDescription, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective Description");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective Description", This.ParseDescription);
         }
 
         private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
@@ -317,54 +306,37 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumber(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseNumber((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective Number");
+            ParseFieldValueLong(Value, ErrorInfo, "QuestObjective Number", This.ParseNumber);
         }
 
-        private void ParseNumber(int RawNumber, ParseErrorInfo ErrorInfo)
+        private void ParseNumber(long RawNumber, ParseErrorInfo ErrorInfo)
         {
             if (RawNumber != 1)
-                this.RawNumber = RawNumber;
+                this.RawNumber = (int)RawNumber;
         }
 
         private static void ParseFieldInteractionFlags(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawInteractionFlags;
-            if ((RawInteractionFlags = Value as ArrayList) != null)
-                This.ParseInteractionFlags(RawInteractionFlags, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlags");
+            ParseFieldValueStringArray(Value, ErrorInfo, "QuestObjective InteractionFlags", This.ParseInteractionFlags);
         }
 
-        private void ParseInteractionFlags(ArrayList RawInteractionFlags, ParseErrorInfo ErrorInfo)
+        private bool ParseInteractionFlags(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
         {
             if (Type == QuestObjectiveType.MultipleInteractionFlags)
             {
-                foreach (object RawInteractionFlag in RawInteractionFlags)
-                {
-                    string AsString;
-                    if ((AsString = RawInteractionFlag as string) != null)
-                        RawInteractionFlagList.Add(AsString);
-                    else
-                    {
-                        ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlags");
-                        break;
-                    }
-                }
+                RawInteractionFlagList.Add(RawInteractionFlag);
+                return true;
             }
             else
+            {
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlags (Type)");
+                return false;
+            }
         }
 
         private static void ParseFieldItemName(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawItemName;
-            if ((RawItemName = Value as string) != null)
-                This.ParseItemName(RawItemName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective ItemName");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective ItemName", This.ParseItemName);
         }
 
         private void ParseItemName(string RawItemName, ParseErrorInfo ErrorInfo)
@@ -396,11 +368,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldInteractionFlag(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawInteractionFlag;
-            if ((RawInteractionFlag = Value as string) != null)
-                This.ParseInteractionFlag(RawInteractionFlag, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlag");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective InteractionFlag", This.ParseInteractionFlag);
         }
 
         private void ParseInteractionFlag(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
@@ -413,11 +381,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMinAmount(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawMinAmount;
-            if ((RawMinAmount = Value as string) != null)
-                This.ParseMinAmount(RawMinAmount, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective MinAmount");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective MinAmount", This.ParseMinAmount);
         }
 
         private void ParseMinAmount(string RawMinAmount, ParseErrorInfo ErrorInfo)
@@ -436,11 +400,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMinFavorReceived(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawMinFavorReceived;
-            if ((RawMinFavorReceived = Value as string) != null)
-                This.ParseMinFavorReceived(RawMinFavorReceived, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective MinFavorReceived");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective MinFavorReceived", This.ParseMinFavorReceived);
         }
 
         private void ParseMinFavorReceived(string RawMinFavorReceived, ParseErrorInfo ErrorInfo)
@@ -460,11 +420,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxFavorReceived(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawMaxFavorReceived;
-            if ((RawMaxFavorReceived = Value as string) != null)
-                This.ParseMaxFavorReceived(RawMaxFavorReceived, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective MaxFavorReceived");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective MaxFavorReceived", This.ParseMaxFavorReceived);
         }
 
         private void ParseMaxFavorReceived(string RawMaxFavorReceived, ParseErrorInfo ErrorInfo)
@@ -484,11 +440,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSkill(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawSkill;
-            if ((RawSkill = Value as string) != null)
-                This.ParseSkill(RawSkill, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective Skill");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective Skill", This.ParseSkill);
         }
 
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
@@ -505,11 +457,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldStringParam(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawStringParam;
-            if ((RawStringParam = Value as string) != null)
-                This.ParseStringParam(RawStringParam, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective StringParam");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective StringParam", This.ParseStringParam);
         }
 
         private void ParseStringParam(string RawStringParam, ParseErrorInfo ErrorInfo)
@@ -522,11 +470,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldResultItemKeyword(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawResultItemKeyword;
-            if ((RawResultItemKeyword = Value as string) != null)
-                This.ParseResultItemKeyword(RawResultItemKeyword, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective ResultItemKeyword");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective ResultItemKeyword", This.ParseResultItemKeyword);
         }
 
         private void ParseResultItemKeyword(string RawResultItemKeyword, ParseErrorInfo ErrorInfo)
@@ -543,11 +487,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAbilityKeyword(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawAbilityKeyword;
-            if ((RawAbilityKeyword = Value as string) != null)
-                This.ParseAbilityKeyword(RawAbilityKeyword, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective AbilityKeyword");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective AbilityKeyword", This.ParseAbilityKeyword);
         }
 
         private void ParseAbilityKeyword(string RawAbilityKeyword, ParseErrorInfo ErrorInfo)
@@ -560,11 +500,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxAmount(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawMaxAmount;
-            if ((RawMaxAmount = Value as string) != null)
-                This.ParseMaxAmount(RawMaxAmount, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective MaxAmount");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective MaxAmount", This.ParseMaxAmount);
         }
 
         private void ParseMaxAmount(string RawMaxAmount, ParseErrorInfo ErrorInfo)
@@ -583,11 +519,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAnatomyType(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawAnatomyType;
-            if ((RawAnatomyType = Value as string) != null)
-                This.ParseAnatomyType(RawAnatomyType, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective AnatomyType");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective AnatomyType", This.ParseAnatomyType);
         }
 
         private void ParseAnatomyType(string RawAnatomyType, ParseErrorInfo ErrorInfo)
@@ -604,11 +536,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemKeyword(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawItemKeyword;
-            if ((RawItemKeyword = Value as string) != null)
-                This.ParseItemKeyword(RawItemKeyword, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective ItemKeyword");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective ItemKeyword", This.ParseItemKeyword);
         }
 
         private void ParseItemKeyword(string RawItemKeyword, ParseErrorInfo ErrorInfo)
@@ -623,22 +551,9 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective ItemKeyword (Type)");
         }
 
-        private static void ParseFieldRequirements(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            Dictionary<string, object> AsDictionary;
-            if ((AsDictionary = Value as Dictionary<string, object>) != null)
-                This.ParseRequirements(AsDictionary, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
-        }
-
         private static void ParseFieldMonsterTypeTag(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawMonsterTypeTag;
-            if ((RawMonsterTypeTag = Value as string) != null)
-                This.ParseMonsterTypeTag(RawMonsterTypeTag, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective MonsterTypeTag");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective MonsterTypeTag", This.ParseMonsterTypeTag);
         }
 
         private void ParseMonsterTypeTag(string RawMonsterTypeTag, ParseErrorInfo ErrorInfo)
@@ -653,21 +568,33 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective MonsterTypeTag (Type)");
         }
 
-        private void ParseRequirements(Dictionary<string, object> RawRequirement, ParseErrorInfo ErrorInfo)
+        private static void ParseFieldRequirements(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            JObject AsJObject;
+            if ((AsJObject = Value as JObject) != null)
+                This.ParseRequirements(AsJObject, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+        }
+
+        private void ParseRequirements(JObject RawRequirement, ParseErrorInfo ErrorInfo)
         {
             if (RawRequirement.ContainsKey("T"))
             {
-                string RequirementType;
-                if ((RequirementType = RawRequirement["T"] as string) != null)
+                JValue AsJValue;
+                if (((AsJValue = RawRequirement["T"] as JValue) != null) && AsJValue.Type == JTokenType.String)
                 {
+                    string RequirementType = AsJValue.Value as string;
                     if (RequirementType == "TimeOfDay")
                     {
                         if (RawRequirement.ContainsKey("MinHour") && RawRequirement.ContainsKey("MaxHour"))
                         {
-                            if ((RawRequirement["MinHour"] is int) && (RawRequirement["MaxHour"] is int))
+                            JValue MinHourJValue;
+                            JValue MaxHourJValue;
+                            if (((MinHourJValue = RawRequirement["MinHour"] as JValue) != null) && ((MaxHourJValue = RawRequirement["MaxHour"] as JValue) != null) && MinHourJValue.Type == JTokenType.Integer && MaxHourJValue.Type == JTokenType.Integer)
                             {
-                                MinHour = (int)RawRequirement["MinHour"];
-                                MaxHour = (int)RawRequirement["MaxHour"];
+                                MinHour = (int)(long)MinHourJValue.Value;
+                                MaxHour = (int)(long)MaxHourJValue.Value;
                             }
                             else
                                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
@@ -679,11 +606,17 @@ namespace PgJsonObjects
                     {
                         if (RawRequirement.ContainsKey("Keyword"))
                         {
-                            string EffectKeyword = RawRequirement["Keyword"] as string;
-                            EffectKeyword ParsedEffectKeyword;
-                            if (StringToEnumConversion<EffectKeyword>.TryParse(EffectKeyword, out ParsedEffectKeyword, ErrorInfo))
+                            JValue KeywordJValue;
+                            if (((KeywordJValue = RawRequirement["Keyword"] as JValue) != null) && KeywordJValue.Type == JTokenType.String)
                             {
-                                EffectRequirement = ParsedEffectKeyword;
+                                string EffectKeyword = KeywordJValue.Value as string;
+                                EffectKeyword ParsedEffectKeyword;
+                                if (StringToEnumConversion<EffectKeyword>.TryParse(EffectKeyword, out ParsedEffectKeyword, ErrorInfo))
+                                {
+                                    EffectRequirement = ParsedEffectKeyword;
+                                }
+                                else
+                                    ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
                             }
                             else
                                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
@@ -703,11 +636,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItem(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawItemName;
-            if ((RawItemName = Value as string) != null)
-                This.ParseItem(RawItemName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective Item");
+            ParseFieldValueString(Value, ErrorInfo, "QuestObjective Item", This.ParseItem);
         }
 
         private void ParseItem(string RawItemName, ParseErrorInfo ErrorInfo)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -39,11 +40,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLabel(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawLabel;
-            if ((RawLabel = Value as string) != null)
-                This.ParseLabel(RawLabel, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("SpecialValue Label");
+            ParseFieldValueString(Value, ErrorInfo, "SpecialValue Label", This.ParseLabel);
         }
 
         private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)
@@ -53,11 +50,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSuffix(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawSuffix;
-            if ((RawSuffix = Value as string) != null)
-                This.ParseSuffix(RawSuffix, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("SpecialValue Suffix");
+            ParseFieldValueString(Value, ErrorInfo, "SpecialValue Suffix", This.ParseSuffix);
         }
 
         private void ParseSuffix(string RawSuffix, ParseErrorInfo ErrorInfo)
@@ -67,10 +60,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldValue(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseValue((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseValue(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseValue((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseValue((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("SpecialValue Value");
         }
@@ -82,42 +75,42 @@ namespace PgJsonObjects
 
         private static void ParseFieldAttributesThatDelta(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatDelta;
-            if ((RawAttributesThatDelta = Value as ArrayList) != null)
+            JArray RawAttributesThatDelta;
+            if ((RawAttributesThatDelta = Value as JArray) != null)
                 This.ParseAttributesThatDelta(RawAttributesThatDelta, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("SpecialValue AttributesThatDelta");
         }
 
-        private void ParseAttributesThatDelta(ArrayList RawAttributesThatDelta, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatDelta(JArray RawAttributesThatDelta, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatDelta, RawAttributesThatDeltaList, "AttributesThatDelta", ErrorInfo, out RawAttributesThatDeltaListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatMod(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatMod;
-            if ((RawAttributesThatMod = Value as ArrayList) != null)
+            JArray RawAttributesThatMod;
+            if ((RawAttributesThatMod = Value as JArray) != null)
                 This.ParseAttributesThatMod(RawAttributesThatMod, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("SpecialValue AttributesThatMod");
         }
 
-        private void ParseAttributesThatMod(ArrayList RawAttributesThatMod, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatMod(JArray RawAttributesThatMod, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatMod, RawAttributesThatModList, "AttributesThatMod", ErrorInfo, out RawAttributesThatModListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatModBase(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatModBase;
-            if ((RawAttributesThatModBase = Value as ArrayList) != null)
+            JArray RawAttributesThatModBase;
+            if ((RawAttributesThatModBase = Value as JArray) != null)
                 This.ParseAttributesThatModBase(RawAttributesThatModBase, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("SpecialValue AttributesThatModBase");
         }
 
-        private void ParseAttributesThatModBase(ArrayList RawAttributesThatModBase, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatModBase(JArray RawAttributesThatModBase, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatModBase, RawAttributesThatModBaseList, "AttributesThatModBase", ErrorInfo, out RawAttributesThatModBaseListIsEmpty);
         }

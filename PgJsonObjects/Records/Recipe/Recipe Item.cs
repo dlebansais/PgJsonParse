@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -73,29 +74,23 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemCode(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseItemCode((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem ItemCode");
+            ParseFieldValueLong(Value, ErrorInfo, "RecipeItem ItemCode", This.ParseItemCode);
         }
 
-        private void ParseItemCode(int RawItemCode, ParseErrorInfo ErrorInfo)
+        private void ParseItemCode(long RawItemCode, ParseErrorInfo ErrorInfo)
         {
-            this.RawItemCode = RawItemCode;
+            this.RawItemCode = (int)RawItemCode;
         }
 
         private static void ParseFieldStackSize(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseStackSize((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem StackSize");
+            ParseFieldValueLong(Value, ErrorInfo, "RecipeItem StackSize", This.ParseStackSize);
         }
 
-        private void ParseStackSize(int RawStackSize, ParseErrorInfo ErrorInfo)
+        private void ParseStackSize(long RawStackSize, ParseErrorInfo ErrorInfo)
         {
             if (RawStackSize > 1)
-                this.RawStackSize = RawStackSize;
+                this.RawStackSize = (int)RawStackSize;
             else
             {
                 this.RawStackSize = 1;
@@ -107,10 +102,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldPercentChance(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParsePercentChance((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParsePercentChance(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParsePercentChance((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParsePercentChance((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeItem PercentChance");
         }
@@ -122,14 +117,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemKeys(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawItemKeys;
-            if ((RawItemKeys = Value as ArrayList) != null)
+            JArray RawItemKeys;
+            if ((RawItemKeys = Value as JArray) != null)
                 This.ParseItemKeys(RawItemKeys, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeItem ItemKeys");
         }
 
-        private void ParseItemKeys(ArrayList RawItemKeys, ParseErrorInfo ErrorInfo)
+        private void ParseItemKeys(JArray RawItemKeys, ParseErrorInfo ErrorInfo)
         {
             List<RecipeItemKey> ParsedItemKeyList = new List<RecipeItemKey>();
             StringToEnumConversion<RecipeItemKey>.ParseList(RawItemKeys, RecipeItemKeyStringMap, ParsedItemKeyList, ErrorInfo);
@@ -142,11 +137,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDesc(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDesc;
-            if ((RawDesc = Value as string) != null)
-                This.ParseDesc(RawDesc, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem Desc");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeItem Desc", This.ParseDesc);
         }
 
         private void ParseDesc(string RawDesc, ParseErrorInfo ErrorInfo)
@@ -156,10 +147,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldChanceToConsume(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseChanceToConsume((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseChanceToConsume(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseChanceToConsume((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseChanceToConsume((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeItem ChanceToConsume");
         }
@@ -171,10 +162,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldDurabilityConsumed(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseDurabilityConsumed((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseDurabilityConsumed(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseDurabilityConsumed((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseDurabilityConsumed((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeItem DurabilityConsumed");
         }

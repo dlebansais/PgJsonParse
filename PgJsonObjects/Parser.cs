@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,13 +39,11 @@ namespace PgJsonObjects
             string Content = LoadContent(FilePath);
             if (Content != null)
             {
-                JavaScriptSerializer ser = new JavaScriptSerializer();
-                if (ser.MaxJsonLength < Content.Length * 2)
-                    ser.MaxJsonLength = Content.Length * 2;
+                JsonSerializer ser = new JsonSerializer();
 
                 try
                 {
-                    Dictionary<string, object> RecordTableRaw = ser.Deserialize<Dictionary<string, object>>(Content);
+                    Dictionary<string, object> RecordTableRaw = ser.Deserialize<Dictionary<string, object>>(new JsonTextReader(new StringReader(Content)));
 
                     foreach (KeyValuePair<string, object> EntryRaw in RecordTableRaw)
                         if (EntryRaw.Key != null && EntryRaw.Key.Length > 0)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -87,140 +88,110 @@ namespace PgJsonObjects
 
         private static void ParseFieldDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseDamage((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX Damage");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX Damage", This.ParseDamage);
         }
 
-        private void ParseDamage(int RawDamage, ParseErrorInfo ErrorInfo)
+        private void ParseDamage(long RawDamage, ParseErrorInfo ErrorInfo)
         {
-            this.RawDamage = RawDamage;
+            this.RawDamage = (int)RawDamage;
         }
 
         private static void ParseFieldExtraDamageIfTargetVulnerable(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseExtraDamageIfTargetVulnerable((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX ExtraDamageIfTargetVulnerable");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX ExtraDamageIfTargetVulnerable", This.ParseExtraDamageIfTargetVulnerable);
         }
 
-        private void ParseExtraDamageIfTargetVulnerable(int RawExtraDamageIfTargetVulnerable, ParseErrorInfo ErrorInfo)
+        private void ParseExtraDamageIfTargetVulnerable(long RawExtraDamageIfTargetVulnerable, ParseErrorInfo ErrorInfo)
         {
-            this.RawExtraDamageIfTargetVulnerable = RawExtraDamageIfTargetVulnerable;
+            this.RawExtraDamageIfTargetVulnerable = (int)RawExtraDamageIfTargetVulnerable;
         }
 
         private static void ParseFieldHealthSpecificDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseHealthSpecificDamage((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX HealthSpecificDamage");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX HealthSpecificDamage", This.ParseHealthSpecificDamage);
         }
 
-        private void ParseHealthSpecificDamage(int RawHealthSpecificDamage, ParseErrorInfo ErrorInfo)
+        private void ParseHealthSpecificDamage(long RawHealthSpecificDamage, ParseErrorInfo ErrorInfo)
         {
-            this.RawHealthSpecificDamage = RawHealthSpecificDamage;
+            this.RawHealthSpecificDamage = (int)RawHealthSpecificDamage;
         }
 
         private static void ParseFieldArmorSpecificDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseArmorSpecificDamage((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX ArmorSpecificDamage");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX ArmorSpecificDamage", This.ParseArmorSpecificDamage);
         }
 
-        private void ParseArmorSpecificDamage(int RawArmorSpecificDamage, ParseErrorInfo ErrorInfo)
+        private void ParseArmorSpecificDamage(long RawArmorSpecificDamage, ParseErrorInfo ErrorInfo)
         {
-            this.RawArmorSpecificDamage = RawArmorSpecificDamage;
+            this.RawArmorSpecificDamage = (int)RawArmorSpecificDamage;
         }
 
         private static void ParseFieldRange(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseRange((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX Range");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX Range", This.ParseRange);
         }
 
-        private void ParseRange(int RawRange, ParseErrorInfo ErrorInfo)
+        private void ParseRange(long RawRange, ParseErrorInfo ErrorInfo)
         {
-            this.RawRange = RawRange;
+            this.RawRange = (int)RawRange;
         }
 
         private static void ParseFieldPowerCost(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParsePowerCost((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX PowerCost");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX PowerCost", This.ParsePowerCost);
         }
 
-        private void ParsePowerCost(int RawPowerCost, ParseErrorInfo ErrorInfo)
+        private void ParsePowerCost(long RawPowerCost, ParseErrorInfo ErrorInfo)
         {
-            this.RawPowerCost = RawPowerCost;
+            this.RawPowerCost = (int)RawPowerCost;
         }
 
         private static void ParseFieldMetabolismCost(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseMetabolismCost((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX MetabolismCost");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX MetabolismCost", This.ParseMetabolismCost);
         }
 
-        private void ParseMetabolismCost(int RawMetabolismCost, ParseErrorInfo ErrorInfo)
+        private void ParseMetabolismCost(long RawMetabolismCost, ParseErrorInfo ErrorInfo)
         {
-            this.RawMetabolismCost = RawMetabolismCost;
+            this.RawMetabolismCost = (int)RawMetabolismCost;
         }
 
         private static void ParseFieldArmorMitigationRatio(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseArmorMitigationRatio((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX ArmorMitigationRatio");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX ArmorMitigationRatio", This.ParseArmorMitigationRatio);
         }
 
-        private void ParseArmorMitigationRatio(int RawArmorMitigationRatio, ParseErrorInfo ErrorInfo)
+        private void ParseArmorMitigationRatio(long RawArmorMitigationRatio, ParseErrorInfo ErrorInfo)
         {
-            this.RawArmorMitigationRatio = RawArmorMitigationRatio;
+            this.RawArmorMitigationRatio = (int)RawArmorMitigationRatio;
         }
 
         private static void ParseFieldAoE(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseAoE((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX AoE");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX AoE", This.ParseAoE);
         }
 
-        private void ParseAoE(int RawAoE, ParseErrorInfo ErrorInfo)
+        private void ParseAoE(long RawAoE, ParseErrorInfo ErrorInfo)
         {
-            this.RawAoE = RawAoE;
+            this.RawAoE = (int)RawAoE;
         }
 
         private static void ParseFieldRageBoost(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseRageBoost((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX RageBoost");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX RageBoost", This.ParseRageBoost);
         }
 
-        private void ParseRageBoost(int RawRageBoost, ParseErrorInfo ErrorInfo)
+        private void ParseRageBoost(long RawRageBoost, ParseErrorInfo ErrorInfo)
         {
-            this.RawRageBoost = RawRageBoost;
+            this.RawRageBoost = (int)RawRageBoost;
         }
 
         private static void ParseFieldRageMultiplier(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseRageMultiplier((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseRageMultiplier(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseRageMultiplier((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseRageMultiplier((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX RageMultiplier");
         }
@@ -232,10 +203,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldAccuracy(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseAccuracy((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseAccuracy(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseAccuracy((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseAccuracy((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX Accuracy");
         }
@@ -247,129 +218,129 @@ namespace PgJsonObjects
 
         private static void ParseFieldAttributesThatDeltaDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatDeltaDamage;
-            if ((RawAttributesThatDeltaDamage = Value as ArrayList) != null)
+            JArray RawAttributesThatDeltaDamage;
+            if ((RawAttributesThatDeltaDamage = Value as JArray) != null)
                 This.ParseAttributesThatDeltaDamage(RawAttributesThatDeltaDamage, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatDeltaDamage");
         }
 
-        private void ParseAttributesThatDeltaDamage(ArrayList RawAttributesThatDeltaDamage, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatDeltaDamage(JArray RawAttributesThatDeltaDamage, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatDeltaDamage, RawAttributesThatDeltaDamageList, "AttributesThatDeltaDamage", ErrorInfo, out RawAttributesThatDeltaDamageListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatModDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatModDamage;
-            if ((RawAttributesThatModDamage = Value as ArrayList) != null)
+            JArray RawAttributesThatModDamage;
+            if ((RawAttributesThatModDamage = Value as JArray) != null)
                 This.ParseAttributesThatModDamage(RawAttributesThatModDamage, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatModDamage");
         }
 
-        private void ParseAttributesThatModDamage(ArrayList RawAttributesThatModDamage, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatModDamage(JArray RawAttributesThatModDamage, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatModDamage, RawAttributesThatModDamageList, "AttributesThatModDamage", ErrorInfo, out RawAttributesThatModDamageListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatModBaseDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatModBaseDamage;
-            if ((RawAttributesThatModBaseDamage = Value as ArrayList) != null)
+            JArray RawAttributesThatModBaseDamage;
+            if ((RawAttributesThatModBaseDamage = Value as JArray) != null)
                 This.ParseAttributesThatModBaseDamage(RawAttributesThatModBaseDamage, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatModBaseDamage");
         }
 
-        private void ParseAttributesThatModBaseDamage(ArrayList RawAttributesThatModBaseDamage, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatModBaseDamage(JArray RawAttributesThatModBaseDamage, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatModBaseDamage, RawAttributesThatModBaseDamageList, "AttributesThatModBaseDamage", ErrorInfo, out RawAttributesThatModBaseDamageListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatDeltaTaunt(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatDeltaTaunt;
-            if ((RawAttributesThatDeltaTaunt = Value as ArrayList) != null)
+            JArray RawAttributesThatDeltaTaunt;
+            if ((RawAttributesThatDeltaTaunt = Value as JArray) != null)
                 This.ParseAttributesThatDeltaTaunt(RawAttributesThatDeltaTaunt, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatDeltaTaunt");
         }
 
-        private void ParseAttributesThatDeltaTaunt(ArrayList RawAttributesThatDeltaTaunt, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatDeltaTaunt(JArray RawAttributesThatDeltaTaunt, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatDeltaTaunt, RawAttributesThatDeltaTauntList, "AttributesThatDeltaTaunt", ErrorInfo, out RawAttributesThatDeltaTauntListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatModTaunt(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatModTaunt;
-            if ((RawAttributesThatModTaunt = Value as ArrayList) != null)
+            JArray RawAttributesThatModTaunt;
+            if ((RawAttributesThatModTaunt = Value as JArray) != null)
                 This.ParseAttributesThatModTaunt(RawAttributesThatModTaunt, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatModTaunt");
         }
 
-        private void ParseAttributesThatModTaunt(ArrayList RawAttributesThatModTaunt, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatModTaunt(JArray RawAttributesThatModTaunt, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatModTaunt, RawAttributesThatModTauntList, "AttributesThatModTaunt", ErrorInfo, out RawAttributesThatModTauntListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatDeltaRage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatDeltaRage;
-            if ((RawAttributesThatDeltaRage = Value as ArrayList) != null)
+            JArray RawAttributesThatDeltaRage;
+            if ((RawAttributesThatDeltaRage = Value as JArray) != null)
                 This.ParseAttributesThatDeltaRage(RawAttributesThatDeltaRage, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatDeltaRage");
         }
 
-        private void ParseAttributesThatDeltaRage(ArrayList RawAttributesThatDeltaRage, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatDeltaRage(JArray RawAttributesThatDeltaRage, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatDeltaRage, RawAttributesThatDeltaRageList, "AttributesThatDeltaRage", ErrorInfo, out RawAttributesThatDeltaRageListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatModRage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatModRage;
-            if ((RawAttributesThatModRage = Value as ArrayList) != null)
+            JArray RawAttributesThatModRage;
+            if ((RawAttributesThatModRage = Value as JArray) != null)
                 This.ParseAttributesThatModRage(RawAttributesThatModRage, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatModRage");
         }
 
-        private void ParseAttributesThatModRage(ArrayList RawAttributesThatModRage, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatModRage(JArray RawAttributesThatModRage, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatModRage, RawAttributesThatModRageList, "AttributesThatModRage", ErrorInfo, out RawAttributesThatModRageListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatDeltaRange(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAttributesThatDeltaRange;
-            if ((RawAttributesThatDeltaRange = Value as ArrayList) != null)
+            JArray RawAttributesThatDeltaRange;
+            if ((RawAttributesThatDeltaRange = Value as JArray) != null)
                 This.ParseAttributesThatDeltaRange(RawAttributesThatDeltaRange, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatDeltaRange");
         }
 
-        private void ParseAttributesThatDeltaRange(ArrayList RawAttributesThatDeltaRange, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatDeltaRange(JArray RawAttributesThatDeltaRange, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatDeltaRange, RawAttributesThatDeltaRangeList, "AttributesThatDeltaRange", ErrorInfo, out RawAttributesThatDeltaRangeListIsEmpty);
         }
 
         private static void ParseFieldSpecialValues(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, object> AsDictionaryArray;
-            ArrayList AsObjectArray;
+            JObject AsJObject;
+            JArray AsJArray;
 
-            if ((AsDictionaryArray = Value as Dictionary<string, object>) != null)
-                This.ParseSpecialValue(AsDictionaryArray, "SpecialValues", ErrorInfo);
+            if ((AsJObject = Value as JObject) != null)
+                This.ParseSpecialValue(AsJObject, "SpecialValues", ErrorInfo);
 
-            else if ((AsObjectArray = Value as ArrayList) != null)
+            else if ((AsJArray = Value as JArray) != null)
             {
-                foreach (object RawItem in AsObjectArray)
-                    if ((AsDictionaryArray = RawItem as Dictionary<string, object>) != null)
-                        This.ParseSpecialValue(AsDictionaryArray, null, ErrorInfo);
+                foreach (object RawItem in AsJArray)
+                    if ((AsJObject = RawItem as JObject) != null)
+                        This.ParseSpecialValue(AsJObject, null, ErrorInfo);
                     else
                         ErrorInfo.AddInvalidObjectFormat("AbilityPvX SpecialValues Array");
             }
@@ -378,7 +349,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX SpecialValues");
         }
 
-        private void ParseSpecialValue(Dictionary<string, object> RawSpecialValue, string ObjectKey, ParseErrorInfo ErrorInfo)
+        private void ParseSpecialValue(JObject RawSpecialValue, string ObjectKey, ParseErrorInfo ErrorInfo)
         {
             SpecialValue ParsedSpecialValue;
             JsonObjectParser<SpecialValue>.InitAsSubitem("SpecialValue", RawSpecialValue, out ParsedSpecialValue, ErrorInfo);
@@ -388,49 +359,40 @@ namespace PgJsonObjects
 
         private static void ParseFieldTauntDelta(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseTauntDelta((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX TauntDelta");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX TauntDelta", This.ParseTauntDelta);
         }
 
-        private void ParseTauntDelta(int RawTauntDelta, ParseErrorInfo ErrorInfo)
+        private void ParseTauntDelta(long RawTauntDelta, ParseErrorInfo ErrorInfo)
         {
-            this.RawTauntDelta = RawTauntDelta;
+            this.RawTauntDelta = (int)RawTauntDelta;
         }
 
         private static void ParseFieldTempTauntDelta(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseTempTauntDelta((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX TempTauntDelta");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX TempTauntDelta", This.ParseTempTauntDelta);
         }
 
-        private void ParseTempTauntDelta(int RawTempTauntDelta, ParseErrorInfo ErrorInfo)
+        private void ParseTempTauntDelta(long RawTempTauntDelta, ParseErrorInfo ErrorInfo)
         {
-            this.RawTempTauntDelta = RawTempTauntDelta;
+            this.RawTempTauntDelta = (int)RawTempTauntDelta;
         }
 
         private static void ParseFieldRageCost(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseRageCost((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX RageCost");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX RageCost", This.ParseRageCost);
         }
 
-        private void ParseRageCost(int RawRageCost, ParseErrorInfo ErrorInfo)
+        private void ParseRageCost(long RawRageCost, ParseErrorInfo ErrorInfo)
         {
-            this.RawRageCost = RawRageCost;
+            this.RawRageCost = (int)RawRageCost;
         }
 
         private static void ParseFieldRageCostMod(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseRageCostMod((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseRageCostMod(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseRageCostMod((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseRageCostMod((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilityPvX RageCostMod");
         }

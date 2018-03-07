@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,11 +35,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldName(GameNpc This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawName;
-            if ((RawName = Value as string) != null)
-                This.ParseName(RawName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Npc Name");
+            ParseFieldValueString(Value, ErrorInfo, "GameNpc Name", This.ParseName);
         }
 
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
@@ -48,11 +45,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAreaName(GameNpc This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawAreaName;
-            if ((RawAreaName = Value as string) != null)
-                This.ParseAreaName(RawAreaName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Npc AreaName");
+            ParseFieldValueString(Value, ErrorInfo, "GameNpc AreaName", This.ParseAreaName);
         }
 
         private void ParseAreaName(string RawAreaName, ParseErrorInfo ErrorInfo)
@@ -64,16 +57,12 @@ namespace PgJsonObjects
                 AreaName = ParsedMapAreaName;
             }
             else
-                ErrorInfo.AddInvalidObjectFormat("Npc AreaName");
+                ErrorInfo.AddInvalidObjectFormat("GameNpc AreaName");
         }
 
         private static void ParseFieldAreaFriendlyName(GameNpc This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawAreaFriendlyName;
-            if ((RawAreaFriendlyName = Value as string) != null)
-                This.ParseAreaFriendlyName(RawAreaFriendlyName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Npc AreaFriendlyName");
+            ParseFieldValueString(Value, ErrorInfo, "GameNpc AreaFriendlyName", This.ParseAreaFriendlyName);
         }
 
         private void ParseAreaFriendlyName(string RawAreaFriendlyName, ParseErrorInfo ErrorInfo)
@@ -83,26 +72,22 @@ namespace PgJsonObjects
 
         private static void ParseFieldPreferences(GameNpc This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawPreferences;
-            if ((RawPreferences = Value as ArrayList) != null)
-                This.ParsePreferences(RawPreferences, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Npc Preferences");
+            ParseFieldValueArray(Value, ErrorInfo, "GameNpc Preferences", This.ParsePreferences);
         }
 
         private void ParsePreferences(ArrayList RawPreferences, ParseErrorInfo ErrorInfo)
         {
             foreach (object RawPreference in RawPreferences)
             {
-                Dictionary<string, object> AsDictionary;
-                if ((AsDictionary = RawPreference as Dictionary<string, object>) != null)
-                    ParsePreferences(AsDictionary, ErrorInfo);
+                JObject AsJObject;
+                if ((AsJObject = RawPreference as JObject) != null)
+                    ParsePreferences(AsJObject, ErrorInfo);
                 else
-                    ErrorInfo.AddInvalidObjectFormat("Npc Preferences");
+                    ErrorInfo.AddInvalidObjectFormat("GameNpc Preferences");
             }
         }
 
-        private void ParsePreferences(Dictionary<string, object> RawPreference, ParseErrorInfo ErrorInfo)
+        private void ParsePreferences(JObject RawPreference, ParseErrorInfo ErrorInfo)
         {
             NpcPreference ParsedPreference;
             JsonObjectParser<NpcPreference>.InitAsSubitem("Preference", RawPreference, out ParsedPreference, ErrorInfo);
@@ -112,7 +97,7 @@ namespace PgJsonObjects
             else if (ParsedPreference.Preference < 0)
                 HateList.Add(ParsedPreference);
             else
-                ErrorInfo.AddInvalidObjectFormat("Npc Preferences");
+                ErrorInfo.AddInvalidObjectFormat("GameNpc Preferences");
         }
         #endregion
 

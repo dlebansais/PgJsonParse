@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -39,11 +40,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldTitle(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawTitle;
-            if ((RawTitle = Value as string) != null)
-                This.ParseTitle(RawTitle, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("LoreBook Title");
+            ParseFieldValueString(Value, ErrorInfo, "LoreBook Title", This.ParseTitle);
         }
 
         private void ParseTitle(string RawTitle, ParseErrorInfo ErrorInfo)
@@ -53,11 +50,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLocationHint(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawLocationHint;
-            if ((RawLocationHint = Value as string) != null)
-                This.ParseLocationHint(RawLocationHint, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("LoreBook LocationHint");
+            ParseFieldValueString(Value, ErrorInfo, "LoreBook LocationHint", This.ParseLocationHint);
         }
 
         private void ParseLocationHint(string RawLocationHint, ParseErrorInfo ErrorInfo)
@@ -67,11 +60,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCategory(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawCategory;
-            if ((RawCategory = Value as string) != null)
-                This.ParseCategory(RawCategory, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("LoreBook Category");
+            ParseFieldValueString(Value, ErrorInfo, "LoreBook Category", This.ParseCategory);
         }
 
         private void ParseCategory(string RawCategory, ParseErrorInfo ErrorInfo)
@@ -83,30 +72,19 @@ namespace PgJsonObjects
 
         private static void ParseFieldKeywords(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawKeywords;
-            if ((RawKeywords = Value as ArrayList) != null)
-                This.ParseKeywords(RawKeywords, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("LoreBook Keywords");
+            ParseFieldValueStringArray(Value, ErrorInfo, "LoreBook Keywords", This.ParseKeywords);
         }
 
-        private void ParseKeywords(ArrayList RawKeywords, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
-            foreach (object Item in RawKeywords)
+            LoreBookKeyword ParsedLoreBookKeyword;
+            if (StringToEnumConversion<LoreBookKeyword>.TryParse(RawKeyword, out ParsedLoreBookKeyword, ErrorInfo))
             {
-                string RawKeyword;
-                if ((RawKeyword = Item as string) != null)
-                {
-                    LoreBookKeyword ParsedLoreBookKeyword;
-                    if (StringToEnumConversion<LoreBookKeyword>.TryParse(RawKeyword, out ParsedLoreBookKeyword, ErrorInfo))
-                        KeywordList.Add(ParsedLoreBookKeyword);
-                }
-                else
-                {
-                    ErrorInfo.AddInvalidObjectFormat("LoreBook Keywords");
-                    break;
-                }
+                KeywordList.Add(ParsedLoreBookKeyword);
+                return true;
             }
+            else
+                return false;
         }
 
         private static void ParseFieldIsClientLocal(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
@@ -124,11 +102,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldVisibility(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawVisibility;
-            if ((RawVisibility = Value as string) != null)
-                This.ParseVisibility(RawVisibility, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("LoreBook Visibility");
+            ParseFieldValueString(Value, ErrorInfo, "LoreBook Visibility", This.ParseVisibility);
         }
 
         private void ParseVisibility(string RawVisibility, ParseErrorInfo ErrorInfo)
@@ -140,11 +114,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldInternalName(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawInternalName;
-            if ((RawInternalName = Value as string) != null)
-                This.ParseInternalName(RawInternalName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("LoreBook InternalName");
+            ParseFieldValueString(Value, ErrorInfo, "LoreBook InternalName", This.ParseInternalName);
         }
 
         private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
@@ -154,11 +124,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldText(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawText;
-            if ((RawText = Value as string) != null)
-                This.ParseText(RawText, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("LoreBook Text");
+            ParseFieldValueString(Value, ErrorInfo, "LoreBook Text", This.ParseText);
         }
 
         private void ParseText(string RawText, ParseErrorInfo ErrorInfo)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -61,11 +62,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAbility(Reward This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawAbility;
-            if ((RawAbility = Value as string) != null)
-                This.ParseAbility(RawAbility, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Reward Ability");
+            ParseFieldValueString(Value, ErrorInfo, "Reward Ability", This.ParseAbility);
         }
 
         private void ParseAbility(string RawAbility, ParseErrorInfo ErrorInfo)
@@ -75,11 +72,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldBonusToSkill(Reward This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawBonusToSkill;
-            if ((RawBonusToSkill = Value as string) != null)
-                This.ParseBonusToSkill(RawBonusToSkill, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Reward BonusToSkill");
+            ParseFieldValueString(Value, ErrorInfo, "Reward BonusToSkill", This.ParseBonusToSkill);
         }
 
         private void ParseBonusToSkill(string RawBonusToSkill, ParseErrorInfo ErrorInfo)
@@ -91,11 +84,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRecipe(Reward This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawRecipe;
-            if ((RawRecipe = Value as string) != null)
-                This.ParseRecipe(RawRecipe, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Reward Recipe");
+            ParseFieldValueString(Value, ErrorInfo, "Reward Recipe", This.ParseRecipe);
         }
 
         private void ParseRecipe(string RawRecipe, ParseErrorInfo ErrorInfo)
@@ -105,11 +94,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNotes(Reward This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawNotes;
-            if ((RawNotes = Value as string) != null)
-                This.ParseNotes(RawNotes, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Reward Notes");
+            ParseFieldValueString(Value, ErrorInfo, "Reward Notes", This.ParseNotes);
         }
 
         private void ParseNotes(string RawNotes, ParseErrorInfo ErrorInfo)

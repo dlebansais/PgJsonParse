@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -60,11 +61,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldName(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawName;
-            if ((RawName = Value as string) != null)
-                This.ParseName(RawName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect Name");
+            ParseFieldValueString(Value, ErrorInfo, "Effect Name", This.ParseName);
         }
 
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
@@ -74,11 +71,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDesc(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDesc;
-            if ((RawDesc = Value as string) != null)
-                This.ParseDesc(RawDesc, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect Desc");
+            ParseFieldValueString(Value, ErrorInfo, "Effect Desc", This.ParseDesc);
         }
 
         private void ParseDesc(string RawDesc, ParseErrorInfo ErrorInfo)
@@ -88,18 +81,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldIconId(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseIconId((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect IconId");
+            ParseFieldValueLong(Value, ErrorInfo, "Effect IconId", This.ParseIconId);
         }
 
-        private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)
+        private void ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
         {
             if (RawIconId > 0)
             {
-                this.RawIconId = RawIconId;
-                ErrorInfo.AddIconId(RawIconId);
+                this.RawIconId = (int)RawIconId;
+                ErrorInfo.AddIconId((int)RawIconId);
             }
             else
                 this.RawIconId = null;
@@ -107,11 +97,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDisplayMode(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDisplayMode;
-            if ((RawDisplayMode = Value as string) != null)
-                This.ParseDisplayMode(RawDisplayMode, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect DisplayMode");
+            ParseFieldValueString(Value, ErrorInfo, "Effect DisplayMode", This.ParseDisplayMode);
         }
 
         private void ParseDisplayMode(string RawDisplayMode, ParseErrorInfo ErrorInfo)
@@ -123,11 +109,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSpewText(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawSpewText;
-            if ((RawSpewText = Value as string) != null)
-                This.ParseSpewText(RawSpewText, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect SpewText");
+            ParseFieldValueString(Value, ErrorInfo, "Effect SpewText", This.ParseSpewText);
         }
 
         private void ParseSpewText(string RawSpewText, ParseErrorInfo ErrorInfo)
@@ -137,11 +119,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldParticle(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawParticle;
-            if ((RawParticle = Value as string) != null)
-                This.ParseParticle(RawParticle, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect Particle");
+            ParseFieldValueString(Value, ErrorInfo, "Effect Particle", This.ParseParticle);
         }
 
         private void ParseParticle(string RawParticle, ParseErrorInfo ErrorInfo)
@@ -153,11 +131,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldStackingType(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawStackingType;
-            if ((RawStackingType = Value as string) != null)
-                This.ParseStackingType(RawStackingType, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect StackingType");
+            ParseFieldValueString(Value, ErrorInfo, "Effect StackingType", This.ParseStackingType);
         }
 
         private void ParseStackingType(string RawStackingType, ParseErrorInfo ErrorInfo)
@@ -169,23 +143,21 @@ namespace PgJsonObjects
 
         private static void ParseFieldStackingPriority(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseStackingPriority((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect StackingPriority");
+            ParseFieldValueLong(Value, ErrorInfo, "Effect StackingPriority", This.ParseStackingPriority);
         }
 
-        private void ParseStackingPriority(int RawStackingPriority, ParseErrorInfo ErrorInfo)
+        private void ParseStackingPriority(long RawStackingPriority, ParseErrorInfo ErrorInfo)
         {
-            this.RawStackingPriority = RawStackingPriority;
+            this.RawStackingPriority = (int)RawStackingPriority;
         }
 
         private static void ParseFieldDuration(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
+            JValue AsJValue;
             string AsString;
 
-            if (Value is int)
-                This.ParseDuration((int)Value, ErrorInfo);
+            if (Value is long)
+                This.ParseDuration((long)Value, ErrorInfo);
 
             else if ((AsString = Value as string) != null)
             {
@@ -195,25 +167,42 @@ namespace PgJsonObjects
                 else
                     ErrorInfo.AddInvalidObjectFormat("Effect Duration");
             }
+
+            else if ((AsJValue = Value as JValue) != null)
+            {
+                if (AsJValue.Type == JTokenType.Integer)
+                    This.ParseDuration((long)Value, ErrorInfo);
+
+                else if (AsJValue.Type == JTokenType.String)
+                {
+                    int RawDuration;
+                    if (int.TryParse(AsJValue.Value as string, out RawDuration))
+                        This.ParseDuration(RawDuration, ErrorInfo);
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("Effect Duration");
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("Effect Duration");
+            }
             else
                 ErrorInfo.AddInvalidObjectFormat("Effect Duration");
         }
 
-        private void ParseDuration(int RawDuration, ParseErrorInfo ErrorInfo)
+        private void ParseDuration(long RawDuration, ParseErrorInfo ErrorInfo)
         {
-            this.RawDuration = RawDuration;
+            this.RawDuration = (int)RawDuration;
         }
 
         private static void ParseFieldKeywords(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawKeywords;
-            if ((RawKeywords = Value as ArrayList) != null)
+            JArray RawKeywords;
+            if ((RawKeywords = Value as JArray) != null)
                 This.ParseKeywords(RawKeywords, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Effect Keywords");
         }
 
-        private void ParseKeywords(ArrayList RawKeywords, ParseErrorInfo ErrorInfo)
+        private void ParseKeywords(JArray RawKeywords, ParseErrorInfo ErrorInfo)
         {
             List<EffectKeyword> ParsedKeywordList = new List<EffectKeyword>();
             StringToEnumConversion<EffectKeyword>.ParseList(RawKeywords, KeywordStringMap, ParsedKeywordList, ErrorInfo);
@@ -228,14 +217,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldAbilityKeywords(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawAbilityKeywords;
-            if ((RawAbilityKeywords = Value as ArrayList) != null)
+            JArray RawAbilityKeywords;
+            if ((RawAbilityKeywords = Value as JArray) != null)
                 This.ParseAbilityKeywords(RawAbilityKeywords, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Effect AbilityKeywords");
         }
 
-        private void ParseAbilityKeywords(ArrayList RawAbilityKeywords, ParseErrorInfo ErrorInfo)
+        private void ParseAbilityKeywords(JArray RawAbilityKeywords, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<AbilityKeyword>.ParseList(RawAbilityKeywords, AbilityKeywordList, ErrorInfo);
             IsAbilityKeywordListEmpty = (RawAbilityKeywords != null && RawAbilityKeywords.Count == 0);

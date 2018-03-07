@@ -22,28 +22,21 @@ namespace PgJsonObjects
 
         private static void ParseFieldEffectDescs(PowerTier This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawEffectDescs;
-            if ((RawEffectDescs = Value as ArrayList) != null)
-                This.ParseEffectDescs(RawEffectDescs, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("PowerTier EffectDescs");
+            ParseFieldValueStringArray(Value, ErrorInfo, "PowerTier EffectDescs", This.ParseEffectDescs);
         }
 
-        private void ParseEffectDescs(ArrayList RawEffectDescs, ParseErrorInfo ErrorInfo)
+        private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)
         {
-            foreach (object RawEffectDesc in RawEffectDescs)
+            PowerEffect NewPowerEffect;
+            if (PowerEffect.TryParse(RawEffectDesc, ErrorInfo, out NewPowerEffect))
             {
-                string EffectDesc;
-                if ((EffectDesc = RawEffectDesc as string) != null)
-                {
-                    PowerEffect NewPowerEffect;
-                    if (PowerEffect.TryParse(EffectDesc, ErrorInfo, out NewPowerEffect))
-                        EffectList.Add(NewPowerEffect);
-                    else
-                        ErrorInfo.AddInvalidString("PowerTier EffectDescs", EffectDesc);
-                }
-                else
-                    ErrorInfo.AddInvalidObjectFormat("PowerTier EffectDescs");
+                EffectList.Add(NewPowerEffect);
+                return true;
+            }
+            else
+            {
+                ErrorInfo.AddInvalidString("PowerTier EffectDescs", RawEffectDesc);
+                return false;
             }
         }
         #endregion

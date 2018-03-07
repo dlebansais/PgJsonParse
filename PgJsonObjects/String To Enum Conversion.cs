@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -102,7 +103,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        public static void ParseList(ArrayList StringArray, List<T> EnumList, ParseErrorInfo ErrorInfo)
+        public static void ParseList(JArray StringArray, List<T> EnumList, ParseErrorInfo ErrorInfo)
         {
             ParseList(StringArray, null, EnumList, ErrorInfo);
         }
@@ -112,16 +113,27 @@ namespace PgJsonObjects
             ParseList(StringArray, null, EnumList, ErrorInfo);
         }
 
-        public static void ParseList(ArrayList StringArray, Dictionary<T, string> StringMap, List<T> EnumList, ParseErrorInfo ErrorInfo)
+        public static void ParseList(JArray StringArray, Dictionary<T, string> StringMap, List<T> EnumList, ParseErrorInfo ErrorInfo)
         {
             if (StringArray == null)
                 return;
 
-            foreach (string s in StringArray)
+            foreach (object Item in StringArray)
             {
-                T ParsedValue;
-                if (StringToEnumConversion<T>.TryParse(s, StringMap, out ParsedValue, ErrorInfo))
-                    EnumList.Add(ParsedValue);
+                JValue AsJValue;
+                if ((AsJValue = Item as JValue) != null)
+                {
+                    if (AsJValue.Type == JTokenType.String)
+                    {
+                        T ParsedValue;
+                        if (TryParse(AsJValue.Value as string, StringMap, out ParsedValue, ErrorInfo))
+                            EnumList.Add(ParsedValue);
+                    }
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("Enum List");
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("Enum List");
             }
         }
 

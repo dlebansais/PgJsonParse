@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -154,11 +155,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldType(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawType;
-            if ((RawType = Value as string) != null)
-                This.ParseType(RawType, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource Type");
+            ParseFieldValueString(Value, ErrorInfo, "AbilitySource Type", This.ParseType);
         }
 
         private void ParseType(string RawType, ParseErrorInfo ErrorInfo)
@@ -170,11 +167,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSkillTypeId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawSkillTypeId;
-            if ((RawSkillTypeId = Value as string) != null)
-                This.ParseSkillTypeId(RawSkillTypeId, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource SkillTypeId");
+            ParseFieldValueString(Value, ErrorInfo, "AbilitySource SkillTypeId", This.ParseSkillTypeId);
         }
 
         private void ParseSkillTypeId(string RawSkillTypeId, ParseErrorInfo ErrorInfo)
@@ -191,11 +184,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawItemName;
-            if ((RawItemName = Value as string) != null)
-                This.ParseItemName(RawItemName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource ItemName");
+            ParseFieldValueString(Value, ErrorInfo, "AbilitySource ItemName", This.ParseItemName);
         }
 
         private void ParseItemName(string RawItemName, ParseErrorInfo ErrorInfo)
@@ -208,27 +197,20 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemTypeId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseItemTypeId((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource ItemTypeId");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilitySource ItemTypeId", This.ParseItemTypeId);
         }
 
-        private void ParseItemTypeId(int RawItemTypeId, ParseErrorInfo ErrorInfo)
+        private void ParseItemTypeId(long RawItemTypeId, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.Item)
-                this.RawItemTypeId = RawItemTypeId;
+                this.RawItemTypeId = (int)RawItemTypeId;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource ItemTypeId (type)");
         }
 
         private static void ParseFieldNpcName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawNpcName;
-            if ((RawNpcName = Value as string) != null)
-                This.ParseNpcName(RawNpcName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource NpcName");
+            ParseFieldValueString(Value, ErrorInfo, "AbilitySource NpcName", This.ParseNpcName);
         }
 
         private void ParseNpcName(string RawNpcName, ParseErrorInfo ErrorInfo)
@@ -241,11 +223,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNpc(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawNpc;
-            if ((RawNpc = Value as string) != null)
-                This.ParseNpc(RawNpc, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource NpcName");
+            ParseFieldValueString(Value, ErrorInfo, "AbilitySource Npc", This.ParseNpc);
         }
 
         private void ParseNpc(string RawNpc, ParseErrorInfo ErrorInfo)
@@ -263,11 +241,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldEffectName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawEffectName;
-            if ((RawEffectName = Value as string) != null)
-                This.ParseEffectName(RawEffectName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource EffectName");
+            ParseFieldValueString(Value, ErrorInfo, "AbilitySource EffectName", This.ParseEffectName);
         }
 
         private void ParseEffectName(string RawEffectName, ParseErrorInfo ErrorInfo)
@@ -280,11 +254,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldEffectTypeId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawEffectTypeId;
-            if ((RawEffectTypeId = Value as string) != null)
-                This.ParseEffectTypeId(RawEffectTypeId, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource EffectTypeId");
+            ParseFieldValueString(Value, ErrorInfo, "AbilitySource EffectTypeId", This.ParseEffectTypeId);
         }
 
         private void ParseEffectTypeId(string RawEffectTypeId, ParseErrorInfo ErrorInfo)
@@ -293,11 +263,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldQuestName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawQuestName;
-            if ((RawQuestName = Value as string) != null)
-                This.ParseQuestName(RawQuestName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource QuestName");
+            ParseFieldValueString(Value, ErrorInfo, "AbilitySource QuestName", This.ParseQuestName);
         }
 
         private void ParseQuestName(string RawQuestName, ParseErrorInfo ErrorInfo)
@@ -310,16 +276,13 @@ namespace PgJsonObjects
 
         private static void ParseFieldQuestId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseQuestId((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource QuestId");
+            ParseFieldValueLong(Value, ErrorInfo, "AbilitySource QuestId", This.ParseQuestId);
         }
 
-        private void ParseQuestId(int RawQuestId, ParseErrorInfo ErrorInfo)
+        private void ParseQuestId(long RawQuestId, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.Quest)
-                this.RawQuestId = RawQuestId;
+                this.RawQuestId = (int)RawQuestId;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource QuestId (type)");
         }

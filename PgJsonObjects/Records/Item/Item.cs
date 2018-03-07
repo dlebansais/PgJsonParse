@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,7 +28,7 @@ namespace PgJsonObjects
         public string Description { get; private set; }
         public ItemDroppedAppearance DroppedAppearance { get; private set; }
         public ObservableCollection<ItemEffect> EffectDescriptionList { get; } = new ObservableCollection<ItemEffect>();
-        public bool IsEffectDescriptionEmpty { get; private set; }
+        public bool IsEffectDescriptionEmpty { get; private set; } = false;
         public uint? DyeColor { get; private set; }
         public string EquipAppearance { get; private set; }
         public ItemSlot EquipSlot { get; private set; }
@@ -119,25 +120,21 @@ namespace PgJsonObjects
 
         private static void ParseFieldBestowRecipes(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawBestowRecipes;
-            if ((RawBestowRecipes = Value as ArrayList) != null)
+            JArray RawBestowRecipes;
+            if ((RawBestowRecipes = Value as JArray) != null)
                 This.ParseBestowRecipes(RawBestowRecipes, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item BestowRecipes");
         }
 
-        private void ParseBestowRecipes(ArrayList RawBestowRecipes, ParseErrorInfo ErrorInfo)
+        private void ParseBestowRecipes(JArray RawBestowRecipes, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawBestowRecipes, RawBestowRecipesList, "BestowRecipes", ErrorInfo, out RawBestowRecipesListIsEmpty);
         }
 
         private static void ParseFieldBestowAbility(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawBestowAbility;
-            if ((RawBestowAbility = Value as string) != null)
-                This.ParseBestowAbility(RawBestowAbility, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item BestowAbility");
+            ParseFieldValueString(Value, ErrorInfo, "Item BestowAbility", This.ParseBestowAbility);
         }
 
         private void ParseBestowAbility(string RawBestowAbility, ParseErrorInfo ErrorInfo)
@@ -149,11 +146,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldBestowQuest(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawBestowQuest;
-            if ((RawBestowQuest = Value as string) != null)
-                This.ParseBestowQuest(RawBestowQuest, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item BestowQuest");
+            ParseFieldValueString(Value, ErrorInfo, "Item BestowQuest", This.ParseBestowQuest);
         }
 
         private void ParseBestowQuest(string RawBestowQuest, ParseErrorInfo ErrorInfo)
@@ -191,37 +184,27 @@ namespace PgJsonObjects
 
         private static void ParseFieldCraftPoints(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseCraftPoints((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item CraftPoints");
+            ParseFieldValueLong(Value, ErrorInfo, "Item CraftPoints", This.ParseCraftPoints);
         }
 
-        private void ParseCraftPoints(int RawCraftPoints, ParseErrorInfo ErrorInfo)
+        private void ParseCraftPoints(long RawCraftPoints, ParseErrorInfo ErrorInfo)
         {
-            this.RawCraftPoints = RawCraftPoints;
+            this.RawCraftPoints = (int)RawCraftPoints;
         }
 
         private static void ParseFieldCraftingTargetLevel(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseCraftingTargetLevel((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item CraftingTargetLevel");
+            ParseFieldValueLong(Value, ErrorInfo, "Item CraftingTargetLevel", This.ParseCraftPoints);
         }
 
-        private void ParseCraftingTargetLevel(int RawCraftingTargetLevel, ParseErrorInfo ErrorInfo)
+        private void ParseCraftingTargetLevel(long RawCraftingTargetLevel, ParseErrorInfo ErrorInfo)
         {
-            this.RawCraftingTargetLevel = RawCraftingTargetLevel;
+            this.RawCraftingTargetLevel = (int)RawCraftingTargetLevel;
         }
 
         private static void ParseFieldDescription(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDescription;
-            if ((RawDescription = Value as string) != null)
-                This.ParseDescription(RawDescription, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item Description");
+            ParseFieldValueString(Value, ErrorInfo, "Item Description", This.ParseDescription);
         }
 
         private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
@@ -231,11 +214,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDroppedAppearance(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDroppedAppearance;
-            if ((RawDroppedAppearance = Value as string) != null)
-                This.ParseDroppedAppearance(RawDroppedAppearance, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item DroppedAppearance");
+            ParseFieldValueString(Value, ErrorInfo, "Item DroppedAppearance", This.ParseDroppedAppearance);
         }
 
         private void ParseDroppedAppearance(string RawDroppedAppearance, ParseErrorInfo ErrorInfo)
@@ -251,48 +230,28 @@ namespace PgJsonObjects
 
         private static void ParseFieldEffectDescs(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawEffectDescs;
-            if ((RawEffectDescs = Value as ArrayList) != null)
-                This.ParseEffectDescs(RawEffectDescs, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item EffectDescs");
+            List<ItemEffect> EffectDescsList = new List<ItemEffect>();
+            ParseFieldValueStringArray(Value, ErrorInfo, "Item EffectDescs", This.ParseEffectDescs);
         }
 
-        private void ParseEffectDescs(ArrayList RawEffectDescs, ParseErrorInfo ErrorInfo)
+        private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)
         {
-            List<ItemEffect> EffectDescsList = new List<ItemEffect>();
-
-            foreach (object Item in RawEffectDescs)
+            ItemEffect ItemEffect;
+            if (ItemEffect.TryParse(RawEffectDesc, out ItemEffect))
             {
-                string RawEffectDesc;
-                if ((RawEffectDesc = Item as string) != null)
-                {
-                    ItemEffect ItemEffect;
-                    if (ItemEffect.TryParse(RawEffectDesc, out ItemEffect))
-                        EffectDescriptionList.Add(ItemEffect);
-                    else
-                    {
-                        ErrorInfo.AddInvalidObjectFormat("Item EffectDescs");
-                        break;
-                    }
-                }
-                else
-                {
-                    ErrorInfo.AddInvalidObjectFormat("Item EffectDescs");
-                    break;
-                }
+                EffectDescriptionList.Add(ItemEffect);
+                return false;
             }
-
-            IsEffectDescriptionEmpty = (EffectDescriptionList.Count == 0);
+            else
+            {
+                ErrorInfo.AddInvalidObjectFormat("Item EffectDescs");
+                return false;
+            }
         }
 
         private static void ParseFieldDyeColor(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDyeColor;
-            if ((RawDyeColor = Value as string) != null)
-                This.ParseDyeColor(RawDyeColor, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item DyeColor");
+            ParseFieldValueString(Value, ErrorInfo, "Item DyeColor", This.ParseDyeColor);
         }
 
         private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)
@@ -306,11 +265,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldEquipAppearance(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawEquipAppearance;
-            if ((RawEquipAppearance = Value as string) != null)
-                This.ParseEquipAppearance(RawEquipAppearance, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item EquipAppearance");
+            ParseFieldValueString(Value, ErrorInfo, "Item EquipAppearance", This.ParseEquipAppearance);
         }
 
         private void ParseEquipAppearance(string RawEquipAppearance, ParseErrorInfo ErrorInfo)
@@ -320,11 +275,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldEquipSlot(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawEquipSlot;
-            if ((RawEquipSlot = Value as string) != null)
-                This.ParseEquipSlot(RawEquipSlot, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item EquipSlot");
+            ParseFieldValueString(Value, ErrorInfo, "Item EquipSlot", This.ParseEquipSlot);
         }
 
         private void ParseEquipSlot(string RawEquipSlot, ParseErrorInfo ErrorInfo)
@@ -336,18 +287,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldIconId(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseIconId((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item IconId");
+            ParseFieldValueLong(Value, ErrorInfo, "Item IconId", This.ParseIconId);
         }
 
-        private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)
+        private void ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
         {
             if (RawIconId > 0)
             {
-                this.RawIconId = RawIconId;
-                ErrorInfo.AddIconId(RawIconId);
+                this.RawIconId = (int)RawIconId;
+                ErrorInfo.AddIconId((int)RawIconId);
             }
             else
                 this.RawIconId = null;
@@ -355,11 +303,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldInternalName(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawInternalName;
-            if ((RawInternalName = Value as string) != null)
-                This.ParseInternalName(RawInternalName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item InternalName");
+            ParseFieldValueString(Value, ErrorInfo, "Item InternalName", This.ParseInternalName);
         }
 
         private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
@@ -400,84 +344,66 @@ namespace PgJsonObjects
 
         private static void ParseFieldKeywords(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList RawKeywords;
-            if ((RawKeywords = Value as ArrayList) != null)
-                This.ParseKeywords(RawKeywords, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item Keywords");
+            ParseFieldValueStringArray(Value, ErrorInfo, "Item Keywords", This.ParseKeywords);
         }
 
-        private void ParseKeywords(ArrayList RawKeywords, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
-            foreach (object RawKeyword in RawKeywords)
+            string KeyString;
+            string ValueString;
+            float Value;
+            FloatFormat ValueFormat;
+
+            string[] Pairs = RawKeyword.Split('=');
+            if (Pairs.Length == 1)
             {
-                string KeywordString;
-                if ((KeywordString = RawKeyword as string) != null)
+                KeyString = RawKeyword.Trim();
+                Value = float.NaN;
+            }
+
+            else if (Pairs.Length == 2)
+            {
+                KeyString = Pairs[0].Trim();
+                ValueString = Pairs[1].Trim();
+
+                if (!Tools.TryParseFloat(ValueString, out Value, out ValueFormat))
                 {
-                    string KeyString;
-                    string ValueString;
-                    float Value;
-                    FloatFormat ValueFormat;
-
-                    string[] Pairs = KeywordString.Split('=');
-                    if (Pairs.Length == 1)
-                    {
-                        KeyString = KeywordString.Trim();
-                        Value = float.NaN;
-                    }
-
-                    else if (Pairs.Length == 2)
-                    {
-                        KeyString = Pairs[0].Trim();
-                        ValueString = Pairs[1].Trim();
-
-                        if (!Tools.TryParseFloat(ValueString, out Value, out ValueFormat))
-                        {
-                            ErrorInfo.AddInvalidString("Item Keywords", KeywordString);
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        ErrorInfo.AddInvalidString("Item Keywords", KeywordString);
-                        continue;
-                    }
-
-                    ItemKeyword Key;
-                    if (!StringToEnumConversion<ItemKeyword>.TryParse(KeyString, out Key, ErrorInfo))
-                        continue;
-
-                    List<float> ValueList;
-                    if (KeywordTable.ContainsKey(Key))
-                        ValueList = KeywordTable[Key];
-                    else
-                    {
-                        ValueList = new List<float>();
-                        KeywordTable.Add(Key, ValueList);
-
-                        RecipeItemKey ParsedKey;
-                        if (StringToEnumConversion<RecipeItemKey>.TryParse(KeyString, out ParsedKey, null))
-                            ItemKeyList.Add(ParsedKey);
-                    }
-
-                    if (!float.IsNaN(Value))
-                        ValueList.Add(Value);
-                }
-                else
-                {
-                    ErrorInfo.AddInvalidObjectFormat("Item Keywords");
-                    break;
+                    ErrorInfo.AddInvalidString("Item Keywords", RawKeyword);
+                    return false;
                 }
             }
+            else
+            {
+                ErrorInfo.AddInvalidString("Item Keywords", RawKeyword);
+                return false;
+            }
+
+            ItemKeyword Key;
+            if (!StringToEnumConversion<ItemKeyword>.TryParse(KeyString, out Key, ErrorInfo))
+                return false;
+
+            List<float> ValueList;
+            if (KeywordTable.ContainsKey(Key))
+                ValueList = KeywordTable[Key];
+            else
+            {
+                ValueList = new List<float>();
+                KeywordTable.Add(Key, ValueList);
+
+                RecipeItemKey ParsedKey;
+                if (StringToEnumConversion<RecipeItemKey>.TryParse(KeyString, out ParsedKey, null))
+                    ItemKeyList.Add(ParsedKey);
+            }
+
+            if (!float.IsNaN(Value))
+                ValueList.Add(Value);
+
+            return true;
         }
 
         private static void ParseFieldMacGuffinQuestName(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawMacGuffinQuestName;
-            if ((RawMacGuffinQuestName = Value as string) != null)
-                This.ParseMacGuffinQuestName(RawMacGuffinQuestName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item MacGuffinQuestName");
+            ParseFieldValueString(Value, ErrorInfo, "Item MacGuffinQuestName", This.ParseMacGuffinQuestName);
         }
 
         private void ParseMacGuffinQuestName(string RawMacGuffinQuestName, ParseErrorInfo ErrorInfo)
@@ -489,50 +415,37 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxCarryable(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseMaxCarryable((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item MaxCarryable");
+            ParseFieldValueLong(Value, ErrorInfo, "Item MaxCarryable", This.ParseMaxCarryable);
         }
 
-        private void ParseMaxCarryable(int RawMaxCarryable, ParseErrorInfo ErrorInfo)
+        private void ParseMaxCarryable(long RawMaxCarryable, ParseErrorInfo ErrorInfo)
         {
-            this.RawMaxCarryable = RawMaxCarryable;
+            this.RawMaxCarryable = (int)RawMaxCarryable;
         }
 
         private static void ParseFieldMaxOnVendor(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseMaxOnVendor((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item MaxOnVendor");
+            ParseFieldValueLong(Value, ErrorInfo, "Item MaxOnVendor", This.ParseMaxOnVendor);
         }
 
-        private void ParseMaxOnVendor(int RawMaxOnVendor, ParseErrorInfo ErrorInfo)
+        private void ParseMaxOnVendor(long RawMaxOnVendor, ParseErrorInfo ErrorInfo)
         {
-            this.RawMaxOnVendor = RawMaxOnVendor;
+            this.RawMaxOnVendor = (int)RawMaxOnVendor;
         }
 
         private static void ParseFieldMaxStackSize(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseMaxStackSize((int)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item MaxStackSize");
+            ParseFieldValueLong(Value, ErrorInfo, "Item MaxStackSize", This.ParseMaxStackSize);
         }
 
-        private void ParseMaxStackSize(int RawMaxStackSize, ParseErrorInfo ErrorInfo)
+        private void ParseMaxStackSize(long RawMaxStackSize, ParseErrorInfo ErrorInfo)
         {
-            this.RawMaxStackSize = RawMaxStackSize;
+            this.RawMaxStackSize = (int)RawMaxStackSize;
         }
 
         private static void ParseFieldName(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawName;
-            if ((RawName = Value as string) != null)
-                This.ParseName(RawName, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item Name");
+            ParseFieldValueString(Value, ErrorInfo, "Item Name", This.ParseName);
         }
 
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
@@ -542,11 +455,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequiredAppearance(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawRequiredAppearance;
-            if ((RawRequiredAppearance = Value as string) != null)
-                This.ParseRequiredAppearance(RawRequiredAppearance, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item RequiredAppearance");
+            ParseFieldValueString(Value, ErrorInfo, "Item RequiredAppearance", This.ParseRequiredAppearance);
         }
 
         private void ParseRequiredAppearance(string RawRequiredAppearance, ParseErrorInfo ErrorInfo)
@@ -558,27 +467,28 @@ namespace PgJsonObjects
 
         private static void ParseFieldSkillReqs(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, object> RawSkillReqs;
-            if ((RawSkillReqs = Value as Dictionary<string, object>) != null)
+            JObject RawSkillReqs;
+            if ((RawSkillReqs = Value as JObject) != null)
                 This.ParseSkillReqs(RawSkillReqs, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item SkillReqs");
         }
 
-        private void ParseSkillReqs(Dictionary<string, object> RawSkillReqs, ParseErrorInfo ErrorInfo)
+        private void ParseSkillReqs(JObject RawSkillReqs, ParseErrorInfo ErrorInfo)
         {
             Dictionary<string, ItemSkillLink> SkillRequirementTable = new Dictionary<string, ItemSkillLink>();
 
-            foreach (KeyValuePair<string, object> SkillEntry in RawSkillReqs)
+            foreach (KeyValuePair<string, JToken> SkillEntry in RawSkillReqs)
             {
                 if (SkillEntry.Key == "Unknown")
                     continue;
 
                 if (!SkillRequirementTable.ContainsKey(SkillEntry.Key))
                 {
-                    if (SkillEntry.Value is int)
+                    JValue AsJValue;
+                    if (((AsJValue = SkillEntry.Value as JValue) != null) && AsJValue.Type == JTokenType.Integer)
                     {
-                        int SkillValue = (int)SkillEntry.Value;
+                        int SkillValue = (int)(long)SkillEntry.Value;
                         SkillRequirementTable.Add(SkillEntry.Key, new ItemSkillLink(SkillEntry.Key, SkillValue));
                     }
                     else
@@ -594,11 +504,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldStockDye(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawStockDye;
-            if ((RawStockDye = Value as string) != null)
-                This.ParseStockDye(RawStockDye, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item StockDye");
+            ParseFieldValueString(Value, ErrorInfo, "Item StockDye", This.ParseStockDye);
         }
 
         private void ParseStockDye(string RawStockDye, ParseErrorInfo ErrorInfo)
@@ -656,10 +562,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldValue(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParseValue((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParseValue(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParseValue((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParseValue((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item Value");
         }
@@ -671,15 +577,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumUses(Item This, object NumUses, ParseErrorInfo ErrorInfo)
         {
-            if (NumUses is int)
-                This.ParseNumUses((int)NumUses, ErrorInfo);
+            if (NumUses is long)
+                This.ParseNumUses((long)NumUses, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item NumUses");
         }
 
-        private void ParseNumUses(int RawNumUses, ParseErrorInfo ErrorInfo)
+        private void ParseNumUses(long RawNumUses, ParseErrorInfo ErrorInfo)
         {
-            this.RawNumUses = RawNumUses;
+            this.RawNumUses = (int)RawNumUses;
         }
 
         private static void ParseFieldDestroyWhenUsedUp(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -697,13 +603,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldBehaviors(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is ArrayList)
-                This.ParseBehaviors(Value as ArrayList, ErrorInfo);
+            JArray AsJArray;
+            if ((AsJArray = Value as JArray) != null)
+                This.ParseBehaviors(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item Behaviors");
         }
 
-        private void ParseBehaviors(ArrayList RawBehaviors, ParseErrorInfo ErrorInfo)
+        private void ParseBehaviors(JArray RawBehaviors, ParseErrorInfo ErrorInfo)
         {
             List<ItemBehavior> ParsedBehaviorList;
             JsonObjectParser<ItemBehavior>.InitAsSublist(RawBehaviors, out ParsedBehaviorList, ErrorInfo);
@@ -717,11 +624,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDynamicCraftingSummary(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawDynamicCraftingSummary;
-            if ((RawDynamicCraftingSummary = Value as string) != null)
-                This.ParseDynamicCraftingSummary(RawDynamicCraftingSummary, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item DynamicCraftingSummary");
+            ParseFieldValueString(Value, ErrorInfo, "Item DynamicCraftingSummary", This.ParseDynamicCraftingSummary);
         }
 
         private void ParseDynamicCraftingSummary(string RawDynamicCraftingSummary, ParseErrorInfo ErrorInfo)
@@ -744,28 +647,28 @@ namespace PgJsonObjects
 
         private static void ParseFieldBestowTitle(Item This, object BestowTitle, ParseErrorInfo ErrorInfo)
         {
-            if (BestowTitle is int)
-                This.ParseBestowTitle((int)BestowTitle, ErrorInfo);
+            if (BestowTitle is long)
+                This.ParseBestowTitle((long)BestowTitle, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item BestowTitle");
         }
 
-        private void ParseBestowTitle(int RawBestowTitle, ParseErrorInfo ErrorInfo)
+        private void ParseBestowTitle(long RawBestowTitle, ParseErrorInfo ErrorInfo)
         {
-            this.RawBestowTitle = RawBestowTitle;
+            this.RawBestowTitle = (int)RawBestowTitle;
         }
 
         private static void ParseFieldBestowLoreBook(Item This, object BestowLoreBook, ParseErrorInfo ErrorInfo)
         {
-            if (BestowLoreBook is int)
-                This.ParseBestowLoreBook((int)BestowLoreBook, ErrorInfo);
+            if (BestowLoreBook is long)
+                This.ParseBestowLoreBook((long)BestowLoreBook, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item BestowLoreBook");
         }
 
-        private void ParseBestowLoreBook(int RawBestowLoreBook, ParseErrorInfo ErrorInfo)
+        private void ParseBestowLoreBook(long RawBestowLoreBook, ParseErrorInfo ErrorInfo)
         {
-            this.RawBestowLoreBook = RawBestowLoreBook;
+            this.RawBestowLoreBook = (int)RawBestowLoreBook;
         }
 
         private List<string> RawBestowRecipesList { get; } = new List<string>();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -24,11 +25,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCurrency(RecipeCost This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawCurrency;
-            if ((RawCurrency = Value as string) != null)
-                This.ParseCurrency(RawCurrency, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeCost Currency");
+            ParseFieldValueString(Value, ErrorInfo, "RecipeCost Currency", This.ParseCurrency);
         }
 
         private void ParseCurrency(string RawCurrency, ParseErrorInfo ErrorInfo)
@@ -40,10 +37,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldPrice(RecipeCost This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is int)
-                This.ParsePrice((int)Value, ErrorInfo);
-            else if (Value is decimal)
-                This.ParsePrice(decimal.ToDouble((decimal)Value), ErrorInfo);
+            if (Value is long)
+                This.ParsePrice((long)Value, ErrorInfo);
+            else if (Value is double)
+                This.ParsePrice((double)Value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeCost Price");
         }
