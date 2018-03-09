@@ -427,40 +427,16 @@
                 </Grid>
                 <Grid>
                     <Grid.Resources>
-                        <Style TargetType="{x:Type TabControl}">
-                            <Setter Property="BorderThickness" Value="0,2,0,0"/>
-                            <Setter Property="BorderBrush" Value="DarkGray"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="TabControl">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <Grid Grid.Row="1">
-                                                <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-                                                    <Border Background="Transparent">
-                                                        <ContentPresenter ContentSource="SelectedContent"/>
-                                                    </Border>
-                                                </Border>
-                                            </Grid>
-                                            <TabPanel Grid.Row="0" IsItemsHost="true"/>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style x:Key="TabItemBaseStyle" TargetType="{x:Type TabItem}">
+                        <Style x:Key="TabItemBaseStyle" TargetType="TabItem">
                             <Setter Property="BorderThickness" Value="0,0,0,2"/>
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="VerticalContentAlignment" Value="Center"/>
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
                         </Style>
-                        <Style x:Key="TabItemStatusStyle" TargetType="{x:Type TabItem}" BasedOn="{StaticResource TabItemBaseStyle}">
+                        <Style x:Key="TabItemStatusStyle" TargetType="TabItem" BasedOn="{StaticResource TabItemBaseStyle}">
                             <Setter Property="Template">
                                 <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <ControlTemplate TargetType="TabItem">
                                         <Grid Margin="0,0,10,-2">
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
@@ -604,10 +580,10 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                        <Style x:Key="TabItemGeneralStyle" TargetType="{x:Type TabItem}" BasedOn="{StaticResource TabItemBaseStyle}">
+                        <Style x:Key="TabItemGeneralStyle" TargetType="TabItem" BasedOn="{StaticResource TabItemBaseStyle}">
                             <Setter Property="Template">
                                 <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <ControlTemplate TargetType="TabItem">
                                         <Grid Margin="0,0,10,-2">
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
@@ -751,10 +727,10 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                        <Style x:Key="TabItemStorageStyle" TargetType="{x:Type TabItem}" BasedOn="{StaticResource TabItemBaseStyle}">
+                        <Style x:Key="TabItemStorageStyle" TargetType="TabItem" BasedOn="{StaticResource TabItemBaseStyle}">
                             <Setter Property="Template">
                                 <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <ControlTemplate TargetType="TabItem">
                                         <Grid Margin="0,0,10,-2">
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
@@ -900,6 +876,32 @@
                         </Style>
                     </Grid.Resources>
                     <TabControl SelectedIndex="{Binding LastSelectedSetting}" MinWidth="190" MinHeight="120">
+                        <TabControl.Style>
+                            <Style TargetType="TabControl">
+                                <Setter Property="BorderThickness" Value="0,2,0,0"/>
+                                <Setter Property="BorderBrush" Value="DarkGray"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TabControl">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid Grid.Row="1">
+                                                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                                                        <Border Background="Transparent">
+                                                            <ContentPresenter ContentSource="SelectedContent"/>
+                                                        </Border>
+                                                    </Border>
+                                                </Grid>
+                                                <TabPanel Grid.Row="0" IsItemsHost="true"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </TabControl.Style>
                         <TabItem Style="{StaticResource TabItemStatusStyle}">
                             <Grid VerticalAlignment="Top" Margin="6,10,0,0">
                                 <Grid.ColumnDefinitions>
