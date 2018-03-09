@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="CustomControls.BusyIndicator"
+             x:Name="rootBusyIndicator"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CustomControls">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Viewbox Stretch="Uniform">
         <Grid Background="Transparent">
             <Canvas RenderTransformOrigin="0.5,0.5" Width="120" Height="120">
@@ -28,7 +28,7 @@
                 </Canvas.Style>
                 <Canvas.Resources>
                     <Style TargetType="{x:Type Ellipse}">
-                        <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:BusyIndicator}}, Path=Foreground}"/>
+                        <Setter Property="Fill" Value="{Binding ElementName=rootBusyIndicator, Path=Foreground}"/>
                         <Setter Property="Width" Value="20"/>
                         <Setter Property="Height" Value="20"/>
                         <Setter Property="Stretch" Value="Fill"/>

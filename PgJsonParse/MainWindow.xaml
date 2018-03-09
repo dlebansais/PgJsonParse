@@ -1,4 +1,5 @@
 ﻿<Window x:Class="PgJsonParse.MainWindow"
+        x:Name="rootMainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -2126,7 +2127,7 @@
                                     </ItemsControl.ItemsPanel>
                                 </ItemsControl>
                                 <ToggleButton x:Name="buttonFavor" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" Margin="5,0,5,0" Click="OnFavorButtonClicked">
-                                    <Image Source="{Binding Path=FavorIcon, RelativeSource={RelativeSource AncestorType={x:Type app:MainWindow}}}" Width="12" Height="12"/>
+                                    <Image Source="{Binding Path=FavorIcon, ElementName=rootMainWindow}" Width="12" Height="12"/>
                                 </ToggleButton>
                                 <Popup IsOpen="{Binding ElementName=buttonFavor, Path=IsChecked}" Placement="Bottom" AllowsTransparency="False" Focusable="False" StaysOpen="False" MaxHeight="400" Opened="OnFavorPopupOpened">
                                     <Border BorderBrush="DarkGray" BorderThickness="1">
