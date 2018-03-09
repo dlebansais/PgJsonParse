@@ -1371,7 +1371,7 @@ namespace PgJsonParse
             PopupHandler.OnPopupMouseLeftButtonUp();
         }
 
-        private void OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void OnRequestNavigate(object sender, RoutedEventArgs e)
         {
             Process.Start(ReleasePageAddress);
         }

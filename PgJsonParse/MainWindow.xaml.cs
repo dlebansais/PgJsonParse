@@ -1738,7 +1738,7 @@ namespace PgJsonParse
             OnForward();
         }
 
-        private void OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void OnRequestNavigate(object sender, RoutedEventArgs e)
         {
             Hyperlink hyperlink = e.OriginalSource as Hyperlink;
             if (hyperlink != null && hyperlink.DataContext != null)

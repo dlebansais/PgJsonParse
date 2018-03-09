@@ -6,12 +6,12 @@
         xmlns:app="clr-namespace:PgJsonParse"
         xmlns:conv="clr-namespace:Converters"
         xmlns:ctrl="clr-namespace:CustomControls"
+        Background="Transparent"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent"
         MouseLeftButtonDown="OnMouseLeftButtonDown"
         Closed="OnWindowClosed">
     <Window.Resources>
@@ -977,7 +977,7 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="A new version of the parser is available at"/>
                         <TextBlock Margin="5,0,0,0">
-                            <Hyperlink RequestNavigate="OnRequestNavigate" NavigateUri="unused">
+                            <Hyperlink Click="OnRequestNavigate" NavigateUri="unused">
                                 <TextBlock Text="{Binding ReleasePageAddress}" TextWrapping="NoWrap"/>
                             </Hyperlink>
                         </TextBlock>
