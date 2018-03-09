@@ -123,42 +123,42 @@
             <Visibility>Hidden</Visibility>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="YellowGreen">
-            <SolidColorBrush>#EDDE3F</SolidColorBrush>
-            <SolidColorBrush>#39AA56</SolidColorBrush>
+            <SolidColorBrush Color="#EDDE3F"/>
+            <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="VersionCheckState_Color">
-            <SolidColorBrush>DarkGray</SolidColorBrush>
-            <SolidColorBrush>#EDDE3F</SolidColorBrush>
-            <SolidColorBrush>#DB4545</SolidColorBrush>
-            <SolidColorBrush>#39AA56</SolidColorBrush>
+            <SolidColorBrush Color="DarkGray"/>
+            <SolidColorBrush Color="#EDDE3F"/>
+            <SolidColorBrush Color="#DB4545"/>
+            <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="GlobalDownloadState_Color">
-            <SolidColorBrush>DarkGray</SolidColorBrush>
-            <SolidColorBrush>#EDDE3F</SolidColorBrush>
-            <SolidColorBrush>#DB4545</SolidColorBrush>
-            <SolidColorBrush>DarkGray</SolidColorBrush>
-            <SolidColorBrush>#39AA56</SolidColorBrush>
+            <SolidColorBrush Color="DarkGray"/>
+            <SolidColorBrush Color="#EDDE3F"/>
+            <SolidColorBrush Color="#DB4545"/>
+            <SolidColorBrush Color="DarkGray"/>
+            <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="GlobalDownloadState_VersionColor">
-            <SolidColorBrush>Black</SolidColorBrush>
-            <SolidColorBrush>Black</SolidColorBrush>
-            <SolidColorBrush>Black</SolidColorBrush>
-            <SolidColorBrush>Black</SolidColorBrush>
-            <SolidColorBrush>#39AA56</SolidColorBrush>
+            <SolidColorBrush Color="Black"/>
+            <SolidColorBrush Color="Black"/>
+            <SolidColorBrush Color="Black"/>
+            <SolidColorBrush Color="Black"/>
+            <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="GlobalDownloadState_StartColor">
-            <SolidColorBrush>DarkGray</SolidColorBrush>
-            <SolidColorBrush>DarkGray</SolidColorBrush>
-            <SolidColorBrush>DarkGray</SolidColorBrush>
-            <SolidColorBrush>DarkGray</SolidColorBrush>
-            <SolidColorBrush>#39AA56</SolidColorBrush>
+            <SolidColorBrush Color="DarkGray"/>
+            <SolidColorBrush Color="DarkGray"/>
+            <SolidColorBrush Color="DarkGray"/>
+            <SolidColorBrush Color="DarkGray"/>
+            <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="GlobalDownloadState_ParsingColor">
-            <SolidColorBrush>#EDDE3F</SolidColorBrush>
-            <SolidColorBrush>#EDDE3F</SolidColorBrush>
-            <SolidColorBrush>#EDDE3F</SolidColorBrush>
-            <SolidColorBrush>#EDDE3F</SolidColorBrush>
-            <SolidColorBrush>#39AA56</SolidColorBrush>
+            <SolidColorBrush Color="#EDDE3F"/>
+            <SolidColorBrush Color="#EDDE3F"/>
+            <SolidColorBrush Color="#EDDE3F"/>
+            <SolidColorBrush Color="#EDDE3F"/>
+            <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="FalseTrue">
             <sys:Boolean>False</sys:Boolean>
@@ -566,14 +566,14 @@
                                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
                                                                 <DiscreteObjectKeyFrame KeyTime="0">
                                                                     <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush>Black</SolidColorBrush>
+                                                                        <SolidColorBrush Color="Black"/>
                                                                     </DiscreteObjectKeyFrame.Value>
                                                                 </DiscreteObjectKeyFrame>
                                                             </ObjectAnimationUsingKeyFrames>
                                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
                                                                 <DiscreteObjectKeyFrame KeyTime="0">
                                                                     <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush>Black</SolidColorBrush>
+                                                                        <SolidColorBrush Color="Black"/>
                                                                     </DiscreteObjectKeyFrame.Value>
                                                                 </DiscreteObjectKeyFrame>
                                                             </ObjectAnimationUsingKeyFrames>
@@ -713,14 +713,14 @@
                                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
                                                                 <DiscreteObjectKeyFrame KeyTime="0">
                                                                     <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush>Black</SolidColorBrush>
+                                                                        <SolidColorBrush Color="Black"/>
                                                                     </DiscreteObjectKeyFrame.Value>
                                                                 </DiscreteObjectKeyFrame>
                                                             </ObjectAnimationUsingKeyFrames>
                                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
                                                                 <DiscreteObjectKeyFrame KeyTime="0">
                                                                     <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush>Black</SolidColorBrush>
+                                                                        <SolidColorBrush Color="Black"/>
                                                                     </DiscreteObjectKeyFrame.Value>
                                                                 </DiscreteObjectKeyFrame>
                                                             </ObjectAnimationUsingKeyFrames>
@@ -860,14 +860,14 @@
                                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
                                                                 <DiscreteObjectKeyFrame KeyTime="0">
                                                                     <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush>Black</SolidColorBrush>
+                                                                        <SolidColorBrush Color="Black"/>
                                                                     </DiscreteObjectKeyFrame.Value>
                                                                 </DiscreteObjectKeyFrame>
                                                             </ObjectAnimationUsingKeyFrames>
                                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
                                                                 <DiscreteObjectKeyFrame KeyTime="0">
                                                                     <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush>Black</SolidColorBrush>
+                                                                        <SolidColorBrush Color="Black"/>
                                                                     </DiscreteObjectKeyFrame.Value>
                                                                 </DiscreteObjectKeyFrame>
                                                             </ObjectAnimationUsingKeyFrames>

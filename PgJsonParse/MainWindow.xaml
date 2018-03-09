@@ -75,12 +75,12 @@
             <sys:String>&#x2009;</sys:String>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="ModColorCodes">
-            <SolidColorBrush>White</SolidColorBrush>
-            <SolidColorBrush>Lime</SolidColorBrush>
-            <SolidColorBrush>Cyan</SolidColorBrush>
-            <SolidColorBrush>#E68080</SolidColorBrush>
-            <SolidColorBrush>Magenta</SolidColorBrush>
-            <SolidColorBrush>Yellow</SolidColorBrush>
+            <SolidColorBrush Color="White"/>
+            <SolidColorBrush Color="Lime"/>
+            <SolidColorBrush Color="Cyan"/>
+            <SolidColorBrush Color="#E68080"/>
+            <SolidColorBrush Color="Magenta"/>
+            <SolidColorBrush Color="Yellow"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="FalseTrue">
             <sys:Boolean>False</sys:Boolean>
@@ -128,8 +128,8 @@
             <obj:RecipeItemKey>MinRarity_Exceptional</obj:RecipeItemKey>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="GreenRed">
-            <SolidColorBrush>Green</SolidColorBrush>
-            <SolidColorBrush>Red</SolidColorBrush>
+            <SolidColorBrush Color="Green"/>
+            <SolidColorBrush Color="Red"/>
         </app:CustomCompositeCollection>
         <BitmapImage x:Key="imgRedo" UriSource="pack://application:,,,/Resources/redo.png"/>
         <BitmapImage x:Key="imgUndo" UriSource="pack://application:,,,/Resources/undo.png"/>
@@ -1466,7 +1466,7 @@
                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="Fill" Duration="0">
                                     <DiscreteObjectKeyFrame KeyTime="0">
                                         <DiscreteObjectKeyFrame.Value>
-                                            <SolidColorBrush>DarkGray</SolidColorBrush>
+                                            <SolidColorBrush Color="DarkGray"/>
                                         </DiscreteObjectKeyFrame.Value>
                                     </DiscreteObjectKeyFrame>
                                 </ObjectAnimationUsingKeyFrames>
@@ -1477,7 +1477,7 @@
                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="Fill" Duration="0">
                                     <DiscreteObjectKeyFrame KeyTime="0">
                                         <DiscreteObjectKeyFrame.Value>
-                                            <SolidColorBrush>Black</SolidColorBrush>
+                                            <SolidColorBrush Color="Black"/>
                                         </DiscreteObjectKeyFrame.Value>
                                     </DiscreteObjectKeyFrame>
                                 </ObjectAnimationUsingKeyFrames>
@@ -1488,7 +1488,7 @@
                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Arrow" Storyboard.TargetProperty="Fill" Duration="0">
                                     <DiscreteObjectKeyFrame KeyTime="0">
                                         <DiscreteObjectKeyFrame.Value>
-                                            <SolidColorBrush>DarkGray</SolidColorBrush>
+                                            <SolidColorBrush Color="DarkGray"/>
                                         </DiscreteObjectKeyFrame.Value>
                                     </DiscreteObjectKeyFrame>
                                 </ObjectAnimationUsingKeyFrames>
@@ -1501,7 +1501,7 @@
                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background" Duration="0">
                                     <DiscreteObjectKeyFrame KeyTime="0">
                                         <DiscreteObjectKeyFrame.Value>
-                                            <SolidColorBrush>White</SolidColorBrush>
+                                            <SolidColorBrush Color="White"/>
                                         </DiscreteObjectKeyFrame.Value>
                                     </DiscreteObjectKeyFrame>
                                 </ObjectAnimationUsingKeyFrames>
@@ -1512,7 +1512,7 @@
                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background" Duration="0">
                                     <DiscreteObjectKeyFrame KeyTime="0">
                                         <DiscreteObjectKeyFrame.Value>
-                                            <SolidColorBrush>LightGray</SolidColorBrush>
+                                            <SolidColorBrush Color="LightGray"/>
                                         </DiscreteObjectKeyFrame.Value>
                                     </DiscreteObjectKeyFrame>
                                 </ObjectAnimationUsingKeyFrames>
