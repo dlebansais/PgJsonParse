@@ -424,7 +424,7 @@ namespace PgJsonParse
             if (i >= VersionList.Count)
             {
                 DownloadState IconDownloadState = IsLastIconLoadedForVersion(Version) ? DownloadState.Downloaded : DownloadState.NotDownloaded;
-                GameVersionInfo NewVersion = new GameVersionInfo(Version, DownloadState.NotDownloaded, IconDownloadState);
+                GameVersionInfo NewVersion = new GameVersionInfo(this, Version, DownloadState.NotDownloaded, IconDownloadState);
 
                 for (i = 0; i < VersionList.Count; i++)
                     if (Version > VersionList[i].Version)
@@ -623,7 +623,7 @@ namespace PgJsonParse
                             DownloadState FileDownloadState = Files.Length >= DowloadableCount ? DownloadState.Downloaded : DownloadState.NotDownloaded;
                             DownloadState IconDownloadState = IsLastIconLoadedForVersion(Version) ? DownloadState.Downloaded : DownloadState.NotDownloaded;
 
-                            GameVersionInfo NewVersion = new GameVersionInfo(Version, FileDownloadState, IconDownloadState);
+                            GameVersionInfo NewVersion = new GameVersionInfo(this, Version, FileDownloadState, IconDownloadState);
 
                             int i;
                             for (i = 0; i < VersionList.Count; i++)

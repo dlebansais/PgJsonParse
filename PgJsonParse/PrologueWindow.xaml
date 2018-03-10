@@ -1,5 +1,4 @@
 ﻿<Window x:Class="PgJsonParse.PrologueWindow"
-        x:Name="rootPrologueWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -180,10 +179,10 @@
                 <DockPanel>
                     <Button DockPanel.Dock="Left" Command="{StaticResource DeleteVersionCommand}" CommandParameter="{Binding}" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="0,0,1,0">
                         <Button.Visibility>
-                            <Binding Path="DataContext.ShowDeleteButton" ElementName="rootPrologueWindow" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
+                            <Binding Path="Owner.ShowDeleteButton" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
                         </Button.Visibility>
                         <Button.IsEnabled>
-                            <Binding Path="DataContext.IsGlobalInteractionEnabled" ElementName="rootPrologueWindow"/>
+                            <Binding Path="Owner.IsGlobalInteractionEnabled"/>
                         </Button.IsEnabled>
                         <Button.ContentTemplate>
                             <DataTemplate>
@@ -208,7 +207,7 @@
                             <Grid Width="{StaticResource Column3}" VerticalAlignment="Center">
                                 <Button Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloadable}}" Command="{StaticResource DownloadVersionCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="1,0,20,0">
                                     <Button.IsEnabled>
-                                        <Binding Path="DataContext.IsGlobalInteractionEnabled" ElementName="rootPrologueWindow"/>
+                                        <Binding Path="Owner.IsGlobalInteractionEnabled"/>
                                     </Button.IsEnabled>
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -231,7 +230,7 @@
                                 </DockPanel>
                                 <Button Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}" Command="{StaticResource StartCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_StartColor}}" HorizontalContentAlignment="Left" Height="30" Margin="1,0,20,0">
                                     <Button.IsEnabled>
-                                        <Binding Path="DataContext.IsGlobalInteractionEnabled" ElementName="rootPrologueWindow"/>
+                                        <Binding Path="Owner.IsGlobalInteractionEnabled"/>
                                     </Button.IsEnabled>
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -244,7 +243,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,5,10,5">
                             <StackPanel.Visibility>
-                                <Binding Path="DataContext.IsIconStateUpdated" ElementName="rootPrologueWindow" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource HiddenVisible}" FallbackValue="Hidden"/>
+                                <Binding Path="Owner.IsIconStateUpdated" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource HiddenVisible}" FallbackValue="Hidden"/>
                             </StackPanel.Visibility>
                             <TextBlock TextAlignment="Right" Width="{StaticResource Column1}" VerticalAlignment="Center">Icons:</TextBlock>
                             <Grid Width="{StaticResource Column2}" VerticalAlignment="Center" Margin="5,0,10,0">
@@ -257,7 +256,7 @@
                             <Grid Width="{StaticResource Column3}" VerticalAlignment="Center">
                                 <Button Visibility="{Binding IconDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloadable}}" Command="{StaticResource DownloadIconsCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="1,0,20,0">
                                     <Button.IsEnabled>
-                                        <Binding Path="DataContext.IsGlobalInteractionEnabled" ElementName="rootPrologueWindow"/>
+                                        <Binding Path="Owner.IsGlobalInteractionEnabled"/>
                                     </Button.IsEnabled>
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -289,7 +288,7 @@
                 <DockPanel>
                     <Grid DockPanel.Dock="Left" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}">
                         <Grid.Visibility>
-                            <Binding Path="DataContext.ShowDeleteButton" ElementName="rootPrologueWindow" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
+                            <Binding Path="Owner.ShowDeleteButton" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
                         </Grid.Visibility>
                     </Grid>
                     <StackPanel>
@@ -311,7 +310,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,5,10,5">
                             <StackPanel.Visibility>
-                                <Binding Path="DataContext.IsIconStateUpdated" ElementName="rootPrologueWindow" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource HiddenVisible}" FallbackValue="Hidden"/>
+                                <Binding Path="Owner.IsIconStateUpdated" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource HiddenVisible}" FallbackValue="Hidden"/>
                             </StackPanel.Visibility>
                             <TextBlock TextAlignment="Right" Width="{StaticResource Column1}" VerticalAlignment="Center">Icons:</TextBlock>
                             <Grid Width="{StaticResource Column2}" VerticalAlignment="Center" Margin="5,0,10,0">
@@ -357,12 +356,12 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Grid Width="{StaticResource Column0}">
                                         <Grid.Visibility>
-                                            <Binding Path="DataContext.ShowDeleteButton" ElementName="rootPrologueWindow" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
+                                            <Binding Path="Owner.ShowDeleteButton" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource CollapsedVisible}" FallbackValue="Visible"/>
                                         </Grid.Visibility>
                                     </Grid>
                                     <Grid Width="1">
                                         <Grid.Visibility>
-                                            <Binding Path="DataContext.ShowDeleteButton" ElementName="rootPrologueWindow" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource VisibleCollapsed}" FallbackValue="Collapsed"/>
+                                            <Binding Path="Owner.ShowDeleteButton" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource VisibleCollapsed}" FallbackValue="Collapsed"/>
                                         </Grid.Visibility>
                                     </Grid>
                                     <Grid Width="{StaticResource Column1And2}" VerticalAlignment="Center" Margin="0,0,15,0">

@@ -8,6 +8,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using System.Windows;
 using Tools;
 
 namespace PgJsonParse
@@ -15,16 +16,19 @@ namespace PgJsonParse
     public class GameVersionInfo : INotifyPropertyChanged
     {
         #region Init
-        public GameVersionInfo(int Version, DownloadState FileDownloadState, DownloadState IconDownloadState)
+        public GameVersionInfo(FrameworkElement owner, int version, DownloadState fileDownloadState, DownloadState iconDownloadState)
         {
-            this.Version = Version;
-            _FileDownloadState = FileDownloadState;
-            _IconDownloadState = IconDownloadState;
+            Owner = owner;
+            Version = version;
+            _FileDownloadState = fileDownloadState;
+            _IconDownloadState = iconDownloadState;
         }
         #endregion
 
         #region Properties
+        public FrameworkElement Owner { get; private set; }
         public int Version { get; private set; }
+
         public DownloadState GlobalDownloadState
         {
             get
