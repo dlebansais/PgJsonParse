@@ -109,6 +109,7 @@
     <Compile Include="Sequence.cs" />
     <Compile Include="Tools\ImageConversion.cs" />
     <Compile Include="Tools\PopupHandler.cs" />
+    <Compile Include="Tools\StaticContainer.cs" />
     <Compile Include="Tools\Taskbar\TaskbarProgress.cs" />
     <Compile Include="Tools\Taskbar\TaskbarShortcut.cs" />
     <Compile Include="Tools\Taskbar\TaskbarStates.cs" />

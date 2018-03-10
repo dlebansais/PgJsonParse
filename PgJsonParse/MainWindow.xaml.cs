@@ -63,7 +63,6 @@ namespace PgJsonParse
         public string CurrentVersionCacheFolder { get; set; }
         public string IconFile { get; set; }
         public string FavorIconFile { get; set; }
-        public ImageSource FavorIcon { get; private set; }
 
         public GameVersionInfo LoadedVersion
         {
@@ -138,7 +137,8 @@ namespace PgJsonParse
         private void InitCache()
         {
             ImageConversion.UpdateWindowIconUsingFile(this, IconFile);
-            FavorIcon = ImageConversion.IconFileToImageSource(FavorIconFile);
+            StaticContainer Container = FindResource("imgFavorIcon") as StaticContainer;
+            Container.Item = ImageConversion.IconFileToImageSource(FavorIconFile);
         }
         #endregion
 
