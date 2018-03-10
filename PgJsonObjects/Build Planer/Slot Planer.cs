@@ -3,13 +3,15 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace PgJsonObjects
 {
     public class SlotPlaner : INotifyPropertyChanged
     {
-        public SlotPlaner(ItemSlot Slot, Dictionary<ItemSlot, string> IconFileTable)
+        public SlotPlaner(FrameworkElement owner, ItemSlot Slot, Dictionary<ItemSlot, string> IconFileTable)
         {
+            Owner = owner;
             this.Slot = Slot;
             IconFileName = IconFileTable[Slot];
 
@@ -38,6 +40,7 @@ namespace PgJsonObjects
             _SelectedGearIndex = -1;
         }
 
+        public FrameworkElement Owner { get; private set; }
         public ItemSlot Slot { get; private set; }
         public string SlotName { get { return Slot.ToString(); } }
         public string IconFileName { get; private set; }

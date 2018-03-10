@@ -7,23 +7,17 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Threading;
 using Tools;
 
@@ -37,6 +31,7 @@ namespace PgJsonParse
             InitializeComponent();
             DataContext = this;
 
+            Title = "Project Gorgon - Json Parser";
             InitStartupPage();
             InitCache();
             InitBuildPlaner();
@@ -159,31 +154,31 @@ namespace PgJsonParse
             SelectedSecondSkill = -1;
             SlotPlanerList = new List<SlotPlaner>();
 
-            HeadSlotPlaner = new SlotPlaner(ItemSlot.Head, IconFileTable);
+            HeadSlotPlaner = new SlotPlaner(this, ItemSlot.Head, IconFileTable);
             SlotPlanerList.Add(HeadSlotPlaner);
 
-            ChestSlotPlaner = new SlotPlaner(ItemSlot.Chest, IconFileTable);
+            ChestSlotPlaner = new SlotPlaner(this, ItemSlot.Chest, IconFileTable);
             SlotPlanerList.Add(ChestSlotPlaner);
 
-            LegSlotPlaner = new SlotPlaner(ItemSlot.Legs, IconFileTable);
+            LegSlotPlaner = new SlotPlaner(this, ItemSlot.Legs, IconFileTable);
             SlotPlanerList.Add(LegSlotPlaner);
 
-            HandSlotPlaner = new SlotPlaner(ItemSlot.Hands, IconFileTable);
+            HandSlotPlaner = new SlotPlaner(this, ItemSlot.Hands, IconFileTable);
             SlotPlanerList.Add(HandSlotPlaner);
 
-            FeetSlotPlaner = new SlotPlaner(ItemSlot.Feet, IconFileTable);
+            FeetSlotPlaner = new SlotPlaner(this, ItemSlot.Feet, IconFileTable);
             SlotPlanerList.Add(FeetSlotPlaner);
 
-            RingSlotPlaner = new SlotPlaner(ItemSlot.Ring, IconFileTable);
+            RingSlotPlaner = new SlotPlaner(this, ItemSlot.Ring, IconFileTable);
             SlotPlanerList.Add(RingSlotPlaner);
 
-            NeckSlotPlaner = new SlotPlaner(ItemSlot.Necklace, IconFileTable);
+            NeckSlotPlaner = new SlotPlaner(this, ItemSlot.Necklace, IconFileTable);
             SlotPlanerList.Add(NeckSlotPlaner);
 
-            MainHandSlotPlaner = new SlotPlaner(ItemSlot.MainHand, IconFileTable);
+            MainHandSlotPlaner = new SlotPlaner(this, ItemSlot.MainHand, IconFileTable);
             SlotPlanerList.Add(MainHandSlotPlaner);
 
-            OffHandSlotPlaner = new SlotPlaner(ItemSlot.OffHand, IconFileTable);
+            OffHandSlotPlaner = new SlotPlaner(this, ItemSlot.OffHand, IconFileTable);
             SlotPlanerList.Add(OffHandSlotPlaner);
 
             WeightProfileList = new ObservableCollection<WeightProfile>();
@@ -192,6 +187,8 @@ namespace PgJsonParse
             IgnoreNoAttribute = true;
         }
 
+        public FrameworkElement FirstSkill { get { return comboFirstSkill; } }
+        public FrameworkElement SecondSkill { get { return comboSecondSkill; } }
         public ObservableCollection<PowerSkill> CombatSkillList { get; private set; }
 
         public int MaxLevelFirstSkill
