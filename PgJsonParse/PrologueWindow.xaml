@@ -904,7 +904,7 @@
                         <TabItem Style="{StaticResource TabItemStatusStyle}">
                             <Grid VerticalAlignment="Top" Margin="6,10,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="setting0"/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -922,7 +922,7 @@
                         <TabItem Style="{StaticResource TabItemGeneralStyle}">
                             <Grid VerticalAlignment="Top" Margin="6,10,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="setting0"/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -941,7 +941,7 @@
                         <TabItem Style="{StaticResource TabItemStorageStyle}">
                             <Grid VerticalAlignment="Top" Margin="6,10,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="setting0"/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
