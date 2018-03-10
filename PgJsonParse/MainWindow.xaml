@@ -155,30 +155,50 @@
                     <DataTemplate x:Key="ItemTemplateFirst">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock>Look like</TextBlock>
-                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                            <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                                <TextBlock.Text>
+                                    <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="AppearanceTextMap" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                     <DataTemplate x:Key="ItemTemplate">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock>,</TextBlock>
-                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                            <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                                <TextBlock.Text>
+                                    <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="AppearanceTextMap" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                     <DataTemplate x:Key="ItemTemplateLast">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,0,0,0">or</TextBlock>
-                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                            <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                                <TextBlock.Text>
+                                    <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="AppearanceTextMap" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </Grid.Resources>
                 <StackPanel Visibility="{Binding AppearanceList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisibleCollapsed}, FallbackValue=Collapsed}" Orientation="Horizontal">
                     <TextBlock Text="Look like"/>
-                    <TextBlock Text="{Binding AppearanceList[0], Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                    <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="AppearanceList[0]" Converter="{StaticResource convEnumToText}" ConverterParameter="AppearanceTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
-                <ItemsControl ItemsSource="{Binding AppearanceList, FallbackValue={x:Null}}" Visibility="{Binding AppearanceList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedCollapsedVisible}, FallbackValue=Visible}">
+                <ItemsControl Visibility="{Binding AppearanceList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedCollapsedVisible}, FallbackValue=Visible}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <app:ListMemberSelector Content="{Binding}"/>
+                            <app:ListMemberSelector>
+                                <app:ListMemberSelector.Content>
+                                    <Binding/>
+                                </app:ListMemberSelector.Content>
+                            </app:ListMemberSelector>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemsPanel>
@@ -186,6 +206,9 @@
                             <WrapPanel/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemsSource>
+                        <Binding Path="AppearanceList" FallbackValue="{x:Null}"/>
+                    </ItemsControl.ItemsSource>
                 </ItemsControl>
             </Grid>
         </DataTemplate>
@@ -202,7 +225,11 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Has</TextBlock>
                 <TextBlock Text="{Binding Count}" Margin="5,0,0,0"/>
-                <TextBlock Text="{Binding Keyword, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityKeywordTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
+                <TextBlock Margin="5,0,5,0">
+                    <TextBlock.Text>
+                        <Binding Path="Keyword" Converter="{StaticResource convEnumToText}" ConverterParameter="AbilityKeywordTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
                 <TextBlock>items equipped</TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -212,7 +239,11 @@
         <DataTemplate x:Key="GardenPlantMaxAbilityRequirementTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Maximum summoned</TextBlock>
-                <TextBlock Text="{Binding TypeTag, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityTypeTagTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
+                <TextBlock Margin="5,0,5,0">
+                    <TextBlock.Text>
+                        <Binding Path="TypeTag" Converter="{StaticResource convEnumToText}" ConverterParameter="AbilityTypeTagTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
                 <TextBlock>x</TextBlock>
                 <TextBlock Text="{Binding Max}"/>
             </StackPanel>
@@ -220,7 +251,11 @@
         <DataTemplate x:Key="HasEffectKeywordAbilityRequirementTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Effect</TextBlock>
-                <TextBlock Text="{Binding Keyword, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityKeywordTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
+                <TextBlock Margin="5,0,5,0">
+                    <TextBlock.Text>
+                        <Binding Path="Keyword" Converter="{StaticResource convEnumToText}" ConverterParameter="AbilityKeywordTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
                 <TextBlock>is active</TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -229,7 +264,11 @@
                 <TextBlock>Has inventory space for</TextBlock>
                 <TextBlock TextWrapping="Wrap">
                     <Hyperlink x:Name="hyperlink_HasInventorySpaceForAbilityRequirement_Item" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Item.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                      <Run>
+                        <Run.Text>
+                          <Binding Path="Item.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                        </Run.Text>
+                      </Run>
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
@@ -244,7 +283,11 @@
             <TextBlock Text="{Binding InteractionFlag}"/>
         </DataTemplate>
         <DataTemplate x:Key="InternalAbilityRequirementTemplate">
-            <TextBlock Text="{Binding Keyword, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityItemKeywordTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
+            <TextBlock Margin="5,0,5,0">
+                <TextBlock.Text>
+                    <Binding Path="Keyword" Converter="{StaticResource convEnumToText}" ConverterParameter="AbilityItemKeywordTextMap" FallbackValue="{x:Null}"/>
+                </TextBlock.Text>
+            </TextBlock>
         </DataTemplate>
         <DataTemplate x:Key="IsAdminAbilityRequirementTemplate">
             <TextBlock>Game Admin Only</TextBlock>
@@ -292,12 +335,15 @@
                         </StackPanel>
                     </DataTemplate>
                 </StackPanel.Resources>
-                <ItemsControl ItemsSource="{Binding OrList, FallbackValue={x:Null}}">
+                <ItemsControl>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <app:ListMemberSelector Content="{Binding}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsSource>
+                        <Binding Path="OrList" FallbackValue="{x:Null}"/>
+                    </ItemsControl.ItemsSource>
                 </ItemsControl>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <TextBlock>Error Message:</TextBlock>
@@ -309,7 +355,11 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Max</TextBlock>
                 <TextBlock Text="{Binding MaxCount}" Margin="5,0,5,0"/>
-                <TextBlock Text="{Binding PetTypeTag, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeKeywordTextMap, FallbackValue={x:Null}}"/>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding Path="PetTypeTag" Converter="{StaticResource convEnumToText}" ConverterParameter="RecipeKeywordTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="RaceAbilityRequirementTemplate">
@@ -318,27 +368,43 @@
                     <DataTemplate x:Key="ItemTemplateFirst">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock>Be</TextBlock>
-                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                            <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                                <TextBlock.Text>
+                                    <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="RaceTextMap" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                     <DataTemplate x:Key="ItemTemplate">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock>,</TextBlock>
-                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                            <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                                <TextBlock.Text>
+                                    <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="RaceTextMap" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                     <DataTemplate x:Key="ItemTemplateLast">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,0,0,0">or</TextBlock>
-                            <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RaceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                            <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                                <TextBlock.Text>
+                                    <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="RaceTextMap" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </Grid.Resources>
                 <StackPanel Visibility="{Binding AllowedRaceList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisibleCollapsed}, FallbackValue=Collapsed}" Orientation="Horizontal">
                     <TextBlock Text="Be"/>
-                    <TextBlock Text="{Binding AllowedRaceList[0], Converter={StaticResource convEnumToText}, ConverterParameter=AppearanceTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                    <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="AllowedRaceList[0]" Converter="{StaticResource convEnumToText}" ConverterParameter="AppearanceTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
-                <ItemsControl ItemsSource="{Binding AllowedRaceList, FallbackValue={x:Null}}" Visibility="{Binding AppearanceList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedCollapsedVisible}, FallbackValue=Visible}">
+                <ItemsControl Visibility="{Binding AppearanceList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedCollapsedVisible}, FallbackValue=Visible}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <app:ListMemberSelector Content="{Binding}"/>
@@ -349,6 +415,9 @@
                             <WrapPanel/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemsSource>
+                        <Binding Path="AllowedRaceList" FallbackValue="{x:Null}"/>
+                    </ItemsControl.ItemsSource>
                 </ItemsControl>
             </Grid>
         </DataTemplate>
@@ -357,7 +426,11 @@
                 <TextBlock>Knows recipe</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
                     <Hyperlink x:Name="hyperlink_RecipeKnownAbilityRequirement_RecipeKnown" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding RecipeKnown.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="RecipeKnown.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
@@ -365,7 +438,11 @@
         <DataTemplate x:Key="RecipeCostTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Price}"/>
-                <TextBlock Text="{Binding Currency, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeCurrencyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                <TextBlock Margin="5,0,0,0">
+                    <TextBlock.Text>
+                        <Binding Path="Currency" Converter="{StaticResource convEnumToText}" ConverterParameter="RecipeCurrencyTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="ConsumedItemDirectTemplate">
@@ -373,7 +450,11 @@
                 <TextBlock Text="{Binding Count}" Visibility="{Binding RawCount, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="0,0,5,0"/>
                 <TextBlock TextWrapping="Wrap">
                     <Hyperlink x:Name="hyperlink_ConsumedItemDirect_Link" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Link.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="Link.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
                 <StackPanel Orientation="Horizontal" Visibility="{Binding RawConsumedChance, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
@@ -391,7 +472,11 @@
         <DataTemplate x:Key="ConsumedItemByKeywordTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Count}" Visibility="{Binding RawCount, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="0,0,5,0"/>
-                <TextBlock Text="{Binding Keyword, Converter={StaticResource convEnumToText}, ConverterParameter=ConsumedItemsTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                <TextBlock Margin="5,0,0,0">
+                    <TextBlock.Text>
+                        <Binding Path="Keyword" Converter="{StaticResource convEnumToText}" ConverterParameter="ConsumedItemsTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
                 <StackPanel Orientation="Horizontal" Visibility="{Binding RawConsumedChance, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
                     <TextBlock>(</TextBlock>
                     <TextBlock Text="{Binding ConsumedChance}"/>
@@ -431,7 +516,11 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Description}"/>
                 <TextBlock Margin="5,0,0,0">(</TextBlock>
-                <TextBlock Text="{Binding Target, Converter={StaticResource convEnumToText},ConverterParameter=QuestObjectiveKillTargetTextMap, FallbackValue={x:Null}}"/>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding Path="Target" Converter="{StaticResource convEnumToText}" ConverterParameter="QuestObjectiveKillTargetTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
                 <StackPanel Visibility="{Binding AbilityKeyword, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
                     <TextBlock>, using</TextBlock>
                     <TextBlock Text="{Binding AbilityKeyword}" Margin="5,0,0,0"/>
@@ -440,7 +529,11 @@
                 <TextBlock Text="{Binding Number}"/>
                 <StackPanel Visibility="{Binding HasEffectRequirement, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
                     <TextBlock>, under effect</TextBlock>
-                    <TextBlock Text="{Binding EffectRequirement, Converter={StaticResource convEnumToText},ConverterParameter=EffectKeywordTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                    <TextBlock Margin="5,0,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="EffectRequirement" Converter="{StaticResource convEnumToText}" ConverterParameter="EffectKeywordTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
                 <TextBlock>)</TextBlock>
             </StackPanel>
@@ -493,7 +586,11 @@
                 <TextBlock>(</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="0,0,5,0">
                     <Hyperlink x:Name="hyperlink_QuestObjectiveDeliver_DeliverNpc" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding DeliverNpc.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="DeliverNpc.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>in</TextBlock>
@@ -501,7 +598,11 @@
                 <TextBlock>)</TextBlock>
                 <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Margin="10,0,0,0">
                     <Hyperlink x:Name="hyperlink_QuestObjectiveDeliver_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding QuestItem.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="QuestItem.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
@@ -518,22 +619,33 @@
                         <TextBlock VerticalAlignment="Center">(</TextBlock>
                         <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">
                             <Hyperlink x:Name="hyperlink_QuestObjectiveItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
-                                <Run Text="{Binding QuestItem.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                <Run>
+                                    <Run.Text>
+                                        <Binding Path="QuestItem.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                    </Run.Text>
+                                </Run>
                             </Hyperlink>
                         </TextBlock>
                         <TextBlock VerticalAlignment="Center">)</TextBlock>
                     </StackPanel>
                     <Expander Header="{Binding Target, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap}" Visibility="{Binding TargetItemList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Top" Margin="10,0,0,0">
-                        <ItemsControl ItemsSource="{Binding TargetItemList, FallbackValue={x:Null}}">
+                        <ItemsControl>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock TextWrapping="Wrap">
                                         <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                            <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                            <Run>
+                                                <Run.Text>
+                                                    <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                </Run.Text>
+                                            </Run>
                                         </Hyperlink>
                                     </TextBlock>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsSource>
+                                <Binding Path="TargetItemList" FallbackValue="{x:Null}"/>
+                            </ItemsControl.ItemsSource>
                         </ItemsControl>
                     </Expander>
                     <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
@@ -555,7 +667,11 @@
                     <TextBlock>(</TextBlock>
                     <TextBlock TextWrapping="Wrap">
                         <Hyperlink x:Name="hyperlink_QuestObjectiveGuildGiveItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
-                            <Run Text="{Binding QuestItem.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                            <Run>
+                                <Run.Text>
+                                    <Binding Path="QuestItem.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                </Run.Text>
+                            </Run>
                         </Hyperlink>
                     </TextBlock>
                     <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
@@ -565,7 +681,11 @@
                     <TextBlock Margin="5,0,5,0">to</TextBlock>
                     <TextBlock TextWrapping="Wrap">
                         <Hyperlink x:Name="hyperlink_QuestObjectiveGuildGiveItem_DeliverNpc" Click="OnRequestNavigate" NavigateUri="unused">
-                            <Run Text="{Binding DeliverNpc.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                            <Run>
+                                <Run.Text>
+                                    <Binding Path="DeliverNpc.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                </Run.Text>
+                            </Run>
                         </Hyperlink>
                     </TextBlock>
                     <TextBlock>)</TextBlock>
@@ -604,32 +724,46 @@
                             <TextBlock>(Using</TextBlock>
                             <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
                                 <Hyperlink x:Name="hyperlink_QuestObjectiveUseRecipe_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                    <Run Text="{Binding ConnectedSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                    <Run>
+                                        <Run.Text>
+                                            <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                        </Run.Text>
+                                    </Run>
                                 </Hyperlink>
                             </TextBlock>
                             <TextBlock>)</TextBlock>
                         </StackPanel>
                     </StackPanel>
                     <Expander Header="{Binding RecipeTarget, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeKeywordTextMap}" Visibility="{Binding RecipeTargetList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Top" Margin="10,0,0,0">
-                        <ItemsControl ItemsSource="{Binding RecipeTargetList,FallbackValue={x:Null}}">
+                        <ItemsControl>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock TextWrapping="Wrap">
                                         <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                            <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                            <Run>
+                                                <Run.Text>
+                                                    <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                </Run.Text>
+                                            </Run>
                                         </Hyperlink>
                                     </TextBlock>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsSource>
+                                <Binding Path="RecipeTargetList" FallbackValue="{x:Null}"/>
+                            </ItemsControl.ItemsSource>
                         </ItemsControl>
                     </Expander>
                     <Expander Header="{Binding ResultItemKeyword, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap}" Visibility="{Binding ResultItemList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Top" Margin="10,0,0,0">
-                        <ItemsControl ItemsSource="{Binding ResultItemList, FallbackValue={x:Null}}">
+                        <ItemsControl>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <app:TypeToTemplateNameSelector Content="{Binding}"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsSource>
+                                <Binding Path="ResultItemList" FallbackValue="{x:Null}"/>
+                            </ItemsControl.ItemsSource>
                         </ItemsControl>
                     </Expander>
                     <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
@@ -652,16 +786,23 @@
                         <TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="0,0,5,0"/>
                     </StackPanel>
                     <Expander Header="{Binding AbilityTarget, Converter={StaticResource convEnumToText}, ConverterParameter=AbilityKeywordTextMap}" Visibility="{Binding AbilityTargetList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Top" Margin="10,0,0,0">
-                        <ItemsControl ItemsSource="{Binding AbilityTargetList,FallbackValue={x:Null}}">
+                        <ItemsControl>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock TextWrapping="Wrap">
                                         <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                            <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                            <Run>
+                                                <Run.Text>
+                                                    <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                </Run.Text>
+                                            </Run>
                                         </Hyperlink>
                                     </TextBlock>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsSource>
+                                <Binding Path="AbilityTargetList" FallbackValue="{x:Null}"/>
+                            </ItemsControl.ItemsSource>
                         </ItemsControl>
                     </Expander>
                     <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
@@ -686,7 +827,11 @@
                             <TextBlock>(Creatures of</TextBlock>
                             <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
                                 <Hyperlink x:Name="hyperlink_QuestObjectiveAnatomy_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                    <Run Text="{Binding ConnectedSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                    <Run>
+                                        <Run.Text>
+                                            <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                        </Run.Text>
+                                    </Run>
                                 </Hyperlink>
                             </TextBlock>
                             <TextBlock>)</TextBlock>
@@ -720,21 +865,32 @@
                         <Expander Width="0" VerticalAlignment="Center"/>
                         <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">
                             <Hyperlink x:Name="hyperlink_QuestObjectiveItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
-                                <Run Text="{Binding QuestItem.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                <Run>
+                                    <Run.Text>
+                                        <Binding Path="QuestItem.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                    </Run.Text>
+                                </Run>
                             </Hyperlink>
                         </TextBlock>
                     </StackPanel>
                     <Expander Header="{Binding ItemTarget, Converter={StaticResource convEnumToText}, ConverterParameter=ItemKeywordTextMap}" Visibility="{Binding ItemList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Top">
-                        <ItemsControl ItemsSource="{Binding ItemList, FallbackValue={x:Null}}">
+                        <ItemsControl>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock TextWrapping="Wrap">
                                         <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                            <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                            <Run>
+                                                <Run.Text>
+                                                    <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                </Run.Text>
+                                            </Run>
                                         </Hyperlink>
                                     </TextBlock>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsSource>
+                                <Binding Path="ItemList" FallbackValue="{x:Null}"/>
+                            </ItemsControl.ItemsSource>
                         </ItemsControl>
                     </Expander>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding HasMonsterTypeTag, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" VerticalAlignment="Top" Margin="5,0,0,0">
@@ -756,7 +912,11 @@
                 <TextBlock>(</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="0,0,5,0">
                     <Hyperlink x:Name="hyperlink_QuestObjectiveScriptedReceiveItem_DeliverNpc" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding DeliverNpc.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="DeliverNpc.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>in</TextBlock>
@@ -764,7 +924,11 @@
                 <TextBlock>) to receive</TextBlock>
                 <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,0,0,0">
                     <Hyperlink x:Name="hyperlink_QuestObjectiveScriptedReceiveItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding QuestItem.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="QuestItem.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
@@ -776,21 +940,33 @@
                     <StackPanel Visibility="{Binding Item, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
                         <TextBlock TextWrapping="Wrap">
                         <Hyperlink x:Name="hyperlink_RecipeItem_Item" Click="OnRequestNavigate" NavigateUri="unused">
-                            <Run Text="{Binding Item.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                            <Run>
+                                <Run.Text>
+                                    <Binding Path="Item.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                </Run.Text>
+                            </Run>
                         </Hyperlink>
                     </TextBlock>
                         <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock>x</TextBlock>
-                            <TextBlock Text="{Binding StackSize, FallbackValue={x:Null}}"/>
+                            <TextBlock Text="{Binding StackSize}"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding RawChanceToConsume, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock>(</TextBlock>
-                            <TextBlock Text="{Binding ChanceToConsume, Converter={StaticResource convDouble}, ConverterParameter=%, FallbackValue={x:Null}}" Margin="0,0,5,0"/>
+                            <TextBlock Margin="0,0,5,0">
+                                <TextBlock.Text>
+                                    <Binding Path="ChanceToConsume" Converter="{StaticResource convDouble}" ConverterParameter="%" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                             <TextBlock>chance item will be consumed)</TextBlock>
                         </StackPanel>
                         <StackPanel Visibility="{Binding RawDurabilityConsumed, Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock>(</TextBlock>
-                            <TextBlock Text="{Binding DurabilityConsumed, Converter={StaticResource convDouble}, ConverterParameter=%, FallbackValue={x:Null}}" Margin="0,0,5,0"/>
+                            <TextBlock Margin="0,0,5,0">
+                                <TextBlock.Text>
+                                    <Binding Path="DurabilityConsumed" Converter="{StaticResource convDouble}" ConverterParameter="%" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                             <TextBlock>durability consumed)</TextBlock>
                         </StackPanel>
                     </StackPanel>
@@ -800,14 +976,22 @@
                                 <Binding Path="ItemKeyList" Converter="{StaticResource convchainIsEnumInSetVisibility}" ConverterParameter="{StaticResource RecipeItemKey_EquipmentSlot}" FallbackValue="Collapsed"/>
                             </StackPanel.Visibility>
                             <TextBlock>Any</TextBlock>
-                            <TextBlock Text="{Binding ItemKeyList, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                            <TextBlock Margin="5,0,0,0">
+                                <TextBlock.Text>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convEnumToText}" ConverterParameter="RecipeItemKeyTextMap" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Visibility>
                                 <Binding Path="ItemKeyList" Converter="{StaticResource convchainIsEnumInSetVisibility}" ConverterParameter="{StaticResource RecipeItemKey_Rarity}" FallbackValue="Collapsed"/>
                             </StackPanel.Visibility>
                             <TextBlock>Any</TextBlock>
-                            <TextBlock Text="{Binding ItemKeyList, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
+                            <TextBlock Margin="5,0,5,0">
+                                <TextBlock.Text>
+                                    <Binding Path="ItemKeyList" Converter="{StaticResource convEnumToText}" ConverterParameter="RecipeItemKeyTextMap" FallbackValue="{x:Null}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
                             <TextBlock>item</TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
@@ -831,7 +1015,11 @@
                                     <Binding Path="MatchingKeyItemList.Count" Converter="{StaticResource convchainIntThresholdVisibility}" ConverterParameter="10" FallbackValue="False"/>
                                 </StackPanel.Visibility>
                                 <TextBlock>Any</TextBlock>
-                                <TextBlock Text="{Binding ItemKeyList, Converter={StaticResource convEnumToText}, ConverterParameter=RecipeItemKeyTextMap, FallbackValue={x:Null}}" Margin="5,0,0,0"/>
+                                <TextBlock Margin="5,0,0,0">
+                                    <TextBlock.Text>
+                                        <Binding Path="ItemKeyList" Converter="{StaticResource convEnumToText}" ConverterParameter="RecipeItemKeyTextMap" FallbackValue="{x:Null}"/>
+                                    </TextBlock.Text>
+                                </TextBlock>
                             </StackPanel>
                             <Grid>
                                 <Grid.Visibility>
@@ -843,7 +1031,11 @@
                                             <TextBlock Margin="0,0,5,0">One of</TextBlock>
                                             <TextBlock TextWrapping="Wrap">
                                             <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                <Run>
+                                                    <Run.Text>
+                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                    </Run.Text>
+                                                </Run>
                                             </Hyperlink>
                                         </TextBlock>
                                             <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -853,7 +1045,11 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock TextWrapping="Wrap">
                                             <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                <Run>
+                                                    <Run.Text>
+                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                    </Run.Text>
+                                                </Run>
                                             </Hyperlink>
                                         </TextBlock>
                                             <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -863,13 +1059,17 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock TextWrapping="Wrap">
                                                 <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                    <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                    <Run>
+                                                        <Run.Text>
+                                                            <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                        </Run.Text>
+                                                    </Run>
                                                 </Hyperlink>
                                             </TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
                                 </Grid.Resources>
-                                <ItemsControl ItemsSource="{Binding MatchingKeyItemList, FallbackValue={x:Null}}">
+                                <ItemsControl>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <app:ListMemberSelector Content="{Binding}"/>
@@ -880,6 +1080,9 @@
                                             <WrapPanel/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemsSource>
+                                        <Binding Path="MatchingKeyItemList" FallbackValue="{x:Null}"/>
+                                    </ItemsControl.ItemsSource>
                                 </ItemsControl>
                             </Grid>
                         </Grid>
@@ -892,7 +1095,11 @@
                 <TextBlock>Obtained with the</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="5,0,5,0">
                     <Hyperlink x:Name="hyperlink_EffectSource_Effect" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Effect.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="Effect.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>effect</TextBlock>
@@ -903,10 +1110,14 @@
                 <TextBlock>Gift from</TextBlock>
                 <TextBlock Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}" TextWrapping="Wrap" Margin="5,0,0,0">
                     <Hyperlink x:Name="hyperlink_GiftSource_Npc" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Npc.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="Npc.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
-                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" Margin="5,0,0,0"/>
+                <TextBlock Text="{Binding NpcName}" Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" Margin="5,0,0,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="HangOutSourceTemplate">
@@ -914,10 +1125,14 @@
                 <TextBlock>Hangout from</TextBlock>
                 <TextBlock Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}" TextWrapping="Wrap" Margin="5,0,0,0">
                     <Hyperlink x:Name="hyperlink_HangOutSource_Npc" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Npc.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="Npc.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
-                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" Margin="5,0,0,0"/>
+                <TextBlock Text="{Binding NpcName}" Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" Margin="5,0,0,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="ItemSourceTemplate">
@@ -925,7 +1140,11 @@
                 <TextBlock>Obtained using</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
                     <Hyperlink x:Name="hyperlink_ItemSource_Item" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Item.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="Item.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
@@ -938,7 +1157,11 @@
                 <TextBlock>Complete the</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="5,0,5,0">
                     <Hyperlink x:Name="hyperlink_QuestSource_Quest" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Quest.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="Quest.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>quest</TextBlock>
@@ -949,7 +1172,11 @@
                 <TextBlock>Use the</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="5,0,5,0">
                     <Hyperlink x:Name="hyperlink_RecipeEffectSource_Recipe" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Recipe.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="Recipe.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>recipe</TextBlock>
@@ -960,7 +1187,11 @@
                 <TextBlock>Learned while progressing in</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
                     <Hyperlink x:Name="hyperlink_SkillupSource_Skill" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Skill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="Skill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
@@ -970,10 +1201,14 @@
                 <TextBlock>Training from</TextBlock>
                 <TextBlock Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource CollapsedVisible},FallbackValue=Collapsed}" TextWrapping="Wrap" Margin="5,0,0,0">
                     <Hyperlink x:Name="hyperlink_TrainingSource_Npc" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding Npc.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="Npc.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
-                <TextBlock Text="{Binding NpcName, FallbackValue={x:Null}}" Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" Margin="5,0,0,0"/>
+                <TextBlock Text="{Binding NpcName}" Visibility="{Binding Npc,Converter={StaticResource convNullToObject},ConverterParameter={StaticResource VisibleCollapsed},FallbackValue=Visible}" Margin="5,0,0,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="AbilityServerInfoEffectTemplate">
@@ -988,7 +1223,11 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
-                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <TextBlock TextWrapping="Wrap">
+                        <TextBlock.Text>
+                            <Binding Path="Type" Converter="{StaticResource convEnumToText}" ConverterParameter="ServerInfoEffectTypeTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
                         <TextBlock>(</TextBlock>
                         <TextBlock Text="{Binding Level}"/>
@@ -998,7 +1237,11 @@
                 <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Learn Ability:</TextBlock>
                 <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Margin="5,10,0,0">
                     <Hyperlink x:Name="hyperlink_ServerInfo_BestowAbility" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding BestowAbility.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="BestowAbility.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
             </Grid>
@@ -1014,7 +1257,11 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
-                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <TextBlock TextWrapping="Wrap">
+                        <TextBlock.Text>
+                            <Binding Path="Type" Converter="{StaticResource convEnumToText}" ConverterParameter="ServerInfoEffectTypeTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
                         <TextBlock>(</TextBlock>
                         <TextBlock Text="{Binding Level}"/>
@@ -1039,7 +1286,11 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
-                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <TextBlock TextWrapping="Wrap">
+                        <TextBlock.Text>
+                            <Binding Path="Type" Converter="{StaticResource convEnumToText}" ConverterParameter="ServerInfoEffectTypeTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
                         <TextBlock>(</TextBlock>
                         <TextBlock Text="{Binding Level}"/>
@@ -1066,7 +1317,11 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
-                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <TextBlock TextWrapping="Wrap">
+                        <TextBlock.Text>
+                            <Binding Path="Type" Converter="{StaticResource convEnumToText}" ConverterParameter="ServerInfoEffectTypeTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
                         <TextBlock>(</TextBlock>
                         <TextBlock Text="{Binding Level}"/>
@@ -1090,7 +1345,11 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
-                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <TextBlock TextWrapping="Wrap">
+                        <TextBlock.Text>
+                            <Binding Path="Type" Converter="{StaticResource convEnumToText}" ConverterParameter="ServerInfoEffectTypeTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
                         <TextBlock>(</TextBlock>
                         <TextBlock Text="{Binding Level}"/>
@@ -1111,7 +1370,11 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
-                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <TextBlock TextWrapping="Wrap">
+                        <TextBlock.Text>
+                            <Binding Path="Type" Converter="{StaticResource convEnumToText}" ConverterParameter="ServerInfoEffectTypeTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
                         <TextBlock>(</TextBlock>
                         <TextBlock Text="{Binding Level}"/>
@@ -1122,7 +1385,11 @@
                 <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="5,10,0,0">
                     <TextBlock TextWrapping="Wrap">
                         <Hyperlink x:Name="hyperlink_SkillAndLevelServerInfoEffect_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                            <Run Text="{Binding ConnectedSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                            <Run>
+                                <Run.Text>
+                                    <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                </Run.Text>
+                            </Run>
                         </Hyperlink>
                     </TextBlock>
                     <TextBlock Margin="5,0,0,0">(</TextBlock>
@@ -1143,7 +1410,11 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Effect:</TextBlock>
                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="5,0,0,0">
-                    <TextBlock Text="{Binding Type, Converter={StaticResource convEnumToText}, ConverterParameter=ServerInfoEffectTypeTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                    <TextBlock TextWrapping="Wrap">
+                        <TextBlock.Text>
+                            <Binding Path="Type" Converter="{StaticResource convEnumToText}" ConverterParameter="ServerInfoEffectTypeTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RawLevel, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0">
                         <TextBlock>(</TextBlock>
                         <TextBlock Text="{Binding Level}"/>
@@ -1165,7 +1436,11 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock TextWrapping="Wrap">
                                     <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -1175,7 +1450,11 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock TextWrapping="Wrap">
                                     <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                             </StackPanel>
@@ -1187,7 +1466,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" TextAlignment="Right" Margin="0,0,0,0">Give Item(s):</TextBlock>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5,0,0,0">
-                        <ItemsControl ItemsSource="{Binding GiveItemList, FallbackValue={x:Null}}">
+                        <ItemsControl>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <app:ListMemberSelector Content="{Binding}"/>
@@ -1198,6 +1477,9 @@
                                     <WrapPanel/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemsSource>
+                                <Binding Path="GiveItemList" FallbackValue="{x:Null}"/>
+                            </ItemsControl.ItemsSource>
                         </ItemsControl>
                         <StackPanel Visibility="{Binding RawNumItemsToGive, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                             <TextBlock>(x</TextBlock>
@@ -1215,7 +1497,11 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" TextAlignment="Right">Required Hotspot:</TextBlock>
-                    <TextBlock Grid.Column="1" Text="{Binding RequiredHotspot, Converter={StaticResource convEnumToText}, ConverterParameter=ItemRequiredHotspotTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="1" TextWrapping="Wrap" Margin="5,0,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="RequiredHotspot" Converter="{StaticResource convEnumToText}" ConverterParameter="ItemRequiredHotspotTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.Visibility>
@@ -1249,7 +1535,10 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="ItemBehaviorTemplate">
-            <Expander Header="{Binding UseVerb, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseVerbTextMap, FallbackValue={x:Null}}">
+            <Expander>
+                <Expander.Header>
+                    <Binding Path="UseVerb" Converter="{StaticResource convEnumToText}" ConverterParameter="ItemUseVerbTextMap" FallbackValue="{x:Null}"/>
+                </Expander.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>
@@ -1264,9 +1553,17 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,10,0,0">Use Delay Animation:</TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding UseDelayAnimation, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="UseDelayAnimation" Converter="{StaticResource convEnumToText}" ConverterParameter="ItemUseAnimationTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Use Animation:</TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding UseAnimation, Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseAnimationTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="UseAnimation" Converter="{StaticResource convEnumToText}" ConverterParameter="ItemUseAnimationTextMap" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Use Requirements:</TextBlock>
                     <Grid Grid.Column="1" Grid.Row="2" Margin="5,10,0,0">
                         <Grid.Resources>
@@ -1280,7 +1577,7 @@
                                 <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=ItemUseRequirementTextMap}"/>
                             </DataTemplate>
                         </Grid.Resources>
-                        <ItemsControl ItemsSource="{Binding UseRequirementList, FallbackValue={x:Null}}">
+                        <ItemsControl ItemsSource="{Binding UseRequirementList}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <app:ListMemberSelector Content="{Binding}"/>
@@ -1294,9 +1591,17 @@
                         </ItemsControl>
                     </Grid>
                     <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Metabolism Cost:</TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding RawMetabolismCost, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="RawMetabolismCost" Converter="{StaticResource convNullableInt}" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Use Delay:</TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RawUseDelay, Converter={StaticResource convDouble}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="RawUseDelay" Converter="{StaticResource convDouble}" FallbackValue="{x:Null}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <ContentControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Content="{Binding ServerInfo}" ContentTemplate="{StaticResource ServerInfoTemplate}" Margin="0,10,0,0"/>
                 </Grid>
             </Expander>
@@ -1329,12 +1634,15 @@
                         </StackPanel>
                     </DataTemplate>
                 </Grid.Resources>
-                <ItemsControl ItemsSource="{Binding OrList, FallbackValue={x:Null}}">
+                <ItemsControl>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <app:ListMemberSelector Content="{Binding}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsSource>
+                        <Binding Path="OrList" FallbackValue="{x:Null}"/>
+                    </ItemsControl.ItemsSource>
                 </ItemsControl>
             </Grid>
         </DataTemplate>
@@ -1345,7 +1653,11 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap">
                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                <Run>
+                                    <Run.Text>
+                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                    </Run.Text>
+                                </Run>
                             </Hyperlink>
                         </TextBlock>
                             <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -1355,13 +1667,17 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap">
                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                <Run>
+                                    <Run.Text>
+                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                    </Run.Text>
+                                </Run>
                             </Hyperlink>
                         </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </Grid.Resources>
-                <ItemsControl ItemsSource="{Binding QuestList, FallbackValue={x:Null}}">
+                <ItemsControl>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <app:ListMemberSelector Content="{Binding}"/>
@@ -1372,6 +1688,9 @@
                             <WrapPanel/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemsSource>
+                        <Binding Path="QuestList" FallbackValue="{x:Null}"/>
+                    </ItemsControl.ItemsSource>
                 </ItemsControl>
             </Grid>
         </DataTemplate>
@@ -1382,7 +1701,11 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap">
                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                <Run>
+                                    <Run.Text>
+                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                    </Run.Text>
+                                </Run>
                             </Hyperlink>
                         </TextBlock>
                             <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -1392,13 +1715,17 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap">
                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                <Run>
+                                    <Run.Text>
+                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                    </Run.Text>
+                                </Run>
                             </Hyperlink>
                         </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </Grid.Resources>
-                <ItemsControl ItemsSource="{Binding QuestList, FallbackValue={x:Null}}">
+                <ItemsControl>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <app:ListMemberSelector Content="{Binding}"/>
@@ -1409,13 +1736,20 @@
                             <WrapPanel/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemsSource>
+                        <Binding Path="QuestList" FallbackValue="{x:Null}"/>
+                    </ItemsControl.ItemsSource>
                 </ItemsControl>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="HasEffectKeywordQuestRequirementTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Effect</TextBlock>
-                <TextBlock Text="{Binding Keyword, Converter={StaticResource convEnumToText}, ConverterParameter=EffectKeywordTextMap, FallbackValue={x:Null}}" Margin="5,0,5,0"/>
+                <TextBlock Margin="5,0,5,0">
+                    <TextBlock.Text>
+                        <Binding Path="Keyword" Converter="{StaticResource convEnumToText}" ConverterParameter="EffectKeywordTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
                 <TextBlock>is active</TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -1425,22 +1759,38 @@
         <DataTemplate x:Key="MinFavorLevelQuestRequirementTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="0,0,5,0">At least</TextBlock>
-                <TextBlock Text="{Binding FavorLevel, Converter={StaticResource convEnumToText}, ConverterParameter=FavorTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                <TextBlock TextWrapping="Wrap">
+                    <TextBlock.Text>
+                        <Binding Path="FavorLevel" Converter="{StaticResource convEnumToText}" ConverterParameter="FavorTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
                 <TextBlock Margin="5,0,5,0">with</TextBlock>
                 <TextBlock TextWrapping="Wrap">
                     <Hyperlink x:Name="hyperlink_MinFavorLevelQuestRequirement_FavorNpc" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding FavorNpc.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="FavorNpc.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock Margin="5,0,5,0">in</TextBlock>
-                <TextBlock Text="{Binding FavorNpcArea, Converter={StaticResource convEnumToText}, ConverterParameter=MapAreaNameTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
+                <TextBlock TextWrapping="Wrap">
+                    <TextBlock.Text>
+                        <Binding Path="FavorNpcArea" Converter="{StaticResource convEnumToText}" ConverterParameter="MapAreaNameTextMap" FallbackValue="{x:Null}"/>
+                    </TextBlock.Text>
+                </TextBlock>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="MinSkillLevelQuestRequirementTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock TextWrapping="Wrap">
                     <Hyperlink x:Name="hyperlink_MinSkillLevelQuestRequirement_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                        <Run Text="{Binding ConnectedSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                        <Run>
+                            <Run.Text>
+                                <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                            </Run.Text>
+                        </Run>
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock Margin="5,0,5,0">at level</TextBlock>
@@ -1677,7 +2027,11 @@
                                             </Grid.RowDefinitions>
                                             <StackPanel Grid.Row="0" Visibility="{Binding SelectedIndex, ElementName=comboFirstSkill, Converter={StaticResource convIndexToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontWeight="Bold" Text="{Binding SelectedItem, ElementName=comboFirstSkill, Converter={StaticResource convFriendlyName}}"/>
+                                                    <TextBlock FontWeight="Bold">
+                                                        <TextBlock.Text>
+                                                            <Binding Path="SelectedItem" ElementName="comboFirstSkill" Converter="{StaticResource convFriendlyName}" FallbackValue="{x:Null}"/>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
                                                     <TextBlock FontWeight="Bold" Margin="5,0,0,0">mods</TextBlock>
                                                 </StackPanel>
                                                 <ListBox ItemsSource="{Binding AvailablePowerList1}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0"/>
@@ -1952,7 +2306,11 @@
                                 <TextBlock Grid.Column="0" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">Ability Group:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="18" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Ability_AbilityGroup" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding AbilityGroup.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="AbilityGroup.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Keywords:</TextBlock>
@@ -1990,7 +2348,11 @@
                                 <TextBlock Grid.Column="2" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Prerequisite:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Ability_Prerequisite" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding Prerequisite.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="Prerequisite.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Projectile:</TextBlock>
@@ -2000,13 +2362,21 @@
                                 <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Shares Reset Timer With:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="7" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Ability_SharesResetTimerWith" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding SharesResetTimerWith.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="SharesResetTimerWith.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="8" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Ability_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding ConnectedSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Special Info:</TextBlock>
@@ -2020,7 +2390,11 @@
                                 <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Upgrade of:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="13" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Ability_UpgradeOf" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding UpgradeOf.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="UpgradeOf.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Works In Combat:</TextBlock>
@@ -2030,7 +2404,7 @@
                                 <TextBlock Grid.Column="2" Grid.Row="16" TextAlignment="Right" Margin="0,10,0,0">Works While Falling:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="16" Text="{Binding RawWorksWhileFalling, Converter={StaticResource convNullableBooleanToObject}, ConverterParameter={StaticResource NoYesNull}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Source:</TextBlock>
-                                <ItemsControl Grid.Column="3" Grid.Row="17" ItemsSource="{Binding SourceList, FallbackValue={x:Null}}" Margin="5,10,0,0">
+                                <ItemsControl Grid.Column="3" Grid.Row="17" ItemsSource="{Binding SourceList}" Margin="5,10,0,0">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <app:TypeToTemplateNameSelector Content="{Binding}"/>
@@ -2141,7 +2515,11 @@
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0" TextWrapping="NoWrap">
                                                         <Hyperlink x:Name="hyperlink_Gift_Item" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding Item.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="Item.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </TextBlock>
                                                         <TextBlock Grid.Column="1" Text="{Binding Value, FallbackValue={x:Null}}" Foreground="{Binding IsHated, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRed}, FallbackValue=Black}"/>
@@ -2184,7 +2562,11 @@
                                     <TextBlock>(Required Skill:</TextBlock>
                                     <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
                                         <Hyperlink x:Name="hyperlink_Skill_SkillRequirement" Click="OnRequestNavigate" NavigateUri="unused">
-                                            <Run Text="{Binding SkillRequirement.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                            <Run>
+                                                <Run.Text>
+                                                    <Binding Path="SkillRequirement.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                </Run.Text>
+                                            </Run>
                                         </Hyperlink>
                                     </TextBlock>
                                     <TextBlock>)</TextBlock>
@@ -2467,7 +2849,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                         <Hyperlink x:Name="hyperlink_Item_Value" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding Value.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="Value.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </TextBlock>
                                                 <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -2477,13 +2863,17 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                         <Hyperlink x:Name="hyperlink_Item_Value" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding Value.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="Value.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </TextBlock>
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding BestowRecipeTable, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding BestowRecipeTable}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -2499,13 +2889,21 @@
                                 <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Bestow Ability:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Item_BestowAbility" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding BestowAbility.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="BestowAbility.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Bestow Quest:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Item_BestowQuest" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding BestowQuest.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="BestowQuest.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Allow Prefix:</TextBlock>
@@ -2543,7 +2941,7 @@
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding EffectDescriptionList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding EffectDescriptionList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -2567,7 +2965,7 @@
                                     <Expander Width="0" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <ScrollViewer Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="13" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" VerticalAlignment="Top" Margin="5,10,0,0">
-                                    <ItemsControl ItemsSource="{Binding BehaviorList, FallbackValue={x:Null}}" ItemTemplate="{StaticResource ItemBehaviorTemplate}">
+                                    <ItemsControl ItemsSource="{Binding BehaviorList}" ItemTemplate="{StaticResource ItemBehaviorTemplate}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Horizontal"/>
@@ -2578,7 +2976,11 @@
                                 <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,10,0,0">Associated Quest:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="0" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Item_MacGuffinQuestName" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding MacGuffinQuestName.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="MacGuffinQuestName.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,0,0,0">Max Carryable:</TextBlock>
@@ -2596,7 +2998,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                     <Hyperlink x:Name="hyperlink_Item_Link" Click="OnRequestNavigate" NavigateUri="unused">
-                                                        <Run Text="{Binding Link.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                        <Run>
+                                                            <Run.Text>
+                                                                <Binding Path="Link.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                            </Run.Text>
+                                                        </Run>
                                                     </Hyperlink>
                                                 </TextBlock>
                                                 <StackPanel Visibility="{Binding HasLevel, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
@@ -2611,7 +3017,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                     <Hyperlink x:Name="hyperlink_Item_Link" Click="OnRequestNavigate" NavigateUri="unused">
-                                                        <Run Text="{Binding Link.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                        <Run>
+                                                            <Run.Text>
+                                                                <Binding Path="Link.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                            </Run.Text>
+                                                        </Run>
                                                     </Hyperlink>
                                                 </TextBlock>
                                                 <StackPanel Visibility="{Binding HasLevel, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
@@ -2622,7 +3032,7 @@
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding SkillRequirementList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding SkillRequirementList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -2681,7 +3091,7 @@
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding KeywordTable, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding KeywordTable}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -2699,7 +3109,11 @@
                                 <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Bestow Lore Book:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="13" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Item_ConnectedLoreBook" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding ConnectedLoreBook.Title, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="ConnectedLoreBook.Title" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                             </Grid>
@@ -2771,7 +3185,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                         <Hyperlink x:Name="hyperlink_QuestRewardXp_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding ConnectedSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </TextBlock>
                                                 <TextBlock Margin="5,0,0,0">(</TextBlock>
@@ -2783,7 +3201,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                         <Hyperlink x:Name="hyperlink_QuestRewardXp_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding ConnectedSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                 </TextBlock>
                                                 <TextBlock Margin="5,0,0,0">(</TextBlock>
@@ -2792,7 +3214,7 @@
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding RewardsXPList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding RewardsXPList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -2812,7 +3234,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                         <Hyperlink x:Name="hyperlink_QuestRewardItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding QuestItem.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="QuestItem.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </TextBlock>
                                                 <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
@@ -2826,7 +3252,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                         <Hyperlink x:Name="hyperlink_QuestRewardItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding QuestItem.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="QuestItem.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </TextBlock>
                                                 <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
@@ -2836,7 +3266,7 @@
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding QuestRewardsItemList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding QuestRewardsItemList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -2856,7 +3286,11 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock TextWrapping="Wrap">
                                             <Hyperlink x:Name="hyperlink_Quest_FavorNpc" Click="OnRequestNavigate" NavigateUri="unused">
-                                                <Run Text="{Binding FavorNpc.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                <Run>
+                                                    <Run.Text>
+                                                        <Binding Path="FavorNpc.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                    </Run.Text>
+                                                </Run>
                                             </Hyperlink>
                                         </TextBlock>
                                         <TextBlock Margin="5,0,5,0">in</TextBlock>
@@ -2881,7 +3315,11 @@
                                 <TextBlock Grid.Column="0" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Ability Reward:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="13" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Quest_RewardAbility" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding RewardAbility.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="RewardAbility.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Follow Up Quests:</TextBlock>
@@ -2891,7 +3329,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                     <Hyperlink x:Name="hyperlink_Quest_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                        <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                        <Run>
+                                                            <Run.Text>
+                                                                <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                            </Run.Text>
+                                                        </Run>
                                                     </Hyperlink>
                                                 </TextBlock>
                                                 <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -2901,13 +3343,17 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                     <Hyperlink x:Name="hyperlink_Quest_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                        <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                        <Run>
+                                                            <Run.Text>
+                                                                <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                            </Run.Text>
+                                                        </Run>
                                                     </Hyperlink>
                                                 </TextBlock>
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding FollowUpQuestList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding FollowUpQuestList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -2925,7 +3371,11 @@
                                 <TextBlock Grid.Column="0" Grid.Row="16" TextAlignment="Right" Margin="0,10,0,0">Work Order Skill:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="16" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Quest_ConnectedWorkOrderSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding ConnectedWorkOrderSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="ConnectedWorkOrderSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Displayed Location:</TextBlock>
@@ -2938,14 +3388,22 @@
                                     <TextBlock Margin="5,0,5,0">XP in</TextBlock>
                                     <TextBlock TextWrapping="Wrap">
                                         <Hyperlink x:Name="hyperlink_Quest_ConnectedRewardSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                            <Run Text="{Binding ConnectedRewardSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                            <Run>
+                                                <Run.Text>
+                                                    <Binding Path="ConnectedRewardSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                </Run.Text>
+                                            </Run>
                                         </Hyperlink>
                                     </TextBlock>
                                 </StackPanel>
                                 <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Recipe Reward:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="2" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Quest_RewardRecipe" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding RewardRecipe.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="RewardRecipe.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Guild XP Reward:</TextBlock>
@@ -2959,7 +3417,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                         <Hyperlink x:Name="hyperlink_QuestRewardItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding QuestItem.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="QuestItem.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </TextBlock>
                                                 <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
@@ -2973,7 +3435,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                         <Hyperlink x:Name="hyperlink_QuestRewardItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding QuestItem.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="QuestItem.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </TextBlock>
                                                 <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
@@ -2983,7 +3449,7 @@
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding PreGiveItemList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding PreGiveItemList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -3007,7 +3473,11 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                     <Hyperlink x:Name="hyperlink_Recipe_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                        <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                        <Run>
+                                                            <Run.Text>
+                                                                <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                            </Run.Text>
+                                                        </Run>
                                                     </Hyperlink>
                                                 </TextBlock>
                                                 <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -3017,13 +3487,17 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextWrapping="Wrap">
                                                     <Hyperlink x:Name="hyperlink_Recipe_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                        <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                        <Run>
+                                                            <Run.Text>
+                                                                <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                            </Run.Text>
+                                                        </Run>
                                                     </Hyperlink>
                                                 </TextBlock>
                                             </StackPanel>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding PreGiveRecipeList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding PreGiveRecipeList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -3049,7 +3523,7 @@
                                             <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=QuestKeywordTextMap}"/>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding KeywordList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding KeywordList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -3065,7 +3539,11 @@
                                 <TextBlock Grid.Column="2" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Effect Reward:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="11" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Quest_RewardEffect" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding RewardEffect.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="RewardEffect.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="12" TextAlignment="Right" Margin="0,10,0,0">Is Auto Preface:</TextBlock>
@@ -3081,7 +3559,11 @@
                                 <TextBlock Grid.Column="2" Grid.Row="17" TextAlignment="Right" Margin="0,10,0,0">Lore Book Reward:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="17" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Quest_RewardLoreBook" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding RewardLoreBook.Title, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="RewardLoreBook.Title" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                             </Grid>
@@ -3170,7 +3652,11 @@
                                 <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding ConnectedSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Required Level:</TextBlock>
@@ -3186,7 +3672,11 @@
                                 <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Sort Skill:</TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Recipe_ConnectedSortSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding ConnectedSortSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Keywords:</TextBlock>
@@ -3202,7 +3692,7 @@
                                             <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=RecipeKeywordTextMap}"/>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding KeywordList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding KeywordList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -3253,7 +3743,11 @@
                                 <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Reward Skill:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="7" TextWrapping="Wrap" Margin="5,10,0,0">
                                     <Hyperlink x:Name="hyperlink_Recipe_ConnectedRewardSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run Text="{Binding ConnectedRewardSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <Binding Path="ConnectedRewardSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                            </Run.Text>
+                                        </Run>
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">XP Reward:</TextBlock>
@@ -3261,7 +3755,7 @@
                                 <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">First Time XP Reward:</TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="9" Text="{Binding RawRewardSkillXpFirstTime, Converter={StaticResource convNullableInt}, FallbackValue={x:Null}}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Column="2" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Source:</TextBlock>
-                                <ItemsControl Grid.Column="3" Grid.Row="10" ItemsSource="{Binding SourceList, FallbackValue={x:Null}}" Margin="5,10,0,0">
+                                <ItemsControl Grid.Column="3" Grid.Row="10" ItemsSource="{Binding SourceList}" Margin="5,10,0,0">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <app:TypeToTemplateNameSelector Content="{Binding}"/>
@@ -3394,7 +3888,7 @@
                                                 <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap}"/>
                                             </DataTemplate>
                                         </Grid.Resources>
-                                        <ItemsControl ItemsSource="{Binding CompatibleCombatSkillList, FallbackValue={x:Null}}">
+                                        <ItemsControl ItemsSource="{Binding CompatibleCombatSkillList}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <app:ListMemberSelector Content="{Binding}"/>
@@ -3412,7 +3906,11 @@
                                     <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Parent Skill:</TextBlock>
                                     <TextBlock Grid.Column="1" Grid.Row="7" TextWrapping="Wrap" Margin="5,10,0,0">
                                         <Hyperlink x:Name="hyperlink_Recipe_ConnectedParentSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                            <Run Text="{Binding ConnectedParentSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                            <Run>
+                                                <Run.Text>
+                                                    <Binding Path="ConnectedParentSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                </Run.Text>
+                                            </Run>
                                         </Hyperlink>
                                     </TextBlock>
                                     <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Skip Bonus Levels If Skill Unlearned:</TextBlock>
@@ -3430,7 +3928,11 @@
                                                         <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
                                                         <Run>, ability: </Run>
                                                         <Hyperlink x:Name="hyperlink_SkillRewardAbility_Ability" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding Ability.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="Ability.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </Span>
                                                 </TextBlock>
@@ -3471,7 +3973,11 @@
                                                         <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
                                                         <Run>, +1 in </Run>
                                                         <Hyperlink x:Name="hyperlink_SkillRewardBonusLevel_Skill" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding Skill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="Skill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </Span>
                                                 </TextBlock>
@@ -3548,7 +4054,11 @@
                                                         <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
                                                         <Run>, recipe: </Run>
                                                         <Hyperlink x:Name="hyperlink_SkillRewardRecipe_Recipe" Click="OnRequestNavigate" NavigateUri="unused">
-                                                            <Run Text="{Binding Recipe.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <Binding Path="Recipe.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                </Run.Text>
+                                                            </Run>
                                                         </Hyperlink>
                                                     </Span>
                                                 </TextBlock>
@@ -3588,7 +4098,11 @@
                                                     <Run Text="{Binding RewardLevel, Mode=OneWay}"/>
                                                     <Run>, unlock </Run>
                                                     <Hyperlink x:Name="hyperlink_SkillRewardBonusLevel_Skill" Click="OnRequestNavigate" NavigateUri="unused">
-                                                        <Run Text="{Binding Skill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                        <Run>
+                                                            <Run.Text>
+                                                                <Binding Path="Skill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                            </Run.Text>
+                                                        </Run>
                                                     </Hyperlink>
                                                     <Run> level </Run>
                                                     <Run Text="{Binding Level, Mode=OneWay}"/>
@@ -3667,7 +4181,7 @@
                                                 <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=ItemSlotTextMap, FallbackValue={x:Null}}"/>
                                             </DataTemplate>
                                         </Grid.Resources>
-                                        <ItemsControl ItemsSource="{Binding SlotList, FallbackValue={x:Null}}">
+                                        <ItemsControl ItemsSource="{Binding SlotList}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <app:ListMemberSelector Content="{Binding}"/>
@@ -3685,7 +4199,11 @@
                                         <TextBlock Visibility="{Binding ConnectedSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" Text="{Binding Skill, Converter={StaticResource convEnumToText}, ConverterParameter=PowerSkillTextMap, FallbackValue={x:Null}}" TextWrapping="Wrap"/>
                                         <TextBlock Visibility="{Binding ConnectedSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
                                             <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                                <Run Text="{Binding ConnectedSkill.Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                <Run>
+                                                    <Run.Text>
+                                                        <Binding Path="ConnectedSkill.Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                    </Run.Text>
+                                                </Run>
                                             </Hyperlink>
                                         </TextBlock>
                                     </Grid>
@@ -3749,7 +4267,7 @@
                                             <TextBlock Text="{Binding Converter={StaticResource convEnumToText}, ConverterParameter=LoreBookKeywordTextMap, FallbackValue={x:Null}}"/>
                                         </DataTemplate>
                                     </Grid.Resources>
-                                    <ItemsControl ItemsSource="{Binding KeywordList, FallbackValue={x:Null}}">
+                                    <ItemsControl ItemsSource="{Binding KeywordList}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <app:ListMemberSelector Content="{Binding}"/>
@@ -3895,7 +4413,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Ability_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -3905,7 +4427,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Ability_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>
@@ -3937,7 +4463,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_DirectedGoal_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Label, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Label" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -3947,7 +4477,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_DirectedGoal_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Label, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Label" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>
@@ -3979,7 +4513,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_GameNpc_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -3989,7 +4527,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_GameNpc_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>
@@ -4021,7 +4563,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_StorageVault_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding NpcFriendlyName, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="NpcFriendlyName" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -4031,7 +4577,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_StorageVault_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding NpcFriendlyName, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="NpcFriendlyName" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>
@@ -4063,7 +4613,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Effect_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -4073,7 +4627,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Effect_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>
@@ -4105,7 +4663,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -4115,7 +4677,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Item_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>
@@ -4147,7 +4713,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -4157,7 +4727,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Quest_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>
@@ -4189,7 +4763,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Recipe_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -4199,7 +4777,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Recipe_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>
@@ -4231,7 +4813,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Skill_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -4241,7 +4827,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Skill_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding Name, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="Name" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>
@@ -4273,7 +4863,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Power_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding ComposedName, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="ComposedName" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <TextBlock Margin="0,0,5,0">,</TextBlock>
@@ -4283,7 +4877,11 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock TextWrapping="Wrap">
                                                             <Hyperlink x:Name="hyperlink_Power_hyperlink" Click="OnRequestNavigate" NavigateUri="unused">
-                                                                <Run Text="{Binding ComposedName, Mode=OneWay, FallbackValue={x:Null}}"/>
+                                                                <Run>
+                                                                    <Run.Text>
+                                                                        <Binding Path="ComposedName" Mode="OneWay" FallbackValue="{x:Null}"/>
+                                                                    </Run.Text>
+                                                                </Run>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                     </StackPanel>

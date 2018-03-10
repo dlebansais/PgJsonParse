@@ -978,7 +978,7 @@
                         <TextBlock Text="A new version of the parser is available at"/>
                         <TextBlock Margin="5,0,0,0">
                             <Hyperlink Click="OnRequestNavigate" NavigateUri="unused">
-                                <TextBlock Text="{Binding ReleasePageAddress}" TextWrapping="NoWrap"/>
+                                <Run Text="{Binding ReleasePageAddress, Mode=OneWay}"/>
                             </Hyperlink>
                         </TextBlock>
                     </StackPanel>
