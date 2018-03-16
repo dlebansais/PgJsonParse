@@ -206,9 +206,14 @@ namespace PgJsonObjects
                         if (RawRequirement.ContainsKey("InteractionFlag"))
                         {
                             JValue InteractionFlag = RawRequirement["InteractionFlag"] as JValue;
-                            if (InteractionFlag != null && InteractionFlag.Type == JTokenType.String && InteractionFlag.Value as string == "Ivyn_Gave_Passcode")
+                            if (InteractionFlag != null && InteractionFlag.Type == JTokenType.String)
                             {
-                                InteractionFlagRequirement = "Ivyn Gave Passcode";
+                                if (InteractionFlag.Value as string == "Ivyn_Gave_Passcode")
+                                    InteractionFlagRequirement = "Ivyn Gave Passcode";
+                                else if (InteractionFlag.Value as string == "Serbule2_TapestryInnChest")
+                                    InteractionFlagRequirement = "Serbule Hills Tapestry Inn Chest";
+                                else
+                                    ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
                             }
                             else
                                 ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");

@@ -423,16 +423,7 @@ namespace PgJsonParse
 
             if (i >= VersionList.Count)
             {
-                DownloadState IconDownloadState = IsLastIconLoadedForVersion(Version) ? DownloadState.Downloaded : DownloadState.NotDownloaded;
-                GameVersionInfo NewVersion = new GameVersionInfo(this, Version, DownloadState.NotDownloaded, IconDownloadState);
-
-                for (i = 0; i < VersionList.Count; i++)
-                    if (Version > VersionList[i].Version)
-                        break;
-
-                VersionList.Insert(i, NewVersion);
-                if (CachedVersionIndex < 0)
-                    CachedVersionIndex = i;
+                GameVersionInfo NewVersion = AddCheckedVersion(Version);
 
                 if (CheckNewParserOnStartup)
                 {
@@ -473,15 +464,43 @@ namespace PgJsonParse
             IsGlobalInteractionEnabled = true;
         }
 
+        private GameVersionInfo AddCheckedVersion(int Version)
+        {
+            DownloadState IconDownloadState = IsLastIconLoadedForVersion(Version) ? DownloadState.Downloaded : DownloadState.NotDownloaded;
+            GameVersionInfo NewVersion = new GameVersionInfo(this, Version, DownloadState.NotDownloaded, IconDownloadState);
+
+            int i;
+            for (i = 0; i < VersionList.Count; i++)
+                if (Version > VersionList[i].Version)
+                    break;
+
+            VersionList.Insert(i, NewVersion);
+            if (CachedVersionIndex < 0)
+                CachedVersionIndex = i;
+
+            return NewVersion;
+        }
+
         private void OnSelectVersion()
         {
             IsGlobalInteractionEnabled = false;
 
-            for (int i = 0; i < VersionList.Count; i++)
+            int i;
+            for (i = 0; i < VersionList.Count; i++)
             {
                 GameVersionInfo VersionInfo = VersionList[i];
                 if (VersionInfo.Version.ToString() == LatestVersion)
+                {
                     CachedVersionIndex = i;
+                    break;
+                }
+            }
+
+            if (i >= VersionList.Count)
+            {
+                int LatestVersionInt;
+                if (int.TryParse(LatestVersion, out LatestVersionInt))
+                    AddCheckedVersion(LatestVersionInt);
             }
 
             IsGlobalInteractionEnabled = true;
@@ -617,7 +636,7 @@ namespace PgJsonParse
 
                             int DowloadableCount = 0;
                             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-                                if (Entry.Value.MinVersion >= Version)
+                                if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion >= Version)
                                     DowloadableCount++;
 
                             DownloadState FileDownloadState = Files.Length >= DowloadableCount ? DownloadState.Downloaded : DownloadState.NotDownloaded;

@@ -1,4 +1,6 @@
 ﻿#if USE_HTTPREQUEST
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -19,9 +21,40 @@ namespace Tools
             {
                 using (Stream ResponseStream = Response.GetResponseStream())
                 {
-                    using (StreamReader Reader = new StreamReader(ResponseStream, Encoding.ASCII))
+                    Encoding Encoding = Encoding.ASCII;
+                    string[] ContentTypeSplit = Response.ContentType.ToLower().Split(';');
+                    foreach (string s in ContentTypeSplit)
                     {
-                        return Reader.ReadToEnd();
+                        string Chunk = s.Trim();
+                        if (Chunk.StartsWith("charset"))
+                        {
+                            string[] ChunkSplit = Chunk.Split('=');
+                            if (ChunkSplit.Length == 2)
+                                if (ChunkSplit[0] == "charset")
+                                    if (ChunkSplit[1] == "utf8" || ChunkSplit[1] == "utf-8")
+                                    {
+                                        Encoding = Encoding.UTF8;
+                                        break;
+                                    }
+                        }
+                    }
+
+                    using (StreamReader Reader = new StreamReader(ResponseStream, Encoding))
+                    {
+                        string Content = Reader.ReadToEnd();
+
+                        try
+                        {
+                            bool IsReadToEnd = Reader.EndOfStream;
+                            if (IsReadToEnd)
+                                return Content;
+
+                            return null;
+                        }
+                        catch
+                        {
+                            throw;
+                        }
                     }
                 }
             }
@@ -37,6 +70,9 @@ namespace Tools
             HttpWebRequest Request = WebRequest.Create(address) as HttpWebRequest;
             using (WebResponse Response = Request.GetResponse())
             {
+                if (Response.ContentLength < minLength)
+                    return false;
+
                 using (Stream ResponseStream = Response.GetResponseStream())
                 {
                     using (BinaryReader Reader = new BinaryReader(ResponseStream))
@@ -47,9 +83,12 @@ namespace Tools
 
                         using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
-                            ResponseStream.CopyTo(fs);
-                            if (fs.Length < minLength)
+                            byte[] Content = Reader.ReadBytes((int)Response.ContentLength);
+
+                            if (Content.Length < Response.ContentLength)
                                 return false;
+
+                            fs.Write(Content, 0, Content.Length);
                         }
                     }
                 }
