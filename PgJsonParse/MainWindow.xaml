@@ -38,14 +38,6 @@
             <conv:BooleanInvertedConverter/>
             <conv:BooleanToVisibilityConverter/>
         </conv:ValueConverterGroup>
-        <app:CustomCompositeCollection x:Key="VisibleHidden">
-            <Visibility>Visible</Visibility>
-            <Visibility>Hidden</Visibility>
-        </app:CustomCompositeCollection>
-        <app:CustomCompositeCollection x:Key="HiddenVisible">
-            <Visibility>Hidden</Visibility>
-            <Visibility>Visible</Visibility>
-        </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
@@ -311,7 +303,7 @@
                 <StackPanel.Resources>
                     <DataTemplate x:Key="ItemTemplateFirst">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Visibility="Hidden">or</TextBlock>
+                            <TextBlock Height="0">or</TextBlock>
                             <ContentControl Content="{Binding}" Margin="5,0,0,0">
                                 <ContentControl.ContentTemplate>
                                     <DataTemplate>
@@ -1610,7 +1602,7 @@
                 <Grid.Resources>
                     <DataTemplate x:Key="ItemTemplateFirst">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Visibility="Hidden">or</TextBlock>
+                            <TextBlock Height="0">or</TextBlock>
                             <ContentControl Content="{Binding}" Margin="5,0,0,0">
                                 <ContentControl.ContentTemplate>
                                     <DataTemplate>
@@ -1920,8 +1912,8 @@
                                     <ComboBox Grid.Column="3" Grid.Row="0" x:Name="comboSecondSkill" DockPanel.Dock="Left" SelectedIndex="{Binding SelectedSecondSkill}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
                                     <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="10,10,0,0">Max Level:</TextBlock>
                                     <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding MaxLevelSecondSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="5,10,0,0"/>
-                                    <Button Grid.Row="0" Width="1" Visibility="Hidden"/>
-                                    <CheckBox Grid.Row="1" Width="1" Visibility="Hidden"/>
+                                    <Button Grid.Row="0" Width="0"/>
+                                    <CheckBox Grid.Row="1" Width="0"/>
                                 </Grid>
                             </Border>
                             <TextBlock Background="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,0,0,0" Padding="2,0,2,0">Skill Selection</TextBlock>
@@ -1942,7 +1934,7 @@
                                         <CheckBox IsChecked="{Binding IgnoreUnobtainable}" Checked="OnIgnoreUnobtainableCheckChanged" Unchecked="OnIgnoreUnobtainableCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore unobtainable</CheckBox>
                                         <CheckBox IsChecked="{Binding IgnoreNoAttribute}" Checked="OnIgnoreNoAttributeCheckChanged" Unchecked="OnIgnoreNoAttributeCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore items with no match</CheckBox>
                                     </StackPanel>
-                                    <TextBox Grid.Row="1" Width="1" Visibility="Hidden"/>
+                                    <TextBox Grid.Row="1" Width="0"/>
                                 </Grid>
                             </Border>
                             <TextBlock Background="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,0,0,0" Padding="2,0,2,0">Gear Selection</TextBlock>
@@ -1999,21 +1991,21 @@
                                                 <TabItem Header="Generic">
                                                     <Grid>
                                                         <ListBox ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox Visibility="Hidden" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox Visibility="Hidden" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                                     </Grid>
                                                 </TabItem>
                                                 <TabItem Header="Endurance">
                                                     <Grid>
-                                                        <ListBox Visibility="Hidden" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                                         <ListBox ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox Visibility="Hidden" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                                     </Grid>
                                                 </TabItem>
                                                 <TabItem Header="Shamanic Infusion">
                                                     <Grid>
-                                                        <ListBox Visibility="Hidden" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox Visibility="Hidden" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                                         <ListBox ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                                     </Grid>
                                                 </TabItem>
