@@ -240,7 +240,7 @@ namespace PgJsonObjects
             if (ItemEffect.TryParse(RawEffectDesc, out ItemEffect))
             {
                 EffectDescriptionList.Add(ItemEffect);
-                return false;
+                return true;
             }
             else
             {
