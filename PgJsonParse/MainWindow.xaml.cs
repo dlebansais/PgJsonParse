@@ -378,7 +378,8 @@ namespace PgJsonParse
                         {
                             foreach (PgJsonObjects.Attribute Attribute in AttributeList)
                             {
-                                sw.WriteLine(Attribute.Label + " " + "=" + " " + "0");
+                                string Line = Attribute.Label + " " + "=" + " " + "0" + PgJsonObjects.Tools.NewLine;
+                                sw.Write(Line);
                             }
                         }
                     }
@@ -400,7 +401,10 @@ namespace PgJsonParse
                             foreach (PgJsonObjects.Attribute Attribute in AttributeList)
                             {
                                 if (Attribute.Key == "MAX_ARMOR")
-                                    sw.WriteLine(Attribute.Label + " " + "=" + " " + "1.0");
+                                {
+                                    string Line = Attribute.Label + " " + "=" + " " + "1.0" + PgJsonObjects.Tools.NewLine;
+                                    sw.Write(Line);
+                                }
                             }
                         }
                     }
@@ -719,19 +723,22 @@ namespace PgJsonParse
             if (SelectedFirstSkill >= 0)
             {
                 string FirstSkillName = CombatSkillList[SelectedFirstSkill].ToString();
-                sw.WriteLine("FirstSkill" + "=" + FirstSkillName + " (" + MaxLevelFirstSkill + ")");
+                string Line = "FirstSkill" + "=" + FirstSkillName + " (" + MaxLevelFirstSkill + ")" + PgJsonObjects.Tools.NewLine;
+                sw.Write(Line);
             }
 
             if (SelectedSecondSkill >= 0)
             {
                 string SecondSkillName = CombatSkillList[SelectedSecondSkill].ToString();
-                sw.WriteLine("SecondSkill" + "=" + SecondSkillName + " (" + MaxLevelSecondSkill + ")");
+                string Line = "SecondSkill" + "=" + SecondSkillName + " (" + MaxLevelSecondSkill + ")" + PgJsonObjects.Tools.NewLine;
+                sw.Write(Line);
             }
 
             if (WeightProfileIndex >= 0)
             {
                 string WeightProfileName = WeightProfileList[WeightProfileIndex].Name;
-                sw.WriteLine("GearProfile" + "=" + WeightProfileName);
+                string Line = "GearProfile" + "=" + WeightProfileName + PgJsonObjects.Tools.NewLine;
+                sw.Write(Line);
             }
 
             foreach (SlotPlaner Planer in SlotPlanerList)
@@ -742,48 +749,48 @@ namespace PgJsonParse
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-
-                    sw.WriteLine(SlotName + "=" + Key);
+                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
+                    sw.Write(Line);
                 }
 
                 foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList2)
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-
-                    sw.WriteLine(SlotName + "=" + Key);
+                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
+                    sw.Write(Line);
                 }
 
                 foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList3)
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-
-                    sw.WriteLine(SlotName + "=" + Key);
+                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
+                    sw.Write(Line);
                 }
 
                 foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList4)
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-
-                    sw.WriteLine(SlotName + "=" + Key);
+                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
+                    sw.Write(Line);
                 }
 
                 foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList5)
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-
-                    sw.WriteLine(SlotName + "=" + Key);
+                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
+                    sw.Write(Line);
                 }
 
                 if (Planer.SelectedGearIndex >= 0 && Planer.SelectedGearIndex < Planer.SortedGearList.Count)
                 {
                     Item PlanerItem = Planer.SortedGearList[Planer.SelectedGearIndex];
                     string Key = PlanerItem.Key;
-
-                    sw.WriteLine(SlotName + "=" + Key);
+                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
+                    sw.Write(Line);
                 }
             }
         }

@@ -209,7 +209,10 @@ namespace PgJsonObjects
                             {
                                 string Content = Entry.Value.TextContent;
                                 if (Content.Length > 0)
-                                    sw.WriteLine(Content + JsonGenerator.ObjectSeparator + Entry.Key);
+                                {
+                                    string Line = Content + JsonGenerator.ObjectSeparator + Entry.Key + Tools.NewLine;
+                                    sw.Write(Line);
+                                }
                             }
                             catch
                             {

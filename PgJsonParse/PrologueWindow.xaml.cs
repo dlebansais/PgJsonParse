@@ -1106,7 +1106,10 @@ namespace PgJsonParse
                     using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
                     {
                         foreach (string MushroomName in MushroomNameList)
-                            sw.WriteLine(MushroomName);
+                        {
+                            string Line = MushroomName + PgJsonObjects.Tools.NewLine;
+                            sw.Write(Line);
+                        }
                     }
                 }
             }
