@@ -428,12 +428,11 @@ namespace PgJsonParse
                     {
                         using (StreamReader sr = new StreamReader(fs, Encoding.ASCII))
                         {
-                            for (;;)
-                            {
-                                string Line = sr.ReadLine();
-                                if (Line == null)
-                                    break;
+                            string Content = sr.ReadToEnd();
+                            string[] Lines = Content.Split(new string[] { PgJsonObjects.Tools.NewLine }, StringSplitOptions.None);
 
+                            foreach (string Line in Lines)
+                            {
                                 if (Line.Length == 0)
                                     continue;
 
@@ -528,13 +527,12 @@ namespace PgJsonParse
 
         private void LoadBuild(StreamReader Reader)
         {
-            while (!Reader.EndOfStream)
-            {
-                string Line = Reader.ReadLine();
-                if (Line == null)
-                    break;
+            string Content = Reader.ReadToEnd();
+            string[] Lines = Content.Split(new string[] { PgJsonObjects.Tools.NewLine }, StringSplitOptions.None);
 
-                Line = Line.Trim();
+            foreach (string s in Lines)
+            {
+                string Line = s.Trim();
 
                 if (Line.Length > 0 && Line[0] == ';')
                     continue;
