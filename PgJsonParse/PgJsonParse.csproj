@@ -59,6 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\ApplicationCommand.cs" />
     <Compile Include="Commands\ExecutedEventArgs.cs" />
+    <Compile Include="Controls\BoldHeaderTabControl.cs" />
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
     </Compile>

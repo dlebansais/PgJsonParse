@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PgJsonParse
@@ -16,6 +17,12 @@ namespace PgJsonParse
         public static void SubscribeToGuiCommand(string resourceName, EventHandler handler)
         {
             ApplicationCommand Command = Application.Current.Resources[resourceName] as ApplicationCommand;
+            Command.Subscribe(handler);
+        }
+
+        public static void SubscribeToControlCommand(Control control, string resourceName, EventHandler handler)
+        {
+            ApplicationCommand Command = control.Resources[resourceName] as ApplicationCommand;
             Command.Subscribe(handler);
         }
 

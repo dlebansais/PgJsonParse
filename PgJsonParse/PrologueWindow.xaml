@@ -23,6 +23,10 @@
         <sys:Double x:Key="AllColumns">400</sys:Double>
         <sys:Double x:Key="AllColumnsAndMargin">426</sys:Double>
         <sys:Double x:Key="AllColumnsAndButton">451</sys:Double>
+        <app:CustomCompositeCollection x:Key="NormalBold">
+            <FontWeight>Normal</FontWeight>
+            <FontWeight>Bold</FontWeight>
+        </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
@@ -296,6 +300,75 @@
                 </DockPanel>
             </Border>
         </DataTemplate>
+        <Style x:Key="TabControlStyle" TargetType="TabControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="1">
+                                <TabPanel Grid.Row="0" IsItemsHost="true"/>
+                                <Border BorderThickness="0" Margin="0,20,0,0">
+                                    <ContentPresenter Content="{Binding SelectedContent, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TabItemStyle" TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid x:Name="Root">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected"/>
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderSelectedBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <SolidColorBrush Color="Black"/>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <SolidColorBrush Color="Gray"/>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <StackPanel MinWidth="85">
+                                <ContentPresenter Content="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}" Margin="0,0,10,0"/>
+                                <Grid Margin="0,2,0,10">
+                                    <Border BorderBrush="DarkGray" BorderThickness="0,0,0,3"/>
+                                    <Border x:Name="HeaderMouseOverBorder" BorderBrush="Transparent" BorderThickness="0,0,0,3" Margin="0,0,10,0"/>
+                                    <Border x:Name="HeaderSelectedBorder" BorderBrush="Transparent" BorderThickness="0,0,0,3" Margin="0,0,10,0"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2">
         <Grid>
@@ -402,483 +475,16 @@
                     </ctrl:SelectorItem>
                 </ctrl:SelectorControl>
                 <Grid>
-                    <Grid.Resources>
-                        <Style x:Key="TabItemBaseStyle" TargetType="TabItem">
-                            <Setter Property="BorderThickness" Value="0,0,0,2"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="VerticalContentAlignment" Value="Center"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                        </Style>
-                        <Style x:Key="TabItemStatusStyle" TargetType="TabItem" BasedOn="{StaticResource TabItemBaseStyle}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="TabItem">
-                                        <Grid Margin="0,0,10,-2">
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="CommonStates">
-                                                    <VisualState x:Name="Normal">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="MouseOver">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                                <VisualStateGroup x:Name="SelectionStates">
-                                                    <VisualState x:Name="Unselected">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="Selected">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush Color="Black"/>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush Color="Black"/>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
-                                            <Grid>
-                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
-                                            </Grid>
-                                            <Border x:Name="HeaderNoMouseBorder" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" BorderBrush="Gray">
-                                                <StackPanel Orientation="Horizontal" MinWidth="65">
-                                                    <Image Source="{StaticResource imgDownload}" Width="16" Height="16"/>
-                                                    <TextBlock x:Name="HeaderNoMouseNormalText" VerticalAlignment="Bottom" Margin="5,0,0,0">Startup</TextBlock>
-                                                    <TextBlock x:Name="HeaderNoMouseBoldText" FontWeight="Bold" VerticalAlignment="Bottom" Margin="5,0,0,0">Startup</TextBlock>
-                                                </StackPanel>
-                                            </Border>
-                                            <Border x:Name="HeaderMouseOverBorder" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" BorderBrush="DarkGray">
-                                                <StackPanel Orientation="Horizontal" MinWidth="65">
-                                                    <Image Source="{StaticResource imgDownload}" Width="16" Height="16"/>
-                                                    <TextBlock x:Name="HeaderMouseOverNormalText" VerticalAlignment="Bottom" Margin="5,0,0,0">Startup</TextBlock>
-                                                    <TextBlock x:Name="HeaderMouseOverBoldText" FontWeight="Bold" VerticalAlignment="Bottom" Margin="5,0,0,0">Startup</TextBlock>
-                                                </StackPanel>
-                                            </Border>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style x:Key="TabItemGeneralStyle" TargetType="TabItem" BasedOn="{StaticResource TabItemBaseStyle}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="TabItem">
-                                        <Grid Margin="0,0,10,-2">
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="CommonStates">
-                                                    <VisualState x:Name="Normal">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="MouseOver">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                                <VisualStateGroup x:Name="SelectionStates">
-                                                    <VisualState x:Name="Unselected">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="Selected">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush Color="Black"/>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush Color="Black"/>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
-                                            <Grid>
-                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
-                                            </Grid>
-                                            <Border x:Name="HeaderNoMouseBorder" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" BorderBrush="Gray">
-                                                <StackPanel Orientation="Horizontal" MinWidth="65">
-                                                    <Image Source="{StaticResource imgSetting}" Width="16" Height="16"/>
-                                                    <TextBlock x:Name="HeaderNoMouseNormalText" VerticalAlignment="Bottom" Margin="5,0,0,0">General</TextBlock>
-                                                    <TextBlock x:Name="HeaderNoMouseBoldText" FontWeight="Bold" VerticalAlignment="Bottom" Margin="5,0,0,0">General</TextBlock>
-                                                </StackPanel>
-                                            </Border>
-                                            <Border x:Name="HeaderMouseOverBorder" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" BorderBrush="DarkGray">
-                                                <StackPanel Orientation="Horizontal" MinWidth="65">
-                                                    <Image Source="{StaticResource imgSetting}" Width="16" Height="16"/>
-                                                    <TextBlock x:Name="HeaderMouseOverNormalText" VerticalAlignment="Bottom" Margin="5,0,0,0">General</TextBlock>
-                                                    <TextBlock x:Name="HeaderMouseOverBoldText" FontWeight="Bold" VerticalAlignment="Bottom" Margin="5,0,0,0">General</TextBlock>
-                                                </StackPanel>
-                                            </Border>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style x:Key="TabItemStorageStyle" TargetType="TabItem" BasedOn="{StaticResource TabItemBaseStyle}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="TabItem">
-                                        <Grid Margin="0,0,10,-2">
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="CommonStates">
-                                                    <VisualState x:Name="Normal">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="MouseOver">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                                <VisualStateGroup x:Name="SelectionStates">
-                                                    <VisualState x:Name="Unselected">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="Selected">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverNormalText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Collapsed</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBoldText" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <Visibility>Visible</Visibility>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderNoMouseBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush Color="Black"/>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMouseOverBorder" Storyboard.TargetProperty="BorderBrush" Duration="0">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush Color="Black"/>
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
-                                            <Grid>
-                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
-                                            </Grid>
-                                            <Border x:Name="HeaderNoMouseBorder" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" BorderBrush="Gray">
-                                                <StackPanel Orientation="Horizontal" MinWidth="65">
-                                                    <Image Source="{StaticResource imgDevice}" Width="16" Height="16"/>
-                                                    <TextBlock x:Name="HeaderNoMouseNormalText" VerticalAlignment="Bottom" Margin="5,0,0,0">Storage</TextBlock>
-                                                    <TextBlock x:Name="HeaderNoMouseBoldText" FontWeight="Bold" VerticalAlignment="Bottom" Margin="5,0,0,0">Storage</TextBlock>
-                                                </StackPanel>
-                                            </Border>
-                                            <Border x:Name="HeaderMouseOverBorder" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" BorderBrush="DarkGray">
-                                                <StackPanel Orientation="Horizontal" MinWidth="65">
-                                                    <Image Source="{StaticResource imgDevice}" Width="16" Height="16"/>
-                                                    <TextBlock x:Name="HeaderMouseOverNormalText" VerticalAlignment="Bottom" Margin="5,0,0,0">Storage</TextBlock>
-                                                    <TextBlock x:Name="HeaderMouseOverBoldText" FontWeight="Bold" VerticalAlignment="Bottom" Margin="5,0,0,0">Storage</TextBlock>
-                                                </StackPanel>
-                                            </Border>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Grid.Resources>
-                    <TabControl SelectedIndex="{Binding LastSelectedSetting}" MinWidth="190" MinHeight="120">
-                        <TabControl.Style>
-                            <Style TargetType="TabControl">
-                                <Setter Property="BorderThickness" Value="0,2,0,0"/>
-                                <Setter Property="BorderBrush" Value="DarkGray"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="TabControl">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid Grid.Row="1">
-                                                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-                                                        <Border Background="Transparent">
-                                                            <ContentPresenter ContentSource="SelectedContent"/>
-                                                        </Border>
-                                                    </Border>
-                                                </Grid>
-                                                <TabPanel Grid.Row="0" IsItemsHost="true"/>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </TabControl.Style>
-                        <TabItem Style="{StaticResource TabItemStatusStyle}">
+                    <ctrl:BoldHeaderTabControl Style="{StaticResource TabControlStyle}" SelectedIndex="{Binding LastSelectedSetting}" MinWidth="190" MinHeight="120">
+                        <TabItem Style="{StaticResource TabItemStyle}">
+                            <TabItem.Header>
+                                <ContentControl>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource imgDownload}" Width="16" Height="16"/>
+                                        <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,0">Startup</TextBlock>
+                                    </StackPanel>
+                                </ContentControl>
+                            </TabItem.Header>
                             <Grid VerticalAlignment="Top" Margin="6,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -896,7 +502,15 @@
                                 <CheckBox Grid.Row="4" IsChecked="{Binding CheckNewParserOnStartup}" Margin="0,10,0,0">Check for the latest parser</CheckBox>
                             </Grid>
                         </TabItem>
-                        <TabItem Style="{StaticResource TabItemGeneralStyle}">
+                        <TabItem Style="{StaticResource TabItemStyle}">
+                            <TabItem.Header>
+                                <ContentControl>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource imgSetting}" Width="16" Height="16"/>
+                                        <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,0">General</TextBlock>
+                                    </StackPanel>
+                                </ContentControl>
+                            </TabItem.Header>
                             <Grid VerticalAlignment="Top" Margin="6,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -915,7 +529,15 @@
                                 <RadioButton Grid.Row="4" IsChecked="{Binding IgnoreMissingIcons}" Margin="5,5,0,0">Ignore and continue</RadioButton>
                             </Grid>
                         </TabItem>
-                        <TabItem Style="{StaticResource TabItemStorageStyle}">
+                        <TabItem Style="{StaticResource TabItemStyle}">
+                            <TabItem.Header>
+                                <ContentControl>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource imgDevice}" Width="16" Height="16"/>
+                                        <TextBlock VerticalAlignment="Bottom" Margin="5,0,0,0">Storage</TextBlock>
+                                    </StackPanel>
+                                </ContentControl>
+                            </TabItem.Header>
                             <Grid VerticalAlignment="Top" Margin="6,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -937,7 +559,7 @@
                                 </Button>
                             </Grid>
                         </TabItem>
-                    </TabControl>
+                    </ctrl:BoldHeaderTabControl>
                 </Grid>
             </StackPanel>
             <Button Command="{StaticResource CloseCommand}" Background="#F4F4F4" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1,0,0,1">
