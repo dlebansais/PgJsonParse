@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -79,15 +79,15 @@ namespace PgJsonObjects
         {
             foreach (object RawPreference in RawPreferences)
             {
-                JObject AsJObject;
-                if ((AsJObject = RawPreference as JObject) != null)
+                JsonObject AsJObject;
+                if ((AsJObject = RawPreference as JsonObject) != null)
                     ParsePreferences(AsJObject, ErrorInfo);
                 else
                     ErrorInfo.AddInvalidObjectFormat("GameNpc Preferences");
             }
         }
 
-        private void ParsePreferences(JObject RawPreference, ParseErrorInfo ErrorInfo)
+        private void ParsePreferences(JsonObject RawPreference, ParseErrorInfo ErrorInfo)
         {
             NpcPreference ParsedPreference;
             JsonObjectParser<NpcPreference>.InitAsSubitem("Preference", RawPreference, out ParsedPreference, ErrorInfo);

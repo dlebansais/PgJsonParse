@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -89,10 +89,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsClientLocal(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsClientLocal((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("LoreBook IsClientLocal");
+            ParseFieldValueBool(Value, ErrorInfo, "LoreBook IsClientLocal", This.ParseIsClientLocal);
         }
 
         private void ParseIsClientLocal(bool RawIsClientLocal, ParseErrorInfo ErrorInfo)

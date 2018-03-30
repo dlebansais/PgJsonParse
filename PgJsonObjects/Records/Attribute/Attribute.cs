@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -68,14 +68,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldIconIds(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawIconIds;
-            if ((RawIconIds = Value as JArray) != null)
+            JsonArray RawIconIds;
+            if ((RawIconIds = Value as JsonArray) != null)
                 This.ParseIconIds(RawIconIds, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Attribute IconIds");
         }
 
-        private void ParseIconIds(JArray RawIconIds, ParseErrorInfo ErrorInfo)
+        private void ParseIconIds(JsonArray RawIconIds, ParseErrorInfo ErrorInfo)
         {
             List<int> RawIconIdList = new List<int>();
             ParseIntTable(RawIconIds, RawIconIdList, "IconIds", ErrorInfo, out IsIconIdListEmpty);
@@ -112,10 +112,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsHidden(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsHidden((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Attribute IsHidden");
+            ParseFieldValueBool(Value, ErrorInfo, "Attribute IsHidden", This.ParseIsHidden);
         }
 
         private void ParseIsHidden(bool RawIsHidden, ParseErrorInfo ErrorInfo)
@@ -137,10 +134,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldDefaultValue(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseDefaultValue((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParseDefaultValue((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseDefaultValue(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseDefaultValue(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("Attribute DefaultValue");
         }

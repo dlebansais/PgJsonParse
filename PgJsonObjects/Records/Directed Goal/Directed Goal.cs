@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections.Generic;
 
@@ -70,10 +70,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsCategoryGate(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsCategoryGate((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("DirectedGoal IsCategoryGate");
+            ParseFieldValueBool(Value, ErrorInfo, "DirectedGoal IsCategoryGate", This.ParseIsCategoryGate);
         }
 
         private void ParseIsCategoryGate(bool RawIsCategoryGate, ParseErrorInfo ErrorInfo)

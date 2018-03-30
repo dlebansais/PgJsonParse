@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -102,10 +102,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldPercentChance(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParsePercentChance((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParsePercentChance((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParsePercentChance(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParsePercentChance(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeItem PercentChance");
         }
@@ -117,14 +122,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemKeys(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawItemKeys;
-            if ((RawItemKeys = Value as JArray) != null)
+            JsonArray RawItemKeys;
+            if ((RawItemKeys = Value as JsonArray) != null)
                 This.ParseItemKeys(RawItemKeys, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeItem ItemKeys");
         }
 
-        private void ParseItemKeys(JArray RawItemKeys, ParseErrorInfo ErrorInfo)
+        private void ParseItemKeys(JsonArray RawItemKeys, ParseErrorInfo ErrorInfo)
         {
             List<RecipeItemKey> ParsedItemKeyList = new List<RecipeItemKey>();
             StringToEnumConversion<RecipeItemKey>.ParseList(RawItemKeys, RecipeItemKeyStringMap, ParsedItemKeyList, ErrorInfo);
@@ -147,10 +152,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldChanceToConsume(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseChanceToConsume((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParseChanceToConsume((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseChanceToConsume(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseChanceToConsume(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeItem ChanceToConsume");
         }
@@ -162,10 +172,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldDurabilityConsumed(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseDurabilityConsumed((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParseDurabilityConsumed((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseDurabilityConsumed(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseDurabilityConsumed(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeItem DurabilityConsumed");
         }
@@ -177,10 +192,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAttuneToCrafter(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseAttuneToCrafter((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem AttuneToCrafter");
+            ParseFieldValueBool(Value, ErrorInfo, "RecipeItem AttuneToCrafter", This.ParseAttuneToCrafter);
         }
 
         private void ParseAttuneToCrafter(bool RawAttuneToCrafter, ParseErrorInfo ErrorInfo)

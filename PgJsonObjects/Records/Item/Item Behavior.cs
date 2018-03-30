@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,9 +44,9 @@ namespace PgJsonObjects
 
         private static void ParseFieldUseVerb(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawUseVerb;
-            if ((RawUseVerb = Value as string) != null)
-                This.ParseUseVerb(RawUseVerb, ErrorInfo);
+            JsonString RawUseVerb;
+            if ((RawUseVerb = Value as JsonString) != null)
+                This.ParseUseVerb(RawUseVerb.String, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("ItemBehavior UseVerb");
         }
@@ -63,7 +63,7 @@ namespace PgJsonObjects
             ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "ItemBehavior ServerInfo", This.ParseServerInfo);
         }
 
-        private void ParseServerInfo(JObject RawServerInfo, ParseErrorInfo ErrorInfo)
+        private void ParseServerInfo(JsonObject RawServerInfo, ParseErrorInfo ErrorInfo)
         {
             ServerInfo ParsedServerInfo;
             JsonObjectParser<ServerInfo>.InitAsSubitem(Key, RawServerInfo, out ParsedServerInfo, ErrorInfo);
@@ -96,11 +96,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldUseAnimation(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawUseAnimation;
-            if ((RawUseAnimation = Value as string) != null)
-                This.ParseUseAnimation(RawUseAnimation, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ItemBehavior UseAnimation");
+            ParseFieldValueString(Value, ErrorInfo, "ItemBehavior UseAnimation", This.ParseUseAnimation);
         }
 
         private void ParseUseAnimation(string RawUseAnimation, ParseErrorInfo ErrorInfo)
@@ -112,11 +108,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldUseDelayAnimation(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawUseDelayAnimation;
-            if ((RawUseDelayAnimation = Value as string) != null)
-                This.ParseUseDelayAnimation(RawUseDelayAnimation, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ItemBehavior UseDelayAnimation");
+            ParseFieldValueString(Value, ErrorInfo, "ItemBehavior UseDelayAnimation", This.ParseUseDelayAnimation);
         }
 
         private void ParseUseDelayAnimation(string RawUseDelayAnimation, ParseErrorInfo ErrorInfo)
@@ -138,10 +130,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldUseDelay(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseUseDelay((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParseUseDelay((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseUseDelay(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseUseDelay(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("ItemBehavior UseDelay");
         }

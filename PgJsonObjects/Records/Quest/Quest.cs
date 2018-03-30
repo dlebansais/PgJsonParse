@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -178,10 +178,10 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequirementsToSustain(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject AsJObject;
+            JsonObject AsJObject;
             ArrayList RawRequirementsToSustain;
 
-            if ((AsJObject = Value as JObject) != null)
+            if ((AsJObject = Value as JsonObject) != null)
                 This.ParseRequirementToSustainAsDictionary(AsJObject, ErrorInfo);
 
             else if ((RawRequirementsToSustain = Value as ArrayList) != null)
@@ -195,15 +195,15 @@ namespace PgJsonObjects
         {
             foreach (object RawRequirement in RawRequirementsToSustain)
             {
-                JObject AsJObject;
-                if ((AsJObject = RawRequirement as JObject) != null)
+                JsonObject AsJObject;
+                if ((AsJObject = RawRequirement as JsonObject) != null)
                     ParseRequirementToSustainAsDictionary(AsJObject, ErrorInfo);
                 else
                     ErrorInfo.AddInvalidObjectFormat("Quest RequirementsToSustain");
             }
         }
 
-        private void ParseRequirementToSustainAsDictionary(JObject RawRequirements, ParseErrorInfo ErrorInfo)
+        private void ParseRequirementToSustainAsDictionary(JsonObject RawRequirements, ParseErrorInfo ErrorInfo)
         {
             QuestRequirement ParsedQuestRequirement;
             JsonObjectParser<QuestRequirement>.InitAsSubitem("Requirements", RawRequirements, out ParsedQuestRequirement, ErrorInfo);
@@ -228,10 +228,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsCancellable(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsCancellable((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest IsCancellable");
+            ParseFieldValueBool(Value, ErrorInfo, "Quest IsCancellable", This.ParseIsCancellable);
         }
 
         private void ParseIsCancellable(bool RawIsCancellable, ParseErrorInfo ErrorInfo)
@@ -241,14 +238,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldObjectives(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray AsJArray;
-            if ((AsJArray = Value as JArray) != null)
+            JsonArray AsJArray;
+            if ((AsJArray = Value as JsonArray) != null)
                 This.ParseObjectives(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Quest Objectives");
         }
 
-        private void ParseObjectives(JArray RawObjectives, ParseErrorInfo ErrorInfo)
+        private void ParseObjectives(JsonArray RawObjectives, ParseErrorInfo ErrorInfo)
         {
             List<QuestObjective> ParsedQuestObjectiveList;
             JsonObjectParser<QuestObjective>.InitAsSublist(RawObjectives, out ParsedQuestObjectiveList, ErrorInfo);
@@ -263,26 +260,26 @@ namespace PgJsonObjects
 
         private static void ParseFieldRewardsXP(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject RawRewardsXP;
-            if ((RawRewardsXP = Value as JObject) != null)
+            JsonObject RawRewardsXP;
+            if ((RawRewardsXP = Value as JsonObject) != null)
                 This.ParseRewardsXP(RawRewardsXP, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Quest RewardsXP");
         }
 
-        private void ParseRewardsXP(JObject RawRewardsXP, ParseErrorInfo ErrorInfo)
+        private void ParseRewardsXP(JsonObject RawRewardsXP, ParseErrorInfo ErrorInfo)
         {
-            foreach (KeyValuePair<string, JToken> RawRewardXP in RawRewardsXP)
+            foreach (KeyValuePair<string, IJsonValue> RawRewardXP in RawRewardsXP)
             {
                 PowerSkill ParsedSkill;
                 if (StringToEnumConversion<PowerSkill>.TryParse(RawRewardXP.Key, out ParsedSkill, ErrorInfo))
                 {
-                    JValue AsJValue;
-                    if (((AsJValue = RawRewardXP.Value as JValue) != null) && AsJValue.Type == JTokenType.Integer)
+                    JsonInteger AsJsonInteger;
+                    if ((AsJsonInteger = RawRewardXP.Value as JsonInteger) != null)
                     {
                         QuestRewardXp NewReward = new QuestRewardXp();
                         NewReward.Skill = ParsedSkill;
-                        NewReward.Xp = (int)(long)AsJValue.Value;
+                        NewReward.Xp = AsJsonInteger.Number;
                         RewardsXPList.Add(NewReward);
                     }
                     else
@@ -293,14 +290,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldRewardsItems(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray AsJArray;
-            if ((AsJArray = Value as JArray) != null)
+            JsonArray AsJArray;
+            if ((AsJArray = Value as JsonArray) != null)
                 This.ParseRewardsItems(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Quest RewardsItems");
         }
 
-        private void ParseRewardsItems(JArray RawRewardsItems, ParseErrorInfo ErrorInfo)
+        private void ParseRewardsItems(JsonArray RawRewardsItems, ParseErrorInfo ErrorInfo)
         {
             List<QuestRewardItem> ParsedRewardItemList;
             JsonObjectParser<QuestRewardItem>.InitAsSublist(RawRewardsItems, out ParsedRewardItemList, ErrorInfo);
@@ -463,7 +460,7 @@ namespace PgJsonObjects
             ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "Quest Requirements", This.ParseRequirements);
         }
 
-        private void ParseRequirements(JObject RawRequirements, ParseErrorInfo ErrorInfo)
+        private void ParseRequirements(JsonObject RawRequirements, ParseErrorInfo ErrorInfo)
         {
             QuestRequirement ParsedQuestRequirement;
             JsonObjectParser<QuestRequirement>.InitAsSubitem("Requirements", RawRequirements, out ParsedQuestRequirement, ErrorInfo);
@@ -478,29 +475,29 @@ namespace PgJsonObjects
             ParseFieldValueArray(Value, ErrorInfo, "Quest Rewards", This.ParseRewards);
         }
 
-        private void ParseRewards(JObject RawReward, ParseErrorInfo ErrorInfo)
+        private void ParseRewards(JsonObject RawReward, ParseErrorInfo ErrorInfo)
         {
-            if (RawReward.ContainsKey("T"))
+            if (RawReward.Has("T"))
             {
-                JValue AsJValue;
-                if (((AsJValue = RawReward["T"] as JValue) != null) && AsJValue.Type == JTokenType.String)
+                JsonString AsJsonString;
+                if ((AsJsonString = RawReward["T"] as JsonString) != null)
                 {
-                    string RewardType = AsJValue.Value as string;
+                    string RewardType = AsJsonString.String;
                     if (RewardType == "SkillXp")
                     {
-                        if (RawReward.ContainsKey("Skill") && RawReward.ContainsKey("Xp"))
+                        if (RawReward.Has("Skill") && RawReward.Has("Xp"))
                         {
                             if (RewardSkill == PowerSkill.Internal_None && !RawRewardSkillXp.HasValue)
                             {
-                                JValue SkillValue;
-                                JValue XpValue;
-                                if (((SkillValue = RawReward["Skill"] as JValue) != null) && ((XpValue = RawReward["Xp"] as JValue) != null) && SkillValue.Type == JTokenType.String && XpValue.Type == JTokenType.Integer)
+                                JsonString SkillValue;
+                                JsonInteger XpValue;
+                                if (((SkillValue = RawReward["Skill"] as JsonString) != null) && ((XpValue = RawReward["Xp"] as JsonInteger) != null))
                                 {
                                     PowerSkill ParsedSkill;
-                                    if (StringToEnumConversion<PowerSkill>.TryParse(SkillValue.Value as string, out ParsedSkill, ErrorInfo))
+                                    if (StringToEnumConversion<PowerSkill>.TryParse(SkillValue.String, out ParsedSkill, ErrorInfo))
                                     {
                                         RewardSkill = ParsedSkill;
-                                        RawRewardSkillXp = (int)(long)XpValue.Value;
+                                        RawRewardSkillXp = XpValue.Number;
                                     }
                                     else
                                         ErrorInfo.AddDuplicateString("Quest", "SkillRewards");
@@ -517,13 +514,13 @@ namespace PgJsonObjects
 
                     else if (RewardType == "Recipe")
                     {
-                        if (RawReward.ContainsKey("Recipe"))
+                        if (RawReward.Has("Recipe"))
                         {
                             if (RewardRecipe == null)
                             {
-                                JValue RecipeValue;
-                                if (((RecipeValue = RawReward["Recipe"] as JValue) != null) && RecipeValue.Type == JTokenType.String)
-                                    RawRewardRecipe = RecipeValue.Value as string;
+                                JsonString RecipeValue;
+                                if ((RecipeValue = RawReward["Recipe"] as JsonString) != null)
+                                    RawRewardRecipe = RecipeValue.String;
                                 else
                                     ErrorInfo.AddInvalidObjectFormat("Quest Rewards");
                             }
@@ -536,13 +533,13 @@ namespace PgJsonObjects
 
                     else if (RewardType == "CombatXp")
                     {
-                        if (RawReward.ContainsKey("Xp"))
+                        if (RawReward.Has("Xp"))
                         {
                             if (RawRewardCombatXP == null)
                             {
-                                JValue XpValue;
-                                if (((XpValue = RawReward["Xp"] as JValue) != null) && XpValue.Type == JTokenType.Integer)
-                                    RawRewardCombatXP = (int)(long)XpValue.Value;
+                                JsonInteger XpValue;
+                                if ((XpValue = RawReward["Xp"] as JsonInteger) != null)
+                                    RawRewardCombatXP = XpValue.Number;
                                 else
                                     ErrorInfo.AddDuplicateString("Quest", "CombatXpRewards");
                             }
@@ -555,13 +552,13 @@ namespace PgJsonObjects
 
                     else if (RewardType == "GuildXp")
                     {
-                        if (RawReward.ContainsKey("Xp"))
+                        if (RawReward.Has("Xp"))
                         {
                             if (!RawRewardGuildXp.HasValue)
                             {
-                                JValue XpValue;
-                                if (((XpValue = RawReward["Xp"] as JValue) != null) && XpValue.Type == JTokenType.Integer)
-                                    RawRewardGuildXp = (int)(long)XpValue.Value;
+                                JsonInteger XpValue;
+                                if ((XpValue = RawReward["Xp"] as JsonInteger) != null)
+                                    RawRewardGuildXp = XpValue.Number;
                                 else
                                     ErrorInfo.AddDuplicateString("Quest", "GuildXpRewards");
                             }
@@ -574,13 +571,13 @@ namespace PgJsonObjects
 
                     else if (RewardType == "GuildCredits")
                     {
-                        if (RawReward.ContainsKey("Credits"))
+                        if (RawReward.Has("Credits"))
                         {
                             if (!RawRewardGuildCredits.HasValue)
                             {
-                                JValue CreditsValue;
-                                if (((CreditsValue = RawReward["Credits"] as JValue) != null) && CreditsValue.Type == JTokenType.Integer)
-                                    RawRewardGuildCredits = (int)(long)CreditsValue.Value;
+                                JsonInteger CreditsValue;
+                                if ((CreditsValue = RawReward["Credits"] as JsonInteger) != null)
+                                    RawRewardGuildCredits = CreditsValue.Number;
                                 else
                                     ErrorInfo.AddDuplicateString("Quest", "GuildCreditsRewards");
                             }
@@ -602,14 +599,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldPreGiveItems(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray AsJArray;
-            if ((AsJArray = Value as JArray) != null)
+            JsonArray AsJArray;
+            if ((AsJArray = Value as JsonArray) != null)
                 This.ParsePreGiveItems(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Quest PreGiveItems");
         }
 
-        private void ParsePreGiveItems(JArray RawPreGiveItems, ParseErrorInfo ErrorInfo)
+        private void ParsePreGiveItems(JsonArray RawPreGiveItems, ParseErrorInfo ErrorInfo)
         {
             List<QuestRewardItem> ParsedPreGiveItemList;
             JsonObjectParser<QuestRewardItem>.InitAsSublist(RawPreGiveItems, out ParsedPreGiveItemList, ErrorInfo);
@@ -733,10 +730,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsAutoPreface(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsAutoPreface((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest IsAutoPreface");
+            ParseFieldValueBool(Value, ErrorInfo, "Quest IsAutoPreface", This.ParseIsAutoPreface);
         }
 
         private void ParseIsAutoPreface(bool RawIsAutoPreface, ParseErrorInfo ErrorInfo)
@@ -746,10 +740,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsAutoWrapUp(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsAutoWrapUp((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest IsAutoWrapUp");
+            ParseFieldValueBool(Value, ErrorInfo, "Quest IsAutoWrapUp", This.ParseIsAutoWrapUp);
         }
 
         private void ParseIsAutoWrapUp(bool RawIsAutoWrapUp, ParseErrorInfo ErrorInfo)
@@ -771,10 +762,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsGuildQuest(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsGuildQuest((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest IsGuildQuest");
+            ParseFieldValueBool(Value, ErrorInfo, "Quest IsGuildQuest", This.ParseIsGuildQuest);
         }
 
         private void ParseIsGuildQuest(bool RawIsGuildQuest, ParseErrorInfo ErrorInfo)

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,7 +47,7 @@ namespace PgJsonObjects
 
         protected static Dictionary<string, bool> ParsedFields;
 
-        protected virtual void InitializeKey(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
+        protected virtual void InitializeKey(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
         {
             Key = EntryRaw.Key;
         }
@@ -86,18 +86,21 @@ namespace PgJsonObjects
             }
         }
 
-        protected virtual void ParseFields(JArray ArrayFields, ParseErrorInfo ErrorInfo)
+        protected virtual void ParseFields(JsonArray ArrayFields, ParseErrorInfo ErrorInfo)
         {
             InitParsedFields();
 
             foreach (object ArrayField in ArrayFields)
             {
-                JObject Fields;
-                if ((Fields = ArrayField as JObject) != null)
+                JsonObject Fields;
+                if ((Fields = ArrayField as JsonObject) != null)
                 {
-                    foreach (KeyValuePair<string, JToken> Field in Fields)
+                    foreach (KeyValuePair<string, IJsonValue> Field in Fields)
                     {
-                        if (IsCustomFieldParsed(Field.Key, Field.Value, ErrorInfo))
+                        if (Field.Value == null)
+                            continue;
+
+                        else if (IsCustomFieldParsed(Field.Key, Field.Value, ErrorInfo))
                             continue;
 
                         else if (FieldTable.ContainsKey(Field.Key))
@@ -114,21 +117,21 @@ namespace PgJsonObjects
             }
         }
 
-        protected virtual void ParseFields(JObject JObjectFields, ParseErrorInfo ErrorInfo)
+        protected virtual void ParseFields(JsonObject JObjectFields, ParseErrorInfo ErrorInfo)
         {
             InitParsedFields();
             ParseFieldsInternal(JObjectFields, ErrorInfo);
         }
 
-        private void ParseFieldsInternal(JObject JObjectFields, ParseErrorInfo ErrorInfo)
+        private void ParseFieldsInternal(JsonObject JObjectFields, ParseErrorInfo ErrorInfo)
         {
-            foreach (KeyValuePair<string, JToken> Field in JObjectFields)
+            foreach (KeyValuePair<string, IJsonValue> Field in JObjectFields)
             {
-                JArray AsArray;
-                JValue AsValue;
-                JToken AsToken;
+                JsonArray AsArray;
+                IJsonValue AsValue;
+                //JToken AsToken;
 
-                if ((AsArray = Field.Value as JArray) != null)
+                if ((AsArray = Field.Value as JsonArray) != null)
                 {
                     if (FieldTable.ContainsKey(Field.Key))
                     {
@@ -139,20 +142,21 @@ namespace PgJsonObjects
                         ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
                 }
 
-                else if ((AsValue = Field.Value as JValue) != null)
+                else if ((AsValue = Field.Value as IJsonValue) != null)
                 {
-                    if (IsCustomFieldParsed(Field.Key, AsValue.Value, ErrorInfo))
+                    if (IsCustomFieldParsed(Field.Key, AsValue, ErrorInfo))
                         continue;
 
                     if (FieldTable.ContainsKey(Field.Key))
                     {
                         ParsedFields[Field.Key] = true;
-                        FieldTable[Field.Key](this as T, AsValue.Value, ErrorInfo);
+                        FieldTable[Field.Key](this as T, AsValue, ErrorInfo);
                     }
                     else
                         ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
                 }
 
+                /*
                 else if ((AsToken = Field.Value as JToken) != null)
                 {
                     if (FieldTable.ContainsKey(Field.Key))
@@ -162,26 +166,21 @@ namespace PgJsonObjects
                     }
                     else
                         ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
-                }
+                }*/
 
-                else
+                else if (Field.Value != null)
                     ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
             }
         }
 
-        protected void ParseStringTable(JArray RawArray, List<string> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
+        protected void ParseStringTable(JsonArray RawArray, List<string> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
         {
             foreach (object Item in RawArray)
             {
-                JValue AsJValue;
+                JsonString AsJsonString;
 
-                if ((AsJValue = Item as JValue) != null)
-                {
-                    if (AsJValue.Type == JTokenType.String)
-                        RawList.Add(AsJValue.Value as string);
-                    else
-                        ErrorInfo.AddInvalidObjectFormat(FieldTableName + " Field: " + FieldName);
-                }
+                if ((AsJsonString = Item as JsonString) != null)
+                    RawList.Add(AsJsonString.String);
                 else
                     ErrorInfo.AddInvalidObjectFormat(FieldTableName + " Field: " + FieldName);
             }
@@ -189,14 +188,14 @@ namespace PgJsonObjects
             IsListEmpty = (RawList.Count == 0);
         }
 
-        protected void ParseIntTable(JArray RawArray, List<int> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
+        protected void ParseIntTable(JsonArray RawArray, List<int> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
         {
             foreach (object Item in RawArray)
             {
-                JValue AsJValue;
-                if (((AsJValue = Item as JValue) != null) && AsJValue.Type == JTokenType.Integer)
-                    RawList.Add((int)(long)AsJValue.Value);
-                else
+                JsonInteger AsJsonInteger;
+                if ((AsJsonInteger = Item as JsonInteger) != null)
+                    RawList.Add(AsJsonInteger.Number);
+                else if (Item != null)
                     ErrorInfo.AddInvalidObjectFormat(FieldTableName + " Field: " + FieldName);
             }
 
@@ -255,28 +254,25 @@ namespace PgJsonObjects
 
         protected static void ParseFieldValueString(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<string, ParseErrorInfo> ParseValue)
         {
-            JValue AsJValue;
-            string AsString;
+            JsonString AsJsonString;
 
-            if (((AsJValue = Value as JValue) != null) && AsJValue.Type == JTokenType.String)
-                ParseValue(AsJValue.Value as string, ErrorInfo);
-            else if ((AsString = Value as string) != null)
-                ParseValue(AsString, ErrorInfo);
+            if ((AsJsonString = Value as JsonString) != null)
+                ParseValue(AsJsonString.String, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
         protected static void ParseFieldValueStringArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Func<string, ParseErrorInfo, bool> ParseValue)
         {
-            JArray AsArray;
-            if ((AsArray = Value as JArray) != null)
+            JsonArray AsArray;
+            if ((AsArray = Value as JsonArray) != null)
             {
-                foreach (JToken Item in AsArray)
+                foreach (IJsonValue Item in AsArray)
                 {
-                    JValue AsJValue;
-                    if (((AsJValue = Item as JValue) != null) && AsJValue.Type == JTokenType.String)
+                    JsonString AsJsonString;
+                    if ((AsJsonString = Item as JsonString) != null)
                     {
-                        if (!ParseValue(AsJValue.Value as string, ErrorInfo))
+                        if (!ParseValue(AsJsonString.String, ErrorInfo))
                             break;
                     }
                     else
@@ -292,27 +288,25 @@ namespace PgJsonObjects
 
         protected static void ParseFieldValueLong(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<long, ParseErrorInfo> ParseValue)
         {
-            JValue AsJValue;
+            JsonInteger AsJsonInteger;
 
-            if (((AsJValue = Value as JValue) != null) && AsJValue.Type == JTokenType.Integer)
-                ParseValue((long)AsJValue.Value, ErrorInfo);
-            else if (Value is long)
-                ParseValue((long)Value, ErrorInfo);
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                ParseValue(AsJsonInteger.Number, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
         protected static void ParseFieldValueLongArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Func<long, ParseErrorInfo, bool> ParseValue)
         {
-            JArray AsArray;
-            if ((AsArray = Value as JArray) != null)
+            JsonArray AsArray;
+            if ((AsArray = Value as JsonArray) != null)
             {
-                foreach (JToken Item in AsArray)
+                foreach (IJsonValue Item in AsArray)
                 {
-                    JValue AsJValue;
-                    if (((AsJValue = Item as JValue) != null) && AsJValue.Type == JTokenType.Integer)
+                    JsonInteger AsJsonInteger;
+                    if ((AsJsonInteger = Item as JsonInteger) != null)
                     {
-                        if (!ParseValue((long)AsJValue.Value, ErrorInfo))
+                        if (!ParseValue(AsJsonInteger.Number, ErrorInfo))
                             break;
                     }
                     else
@@ -326,15 +320,25 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
-        protected static void ParseFieldValueArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<JObject, ParseErrorInfo> ParseValue)
+        protected static void ParseFieldValueBool(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<bool, ParseErrorInfo> ParseValue)
         {
-            JArray AsArray;
-            if ((AsArray = Value as JArray) != null)
+            JsonBool AsJsonBool;
+
+            if ((AsJsonBool = Value as JsonBool) != null)
+                ParseValue(AsJsonBool.Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat(FieldName);
+        }
+
+        protected static void ParseFieldValueArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<JsonObject, ParseErrorInfo> ParseValue)
+        {
+            JsonArray AsArray;
+            if ((AsArray = Value as JsonArray) != null)
             {
-                foreach (JToken Item in AsArray)
+                foreach (IJsonValue Item in AsArray)
                 {
-                    JObject AsJObject;
-                    if ((AsJObject = Item as JObject) != null)
+                    JsonObject AsJObject;
+                    if ((AsJObject = Item as JsonObject) != null)
                         ParseValue(AsJObject, ErrorInfo);
                     else
                     {
@@ -347,17 +351,17 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
-        protected static void ParseFieldValueStringObjectOrArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<JObject, ParseErrorInfo> ParseValue)
+        protected static void ParseFieldValueStringObjectOrArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<JsonObject, ParseErrorInfo> ParseValue)
         {
-            JObject AsJObject;
-            JArray AsArray;
+            JsonObject AsJObject;
+            JsonArray AsArray;
 
-            if ((AsJObject = Value as JObject) != null)
+            if ((AsJObject = Value as JsonObject) != null)
                 ParseValue(AsJObject, ErrorInfo);
 
-            else if ((AsArray = Value as JArray) != null)
+            else if ((AsArray = Value as JsonArray) != null)
             {
-                foreach (JToken Item in AsArray)
+                foreach (IJsonValue Item in AsArray)
                     ParseFieldValueStringObjectOrArray(Item, ErrorInfo, FieldName, ParseValue);
             }
             else
@@ -382,20 +386,20 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public virtual void Init(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
+        public virtual void Init(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
         {
             InitializeKey(EntryRaw, ErrorInfo);
 
             Dictionary<string, object> Fields;
-            JArray JArrayFields;
-            JObject JObjectFields;
+            JsonArray JArrayFields;
+            JsonObject JObjectFields;
 
 
             if ((Fields = EntryRaw.Value as Dictionary<string, object>) != null)
                 ParseFields(Fields, ErrorInfo);
-            else if ((JArrayFields = EntryRaw.Value as JArray) != null)
+            else if ((JArrayFields = EntryRaw.Value as JsonArray) != null)
                 ParseFields(JArrayFields, ErrorInfo);
-            else if ((JObjectFields = EntryRaw.Value as JObject) != null)
+            else if ((JObjectFields = EntryRaw.Value as JsonObject) != null)
                 ParseFields(JObjectFields, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);

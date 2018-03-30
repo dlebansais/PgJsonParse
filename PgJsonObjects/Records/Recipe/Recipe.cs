@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -144,14 +144,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldIngredients(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray AsJArray;
-            if ((AsJArray = Value as JArray) != null)
+            JsonArray AsJArray;
+            if ((AsJArray = Value as JsonArray) != null)
                 This.ParseIngredients(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Recipe Ingredients");
         }
 
-        private void ParseIngredients(JArray RawIngredients, ParseErrorInfo ErrorInfo)
+        private void ParseIngredients(JsonArray RawIngredients, ParseErrorInfo ErrorInfo)
         {
             List<RecipeItem> ParsedIngredientList;
             JsonObjectParser<RecipeItem>.InitAsSublist(RawIngredients, out ParsedIngredientList, ErrorInfo);
@@ -190,14 +190,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldResultItems(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray AsJArray;
-            if ((AsJArray = Value as JArray) != null)
+            JsonArray AsJArray;
+            if ((AsJArray = Value as JsonArray) != null)
                 This.ParseResultItems(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Recipe ResultItems");
         }
 
-        private void ParseResultItems(JArray RawResultItems, ParseErrorInfo ErrorInfo)
+        private void ParseResultItems(JsonArray RawResultItems, ParseErrorInfo ErrorInfo)
         {
             List<RecipeItem> ParsedResultItemList;
             JsonObjectParser<RecipeItem>.InitAsSublist(RawResultItems, out ParsedResultItemList, ErrorInfo);
@@ -260,14 +260,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldKeywords(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawKeywords;
-            if ((RawKeywords = Value as JArray) != null)
+            JsonArray RawKeywords;
+            if ((RawKeywords = Value as JsonArray) != null)
                 This.ParseKeywords(RawKeywords, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Recipe Keywords");
         }
 
-        private void ParseKeywords(JArray RawKeywords, ParseErrorInfo ErrorInfo)
+        private void ParseKeywords(JsonArray RawKeywords, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<RecipeKeyword>.ParseList(RawKeywords, KeywordList, ErrorInfo);
         }
@@ -321,7 +321,7 @@ namespace PgJsonObjects
             ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "Recipe OtherRequirements", This.ParseOtherRequirements);
         }
 
-        public void ParseOtherRequirements(JObject RawOtherRequirements, ParseErrorInfo ErrorInfo)
+        public void ParseOtherRequirements(JsonObject RawOtherRequirements, ParseErrorInfo ErrorInfo)
         {
             AbilityRequirement ParsedOtherRequirement;
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
@@ -333,14 +333,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldCosts(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray AsJArray;
-            if ((AsJArray = Value as JArray) != null)
+            JsonArray AsJArray;
+            if ((AsJArray = Value as JsonArray) != null)
                 This.ParseCosts(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Recipe Costs");
         }
 
-        private void ParseCosts(JArray RawCosts, ParseErrorInfo ErrorInfo)
+        private void ParseCosts(JsonArray RawCosts, ParseErrorInfo ErrorInfo)
         {
             List<RecipeCost> ParsedCostList;
             JsonObjectParser<RecipeCost>.InitAsSublist(RawCosts, out ParsedCostList, ErrorInfo);
@@ -837,10 +837,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsItemMenuKeywordReqSufficient(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsItemMenuKeywordReqSufficient((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Recipe IsItemMenuKeywordReqSufficient");
+            ParseFieldValueBool(Value, ErrorInfo, "Recipe IsItemMenuKeywordReqSufficient", This.ParseIsItemMenuKeywordReqSufficient);
         }
 
         private void ParseIsItemMenuKeywordReqSufficient(bool RawIsItemMenuKeywordReqSufficient, ParseErrorInfo ErrorInfo)

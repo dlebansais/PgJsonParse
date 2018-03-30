@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -194,11 +194,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldLevel(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            string RawLevel;
-            if ((RawLevel = Value as string) != null)
-                This.ParseLevelForFavor(RawLevel, ErrorInfo);
-            else if (Value is long)
-                This.ParseLevelForSkill((long)Value, ErrorInfo);
+            JsonString AsJsonString;
+            JsonInteger AsJsonInteger;
+
+            if ((AsJsonString = Value as JsonString) != null)
+                This.ParseLevelForFavor(AsJsonString.String, ErrorInfo);
+
+            else if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseLevelForSkill(AsJsonInteger.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level");
         }
@@ -245,7 +249,7 @@ namespace PgJsonObjects
             ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "QuestRequirement List", This.ParseList);
         }
 
-        private void ParseList(JObject RawList, ParseErrorInfo ErrorInfo)
+        private void ParseList(JsonObject RawList, ParseErrorInfo ErrorInfo)
         {
             if (T == OtherRequirementType.Or)
             {

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -182,18 +182,18 @@ namespace PgJsonObjects
 
         private static void ParseFieldTiers(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject RawTiers;
-            if ((RawTiers = Value as JObject) != null)
+            JsonObject RawTiers;
+            if ((RawTiers = Value as JsonObject) != null)
                 This.ParseTiers(RawTiers, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Power Tiers");
         }
 
-        private void ParseTiers(JObject RawTiers, ParseErrorInfo ErrorInfo)
+        private void ParseTiers(JsonObject RawTiers, ParseErrorInfo ErrorInfo)
         {
             int TierOffset = int.MaxValue;
 
-            foreach (KeyValuePair<string, JToken> Entry in RawTiers)
+            foreach (KeyValuePair<string, IJsonValue> Entry in RawTiers)
             {
                 if (!Entry.Key.Contains("id_"))
                     break;
@@ -210,11 +210,11 @@ namespace PgJsonObjects
             for (i = 0; i < RawTiers.Count; i++)
             {
                 string Key = "id_" + (i + TierOffset).ToString();
-                if (!RawTiers.ContainsKey(Key))
+                if (!RawTiers.Has(Key))
                     break;
 
-                JObject RawValue;
-                if ((RawValue = RawTiers[Key] as JObject) != null)
+                JsonObject RawValue;
+                if ((RawValue = RawTiers[Key] as JsonObject) != null)
                 {
                     PowerTier Subitem;
                     JsonObjectParser<PowerTier>.InitAsSubitem(Key, RawValue, out Subitem, ErrorInfo);
@@ -230,14 +230,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldSlots(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawSlots;
-            if ((RawSlots = Value as JArray) != null)
+            JsonArray RawSlots;
+            if ((RawSlots = Value as JsonArray) != null)
                 This.ParseSlots(RawSlots, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Power Slots");
         }
 
-        private void ParseSlots(JArray RawSlots, ParseErrorInfo ErrorInfo)
+        private void ParseSlots(JsonArray RawSlots, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<ItemSlot>.ParseList(RawSlots, SlotList, ErrorInfo);
         }
@@ -256,10 +256,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsUnavailable(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsUnavailable((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Power IsUnavailable");
+            ParseFieldValueBool(Value, ErrorInfo, "Power IsUnavailable", This.ParseIsUnavailable);
         }
 
         private void ParseIsUnavailable(bool RawIsUnavailable, ParseErrorInfo ErrorInfo)

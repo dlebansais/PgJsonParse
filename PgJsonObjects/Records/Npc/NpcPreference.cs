@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PgJsonReader;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -143,10 +144,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldPref(NpcPreference This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParsePref((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParsePref((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParsePref(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParsePref(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref");
         }

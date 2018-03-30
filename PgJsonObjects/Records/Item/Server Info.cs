@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -179,27 +179,27 @@ namespace PgJsonObjects
         private static void ParseFieldOtherRequirements(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
         {
             ArrayList AsArrayList;
-            JObject AsJObject;
+            JsonObject AsJObject;
 
             if ((AsArrayList = Value as ArrayList) != null)
             {
                 foreach (object Item in AsArrayList)
                 {
-                    if ((AsJObject = Item as JObject) != null)
+                    if ((AsJObject = Item as JsonObject) != null)
                         This.ParseOtherRequirements(AsJObject, ErrorInfo);
                     else
                         ErrorInfo.AddInvalidObjectFormat("ServerInfo OtherRequirements");
                 }
             }
 
-            else if ((AsJObject = Value as JObject) != null)
+            else if ((AsJObject = Value as JsonObject) != null)
                 This.ParseOtherRequirements(AsJObject, ErrorInfo);
 
             else
                 ErrorInfo.AddInvalidObjectFormat("ServerInfo OtherRequirements");
         }
 
-        public void ParseOtherRequirements(JObject RawOtherRequirements, ParseErrorInfo ErrorInfo)
+        public void ParseOtherRequirements(JsonObject RawOtherRequirements, ParseErrorInfo ErrorInfo)
         {
             AbilityRequirement ParsedOtherRequirement;
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);

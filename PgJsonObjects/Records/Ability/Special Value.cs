@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -60,10 +60,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldValue(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseValue((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParseValue((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseValue(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseValue(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("SpecialValue Value");
         }
@@ -75,52 +80,49 @@ namespace PgJsonObjects
 
         private static void ParseFieldAttributesThatDelta(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawAttributesThatDelta;
-            if ((RawAttributesThatDelta = Value as JArray) != null)
+            JsonArray RawAttributesThatDelta;
+            if ((RawAttributesThatDelta = Value as JsonArray) != null)
                 This.ParseAttributesThatDelta(RawAttributesThatDelta, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("SpecialValue AttributesThatDelta");
         }
 
-        private void ParseAttributesThatDelta(JArray RawAttributesThatDelta, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatDelta(JsonArray RawAttributesThatDelta, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatDelta, RawAttributesThatDeltaList, "AttributesThatDelta", ErrorInfo, out RawAttributesThatDeltaListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatMod(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawAttributesThatMod;
-            if ((RawAttributesThatMod = Value as JArray) != null)
+            JsonArray RawAttributesThatMod;
+            if ((RawAttributesThatMod = Value as JsonArray) != null)
                 This.ParseAttributesThatMod(RawAttributesThatMod, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("SpecialValue AttributesThatMod");
         }
 
-        private void ParseAttributesThatMod(JArray RawAttributesThatMod, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatMod(JsonArray RawAttributesThatMod, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatMod, RawAttributesThatModList, "AttributesThatMod", ErrorInfo, out RawAttributesThatModListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatModBase(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawAttributesThatModBase;
-            if ((RawAttributesThatModBase = Value as JArray) != null)
+            JsonArray RawAttributesThatModBase;
+            if ((RawAttributesThatModBase = Value as JsonArray) != null)
                 This.ParseAttributesThatModBase(RawAttributesThatModBase, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("SpecialValue AttributesThatModBase");
         }
 
-        private void ParseAttributesThatModBase(JArray RawAttributesThatModBase, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatModBase(JsonArray RawAttributesThatModBase, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatModBase, RawAttributesThatModBaseList, "AttributesThatModBase", ErrorInfo, out RawAttributesThatModBaseListIsEmpty);
         }
 
-        private static void ParseFieldDisplayAsPercent(SpecialValue This, object DisplayAsPercent, ParseErrorInfo ErrorInfo)
+        private static void ParseFieldDisplayAsPercent(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (DisplayAsPercent is bool)
-                This.ParseDisplayAsPercent((bool)DisplayAsPercent, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("SpecialValue DisplayAsPercent");
+            ParseFieldValueBool(Value, ErrorInfo, "SpecialValue DisplayAsPercent", This.ParseDisplayAsPercent);
         }
 
         private void ParseDisplayAsPercent(bool RawDisplayAsPercent, ParseErrorInfo ErrorInfo)
@@ -128,12 +130,9 @@ namespace PgJsonObjects
             this.RawDisplayAsPercent = RawDisplayAsPercent;
         }
 
-        private static void ParseFieldSkipIfZero(SpecialValue This, object SkipIfZero, ParseErrorInfo ErrorInfo)
+        private static void ParseFieldSkipIfZero(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (SkipIfZero is bool)
-                This.ParseSkipIfZero((bool)SkipIfZero, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("SpecialValue SkipIfZero");
+            ParseFieldValueBool(Value, ErrorInfo, "SpecialValue SkipIfZero", This.ParseSkipIfZero);
         }
 
         private void ParseSkipIfZero(bool RawSkipIfZero, ParseErrorInfo ErrorInfo)

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections.Generic;
 
@@ -98,10 +98,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldHasAssociatedNpc(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseHasAssociatedNpc((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault HasAssociatedNpc");
+            ParseFieldValueBool(Value, ErrorInfo, "StorageVault HasAssociatedNpc", This.ParseHasAssociatedNpc);
         }
 
         private void ParseHasAssociatedNpc(bool RawHasAssociatedNpc, ParseErrorInfo ErrorInfo)
@@ -111,22 +108,22 @@ namespace PgJsonObjects
 
         private static void ParseFieldLevels(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject AsJObject;
-            if ((AsJObject = Value as JObject) != null)
+            JsonObject AsJObject;
+            if ((AsJObject = Value as JsonObject) != null)
                 This.ParseLevels(AsJObject, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("StorageVault Levels");
         }
 
-        private void ParseLevels(JObject RawLevels, ParseErrorInfo ErrorInfo)
+        private void ParseLevels(JsonObject RawLevels, ParseErrorInfo ErrorInfo)
         {
-            foreach (KeyValuePair<string, JToken> Entry in RawLevels)
+            foreach (KeyValuePair<string, IJsonValue> Entry in RawLevels)
             {
                 int FavorLevel;
-                JValue AsJValue;
+                JsonInteger AsJValue;
 
-                if (((AsJValue = Entry.Value as JValue) != null) && AsJValue.Type == JTokenType.Integer)
-                    FavorLevel = (int)(long)AsJValue.Value;
+                if ((AsJValue = Entry.Value as JsonInteger) != null)
+                    FavorLevel = AsJValue.Number;
                 else
                 {
                     ErrorInfo.AddInvalidObjectFormat("StorageVault Levels");
@@ -186,31 +183,31 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequirements(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject AsJObject;
-            if ((AsJObject = Value as JObject) != null)
+            JsonObject AsJObject;
+            if ((AsJObject = Value as JsonObject) != null)
                 This.ParseRequirements(AsJObject, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
         }
 
-        private void ParseRequirements(JObject RawRequirement, ParseErrorInfo ErrorInfo)
+        private void ParseRequirements(JsonObject RawRequirement, ParseErrorInfo ErrorInfo)
         {
-            if (RawRequirement.ContainsKey("T"))
+            if (RawRequirement.Has("T"))
             {
-                JValue AsJValue;
-                if (((AsJValue = RawRequirement["T"] as JValue) != null) && AsJValue.Type == JTokenType.String)
+                JsonString AsJsonString;
+                if ((AsJsonString = RawRequirement["T"] as JsonString) != null)
                 {
-                    string RequirementType = AsJValue.Value as string;
+                    string RequirementType = AsJsonString.String;
                     if (RequirementType == "InteractionFlagSet")
                     {
-                        if (RawRequirement.ContainsKey("InteractionFlag"))
+                        if (RawRequirement.Has("InteractionFlag"))
                         {
-                            JValue InteractionFlag = RawRequirement["InteractionFlag"] as JValue;
-                            if (InteractionFlag != null && InteractionFlag.Type == JTokenType.String)
+                            JsonString InteractionFlag;
+                            if ((InteractionFlag = RawRequirement["InteractionFlag"] as JsonString) != null)
                             {
-                                if (InteractionFlag.Value as string == "Ivyn_Gave_Passcode")
+                                if (InteractionFlag.String == "Ivyn_Gave_Passcode")
                                     InteractionFlagRequirement = "Ivyn Gave Passcode";
-                                else if (InteractionFlag.Value as string == "Serbule2_TapestryInnChest")
+                                else if (InteractionFlag.String == "Serbule2_TapestryInnChest")
                                     InteractionFlagRequirement = "Serbule Hills Tapestry Inn Chest";
                                 else
                                     ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");

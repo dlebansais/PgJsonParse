@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections.Generic;
 
@@ -37,10 +37,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldPrice(RecipeCost This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParsePrice((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParsePrice((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParsePrice(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParsePrice(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeCost Price");
         }

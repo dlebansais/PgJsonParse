@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -153,34 +153,17 @@ namespace PgJsonObjects
 
         private static void ParseFieldDuration(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JValue AsJValue;
-            string AsString;
+            JsonInteger AsJsonInteger;
+            JsonString AsJsonString;
 
-            if (Value is long)
-                This.ParseDuration((long)Value, ErrorInfo);
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseDuration(AsJsonInteger.Number, ErrorInfo);
 
-            else if ((AsString = Value as string) != null)
+            else if ((AsJsonString = Value as JsonString) != null)
             {
                 int RawDuration;
-                if (int.TryParse(AsString, out RawDuration))
+                if (int.TryParse(AsJsonString.String, out RawDuration))
                     This.ParseDuration(RawDuration, ErrorInfo);
-                else
-                    ErrorInfo.AddInvalidObjectFormat("Effect Duration");
-            }
-
-            else if ((AsJValue = Value as JValue) != null)
-            {
-                if (AsJValue.Type == JTokenType.Integer)
-                    This.ParseDuration((long)Value, ErrorInfo);
-
-                else if (AsJValue.Type == JTokenType.String)
-                {
-                    int RawDuration;
-                    if (int.TryParse(AsJValue.Value as string, out RawDuration))
-                        This.ParseDuration(RawDuration, ErrorInfo);
-                    else
-                        ErrorInfo.AddInvalidObjectFormat("Effect Duration");
-                }
                 else
                     ErrorInfo.AddInvalidObjectFormat("Effect Duration");
             }
@@ -195,14 +178,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldKeywords(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawKeywords;
-            if ((RawKeywords = Value as JArray) != null)
+            JsonArray RawKeywords;
+            if ((RawKeywords = Value as JsonArray) != null)
                 This.ParseKeywords(RawKeywords, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Effect Keywords");
         }
 
-        private void ParseKeywords(JArray RawKeywords, ParseErrorInfo ErrorInfo)
+        private void ParseKeywords(JsonArray RawKeywords, ParseErrorInfo ErrorInfo)
         {
             List<EffectKeyword> ParsedKeywordList = new List<EffectKeyword>();
             StringToEnumConversion<EffectKeyword>.ParseList(RawKeywords, KeywordStringMap, ParsedKeywordList, ErrorInfo);
@@ -217,14 +200,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldAbilityKeywords(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawAbilityKeywords;
-            if ((RawAbilityKeywords = Value as JArray) != null)
+            JsonArray RawAbilityKeywords;
+            if ((RawAbilityKeywords = Value as JsonArray) != null)
                 This.ParseAbilityKeywords(RawAbilityKeywords, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Effect AbilityKeywords");
         }
 
-        private void ParseAbilityKeywords(JArray RawAbilityKeywords, ParseErrorInfo ErrorInfo)
+        private void ParseAbilityKeywords(JsonArray RawAbilityKeywords, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<AbilityKeyword>.ParseList(RawAbilityKeywords, AbilityKeywordList, ErrorInfo);
             IsAbilityKeywordListEmpty = (RawAbilityKeywords != null && RawAbilityKeywords.Count == 0);

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections.Generic;
 
@@ -16,20 +16,20 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        public override void Init(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
+        public override void Init(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
         {
             InitializeKey(EntryRaw, ErrorInfo);
 
             LevelTable = new Dictionary<int, Advancement>();
 
-            JObject AsJObject;
-            Dictionary<string, JObject> Levels;
-            if ((AsJObject = EntryRaw.Value as JObject) != null)
+            JsonObject AsJObject;
+            Dictionary<string, JsonObject> Levels;
+            if ((AsJObject = EntryRaw.Value as JsonObject) != null)
             {
-                foreach (KeyValuePair<string, JToken> Token in AsJObject)
+                foreach (KeyValuePair<string, IJsonValue> Token in AsJObject)
                 {
-                    JObject AsSubObject;
-                    if ((AsSubObject = Token.Value as JObject) != null)
+                    JsonObject AsSubObject;
+                    if ((AsSubObject = Token.Value as JsonObject) != null)
                         Init(Token.Key, AsSubObject, ErrorInfo);
                     else
                     {
@@ -39,16 +39,16 @@ namespace PgJsonObjects
                 }
             }
 
-            else if ((Levels = EntryRaw.Value as Dictionary<string, JObject>) != null)
+            else if ((Levels = EntryRaw.Value as Dictionary<string, JsonObject>) != null)
             {
-                foreach (KeyValuePair<string, JObject> Level in Levels)
+                foreach (KeyValuePair<string, JsonObject> Level in Levels)
                     Init(Level.Key, Level.Value, ErrorInfo);
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key);
         }
 
-        private void Init(string LevelKey, JObject LevelValue, ParseErrorInfo ErrorInfo)
+        private void Init(string LevelKey, JsonObject LevelValue, ParseErrorInfo ErrorInfo)
         {
             if (LevelKey.StartsWith("Level_"))
             {
@@ -66,7 +66,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key + ", " + LevelKey);
         }
 
-        protected override void InitializeKey(KeyValuePair<string, object> EntryRaw, ParseErrorInfo ErrorInfo)
+        protected override void InitializeKey(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
         {
             base.InitializeKey(EntryRaw, ErrorInfo);
 

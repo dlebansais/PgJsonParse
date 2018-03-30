@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -355,10 +355,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMustCompleteEarlierObjectivesFirst(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseMustCompleteEarlierObjectivesFirst((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective MustCompleteEarlierObjectivesFirst");
+            ParseFieldValueBool(Value, ErrorInfo, "QuestObjective MustCompleteEarlierObjectivesFirst", This.ParseMustCompleteEarlierObjectivesFirst);
         }
 
         private void ParseMustCompleteEarlierObjectivesFirst(bool RawMustCompleteEarlierObjectivesFirst, ParseErrorInfo ErrorInfo)
@@ -570,31 +567,31 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequirements(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject AsJObject;
-            if ((AsJObject = Value as JObject) != null)
+            JsonObject AsJObject;
+            if ((AsJObject = Value as JsonObject) != null)
                 This.ParseRequirements(AsJObject, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
         }
 
-        private void ParseRequirements(JObject RawRequirement, ParseErrorInfo ErrorInfo)
+        private void ParseRequirements(JsonObject RawRequirement, ParseErrorInfo ErrorInfo)
         {
-            if (RawRequirement.ContainsKey("T"))
+            if (RawRequirement.Has("T"))
             {
-                JValue AsJValue;
-                if (((AsJValue = RawRequirement["T"] as JValue) != null) && AsJValue.Type == JTokenType.String)
+                JsonString AsJsonString;
+                if ((AsJsonString = RawRequirement["T"] as JsonString) != null)
                 {
-                    string RequirementType = AsJValue.Value as string;
+                    string RequirementType = AsJsonString.String;
                     if (RequirementType == "TimeOfDay")
                     {
-                        if (RawRequirement.ContainsKey("MinHour") && RawRequirement.ContainsKey("MaxHour"))
+                        if (RawRequirement.Has("MinHour") && RawRequirement.Has("MaxHour"))
                         {
-                            JValue MinHourJValue;
-                            JValue MaxHourJValue;
-                            if (((MinHourJValue = RawRequirement["MinHour"] as JValue) != null) && ((MaxHourJValue = RawRequirement["MaxHour"] as JValue) != null) && MinHourJValue.Type == JTokenType.Integer && MaxHourJValue.Type == JTokenType.Integer)
+                            JsonInteger MinHourJValue;
+                            JsonInteger MaxHourJValue;
+                            if (((MinHourJValue = RawRequirement["MinHour"] as JsonInteger) != null) && ((MaxHourJValue = RawRequirement["MaxHour"] as JsonInteger) != null))
                             {
-                                MinHour = (int)(long)MinHourJValue.Value;
-                                MaxHour = (int)(long)MaxHourJValue.Value;
+                                MinHour = MinHourJValue.Number;
+                                MaxHour = MaxHourJValue.Number;
                             }
                             else
                                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
@@ -604,12 +601,12 @@ namespace PgJsonObjects
                     }
                     else if (RequirementType == "HasEffectKeyword")
                     {
-                        if (RawRequirement.ContainsKey("Keyword"))
+                        if (RawRequirement.Has("Keyword"))
                         {
-                            JValue KeywordJValue;
-                            if (((KeywordJValue = RawRequirement["Keyword"] as JValue) != null) && KeywordJValue.Type == JTokenType.String)
+                            JsonString KeywordJValue;
+                            if ((KeywordJValue = RawRequirement["Keyword"] as JsonString) != null)
                             {
-                                string EffectKeyword = KeywordJValue.Value as string;
+                                string EffectKeyword = KeywordJValue.String;
                                 EffectKeyword ParsedEffectKeyword;
                                 if (StringToEnumConversion<EffectKeyword>.TryParse(EffectKeyword, out ParsedEffectKeyword, ErrorInfo))
                                 {

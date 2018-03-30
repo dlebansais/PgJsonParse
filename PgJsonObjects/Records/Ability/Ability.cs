@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -214,52 +214,49 @@ namespace PgJsonObjects
 
         private static void ParseFieldAttributesThatDeltaPowerCost(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawAttributesThatDeltaPowerCost2;
-            if ((RawAttributesThatDeltaPowerCost2 = Value as JArray) != null)
+            JsonArray RawAttributesThatDeltaPowerCost2;
+            if ((RawAttributesThatDeltaPowerCost2 = Value as JsonArray) != null)
                 This.ParseAttributesThatDeltaPowerCost(RawAttributesThatDeltaPowerCost2, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability AttributesThatDeltaPowerCost");
         }
 
-        private void ParseAttributesThatDeltaPowerCost(JArray RawAttributesThatDeltaPowerCost, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatDeltaPowerCost(JsonArray RawAttributesThatDeltaPowerCost, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatDeltaPowerCost, RawAttributesThatDeltaPowerCostList, "AttributesThatDeltaPowerCost", ErrorInfo, out RawAttributesThatDeltaPowerCostListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatDeltaResetTime(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawAttributesThatDeltaResetTime;
-            if ((RawAttributesThatDeltaResetTime = Value as JArray) != null)
+            JsonArray RawAttributesThatDeltaResetTime;
+            if ((RawAttributesThatDeltaResetTime = Value as JsonArray) != null)
                 This.ParseAttributesThatDeltaResetTime(RawAttributesThatDeltaResetTime, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability AttributesThatDeltaResetTime");
         }
 
-        private void ParseAttributesThatDeltaResetTime(JArray RawAttributesThatDeltaResetTime, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatDeltaResetTime(JsonArray RawAttributesThatDeltaResetTime, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatDeltaResetTime, RawAttributesThatDeltaResetTimeList, "AttributesThatDeltaResetTime", ErrorInfo, out RawAttributesThatDeltaResetTimeListIsEmpty);
         }
 
         private static void ParseFieldAttributesThatModPowerCost(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawAttributesThatModPowerCost;
-            if ((RawAttributesThatModPowerCost = Value as JArray) != null)
+            JsonArray RawAttributesThatModPowerCost;
+            if ((RawAttributesThatModPowerCost = Value as JsonArray) != null)
                 This.ParseAttributesThatModPowerCost(RawAttributesThatModPowerCost, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability AttributesThatModPowerCost");
         }
 
-        private void ParseAttributesThatModPowerCost(JArray RawAttributesThatModPowerCost, ParseErrorInfo ErrorInfo)
+        private void ParseAttributesThatModPowerCost(JsonArray RawAttributesThatModPowerCost, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawAttributesThatModPowerCost, RawAttributesThatModPowerCostList, "AttributesThatModPowerCost", ErrorInfo, out RawAttributesThatModPowerCostListIsEmpty);
         }
 
         private static void ParseFieldCanBeOnSidebar(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseCanBeOnSidebar((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability CanBeOnSidebar");
+            ParseFieldValueBool(Value, ErrorInfo, "Ability CanBeOnSidebar", This.ParseCanBeOnSidebar);
         }
 
         private void ParseCanBeOnSidebar(bool RawCanBeOnSidebar, ParseErrorInfo ErrorInfo)
@@ -269,10 +266,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCanSuppressMonsterShout(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseCanSuppressMonsterShout((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability CanSuppressMonsterShout");
+            ParseFieldValueBool(Value, ErrorInfo, "Ability CanSuppressMonsterShout", This.ParseCanSuppressMonsterShout);
         }
 
         private void ParseCanSuppressMonsterShout(bool RawCanSuppressMonsterShout, ParseErrorInfo ErrorInfo)
@@ -282,10 +276,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCanTargetUntargetableEnemies(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseCanTargetUntargetableEnemies((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability CanTargetUntargetableEnemies");
+            ParseFieldValueBool(Value, ErrorInfo, "Ability CanTargetUntargetableEnemies", This.ParseCanTargetUntargetableEnemies);
         }
 
         private void ParseCanTargetUntargetableEnemies(bool RawCanTargetUntargetableEnemies, ParseErrorInfo ErrorInfo)
@@ -295,28 +286,28 @@ namespace PgJsonObjects
 
         private static void ParseFieldCausesOfDeath(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawCausesOfDeath;
-            if ((RawCausesOfDeath = Value as JArray) != null)
+            JsonArray RawCausesOfDeath;
+            if ((RawCausesOfDeath = Value as JsonArray) != null)
                 This.ParseCausesOfDeath(RawCausesOfDeath, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability CausesOfDeath");
         }
 
-        private void ParseCausesOfDeath(JArray RawCausesOfDeath, ParseErrorInfo ErrorInfo)
+        private void ParseCausesOfDeath(JsonArray RawCausesOfDeath, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<Deaths>.ParseList(RawCausesOfDeath, CausesOfDeathList, ErrorInfo);
         }
 
         private static void ParseFieldCosts(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray AsJArray;
-            if ((AsJArray = Value as JArray) != null)
+            JsonArray AsJArray;
+            if ((AsJArray = Value as JsonArray) != null)
                 This.ParseCosts(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability Costs");
         }
 
-        private void ParseCosts(JArray RawCosts, ParseErrorInfo ErrorInfo)
+        private void ParseCosts(JsonArray RawCosts, ParseErrorInfo ErrorInfo)
         {
             List<RecipeCost> ParsedCostList;
             JsonObjectParser<RecipeCost>.InitAsSublist(RawCosts, out ParsedCostList, ErrorInfo);
@@ -335,14 +326,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldCompatibleSkills(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawCompatibleSkills;
-            if ((RawCompatibleSkills = Value as JArray) != null)
+            JsonArray RawCompatibleSkills;
+            if ((RawCompatibleSkills = Value as JsonArray) != null)
                 This.ParseCompatibleSkills(RawCompatibleSkills, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability CompatibleSkills");
         }
 
-        private void ParseCompatibleSkills(JArray RawCompatibleSkills, ParseErrorInfo ErrorInfo)
+        private void ParseCompatibleSkills(JsonArray RawCompatibleSkills, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<PowerSkill>.ParseList(RawCompatibleSkills, RawCompatibleSkillList, ErrorInfo);
 
@@ -352,10 +343,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldConsumedItemChance(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseConsumedItemChance((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParseConsumedItemChance((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseConsumedItemChance(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseConsumedItemChance(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemChance");
         }
@@ -371,10 +367,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldConsumedItemChanceToStickInCorpse(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseConsumedItemChanceToStickInCorpse((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParseConsumedItemChanceToStickInCorpse((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseConsumedItemChanceToStickInCorpse(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseConsumedItemChanceToStickInCorpse(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemChanceToStickInCorpse");
         }
@@ -425,10 +426,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDelayLoopIsAbortedIfAttacked(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseDelayLoopIsAbortedIfAttacked((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability DelayLoopIsAbortedIfAttacked");
+            ParseFieldValueBool(Value, ErrorInfo, "Ability DelayLoopIsAbortedIfAttacked", This.ParseDelayLoopIsAbortedIfAttacked);
         }
 
         private void ParseDelayLoopIsAbortedIfAttacked(bool RawDelayLoopIsAbortedIfAttacked, ParseErrorInfo ErrorInfo)
@@ -471,14 +469,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldEffectKeywordsIndicatingEnabled(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawEffectKeywordsIndicatingEnabled;
-            if ((RawEffectKeywordsIndicatingEnabled = Value as JArray) != null)
+            JsonArray RawEffectKeywordsIndicatingEnabled;
+            if ((RawEffectKeywordsIndicatingEnabled = Value as JsonArray) != null)
                 This.ParseEffectKeywordsIndicatingEnabled(RawEffectKeywordsIndicatingEnabled, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability EffectKeywordsIndicatingEnabled");
         }
 
-        private void ParseEffectKeywordsIndicatingEnabled(JArray RawEffectKeywordsIndicatingEnabled, ParseErrorInfo ErrorInfo)
+        private void ParseEffectKeywordsIndicatingEnabled(JsonArray RawEffectKeywordsIndicatingEnabled, ParseErrorInfo ErrorInfo)
         {
             List<AbilityIndicatingEnabled> EffectKeywordsIndicatingEnabledList = new List<AbilityIndicatingEnabled>();
             StringToEnumConversion<AbilityIndicatingEnabled>.ParseList(RawEffectKeywordsIndicatingEnabled, EffectKeywordsIndicatingEnabledList, ErrorInfo);
@@ -509,10 +507,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldInternalAbility(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseInternalAbility((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability InternalAbility");
+            ParseFieldValueBool(Value, ErrorInfo, "Ability InternalAbility", This.ParseInternalAbility);
         }
 
         private void ParseInternalAbility(bool RawInternalAbility, ParseErrorInfo ErrorInfo)
@@ -532,10 +527,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsHarmless(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsHarmless((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability IsHarmless");
+            ParseFieldValueBool(Value, ErrorInfo, "Ability IsHarmless", This.ParseIsHarmless);
         }
 
         private void ParseIsHarmless(bool RawIsHarmless, ParseErrorInfo ErrorInfo)
@@ -555,28 +547,28 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemKeywordReqs(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawItemKeywordReqs;
-            if ((RawItemKeywordReqs = Value as JArray) != null)
+            JsonArray RawItemKeywordReqs;
+            if ((RawItemKeywordReqs = Value as JsonArray) != null)
                 This.ParseItemKeywordReqs(RawItemKeywordReqs, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability ItemKeywordReqs");
         }
 
-        private void ParseItemKeywordReqs(JArray RawItemKeywordReqs, ParseErrorInfo ErrorInfo)
+        private void ParseItemKeywordReqs(JsonArray RawItemKeywordReqs, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<AbilityItemKeyword>.ParseList(RawItemKeywordReqs, TextMaps.AbilityItemKeywordStringMap, ItemKeywordReqList, ErrorInfo);
         }
 
         private static void ParseFieldKeywords(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawKeywords;
-            if ((RawKeywords = Value as JArray) != null)
+            JsonArray RawKeywords;
+            if ((RawKeywords = Value as JsonArray) != null)
                 This.ParseKeywords(RawKeywords, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability Keywords");
         }
 
-        private void ParseKeywords(JArray RawKeywords, ParseErrorInfo ErrorInfo)
+        private void ParseKeywords(JsonArray RawKeywords, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<AbilityKeyword>.ParseList(RawKeywords, KeywordList, ErrorInfo);
             if (KeywordList.Contains(AbilityKeyword.BasicAttack))
@@ -652,14 +644,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldPvE(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject RawPvE;
-            if ((RawPvE = Value as JObject) != null)
+            JsonObject RawPvE;
+            if ((RawPvE = Value as JsonObject) != null)
                 This.ParsePvE(RawPvE, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability PvE");
         }
 
-        private void ParsePvE(JObject RawPvE, ParseErrorInfo ErrorInfo)
+        private void ParsePvE(JsonObject RawPvE, ParseErrorInfo ErrorInfo)
         {
             AbilityPvX ParsedPvE;
             JsonObjectParser<AbilityPvX>.InitAsSubitem("PvE", RawPvE, out ParsedPvE, ErrorInfo);
@@ -668,14 +660,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldPvP(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject RawPvP;
-            if ((RawPvP = Value as JObject) != null)
+            JsonObject RawPvP;
+            if ((RawPvP = Value as JsonObject) != null)
                 This.ParsePvP(RawPvP, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability PvP");
         }
 
-        private void ParsePvP(JObject RawPvP, ParseErrorInfo ErrorInfo)
+        private void ParsePvP(JsonObject RawPvP, ParseErrorInfo ErrorInfo)
         {
             AbilityPvX ParsedPvP;
             JsonObjectParser<AbilityPvX>.InitAsSubitem("PvP", RawPvP, out ParsedPvP, ErrorInfo);
@@ -684,10 +676,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldResetTime(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseResetTime((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParseResetTime((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseResetTime(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseResetTime(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability ResetTime");
         }
@@ -737,16 +734,16 @@ namespace PgJsonObjects
 
         private static void ParseFieldSpecialCasterRequirements(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject AsJObject;
-            JArray AsJArray;
+            JsonObject AsJObject;
+            JsonArray AsJArray;
 
-            if ((AsJObject = Value as JObject) != null)
+            if ((AsJObject = Value as JsonObject) != null)
                 This.ParseSpecialCasterRequirement(AsJObject, "SpecialCasterRequirements", ErrorInfo);
 
-            else if ((AsJArray = Value as JArray) != null)
+            else if ((AsJArray = Value as JsonArray) != null)
             {
                 foreach (object RawItem in AsJArray)
-                    if ((AsJObject = RawItem as JObject) != null)
+                    if ((AsJObject = RawItem as JsonObject) != null)
                         This.ParseSpecialCasterRequirement(AsJObject, null, ErrorInfo);
                     else
                         ErrorInfo.AddInvalidObjectFormat("Ability SpecialCasterRequirements Array");
@@ -827,10 +824,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldWorksInCombat(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseWorksInCombat((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability WorksInCombat");
+            ParseFieldValueBool(Value, ErrorInfo, "Ability WorksInCombat", This.ParseWorksInCombat);
         }
 
         private void ParseWorksInCombat(bool RawWorksInCombat, ParseErrorInfo ErrorInfo)
@@ -840,10 +834,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldWorksUnderwater(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseWorksUnderwater((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability WorksUnderwater");
+            ParseFieldValueBool(Value, ErrorInfo, "Ability WorksUnderwater", This.ParseWorksUnderwater);
         }
 
         private void ParseWorksUnderwater(bool RawWorksUnderwater, ParseErrorInfo ErrorInfo)
@@ -853,10 +844,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldWorksWhileFalling(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseWorksWhileFalling((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability WorksWhileFalling");
+            ParseFieldValueBool(Value, ErrorInfo, "Ability WorksWhileFalling", This.ParseWorksWhileFalling);
         }
 
         private void ParseWorksWhileFalling(bool RawWorksWhileFalling, ParseErrorInfo ErrorInfo)
@@ -866,14 +854,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldExtraKeywordsForTooltips(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawExtraKeywordsForTooltips;
-            if ((RawExtraKeywordsForTooltips = Value as JArray) != null)
+            JsonArray RawExtraKeywordsForTooltips;
+            if ((RawExtraKeywordsForTooltips = Value as JsonArray) != null)
                 This.ParseExtraKeywordsForTooltips(RawExtraKeywordsForTooltips, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Ability ExtraKeywordsForTooltips");
         }
 
-        private void ParseExtraKeywordsForTooltips(JArray RawExtraKeywordsForTooltips, ParseErrorInfo ErrorInfo)
+        private void ParseExtraKeywordsForTooltips(JsonArray RawExtraKeywordsForTooltips, ParseErrorInfo ErrorInfo)
         {
             List<TooltipsExtraKeywords> ExtraKeywordsForTooltipList = new List<TooltipsExtraKeywords>();
             StringToEnumConversion<TooltipsExtraKeywords>.ParseList(RawExtraKeywordsForTooltips, ExtraKeywordsForTooltipList, ErrorInfo);
@@ -895,7 +883,7 @@ namespace PgJsonObjects
             IsRawAbilityGroupParsed = false;
         }
 
-        public void ParseSpecialCasterRequirement(JObject RawSpecialCasterRequirement, string ObjectKey, ParseErrorInfo ErrorInfo)
+        public void ParseSpecialCasterRequirement(JsonObject RawSpecialCasterRequirement, string ObjectKey, ParseErrorInfo ErrorInfo)
         {
             AbilityRequirement ParsedSpecialCasterRequirement;
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("SpecialCasterRequirement", RawSpecialCasterRequirement, out ParsedSpecialCasterRequirement, ErrorInfo);

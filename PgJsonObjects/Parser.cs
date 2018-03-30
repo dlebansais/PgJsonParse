@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,20 +39,20 @@ namespace PgJsonObjects
             string Content = LoadContent(FilePath);
             if (Content != null)
             {
-                JsonSerializer ser = new JsonSerializer();
-
                 try
                 {
-                    Dictionary<string, object> RecordTableRaw = ser.Deserialize<Dictionary<string, object>>(new JsonTextReader(new StringReader(Content)));
+                    using (IJsonReader reader = new JsonTextReader(Content))
+                    {
+                        JsonObject RootObject = reader.Parse();
+                        foreach (KeyValuePair<string, IJsonValue> EntryRaw in RootObject.Entries)
+                            if (EntryRaw.Key != null && EntryRaw.Key.Length > 0)
+                            {
+                                T NewObject = new T();
+                                NewObject.Init(EntryRaw, ErrorInfo);
 
-                    foreach (KeyValuePair<string, object> EntryRaw in RecordTableRaw)
-                        if (EntryRaw.Key != null && EntryRaw.Key.Length > 0)
-                        {
-                            T NewObject = new T();
-                            NewObject.Init(EntryRaw, ErrorInfo);
-
-                            ObjectList.Add(NewObject);
-                        }
+                                ObjectList.Add(NewObject);
+                            }
+                    }
                 }
                 catch (Exception e)
                 {

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections.Generic;
 
@@ -38,10 +38,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldStackSize(QuestRewardItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseStackSize((long)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestRewardItem StackSize");
+            ParseFieldValueLong(Value, ErrorInfo, "QuestRewardItem StackSize", This.ParseStackSize);
         }
 
         private void ParseStackSize(long RawStackSize, ParseErrorInfo ErrorInfo)

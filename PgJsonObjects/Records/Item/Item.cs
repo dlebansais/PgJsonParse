@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -120,14 +120,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldBestowRecipes(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawBestowRecipes;
-            if ((RawBestowRecipes = Value as JArray) != null)
+            JsonArray RawBestowRecipes;
+            if ((RawBestowRecipes = Value as JsonArray) != null)
                 This.ParseBestowRecipes(RawBestowRecipes, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item BestowRecipes");
         }
 
-        private void ParseBestowRecipes(JArray RawBestowRecipes, ParseErrorInfo ErrorInfo)
+        private void ParseBestowRecipes(JsonArray RawBestowRecipes, ParseErrorInfo ErrorInfo)
         {
             ParseStringTable(RawBestowRecipes, RawBestowRecipesList, "BestowRecipes", ErrorInfo, out RawBestowRecipesListIsEmpty);
         }
@@ -158,10 +158,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAllowPrefix(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseAllowPrefix((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item AllowPrefix");
+            ParseFieldValueBool(Value, ErrorInfo, "Item AllowPrefix", This.ParseAllowPrefix);
         }
 
         private void ParseAllowPrefix(bool RawAllowPrefix, ParseErrorInfo ErrorInfo)
@@ -171,10 +168,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAllowSuffix(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseAllowSuffix((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item AllowSuffix");
+            ParseFieldValueBool(Value, ErrorInfo, "Item AllowSuffix", This.ParseAllowSuffix);
         }
 
         private void ParseAllowSuffix(bool RawAllowSuffix, ParseErrorInfo ErrorInfo)
@@ -318,10 +312,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsTemporary(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsTemporary((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item IsTemporary");
+            ParseFieldValueBool(Value, ErrorInfo, "Item IsTemporary", This.ParseIsTemporary);
         }
 
         private void ParseIsTemporary(bool RawIsTemporary, ParseErrorInfo ErrorInfo)
@@ -331,10 +322,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsCrafted(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsCrafted((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item IsCrafted");
+            ParseFieldValueBool(Value, ErrorInfo, "Item IsCrafted", This.ParseIsCrafted);
         }
 
         private void ParseIsCrafted(bool RawIsCrafted, ParseErrorInfo ErrorInfo)
@@ -467,28 +455,28 @@ namespace PgJsonObjects
 
         private static void ParseFieldSkillReqs(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JObject RawSkillReqs;
-            if ((RawSkillReqs = Value as JObject) != null)
+            JsonObject RawSkillReqs;
+            if ((RawSkillReqs = Value as JsonObject) != null)
                 This.ParseSkillReqs(RawSkillReqs, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item SkillReqs");
         }
 
-        private void ParseSkillReqs(JObject RawSkillReqs, ParseErrorInfo ErrorInfo)
+        private void ParseSkillReqs(JsonObject RawSkillReqs, ParseErrorInfo ErrorInfo)
         {
             Dictionary<string, ItemSkillLink> SkillRequirementTable = new Dictionary<string, ItemSkillLink>();
 
-            foreach (KeyValuePair<string, JToken> SkillEntry in RawSkillReqs)
+            foreach (KeyValuePair<string, IJsonValue> SkillEntry in RawSkillReqs)
             {
                 if (SkillEntry.Key == "Unknown")
                     continue;
 
                 if (!SkillRequirementTable.ContainsKey(SkillEntry.Key))
                 {
-                    JValue AsJValue;
-                    if (((AsJValue = SkillEntry.Value as JValue) != null) && AsJValue.Type == JTokenType.Integer)
+                    JsonInteger AsJsonInteger;
+                    if ((AsJsonInteger = SkillEntry.Value as JsonInteger) != null)
                     {
-                        int SkillValue = (int)(long)SkillEntry.Value;
+                        int SkillValue = AsJsonInteger.Number;
                         SkillRequirementTable.Add(SkillEntry.Key, new ItemSkillLink(SkillEntry.Key, SkillValue));
                     }
                     else
@@ -563,10 +551,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldValue(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is long)
-                This.ParseValue((long)Value, ErrorInfo);
-            else if (Value is double)
-                This.ParseValue((double)Value, ErrorInfo);
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseValue(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseValue(AsJsonFloat.Number, ErrorInfo);
+
             else
                 ErrorInfo.AddInvalidObjectFormat("Item Value");
         }
@@ -576,12 +569,9 @@ namespace PgJsonObjects
             this.RawValue = RawValue;
         }
 
-        private static void ParseFieldNumUses(Item This, object NumUses, ParseErrorInfo ErrorInfo)
+        private static void ParseFieldNumUses(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (NumUses is long)
-                This.ParseNumUses((long)NumUses, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item NumUses");
+            ParseFieldValueLong(Value, ErrorInfo, "Item NumUses", This.ParseNumUses);
         }
 
         private void ParseNumUses(long RawNumUses, ParseErrorInfo ErrorInfo)
@@ -591,10 +581,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDestroyWhenUsedUp(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseDestroyWhenUsedUp((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item DestroyWhenUsedUp");
+            ParseFieldValueBool(Value, ErrorInfo, "Item DestroyWhenUsedUp", This.ParseDestroyWhenUsedUp);
         }
 
         private void ParseDestroyWhenUsedUp(bool RawDestroyWhenUsedUp, ParseErrorInfo ErrorInfo)
@@ -604,14 +591,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldBehaviors(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray AsJArray;
-            if ((AsJArray = Value as JArray) != null)
+            JsonArray AsJArray;
+            if ((AsJArray = Value as JsonArray) != null)
                 This.ParseBehaviors(AsJArray, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Item Behaviors");
         }
 
-        private void ParseBehaviors(JArray RawBehaviors, ParseErrorInfo ErrorInfo)
+        private void ParseBehaviors(JsonArray RawBehaviors, ParseErrorInfo ErrorInfo)
         {
             List<ItemBehavior> ParsedBehaviorList;
             JsonObjectParser<ItemBehavior>.InitAsSublist(RawBehaviors, out ParsedBehaviorList, ErrorInfo);
@@ -635,10 +622,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIsSkillReqsDefaults(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (Value is bool)
-                This.ParseIsSkillReqsDefaults((bool)Value, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item IsSkillReqsDefaults");
+            ParseFieldValueBool(Value, ErrorInfo, "Item IsSkillReqsDefaults", This.ParseIsSkillReqsDefaults);
         }
 
         private void ParseIsSkillReqsDefaults(bool RawIsSkillReqsDefaults, ParseErrorInfo ErrorInfo)
@@ -646,12 +630,9 @@ namespace PgJsonObjects
             this.RawIsSkillReqsDefaults = RawIsSkillReqsDefaults;
         }
 
-        private static void ParseFieldBestowTitle(Item This, object BestowTitle, ParseErrorInfo ErrorInfo)
+        private static void ParseFieldBestowTitle(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (BestowTitle is long)
-                This.ParseBestowTitle((long)BestowTitle, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item BestowTitle");
+            ParseFieldValueLong(Value, ErrorInfo, "Item BestowTitle", This.ParseBestowTitle);
         }
 
         private void ParseBestowTitle(long RawBestowTitle, ParseErrorInfo ErrorInfo)
@@ -659,12 +640,9 @@ namespace PgJsonObjects
             this.RawBestowTitle = (int)RawBestowTitle;
         }
 
-        private static void ParseFieldBestowLoreBook(Item This, object BestowLoreBook, ParseErrorInfo ErrorInfo)
+        private static void ParseFieldBestowLoreBook(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            if (BestowLoreBook is long)
-                This.ParseBestowLoreBook((long)BestowLoreBook, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item BestowLoreBook");
+            ParseFieldValueLong(Value, ErrorInfo, "Item BestowLoreBook", This.ParseBestowLoreBook);
         }
 
         private void ParseBestowLoreBook(long RawBestowLoreBook, ParseErrorInfo ErrorInfo)

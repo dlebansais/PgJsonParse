@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using PgJsonReader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,14 +41,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldXpAmounts(XpTable This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JArray RawXpAmounts;
-            if ((RawXpAmounts = Value as JArray) != null)
+            JsonArray RawXpAmounts;
+            if ((RawXpAmounts = Value as JsonArray) != null)
                 This.ParseXpAmounts(RawXpAmounts, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("XpTable XpAmounts");
         }
 
-        private void ParseXpAmounts(JArray RawXpAmounts, ParseErrorInfo ErrorInfo)
+        private void ParseXpAmounts(JsonArray RawXpAmounts, ParseErrorInfo ErrorInfo)
         {
             List<int> XpList = new List<int>();
             ParseIntTable(RawXpAmounts, XpList, "XpAmounts", ErrorInfo, out IsXpAmountListEmpty);
