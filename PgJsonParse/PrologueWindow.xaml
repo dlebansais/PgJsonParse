@@ -23,10 +23,6 @@
         <sys:Double x:Key="AllColumns">400</sys:Double>
         <sys:Double x:Key="AllColumnsAndMargin">426</sys:Double>
         <sys:Double x:Key="AllColumnsAndButton">451</sys:Double>
-        <app:CustomCompositeCollection x:Key="NormalBold">
-            <FontWeight>Normal</FontWeight>
-            <FontWeight>Bold</FontWeight>
-        </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
@@ -300,27 +296,9 @@
                 </DockPanel>
             </Border>
         </DataTemplate>
-        <Style x:Key="TabControlStyle" TargetType="TabControl">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TabControl">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="1">
-                                <TabPanel Grid.Row="0" IsItemsHost="true"/>
-                                <Border BorderThickness="0" Margin="0,20,0,0">
-                                    <ContentPresenter Content="{Binding SelectedContent, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                </Border>
-                            </Grid>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style x:Key="TabItemStyle" TargetType="TabItem">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
@@ -369,6 +347,33 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <StackPanel>
+                            <VisualStateManager.VisualStateGroups>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border x:Name="OuterBorder" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                <DockPanel>
+                                    <ToggleButton x:Name="DropDownToggle" DockPanel.Dock="Right" IsChecked="{Binding IsVersionSelectionToggled, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" BorderThickness="0" Background="Transparent" Padding="2,4,3,4">
+                                        <Path x:Name="arrow" Visibility="Visible" Stroke="Gray" Width="13" Height="15" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None" Data="M 1.5,2.25 L 6.75,7.5 L 12,2.25 M 1.5,8.25 L 6.75,13.5 L 12,8.25"/>
+                                    </ToggleButton>
+                                    <ContentControl x:Name="ContentPresenter" Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}" ContentTemplate="{StaticResource GameVersionInfoTemplate}" Margin="{TemplateBinding Padding}" MinHeight="24"/>
+                                </DockPanel>
+                            </Border>
+                            <Popup x:Name="PART_Popup" IsOpen="{Binding IsChecked, ElementName=DropDownToggle}" HorizontalOffset="-20">
+                                <Border Background="#F4F4F4" BorderThickness="0">
+                                    <ScrollViewer MaxHeight="{TemplateBinding MaxDropDownHeight}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <ItemsPresenter x:Name="ItemsPresenter"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2">
         <Grid>
@@ -377,7 +382,7 @@
                     <ctrl:SelectorItem>
                         <DockPanel>
                             <ctrl:SelectorControl DockPanel.Dock="Bottom" Selector="StatusMessage">
-                                <ctrl:SelectorItem Value="True">
+                                <ctrl:SelectorItem Value="">
                                     <DockPanel HorizontalAlignment="Left" Width="{StaticResource AllColumnsAndMargin}" ToolTip="{Binding LastExceptionMessage}" Margin="0,10,0,0">
                                         <ctrl:SelectorControl DockPanel.Dock="Left" Selector="LastExceptionMessage">
                                             <ctrl:SelectorItem Value="True">
@@ -430,32 +435,17 @@
                                     </StackPanel>
                                 </Border>
                             </DockPanel>
-                            <ctrl:SelectorControl Selector="SelectedVersion">
-                                <ctrl:SelectorItem Value="True">
-                                    <DockPanel x:Name="stackVersions" VerticalAlignment="Center">
-                                        <Grid DockPanel.Dock="Right" VerticalAlignment="Bottom" Width="{StaticResource Column4}" Height="20" Margin="2,0,0,0">
-                                            <ToggleButton x:Name="buttonVersions" Visibility="{Binding VersionList.Count, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource CollapsedCollapsedVisible}}" Checked="OnToggleButtonChecked" Unchecked="OnToggleButtonUnchecked" BorderThickness="0" Background="#F4F4F4" IsEnabled="{Binding IsGlobalInteractionEnabled}">
-                                                <Image Source="{StaticResource imgDropDown}" Width="16" Margin="0,0,0,4"/>
-                                            </ToggleButton>
-                                        </Grid>
-                                        <ContentControl Content="{Binding SelectedVersion}" ContentTemplate="{StaticResource GameVersionInfoTemplate}"/>
-                                    </DockPanel>
-                                </ctrl:SelectorItem>
-                                <ctrl:SelectorItem>
-                                    <Grid/>
-                                </ctrl:SelectorItem>
-                            </ctrl:SelectorControl>
-                            <Popup IsOpen="{Binding IsChecked, ElementName=buttonVersions, Mode=OneWay}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-21" PlacementTarget="{Binding ElementName=stackVersions}" AllowsTransparency="False" Closed="OnPopupClosed" MaxHeight="400">
-                                <ListBox BorderThickness="0" ItemsSource="{Binding VersionList}" ItemTemplate="{StaticResource GameVersionInfoShortTemplate}" SelectedIndex="{Binding CachedVersionIndex}" SelectionChanged="OnPopupSelectionChanged" MouseLeftButtonUp="OnPopupMouseLeftButtonUp">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="ListBoxItem">
+                            <Grid>
+                                <ComboBox Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" SelectedIndex="{Binding CachedVersionIndex}" ItemTemplate="{StaticResource GameVersionInfoShortTemplate}" Padding="0" BorderThickness="0" SelectionChanged="OnVersionSelectionChanged">
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
                                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                             <Setter Property="Padding" Value="0"/>
                                             <Setter Property="Margin" Value="0"/>
                                         </Style>
-                                    </ListBox.ItemContainerStyle>
-                                </ListBox>
-                            </Popup>
+                                    </ComboBox.ItemContainerStyle>
+                                </ComboBox>
+                            </Grid>
                         </DockPanel>
                     </ctrl:SelectorItem>
                     <ctrl:SelectorItem Value="True">
@@ -475,7 +465,7 @@
                     </ctrl:SelectorItem>
                 </ctrl:SelectorControl>
                 <Grid>
-                    <ctrl:BoldHeaderTabControl Style="{StaticResource TabControlStyle}" SelectedIndex="{Binding LastSelectedSetting}" MinWidth="190" MinHeight="120">
+                    <ctrl:BoldHeaderTabControl SelectedIndex="{Binding LastSelectedSetting}" BorderThickness="0" Background="Transparent" MinWidth="190" MinHeight="120">
                         <TabItem Style="{StaticResource TabItemStyle}">
                             <TabItem.Header>
                                 <ContentControl>
@@ -485,22 +475,12 @@
                                     </StackPanel>
                                 </ContentControl>
                             </TabItem.Header>
-                            <Grid VerticalAlignment="Top" Margin="6,10,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <CheckBox Grid.Row="0" IsChecked="{Binding CheckLastVersionOnStartup}" Margin="0,0,0,0">Check Lastest Version</CheckBox>
-                                <CheckBox Grid.Row="1" IsChecked="{Binding DownloadNewVersionsAutomatically}" Margin="0,10,0,0">Download latest version</CheckBox>
-                                <CheckBox Grid.Row="3" IsChecked="{Binding StartAutomatically}" Margin="0,10,0,0">Start when ready</CheckBox>
-                                <CheckBox Grid.Row="4" IsChecked="{Binding CheckNewParserOnStartup}" Margin="0,10,0,0">Check for the latest parser</CheckBox>
-                            </Grid>
+                            <StackPanel Margin="6,0,0,0">
+                                <CheckBox IsChecked="{Binding CheckLastVersionOnStartup}" Margin="0,0,0,10">Check Lastest Version</CheckBox>
+                                <CheckBox IsChecked="{Binding DownloadNewVersionsAutomatically}" Margin="0,0,0,10">Download latest version</CheckBox>
+                                <CheckBox IsChecked="{Binding StartAutomatically}" Margin="0,0,0,10">Start when ready</CheckBox>
+                                <CheckBox IsChecked="{Binding CheckNewParserOnStartup}" Margin="0,0,0,10">Check for the latest parser</CheckBox>
+                            </StackPanel>
                         </TabItem>
                         <TabItem Style="{StaticResource TabItemStyle}">
                             <TabItem.Header>
@@ -511,23 +491,13 @@
                                     </StackPanel>
                                 </ContentControl>
                             </TabItem.Header>
-                            <Grid VerticalAlignment="Top" Margin="6,10,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <CheckBox Grid.Row="0" IsChecked="{Binding ShowDeleteButton}" Margin="0,0,0,0">Show the Delete button</CheckBox>
-                                <TextBlock Grid.Row="1" FontWeight="Normal" Margin="0,10,0,0">When some icons are missing:</TextBlock>
-                                <RadioButton Grid.Row="2" IsChecked="{Binding AskToIgnoreMissingIcons}" Margin="5,5,0,0">Ask me what to do</RadioButton>
-                                <RadioButton Grid.Row="3" IsChecked="{Binding DownloadMissingIcons}" Margin="5,5,0,0">Download them</RadioButton>
-                                <RadioButton Grid.Row="4" IsChecked="{Binding IgnoreMissingIcons}" Margin="5,5,0,0">Ignore and continue</RadioButton>
-                            </Grid>
+                            <StackPanel Margin="6,0,0,0">
+                                <CheckBox IsChecked="{Binding ShowDeleteButton}" Margin="0,0,0,10">Show the Delete button</CheckBox>
+                                <TextBlock FontWeight="Normal" Margin="0,0,0,5">When some icons are missing:</TextBlock>
+                                <RadioButton IsChecked="{Binding AskToIgnoreMissingIcons}" Margin="5,0,0,5">Ask me what to do</RadioButton>
+                                <RadioButton IsChecked="{Binding DownloadMissingIcons}" Margin="5,0,0,5">Download them</RadioButton>
+                                <RadioButton IsChecked="{Binding IgnoreMissingIcons}" Margin="5,0,0,10">Ignore and continue</RadioButton>
+                            </StackPanel>
                         </TabItem>
                         <TabItem Style="{StaticResource TabItemStyle}">
                             <TabItem.Header>
@@ -538,26 +508,16 @@
                                     </StackPanel>
                                 </ContentControl>
                             </TabItem.Header>
-                            <Grid VerticalAlignment="Top" Margin="6,10,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <CheckBox Grid.Row="0" IsChecked="{Binding KeepRecentVersions}" Margin="0,0,0,0">Keep all downloaded versions</CheckBox>
-                                <CheckBox x:Name="checkShareIcons" Grid.Row="1" IsChecked="{Binding ShareIconFiles}" Checked="OnIconSharingChanged" Unchecked="OnIconSharingChanged" Margin="0,10,0,0">Share icons between versions</CheckBox>
-                                <Button Grid.Row="2" Grid.RowSpan="3" Command="{StaticResource DeleteIconsCommand}" IsEnabled="{Binding CanDeleteSharedIcons}" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="20,10,0,0">
+                            <StackPanel Margin="6,0,0,0">
+                                <CheckBox IsChecked="{Binding KeepRecentVersions}" Margin="0,0,0,10">Keep all downloaded versions</CheckBox>
+                                <CheckBox x:Name="checkShareIcons" IsChecked="{Binding ShareIconFiles}" Checked="OnIconSharingChanged" Unchecked="OnIconSharingChanged" Margin="0,0,0,10">Share icons between versions</CheckBox>
+                                <Button Command="{StaticResource DeleteIconsCommand}" IsEnabled="{Binding CanDeleteSharedIcons}" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="20,0,0,10">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                         <Image Source="{StaticResource imgRecycle}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
                                         <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">Clear All Icons</TextBlock>
                                     </StackPanel>
                                 </Button>
-                            </Grid>
+                            </StackPanel>
                         </TabItem>
                     </ctrl:BoldHeaderTabControl>
                 </Grid>

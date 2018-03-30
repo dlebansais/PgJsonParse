@@ -17,7 +17,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using System.Windows.Threading;
 using Tools;
 
@@ -81,6 +80,28 @@ namespace PgJsonParse
         public string ApplicationFolder { get; private set; }
         public string VersionCacheFolder { get; private set; }
         public string IconCacheFolder { get; private set; }
+
+        public bool IsVersionSelectionToggled
+        {
+            get { return _IsVersionSelectionToggled; }
+            set
+            {
+                if (_IsVersionSelectionToggled != value)
+                {
+                    _IsVersionSelectionToggled = value;
+                    NotifyThisPropertyChanged();
+                }
+            }
+        }
+        private bool _IsVersionSelectionToggled;
+
+        private void OnVersionSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            IsVersionSelectionToggled = false;
+        }
+
+
+
 
         public bool IsGlobalInteractionEnabled
         {

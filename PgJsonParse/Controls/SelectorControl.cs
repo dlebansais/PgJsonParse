@@ -1,4 +1,5 @@
 ﻿using Converters;
+using PgJsonParse;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -9,7 +10,7 @@ using System.Windows.Media;
 
 namespace CustomControls
 {
-    public class SelectorControl : TabControl
+    public class SelectorControl : Grid
     {
         #region Custom properties and events
         #region Selector
@@ -39,149 +40,71 @@ namespace CustomControls
 
         private void OnSelectorPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            UpdateBindings();
+            if (IsBindingPossible(false))
+                SetBinding();
         }
         #endregion
         #endregion
 
         #region Initialization
         public SelectorControl()
-            : base()
         {
-            BorderThickness = new Thickness();
-            Background = Brushes.Transparent;
-            Style NoHeaderStyle = new Style();
-            Setter NoHeaderSetter = new Setter();
-            NoHeaderSetter.Property = VisibilityProperty;
-            NoHeaderSetter.Value = Visibility.Collapsed;
-            NoHeaderStyle.TargetType = typeof(TabItem);
-            NoHeaderStyle.Setters.Add(NoHeaderSetter);
-            ItemContainerStyle = NoHeaderStyle;
-
-            IsBindingDecided = false;
             IsBindingSet = false;
-            DataContextChanged += OnDataContextChanged;
-            LayoutUpdated += OnLayoutUpdated;
-            Initialized += OnInitialized;
             SizeChanged += OnSizeChanged;
         }
         #endregion
 
         #region Implementation
-        private void OnInitialized(object sender, EventArgs e)
-        {
-            //Debug.Print("Initialized");
-
-            if (!IsBindingDecided)
-                UpdateBindings();
-        }
-
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //Debug.Print("Size changed for " + (Selector == null ? "" : Selector) + ", Width: " + Width + ", Height: " + Height + ", ActualWidth: " + ActualWidth + ", ActualHeight: " + ActualHeight);
+            //Debug.WriteLine((Selector == null ? "*" : Selector) + ": Size changed, Width: " + Width + ", Height: " + Height + ", ActualWidth: " + ActualWidth + ", ActualHeight: " + ActualHeight);
 
-            if (double.IsNaN(Width) && SelectedWidth < ActualWidth)
-                SelectedWidth = ActualWidth;
-            if (double.IsNaN(Height) && SelectedHeight < ActualHeight)
-                SelectedHeight = ActualHeight;
+            if (double.IsNaN(Width) && !double.IsNaN(ActualWidth) && ActualWidth > 0)
+                Width = ActualWidth;
+
+            if (double.IsNaN(Height) && !double.IsNaN(ActualHeight) && ActualHeight > 0)
+                Height = ActualHeight;
+
+            if (IsBindingPossible(true))
+                SetBinding();
         }
 
-        /// <summary>
-        ///     Binds the SelectedIndex properties to the new selected property.
-        /// </summary>
-        private void UpdateBindings()
+        private bool IsBindingPossible(bool DisplayDiagnostic)
         {
             if (DataContext == null)
             {
-                //Debug.Print("Stop because DataContext == null");
-                return;
+                //if (DisplayDiagnostic)
+                //    Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Stop because DataContext == null");
+                return false;
             }
-            if (Items.Count == 0)
+
+            if (Children.Count == 0)
             {
-                //Debug.Print("Stop because Items.Count == 0");
-                return;
+                //if (DisplayDiagnostic)
+                //    Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Stop because Items.Count == 0");
+                return false;
             }
 
-            IsBindingDecided = true;
-            SelectedIndex = 0;
-
-            //Debug.Print("Binding decided for " + Selector);
-        }
-
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            //Debug.Print("DataContext changed");
-
-            if (!IsBindingDecided)
-                UpdateBindings();
-        }
-
-        private void OnLayoutUpdated(object sender, EventArgs e)
-        {
-            if (IsBindingDecided && !IsBindingSet)
-            {
-                if (SelectedIndex + 1 < Items.Count)
-                {
-                    SelectedIndex = SelectedIndex + 1;
-                    return;
-                }
-                else
-                {
-                    SetBinding();
-                    FreezeSize();
-                }
-            }
+            return true;
         }
 
         private void SetBinding()
         {
-            if (Selector == null)
-                BindingOperations.ClearBinding(this, SelectedIndexProperty);
-            else
+            if (IsBindingSet)
+                return;
+
+            foreach (object Item in Children)
             {
-                const string ErrorMessage = "A SelectorControl can only contain exactly two SelectorItem children, one with Value=True and the other with Value=Talse";
-                bool[] ItemValues = new bool[2] { false, false };
-                int Index = 0;
-
-                foreach (object Item in Items)
-                {
-                    SelectorItem AsSelectorItem;
-                    if ((AsSelectorItem = Item as SelectorItem) != null)
-                        if (Index < ItemValues.Length)
-                            ItemValues[Index++] = AsSelectorItem.Value;
-                        else
-                            throw new InvalidOperationException(ErrorMessage);
-                    else
-                        throw new InvalidOperationException(ErrorMessage);
-                }
-
-                if (Index != ItemValues.Length)
-                    throw new InvalidOperationException(ErrorMessage);
-
-                for (Index = 0; Index + 1 < ItemValues.Length; Index++)
-                    if (ItemValues[Index] == ItemValues[Index + 1])
-                        throw new InvalidOperationException(ErrorMessage);
-
-                Binding NewBinding = new Binding(Selector) { Source = DataContext, Mode = BindingMode.OneWay, Converter = new ObjectToIndexConverter(), ConverterParameter = ItemValues };
-                SetBinding(SelectedIndexProperty, NewBinding);
+                SelectorItem AsSelectorItem = Item as SelectorItem;
+                Binding NewBinding = new Binding(Selector) { Source = DataContext, Mode = BindingMode.OneWay, Converter = new ObjectToIndexConverter(), ConverterParameter = AsSelectorItem.Value };
+                AsSelectorItem.SetBinding(VisibilityProperty, NewBinding);
             }
 
             IsBindingSet = true;
-            //Debug.Print("Binding set for " + Selector);
+            //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Binding set");
         }
 
-        private void FreezeSize()
-        {
-            if (double.IsNaN(Width))
-                Width = SelectedWidth;
-            if (double.IsNaN(Height))
-                Height = SelectedHeight;
-        }
-
-        private bool IsBindingDecided;
         private bool IsBindingSet;
-        private double SelectedWidth;
-        private double SelectedHeight;
         #endregion
     }
 }

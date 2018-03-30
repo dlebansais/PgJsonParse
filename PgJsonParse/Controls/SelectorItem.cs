@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace CustomControls
 {
-    public class SelectorItem : TabItem
+    public class SelectorItem : ContentControl
     {
         #region Custom properties and events
         #region Value
@@ -14,35 +14,17 @@ namespace CustomControls
         /// <returns>
         ///     The identifier for the <see cref="Value"/> dependency property.
         /// </returns>
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(bool), typeof(SelectorItem), new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnValuePropertyChanged)));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(object), typeof(SelectorItem), new FrameworkPropertyMetadata(null));
 
         /// <summary>
-        ///     Gets or sets the scroll viewer property to bind on.
+        ///     Gets or sets the Value property.
         /// </summary>
-        [Bindable(true)]
-        public bool Value
+        public object Value
         {
-            get { return (bool)GetValue(ValueProperty); }
+            get { return GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
-
-        private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            SelectorItem ctrl = (SelectorItem)d;
-            ctrl.OnValuePropertyChanged(e);
-        }
-
-        private void OnValuePropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-        }
         #endregion
-        #endregion
-
-        #region Init
-        public SelectorItem()
-            : base()
-        {
-        }
         #endregion
     }
 }

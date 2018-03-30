@@ -1,29 +1,42 @@
-﻿using PgJsonParse;
-using System;
+﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Converters
 {
-    [ValueConversion(typeof(bool), typeof(int))]
     public class ObjectToIndexConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool[] ItemValues = parameter as bool[];
-
             if (value is bool)
             {
                 bool BooleanValue = (bool)value;
-                return ((BooleanValue && ItemValues[0]) || (!BooleanValue && !ItemValues[0])) ? 0 : 1;
+
+                bool BooleanExpectedValue;
+                if (parameter is bool)
+                    BooleanExpectedValue = (bool)parameter;
+                else
+                    bool.TryParse(parameter as string, out BooleanExpectedValue);
+
+                return BooleanValue == BooleanExpectedValue ? Visibility.Visible : Visibility.Collapsed;
             }
+
             else if (value is int)
             {
                 int IntValue = (int)value;
-                return ((IntValue != 0 && ItemValues[0]) || (IntValue == 0 && !ItemValues[0])) ? 0 : 1;
+
+                int IntExpectedValue;
+                if (parameter is int)
+                    IntExpectedValue = (int)parameter;
+                else
+                    int.TryParse(parameter as string, out IntExpectedValue);
+
+                return IntValue == IntExpectedValue ? Visibility.Visible : Visibility.Collapsed;
             }
+
             else
-                return ((value != null && ItemValues[0]) || (value == null && !ItemValues[0])) ? 0 : 1;
+                return (value != null && parameter != null) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
