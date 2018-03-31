@@ -12,11 +12,8 @@
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
-            Generator.OpenObject(Key);
-
             Generator.AddString("T", "CurHealth");
-
-            Generator.CloseObject();
+            Generator.AddDouble("Health", Health);
         }
         #endregion
 

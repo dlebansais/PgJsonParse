@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace PgJsonObjects
 {
-    public class JsonGenerator
+    public class JsonGenerator : IDisposable
     {
         public static bool UseJavaFormat = true;
         public static char FieldSeparator = '§';
@@ -123,6 +124,33 @@ namespace PgJsonObjects
             InsertedLines++;
         }
 
+        public void AddEnum<T>(string Field, T Value)
+        {
+            if ((int)(object)Value != 0)
+                AddString(Field, StringToEnumConversion<T>.ToString(Value));
+        }
+
+        public void AddEnum<T>(string Field, T Value, Dictionary<T, string> StringMap)
+        {
+            if ((int)(object)Value != 0)
+                AddString(Field, StringToEnumConversion<T>.ToString(Value, StringMap));
+        }
+
+        public void AddEnum<T>(string Field, T Value, Dictionary<T, string> StringMap, T DefaultValue)
+        {
+            if ((int)(object)Value != (int)(object)DefaultValue)
+                AddString(Field, StringToEnumConversion<T>.ToString(Value, StringMap, DefaultValue));
+        }
+
+        public void AddEnum<T>(string Field, T Value, Dictionary<T, string> StringMap, T DefaultValue, T EmptyValue)
+        {
+            if ((int)(object)Value != (int)(object)DefaultValue)
+                if ((int)(object)Value != (int)(object)EmptyValue)
+                    AddString(Field, StringToEnumConversion<T>.ToString(Value, StringMap, DefaultValue, EmptyValue));
+                else
+                    AddString(Field, "");
+        }
+
         public void AddString(string Field, string Value)
         {
             if (Value == null)
@@ -185,34 +213,6 @@ namespace PgJsonObjects
             InsertedLines++;
         }
 
-        public void AddFloat(string Field, float Value)
-        {
-            if (Value == 0)
-                return;
-
-            if (InsertedLines > 0)
-                Next();
-
-            string StringLine = "\"" + Field + "\":" + SpaceLine + Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
-
-            ReconstructedContent += Indentation() + StringLine;
-            InsertedLines++;
-        }
-
-        public void AddFloat(string Field, float? Value)
-        {
-            if (Value == null)
-                return;
-
-            if (InsertedLines > 0)
-                Next();
-
-            string StringLine = "\"" + Field + "\":" + SpaceLine + Value.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
-
-            ReconstructedContent += Indentation() + StringLine;
-            InsertedLines++;
-        }
-
         public void AddDouble(string Field, double Value)
         {
             if (Value == 0)
@@ -221,7 +221,7 @@ namespace PgJsonObjects
             if (InsertedLines > 0)
                 Next();
 
-            string StringLine = "\"" + Field + "\":" + SpaceLine + Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
+            string StringLine = "\"" + Field + "\":" + SpaceLine + ((float)Value).ToString(CultureInfo.InvariantCulture.NumberFormat);
 
             ReconstructedContent += Indentation() + StringLine;
             InsertedLines++;
@@ -235,7 +235,7 @@ namespace PgJsonObjects
             if (InsertedLines > 0)
                 Next();
 
-            string StringLine = "\"" + Field + "\":" + SpaceLine + Value.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
+            string StringLine = "\"" + Field + "\":" + SpaceLine + ((float)Value.Value).ToString(CultureInfo.InvariantCulture.NumberFormat);
 
             ReconstructedContent += Indentation() + StringLine;
             InsertedLines++;
@@ -262,7 +262,7 @@ namespace PgJsonObjects
 
         public void AddList(string ArrayName, List<string> StringList, bool IsListEmpty)
         {
-            if (StringList.Count > 0 || IsListEmpty)
+            if (StringList.Count > 0)
             {
                 OpenArray(ArrayName);
 
@@ -306,6 +306,14 @@ namespace PgJsonObjects
 
             string Current = ReconstructedContent;
             ReconstructedContent = LastReconstructedContentStack.Pop() + Current;
+        }
+
+        public virtual void Dispose()
+        {
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
         }
     }
 }

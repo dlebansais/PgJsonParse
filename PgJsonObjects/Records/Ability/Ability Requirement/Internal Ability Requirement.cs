@@ -8,5 +8,11 @@
         }
 
         public AbilityItemKeyword Keyword { get; private set; }
+
+        #region Json Reconstruction
+        public override void GenerateObjectContent(JsonGenerator Generator)
+        {
+        }
+        #endregion
     }
 }

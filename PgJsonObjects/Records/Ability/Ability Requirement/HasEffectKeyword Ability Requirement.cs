@@ -14,11 +14,8 @@
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
-            Generator.OpenObject(Key);
-
             Generator.AddString("T", "HasEffectKeyword");
-
-            Generator.CloseObject();
+            Generator.AddEnum("Keyword", Keyword);
         }
         #endregion
 

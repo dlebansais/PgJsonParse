@@ -151,7 +151,7 @@ namespace PgJsonObjects
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
-            Generator.OpenObject(Key);
+            Generator.OpenObject(null);
 
             Generator.AddString("Label", Label);
             Generator.AddString("Suffix", Suffix);
@@ -159,6 +159,8 @@ namespace PgJsonObjects
             Generator.AddList("AttributesThatDelta", RawAttributesThatDeltaList, RawAttributesThatDeltaListIsEmpty);
             Generator.AddList("AttributesThatMod", RawAttributesThatModList, RawAttributesThatModListIsEmpty);
             Generator.AddList("AttributesThatModBase", RawAttributesThatModBaseList, RawAttributesThatModBaseListIsEmpty);
+            Generator.AddBoolean("DisplayAsPercent", RawDisplayAsPercent);
+            Generator.AddBoolean("SkipIfZero", RawSkipIfZero);
 
             Generator.CloseObject();
         }

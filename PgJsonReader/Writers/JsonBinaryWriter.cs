@@ -80,7 +80,12 @@ namespace PgJsonReader
             writer.Write(value);
         }
 
-        public void Flush()
+        public void Flush(Stream stream)
+        {
+            writer.Flush();
+        }
+
+        public void Flush(StringWriter writer)
         {
             writer.Flush();
         }

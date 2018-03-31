@@ -16,11 +16,9 @@
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
-            Generator.OpenObject(Key);
-
             Generator.AddString("T", "GardenPlantMax");
-
-            Generator.CloseObject();
+            Generator.AddEnum("TypeTag", TypeTag);
+            Generator.AddInteger("Max", Max);
         }
         #endregion
 

@@ -25,11 +25,19 @@ namespace PgJsonObjects
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
-            Generator.OpenObject(Key);
-
             Generator.AddString("T", "Race");
 
-            Generator.CloseObject();
+            if (AllowedRaceList.Count > 1)
+            {
+                Generator.OpenArray("AllowedRace");
+
+                foreach (Race Item in AllowedRaceList)
+                    Generator.AddEnum(null, Item);
+
+                Generator.CloseArray();
+            }
+            else if (AllowedRaceList.Count > 0)
+                Generator.AddEnum("AllowedRace", AllowedRaceList[0]);
         }
         #endregion
 

@@ -374,9 +374,7 @@ namespace PgJsonObjects
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
-            Generator.OpenObject(Key);
-
-            Generator.CloseObject();
+            throw new InvalidOperationException();
         }
         #endregion
 

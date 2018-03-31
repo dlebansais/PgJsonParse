@@ -12,7 +12,7 @@ namespace PgJsonReader
 
         public IStringHandler StringHandler = new DefaultStringHandler();
 
-        private TextWriter writer;
+        private VirtualWriter writer;
         private bool format;
         private bool firstItem = true;
         private bool openKey;
@@ -20,19 +20,7 @@ namespace PgJsonReader
 
         public JsonTextWriter(bool format = true)
         {
-            writer = new StringWriter();
-            this.format = format;
-        }
-
-        public JsonTextWriter(TextWriter writer, bool format = true)
-        {
-            this.writer = writer;
-            this.format = format;
-        }
-
-        public JsonTextWriter(Stream stream, bool format = true)
-        {
-            writer = new StreamWriter(stream);
+            writer = new VirtualWriter();
             this.format = format;
         }
 
@@ -59,7 +47,7 @@ namespace PgJsonReader
         private void Newline()
         {
             if (format)
-                writer.Write(writer.NewLine);
+                writer.WriteNewLine();
         }
 
         private void Comma()
@@ -175,14 +163,18 @@ namespace PgJsonReader
             openKey = false;
         }
 
-        public void Flush()
+        public void Flush(Stream stream)
         {
-            writer.Flush();
+            writer.Flush(stream);
+        }
+
+        public void Flush(StringWriter writer)
+        {
+            this.writer.Flush(writer);
         }
 
         public void Dispose()
         {
-            writer.Flush();
             writer.Dispose();
         }
     }

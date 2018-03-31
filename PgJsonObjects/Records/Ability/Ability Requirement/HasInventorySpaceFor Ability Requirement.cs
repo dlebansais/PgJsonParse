@@ -17,11 +17,9 @@ namespace PgJsonObjects
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
-            Generator.OpenObject(Key);
-
             Generator.AddString("T", "HasInventorySpaceFor");
-
-            Generator.CloseObject();
+            //Generator.AddString("Item", Item != null ? Item.Name : null);
+            Generator.AddString("Item", RawItem);
         }
         #endregion
 

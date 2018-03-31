@@ -17,11 +17,9 @@ namespace PgJsonObjects
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
-            Generator.OpenObject(Key);
-
             Generator.AddString("T", "RecipeKnown");
-
-            Generator.CloseObject();
+            //Generator.AddString("Recipe", RecipeKnown != null ? RecipeKnown.Name : null);
+            Generator.AddString("Recipe", RawRecipeKnown);
         }
         #endregion
 

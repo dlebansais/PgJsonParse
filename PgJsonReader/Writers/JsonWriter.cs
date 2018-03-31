@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,8 @@ namespace PgJsonReader
         void Value(string value);
         void Value(float value);
         void Value(bool value);
-        void Flush();
+        void Flush(Stream stream);
+        void Flush(StringWriter writer);
     }
 
     public static class JsonWriter

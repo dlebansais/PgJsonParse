@@ -5,10 +5,10 @@ namespace PgJsonReader
 {
     public class VirtualReader : IDisposable
     {
-        protected VirtualReader()
+        public VirtualReader(string text)
+            : this()
         {
-            Content = "";
-            Index = 0;
+            Content = text;
         }
 
         public VirtualReader(Stream stream)
@@ -20,16 +20,16 @@ namespace PgJsonReader
             }
         }
 
-        public VirtualReader(string text)
-            : this()
-        {
-            Content = text;
-        }
-
         public VirtualReader(StringReader reader)
             : this()
         {
             Content = reader.ReadToEnd();
+        }
+
+        protected VirtualReader()
+        {
+            Content = "";
+            Index = 0;
         }
 
         public virtual int Peek()

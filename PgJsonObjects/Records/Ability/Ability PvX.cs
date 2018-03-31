@@ -60,8 +60,8 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Damage", ParseFieldDamage },
-            { "ExtraDamageIfTargetVulnerable", ParseFieldExtraDamageIfTargetVulnerable },
             { "HealthSpecificDamage", ParseFieldHealthSpecificDamage },
+            { "ExtraDamageIfTargetVulnerable", ParseFieldExtraDamageIfTargetVulnerable },
             { "ArmorSpecificDamage", ParseFieldArmorSpecificDamage },
             { "Range", ParseFieldRange },
             { "PowerCost", ParseFieldPowerCost },
@@ -441,8 +441,8 @@ namespace PgJsonObjects
             Generator.OpenObject(Key);
 
             Generator.AddInteger("Damage", RawDamage);
-            Generator.AddInteger("ExtraDamageIfTargetVulnerable", RawExtraDamageIfTargetVulnerable);
             Generator.AddInteger("HealthSpecificDamage", RawHealthSpecificDamage);
+            Generator.AddInteger("ExtraDamageIfTargetVulnerable", RawExtraDamageIfTargetVulnerable);
             Generator.AddInteger("ArmorSpecificDamage", RawArmorSpecificDamage);
             Generator.AddInteger("Range", RawRange);
             Generator.AddInteger("PowerCost", RawPowerCost);

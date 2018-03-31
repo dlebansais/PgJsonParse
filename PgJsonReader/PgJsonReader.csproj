@@ -53,6 +53,7 @@
     <Compile Include="Values\JsonObject.cs" />
     <Compile Include="Values\JsonString.cs" />
     <Compile Include="VirtualReader.cs" />
+    <Compile Include="VirtualWriter.cs" />
     <Compile Include="Writers\JsonBinaryWriter.cs" />
     <Compile Include="Writers\JsonTextWriter.cs" />
     <Compile Include="Writers\JsonWriter.cs" />

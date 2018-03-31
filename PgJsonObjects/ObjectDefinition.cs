@@ -20,6 +20,7 @@ namespace PgJsonObjects
         {
             this.JsonFileName = JsonFileName;
             this.MinVersion = MinVersion;
+            FileParser.VerifyParse = false;
         }
 
         public string JsonFileName { get; private set; }

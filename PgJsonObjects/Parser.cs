@@ -13,6 +13,7 @@ namespace PgJsonObjects
 {
     public interface IParser
     {
+        bool VerifyParse { get; set; }
         void LoadRaw(string FilePath, ICollection ObjectList, ParseErrorInfo ErrorInfo);
         void CreateIndex(string IndexFilePath, IDictionary<string, IGenericJsonObject> ObjectTable);
     }
@@ -28,6 +29,7 @@ namespace PgJsonObjects
 
         #region Properties
         public Dictionary<string, T> RecordTable { get; private set; }
+        public bool VerifyParse { get; set; }
         #endregion
 
         #region Client Interface
@@ -59,21 +61,47 @@ namespace PgJsonObjects
                     MessageBox.Show("Unable to parse " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", MessageBoxButton.OK);
                 }
 
-                /*
+                if (VerifyParse)
+                {
+                    try
+                    {
+                        using (JsonGenerator Generator = new JsonGenerator())
+                        {
+                            Generator.Begin();
+                            foreach (T Item in ObjectList)
+                                Item.GenerateObjectContent(Generator);
+                            Generator.End();
 
-                string SortedContent = ser.Serialize(RecordTable);
+                            //int FirstDiff = CompareContent(SortedContent, Generator.Content);
+                            int FirstDiff = CompareContent(Content, Generator.Content);
+                            if (FirstDiff >= 0 && FirstDiff < Content.Length)
+                            {
+                                if (FirstDiff > 150)
+                                    FirstDiff -= 150;
+                                else
+                                    FirstDiff = 0;
 
-                JsonGenerator Generator = new JsonGenerator();
-
-                Generator.Begin();
-                foreach (T Item in ObjectList)
-                    Item.GenerateObjectContent(Generator);
-                Generator.End();
-
-                //int FirstDiff = CompareContent(SortedContent, Generator.Content);
-                int FirstDiff = CompareContent(Content, Generator.Content);
-
-                */
+                                int Length = 200;
+                                if (Length > (Content.Length - FirstDiff))
+                                    Length = (Content.Length - FirstDiff);
+                                if (Length > (Generator.Content.Length - FirstDiff))
+                                    Length = (Generator.Content.Length - FirstDiff);
+                                if (Length > 0)
+                                {
+                                    Debug.WriteLine("** " + Path.GetFileName(FilePath));
+                                    Debug.WriteLine(Content.Substring(FirstDiff, Length));
+                                    Debug.WriteLine("**");
+                                    Debug.WriteLine(Generator.Content.Substring(FirstDiff, Length));
+                                    Debug.WriteLine("**");
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Unable to verify " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", MessageBoxButton.OK);
+                    }
+                }
             }
             else
                 RecordTable = null;

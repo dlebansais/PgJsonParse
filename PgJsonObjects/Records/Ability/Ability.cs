@@ -91,7 +91,7 @@ namespace PgJsonObjects
         public string DigitStrippedName { get; private set; }
         public int LineIndex { get; private set; }
         public List<AbilityAdditionalResult> AbilityAdditionalResultList { get; } = new List<AbilityAdditionalResult>();
-        public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
+        public string SearchResultIconFileName { get { return RawIconId.HasValue && RawIconId.Value > 0 ? "icon_" + RawIconId.Value : null; } }
         public List<AbilityRequirement> CombinedRequirementList { get; } = new List<AbilityRequirement>();
         public ConsumedItem ConsumedItem { get; private set; }
         public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
@@ -146,6 +146,7 @@ namespace PgJsonObjects
         #region Parsing
         protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
+            { "AbilityGroup", ParseFieldAbilityGroup },
             { "Animation", ParseFieldAnimation },
             { "AttributesThatDeltaPowerCost", ParseFieldAttributesThatDeltaPowerCost },
             { "AttributesThatDeltaResetTime", ParseFieldAttributesThatDeltaResetTime },
@@ -167,6 +168,7 @@ namespace PgJsonObjects
             { "DelayLoopTime", ParseFieldDelayLoopTime },
             { "Description", ParseFieldDescription },
             { "EffectKeywordsIndicatingEnabled", ParseFieldEffectKeywordsIndicatingEnabled },
+            { "ExtraKeywordsForTooltips", ParseFieldExtraKeywordsForTooltips },
             { "IconID", ParseFieldIconId },
             { "InternalAbility", ParseFieldInternalAbility },
             { "InternalName", ParseFieldInternalName },
@@ -196,9 +198,19 @@ namespace PgJsonObjects
             { "WorksInCombat", ParseFieldWorksInCombat },
             { "WorksUnderwater", ParseFieldWorksUnderwater },
             { "WorksWhileFalling", ParseFieldWorksWhileFalling },
-            { "ExtraKeywordsForTooltips", ParseFieldExtraKeywordsForTooltips },
-            { "AbilityGroup", ParseFieldAbilityGroup },
         };
+
+        private static void ParseFieldAbilityGroup(Ability This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            ParseFieldValueString(Value, ErrorInfo, "Ability AbilityGroup", This.ParseAbilityGroup);
+        }
+
+        private void ParseAbilityGroup(string RawAbilityGroup, ParseErrorInfo ErrorInfo)
+        {
+            this.RawAbilityGroup = RawAbilityGroup;
+            AbilityGroup = null;
+            IsRawAbilityGroupParsed = false;
+        }
 
         private static void ParseFieldAnimation(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
@@ -487,6 +499,25 @@ namespace PgJsonObjects
                 EffectKeywordsIndicatingEnabled = EffectKeywordsIndicatingEnabledList[0];
         }
 
+        private static void ParseFieldExtraKeywordsForTooltips(Ability This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            JsonArray RawExtraKeywordsForTooltips;
+            if ((RawExtraKeywordsForTooltips = Value as JsonArray) != null)
+                This.ParseExtraKeywordsForTooltips(RawExtraKeywordsForTooltips, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat("Ability ExtraKeywordsForTooltips");
+        }
+
+        private void ParseExtraKeywordsForTooltips(JsonArray RawExtraKeywordsForTooltips, ParseErrorInfo ErrorInfo)
+        {
+            List<TooltipsExtraKeywords> ExtraKeywordsForTooltipList = new List<TooltipsExtraKeywords>();
+            StringToEnumConversion<TooltipsExtraKeywords>.ParseList(RawExtraKeywordsForTooltips, ExtraKeywordsForTooltipList, ErrorInfo);
+            if (ExtraKeywordsForTooltipList.Count == 1)
+                ExtraKeywordsForTooltips = ExtraKeywordsForTooltipList[0];
+            else
+                ErrorInfo.AddInvalidObjectFormat("Ability ExtraKeywordsForTooltips");
+        }
+
         private static void ParseFieldIconId(Ability This, object Value, ParseErrorInfo ErrorInfo)
         {
             ParseFieldValueLong(Value, ErrorInfo, "Ability IconId", This.ParseIconId);
@@ -502,7 +533,7 @@ namespace PgJsonObjects
                 PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
             }
             else
-                this.RawIconId = null;
+                this.RawIconId = 0;
         }
 
         private static void ParseFieldInternalAbility(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -727,7 +758,7 @@ namespace PgJsonObjects
             StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedPowerSkill, ErrorInfo);
             Skill = ParsedPowerSkill;
 
-            PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
+            PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, RawIconId.HasValue && RawIconId.Value > 0 ? RawIconId : null);
             if (KeywordList.Contains(AbilityKeyword.BasicAttack))
                 PgJsonObjects.Skill.UpdateBasicAttackTable(Skill, this);
         }
@@ -760,8 +791,10 @@ namespace PgJsonObjects
 
         private void ParseSpecialInfo(string RawSpecialInfo, ParseErrorInfo ErrorInfo)
         {
-            SpecialInfo = RawSpecialInfo;
-            ParseCompleteSpecialInfo(SpecialInfo, ErrorInfo);
+            if (SpecialInfo == null)
+                SpecialInfo = RawSpecialInfo;
+
+            ParseCompleteSpecialInfo(RawSpecialInfo, ErrorInfo);
         }
 
         private static void ParseFieldSpecialTargetingTypeReq(Ability This, object Value, ParseErrorInfo ErrorInfo)
@@ -850,37 +883,6 @@ namespace PgJsonObjects
         private void ParseWorksWhileFalling(bool RawWorksWhileFalling, ParseErrorInfo ErrorInfo)
         {
             this.RawWorksWhileFalling = RawWorksWhileFalling;
-        }
-
-        private static void ParseFieldExtraKeywordsForTooltips(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            JsonArray RawExtraKeywordsForTooltips;
-            if ((RawExtraKeywordsForTooltips = Value as JsonArray) != null)
-                This.ParseExtraKeywordsForTooltips(RawExtraKeywordsForTooltips, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability ExtraKeywordsForTooltips");
-        }
-
-        private void ParseExtraKeywordsForTooltips(JsonArray RawExtraKeywordsForTooltips, ParseErrorInfo ErrorInfo)
-        {
-            List<TooltipsExtraKeywords> ExtraKeywordsForTooltipList = new List<TooltipsExtraKeywords>();
-            StringToEnumConversion<TooltipsExtraKeywords>.ParseList(RawExtraKeywordsForTooltips, ExtraKeywordsForTooltipList, ErrorInfo);
-            if (ExtraKeywordsForTooltipList.Count == 1)
-                ExtraKeywordsForTooltips = ExtraKeywordsForTooltipList[0];
-            else
-                ErrorInfo.AddInvalidObjectFormat("Ability ExtraKeywordsForTooltips");
-        }
-
-        private static void ParseFieldAbilityGroup(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability AbilityGroup", This.ParseAbilityGroup);
-        }
-
-        private void ParseAbilityGroup(string RawAbilityGroup, ParseErrorInfo ErrorInfo)
-        {
-            this.RawAbilityGroup = RawAbilityGroup;
-            AbilityGroup = null;
-            IsRawAbilityGroupParsed = false;
         }
 
         public void ParseSpecialCasterRequirement(JsonObject RawSpecialCasterRequirement, string ObjectKey, ParseErrorInfo ErrorInfo)
@@ -2655,6 +2657,7 @@ namespace PgJsonObjects
         {
             Generator.OpenObject(Key);
 
+            Generator.AddString("AbilityGroup", RawAbilityGroup);
             Generator.AddString("Animation", Animation.ToString());
             Generator.AddList("AttributesThatDeltaPowerCost", RawAttributesThatDeltaPowerCostList, RawAttributesThatDeltaPowerCostListIsEmpty);
             Generator.AddList("AttributesThatDeltaResetTime", RawAttributesThatDeltaResetTimeList, RawAttributesThatDeltaResetTimeListIsEmpty);
@@ -2663,7 +2666,17 @@ namespace PgJsonObjects
             Generator.AddBoolean("CanSuppressMonsterShout", RawCanSuppressMonsterShout);
             Generator.AddBoolean("CanTargetUntargetableEnemies", RawCanTargetUntargetableEnemies);
             StringToEnumConversion<Deaths>.ListToString(Generator, "CausesOfDeath", CausesOfDeathList);
-            StringToEnumConversion<RecipeCost>.ListToString(Generator, "Costs", CostList);
+
+            if (CostList.Count > 0)
+            {
+                Generator.OpenArray("Costs");
+
+                foreach (RecipeCost Cost in CostList)
+                    Cost.GenerateObjectContent(Generator);
+
+                Generator.CloseArray();
+            }
+
             Generator.AddInteger("CombatRefreshBaseAmount", RawCombatRefreshBaseAmount);
             StringToEnumConversion<PowerSkill>.ListToString(Generator, "CompatibleSkills", RawCompatibleSkillList);
             Generator.AddDouble("ConsumedItemChance", RawConsumedItemChance);
@@ -2681,6 +2694,11 @@ namespace PgJsonObjects
                 EffectKeywordsIndicatingEnabledList.Add(EffectKeywordsIndicatingEnabled);
             StringToEnumConversion<AbilityIndicatingEnabled>.ListToString(Generator, "EffectKeywordsIndicatingEnabled", EffectKeywordsIndicatingEnabledList);
 
+            List<TooltipsExtraKeywords> ExtraKeywordsForTooltipList = new List<TooltipsExtraKeywords>();
+            if (ExtraKeywordsForTooltips != TooltipsExtraKeywords.Internal_None)
+                ExtraKeywordsForTooltipList.Add(ExtraKeywordsForTooltips);
+            StringToEnumConversion<TooltipsExtraKeywords>.ListToString(Generator, "ExtraKeywordsForTooltips", ExtraKeywordsForTooltipList);
+
             Generator.AddInteger("IconID", RawIconId);
             Generator.AddBoolean("InternalAbility", RawInternalAbility);
             Generator.AddString("InternalName", InternalName);
@@ -2690,11 +2708,10 @@ namespace PgJsonObjects
             StringToEnumConversion<AbilityKeyword>.ListToString(Generator, "Keywords", KeywordList);
             Generator.AddInteger("Level", RawLevel);
             Generator.AddString("Name", Name);
-            Generator.AddString("PetTypeTagReq", StringToEnumConversion<AbilityPetType>.ToString(PetTypeTagReq));
+            Generator.AddEnum("PetTypeTagReq", PetTypeTagReq);
             Generator.AddInteger("PetTypeTagReqMax", RawPetTypeTagReqMax);
             Generator.AddString("Prerequisite", RawPrerequisite);
-            Generator.AddString("AbilityGroup", RawAbilityGroup);
-            Generator.AddString("Projectile", StringToEnumConversion<AbilityProjectile>.ToString(Projectile));
+            Generator.AddEnum("Projectile", Projectile);
 
             if (PvE != null)
                 PvE.GenerateObjectContent(Generator);
@@ -2705,32 +2722,42 @@ namespace PgJsonObjects
             Generator.AddDouble("ResetTime", RawResetTime);
             Generator.AddString("SelfParticle", SelfParticle);
             Generator.AddString("SharesResetTimerWith", RawSharesResetTimerWith);
-            Generator.AddString("Skill", Skill.ToString());
+            Generator.AddEnum("Skill", Skill);
 
             if (SpecialCasterRequirementList.Count > 1)
             {
                 Generator.OpenArray("SpecialCasterRequirements");
 
                 foreach (AbilityRequirement Item in SpecialCasterRequirementList)
+                {
+                    Generator.OpenObject(null);
+
                     Item.GenerateObjectContent(Generator);
+
+                    Generator.CloseObject();
+                }
 
                 Generator.CloseArray();
             }
             else if (SpecialCasterRequirementList.Count > 0)
             {
+                Generator.OpenObject("SpecialCasterRequirements");
+
                 AbilityRequirement Item = SpecialCasterRequirementList[0];
                 Item.GenerateObjectContent(Generator);
+
+                Generator.CloseObject();
             }
 
             Generator.AddString("SpecialInfo", SpecialInfo);
             Generator.AddInteger("SpecialTargetingTypeReq", RawSpecialTargetingTypeReq);
-            Generator.AddString("Target", Target.ToString());
+            Generator.AddEnum("Target", Target);
             Generator.AddString("TargetEffectKeywordReq", StringToEnumConversion<TargetEffectKeyword>.ToString(TargetEffectKeywordReq, null, TargetEffectKeyword.Internal_None));
-            Generator.AddString("TargetParticle", TargetParticle.ToString());
+            Generator.AddEnum("TargetParticle", TargetParticle);
             Generator.AddString("UpgradeOf", RawUpgradeOf);
             Generator.AddBoolean("WorksInCombat", RawWorksInCombat);
             Generator.AddBoolean("WorksUnderwater", RawWorksUnderwater);
-            Generator.AddBoolean("WorksWhileFalling", RawWorksWhileFalling);
+            Generator.AddBoolean("WorksWhileFalling", RawWorksWhileFalling); 
 
             Generator.CloseObject();
         }
