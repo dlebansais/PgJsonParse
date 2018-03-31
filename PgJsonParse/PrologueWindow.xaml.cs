@@ -1,4 +1,5 @@
 ﻿using PgJsonObjects;
+using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,10 +23,11 @@ using Tools;
 
 namespace PgJsonParse
 {
-    public partial class PrologueWindow : Window, INotifyPropertyChanged
+    public partial class PrologueWindow : RootControl, INotifyPropertyChanged
     {
         #region Init
         public PrologueWindow()
+            : base(RootControlMode.CustomShape)
         {
             try
             {
@@ -62,7 +64,6 @@ namespace PgJsonParse
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ApplicationCommand.SubscribeToGlobalCommand("CloseCommand", OnClose);
             ApplicationCommand.SubscribeToGlobalCommand("CheckVersionCommand", OnCheckVersion);
             ApplicationCommand.SubscribeToGlobalCommand("SelectVersionCommand", OnSelectVersion);
             ApplicationCommand.SubscribeToGlobalCommand("DownloadVersionCommand", OnDownloadVersion);
@@ -1318,7 +1319,7 @@ namespace PgJsonParse
         #endregion
 
         #region Events
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             DragMove();
         }
@@ -1441,18 +1442,21 @@ namespace PgJsonParse
             Dispatcher.BeginInvoke(new Action(OnIconSharingChanged));
         }
 
-        private void OnClose(object sender, EventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
             App.SetState(this, TaskbarStates.NoProgress);
-            Close();
+
+            base.OnClosing(e);
         }
 
-        private void OnWindowClosed(object sender, EventArgs e)
+        protected override void OnClosed(EventArgs e)
         {
             if (Dlg != null && !Dlg.IsVisible)
                 Dlg.Close();
 
             SaveSettings();
+
+            base.OnClosed(e);
         }
         #endregion
 

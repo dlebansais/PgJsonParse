@@ -1,12 +1,12 @@
-﻿<Window x:Class="PgJsonParse.PrologueWindow"
+﻿<p:RootControl x:Class="PgJsonParse.PrologueWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:Presentation;assembly=Presentation"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:app="clr-namespace:PgJsonParse"
         xmlns:conv="clr-namespace:Converters"
-        xmlns:ctrl="clr-namespace:CustomControls"
-        Background="Transparent" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStyle="None" AllowsTransparency="True" MouseLeftButtonDown="OnMouseLeftButtonDown" Closed="OnWindowClosed">
-    <Window.Resources>
+        xmlns:ctrl="clr-namespace:CustomControls">
+    <p:RootControl.Resources>
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
         <conv:ObjectToIndexConverter x:Key="convObjectToIndex"/>
         <conv:EnumToIntConverter x:Key="convEnumToInt"/>
@@ -376,7 +376,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </Window.Resources>
+    </p:RootControl.Resources>
     <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2">
         <Grid>
             <DockPanel>
@@ -537,9 +537,9 @@
                     </ctrl:SelectorControl>
                 </DockPanel>
             </DockPanel>
-            <Button Command="{StaticResource CloseCommand}" Background="#F4F4F4" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1,0,0,1">
+            <p:CloseButton Background="#F4F4F4" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1,0,0,1">
                 <Image Source="{StaticResource imgClose}" Width="16" Height="16"/>
-            </Button>
+            </p:CloseButton>
         </Grid>
     </Border>
-</Window>
+</p:RootControl>

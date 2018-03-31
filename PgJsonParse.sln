@@ -4,10 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PgJsonParse", "PgJsonParse\PgJsonParse.csproj", "{29094E98-4503-49A7-BD14-56A40866333F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818} = {BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PgJsonObjects", "PgJsonObjects\PgJsonObjects.csproj", "{2D9E943B-7D22-469B-8DBE-500D23877B55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PgJsonReader", "PgJsonReader\PgJsonReader.csproj", "{001249F7-BF13-4C71-8592-BA1F32D53A69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +42,14 @@ Global
 		{001249F7-BF13-4C71-8592-BA1F32D53A69}.Release|Any CPU.Build.0 = Release|Any CPU
 		{001249F7-BF13-4C71-8592-BA1F32D53A69}.Release|x64.ActiveCfg = Release|Any CPU
 		{001249F7-BF13-4C71-8592-BA1F32D53A69}.Release|x64.Build.0 = Release|Any CPU
+		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Debug|x64.Build.0 = Debug|Any CPU
+		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Release|x64.ActiveCfg = Release|Any CPU
+		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

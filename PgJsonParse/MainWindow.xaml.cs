@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using PgJsonObjects;
+using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,10 +24,11 @@ using Tools;
 
 namespace PgJsonParse
 {
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : RootControl, INotifyPropertyChanged
     {
         #region Init
         public MainWindow()
+            : base(RootControlMode.ResizedWithCaption)
         {
             InitializeComponent();
             DataContext = this;

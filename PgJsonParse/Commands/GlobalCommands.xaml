@@ -10,7 +10,6 @@
     <app:ApplicationCommand x:Key="OpenProfileFolderCommand"/>
     <app:ApplicationCommand x:Key="BackwardCommand"/>
     <app:ApplicationCommand x:Key="ForwardCommand"/>
-    <app:ApplicationCommand x:Key="CloseCommand"/>
     <app:ApplicationCommand x:Key="CheckVersionCommand"/>
     <app:ApplicationCommand x:Key="SelectVersionCommand"/>
     <app:ApplicationCommand x:Key="DownloadVersionCommand"/>
