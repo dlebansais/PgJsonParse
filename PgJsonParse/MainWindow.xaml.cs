@@ -46,15 +46,15 @@ namespace PgJsonParse
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ApplicationCommand.SubscribeToGlobalCommand("AddPowerCommand", OnAddPower);
-            ApplicationCommand.SubscribeToGlobalCommand("RemovePowerCommand", OnRemovePower);
-            ApplicationCommand.SubscribeToGlobalCommand("LoadBuildCommand", OnLoadBuild);
-            ApplicationCommand.SubscribeToGlobalCommand("SaveBuildCommand", OnSaveBuild);
-            ApplicationCommand.SubscribeToGlobalCommand("CopyBuildCommand", OnCopyBuild);
-            ApplicationCommand.SubscribeToGlobalCommand("CrunchCommand", OnCrunch);
-            ApplicationCommand.SubscribeToGlobalCommand("OpenProfileFolderCommand", OnOpenProfileFolder);
-            ApplicationCommand.SubscribeToGlobalCommand("BackwardCommand", OnBackward);
-            ApplicationCommand.SubscribeToGlobalCommand("ForwardCommand", OnForward);
+            SubscribeToCommand("AddPowerCommand", OnAddPower);
+            SubscribeToCommand("RemovePowerCommand", OnRemovePower);
+            SubscribeToCommand("LoadBuildCommand", OnLoadBuild);
+            SubscribeToCommand("SaveBuildCommand", OnSaveBuild);
+            SubscribeToCommand("CopyBuildCommand", OnCopyBuild);
+            SubscribeToCommand("CrunchCommand", OnCrunch);
+            SubscribeToCommand("OpenProfileFolderCommand", OnOpenProfileFolder);
+            SubscribeToCommand("BackwardCommand", OnBackward);
+            SubscribeToCommand("ForwardCommand", OnForward);
         }
         #endregion
 
@@ -858,7 +858,7 @@ namespace PgJsonParse
 
             Clipboard.SetText(Text);
 
-            MessageBox.Show("The clipboard now contains a text description of this build.", "Build Planner", MessageBoxButton.OK, MessageBoxImage.Information);
+            Confirmation.Show("The clipboard now contains a text description of this build.", "Build Planner", false, ConfirmationType.Info);
         }
 
         private void OnProfileSelected(object sender, SelectionChangedEventArgs e)

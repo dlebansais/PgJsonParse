@@ -58,8 +58,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\ApplicationCommand.cs" />
-    <Compile Include="Commands\ExecutedEventArgs.cs" />
     <Compile Include="Controls\BoldHeaderTabControl.cs" />
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
@@ -122,10 +120,6 @@
     <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="Tools\WebClientTool.cs" />
     <Compile Include="VersionCheckState.cs" />
-    <Page Include="Commands\GlobalCommands.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\BusyIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

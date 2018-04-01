@@ -13,16 +13,21 @@
         <conv:EnumToObjectConverter x:Key="convEnumToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
         <conv:IntToObjectConverter x:Key="convIntToObject"/>
+        <p:ApplicationCommand x:Key="CheckVersionCommand"/>
+        <p:ApplicationCommand x:Key="SelectVersionCommand"/>
+        <p:ApplicationCommand x:Key="DownloadVersionCommand"/>
+        <p:ApplicationCommand x:Key="CancelDownloadVersionCommand"/>
+        <p:ApplicationCommand x:Key="DownloadIconsCommand"/>
+        <p:ApplicationCommand x:Key="CancelDownloadIconsCommand"/>
+        <p:ApplicationCommand x:Key="StartCommand"/>
+        <p:ApplicationCommand x:Key="CancelStartCommand"/>
+        <p:ApplicationCommand x:Key="DeleteVersionCommand"/>
+        <p:ApplicationCommand x:Key="DeleteIconsCommand"/>
         <sys:Double x:Key="Column0">20</sys:Double>
         <sys:Double x:Key="Column1">50</sys:Double>
         <sys:Double x:Key="Column2">210</sys:Double>
         <sys:Double x:Key="Column1And2">260</sys:Double>
         <sys:Double x:Key="Column3">120</sys:Double>
-        <sys:Double x:Key="Column1To3">380</sys:Double>
-        <sys:Double x:Key="Column4">20</sys:Double>
-        <sys:Double x:Key="AllColumns">400</sys:Double>
-        <sys:Double x:Key="AllColumnsAndMargin">426</sys:Double>
-        <sys:Double x:Key="AllColumnsAndButton">451</sys:Double>
         <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
@@ -382,17 +387,19 @@
             <DockPanel>
                 <ctrl:SelectorControl DockPanel.Dock="Bottom" Selector="StatusMessage" Margin="10,0,10,10">
                     <ctrl:SelectorItem Value="Any">
-                        <StackPanel Orientation="Horizontal" ToolTip="{Binding LastExceptionMessage}">
-                            <ctrl:SelectorControl DockPanel.Dock="Left" Selector="LastExceptionMessage" VerticalAlignment="Center" Margin="1,0,10,0">
-                                <ctrl:SelectorItem Value="True">
-                                    <Image Source="{StaticResource imgIconInfo}" Width="16" Height="16"/>
-                                </ctrl:SelectorItem>
-                                <ctrl:SelectorItem>
-                                    <Grid/>
-                                </ctrl:SelectorItem>
-                            </ctrl:SelectorControl>
-                            <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <p:ToolTipControl ToolTip="{Binding LastExceptionMessage}">
+                            <StackPanel Orientation="Horizontal">
+                                <ctrl:SelectorControl DockPanel.Dock="Left" Selector="LastExceptionMessage" VerticalAlignment="Center" Margin="1,0,10,0">
+                                    <ctrl:SelectorItem Value="True">
+                                        <Image Source="{StaticResource imgIconInfo}" Width="16" Height="16"/>
+                                    </ctrl:SelectorItem>
+                                    <ctrl:SelectorItem>
+                                        <Grid/>
+                                    </ctrl:SelectorItem>
+                                </ctrl:SelectorControl>
+                                <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </p:ToolTipControl>
                     </ctrl:SelectorItem>
                     <ctrl:SelectorItem>
                         <ctrl:SelectorControl Selector="IsNewParserAvailable" VerticalAlignment="Center">
@@ -508,7 +515,7 @@
                                         </StackPanel>
                                     </Border>
                                 </DockPanel>
-                                <ComboBox Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" SelectedIndex="{Binding CachedVersionIndex}" ItemTemplate="{StaticResource GameVersionInfoShortTemplate}" Padding="0" BorderThickness="0" SelectionChanged="OnVersionSelectionChanged">
+                                <p:ComboBox UseNativeComboBox="False" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" SelectedIndex="{Binding CachedVersionIndex}" ItemTemplate="{StaticResource GameVersionInfoShortTemplate}" Padding="0" BorderThickness="0" SelectionChanged="OnVersionSelectionChanged">
                                     <ComboBox.ItemContainerStyle>
                                         <Style TargetType="ComboBoxItem">
                                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -516,7 +523,7 @@
                                             <Setter Property="Margin" Value="0"/>
                                         </Style>
                                     </ComboBox.ItemContainerStyle>
-                                </ComboBox>
+                                </p:ComboBox>
                             </DockPanel>
                         </ctrl:SelectorItem>
                         <ctrl:SelectorItem Value="True">

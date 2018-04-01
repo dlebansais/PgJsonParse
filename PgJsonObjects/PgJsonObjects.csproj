@@ -261,6 +261,10 @@
       <Project>{001249f7-bf13-4c71-8592-ba1f32d53a69}</Project>
       <Name>PgJsonReader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Presentation\Presentation.csproj">
+      <Project>{bf57b40a-0e23-4cd8-af46-a9fe6bfb3818}</Project>
+      <Name>Presentation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

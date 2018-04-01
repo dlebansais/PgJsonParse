@@ -1,4 +1,5 @@
 ﻿using PgJsonReader;
+using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace PgJsonObjects
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("Unable to parse " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", MessageBoxButton.OK);
+                    Confirmation.Show("Unable to parse " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", false, ConfirmationType.Error);
                 }
 
                 if (VerifyParse)
@@ -99,7 +100,7 @@ namespace PgJsonObjects
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("Unable to verify " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", MessageBoxButton.OK);
+                        Confirmation.Show("Unable to verify " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", false, ConfirmationType.Error);
                     }
                 }
             }

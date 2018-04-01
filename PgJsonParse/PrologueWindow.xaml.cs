@@ -17,15 +17,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Threading;
 using Tools;
+#if CSHARP_XAML_FOR_HTML5
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+#else
+#endif
 
 namespace PgJsonParse
 {
     public partial class PrologueWindow : RootControl, INotifyPropertyChanged
     {
-        #region Init
+#region Init
         public PrologueWindow()
             : base(RootControlMode.CustomShape)
         {
@@ -43,16 +46,10 @@ namespace PgJsonParse
                 InitIcons();
 
                 if (CheckLastVersionOnStartup)
-                {
-                    Task CompleteTask = new Task(new Action(() => { }));
-                    Dispatcher.InvokeAsync(new Action(() => OnCheckVersion(CompleteTask)));
-                }
+                    InvokeAndForget(new Action(() => OnCheckVersion()));
 
                 else if (CheckNewParserOnStartup)
-                {
-                    Task CompleteTask = new Task(new Action(() => { }));
-                    Dispatcher.InvokeAsync(new Action(() => OnCheckParser(CompleteTask)));
-                }
+                    InvokeAndForget(new Action(() => OnCheckParser()));
 
                 Loaded += OnLoaded;
             }
@@ -64,20 +61,20 @@ namespace PgJsonParse
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ApplicationCommand.SubscribeToGlobalCommand("CheckVersionCommand", OnCheckVersion);
-            ApplicationCommand.SubscribeToGlobalCommand("SelectVersionCommand", OnSelectVersion);
-            ApplicationCommand.SubscribeToGlobalCommand("DownloadVersionCommand", OnDownloadVersion);
-            ApplicationCommand.SubscribeToGlobalCommand("CancelDownloadVersionCommand", OnCancelDownloadVersion);
-            ApplicationCommand.SubscribeToGlobalCommand("DownloadIconsCommand", OnDownloadIcons);
-            ApplicationCommand.SubscribeToGlobalCommand("CancelDownloadIconsCommand", OnCancelDownloadIcons);
-            ApplicationCommand.SubscribeToGlobalCommand("StartCommand", OnStart);
-            ApplicationCommand.SubscribeToGlobalCommand("CancelStartCommand", OnCancelStart);
-            ApplicationCommand.SubscribeToGlobalCommand("DeleteVersionCommand", OnDeleteVersion);
-            ApplicationCommand.SubscribeToGlobalCommand("DeleteIconsCommand", OnDeleteIcons);
+            SubscribeToCommand("CheckVersionCommand", OnCheckVersion);
+            SubscribeToCommand("SelectVersionCommand", OnSelectVersion);
+            SubscribeToCommand("DownloadVersionCommand", OnDownloadVersion);
+            SubscribeToCommand("CancelDownloadVersionCommand", OnCancelDownloadVersion);
+            SubscribeToCommand("DownloadIconsCommand", OnDownloadIcons);
+            SubscribeToCommand("CancelDownloadIconsCommand", OnCancelDownloadIcons);
+            SubscribeToCommand("StartCommand", OnStart);
+            SubscribeToCommand("CancelStartCommand", OnCancelStart);
+            SubscribeToCommand("DeleteVersionCommand", OnDeleteVersion);
+            SubscribeToCommand("DeleteIconsCommand", OnDeleteIcons);
         }
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
         public string ApplicationFolder { get; private set; }
         public string VersionCacheFolder { get; private set; }
         public string IconCacheFolder { get; private set; }
@@ -185,10 +182,7 @@ namespace PgJsonParse
                     NotifyThisPropertyChanged();
 
                     if (StatusMessage == null && value == true && !IsParserUpdateChecked)
-                    {
-                        Task CompleteTask = new Task(new Action(() => { }));
-                        Dispatcher.InvokeAsync(new Action(() => OnCheckParser(CompleteTask)));
-                    }
+                        InvokeAndForget(new Action(() => OnCheckParser()));
                 }
             }
         }
@@ -221,9 +215,9 @@ namespace PgJsonParse
                 NotifyPropertyChanged(nameof(IgnoreMissingIcons));
             }
         }
-        #endregion
+#endregion
 
-        #region Settings
+#region Settings
         private void InitSettings()
         {
             ApplicationFolder = InitFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PgJsonParse"));
@@ -273,9 +267,9 @@ namespace PgJsonParse
         }
 
         private string LastIconId;
-        #endregion
+#endregion
 
-        #region Status
+#region Status
         private void InitStatus()
         {
             _StatusMessage = null;
@@ -309,9 +303,9 @@ namespace PgJsonParse
             }
         }
         private string _LastExceptionMessage;
-        #endregion
+#endregion
 
-        #region Version Check
+#region Version Check
         private void InitVersionCheck()
         {
             if (CheckLastVersionOnStartup)
@@ -379,7 +373,7 @@ namespace PgJsonParse
         }
         private string _LatestVersion;
 
-        private async void OnCheckVersion(Task CompleteTask)
+        private async void OnCheckVersion()
         {
             IsGlobalInteractionEnabled = false;
             VersionCheckState = VersionCheckState.Checking;
@@ -392,8 +386,6 @@ namespace PgJsonParse
                 VersionCheckState = VersionCheckState.CheckFailed;
                 IsGlobalInteractionEnabled = true;
             }
-
-            CompleteTask.RunSynchronously();
         }
 
         private int ExecuteCheckVersion()
@@ -448,37 +440,25 @@ namespace PgJsonParse
                 GameVersionInfo NewVersion = AddCheckedVersion(Version);
 
                 if (CheckNewParserOnStartup)
-                {
-                    Task CompleteTask = new Task(new Action(() => {}));
-                    await Dispatcher.InvokeAsync(new Action(() => OnCheckParser(CompleteTask)));
-                    await CompleteTask;
-                }
+                    await InvokeAndWait(new Action(() => OnCheckParser()));
 
                 if (DownloadNewVersionsAutomatically)
                 {
                     CachedVersionIndex = VersionList.IndexOf(NewVersion);
-                    Task CompleteTask = new Task(new Action(() => { }));
-                    await Dispatcher.InvokeAsync(new Action(() => OnDownloadVersion(NewVersion, CompleteTask)));
-                    await CompleteTask;
+                    await InvokeAndWait(new Action(() => OnDownloadVersion(NewVersion)));
                     return;
                 }
             }
             else
             {
                 if (CheckNewParserOnStartup)
-                {
-                    Task CompleteTask = new Task(new Action(() => { }));
-                    await Dispatcher.InvokeAsync(new Action(() => OnCheckParser(CompleteTask)));
-                    await CompleteTask;
-                }
+                    await InvokeAndWait(new Action(() => OnCheckParser()));
 
                 GameVersionInfo VersionInfo = SelectedVersion;
 
                 if (StartAutomatically)
                 {
-                    Task CompleteTask = new Task(new Action(() => { }));
-                    await Dispatcher.InvokeAsync(new Action(() => OnStart(VersionInfo, CompleteTask)));
-                    await CompleteTask;
+                    await InvokeAndWait(new Action(() => OnStart(VersionInfo)));
                     return;
                 }
             }
@@ -527,9 +507,9 @@ namespace PgJsonParse
 
             IsGlobalInteractionEnabled = true;
         }
-        #endregion
+#endregion
 
-        #region Parser Check
+#region Parser Check
         public const double PARSER_VERSION = 298.1;
 
         private void InitParserCheck()
@@ -556,16 +536,13 @@ namespace PgJsonParse
 
         private void OnCheckNewParser()
         {
-            Task CompleteTask = new Task(new Action(() => { }));
-            Dispatcher.InvokeAsync(new Action(() => OnCheckParser(CompleteTask)));
+            InvokeAndForget(new Action(() => OnCheckParser()));
         }
 
-        private async void OnCheckParser(Task CompleteTask)
+        private async void OnCheckParser()
         {
             IsParserUpdateChecked = true;
-
             IsNewParserAvailable = await Task.Run(() => { return ExecuteCheckParser(); });
-            CompleteTask.RunSynchronously();
         }
 
         private bool ExecuteCheckParser()
@@ -577,8 +554,7 @@ namespace PgJsonParse
 
             try
             {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                NetTools.EnableTls12();
 
                 string Content = WebClientTool.DownloadText(ReleasePageAddress);
                 string Pattern = @"<a href=""/dlebansais/PgJsonParse/releases/tag/";
@@ -594,7 +570,7 @@ namespace PgJsonParse
                             ParserTagVersion = ParserTagVersion.Substring(1);
 
                         double ReleasedParserVersion;
-                        if (double.TryParse(ParserTagVersion, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture.NumberFormat, out ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
+                        if (double.TryParse(ParserTagVersion, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
                             FoundUpdate = true;
                     }
                 }
@@ -608,9 +584,9 @@ namespace PgJsonParse
         }
 
         private bool IsParserUpdateChecked;
-        #endregion
+#endregion
 
-        #region Version Cached
+#region Version Cached
         private void InitVersionCache()
         {
             _CachedVersionIndex = -1;
@@ -699,7 +675,7 @@ namespace PgJsonParse
             }
         }
 
-        private async void OnDownloadVersion(GameVersionInfo VersionInfo, Task CompleteTask)
+        private async void OnDownloadVersion(GameVersionInfo VersionInfo)
         {
             IsGlobalInteractionEnabled = false;
             App.SetState(this, TaskbarStates.Normal);
@@ -714,7 +690,7 @@ namespace PgJsonParse
 
                 if (StartAutomatically)
                 {
-                    await Dispatcher.InvokeAsync(new Action(() => OnStart(VersionInfo, CompleteTask)));
+                    await InvokeAndWait(new Action(() => OnStart(VersionInfo)));
                     return;
                 }
             }
@@ -725,7 +701,6 @@ namespace PgJsonParse
             }
 
             IsGlobalInteractionEnabled = true;
-            CompleteTask.RunSynchronously();
         }
 
         public bool ExecuteDownloadVersion(GameVersionInfo VersionInfo)
@@ -754,13 +729,13 @@ namespace PgJsonParse
             int OldCachedVersionIndex = CachedVersionIndex;
 
             if (VersionList.Count == 1)
-                if (MessageBox.Show("This will delete the last downloaded version, are you sure?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                if (Confirmation.Show("This will delete the last downloaded version.", "Delete", true, ConfirmationType.Warning) != MessageBoxResult.OK)
                     return;
 
             try
             {
                 string VersionFolder = Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString());
-                Directory.Delete(VersionFolder, true);
+                FolderTools.DeleteDirectory(VersionFolder, true);
 
                 VersionList.Remove(VersionInfo);
                 if (OldCachedVersionIndex < VersionList.Count)
@@ -776,9 +751,9 @@ namespace PgJsonParse
                 LastExceptionMessage = e.Message;
             }
         }
-        #endregion
+#endregion
 
-        #region Parsing
+#region Parsing
         private void InitParsing()
         {
             _ParseProgress = 0;
@@ -844,19 +819,13 @@ namespace PgJsonParse
         }
         private MainWindow _Dlg;
 
-        private async void OnStart(GameVersionInfo VersionInfo, Task CompleteTask)
-        {
-            await OnStartNoCompletion(VersionInfo);
-            CompleteTask.RunSynchronously();
-        }
-
-        private async Task OnStartNoCompletion(GameVersionInfo VersionInfo)
+        private async void OnStart(GameVersionInfo VersionInfo)
         {
             IsGlobalInteractionEnabled = false;
             Dlg = new MainWindow();
             IsParsing = true;
             IsParsingCancelable = true;
-            ParseCancellationTokenSource = new CancellationTokenSource();
+            ParseCancellation = new Cancellation();
             ParseProgress = 0;
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
 
@@ -868,7 +837,7 @@ namespace PgJsonParse
             {
                 IsParsing = false;
                 IsParsingCancelable = false;
-                Dlg.Close();
+                Dlg.ControlClose();
                 Dlg = null;
                 IsGlobalInteractionEnabled = true;
                 return;
@@ -901,7 +870,7 @@ namespace PgJsonParse
                 {
                     default:
                     case MissingIconsAction.Ask:
-                        if (MessageBox.Show("There are " + MissingIconList.Count + " icon(s) not downloaded yet, would you like to get them now?", "Starting", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        if (Confirmation.Show("There are " + MissingIconList.Count + " icon(s) not downloaded yet, would you like to get them now?", "Starting", true, ConfirmationType.Info) == MessageBoxResult.OK)
                         {
                             FollowStartWithDownloadIcons(VersionInfo);
                             return;
@@ -929,7 +898,7 @@ namespace PgJsonParse
                     foreach (GameVersionInfo Item in ToRemove)
                     {
                         string VersionFolder = Path.Combine(VersionCacheFolder, Item.Version.ToString());
-                        Directory.Delete(VersionFolder, true);
+                        FolderTools.DeleteDirectory(VersionFolder, true);
 
                         VersionList.Remove(Item);
                     }
@@ -959,9 +928,7 @@ namespace PgJsonParse
             Dlg.IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
             Dlg.FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
 
-            Dlg.Show();
-            Close();
-            Dlg.StartApplication();
+            SwitchTo(Dlg, new Action(() => Dlg.StartApplication()));
 
             IsGlobalInteractionEnabled = true;
         }
@@ -981,7 +948,7 @@ namespace PgJsonParse
                     if (!LoadNextFile(Entry.Value, VersionFolder, ErrorInfo))
                         return false;
 
-                    if (ParseCancellationTokenSource.IsCancellationRequested)
+                    if (ParseCancellation.IsCanceled)
                         return false;
                 }
 
@@ -1036,7 +1003,7 @@ namespace PgJsonParse
                 foreach (IGenericJsonObject Item in Definition.ObjectList)
                     Item.Connect(ErrorInfo, null, AllTables);
 
-                if (ParseCancellationTokenSource.IsCancellationRequested)
+                if (ParseCancellation.IsCanceled)
                     return false;
             }
 
@@ -1064,7 +1031,7 @@ namespace PgJsonParse
                     Item.SortLinkBack();
             }
 
-            if (ParseCancellationTokenSource.IsCancellationRequested)
+            if (ParseCancellation.IsCanceled)
                 return false;
 
             return CreateIndexes(VersionFolder, IconFolder, ErrorInfo);
@@ -1077,7 +1044,7 @@ namespace PgJsonParse
                 if (!CreateNextIndex(Entry.Value, VersionFolder, ErrorInfo))
                     return false;
 
-                if (ParseCancellationTokenSource.IsCancellationRequested)
+                if (ParseCancellation.IsCanceled)
                     return false;
             }
 
@@ -1155,25 +1122,23 @@ namespace PgJsonParse
 
         private void CancelParse()
         {
-            ParseCancellationTokenSource.Cancel();
+            ParseCancellation.Cancel();
         }
 
         private async void FollowStartWithDownloadIcons(GameVersionInfo VersionInfo)
         {
             IsParsing = false;
             IsParsingCancelable = false;
-            Dlg.Close();
+            Dlg.ControlClose();
             Dlg = null;
 
-            Task CompleteTask = new Task(new Action(() => { }));
-            await Dispatcher.InvokeAsync(new Action(() => OnDownloadIcons(VersionInfo, CompleteTask)));
-            await CompleteTask;
+            await InvokeAndWait(new Action(() => OnDownloadIcons(VersionInfo)));
         }
 
-        private CancellationTokenSource ParseCancellationTokenSource;
-        #endregion
+        private Cancellation ParseCancellation;
+#endregion
 
-        #region Icons
+#region Icons
         private void InitIcons()
         {
             LoadedIconCount = 0;
@@ -1199,7 +1164,7 @@ namespace PgJsonParse
             return FileExists;
         }
 
-        private async void OnDownloadIcons(GameVersionInfo VersionInfo, Task CompleteTask)
+        private async void OnDownloadIcons(GameVersionInfo VersionInfo)
         {
             IsGlobalInteractionEnabled = false;
             IsIconStateUpdated = true;
@@ -1225,11 +1190,7 @@ namespace PgJsonParse
                     File.Copy(SourceFavorIconFile, FavorIconFile, true);
 
                 if (StartAutomatically)
-                {
-                    Task CompleteTask2 = new Task(new Action(() => { }));
-                    await Dispatcher.InvokeAsync(new Action(() => OnStart(VersionInfo, CompleteTask2)));
-                    await CompleteTask2;
-                }
+                    await InvokeAndWait(new Action(() => OnStart(VersionInfo)));
             }
             else
             {
@@ -1240,7 +1201,6 @@ namespace PgJsonParse
             UpdateWindowIcon();
 
             IsGlobalInteractionEnabled = true;
-            CompleteTask.RunSynchronously();
         }
 
         private bool ExecuteDownloadIcons(GameVersionInfo VersionInfo)
@@ -1290,7 +1250,7 @@ namespace PgJsonParse
             if (!ShareIconFiles)
                 return;
 
-            if (MessageBox.Show("This will delete all shared icons, are you sure?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            if (Confirmation.Show("This will delete all shared icons.", "Delete", true, ConfirmationType.Warning) != MessageBoxResult.OK)
                 return;
 
             string IconFolder = IconCacheFolder;
@@ -1298,7 +1258,7 @@ namespace PgJsonParse
             try
             {
                 if (Directory.Exists(IconCacheFolder))
-                    Directory.Delete(IconCacheFolder, true);
+                    FolderTools.DeleteDirectory(IconCacheFolder, true);
             }
             catch (Exception e)
             {
@@ -1310,26 +1270,19 @@ namespace PgJsonParse
             LastIconId = null;
             IsIconStateUpdated = false;
 
-            Dispatcher.BeginInvoke(new Action(OnIconSharingChanged));
+            InvokeAndForget(new Action(OnIconSharingChanged));
         }
 
         private int LoadedIconCount;
         private List<int> MissingIconList;
         private Dictionary<int, bool> IconTable;
-        #endregion
+#endregion
 
-        #region Events
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
-
+#region Events
         private async void OnCheckVersion(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarStates.NoProgress);
-            Task CompleteTask = new Task(new Action(() => { }));
-            await Dispatcher.InvokeAsync(new Action(() => OnCheckVersion(CompleteTask)));
-            await CompleteTask;
+            await InvokeAndWait(new Action(() => OnCheckVersion()));
         }
 
         private void OnSelectVersion(object sender, EventArgs e)
@@ -1347,9 +1300,7 @@ namespace PgJsonParse
         private async void OnDownloadVersion(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarStates.NoProgress);
-            Task CompleteTask = new Task(new Action(() => { }));
-            await Dispatcher.InvokeAsync(new Action(() => OnDownloadVersion(VersionInfoFromControl(e), CompleteTask)));
-            await CompleteTask;
+            await InvokeAndWait(new Action(() => OnDownloadVersion(VersionInfoFromControl(e))));
         }
 
         private void OnCancelDownloadVersion(object sender, EventArgs e)
@@ -1372,9 +1323,7 @@ namespace PgJsonParse
         private async void OnDownloadIcons(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarStates.NoProgress);
-            Task CompleteTask = new Task(new Action(() => { }));
-            await Dispatcher.InvokeAsync(new Action(() => OnDownloadIcons(VersionInfoFromControl(e), CompleteTask)));
-            await CompleteTask;
+            await InvokeAndWait(new Action(() => OnDownloadIcons(VersionInfoFromControl(e))));
         }
 
         private void OnCancelDownloadIcons(object sender, EventArgs e)
@@ -1385,20 +1334,19 @@ namespace PgJsonParse
         private async void OnStart(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarStates.NoProgress);
-            Task CompleteTask = new Task(new Action(() => { }));
-            await Dispatcher.InvokeAsync(new Action(() => OnStart(VersionInfoFromControl(e), CompleteTask)));
-            await CompleteTask;
+            await InvokeAndWait(new Action(() => OnStart(VersionInfoFromControl(e))));
         }
 
         private void OnCancelStart(object sender, EventArgs e)
         {
             CancelParse();
         }
-
+        
+        /*
         private void OnToggleButtonChecked(object sender, RoutedEventArgs e)
         {
             PopupHandler.SetOpenPopupButton(sender as ToggleButton);
-        }
+        }*/
 
         private void OnToggleButtonUnchecked(object sender, RoutedEventArgs e)
         {
@@ -1410,14 +1358,15 @@ namespace PgJsonParse
             PopupHandler.OnPopupSelectionChanged();
         }
 
+        /*
         private void OnPopupMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             PopupHandler.OnPopupMouseLeftButtonUp();
-        }
+        }*/
 
         private void OnRequestNavigate(object sender, RoutedEventArgs e)
         {
-            Process.Start(ReleasePageAddress);
+            NavigateTo(ReleasePageAddress);
         }
 
         private void OnFileDownloadProgressChanged(object sender, EventArgs e)
@@ -1439,28 +1388,28 @@ namespace PgJsonParse
 
         private void OnIconSharingChanged(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(OnIconSharingChanged));
+            InvokeAndForget(new Action(OnIconSharingChanged));
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        protected override void OnControlClosing(ref bool Cancel)
         {
             App.SetState(this, TaskbarStates.NoProgress);
 
-            base.OnClosing(e);
+            base.OnControlClosing(ref Cancel);
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnControlClosed()
         {
-            if (Dlg != null && !Dlg.IsVisible)
-                Dlg.Close();
+            if (Dlg != null && !Dlg.IsControlVisible)
+                Dlg.ControlClose();
 
             SaveSettings();
 
-            base.OnClosed(e);
+            base.OnControlClosed();
         }
-        #endregion
+#endregion
 
-        #region Implementation of INotifyPropertyChanged
+#region Implementation of INotifyPropertyChanged
         /// <summary>
         ///     Implements the PropertyChanged event.
         /// </summary>
@@ -1476,6 +1425,6 @@ namespace PgJsonParse
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
+#endregion
     }
 }

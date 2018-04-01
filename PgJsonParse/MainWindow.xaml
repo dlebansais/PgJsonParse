@@ -39,6 +39,15 @@
             <conv:BooleanInvertedConverter/>
             <conv:BooleanToVisibilityConverter/>
         </conv:ValueConverterGroup>
+        <p:ApplicationCommand x:Key="AddPowerCommand"/>
+        <p:ApplicationCommand x:Key="RemovePowerCommand"/>
+        <p:ApplicationCommand x:Key="LoadBuildCommand"/>
+        <p:ApplicationCommand x:Key="SaveBuildCommand"/>
+        <p:ApplicationCommand x:Key="CopyBuildCommand"/>
+        <p:ApplicationCommand x:Key="CrunchCommand"/>
+        <p:ApplicationCommand x:Key="OpenProfileFolderCommand"/>
+        <p:ApplicationCommand x:Key="BackwardCommand"/>
+        <p:ApplicationCommand x:Key="ForwardCommand"/>
         <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>

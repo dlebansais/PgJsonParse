@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PgJsonParse
+namespace Presentation
 {
     public class ExecutedEventArgs : EventArgs
     {
