@@ -36,7 +36,7 @@ namespace Converters
             }
 
             else
-                return (value != null && parameter != null) ? Visibility.Visible : Visibility.Collapsed;
+                return ((value != null && parameter != null) || (value == null && parameter == null)) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

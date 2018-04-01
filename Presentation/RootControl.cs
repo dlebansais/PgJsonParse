@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -99,6 +100,12 @@ namespace Presentation
             CompleteTask.RunSynchronously();
         }
 
+        protected virtual async Task<TResult> RunAsync<TResult>(Func<TResult> function)
+        {
+            TResult Result = await Task.Run(function);
+            return Result;
+        }
+
         public virtual void SwitchTo(RootControl ctrl, Action action)
         {
             ctrl.Show();
@@ -108,7 +115,7 @@ namespace Presentation
 
         public virtual void NavigateTo(string address)
         {
-            //Process.Start(address);
+            Process.Start(address);
         }
 
         public void SubscribeToCommand(string resourceName, EventHandler handler)

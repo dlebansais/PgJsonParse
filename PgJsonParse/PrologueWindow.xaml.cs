@@ -220,7 +220,7 @@ namespace PgJsonParse
 #region Settings
         private void InitSettings()
         {
-            ApplicationFolder = InitFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PgJsonParse"));
+            ApplicationFolder = InitFolder(Path.Combine(PresentationEnvironment.UserRootFolder, "PgJsonParse"));
             VersionCacheFolder = Path.Combine(ApplicationFolder, "Versions");
             IconCacheFolder = InitFolder(Path.Combine(ApplicationFolder, "Shared Icons"));
             _IsIconStateUpdated = false;
@@ -378,7 +378,7 @@ namespace PgJsonParse
             IsGlobalInteractionEnabled = false;
             VersionCheckState = VersionCheckState.Checking;
 
-            int Version = await Task.Run(() => { return ExecuteCheckVersion(); });
+            int Version = await RunAsync(() => { return ExecuteCheckVersion(); });
             if (Version > 0)
                 ExecuteCompleteCheckVersion(Version);
             else
@@ -542,7 +542,7 @@ namespace PgJsonParse
         private async void OnCheckParser()
         {
             IsParserUpdateChecked = true;
-            IsNewParserAvailable = await Task.Run(() => { return ExecuteCheckParser(); });
+            IsNewParserAvailable = await RunAsync(() => { return ExecuteCheckParser(); });
         }
 
         private bool ExecuteCheckParser()
@@ -681,7 +681,7 @@ namespace PgJsonParse
             App.SetState(this, TaskbarStates.Normal);
 
             VersionInfo.ProgressChanged += OnFileDownloadProgressChanged;
-            bool Success = await Task.Run(() => { return ExecuteDownloadVersion(VersionInfo); });
+            bool Success = await RunAsync(() => { return ExecuteDownloadVersion(VersionInfo); });
             VersionInfo.ProgressChanged -= OnFileDownloadProgressChanged;
 
             if (Success)
@@ -830,7 +830,7 @@ namespace PgJsonParse
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
 
             App.SetState(this, TaskbarStates.Normal);
-            bool Success = await Task.Run(() => { return ExecuteParse(VersionInfo, ErrorInfo); });
+            bool Success = await RunAsync(() => { return ExecuteParse(VersionInfo, ErrorInfo); });
             App.SetState(this, TaskbarStates.NoProgress);
 
             if (!Success)
@@ -1171,7 +1171,7 @@ namespace PgJsonParse
             App.SetState(this, TaskbarStates.Normal);
 
             VersionInfo.ProgressChanged += OnIconDownloadProgressChanged;
-            bool Success = await Task.Run(() => { return ExecuteDownloadIcons(VersionInfo); });
+            bool Success = await RunAsync(() => { return ExecuteDownloadIcons(VersionInfo); });
             VersionInfo.ProgressChanged -= OnIconDownloadProgressChanged;
 
             if (Success)

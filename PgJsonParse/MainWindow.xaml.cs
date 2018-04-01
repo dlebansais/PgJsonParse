@@ -98,7 +98,7 @@ namespace PgJsonParse
         #region Startup Page
         private void InitStartupPage()
         {
-            ApplicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PgJsonParse");
+            ApplicationFolder = Path.Combine(PresentationEnvironment.UserRootFolder, "PgJsonParse");
 
             if (!Directory.Exists(ApplicationFolder))
                 Directory.CreateDirectory(ApplicationFolder);

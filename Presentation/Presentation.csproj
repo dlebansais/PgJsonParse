@@ -54,6 +54,7 @@
     <Compile Include="DispatchableDelegate.cs" />
     <Compile Include="FolderTools.cs" />
     <Compile Include="NetTools.cs" />
+    <Compile Include="PresentationEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RootControl.cs" />
     <Compile Include="RootControlMode.cs" />

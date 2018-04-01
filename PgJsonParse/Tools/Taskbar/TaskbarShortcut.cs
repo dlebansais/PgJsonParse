@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -34,7 +35,7 @@ namespace Tools
                 if (!File.Exists(IconFileAsIco))
                     return;
 
-                string RoamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string RoamingPath = PresentationEnvironment.UserRootFolder;
                 string TaskbarShortcutPath = Path.Combine(RoamingPath, @"Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar");
                 string ShortcutFileName = "PgJsonParse.lnk";
                 string PgJsonParseShortcut = Path.Combine(TaskbarShortcutPath, ShortcutFileName);
