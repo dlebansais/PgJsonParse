@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using Tools;
 #if CSHARP_XAML_FOR_HTML5
 using Windows.UI.Xaml;
@@ -78,28 +79,6 @@ namespace PgJsonParse
         public string ApplicationFolder { get; private set; }
         public string VersionCacheFolder { get; private set; }
         public string IconCacheFolder { get; private set; }
-
-        public bool IsVersionSelectionToggled
-        {
-            get { return _IsVersionSelectionToggled; }
-            set
-            {
-                if (_IsVersionSelectionToggled != value)
-                {
-                    _IsVersionSelectionToggled = value;
-                    NotifyThisPropertyChanged();
-                }
-            }
-        }
-        private bool _IsVersionSelectionToggled;
-
-        private void OnVersionSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            IsVersionSelectionToggled = false;
-        }
-
-
-
 
         public bool IsGlobalInteractionEnabled
         {
@@ -220,11 +199,11 @@ namespace PgJsonParse
 #region Settings
         private void InitSettings()
         {
-            ApplicationFolder = InitFolder(Path.Combine(PresentationEnvironment.UserRootFolder, "PgJsonParse"));
-            VersionCacheFolder = Path.Combine(ApplicationFolder, "Versions");
+            string UserRootFolder = InitFolder(PresentationEnvironment.UserRootFolder);
+            ApplicationFolder = InitFolder(Path.Combine(UserRootFolder, "PgJsonParse"));
+            VersionCacheFolder = InitFolder(Path.Combine(ApplicationFolder, "Versions"));
             IconCacheFolder = InitFolder(Path.Combine(ApplicationFolder, "Shared Icons"));
             _IsIconStateUpdated = false;
-
             CheckLastVersionOnStartup = App.GetSettingBool(nameof(CheckLastVersionOnStartup), true);
             _CheckNewParserOnStartup = App.GetSettingBool(nameof(CheckNewParserOnStartup), true);
             DownloadNewVersionsAutomatically = App.GetSettingBool(nameof(DownloadNewVersionsAutomatically), false);
@@ -558,7 +537,7 @@ namespace PgJsonParse
 
                 string Content = WebClientTool.DownloadText(ReleasePageAddress);
                 string Pattern = @"<a href=""/dlebansais/PgJsonParse/releases/tag/";
-                int Index = Content.IndexOf(Pattern);
+                int Index = Content == null ? -1 : Content.IndexOf(Pattern);
                 if (Index >= 0)
                 {
                     string ParserTagVersion = Content.Substring(Index + Pattern.Length, 20);
@@ -735,7 +714,8 @@ namespace PgJsonParse
             try
             {
                 string VersionFolder = Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString());
-                FolderTools.DeleteDirectory(VersionFolder, true);
+                if (Directory.Exists(VersionFolder))
+                    FolderTools.DeleteDirectory(VersionFolder, true);
 
                 VersionList.Remove(VersionInfo);
                 if (OldCachedVersionIndex < VersionList.Count)
@@ -1363,6 +1343,14 @@ namespace PgJsonParse
         {
             PopupHandler.OnPopupMouseLeftButtonUp();
         }*/
+
+        private void OnComboBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            Presentation.ComboBox ctrl = sender as Presentation.ComboBox;
+            ToggleButton btn = ctrl.DropDownToggle;
+            if (btn != null && !double.IsNaN(btn.ActualWidth) && btn.ActualWidth > 0)
+                ctrlDockingSpace.Width = btn.ActualWidth;
+        }
 
         private void OnRequestNavigate(object sender, RoutedEventArgs e)
         {

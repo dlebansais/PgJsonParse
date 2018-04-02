@@ -1,12 +1,9 @@
 ﻿using Converters;
-using PgJsonParse;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace CustomControls
 {
@@ -51,19 +48,34 @@ namespace CustomControls
         {
             IsBindingSet = false;
             SizeChanged += OnSizeChanged;
+            Loaded += OnLoaded;
         }
         #endregion
 
         #region Implementation
+        private double SelectedWidth;
+        private double SelectedHeight;
+
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             //Debug.WriteLine((Selector == null ? "*" : Selector) + ": Size changed, Width: " + Width + ", Height: " + Height + ", ActualWidth: " + ActualWidth + ", ActualHeight: " + ActualHeight);
 
-            if (double.IsNaN(Width) && !double.IsNaN(ActualWidth) && ActualWidth > 0)
-                Width = ActualWidth;
+            if (!double.IsNaN(ActualWidth) && ActualWidth > SelectedWidth)
+                SelectedWidth = ActualWidth;
 
-            if (double.IsNaN(Height) && !double.IsNaN(ActualHeight) && ActualHeight > 0)
-                Height = ActualHeight;
+            if (!double.IsNaN(ActualHeight) && ActualHeight > SelectedHeight)
+                SelectedHeight = ActualHeight;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            //Debug.WriteLine((Selector == null ? "*" : Selector) + ": Loaded, Width: " + Width + ", Height: " + Height + ", ActualWidth: " + ActualWidth + ", ActualHeight: " + ActualHeight);
+
+            if (double.IsNaN(Width) && SelectedWidth > 0)
+                Width = SelectedWidth;
+
+            if (double.IsNaN(Height) && SelectedHeight > 0)
+                Height = SelectedHeight;
 
             if (IsBindingPossible(true))
                 SetBinding();

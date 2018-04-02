@@ -69,6 +69,7 @@
     <Compile Include="Controls\SelectorItem.cs" />
     <Compile Include="Converters\Boolean To Object Converter.cs" />
     <Compile Include="Converters\BooleanInvertedConverter.cs" />
+    <Compile Include="Converters\CountToOpacityConverter.cs" />
     <Compile Include="Converters\ObjectToIndexConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\Double Converter.cs" />

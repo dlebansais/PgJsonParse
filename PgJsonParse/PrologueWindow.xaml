@@ -13,6 +13,7 @@
         <conv:EnumToObjectConverter x:Key="convEnumToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
         <conv:IntToObjectConverter x:Key="convIntToObject"/>
+        <conv:CountToOpacityConverter x:Key="convCountToOpacity"/>
         <p:ApplicationCommand x:Key="CheckVersionCommand"/>
         <p:ApplicationCommand x:Key="SelectVersionCommand"/>
         <p:ApplicationCommand x:Key="DownloadVersionCommand"/>
@@ -363,8 +364,8 @@
                             </VisualStateManager.VisualStateGroups>
                             <Border x:Name="OuterBorder" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                                 <DockPanel>
-                                    <ToggleButton x:Name="DropDownToggle" DockPanel.Dock="Right" IsChecked="{Binding IsVersionSelectionToggled, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" BorderThickness="0" Background="Transparent">
-                                        <Path x:Name="arrow" Visibility="Visible" Stroke="Gray" Width="{StaticResource ComboBox_ToggleButtonWidth}" Height="{StaticResource ComboBox_ToggleButtonHeight}" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None" Data="M 3.5,6.25 L 8.75,11.5 L 14,6.25 M 3.5,12.25 L 8.75,17.5 L 14,12.25"/>
+                                    <ToggleButton x:Name="DropDownToggle" DockPanel.Dock="Right" VerticalAlignment="Bottom" BorderThickness="0" Background="Transparent">
+                                        <Path x:Name="arrow" Stroke="Gray" StrokeThickness="3" Stretch="None" Data="M 3.5,6.25 L 8.75,11.5 L 14,6.25 M 3.5,12.25 L 8.75,17.5 L 14,12.25" Width="{StaticResource ComboBox_ToggleButtonWidth}" Height="{StaticResource ComboBox_ToggleButtonHeight}"/>
                                     </ToggleButton>
                                     <ContentControl x:Name="ContentPresenter" Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}" ContentTemplate="{StaticResource GameVersionInfoTemplate}" Margin="{TemplateBinding Padding}" MinHeight="24"/>
                                 </DockPanel>
@@ -382,7 +383,7 @@
             </Setter>
         </Style>
     </p:RootControl.Resources>
-    <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2">
+    <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <DockPanel>
                 <ctrl:SelectorControl DockPanel.Dock="Bottom" Selector="StatusMessage" Margin="10,0,10,10">
@@ -479,7 +480,7 @@
                     <ctrl:SelectorItem>
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <Grid DockPanel.Dock="Right" Width="{StaticResource ComboBox_ToggleButtonWidth}" Margin="0,0,2,0"/>
+                                <Grid x:Name="ctrlDockingSpace" DockPanel.Dock="Right" Margin="0,0,0,0"/>
                                 <Border Margin="0,2,0,10" BorderBrush="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Color}}" BorderThickness="1,1,1,1" Background="White">
                                     <StackPanel Orientation="Horizontal">
                                         <Grid Width="{StaticResource Column0}" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}"/>
@@ -514,15 +515,17 @@
                                     </StackPanel>
                                 </Border>
                             </DockPanel>
-                            <p:ComboBox UseNativeComboBox="False" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" SelectedIndex="{Binding CachedVersionIndex}" ItemTemplate="{StaticResource GameVersionInfoShortTemplate}" Padding="0" BorderThickness="0" SelectionChanged="OnVersionSelectionChanged">
-                                <ComboBox.ItemContainerStyle>
-                                    <Style TargetType="ComboBoxItem">
-                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                        <Setter Property="Padding" Value="0"/>
-                                        <Setter Property="Margin" Value="0"/>
-                                    </Style>
-                                </ComboBox.ItemContainerStyle>
-                            </p:ComboBox>
+                            <Grid MinHeight="94" MinWidth="449">
+                                <p:ComboBox UseNativeComboBox="False" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" Opacity="{Binding VersionList.Count, Converter={StaticResource convCountToOpacity}, FallbackValue=0}" SelectedIndex="{Binding CachedVersionIndex}" ItemTemplate="{StaticResource GameVersionInfoShortTemplate}" BorderThickness="0" Loaded="OnComboBoxLoaded" HorizontalAlignment="Left" Padding="0">
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                        </Style>
+                                    </ComboBox.ItemContainerStyle>
+                                </p:ComboBox>
+                            </Grid>
                         </DockPanel>
                     </ctrl:SelectorItem>
                     <ctrl:SelectorItem Value="True">
