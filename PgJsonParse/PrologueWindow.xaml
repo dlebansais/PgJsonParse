@@ -24,7 +24,6 @@
         <p:ApplicationCommand x:Key="CancelStartCommand"/>
         <p:ApplicationCommand x:Key="DeleteVersionCommand"/>
         <p:ApplicationCommand x:Key="DeleteIconsCommand"/>
-        <sys:Double x:Key="Column0">20</sys:Double>
         <sys:Double x:Key="Column1">50</sys:Double>
         <sys:Double x:Key="Column2">210</sys:Double>
         <sys:Double x:Key="Column1And2">260</sys:Double>
@@ -169,7 +168,7 @@
         <DataTemplate x:Key="GameVersionInfoBigTemplate">
             <Border BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="1,1,1,1" Background="White">
                 <DockPanel>
-                    <Button DockPanel.Dock="Left" Command="{StaticResource DeleteVersionCommand}" CommandParameter="{Binding}" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="0,0,1,0" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}" IsEnabled="{Binding Owner.IsGlobalInteractionEnabled}">
+                    <Button DockPanel.Dock="Left" Command="{StaticResource DeleteVersionCommand}" CommandParameter="{Binding}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="0,0,1,0" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}" IsEnabled="{Binding Owner.IsGlobalInteractionEnabled}">
                         <Button.ContentTemplate>
                             <DataTemplate>
                                 <Image Source="{StaticResource imgRecycle}" Width="16" Height="16"/>
@@ -263,7 +262,13 @@
         <DataTemplate x:Key="GameVersionInfoSmallTemplate">
             <Border BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="1,1,1,1">
                 <DockPanel>
-                    <Grid DockPanel.Dock="Left" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}"/>
+                    <Button DockPanel.Dock="Left" IsHitTestVisible="False" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="0,0,1,0" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}" IsEnabled="{Binding Owner.IsGlobalInteractionEnabled}">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <Image Opacity="0" Source="{StaticResource imgRecycle}" Width="16" Height="16"/>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                             <TextBlock TextAlignment="Right" VerticalAlignment="Center" Width="{StaticResource Column1}">Version:</TextBlock>
@@ -485,10 +490,10 @@
                     <ctrl:SelectorItem>
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <Grid x:Name="ctrlDockingSpace" DockPanel.Dock="Right"/>
+                                <Grid x:Name="ctrlAnchor1" DockPanel.Dock="Right"/>
                                 <Border Margin="0,2,0,10" BorderBrush="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Color}}" BorderThickness="1,1,1,1" Background="White">
                                     <StackPanel Orientation="Horizontal">
-                                        <Grid Width="{StaticResource Column0}" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}"/>
+                                        <Grid x:Name="ctrlAnchor2" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}"/>
                                         <Grid Width="1" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Collapsed}"/>
                                         <Grid Width="{StaticResource Column1And2}" VerticalAlignment="Center" Margin="0,0,15,0">
                                             <TextBlock Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Unchecked}}" HorizontalAlignment="Center">The latest version has not been checked.</TextBlock>
@@ -520,13 +525,8 @@
                                     </StackPanel>
                                 </Border>
                             </DockPanel>
-                            <Grid MinHeight="94" MinWidth="449">
-                                <p:ComboBox UseNativeComboBox="False" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" Opacity="{Binding VersionList.Count, Converter={StaticResource convCountToOpacity}, FallbackValue=0}" ControlSelectedIndex="{Binding CachedVersionIndex}" BorderThickness="0" Loaded="OnComboBoxLoaded" HorizontalAlignment="Left" Padding="0">
-                                    <p:ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <p:ComboBoxTemplateSelector Content="{Binding}" SelectedItemTemplate="{StaticResource GameVersionInfoBigTemplate}" DropdownItemsTemplate="{StaticResource GameVersionInfoSmallTemplate}"/>
-                                        </DataTemplate>
-                                    </p:ComboBox.ItemTemplate>
+                            <Grid Opacity="{Binding VersionList.Count, Converter={StaticResource convCountToOpacity}, FallbackValue=0}" MinHeight="94" MinWidth="449">
+                                <p:ComboBox x:Name="comboVersions" UseNativeComboBox="False" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" ControlSelectedIndex="{Binding CachedVersionIndex, Mode=TwoWay}" ItemTemplate="{StaticResource GameVersionInfoSmallTemplate}" BorderThickness="0" Loaded="OnComboBoxLoaded" HorizontalAlignment="Left" Padding="0">
                                     <p:ComboBox.ItemContainerStyle>
                                         <Style TargetType="ComboBoxItem">
                                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -535,6 +535,7 @@
                                         </Style>
                                     </p:ComboBox.ItemContainerStyle>
                                 </p:ComboBox>
+                                <ContentControl Visibility="{Binding IsDropDownOpen, ElementName=comboVersions, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Collapsed}" Content="{Binding SelectedItem, ElementName=comboVersions}" ContentTemplate="{StaticResource GameVersionInfoBigTemplate}" HorizontalAlignment="Left"/>
                             </Grid>
                         </DockPanel>
                     </ctrl:SelectorItem>

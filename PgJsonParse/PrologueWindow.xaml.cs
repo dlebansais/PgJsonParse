@@ -1331,7 +1331,14 @@ namespace PgJsonParse
             Presentation.ComboBox ctrl = sender as Presentation.ComboBox;
             ToggleButton btn = ctrl.DropDownToggle;
             if (btn != null && !double.IsNaN(btn.ActualWidth) && btn.ActualWidth > 0)
-                ctrlDockingSpace.Width = btn.ActualWidth;
+            {
+                FrameworkElement ctrlAnchor1;
+                if ((ctrlAnchor1 = FindName("ctrlAnchor1") as FrameworkElement) != null)
+                    ctrlAnchor1.Width = btn.ActualWidth;
+                FrameworkElement ctrlAnchor2;
+                if ((ctrlAnchor2 = FindName("ctrlAnchor2") as FrameworkElement) != null)
+                    ctrlAnchor2.Width = btn.ActualWidth;
+            }
         }
 
         private void OnRequestNavigate(object sender, RoutedEventArgs e)
