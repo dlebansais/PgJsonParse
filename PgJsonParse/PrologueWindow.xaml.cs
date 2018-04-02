@@ -115,6 +115,7 @@ namespace PgJsonParse
                 {
                     _ShowDeleteButton = value;
                     NotifyThisPropertyChanged();
+                    Persistent.SetSettingBool(nameof(ShowDeleteButton), _ShowDeleteButton);
                 }
             }
         }
@@ -130,6 +131,7 @@ namespace PgJsonParse
                     _ShareIconFiles = value;
                     NotifyThisPropertyChanged();
                     NotifyPropertyChanged(nameof(CanDeleteSharedIcons));
+                    Persistent.SetSettingBool(nameof(ShareIconFiles), _ShareIconFiles);
                 }
             }
         }
@@ -140,12 +142,95 @@ namespace PgJsonParse
             get { return ShareIconFiles && IsGlobalInteractionEnabled; }
         }
 
-        public bool CheckLastVersionOnStartup { get; set; }
-        public bool DownloadNewVersionsAutomatically { get; set; }
-        public int DefaultSelectedVersion { get; set; }
-        public bool KeepRecentVersions { get; set; }
-        public bool StartAutomatically { get; set; }
-        public int LastSelectedSetting { get; set; }
+        public bool CheckLastVersionOnStartup
+        {
+            get { return _CheckLastVersionOnStartup; }
+            set
+            {
+                if (_CheckLastVersionOnStartup != value)
+                {
+                    _CheckLastVersionOnStartup = value;
+                    NotifyThisPropertyChanged();
+                    Persistent.SetSettingBool(nameof(CheckLastVersionOnStartup), _CheckLastVersionOnStartup);
+                }
+            }
+        }
+        private bool _CheckLastVersionOnStartup;
+
+        public bool DownloadNewVersionsAutomatically
+        {
+            get { return _DownloadNewVersionsAutomatically; }
+            set
+            {
+                if (_DownloadNewVersionsAutomatically != value)
+                {
+                    _DownloadNewVersionsAutomatically = value;
+                    NotifyThisPropertyChanged();
+                    Persistent.SetSettingBool(nameof(DownloadNewVersionsAutomatically), _DownloadNewVersionsAutomatically);
+                }
+            }
+        }
+        private bool _DownloadNewVersionsAutomatically;
+
+        public int DefaultSelectedVersion
+        {
+            get { return _DefaultSelectedVersion; }
+            set
+            {
+                if (_DefaultSelectedVersion != value)
+                {
+                    _DefaultSelectedVersion = value;
+                    NotifyThisPropertyChanged();
+                    Persistent.SetSettingInt(nameof(DefaultSelectedVersion), _DefaultSelectedVersion);
+                }
+            }
+        }
+        private int _DefaultSelectedVersion;
+
+        public bool KeepRecentVersions
+        {
+            get { return _KeepRecentVersions; }
+            set
+            {
+                if (_KeepRecentVersions != value)
+                {
+                    _KeepRecentVersions = value;
+                    NotifyThisPropertyChanged();
+                    Persistent.SetSettingBool(nameof(KeepRecentVersions), _KeepRecentVersions);
+                }
+            }
+        }
+        private bool _KeepRecentVersions;
+
+        public bool StartAutomatically
+        {
+            get { return _StartAutomatically; }
+            set
+            {
+                if (_StartAutomatically != value)
+                {
+                    _StartAutomatically = value;
+                    NotifyThisPropertyChanged();
+                    Persistent.SetSettingBool(nameof(StartAutomatically), _StartAutomatically);
+                }
+            }
+        }
+        private bool _StartAutomatically;
+
+        public int LastSelectedSetting
+        {
+            get { return _LastSelectedSetting; }
+            set
+            {
+                if (_LastSelectedSetting != value)
+                {
+                    _LastSelectedSetting = value;
+                    NotifyThisPropertyChanged();
+                    Persistent.SetSettingInt(nameof(LastSelectedSetting), _LastSelectedSetting);
+                }
+            }
+        }
+        private int _LastSelectedSetting;
 
         public bool CheckNewParserOnStartup
         {
@@ -156,6 +241,7 @@ namespace PgJsonParse
                 {
                     _CheckNewParserOnStartup = value;
                     NotifyThisPropertyChanged();
+                    Persistent.SetSettingBool(nameof(CheckNewParserOnStartup), _CheckNewParserOnStartup);
 
                     if (StatusMessage == null && value == true && !IsParserUpdateChecked)
                         InvokeAndForget(new Action(() => OnCheckParser()));
@@ -164,32 +250,46 @@ namespace PgJsonParse
         }
         private bool _CheckNewParserOnStartup;
 
+        public MissingIconsAction MissingIconsAction
+        {
+            get { return _MissingIconsAction; }
+            set
+            {
+                if (_MissingIconsAction != value)
+                {
+                    _MissingIconsAction = value;
+                    Persistent.SetSettingInt(nameof(MissingIconsAction), (int)_MissingIconsAction);
+                }
+            }
+        }
+        private MissingIconsAction _MissingIconsAction;
+
         public bool AskToIgnoreMissingIcons
         {
             get { return MissingIconsAction == MissingIconsAction.Ask; }
-            set { SetMissingIconsAction(MissingIconsAction.Ask); }
         }
         public bool DownloadMissingIcons
         {
             get { return MissingIconsAction == MissingIconsAction.Download; }
-            set { SetMissingIconsAction(MissingIconsAction.Download); }
         }
         public bool IgnoreMissingIcons
         {
             get { return MissingIconsAction == MissingIconsAction.Ignore; }
-            set { SetMissingIconsAction(MissingIconsAction.Ignore); }
         }
-        private MissingIconsAction MissingIconsAction;
 
-        private void SetMissingIconsAction(MissingIconsAction Action)
+        private void OnSetAskToIgnoreMissingIcons(object sender, RoutedEventArgs e)
         {
-            if (MissingIconsAction != Action)
-            {
-                MissingIconsAction = Action;
-                NotifyPropertyChanged(nameof(AskToIgnoreMissingIcons));
-                NotifyPropertyChanged(nameof(DownloadMissingIcons));
-                NotifyPropertyChanged(nameof(IgnoreMissingIcons));
-            }
+            MissingIconsAction = MissingIconsAction.Ask;
+        }
+
+        private void OnSetDownloadMissingIcons(object sender, RoutedEventArgs e)
+        {
+            MissingIconsAction = MissingIconsAction.Download;
+        }
+
+        private void OnSetIgnoreMissingIcons(object sender, RoutedEventArgs e)
+        {
+            MissingIconsAction = MissingIconsAction.Ignore;
         }
         #endregion
 
@@ -201,17 +301,17 @@ namespace PgJsonParse
             VersionCacheFolder = InitFolder(Path.Combine(ApplicationFolder, "Versions"));
             IconCacheFolder = InitFolder(Path.Combine(ApplicationFolder, "Shared Icons"));
             _IsIconStateUpdated = false;
-            CheckLastVersionOnStartup = App.GetSettingBool(nameof(CheckLastVersionOnStartup), true);
-            _CheckNewParserOnStartup = App.GetSettingBool(nameof(CheckNewParserOnStartup), true);
-            DownloadNewVersionsAutomatically = App.GetSettingBool(nameof(DownloadNewVersionsAutomatically), false);
-            DefaultSelectedVersion = App.GetSettingInt(nameof(DefaultSelectedVersion), 0);
-            ShareIconFiles = App.GetSettingBool(nameof(ShareIconFiles), true);
-            MissingIconsAction = (MissingIconsAction)App.GetSettingEnum(nameof(MissingIconsAction), (int)MissingIconsAction.Ask, (int)MissingIconsAction.Ignore);
-            KeepRecentVersions = App.GetSettingBool(nameof(KeepRecentVersions), true);
-            ShowDeleteButton = App.GetSettingBool(nameof(ShowDeleteButton), true);
-            StartAutomatically = App.GetSettingBool(nameof(StartAutomatically), false);
-            LastSelectedSetting = App.GetSettingInt(nameof(LastSelectedSetting), 0);
-            LastIconId = App.GetSettingString(nameof(LastIconId), null);
+            _CheckLastVersionOnStartup = Persistent.GetSettingBool(nameof(CheckLastVersionOnStartup), true);
+            _CheckNewParserOnStartup = Persistent.GetSettingBool(nameof(CheckNewParserOnStartup), true);
+            _DownloadNewVersionsAutomatically = Persistent.GetSettingBool(nameof(DownloadNewVersionsAutomatically), false);
+            _DefaultSelectedVersion = Persistent.GetSettingInt(nameof(DefaultSelectedVersion), 0);
+            _ShareIconFiles = Persistent.GetSettingBool(nameof(ShareIconFiles), true);
+            _MissingIconsAction = (MissingIconsAction)Persistent.GetSettingEnum(nameof(MissingIconsAction), (int)MissingIconsAction.Ask, (int)MissingIconsAction.Ignore);
+            _KeepRecentVersions = Persistent.GetSettingBool(nameof(KeepRecentVersions), true);
+            _ShowDeleteButton = Persistent.GetSettingBool(nameof(ShowDeleteButton), true);
+            _StartAutomatically = Persistent.GetSettingBool(nameof(StartAutomatically), false);
+            _LastSelectedSetting = Persistent.GetSettingInt(nameof(LastSelectedSetting), 0);
+            _LastIconId = Persistent.GetSettingString(nameof(LastIconId), null);
         }
 
         private string InitFolder(string FolderName)
@@ -229,20 +329,35 @@ namespace PgJsonParse
             else
                 DefaultSelectedVersion = 0;
 
-            App.SetSettingBool(nameof(CheckLastVersionOnStartup), CheckLastVersionOnStartup);
-            App.SetSettingBool(nameof(CheckNewParserOnStartup), CheckNewParserOnStartup);
-            App.SetSettingBool(nameof(DownloadNewVersionsAutomatically), DownloadNewVersionsAutomatically);
-            App.SetSettingInt(nameof(DefaultSelectedVersion), DefaultSelectedVersion);
-            App.SetSettingBool(nameof(ShareIconFiles), ShareIconFiles);
-            App.SetSettingInt(nameof(MissingIconsAction), (int)MissingIconsAction);
-            App.SetSettingBool(nameof(KeepRecentVersions), KeepRecentVersions);
-            App.SetSettingBool(nameof(ShowDeleteButton), ShowDeleteButton);
-            App.SetSettingBool(nameof(StartAutomatically), StartAutomatically);
-            App.SetSettingInt(nameof(LastSelectedSetting), LastSelectedSetting);
-            App.SetSettingString(nameof(LastIconId), LastIconId);
+            /*
+            Persistent.SetSettingBool(nameof(CheckLastVersionOnStartup), CheckLastVersionOnStartup);
+            Persistent.SetSettingBool(nameof(CheckNewParserOnStartup), CheckNewParserOnStartup);
+            Persistent.SetSettingBool(nameof(DownloadNewVersionsAutomatically), DownloadNewVersionsAutomatically);
+            Persistent.SetSettingInt(nameof(DefaultSelectedVersion), DefaultSelectedVersion);
+            Persistent.SetSettingBool(nameof(ShareIconFiles), ShareIconFiles);
+            Persistent.SetSettingInt(nameof(MissingIconsAction), (int)MissingIconsAction);
+            Persistent.SetSettingBool(nameof(KeepRecentVersions), KeepRecentVersions);
+            Persistent.SetSettingBool(nameof(ShowDeleteButton), ShowDeleteButton);
+            Persistent.SetSettingBool(nameof(StartAutomatically), StartAutomatically);
+            Persistent.SetSettingInt(nameof(LastSelectedSetting), LastSelectedSetting);
+            Persistent.SetSettingString(nameof(LastIconId), LastIconId);
+            */
+            Persistent.CommitSettings();
         }
 
-        private string LastIconId;
+        private string LastIconId
+        {
+            get { return _LastIconId; }
+            set
+            {
+                if (_LastIconId != value)
+                {
+                    _LastIconId = value;
+                    Persistent.SetSettingString(nameof(LastIconId), _LastIconId);
+                }
+            }
+        }
+        private string _LastIconId;
         #endregion
 
         #region Status
@@ -661,7 +776,7 @@ namespace PgJsonParse
         private async void OnDownloadVersion(GameVersionInfo VersionInfo)
         {
             IsGlobalInteractionEnabled = false;
-            App.SetState(this, TaskbarStates.Normal);
+            SetTaskbarState(TaskbarStates.Normal);
 
             VersionInfo.ProgressChanged += OnFileDownloadProgressChanged;
             bool Success = await RunAsync(() => { return ExecuteDownloadVersion(VersionInfo); });
@@ -669,7 +784,7 @@ namespace PgJsonParse
 
             if (Success)
             {
-                App.SetState(this, TaskbarStates.NoProgress);
+                SetTaskbarState(TaskbarStates.NoProgress);
 
                 if (StartAutomatically)
                 {
@@ -679,7 +794,7 @@ namespace PgJsonParse
             }
             else
             {
-                App.SetState(this, TaskbarStates.Error);
+                SetTaskbarState(TaskbarStates.Error);
                 StatusMessage = "Unable to download version files.";
             }
 
@@ -813,9 +928,9 @@ namespace PgJsonParse
             ParseProgress = 0;
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
 
-            App.SetState(this, TaskbarStates.Normal);
+            SetTaskbarState(TaskbarStates.Normal);
             bool Success = await RunAsync(() => { return ExecuteParse(VersionInfo, ErrorInfo); });
-            App.SetState(this, TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarStates.NoProgress);
 
             if (!Success)
             {
@@ -939,7 +1054,7 @@ namespace PgJsonParse
                 ParseProgress = (ProgressIndex * 100.0) / ObjectList.Definitions.Count;
                 ProgressIndex++;
 
-                App.SetValue(this, ParseProgress, 100.0);
+                SetTaskbarProgressValue(ParseProgress, 100.0);
             }
 
             return ConnectTables(VersionFolder, IconFolder, ErrorInfo);
@@ -1152,7 +1267,7 @@ namespace PgJsonParse
         {
             IsGlobalInteractionEnabled = false;
             IsIconStateUpdated = true;
-            App.SetState(this, TaskbarStates.Normal);
+            SetTaskbarState(TaskbarStates.Normal);
 
             VersionInfo.ProgressChanged += OnIconDownloadProgressChanged;
             bool Success = await RunAsync(() => { return ExecuteDownloadIcons(VersionInfo); });
@@ -1160,7 +1275,7 @@ namespace PgJsonParse
 
             if (Success)
             {
-                App.SetState(this, TaskbarStates.NoProgress);
+                SetTaskbarState(TaskbarStates.NoProgress);
 
                 string IconFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString());
                 string IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
@@ -1178,7 +1293,7 @@ namespace PgJsonParse
             }
             else
             {
-                App.SetState(this, TaskbarStates.Error);
+                SetTaskbarState(TaskbarStates.Error);
                 StatusMessage = "Failed to download icons.";
             }
 
@@ -1265,13 +1380,13 @@ namespace PgJsonParse
         #region Events
         private async void OnCheckVersion(object sender, EventArgs e)
         {
-            App.SetState(this, TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarStates.NoProgress);
             await InvokeAndWait(new Action(() => OnCheckVersion()));
         }
 
         private void OnSelectVersion(object sender, EventArgs e)
         {
-            App.SetState(this, TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarStates.NoProgress);
             OnSelectVersion();
         }
 
@@ -1283,7 +1398,7 @@ namespace PgJsonParse
 
         private async void OnDownloadVersion(object sender, EventArgs e)
         {
-            App.SetState(this, TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarStates.NoProgress);
             await InvokeAndWait(new Action(() => OnDownloadVersion(VersionInfoFromControl(e))));
         }
 
@@ -1294,19 +1409,19 @@ namespace PgJsonParse
 
         private void OnDeleteVersion(object sender, EventArgs e)
         {
-            App.SetState(this, TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarStates.NoProgress);
             OnDeleteVersion(VersionInfoFromControl(e));
         }
 
         private void OnDeleteIcons(object sender, EventArgs e)
         {
-            App.SetState(this, TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarStates.NoProgress);
             OnDeleteIcons();
         }
 
         private async void OnDownloadIcons(object sender, EventArgs e)
         {
-            App.SetState(this, TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarStates.NoProgress);
             await InvokeAndWait(new Action(() => OnDownloadIcons(VersionInfoFromControl(e))));
         }
 
@@ -1317,7 +1432,7 @@ namespace PgJsonParse
 
         private async void OnStart(object sender, EventArgs e)
         {
-            App.SetState(this, TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarStates.NoProgress);
             await InvokeAndWait(new Action(() => OnStart(VersionInfoFromControl(e))));
         }
 
@@ -1349,13 +1464,13 @@ namespace PgJsonParse
         private void OnFileDownloadProgressChanged(object sender, EventArgs e)
         {
             GameVersionInfo VersionInfo = sender as GameVersionInfo;
-            App.SetValue(this, VersionInfo.FileDownloadProgress, 100.0);
+            SetTaskbarProgressValue(VersionInfo.FileDownloadProgress, 100.0);
         }
 
         private void OnIconDownloadProgressChanged(object sender, EventArgs e)
         {
             GameVersionInfo VersionInfo = sender as GameVersionInfo;
-            App.SetValue(this, VersionInfo.IconDownloadProgress, 100.0);
+            SetTaskbarProgressValue(VersionInfo.IconDownloadProgress, 100.0);
         }
 
         private void OnPopupClosed(object sender, EventArgs e)
@@ -1370,7 +1485,7 @@ namespace PgJsonParse
 
         protected override void OnControlClosing(ref bool Cancel)
         {
-            App.SetState(this, TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarStates.NoProgress);
 
             base.OnControlClosing(ref Cancel);
         }

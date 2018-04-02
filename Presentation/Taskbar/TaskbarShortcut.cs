@@ -1,12 +1,11 @@
-﻿using Presentation;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-namespace Tools
+namespace Presentation
 {
     public static class TaskbarShortcut
     {

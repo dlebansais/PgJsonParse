@@ -1,4 +1,4 @@
-﻿namespace Tools
+﻿namespace Presentation
 {
     public enum TaskbarStates
     {

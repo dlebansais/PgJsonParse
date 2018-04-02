@@ -122,5 +122,27 @@ namespace Presentation
         {
             ApplicationCommand.SubscribeToControlCommand(this, resourceName, handler);
         }
+
+        #region Progress
+        public void SetTaskbarState(TaskbarStates taskbarState)
+        {
+            Dispatcher.BeginInvoke(new Action(() => OnSetState(this, taskbarState)));
+        }
+
+        public static void OnSetState(Window window, TaskbarStates taskbarState)
+        {
+            TaskbarProgress.SetState(window, taskbarState);
+        }
+
+        public void SetTaskbarProgressValue(double progressValue, double progressMax)
+        {
+            Dispatcher.BeginInvoke(new Action(() => OnSetValue(this, progressValue, progressMax)));
+        }
+
+        public static void OnSetValue(Window window, double progressValue, double progressMax)
+        {
+            TaskbarProgress.SetValue(window, progressValue, progressMax);
+        }
+        #endregion
     }
 }

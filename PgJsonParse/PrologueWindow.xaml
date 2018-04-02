@@ -442,10 +442,10 @@
                             </ContentControl>
                         </TabItem.Header>
                         <StackPanel Margin="6,0,0,0">
-                            <CheckBox IsChecked="{Binding CheckLastVersionOnStartup}" Margin="0,0,0,10">Check Lastest Version</CheckBox>
-                            <CheckBox IsChecked="{Binding DownloadNewVersionsAutomatically}" Margin="0,0,0,10">Download latest version</CheckBox>
-                            <CheckBox IsChecked="{Binding StartAutomatically}" Margin="0,0,0,10">Start when ready</CheckBox>
-                            <CheckBox IsChecked="{Binding CheckNewParserOnStartup}" Margin="0,0,0,10">Check for the latest parser</CheckBox>
+                            <CheckBox IsChecked="{Binding CheckLastVersionOnStartup, Mode=TwoWay}" Margin="0,0,0,10">Check Lastest Version</CheckBox>
+                            <CheckBox IsChecked="{Binding DownloadNewVersionsAutomatically, Mode=TwoWay}" Margin="0,0,0,10">Download latest version</CheckBox>
+                            <CheckBox IsChecked="{Binding StartAutomatically, Mode=TwoWay}" Margin="0,0,0,10">Start when ready</CheckBox>
+                            <CheckBox IsChecked="{Binding CheckNewParserOnStartup, Mode=TwoWay}" Margin="0,0,0,10">Check for the latest parser</CheckBox>
                         </StackPanel>
                     </TabItem>
                     <TabItem Style="{StaticResource TabItemStyle}">
@@ -458,11 +458,11 @@
                             </ContentControl>
                         </TabItem.Header>
                         <StackPanel Margin="6,0,0,0">
-                            <CheckBox IsChecked="{Binding ShowDeleteButton}" Margin="0,0,0,10">Show the Delete button</CheckBox>
+                            <CheckBox IsChecked="{Binding ShowDeleteButton, Mode=TwoWay}" Margin="0,0,0,10">Show the Delete button</CheckBox>
                             <TextBlock FontWeight="Normal" Margin="0,0,0,5">When some icons are missing:</TextBlock>
-                            <RadioButton IsChecked="{Binding AskToIgnoreMissingIcons}" Margin="5,0,0,5">Ask me what to do</RadioButton>
-                            <RadioButton IsChecked="{Binding DownloadMissingIcons}" Margin="5,0,0,5">Download them</RadioButton>
-                            <RadioButton IsChecked="{Binding IgnoreMissingIcons}" Margin="5,0,0,10">Ignore and continue</RadioButton>
+                            <RadioButton IsChecked="{Binding AskToIgnoreMissingIcons, Mode=OneWay}" Checked="OnSetAskToIgnoreMissingIcons" Margin="5,0,0,5">Ask me what to do</RadioButton>
+                            <RadioButton IsChecked="{Binding DownloadMissingIcons, Mode=OneWay}" Checked="OnSetDownloadMissingIcons" Margin="5,0,0,5">Download them</RadioButton>
+                            <RadioButton IsChecked="{Binding IgnoreMissingIcons, Mode=OneWay}" Checked="OnSetIgnoreMissingIcons" Margin="5,0,0,10">Ignore and continue</RadioButton>
                         </StackPanel>
                     </TabItem>
                     <TabItem Style="{StaticResource TabItemStyle}">
@@ -475,8 +475,8 @@
                             </ContentControl>
                         </TabItem.Header>
                         <StackPanel Margin="6,0,0,0">
-                            <CheckBox IsChecked="{Binding KeepRecentVersions}" Margin="0,0,0,10">Keep all downloaded versions</CheckBox>
-                            <CheckBox x:Name="checkShareIcons" IsChecked="{Binding ShareIconFiles}" Checked="OnIconSharingChanged" Unchecked="OnIconSharingChanged" Margin="0,0,0,10">Share icons between versions</CheckBox>
+                            <CheckBox IsChecked="{Binding KeepRecentVersions, Mode=TwoWay}" Margin="0,0,0,10">Keep all downloaded versions</CheckBox>
+                            <CheckBox x:Name="checkShareIcons" IsChecked="{Binding ShareIconFiles, Mode=TwoWay}" Checked="OnIconSharingChanged" Unchecked="OnIconSharingChanged" Margin="0,0,0,10">Share icons between versions</CheckBox>
                             <Button Command="{StaticResource DeleteIconsCommand}" IsEnabled="{Binding CanDeleteSharedIcons}" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Background="DarkGray" Height="30" Margin="20,0,0,10">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <Image Source="{StaticResource imgRecycle}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
@@ -489,12 +489,10 @@
                 <ctrl:SelectorControl Selector="IsParsing" Margin="10,10,0,10">
                     <ctrl:SelectorItem>
                         <DockPanel>
-                            <DockPanel DockPanel.Dock="Top">
-                                <Grid x:Name="ctrlAnchor1" DockPanel.Dock="Right"/>
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Left">
                                 <Border Margin="0,2,0,10" BorderBrush="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Color}}" BorderThickness="1,1,1,1" Background="White">
                                     <StackPanel Orientation="Horizontal">
-                                        <Grid x:Name="ctrlAnchor2" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}"/>
-                                        <Grid Width="1" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Collapsed}"/>
+                                        <Grid x:Name="ctrlAnchor1" Visibility="{Binding ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}"/>
                                         <Grid Width="{StaticResource Column1And2}" VerticalAlignment="Center" Margin="0,0,15,0">
                                             <TextBlock Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Unchecked}}" HorizontalAlignment="Center">The latest version has not been checked.</TextBlock>
                                             <TextBlock Visibility="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Checking}}" HorizontalAlignment="Center">Checking what the latest version of the game is.</TextBlock>
@@ -524,7 +522,8 @@
                                         </Grid>
                                     </StackPanel>
                                 </Border>
-                            </DockPanel>
+                                <Grid x:Name="ctrlAnchor2"/>
+                            </StackPanel>
                             <Grid Opacity="{Binding VersionList.Count, Converter={StaticResource convCountToOpacity}, FallbackValue=0}" MinHeight="94" MinWidth="449">
                                 <p:ComboBox x:Name="comboVersions" UseNativeComboBox="False" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" ControlSelectedIndex="{Binding CachedVersionIndex, Mode=TwoWay}" ItemTemplate="{StaticResource GameVersionInfoSmallTemplate}" BorderThickness="0" Loaded="OnComboBoxLoaded" HorizontalAlignment="Left" Padding="0">
                                     <p:ComboBox.ItemContainerStyle>
