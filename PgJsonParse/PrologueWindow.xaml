@@ -166,7 +166,7 @@
         <BitmapImage x:Key="imgSearch" UriSource="/PgJsonParse;component/Resources/search.png"/>
         <BitmapImage x:Key="imgSetting" UriSource="/PgJsonParse;component/Resources/setting.png"/>
         <BitmapImage x:Key="imgDevice" UriSource="/PgJsonParse;component/Resources/device.png"/>
-        <DataTemplate x:Key="GameVersionInfoTemplate">
+        <DataTemplate x:Key="GameVersionInfoBigTemplate">
             <Border BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="1,1,1,1" Background="White">
                 <DockPanel>
                     <Button DockPanel.Dock="Left" Command="{StaticResource DeleteVersionCommand}" CommandParameter="{Binding}" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="0,0,1,0" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}" IsEnabled="{Binding Owner.IsGlobalInteractionEnabled}">
@@ -260,7 +260,7 @@
                 </DockPanel>
             </Border>
         </DataTemplate>
-        <DataTemplate x:Key="GameVersionInfoShortTemplate">
+        <DataTemplate x:Key="GameVersionInfoSmallTemplate">
             <Border BorderBrush="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" BorderThickness="1,1,1,1">
                 <DockPanel>
                     <Grid DockPanel.Dock="Left" Width="{StaticResource Column0}" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_Color}}" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}"/>
@@ -301,6 +301,11 @@
                     </StackPanel>
                 </DockPanel>
             </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="GameVersionInfoSelectTemplate">
+            <Grid MinHeight="94" MinWidth="449">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Please select one of the versions below.</TextBlock>
+            </Grid>
         </DataTemplate>
         <Style x:Key="TabItemStyle" TargetType="TabItem">
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -367,7 +372,7 @@
                                     <ToggleButton x:Name="DropDownToggle" DockPanel.Dock="Right" VerticalAlignment="Bottom" BorderThickness="0" Background="Transparent">
                                         <Path x:Name="arrow" Stroke="Gray" StrokeThickness="3" Stretch="None" Data="M 3.5,6.25 L 8.75,11.5 L 14,6.25 M 3.5,12.25 L 8.75,17.5 L 14,12.25" Width="{StaticResource ComboBox_ToggleButtonWidth}" Height="{StaticResource ComboBox_ToggleButtonHeight}"/>
                                     </ToggleButton>
-                                    <ContentControl x:Name="ContentPresenter" Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}" ContentTemplate="{StaticResource GameVersionInfoTemplate}" Margin="{TemplateBinding Padding}" MinHeight="24"/>
+                                    <p:ComboBoxContentPresenter x:Name="ContentPresenter" SelectedItemTemplate="{StaticResource GameVersionInfoBigTemplate}" SelectionTemplate="{StaticResource GameVersionInfoSelectTemplate}" Margin="{TemplateBinding Padding}" MinHeight="110"/>
                                 </DockPanel>
                             </Border>
                             <Popup x:Name="PART_Popup" IsOpen="{Binding IsChecked, ElementName=DropDownToggle}" HorizontalOffset="-20">
@@ -383,7 +388,7 @@
             </Setter>
         </Style>
     </p:RootControl.Resources>
-    <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Top">
         <Grid>
             <DockPanel>
                 <ctrl:SelectorControl DockPanel.Dock="Bottom" Selector="StatusMessage" Margin="10,0,10,10">
@@ -480,7 +485,7 @@
                     <ctrl:SelectorItem>
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <Grid x:Name="ctrlDockingSpace" DockPanel.Dock="Right" Margin="0,0,0,0"/>
+                                <Grid x:Name="ctrlDockingSpace" DockPanel.Dock="Right"/>
                                 <Border Margin="0,2,0,10" BorderBrush="{Binding VersionCheckState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource VersionCheckState_Color}}" BorderThickness="1,1,1,1" Background="White">
                                     <StackPanel Orientation="Horizontal">
                                         <Grid Width="{StaticResource Column0}" Visibility="{Binding Owner.ShowDeleteButton, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Visible}"/>
@@ -516,14 +521,19 @@
                                 </Border>
                             </DockPanel>
                             <Grid MinHeight="94" MinWidth="449">
-                                <p:ComboBox UseNativeComboBox="False" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" Opacity="{Binding VersionList.Count, Converter={StaticResource convCountToOpacity}, FallbackValue=0}" SelectedIndex="{Binding CachedVersionIndex}" ItemTemplate="{StaticResource GameVersionInfoShortTemplate}" BorderThickness="0" Loaded="OnComboBoxLoaded" HorizontalAlignment="Left" Padding="0">
-                                    <ComboBox.ItemContainerStyle>
+                                <p:ComboBox UseNativeComboBox="False" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding VersionList}" Opacity="{Binding VersionList.Count, Converter={StaticResource convCountToOpacity}, FallbackValue=0}" ControlSelectedIndex="{Binding CachedVersionIndex}" BorderThickness="0" Loaded="OnComboBoxLoaded" HorizontalAlignment="Left" Padding="0">
+                                    <p:ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <p:ComboBoxTemplateSelector Content="{Binding}" SelectedItemTemplate="{StaticResource GameVersionInfoBigTemplate}" DropdownItemsTemplate="{StaticResource GameVersionInfoSmallTemplate}"/>
+                                        </DataTemplate>
+                                    </p:ComboBox.ItemTemplate>
+                                    <p:ComboBox.ItemContainerStyle>
                                         <Style TargetType="ComboBoxItem">
                                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                             <Setter Property="Padding" Value="0"/>
                                             <Setter Property="Margin" Value="0"/>
                                         </Style>
-                                    </ComboBox.ItemContainerStyle>
+                                    </p:ComboBox.ItemContainerStyle>
                                 </p:ComboBox>
                             </Grid>
                         </DockPanel>

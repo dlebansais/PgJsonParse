@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using Presentation;
+using System.Windows;
 using System.Windows.Media;
 
 namespace PgJsonParse
@@ -19,8 +19,8 @@ namespace PgJsonParse
                 if (parent == null)
                     break;
 
-                ItemsControl ParentList;
-                if ((ParentList = parent as ItemsControl) != null)
+                System.Windows.Controls.ItemsControl ParentList;
+                if ((ParentList = parent as System.Windows.Controls.ItemsControl) != null)
                 {
                     int ItemIndex = ParentList.Items.IndexOf(item);
                     IsFirst = (ItemIndex == 0);

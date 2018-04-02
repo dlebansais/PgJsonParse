@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace PgJsonParse
+namespace Presentation
 {
     public abstract class DataTemplateSelector : ContentControl
     {

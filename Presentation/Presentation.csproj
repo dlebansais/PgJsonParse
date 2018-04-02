@@ -47,10 +47,13 @@
     <Compile Include="Cancellation.cs" />
     <Compile Include="CloseButton.cs" />
     <Compile Include="ComboBox.cs" />
+    <Compile Include="ComboBoxContentPresenter.cs" />
+    <Compile Include="ComboBoxTemplateSelector.cs" />
     <Compile Include="Commands\ApplicationCommand.cs" />
     <Compile Include="Commands\ExecutedEventArgs.cs" />
     <Compile Include="Confirmation.cs" />
     <Compile Include="ConfirmationType.cs" />
+    <Compile Include="DataTemplateSelector.cs" />
     <Compile Include="DispatchableDelegate.cs" />
     <Compile Include="FolderTools.cs" />
     <Compile Include="NetTools.cs" />

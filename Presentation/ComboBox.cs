@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -22,10 +24,42 @@ namespace Presentation
         /// <summary>
         ///     Gets or sets the UseNativeComboBox property.
         /// </summary>
+        [Bindable(true)]
         public bool UseNativeComboBox
         {
             get { return (bool)GetValue(UseNativeComboBoxProperty); }
             set { SetValue(UseNativeComboBoxProperty, value); }
+        }
+        #endregion
+        #region ControlSelectedIndex
+        /// <summary>
+        ///     Identifies the <see cref="ControlSelectedIndex"/> dependency property.
+        /// </summary>
+        /// <returns>
+        ///     The identifier for the <see cref="ControlSelectedIndex"/> dependency property.
+        /// </returns>
+        public static readonly DependencyProperty ControlSelectedIndexProperty = DependencyProperty.Register("ControlSelectedIndex", typeof(int), typeof(ComboBox), new FrameworkPropertyMetadata(-1, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnControlSelectedIndexPropertyChanged)));
+
+        /// <summary>
+        ///     Gets or sets the ControlSelectedIndex property.
+        /// </summary>
+        [Bindable(true)]
+        public int ControlSelectedIndex
+        {
+            get { return (int)GetValue(ControlSelectedIndexProperty); }
+            set { SetValue(ControlSelectedIndexProperty, value); }
+        }
+
+        private static void OnControlSelectedIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ComboBox ctrl = (ComboBox)d;
+            ctrl.OnControlSelectedIndexPropertyChanged(e);
+        }
+
+        private void OnControlSelectedIndexPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (SelectedIndex != ControlSelectedIndex)
+                SelectedIndex = ControlSelectedIndex;
         }
         #endregion
         #endregion
@@ -43,6 +77,14 @@ namespace Presentation
             DropDownBinding.Path = new PropertyPath("DropDownToggle.IsChecked");
             DropDownBinding.RelativeSource = RelativeSource.Self;
             SetBinding(IsDropDownOpenProperty, DropDownBinding);
+        }
+
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+        {
+            base.OnSelectionChanged(e);
+
+            if (ControlSelectedIndex != SelectedIndex)
+                SetValue(ControlSelectedIndexProperty, SelectedIndex);
         }
 
         public ToggleButton DropDownToggle { get; private set; }

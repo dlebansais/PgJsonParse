@@ -9,27 +9,24 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
 using Tools;
 #if CSHARP_XAML_FOR_HTML5
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 #else
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 #endif
 
 namespace PgJsonParse
 {
     public partial class PrologueWindow : RootControl, INotifyPropertyChanged
     {
-#region Init
+        #region Init
         public PrologueWindow()
             : base(RootControlMode.CustomShape)
         {
@@ -73,9 +70,9 @@ namespace PgJsonParse
             SubscribeToCommand("DeleteVersionCommand", OnDeleteVersion);
             SubscribeToCommand("DeleteIconsCommand", OnDeleteIcons);
         }
-#endregion
+        #endregion
 
-#region Properties
+        #region Properties
         public string ApplicationFolder { get; private set; }
         public string VersionCacheFolder { get; private set; }
         public string IconCacheFolder { get; private set; }
@@ -194,9 +191,9 @@ namespace PgJsonParse
                 NotifyPropertyChanged(nameof(IgnoreMissingIcons));
             }
         }
-#endregion
+        #endregion
 
-#region Settings
+        #region Settings
         private void InitSettings()
         {
             string UserRootFolder = InitFolder(PresentationEnvironment.UserRootFolder);
@@ -246,9 +243,9 @@ namespace PgJsonParse
         }
 
         private string LastIconId;
-#endregion
+        #endregion
 
-#region Status
+        #region Status
         private void InitStatus()
         {
             _StatusMessage = null;
@@ -282,9 +279,9 @@ namespace PgJsonParse
             }
         }
         private string _LastExceptionMessage;
-#endregion
+        #endregion
 
-#region Version Check
+        #region Version Check
         private void InitVersionCheck()
         {
             if (CheckLastVersionOnStartup)
@@ -374,27 +371,34 @@ namespace PgJsonParse
             Stopwatch Watch = new Stopwatch();
             Watch.Start();
 
+            bool Success = false;
+            string Content = null;
+            string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
             try
             {
-                string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
-                string Content = WebClientTool.DownloadText(RequestUri);
-                if (int.TryParse(Content, out Version))
+                Content = WebClientTool.DownloadText(RequestUri);
+                Success = true;
+            }
+            catch (Exception e)
+            {
+                LastExceptionMessage = e.Message;
+            }
+
+            if (Success)
+            {
+                if (Content != null && int.TryParse(Content, out Version))
                 {
                     StatusMessage = null;
                     LastExceptionMessage = null;
                     UserUI.MinimalSleep(Watch);
+                    return Version;
                 }
-                else
-                    throw new Exception(RequestUri + " is invalid.");
-            }
-            catch (Exception e)
-            {
-                StatusMessage = "Unable to connect to the game server.";
-                LastExceptionMessage = e.Message;
-                Version = 0;
+
+                LastExceptionMessage = RequestUri + " is invalid.";
             }
 
-            return Version;
+            StatusMessage = "Unable to connect to the game server.";
+            return 0;
         }
 
         private async void ExecuteCompleteCheckVersion(int Version)
@@ -486,9 +490,9 @@ namespace PgJsonParse
 
             IsGlobalInteractionEnabled = true;
         }
-#endregion
+        #endregion
 
-#region Parser Check
+        #region Parser Check
         public const double PARSER_VERSION = 298.1;
 
         private void InitParserCheck()
@@ -563,9 +567,9 @@ namespace PgJsonParse
         }
 
         private bool IsParserUpdateChecked;
-#endregion
+        #endregion
 
-#region Version Cached
+        #region Version Cached
         private void InitVersionCache()
         {
             _CachedVersionIndex = -1;
@@ -731,9 +735,9 @@ namespace PgJsonParse
                 LastExceptionMessage = e.Message;
             }
         }
-#endregion
+        #endregion
 
-#region Parsing
+        #region Parsing
         private void InitParsing()
         {
             _ParseProgress = 0;
@@ -1116,9 +1120,9 @@ namespace PgJsonParse
         }
 
         private Cancellation ParseCancellation;
-#endregion
+        #endregion
 
-#region Icons
+        #region Icons
         private void InitIcons()
         {
             LoadedIconCount = 0;
@@ -1256,9 +1260,9 @@ namespace PgJsonParse
         private int LoadedIconCount;
         private List<int> MissingIconList;
         private Dictionary<int, bool> IconTable;
-#endregion
+        #endregion
 
-#region Events
+        #region Events
         private async void OnCheckVersion(object sender, EventArgs e)
         {
             App.SetState(this, TaskbarStates.NoProgress);
@@ -1321,28 +1325,6 @@ namespace PgJsonParse
         {
             CancelParse();
         }
-        
-        /*
-        private void OnToggleButtonChecked(object sender, RoutedEventArgs e)
-        {
-            PopupHandler.SetOpenPopupButton(sender as ToggleButton);
-        }*/
-
-        private void OnToggleButtonUnchecked(object sender, RoutedEventArgs e)
-        {
-            PopupHandler.ClearOpenPopupButton();
-        }
-
-        private void OnPopupSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            PopupHandler.OnPopupSelectionChanged();
-        }
-
-        /*
-        private void OnPopupMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            PopupHandler.OnPopupMouseLeftButtonUp();
-        }*/
 
         private void OnComboBoxLoaded(object sender, RoutedEventArgs e)
         {
@@ -1395,9 +1377,9 @@ namespace PgJsonParse
 
             base.OnControlClosed();
         }
-#endregion
+        #endregion
 
-#region Implementation of INotifyPropertyChanged
+        #region Implementation of INotifyPropertyChanged
         /// <summary>
         ///     Implements the PropertyChanged event.
         /// </summary>
@@ -1413,6 +1395,6 @@ namespace PgJsonParse
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-#endregion
+        #endregion
     }
 }
