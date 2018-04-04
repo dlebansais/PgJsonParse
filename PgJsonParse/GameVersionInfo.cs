@@ -113,8 +113,8 @@ namespace PgJsonParse
                 NotifyProgressChanged();
                 Thread.Sleep(0);
 
-                if (ProgressIndex + 1 < FileList.Count)
-                    DownloadFiles1(FileList, DestinationFolder, Watch, ProgressIndex + 1, callback);
+                if (ProgressIndex < FileList.Count)
+                    DownloadFiles1(FileList, DestinationFolder, Watch, ProgressIndex, callback);
                 else
                     DownloadFiles3(true, null, Watch, callback);
             }

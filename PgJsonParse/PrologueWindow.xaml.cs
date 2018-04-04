@@ -45,6 +45,12 @@ namespace PgJsonParse
                 InitIcons();
 
                 Loaded += OnLoaded;
+
+                if (CheckLastVersionOnStartup)
+                    OnCheckVersion();
+
+                else if (CheckNewParserOnStartup)
+                    OnCheckParser(() => { });
             }
             catch (Exception e)
             {
@@ -64,17 +70,6 @@ namespace PgJsonParse
             SubscribeToCommand("CancelStartCommand", OnCancelStart);
             SubscribeToCommand("DeleteVersionCommand", OnDeleteVersion);
             SubscribeToCommand("DeleteIconsCommand", OnDeleteIcons);
-
-            StartTask(OnStartup);
-        }
-
-        private void OnStartup()
-        {
-            if (CheckLastVersionOnStartup)
-                OnCheckVersion();
-
-            else if (CheckNewParserOnStartup)
-                OnCheckParser(() => { });
         }
         #endregion
 
@@ -275,10 +270,10 @@ namespace PgJsonParse
             get { return _MissingIconsAction; }
             set
             {
-                Debug.Assert(IsGlobalInteractionEnabled);
-
                 if (_MissingIconsAction != value)
                 {
+                    Debug.Assert(IsGlobalInteractionEnabled);
+
                     _MissingIconsAction = value;
                     Persistent.SetSettingInt(nameof(MissingIconsAction), (int)_MissingIconsAction);
                 }
@@ -526,14 +521,15 @@ namespace PgJsonParse
                 if (CheckNewParserOnStartup)
                     OnCheckParser(() => OnCheckVersion3(NewVersion));
                 else
-                    IsGlobalInteractionEnabled = true;
+                    OnCheckVersion3(NewVersion);
             }
-
-            else if (CheckNewParserOnStartup)
-                OnCheckParser(() => OnCheckVersion4());
-
             else
-                IsGlobalInteractionEnabled = true;
+            {
+                if (CheckNewParserOnStartup)
+                    OnCheckParser(() => OnCheckVersion4());
+                else
+                    OnCheckVersion4();
+            }
         }
 
         private void OnCheckVersion3(GameVersionInfo NewVersion)
@@ -568,8 +564,7 @@ namespace PgJsonParse
                     break;
 
             VersionList.Insert(i, NewVersion);
-            if (CachedVersionIndex < 0)
-                CachedVersionIndex = i;
+            CachedVersionIndex = i;
 
             return NewVersion;
         }
@@ -601,7 +596,7 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const double PARSER_VERSION = 298.1;
+        public const double PARSER_VERSION = 298.01;
 
         private void InitParserCheck()
         {
@@ -648,7 +643,7 @@ namespace PgJsonParse
         {
             NetTools.RestoreSecurityProtocol(oldSecurityProtocol);
 
-            if (DownloadException != null)
+            if (DownloadException == null)
             {
                 bool FoundUpdate = false;
 
@@ -697,8 +692,6 @@ namespace PgJsonParse
             get { return _CachedVersionIndex; }
             set
             {
-                Debug.Assert(IsGlobalInteractionEnabled);
-
                 if (_CachedVersionIndex != value)
                 {
                     _CachedVersionIndex = value;

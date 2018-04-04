@@ -13,6 +13,12 @@ namespace Tools
         #region Download Text
         public static void DownloadText(string address, Stopwatch watch, Action<string, Exception> callback)
         {
+            /*if (address == "http://client.projectgorgon.com/fileversion.txt")
+            {
+                callback("300\n", null);
+                return;
+            }*/
+
             Task<Tuple<string,Exception>> DownloadTask = new Task<Tuple<string, Exception>>(() => { return ExecuteDownloadText(address, watch); });
             DownloadTask.Start();
 
