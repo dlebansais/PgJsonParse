@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Presentation
 {
@@ -82,28 +83,21 @@ namespace Presentation
         {
         }
 
-        protected virtual void InvokeAndForget(Action action)
+        public void StartTask(Action action)
         {
-            Dispatcher.InvokeAsync(action);
+            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, action);
         }
 
-        protected virtual async Task InvokeAndWait(Action action)
+        public void StartTask(Func<bool> action, Action<bool> callback)
         {
-            Task CompleteTask = new Task(new Action(() => { }));
-            await Dispatcher.InvokeAsync(new Action(() => ExecuteAction(action, CompleteTask)));
-            await CompleteTask;
+            Task ParseTask = new Task(() => ExecuteTask(action, callback));
+            ParseTask.Start();
         }
 
-        private void ExecuteAction(Action action, Task CompleteTask)
+        private void ExecuteTask(Func<bool> action, Action<bool> callback)
         {
-            action();
-            CompleteTask.RunSynchronously();
-        }
-
-        protected virtual async Task<TResult> RunAsync<TResult>(Func<TResult> function)
-        {
-            TResult Result = await Task.Run(function);
-            return Result;
+            bool Result = action();
+            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, callback, Result);
         }
 
         public virtual void SwitchTo(RootControl ctrl, Action action)
