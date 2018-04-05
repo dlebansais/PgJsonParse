@@ -1,61 +1,30 @@
 ﻿using Converters;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Threading;
 
 namespace CustomControls
 {
     public class SelectorControl : Grid
     {
-        #region Custom properties and events
-        #region Selector
-        /// <summary>
-        ///     Identifies the <see cref="Selector"/> dependency property.
-        /// </summary>
-        /// <returns>
-        ///     The identifier for the <see cref="Selector"/> dependency property.
-        /// </returns>
-        public static readonly DependencyProperty SelectorProperty = DependencyProperty.Register("Selector", typeof(string), typeof(SelectorControl), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnSelectorPropertyChanged)));
-
-        /// <summary>
-        ///     Gets or sets the scroll viewer property to bind on.
-        /// </summary>
-        [Bindable(true)]
-        public string Selector
-        {
-            get { return (string)GetValue(SelectorProperty); }
-            set { SetValue(SelectorProperty, value); }
-        }
-
-        private static void OnSelectorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            SelectorControl ctrl = (SelectorControl)d;
-            ctrl.OnSelectorPropertyChanged(e);
-        }
-
-        private void OnSelectorPropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (IsBindingPossible(false))
-                SetBinding();
-        }
-        #endregion
-        #endregion
-
         #region Initialization
         public SelectorControl()
         {
-            IsBindingSet = false;
             SizeChanged += OnSizeChanged;
             Loaded += OnLoaded;
         }
         #endregion
 
-        #region Implementation
-        private double SelectedWidth;
-        private double SelectedHeight;
+        #region Properties
+        public string Selector { get; set; }
+        #endregion
 
+        #region Size
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             //Debug.WriteLine((Selector == null ? "*" : Selector) + ": Size changed, Width: " + Width + ", Height: " + Height + ", ActualWidth: " + ActualWidth + ", ActualHeight: " + ActualHeight);
@@ -77,34 +46,53 @@ namespace CustomControls
             if (double.IsNaN(Height) && SelectedHeight > 0)
                 Height = SelectedHeight;
 
-            if (IsBindingPossible(true))
+            if (IsBindingPossible())
                 SetBinding();
+            else
+                TryBindingAgainLater();
         }
 
-        private bool IsBindingPossible(bool DisplayDiagnostic)
+        private double SelectedWidth;
+        private double SelectedHeight;
+        #endregion
+
+        #region Binding
+        private bool IsBindingPossible()
         {
             if (DataContext == null)
             {
-                //if (DisplayDiagnostic)
-                //    Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Stop because DataContext == null");
+                //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Stop because DataContext == null");
+                return false;
+            }
+
+            if (DataContext as string == "")
+            {
+                //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Stop because DataContext is empty");
                 return false;
             }
 
             if (Children.Count == 0)
             {
-                //if (DisplayDiagnostic)
-                //    Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Stop because Items.Count == 0");
+                //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Stop because Items.Count == 0");
                 return false;
             }
 
             return true;
         }
 
+        private void TryBindingAgainLater()
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => BindAgain()));
+        }
+
+        private void BindAgain()
+        {
+            //Debug.WriteLine("Binding retry");
+            SetBinding();
+        }
+
         private void SetBinding()
         {
-            if (IsBindingSet)
-                return;
-
             foreach (object Item in Children)
             {
                 SelectorItem AsSelectorItem = Item as SelectorItem;
@@ -112,11 +100,8 @@ namespace CustomControls
                 AsSelectorItem.SetBinding(VisibilityProperty, NewBinding);
             }
 
-            IsBindingSet = true;
-            //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Binding set");
+            //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Binding set on Source=" + DataContext.ToString());
         }
-
-        private bool IsBindingSet;
         #endregion
     }
 }

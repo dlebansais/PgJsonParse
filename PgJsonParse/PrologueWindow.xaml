@@ -28,6 +28,19 @@
         <sys:Double x:Key="Column2">210</sys:Double>
         <sys:Double x:Key="Column1And2">260</sys:Double>
         <sys:Double x:Key="Column3">120</sys:Double>
+        <LinearGradientBrush x:Key="ProgressColor" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="#EDDE3F"/>
+            <GradientStop Offset="0.1" Color="Orange"/>
+            <GradientStop Offset="0.2" Color="#EDDE3F"/>
+            <GradientStop Offset="0.3" Color="Orange"/>
+            <GradientStop Offset="0.4" Color="#EDDE3F"/>
+            <GradientStop Offset="0.5" Color="Orange"/>
+            <GradientStop Offset="0.6" Color="#EDDE3F"/>
+            <GradientStop Offset="0.7" Color="Orange"/>
+            <GradientStop Offset="0.8" Color="#EDDE3F"/>
+            <GradientStop Offset="0.9" Color="Orange"/>
+            <GradientStop Offset="1" Color="#EDDE3F"/>
+        </LinearGradientBrush>
         <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
@@ -119,10 +132,6 @@
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
         </app:CustomCompositeCollection>
-        <app:CustomCompositeCollection x:Key="YellowGreen">
-            <SolidColorBrush Color="#EDDE3F"/>
-            <SolidColorBrush Color="#39AA56"/>
-        </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="GlobalDownloadState_Color">
             <SolidColorBrush Color="DarkGray"/>
             <SolidColorBrush Color="#EDDE3F"/>
@@ -145,10 +154,10 @@
             <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="GlobalDownloadState_ParsingColor">
-            <SolidColorBrush Color="#EDDE3F"/>
-            <SolidColorBrush Color="#EDDE3F"/>
-            <SolidColorBrush Color="#EDDE3F"/>
-            <SolidColorBrush Color="#EDDE3F"/>
+            <StaticResource ResourceKey="ProgressColor"/>
+            <StaticResource ResourceKey="ProgressColor"/>
+            <StaticResource ResourceKey="ProgressColor"/>
+            <StaticResource ResourceKey="ProgressColor"/>
             <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="FalseTrue">
@@ -207,7 +216,7 @@
                                         </Button.Template>
                                     </Button>
                                     <Border BorderBrush="Black" BorderThickness="1,1,1,1" Height="12" Margin="1,0,6,0">
-                                        <ctrl:PercentProgressBar Value="{Binding FileDownloadProgress}" Background="White" Foreground="#EDDE3F"/>
+                                        <ctrl:PercentProgressBar Dock="Right" Value="{Binding FileDownloadProgress}" Foreground="White" Background="{StaticResource ProgressColor}"/>
                                     </Border>
                                 </DockPanel>
                                 <Button Visibility="{Binding FileDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource DownloadState_Downloaded}}" Command="{StaticResource StartCommand}" CommandParameter="{Binding}" VerticalAlignment="Center" Background="{Binding GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_StartColor}}" HorizontalContentAlignment="Left" Height="30" Margin="1,0,20,0" IsEnabled="{Binding Owner.IsGlobalInteractionEnabled}">
@@ -245,7 +254,7 @@
                                                 </Button.Template>
                                             </Button>
                                             <Border BorderBrush="Black" BorderThickness="1,1,1,1" Height="12" Margin="1,0,6,0">
-                                                <ctrl:PercentProgressBar Value="{Binding IconDownloadProgress}" Background="White" Foreground="#EDDE3F"/>
+                                                <ctrl:PercentProgressBar Dock="Right" Value="{Binding IconDownloadProgress}" Foreground="White" Background="{StaticResource ProgressColor}"/>
                                             </Border>
                                         </DockPanel>
                                     </Grid>
@@ -542,7 +551,7 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <TextBlock HorizontalAlignment="Center">Parsing, please wait...</TextBlock>
                             <Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Center" Height="12" Width="{StaticResource Column3}" Margin="10,0,0,0">
-                                <ctrl:PercentProgressBar Value="{Binding ParseProgress}" Background="White" Foreground="{Binding SelectedVersion.GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_ParsingColor}}"/>
+                                <ctrl:PercentProgressBar Dock="Right" Value="{Binding ParseProgress}" Foreground="White" Background="{Binding SelectedVersion.GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_ParsingColor}}"/>
                             </Border>
                             <Button Command="{StaticResource CancelStartCommand}" VerticalAlignment="Center" Margin="6,0,0,0">
                                 <Button.Template>

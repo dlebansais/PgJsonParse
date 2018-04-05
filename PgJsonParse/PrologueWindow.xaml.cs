@@ -19,7 +19,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 #else
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 #endif
 
@@ -564,6 +563,7 @@ namespace PgJsonParse
                     break;
 
             VersionList.Insert(i, NewVersion);
+            CachedVersionIndex = -1;
             CachedVersionIndex = i;
 
             return NewVersion;

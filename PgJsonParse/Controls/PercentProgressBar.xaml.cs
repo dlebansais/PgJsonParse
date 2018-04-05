@@ -36,6 +36,7 @@ namespace CustomControls
         #endregion
 
         #region Custom properties and events
+        #region Value
         /// <summary>
         ///     Identifies the <see cref="Value"/> dependency property.
         /// </summary>
@@ -64,6 +65,25 @@ namespace CustomControls
         {
             NotifyPropertyChanged(nameof(Value));
         }
+        #endregion
+        #region Dock
+        /// <summary>
+        ///     Identifies the <see cref="Dock"/> dependency property.
+        /// </summary>
+        /// <returns>
+        ///     The identifier for the <see cref="Dock"/> dependency property.
+        /// </returns>
+        public static readonly DependencyProperty DockProperty = DependencyProperty.Register("Dock", typeof(Dock), typeof(PercentProgressBar), new FrameworkPropertyMetadata(Dock.Left));
+
+        /// <summary>
+        ///     Gets or sets the value.
+        /// </summary>
+        public Dock Dock
+        {
+            get { return (Dock)GetValue(DockProperty); }
+            set { SetValue(DockProperty, value); }
+        }
+        #endregion
         #endregion
 
         #region Implementation of INotifyPropertyChanged
