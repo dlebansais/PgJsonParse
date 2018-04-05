@@ -1,5 +1,4 @@
-﻿using Converters;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
@@ -8,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
 
-namespace CustomControls
+namespace Presentation
 {
     public class SelectorControl : Grid
     {

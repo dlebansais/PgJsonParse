@@ -65,8 +65,6 @@
     <Compile Include="Controls\PercentProgressBar.xaml.cs">
       <DependentUpon>PercentProgressBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SelectorControl.cs" />
-    <Compile Include="Controls\SelectorItem.cs" />
     <Compile Include="Converters\Boolean To Object Converter.cs" />
     <Compile Include="Converters\BooleanInvertedConverter.cs" />
     <Compile Include="Converters\CountToOpacityConverter.cs" />
