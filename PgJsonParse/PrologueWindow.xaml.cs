@@ -472,7 +472,7 @@ namespace PgJsonParse
             Watch.Start();
 
             const string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
-            WebClientTool.DownloadText(RequestUri, Watch,
+            WebClientTool.DownloadText(this, RequestUri, Watch,
                                        (string Content, Exception DownloadException) => OnCheckVersion1(Content, DownloadException, RequestUri));
         }
 
@@ -596,7 +596,7 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const double PARSER_VERSION = 298.01;
+        public const double PARSER_VERSION = 298.1;
 
         private void InitParserCheck()
         {
@@ -635,7 +635,7 @@ namespace PgJsonParse
             IsParserUpdateChecked = true;
 
             NetTools.EnableSecurityProtocol(out object OldSecurityProtocol);
-            WebClientTool.DownloadText(ReleasePageAddress, null,
+            WebClientTool.DownloadText(this, ReleasePageAddress, null,
                                        (string Content, Exception DownloadException) => OnCheckParser1(Content, DownloadException, callback, OldSecurityProtocol));
         }
 
@@ -783,7 +783,7 @@ namespace PgJsonParse
                 if (Entry.Value.MinVersion <= VersionInfo.Version)
                     JsonFileList.Add(Entry.Value.JsonFileName);
 
-            VersionInfo.DownloadFiles(VersionFolder, JsonFileList,
+            VersionInfo.DownloadFiles(this, VersionFolder, JsonFileList,
                                       (bool success, string exceptionMessage) => OnDownloadVersion1(success, exceptionMessage, VersionInfo));
         }
 
@@ -1327,7 +1327,7 @@ namespace PgJsonParse
         private void ExecuteDownloadIcons0(GameVersionInfo VersionInfo, Action<bool> callback)
         {
             string DestinationFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString());
-            VersionInfo.DownloadIcons(LoadedIconCount, MissingIconList, DestinationFolder, 
+            VersionInfo.DownloadIcons(this, LoadedIconCount, MissingIconList, DestinationFolder, 
                                       (bool Success, string ExceptionMessage, int NewLoadedIconCount) => ExecuteDownloadIcons1(Success, ExceptionMessage, NewLoadedIconCount, callback));
         }
 

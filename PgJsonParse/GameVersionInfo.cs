@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Presentation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
+#if CSHARP_XAML_FOR_HTML5
+using Windows.UI.Xaml;
+#else
 using System.Windows;
+#endif
 using Tools;
 
 namespace PgJsonParse
@@ -77,12 +80,12 @@ namespace PgJsonParse
         }
         private double _FileDownloadProgress;
 
-        public void DownloadFiles(string DestinationFolder, List<string> FileList, Action<bool, string> callback)
+        public void DownloadFiles(RootControl control, string DestinationFolder, List<string> FileList, Action<bool, string> callback)
         {
-            DownloadFiles0(FileList, DestinationFolder, callback);
+            DownloadFiles0(control, FileList, DestinationFolder, callback);
         }
 
-        private void DownloadFiles0(List<string> FileList, string DestinationFolder, Action<bool, string> callback)
+        private void DownloadFiles0(RootControl control, List<string> FileList, string DestinationFolder, Action<bool, string> callback)
         {
             FileDownloadState = DownloadState.Downloading;
             IsFileDownloadCancelled = false;
@@ -92,18 +95,18 @@ namespace PgJsonParse
             Watch.Start();
 
             if (FileList.Count > 0)
-                DownloadFiles1(FileList, DestinationFolder, Watch, 0, callback);
+                DownloadFiles1(control, FileList, DestinationFolder, Watch, 0, callback);
             else
                 DownloadFiles3(true, null, Watch, callback);
         }
 
-        private void DownloadFiles1(List<string> FileList, string DestinationFolder, Stopwatch Watch, int ProgressIndex, Action<bool, string> callback)
+        private void DownloadFiles1(RootControl control, List<string> FileList, string DestinationFolder, Stopwatch Watch, int ProgressIndex, Action<bool, string> callback)
         {
             string FileName = FileList[ProgressIndex];
-            DownloadOneFile("data", FileName, "json", DestinationFolder, new Action<bool, Exception>((bool Success, Exception e) => { DownloadFiles2(Success, e, FileList, DestinationFolder, Watch, ProgressIndex, callback); } ));
+            DownloadOneFile(control, "data", FileName, "json", DestinationFolder, new Action<bool, Exception>((bool Success, Exception DownloadException) => { DownloadFiles2(Success, DownloadException, control, FileList, DestinationFolder, Watch, ProgressIndex, callback); } ));
         }
 
-        private void DownloadFiles2(bool Success, Exception DownloadException, List<string> FileList, string DestinationFolder, Stopwatch Watch, int ProgressIndex, Action<bool, string> callback)
+        private void DownloadFiles2(bool Success, Exception DownloadException, RootControl control, List<string> FileList, string DestinationFolder, Stopwatch Watch, int ProgressIndex, Action<bool, string> callback)
         {
             if (Success && DownloadException == null)
             {
@@ -111,10 +114,9 @@ namespace PgJsonParse
                 ProgressIndex++;
 
                 NotifyProgressChanged();
-                Thread.Sleep(0);
 
                 if (ProgressIndex < FileList.Count)
-                    DownloadFiles1(FileList, DestinationFolder, Watch, ProgressIndex, callback);
+                    DownloadFiles1(control, FileList, DestinationFolder, Watch, ProgressIndex, callback);
                 else
                     DownloadFiles3(true, null, Watch, callback);
             }
@@ -152,12 +154,12 @@ namespace PgJsonParse
             IsFileDownloadCancelled = true;
         }
 
-        private void DownloadOneFile(string SourceLocation, string FileName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
+        private void DownloadOneFile(RootControl control, string SourceLocation, string FileName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
         {
-            DownloadOneFile0(SourceLocation, FileName, Extension, DestinationFolder, callback);
+            DownloadOneFile0(control, SourceLocation, FileName, Extension, DestinationFolder, callback);
         }
 
-        private void DownloadOneFile0(string SourceLocation, string FileName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
+        private void DownloadOneFile0(RootControl control, string SourceLocation, string FileName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
         {
             if (IsFileDownloadCancelled)
             {
@@ -167,7 +169,7 @@ namespace PgJsonParse
             }
 
             string RequestUri = "http://cdn.projectgorgon.com/v" + Version + "/" + SourceLocation + "/" + FileName + "." + Extension;
-            WebClientTool.DownloadText(RequestUri, null,
+            WebClientTool.DownloadText(control, RequestUri, null,
                                        new Action<string, Exception>((string Content, Exception e) => { DownloadOneFile1(Content, e, FileName, Extension, DestinationFolder, callback); }));
         }
 
@@ -243,17 +245,17 @@ namespace PgJsonParse
             IconDownloadState = IsDownloaded ? DownloadState.Downloaded : DownloadState.NotDownloaded;
         }
 
-        public void DownloadIcons(int LoadedIconCount, List<int> IconList, string DestinationFolder, Action<bool, string, int> callback)
+        public void DownloadIcons(RootControl control, int LoadedIconCount, List<int> IconList, string DestinationFolder, Action<bool, string, int> callback)
         {
             IconDownloadState = DownloadState.Downloading;
             IsIconDownloadCancelled = false;
 
-            DownloadIcons0(LoadedIconCount, IconList, DestinationFolder, callback);
+            DownloadIcons0(control, LoadedIconCount, IconList, DestinationFolder, callback);
         }
 
-        public void DownloadIcons0(int LoadedIconCount, List<int> IconList, string DestinationFolder, Action<bool, string, int> callback)
+        public void DownloadIcons0(RootControl control, int LoadedIconCount, List<int> IconList, string DestinationFolder, Action<bool, string, int> callback)
         {
-            DownloadIconsNow(LoadedIconCount, IconList, DestinationFolder, new Action<bool, Exception, int>((bool Success, Exception DownloadException, int Count) => { DownloadIcons1(Success, DownloadException, Count, IconList, DestinationFolder, callback); }));
+            DownloadIconsNow(control, LoadedIconCount, IconList, DestinationFolder, new Action<bool, Exception, int>((bool Success, Exception DownloadException, int Count) => { DownloadIcons1(Success, DownloadException, Count, IconList, DestinationFolder, callback); }));
         }
 
         public void DownloadIcons1(bool Success, Exception DownloadException, int Count, List<int> IconList, string DestinationFolder, Action<bool, string, int> callback)
@@ -276,24 +278,24 @@ namespace PgJsonParse
             IsIconDownloadCancelled = true;
         }
 
-        private void DownloadIconsNow(int LoadedIconCount, List<int> IconList, string DestinationFolder, Action<bool, Exception, int> callback)
+        private void DownloadIconsNow(RootControl control, int LoadedIconCount, List<int> IconList, string DestinationFolder, Action<bool, Exception, int> callback)
         {
             Stopwatch Watch = new Stopwatch();
             Watch.Start();
 
             if (IconList.Count > 0)
-                DownloadIconsNow0(LoadedIconCount, IconList, DestinationFolder, 0, callback, Watch);
+                DownloadIconsNow0(control, LoadedIconCount, IconList, DestinationFolder, 0, callback, Watch);
             else
                 callback(true, null, LoadedIconCount);
         }
 
-        private void DownloadIconsNow0(int LoadedIconCount, List<int> IconList, string DestinationFolder, int ProgressIndex, Action<bool, Exception, int> callback, Stopwatch Watch)
+        private void DownloadIconsNow0(RootControl control, int LoadedIconCount, List<int> IconList, string DestinationFolder, int ProgressIndex, Action<bool, Exception, int> callback, Stopwatch Watch)
         {
             int IconId = IconList[ProgressIndex];
-            DownloadOneIcon0("icons", "icon_" + IconId.ToString(), "png", DestinationFolder, new Action<bool, Exception>((bool Success, Exception DownloadException) => { DownloadIconsNow1(Success, DownloadException, IconList, DestinationFolder, callback, LoadedIconCount, ProgressIndex, Watch, IconId); }));
+            DownloadOneIcon0(control, "icons", "icon_" + IconId.ToString(), "png", DestinationFolder, new Action<bool, Exception>((bool Success, Exception DownloadException) => { DownloadIconsNow1(Success, DownloadException, control, IconList, DestinationFolder, callback, LoadedIconCount, ProgressIndex, Watch, IconId); }));
         }
 
-        private void DownloadIconsNow1(bool Success, Exception DownloadException, List<int> IconList, string DestinationFolder, Action<bool, Exception, int> callback, int LoadedIconCount, int ProgressIndex, Stopwatch Watch, int IconId)
+        private void DownloadIconsNow1(bool Success, Exception DownloadException, RootControl control, List<int> IconList, string DestinationFolder, Action<bool, Exception, int> callback, int LoadedIconCount, int ProgressIndex, Stopwatch Watch, int IconId)
         {
             if (Success)
             {
@@ -302,10 +304,9 @@ namespace PgJsonParse
                 ProgressIndex++;
 
                 NotifyProgressChanged();
-                Thread.Sleep(0);
 
                 if (ProgressIndex < IconList.Count)
-                    DownloadIconsNow0(LoadedIconCount, IconList, DestinationFolder, ProgressIndex, callback, Watch);
+                    DownloadIconsNow0(control, LoadedIconCount, IconList, DestinationFolder, ProgressIndex, callback, Watch);
                 else
                 {
                     UserUI.MinimalSleep(Watch);
@@ -316,7 +317,7 @@ namespace PgJsonParse
                 callback(false, DownloadException, LoadedIconCount + ProgressIndex);
         }
 
-        private void DownloadOneIcon0(string SourceLocation, string IconName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
+        private void DownloadOneIcon0(RootControl control, string SourceLocation, string IconName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
         {
             if (IsIconDownloadCancelled)
             {
@@ -327,7 +328,7 @@ namespace PgJsonParse
             {
                 string RequestUri = "http://cdn.projectgorgon.com/v" + Version + "/" + SourceLocation + "/" + IconName + "." + Extension;
                 string IconPath = Path.Combine(DestinationFolder, IconName + "." + Extension);
-                WebClientTool.DownloadDataToFile(RequestUri, IconPath, 256, new Action<bool, Exception>((bool Success, Exception DownloadException) => { DownloadOneIcon1(Success, DownloadException, callback); }));
+                WebClientTool.DownloadDataToFile(control, RequestUri, IconPath, 256, new Action<bool, Exception>((bool Success, Exception DownloadException) => { DownloadOneIcon1(Success, DownloadException, callback); }));
             }
         }
 

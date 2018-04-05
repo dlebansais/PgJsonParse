@@ -18,18 +18,19 @@ namespace CustomControls
         #region Init
         public PercentProgressBar()
         {
-            ControlList.Add(this);
             InitializeComponent();
 
             Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            ControlList.Add(this);
             NotifyPropertyChanged(nameof(Value));
         }
 
-        ~PercentProgressBar()
+        private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             ControlList.Remove(this);
         }

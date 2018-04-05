@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -11,7 +12,7 @@ namespace Tools
     public class WebClientTool
     {
         #region Download Text
-        public static void DownloadText(string address, Stopwatch watch, Action<string, Exception> callback)
+        public static void DownloadText(RootControl control, string address, Stopwatch watch, Action<string, Exception> callback)
         {
             Task<Tuple<string,Exception>> DownloadTask = new Task<Tuple<string, Exception>>(() => { return ExecuteDownloadText(address, watch); });
             DownloadTask.Start();
@@ -88,7 +89,7 @@ namespace Tools
         #endregion
 
         #region Download Binary
-        public static void DownloadDataToFile(string address, string FileName, int minLength, Action<bool, Exception> callback)
+        public static void DownloadDataToFile(RootControl control, string address, string FileName, int minLength, Action<bool, Exception> callback)
         {
             Task<Tuple<bool, Exception>> DownloadTask = new Task<Tuple<bool, Exception>>(() => { return ExecuteDownloadDataToFile(address, FileName, minLength); });
             DownloadTask.Start();

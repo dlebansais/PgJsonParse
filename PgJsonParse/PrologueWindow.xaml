@@ -8,7 +8,6 @@
         xmlns:ctrl="clr-namespace:CustomControls">
     <p:RootControl.Resources>
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
-        <conv:ObjectToIndexConverter x:Key="convObjectToIndex"/>
         <conv:EnumToIntConverter x:Key="convEnumToInt"/>
         <conv:EnumToObjectConverter x:Key="convEnumToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
@@ -154,10 +153,58 @@
             <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="GlobalDownloadState_ParsingColor">
-            <StaticResource ResourceKey="ProgressColor"/>
-            <StaticResource ResourceKey="ProgressColor"/>
-            <StaticResource ResourceKey="ProgressColor"/>
-            <StaticResource ResourceKey="ProgressColor"/>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="#EDDE3F"/>
+                <GradientStop Offset="0.1" Color="Orange"/>
+                <GradientStop Offset="0.2" Color="#EDDE3F"/>
+                <GradientStop Offset="0.3" Color="Orange"/>
+                <GradientStop Offset="0.4" Color="#EDDE3F"/>
+                <GradientStop Offset="0.5" Color="Orange"/>
+                <GradientStop Offset="0.6" Color="#EDDE3F"/>
+                <GradientStop Offset="0.7" Color="Orange"/>
+                <GradientStop Offset="0.8" Color="#EDDE3F"/>
+                <GradientStop Offset="0.9" Color="Orange"/>
+                <GradientStop Offset="1" Color="#EDDE3F"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="#EDDE3F"/>
+                <GradientStop Offset="0.1" Color="Orange"/>
+                <GradientStop Offset="0.2" Color="#EDDE3F"/>
+                <GradientStop Offset="0.3" Color="Orange"/>
+                <GradientStop Offset="0.4" Color="#EDDE3F"/>
+                <GradientStop Offset="0.5" Color="Orange"/>
+                <GradientStop Offset="0.6" Color="#EDDE3F"/>
+                <GradientStop Offset="0.7" Color="Orange"/>
+                <GradientStop Offset="0.8" Color="#EDDE3F"/>
+                <GradientStop Offset="0.9" Color="Orange"/>
+                <GradientStop Offset="1" Color="#EDDE3F"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="#EDDE3F"/>
+                <GradientStop Offset="0.1" Color="Orange"/>
+                <GradientStop Offset="0.2" Color="#EDDE3F"/>
+                <GradientStop Offset="0.3" Color="Orange"/>
+                <GradientStop Offset="0.4" Color="#EDDE3F"/>
+                <GradientStop Offset="0.5" Color="Orange"/>
+                <GradientStop Offset="0.6" Color="#EDDE3F"/>
+                <GradientStop Offset="0.7" Color="Orange"/>
+                <GradientStop Offset="0.8" Color="#EDDE3F"/>
+                <GradientStop Offset="0.9" Color="Orange"/>
+                <GradientStop Offset="1" Color="#EDDE3F"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="#EDDE3F"/>
+                <GradientStop Offset="0.1" Color="Orange"/>
+                <GradientStop Offset="0.2" Color="#EDDE3F"/>
+                <GradientStop Offset="0.3" Color="Orange"/>
+                <GradientStop Offset="0.4" Color="#EDDE3F"/>
+                <GradientStop Offset="0.5" Color="Orange"/>
+                <GradientStop Offset="0.6" Color="#EDDE3F"/>
+                <GradientStop Offset="0.7" Color="Orange"/>
+                <GradientStop Offset="0.8" Color="#EDDE3F"/>
+                <GradientStop Offset="0.9" Color="Orange"/>
+                <GradientStop Offset="1" Color="#EDDE3F"/>
+            </LinearGradientBrush>
             <SolidColorBrush Color="#39AA56"/>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="FalseTrue">
