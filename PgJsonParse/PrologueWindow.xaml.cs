@@ -7,15 +7,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Tools;
-using System.Threading.Tasks;
 #if CSHARP_XAML_FOR_HTML5
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 #else
 using System.Windows;
@@ -596,7 +593,7 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const double PARSER_VERSION = 298.1;
+        public const double PARSER_VERSION = 298.01;
 
         private void InitParserCheck()
         {
@@ -661,7 +658,7 @@ namespace PgJsonParse
                             if (ParserTagVersion.ToLower().StartsWith("v"))
                                 ParserTagVersion = ParserTagVersion.Substring(1);
 
-                            if (double.TryParse(ParserTagVersion, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out double ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
+                            if (StringParser.TryParseDouble(ParserTagVersion, out double ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
                                 FoundUpdate = true;
                         }
                     }
