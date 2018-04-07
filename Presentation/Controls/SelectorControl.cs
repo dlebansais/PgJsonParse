@@ -14,8 +14,10 @@ namespace Presentation
         #region Initialization
         public SelectorControl()
         {
+            IsBindingSet = false;
             SizeChanged += OnSizeChanged;
             Loaded += OnLoaded;
+            DataContextChanged += OnDataContextChanged;
         }
         #endregion
 
@@ -51,6 +53,12 @@ namespace Presentation
                 TryBindingAgainLater();
         }
 
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (IsBindingPossible())
+                SetBinding();
+        }
+
         private double SelectedWidth;
         private double SelectedHeight;
         #endregion
@@ -58,6 +66,9 @@ namespace Presentation
         #region Binding
         private bool IsBindingPossible()
         {
+            if (IsBindingSet)
+                return true;
+
             if (DataContext == null)
             {
                 //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Stop because DataContext == null");
@@ -86,12 +97,15 @@ namespace Presentation
 
         private void BindAgain()
         {
-            //Debug.WriteLine("Binding retry");
-            SetBinding();
+            if (IsBindingPossible())
+                SetBinding();
         }
 
         private void SetBinding()
         {
+            if (IsBindingSet)
+                return;
+
             foreach (object Item in Children)
             {
                 SelectorItem AsSelectorItem = Item as SelectorItem;
@@ -99,8 +113,11 @@ namespace Presentation
                 AsSelectorItem.SetBinding(VisibilityProperty, NewBinding);
             }
 
+            IsBindingSet = true;
             //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Binding set on Source=" + DataContext.ToString());
         }
+
+        private bool IsBindingSet;
         #endregion
     }
 }
