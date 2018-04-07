@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation;
+using System;
 using System.Drawing;
 using System.Globalization;
 using System.Reflection;
@@ -212,16 +213,16 @@ namespace PgJsonObjects
 
                         int k = Format.IndexOf('}', j);
                         string EnumTypeName = Format.Substring(j + 2, k - j - 2);
-                        Assembly Current = Assembly.GetExecutingAssembly();
-                        AssemblyName AssemblyName = Current.GetName();
 
-                        Type t = Current.GetType(AssemblyName.Name + "." + EnumTypeName);
-                        string[] Names = t.GetEnumNames();
+                        string AssemblyName = AssemblyTools.GetCurrentAssemblyName();
+                        Type t = Type.GetType(AssemblyName + "." + EnumTypeName);
+
+                        string[] Names = Enum.GetNames(t);
 
                         for (k = 0; k < Names.Length; k++)
                             if (s.Length >= i + Names[k].Length && String.Compare(s.Substring(i, Names[k].Length), Names[k], true) == 0)
                             {
-                                Array Values = t.GetEnumValues();
+                                Array Values = Enum.GetValues(t);
                                 args[argc++] = Values.GetValue(k);
                                 break;
                             }

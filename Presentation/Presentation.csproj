@@ -50,6 +50,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyTools.cs" />
     <Compile Include="Cancellation.cs" />
     <Compile Include="CloseButton.cs" />
     <Compile Include="ComboBox.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="RootControlMode.cs" />
     <Compile Include="Controls\SelectorControl.cs" />
     <Compile Include="Controls\SelectorItem.cs" />
-    <Compile Include="StringParser.cs" />
+    <Compile Include="InvariantCulture.cs" />
     <Compile Include="Taskbar\TaskbarProgress.cs" />
     <Compile Include="Taskbar\TaskbarShortcut.cs" />
     <Compile Include="Taskbar\TaskbarStates.cs" />

@@ -289,7 +289,7 @@ namespace PgJsonObjects
             int iReconstructed = 0;
 
             for (; iOriginal < OriginalContent.Length && iReconstructed < ReconstructedContent.Length; iOriginal++, iReconstructed++)
-                if (char.ToLower(OriginalContent[iOriginal]) != char.ToLower(ReconstructedContent[iReconstructed]))
+                if (OriginalContent[iOriginal].ToString().ToLower() != ReconstructedContent[iReconstructed].ToString().ToLower())
                 {
                     int Offset = (iOriginal >= 10 ? iOriginal - 10 : 0);
                     string Diff1 = OriginalContent.Substring(iOriginal);

@@ -658,7 +658,7 @@ namespace PgJsonParse
                             if (ParserTagVersion.ToLower().StartsWith("v"))
                                 ParserTagVersion = ParserTagVersion.Substring(1);
 
-                            if (StringParser.TryParseDouble(ParserTagVersion, out double ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
+                            if (InvariantCulture.TryParseDouble(ParserTagVersion, out double ReleasedParserVersion) && ReleasedParserVersion > PARSER_VERSION)
                                 FoundUpdate = true;
                         }
                     }

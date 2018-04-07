@@ -241,7 +241,7 @@ namespace PgJsonObjects
             foreach (KeyValuePair<Type, bool[]> Entry in StringToEnumConversion.KnownParsedEnumtable)
             {
                 string NotEnumerated = "";
-                string[] EnumNames = Entry.Key.GetEnumNames();
+                string[] EnumNames = Enum.GetNames(Entry.Key);
                 for (int i = 1; i < Entry.Value.Length; i++)
                     if (!Entry.Value[i])
                     {

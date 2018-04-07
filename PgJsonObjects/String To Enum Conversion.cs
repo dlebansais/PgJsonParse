@@ -31,8 +31,8 @@ namespace PgJsonObjects
         {
             EnumValue = DefaultValue;
             string TrimmedStringValue = StringValue;
-            string[] EnumNames = typeof(T).GetEnumNames();
-            Array EnumValues = typeof(T).GetEnumValues();
+            string[] EnumNames = Enum.GetNames(typeof(T));
+            Array EnumValues = Enum.GetValues(typeof(T));
 
             if (StringValue == null)
                 return false;
