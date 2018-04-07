@@ -587,6 +587,11 @@
                         </Run>
                     </Hyperlink>
                 </TextBlock>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding NumToDeliver, Converter={StaticResource convIndexToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
+                    <TextBlock>(x</TextBlock>
+                    <TextBlock Text="{Binding NumToDeliver}"/>
+                    <TextBlock>)</TextBlock>
+                </StackPanel>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveItemTemplate">
@@ -4502,6 +4507,7 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>

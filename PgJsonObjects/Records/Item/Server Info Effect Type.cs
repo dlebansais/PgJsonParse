@@ -551,5 +551,15 @@
         GrapeCandyCane,
         WolfsbaneMuffin,
         JerkyLembasBrick,
+        FriedPotatoSticks,
+        FriedBoletusBites,
+        RanalonSalad,
+        LungfishKabob,
+        LungfishRoll,
+        FriedLungfish,
+        MokapokStew,
+        SucculentPorkChops,
+        DamageBoostVsFish,
+        MoisteningCream,
     }
 }

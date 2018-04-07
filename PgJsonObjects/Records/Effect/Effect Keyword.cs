@@ -3,12 +3,10 @@
     public enum EffectKeyword {
         Internal_None,
         Hyphen,
-        //Event,
         Debuff,
         MusicPerformance,
         Dispel,
         Innate,
-        //CombatRefresh,
         Buff,
         MovementBuff,
         LycanthropyBuff,
@@ -55,7 +53,6 @@
         DispelledByKnockback,
         NamelessCurse,
         ElerimonCurse,
-        //TundraCold,
         HearthWarmth,
         Roundworms,
         HoT,
@@ -150,7 +147,6 @@
         NotSoSmartAnymore,
         ShadowFeint,
         Knockdown,
-        //Internal,
         PoisonAir,
         RedCrystalCurse,
         PetBuff,
@@ -208,5 +204,6 @@
         HardcoreBuff,
         Event_HalloweenEvent,
         Event_Christmas,
+        RanalonSpeechCurse,
     }
 }

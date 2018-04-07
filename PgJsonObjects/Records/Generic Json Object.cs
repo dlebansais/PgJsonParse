@@ -289,9 +289,17 @@ namespace PgJsonObjects
         protected static void ParseFieldValueLong(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<long, ParseErrorInfo> ParseValue)
         {
             JsonInteger AsJsonInteger;
+            JsonString AsJsonString;
 
             if ((AsJsonInteger = Value as JsonInteger) != null)
                 ParseValue(AsJsonInteger.Number, ErrorInfo);
+            else if ((AsJsonString = Value as JsonString) != null)
+            {
+                if (long.TryParse(AsJsonString.String, out long LongValue))
+                    ParseValue(LongValue, ErrorInfo);
+                else
+                    ErrorInfo.AddInvalidObjectFormat(FieldName);
+            }
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }

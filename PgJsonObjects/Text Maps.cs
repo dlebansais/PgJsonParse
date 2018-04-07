@@ -134,6 +134,7 @@ namespace PgJsonObjects
             { MapAreaName.MyconianCave, "Myconian Caverns" },
             { MapAreaName.GazlukKeep, "Gazluk Keep" },
             { MapAreaName.Dungeons, "Dungeons" },
+            { MapAreaName.RanalonDen, "Ranalon Den" },
         };
 
         public static readonly Dictionary<AbilityAnimation, string> AbilityAnimationTextMap = new Dictionary<AbilityAnimation, string>()
@@ -416,6 +417,7 @@ namespace PgJsonObjects
             { Deaths.MummyWrap, "Mummy Wrap" },
             { Deaths.IceShards, "Ice Shards" },
             { Deaths.EarthRoot, "Earth Root" },
+            { Deaths.BlindingLight, "Blinding Light" },
         };
 
         public static readonly Dictionary<PowerSkill, string> PowerSkillTextMap = new Dictionary<PowerSkill, string>()
@@ -1123,6 +1125,7 @@ namespace PgJsonObjects
             { AbilityKeyword.IlthHaleRing8, "IlthHaleRing #8" },
             { AbilityKeyword.Echolocation, "IlthHaleRing #9" },
             { AbilityKeyword.FamiliarRecallCollar, "Familiar Recall Collar" },
+            { AbilityKeyword.EnthusiasmCriticals, "Enthusiasm Criticals" },
         };
 
         public static readonly Dictionary<AbilityPetType, string> AbilityPetTypeTextMap = new Dictionary<AbilityPetType, string>()
@@ -1367,6 +1370,7 @@ namespace PgJsonObjects
             { EffectParticle.DeathPlumeFixedPosition, "Death Plume Fixed Position" },
             { EffectParticle.StoneImmobilize, "Stone Immobilize" },
             { EffectParticle.EarthStormSmall, "Earth Storm Small" },
+            { EffectParticle.RanalonGuardianGlow, "Ranalon Guardian Glow" },
         };
 
         public static readonly Dictionary<EffectStackingType, string> EffectStackingTypeTextMap = new Dictionary<EffectStackingType, string>()
@@ -1496,8 +1500,8 @@ namespace PgJsonObjects
             { EffectStackingType.TSysAccuracyBoost, "Accuracy Boost" },
             //{ EffectStackingType.TSysBoostUniversalDirect, "Universal Direct Boost" },
             { EffectStackingType.PunchPsiVuln, "Punch Psi Vulnerability" },
-            { EffectStackingType.TsysMentalismMitigation, "Mentalism Mitigation" },
-            { EffectStackingType.TsysMentalismPsiMitigation, "Mentalism Psi Mitigation" },
+            //{ EffectStackingType.TsysMentalismMitigation, "Mentalism Mitigation" },
+            //{ EffectStackingType.TsysMentalismPsiMitigation, "Mentalism Psi Mitigation" },
             { EffectStackingType.DenseFireVuln, "Dense Fire Vulnerability" },
             { EffectStackingType.EquipmentXpBoost, "Equipment XP Boost" },
             { EffectStackingType.BoostReconstruct, "Reconstruct Boost" },
@@ -1630,6 +1634,9 @@ namespace PgJsonObjects
             { EffectStackingType.TastsBoon, "Tast's Boon" },
             { EffectStackingType.SpecialEventMeal, "Special Event Meal" },
             { EffectStackingType.SpecialEventSnack, "Special Event Snack" },
+            { EffectStackingType.AlchemyDmgBoostVsFish, "Alchemy Damage Boost Vs Fish" },
+            { EffectStackingType.MoisteningCream, "Moistening Cream" },
+            { EffectStackingType.RanalonSpeechCurse, "Ranalon Speech Curse" },
         };
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTextMap = new Dictionary<EffectKeyword, string>()
@@ -1841,6 +1848,7 @@ namespace PgJsonObjects
             { EffectKeyword.HardcoreBuff, "Hardcore Buff" },
             { EffectKeyword.Event_HalloweenEvent, "Halloween Event" },
             { EffectKeyword.Event_Christmas, "Christmas Event" },
+            { EffectKeyword.RanalonSpeechCurse, "Ranalon Speech Curse" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -1913,6 +1921,8 @@ namespace PgJsonObjects
             { ItemDroppedAppearance.Blanket, "Blanket" },
             { ItemDroppedAppearance.MiniBarrel, "Mini Barrel" },
             { ItemDroppedAppearance.LootBracelet1, "Loot Bracelet" },
+            { ItemDroppedAppearance.GreenMarbleVase, "Green Marble Vase" },
+            { ItemDroppedAppearance.AlchemyBulb5, "Alchemy Bulb (5)" },
         };
 
         public static readonly Dictionary<ItemSlot, string> ItemSlotTextMap = new Dictionary<ItemSlot, string>()
@@ -2793,6 +2803,12 @@ namespace PgJsonObjects
             { ItemKeyword.AlcoholBarrel, "Alcohol Barrel" },
             { ItemKeyword.InstantSnack, "Instant Snack" },
             { ItemKeyword.FamiliarRecallCollar, "Familiar Recall Collar" },
+            { ItemKeyword.ScrayLung, "Scray Lung" },
+            { ItemKeyword.GuardianLure, "Guardian Lure" },
+            { ItemKeyword.RanalonGlassBracelet, "Ranalon Glass Bracelet" },
+            { ItemKeyword.ShamanicInfusionRecipe, "Shamanic Infusion Recipe" },
+            { ItemKeyword.Watercress, "Watercress" },
+            { ItemKeyword.Trident, "Trident" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -2887,6 +2903,7 @@ namespace PgJsonObjects
             { MapAreaName.MyconianCave, "Myconian Caverns" },
             { MapAreaName.GazlukKeep, "Gazluk Keep" },
             { MapAreaName.FaeRealm1, "Fae Realm" },
+            { MapAreaName.RanalonDen, "Ranalon Den" },
         };
 
         public static readonly Dictionary<Favor, string> FavorTextMap = new Dictionary<Favor, string>()
@@ -2914,6 +2931,7 @@ namespace PgJsonObjects
             { QuestKeyword.WorkOrder, "Work Order" },
             { QuestKeyword.Lint_CannotComplete, "Cannot Complete" },
             { QuestKeyword.EventQuest, "Event Quest" },
+            { QuestKeyword.ChirrraSoloQuest, "Chirrra Solo Quest" },
         };
 
         public static readonly Dictionary<QuestGroupingName, string> QuestGroupingNameTextMap = new Dictionary<QuestGroupingName, string>()
@@ -3253,6 +3271,7 @@ namespace PgJsonObjects
             { RecipeEffect.DeployBeerBarrel, "Deploy Beer Barrel" },
             { RecipeEffect.SpawnPlayerPortal1, "Spawn Player Portal #1" },
             { RecipeEffect.SpawnPlayerPortal2, "Spawn Player Portal #2" },
+            { RecipeEffect.Calligraphy5D, "Calligraphy 5D" },
         };
 
         public static readonly Dictionary<DecomposeMaterial, string> DecomposeMaterialTextMap = new Dictionary<DecomposeMaterial, string>()
@@ -3376,6 +3395,8 @@ namespace PgJsonObjects
             { ShamanicSlotPower.ShamanicRingCombatRefreshPower, "Ring with Combat Refresh Power" },
             { ShamanicSlotPower.ShamanicNecklaceHealth, "Necklace with Health" },
             { ShamanicSlotPower.ShamanicNecklacePower, "Necklace with Power" },
+            { ShamanicSlotPower.ShamanicHeadBoostLungs, "Shamanic Head Boost Lungs" },
+            { ShamanicSlotPower.ShamanicLegsWaterBoost, "Shamanic Legs Water Boost" },
         };
 
         public static readonly Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap = new Dictionary<RecipeItemKey, string>()
@@ -3481,6 +3502,7 @@ namespace PgJsonObjects
             { RecipeItemKey.MaxTSysPrereq_60, "Prerequisite: Max Level 60" },
             { RecipeItemKey.MinTSysPrereq_61, "Prerequisite: Min Level 61" },
             { RecipeItemKey.MaxTSysPrereq_90, "Prerequisite: Max Level 90" },
+            { RecipeItemKey.GlassChunk, "Glass Chunk" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
@@ -3646,6 +3668,15 @@ namespace PgJsonObjects
             { QuestObjectiveKillTarget.SkeletonMage, "Skeleton Mage" },
             { QuestObjectiveKillTarget.Ursula, "Ursula" },
             { QuestObjectiveKillTarget.BonfirePuck, "Bonfire Puck" },
+            { QuestObjectiveKillTarget.RanalonLeglingGardener, "Ranalon Legling Gardener" },
+            { QuestObjectiveKillTarget.RanalonLeglingClubber, "Ranalon Legling Clubber" },
+            { QuestObjectiveKillTarget.RanalonMartialSupervisor, "Ranalon Martial Supervisor" },
+            { QuestObjectiveKillTarget.RanalonLeglingStoneShaper, "Ranalon Legling StoneShaper" },
+            { QuestObjectiveKillTarget.RanalonMageSupervisor, "Ranalon Mage Supervisor" },
+            { QuestObjectiveKillTarget.RelaxedRanalon, "Relaxed Ranalon" },
+            { QuestObjectiveKillTarget.RanalonDenScray, "Ranalon Den Scray" },
+            { QuestObjectiveKillTarget.RanalonFarmCaster, "Ranalon Farm Caster" },
+            { QuestObjectiveKillTarget.SoloHallsGuardian, "Solo Halls Guardian" },
         };
 
         public static readonly Dictionary<MoonPhases, string> MoonPhasesTextMap = new Dictionary<MoonPhases, string>()
@@ -4229,7 +4260,17 @@ namespace PgJsonObjects
             { ServerInfoEffectType.SpearmintCandyCane,"Spearmint Candy Cane" },
             { ServerInfoEffectType.GrapeCandyCane,"Grape Candy Cane" },
             { ServerInfoEffectType.WolfsbaneMuffin,"Wolfsbane Muffin" },
-            { ServerInfoEffectType.JerkyLembasBrick,"Jerky Lembas Brick" },
+            { ServerInfoEffectType.JerkyLembasBrick, "Jerky Lembas Brick" },
+            { ServerInfoEffectType.FriedPotatoSticks, "Fried Potato Sticks" },
+            { ServerInfoEffectType.FriedBoletusBites, "Fried Boletus Bites" },
+            { ServerInfoEffectType.RanalonSalad, "Ranalon Salad" },
+            { ServerInfoEffectType.LungfishKabob, "Lungfish Kabob" },
+            { ServerInfoEffectType.LungfishRoll, "Lungfish Roll" },
+            { ServerInfoEffectType.FriedLungfish, "Fried Lungfish" },
+            { ServerInfoEffectType.MokapokStew, "Mokapok Stew" },
+            { ServerInfoEffectType.SucculentPorkChops, "Succulent Pork Chops" },
+            { ServerInfoEffectType.DamageBoostVsFish, "Damage Boost Vs Fish" },
+            { ServerInfoEffectType.MoisteningCream, "Moistening Cream" },
         };
 
         public static readonly Dictionary<ItemRequiredHotspot, string> ItemRequiredHotspotTextMap = new Dictionary<ItemRequiredHotspot, string>()
@@ -4276,9 +4317,9 @@ namespace PgJsonObjects
             { SpecialNpc.NPC_Pennoc, "Pennoc" },
             { SpecialNpc.NPC_Lakrea, "Lakrea" },
             { SpecialNpc.NPC_DyePlaceholder, "Dye Placeholder" },
-            //{ SpecialNpc.NPC_RecordsGolem, "Record's Golem" },
             { SpecialNpc.NPC_DyeMonster, "Dye Monster" },
             { SpecialNpc.NPC_Bahdba, "Bahdba" },
+            { SpecialNpc.NPC_Chirrra, "Chirrra" },
         };
 
         public static readonly Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap = new Dictionary<LoreBookKeyword, string>()
@@ -4310,6 +4351,7 @@ namespace PgJsonObjects
             { LoreBookCategory.History, "History" },
             { LoreBookCategory.Plot, "Plot" },
             { LoreBookCategory.Misc, "Misc" },
+            { LoreBookCategory.GuideProgram, "Guide Program" },
         };
     }
 }

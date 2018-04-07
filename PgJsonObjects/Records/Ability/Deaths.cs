@@ -132,5 +132,6 @@
         MummyWrap,
         IceShards,
         EarthRoot,
+        BlindingLight,
     }
 }

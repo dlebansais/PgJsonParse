@@ -135,6 +135,8 @@ namespace PgJsonObjects
         private double? RawShopLogDaysKept;
         public double ShopHiringNumFree { get { return RawShopHiringNumFree.HasValue ? RawShopHiringNumFree.Value : 0; } }
         private double? RawShopHiringNumFree;
+        public double CriticalHitDamage { get { return RawCriticalHitDamage.HasValue ? RawCriticalHitDamage.Value : 0; } }
+        private double? RawCriticalHitDamage;
         #endregion
 
         #region Indirect Properties
@@ -209,6 +211,7 @@ namespace PgJsonObjects
             { "SHOP_HIRING_MAX_PREPAY_DAYS", ParseFieldShopHiringMaxPrepDays },
             { "SHOP_LOG_DAYSKEPT", ParseFieldShopLogDaysKept },
             { "SHOP_HIRING_NUMFREE", ParseFieldShopHiringNumFree },
+            { "MOD_CRITICAL_HIT_DAMAGE", ParseFieldCriticalHitDamage },
         };
 
         protected override bool IsCustomFieldParsed(string FieldKey, object FieldValue, ParseErrorInfo ErrorInfo)
@@ -1515,6 +1518,26 @@ namespace PgJsonObjects
         {
             this.RawShopHiringNumFree = RawShopHiringNumFree;
         }
+
+        private static void ParseFieldCriticalHitDamage(Advancement This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                This.ParseCriticalHitDamage(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                This.ParseCriticalHitDamage(AsJsonFloat.Number, ErrorInfo);
+
+            else
+                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CriticalHitDamage");
+        }
+
+        private void ParseCriticalHitDamage(double RawCriticalHitDamage, ParseErrorInfo ErrorInfo)
+        {
+            this.RawCriticalHitDamage = RawCriticalHitDamage;
+        }
         #endregion
 
         #region Json Reconstruction
@@ -1589,6 +1612,7 @@ namespace PgJsonObjects
             Generator.AddDouble("ShopHiringMaxPrepDays", RawShopHiringMaxPrepDays);
             Generator.AddDouble("ShopLogDaysKept", RawShopLogDaysKept);
             Generator.AddDouble("ShopHiringNumFree", RawShopHiringNumFree);
+            Generator.AddDouble("CriticalHitDamage", RawCriticalHitDamage);
 
             Generator.CloseObject();
         }

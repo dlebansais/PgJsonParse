@@ -6,13 +6,14 @@ namespace PgJsonObjects
     public class QuestObjectiveDeliver : QuestObjective
     {
         #region Indexing
-        public QuestObjectiveDeliver(string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName)
+        public QuestObjectiveDeliver(string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName, int NumToDeliver)
             : base(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.DeliverNpcArea = DeliverNpcArea;
             this.DeliverNpcId = DeliverNpcId;
             this.DeliverNpcName = DeliverNpcName;
             this.RawItemName = RawItemName;
+            this.NumToDeliver = NumToDeliver;
         }
         #endregion
 
@@ -25,6 +26,7 @@ namespace PgJsonObjects
         public Item QuestItem { get; private set; }
         private string RawItemName;
         private bool IsItemNameParsed;
+        public int NumToDeliver { get; private set; }
         #endregion
 
         #region Indexing

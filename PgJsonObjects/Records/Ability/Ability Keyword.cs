@@ -461,5 +461,6 @@
         IlthHaleRing8,
         Echolocation,
         FamiliarRecallCollar,
+        EnthusiasmCriticals,
     }
 }

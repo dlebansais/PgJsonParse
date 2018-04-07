@@ -24,5 +24,6 @@
         MyconianCave,
         GazlukKeep,
         FaeRealm1,
+        RanalonDen,
     }
 }

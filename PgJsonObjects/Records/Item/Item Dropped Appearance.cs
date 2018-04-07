@@ -70,5 +70,7 @@
         Blanket,
         MiniBarrel,
         LootBracelet1,
+        GreenMarbleVase,
+        AlchemyBulb5,
     }
 }

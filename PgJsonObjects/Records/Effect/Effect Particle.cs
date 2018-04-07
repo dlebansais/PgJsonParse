@@ -89,5 +89,6 @@
         DeathPlumeFixedPosition,
         StoneImmobilize,
         EarthStormSmall,
+        RanalonGuardianGlow,
     }
 }

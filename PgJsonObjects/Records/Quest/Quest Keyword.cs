@@ -10,5 +10,6 @@
         WorkOrder,
         Lint_CannotComplete,
         EventQuest,
+        ChirrraSoloQuest,
     }
 }

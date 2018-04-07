@@ -23,6 +23,7 @@ namespace PgJsonObjects
             { "History", ParseFieldHistory },
             { "Plot", ParseFieldPlot },
             { "Stories", ParseFieldStories },
+            { "GuideProgram", ParseFieldGuideProgram },
         };
 
         private static void ParseFieldGods(LoreBookInfo This, object Value, ParseErrorInfo ErrorInfo)
@@ -42,6 +43,10 @@ namespace PgJsonObjects
         }
 
         private static void ParseFieldStories(LoreBookInfo This, object Value, ParseErrorInfo ErrorInfo)
+        {
+        }
+
+        private static void ParseFieldGuideProgram(LoreBookInfo This, object Value, ParseErrorInfo ErrorInfo)
         {
         }
         #endregion

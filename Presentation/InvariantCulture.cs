@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 namespace Presentation
 {
@@ -12,7 +13,7 @@ namespace Presentation
 
         public static string DoubleToString(double v)
         {
-            return v.ToString(CultureInfo.InvariantCulture);
+            return Math.Round(v, 2).ToString(CultureInfo.InvariantCulture);
         }
 
         public static string DoubleToString(double v, string format)
@@ -24,16 +25,7 @@ namespace Presentation
         #region Single
         public static bool TryParseSingle(string s, out float v)
         {
-            if (TryParseDouble(s, out double d))
-            {
-                v = (float)d;
-                return true;
-            }
-            else
-            {
-                v = float.NaN;
-                return false;
-            }
+            return float.TryParse(s, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out v);
         }
 
         public static string SingleToString(float v)

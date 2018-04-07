@@ -8,5 +8,6 @@
         History,
         Plot,
         Misc,
+        GuideProgram,
     }
 }

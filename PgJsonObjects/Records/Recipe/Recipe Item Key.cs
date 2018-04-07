@@ -103,5 +103,6 @@
         MaxTSysPrereq_60,
         MinTSysPrereq_61,
         MaxTSysPrereq_90,
+        GlassChunk,
     }
 }

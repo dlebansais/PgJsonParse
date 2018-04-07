@@ -17,5 +17,7 @@
         ShamanicRingCombatRefreshPower,
         ShamanicNecklaceHealth,
         ShamanicNecklacePower,
+        ShamanicHeadBoostLungs,
+        ShamanicLegsWaterBoost,
     }
 }

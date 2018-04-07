@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -27,10 +28,10 @@ namespace Converters
             if ((AsString = parameter as string) != null)
             {
                 if (AsString == "+" && DoubleValue > 0)
-                    return "+" + DoubleValue.ToString();
+                    return "+" + InvariantCulture.DoubleToString(DoubleValue);
 
                 else if (AsString == "%" && DoubleValue >= 0 && DoubleValue <= 1.0)
-                    return (DoubleValue * 100).ToString() + "%";
+                    return InvariantCulture.DoubleToString(DoubleValue * 100) + "%";
             }
 
             return DoubleValue.ToString();

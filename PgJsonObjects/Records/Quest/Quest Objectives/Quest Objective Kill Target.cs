@@ -93,5 +93,14 @@
         SkeletonMage,
         Ursula,
         BonfirePuck,
+        RanalonLeglingGardener,
+        RanalonLeglingClubber,
+        RanalonMartialSupervisor,
+        RanalonLeglingStoneShaper,
+        RanalonMageSupervisor,
+        RelaxedRanalon,
+        RanalonDenScray,
+        RanalonFarmCaster,
+        SoloHallsGuardian,
     }
 }

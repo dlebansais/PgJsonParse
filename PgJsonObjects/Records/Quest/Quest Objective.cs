@@ -53,6 +53,7 @@ namespace PgJsonObjects
         private ItemKeyword ItemKeyword;
         private MonsterTypeTag MonsterTypeTag;
         private EffectKeyword EffectRequirement;
+        protected int? RawNumToDeliver;
         #endregion
 
         #region Indirect Properties
@@ -91,7 +92,7 @@ namespace PgJsonObjects
 
                 case QuestObjectiveType.Deliver:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
-                        return new QuestObjectiveDeliver(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName);
+                        return new QuestObjectiveDeliver(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName, RawNumToDeliver.HasValue && RawNumToDeliver.Value > 0 ? RawNumToDeliver.Value : -1);
                     else
                         return this;
 
@@ -185,6 +186,7 @@ namespace PgJsonObjects
             { "Requirements", ParseFieldRequirements },
             { "MonsterTypeTag", ParseFieldMonsterTypeTag },
             { "Item", ParseFieldItem },
+            { "NumToDeliver", ParseFieldNumToDeliver },
         };
 
         private static void ParseFieldType(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
@@ -642,6 +644,19 @@ namespace PgJsonObjects
                 this.RawItemName = RawItemName;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Item (Type)");
+        }
+
+        private static void ParseFieldNumToDeliver(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
+        {
+            ParseFieldValueLong(Value, ErrorInfo, "QuestObjective NumToDeliver", This.ParseNumToDeliver);
+        }
+
+        private void ParseNumToDeliver(long RawNumToDeliver, ParseErrorInfo ErrorInfo)
+        {
+            if (Type == QuestObjectiveType.Deliver)
+                this.RawNumToDeliver = (int)RawNumToDeliver;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestObjective NumToDeliver (Type)");
         }
         #endregion
 
