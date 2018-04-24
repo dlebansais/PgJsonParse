@@ -2639,6 +2639,20 @@ namespace PgJsonObjects
                 //TODO
             }
 
+            else if (Tools.Scan(s, "Pet attempts to perform its pet-specific Clever Trick", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Pet gains +%d speed for %d seconds and pet attempts to use its pet-specific Special Attack", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "(How well the pet focuses on your enemies depends in part on the pet's Bond Level.)", args))
+            {
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);

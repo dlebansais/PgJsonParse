@@ -49,7 +49,8 @@ namespace PgJsonObjects
 
                     else if (RequirementFavorNpcId == null && RequirementFavorNpcName == null)
                     {
-                        ErrorInfo.AddInvalidObjectFormat("QuestRequirement Npc");
+                        // Ignore bugged entry...
+                        //ErrorInfo.AddInvalidObjectFormat("QuestRequirement Npc");
                         return null;
                     }
                     else
@@ -185,7 +186,7 @@ namespace PgJsonObjects
                     RequirementFavorNpcId = NpcId;
                     RequirementFavorNpcName = NpcName;
                 }
-                else
+                else if (RawNpc.Length > 0)
                     ErrorInfo.AddInvalidObjectFormat("QuestRequirement Npc");
             }
             else
