@@ -114,7 +114,7 @@ namespace PgJsonParse
             {
                 string FileName = fileList[progressIndex];
                 DownloadOneFile(dispatcherSource, "data", FileName, "json", destinationFolder, 
-                    new DownloadFilesCompletedHandler((bool success, Exception downloadException) => { DownloadFiles2(success, downloadException, dispatcherSource, fileList, destinationFolder, watch, progressIndex, callback); }));
+                                (bool success, Exception downloadException) => { DownloadFiles2(success, downloadException, dispatcherSource, fileList, destinationFolder, watch, progressIndex, callback); });
             }
             else
                 DownloadFiles3(success: true, downloadException: null, watch, callback);
@@ -179,7 +179,7 @@ namespace PgJsonParse
 
             string RequestUri = $"http://cdn.projectgorgon.com/v{Version}/{sourceLocation}/{fileName}.{extension}";
             WebClientTool.DownloadText(dispatcherSource, RequestUri, null,
-                                       new WebClientTool.DownloadTextResultHandler((string content, Exception downloadException) => { DownloadOneFile1(content, downloadException, fileName, extension, destinationFolder, callback); }));
+                                       (string content, Exception downloadException) => { DownloadOneFile1(content, downloadException, fileName, extension, destinationFolder, callback); });
         }
 
         private void DownloadOneFile1(string content, Exception downloadException, string fileName, string extension, string destinationFolder, DownloadFilesCompletedHandler callback)
@@ -276,7 +276,7 @@ namespace PgJsonParse
         private void DownloadIcons0(IDispatcherSource dispatcherSource, int loadedIconCount, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
         {
             DownloadIcons1(dispatcherSource, loadedIconCount, iconList, destinationFolder, 
-                new DownloadIconsCompletedHandler((bool success, Exception downloadException, int downloadedCount) => { DownloadIcons4(success, downloadException, downloadedCount, iconList, destinationFolder, callback); }));
+                           (bool success, Exception downloadException, int downloadedCount) => { DownloadIcons4(success, downloadException, downloadedCount, iconList, destinationFolder, callback); });
         }
 
         private delegate void DownloadIconsCompletedHandler(bool success, Exception downloadException, int downloadedCount);
@@ -295,7 +295,7 @@ namespace PgJsonParse
             {
                 int IconId = iconList[progressIndex];
                 DownloadOneIcon0(dispatcherSource, "icons", "icon_" + IconId.ToString(), "png", destinationFolder,
-                    new DownloadOneIconResultHandler((bool success, Exception downloadException) => { DownloadIcons3(success, downloadException, dispatcherSource, iconList, destinationFolder, callback, loadedIconCount, progressIndex, watch, IconId); }));
+                                 (bool success, Exception downloadException) => { DownloadIcons3(success, downloadException, dispatcherSource, iconList, destinationFolder, callback, loadedIconCount, progressIndex, watch, IconId); });
             }
             else
             {
@@ -354,7 +354,7 @@ namespace PgJsonParse
                 string RequestUri = $"http://cdn.projectgorgon.com/v{Version}/{SourceLocation}/{IconName}.{Extension}";
                 string IconPath = Path.Combine(destinationFolder, IconName + "." + Extension);
                 WebClientTool.DownloadDataToFile(dispatcherSource, RequestUri, 
-                    new WebClientTool.DownloadDataResultHandler((byte[] data, Exception downloadException) => { DownloadOneIcon1(data, downloadException, IconPath, 256, callback); }));
+                                                 (byte[] data, Exception downloadException) => { DownloadOneIcon1(data, downloadException, IconPath, 256, callback); });
             }
         }
 

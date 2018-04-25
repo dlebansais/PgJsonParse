@@ -327,12 +327,12 @@ namespace PgJsonParse
             _LastIconId = Persistent.GetSettingString(nameof(LastIconId), null);
         }
 
-        private string InitFolder(string FolderName)
+        private string InitFolder(string folderName)
         {
-            if (!Directory.Exists(FolderName))
-                Directory.CreateDirectory(FolderName);
+            if (!Directory.Exists(folderName))
+                Directory.CreateDirectory(folderName);
 
-            return FolderName;
+            return folderName;
         }
 
         private void SaveSettings()
@@ -470,14 +470,14 @@ namespace PgJsonParse
 
             const string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
             WebClientTool.DownloadText(this, RequestUri, Watch,
-                                       (string Content, Exception DownloadException) => OnCheckVersion1(Content, DownloadException, RequestUri));
+                                       (string content, Exception downloadException) => OnCheckVersion1(content, downloadException, RequestUri));
         }
 
-        private void OnCheckVersion1(string Content, Exception DownloadException, string RequestUri)
+        private void OnCheckVersion1(string content, Exception downloadException, string requestUri)
         {
-            if (DownloadException == null)
+            if (downloadException == null)
             {
-                if (Content != null && int.TryParse(Content, out int Version) && Version > 0)
+                if (content != null && int.TryParse(content, out int Version) && Version > 0)
                 {
                     StatusMessage = null;
                     LastExceptionMessage = null;
@@ -485,10 +485,10 @@ namespace PgJsonParse
                     return;
                 }
                 else
-                    LastExceptionMessage = RequestUri + " is invalid.";
+                    LastExceptionMessage = requestUri + " is invalid.";
             }
             else
-                LastExceptionMessage = DownloadException.Message;
+                LastExceptionMessage = downloadException.Message;
 
             StatusMessage = "Unable to connect to the game server.";
 
@@ -496,14 +496,14 @@ namespace PgJsonParse
             IsGlobalInteractionEnabled = true;
         }
 
-        private void OnCheckVersion2(int Version)
+        private void OnCheckVersion2(int version)
         {
-            LatestVersion = Version.ToString();
+            LatestVersion = version.ToString();
             VersionCheckState = VersionCheckState.Known;
 
             int i;
             for (i = 0; i < VersionList.Count; i++)
-                if (VersionList[i].Version == Version)
+                if (VersionList[i].Version == version)
                 {
                     if (CachedVersionIndex < 0)
                         CachedVersionIndex = i;
@@ -512,7 +512,7 @@ namespace PgJsonParse
 
             if (i >= VersionList.Count)
             {
-                GameVersionInfo NewVersion = AddCheckedVersion(Version);
+                GameVersionInfo NewVersion = AddCheckedVersion(version);
 
                 if (CheckNewParserOnStartup)
                     OnCheckParser(() => OnCheckVersion3(NewVersion));
@@ -528,12 +528,12 @@ namespace PgJsonParse
             }
         }
 
-        private void OnCheckVersion3(GameVersionInfo NewVersion)
+        private void OnCheckVersion3(GameVersionInfo newVersion)
         {
             if (DownloadNewVersionsAutomatically)
             {
-                CachedVersionIndex = VersionList.IndexOf(NewVersion);
-                OnDownloadVersion(NewVersion);
+                CachedVersionIndex = VersionList.IndexOf(newVersion);
+                OnDownloadVersion(newVersion);
             }
             else
                 IsGlobalInteractionEnabled = true;
@@ -636,21 +636,21 @@ namespace PgJsonParse
                                        (string Content, Exception DownloadException) => OnCheckParser1(Content, DownloadException, callback, OldSecurityProtocol));
         }
 
-        private void OnCheckParser1(string Content, Exception DownloadException, Action callback, object oldSecurityProtocol)
+        private void OnCheckParser1(string content, Exception downloadException, Action callback, object oldSecurityProtocol)
         {
             NetTools.RestoreSecurityProtocol(oldSecurityProtocol);
 
-            if (DownloadException == null)
+            if (downloadException == null)
             {
                 bool FoundUpdate = false;
 
-                if (Content != null)
+                if (content != null)
                 {
                     const string Pattern = @"<a href=""/dlebansais/PgJsonParse/releases/tag/";
-                    int Index = Content.IndexOf(Pattern);
+                    int Index = content.IndexOf(Pattern);
                     if (Index >= 0)
                     {
-                        string ParserTagVersion = Content.Substring(Index + Pattern.Length, 20);
+                        string ParserTagVersion = content.Substring(Index + Pattern.Length, 20);
                         int EndIndex = ParserTagVersion.IndexOf('"');
                         if (EndIndex > 0)
                         {
@@ -762,31 +762,31 @@ namespace PgJsonParse
             }
         }
 
-        private void OnDownloadVersion(GameVersionInfo VersionInfo)
+        private void OnDownloadVersion(GameVersionInfo versionInfo)
         {
             IsGlobalInteractionEnabled = false;
             SetTaskbarState(TaskbarStates.Normal);
-            VersionInfo.ProgressChanged += OnFileDownloadProgressChanged;
+            versionInfo.ProgressChanged += OnFileDownloadProgressChanged;
 
-            OnDownloadVersion0(VersionInfo);
+            OnDownloadVersion0(versionInfo);
         }
 
-        private void OnDownloadVersion0(GameVersionInfo VersionInfo)
+        private void OnDownloadVersion0(GameVersionInfo versionInfo)
         {
-            string VersionFolder = InitFolder(Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString()));
+            string VersionFolder = InitFolder(Path.Combine(VersionCacheFolder, versionInfo.Version.ToString()));
 
             List<string> JsonFileList = new List<string>();
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-                if (Entry.Value.MinVersion <= VersionInfo.Version)
+                if (Entry.Value.MinVersion <= versionInfo.Version)
                     JsonFileList.Add(Entry.Value.JsonFileName);
 
-            VersionInfo.DownloadFiles(this, VersionFolder, JsonFileList,
-                                      (bool success, string exceptionMessage) => OnDownloadVersion1(success, exceptionMessage, VersionInfo));
+            versionInfo.DownloadFiles(this, VersionFolder, JsonFileList,
+                                      (bool success, string exceptionMessage) => OnDownloadVersion1(success, exceptionMessage, versionInfo));
         }
 
-        private void OnDownloadVersion1(bool success, string exceptionMessage, GameVersionInfo VersionInfo)
+        private void OnDownloadVersion1(bool success, string exceptionMessage, GameVersionInfo versionInfo)
         {
-            VersionInfo.ProgressChanged -= OnFileDownloadProgressChanged;
+            versionInfo.ProgressChanged -= OnFileDownloadProgressChanged;
 
             if (success)
             {
@@ -795,7 +795,7 @@ namespace PgJsonParse
                 LastExceptionMessage = null;
 
                 if (StartAutomatically)
-                    OnStart(VersionInfo);
+                    OnStart(versionInfo);
                 else
                     IsGlobalInteractionEnabled = true;
             }
@@ -808,12 +808,12 @@ namespace PgJsonParse
             }
         }
 
-        private void OnCancelDownloadVersion(GameVersionInfo VersionInfo)
+        private void OnCancelDownloadVersion(GameVersionInfo versionInfo)
         {
-            VersionInfo.CancelDownloadFiles();
+            versionInfo.CancelDownloadFiles();
         }
 
-        private void OnDeleteVersion(GameVersionInfo VersionInfo)
+        private void OnDeleteVersion(GameVersionInfo versionInfo)
         {
             int OldCachedVersionIndex = CachedVersionIndex;
 
@@ -823,11 +823,11 @@ namespace PgJsonParse
 
             try
             {
-                string VersionFolder = Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString());
+                string VersionFolder = Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
                 if (Directory.Exists(VersionFolder))
                     FolderTools.DeleteDirectory(VersionFolder, true);
 
-                VersionList.Remove(VersionInfo);
+                VersionList.Remove(versionInfo);
                 if (OldCachedVersionIndex < VersionList.Count)
                     CachedVersionIndex = OldCachedVersionIndex;
                 else if (VersionList.Count > 0)

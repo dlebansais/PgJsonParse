@@ -2,27 +2,35 @@
 {
     public class Sequence
     {
-        public static Sequence Create(int MaxCount, int MaxValue)
+        #region Init
+        public static Sequence Create(int maxCount, int maxValue)
         {
-            Sequence Result = new Sequence(MaxCount, MaxValue);
+            Sequence Result = new Sequence(maxCount, maxValue);
             return Result;
         }
 
-        public static Sequence CreateSeparate(int MaxCount, int MaxValue)
+        public static Sequence CreateSeparate(int maxCount, int maxValue)
         {
-            Sequence Result = new Sequence(MaxCount, MaxValue);
+            Sequence Result = new Sequence(maxCount, maxValue);
             Result.NextSeparate();
             return Result;
         }
 
-        private Sequence(int MaxCount, int MaxValue)
+        private Sequence(int maxCount, int maxValue)
         {
-            Array = new int[MaxCount];
-            this.MaxValue = MaxValue;
-            Index = 0;
+            Array = new int[maxCount];
+            MaxValue = maxValue;
             IsCompleted = false;
         }
+        #endregion
 
+        #region Properties
+        public int[] Array { get; private set; }
+        public int MaxValue { get; private set; }
+        public bool IsCompleted { get; private set; }
+        #endregion
+
+        #region Client Interface
         public void Next()
         {
             for (int ArrayIndex = 0; ArrayIndex < Array.Length; ArrayIndex++)
@@ -46,7 +54,7 @@
             while (!IsCompleted && !IsSequenceSeparate);
         }
 
-        public bool IsSequenceSeparate
+        private bool IsSequenceSeparate
         {
             get
             {
@@ -58,10 +66,6 @@
                 return true;
             }
         }
-        public int[] Array;
-        public int MaxValue;
-        public bool IsSeparate;
-        public int Index;
-        public bool IsCompleted;
+        #endregion
     }
 }
