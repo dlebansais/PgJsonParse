@@ -35,6 +35,8 @@ namespace Presentation
 
             if (!double.IsNaN(ActualHeight) && ActualHeight > SelectedHeight)
                 SelectedHeight = ActualHeight;
+
+            IsSizeSet = true;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -55,7 +57,7 @@ namespace Presentation
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (IsBindingPossible())
+            if (IsSizeSet && IsBindingPossible())
                 SetBinding();
         }
 
@@ -117,6 +119,7 @@ namespace Presentation
             //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Binding set on Source=" + DataContext.ToString());
         }
 
+        private bool IsSizeSet;
         private bool IsBindingSet;
         #endregion
     }

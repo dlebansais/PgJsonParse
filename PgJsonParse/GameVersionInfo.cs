@@ -60,10 +60,14 @@ namespace PgJsonParse
                 {
                     _FileDownloadState = value;
                     NotifyThisPropertyChanged();
+                    NotifyPropertyChanged(nameof(IsDownloadSuccessful));
+                    NotifyPropertyChanged(nameof(IsDownloadFailed));
                     NotifyPropertyChanged(nameof(GlobalDownloadState));
                 }
             }
         }
+        public bool IsDownloadSuccessful { get { return FileDownloadState == DownloadState.Downloaded; } }
+        public bool IsDownloadFailed { get { return FileDownloadState > DownloadState.Downloading && FileDownloadState < DownloadState.Downloaded; } }
         private DownloadState _FileDownloadState;
 
         public double FileDownloadProgress
@@ -80,12 +84,19 @@ namespace PgJsonParse
         }
         private double _FileDownloadProgress;
 
-        public void DownloadFiles(RootControl control, string DestinationFolder, List<string> FileList, Action<bool, string> callback)
+        public delegate void DownloadFilesResultHandler(bool success, string exceptionMessage);
+
+        public void DownloadFiles(IDispatcherSource dispatcherSource, string destinationFolder, IReadOnlyList<string> fileList, DownloadFilesResultHandler callback)
         {
-            DownloadFiles0(control, FileList, DestinationFolder, callback);
+            DownloadFiles0(dispatcherSource, fileList, destinationFolder, callback);
         }
 
-        private void DownloadFiles0(RootControl control, List<string> FileList, string DestinationFolder, Action<bool, string> callback)
+        public void CancelDownloadFiles()
+        {
+            IsFileDownloadCancelled = true;
+        }
+
+        private void DownloadFiles0(IDispatcherSource dispatcherSource, IReadOnlyList<string> fileList, string destinationFolder, DownloadFilesResultHandler callback)
         {
             FileDownloadState = DownloadState.Downloading;
             IsFileDownloadCancelled = false;
@@ -94,102 +105,100 @@ namespace PgJsonParse
             Stopwatch Watch = new Stopwatch();
             Watch.Start();
 
-            if (FileList.Count > 0)
-                DownloadFiles1(control, FileList, DestinationFolder, Watch, 0, callback);
-            else
-                DownloadFiles3(true, null, Watch, callback);
+            DownloadFiles1(dispatcherSource, fileList, destinationFolder, Watch, 0, callback);
         }
 
-        private void DownloadFiles1(RootControl control, List<string> FileList, string DestinationFolder, Stopwatch Watch, int ProgressIndex, Action<bool, string> callback)
+        private void DownloadFiles1(IDispatcherSource dispatcherSource, IReadOnlyList<string> fileList, string destinationFolder, Stopwatch watch, int progressIndex, DownloadFilesResultHandler callback)
         {
-            string FileName = FileList[ProgressIndex];
-            DownloadOneFile(control, "data", FileName, "json", DestinationFolder, new Action<bool, Exception>((bool Success, Exception DownloadException) => { DownloadFiles2(Success, DownloadException, control, FileList, DestinationFolder, Watch, ProgressIndex, callback); } ));
-        }
-
-        private void DownloadFiles2(bool Success, Exception DownloadException, RootControl control, List<string> FileList, string DestinationFolder, Stopwatch Watch, int ProgressIndex, Action<bool, string> callback)
-        {
-            if (Success && DownloadException == null)
+            if (progressIndex < fileList.Count)
             {
-                FileDownloadProgress = (ProgressIndex * 100.0) / FileList.Count;
-                ProgressIndex++;
-
-                NotifyProgressChanged();
-
-                if (ProgressIndex < FileList.Count)
-                    DownloadFiles1(control, FileList, DestinationFolder, Watch, ProgressIndex, callback);
-                else
-                    DownloadFiles3(true, null, Watch, callback);
+                string FileName = fileList[progressIndex];
+                DownloadOneFile(dispatcherSource, "data", FileName, "json", destinationFolder, 
+                    new DownloadFilesCompletedHandler((bool success, Exception downloadException) => { DownloadFiles2(success, downloadException, dispatcherSource, fileList, destinationFolder, watch, progressIndex, callback); }));
             }
             else
-                DownloadFiles3(Success, DownloadException, Watch, callback);
+                DownloadFiles3(success: true, downloadException: null, watch, callback);
         }
 
-        private void DownloadFiles3(bool Success, Exception DownloadException, Stopwatch Watch, Action<bool, string> callback)
+        private void DownloadFiles2(bool success, Exception downloadException, IDispatcherSource dispatcherSource, IReadOnlyList<string> fileList, string destinationFolder, Stopwatch watch, int progressIndex, DownloadFilesResultHandler callback)
+        {
+            if (success && downloadException == null)
+            {
+                FileDownloadProgress = (progressIndex * 100.0) / fileList.Count;
+                NotifyProgressChanged();
+
+                DownloadFiles1(dispatcherSource, fileList, destinationFolder, watch, progressIndex + 1, callback);
+            }
+            else
+                DownloadFiles3(success, downloadException, watch, callback);
+        }
+
+        private void DownloadFiles3(bool success, Exception downloadException, Stopwatch watch, DownloadFilesResultHandler callback)
         {
             string ExceptionMessage = null;
 
-            if (Success && DownloadException == null)
-                UserUI.MinimalSleep(Watch);
+            if (success && downloadException == null)
+                UserUI.MinimalSleep(watch);
 
-            else if (DownloadException != null)
+            else if (downloadException != null)
             {
-                Success = false;
-                ExceptionMessage = DownloadException.Message;
+                Debug.Assert(!success);
+
+                ExceptionMessage = downloadException.Message;
                 FileDownloadState = DownloadState.FailedToDownload;
             }
 
-            DownloadFiles4(Success, ExceptionMessage, callback);
+            DownloadFiles4(success, ExceptionMessage, callback);
         }
 
-        private void DownloadFiles4(bool Success, string ExceptionMessage, Action<bool, string> callback)
+        private void DownloadFiles4(bool success, string exceptionMessage, DownloadFilesResultHandler callback)
         {
-            if (Success)
+            if (success)
                 FileDownloadState = DownloadState.Downloaded;
 
-            callback(Success, ExceptionMessage);
+            Debug.Assert((success && IsDownloadSuccessful) || (!success && IsDownloadFailed));
+
+            callback(success, exceptionMessage);
         }
 
-        public void CancelDownloadFiles()
+        private delegate void DownloadFilesCompletedHandler(bool success, Exception downloadException);
+
+        private void DownloadOneFile(IDispatcherSource dispatcherSource, string sourceLocation, string fileName, string extension, string destinationFolder, DownloadFilesCompletedHandler callback)
         {
-            IsFileDownloadCancelled = true;
+            DownloadOneFile0(dispatcherSource, sourceLocation, fileName, extension, destinationFolder, callback);
         }
 
-        private void DownloadOneFile(RootControl control, string SourceLocation, string FileName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
-        {
-            DownloadOneFile0(control, SourceLocation, FileName, Extension, DestinationFolder, callback);
-        }
-
-        private void DownloadOneFile0(RootControl control, string SourceLocation, string FileName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
+        private void DownloadOneFile0(IDispatcherSource dispatcherSource, string sourceLocation, string fileName, string extension, string destinationFolder, DownloadFilesCompletedHandler callback)
         {
             if (IsFileDownloadCancelled)
             {
                 FileDownloadState = DownloadState.DownloadCanceled;
-                callback(false, null);
+                callback(success: false, downloadException: null);
                 return;
             }
 
-            string RequestUri = "http://cdn.projectgorgon.com/v" + Version + "/" + SourceLocation + "/" + FileName + "." + Extension;
-            WebClientTool.DownloadText(control, RequestUri, null,
-                                       new Action<string, Exception>((string Content, Exception e) => { DownloadOneFile1(Content, e, FileName, Extension, DestinationFolder, callback); }));
+            string RequestUri = $"http://cdn.projectgorgon.com/v{Version}/{sourceLocation}/{fileName}.{extension}";
+            WebClientTool.DownloadText(dispatcherSource, RequestUri, null,
+                                       new WebClientTool.DownloadTextResultHandler((string content, Exception downloadException) => { DownloadOneFile1(content, downloadException, fileName, extension, destinationFolder, callback); }));
         }
 
-        private void DownloadOneFile1(string Content, Exception ContentException, string FileName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
+        private void DownloadOneFile1(string content, Exception downloadException, string fileName, string extension, string destinationFolder, DownloadFilesCompletedHandler callback)
         {
             bool Success = false;
 
-            if (ContentException == null)
+            if (downloadException == null)
             {
                 try
                 {
-                    if (Content != null && Content.Length >= 256)
+                    if (content != null && content.Length >= 256)
                     {
-                        string FilePath = Path.Combine(DestinationFolder, FileName + "." + Extension);
+                        string FilePath = Path.Combine(destinationFolder, fileName + "." + extension);
 
                         using (FileStream fs = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
                             using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
                             {
-                                sw.Write(Content);
+                                sw.Write(content);
                                 Success = true;
                             }
                         }
@@ -197,14 +206,14 @@ namespace PgJsonParse
                 }
                 catch (Exception e)
                 {
-                    ContentException = e;
+                    downloadException = e;
                 }
 
                 if (!Success)
                     FileDownloadState = DownloadState.FailedToDownload;
             }
 
-            callback(Success, ContentException);
+            callback(Success, downloadException);
         }
 
         private bool IsFileDownloadCancelled;
@@ -220,10 +229,14 @@ namespace PgJsonParse
                 {
                     _IconDownloadState = value;
                     NotifyThisPropertyChanged();
+                    NotifyPropertyChanged(nameof(IsIconDownloadSuccessful));
+                    NotifyPropertyChanged(nameof(IsIconDownloadFailed));
                     NotifyPropertyChanged(nameof(GlobalDownloadState));
                 }
             }
         }
+        public bool IsIconDownloadSuccessful { get { return IconDownloadState == DownloadState.Downloaded; } }
+        public bool IsIconDownloadFailed { get { return IconDownloadState > DownloadState.Downloading && IconDownloadState < DownloadState.Downloaded; } }
         private DownloadState _IconDownloadState;
 
         public double IconDownloadProgress
@@ -240,37 +253,19 @@ namespace PgJsonParse
         }
         private double _IconDownloadProgress;
 
-        public void SetIconsDownloaded(bool IsDownloaded)
+        public void SetIconsDownloaded(bool isDownloaded)
         {
-            IconDownloadState = IsDownloaded ? DownloadState.Downloaded : DownloadState.NotDownloaded;
+            IconDownloadState = isDownloaded ? DownloadState.Downloaded : DownloadState.NotDownloaded;
         }
 
-        public void DownloadIcons(RootControl control, int LoadedIconCount, List<int> IconList, string DestinationFolder, Action<bool, string, int> callback)
+        public delegate void DownloadIconsResultHandler(bool success, string exceptionMessage, int downloadedCount);
+
+        public void DownloadIcons(IDispatcherSource dispatcherSource, int loadedIconCount, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
         {
             IconDownloadState = DownloadState.Downloading;
             IsIconDownloadCancelled = false;
 
-            DownloadIcons0(control, LoadedIconCount, IconList, DestinationFolder, callback);
-        }
-
-        public void DownloadIcons0(RootControl control, int LoadedIconCount, List<int> IconList, string DestinationFolder, Action<bool, string, int> callback)
-        {
-            DownloadIconsNow(control, LoadedIconCount, IconList, DestinationFolder, new Action<bool, Exception, int>((bool Success, Exception DownloadException, int Count) => { DownloadIcons1(Success, DownloadException, Count, IconList, DestinationFolder, callback); }));
-        }
-
-        public void DownloadIcons1(bool Success, Exception DownloadException, int Count, List<int> IconList, string DestinationFolder, Action<bool, string, int> callback)
-        {
-            if (Success)
-            {
-                IconDownloadState = DownloadState.Downloaded;
-                callback(true, null, Count);
-            }
-
-            else if (DownloadException != null)
-                callback(false, DownloadException.Message, Count);
-
-            else
-                callback(false, null, Count);
+            DownloadIcons0(dispatcherSource, loadedIconCount, iconList, destinationFolder, callback);
         }
 
         public void CancelDownloadIcons()
@@ -278,66 +273,120 @@ namespace PgJsonParse
             IsIconDownloadCancelled = true;
         }
 
-        private void DownloadIconsNow(RootControl control, int LoadedIconCount, List<int> IconList, string DestinationFolder, Action<bool, Exception, int> callback)
+        private void DownloadIcons0(IDispatcherSource dispatcherSource, int loadedIconCount, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
+        {
+            DownloadIcons1(dispatcherSource, loadedIconCount, iconList, destinationFolder, 
+                new DownloadIconsCompletedHandler((bool success, Exception downloadException, int downloadedCount) => { DownloadIcons4(success, downloadException, downloadedCount, iconList, destinationFolder, callback); }));
+        }
+
+        private delegate void DownloadIconsCompletedHandler(bool success, Exception downloadException, int downloadedCount);
+
+        private void DownloadIcons1(IDispatcherSource dispatcherSource, int loadedIconCount, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsCompletedHandler callback)
         {
             Stopwatch Watch = new Stopwatch();
             Watch.Start();
 
-            if (IconList.Count > 0)
-                DownloadIconsNow0(control, LoadedIconCount, IconList, DestinationFolder, 0, callback, Watch);
-            else
-                callback(true, null, LoadedIconCount);
+            DownloadIcons2(dispatcherSource, loadedIconCount, iconList, destinationFolder, 0, callback, Watch);
         }
 
-        private void DownloadIconsNow0(RootControl control, int LoadedIconCount, List<int> IconList, string DestinationFolder, int ProgressIndex, Action<bool, Exception, int> callback, Stopwatch Watch)
+        private void DownloadIcons2(IDispatcherSource dispatcherSource, int loadedIconCount, IReadOnlyList<int> iconList, string destinationFolder, int progressIndex, DownloadIconsCompletedHandler callback, Stopwatch watch)
         {
-            int IconId = IconList[ProgressIndex];
-            DownloadOneIcon0(control, "icons", "icon_" + IconId.ToString(), "png", DestinationFolder, new Action<bool, Exception>((bool Success, Exception DownloadException) => { DownloadIconsNow1(Success, DownloadException, control, IconList, DestinationFolder, callback, LoadedIconCount, ProgressIndex, Watch, IconId); }));
-        }
-
-        private void DownloadIconsNow1(bool Success, Exception DownloadException, RootControl control, List<int> IconList, string DestinationFolder, Action<bool, Exception, int> callback, int LoadedIconCount, int ProgressIndex, Stopwatch Watch, int IconId)
-        {
-            if (Success)
+            if (progressIndex < iconList.Count)
             {
-                IconDownloadProgress = ((LoadedIconCount + ProgressIndex) * 100.0) / (LoadedIconCount + IconList.Count);
+                int IconId = iconList[progressIndex];
+                DownloadOneIcon0(dispatcherSource, "icons", "icon_" + IconId.ToString(), "png", destinationFolder,
+                    new DownloadOneIconResultHandler((bool success, Exception downloadException) => { DownloadIcons3(success, downloadException, dispatcherSource, iconList, destinationFolder, callback, loadedIconCount, progressIndex, watch, IconId); }));
+            }
+            else
+            {
+                if (iconList.Count > 0)
+                    UserUI.MinimalSleep(watch);
 
-                ProgressIndex++;
+                callback(success: true, downloadException: null, loadedIconCount + progressIndex);
+            }
+        }
+
+        private void DownloadIcons3(bool success, Exception downloadException, IDispatcherSource dispatcherSource, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsCompletedHandler callback, int loadedIconCount, int progressIndex, Stopwatch watch, int iconId)
+        {
+            if (success)
+            {
+                IconDownloadProgress = ((loadedIconCount + progressIndex) * 100.0) / (loadedIconCount + iconList.Count);
 
                 NotifyProgressChanged();
 
-                if (ProgressIndex < IconList.Count)
-                    DownloadIconsNow0(control, LoadedIconCount, IconList, DestinationFolder, ProgressIndex, callback, Watch);
-                else
-                {
-                    UserUI.MinimalSleep(Watch);
-                    callback(true, null, LoadedIconCount + ProgressIndex);
-                }
+                DownloadIcons2(dispatcherSource, loadedIconCount, iconList, destinationFolder, progressIndex + 1, callback, watch);
             }
             else
-                callback(false, DownloadException, LoadedIconCount + ProgressIndex);
+                callback(false, downloadException, loadedIconCount + progressIndex);
         }
 
-        private void DownloadOneIcon0(RootControl control, string SourceLocation, string IconName, string Extension, string DestinationFolder, Action<bool, Exception> callback)
+        private void DownloadIcons4(bool success, Exception downloadException, int downloadedCount, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
+        {
+            if (success)
+            {
+                IconDownloadState = DownloadState.Downloaded;
+                callback(success, exceptionMessage: null, downloadedCount);
+            }
+
+            else
+            {
+                Debug.Assert(IsIconDownloadFailed);
+
+                if (downloadException != null)
+                    callback(success, downloadException.Message, downloadedCount);
+
+                else
+                    callback(success, exceptionMessage: null, downloadedCount);
+            }
+        }
+
+        private delegate void DownloadOneIconResultHandler(bool success, Exception downloadException);
+
+        private void DownloadOneIcon0(IDispatcherSource dispatcherSource, string SourceLocation, string IconName, string Extension, string destinationFolder, DownloadOneIconResultHandler callback)
         {
             if (IsIconDownloadCancelled)
             {
                 IconDownloadState = DownloadState.DownloadCanceled;
-                callback(false, null);
+                callback(success: false, downloadException: null);
             }
             else
             {
-                string RequestUri = "http://cdn.projectgorgon.com/v" + Version + "/" + SourceLocation + "/" + IconName + "." + Extension;
-                string IconPath = Path.Combine(DestinationFolder, IconName + "." + Extension);
-                WebClientTool.DownloadDataToFile(control, RequestUri, IconPath, 256, new Action<bool, Exception>((bool Success, Exception DownloadException) => { DownloadOneIcon1(Success, DownloadException, callback); }));
+                string RequestUri = $"http://cdn.projectgorgon.com/v{Version}/{SourceLocation}/{IconName}.{Extension}";
+                string IconPath = Path.Combine(destinationFolder, IconName + "." + Extension);
+                WebClientTool.DownloadDataToFile(dispatcherSource, RequestUri, 
+                    new WebClientTool.DownloadDataResultHandler((byte[] data, Exception downloadException) => { DownloadOneIcon1(data, downloadException, IconPath, 256, callback); }));
             }
         }
 
-        private void DownloadOneIcon1(bool Success, Exception DownloadException, Action<bool, Exception> callback)
+        private void DownloadOneIcon1(byte[] data, Exception downloadException, string iconPath, int minLength, DownloadOneIconResultHandler callback)
         {
-            if (!Success)
+            if (data == null || data.Length < minLength || downloadException != null)
+            {
                 IconDownloadState = DownloadState.FailedToDownload;
+                callback(success: false, downloadException);
+            }
 
-            callback(Success, DownloadException);
+            bool success = false;
+
+            try
+            {
+                string DestinationFolder = Path.GetDirectoryName(iconPath);
+                if (!Directory.Exists(DestinationFolder))
+                    Directory.CreateDirectory(DestinationFolder);
+
+                using (FileStream fs = new FileStream(iconPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    fs.Write(data, 0, data.Length);
+                    success = true;
+                }
+            }
+            catch (Exception e)
+            {
+                IconDownloadState = DownloadState.FailedToDownload;
+                downloadException = e;
+            }
+
+            callback(success, downloadException);
         }
 
         private bool IsIconDownloadCancelled;

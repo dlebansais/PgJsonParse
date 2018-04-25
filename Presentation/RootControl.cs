@@ -9,7 +9,7 @@ using System.Windows.Threading;
 
 namespace Presentation
 {
-    public class RootControl : Window
+    public class RootControl : Window, IDispatcherSource
     {
         public RootControl(RootControlMode mode)
         {
@@ -38,6 +38,7 @@ namespace Presentation
 
         public RootControlMode Mode { get; set; }
         public bool IsControlVisible { get { return IsVisible; } }
+        public object ActionDispatcher { get { return Dispatcher; } }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {

@@ -1,5 +1,4 @@
-﻿using Presentation;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -7,12 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
-namespace Tools
+namespace Presentation
 {
     public class WebClientTool
     {
         #region Download Text
-        public static void DownloadText(RootControl control, string address, Stopwatch watch, Action<string, Exception> callback)
+        public delegate void DownloadTextResultHandler(string content, Exception downloadException);
+
+        public static void DownloadText(IDispatcherSource dispatcherSource, string address, Stopwatch watch, DownloadTextResultHandler callback)
         {
             Task<Tuple<string,Exception>> DownloadTask = new Task<Tuple<string, Exception>>(() => { return ExecuteDownloadText(address, watch); });
             DownloadTask.Start();
@@ -71,12 +72,12 @@ namespace Tools
             }
         }
 
-        private static void PollDownload(Task<Tuple<string, Exception>> DownloadTask, Action<string, Exception> callback)
+        private static void PollDownload(Task<Tuple<string, Exception>> DownloadTask, DownloadTextResultHandler callback)
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action<Task<Tuple<string, Exception>>, Action<string, Exception>>(OnCheckDownload), DownloadTask, callback);
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action<Task<Tuple<string, Exception>>, DownloadTextResultHandler>(OnCheckDownload), DownloadTask, callback);
         }
 
-        private static void OnCheckDownload(Task<Tuple<string, Exception>> DownloadTask, Action<string, Exception> callback)
+        private static void OnCheckDownload(Task<Tuple<string, Exception>> DownloadTask, DownloadTextResultHandler callback)
         {
             if (DownloadTask.IsCompleted)
             {
@@ -89,63 +90,49 @@ namespace Tools
         #endregion
 
         #region Download Binary
-        public static void DownloadDataToFile(RootControl control, string address, string FileName, int minLength, Action<bool, Exception> callback)
+        public delegate void DownloadDataResultHandler(byte[] data, Exception downloadException);
+
+        public static void DownloadDataToFile(IDispatcherSource dispatcherSource, string address, DownloadDataResultHandler callback)
         {
-            Task<Tuple<bool, Exception>> DownloadTask = new Task<Tuple<bool, Exception>>(() => { return ExecuteDownloadDataToFile(address, FileName, minLength); });
+            Task<Tuple<byte[], Exception>> DownloadTask = new Task<Tuple<byte[], Exception>>(() => { return ExecuteDownloadData(address); });
             DownloadTask.Start();
 
             PollDownload(DownloadTask, callback);
         }
 
-        private static Tuple<bool, Exception> ExecuteDownloadDataToFile(string address, string FileName, int minLength)
+        private static Tuple<byte[], Exception> ExecuteDownloadData(string address)
         {
             try
             {
                 HttpWebRequest Request = WebRequest.Create(address) as HttpWebRequest;
                 using (WebResponse Response = Request.GetResponse())
                 {
-                    if (Response.ContentLength < minLength)
-                        return new Tuple<bool, Exception>(false, null);
-
                     using (Stream ResponseStream = Response.GetResponseStream())
                     {
                         using (BinaryReader Reader = new BinaryReader(ResponseStream))
                         {
-                            string DestinationFolder = Path.GetDirectoryName(FileName);
-                            if (!Directory.Exists(DestinationFolder))
-                                Directory.CreateDirectory(DestinationFolder);
-
-                            using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.None))
-                            {
-                                byte[] Content = Reader.ReadBytes((int)Response.ContentLength);
-
-                                if (Content.Length < Response.ContentLength)
-                                    return new Tuple<bool, Exception>(false, null);
-
-                                fs.Write(Content, 0, Content.Length);
-                            }
+                            byte[] Content = Reader.ReadBytes((int)Response.ContentLength);
+                            return new Tuple<byte[], Exception>(Content, null);
                         }
                     }
                 }
-
-                return new Tuple<bool, Exception>(true, null);
             }
             catch (Exception e)
             {
-                return new Tuple<bool, Exception>(false, e);
+                return new Tuple<byte[], Exception>(null, e);
             }
         }
 
-        private static void PollDownload(Task<Tuple<bool, Exception>> DownloadTask, Action<bool, Exception> callback)
+        private static void PollDownload(Task<Tuple<byte[], Exception>> DownloadTask, DownloadDataResultHandler callback)
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action<Task<Tuple<bool, Exception>>, Action<bool, Exception>>(OnCheckDownload), DownloadTask, callback);
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action<Task<Tuple<byte[], Exception>>, DownloadDataResultHandler>(OnCheckDownload), DownloadTask, callback);
         }
 
-        private static void OnCheckDownload(Task<Tuple<bool, Exception>> DownloadTask, Action<bool, Exception> callback)
+        private static void OnCheckDownload(Task<Tuple<byte[], Exception>> DownloadTask, DownloadDataResultHandler callback)
         {
             if (DownloadTask.IsCompleted)
             {
-                Tuple<bool, Exception> Result = DownloadTask.Result;
+                Tuple<byte[], Exception> Result = DownloadTask.Result;
                 callback(Result.Item1, Result.Item2);
             }
             else

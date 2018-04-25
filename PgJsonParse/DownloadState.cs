@@ -3,9 +3,9 @@
     public enum DownloadState
     {
         NotDownloaded,
-        Downloading,
+        Downloading,      // Ensure all download errors are below this line (cf: IsDownloadFailed property)
         FailedToDownload,
         DownloadCanceled,
-        Downloaded,
+        Downloaded,       // Ensure all download errors are above this line (cf: IsDownloadFailed property)
     }
 }

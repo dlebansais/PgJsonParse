@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace Tools
+namespace Presentation
 {
     public static class UserUI
     {

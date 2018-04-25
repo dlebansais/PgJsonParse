@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -111,9 +112,7 @@
     <Compile Include="Tools\ImageConversion.cs" />
     <Compile Include="Tools\PopupHandler.cs" />
     <Compile Include="Tools\StaticContainer.cs" />
-    <Compile Include="Tools\UserUI.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />
-    <Compile Include="Tools\WebClientTool.cs" />
     <Compile Include="VersionCheckState.cs" />
     <Page Include="Controls\BusyIndicator.xaml">
       <SubType>Designer</SubType>
