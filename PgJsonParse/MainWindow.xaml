@@ -5158,7 +5158,7 @@
                     </ScrollViewer>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Cruncher (under construction)" IsEnabled="False">
+            <TabItem Header="Cruncher (under construction)" Visibility="Collapsed">
                 <TabItem.Resources>
                     <DataTemplate x:Key="CrunchSelectionTemplate">
                         <DockPanel>

@@ -909,12 +909,12 @@ namespace PgJsonParse
         }
         private MainWindow _Dlg;
 
-        private void OnStart(GameVersionInfo VersionInfo)
+        private void OnStart(GameVersionInfo versionInfo)
         {
-            OnStart0(VersionInfo);
+            OnStart0(versionInfo);
         }
 
-        private void OnStart0(GameVersionInfo VersionInfo)
+        private void OnStart0(GameVersionInfo versionInfo)
         {
             IsGlobalInteractionEnabled = false;
 
@@ -926,14 +926,14 @@ namespace PgJsonParse
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
             SetTaskbarState(TaskbarStates.Normal);
 
-            string VersionFolder = Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString());
+            string VersionFolder = Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
             string IconFolder = ShareIconFiles ? IconCacheFolder : VersionFolder;
 
-            StartTask(() => { return ExecuteParse(VersionInfo, ErrorInfo, VersionFolder, IconFolder); },
-                      (bool Success) => OnStart1(Success, VersionInfo, ErrorInfo));
+            StartTask(() => { return ExecuteParse(versionInfo, ErrorInfo, VersionFolder, IconFolder); },
+                      (bool Success) => OnStart1(Success, versionInfo, ErrorInfo));
         }
 
-        private void OnStart1(bool Success, GameVersionInfo VersionInfo, ParseErrorInfo ErrorInfo)
+        private void OnStart1(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo)
         {
             SetTaskbarState(TaskbarStates.NoProgress);
 
@@ -941,7 +941,7 @@ namespace PgJsonParse
             IsParsingCancelable = false;
             ParseCancellation = null;
 
-            if (!Success)
+            if (!success)
             {
                 Dlg.ControlClose();
                 Dlg = null;
@@ -967,7 +967,7 @@ namespace PgJsonParse
                         Item.SetIconsDownloaded(false);
                 }
                 else
-                    VersionInfo.SetIconsDownloaded(false);
+                    versionInfo.SetIconsDownloaded(false);
 
                 LastIconId = "icon_" + MissingIconList[MissingIconList.Count - 1];
 
@@ -977,13 +977,13 @@ namespace PgJsonParse
                     case MissingIconsAction.Ask:
                         if (Confirmation.Show("There are " + MissingIconList.Count + " icon(s) not downloaded yet, would you like to get them now?", "Starting", true, ConfirmationType.Info) == MessageBoxResult.OK)
                         {
-                            FollowStartWithDownloadIcons(VersionInfo);
+                            FollowStartWithDownloadIcons(versionInfo);
                             return;
                         }
                         break;
 
                     case MissingIconsAction.Download:
-                        FollowStartWithDownloadIcons(VersionInfo);
+                        FollowStartWithDownloadIcons(versionInfo);
                         return;
 
                     case MissingIconsAction.Ignore:
@@ -997,7 +997,7 @@ namespace PgJsonParse
                 {
                     List<GameVersionInfo> ToRemove = new List<GameVersionInfo>();
                     foreach (GameVersionInfo Item in VersionList)
-                        if (Item.Version < VersionInfo.Version)
+                        if (Item.Version < versionInfo.Version)
                             ToRemove.Add(Item);
 
                     foreach (GameVersionInfo Item in ToRemove)
@@ -1009,7 +1009,7 @@ namespace PgJsonParse
                         VersionList.Remove(Item);
                     }
 
-                    CachedVersionIndex = VersionList.IndexOf(VersionInfo);
+                    CachedVersionIndex = VersionList.IndexOf(versionInfo);
                 }
                 catch (Exception e)
                 {
@@ -1018,7 +1018,7 @@ namespace PgJsonParse
                 }
             }
 
-            string Warnings = ErrorInfo.GetWarnings();
+            string Warnings = errorInfo.GetWarnings();
             if (Warnings.Length > 0)
             {
                 Debug.WriteLine(Warnings);
@@ -1027,10 +1027,10 @@ namespace PgJsonParse
             else
                 Dlg.WarningText = "Files loaded and parsed, no warnings.";
 
-            Dlg.LoadedVersion = VersionInfo;
+            Dlg.LoadedVersion = versionInfo;
             Dlg.ApplicationFolder = ApplicationFolder;
             Dlg.IconCacheFolder = IconCacheFolder;
-            Dlg.CurrentVersionCacheFolder = InitFolder(Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString()));
+            Dlg.CurrentVersionCacheFolder = InitFolder(Path.Combine(VersionCacheFolder, versionInfo.Version.ToString()));
             Dlg.IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
             Dlg.FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
 
@@ -1039,16 +1039,16 @@ namespace PgJsonParse
             IsGlobalInteractionEnabled = true;
         }
 
-        public bool ExecuteParse(GameVersionInfo VersionInfo, ParseErrorInfo ErrorInfo, string VersionFolder, string IconFolder)
+        public bool ExecuteParse(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
         {
             IconTable.Clear();
 
             int ProgressIndex = 0;
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
-                if (Entry.Value.MinVersion <= VersionInfo.Version)
+                if (Entry.Value.MinVersion <= versionInfo.Version)
                 {
-                    if (!LoadNextFile(Entry.Value, VersionFolder, ErrorInfo))
+                    if (!LoadNextFile(Entry.Value, versionFolder, errorInfo))
                         return false;
 
                     if (ParseCancellation.IsCanceled)
@@ -1061,21 +1061,21 @@ namespace PgJsonParse
                 SetTaskbarProgressValue(ParseProgress, 100.0);
             }
 
-            bool Success = ConnectTables(VersionFolder, IconFolder, ErrorInfo);
+            bool Success = ConnectTables(versionFolder, iconFolder, errorInfo);
 
             return Success;
         }
 
-        private bool LoadNextFile(IObjectDefinition Definition, string VersionFolder, ParseErrorInfo ErrorInfo)
+        private bool LoadNextFile(IObjectDefinition definition, string versionFolder, ParseErrorInfo errorInfo)
         {
             try
             {
-                string FilePath = Path.Combine(VersionFolder, Definition.JsonFileName + ".json");
+                string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
 
-                IParser FileParser = Definition.FileParser;
-                IList ObjectList = Definition.ObjectList;
-                Dictionary<string, IGenericJsonObject> ObjectTable = Definition.ObjectTable;
-                FileParser.LoadRaw(FilePath, ObjectList, ErrorInfo);
+                IParser FileParser = definition.FileParser;
+                IList ObjectList = definition.ObjectList;
+                Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
+                FileParser.LoadRaw(FilePath, ObjectList, errorInfo);
 
                 ObjectTable.Clear();
                 foreach (IGenericJsonObject Item in ObjectList)
@@ -1091,22 +1091,22 @@ namespace PgJsonParse
             return true;
         }
 
-        private bool ConnectTables(string VersionFolder, string IconFolder, ParseErrorInfo ErrorInfo)
+        private bool ConnectTables(string versionFolder, string iconFolder, ParseErrorInfo errorInfo)
         {
             Dictionary<Type, IList> AllLists = new Dictionary<Type, IList>();
             Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables = new Dictionary<Type, Dictionary<string, IGenericJsonObject>>();
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
-                IObjectDefinition Definition = Entry.Value;
-                AllLists.Add(Entry.Key, Definition.ObjectList);
-                AllTables.Add(Entry.Key, Definition.ObjectTable);
+                IObjectDefinition definition = Entry.Value;
+                AllLists.Add(Entry.Key, definition.ObjectList);
+                AllTables.Add(Entry.Key, definition.ObjectTable);
             }
 
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
-                IObjectDefinition Definition = Entry.Value;
-                foreach (IGenericJsonObject Item in Definition.ObjectList)
-                    Item.Connect(ErrorInfo, null, AllTables);
+                IObjectDefinition definition = Entry.Value;
+                foreach (IGenericJsonObject Item in definition.ObjectList)
+                    Item.Connect(errorInfo, null, AllTables);
 
                 if (ParseCancellation.IsCanceled)
                     return false;
@@ -1124,29 +1124,29 @@ namespace PgJsonParse
 
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
-                IObjectDefinition Definition = Entry.Value;
-                foreach (IGenericJsonObject Item in Definition.ObjectList)
-                    Item.SetIndirectProperties(AllTables, ErrorInfo);
+                IObjectDefinition definition = Entry.Value;
+                foreach (IGenericJsonObject Item in definition.ObjectList)
+                    Item.SetIndirectProperties(AllTables, errorInfo);
             }
 
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
-                IObjectDefinition Definition = Entry.Value;
-                foreach (IGenericJsonObject Item in Definition.ObjectList)
+                IObjectDefinition definition = Entry.Value;
+                foreach (IGenericJsonObject Item in definition.ObjectList)
                     Item.SortLinkBack();
             }
 
             if (ParseCancellation.IsCanceled)
                 return false;
 
-            return CreateIndexes(VersionFolder, IconFolder, ErrorInfo);
+            return CreateIndexes(versionFolder, iconFolder, errorInfo);
         }
 
-        private bool CreateIndexes(string VersionFolder, string IconFolder, ParseErrorInfo ErrorInfo)
+        private bool CreateIndexes(string versionFolder, string iconFolder, ParseErrorInfo errorInfo)
         {
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
-                if (!CreateNextIndex(Entry.Value, VersionFolder, ErrorInfo))
+                if (!CreateNextIndex(Entry.Value, versionFolder, errorInfo))
                     return false;
 
                 if (ParseCancellation.IsCanceled)
@@ -1154,18 +1154,18 @@ namespace PgJsonParse
             }
 
             IsParsingCancelable = false;
-            CreateMushroomIndex(ErrorInfo);
+            CreateMushroomIndex(errorInfo);
 
-            return EnumerateMissingIcons(IconFolder, ErrorInfo);
+            return EnumerateMissingIcons(iconFolder, errorInfo);
         }
 
-        private bool CreateNextIndex(IObjectDefinition Definition, string VersionFolder, ParseErrorInfo ErrorInfo)
+        private bool CreateNextIndex(IObjectDefinition definition, string versionFolder, ParseErrorInfo errorInfo)
         {
             try
             {
-                string IndexFilePath = Path.Combine(VersionFolder, Definition.JsonFileName + "-index.txt");
-                IParser FileParser = Definition.FileParser;
-                Dictionary<string, IGenericJsonObject> ObjectTable = Definition.ObjectTable;
+                string IndexFilePath = Path.Combine(versionFolder, definition.JsonFileName + "-index.txt");
+                IParser FileParser = definition.FileParser;
+                Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
                 FileParser.CreateIndex(IndexFilePath, ObjectTable);
             }
             catch (Exception e)
@@ -1178,7 +1178,7 @@ namespace PgJsonParse
             return true;
         }
 
-        private void CreateMushroomIndex(ParseErrorInfo ErrorInfo)
+        private void CreateMushroomIndex(ParseErrorInfo errorInfo)
         {
             string MushroomNameFile = Path.Combine(ApplicationFolder, "Mushrooms.txt");
 
@@ -1214,11 +1214,11 @@ namespace PgJsonParse
             }
         }
 
-        private bool EnumerateMissingIcons(string IconFolder, ParseErrorInfo ErrorInfo)
+        private bool EnumerateMissingIcons(string iconFolder, ParseErrorInfo errorInfo)
         {
-            foreach (int IconId in ErrorInfo.IconList)
+            foreach (int IconId in errorInfo.IconList)
             {
-                string FilePath = Path.Combine(IconFolder, "icon_" + IconId + ".png");
+                string FilePath = Path.Combine(iconFolder, "icon_" + IconId + ".png");
                 IconTable.Add(IconId, File.Exists(FilePath));
             }
 
@@ -1230,12 +1230,12 @@ namespace PgJsonParse
             ParseCancellation.Cancel();
         }
 
-        private void FollowStartWithDownloadIcons(GameVersionInfo VersionInfo)
+        private void FollowStartWithDownloadIcons(GameVersionInfo versionInfo)
         {
             Dlg.ControlClose();
             Dlg = null;
 
-            OnDownloadIcons(VersionInfo);
+            OnDownloadIcons(versionInfo);
         }
 
         private Cancellation ParseCancellation;
@@ -1255,44 +1255,44 @@ namespace PgJsonParse
             ImageConversion.UpdateWindowIconUsingFile(this, Path.Combine(ApplicationFolder, "mainicon.png"));
         }
 
-        private bool IsLastIconLoadedForVersion(int Version)
+        private bool IsLastIconLoadedForVersion(int version)
         {
             if (LastIconId == null)
                 return false;
 
-            string IconFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, Version.ToString());
+            string IconFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, version.ToString());
             string LastIconFile = Path.Combine(IconFolder, LastIconId + ".png");
             bool FileExists = File.Exists(LastIconFile);
 
             return FileExists;
         }
 
-        private void OnDownloadIcons(GameVersionInfo VersionInfo)
+        private void OnDownloadIcons(GameVersionInfo versionInfo)
         {
             IsGlobalInteractionEnabled = false;
-            VersionInfo.ProgressChanged += OnIconDownloadProgressChanged;
+            versionInfo.ProgressChanged += OnIconDownloadProgressChanged;
 
-            OnDownloadIcons0(VersionInfo);
+            OnDownloadIcons0(versionInfo);
         }
 
-        private void OnDownloadIcons0(GameVersionInfo VersionInfo)
+        private void OnDownloadIcons0(GameVersionInfo versionInfo)
         {
             IsIconStateUpdated = true;
             SetTaskbarState(TaskbarStates.Normal);
 
-            ExecuteDownloadIcons0(VersionInfo, 
-                                  (bool Success) => OnDownloadIcons1(Success, VersionInfo));
+            ExecuteDownloadIcons0(versionInfo, 
+                                  (bool Success) => OnDownloadIcons1(Success, versionInfo));
         }
 
-        private void OnDownloadIcons1(bool Success, GameVersionInfo VersionInfo)
+        private void OnDownloadIcons1(bool success, GameVersionInfo versionInfo)
         {
-            VersionInfo.ProgressChanged -= OnIconDownloadProgressChanged;
+            versionInfo.ProgressChanged -= OnIconDownloadProgressChanged;
 
-            if (Success)
+            if (success)
             {
                 SetTaskbarState(TaskbarStates.NoProgress);
 
-                string IconFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString());
+                string IconFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
                 string IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
                 string SourceIconFile = Path.Combine(IconFolder, "icon_5624.png");
                 string FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
@@ -1305,7 +1305,7 @@ namespace PgJsonParse
 
                 if (StartAutomatically)
                 {
-                    OnStart(VersionInfo);
+                    OnStart(versionInfo);
                     UpdateWindowIcon();
                     return;
                 }
@@ -1321,10 +1321,10 @@ namespace PgJsonParse
             IsGlobalInteractionEnabled = true;
         }
 
-        private void ExecuteDownloadIcons0(GameVersionInfo VersionInfo, Action<bool> callback)
+        private void ExecuteDownloadIcons0(GameVersionInfo versionInfo, Action<bool> callback)
         {
-            string DestinationFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, VersionInfo.Version.ToString());
-            VersionInfo.DownloadIcons(this, LoadedIconCount, MissingIconList, DestinationFolder, 
+            string DestinationFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
+            versionInfo.DownloadIcons(this, LoadedIconCount, MissingIconList, DestinationFolder, 
                                       (bool Success, string ExceptionMessage, int NewLoadedIconCount) => ExecuteDownloadIcons1(Success, ExceptionMessage, NewLoadedIconCount, callback));
         }
 
@@ -1336,9 +1336,9 @@ namespace PgJsonParse
             callback(success);
         }
 
-        private void OnCancelDownloadIcons(GameVersionInfo VersionInfo)
+        private void OnCancelDownloadIcons(GameVersionInfo versionInfo)
         {
-            VersionInfo.CancelDownloadIcons();
+            versionInfo.CancelDownloadIcons();
         }
 
         private void OnIconSharingChanged()
@@ -1503,11 +1503,11 @@ namespace PgJsonParse
             OnIconSharingChanged();
         }
 
-        protected override void OnControlClosing(ref bool Cancel)
+        protected override void OnControlClosing(ref bool cancel)
         {
             SetTaskbarState(TaskbarStates.NoProgress);
 
-            base.OnControlClosing(ref Cancel);
+            base.OnControlClosing(ref cancel);
         }
 
         protected override void OnControlClosed()

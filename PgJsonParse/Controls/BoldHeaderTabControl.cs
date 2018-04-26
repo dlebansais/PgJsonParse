@@ -13,12 +13,12 @@ namespace CustomControls
                 SetHeaderFontWeight(Item, Item == SelectedItem ? FontWeights.Bold : FontWeights.Normal);
         }
 
-        private void SetHeaderFontWeight(TabItem Item, FontWeight FontWeight)
+        private void SetHeaderFontWeight(TabItem item, FontWeight fontWeight)
         {
             Control AsControl;
-            if ((AsControl = Item.Header as Control) != null)
-                if (AsControl.FontWeight != FontWeight)
-                    AsControl.FontWeight = FontWeight;
+            if ((AsControl = item.Header as Control) != null)
+                if (AsControl.FontWeight != fontWeight)
+                    AsControl.FontWeight = fontWeight;
         }
     }
 }

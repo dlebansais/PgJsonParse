@@ -18,7 +18,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 using Tools;
 
@@ -491,22 +490,22 @@ namespace PgJsonParse
                 PlanerItem.RefreshGearList(ItemList, AttributeList, SelectedProfile, IgnoreUnobtainable, IgnoreNoAttribute);
         }
 
-        private void AddPower(SlotPlaner SenderSlot)
+        private void AddPower(SlotPlaner senderSlot)
         {
-            SenderSlot.AddPower1();
-            SenderSlot.AddPower2();
-            SenderSlot.AddPower3();
-            SenderSlot.AddPower4();
-            SenderSlot.AddPower5();
+            senderSlot.AddPower1();
+            senderSlot.AddPower2();
+            senderSlot.AddPower3();
+            senderSlot.AddPower4();
+            senderSlot.AddPower5();
         }
 
-        private void RemovePower(SlotPlaner SenderSlot)
+        private void RemovePower(SlotPlaner senderSlot)
         {
-            SenderSlot.RemovePower1();
-            SenderSlot.RemovePower2();
-            SenderSlot.RemovePower3();
-            SenderSlot.RemovePower4();
-            SenderSlot.RemovePower5();
+            senderSlot.RemovePower1();
+            senderSlot.RemovePower2();
+            senderSlot.RemovePower3();
+            senderSlot.RemovePower4();
+            senderSlot.RemovePower5();
         }
 
         private void LoadBuild()
@@ -527,9 +526,9 @@ namespace PgJsonParse
             }
         }
 
-        private void LoadBuild(StreamReader Reader)
+        private void LoadBuild(StreamReader reader)
         {
-            string Content = Reader.ReadToEnd();
+            string Content = reader.ReadToEnd();
             string[] Lines = Content.Split(new string[] { PgJsonObjects.Tools.NewLine }, StringSplitOptions.None);
 
             foreach (string s in Lines)
@@ -1055,7 +1054,7 @@ namespace PgJsonParse
             }
         }
 
-        private void PerformSearch(List<string> TermList, SearchModes SearchMode)
+        private void PerformSearch(List<string> termList, SearchModes searchMode)
         {
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
@@ -1072,15 +1071,15 @@ namespace PgJsonParse
                     (EntryType == typeof(Skill) && IncludeSkill) ||
                     (EntryType == typeof(Power) && IncludePower) ||
                     (EntryType == typeof(LoreBook) && IncludeLoreBook))
-                    PerformSearch(TermList, Entry.Value, SearchMode);
+                    PerformSearch(termList, Entry.Value, searchMode);
             }
         }
 
-        private void PerformSearch(List<string> TermList, IObjectDefinition Definition, SearchModes SearchMode)
+        private void PerformSearch(List<string> termList, IObjectDefinition definition, SearchModes searchMode)
         {
             try
             {
-                string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, Definition.JsonFileName + "-index.txt");
+                string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, definition.JsonFileName + "-index.txt");
                 if (!File.Exists(IndexFilePath))
                     return;
 
@@ -1090,8 +1089,8 @@ namespace PgJsonParse
                     {
                         string TextContent = sr.ReadToEnd();
 
-                        Dictionary<string, IGenericJsonObject> ObjectTable = Definition.ObjectTable;
-                        PerformSearch(TermList, ObjectTable, TextContent, SearchMode);
+                        Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
+                        PerformSearch(termList, ObjectTable, TextContent, searchMode);
                     }
                 }
             }
@@ -1101,17 +1100,17 @@ namespace PgJsonParse
             }
         }
 
-        private void PerformSearch(List<string> TermList, IDictionary ObjectTable, string TextContent, SearchModes SearchMode)
+        private void PerformSearch(List<string> termList, IDictionary objectTable, string textContent, SearchModes searchMode)
         {
             List<GenericJsonObject> Result = new List<GenericJsonObject>();
 
-            switch (SearchMode)
+            switch (searchMode)
             {
                 case SearchModes.And:
-                    for (int i = 0; i < TermList.Count; i++)
+                    for (int i = 0; i < termList.Count; i++)
                     {
                         List<GenericJsonObject> SingleTermResult = new List<GenericJsonObject>();
-                        PerformSearch(TermList[i], ObjectTable, TextContent, SingleTermResult);
+                        PerformSearch(termList[i], objectTable, textContent, SingleTermResult);
 
                         if (i == 0)
                         {
@@ -1132,10 +1131,10 @@ namespace PgJsonParse
                     break;
 
                 case SearchModes.Or:
-                    foreach (string Term in TermList)
+                    foreach (string Term in termList)
                     {
                         List<GenericJsonObject> SingleTermResult = new List<GenericJsonObject>();
-                        PerformSearch(Term, ObjectTable, TextContent, SingleTermResult);
+                        PerformSearch(Term, objectTable, textContent, SingleTermResult);
 
                         foreach (GenericJsonObject o in SingleTermResult)
                             if (!Result.Contains(o))
@@ -1144,7 +1143,7 @@ namespace PgJsonParse
                     break;
 
                 case SearchModes.Neither:
-                    PerformSearch(TermList[0], ObjectTable, TextContent, Result);
+                    PerformSearch(termList[0], objectTable, textContent, Result);
                     break;
             }
 
@@ -1154,14 +1153,14 @@ namespace PgJsonParse
                 SearchResult.Add(o);
         }
 
-        private void PerformSearch(string Term, IDictionary ObjectTable, string TextContent, List<GenericJsonObject> SingleTermResult)
+        private void PerformSearch(string term, IDictionary objectTable, string textContent, List<GenericJsonObject> SingleTermResult)
         {
             int MatchIndex = -1;
             StringComparison Comparison = MustMatchCase ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase;
 
-            while ((MatchIndex = TextContent.IndexOf(Term, MatchIndex + 1, Comparison)) >= 0)
+            while ((MatchIndex = textContent.IndexOf(term, MatchIndex + 1, Comparison)) >= 0)
             {
-                int KeyIndex = TextContent.IndexOf(JsonGenerator.ObjectSeparator, MatchIndex + Term.Length);
+                int KeyIndex = textContent.IndexOf(JsonGenerator.ObjectSeparator, MatchIndex + term.Length);
                 if (KeyIndex < 0)
                     break;
 
@@ -1171,10 +1170,10 @@ namespace PgJsonParse
 
                 for (;;)
                 {
-                    if (KeyIndex >= TextContent.Length)
+                    if (KeyIndex >= textContent.Length)
                         break;
 
-                    char c = TextContent[KeyIndex++];
+                    char c = textContent[KeyIndex++];
                     if (c == '\r' || c == '\n')
                         break;
 
@@ -1183,22 +1182,22 @@ namespace PgJsonParse
 
                 for (;;)
                 {
-                    if (KeyIndex >= TextContent.Length)
+                    if (KeyIndex >= textContent.Length)
                         break;
 
-                    char c = TextContent[KeyIndex];
+                    char c = textContent[KeyIndex];
                     if (c != '\r' && c != '\n')
                         break;
 
                     KeyIndex++;
                 }
 
-                if (ObjectTable.Contains(Key))
-                    SingleTermResult.Add((GenericJsonObject)ObjectTable[Key]);
+                if (objectTable.Contains(Key))
+                    SingleTermResult.Add((GenericJsonObject)objectTable[Key]);
 
                 MatchIndex = KeyIndex;
 
-                if (MatchIndex + Term.Length >= TextContent.Length)
+                if (MatchIndex + term.Length >= textContent.Length)
                     break;
 
                 MatchIndex--;
@@ -1231,19 +1230,19 @@ namespace PgJsonParse
             }
         }
 
-        private void OnRequestNavigate(object FromObject, string PropertyName)
+        private void OnRequestNavigate(object fromObject, string propertyName)
         {
             object ToObject = null;
 
-            Type ObjectType = FromObject.GetType();
+            Type ObjectType = fromObject.GetType();
 
-            if (PropertyName== "hyperlink")
-                ToObject = FromObject;
+            if (propertyName== "hyperlink")
+                ToObject = fromObject;
             else
             {
-                PropertyInfo pi = ObjectType.GetProperty(PropertyName);
+                PropertyInfo pi = ObjectType.GetProperty(propertyName);
                 if (pi != null)
-                    ToObject = pi.GetValue(FromObject);
+                    ToObject = pi.GetValue(fromObject);
             }
 
             if (ToObject != null)
@@ -1319,12 +1318,12 @@ namespace PgJsonParse
             Dispatcher.BeginInvoke(new Action(() => OnCrunchSkills(CombatSkillList, 0, 0)));
         }
 
-        private void OnCrunchSkills(List<Skill> CombatSkillList, int i, int j)
+        private void OnCrunchSkills(List<Skill> combatSkillList, int i, int j)
         {
-            CrunchProgress = ((double)(i * CombatSkillList.Count + j)) / ((double)(CombatSkillList.Count * CombatSkillList.Count));
+            CrunchProgress = ((double)(i * combatSkillList.Count + j)) / ((double)(combatSkillList.Count * combatSkillList.Count));
 
-            Skill PrimarySkill = CombatSkillList[i];
-            Skill SecondarySkill = CombatSkillList[j];
+            Skill PrimarySkill = combatSkillList[i];
+            Skill SecondarySkill = combatSkillList[j];
             if (IsValidCombination(PrimarySkill, SecondarySkill))
             {
                 CrunchSelection Selection;
@@ -1338,20 +1337,20 @@ namespace PgJsonParse
                 CrunchSelectionList.Insert(i, Selection);
             }
 
-            if (j + 1 < CombatSkillList.Count)
-                Dispatcher.BeginInvoke(new Action(() => OnCrunchSkills(CombatSkillList, i, j + 1)));
-            else if (i + 1 < CombatSkillList.Count)
-                Dispatcher.BeginInvoke(new Action(() => OnCrunchSkills(CombatSkillList, i + 1, 0)));
+            if (j + 1 < combatSkillList.Count)
+                Dispatcher.BeginInvoke(new Action(() => OnCrunchSkills(combatSkillList, i, j + 1)));
+            else if (i + 1 < combatSkillList.Count)
+                Dispatcher.BeginInvoke(new Action(() => OnCrunchSkills(combatSkillList, i + 1, 0)));
             else
                 IsCrunching = false;
         }
 
-        private bool IsCombatSkill(Skill SkillItem)
+        private bool IsCombatSkill(Skill skillItem)
         {
-            if (!SkillItem.Combat)
+            if (!skillItem.Combat)
                 return false;
 
-            if (SkillItem.XpTable.InternalName != "TypicalCombatSkill" && SkillItem.XpTable.InternalName != "TypicalCombatSkillExt")
+            if (skillItem.XpTable.InternalName != "TypicalCombatSkill" && skillItem.XpTable.InternalName != "TypicalCombatSkillExt")
                 return false;
 
             IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
@@ -1359,31 +1358,31 @@ namespace PgJsonParse
 
             int AbilityCount = 0;
             foreach (Ability Item in AbilityList)
-                if (SkillItem.CombatSkill != PowerSkill.Internal_None && Item.Skill == SkillItem.CombatSkill)
+                if (skillItem.CombatSkill != PowerSkill.Internal_None && Item.Skill == skillItem.CombatSkill)
                     AbilityCount++;
 
             if (AbilityCount < 6)
                 return false;
 
-            //Debug.WriteLine(SkillItem.ToString() + ": " + SkillItem.XpTable + ", " + AbilityCount);
+            //Debug.WriteLine(skillItem.ToString() + ": " + skillItem.XpTable + ", " + AbilityCount);
 
             return true;
         }
 
-        private bool IsValidCombination(Skill PrimarySkill, Skill SecondarySkill)
+        private bool IsValidCombination(Skill primarySkill, Skill secondarySkill)
         {
-            if (PrimarySkill.CompatibleCombatSkillList.Contains(SecondarySkill.CombatSkill) && SecondarySkill.CompatibleCombatSkillList.Contains(PrimarySkill.CombatSkill))
+            if (primarySkill.CompatibleCombatSkillList.Contains(secondarySkill.CombatSkill) && secondarySkill.CompatibleCombatSkillList.Contains(primarySkill.CombatSkill))
                 return true;
 
-            //Debug.WriteLine("Incompatible skills: " + PrimarySkill.Key + " and " + SecondarySkill.Key);
+            //Debug.WriteLine("Incompatible skills: " + primarySkill.Key + " and " + secondarySkill.Key);
 
             return false;
         }
 
-        private void Crunch(Skill PrimarySkill, Skill SecondarySkill, out CrunchSelection Selection)
+        private void Crunch(Skill primarySkill, Skill secondarySkill, out CrunchSelection selection)
         {
-            List<Ability> PrimaryAbilityList = SelectAbilities(PrimarySkill);
-            List<Ability> SecondaryAbilityList = SelectAbilities(SecondarySkill);
+            List<Ability> PrimaryAbilityList = SelectAbilities(primarySkill);
+            List<Ability> SecondaryAbilityList = SelectAbilities(secondarySkill);
 
             for (;;)
             {
@@ -1398,7 +1397,7 @@ namespace PgJsonParse
                     SelectedAbilityList.Add(SecondaryAbilityList[i]);
 
                 CrunchSelection SequenceSelection;
-                Crunch(PrimarySkill, SecondarySkill, SelectedAbilityList, out SequenceSelection);
+                Crunch(primarySkill, secondarySkill, SelectedAbilityList, out SequenceSelection);
 
                 for (int i = 0; i < 6; i++)
                     if (!SequenceSelection.BestSequenceAbilityList.Contains(PrimaryAbilityList[i]))
@@ -1417,7 +1416,7 @@ namespace PgJsonParse
                     break;
             }
 
-            Selection = null;
+            selection = null;
 
             Sequence PrimarySequence = Sequence.CreateSeparate(6, PrimaryAbilityList.Count);
             while (!PrimarySequence.IsCompleted)
@@ -1435,10 +1434,10 @@ namespace PgJsonParse
                         SelectedAbilityList.Add(SecondaryAbilityList[SecondaryArray[i]]);
 
                     CrunchSelection SequenceSelection;
-                    Crunch(PrimarySkill, SecondarySkill, SelectedAbilityList, out SequenceSelection);
+                    Crunch(primarySkill, secondarySkill, SelectedAbilityList, out SequenceSelection);
 
-                    if (Selection == null || Selection.BestDPS < SequenceSelection.BestDPS)
-                        Selection = SequenceSelection;
+                    if (selection == null || selection.BestDPS < SequenceSelection.BestDPS)
+                        selection = SequenceSelection;
 
                     SecondarySequence.NextSeparate();
                 }
@@ -1447,23 +1446,23 @@ namespace PgJsonParse
             }
         }
 
-        private void Crunch(Skill PrimarySkill, Skill SecondarySkill, List<Ability> SelectedAbilityList, out CrunchSelection Selection)
+        private void Crunch(Skill primarySkill, Skill secondarySkill, List<Ability> selectedAbilityList, out CrunchSelection selection)
         {
-            Dictionary<ItemSlot, List<Power>> Gear = SelectGear(PrimarySkill, SecondarySkill);
+            Dictionary<ItemSlot, List<Power>> Gear = SelectGear(primarySkill, secondarySkill);
 
             List<CrunchTarget> TargetList = new List<CrunchTarget>();
             TargetList.Add(Target1);
 
-            Selection = new CrunchSelection(PrimarySkill, SecondarySkill, SelectedAbilityList, Gear, TargetList);
-            Selection.Crunch();
+            selection = new CrunchSelection(primarySkill, secondarySkill, selectedAbilityList, Gear, TargetList);
+            selection.Crunch();
         }
 
-        private List<Ability> SelectAbilities(Skill SelectedSkill)
+        private List<Ability> SelectAbilities(Skill selectedSkill)
         {
             List<Ability> LineAbilityList = new List<Ability>();
             int MaxLevel;
-            if (CrunchSelection.MaxAttainableLevel.ContainsKey(SelectedSkill.CombatSkill))
-                MaxLevel = CrunchSelection.MaxAttainableLevel[SelectedSkill.CombatSkill];
+            if (CrunchSelection.MaxAttainableLevel.ContainsKey(selectedSkill.CombatSkill))
+                MaxLevel = CrunchSelection.MaxAttainableLevel[selectedSkill.CombatSkill];
             else
                 MaxLevel = int.MaxValue;
 
@@ -1479,7 +1478,7 @@ namespace PgJsonParse
                 if (AbilityItem.Level > MaxLevel)
                     continue;
 
-                if ((AbilityItem.InternalName != null) && (AbilityItem.Skill == SelectedSkill.CombatSkill))
+                if ((AbilityItem.InternalName != null) && (AbilityItem.Skill == selectedSkill.CombatSkill))
                 {
                     List<Ability> SortedAbilityList;
 
@@ -1518,53 +1517,53 @@ namespace PgJsonParse
             return LineAbilityList;
         }
 
-        private Ability AbilityUpgradeOf(Ability AbilityItem)
+        private Ability AbilityUpgradeOf(Ability abilityItem)
         {
-            if (AbilityItem.UpgradeOf != null)
-                return AbilityItem.UpgradeOf;
+            if (abilityItem.UpgradeOf != null)
+                return abilityItem.UpgradeOf;
 
-            return AbilityPrevious(AbilityItem);
+            return AbilityPrevious(abilityItem);
         }
 
-        private Ability AbilityPrerequisite(Ability AbilityItem)
+        private Ability AbilityPrerequisite(Ability abilityItem)
         {
-            if (AbilityItem.Prerequisite != null)
-                return AbilityItem.Prerequisite;
+            if (abilityItem.Prerequisite != null)
+                return abilityItem.Prerequisite;
 
-            return AbilityPrevious(AbilityItem);
+            return AbilityPrevious(abilityItem);
         }
 
-        private Ability AbilityPrevious(Ability AbilityItem)
+        private Ability AbilityPrevious(Ability abilityItem)
         {
             IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
             IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
-            if (AbilityItem.UpgradeOf != null)
-                return AbilityItem.UpgradeOf;
+            if (abilityItem.UpgradeOf != null)
+                return abilityItem.UpgradeOf;
 
-            if (AbilityItem.Prerequisite != null)
-                return AbilityItem.Prerequisite;
+            if (abilityItem.Prerequisite != null)
+                return abilityItem.Prerequisite;
 
-            if (AbilityItem.LineIndex <= 0)
+            if (abilityItem.LineIndex <= 0)
                 return null;
 
             foreach (Ability Item in AbilityList)
-                if (Item.DigitStrippedName == AbilityItem.DigitStrippedName)
-                    if (Item.LineIndex + 1 == AbilityItem.LineIndex)
+                if (Item.DigitStrippedName == abilityItem.DigitStrippedName)
+                    if (Item.LineIndex + 1 == abilityItem.LineIndex)
                         return Item;
 
             foreach (Ability Item in AbilityList)
-                if (Item.DigitStrippedName == AbilityItem.DigitStrippedName)
+                if (Item.DigitStrippedName == abilityItem.DigitStrippedName)
                     if (Item.LineIndex == -1)
                         return Item;
 
-            if (AbilityItem.LineIndex == 1)
+            if (abilityItem.LineIndex == 1)
                 return null;
 
             return null;
         }
 
-        private Dictionary<ItemSlot, List<Power>> SelectGear(Skill PrimarySkill, Skill SecondarySkill)
+        private Dictionary<ItemSlot, List<Power>> SelectGear(Skill primarySkill, Skill secondarySkill)
         {
             Dictionary<ItemSlot, List<Power>> Gear = new Dictionary<ItemSlot, List<Power>>();
             IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
@@ -1589,9 +1588,9 @@ namespace PgJsonParse
                 List<Power> SecondaryPowerListForSlot = new List<Power>();
 
                 foreach (Power PowerItem in PowerList)
-                    if (PowerItem.IsValidForSlot(PrimarySkill.CombatSkill, Slot))
+                    if (PowerItem.IsValidForSlot(primarySkill.CombatSkill, Slot))
                         PrimaryPowerListForSlot.Add(PowerItem);
-                    else if (PowerItem.IsValidForSlot(SecondarySkill.CombatSkill, Slot))
+                    else if (PowerItem.IsValidForSlot(secondarySkill.CombatSkill, Slot))
                         SecondaryPowerListForSlot.Add(PowerItem);
 
                 List<Power> PowerListForSlot = new List<Power>();
@@ -1603,11 +1602,11 @@ namespace PgJsonParse
             return Gear;
         }
 
-        private void SelectGearForSlot(List<Power> PrimaryPowerListForSlot, List<Power> SecondaryPowerListForSlot, List<Power> PowerListForSlot)
+        private void SelectGearForSlot(List<Power> primaryPowerListForSlot, List<Power> secondaryPowerListForSlot, List<Power> powerListForSlot)
         {
             int i = 0;
-            List<Power> List1 = new List<Power>(PrimaryPowerListForSlot);
-            List<Power> List2 = new List<Power>(PrimaryPowerListForSlot);
+            List<Power> List1 = new List<Power>(primaryPowerListForSlot);
+            List<Power> List2 = new List<Power>(primaryPowerListForSlot);
             int ModCount1 = 0;
             int ModCount2 = 0;
 
@@ -1617,54 +1616,54 @@ namespace PgJsonParse
                 if (!SelectMod(List1, List2, ref ModCount1, ref ModCount2, out SelectedPower))
                     break;
 
-                PowerListForSlot.Add(SelectedPower);
+                powerListForSlot.Add(SelectedPower);
             }
         }
 
-        private bool SelectMod(List<Power> List1, List<Power> List2, ref int ModCount1, ref int ModCount2, out Power SelectedPower)
+        private bool SelectMod(List<Power> list1, List<Power> list2, ref int modCount1, ref int modCount2, out Power selectedPower)
         {
-            if (List1.Count == 0 && List2.Count == 0)
+            if (list1.Count == 0 && list2.Count == 0)
             {
-                SelectedPower = null;
+                selectedPower = null;
                 return false;
             }
 
             List<Power> SelectedList;
 
-            if (ModCount1 + 1 < ModCount2 && List1.Count > 0)
+            if (modCount1 + 1 < modCount2 && list1.Count > 0)
             {
-                SelectedList = List1;
-                ModCount1++;
+                SelectedList = list1;
+                modCount1++;
             }
 
-            else if (ModCount2 + 1 < ModCount1 && List2.Count > 0)
+            else if (modCount2 + 1 < modCount1 && list2.Count > 0)
             {
-                SelectedList = List2;
-                ModCount2++;
+                SelectedList = list2;
+                modCount2++;
             }
 
-            else if (List2.Count == 0)
+            else if (list2.Count == 0)
             {
-                SelectedList = List1;
-                ModCount1++;
+                SelectedList = list1;
+                modCount1++;
             }
 
-            else if (List1.Count == 0)
+            else if (list1.Count == 0)
             {
-                SelectedList = List2;
-                ModCount2++;
+                SelectedList = list2;
+                modCount2++;
             }
             else
             {
                 //TODO: select list randomly
-                SelectedList = List1;
-                ModCount1++;
+                SelectedList = list1;
+                modCount1++;
             }
 
             //TODO: select index randomly
             int Index = 0;
 
-            SelectedPower = SelectedList[Index];
+            selectedPower = SelectedList[Index];
             SelectedList.RemoveAt(Index);
 
             return true;
@@ -1810,13 +1809,13 @@ namespace PgJsonParse
 
         internal void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Default parameter is mandatory with [CallerMemberName]")]
         internal void NotifyThisPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }
