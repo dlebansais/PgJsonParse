@@ -69,11 +69,9 @@
     <Compile Include="Converters\BooleanToObject Converter.cs" />
     <Compile Include="Converters\BooleanInvertedConverter.cs" />
     <Compile Include="Converters\CountToOpacityConverter.cs" />
-    <Compile Include="Converters\ObjectToIndexConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DoubleConverter.cs" />
     <Compile Include="Converters\EnumToTextConverter.cs" />
-    <Compile Include="Converters\EnumToIntConverter.cs" />
     <Compile Include="Converters\EnumToObjectConverter.cs" />
     <Compile Include="Converters\FileNameToBitmapImageConverter.cs" />
     <Compile Include="Converters\FloatListToStringConverter.cs" />
@@ -86,7 +84,7 @@
     <Compile Include="Converters\NullToObjectConverter.cs" />
     <Compile Include="Converters\NullableIntConverter.cs" />
     <Compile Include="Converters\NullableBooleanToObjectConverter.cs" />
-    <Compile Include="Converters\PercentProgressBarPropertyConverter.cs" />
+    <Compile Include="Controls\PercentProgressBarPropertyConverter.cs" />
     <Compile Include="Converters\ReplaceMacroConverter.cs" />
     <Compile Include="Converters\RgbColorToBrushConverter.cs" />
     <Compile Include="Crunch\CrunchSelection.cs" />

@@ -8,10 +8,7 @@
         xmlns:ctrl="clr-namespace:CustomControls">
     <p:RootControl.Resources>
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
-        <conv:EnumToIntConverter x:Key="convEnumToInt"/>
         <conv:EnumToObjectConverter x:Key="convEnumToObject"/>
-        <conv:NullToObjectConverter x:Key="convNullToObject"/>
-        <conv:IntToObjectConverter x:Key="convIntToObject"/>
         <conv:CountToOpacityConverter x:Key="convCountToOpacity"/>
         <p:ApplicationCommand x:Key="CheckVersionCommand"/>
         <p:ApplicationCommand x:Key="SelectVersionCommand"/>
