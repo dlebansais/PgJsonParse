@@ -81,17 +81,18 @@
     <Compile Include="Records\Attribute\DisplayRule.cs" />
     <Compile Include="Records\ItemUses\Item Uses.cs" />
     <Compile Include="Records\Item\Item Behavior Type.cs" />
-    <Compile Include="Records\Item\Item Behavior\Behavior.cs" />
     <Compile Include="Records\Item\Item Behavior.cs" />
     <Compile Include="Records\Item\Item Required Hotspot.cs" />
     <Compile Include="Records\Item\Server Info Effect Type.cs" />
     <Compile Include="Records\Item\Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Ability Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Drink Effect Server Info Effect.cs" />
+    <Compile Include="Records\Item\Server Info Effect\Equipment Boost Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Interval Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Poetry Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Simple Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Skill And Level Server Info Effect.cs" />
+    <Compile Include="Records\Item\Server Info Effect\Temporary Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Value Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info.cs" />
     <Compile Include="Records\Lore Book\Lore Book Category.cs" />
@@ -252,9 +253,6 @@
     <Compile Include="String To Enum Conversion.cs" />
     <Compile Include="Text Maps.cs" />
     <Compile Include="Tools.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgJsonReader\PgJsonReader.csproj">

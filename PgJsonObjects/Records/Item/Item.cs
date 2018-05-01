@@ -1051,6 +1051,32 @@ namespace PgJsonObjects
                             Weight += AsItemAttributeLink.AttributeEffect * AttributeWeight.Weight;
                     }
                 }
+
+                EquipmentBoostServerInfoEffect AsEquipmentBoost;
+
+                foreach (ItemBehavior Behavior in BehaviorList)
+                    if (Behavior.ServerInfo != null)
+                    {
+                        foreach (ServerInfoEffect Effect in Behavior.ServerInfo.ServerInfoEffectList)
+                            if ((AsEquipmentBoost = Effect as EquipmentBoostServerInfoEffect) != null)
+                                if (AsEquipmentBoost.Boost != null)
+                                {
+                                    ItemAttributeLink AsItemAttributeLink;
+                                    ItemSimpleEffect AsItemSimpleEffect;
+
+                                    if ((AsItemAttributeLink = AsEquipmentBoost.Boost as ItemAttributeLink) != null)
+                                    {
+                                        if (AsItemAttributeLink.Link == AttributeWeight.Attribute)
+                                            Weight += AsItemAttributeLink.AttributeEffect * AttributeWeight.Weight;
+                                    }
+                                    else if ((AsItemSimpleEffect = AsEquipmentBoost.Boost as ItemSimpleEffect) != null)
+                                    {
+                                        if (AsItemSimpleEffect.Description == AttributeWeight.Attribute.Key)
+                                            if (AsEquipmentBoost.AttributeEffect != 0)
+                                                Weight += AsEquipmentBoost.AttributeEffect * AttributeWeight.Weight;
+                                    }
+                                }
+                    }
             }
 
             return Weight;

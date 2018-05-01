@@ -1,4 +1,5 @@
 ﻿using PgJsonReader;
+using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -105,12 +106,21 @@ namespace PgJsonObjects
                 case ServerInfoEffectType.SpawnItemDispenser:
                 case ServerInfoEffectType.BestowGolemConditional:
                 case ServerInfoEffectType.BestowGolemAbility:
-                case ServerInfoEffectType.EquipmentBoost:
                 case ServerInfoEffectType.PulseEvent:
                 case ServerInfoEffectType.SetPrimaryCombatSkill:
                 case ServerInfoEffectType.SetInteractionFlag:
+                    return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel);
+
+                case ServerInfoEffectType.EquipmentBoost:
+                    if (RawAttribute != null && RawAttributeEffect.HasValue && RawDuration.HasValue)
+                        return new TemporaryServerInfoEffect(ServerInfoEffect, EffectLevel, RawAttribute, RawAttributeEffect, RawDuration);
+                    else if (RawAttribute != null && RawAttributeEffect.HasValue)
+                        return new EquipmentBoostServerInfoEffect(ServerInfoEffect, EffectLevel, RawAttribute, RawAttributeEffect);
+                    else
+                        return null;
 
                 case ServerInfoEffectType.SummonGruesomeSpookyPunch:
+                    return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel);
 
                 default:
                     return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel);
@@ -313,7 +323,6 @@ namespace PgJsonObjects
                 case ServerInfoEffectType.SpawnItemDispenser:
                 case ServerInfoEffectType.BestowGolemConditional:
                 case ServerInfoEffectType.BestowGolemAbility:
-                case ServerInfoEffectType.EquipmentBoost:
                 case ServerInfoEffectType.PulseEvent:
                 case ServerInfoEffectType.SetPrimaryCombatSkill:
                 case ServerInfoEffectType.SetInteractionFlag:
@@ -322,6 +331,10 @@ namespace PgJsonObjects
                         ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
                         return null;
                     }
+                    break;
+
+                case ServerInfoEffectType.EquipmentBoost:
+                    ParseEquipmentBoost(Details, ErrorInfo);
                     break;
 
                 case ServerInfoEffectType.SummonGruesomeSpookyPunch:
@@ -507,6 +520,69 @@ namespace PgJsonObjects
             this.AlcoholPowerValue = AlcoholPowerValue;
         }
 
+        private void ParseEquipmentBoost(string Details, ParseErrorInfo ErrorInfo)
+        {
+            if (Details == null)
+            {
+                ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                return;
+            }
+
+            string[] Splitted = Details.Split(',');
+
+            if (Splitted.Length == 2)
+            {
+                string RawEffectDesc = Splitted[0].Trim();
+                string RawEffect = Splitted[1].Trim();
+
+                float AttributeEffect = 0;
+                if (!InvariantCulture.TryParseSingle(RawEffect, out AttributeEffect))
+                {
+                    ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                    return;
+                }
+
+                ItemEffect RawAttribute;
+                if (!ItemEffect.TryParse(RawEffectDesc, out RawAttribute))
+                {
+                    ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                    return;
+                }
+
+                this.RawAttribute = RawAttribute;
+                RawAttributeEffect = AttributeEffect;
+            }
+
+            else if (Splitted.Length == 4)
+            {
+                string RawEffectDesc = Splitted[0].Trim();
+                string RawEffect = Splitted[1].Trim();
+                string RawDuration = Splitted[3].Trim();
+
+                float AttributeEffect = 0;
+                int Duration = 0;
+                if (!InvariantCulture.TryParseSingle(RawEffect, out AttributeEffect) || !int.TryParse(RawDuration, out Duration))
+                {
+                    ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                    return;
+                }
+
+                ItemEffect RawAttribute;
+                if (!ItemEffect.TryParse(RawEffectDesc, out RawAttribute))
+                {
+                    ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                    return;
+                }
+
+                this.RawAttribute = RawAttribute;
+                RawAttributeEffect = AttributeEffect;
+                this.RawDuration = Duration;
+            }
+
+            else
+                ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+        }
+
         private GenericJsonObject LinkBack;
         private ServerInfoEffectType ServerInfoEffect;
         private int? EffectLevel;
@@ -520,6 +596,9 @@ namespace PgJsonObjects
         private int? DrinkATValue;
         private int? AlcoholPowerValue;
         private string RawBestowAbility;
+        private ItemEffect RawAttribute;
+        private float? RawAttributeEffect;
+        private int? RawDuration;
         #endregion
 
         #region Json Reconstruction
