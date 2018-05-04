@@ -1,8 +1,6 @@
 ﻿using Presentation;
 using System;
 using System.Drawing;
-using System.Globalization;
-using System.Reflection;
 
 namespace PgJsonObjects
 {
@@ -10,12 +8,12 @@ namespace PgJsonObjects
     {
         public static bool TryParseFloat(string s, out float Value, out FloatFormat Format)
         {
-            if (float.TryParse(s, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture.NumberFormat, out Value))
+            if (InvariantCulture.TryParseSingle(s, out Value))
             {
-                if (s == Value.ToString(CultureInfo.InvariantCulture.NumberFormat))
+                if (s == InvariantCulture.SingleToString(Value))
                     Format = FloatFormat.Standard;
 
-                else if (s == Value.ToString("0.0#", CultureInfo.InvariantCulture.NumberFormat))
+                else if (s == InvariantCulture.SingleToString(Value, "0.0#"))
                     Format = FloatFormat.WithEndingZero;
 
                 else
@@ -35,57 +33,11 @@ namespace PgJsonObjects
                 default:
                 case FloatFormat.Other:
                 case FloatFormat.Standard:
-                    return Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    return InvariantCulture.SingleToString(Value);
 
                 case FloatFormat.WithEndingZero:
-                    return Value.ToString("0.0#", CultureInfo.InvariantCulture.NumberFormat);
+                    return InvariantCulture.SingleToString(Value, "0.0#");
             }
-        }
-
-        public static bool TryParseColor(string s, out uint Value)
-        {
-            if (s == null)
-            {
-                Value = 0;
-                return false;
-            }
-
-#if SUPPORT_COLORNAMES
-            Color TryNamed = Color.FromName(s);
-            if (TryNamed.ToArgb() != 0)
-            {
-                Value = (uint)TryNamed.ToArgb();
-                return true;
-            }
-#endif
-            if (s.Length != 6)
-            {
-                Value = 0;
-                return false;
-            }
-
-            byte R, G, B;
-
-            if (!byte.TryParse(s.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture.NumberFormat, out R) ||
-                !byte.TryParse(s.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture.NumberFormat, out G) ||
-                !byte.TryParse(s.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture.NumberFormat, out B))
-            {
-                Value = 0;
-                return false;
-            }
-
-            Color c = Color.FromArgb(0xFF, R, G, B);
-            Value = (0xFF000000 + ((uint)R << 16) + ((uint)G << 8) + ((uint)B << 0));
-            return true;
-        }
-
-        public static string ColorToString(uint Value)
-        {
-            byte R = (byte)((Value >> 16) & 0xFF);
-            byte G = (byte)((Value >> 8) & 0xFF);
-            byte B = (byte)((Value >> 0) & 0xFF);
-            Color c = Color.FromArgb(0xFF, R, G, B);
-            return c.R.ToString("X02") + c.G.ToString("X02") + c.B.ToString("X02");
         }
 
         public static bool Scan(string s, string Format, params object[] args)

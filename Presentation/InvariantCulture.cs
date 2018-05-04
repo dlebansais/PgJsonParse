@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 
 namespace Presentation
@@ -48,6 +49,53 @@ namespace Presentation
         public static string ByteToString(byte v)
         {
             return v.ToString(CultureInfo.InvariantCulture);
+        }
+        #endregion
+
+        #region Color
+        public static bool TryParseColor(string s, out uint Value)
+        {
+            if (s == null)
+            {
+                Value = 0;
+                return false;
+            }
+
+            Color TryNamed = Color.FromName(s);
+            if (TryNamed.ToArgb() != 0)
+            {
+                Value = (uint)TryNamed.ToArgb();
+                return true;
+            }
+
+            if (s.Length != 6)
+            {
+                Value = 0;
+                return false;
+            }
+
+            byte R, G, B;
+
+            if (!TryParseByteHex(s.Substring(0, 2), out R) ||
+                !TryParseByteHex(s.Substring(2, 2), out G) ||
+                !TryParseByteHex(s.Substring(4, 2), out B))
+            {
+                Value = 0;
+                return false;
+            }
+
+            Color c = Color.FromArgb(0xFF, R, G, B);
+            Value = (0xFF000000 + ((uint)R << 16) + ((uint)G << 8) + ((uint)B << 0));
+            return true;
+        }
+
+        public static string ColorToString(uint Value)
+        {
+            byte R = (byte)((Value >> 16) & 0xFF);
+            byte G = (byte)((Value >> 8) & 0xFF);
+            byte B = (byte)((Value >> 0) & 0xFF);
+            Color c = Color.FromArgb(0xFF, R, G, B);
+            return c.R.ToString("X02") + c.G.ToString("X02") + c.B.ToString("X02");
         }
         #endregion
     }

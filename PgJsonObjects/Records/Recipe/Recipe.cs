@@ -1,4 +1,5 @@
 ﻿using PgJsonReader;
+using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -385,7 +386,7 @@ namespace PgJsonObjects
         private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)
         {
             uint NewColor;
-            if (Tools.TryParseColor(RawDyeColor, out NewColor))
+            if (InvariantCulture.TryParseColor(RawDyeColor, out NewColor))
                 DyeColor = NewColor;
             else
                 ErrorInfo.AddInvalidString("Item DyeColor", RawDyeColor);
@@ -640,7 +641,7 @@ namespace PgJsonObjects
                             float AddedQuantity;
                             int ConsumedEnhancementPoints;
 
-                            if (float.TryParse(EnhanceDataSplit[0], System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture.NumberFormat, out AddedQuantity) &&
+                            if (InvariantCulture.TryParseSingle(EnhanceDataSplit[0], out AddedQuantity) &&
                                 int.TryParse(EnhanceDataSplit[1], out ConsumedEnhancementPoints))
                             {
                                 NewResultEffect.Effect = ConvertedRecipeEffect;
@@ -881,7 +882,7 @@ namespace PgJsonObjects
 
             if (DyeColor.HasValue)
             {
-                string AsString = Tools.ColorToString(DyeColor.Value);
+                string AsString = InvariantCulture.ColorToString(DyeColor.Value);
                 Generator.AddString("DyeColor", AsString);
             }
 
@@ -1038,7 +1039,7 @@ namespace PgJsonObjects
 
         public string GenerateEnhanceContent(JsonGenerator Generator, RecipeResultEffect ResultEffect)
         {
-            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + ResultEffect.Enhancement.ToString() + "(" + ResultEffect.AddedQuantity.ToString(CultureInfo.InvariantCulture.NumberFormat) + "," + ResultEffect.ConsumedEnhancementPoints + ")";
+            return StringToEnumConversion<RecipeEffect>.ToString(ResultEffect.Effect, TextMaps.RecipeEffectStringMap) + ResultEffect.Enhancement.ToString() + "(" + InvariantCulture.SingleToString(ResultEffect.AddedQuantity) + "," + ResultEffect.ConsumedEnhancementPoints + ")";
         }
         #endregion
 

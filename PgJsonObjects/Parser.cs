@@ -7,8 +7,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Web.Script.Serialization;
-using System.Windows;
 
 namespace PgJsonObjects
 {
@@ -172,7 +170,7 @@ namespace PgJsonObjects
             if (Value == 0.05F)
                 Value = 0.05F;
 
-            StringLine = "\t\t\"" + Field + "\": " + Value.ToString(CultureInfo.InvariantCulture.NumberFormat) + ",\n";
+            StringLine = "\t\t\"" + Field + "\": " + InvariantCulture.SingleToString(Value) + ",\n";
             return true;
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -221,7 +222,7 @@ namespace PgJsonObjects
             if (InsertedLines > 0)
                 Next();
 
-            string StringLine = "\"" + Field + "\":" + SpaceLine + ((float)Value).ToString(CultureInfo.InvariantCulture.NumberFormat);
+            string StringLine = "\"" + Field + "\":" + SpaceLine + InvariantCulture.SingleToString((float)Value);
 
             ReconstructedContent += Indentation() + StringLine;
             InsertedLines++;
@@ -235,7 +236,7 @@ namespace PgJsonObjects
             if (InsertedLines > 0)
                 Next();
 
-            string StringLine = "\"" + Field + "\":" + SpaceLine + ((float)Value.Value).ToString(CultureInfo.InvariantCulture.NumberFormat);
+            string StringLine = "\"" + Field + "\":" + SpaceLine + InvariantCulture.SingleToString((float)Value.Value);
 
             ReconstructedContent += Indentation() + StringLine;
             InsertedLines++;

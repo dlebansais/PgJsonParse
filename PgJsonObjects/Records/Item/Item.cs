@@ -1,4 +1,5 @@
 ﻿using PgJsonReader;
+using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -251,7 +252,7 @@ namespace PgJsonObjects
         private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)
         {
             uint NewColor;
-            if (Tools.TryParseColor(RawDyeColor, out NewColor))
+            if (InvariantCulture.TryParseColor(RawDyeColor, out NewColor))
                 DyeColor = NewColor;
             else
                 ErrorInfo.AddInvalidString("Item DyeColor", RawDyeColor);
@@ -534,7 +535,7 @@ namespace PgJsonObjects
                 string ColorString = Split[i].Substring(ColorPrefix.Length);
 
                 uint ParsedColor;
-                if (!Tools.TryParseColor(ColorString, out ParsedColor))
+                if (!InvariantCulture.TryParseColor(ColorString, out ParsedColor))
                 {
                     ErrorInfo.AddInvalidString("Item StockDye (4) [i=" + i + "]", RawStockDye);
                     StockDye = null;
@@ -683,7 +684,7 @@ namespace PgJsonObjects
 
             if (DyeColor.HasValue)
             {
-                string AsString = Tools.ColorToString(DyeColor.Value);
+                string AsString = InvariantCulture.ColorToString(DyeColor.Value);
                 Generator.AddString("DyeColor", AsString);
             }
 
@@ -740,7 +741,7 @@ namespace PgJsonObjects
                         if (i == 2 && c == 0xFF00FFFF)
                             StockDyeString += ";Color" + (i + 1).ToString() + "=cyan";
                         else
-                            StockDyeString += ";Color" + (i + 1).ToString() + "=" + Tools.ColorToString(c).ToLower();
+                            StockDyeString += ";Color" + (i + 1).ToString() + "=" + InvariantCulture.ColorToString(c).ToLower();
                     }
 
                     Generator.AddString("StockDye", StockDyeString);
@@ -760,7 +761,7 @@ namespace PgJsonObjects
             if (float.IsNaN(EntryValue))
                 Generator.AddString(null, EntryKey.ToString());
             else
-                Generator.AddString(null, EntryKey.ToString() + "=" + EntryValue.ToString(CultureInfo.InvariantCulture.NumberFormat));
+                Generator.AddString(null, EntryKey.ToString() + "=" + InvariantCulture.SingleToString(EntryValue));
         }
         #endregion
 
