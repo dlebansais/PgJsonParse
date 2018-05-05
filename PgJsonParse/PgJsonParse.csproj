@@ -59,13 +59,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controls\BoldHeaderTabControl.cs" />
-    <Compile Include="Controls\BusyIndicator.xaml.cs">
-      <DependentUpon>BusyIndicator.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PercentProgressBar.xaml.cs">
-      <DependentUpon>PercentProgressBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Converters\BooleanToObject Converter.cs" />
     <Compile Include="Converters\BooleanInvertedConverter.cs" />
     <Compile Include="Converters\CountToOpacityConverter.cs" />
@@ -84,7 +77,6 @@
     <Compile Include="Converters\NullToObjectConverter.cs" />
     <Compile Include="Converters\NullableIntConverter.cs" />
     <Compile Include="Converters\NullableBooleanToObjectConverter.cs" />
-    <Compile Include="Controls\PercentProgressBarPropertyConverter.cs" />
     <Compile Include="Converters\ReplaceMacroConverter.cs" />
     <Compile Include="Converters\RgbColorToBrushConverter.cs" />
     <Compile Include="Crunch\CrunchSelection.cs" />
@@ -108,16 +100,7 @@
     <Compile Include="Tools\ImageConversion.cs" />
     <Compile Include="Tools\PopupHandler.cs" />
     <Compile Include="Tools\StaticContainer.cs" />
-    <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="VersionCheckState.cs" />
-    <Page Include="Controls\BusyIndicator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PercentProgressBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

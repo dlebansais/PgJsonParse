@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CustomControls
+namespace Presentation
 {
     public partial class PercentProgressBar : UserControl, INotifyPropertyChanged
     {

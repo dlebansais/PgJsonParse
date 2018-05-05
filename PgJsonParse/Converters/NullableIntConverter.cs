@@ -1,13 +1,12 @@
-﻿using System;
-using System.Globalization;
+﻿using Presentation;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(int?), typeof(string))]
-    public class NullableIntConverter : IValueConverter
+    public class NullableIntConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             if (value == null)
                 return "";
@@ -24,11 +23,6 @@ namespace Converters
             Result += IntValue.ToString();
 
             return Result;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return 0;
         }
     }
 }

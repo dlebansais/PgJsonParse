@@ -1,14 +1,13 @@
 ﻿using PgJsonObjects;
-using System;
-using System.Globalization;
+using Presentation;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(PowerSkill), typeof(string))]
-    public class FriendlyNameConverter : IValueConverter
+    public class FriendlyNameConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             string s;
 
@@ -36,11 +35,6 @@ namespace Converters
             }
 
             return s;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
         }
     }
 }

@@ -5,6 +5,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:conv="clr-namespace:Converters"
         xmlns:app="clr-namespace:PgJsonParse"
+        xmlns:pre="clr-namespace:Presentation;assembly=Presentation"
         xmlns:obj="clr-namespace:PgJsonObjects;assembly=PgJsonObjects">
     <p:RootControl.Resources>
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
@@ -21,24 +22,24 @@
         <conv:RgbColorToBrushConverter x:Key="convRgbColorToBrush"/>
         <conv:ReplaceMacroConverter x:Key="convReplaceMacro"/>
         <conv:NullableTimeSpanToDurationConverter x:Key="convNullableTimeSpanToDuration"/>
-        <conv:ValueConverterGroup x:Key="convchainIsEnumInSetVisibility">
+        <pre:ValueConverterGroup x:Key="convchainIsEnumInSetVisibility">
             <conv:IsEnumInSetConverter/>
             <conv:BooleanToVisibilityConverter/>
-        </conv:ValueConverterGroup>
-        <conv:ValueConverterGroup x:Key="convchainNotIsEnumInSetVisibility">
+        </pre:ValueConverterGroup>
+        <pre:ValueConverterGroup x:Key="convchainNotIsEnumInSetVisibility">
             <conv:IsEnumInSetConverter/>
             <conv:BooleanInvertedConverter/>
             <conv:BooleanToVisibilityConverter/>
-        </conv:ValueConverterGroup>
-        <conv:ValueConverterGroup x:Key="convchainIntThresholdVisibility">
+        </pre:ValueConverterGroup>
+        <pre:ValueConverterGroup x:Key="convchainIntThresholdVisibility">
             <conv:IntThresholdConverter/>
             <conv:BooleanToVisibilityConverter/>
-        </conv:ValueConverterGroup>
-        <conv:ValueConverterGroup x:Key="convchainNotIntThresholdVisibility">
+        </pre:ValueConverterGroup>
+        <pre:ValueConverterGroup x:Key="convchainNotIntThresholdVisibility">
             <conv:IntThresholdConverter/>
             <conv:BooleanInvertedConverter/>
             <conv:BooleanToVisibilityConverter/>
-        </conv:ValueConverterGroup>
+        </pre:ValueConverterGroup>
         <p:ApplicationCommand x:Key="AddPowerCommand"/>
         <p:ApplicationCommand x:Key="RemovePowerCommand"/>
         <p:ApplicationCommand x:Key="LoadBuildCommand"/>

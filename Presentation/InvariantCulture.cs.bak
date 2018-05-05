@@ -97,20 +97,6 @@ namespace Presentation
             Color c = Color.FromArgb(0xFF, R, G, B);
             return c.R.ToString("X02") + c.G.ToString("X02") + c.B.ToString("X02");
         }
-
-        public static System.Windows.Media.Brush ColorToBrush(uint? rgbColor)
-        {
-            if (rgbColor.HasValue)
-            {
-                byte R = (byte)((rgbColor.Value >> 16) & 0xFF);
-                byte G = (byte)((rgbColor.Value >> 8) & 0xFF);
-                byte B = (byte)((rgbColor.Value >> 0) & 0xFF);
-                System.Windows.Media.Color c = System.Windows.Media.Color.FromArgb(0xFF, R, G, B);
-                return new System.Windows.Media.SolidColorBrush(c);
-            }
-            else
-                return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Transparent);
-        }
         #endregion
     }
 }

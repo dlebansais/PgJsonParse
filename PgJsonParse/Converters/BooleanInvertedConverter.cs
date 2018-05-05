@@ -1,21 +1,15 @@
-﻿using System;
-using System.Globalization;
+﻿using Presentation;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(bool), typeof(object))]
-    public class BooleanInvertedConverter : IValueConverter
+    public class BooleanInvertedConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             bool BoolValue = (bool)value;
             return !BoolValue;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return false;
         }
     }
 }

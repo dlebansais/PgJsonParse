@@ -1,14 +1,13 @@
 ﻿using PgJsonParse;
-using System;
-using System.Globalization;
+using Presentation;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(bool), typeof(object))]
-    public class NullableBooleanToObjectConverter : IValueConverter
+    public class NullableBooleanToObjectConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             int IntValue;
 
@@ -20,11 +19,6 @@ namespace Converters
             CustomCompositeCollection CollectionOfItems = parameter as CustomCompositeCollection;
 
             return CollectionOfItems[IntValue];
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
         }
     }
 }

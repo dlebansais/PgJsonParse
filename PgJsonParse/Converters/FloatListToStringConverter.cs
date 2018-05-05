@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Presentation;
 using System.Collections;
-using System.Globalization;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(IList), typeof(string))]
-    public class FloatListToStringConverter : IValueConverter
+    public class FloatListToStringConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             IList ListValue = value as IList;
             if (ListValue == null)
@@ -26,11 +25,6 @@ namespace Converters
                 }
 
             return Result;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return -1;
         }
     }
 }

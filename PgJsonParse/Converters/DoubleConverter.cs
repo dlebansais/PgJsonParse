@@ -1,14 +1,12 @@
 ﻿using Presentation;
-using System;
-using System.Globalization;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(double), typeof(string))]
-    public class DoubleConverter : IValueConverter
+    public class DoubleConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             double DoubleValue;
 
@@ -35,11 +33,6 @@ namespace Converters
             }
 
             return DoubleValue.ToString();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return 0;
         }
     }
 }

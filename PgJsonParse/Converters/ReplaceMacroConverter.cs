@@ -1,13 +1,12 @@
-﻿using System;
-using System.Globalization;
+﻿using Presentation;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(string), typeof(string))]
-    public class ReplaceMacroConverter : IValueConverter
+    public class ReplaceMacroConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             if (value == null)
                 return null;
@@ -17,11 +16,6 @@ namespace Converters
             StringValue = StringValue.Replace("%NAME%", "Target");
 
             return StringValue;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return 0;
         }
     }
 }

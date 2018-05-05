@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace CustomControls
+namespace Presentation
 {
     public class BoldHeaderTabControl : TabControl
     {

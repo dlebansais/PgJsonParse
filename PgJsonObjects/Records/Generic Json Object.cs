@@ -295,8 +295,8 @@ namespace PgJsonObjects
                 ParseValue(AsJsonInteger.Number, ErrorInfo);
             else if ((AsJsonString = Value as JsonString) != null)
             {
-                if (long.TryParse(AsJsonString.String, out long LongValue))
-                    ParseValue(LongValue, ErrorInfo);
+                if (int.TryParse(AsJsonString.String, out int IntValue))
+                    ParseValue(IntValue, ErrorInfo);
                 else
                     ErrorInfo.AddInvalidObjectFormat(FieldName);
             }

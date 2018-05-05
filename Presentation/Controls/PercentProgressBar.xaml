@@ -1,8 +1,8 @@
-﻿<UserControl x:Class="CustomControls.PercentProgressBar"
+﻿<UserControl x:Class="Presentation.PercentProgressBar"
              x:Name="rootPercentProgressBar"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CustomControls">
+             xmlns:local="clr-namespace:Presentation">
     <UserControl.Resources>
         <local:PercentProgressBarPropertyConverter x:Key="convPercentageToMargin"/>
     </UserControl.Resources>

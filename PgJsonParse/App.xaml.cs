@@ -1,8 +1,13 @@
-﻿using System.Windows;
+﻿using Presentation;
 
 namespace PgJsonParse
 {
-    public partial class App : Application
+    public partial class App : RootApp
     {
+        public App()
+        {
+            InitializeComponent();
+            InitializeApp();
+        }
     }
 }

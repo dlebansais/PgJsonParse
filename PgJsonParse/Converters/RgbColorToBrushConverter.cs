@@ -1,26 +1,15 @@
-﻿using System;
-using System.Globalization;
+﻿using Presentation;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace Converters
 {
-    [ValueConversion(typeof(uint?), typeof(Brush))]
-    public class RgbColorToBrushConverter : IValueConverter
+    [ValueConversion(typeof(uint?), typeof(object))]
+    public class RgbColorToBrushConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             uint? rgbColor = value as uint?;
-
-            if (rgbColor.HasValue)
-                return new SolidColorBrush(Color.FromRgb((byte)((rgbColor >> 16) & 0xFF), (byte)((rgbColor >> 8) & 0xFF), (byte)((rgbColor >> 0) & 0xFF)));
-            else
-                return Brushes.Transparent;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return 0;
+            return InvariantCulture.ColorToBrush(rgbColor);
         }
     }
 }

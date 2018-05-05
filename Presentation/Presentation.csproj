@@ -61,15 +61,26 @@
     <Compile Include="Commands\ExecutedEventArgs.cs" />
     <Compile Include="Confirmation.cs" />
     <Compile Include="ConfirmationType.cs" />
+    <Compile Include="Controls\BoldHeaderTabControl.cs" />
+    <Compile Include="Controls\BusyIndicator.xaml.cs">
+      <DependentUpon>BusyIndicator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ObjectToIndexConverter.cs" />
+    <Compile Include="Controls\PercentProgressBar.xaml.cs">
+      <DependentUpon>PercentProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PercentProgressBarPropertyConverter.cs" />
     <Compile Include="DataTemplateSelector.cs" />
     <Compile Include="DispatchableDelegate.cs" />
     <Compile Include="DispatcherSource.cs" />
+    <Compile Include="FileNameToBitmapImage.cs" />
     <Compile Include="FolderTools.cs" />
+    <Compile Include="GenericValueConverter.cs" />
     <Compile Include="NetTools.cs" />
     <Compile Include="Persistent.cs" />
     <Compile Include="PresentationEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RootApp.cs" />
     <Compile Include="RootControl.cs" />
     <Compile Include="RootControlMode.cs" />
     <Compile Include="Controls\SelectorControl.cs" />
@@ -80,7 +91,18 @@
     <Compile Include="Taskbar\TaskbarStates.cs" />
     <Compile Include="ToolTipControl.cs" />
     <Compile Include="UserUI.cs" />
+    <Compile Include="ValueConverterGroup.cs" />
     <Compile Include="WebClientTool.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\BusyIndicator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PercentProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

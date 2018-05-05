@@ -1,59 +1,35 @@
 ﻿using PgJsonParse;
-using System;
-using System.Globalization;
+using Presentation;
 using System.IO;
-using System.Reflection;
-using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media.Imaging;
 
 namespace Converters
 {
-    [ValueConversion(typeof(string), typeof(BitmapImage))]
-    public class FileNameToBitmapImageConverter : IValueConverter
+    [ValueConversion(typeof(string), typeof(object))]
+    public class FileNameToBitmapImageConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             string FileName;
 
             if ((FileName = value as string) != null)
             {
-                App CurrentApp = App.Current as App;
-                foreach (Window w in CurrentApp.Windows)
+                RootApp CurrentApp = App.Current as RootApp;
+                foreach (RootControl w in CurrentApp.Windows)
                 {
                     MainWindow AsMainWindow;
                     if ((AsMainWindow = w as MainWindow) != null)
                     {
                         GameVersionInfo SelectedVersion = AsMainWindow.LoadedVersion;
                         string IconCacheFolder = AsMainWindow.IconCacheFolder;
+                        FileName = Path.GetFileNameWithoutExtension(FileName) + ".png";
                         string FilePath = Path.Combine(IconCacheFolder, FileName);
-                        FilePath = Path.ChangeExtension(FilePath, ".png");
 
-                        if (File.Exists(FilePath))
-                        {
-                            Uri uri;
-                            BitmapImage img;
-
-                            try
-                            {
-                                uri = new Uri(FilePath);
-                                img = new BitmapImage(uri);
-                                return img;
-                            }
-                            catch
-                            {
-                                return null;
-                            }
-                        }
+                        return FileNameToBitmapImage.Convert(FilePath);
                     }
                 }
             }
 
-            return null;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
             return null;
         }
     }

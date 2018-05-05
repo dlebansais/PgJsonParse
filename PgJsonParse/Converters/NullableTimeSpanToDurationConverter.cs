@@ -1,13 +1,13 @@
-﻿using System;
-using System.Globalization;
+﻿using Presentation;
+using System;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(TimeSpan?), typeof(string))]
-    public class NullableTimeSpanToDurationConverter : IValueConverter
+    public class NullableTimeSpanToDurationConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             TimeSpan? TimeSpanValue = value as TimeSpan?;
             if (!TimeSpanValue.HasValue)
@@ -15,11 +15,6 @@ namespace Converters
 
             TimeSpan Duration = TimeSpanValue.Value;
             return PgJsonObjects.Tools.TimeSpanToString(Duration);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return -1;
         }
     }
 }

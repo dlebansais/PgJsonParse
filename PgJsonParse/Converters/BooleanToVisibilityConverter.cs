@@ -1,22 +1,20 @@
-﻿using System;
-using System.Globalization;
-using System.Windows;
+﻿using Presentation;
 using System.Windows.Data;
+#if CSHARP_XAML_FOR_HTML5
+using Windows.UI.Xaml;
+#else
+using System.Windows;
+#endif
 
 namespace Converters
 {
     [ValueConversion(typeof(bool), typeof(object))]
-    public class BooleanToVisibilityConverter : IValueConverter
+    public class BooleanToVisibilityConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             bool BoolValue = (bool)value;
             return BoolValue ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return false;
         }
     }
 }

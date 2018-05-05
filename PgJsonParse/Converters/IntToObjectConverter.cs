@@ -1,14 +1,13 @@
 ﻿using PgJsonParse;
-using System;
-using System.Globalization;
+using Presentation;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(int), typeof(object))]
-    public class IntToObjectConverter : IValueConverter
+    public class IntToObjectConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             int IndexValue = (int)value;
 
@@ -20,11 +19,6 @@ namespace Converters
                 return CollectionOfItems[CollectionOfItems.Count - 1];
             else
                 return CollectionOfItems[IndexValue];
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return -1;
         }
     }
 }

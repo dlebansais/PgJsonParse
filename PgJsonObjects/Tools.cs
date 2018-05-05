@@ -1,6 +1,5 @@
 ﻿using Presentation;
 using System;
-using System.Drawing;
 
 namespace PgJsonObjects
 {

@@ -1,16 +1,15 @@
 ﻿using PgJsonParse;
-using System;
+using Presentation;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Windows.Data;
 
 namespace Converters
 {
     [ValueConversion(typeof(object), typeof(bool))]
-    public class IsEnumInSetConverter : IValueConverter
+    public class IsEnumInSetConverter : GenericValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        protected override object Convert(object value, object parameter)
         {
             List<int> EnumList = new List<int>();
 
@@ -34,11 +33,6 @@ namespace Converters
             }
 
             return false;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
         }
     }
 }

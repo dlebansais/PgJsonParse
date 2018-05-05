@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CustomControls
+namespace Presentation
 {
     public partial class BusyIndicator : UserControl
     {
