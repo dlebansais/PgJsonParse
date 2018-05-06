@@ -54,7 +54,7 @@
     <Compile Include="AssemblyTools.cs" />
     <Compile Include="Cancellation.cs" />
     <Compile Include="CloseButton.cs" />
-    <Compile Include="ComboBox.cs" />
+    <Compile Include="Controls\ComboBox.cs" />
     <Compile Include="ComboBoxContentPresenter.cs" />
     <Compile Include="ComboBoxTemplateSelector.cs" />
     <Compile Include="Commands\ApplicationCommand.cs" />
@@ -73,8 +73,8 @@
     <Compile Include="DataTemplateSelector.cs" />
     <Compile Include="DispatchableDelegate.cs" />
     <Compile Include="DispatcherSource.cs" />
-    <Compile Include="ListBox.cs" />
-    <Compile Include="Popup.cs" />
+    <Compile Include="Controls\ListBox.cs" />
+    <Compile Include="Controls\Popup.cs" />
     <Compile Include="FileNameToBitmapImage.cs" />
     <Compile Include="FileTools.cs" />
     <Compile Include="FolderTools.cs" />
@@ -93,7 +93,7 @@
     <Compile Include="Taskbar\TaskbarProgress.cs" />
     <Compile Include="Taskbar\TaskbarShortcut.cs" />
     <Compile Include="Taskbar\TaskbarStates.cs" />
-    <Compile Include="ToolTipControl.cs" />
+    <Compile Include="Controls\ToolTipControl.cs" />
     <Compile Include="UserUI.cs" />
     <Compile Include="ValueConverterGroup.cs" />
     <Compile Include="WebClientTool.cs" />
