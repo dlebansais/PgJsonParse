@@ -14,7 +14,7 @@ namespace Converters
 
             if ((FileName = value as string) != null)
             {
-                RootApp CurrentApp = App.Current as RootApp;
+                App CurrentApp = App.Current as App;
                 foreach (RootControl w in CurrentApp.Windows)
                 {
                     MainWindow AsMainWindow;

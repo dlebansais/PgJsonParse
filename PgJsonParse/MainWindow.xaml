@@ -2069,11 +2069,11 @@
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
                                             <StackPanel Margin="0,10,0,10">
-                                                <ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                                                <ListBox ItemsSource="{Binding SelectedPowerList2}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                                                <ListBox ItemsSource="{Binding SelectedPowerList3}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                                                <ListBox ItemsSource="{Binding SelectedPowerList4}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                                                <ListBox ItemsSource="{Binding SelectedPowerList5}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                                                <p:ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                                                <p:ListBox ItemsSource="{Binding SelectedPowerList2}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                                                <p:ListBox ItemsSource="{Binding SelectedPowerList3}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                                                <p:ListBox ItemsSource="{Binding SelectedPowerList4}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                                                <p:ListBox ItemsSource="{Binding SelectedPowerList5}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
@@ -2592,7 +2592,7 @@
                                                         </Border>
                                                     </Grid>
                                                 </Border>
-                                                <ListBox ItemsSource="{Binding ItemFavorList}" ItemTemplate="{StaticResource GiftTemplate}" BorderBrush="Transparent" BorderThickness="0,0,0,0" ItemContainerStyle="{StaticResource styleListBoxItemNotFocusable}"/>
+                                                <p:ListBox ItemsSource="{Binding ItemFavorList}" ItemTemplate="{StaticResource GiftTemplate}" BorderBrush="Transparent" BorderThickness="0,0,0,0" ItemContainerStyle="{StaticResource styleListBoxItemNotFocusable}"/>
                                             </DockPanel>
                                         </ScrollViewer>
                                     </Border>
@@ -4151,7 +4151,7 @@
                                                                 </Border>
                                                             </Grid>
                                                         </Border>
-                                                        <ListBox ItemsSource="{Binding XpTable.XpAmountList}" ItemTemplate="{StaticResource XpTemplate}" BorderBrush="Transparent" BorderThickness="0,0,0,0" ItemContainerStyle="{StaticResource styleListBoxItemNotFocusable}"/>
+                                                        <p:ListBox ItemsSource="{Binding XpTable.XpAmountList}" ItemTemplate="{StaticResource XpTemplate}" BorderBrush="Transparent" BorderThickness="0,0,0,0" ItemContainerStyle="{StaticResource styleListBoxItemNotFocusable}"/>
                                                     </DockPanel>
                                                 </ScrollViewer>
                                             </Border>
