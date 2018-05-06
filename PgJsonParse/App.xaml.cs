@@ -9,5 +9,10 @@ namespace PgJsonParse
             InitializeComponent();
             InitializeApp();
         }
+
+        protected override RootControl CreateRootControl()
+        {
+            return new PrologueWindow();
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using PgJsonObjects;
+﻿using PgJsonObjects;
 using Presentation;
 using System;
 using System.Collections;
@@ -8,18 +7,25 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
+#if CSHARP_XAML_FOR_HTML5
+using Windows.System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Documents;
+using Windows.UI.Xaml.Input;
+#else
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Tools;
+#endif
 
 namespace PgJsonParse
 {
@@ -138,7 +144,7 @@ namespace PgJsonParse
         private void InitCache()
         {
             ImageConversion.UpdateWindowIconUsingFile(this, IconFile);
-            StaticContainer Container = FindResource("imgFavorIcon") as StaticContainer;
+            StaticContainer Container = GetResourceByName("imgFavorIcon") as StaticContainer;
             Container.Item = ImageConversion.IconFileToImageSource(FavorIconFile);
         }
         #endregion
@@ -379,7 +385,7 @@ namespace PgJsonParse
                         {
                             foreach (PgJsonObjects.Attribute Attribute in AttributeList)
                             {
-                                string Line = Attribute.Label + " " + "=" + " " + "0" + PgJsonObjects.Tools.NewLine;
+                                string Line = Attribute.Label + " " + "=" + " " + "0" + InvariantCulture.NewLine;
                                 sw.Write(Line);
                             }
                         }
@@ -403,7 +409,7 @@ namespace PgJsonParse
                             {
                                 if (Attribute.Key == "MAX_ARMOR")
                                 {
-                                    string Line = Attribute.Label + " " + "=" + " " + "1.0" + PgJsonObjects.Tools.NewLine;
+                                    string Line = Attribute.Label + " " + "=" + " " + "1.0" + InvariantCulture.NewLine;
                                     sw.Write(Line);
                                 }
                             }
@@ -430,7 +436,7 @@ namespace PgJsonParse
                         using (StreamReader sr = new StreamReader(fs, Encoding.ASCII))
                         {
                             string Content = sr.ReadToEnd();
-                            string[] Lines = Content.Split(new string[] { PgJsonObjects.Tools.NewLine }, StringSplitOptions.None);
+                            string[] Lines = Content.Split(new string[] { InvariantCulture.NewLine }, StringSplitOptions.None);
 
                             foreach (string Line in Lines)
                             {
@@ -447,7 +453,7 @@ namespace PgJsonParse
                                     continue;
 
                                 float AttributeWeight;
-                                if (!float.TryParse(AttributeWeightString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture.NumberFormat, out AttributeWeight))
+                                if (!InvariantCulture.TryParseSingle(AttributeWeightString, out AttributeWeight))
                                     continue;
 
                                 if (AttributeWeight <= 0)
@@ -510,26 +516,16 @@ namespace PgJsonParse
 
         private void LoadBuild()
         {
-            OpenFileDialog Dlg = new OpenFileDialog();
-            Dlg.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            bool? Result = Dlg.ShowDialog();
-
-            if (Result.HasValue && Result.Value == true)
+            if (FileTools.OpenTextFile(out string FileName, out string Content))
             {
-                using (FileStream fs = new FileStream(Dlg.FileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    using (StreamReader sr = new StreamReader(fs, Encoding.ASCII))
-                    {
-                        LoadBuild(sr);
-                    }
-                }
+                BuildFileName = FileName;
+                LoadBuild(Content);
             }
         }
 
-        private void LoadBuild(StreamReader reader)
+        private void LoadBuild(string content)
         {
-            string Content = reader.ReadToEnd();
-            string[] Lines = Content.Split(new string[] { PgJsonObjects.Tools.NewLine }, StringSplitOptions.None);
+            string[] Lines = content.Split(new string[] { InvariantCulture.NewLine }, StringSplitOptions.None);
 
             foreach (string s in Lines)
             {
@@ -701,43 +697,34 @@ namespace PgJsonParse
 
         private void SaveBuild()
         {
-            SaveFileDialog Dlg = new SaveFileDialog();
-            Dlg.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            bool? Result = Dlg.ShowDialog();
-
-            if (Result.HasValue && Result.Value == true)
+            using (StringWriter sw = new StringWriter())
             {
-                using (FileStream fs = new FileStream(Dlg.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
-                    {
-                        SaveBuild(sw);
-                    }
-                }
+                SaveBuild(sw);
+                FileTools.SaveTextFile(BuildFileName, sw.ToString());
             }
         }
 
-        private void SaveBuild(StreamWriter sw)
+        private void SaveBuild(TextWriter tw)
         {
             if (SelectedFirstSkill >= 0)
             {
                 string FirstSkillName = CombatSkillList[SelectedFirstSkill].ToString();
-                string Line = "FirstSkill" + "=" + FirstSkillName + " (" + MaxLevelFirstSkill + ")" + PgJsonObjects.Tools.NewLine;
-                sw.Write(Line);
+                string Line = "FirstSkill" + "=" + FirstSkillName + " (" + MaxLevelFirstSkill + ")" + InvariantCulture.NewLine;
+                tw.Write(Line);
             }
 
             if (SelectedSecondSkill >= 0)
             {
                 string SecondSkillName = CombatSkillList[SelectedSecondSkill].ToString();
-                string Line = "SecondSkill" + "=" + SecondSkillName + " (" + MaxLevelSecondSkill + ")" + PgJsonObjects.Tools.NewLine;
-                sw.Write(Line);
+                string Line = "SecondSkill" + "=" + SecondSkillName + " (" + MaxLevelSecondSkill + ")" + InvariantCulture.NewLine;
+                tw.Write(Line);
             }
 
             if (WeightProfileIndex >= 0)
             {
                 string WeightProfileName = WeightProfileList[WeightProfileIndex].Name;
-                string Line = "GearProfile" + "=" + WeightProfileName + PgJsonObjects.Tools.NewLine;
-                sw.Write(Line);
+                string Line = "GearProfile" + "=" + WeightProfileName + InvariantCulture.NewLine;
+                tw.Write(Line);
             }
 
             foreach (SlotPlaner Planer in SlotPlanerList)
@@ -748,48 +735,48 @@ namespace PgJsonParse
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
-                    sw.Write(Line);
+                    string Line = SlotName + "=" + Key + InvariantCulture.NewLine;
+                    tw.Write(Line);
                 }
 
                 foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList2)
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
-                    sw.Write(Line);
+                    string Line = SlotName + "=" + Key + InvariantCulture.NewLine;
+                    tw.Write(Line);
                 }
 
                 foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList3)
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
-                    sw.Write(Line);
+                    string Line = SlotName + "=" + Key + InvariantCulture.NewLine;
+                    tw.Write(Line);
                 }
 
                 foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList4)
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
-                    sw.Write(Line);
+                    string Line = SlotName + "=" + Key + InvariantCulture.NewLine;
+                    tw.Write(Line);
                 }
 
                 foreach (PlanerSlotPower PlanerSlot in Planer.SelectedPowerList5)
                 {
                     Power Reference = PlanerSlot.Reference;
                     string Key = Reference.Key;
-                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
-                    sw.Write(Line);
+                    string Line = SlotName + "=" + Key + InvariantCulture.NewLine;
+                    tw.Write(Line);
                 }
 
                 if (Planer.SelectedGearIndex >= 0 && Planer.SelectedGearIndex < Planer.SortedGearList.Count)
                 {
                     Item PlanerItem = Planer.SortedGearList[Planer.SelectedGearIndex];
                     string Key = PlanerItem.Key;
-                    string Line = SlotName + "=" + Key + PgJsonObjects.Tools.NewLine;
-                    sw.Write(Line);
+                    string Line = SlotName + "=" + Key + InvariantCulture.NewLine;
+                    tw.Write(Line);
                 }
             }
         }
@@ -876,6 +863,7 @@ namespace PgJsonParse
         }
 
         private List<SlotPlaner> SlotPlanerList;
+        private string BuildFileName;
         #endregion
 
         #region Gear Planer
@@ -1313,7 +1301,7 @@ namespace PgJsonParse
             List<Skill> CombatSkillList = new List<Skill>();
             foreach (Skill SkillItem in SkillList)
                 if (IsCombatSkill(SkillItem))
-                        CombatSkillList.Add(SkillItem);
+                    CombatSkillList.Add(SkillItem);
 
             Dispatcher.BeginInvoke(new Action(() => OnCrunchSkills(CombatSkillList, 0, 0)));
         }
@@ -1466,7 +1454,7 @@ namespace PgJsonParse
             else
                 MaxLevel = int.MaxValue;
 
-            Dictionary <Ability, List<Ability>> AbilitiesSortedByLineName = new Dictionary<Ability, List<Ability>>();
+            Dictionary<Ability, List<Ability>> AbilitiesSortedByLineName = new Dictionary<Ability, List<Ability>>();
             IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
             IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
@@ -1712,18 +1700,7 @@ namespace PgJsonParse
 
         private void OnOpenProfileFolder(object sender, EventArgs e)
         {
-            Process Explorer = new Process();
-            Explorer.StartInfo.FileName = "explorer.exe";
-            Explorer.StartInfo.Arguments = ProfileFolder;
-            Explorer.StartInfo.UseShellExecute = true;
-
-            Explorer.Start();
-        }
-
-        private void OnSearchTermsEntered(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                OnSearchTermsEntered();
+            WebClientTool.OpenFileExplorer(ProfileFolder);
         }
 
         private void OnSearchCheckChanged(object sender, RoutedEventArgs e)
@@ -1768,6 +1745,32 @@ namespace PgJsonParse
                 XpTableButton.IsChecked = false;
         }
 
+        private void OnFavorButtonClicked(object sender, RoutedEventArgs e)
+        {
+            ToggleButton NewFavorButton = sender as ToggleButton;
+            if (FavorButton != null && FavorButton != NewFavorButton && FavorButton.IsChecked.HasValue && FavorButton.IsChecked.Value)
+                FavorButton.IsChecked = false;
+
+            FavorButton = NewFavorButton;
+        }
+
+        private void OnFavorPopupOpened(object sender, EventArgs e)
+        {
+        }
+
+#if CSHARP_XAML_FOR_HTML5
+        private void OnSearchTermsEntered(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+                OnSearchTermsEntered();
+        }
+#else
+        private void OnSearchTermsEntered(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                OnSearchTermsEntered();
+        }
+
         private void OnGridViewColumnHeaderClick(object sender, RoutedEventArgs e)
         {
             GridViewColumnHeader Header = e.OriginalSource as GridViewColumnHeader;
@@ -1783,19 +1786,7 @@ namespace PgJsonParse
             else if (ColumnName == "Value")
                 Favor.SortByValue();
         }
-
-        private void OnFavorButtonClicked(object sender, RoutedEventArgs e)
-        {
-            ToggleButton NewFavorButton = sender as ToggleButton;
-            if (FavorButton != null && FavorButton != NewFavorButton && FavorButton.IsChecked.HasValue && FavorButton.IsChecked.Value)
-                FavorButton.IsChecked = false;
-
-            FavorButton = NewFavorButton;
-        }
-
-        private void OnFavorPopupOpened(object sender, EventArgs e)
-        {
-        }
+#endif
 
         private ToggleButton XpTableButton;
         private ToggleButton FavorButton;

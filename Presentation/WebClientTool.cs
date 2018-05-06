@@ -139,5 +139,17 @@ namespace Presentation
                 PollDownload(DownloadTask, callback);
         }
         #endregion
+
+        #region Explorer
+        public static void OpenFileExplorer(string folder)
+        {
+            Process Explorer = new Process();
+            Explorer.StartInfo.FileName = "explorer.exe";
+            Explorer.StartInfo.Arguments = folder;
+            Explorer.StartInfo.UseShellExecute = true;
+
+            Explorer.Start();
+        }
+        #endregion
     }
 }

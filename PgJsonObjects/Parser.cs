@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -237,7 +236,7 @@ namespace PgJsonObjects
                                 string Content = Entry.Value.TextContent;
                                 if (Content.Length > 0)
                                 {
-                                    string Line = Content + JsonGenerator.ObjectSeparator + Entry.Key + Tools.NewLine;
+                                    string Line = Content + JsonGenerator.ObjectSeparator + Entry.Key + InvariantCulture.NewLine;
                                     sw.Write(Line);
                                 }
                             }

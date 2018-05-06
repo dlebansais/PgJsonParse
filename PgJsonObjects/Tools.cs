@@ -251,7 +251,5 @@ namespace PgJsonObjects
 
             return Result;
         }
-
-        public static string NewLine { get; } = "\r\n";
     }
 }

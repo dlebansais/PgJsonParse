@@ -7,7 +7,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Tools
+namespace Presentation
 {
     public static class ImageConversion
     {

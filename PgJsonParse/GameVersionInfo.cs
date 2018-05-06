@@ -12,7 +12,6 @@ using Windows.UI.Xaml;
 #else
 using System.Windows;
 #endif
-using Tools;
 
 namespace PgJsonParse
 {
@@ -86,7 +85,7 @@ namespace PgJsonParse
 
         public delegate void DownloadFilesResultHandler(bool success, string exceptionMessage);
 
-        public void DownloadFiles(IDispatcherSource dispatcherSource, string destinationFolder, IReadOnlyList<string> fileList, DownloadFilesResultHandler callback)
+        public void DownloadFiles(IDispatcherSource dispatcherSource, string destinationFolder, IList<string> fileList, DownloadFilesResultHandler callback)
         {
             DownloadFiles0(dispatcherSource, fileList, destinationFolder, callback);
         }
@@ -96,7 +95,7 @@ namespace PgJsonParse
             IsFileDownloadCancelled = true;
         }
 
-        private void DownloadFiles0(IDispatcherSource dispatcherSource, IReadOnlyList<string> fileList, string destinationFolder, DownloadFilesResultHandler callback)
+        private void DownloadFiles0(IDispatcherSource dispatcherSource, IList<string> fileList, string destinationFolder, DownloadFilesResultHandler callback)
         {
             FileDownloadState = DownloadState.Downloading;
             IsFileDownloadCancelled = false;
@@ -108,7 +107,7 @@ namespace PgJsonParse
             DownloadFiles1(dispatcherSource, fileList, destinationFolder, Watch, 0, callback);
         }
 
-        private void DownloadFiles1(IDispatcherSource dispatcherSource, IReadOnlyList<string> fileList, string destinationFolder, Stopwatch watch, int progressIndex, DownloadFilesResultHandler callback)
+        private void DownloadFiles1(IDispatcherSource dispatcherSource, IList<string> fileList, string destinationFolder, Stopwatch watch, int progressIndex, DownloadFilesResultHandler callback)
         {
             if (progressIndex < fileList.Count)
             {
@@ -120,7 +119,7 @@ namespace PgJsonParse
                 DownloadFiles3(success: true, downloadException: null, watch, callback);
         }
 
-        private void DownloadFiles2(bool success, Exception downloadException, IDispatcherSource dispatcherSource, IReadOnlyList<string> fileList, string destinationFolder, Stopwatch watch, int progressIndex, DownloadFilesResultHandler callback)
+        private void DownloadFiles2(bool success, Exception downloadException, IDispatcherSource dispatcherSource, IList<string> fileList, string destinationFolder, Stopwatch watch, int progressIndex, DownloadFilesResultHandler callback)
         {
             if (success && downloadException == null)
             {
@@ -260,7 +259,7 @@ namespace PgJsonParse
 
         public delegate void DownloadIconsResultHandler(bool success, string exceptionMessage, int downloadedCount);
 
-        public void DownloadIcons(IDispatcherSource dispatcherSource, int loadedIconCount, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
+        public void DownloadIcons(IDispatcherSource dispatcherSource, int loadedIconCount, IList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
         {
             IconDownloadState = DownloadState.Downloading;
             IsIconDownloadCancelled = false;
@@ -273,7 +272,7 @@ namespace PgJsonParse
             IsIconDownloadCancelled = true;
         }
 
-        private void DownloadIcons0(IDispatcherSource dispatcherSource, int loadedIconCount, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
+        private void DownloadIcons0(IDispatcherSource dispatcherSource, int loadedIconCount, IList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
         {
             DownloadIcons1(dispatcherSource, loadedIconCount, iconList, destinationFolder, 
                            (bool success, Exception downloadException, int downloadedCount) => { DownloadIcons4(success, downloadException, downloadedCount, iconList, destinationFolder, callback); });
@@ -281,7 +280,7 @@ namespace PgJsonParse
 
         private delegate void DownloadIconsCompletedHandler(bool success, Exception downloadException, int downloadedCount);
 
-        private void DownloadIcons1(IDispatcherSource dispatcherSource, int loadedIconCount, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsCompletedHandler callback)
+        private void DownloadIcons1(IDispatcherSource dispatcherSource, int loadedIconCount, IList<int> iconList, string destinationFolder, DownloadIconsCompletedHandler callback)
         {
             Stopwatch Watch = new Stopwatch();
             Watch.Start();
@@ -289,7 +288,7 @@ namespace PgJsonParse
             DownloadIcons2(dispatcherSource, loadedIconCount, iconList, destinationFolder, 0, callback, Watch);
         }
 
-        private void DownloadIcons2(IDispatcherSource dispatcherSource, int loadedIconCount, IReadOnlyList<int> iconList, string destinationFolder, int progressIndex, DownloadIconsCompletedHandler callback, Stopwatch watch)
+        private void DownloadIcons2(IDispatcherSource dispatcherSource, int loadedIconCount, IList<int> iconList, string destinationFolder, int progressIndex, DownloadIconsCompletedHandler callback, Stopwatch watch)
         {
             if (progressIndex < iconList.Count)
             {
@@ -306,7 +305,7 @@ namespace PgJsonParse
             }
         }
 
-        private void DownloadIcons3(bool success, Exception downloadException, IDispatcherSource dispatcherSource, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsCompletedHandler callback, int loadedIconCount, int progressIndex, Stopwatch watch, int iconId)
+        private void DownloadIcons3(bool success, Exception downloadException, IDispatcherSource dispatcherSource, IList<int> iconList, string destinationFolder, DownloadIconsCompletedHandler callback, int loadedIconCount, int progressIndex, Stopwatch watch, int iconId)
         {
             if (success)
             {
@@ -320,7 +319,7 @@ namespace PgJsonParse
                 callback(false, downloadException, loadedIconCount + progressIndex);
         }
 
-        private void DownloadIcons4(bool success, Exception downloadException, int downloadedCount, IReadOnlyList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
+        private void DownloadIcons4(bool success, Exception downloadException, int downloadedCount, IList<int> iconList, string destinationFolder, DownloadIconsResultHandler callback)
         {
             if (success)
             {

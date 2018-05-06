@@ -118,6 +118,11 @@ namespace Presentation
             ApplicationCommand.SubscribeToControlCommand(this, resourceName, handler);
         }
 
+        protected object GetResourceByName(string name)
+        {
+            return Resources[name];
+        }
+
         #region Progress
         public void SetTaskbarState(TaskbarStates taskbarState)
         {

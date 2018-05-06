@@ -1,4 +1,4 @@
-﻿namespace PgJsonParse
+﻿namespace Presentation
 {
     public class StaticContainer
     {

@@ -1,14 +1,6 @@
-﻿<pre:RootApp x:Class="PgJsonParse.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:pre="clr-namespace:Presentation;assembly=Presentation"
-             xmlns:local="clr-namespace:PgJsonParse"
-             StartupUri="PrologueWindow.xaml">
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Tools/MiscStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Application.Resources>
-</pre:RootApp>
+﻿<p:RootApp x:Class="PgJsonParse.App"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:p="clr-namespace:Presentation;assembly=Presentation"
+           StartupUri="PrologueWindow.xaml">
+</p:RootApp>

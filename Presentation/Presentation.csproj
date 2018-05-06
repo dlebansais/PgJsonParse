@@ -73,9 +73,12 @@
     <Compile Include="DataTemplateSelector.cs" />
     <Compile Include="DispatchableDelegate.cs" />
     <Compile Include="DispatcherSource.cs" />
+    <Compile Include="Popup.cs" />
     <Compile Include="FileNameToBitmapImage.cs" />
+    <Compile Include="FileTools.cs" />
     <Compile Include="FolderTools.cs" />
     <Compile Include="GenericValueConverter.cs" />
+    <Compile Include="ImageConversion.cs" />
     <Compile Include="NetTools.cs" />
     <Compile Include="Persistent.cs" />
     <Compile Include="PresentationEnvironment.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="Controls\SelectorControl.cs" />
     <Compile Include="Controls\SelectorItem.cs" />
     <Compile Include="InvariantCulture.cs" />
+    <Compile Include="StaticContainer.cs" />
     <Compile Include="Taskbar\TaskbarProgress.cs" />
     <Compile Include="Taskbar\TaskbarShortcut.cs" />
     <Compile Include="Taskbar\TaskbarStates.cs" />

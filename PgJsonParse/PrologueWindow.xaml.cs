@@ -10,7 +10,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Tools;
 #if CSHARP_XAML_FOR_HTML5
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -1201,7 +1200,7 @@ namespace PgJsonParse
                     {
                         foreach (string MushroomName in MushroomNameList)
                         {
-                            string Line = MushroomName + PgJsonObjects.Tools.NewLine;
+                            string Line = MushroomName + InvariantCulture.NewLine;
                             sw.Write(Line);
                         }
                     }
@@ -1491,11 +1490,6 @@ namespace PgJsonParse
         {
             GameVersionInfo VersionInfo = sender as GameVersionInfo;
             SetTaskbarProgressValue(VersionInfo.IconDownloadProgress, 100.0);
-        }
-
-        private void OnPopupClosed(object sender, EventArgs e)
-        {
-            PopupHandler.OnPopupClosed(this);
         }
 
         private void OnIconSharingChanged(object sender, RoutedEventArgs e)

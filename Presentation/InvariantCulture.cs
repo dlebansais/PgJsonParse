@@ -112,5 +112,9 @@ namespace Presentation
                 return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Transparent);
         }
         #endregion
+
+        #region Misc
+        public static string NewLine { get; } = "\r\n";
+        #endregion
     }
 }

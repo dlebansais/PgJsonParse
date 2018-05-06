@@ -5,7 +5,6 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:conv="clr-namespace:Converters"
         xmlns:app="clr-namespace:PgJsonParse"
-        xmlns:pre="clr-namespace:Presentation;assembly=Presentation"
         xmlns:obj="clr-namespace:PgJsonObjects;assembly=PgJsonObjects">
     <p:RootControl.Resources>
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
@@ -22,24 +21,24 @@
         <conv:RgbColorToBrushConverter x:Key="convRgbColorToBrush"/>
         <conv:ReplaceMacroConverter x:Key="convReplaceMacro"/>
         <conv:NullableTimeSpanToDurationConverter x:Key="convNullableTimeSpanToDuration"/>
-        <pre:ValueConverterGroup x:Key="convchainIsEnumInSetVisibility">
+        <p:ValueConverterGroup x:Key="convchainIsEnumInSetVisibility">
             <conv:IsEnumInSetConverter/>
             <conv:BooleanToVisibilityConverter/>
-        </pre:ValueConverterGroup>
-        <pre:ValueConverterGroup x:Key="convchainNotIsEnumInSetVisibility">
+        </p:ValueConverterGroup>
+        <p:ValueConverterGroup x:Key="convchainNotIsEnumInSetVisibility">
             <conv:IsEnumInSetConverter/>
             <conv:BooleanInvertedConverter/>
             <conv:BooleanToVisibilityConverter/>
-        </pre:ValueConverterGroup>
-        <pre:ValueConverterGroup x:Key="convchainIntThresholdVisibility">
+        </p:ValueConverterGroup>
+        <p:ValueConverterGroup x:Key="convchainIntThresholdVisibility">
             <conv:IntThresholdConverter/>
             <conv:BooleanToVisibilityConverter/>
-        </pre:ValueConverterGroup>
-        <pre:ValueConverterGroup x:Key="convchainNotIntThresholdVisibility">
+        </p:ValueConverterGroup>
+        <p:ValueConverterGroup x:Key="convchainNotIntThresholdVisibility">
             <conv:IntThresholdConverter/>
             <conv:BooleanInvertedConverter/>
             <conv:BooleanToVisibilityConverter/>
-        </pre:ValueConverterGroup>
+        </p:ValueConverterGroup>
         <p:ApplicationCommand x:Key="AddPowerCommand"/>
         <p:ApplicationCommand x:Key="RemovePowerCommand"/>
         <p:ApplicationCommand x:Key="LoadBuildCommand"/>
@@ -136,7 +135,11 @@
         <BitmapImage x:Key="imgRedo" UriSource="pack://application:,,,/Resources/redo.png"/>
         <BitmapImage x:Key="imgUndo" UriSource="pack://application:,,,/Resources/undo.png"/>
         <BitmapImage x:Key="imgAttuned" UriSource="pack://application:,,,/Resources/Locked.png"/>
-        <app:StaticContainer x:Key="imgFavorIcon"/>
+        <p:StaticContainer x:Key="imgFavorIcon"/>
+        <Style x:Key="styleListBoxItemNotFocusable" TargetType="ListBoxItem"/>
+        <Style x:Key="styleListBoxItemHorizontalStretch" TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
         <DataTemplate x:Key="AttributeLinkTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding FriendlyName}" TextWrapping="Wrap" Width="300" TextAlignment="Right"/>
@@ -892,7 +895,9 @@
         </DataTemplate>
         <DataTemplate x:Key="RecipeItemTemplate">
             <StackPanel Orientation="Horizontal">
-                <Image Visibility="{Binding AttuneToCrafter, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Source="{StaticResource imgAttuned}" ToolTip="This item is attuned to the crafter" Width="6" Height="8" Margin="0,0,5,0"/>
+                <p:ToolTipControl ToolTip="This item is attuned to the crafter">
+                    <Image Visibility="{Binding AttuneToCrafter, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Source="{StaticResource imgAttuned}" Width="6" Height="8" Margin="0,0,5,0"/>
+                </p:ToolTipControl>
                 <Grid>
                     <StackPanel Visibility="{Binding Item, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal">
                         <TextBlock TextWrapping="Wrap">
@@ -2550,7 +2555,7 @@
                                 <ToggleButton x:Name="buttonFavor" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" Margin="5,0,5,0" Click="OnFavorButtonClicked">
                                     <Image Width="12" Height="12" Source="{Binding Item, Source={StaticResource imgFavorIcon}}"/>
                                 </ToggleButton>
-                                <Popup IsOpen="{Binding IsChecked, ElementName=buttonFavor}" Placement="Bottom" AllowsTransparency="False" Focusable="False" StaysOpen="False" MaxHeight="400" Opened="OnFavorPopupOpened">
+                                <p:Popup IsOpen="{Binding IsChecked, ElementName=buttonFavor}" Placement="Bottom" AllowsTransparency="False" Focusable="False" StaysOpen="False" MaxHeight="400" Opened="OnFavorPopupOpened">
                                     <Border BorderBrush="DarkGray" BorderThickness="1">
                                         <ScrollViewer>
                                             <ScrollViewer.Resources>
@@ -2591,7 +2596,7 @@
                                             </DockPanel>
                                         </ScrollViewer>
                                     </Border>
-                                </Popup>
+                                </p:Popup>
                                 <StackPanel Orientation="Horizontal" Visibility="{Binding MinValueRequirement, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
                                     <TextBlock>(Min Value:</TextBlock>
                                     <TextBlock Text="{Binding MinValueRequirement}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -2928,7 +2933,9 @@
                     <DataTemplate x:Key="SearchResultItemContentTemplate">
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <Image DockPanel.Dock="Left" ToolTip="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                <p:ToolTipControl ToolTip="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}">
+                                    <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                                </p:ToolTipControl>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Item:</TextBlock>
                                     <TextBlock Text="{Binding Name}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -4107,7 +4114,7 @@
                                                 </TextBlock.Text>
                                             </TextBlock>
                                         </DockPanel>
-                                        <Popup IsOpen="{Binding IsChecked, ElementName=buttonXpTable}" Placement="Bottom" AllowsTransparency="False" Focusable="False" StaysOpen="False" MaxHeight="400">
+                                        <p:Popup IsOpen="{Binding IsChecked, ElementName=buttonXpTable}" Placement="Bottom" AllowsTransparency="False" Focusable="False" StaysOpen="False" MaxHeight="400">
                                             <Border BorderBrush="DarkGray" BorderThickness="1">
                                                 <ScrollViewer>
                                                     <ScrollViewer.Resources>
@@ -4148,7 +4155,7 @@
                                                     </DockPanel>
                                                 </ScrollViewer>
                                             </Border>
-                                        </Popup>
+                                        </p:Popup>
                                     </Grid>
                                     <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Advancement Table:</TextBlock>
                                     <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding AdvancementTable.InternalName}" TextWrapping="Wrap" Margin="5,10,0,0"/>
