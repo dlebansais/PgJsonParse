@@ -716,16 +716,16 @@ namespace PgJsonParse
                         int Version;
                         if (int.TryParse(FolderName, out Version) && Version > 0)
                         {
-                            string[] Files = Directory.GetFiles(SubFolder, "*.json");
-
-                            int DowloadableCount = 0;
+                            DownloadState FileDownloadState = DownloadState.Downloaded;
                             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
                                 if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion >= Version)
-                                    DowloadableCount++;
+                                    if (!FileTools.FileExists(Path.Combine(SubFolder, Entry.Value.JsonFileName + ".json")))
+                                    {
+                                        FileDownloadState = DownloadState.NotDownloaded;
+                                        break;
+                                    }
 
-                            DownloadState FileDownloadState = Files.Length >= DowloadableCount ? DownloadState.Downloaded : DownloadState.NotDownloaded;
                             DownloadState IconDownloadState = IsLastIconLoadedForVersion(Version) ? DownloadState.Downloaded : DownloadState.NotDownloaded;
-
                             GameVersionInfo NewVersion = new GameVersionInfo(this, Version, FileDownloadState, IconDownloadState);
 
                             int i;
@@ -1194,17 +1194,14 @@ namespace PgJsonParse
 
             try
             {
-                using (FileStream fs = new FileStream(MushroomNameFile, FileMode.Create, FileAccess.Write, FileShare.None))
+                string Content = "";
+                foreach (string MushroomName in MushroomNameList)
                 {
-                    using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
-                    {
-                        foreach (string MushroomName in MushroomNameList)
-                        {
-                            string Line = MushroomName + InvariantCulture.NewLine;
-                            sw.Write(Line);
-                        }
-                    }
+                    string Line = MushroomName + InvariantCulture.NewLine;
+                    Content += Line;
                 }
+
+                FileTools.CommitTextFile(MushroomNameFile, Content);
             }
             catch (Exception e)
             {

@@ -36,7 +36,7 @@ namespace PgJsonObjects
             ICollection<T> ObjectList = GenericObjectList as ICollection<T>;
             ObjectList.Clear();
 
-            string Content = LoadContent(FilePath);
+            string Content = FileTools.LoadTextFile(FilePath);
             if (Content != null)
             {
                 try
@@ -222,31 +222,30 @@ namespace PgJsonObjects
         {
             try
             {
-                if (File.Exists(IndexFilePath))
+                if (FileTools.FileExists(IndexFilePath))
                     return;
 
-                using (FileStream fs = new FileStream(IndexFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                StringBuilder Builder = new StringBuilder();
+
+                foreach (KeyValuePair<string, IGenericJsonObject> Entry in ObjectTable)
                 {
-                    using (StreamWriter sw = new StreamWriter(fs, Encoding.UTF8))
+                    try
                     {
-                        foreach (KeyValuePair<string, IGenericJsonObject> Entry in ObjectTable)
+                        string StringValue = Entry.Value.TextContent;
+                        if (StringValue.Length > 0)
                         {
-                            try
-                            {
-                                string Content = Entry.Value.TextContent;
-                                if (Content.Length > 0)
-                                {
-                                    string Line = Content + JsonGenerator.ObjectSeparator + Entry.Key + InvariantCulture.NewLine;
-                                    sw.Write(Line);
-                                }
-                            }
-                            catch
-                            {
-                                Debug.WriteLine("Failed to write index for " + Entry.Value.ToString());
-                            }
+                            string Line = StringValue + JsonGenerator.ObjectSeparator + Entry.Key + InvariantCulture.NewLine;
+                            Builder.Append(Line);
                         }
                     }
+                    catch
+                    {
+                        Debug.WriteLine("Failed to write index for " + Entry.Value.ToString());
+                    }
                 }
+
+                string Content = Builder.ToString();
+                FileTools.CommitTextFile(IndexFilePath, Content);
             }
             catch
             {
@@ -256,30 +255,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Implementation
-        private string LoadContent(string FilePath)
-        {
-            string Result = null;
-
-            using (FileStream fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                Result = LoadContent(fs);
-            }
-
-            return Result;
-        }
-
-        private string LoadContent(Stream SourceStream)
-        {
-            string Result = null;
-
-            using (StreamReader Reader = new StreamReader(SourceStream))
-            {
-                Result = Reader.ReadToEnd();
-            }
-
-            return Result;
-        }
-
         private int CompareContent(string OriginalContent, string ReconstructedContent)
         {
             int iOriginal = 0;

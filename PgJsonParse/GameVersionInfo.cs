@@ -192,15 +192,8 @@ namespace PgJsonParse
                     if (content != null && content.Length >= 256)
                     {
                         string FilePath = Path.Combine(destinationFolder, fileName + "." + extension);
-
-                        using (FileStream fs = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                        {
-                            using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
-                            {
-                                sw.Write(content);
-                                Success = true;
-                            }
-                        }
+                        FileTools.CommitTextFile(FilePath, content);
+                        Success = true;
                     }
                 }
                 catch (Exception e)
@@ -373,11 +366,8 @@ namespace PgJsonParse
                 if (!Directory.Exists(DestinationFolder))
                     Directory.CreateDirectory(DestinationFolder);
 
-                using (FileStream fs = new FileStream(iconPath, FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    fs.Write(data, 0, data.Length);
-                    success = true;
-                }
+                FileTools.CommitBinaryFile(iconPath, data);
+                success = true;
             }
             catch (Exception e)
             {

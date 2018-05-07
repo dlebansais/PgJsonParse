@@ -331,41 +331,55 @@ namespace PgJsonParse
             string s2 = skill2.ToString();
             return string.Compare(s1, s2);
         }
-        
+
+        private bool IsBuildPlanerRefreshing;
+
         private void RefreshBuildPlaner()
         {
             if (SlotPlanerList == null)
                 return;
 
-            PowerSkill SelectAsFirst, SelectAsSecond;
+            if (IsBuildPlanerRefreshing) // Prevents recursion in badly implemented .NET emulation
+                return;
 
-            if (SelectedFirstSkill >= 0 && SelectedFirstSkill < CombatSkillList.Count)
-                SelectAsFirst = CombatSkillList[SelectedFirstSkill];
-            else
-                SelectAsFirst = PowerSkill.Internal_None;
-
-            if (SelectedSecondSkill >= 0 && SelectedSecondSkill < CombatSkillList.Count)
-                SelectAsSecond = CombatSkillList[SelectedSecondSkill];
-            else
-                SelectAsSecond = PowerSkill.Internal_None;
-
-            if (SelectAsFirst == SelectAsSecond)
+            try
             {
-                SelectedFirstSkill = -1;
-                SelectedSecondSkill = -1;
-                NotifyPropertyChanged("SelectedFirstSkill");
-                NotifyPropertyChanged("SelectedSecondSkill");
-                SelectAsFirst = PowerSkill.Internal_None;
-                SelectAsSecond = PowerSkill.Internal_None;
+                IsBuildPlanerRefreshing = true;
+
+                PowerSkill SelectAsFirst, SelectAsSecond;
+
+                if (SelectedFirstSkill >= 0 && SelectedFirstSkill < CombatSkillList.Count)
+                    SelectAsFirst = CombatSkillList[SelectedFirstSkill];
+                else
+                    SelectAsFirst = PowerSkill.Internal_None;
+
+                if (SelectedSecondSkill >= 0 && SelectedSecondSkill < CombatSkillList.Count)
+                    SelectAsSecond = CombatSkillList[SelectedSecondSkill];
+                else
+                    SelectAsSecond = PowerSkill.Internal_None;
+
+                if (SelectAsFirst == SelectAsSecond)
+                {
+                    SelectedFirstSkill = -1;
+                    SelectedSecondSkill = -1;
+                    NotifyPropertyChanged("SelectedFirstSkill");
+                    NotifyPropertyChanged("SelectedSecondSkill");
+                    SelectAsFirst = PowerSkill.Internal_None;
+                    SelectAsSecond = PowerSkill.Internal_None;
+                }
+
+                IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
+                IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
+                IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
+                Dictionary<string, IGenericJsonObject> AttributeTable = AttributeDefinition.ObjectTable;
+
+                foreach (SlotPlaner PlanerItem in SlotPlanerList)
+                    PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill, DefaultMaxLevel);
             }
-
-            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
-            IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
-            IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
-            Dictionary<string, IGenericJsonObject> AttributeTable = AttributeDefinition.ObjectTable;
-
-            foreach (SlotPlaner PlanerItem in SlotPlanerList)
-                PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill, DefaultMaxLevel);
+            finally
+            {
+                IsBuildPlanerRefreshing = false;
+            }
         }
 
         private void RefreshWeightProfileList()
@@ -375,46 +389,33 @@ namespace PgJsonParse
             IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
             IList<PgJsonObjects.Attribute> AttributeList = AttributeDefinition.ObjectList as IList<PgJsonObjects.Attribute>;
 
-            if (!File.Exists(DefaultProfileName))
+            if (!FileTools.FileExists(DefaultProfileName))
             {
-                try
+                string AllContent = "";
+                foreach (PgJsonObjects.Attribute Attribute in AttributeList)
                 {
-                    using (FileStream fs = new FileStream(DefaultProfileName, FileMode.Create, FileAccess.Write, FileShare.None))
-                    {
-                        using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
-                        {
-                            foreach (PgJsonObjects.Attribute Attribute in AttributeList)
-                            {
-                                string Line = Attribute.Label + " " + "=" + " " + "0" + InvariantCulture.NewLine;
-                                sw.Write(Line);
-                            }
-                        }
-                    }
+                    string Line = Attribute.Label + " " + "=" + " " + "0" + InvariantCulture.NewLine;
+                    AllContent += Line;
                 }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
+
+                FileTools.CommitTextFile(DefaultProfileName, AllContent);
             }
 
-            if (!File.Exists(BestArmorProfileName))
+            if (!FileTools.FileExists(BestArmorProfileName))
             {
                 try
                 {
-                    using (FileStream fs = new FileStream(BestArmorProfileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                    string ArmorContent = "";
+                    foreach (PgJsonObjects.Attribute Attribute in AttributeList)
                     {
-                        using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
+                        if (Attribute.Key == "MAX_ARMOR")
                         {
-                            foreach (PgJsonObjects.Attribute Attribute in AttributeList)
-                            {
-                                if (Attribute.Key == "MAX_ARMOR")
-                                {
-                                    string Line = Attribute.Label + " " + "=" + " " + "1.0" + InvariantCulture.NewLine;
-                                    sw.Write(Line);
-                                }
-                            }
+                            string Line = Attribute.Label + " " + "=" + " " + "1.0" + InvariantCulture.NewLine;
+                            ArmorContent += Line;
                         }
                     }
+
+                    FileTools.CommitTextFile(BestArmorProfileName, ArmorContent);
                 }
                 catch (Exception e)
                 {
@@ -431,45 +432,39 @@ namespace PgJsonParse
                 {
                     WeightProfile NewProfile = null;
 
-                    using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    string Content = FileTools.LoadTextFile(FileName);
+                    string[] Lines = Content.Split(new string[] { InvariantCulture.NewLine }, StringSplitOptions.None);
+
+                    foreach (string Line in Lines)
                     {
-                        using (StreamReader sr = new StreamReader(fs, Encoding.ASCII))
-                        {
-                            string Content = sr.ReadToEnd();
-                            string[] Lines = Content.Split(new string[] { InvariantCulture.NewLine }, StringSplitOptions.None);
+                        if (Line.Length == 0)
+                            continue;
 
-                            foreach (string Line in Lines)
+                        string[] Split = Line.Split('=');
+                        if (Split.Length != 2)
+                            continue;
+
+                        string AttributeLabel = Split[0].Trim();
+                        string AttributeWeightString = Split[1].Trim();
+                        if (AttributeLabel.Length == 0 || AttributeWeightString.Length == 0)
+                            continue;
+
+                        float AttributeWeight;
+                        if (!InvariantCulture.TryParseSingle(AttributeWeightString, out AttributeWeight))
+                            continue;
+
+                        if (AttributeWeight <= 0)
+                            continue;
+
+                        foreach (PgJsonObjects.Attribute Attribute in AttributeList)
+                            if (Attribute.Label == AttributeLabel)
                             {
-                                if (Line.Length == 0)
-                                    continue;
+                                if (NewProfile == null)
+                                    NewProfile = new WeightProfile(Path.GetFileNameWithoutExtension(FileName));
 
-                                string[] Split = Line.Split('=');
-                                if (Split.Length != 2)
-                                    continue;
-
-                                string AttributeLabel = Split[0].Trim();
-                                string AttributeWeightString = Split[1].Trim();
-                                if (AttributeLabel.Length == 0 || AttributeWeightString.Length == 0)
-                                    continue;
-
-                                float AttributeWeight;
-                                if (!InvariantCulture.TryParseSingle(AttributeWeightString, out AttributeWeight))
-                                    continue;
-
-                                if (AttributeWeight <= 0)
-                                    continue;
-
-                                foreach (PgJsonObjects.Attribute Attribute in AttributeList)
-                                    if (Attribute.Label == AttributeLabel)
-                                    {
-                                        if (NewProfile == null)
-                                            NewProfile = new WeightProfile(Path.GetFileNameWithoutExtension(FileName));
-
-                                        NewProfile.AddAttributeWeight(Attribute, AttributeWeight);
-                                        break;
-                                    }
+                                NewProfile.AddAttributeWeight(Attribute, AttributeWeight);
+                                break;
                             }
-                        }
                     }
 
                     if (NewProfile != null)
@@ -1068,23 +1063,15 @@ namespace PgJsonParse
             try
             {
                 string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, definition.JsonFileName + "-index.txt");
-                if (!File.Exists(IndexFilePath))
+                if (!FileTools.FileExists(IndexFilePath))
                     return;
 
-                using (FileStream fs = new FileStream(IndexFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
-                    {
-                        string TextContent = sr.ReadToEnd();
-
-                        Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
-                        PerformSearch(termList, ObjectTable, TextContent, searchMode);
-                    }
-                }
+                string TextContent = FileTools.LoadTextFile(IndexFilePath);
+                Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
+                PerformSearch(termList, ObjectTable, TextContent, searchMode);
             }
             catch
             {
-
             }
         }
 
