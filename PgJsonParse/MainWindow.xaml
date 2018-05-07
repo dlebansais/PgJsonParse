@@ -1844,6 +1844,164 @@
                 <Path x:Name="Arrow" Grid.Column="1" Fill="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
             </Grid>
         </ControlTemplate>
+        <DataTemplate x:Key="GearNameTemplate">
+            <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="PlanerHeaderTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="{Binding IconFileName, Converter={StaticResource convFileNameToBitmapImage}}"/>
+                <TextBlock VerticalAlignment="Center" Margin="10,0,20,0">
+                    <TextBlock.Text>
+                        <Binding Path="SlotName" Converter="{StaticResource convFriendlyName}"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="PlanerTemplate">
+            <Grid Margin="10,10,10,10">
+                <Grid.Resources>
+                    <DataTemplate x:Key="PowerNameTemplate">
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                    <DataTemplate x:Key="FullPowerTemplate">
+                        <DockPanel>
+                            <Ellipse DockPanel.Dock="Left" Fill="LightBlue" VerticalAlignment="Top" Width="5" Height="5" Margin="9,12,7,0"/>
+                            <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding IconFileNameList}" VerticalAlignment="Top" Margin="0,5,0,5">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Converter={StaticResource convFileNameToBitmapImage}}" Width="32" Height="32"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <TextBlock Text="{Binding Name}" Foreground="Lime" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" VerticalAlignment="Top" Margin="30,3,0,0"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="548"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="0" Margin="0,0,5,0">
+                    <Expander DockPanel.Dock="Bottom" Header="Other mods" Margin="0,10,0,0">
+                        <TabControl Margin="0,10,0,0">
+                            <TabItem Header="Generic">
+                                <Grid>
+                                    <ListBox ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <ListBox Width="0" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <ListBox Width="0" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Endurance">
+                                <Grid>
+                                    <ListBox Width="0" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <ListBox ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <ListBox Width="0" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Shamanic Infusion">
+                                <Grid>
+                                    <ListBox Width="0" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <ListBox Width="0" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <ListBox ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Expander>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Visibility="{Binding Owner.FirstSkill.SelectedIndex, Converter={StaticResource convIndexToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontWeight="Bold">
+                                    <TextBlock.Text>
+                                        <Binding Path="Owner.FirstSkill.SelectedItem" Converter="{StaticResource convFriendlyName}"/>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock FontWeight="Bold" Margin="5,0,0,0">mods</TextBlock>
+                            </StackPanel>
+                            <ListBox ItemsSource="{Binding AvailablePowerList1}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Visibility="{Binding Owner.SecondSkill.SelectedIndex, Converter={StaticResource convIndexToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontWeight="Bold">
+                                    <TextBlock.Text>
+                                        <Binding Path="Owner.SecondSkill.SelectedItem" Converter="{StaticResource convFriendlyName}"/>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock FontWeight="Bold" Margin="5,0,0,0">mods</TextBlock>
+                            </StackPanel>
+                            <ListBox ItemsSource="{Binding AvailablePowerList2}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                        </StackPanel>
+                    </Grid>
+                </DockPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <Button Command="{StaticResource AddPowerCommand}" CommandParameter="{Binding}" Margin="0,0,0,5">Add -&gt;</Button>
+                    <Button Command="{StaticResource RemovePowerCommand}" CommandParameter="{Binding}" Margin="0,5,0,0">&lt;- Remove</Button>
+                </StackPanel>
+                <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible" Margin="10,0,0,0">
+                    <StackPanel Background="Black">
+                        <DockPanel Margin="10,10,10,0">
+                            <Image DockPanel.Dock="Left" Source="{Binding SelectedGearIcon, Converter={StaticResource convFileNameToBitmapImage}}" Width="48" Height="48" VerticalAlignment="Top"/>
+                            <StackPanel Margin="10,2,5,0">
+                                <TextBlock Foreground="{Binding ColorIndex, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource ModColorCodes}, FallbackValue=White}" FontSize="28" FontWeight="Bold" FontFamily="Times New Roman" TextWrapping="Wrap" VerticalAlignment="Top">
+                                    <TextBlock.Text>
+                                        <Binding Path="SelectedGearName" Converter="{StaticResource convFriendlyName}"/>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Text="{Binding SelectedGearDescription}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="1,5,0,0"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <ItemsControl ItemsSource="{Binding SelectedGearEffectDescriptionList}" Margin="0,10,0,0">
+                            <ItemsControl.Resources>
+                                <DataTemplate x:Key="AttributeLinkGearTemplate">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Fill="LightBlue" VerticalAlignment="Top" Width="5" Height="5" Margin="15,10,5,0"/>
+                                        <ItemsControl ItemsSource="{Binding Link.IconFileNameList}" Margin="0,5,0,5">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Image Source="{Binding Converter={StaticResource convFileNameToBitmapImage}}" Width="32" Height="32"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                        <TextBlock Text="{Binding FriendlyNameAndEffect}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="25,5,0,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate x:Key="SimpleEffectGearTemplate">
+                                    <TextBlock Text="{Binding Description}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="10,0,10,0"/>
+                                </DataTemplate>
+                            </ItemsControl.Resources>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <app:ItemEffectGearSelector Content="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <StackPanel Margin="0,10,0,10">
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList2}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList3}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList4}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList5}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+                <ListBox x:Name="listGear" Grid.Column="3" ItemsSource="{Binding SortedGearList}" ItemTemplate="{StaticResource GearNameTemplate}" SelectedIndex="{Binding SelectedGearIndex}" Margin="10,0,0,0"/>
+            </Grid>
+        </DataTemplate>
     </p:RootControl.Resources>
     <Grid>
         <TabControl>
@@ -1921,166 +2079,6 @@
                         <Button DockPanel.Dock="Right" Command="{StaticResource LoadBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0">Load profile...</Button>
                     </DockPanel>
                     <TabControl Margin="0,10,0,0">
-                        <TabControl.Resources>
-                            <DataTemplate x:Key="GearNameTemplate">
-                                <TextBlock Text="{Binding Name}"/>
-                            </DataTemplate>
-                            <DataTemplate x:Key="PlanerHeaderTemplate">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding IconFileName, Converter={StaticResource convFileNameToBitmapImage}}"/>
-                                    <TextBlock VerticalAlignment="Center" Margin="10,0,20,0">
-                                        <TextBlock.Text>
-                                            <Binding Path="SlotName" Converter="{StaticResource convFriendlyName}"/>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </StackPanel>
-                            </DataTemplate>
-                            <DataTemplate x:Key="PlanerTemplate">
-                                <Grid Margin="10,10,10,10">
-                                    <Grid.Resources>
-                                        <DataTemplate x:Key="PowerNameTemplate">
-                                            <TextBlock Text="{Binding Name}"/>
-                                        </DataTemplate>
-                                        <DataTemplate x:Key="FullPowerTemplate">
-                                            <DockPanel>
-                                                <Ellipse DockPanel.Dock="Left" Fill="LightBlue" VerticalAlignment="Top" Width="5" Height="5" Margin="9,12,7,0"/>
-                                                <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding IconFileNameList}" VerticalAlignment="Top" Margin="0,5,0,5">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Image Source="{Binding Converter={StaticResource convFileNameToBitmapImage}}" Width="32" Height="32"/>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <StackPanel Orientation="Horizontal"/>
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-                                                </ItemsControl>
-                                                <TextBlock Text="{Binding Name}" Foreground="Lime" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" VerticalAlignment="Top" Margin="30,3,0,0"/>
-                                            </DockPanel>
-                                        </DataTemplate>
-                                    </Grid.Resources>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="548"/>
-                                        <ColumnDefinition Width="250"/>
-                                    </Grid.ColumnDefinitions>
-                                    <DockPanel Grid.Column="0" Margin="0,0,5,0">
-                                        <Expander DockPanel.Dock="Bottom" Header="Other mods" Margin="0,10,0,0">
-                                            <TabControl Margin="0,10,0,0">
-                                                <TabItem Header="Generic">
-                                                    <Grid>
-                                                        <ListBox ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                    </Grid>
-                                                </TabItem>
-                                                <TabItem Header="Endurance">
-                                                    <Grid>
-                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                    </Grid>
-                                                </TabItem>
-                                                <TabItem Header="Shamanic Infusion">
-                                                    <Grid>
-                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox Width="0" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                        <ListBox ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                                    </Grid>
-                                                </TabItem>
-                                            </TabControl>
-                                        </Expander>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <StackPanel Grid.Row="0" Visibility="{Binding Owner.FirstSkill.SelectedIndex, Converter={StaticResource convIndexToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontWeight="Bold">
-                                                        <TextBlock.Text>
-                                                            <Binding Path="Owner.FirstSkill.SelectedItem" Converter="{StaticResource convFriendlyName}"/>
-                                                        </TextBlock.Text>
-                                                    </TextBlock>
-                                                    <TextBlock FontWeight="Bold" Margin="5,0,0,0">mods</TextBlock>
-                                                </StackPanel>
-                                                <ListBox ItemsSource="{Binding AvailablePowerList1}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                            </StackPanel>
-                                            <StackPanel Grid.Row="1" Visibility="{Binding Owner.SecondSkill.SelectedIndex, Converter={StaticResource convIndexToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontWeight="Bold">
-                                                        <TextBlock.Text>
-                                                            <Binding Path="Owner.SecondSkill.SelectedItem" Converter="{StaticResource convFriendlyName}"/>
-                                                        </TextBlock.Text>
-                                                    </TextBlock>
-                                                    <TextBlock FontWeight="Bold" Margin="5,0,0,0">mods</TextBlock>
-                                                </StackPanel>
-                                                <ListBox ItemsSource="{Binding AvailablePowerList2}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                            </StackPanel>
-                                        </Grid>
-                                    </DockPanel>
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <Button Command="{StaticResource AddPowerCommand}" CommandParameter="{Binding}" Margin="0,0,0,5">Add -&gt;</Button>
-                                        <Button Command="{StaticResource RemovePowerCommand}" CommandParameter="{Binding}" Margin="0,5,0,0">&lt;- Remove</Button>
-                                    </StackPanel>
-                                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible" Margin="10,0,0,0">
-                                        <StackPanel Background="Black">
-                                            <DockPanel Margin="10,10,10,0">
-                                                <Image DockPanel.Dock="Left" Source="{Binding SelectedGearIcon, Converter={StaticResource convFileNameToBitmapImage}}" Width="48" Height="48" VerticalAlignment="Top"/>
-                                                <StackPanel Margin="10,2,5,0">
-                                                    <TextBlock Foreground="{Binding ColorIndex, Converter={StaticResource convIntToObject}, ConverterParameter={StaticResource ModColorCodes}, FallbackValue=White}" FontSize="28" FontWeight="Bold" FontFamily="Times New Roman" TextWrapping="Wrap" VerticalAlignment="Top">
-                                                        <TextBlock.Text>
-                                                            <Binding Path="SelectedGearName" Converter="{StaticResource convFriendlyName}"/>
-                                                        </TextBlock.Text>
-                                                    </TextBlock>
-                                                    <TextBlock Text="{Binding SelectedGearDescription}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="1,5,0,0"/>
-                                                </StackPanel>
-                                            </DockPanel>
-                                            <ItemsControl ItemsSource="{Binding SelectedGearEffectDescriptionList}" Margin="0,10,0,0">
-                                                <ItemsControl.Resources>
-                                                    <DataTemplate x:Key="AttributeLinkGearTemplate">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <Ellipse Fill="LightBlue" VerticalAlignment="Top" Width="5" Height="5" Margin="15,10,5,0"/>
-                                                            <ItemsControl ItemsSource="{Binding Link.IconFileNameList}" Margin="0,5,0,5">
-                                                                <ItemsControl.ItemTemplate>
-                                                                    <DataTemplate>
-                                                                        <Image Source="{Binding Converter={StaticResource convFileNameToBitmapImage}}" Width="32" Height="32"/>
-                                                                    </DataTemplate>
-                                                                </ItemsControl.ItemTemplate>
-                                                                <ItemsControl.ItemsPanel>
-                                                                    <ItemsPanelTemplate>
-                                                                        <StackPanel Orientation="Horizontal"/>
-                                                                    </ItemsPanelTemplate>
-                                                                </ItemsControl.ItemsPanel>
-                                                            </ItemsControl>
-                                                            <TextBlock Text="{Binding FriendlyNameAndEffect}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="25,5,0,0"/>
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                    <DataTemplate x:Key="SimpleEffectGearTemplate">
-                                                        <TextBlock Text="{Binding Description}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="10,0,10,0"/>
-                                                    </DataTemplate>
-                                                </ItemsControl.Resources>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <app:ItemEffectGearSelector Content="{Binding}"/>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                            <StackPanel Margin="0,10,0,10">
-                                                <p:ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                                                <p:ListBox ItemsSource="{Binding SelectedPowerList2}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                                                <p:ListBox ItemsSource="{Binding SelectedPowerList3}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                                                <p:ListBox ItemsSource="{Binding SelectedPowerList4}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                                                <p:ListBox ItemsSource="{Binding SelectedPowerList5}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                                            </StackPanel>
-                                        </StackPanel>
-                                    </ScrollViewer>
-                                    <ListBox x:Name="listGear" Grid.Column="3" ItemsSource="{Binding SortedGearList}" ItemTemplate="{StaticResource GearNameTemplate}" SelectedIndex="{Binding SelectedGearIndex}" Margin="10,0,0,0"/>
-                                </Grid>
-                            </DataTemplate>
-                        </TabControl.Resources>
                         <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding HeadSlotPlaner}">
                             <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding HeadSlotPlaner}"/>
                         </TabItem>
