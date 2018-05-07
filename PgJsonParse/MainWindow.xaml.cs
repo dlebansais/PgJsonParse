@@ -332,54 +332,40 @@ namespace PgJsonParse
             return string.Compare(s1, s2);
         }
 
-        private bool IsBuildPlanerRefreshing;
-
         private void RefreshBuildPlaner()
         {
             if (SlotPlanerList == null)
                 return;
 
-            if (IsBuildPlanerRefreshing) // Prevents recursion in badly implemented .NET emulation
-                return;
+            PowerSkill SelectAsFirst, SelectAsSecond;
 
-            try
+            if (SelectedFirstSkill >= 0 && SelectedFirstSkill < CombatSkillList.Count)
+                SelectAsFirst = CombatSkillList[SelectedFirstSkill];
+            else
+                SelectAsFirst = PowerSkill.Internal_None;
+
+            if (SelectedSecondSkill >= 0 && SelectedSecondSkill < CombatSkillList.Count)
+                SelectAsSecond = CombatSkillList[SelectedSecondSkill];
+            else
+                SelectAsSecond = PowerSkill.Internal_None;
+
+            if (SelectAsFirst == SelectAsSecond)
             {
-                IsBuildPlanerRefreshing = true;
-
-                PowerSkill SelectAsFirst, SelectAsSecond;
-
-                if (SelectedFirstSkill >= 0 && SelectedFirstSkill < CombatSkillList.Count)
-                    SelectAsFirst = CombatSkillList[SelectedFirstSkill];
-                else
-                    SelectAsFirst = PowerSkill.Internal_None;
-
-                if (SelectedSecondSkill >= 0 && SelectedSecondSkill < CombatSkillList.Count)
-                    SelectAsSecond = CombatSkillList[SelectedSecondSkill];
-                else
-                    SelectAsSecond = PowerSkill.Internal_None;
-
-                if (SelectAsFirst == SelectAsSecond)
-                {
-                    SelectedFirstSkill = -1;
-                    SelectedSecondSkill = -1;
-                    NotifyPropertyChanged("SelectedFirstSkill");
-                    NotifyPropertyChanged("SelectedSecondSkill");
-                    SelectAsFirst = PowerSkill.Internal_None;
-                    SelectAsSecond = PowerSkill.Internal_None;
-                }
-
-                IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
-                IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
-                IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
-                Dictionary<string, IGenericJsonObject> AttributeTable = AttributeDefinition.ObjectTable;
-
-                foreach (SlotPlaner PlanerItem in SlotPlanerList)
-                    PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill, DefaultMaxLevel);
+                SelectedFirstSkill = -1;
+                SelectedSecondSkill = -1;
+                NotifyPropertyChanged("SelectedFirstSkill");
+                NotifyPropertyChanged("SelectedSecondSkill");
+                SelectAsFirst = PowerSkill.Internal_None;
+                SelectAsSecond = PowerSkill.Internal_None;
             }
-            finally
-            {
-                IsBuildPlanerRefreshing = false;
-            }
+
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
+            IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
+            IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
+            Dictionary<string, IGenericJsonObject> AttributeTable = AttributeDefinition.ObjectTable;
+
+            foreach (SlotPlaner PlanerItem in SlotPlanerList)
+                PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill, DefaultMaxLevel);
         }
 
         private void RefreshWeightProfileList()
@@ -844,7 +830,7 @@ namespace PgJsonParse
 
         private void OnProfileSelected(object sender, SelectionChangedEventArgs e)
         {
-            RefreshGearPlaner();
+            Dispatcher.BeginInvoke(new Action(() => RefreshGearPlaner()));
         }
 
         private void OnIgnoreUnobtainableCheckChanged(object sender, RoutedEventArgs e)
@@ -1648,9 +1634,27 @@ namespace PgJsonParse
         #endregion
 
         #region Events
+        private bool IsBuildPlanerRefreshing;
+
         private void OnRefreshBuildPlaner(object sender, SelectionChangedEventArgs e)
         {
-            RefreshBuildPlaner();
+            if (IsBuildPlanerRefreshing) // Prevents recursion
+                return;
+
+            IsBuildPlanerRefreshing = true;
+            Dispatcher.BeginInvoke(new Action(() => ExecuteRefreshBuildPlaner()));
+        }
+
+        private void ExecuteRefreshBuildPlaner()
+        {
+            try
+            {
+                RefreshBuildPlaner();
+            }
+            finally
+            {
+                IsBuildPlanerRefreshing = false;
+            }
         }
 
         private void OnAddPower(object sender, EventArgs e)

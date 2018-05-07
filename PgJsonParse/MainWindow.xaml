@@ -1882,11 +1882,11 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center">First Skill:</TextBlock>
-                                    <ComboBox x:Name="comboFirstSkill" Grid.Column="1" Grid.Row="0" DockPanel.Dock="Left" SelectedIndex="{Binding SelectedFirstSkill}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
+                                    <p:ComboBox x:Name="comboFirstSkill" Grid.Column="1" Grid.Row="0" DockPanel.Dock="Left" ControlSelectedIndex="{Binding SelectedFirstSkill, Mode=TwoWay}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
                                     <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="0,10,0,0">Max Level:</TextBlock>
                                     <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding MaxLevelFirstSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="5,10,0,0"/>
                                     <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">Second Skill:</TextBlock>
-                                    <ComboBox x:Name="comboSecondSkill" Grid.Column="3" Grid.Row="0" DockPanel.Dock="Left" SelectedIndex="{Binding SelectedSecondSkill}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
+                                    <p:ComboBox x:Name="comboSecondSkill" Grid.Column="3" Grid.Row="0" DockPanel.Dock="Left" ControlSelectedIndex="{Binding SelectedSecondSkill, Mode=TwoWay}" ItemsSource="{Binding CombatSkillList}" ItemTemplate="{StaticResource PowerSkillTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="OnRefreshBuildPlaner" Width="150" Margin="5,0,0,0"/>
                                     <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="10,10,0,0">Max Level:</TextBlock>
                                     <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding MaxLevelSecondSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="5,10,0,0"/>
                                     <Button Grid.Row="0" Width="0"/>
@@ -1905,7 +1905,7 @@
                                     <DockPanel Grid.Row="0">
                                         <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Profile:</TextBlock>
                                         <Button DockPanel.Dock="Right" Command="{StaticResource OpenProfileFolderCommand}" VerticalAlignment="Center" Width="120" Height="24" Margin="10,0,0,0">Open Profile Folder</Button>
-                                        <ComboBox ItemsSource="{Binding WeightProfileList}" SelectedIndex="{Binding WeightProfileIndex}" SelectionChanged="OnProfileSelected" VerticalAlignment="Center" MinWidth="200" Margin="5,0,0,0"/>
+                                        <p:ComboBox ItemsSource="{Binding WeightProfileList}" ControlSelectedIndex="{Binding WeightProfileIndex}" SelectionChanged="OnProfileSelected" VerticalAlignment="Center" MinWidth="200" Margin="5,0,0,0"/>
                                     </DockPanel>
                                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
                                         <CheckBox IsChecked="{Binding IgnoreUnobtainable}" Checked="OnIgnoreUnobtainableCheckChanged" Unchecked="OnIgnoreUnobtainableCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore unobtainable</CheckBox>
@@ -5312,11 +5312,11 @@
                 <DockPanel>
                     <DockPanel DockPanel.Dock="Top" Margin="5,5,5,5">
                         <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Category:</TextBlock>
-                        <ComboBox DockPanel.Dock="Left" SelectedIndex="{Binding CruncherCategoryIndex}" VerticalAlignment="Center" Margin="5,0,0,0">
+                        <p:ComboBox DockPanel.Dock="Left" ControlSelectedIndex="{Binding CruncherCategoryIndex}" VerticalAlignment="Center" Margin="5,0,0,0">
                             <ComboBoxItem>
                                 <TextBlock>DPS</TextBlock>
                             </ComboBoxItem>
-                        </ComboBox>
+                        </p:ComboBox>
                         <Button DockPanel.Dock="Right" Command="{StaticResource CrunchCommand}" VerticalAlignment="Center" Width="120" Margin="0,0,5,0">Crunch!</Button>
                     </DockPanel>
                     <Grid>
