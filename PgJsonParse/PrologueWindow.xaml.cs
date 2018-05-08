@@ -328,8 +328,7 @@ namespace PgJsonParse
 
         private string InitFolder(string folderName)
         {
-            if (!Directory.Exists(folderName))
-                Directory.CreateDirectory(folderName);
+            FileTools.CreateDirectory(folderName);
 
             return folderName;
         }
@@ -823,8 +822,7 @@ namespace PgJsonParse
             try
             {
                 string VersionFolder = Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
-                if (Directory.Exists(VersionFolder))
-                    FolderTools.DeleteDirectory(VersionFolder, true);
+                FileTools.DeleteDirectory(VersionFolder);
 
                 VersionList.Remove(versionInfo);
                 if (OldCachedVersionIndex < VersionList.Count)
@@ -1002,8 +1000,7 @@ namespace PgJsonParse
                     foreach (GameVersionInfo Item in ToRemove)
                     {
                         string VersionFolder = Path.Combine(VersionCacheFolder, Item.Version.ToString());
-                        if (Directory.Exists(VersionFolder))
-                            FolderTools.DeleteDirectory(VersionFolder, true);
+                        FileTools.DeleteDirectory(VersionFolder);
 
                         VersionList.Remove(Item);
                     }
@@ -1215,7 +1212,7 @@ namespace PgJsonParse
             foreach (int IconId in errorInfo.IconList)
             {
                 string FilePath = Path.Combine(iconFolder, "icon_" + IconId + ".png");
-                IconTable.Add(IconId, File.Exists(FilePath));
+                IconTable.Add(IconId, FileTools.FileExists(FilePath));
             }
 
             return true;
@@ -1258,7 +1255,7 @@ namespace PgJsonParse
 
             string IconFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, version.ToString());
             string LastIconFile = Path.Combine(IconFolder, LastIconId + ".png");
-            bool FileExists = File.Exists(LastIconFile);
+            bool FileExists = FileTools.FileExists(LastIconFile);
 
             return FileExists;
         }
@@ -1294,10 +1291,8 @@ namespace PgJsonParse
                 string FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
                 string SourceFavorIconFile = Path.Combine(IconFolder, "icon_102.png");
 
-                if (File.Exists(SourceIconFile))
-                    File.Copy(SourceIconFile, IconFile, true);
-                if (File.Exists(SourceFavorIconFile))
-                    File.Copy(SourceFavorIconFile, FavorIconFile, true);
+                FileTools.CopyFile(SourceIconFile, IconFile);
+                FileTools.CopyFile(SourceFavorIconFile, FavorIconFile);
 
                 if (StartAutomatically)
                 {
@@ -1371,8 +1366,7 @@ namespace PgJsonParse
 
             try
             {
-                if (Directory.Exists(IconCacheFolder))
-                    FolderTools.DeleteDirectory(IconCacheFolder, true);
+                FileTools.DeleteDirectory(IconCacheFolder);
             }
             catch (Exception e)
             {

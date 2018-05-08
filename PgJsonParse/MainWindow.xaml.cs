@@ -104,14 +104,10 @@ namespace PgJsonParse
         private void InitStartupPage()
         {
             ApplicationFolder = Path.Combine(PresentationEnvironment.UserRootFolder, "PgJsonParse");
-
-            if (!Directory.Exists(ApplicationFolder))
-                Directory.CreateDirectory(ApplicationFolder);
+            FileTools.CreateDirectory(ApplicationFolder);
 
             VersionCacheFolder = Path.Combine(ApplicationFolder, "Versions");
-
-            if (!Directory.Exists(VersionCacheFolder))
-                Directory.CreateDirectory(VersionCacheFolder);
+            FileTools.CreateDirectory(VersionCacheFolder);
 
             IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
             FavorIconFile = Path.Combine(ApplicationFolder, "favoricon.png");
@@ -851,9 +847,7 @@ namespace PgJsonParse
         private void InitGearPlaner()
         {
             ProfileFolder = Path.Combine(ApplicationFolder, "Profiles");
-
-            if (!Directory.Exists(ProfileFolder))
-                Directory.CreateDirectory(ProfileFolder);
+            FileTools.CreateDirectory(ProfileFolder);
 
             DefaultProfileName = Path.Combine(ProfileFolder, "default.txt");
             BestArmorProfileName = Path.Combine(ProfileFolder, "Best Armor.txt");

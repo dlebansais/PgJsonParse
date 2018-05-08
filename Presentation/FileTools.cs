@@ -6,7 +6,7 @@ namespace Presentation
 {
     public class FileTools
     {
-        #region Open File
+        #region File Dialog
         public static bool OpenTextFile(out string fileName, out string content)
         {
             OpenFileDialog Dlg = new OpenFileDialog();
@@ -49,7 +49,9 @@ namespace Presentation
                 }
             }
         }
+        #endregion
 
+        #region File
         public static bool FileExists(string fileName)
         {
             return File.Exists(fileName);
@@ -99,6 +101,31 @@ namespace Presentation
                     bw.Write(content);
                 }
             }
+        }
+
+        public static void CopyFile(string sourceFileName, string destinationFileName)
+        {
+            if (File.Exists(sourceFileName))
+                File.Copy(sourceFileName, destinationFileName, true);
+        }
+        #endregion
+
+        #region Directory
+        public static bool DirectoryExists(string directoryName)
+        {
+            return Directory.Exists(directoryName);
+        }
+
+        public static void CreateDirectory(string directoryName)
+        {
+            if (!Directory.Exists(directoryName))
+                Directory.CreateDirectory(directoryName);
+        }
+
+        public static void DeleteDirectory(string directoryName)
+        {
+            if (Directory.Exists(directoryName))
+                Directory.Delete(directoryName, true);
         }
         #endregion
     }

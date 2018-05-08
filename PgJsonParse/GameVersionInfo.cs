@@ -363,8 +363,7 @@ namespace PgJsonParse
             try
             {
                 string DestinationFolder = Path.GetDirectoryName(iconPath);
-                if (!Directory.Exists(DestinationFolder))
-                    Directory.CreateDirectory(DestinationFolder);
+                FileTools.CreateDirectory(DestinationFolder);
 
                 FileTools.CommitBinaryFile(iconPath, data);
                 success = true;
