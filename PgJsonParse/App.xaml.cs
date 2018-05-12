@@ -1,5 +1,5 @@
-﻿#if CSHARP_XAML_FOR_HTML5
-using Presentation;
+﻿using Presentation;
+#if CSHARP_XAML_FOR_HTML5
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,6 +30,22 @@ namespace PgJsonParse
             }
 #else
             StartupUri = new Uri("PrologueWindow.xaml", UriKind.Relative);
+#endif
+        }
+
+        public static void SetMainWindow(RootControl window)
+        {
+#if CSHARP_XAML_FOR_HTML5
+            App CurrentApp = Current as App;
+
+            foreach (RootControl ctrl in CurrentApp.Windows)
+                if (ctrl is MainWindow)
+                {
+                    CurrentApp.Windows.Remove(ctrl);
+                    break;
+                }
+
+            CurrentApp.Windows.Add(window);
 #endif
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Text;
 
@@ -126,6 +127,14 @@ namespace Presentation
         {
             if (Directory.Exists(directoryName))
                 Directory.Delete(directoryName, true);
+        }
+        #endregion
+
+        #region Uri
+        public static Uri GetFileUri(string fileName)
+        {
+            Uri uri = new Uri(fileName);
+            return uri;
         }
         #endregion
     }

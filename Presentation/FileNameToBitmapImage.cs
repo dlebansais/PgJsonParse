@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation;
+using System;
 using System.Windows.Media.Imaging;
 
 namespace Converters
@@ -12,7 +13,7 @@ namespace Converters
 
             try
             {
-                uri = new Uri(FilePath);
+                uri = FileTools.GetFileUri(FilePath);
                 img = new BitmapImage(uri);
                 return img;
             }

@@ -330,6 +330,8 @@ namespace PgJsonParse
 
         private void RefreshBuildPlaner()
         {
+            IsBuildPlanerRefreshed = true;
+
             if (SlotPlanerList == null)
                 return;
 
@@ -1629,6 +1631,7 @@ namespace PgJsonParse
 
         #region Events
         private bool IsBuildPlanerRefreshing;
+        private bool IsBuildPlanerRefreshed;
 
         private void OnRefreshBuildPlaner(object sender, SelectionChangedEventArgs e)
         {
@@ -1636,6 +1639,7 @@ namespace PgJsonParse
                 return;
 
             IsBuildPlanerRefreshing = true;
+            IsBuildPlanerRefreshed = false;
             Dispatcher.BeginInvoke(new Action(() => ExecuteRefreshBuildPlaner()));
         }
 
@@ -1643,7 +1647,8 @@ namespace PgJsonParse
         {
             try
             {
-                RefreshBuildPlaner();
+                if (!IsBuildPlanerRefreshed) // Prevents calling it multiple times
+                    RefreshBuildPlaner();
             }
             finally
             {

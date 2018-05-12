@@ -922,6 +922,7 @@ namespace PgJsonParse
             ParseProgress = 0;
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
             SetTaskbarState(TaskbarStates.Normal);
+            App.SetMainWindow(Dlg);
 
             string VersionFolder = Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
             string IconFolder = ShareIconFiles ? IconCacheFolder : VersionFolder;
