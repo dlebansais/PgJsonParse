@@ -157,37 +157,38 @@ namespace PgJsonParse
             SelectedSecondSkill = -1;
             SlotPlanerList = new List<SlotPlaner>();
 
-            HeadSlotPlaner = new SlotPlaner(this, ItemSlot.Head, IconFileTable);
-            SlotPlanerList.Add(HeadSlotPlaner);
-
-            ChestSlotPlaner = new SlotPlaner(this, ItemSlot.Chest, IconFileTable);
-            SlotPlanerList.Add(ChestSlotPlaner);
-
-            LegSlotPlaner = new SlotPlaner(this, ItemSlot.Legs, IconFileTable);
-            SlotPlanerList.Add(LegSlotPlaner);
-
-            HandSlotPlaner = new SlotPlaner(this, ItemSlot.Hands, IconFileTable);
-            SlotPlanerList.Add(HandSlotPlaner);
-
-            FeetSlotPlaner = new SlotPlaner(this, ItemSlot.Feet, IconFileTable);
-            SlotPlanerList.Add(FeetSlotPlaner);
-
-            RingSlotPlaner = new SlotPlaner(this, ItemSlot.Ring, IconFileTable);
-            SlotPlanerList.Add(RingSlotPlaner);
-
-            NeckSlotPlaner = new SlotPlaner(this, ItemSlot.Necklace, IconFileTable);
-            SlotPlanerList.Add(NeckSlotPlaner);
-
-            MainHandSlotPlaner = new SlotPlaner(this, ItemSlot.MainHand, IconFileTable);
-            SlotPlanerList.Add(MainHandSlotPlaner);
-
-            OffHandSlotPlaner = new SlotPlaner(this, ItemSlot.OffHand, IconFileTable);
-            SlotPlanerList.Add(OffHandSlotPlaner);
+            HeadSlotPlaner = CreateSlotPlaner(ItemSlot.Head);
+            ChestSlotPlaner = CreateSlotPlaner(ItemSlot.Chest);
+            LegSlotPlaner = CreateSlotPlaner(ItemSlot.Legs);
+            HandSlotPlaner = CreateSlotPlaner(ItemSlot.Hands);
+            FeetSlotPlaner = CreateSlotPlaner(ItemSlot.Feet);
+            RingSlotPlaner = CreateSlotPlaner(ItemSlot.Ring);
+            NeckSlotPlaner = CreateSlotPlaner(ItemSlot.Necklace);
+            MainHandSlotPlaner = CreateSlotPlaner(ItemSlot.MainHand);
+            OffHandSlotPlaner = CreateSlotPlaner(ItemSlot.OffHand);
 
             WeightProfileList = new ObservableCollection<WeightProfile>();
             WeightProfileIndex = -1;
             IgnoreUnobtainable = true;
             IgnoreNoAttribute = true;
+        }
+
+        private SlotPlaner CreateSlotPlaner(ItemSlot slot)
+        {
+            SlotPlaner Result = new SlotPlaner(this, slot, IconFileTable, GetFirstSelectedSkill, GetSecondSelectedSkill);
+            SlotPlanerList.Add(Result);
+
+            return Result;
+        }
+
+        private int GetFirstSelectedSkill()
+        {
+            return SelectedFirstSkill;
+        }
+
+        private int GetSecondSelectedSkill()
+        {
+            return SelectedSecondSkill;
         }
 
         public FrameworkElement FirstSkill { get { return comboFirstSkill; } }
@@ -1746,6 +1747,12 @@ namespace PgJsonParse
 
         private void OnFavorPopupOpened(object sender, EventArgs e)
         {
+        }
+
+        private void OnTabControlLoaded(object sender, RoutedEventArgs e)
+        {
+            TabControl ctrl = sender as TabControl;
+            Dispatcher.BeginInvoke(new Action(() => { ctrl.SelectedIndex = 0; }));
         }
 
 #if CSHARP_XAML_FOR_HTML5

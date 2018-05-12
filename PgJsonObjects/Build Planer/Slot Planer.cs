@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Presentation;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -8,11 +9,15 @@ namespace PgJsonObjects
 {
     public class SlotPlaner : INotifyPropertyChanged
     {
-        public SlotPlaner(object owner, ItemSlot Slot, Dictionary<ItemSlot, string> IconFileTable)
+        public delegate int GetSelectedSkillHandler();
+
+        public SlotPlaner(RootControl owner, ItemSlot Slot, Dictionary<ItemSlot, string> IconFileTable, GetSelectedSkillHandler getFirstSkillHandler, GetSelectedSkillHandler getSecondSkillHandler)
         {
             Owner = owner;
             this.Slot = Slot;
             IconFileName = IconFileTable[Slot];
+            GetFirstSkillHandler = getFirstSkillHandler;
+            GetSecondSkillHandler = getSecondSkillHandler;
 
             AvailablePowerList1 = new ObservableCollection<PlanerSlotPower>();
             AvailablePowerList2 = new ObservableCollection<PlanerSlotPower>();
@@ -39,10 +44,12 @@ namespace PgJsonObjects
             _SelectedGearIndex = -1;
         }
 
-        public object Owner { get; private set; }
+        public RootControl Owner { get; private set; }
         public ItemSlot Slot { get; private set; }
         public string SlotName { get { return Slot.ToString(); } }
         public string IconFileName { get; private set; }
+        public GetSelectedSkillHandler GetFirstSkillHandler { get; private set; }
+        public GetSelectedSkillHandler GetSecondSkillHandler { get; private set; }
         public ObservableCollection<PlanerSlotPower> AvailablePowerList1 { get; private set; }
         public ObservableCollection<PlanerSlotPower> AvailablePowerList2 { get; private set; }
         public ObservableCollection<PlanerSlotPower> AvailablePowerList3 { get; private set; }
@@ -55,6 +62,9 @@ namespace PgJsonObjects
         public ObservableCollection<PlanerSlotPower> SelectedPowerList5 { get; private set; }
         public ObservableCollection<Item> SortedGearList { get; private set; }
         public ObservableCollection<PlanerSlotGear> GearWeightList { get; private set; }
+
+        public bool IsFirstSkillSelected { get { return GetFirstSkillHandler() >= 0; } }
+        public bool IsSecondSkillSelected { get { return GetSecondSkillHandler() >= 0; } }
 
         public int AvailablePowerIndex1
         {
@@ -215,10 +225,10 @@ namespace PgJsonObjects
                 {
                     _SelectedGearIndex = value;
                     NotifyThisPropertyChanged();
-                    NotifyPropertyChanged("SelectedGearName");
-                    NotifyPropertyChanged("SelectedGearIcon");
-                    NotifyPropertyChanged("SelectedGearDescription");
-                    NotifyPropertyChanged("SelectedGearEffectDescriptionList");
+                    NotifyPropertyChanged(nameof(SelectedGearName));
+                    NotifyPropertyChanged(nameof(SelectedGearIcon));
+                    NotifyPropertyChanged(nameof(SelectedGearDescription));
+                    NotifyPropertyChanged(nameof(SelectedGearEffectDescriptionList));
                 }
             }
         }
@@ -315,8 +325,10 @@ namespace PgJsonObjects
                 if (PowerItem.IsValidForSlot(PowerSkill.ShamanicInfusion, Slot))
                     AvailablePowerList5.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelGeneric));
 
-            NotifyPropertyChanged("ColorIndex");
-            NotifyPropertyChanged("SelectedGearName");
+            NotifyPropertyChanged(nameof(ColorIndex));
+            NotifyPropertyChanged(nameof(SelectedGearName));
+            NotifyPropertyChanged(nameof(IsFirstSkillSelected));
+            NotifyPropertyChanged(nameof(IsSecondSkillSelected));
         }
 
         public void AddPower1()
@@ -442,8 +454,8 @@ namespace PgJsonObjects
                 Destination.Add(Power);
                 DestinationIndex = Destination.Count - 1;
 
-                NotifyPropertyChanged("ColorIndex");
-                NotifyPropertyChanged("SelectedGearName");
+                NotifyPropertyChanged(nameof(ColorIndex));
+                NotifyPropertyChanged(nameof(SelectedGearName));
             }
         }
 
@@ -457,8 +469,8 @@ namespace PgJsonObjects
                 AvailablePowerList1.RemoveAt(Index);
                 SelectedPowerList1.Add(Power);
 
-                NotifyPropertyChanged("ColorIndex");
-                NotifyPropertyChanged("SelectedGearName");
+                NotifyPropertyChanged(nameof(ColorIndex));
+                NotifyPropertyChanged(nameof(SelectedGearName));
             }
         }
 
@@ -472,8 +484,8 @@ namespace PgJsonObjects
                 AvailablePowerList2.RemoveAt(Index);
                 SelectedPowerList2.Add(Power);
 
-                NotifyPropertyChanged("ColorIndex");
-                NotifyPropertyChanged("SelectedGearName");
+                NotifyPropertyChanged(nameof(ColorIndex));
+                NotifyPropertyChanged(nameof(SelectedGearName));
             }
         }
 
@@ -487,8 +499,8 @@ namespace PgJsonObjects
                 AvailablePowerList3.RemoveAt(Index);
                 SelectedPowerList3.Add(Power);
 
-                NotifyPropertyChanged("ColorIndex");
-                NotifyPropertyChanged("SelectedGearName");
+                NotifyPropertyChanged(nameof(ColorIndex));
+                NotifyPropertyChanged(nameof(SelectedGearName));
             }
         }
 
@@ -502,8 +514,8 @@ namespace PgJsonObjects
                 AvailablePowerList4.RemoveAt(Index);
                 SelectedPowerList4.Add(Power);
 
-                NotifyPropertyChanged("ColorIndex");
-                NotifyPropertyChanged("SelectedGearName");
+                NotifyPropertyChanged(nameof(ColorIndex));
+                NotifyPropertyChanged(nameof(SelectedGearName));
             }
         }
 
@@ -517,8 +529,8 @@ namespace PgJsonObjects
                 AvailablePowerList5.RemoveAt(Index);
                 SelectedPowerList5.Add(Power);
 
-                NotifyPropertyChanged("ColorIndex");
-                NotifyPropertyChanged("SelectedGearName");
+                NotifyPropertyChanged(nameof(ColorIndex));
+                NotifyPropertyChanged(nameof(SelectedGearName));
             }
         }
 
@@ -586,31 +598,31 @@ namespace PgJsonObjects
             if (NotReset != 1)
             {
                 _AvailablePowerIndex1 = -1;
-                NotifyPropertyChanged("AvailablePowerIndex1");
+                NotifyPropertyChanged(nameof(AvailablePowerIndex1));
             }
 
             if (NotReset != 2)
             {
                 _AvailablePowerIndex2 = -1;
-                NotifyPropertyChanged("AvailablePowerIndex2");
+                NotifyPropertyChanged(nameof(AvailablePowerIndex2));
             }
 
             if (NotReset != 3)
             {
                 _AvailablePowerIndex3 = -1;
-                NotifyPropertyChanged("AvailablePowerIndex3");
+                NotifyPropertyChanged(nameof(AvailablePowerIndex3));
             }
 
             if (NotReset != 4)
             {
                 _AvailablePowerIndex4 = -1;
-                NotifyPropertyChanged("AvailablePowerIndex4");
+                NotifyPropertyChanged(nameof(AvailablePowerIndex4));
             }
 
             if (NotReset != 5)
             {
                 _AvailablePowerIndex5 = -1;
-                NotifyPropertyChanged("AvailablePowerIndex5");
+                NotifyPropertyChanged(nameof(AvailablePowerIndex5));
             }
         }
 
@@ -619,31 +631,31 @@ namespace PgJsonObjects
             if (NotReset != 1)
             {
                 _SelectedPowerIndex1 = -1;
-                NotifyPropertyChanged("SelectedPowerIndex1");
+                NotifyPropertyChanged(nameof(SelectedPowerIndex1));
             }
 
             if (NotReset != 2)
             {
                 _SelectedPowerIndex2 = -1;
-                NotifyPropertyChanged("SelectedPowerIndex2");
+                NotifyPropertyChanged(nameof(SelectedPowerIndex2));
             }
 
             if (NotReset != 3)
             {
                 _SelectedPowerIndex3 = -1;
-                NotifyPropertyChanged("SelectedPowerIndex3");
+                NotifyPropertyChanged(nameof(SelectedPowerIndex3));
             }
 
             if (NotReset != 4)
             {
                 _SelectedPowerIndex4 = -1;
-                NotifyPropertyChanged("SelectedPowerIndex4");
+                NotifyPropertyChanged(nameof(SelectedPowerIndex4));
             }
 
             if (NotReset != 5)
             {
                 _SelectedPowerIndex5 = -1;
-                NotifyPropertyChanged("SelectedPowerIndex5");
+                NotifyPropertyChanged(nameof(SelectedPowerIndex5));
             }
         }
 
