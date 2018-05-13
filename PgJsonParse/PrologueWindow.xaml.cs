@@ -704,53 +704,48 @@ namespace PgJsonParse
 
             try
             {
-                string[] SubFolders = Directory.GetDirectories(VersionCacheFolder);
-                if (SubFolders != null)
+                GameVersionInfo DefaultVersion = null;
+
+                foreach (string SubFolder in FileTools.DirectoryFolders(VersionCacheFolder))
                 {
-                    GameVersionInfo DefaultVersion = null;
-                    foreach (string SubFolder in SubFolders)
+                    string FolderName = Path.GetFileName(SubFolder);
+
+                    int Version;
+                    if (int.TryParse(FolderName, out Version) && Version > 0)
                     {
-                        string FolderName = Path.GetFileName(SubFolder);
-
-                        int Version;
-                        if (int.TryParse(FolderName, out Version) && Version > 0)
-                        {
-                            DownloadState FileDownloadState = DownloadState.Downloaded;
-                            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-                                if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion >= Version)
-                                    if (!FileTools.FileExists(Path.Combine(SubFolder, Entry.Value.JsonFileName + ".json")))
-                                    {
-                                        FileDownloadState = DownloadState.NotDownloaded;
-                                        break;
-                                    }
-
-                            DownloadState IconDownloadState = IsLastIconLoadedForVersion(Version) ? DownloadState.Downloaded : DownloadState.NotDownloaded;
-                            GameVersionInfo NewVersion = new GameVersionInfo(this, Version, FileDownloadState, IconDownloadState);
-
-                            int i;
-                            for (i = 0; i < VersionList.Count; i++)
-                                if (Version > VersionList[i].Version)
+                        DownloadState FileDownloadState = DownloadState.Downloaded;
+                        foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+                            if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion >= Version)
+                                if (!FileTools.FileExists(Path.Combine(SubFolder, Entry.Value.JsonFileName + ".json")))
+                                {
+                                    FileDownloadState = DownloadState.NotDownloaded;
                                     break;
+                                }
 
-                            VersionList.Insert(i, NewVersion);
+                        DownloadState IconDownloadState = IsLastIconLoadedForVersion(Version) ? DownloadState.Downloaded : DownloadState.NotDownloaded;
+                        GameVersionInfo NewVersion = new GameVersionInfo(this, Version, FileDownloadState, IconDownloadState);
 
-                            if (Version == DefaultSelectedVersion)
-                                DefaultVersion = NewVersion;
-                        }
+                        int i;
+                        for (i = 0; i < VersionList.Count; i++)
+                            if (Version > VersionList[i].Version)
+                                break;
+
+                        VersionList.Insert(i, NewVersion);
+
+                        if (Version == DefaultSelectedVersion)
+                            DefaultVersion = NewVersion;
                     }
-
-                    if (DefaultVersion != null)
-                        CachedVersionIndex = VersionList.IndexOf(DefaultVersion);
-                    else if (VersionList.Count > 0)
-                        CachedVersionIndex = 0;
-                    else
-                        CachedVersionIndex = -1;
-
-                    if (SelectedVersion != null && SelectedVersion.IconDownloadState == DownloadState.Downloaded)
-                        IsIconStateUpdated = true;
                 }
+
+                if (DefaultVersion != null)
+                    CachedVersionIndex = VersionList.IndexOf(DefaultVersion);
+                else if (VersionList.Count > 0)
+                    CachedVersionIndex = 0;
                 else
                     CachedVersionIndex = -1;
+
+                if (SelectedVersion != null && SelectedVersion.IconDownloadState == DownloadState.Downloaded)
+                    IsIconStateUpdated = true;
             }
             catch (Exception e)
             {

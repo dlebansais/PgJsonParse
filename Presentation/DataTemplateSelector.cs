@@ -38,6 +38,23 @@ namespace Presentation
             return null;
         }
 
+        protected object TryFindRootResource(FrameworkElement element, string resourceName)
+        {
+            while (element != null)
+            {
+                if (element.Resources.Contains(resourceName))
+                    return element.Resources[resourceName];
+
+                FrameworkElement Parent = VisualTreeHelper.GetParent(element) as FrameworkElement;
+                if (Parent != null)
+                    element = Parent;
+                else
+                    element = null;
+            }
+
+            return null;
+        }
+
         protected override void OnContentChanged(object oldContent, object newContent)
         {
             base.OnContentChanged(oldContent, newContent);

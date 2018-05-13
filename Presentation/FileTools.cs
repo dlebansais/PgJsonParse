@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -127,6 +128,24 @@ namespace Presentation
         {
             if (Directory.Exists(directoryName))
                 Directory.Delete(directoryName, true);
+        }
+
+        public static string[] DirectoryFolders(string directoryName)
+        {
+            if (!Directory.Exists(directoryName))
+                return new string[0];
+
+            return Directory.GetDirectories(directoryName);
+        }
+
+        public static string[] DirectoryFiles(string directoryName, string searchPattern)
+        {
+            searchPattern = "*." + searchPattern;
+
+            if (!Directory.Exists(directoryName))
+                return new string[0];
+
+            return Directory.GetFiles(directoryName, searchPattern);
         }
         #endregion
 

@@ -408,7 +408,7 @@ namespace PgJsonParse
                 }
             }
 
-            foreach (string FileName in Directory.GetFiles(ProfileFolder, "*.txt"))
+            foreach (string FileName in FileTools.DirectoryFiles(ProfileFolder, "txt"))
             {
                 if (FileName == DefaultProfileName)
                     continue;
@@ -829,17 +829,45 @@ namespace PgJsonParse
 
         private void OnProfileSelected(object sender, SelectionChangedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(() => RefreshGearPlaner()));
+            if (IsGearPlanerRefreshing) // Prevents recursion
+                return;
+
+            IsGearPlanerRefreshing = true;
+            IsGearPlanerRefreshed = false;
+            Dispatcher.BeginInvoke(new Action(() => ExecuteRefreshGearPlaner()));
         }
 
         private void OnIgnoreUnobtainableCheckChanged(object sender, RoutedEventArgs e)
         {
-            RefreshGearPlaner();
+            if (IsGearPlanerRefreshing) // Prevents recursion
+                return;
+
+            IsGearPlanerRefreshing = true;
+            IsGearPlanerRefreshed = false;
+            Dispatcher.BeginInvoke(new Action(() => ExecuteRefreshGearPlaner()));
         }
 
         private void OnIgnoreNoAttributeCheckChanged(object sender, RoutedEventArgs e)
         {
-            RefreshGearPlaner();
+            if (IsGearPlanerRefreshing) // Prevents recursion
+                return;
+
+            IsGearPlanerRefreshing = true;
+            IsGearPlanerRefreshed = false;
+            Dispatcher.BeginInvoke(new Action(() => ExecuteRefreshGearPlaner()));
+        }
+
+        private void ExecuteRefreshGearPlaner()
+        {
+            try
+            {
+                if (!IsGearPlanerRefreshed) // Prevents calling it multiple times
+                    RefreshGearPlaner();
+            }
+            finally
+            {
+                IsGearPlanerRefreshing = false;
+            }
         }
 
         private List<SlotPlaner> SlotPlanerList;
@@ -1633,6 +1661,8 @@ namespace PgJsonParse
         #region Events
         private bool IsBuildPlanerRefreshing;
         private bool IsBuildPlanerRefreshed;
+        private bool IsGearPlanerRefreshing;
+        private bool IsGearPlanerRefreshed;
 
         private void OnRefreshBuildPlaner(object sender, SelectionChangedEventArgs e)
         {

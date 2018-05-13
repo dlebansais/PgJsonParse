@@ -1,11 +1,17 @@
 ﻿using PgJsonObjects;
 using Presentation;
+#if CSHARP_XAML_FOR_HTML5
+using Windows.UI.Xaml;
+#else
 using System.Windows;
+#endif
 
 namespace PgJsonParse
 {
-    public class ItemEffectGearSelector : DataTemplateSelector
+    public abstract class ItemEffectGearSelector : DataTemplateSelector
     {
+        public abstract string Prefix { get; }
+
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             FrameworkElement element = container as FrameworkElement;
@@ -15,13 +21,13 @@ namespace PgJsonParse
 
             if ((AsItemAttributeLink = item as ItemAttributeLink) != null)
             {
-                DataTemplate Result = TryFindResource(element, "AttributeLinkGearTemplate") as DataTemplate;
+                DataTemplate Result = TryFindRootResource(element, (Prefix ?? "") + "AttributeLinkGearTemplate") as DataTemplate;
                 return Result;
             }
 
             else if ((AsItemSimpleEffect = item as ItemSimpleEffect) != null)
             {
-                DataTemplate Result = TryFindResource(element, "SimpleEffectGearTemplate") as DataTemplate;
+                DataTemplate Result = TryFindRootResource(element, (Prefix ?? "") + "SimpleEffectGearTemplate") as DataTemplate;
                 return Result;
             }
 

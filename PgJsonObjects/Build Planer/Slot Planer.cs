@@ -563,6 +563,8 @@ namespace PgJsonObjects
                         break;
 
                 SortedGearList.Insert(i, Item);
+                if (SortedGearList.Count > ListBox.MaxCount)
+                    SortedGearList.RemoveAt(SortedGearList.Count - 1);
 
                 foreach (ItemEffect Effect in Item.EffectDescriptionList)
                 {

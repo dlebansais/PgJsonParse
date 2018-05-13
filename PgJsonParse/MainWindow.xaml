@@ -1187,6 +1187,12 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
+        <DataTemplate x:Key="EquipmentBoost_AttributeLinkGearTemplate">
+            <TextBlock Text="{Binding FriendlyNameAndEffect}" TextWrapping="Wrap"/>
+        </DataTemplate>
+        <DataTemplate x:Key="EquipmentBoost_SimpleEffectGearTemplate">
+            <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+        </DataTemplate>
         <DataTemplate x:Key="EquipmentBoostServerInfoEffectTemplate">
             <Grid Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
@@ -1210,17 +1216,9 @@
                     </StackPanel>
                     <TextBlock Margin="5,0,0,0">(</TextBlock>
                     <ContentControl Content="{Binding Boost}">
-                        <ContentControl.Resources>
-                            <DataTemplate x:Key="AttributeLinkGearTemplate">
-                                <TextBlock Text="{Binding FriendlyNameAndEffect}" TextWrapping="Wrap"/>
-                            </DataTemplate>
-                            <DataTemplate x:Key="SimpleEffectGearTemplate">
-                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
-                            </DataTemplate>
-                        </ContentControl.Resources>
                         <ContentControl.ContentTemplate>
                             <DataTemplate>
-                                <app:ItemEffectGearSelector Content="{Binding}"/>
+                                <app:EquipmentBoost_ItemEffectGearSelector Content="{Binding}"/>
                             </DataTemplate>
                         </ContentControl.ContentTemplate>
                     </ContentControl>
@@ -1351,6 +1349,12 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
+        <DataTemplate x:Key="Temporary_AttributeLinkGearTemplate">
+            <TextBlock Text="{Binding FriendlyNameAndEffect}" TextWrapping="Wrap"/>
+        </DataTemplate>
+        <DataTemplate x:Key="Temporary_SimpleEffectGearTemplate">
+            <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+        </DataTemplate>
         <DataTemplate x:Key="TemporaryServerInfoEffectTemplate">
             <Grid Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
@@ -1374,17 +1378,9 @@
                     </StackPanel>
                     <TextBlock Margin="5,0,0,0">(</TextBlock>
                     <ContentControl Content="{Binding Boost}">
-                        <ContentControl.Resources>
-                            <DataTemplate x:Key="AttributeLinkGearTemplate">
-                                <TextBlock Text="{Binding FriendlyNameAndEffect}" TextWrapping="Wrap"/>
-                            </DataTemplate>
-                            <DataTemplate x:Key="SimpleEffectGearTemplate">
-                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
-                            </DataTemplate>
-                        </ContentControl.Resources>
                         <ContentControl.ContentTemplate>
                             <DataTemplate>
-                                <app:ItemEffectGearSelector Content="{Binding}"/>
+                                <app:Temporary_ItemEffectGearSelector Content="{Binding}"/>
                             </DataTemplate>
                         </ContentControl.ContentTemplate>
                     </ContentControl>
@@ -1878,6 +1874,27 @@
                 <TextBlock Text="{Binding Name}" Foreground="Lime" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" VerticalAlignment="Top" Margin="30,3,0,0"/>
             </DockPanel>
         </DataTemplate>
+        <DataTemplate x:Key="Planer_AttributeLinkGearTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Fill="LightBlue" VerticalAlignment="Top" Width="5" Height="5" Margin="15,10,5,0"/>
+                <ItemsControl ItemsSource="{Binding Link.IconFileNameList}" Margin="0,5,0,5">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Converter={StaticResource convFileNameToBitmapImage}}" Width="32" Height="32"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <TextBlock Text="{Binding FriendlyNameAndEffect}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="25,5,0,0"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Planer_SimpleEffectGearTemplate">
+            <TextBlock Text="{Binding Description}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="10,0,10,0"/>
+        </DataTemplate>
         <DataTemplate x:Key="PlanerTemplate">
             <Grid Margin="10,10,10,10">
                 <Grid.ColumnDefinitions>
@@ -1891,7 +1908,7 @@
                         <TabControl Margin="0,10,0,0" Loaded="OnTabControlLoaded">
                             <TabItem Header="Generic">
                                 <Grid>
-                                    <ListBox ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <p:ListBox ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" ControlSelectedIndex="{Binding AvailablePowerIndex3, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                     <ListBox Width="0" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                     <ListBox Width="0" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                 </Grid>
@@ -1899,7 +1916,7 @@
                             <TabItem Header="Endurance">
                                 <Grid>
                                     <ListBox Width="0" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                    <ListBox ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <p:ListBox ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" ControlSelectedIndex="{Binding AvailablePowerIndex4, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                     <ListBox Width="0" ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                 </Grid>
                             </TabItem>
@@ -1907,7 +1924,7 @@
                                 <Grid>
                                     <ListBox Width="0" ItemsSource="{Binding AvailablePowerList3}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                     <ListBox Width="0" ItemsSource="{Binding AvailablePowerList4}" ItemTemplate="{StaticResource PowerNameTemplate}" BorderBrush="{x:Null}" BorderThickness="0"/>
-                                    <ListBox ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <p:ListBox ItemsSource="{Binding AvailablePowerList5}" ItemTemplate="{StaticResource PowerNameTemplate}" ControlSelectedIndex="{Binding AvailablePowerIndex5, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                 </Grid>
                             </TabItem>
                         </TabControl>
@@ -1928,7 +1945,7 @@
                                         </TextBlock>
                                         <TextBlock FontWeight="Bold" Margin="5,0,0,0">mods</TextBlock>
                                     </StackPanel>
-                                    <ListBox ItemsSource="{Binding AvailablePowerList1}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <p:ListBox ItemsSource="{Binding AvailablePowerList1}" ItemTemplate="{StaticResource PowerNameTemplate}" ControlSelectedIndex="{Binding AvailablePowerIndex1, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                 </StackPanel>
                             </p:SelectorItem>
                             <p:SelectorItem/>
@@ -1944,7 +1961,7 @@
                                         </TextBlock>
                                         <TextBlock FontWeight="Bold" Margin="5,0,0,0">mods</TextBlock>
                                     </StackPanel>
-                                    <ListBox ItemsSource="{Binding AvailablePowerList2}" ItemTemplate="{StaticResource PowerNameTemplate}" SelectedIndex="{Binding AvailablePowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0"/>
+                                    <p:ListBox ItemsSource="{Binding AvailablePowerList2}" ItemTemplate="{StaticResource PowerNameTemplate}" ControlSelectedIndex="{Binding AvailablePowerIndex2, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0"/>
                                 </StackPanel>
                             </p:SelectorItem>
                             <p:SelectorItem/>
@@ -1969,45 +1986,22 @@
                             </StackPanel>
                         </DockPanel>
                         <ItemsControl ItemsSource="{Binding SelectedGearEffectDescriptionList}" Margin="0,10,0,0">
-                            <ItemsControl.Resources>
-                                <DataTemplate x:Key="AttributeLinkGearTemplate">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Fill="LightBlue" VerticalAlignment="Top" Width="5" Height="5" Margin="15,10,5,0"/>
-                                        <ItemsControl ItemsSource="{Binding Link.IconFileNameList}" Margin="0,5,0,5">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Image Source="{Binding Converter={StaticResource convFileNameToBitmapImage}}" Width="32" Height="32"/>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                        </ItemsControl>
-                                        <TextBlock Text="{Binding FriendlyNameAndEffect}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="25,5,0,0"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                                <DataTemplate x:Key="SimpleEffectGearTemplate">
-                                    <TextBlock Text="{Binding Description}" Foreground="#B19167" FontSize="22" FontFamily="Tahoma" TextWrapping="Wrap" Margin="10,0,10,0"/>
-                                </DataTemplate>
-                            </ItemsControl.Resources>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <app:ItemEffectGearSelector Content="{Binding}"/>
+                                    <app:Planer_ItemEffectGearSelector Content="{Binding}"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                         <StackPanel Margin="0,10,0,10">
-                            <p:ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex1}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                            <p:ListBox ItemsSource="{Binding SelectedPowerList2}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex2}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                            <p:ListBox ItemsSource="{Binding SelectedPowerList3}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex3}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                            <p:ListBox ItemsSource="{Binding SelectedPowerList4}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex4}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
-                            <p:ListBox ItemsSource="{Binding SelectedPowerList5}" ItemTemplate="{StaticResource FullPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex5}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList1}" ItemTemplate="{StaticResource FullPowerTemplate}" ControlSelectedIndex="{Binding SelectedPowerIndex1, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList2}" ItemTemplate="{StaticResource FullPowerTemplate}" ControlSelectedIndex="{Binding SelectedPowerIndex2, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList3}" ItemTemplate="{StaticResource FullPowerTemplate}" ControlSelectedIndex="{Binding SelectedPowerIndex3, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList4}" ItemTemplate="{StaticResource FullPowerTemplate}" ControlSelectedIndex="{Binding SelectedPowerIndex4, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
+                            <p:ListBox ItemsSource="{Binding SelectedPowerList5}" ItemTemplate="{StaticResource FullPowerTemplate}" ControlSelectedIndex="{Binding SelectedPowerIndex5, Mode=TwoWay}" BorderBrush="{x:Null}" BorderThickness="0" Background="Black" ItemContainerStyle="{StaticResource styleListBoxItemHorizontalStretch}"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
-                <ListBox x:Name="listGear" Grid.Column="3" ItemsSource="{Binding SortedGearList}" ItemTemplate="{StaticResource GearNameTemplate}" SelectedIndex="{Binding SelectedGearIndex}" Margin="10,0,0,0"/>
+                <p:ListBox x:Name="listGear" Grid.Column="3" ItemsSource="{Binding SortedGearList}" ItemTemplate="{StaticResource GearNameTemplate}" ControlSelectedIndex="{Binding SelectedGearIndex, Mode=TwoWay}" Margin="10,0,0,0"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="SearchResultAbilityTitleTemplate">
@@ -5138,7 +5132,7 @@
                                     <DockPanel Grid.Row="0">
                                         <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Profile:</TextBlock>
                                         <Button DockPanel.Dock="Right" Command="{StaticResource OpenProfileFolderCommand}" VerticalAlignment="Center" Width="120" Height="24" Margin="10,0,0,0">Open Profile Folder</Button>
-                                        <p:ComboBox ItemsSource="{Binding WeightProfileList}" ControlSelectedIndex="{Binding WeightProfileIndex}" SelectionChanged="OnProfileSelected" VerticalAlignment="Center" MinWidth="150" Margin="5,0,0,0"/>
+                                        <p:ComboBox ItemsSource="{Binding WeightProfileList}" ControlSelectedIndex="{Binding WeightProfileIndex, Mode=TwoWay}" SelectionChanged="OnProfileSelected" VerticalAlignment="Center" MinWidth="150" Margin="5,0,0,0"/>
                                     </DockPanel>
                                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
                                         <CheckBox IsChecked="{Binding IgnoreUnobtainable}" Checked="OnIgnoreUnobtainableCheckChanged" Unchecked="OnIgnoreUnobtainableCheckChanged" VerticalAlignment="Center" Margin="10,0,0,0">Ignore unobtainable</CheckBox>
@@ -5310,7 +5304,7 @@
                 <DockPanel>
                     <DockPanel DockPanel.Dock="Top" Margin="5,5,5,5">
                         <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Category:</TextBlock>
-                        <p:ComboBox DockPanel.Dock="Left" ControlSelectedIndex="{Binding CruncherCategoryIndex}" VerticalAlignment="Center" Margin="5,0,0,0">
+                        <p:ComboBox DockPanel.Dock="Left" ControlSelectedIndex="{Binding CruncherCategoryIndex, Mode=TwoWay}" VerticalAlignment="Center" Margin="5,0,0,0">
                             <ComboBoxItem>
                                 <TextBlock>DPS</TextBlock>
                             </ComboBoxItem>

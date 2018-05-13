@@ -89,6 +89,9 @@
       <DependentUpon>PrologueWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SearchModes.cs" />
+    <Compile Include="Selectors\EquipmentBoost_ItemEffectGearSelector.cs" />
+    <Compile Include="Selectors\Planer_ItemEffectGearSelector.cs" />
+    <Compile Include="Selectors\Temporary_ItemEffectGearSelector.cs" />
     <Compile Include="Selectors\TypeToTemplateNameSelector.cs" />
     <Compile Include="Selectors\ItemEffectGearSelector.cs" />
     <Compile Include="Selectors\LinkBackSelector.cs" />
