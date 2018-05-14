@@ -25,7 +25,8 @@ namespace Converters
                         FileName = Path.GetFileNameWithoutExtension(FileName) + ".png";
                         string FilePath = Path.Combine(IconCacheFolder, FileName);
 
-                        return FileNameToBitmapImage.Convert(FilePath);
+                        FileBitmapImage fbimg = FileTools.LoadBitmap(FilePath);
+                        return fbimg.BitmapImage;
                     }
                 }
             }

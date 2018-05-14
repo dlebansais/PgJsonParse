@@ -75,7 +75,7 @@
     <Compile Include="DispatcherSource.cs" />
     <Compile Include="Controls\ListBox.cs" />
     <Compile Include="Controls\Popup.cs" />
-    <Compile Include="FileNameToBitmapImage.cs" />
+    <Compile Include="FileBitmapImage.cs" />
     <Compile Include="FileTools.cs" />
     <Compile Include="FolderTools.cs" />
     <Compile Include="GenericValueConverter.cs" />

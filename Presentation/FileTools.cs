@@ -149,11 +149,10 @@ namespace Presentation
         }
         #endregion
 
-        #region Uri
-        public static Uri GetFileUri(string fileName)
+        #region Bitmap
+        public static FileBitmapImage LoadBitmap(string fileName)
         {
-            Uri uri = new Uri(fileName);
-            return uri;
+            return new FileBitmapImage(fileName);
         }
         #endregion
     }
