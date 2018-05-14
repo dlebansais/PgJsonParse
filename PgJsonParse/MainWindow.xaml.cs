@@ -60,6 +60,7 @@ namespace PgJsonParse
             SubscribeToCommand("OpenProfileFolderCommand", OnOpenProfileFolder);
             SubscribeToCommand("BackwardCommand", OnBackward);
             SubscribeToCommand("ForwardCommand", OnForward);
+            SubscribeToCommand("GoToCommand", OnGoTo);
         }
         #endregion
 
@@ -1737,6 +1738,11 @@ namespace PgJsonParse
         private void OnForward(object sender, EventArgs e)
         {
             OnForward();
+        }
+
+        private void OnGoTo(object sender, EventArgs e)
+        {
+            OnSearchTermsEntered();
         }
 
         private void OnRequestNavigate(object sender, RoutedEventArgs e)

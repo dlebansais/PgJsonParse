@@ -48,6 +48,7 @@
         <p:ApplicationCommand x:Key="OpenProfileFolderCommand"/>
         <p:ApplicationCommand x:Key="BackwardCommand"/>
         <p:ApplicationCommand x:Key="ForwardCommand"/>
+        <p:ApplicationCommand x:Key="GoToCommand"/>
         <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
@@ -135,6 +136,7 @@
         <BitmapImage x:Key="imgRedo" UriSource="/PgJsonParse;component/Resources/redo.png"/>
         <BitmapImage x:Key="imgUndo" UriSource="/PgJsonParse;component/Resources/undo.png"/>
         <BitmapImage x:Key="imgAttuned" UriSource="/PgJsonParse;component/Resources/Locked.png"/>
+        <BitmapImage x:Key="imgGoTo" UriSource="/PgJsonParse;component/Resources/goto.png"/>
         <p:StaticContainer x:Key="imgFavorIcon"/>
         <Style x:Key="styleListBoxItemNotFocusable" TargetType="ListBoxItem"/>
         <Style x:Key="styleListBoxItemHorizontalStretch" TargetType="ListBoxItem">
@@ -5203,7 +5205,12 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0">Search:</TextBlock>
-                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding SearchTerms, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" KeyDown="OnSearchTermsEntered" Margin="5,0,0,0"/>
+                            <DockPanel Grid.Column="1" Grid.Row="0" Margin="5,0,0,0">
+                                <Button DockPanel.Dock="Right" Command="{StaticResource GoToCommand}" VerticalAlignment="Center" Margin="10,0,0,0">
+                                    <Image Source="{StaticResource imgRedo}" Width="16" Height="16"/>
+                                </Button>
+                                <TextBox Text="{Binding SearchTerms, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" KeyDown="OnSearchTermsEntered" VerticalAlignment="Center"/>
+                            </DockPanel>
                             <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding MustMatchCase}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Match case</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding MustMatchWholeWord}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Visibility="Collapsed" Margin="5,10,0,0">Match whole word</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding IncludeAbility}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Abilities</CheckBox>

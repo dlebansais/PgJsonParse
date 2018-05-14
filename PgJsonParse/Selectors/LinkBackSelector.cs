@@ -2,7 +2,11 @@
 using Presentation;
 using System;
 using System.Collections.Generic;
+#if CSHARP_XAML_FOR_HTML5
+using Windows.UI.Xaml;
+#else
 using System.Windows;
+#endif
 
 namespace PgJsonParse
 {

@@ -97,7 +97,7 @@
     <Compile Include="Selectors\LinkBackSelector.cs" />
     <Compile Include="Selectors\ListMemberSelector.cs" />
     <Compile Include="Selectors\SearchResultContentSelector.cs" />
-    <Compile Include="Selectors\Search Result Title Selector.cs" />
+    <Compile Include="Selectors\SearchResultTitleSelector.cs" />
     <Compile Include="Selectors\SkillRewardSelector.cs" />
     <Compile Include="Sequence.cs" />
     <Compile Include="VersionCheckState.cs" />
@@ -188,6 +188,9 @@
   <ItemGroup>
     <Resource Include="Resources\mainicon.i" />
     <Resource Include="Resources\mainicon.p" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\goto.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">

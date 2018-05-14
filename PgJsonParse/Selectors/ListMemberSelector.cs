@@ -1,10 +1,16 @@
-﻿using Presentation;
+﻿#if CSHARP_XAML_FOR_HTML5
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+#else
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+#endif
 
 namespace PgJsonParse
 {
-    public class ListMemberSelector : DataTemplateSelector
+    public class ListMemberSelector : Presentation.DataTemplateSelector
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -19,8 +25,8 @@ namespace PgJsonParse
                 if (parent == null)
                     break;
 
-                System.Windows.Controls.ItemsControl ParentList;
-                if ((ParentList = parent as System.Windows.Controls.ItemsControl) != null)
+                ItemsControl ParentList;
+                if ((ParentList = parent as ItemsControl) != null)
                 {
                     int ItemIndex = ParentList.Items.IndexOf(item);
                     IsFirst = (ItemIndex == 0);
