@@ -974,8 +974,8 @@
                         <StackPanel Orientation="Horizontal" Visibility="{Binding ItemKeyList, Converter={StaticResource convchainIsEnumInSetVisibility}, ConverterParameter={StaticResource RecipeItemKey_MinRarityExceptional}, FallbackValue=Collapsed}">
                             <TextBlock>Any exceptional item or better</TextBlock>
                         </StackPanel>
-                        <Grid Visibility="{Binding ItemKeyList, Converter={StaticResource convchainNotIsEnumInSetVisibility}, ConverterParameter={StaticResource RecipeItemKey_AnyMagical}, FallbackValue=False}">
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding MatchingKeyItemList.Count, Converter={StaticResource convchainIntThresholdVisibility}, ConverterParameter=10, FallbackValue=False}">
+                        <Grid Visibility="{Binding ItemKeyList, Converter={StaticResource convchainNotIsEnumInSetVisibility}, ConverterParameter={StaticResource RecipeItemKey_AnyMagical}, FallbackValue=Collapsed}">
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding MatchingKeyItemList.Count, Converter={StaticResource convchainIntThresholdVisibility}, ConverterParameter=10, FallbackValue=Collapsed}">
                                 <TextBlock>Any</TextBlock>
                                 <TextBlock Margin="5,0,0,0">
                                     <TextBlock.Text>
@@ -1424,7 +1424,7 @@
         </DataTemplate>
         <DataTemplate x:Key="ServerInfoTemplate">
             <StackPanel>
-                <Grid Visibility="{Binding GiveItemList.Count, Converter={StaticResource convchainIntThresholdVisibility}, ConverterParameter=1, FallbackValue=False}">
+                <Grid Visibility="{Binding GiveItemList.Count, Converter={StaticResource convchainIntThresholdVisibility}, ConverterParameter=1, FallbackValue=Collapsed}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="110"/>
                         <ColumnDefinition/>
@@ -1450,7 +1450,7 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-                <Grid Margin="0,10,0,0" Visibility="{Binding RequiredHotspot, Converter={StaticResource convchainIntThresholdVisibility}, ConverterParameter=1, FallbackValue=False}">
+                <Grid Margin="0,10,0,0" Visibility="{Binding RequiredHotspot, Converter={StaticResource convchainIntThresholdVisibility}, ConverterParameter=1, FallbackValue=Collapsed}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="110"/>
                         <ColumnDefinition/>
@@ -1462,7 +1462,7 @@
                         </TextBlock.Text>
                     </TextBlock>
                 </Grid>
-                <Grid Margin="0,10,0,0" Visibility="{Binding OtherRequirementList.Count, Converter={StaticResource convchainIntThresholdVisibility}, ConverterParameter=1, FallbackValue=False}">
+                <Grid Margin="0,10,0,0" Visibility="{Binding OtherRequirementList.Count, Converter={StaticResource convchainIntThresholdVisibility}, ConverterParameter=1, FallbackValue=Collapsed}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="110"/>
                         <ColumnDefinition/>
