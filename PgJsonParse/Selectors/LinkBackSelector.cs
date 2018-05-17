@@ -22,61 +22,61 @@ namespace PgJsonParse
 
             if (ItemKeyValue.Key == typeof(Ability))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackAbilityTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackAbilityTemplate");
                 return Result;
             }
 
             else if (ItemKeyValue.Key == typeof(DirectedGoal))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackDirectedGoalTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackDirectedGoalTemplate");
                 return Result;
             }
 
             else if (ItemKeyValue.Key == typeof(GameNpc))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackGameNpcTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackGameNpcTemplate");
                 return Result;
             }
 
             else if (ItemKeyValue.Key == typeof(StorageVault))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackStorageVaultTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackStorageVaultTemplate");
                 return Result;
             }
 
             else if (ItemKeyValue.Key == typeof(Effect))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackEffectTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackEffectTemplate");
                 return Result;
             }
 
             else if (ItemKeyValue.Key == typeof(Item))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackItemTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackItemTemplate");
                 return Result;
             }
 
             else if (ItemKeyValue.Key == typeof(Quest))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackQuestTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackQuestTemplate");
                 return Result;
             }
 
             else if (ItemKeyValue.Key == typeof(Recipe))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackRecipeTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackRecipeTemplate");
                 return Result;
             }
 
             else if (ItemKeyValue.Key == typeof(Skill))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackSkillTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackSkillTemplate");
                 return Result;
             }
 
             else if (ItemKeyValue.Key == typeof(Power))
             {
-                DataTemplate Result = TryFindResource(element, "LinkBackPowerTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "LinkBackPowerTemplate");
                 return Result;
             }
 

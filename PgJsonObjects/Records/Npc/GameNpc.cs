@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace PgJsonObjects
 {
@@ -222,6 +221,16 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Npc"; } }
+
+        public override string ToString()
+        {
+            if (AreaName == MapAreaName.Internal_None)
+                return "\"" + Name + "\"";
+            else if (AreaFriendlyName != null)
+                return "\"" + Name + "/" + AreaFriendlyName + "\"";
+            else
+                return "\"" + Name + "/??\"";
+        }
         #endregion
     }
 }

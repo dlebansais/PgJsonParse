@@ -24,7 +24,7 @@ namespace PgJsonParse
             {
                 string TemplateName = ItemType.Name + "Template";
 
-                Result = TryFindResource(element, TemplateName) as DataTemplate;
+                Result = FindTemplate(element, TemplateName);
                 if (Result == null)
                     ItemType = ItemType.BaseType;
             }

@@ -21,13 +21,13 @@ namespace PgJsonParse
 
             if ((AsItemAttributeLink = item as ItemAttributeLink) != null)
             {
-                DataTemplate Result = TryFindRootResource(element, (Prefix ?? "") + "AttributeLinkGearTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, (Prefix ?? "") + "AttributeLinkGearTemplate");
                 return Result;
             }
 
             else if ((AsItemSimpleEffect = item as ItemSimpleEffect) != null)
             {
-                DataTemplate Result = TryFindRootResource(element, (Prefix ?? "") + "SimpleEffectGearTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, (Prefix ?? "") + "SimpleEffectGearTemplate");
                 return Result;
             }
 

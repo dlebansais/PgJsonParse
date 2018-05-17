@@ -30,6 +30,9 @@ namespace Converters
                     Text += StringMap[Enum] as string;
                 }
             }
+            else if (value == null)
+                return null;
+
             else
                 Text = StringMap[value] as string;
 

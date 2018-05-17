@@ -22,31 +22,31 @@ namespace PgJsonParse
 
             if ((AsSkillRewardAbility = item as SkillRewardAbility) != null)
             {
-                DataTemplate Result = TryFindResource(element, "SkillRewardAbilityTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "SkillRewardAbilityTemplate");
                 return Result;
             }
 
             else if ((AsSkillRewardBonusLevel = item as SkillRewardBonusLevel) != null)
             {
-                DataTemplate Result = TryFindResource(element, "SkillRewardBonusLevelTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "SkillRewardBonusLevelTemplate");
                 return Result;
             }
 
             else if ((AsSkillRewardMisc = item as SkillRewardMisc) != null)
             {
-                DataTemplate Result = TryFindResource(element, "SkillRewardMiscTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "SkillRewardMiscTemplate");
                 return Result;
             }
 
             else if ((AsSkillRewardRecipe = item as SkillRewardRecipe) != null)
             {
-                DataTemplate Result = TryFindResource(element, "SkillRewardRecipeTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "SkillRewardRecipeTemplate");
                 return Result;
             }
 
             else if ((AsSkillRewardUnlock = item as SkillRewardUnlock) != null)
             {
-                DataTemplate Result = TryFindResource(element, "SkillRewardUnlockTemplate") as DataTemplate;
+                DataTemplate Result = FindTemplate(element, "SkillRewardUnlockTemplate");
                 return Result;
             }
 

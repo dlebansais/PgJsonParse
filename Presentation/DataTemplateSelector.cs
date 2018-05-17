@@ -11,12 +11,12 @@ namespace Presentation
             return null;
         }
 
-        protected object TryFindResource(FrameworkElement element, string resourceName)
+        protected DataTemplate FindTemplate(FrameworkElement element, string resourceName)
         {
             while (element != null)
             {
                 if (element.Resources.Contains(resourceName))
-                    return element.Resources[resourceName];
+                    return element.Resources[resourceName] as DataTemplate;
 
                 TabControl AsTabControl;
                 if ((AsTabControl = element as TabControl) != null)
@@ -24,26 +24,9 @@ namespace Presentation
                     foreach (TabItem TabItem in AsTabControl.Items)
                     {
                         if (TabItem.Resources.Contains(resourceName))
-                            return TabItem.Resources[resourceName];
+                            return TabItem.Resources[resourceName] as DataTemplate;
                     }
                 }
-
-                FrameworkElement Parent = VisualTreeHelper.GetParent(element) as FrameworkElement;
-                if (Parent != null)
-                    element = Parent;
-                else
-                    element = null;
-            }
-
-            return null;
-        }
-
-        protected object TryFindRootResource(FrameworkElement element, string resourceName)
-        {
-            while (element != null)
-            {
-                if (element.Resources.Contains(resourceName))
-                    return element.Resources[resourceName];
 
                 FrameworkElement Parent = VisualTreeHelper.GetParent(element) as FrameworkElement;
                 if (Parent != null)
