@@ -113,6 +113,44 @@ namespace Presentation
         }
         #endregion
 
+        #region Enum
+        public static bool TryParseEnum<T>(string s, out T enumValue, out int enumIndex)
+        {
+            if (!string.IsNullOrEmpty(s))
+            {
+                string[] EnumNames = Enum.GetNames(typeof(T));
+                Array EnumValues = Enum.GetValues(typeof(T));
+
+                for (int i = 0; i < EnumNames.Length; i++)
+                    if (s == EnumNames[i])
+                    {
+                        enumValue = (T)EnumValues.GetValue(i);
+                        enumIndex = i;
+                        return true;
+                    }
+            }
+
+            enumValue = default(T);
+            enumIndex = -1;
+            return false;
+        }
+
+        public static bool TryFindIndex<T>(T enumValue, out int enumIndex)
+        {
+            Array EnumValues = Enum.GetValues(typeof(T));
+
+            for (int i = 0; i < EnumValues.Length; i++)
+                if ((int)EnumValues.GetValue(i) == (int)(object)enumValue)
+                {
+                    enumIndex = i;
+                    return true;
+                }
+
+            enumIndex = -1;
+            return false;
+        }
+        #endregion
+
         #region Misc
         public static string NewLine { get; } = "\r\n";
         #endregion

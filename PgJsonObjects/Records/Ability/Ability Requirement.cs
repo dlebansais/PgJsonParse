@@ -14,7 +14,7 @@ namespace PgJsonObjects
         #region Parsing
         public AbilityRequirement ToSpecificAbilityRequirement(ParseErrorInfo ErrorInfo)
         {
-            switch (T)
+            switch (OtherRequirementType)
             {
                 case OtherRequirementType.IsAdmin:
                     return new IsAdminAbilityRequirement();
@@ -114,7 +114,7 @@ namespace PgJsonObjects
         {
             OtherRequirementType ParsedT;
             StringToEnumConversion<OtherRequirementType>.TryParse(RawT, out ParsedT, ErrorInfo);
-            T = ParsedT;
+            OtherRequirementType = ParsedT;
         }
 
         private static void ParseFieldKeyword(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -350,7 +350,7 @@ namespace PgJsonObjects
             this.RawInteractionFlag = RawInteractionFlag;
         }
 
-        private OtherRequirementType T;
+        private OtherRequirementType OtherRequirementType;
         private double? RawHealth;
         private List<string> RawAllowedRaceList { get; } = new List<string>();
         private string RawAllowedRace;

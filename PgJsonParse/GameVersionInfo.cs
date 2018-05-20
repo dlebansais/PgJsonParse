@@ -192,8 +192,7 @@ namespace PgJsonParse
                     if (content != null && content.Length >= 256)
                     {
                         string FilePath = Path.Combine(destinationFolder, fileName + "." + extension);
-                        FileTools.CommitTextFile(FilePath, content);
-                        Success = true;
+                        Success = FileTools.CommitTextFile(FilePath, content);
                     }
                 }
                 catch (Exception e)
@@ -365,8 +364,7 @@ namespace PgJsonParse
                 string DestinationFolder = Path.GetDirectoryName(iconPath);
                 FileTools.CreateDirectory(DestinationFolder);
 
-                FileTools.CommitBinaryFile(iconPath, data);
-                success = true;
+                success = FileTools.CommitBinaryFile(iconPath, data);
             }
             catch (Exception e)
             {

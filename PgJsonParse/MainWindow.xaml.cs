@@ -418,7 +418,7 @@ namespace PgJsonParse
                 {
                     WeightProfile NewProfile = null;
 
-                    string Content = FileTools.LoadTextFile(FileName);
+                    string Content = FileTools.LoadTextFile(FileName, FileMode.Open);
                     string[] Lines = Content.Split(new string[] { InvariantCulture.NewLine }, StringSplitOptions.None);
 
                     foreach (string Line in Lines)
@@ -1072,18 +1072,15 @@ namespace PgJsonParse
 
         private void PerformSearch(List<string> termList, IObjectDefinition definition, SearchModes searchMode)
         {
-            try
-            {
-                string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, definition.JsonFileName + "-index.txt");
-                if (!FileTools.FileExists(IndexFilePath))
-                    return;
+            string IndexFilePath = Path.Combine(CurrentVersionCacheFolder, definition.JsonFileName + "-index.txt");
+            if (!FileTools.FileExists(IndexFilePath))
+                return;
 
-                string TextContent = FileTools.LoadTextFile(IndexFilePath);
+            string TextContent = FileTools.LoadTextFile(IndexFilePath, FileMode.OpenOrCreate);
+            if (!string.IsNullOrEmpty(TextContent))
+            {
                 Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
                 PerformSearch(termList, ObjectTable, TextContent, searchMode);
-            }
-            catch
-            {
             }
         }
 

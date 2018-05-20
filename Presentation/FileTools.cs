@@ -59,9 +59,9 @@ namespace Presentation
             return File.Exists(fileName);
         }
 
-        public static string LoadTextFile(string fileName)
+        public static string LoadTextFile(string fileName, FileMode mode)
         {
-            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream fs = new FileStream(fileName, mode, FileAccess.Read, FileShare.Read))
             {
                 using (StreamReader sr = new StreamReader(fs))
                 {
@@ -71,13 +71,14 @@ namespace Presentation
             }
         }
 
-        public static void CommitTextFile(string fileName, string content)
+        public static bool CommitTextFile(string fileName, string content)
         {
             using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
                 {
                     sw.Write(content);
+                    return true;
                 }
             }
         }
@@ -94,13 +95,14 @@ namespace Presentation
             }
         }
 
-        public static void CommitBinaryFile(string fileName, byte[] content)
+        public static bool CommitBinaryFile(string fileName, byte[] content)
         {
             using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 using (BinaryWriter bw = new BinaryWriter(fs))
                 {
                     bw.Write(content);
+                    return true;
                 }
             }
         }

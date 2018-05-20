@@ -922,12 +922,58 @@ namespace PgJsonParse
             string VersionFolder = Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
             string IconFolder = ShareIconFiles ? IconCacheFolder : VersionFolder;
 
-            StartTask(() => { return ExecuteParse(versionInfo, ErrorInfo, VersionFolder, IconFolder); },
-                      (bool Success) => OnStart1(Success, versionInfo, ErrorInfo));
+            List<KeyValuePair<Type, IObjectDefinition>> EntryList = new List<KeyValuePair<Type, IObjectDefinition>>();
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+                EntryList.Add(Entry);
+
+            IconTable.Clear();
+            int ProgressIndex = 0;
+
+            StartTask(() => { return ExecuteParse0(versionInfo, ErrorInfo, VersionFolder, EntryList, ProgressIndex); },
+                      (bool Success) => { ExecuteParse1(Success, versionInfo, ErrorInfo, VersionFolder, IconFolder, EntryList, ProgressIndex); });
         }
 
-        private void OnStart1(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo)
+        public bool ExecuteParse0(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, List<KeyValuePair<Type, IObjectDefinition>> entryList, int progressIndex)
         {
+            KeyValuePair<Type, IObjectDefinition> Entry = entryList[progressIndex];
+
+            if (Entry.Value.MinVersion <= versionInfo.Version)
+            {
+                if (!LoadNextFile(Entry.Value, versionFolder, errorInfo))
+                    return false;
+
+                if (ParseCancellation.IsCanceled)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public void ExecuteParse1(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, List<KeyValuePair<Type, IObjectDefinition>> entryList, int progressIndex)
+        {
+            if (success)
+            {
+                progressIndex++;
+
+                ParseProgress = (progressIndex * 100.0) / ObjectList.Definitions.Count;
+                SetTaskbarProgressValue(ParseProgress, 100.0);
+
+                if (progressIndex < entryList.Count)
+                {
+                    StartTask(() => { return ExecuteParse0(versionInfo, errorInfo, versionFolder, entryList, progressIndex); },
+                                (bool nextStepSuccess) => { ExecuteParse1(nextStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, entryList, progressIndex); });
+                    return;
+                }
+            }
+
+            OnStart1(success, versionInfo, errorInfo, versionFolder, iconFolder);
+        }
+
+        private void OnStart1(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
+        {
+            if (success)
+                success = ConnectTables(versionFolder, iconFolder, errorInfo);
+
             SetTaskbarState(TaskbarStates.NoProgress);
 
             IsParsing = false;
@@ -1031,33 +1077,6 @@ namespace PgJsonParse
             IsGlobalInteractionEnabled = true;
         }
 
-        public bool ExecuteParse(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
-        {
-            IconTable.Clear();
-
-            int ProgressIndex = 0;
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                if (Entry.Value.MinVersion <= versionInfo.Version)
-                {
-                    if (!LoadNextFile(Entry.Value, versionFolder, errorInfo))
-                        return false;
-
-                    if (ParseCancellation.IsCanceled)
-                        return false;
-                }
-
-                ParseProgress = (ProgressIndex * 100.0) / ObjectList.Definitions.Count;
-                ProgressIndex++;
-
-                SetTaskbarProgressValue(ParseProgress, 100.0);
-            }
-
-            bool Success = ConnectTables(versionFolder, iconFolder, errorInfo);
-
-            return Success;
-        }
-
         private bool LoadNextFile(IObjectDefinition definition, string versionFolder, ParseErrorInfo errorInfo)
         {
             try
@@ -1067,7 +1086,8 @@ namespace PgJsonParse
                 IParser FileParser = definition.FileParser;
                 IList ObjectList = definition.ObjectList;
                 Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
-                FileParser.LoadRaw(FilePath, ObjectList, errorInfo);
+                if (!FileParser.LoadRaw(FilePath, ObjectList, errorInfo))
+                    return false;
 
                 ObjectTable.Clear();
                 foreach (IGenericJsonObject Item in ObjectList)

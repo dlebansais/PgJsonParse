@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PgJsonReader
 {
-    
+
     public interface IJsonReader : IDisposable
     {
-
         Json.Token Read();
         Json.Token CurrentToken { get; }
         object CurrentValue { get; }

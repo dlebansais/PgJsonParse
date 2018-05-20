@@ -64,7 +64,7 @@ namespace PgJsonReader
                 }
                 else if (ch == '"')
                 {
-                    var isKey = !lastIsKey && stack.Peek() == Json.Token.ObjectStart;
+                    var isKey = !lastIsKey && stack.Count > 0 && stack.Peek() == Json.Token.ObjectStart;
                     lastIsKey = isKey;
 
                     value = ReadString();
@@ -107,7 +107,11 @@ namespace PgJsonReader
                         value = integer;
                         return token = Json.Token.Integer;
                     }
+#if CSHARP_XAML_FOR_HTML5
+                    else if (double.TryParse(str, out double single))
+#else
                     else if (double.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out double single))
+#endif
                     {
                         value = (float)single;
                         return token = Json.Token.Float;

@@ -1,7 +1,9 @@
 ﻿using PgJsonReader;
+using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PgJsonObjects
 {
@@ -30,9 +32,6 @@ namespace PgJsonObjects
         public static bool TryParse(string StringValue, Dictionary<T, string> StringMap, T DefaultValue, T EmptyValue, out T EnumValue, ParseErrorInfo ErrorInfo)
         {
             EnumValue = DefaultValue;
-            string TrimmedStringValue = StringValue;
-            string[] EnumNames = Enum.GetNames(typeof(T));
-            Array EnumValues = Enum.GetValues(typeof(T));
 
             if (StringValue == null)
                 return false;
@@ -40,62 +39,38 @@ namespace PgJsonObjects
             bool[] ParsedEnums;
             if (!StringToEnumConversion.KnownParsedEnumtable.ContainsKey(typeof(T)))
             {
+                string[] EnumNames = Enum.GetNames(typeof(T));
                 ParsedEnums = new bool[EnumNames.Length];
                 StringToEnumConversion.KnownParsedEnumtable.Add(typeof(T), ParsedEnums);
             }
             else
                 ParsedEnums = StringToEnumConversion.KnownParsedEnumtable[typeof(T)];
 
-            if (StringValue.Length == 0 && !EmptyValue.Equals(DefaultValue))
-            {
-                for (int i = 0; i < EnumValues.Length; i++)
-                    if ((int)EnumValues.GetValue(i) == (int)(object)EmptyValue)
-                    {
-                        ParsedEnums[i] = true;
-                        break;
-                    }
+            int EnumIndex;
 
+            if (StringValue.Length == 0 && !EmptyValue.Equals(DefaultValue) && InvariantCulture.TryFindIndex<T>(EmptyValue, out EnumIndex))
+            {
+                ParsedEnums[EnumIndex] = true;
                 EnumValue = EmptyValue;
                 return true;
             }
 
-            bool Found = false;
-
-            for (int i = 0; i < EnumNames.Length; i++)
+            if (InvariantCulture.TryParseEnum(StringValue, out EnumValue, out EnumIndex))
             {
-                string EnumName = EnumNames[i];
-                if (TrimmedStringValue == EnumName)
-                {
-                    EnumValue = (T)EnumValues.GetValue(i);
-                    ParsedEnums[i] = true;
-                    Found = true;
-                    break;
-                }
+                ParsedEnums[EnumIndex] = true;
+                return true;
             }
 
-            if (!Found && StringMap != null)
-            {
+            if (StringMap != null)
                 foreach (KeyValuePair<T, string> Entry in StringMap)
-                {
-                    if (TrimmedStringValue == Entry.Value)
+                    if (StringValue == Entry.Value)
                     {
                         EnumValue = Entry.Key;
-                        Found = true;
+                        if (InvariantCulture.TryFindIndex<T>(EnumValue, out EnumIndex))
+                            ParsedEnums[EnumIndex] = true;
 
-                        for (int i = 0; i < EnumValues.Length; i++)
-                            if ((int)EnumValues.GetValue(i) == (int)(object)EnumValue)
-                            {
-                                ParsedEnums[i] = true;
-                                break;
-                            }
-
-                        break;
+                        return true;
                     }
-                }
-            }
-
-            if (Found)
-                return true;
 
             if (ErrorInfo != null)
                 ErrorInfo.AddMissingEnum(typeof(T).Name, StringValue);

@@ -14,7 +14,7 @@ namespace PgJsonObjects
         #region Parsing
         public QuestRequirement ToSpecificQuestRequirement(ParseErrorInfo ErrorInfo)
         {
-            switch (T)
+            switch (OtherRequirementType)
             {
                 case OtherRequirementType.Or:
                     if (RequirementOrList.Count >= 2)
@@ -108,7 +108,7 @@ namespace PgJsonObjects
                     }
 
                 default:
-                    ErrorInfo.AddInvalidObjectFormat("QuestRequirement (T=" + T + ")");
+                    ErrorInfo.AddInvalidObjectFormat("QuestRequirement (T=" + OtherRequirementType + ")");
                     return null;
             }
         }
@@ -135,7 +135,7 @@ namespace PgJsonObjects
         {
             OtherRequirementType ParsedT;
             StringToEnumConversion<OtherRequirementType>.TryParse(RawT, out ParsedT, ErrorInfo);
-            T = ParsedT;
+            OtherRequirementType = ParsedT;
         }
 
         private static void ParseFieldQuest(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -145,10 +145,10 @@ namespace PgJsonObjects
 
         private void ParseQuest(string RawQuest, ParseErrorInfo ErrorInfo)
         {
-            if (T == OtherRequirementType.QuestCompleted || T == OtherRequirementType.GuildQuestCompleted)
+            if (OtherRequirementType == OtherRequirementType.QuestCompleted || OtherRequirementType == OtherRequirementType.GuildQuestCompleted)
                 RawRequirementQuestList.Add(RawQuest);
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Quest (" + T + ")");
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Quest (" + OtherRequirementType + ")");
         }
 
         private static void ParseFieldKeyword(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -158,14 +158,14 @@ namespace PgJsonObjects
 
         private void ParseKeyword(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
-            if (T == OtherRequirementType.HasEffectKeyword)
+            if (OtherRequirementType == OtherRequirementType.HasEffectKeyword)
             {
                 EffectKeyword ParsedEffectKeyword;
                 StringToEnumConversion<EffectKeyword>.TryParse(RawKeyword, out ParsedEffectKeyword, ErrorInfo);
                 RequirementKeyword = ParsedEffectKeyword;
             }
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Keyword (" + T + ")");
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Keyword (" + OtherRequirementType + ")");
         }
 
         private static void ParseFieldNpc(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -175,7 +175,7 @@ namespace PgJsonObjects
 
         private void ParseNpc(string RawNpc, ParseErrorInfo ErrorInfo)
         {
-            if (T == OtherRequirementType.MinFavorLevel)
+            if (OtherRequirementType == OtherRequirementType.MinFavorLevel)
             {
                 MapAreaName ParsedArea;
                 string NpcId;
@@ -190,7 +190,7 @@ namespace PgJsonObjects
                     ErrorInfo.AddInvalidObjectFormat("QuestRequirement Npc");
             }
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Npc (" + T + ")");
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Npc (" + OtherRequirementType + ")");
         }
 
         private static void ParseFieldLevel(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -210,22 +210,22 @@ namespace PgJsonObjects
 
         private void ParseLevelForFavor(string RawLevel, ParseErrorInfo ErrorInfo)
         {
-            if (T == OtherRequirementType.MinFavorLevel)
+            if (OtherRequirementType == OtherRequirementType.MinFavorLevel)
             {
                 Favor ParsedFavor;
                 StringToEnumConversion<Favor>.TryParse(RawLevel, out ParsedFavor, ErrorInfo);
                 RequirementFavorLevel = ParsedFavor;
             }
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + T + ")");
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + OtherRequirementType + ")");
         }
 
         private void ParseLevelForSkill(long RawLevel, ParseErrorInfo ErrorInfo)
         {
-            if (T == OtherRequirementType.MinSkillLevel)
+            if (OtherRequirementType == OtherRequirementType.MinSkillLevel)
                 RawRequirementSkillLevel = (int)RawLevel;
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + T + ")");
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + OtherRequirementType + ")");
         }
 
         private static void ParseFieldSkill(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -235,14 +235,14 @@ namespace PgJsonObjects
 
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
         {
-            if (T == OtherRequirementType.MinSkillLevel)
+            if (OtherRequirementType == OtherRequirementType.MinSkillLevel)
             {
                 PowerSkill ParsedSkill;
                 StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedSkill, ErrorInfo);
                 RequirementSkill = ParsedSkill;
             }
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Skill (" + T + ")");
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Skill (" + OtherRequirementType + ")");
         }
 
         private static void ParseFieldList(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -252,7 +252,7 @@ namespace PgJsonObjects
 
         private void ParseList(JsonObject RawList, ParseErrorInfo ErrorInfo)
         {
-            if (T == OtherRequirementType.Or)
+            if (OtherRequirementType == OtherRequirementType.Or)
             {
                 QuestRequirement ParsedQuestRequirement;
                 JsonObjectParser<QuestRequirement>.InitAsSubitem("List", RawList, out ParsedQuestRequirement, ErrorInfo);
@@ -262,7 +262,7 @@ namespace PgJsonObjects
                     RequirementOrList.Add(ConvertedQuestRequirement);
             }
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement List (" + T + ")");
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement List (" + OtherRequirementType + ")");
         }
 
         private static void ParseFieldRule(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -272,10 +272,10 @@ namespace PgJsonObjects
 
         private void ParseRule(string RawRule, ParseErrorInfo ErrorInfo)
         {
-            if (T == OtherRequirementType.RuntimeBehaviorRuleSet)
+            if (OtherRequirementType == OtherRequirementType.RuntimeBehaviorRuleSet)
                 RequirementRule = RawRule;
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Rule (" + T + ")");
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Rule (" + OtherRequirementType + ")");
         }
 
         private static void ParseFieldInteractionFlag(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -285,13 +285,13 @@ namespace PgJsonObjects
 
         private void ParseInteractionFlag(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
         {
-            if (T == OtherRequirementType.InteractionFlagSet)
+            if (OtherRequirementType == OtherRequirementType.InteractionFlagSet)
                 RequirementInteractionFlag = RawInteractionFlag;
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement InteractionFlag (" + T + ")");
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement InteractionFlag (" + OtherRequirementType + ")");
         }
 
-        private OtherRequirementType T;
+        private OtherRequirementType OtherRequirementType;
         private Favor RequirementFavorLevel;
         private int? RawRequirementSkillLevel;
         private MapAreaName RequirementFavorNpcArea;

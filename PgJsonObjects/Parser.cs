@@ -12,7 +12,7 @@ namespace PgJsonObjects
     public interface IParser
     {
         bool VerifyParse { get; set; }
-        void LoadRaw(string FilePath, ICollection ObjectList, ParseErrorInfo ErrorInfo);
+        bool LoadRaw(string FilePath, ICollection ObjectList, ParseErrorInfo ErrorInfo);
         void CreateIndex(string IndexFilePath, IDictionary<string, IGenericJsonObject> ObjectTable);
     }
 
@@ -31,12 +31,14 @@ namespace PgJsonObjects
         #endregion
 
         #region Client Interface
-        public void LoadRaw(string FilePath, ICollection GenericObjectList, ParseErrorInfo ErrorInfo)
+        public bool LoadRaw(string FilePath, ICollection GenericObjectList, ParseErrorInfo ErrorInfo)
         {
             ICollection<T> ObjectList = GenericObjectList as ICollection<T>;
             ObjectList.Clear();
 
-            string Content = FileTools.LoadTextFile(FilePath);
+            bool Success = true;
+
+            string Content = FileTools.LoadTextFile(FilePath, FileMode.Open);
             if (Content != null)
             {
                 try
@@ -56,7 +58,16 @@ namespace PgJsonObjects
                 }
                 catch (Exception e)
                 {
-                    Confirmation.Show("Unable to parse " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", false, ConfirmationType.Error);
+                    string Message = e.Message;
+                    string StackTrace = e.StackTrace;
+                    if (StackTrace.Length > 768)
+                        StackTrace = StackTrace.Substring(StackTrace.Length - 768);
+
+                    Debug.WriteLine(e.StackTrace);
+
+                    Confirmation.Show("Unable to parse " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + Message + "\n\n" + StackTrace, "Error", false, ConfirmationType.Error);
+
+                    Success = false;
                 }
 
                 if (VerifyParse)
@@ -98,11 +109,17 @@ namespace PgJsonObjects
                     catch (Exception e)
                     {
                         Confirmation.Show("Unable to verify " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", false, ConfirmationType.Error);
+                        Success = false;
                     }
                 }
             }
             else
+            {
                 RecordTable = null;
+                Success = false;
+            }
+
+            return Success;
         }
 
         public static string GenerateObjectHeader(string ObjectName, int NestingLevel)
