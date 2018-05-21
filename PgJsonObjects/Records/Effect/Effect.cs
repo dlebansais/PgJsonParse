@@ -33,7 +33,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Name", ParseFieldName },
             { "Desc", ParseFieldDesc },
@@ -81,7 +81,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIconId(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Effect IconId", This.ParseIconId);
+            ParseFieldValueInteger(Value, ErrorInfo, "Effect IconId", This.ParseIconId);
         }
 
         private void ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
@@ -143,7 +143,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldStackingPriority(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Effect StackingPriority", This.ParseStackingPriority);
+            ParseFieldValueInteger(Value, ErrorInfo, "Effect StackingPriority", This.ParseStackingPriority);
         }
 
         private void ParseStackingPriority(long RawStackingPriority, ParseErrorInfo ErrorInfo)
@@ -153,22 +153,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDuration(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonString AsJsonString;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseDuration(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonString = Value as JsonString) != null)
-            {
-                int RawDuration;
-                if (int.TryParse(AsJsonString.String, out RawDuration))
-                    This.ParseDuration(RawDuration, ErrorInfo);
-                else
-                    ErrorInfo.AddInvalidObjectFormat("Effect Duration");
-            }
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect Duration");
+            ParseFieldValueInteger(Value, ErrorInfo, "Effect Duration", This.ParseDuration);
         }
 
         private void ParseDuration(long RawDuration, ParseErrorInfo ErrorInfo)
@@ -178,39 +163,32 @@ namespace PgJsonObjects
 
         private static void ParseFieldKeywords(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawKeywords;
-            if ((RawKeywords = Value as JsonArray) != null)
-                This.ParseKeywords(RawKeywords, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect Keywords");
+            ParseFieldValueStringArray(Value, ErrorInfo, "Effect Keywords", This.ParseKeywords);
         }
 
-        private void ParseKeywords(JsonArray RawKeywords, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
-            List<EffectKeyword> ParsedKeywordList = new List<EffectKeyword>();
-            StringToEnumConversion<EffectKeyword>.ParseList(RawKeywords, KeywordStringMap, ParsedKeywordList, ErrorInfo);
-            foreach (EffectKeyword Item in ParsedKeywordList)
-                if (Item != EffectKeyword.TSys)
-                    KeywordList.Add(Item);
-                else
-                    HasTSysKeyword = true;
+            StringToEnumConversion<EffectKeyword>.TryParse(RawKeyword, KeywordStringMap, out EffectKeyword ParsedEffectKeyword, ErrorInfo);
+            if (ParsedEffectKeyword != EffectKeyword.TSys)
+                KeywordList.Add(ParsedEffectKeyword);
+            else
+                HasTSysKeyword = true;
 
-            IsKeywordListEmpty = (RawKeywords != null && ParsedKeywordList.Count == 0);
+            //IsKeywordListEmpty = (RawKeywords != null && ParsedKeywordList.Count == 0);
+            return true;
         }
 
         private static void ParseFieldAbilityKeywords(Effect This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAbilityKeywords;
-            if ((RawAbilityKeywords = Value as JsonArray) != null)
-                This.ParseAbilityKeywords(RawAbilityKeywords, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Effect AbilityKeywords");
+            ParseFieldValueStringArray(Value, ErrorInfo, "Effect AbilityKeywords", This.ParseAbilityKeywords);
         }
 
-        private void ParseAbilityKeywords(JsonArray RawAbilityKeywords, ParseErrorInfo ErrorInfo)
+        private bool ParseAbilityKeywords(string RawAbilityKeyword, ParseErrorInfo ErrorInfo)
         {
-            StringToEnumConversion<AbilityKeyword>.ParseList(RawAbilityKeywords, AbilityKeywordList, ErrorInfo);
-            IsAbilityKeywordListEmpty = (RawAbilityKeywords != null && RawAbilityKeywords.Count == 0);
+            StringToEnumConversion<AbilityKeyword>.TryParse(RawAbilityKeyword, out AbilityKeyword ParsedAbilityKeyword, ErrorInfo);
+            AbilityKeywordList.Add(ParsedAbilityKeyword);
+            //IsAbilityKeywordListEmpty = (RawAbilityKeywords != null && RawAbilityKeywords.Count == 0);
+            return true;
         }
         #endregion
 

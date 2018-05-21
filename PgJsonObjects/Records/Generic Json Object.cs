@@ -286,7 +286,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
-        protected static void ParseFieldValueLong(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<long, ParseErrorInfo> ParseValue)
+        protected static void ParseFieldValueInteger(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<long, ParseErrorInfo> ParseValue)
         {
             JsonInteger AsJsonInteger;
             JsonString AsJsonString;
@@ -304,7 +304,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
-        protected static void ParseFieldValueLongArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Func<long, ParseErrorInfo, bool> ParseValue)
+        protected static void ParseFieldValueIntegerArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Func<long, ParseErrorInfo, bool> ParseValue)
         {
             JsonArray AsArray;
             if ((AsArray = Value as JsonArray) != null)
@@ -328,12 +328,36 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
+        protected static void ParseFieldValueFloat(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<double, ParseErrorInfo> ParseValue)
+        {
+            JsonInteger AsJsonInteger;
+            JsonFloat AsJsonFloat;
+
+            if ((AsJsonInteger = Value as JsonInteger) != null)
+                ParseValue(AsJsonInteger.Number, ErrorInfo);
+
+            else if ((AsJsonFloat = Value as JsonFloat) != null)
+                ParseValue(AsJsonFloat.Number, ErrorInfo);
+
+            else
+                ErrorInfo.AddInvalidObjectFormat(FieldName);
+        }
+
         protected static void ParseFieldValueBool(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<bool, ParseErrorInfo> ParseValue)
         {
             JsonBool AsJsonBool;
 
             if ((AsJsonBool = Value as JsonBool) != null)
                 ParseValue(AsJsonBool.Value, ErrorInfo);
+            else
+                ErrorInfo.AddInvalidObjectFormat(FieldName);
+        }
+
+        protected static void ParseFieldValue(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<JsonObject, ParseErrorInfo> ParseValue)
+        {
+            JsonObject AsJObject;
+            if ((AsJObject = Value as JsonObject) != null)
+                ParseValue(AsJObject, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }

@@ -31,7 +31,7 @@ namespace PgJsonObjects
                 ServerInfo.SetLinkBack(LinkBack);
         }
 
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "UseVerb", ParseFieldUseVerb},
             { "ServerInfo", ParseFieldServerInfo },
@@ -44,11 +44,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldUseVerb(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonString RawUseVerb;
-            if ((RawUseVerb = Value as JsonString) != null)
-                This.ParseUseVerb(RawUseVerb.String, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("ItemBehavior UseVerb");
+            ParseFieldValueString(Value, ErrorInfo, "ItemBehavior UseVerb", This.ParseUseVerb);
         }
 
         private void ParseUseVerb(string RawUseVerb, ParseErrorInfo ErrorInfo)
@@ -120,7 +116,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMetabolismCost(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "ItemBehavior MetabolismCost", This.ParseMetabolismCost);
+            ParseFieldValueInteger(Value, ErrorInfo, "ItemBehavior MetabolismCost", This.ParseMetabolismCost);
         }
 
         private void ParseMetabolismCost(long RawMetabolismCost, ParseErrorInfo ErrorInfo)
@@ -130,17 +126,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldUseDelay(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseUseDelay(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseUseDelay(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("ItemBehavior UseDelay");
+            ParseFieldValueFloat(Value, ErrorInfo, "ItemBehavior UseDelay", This.ParseUseDelay);
         }
 
         private void ParseUseDelay(double RawUseDelay, ParseErrorInfo ErrorInfo)

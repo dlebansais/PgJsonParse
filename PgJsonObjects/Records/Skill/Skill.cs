@@ -195,7 +195,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldId(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Skill Id", This.ParseId);
+            ParseFieldValueInteger(Value, ErrorInfo, "Skill Id", This.ParseId);
         }
 
         private void ParseId(long RawId, ParseErrorInfo ErrorInfo)
@@ -278,7 +278,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxBonusLevels(Skill This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Skill MaxBonusLevels", This.ParseMaxBonusLevels);
+            ParseFieldValueInteger(Value, ErrorInfo, "Skill MaxBonusLevels", This.ParseMaxBonusLevels);
         }
 
         private void ParseMaxBonusLevels(long RawMaxBonusLevels, ParseErrorInfo ErrorInfo)

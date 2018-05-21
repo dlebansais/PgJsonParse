@@ -141,7 +141,7 @@ namespace PgJsonObjects
             }
         }
 
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Type", ParseFieldType },
             { "SkillTypeId", ParseFieldSkillTypeId },
@@ -197,7 +197,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemTypeId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilitySource ItemTypeId", This.ParseItemTypeId);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilitySource ItemTypeId", This.ParseItemTypeId);
         }
 
         private void ParseItemTypeId(long RawItemTypeId, ParseErrorInfo ErrorInfo)
@@ -276,7 +276,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldQuestId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilitySource QuestId", This.ParseQuestId);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilitySource QuestId", This.ParseQuestId);
         }
 
         private void ParseQuestId(long RawQuestId, ParseErrorInfo ErrorInfo)

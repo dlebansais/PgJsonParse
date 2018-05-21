@@ -106,7 +106,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Keywords", ParseFieldKeywords },
             { "Pref", ParseFieldPref },
@@ -144,17 +144,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldPref(NpcPreference This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParsePref(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParsePref(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref");
+            ParseFieldValueFloat(Value, ErrorInfo, "NpcPreference Pref", This.ParsePref);
         }
 
         private void ParsePref(double RawPref, ParseErrorInfo ErrorInfo)

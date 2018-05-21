@@ -126,7 +126,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIconId(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Recipe IconId", This.ParseIconId);
+            ParseFieldValueInteger(Value, ErrorInfo, "Recipe IconId", This.ParseIconId);
         }
 
         private void ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
@@ -222,7 +222,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSkillLevelReq(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Recipe SkillLevelReq", This.ParseSkillLevelReq);
+            ParseFieldValueInteger(Value, ErrorInfo, "Recipe SkillLevelReq", This.ParseSkillLevelReq);
         }
 
         private void ParseSkillLevelReq(long RawSkillLevelReq, ParseErrorInfo ErrorInfo)
@@ -287,7 +287,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldUsageDelay(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Recipe UsageDelay", This.ParseUsageDelay);
+            ParseFieldValueInteger(Value, ErrorInfo, "Recipe UsageDelay", This.ParseUsageDelay);
         }
 
         private void ParseUsageDelay(long RawUsageDelay, ParseErrorInfo ErrorInfo)
@@ -350,7 +350,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumResultItems(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Recipe NumResultItems", This.ParseNumResultItems);
+            ParseFieldValueInteger(Value, ErrorInfo, "Recipe NumResultItems", This.ParseNumResultItems);
         }
 
         private void ParseNumResultItems(long RawNumResultItems, ParseErrorInfo ErrorInfo)
@@ -370,7 +370,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldResetTimeInSeconds(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Recipe ResetTimeInSeconds", This.ParseResetTimeInSeconds);
+            ParseFieldValueInteger(Value, ErrorInfo, "Recipe ResetTimeInSeconds", This.ParseResetTimeInSeconds);
         }
 
         private void ParseResetTimeInSeconds(long RawResetTimeInSeconds, ParseErrorInfo ErrorInfo)
@@ -786,7 +786,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRewardSkillXp(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Recipe RewardSkillXp", This.ParseRewardSkillXp);
+            ParseFieldValueInteger(Value, ErrorInfo, "Recipe RewardSkillXp", This.ParseRewardSkillXp);
         }
 
         private void ParseRewardSkillXp(long RawRewardSkillXp, ParseErrorInfo ErrorInfo)
@@ -796,7 +796,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRewardSkillXpFirstTime(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Recipe RewardSkillXpFirstTime", This.ParseRewardSkillXpFirstTime);
+            ParseFieldValueInteger(Value, ErrorInfo, "Recipe RewardSkillXpFirstTime", This.ParseRewardSkillXpFirstTime);
         }
 
         private void ParseRewardSkillXpFirstTime(long RawRewardSkillXpFirstTime, ParseErrorInfo ErrorInfo)
@@ -862,7 +862,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemMenuCategoryLevel(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Recipe ItemMenuCategoryLevel", This.ParseItemMenuCategoryLevel);
+            ParseFieldValueInteger(Value, ErrorInfo, "Recipe ItemMenuCategoryLevel", This.ParseItemMenuCategoryLevel);
         }
 
         private void ParseItemMenuCategoryLevel(long RawItemMenuCategoryLevel, ParseErrorInfo ErrorInfo)

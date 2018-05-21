@@ -84,7 +84,7 @@ namespace PgJsonObjects
             }
         }
 
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "T", ParseFieldT },
             { "Keyword", ParseFieldKeyword },
@@ -149,17 +149,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCount(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCount(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCount(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Count");
+            ParseFieldValueFloat(Value, ErrorInfo, "AbilityRequirement Count", This.ParseCount);
         }
 
         private void ParseCount(double RawCount, ParseErrorInfo ErrorInfo)
@@ -169,17 +159,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldHealth(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseHealth(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseHealth(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Health");
+            ParseFieldValueFloat(Value, ErrorInfo, "AbilityRequirement Health", This.ParseHealth);
         }
 
         private void ParseHealth(double RawHealth, ParseErrorInfo ErrorInfo)
@@ -231,24 +211,17 @@ namespace PgJsonObjects
 
         private static void ParseFieldList(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray AsJArray;
-            if ((AsJArray = Value as JsonArray) != null)
-                This.ParseList(AsJArray, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement List");
+            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "AbilityRequirement List", This.ParseList);
         }
 
-        private void ParseList(JsonArray RawList, ParseErrorInfo ErrorInfo)
+        private void ParseList(JsonObject RawList, ParseErrorInfo ErrorInfo)
         {
-            List<AbilityRequirement> ParsedAbilityRequirementList;
-            JsonObjectParser<AbilityRequirement>.InitAsSublist(RawList, out ParsedAbilityRequirementList, ErrorInfo);
+            AbilityRequirement ParsedAbilityRequirement;
+            JsonObjectParser<AbilityRequirement>.InitAsSubitem("List", RawList, out ParsedAbilityRequirement, ErrorInfo);
 
-            foreach (AbilityRequirement Item in ParsedAbilityRequirementList)
-            {
-                AbilityRequirement ConvertedAbilityRequirement = Item.ToSpecificAbilityRequirement(ErrorInfo);
-                if (ConvertedAbilityRequirement != null)
-                    OrList.Add(ConvertedAbilityRequirement);
-            }
+            AbilityRequirement ConvertedAbilityRequirement = ParsedAbilityRequirement.ToSpecificAbilityRequirement(ErrorInfo);
+            if (ConvertedAbilityRequirement != null)
+                OrList.Add(ConvertedAbilityRequirement);
         }
 
         private static void ParseFieldErrorMsg(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
@@ -292,17 +265,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxCount(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxCount(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxCount(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement MaxCount");
+            ParseFieldValueFloat(Value, ErrorInfo, "AbilityRequirement MaxCount", This.ParseMaxCount);
         }
 
         private void ParseMaxCount(double RawMaxCount, ParseErrorInfo ErrorInfo)
@@ -332,7 +295,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMax(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityRequirement Max", This.ParseMax);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityRequirement Max", This.ParseMax);
         }
 
         private void ParseMax(long RawMax, ParseErrorInfo ErrorInfo)

@@ -57,7 +57,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Damage", ParseFieldDamage },
             { "HealthSpecificDamage", ParseFieldHealthSpecificDamage },
@@ -88,7 +88,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX Damage", This.ParseDamage);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX Damage", This.ParseDamage);
         }
 
         private void ParseDamage(long RawDamage, ParseErrorInfo ErrorInfo)
@@ -98,7 +98,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldExtraDamageIfTargetVulnerable(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX ExtraDamageIfTargetVulnerable", This.ParseExtraDamageIfTargetVulnerable);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX ExtraDamageIfTargetVulnerable", This.ParseExtraDamageIfTargetVulnerable);
         }
 
         private void ParseExtraDamageIfTargetVulnerable(long RawExtraDamageIfTargetVulnerable, ParseErrorInfo ErrorInfo)
@@ -108,7 +108,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldHealthSpecificDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX HealthSpecificDamage", This.ParseHealthSpecificDamage);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX HealthSpecificDamage", This.ParseHealthSpecificDamage);
         }
 
         private void ParseHealthSpecificDamage(long RawHealthSpecificDamage, ParseErrorInfo ErrorInfo)
@@ -118,7 +118,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldArmorSpecificDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX ArmorSpecificDamage", This.ParseArmorSpecificDamage);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX ArmorSpecificDamage", This.ParseArmorSpecificDamage);
         }
 
         private void ParseArmorSpecificDamage(long RawArmorSpecificDamage, ParseErrorInfo ErrorInfo)
@@ -128,7 +128,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRange(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX Range", This.ParseRange);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX Range", This.ParseRange);
         }
 
         private void ParseRange(long RawRange, ParseErrorInfo ErrorInfo)
@@ -138,7 +138,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldPowerCost(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX PowerCost", This.ParsePowerCost);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX PowerCost", This.ParsePowerCost);
         }
 
         private void ParsePowerCost(long RawPowerCost, ParseErrorInfo ErrorInfo)
@@ -148,7 +148,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMetabolismCost(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX MetabolismCost", This.ParseMetabolismCost);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX MetabolismCost", This.ParseMetabolismCost);
         }
 
         private void ParseMetabolismCost(long RawMetabolismCost, ParseErrorInfo ErrorInfo)
@@ -158,7 +158,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldArmorMitigationRatio(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX ArmorMitigationRatio", This.ParseArmorMitigationRatio);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX ArmorMitigationRatio", This.ParseArmorMitigationRatio);
         }
 
         private void ParseArmorMitigationRatio(long RawArmorMitigationRatio, ParseErrorInfo ErrorInfo)
@@ -168,7 +168,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAoE(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX AoE", This.ParseAoE);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX AoE", This.ParseAoE);
         }
 
         private void ParseAoE(long RawAoE, ParseErrorInfo ErrorInfo)
@@ -178,7 +178,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRageBoost(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX RageBoost", This.ParseRageBoost);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX RageBoost", This.ParseRageBoost);
         }
 
         private void ParseRageBoost(long RawRageBoost, ParseErrorInfo ErrorInfo)
@@ -188,17 +188,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRageMultiplier(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseRageMultiplier(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseRageMultiplier(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX RageMultiplier");
+            ParseFieldValueFloat(Value, ErrorInfo, "AbilityPvX RageMultiplier", This.ParseRageMultiplier);
         }
 
         private void ParseRageMultiplier(double RawRageMultiplier, ParseErrorInfo ErrorInfo)
@@ -208,17 +198,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldAccuracy(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseAccuracy(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseAccuracy(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX Accuracy");
+            ParseFieldValueFloat(Value, ErrorInfo, "AbilityPvX Accuracy", This.ParseAccuracy);
         }
 
         private void ParseAccuracy(double RawAccuracy, ParseErrorInfo ErrorInfo)
@@ -228,138 +208,98 @@ namespace PgJsonObjects
 
         private static void ParseFieldAttributesThatDeltaDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatDeltaDamage;
-            if ((RawAttributesThatDeltaDamage = Value as JsonArray) != null)
-                This.ParseAttributesThatDeltaDamage(RawAttributesThatDeltaDamage, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatDeltaDamage");
+            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityPvX AttributesThatDeltaDamage", This.ParseAttributesThatDeltaDamage);
         }
 
-        private void ParseAttributesThatDeltaDamage(JsonArray RawAttributesThatDeltaDamage, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatDeltaDamage(string RawAttributesThatDeltaDamage, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatDeltaDamage, RawAttributesThatDeltaDamageList, "AttributesThatDeltaDamage", ErrorInfo, out RawAttributesThatDeltaDamageListIsEmpty);
+            RawAttributesThatDeltaDamageList.Add(RawAttributesThatDeltaDamage);
+            return true;
         }
 
         private static void ParseFieldAttributesThatModDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatModDamage;
-            if ((RawAttributesThatModDamage = Value as JsonArray) != null)
-                This.ParseAttributesThatModDamage(RawAttributesThatModDamage, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatModDamage");
+            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityPvX AttributesThatModDamage", This.ParseAttributesThatModDamage);
         }
 
-        private void ParseAttributesThatModDamage(JsonArray RawAttributesThatModDamage, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatModDamage(string RawAttributesThatModDamage, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatModDamage, RawAttributesThatModDamageList, "AttributesThatModDamage", ErrorInfo, out RawAttributesThatModDamageListIsEmpty);
+            RawAttributesThatModDamageList.Add(RawAttributesThatModDamage);
+            return true;
         }
 
         private static void ParseFieldAttributesThatModBaseDamage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatModBaseDamage;
-            if ((RawAttributesThatModBaseDamage = Value as JsonArray) != null)
-                This.ParseAttributesThatModBaseDamage(RawAttributesThatModBaseDamage, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatModBaseDamage");
+            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityPvX AttributesThatModBaseDamage", This.ParseAttributesThatModBaseDamage);
         }
 
-        private void ParseAttributesThatModBaseDamage(JsonArray RawAttributesThatModBaseDamage, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatModBaseDamage(string RawAttributesThatModBaseDamage, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatModBaseDamage, RawAttributesThatModBaseDamageList, "AttributesThatModBaseDamage", ErrorInfo, out RawAttributesThatModBaseDamageListIsEmpty);
+            RawAttributesThatModBaseDamageList.Add(RawAttributesThatModBaseDamage);
+            return true;
         }
 
         private static void ParseFieldAttributesThatDeltaTaunt(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatDeltaTaunt;
-            if ((RawAttributesThatDeltaTaunt = Value as JsonArray) != null)
-                This.ParseAttributesThatDeltaTaunt(RawAttributesThatDeltaTaunt, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatDeltaTaunt");
+            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityPvX AttributesThatDeltaTaunt", This.ParseAttributesThatDeltaTaunt);
         }
 
-        private void ParseAttributesThatDeltaTaunt(JsonArray RawAttributesThatDeltaTaunt, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatDeltaTaunt(string RawAttributesThatDeltaTaunt, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatDeltaTaunt, RawAttributesThatDeltaTauntList, "AttributesThatDeltaTaunt", ErrorInfo, out RawAttributesThatDeltaTauntListIsEmpty);
+            RawAttributesThatDeltaTauntList.Add(RawAttributesThatDeltaTaunt);
+            return true;
         }
 
         private static void ParseFieldAttributesThatModTaunt(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatModTaunt;
-            if ((RawAttributesThatModTaunt = Value as JsonArray) != null)
-                This.ParseAttributesThatModTaunt(RawAttributesThatModTaunt, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatModTaunt");
+            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityPvX AttributesThatModTaunt", This.ParseAttributesThatModTaunt);
         }
 
-        private void ParseAttributesThatModTaunt(JsonArray RawAttributesThatModTaunt, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatModTaunt(string RawAttributesThatModTaunt, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatModTaunt, RawAttributesThatModTauntList, "AttributesThatModTaunt", ErrorInfo, out RawAttributesThatModTauntListIsEmpty);
+            RawAttributesThatModTauntList.Add(RawAttributesThatModTaunt);
+            return true;
         }
 
         private static void ParseFieldAttributesThatDeltaRage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatDeltaRage;
-            if ((RawAttributesThatDeltaRage = Value as JsonArray) != null)
-                This.ParseAttributesThatDeltaRage(RawAttributesThatDeltaRage, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatDeltaRage");
+            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityPvX AttributesThatDeltaRage", This.ParseAttributesThatDeltaRage);
         }
 
-        private void ParseAttributesThatDeltaRage(JsonArray RawAttributesThatDeltaRage, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatDeltaRage(string RawAttributesThatDeltaRage, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatDeltaRage, RawAttributesThatDeltaRageList, "AttributesThatDeltaRage", ErrorInfo, out RawAttributesThatDeltaRageListIsEmpty);
+            RawAttributesThatDeltaRageList.Add(RawAttributesThatDeltaRage);
+            return true;
         }
 
         private static void ParseFieldAttributesThatModRage(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatModRage;
-            if ((RawAttributesThatModRage = Value as JsonArray) != null)
-                This.ParseAttributesThatModRage(RawAttributesThatModRage, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatModRage");
+            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityPvX AttributesThatModRage", This.ParseAttributesThatModRage);
         }
 
-        private void ParseAttributesThatModRage(JsonArray RawAttributesThatModRage, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatModRage(string RawAttributesThatModRage, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatModRage, RawAttributesThatModRageList, "AttributesThatModRage", ErrorInfo, out RawAttributesThatModRageListIsEmpty);
+            RawAttributesThatModRageList.Add(RawAttributesThatModRage);
+            return true;
         }
 
         private static void ParseFieldAttributesThatDeltaRange(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatDeltaRange;
-            if ((RawAttributesThatDeltaRange = Value as JsonArray) != null)
-                This.ParseAttributesThatDeltaRange(RawAttributesThatDeltaRange, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX AttributesThatDeltaRange");
+            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityPvX AttributesThatDeltaRange", This.ParseAttributesThatDeltaRange);
         }
 
-        private void ParseAttributesThatDeltaRange(JsonArray RawAttributesThatDeltaRange, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatDeltaRange(string RawAttributesThatDeltaRange, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatDeltaRange, RawAttributesThatDeltaRangeList, "AttributesThatDeltaRange", ErrorInfo, out RawAttributesThatDeltaRangeListIsEmpty);
+            RawAttributesThatDeltaRangeList.Add(RawAttributesThatDeltaRange);
+            return true;
         }
 
         private static void ParseFieldSpecialValues(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonObject AsJObject;
-            JsonArray AsJArray;
-
-            if ((AsJObject = Value as JsonObject) != null)
-                This.ParseSpecialValue(AsJObject, "SpecialValues", ErrorInfo);
-
-            else if ((AsJArray = Value as JsonArray) != null)
-            {
-                foreach (object RawItem in AsJArray)
-                    if ((AsJObject = RawItem as JsonObject) != null)
-                        This.ParseSpecialValue(AsJObject, null, ErrorInfo);
-                    else
-                        ErrorInfo.AddInvalidObjectFormat("AbilityPvX SpecialValues Array");
-            }
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX SpecialValues");
+            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "AbilityPvX SpecialValues", This.ParseSpecialValue);
         }
 
-        private void ParseSpecialValue(JsonObject RawSpecialValue, string ObjectKey, ParseErrorInfo ErrorInfo)
+        private void ParseSpecialValue(JsonObject RawSpecialValue, ParseErrorInfo ErrorInfo)
         {
             SpecialValue ParsedSpecialValue;
             JsonObjectParser<SpecialValue>.InitAsSubitem("SpecialValue", RawSpecialValue, out ParsedSpecialValue, ErrorInfo);
@@ -369,7 +309,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldTauntDelta(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX TauntDelta", This.ParseTauntDelta);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX TauntDelta", This.ParseTauntDelta);
         }
 
         private void ParseTauntDelta(long RawTauntDelta, ParseErrorInfo ErrorInfo)
@@ -379,7 +319,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldTempTauntDelta(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX TempTauntDelta", This.ParseTempTauntDelta);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX TempTauntDelta", This.ParseTempTauntDelta);
         }
 
         private void ParseTempTauntDelta(long RawTempTauntDelta, ParseErrorInfo ErrorInfo)
@@ -389,7 +329,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRageCost(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AbilityPvX RageCost", This.ParseRageCost);
+            ParseFieldValueInteger(Value, ErrorInfo, "AbilityPvX RageCost", This.ParseRageCost);
         }
 
         private void ParseRageCost(long RawRageCost, ParseErrorInfo ErrorInfo)
@@ -399,17 +339,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRageCostMod(AbilityPvX This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseRageCostMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseRageCostMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilityPvX RageCostMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "AbilityPvX RageCostMod", This.ParseRageCostMod);
         }
 
         private void ParseRageCostMod(double RawRageCostMod, ParseErrorInfo ErrorInfo)

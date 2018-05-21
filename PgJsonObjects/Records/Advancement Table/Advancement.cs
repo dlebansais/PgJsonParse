@@ -144,7 +144,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "VULNERABILITY", null },
             { "MITIGATION", null },
@@ -291,17 +291,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNonCombatRegenHealthMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseNonCombatRegenHealthMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseNonCombatRegenHealthMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NonCombatRegenHealthMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenHealthMod", This.ParseNonCombatRegenHealthMod);
         }
 
         private void ParseNonCombatRegenHealthMod(double RawNonCombatRegenHealthMod, ParseErrorInfo ErrorInfo)
@@ -311,17 +301,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCombatRegenHealthMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCombatRegenHealthMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCombatRegenHealthMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CombatRegenHealthMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenHealthMod", This.ParseCombatRegenHealthMod);
         }
 
         private void ParseCombatRegenHealthMod(double RawCombatRegenHealthMod, ParseErrorInfo ErrorInfo)
@@ -331,17 +311,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCombatRegenHealthDelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCombatRegenHealthDelta(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCombatRegenHealthDelta(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CombatRegenHealthDelta");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenHealthDelta", This.ParseCombatRegenHealthDelta);
         }
 
         private void ParseCombatRegenHealthDelta(double RawCombatRegenHealthDelta, ParseErrorInfo ErrorInfo)
@@ -351,17 +321,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNonCombatRegenArmorMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseNonCombatRegenArmorMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseNonCombatRegenArmorMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NonCombatRegenArmorMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenArmorMod", This.ParseNonCombatRegenArmorMod);
         }
 
         private void ParseNonCombatRegenArmorMod(double RawNonCombatRegenArmorMod, ParseErrorInfo ErrorInfo)
@@ -371,17 +331,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNonCombatRegenArmordelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseNonCombatRegenArmordelta(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseNonCombatRegenArmordelta(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NonCombatRegenArmordelta");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenArmordelta", This.ParseNonCombatRegenArmordelta);
         }
 
         private void ParseNonCombatRegenArmordelta(double RawNonCombatRegenArmordelta, ParseErrorInfo ErrorInfo)
@@ -391,17 +341,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCombatRegenArmorMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCombatRegenArmorMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCombatRegenArmorMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CombatRegenArmorMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenArmorMod", This.ParseCombatRegenArmorMod);
         }
 
         private void ParseCombatRegenArmorMod(double RawCombatRegenArmorMod, ParseErrorInfo ErrorInfo)
@@ -411,17 +351,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNonCombatRegenPowerMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseNonCombatRegenPowerMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseNonCombatRegenPowerMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NonCombatRegenPowerMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenPowerMod", This.ParseNonCombatRegenPowerMod);
         }
 
         private void ParseNonCombatRegenPowerMod(double RawNonCombatRegenPowerMod, ParseErrorInfo ErrorInfo)
@@ -431,17 +361,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCombatRegenPowerMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCombatRegenPowerMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCombatRegenPowerMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CombatRegenPowerMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenPowerMod", This.ParseCombatRegenPowerMod);
         }
 
         private void ParseCombatRegenPowerMod(double RawCombatRegenPowerMod, ParseErrorInfo ErrorInfo)
@@ -451,17 +371,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNonCombatRegenRageMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseNonCombatRegenRageMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseNonCombatRegenRageMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NonCombatRegenRageMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenRageMod", This.ParseNonCombatRegenRageMod);
         }
 
         private void ParseNonCombatRegenRageMod(double RawNonCombatRegenRageMod, ParseErrorInfo ErrorInfo)
@@ -471,17 +381,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCombatRegenRageMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCombatRegenRageMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCombatRegenRageMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CombatRegenRageMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenRageMod", This.ParseCombatRegenRageMod);
         }
 
         private void ParseCombatRegenRageMod(double RawCombatRegenRageMod, ParseErrorInfo ErrorInfo)
@@ -491,17 +391,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMentalDefenseRating(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMentalDefenseRating(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMentalDefenseRating(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MentalDefenseRating");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MentalDefenseRating", This.ParseMentalDefenseRating);
         }
 
         private void ParseMentalDefenseRating(double RawMentalDefenseRating, ParseErrorInfo ErrorInfo)
@@ -511,17 +401,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSprintBoost(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseSprintBoost(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseSprintBoost(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable SprintBoost");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement SprintBoost", This.ParseSprintBoost);
         }
 
         private void ParseSprintBoost(double RawSprintBoost, ParseErrorInfo ErrorInfo)
@@ -531,17 +411,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldTauntMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseTauntMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseTauntMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable TauntMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement TauntMod", This.ParseTauntMod);
         }
 
         private void ParseTauntMod(double RawTauntMod, ParseErrorInfo ErrorInfo)
@@ -551,17 +421,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIgnoreChanceFear(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseIgnoreChanceFear(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseIgnoreChanceFear(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable IgnoreChanceFear");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement IgnoreChanceFear", This.ParseIgnoreChanceFear);
         }
 
         private void ParseIgnoreChanceFear(double RawIgnoreChanceFear, ParseErrorInfo ErrorInfo)
@@ -571,17 +431,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIgnoreChanceMezz(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseIgnoreChanceMezz(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseIgnoreChanceMezz(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable IgnoreChanceMezz");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement IgnoreChanceMezz", This.ParseIgnoreChanceMezz);
         }
 
         private void ParseIgnoreChanceMezz(double RawIgnoreChanceMezz, ParseErrorInfo ErrorInfo)
@@ -591,17 +441,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIgnoreChanceKnockback(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseIgnoreChanceKnockback(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseIgnoreChanceKnockback(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable IgnoreChanceKnockback");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement IgnoreChanceKnockback", This.ParseIgnoreChanceKnockback);
         }
 
         private void ParseIgnoreChanceKnockback(double RawIgnoreChanceKnockback, ParseErrorInfo ErrorInfo)
@@ -611,17 +451,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldEvasionChance(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseEvasionChance(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseEvasionChance(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable EvasionChance");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement EvasionChance", This.ParseEvasionChance);
         }
 
         private void ParseEvasionChance(double RawEvasionChance, ParseErrorInfo ErrorInfo)
@@ -631,17 +461,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLootBoostChanceUncommon(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseLootBoostChanceUncommon(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseLootBoostChanceUncommon(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable LootBoostChanceUncommon");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceUncommon", This.ParseLootBoostChanceUncommon);
         }
 
         private void ParseLootBoostChanceUncommon(double RawLootBoostChanceUncommon, ParseErrorInfo ErrorInfo)
@@ -651,17 +471,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLootBoostChanceRare(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseLootBoostChanceRare(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseLootBoostChanceRare(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable LootBoostChanceRare");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceRare", This.ParseLootBoostChanceRare);
         }
 
         private void ParseLootBoostChanceRare(double RawLootBoostChanceRare, ParseErrorInfo ErrorInfo)
@@ -671,17 +481,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLootBoostChanceExceptional(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseLootBoostChanceExceptional(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseLootBoostChanceExceptional(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable LootBoostChanceExceptional");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceExceptional", This.ParseLootBoostChanceExceptional);
         }
 
         private void ParseLootBoostChanceExceptional(double RawLootBoostChanceExceptional, ParseErrorInfo ErrorInfo)
@@ -691,17 +491,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLootBoostChanceEpic(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseLootBoostChanceEpic(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseLootBoostChanceEpic(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable LootBoostChanceEpic");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceEpic", This.ParseLootBoostChanceEpic);
         }
 
         private void ParseLootBoostChanceEpic(double RawLootBoostChanceEpic, ParseErrorInfo ErrorInfo)
@@ -711,17 +501,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLootBoostChanceLegendary(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseLootBoostChanceLegendary(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseLootBoostChanceLegendary(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable LootBoostChanceLegendary");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceLegendary", This.ParseLootBoostChanceLegendary);
         }
 
         private void ParseLootBoostChanceLegendary(double RawLootBoostChanceLegendary, ParseErrorInfo ErrorInfo)
@@ -731,17 +511,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxHealth(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxHealth(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxHealth(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxHealth");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxHealth", This.ParseMaxHealth);
         }
 
         private void ParseMaxHealth(double RawMaxHealth, ParseErrorInfo ErrorInfo)
@@ -751,17 +521,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxArmor(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxArmor(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxArmor(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxArmor");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxArmor", This.ParseMaxArmor);
         }
 
         private void ParseMaxArmor(double RawMaxArmor, ParseErrorInfo ErrorInfo)
@@ -771,17 +531,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxRage(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxRage(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxRage(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxRage");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxRage", This.ParseMaxRage);
         }
 
         private void ParseMaxRage(double RawMaxRage, ParseErrorInfo ErrorInfo)
@@ -791,17 +541,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxPower(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxPower(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxPower(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxPower");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxPower", This.ParseMaxPower);
         }
 
         private void ParseMaxPower(double RawMaxPower, ParseErrorInfo ErrorInfo)
@@ -811,17 +551,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxBreath(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxBreath(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxBreath(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxBreath");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxBreath", This.ParseMaxBreath);
         }
 
         private void ParseMaxBreath(double RawMaxBreath, ParseErrorInfo ErrorInfo)
@@ -831,17 +561,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldBoostUniversalDirect(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseBoostUniversalDirect(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseBoostUniversalDirect(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable BoostUniversalDirect");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement BoostUniversalDirect", This.ParseBoostUniversalDirect);
         }
 
         private void ParseBoostUniversalDirect(double RawBoostUniversalDirect, ParseErrorInfo ErrorInfo)
@@ -851,17 +571,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldBoostAbilityRageAttack(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseBoostAbilityRageAttack(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseBoostAbilityRageAttack(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable BoostAbilityRageAttack");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement BoostAbilityRageAttack", This.ParseBoostAbilityRageAttack);
         }
 
         private void ParseBoostAbilityRageAttack(double RawBoostAbilityRageAttack, ParseErrorInfo ErrorInfo)
@@ -871,17 +581,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldModAbilityRageAttack(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseModAbilityRageAttack(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseModAbilityRageAttack(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable ModAbilityRageAttack");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ModAbilityRageAttack", This.ParseModAbilityRageAttack);
         }
 
         private void ParseModAbilityRageAttack(double RawModAbilityRageAttack, ParseErrorInfo ErrorInfo)
@@ -891,17 +591,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMonsterCombatXpValue(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMonsterCombatXpValue(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMonsterCombatXpValue(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MonsterCombatXpValue");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MonsterCombatXpValue", This.ParseMonsterCombatXpValue);
         }
 
         private void ParseMonsterCombatXpValue(double RawMonsterCombatXpValue, ParseErrorInfo ErrorInfo)
@@ -911,17 +601,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCombatRegenArmorDelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCombatRegenArmorDelta(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCombatRegenArmorDelta(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CombatRegenArmorDelta");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenArmorDelta", This.ParseCombatRegenArmorDelta);
         }
 
         private void ParseCombatRegenArmorDelta(double RawCombatRegenArmorDelta, ParseErrorInfo ErrorInfo)
@@ -931,17 +611,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCombatRegenDelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCombatRegenDelta(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCombatRegenDelta(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CombatRegenDelta");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenDelta", This.ParseCombatRegenDelta);
         }
 
         private void ParseCombatRegenDelta(double RawCombatRegenDelta, ParseErrorInfo ErrorInfo)
@@ -951,17 +621,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCombatRegenMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCombatRegenMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCombatRegenMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CombatRegenMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenMod", This.ParseCombatRegenMod);
         }
 
         private void ParseCombatRegenMod(double RawCombatRegenMod, ParseErrorInfo ErrorInfo)
@@ -971,17 +631,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxInventorySize(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxInventorySize(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxInventorySize(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxInventorySize");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxInventorySize", This.ParseMaxInventorySize);
         }
 
         private void ParseMaxInventorySize(double RawMaxInventorySize, ParseErrorInfo ErrorInfo)
@@ -991,17 +641,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxMetabolism(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxMetabolism(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxMetabolism(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxMetabolism");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxMetabolism", This.ParseMaxMetabolism);
         }
 
         private void ParseMaxMetabolism(double RawMaxMetabolism, ParseErrorInfo ErrorInfo)
@@ -1011,17 +651,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNpcModFavorFromGifts(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseNpcModFavorFromGifts(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseNpcModFavorFromGifts(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NpcModFavorFromGifts");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NpcModFavorFromGifts", This.ParseNpcModFavorFromGifts);
         }
 
         private void ParseNpcModFavorFromGifts(double RawNpcModFavorFromGifts, ParseErrorInfo ErrorInfo)
@@ -1031,17 +661,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNpcModFavorFromHangouts(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseNpcModFavorFromHangouts(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseNpcModFavorFromHangouts(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NpcModFavorFromHangouts");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NpcModFavorFromHangouts", This.ParseNpcModFavorFromHangouts);
         }
 
         private void ParseNpcModFavorFromHangouts(double RawNpcModFavorFromHangouts, ParseErrorInfo ErrorInfo)
@@ -1051,17 +671,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNpcModMaxSalesValue(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseNpcModMaxSalesValue(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseNpcModMaxSalesValue(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NpcModMaxSalesValue");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NpcModMaxSalesValue", This.ParseNpcModMaxSalesValue);
         }
 
         private void ParseNpcModMaxSalesValue(double RawNpcModMaxSalesValue, ParseErrorInfo ErrorInfo)
@@ -1071,17 +681,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNpcModTrainingCost(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseNpcModTrainingCost(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseNpcModTrainingCost(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable NpcModTrainingCost");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NpcModTrainingCost", This.ParseNpcModTrainingCost);
         }
 
         private void ParseNpcModTrainingCost(double RawNpcModTrainingCost, ParseErrorInfo ErrorInfo)
@@ -1091,7 +691,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumInventoryFolders(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "AdvancementTable NumInventoryFolders", This.ParseNumInventoryFolders);
+            ParseFieldValueInteger(Value, ErrorInfo, "AdvancementTable NumInventoryFolders", This.ParseNumInventoryFolders);
         }
 
         private void ParseNumInventoryFolders(long RawNumInventoryFolders, ParseErrorInfo ErrorInfo)
@@ -1101,17 +701,7 @@ namespace PgJsonObjects
         
         private static void ParseFieldHighCleanlinessXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseHighCleanlinessXpEarnedMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseHighCleanlinessXpEarnedMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable HighCleanlinessXpEarnedMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement HighCleanlinessXpEarnedMod", This.ParseHighCleanlinessXpEarnedMod);
         }
 
         private void ParseHighCleanlinessXpEarnedMod(double RawHighCleanlinessXpEarnedMod, ParseErrorInfo ErrorInfo)
@@ -1121,17 +711,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLowCleanlinessXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseLowCleanlinessXpEarnedMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseLowCleanlinessXpEarnedMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable LowCleanlinessXpEarnedMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LowCleanlinessXpEarnedMod", This.ParseLowCleanlinessXpEarnedMod);
         }
 
         private void ParseLowCleanlinessXpEarnedMod(double RawLowCleanlinessXpEarnedMod, ParseErrorInfo ErrorInfo)
@@ -1141,17 +721,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxArmorMitigationRatio(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxArmorMitigationRatio(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxArmorMitigationRatio(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxArmorMitigationRatio");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxArmorMitigationRatio", This.ParseMaxArmorMitigationRatio);
         }
 
         private void ParseMaxArmorMitigationRatio(double RawMaxArmorMitigationRatio, ParseErrorInfo ErrorInfo)
@@ -1161,17 +731,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldShowCleanlinessIndicators(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseShowCleanlinessIndicators(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseShowCleanlinessIndicators(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable ShowCleanlinessIndicators");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShowCleanlinessIndicators", This.ParseShowCleanlinessIndicators);
         }
 
         private void ParseShowCleanlinessIndicators(double RawShowCleanlinessIndicators, ParseErrorInfo ErrorInfo)
@@ -1181,17 +741,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldHighCommunityXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseHighCommunityXpEarnedMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseHighCommunityXpEarnedMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable HighCommunityXpEarnedMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement HighCommunityXpEarnedMod", This.ParseHighCommunityXpEarnedMod);
         }
 
         private void ParseHighCommunityXpEarnedMod(double RawHighCommunityXpEarnedMod, ParseErrorInfo ErrorInfo)
@@ -1201,17 +751,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLowCommunityXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseLowCommunityXpEarnedMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseLowCommunityXpEarnedMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable LowCommunityXpEarnedMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LowCommunityXpEarnedMod", This.ParseLowCommunityXpEarnedMod);
         }
 
         private void ParseLowCommunityXpEarnedMod(double RawLowCommunityXpEarnedMod, ParseErrorInfo ErrorInfo)
@@ -1221,17 +761,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldShowCommunityIndicators(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseShowCommunityIndicators(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseShowCommunityIndicators(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable ShowCommunityIndicators");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShowCommunityIndicators", This.ParseShowCommunityIndicators);
         }
 
         private void ParseShowCommunityIndicators(double RawShowCommunityIndicators, ParseErrorInfo ErrorInfo)
@@ -1241,17 +771,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldHighPeaceblenessXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseHighPeaceblenessXpEarnedMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseHighPeaceblenessXpEarnedMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable HighPeaceblenessXpEarnedMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement HighPeaceblenessXpEarnedMod", This.ParseHighPeaceblenessXpEarnedMod);
         }
 
         private void ParseHighPeaceblenessXpEarnedMod(double RawHighPeaceblenessXpEarnedMod, ParseErrorInfo ErrorInfo)
@@ -1261,17 +781,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLowPeaceblenessXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseLowPeaceblenessXpEarnedMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseLowPeaceblenessXpEarnedMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable LowPeaceblenessXpEarnedMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LowPeaceblenessXpEarnedMod", This.ParseLowPeaceblenessXpEarnedMod);
         }
 
         private void ParseLowPeaceblenessXpEarnedMod(double RawLowPeaceblenessXpEarnedMod, ParseErrorInfo ErrorInfo)
@@ -1281,17 +791,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldShowPeaceblenessIndicators(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseShowPeaceblenessIndicators(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseShowPeaceblenessIndicators(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable ShowPeaceblenessIndicators");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShowPeaceblenessIndicators", This.ParseShowPeaceblenessIndicators);
         }
 
         private void ParseShowPeaceblenessIndicators(double RawShowPeaceblenessIndicators, ParseErrorInfo ErrorInfo)
@@ -1301,17 +801,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldStaffArmorAutoHeal(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseStaffArmorAutoHeal(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseStaffArmorAutoHeal(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable StaffArmorAutoHeal");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement StaffArmorAutoHeal", This.ParseStaffArmorAutoHeal);
         }
 
         private void ParseStaffArmorAutoHeal(double RawStaffArmorAutoHeal, ParseErrorInfo ErrorInfo)
@@ -1321,17 +811,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxMapPinsPerArea(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxMapPinsPerArea(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxMapPinsPerArea(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxMapPinsPerArea");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxMapPinsPerArea", This.ParseMaxMapPinsPerArea);
         }
 
         private void ParseMaxMapPinsPerArea(double RawMaxMapPinsPerArea, ParseErrorInfo ErrorInfo)
@@ -1341,17 +821,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxMapPinIcons(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxMapPinIcons(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxMapPinIcons(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxMapPinIcons");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxMapPinIcons", This.ParseMaxMapPinIcons);
         }
 
         private void ParseMaxMapPinIcons(double RawMaxMapPinIcons, ParseErrorInfo ErrorInfo)
@@ -1361,17 +831,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldWorkOrderCoinRewardMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseWorkOrderCoinRewardMod(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseWorkOrderCoinRewardMod(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable WorkOrderCoinRewardMod");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement WorkOrderCoinRewardMod", This.ParseWorkOrderCoinRewardMod);
         }
 
         private void ParseWorkOrderCoinRewardMod(double RawWorkOrderCoinRewardMod, ParseErrorInfo ErrorInfo)
@@ -1381,17 +841,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxActiveWorkOrders(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMaxActiveWorkOrders(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMaxActiveWorkOrders(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MaxActiveWorkOrders");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxActiveWorkOrders", This.ParseMaxActiveWorkOrders);
         }
 
         private void ParseMaxActiveWorkOrders(double RawMaxActiveWorkOrders, ParseErrorInfo ErrorInfo)
@@ -1401,17 +851,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldPlayerOrdersMaxActive(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParsePlayerOrdersMaxActive(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParsePlayerOrdersMaxActive(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable PlayerOrdersMaxActive");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement PlayerOrdersMaxActive", This.ParsePlayerOrdersMaxActive);
         }
 
         private void ParsePlayerOrdersMaxActive(double RawPlayerOrdersMaxActive, ParseErrorInfo ErrorInfo)
@@ -1421,17 +861,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldShopInventorySizeDelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseShopInventorySizeDelta(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseShopInventorySizeDelta(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable ShopInventorySizeDelta");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShopInventorySizeDelta", This.ParseShopInventorySizeDelta);
         }
 
         private void ParseShopInventorySizeDelta(double RawShopInventorySizeDelta, ParseErrorInfo ErrorInfo)
@@ -1441,17 +871,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMailShopNumFree(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseMailShopNumFree(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseMailShopNumFree(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable MailShopNumFree");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MailShopNumFree", This.ParseMailShopNumFree);
         }
 
         private void ParseMailShopNumFree(double RawMailShopNumFree, ParseErrorInfo ErrorInfo)
@@ -1461,17 +881,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldShopHiringMaxPrepDays(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseShopHiringMaxPrepDays(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseShopHiringMaxPrepDays(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable ShopHiringMaxPrepDays");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShopHiringMaxPrepDays", This.ParseShopHiringMaxPrepDays);
         }
 
         private void ParseShopHiringMaxPrepDays(double RawShopHiringMaxPrepDays, ParseErrorInfo ErrorInfo)
@@ -1481,17 +891,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldShopLogDaysKept(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseShopLogDaysKept(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseShopLogDaysKept(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable ShopLogDaysKept");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShopLogDaysKept", This.ParseShopLogDaysKept);
         }
 
         private void ParseShopLogDaysKept(double RawShopLogDaysKept, ParseErrorInfo ErrorInfo)
@@ -1501,17 +901,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldShopHiringNumFree(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseShopHiringNumFree(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseShopHiringNumFree(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable ShopHiringNumFree");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShopHiringNumFree", This.ParseShopHiringNumFree);
         }
 
         private void ParseShopHiringNumFree(double RawShopHiringNumFree, ParseErrorInfo ErrorInfo)
@@ -1521,17 +911,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCriticalHitDamage(Advancement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseCriticalHitDamage(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseCriticalHitDamage(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("AdvancementTable CriticalHitDamage");
+            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CriticalHitDamage", This.ParseCriticalHitDamage);
         }
 
         private void ParseCriticalHitDamage(double RawCriticalHitDamage, ParseErrorInfo ErrorInfo)

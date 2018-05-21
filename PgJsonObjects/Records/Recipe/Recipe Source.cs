@@ -187,7 +187,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemTypeId(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "RecipeSource ItemTypeId", This.ParseItemTypeId);
+            ParseFieldValueInteger(Value, ErrorInfo, "RecipeSource ItemTypeId", This.ParseItemTypeId);
         }
 
         private void ParseItemTypeId(long RawItemTypeId, ParseErrorInfo ErrorInfo)
@@ -266,7 +266,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldQuestId(RecipeSource This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "RecipeSource QuestId", This.ParseQuestId);
+            ParseFieldValueInteger(Value, ErrorInfo, "RecipeSource QuestId", This.ParseQuestId);
         }
 
         private void ParseQuestId(long RawQuestId, ParseErrorInfo ErrorInfo)

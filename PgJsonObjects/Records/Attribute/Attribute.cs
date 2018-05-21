@@ -68,24 +68,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldIconIds(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawIconIds;
-            if ((RawIconIds = Value as JsonArray) != null)
-                This.ParseIconIds(RawIconIds, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Attribute IconIds");
+            ParseFieldValueIntegerArray(Value, ErrorInfo, "Attribute IconIds", This.ParseIconId);
         }
 
-        private void ParseIconIds(JsonArray RawIconIds, ParseErrorInfo ErrorInfo)
+        private bool ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
         {
-            List<int> RawIconIdList = new List<int>();
-            ParseIntTable(RawIconIds, RawIconIdList, "IconIds", ErrorInfo, out IsIconIdListEmpty);
-
-            foreach (int Id in RawIconIdList)
-                if (!IconIdList.Contains(Id))
-                {
-                    IconIdList.Add(Id);
-                    ErrorInfo.AddIconId(Id);
-                }
+            IconIdList.Add((int)RawIconId);
+            ErrorInfo.AddIconId((int)RawIconId);
+            return true;
         }
 
         private static void ParseFieldTooltip(Attribute This, object Value, ParseErrorInfo ErrorInfo)
@@ -134,17 +124,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDefaultValue(Attribute This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseDefaultValue(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseDefaultValue(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("Attribute DefaultValue");
+            ParseFieldValueFloat(Value, ErrorInfo, "Attribute DefaultValue", This.ParseDefaultValue);
         }
 
         private void ParseDefaultValue(double RawDefaultValue, ParseErrorInfo ErrorInfo)

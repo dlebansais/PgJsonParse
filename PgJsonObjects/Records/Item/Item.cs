@@ -81,7 +81,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "BestowRecipes", ParseFieldBestowRecipes },
             { "BestowAbility", ParseFieldBestowAbility },
@@ -121,16 +121,13 @@ namespace PgJsonObjects
 
         private static void ParseFieldBestowRecipes(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawBestowRecipes;
-            if ((RawBestowRecipes = Value as JsonArray) != null)
-                This.ParseBestowRecipes(RawBestowRecipes, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item BestowRecipes");
+            ParseFieldValueStringArray(Value, ErrorInfo, "Item BestowRecipes", This.ParseBestowRecipes);
         }
 
-        private void ParseBestowRecipes(JsonArray RawBestowRecipes, ParseErrorInfo ErrorInfo)
+        private bool ParseBestowRecipes(string RawBestowRecipes, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawBestowRecipes, RawBestowRecipesList, "BestowRecipes", ErrorInfo, out RawBestowRecipesListIsEmpty);
+            RawBestowRecipesList.Add(RawBestowRecipes);
+            return true;
         }
 
         private static void ParseFieldBestowAbility(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -179,7 +176,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCraftPoints(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Item CraftPoints", This.ParseCraftPoints);
+            ParseFieldValueInteger(Value, ErrorInfo, "Item CraftPoints", This.ParseCraftPoints);
         }
 
         private void ParseCraftPoints(long RawCraftPoints, ParseErrorInfo ErrorInfo)
@@ -189,7 +186,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCraftingTargetLevel(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Item CraftingTargetLevel", This.ParseCraftPoints);
+            ParseFieldValueInteger(Value, ErrorInfo, "Item CraftingTargetLevel", This.ParseCraftPoints);
         }
 
         private void ParseCraftingTargetLevel(long RawCraftingTargetLevel, ParseErrorInfo ErrorInfo)
@@ -225,7 +222,6 @@ namespace PgJsonObjects
 
         private static void ParseFieldEffectDescs(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            List<ItemEffect> EffectDescsList = new List<ItemEffect>();
             ParseFieldValueStringArray(Value, ErrorInfo, "Item EffectDescs", This.ParseEffectDescs);
         }
 
@@ -282,7 +278,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldIconId(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Item IconId", This.ParseIconId);
+            ParseFieldValueInteger(Value, ErrorInfo, "Item IconId", This.ParseIconId);
         }
 
         private void ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
@@ -404,7 +400,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxCarryable(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Item MaxCarryable", This.ParseMaxCarryable);
+            ParseFieldValueInteger(Value, ErrorInfo, "Item MaxCarryable", This.ParseMaxCarryable);
         }
 
         private void ParseMaxCarryable(long RawMaxCarryable, ParseErrorInfo ErrorInfo)
@@ -414,7 +410,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxOnVendor(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Item MaxOnVendor", This.ParseMaxOnVendor);
+            ParseFieldValueInteger(Value, ErrorInfo, "Item MaxOnVendor", This.ParseMaxOnVendor);
         }
 
         private void ParseMaxOnVendor(long RawMaxOnVendor, ParseErrorInfo ErrorInfo)
@@ -424,7 +420,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldMaxStackSize(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Item MaxStackSize", This.ParseMaxStackSize);
+            ParseFieldValueInteger(Value, ErrorInfo, "Item MaxStackSize", This.ParseMaxStackSize);
         }
 
         private void ParseMaxStackSize(long RawMaxStackSize, ParseErrorInfo ErrorInfo)
@@ -456,11 +452,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldSkillReqs(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonObject RawSkillReqs;
-            if ((RawSkillReqs = Value as JsonObject) != null)
-                This.ParseSkillReqs(RawSkillReqs, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item SkillReqs");
+            ParseFieldValue(Value, ErrorInfo, "Item SkillReqs", This.ParseSkillReqs);
         }
 
         private void ParseSkillReqs(JsonObject RawSkillReqs, ParseErrorInfo ErrorInfo)
@@ -552,17 +544,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldValue(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseValue(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseValue(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item Value");
+            ParseFieldValueFloat(Value, ErrorInfo, "Item Value", This.ParseValue);
         }
 
         private void ParseValue(double RawValue, ParseErrorInfo ErrorInfo)
@@ -572,7 +554,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumUses(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Item NumUses", This.ParseNumUses);
+            ParseFieldValueInteger(Value, ErrorInfo, "Item NumUses", This.ParseNumUses);
         }
 
         private void ParseNumUses(long RawNumUses, ParseErrorInfo ErrorInfo)
@@ -592,23 +574,14 @@ namespace PgJsonObjects
 
         private static void ParseFieldBehaviors(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray AsJArray;
-            if ((AsJArray = Value as JsonArray) != null)
-                This.ParseBehaviors(AsJArray, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Item Behaviors");
+            ParseFieldValueArray(Value, ErrorInfo, "Item Behaviors", This.ParseBehaviors);
         }
 
-        private void ParseBehaviors(JsonArray RawBehaviors, ParseErrorInfo ErrorInfo)
+        private void ParseBehaviors(JsonObject RawBehaviors, ParseErrorInfo ErrorInfo)
         {
-            List<ItemBehavior> ParsedBehaviorList;
-            JsonObjectParser<ItemBehavior>.InitAsSublist(RawBehaviors, out ParsedBehaviorList, ErrorInfo);
-
-            foreach (ItemBehavior ParsedBehavior in ParsedBehaviorList)
-            {
-                ParsedBehavior.SetLinkBack(this);
-                BehaviorList.Add(ParsedBehavior);
-            }
+            JsonObjectParser<ItemBehavior>.InitAsSubitem("Behaviors", RawBehaviors, out ItemBehavior ParsedBehavior, ErrorInfo);
+            ParsedBehavior.SetLinkBack(this);
+            BehaviorList.Add(ParsedBehavior);
         }
 
         private static void ParseFieldDynamicCraftingSummary(Item This, object Value, ParseErrorInfo ErrorInfo)
@@ -633,7 +606,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldBestowTitle(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Item BestowTitle", This.ParseBestowTitle);
+            ParseFieldValueInteger(Value, ErrorInfo, "Item BestowTitle", This.ParseBestowTitle);
         }
 
         private void ParseBestowTitle(long RawBestowTitle, ParseErrorInfo ErrorInfo)
@@ -643,7 +616,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldBestowLoreBook(Item This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Item BestowLoreBook", This.ParseBestowLoreBook);
+            ParseFieldValueInteger(Value, ErrorInfo, "Item BestowLoreBook", This.ParseBestowLoreBook);
         }
 
         private void ParseBestowLoreBook(long RawBestowLoreBook, ParseErrorInfo ErrorInfo)

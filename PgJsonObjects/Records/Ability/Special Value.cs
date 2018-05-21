@@ -26,7 +26,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Label", ParseFieldLabel },
             { "Suffix", ParseFieldSuffix },
@@ -60,17 +60,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldValue(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseValue(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseValue(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("SpecialValue Value");
+            ParseFieldValueFloat(Value, ErrorInfo, "SpecialValue Value", This.ParseValue);
         }
 
         private void ParseValue(double RawValue, ParseErrorInfo ErrorInfo)
@@ -80,44 +70,35 @@ namespace PgJsonObjects
 
         private static void ParseFieldAttributesThatDelta(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatDelta;
-            if ((RawAttributesThatDelta = Value as JsonArray) != null)
-                This.ParseAttributesThatDelta(RawAttributesThatDelta, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("SpecialValue AttributesThatDelta");
+            ParseFieldValueStringArray(Value, ErrorInfo, "SpecialValue AttributesThatDelta", This.ParseAttributesThatDelta);
         }
 
-        private void ParseAttributesThatDelta(JsonArray RawAttributesThatDelta, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatDelta(string RawAttributesThatDelta, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatDelta, RawAttributesThatDeltaList, "AttributesThatDelta", ErrorInfo, out RawAttributesThatDeltaListIsEmpty);
+            RawAttributesThatDeltaList.Add(RawAttributesThatDelta);
+            return true;
         }
 
         private static void ParseFieldAttributesThatMod(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatMod;
-            if ((RawAttributesThatMod = Value as JsonArray) != null)
-                This.ParseAttributesThatMod(RawAttributesThatMod, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("SpecialValue AttributesThatMod");
+            ParseFieldValueStringArray(Value, ErrorInfo, "SpecialValue AttributesThatMod", This.ParseAttributesThatMod);
         }
 
-        private void ParseAttributesThatMod(JsonArray RawAttributesThatMod, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatMod(string RawAttributesThatMod, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatMod, RawAttributesThatModList, "AttributesThatMod", ErrorInfo, out RawAttributesThatModListIsEmpty);
+            RawAttributesThatModList.Add(RawAttributesThatMod);
+            return true;
         }
 
         private static void ParseFieldAttributesThatModBase(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawAttributesThatModBase;
-            if ((RawAttributesThatModBase = Value as JsonArray) != null)
-                This.ParseAttributesThatModBase(RawAttributesThatModBase, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("SpecialValue AttributesThatModBase");
+            ParseFieldValueStringArray(Value, ErrorInfo, "SpecialValue AttributesThatModBase", This.ParseAttributesThatModBase);
         }
 
-        private void ParseAttributesThatModBase(JsonArray RawAttributesThatModBase, ParseErrorInfo ErrorInfo)
+        private bool ParseAttributesThatModBase(string RawAttributesThatModBase, ParseErrorInfo ErrorInfo)
         {
-            ParseStringTable(RawAttributesThatModBase, RawAttributesThatModBaseList, "AttributesThatModBase", ErrorInfo, out RawAttributesThatModBaseListIsEmpty);
+            RawAttributesThatModBaseList.Add(RawAttributesThatModBase);
+            return true;
         }
 
         private static void ParseFieldDisplayAsPercent(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)

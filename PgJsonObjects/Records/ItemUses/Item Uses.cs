@@ -17,14 +17,14 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "RecipesThatUseItem", ParseFieldRecipesThatUseItem },
         };
 
         private static void ParseFieldRecipesThatUseItem(ItemUses This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLongArray(Value, ErrorInfo, "ItemUses RecipesThatUseItem", This.ParseRecipesThatUseItem);
+            ParseFieldValueIntegerArray(Value, ErrorInfo, "ItemUses RecipesThatUseItem", This.ParseRecipesThatUseItem);
         }
 
         private bool ParseRecipesThatUseItem(long RecipeThatUseItem, ParseErrorInfo ErrorInfo)

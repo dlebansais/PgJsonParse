@@ -26,7 +26,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Id", ParseFieldId },
             { "Label", ParseFieldLabel },
@@ -39,7 +39,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldId(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "DirectedGoal Id", This.ParseId);
+            ParseFieldValueInteger(Value, ErrorInfo, "DirectedGoal Id", This.ParseId);
         }
 
         private void ParseId(long RawId, ParseErrorInfo ErrorInfo)
@@ -100,7 +100,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldCategoryGateId(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "DirectedGoal CategoryGateId", This.ParseCategoryGateId);
+            ParseFieldValueInteger(Value, ErrorInfo, "DirectedGoal CategoryGateId", This.ParseCategoryGateId);
         }
 
         private void ParseCategoryGateId(long RawCategoryGateId, ParseErrorInfo ErrorInfo)

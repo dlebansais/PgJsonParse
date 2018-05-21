@@ -182,11 +182,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldTiers(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonObject RawTiers;
-            if ((RawTiers = Value as JsonObject) != null)
-                This.ParseTiers(RawTiers, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Power Tiers");
+            ParseFieldValue(Value, ErrorInfo, "Power Tiers", This.ParseTiers);
         }
 
         private void ParseTiers(JsonObject RawTiers, ParseErrorInfo ErrorInfo)
@@ -230,16 +226,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldSlots(Power This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawSlots;
-            if ((RawSlots = Value as JsonArray) != null)
-                This.ParseSlots(RawSlots, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Power Slots");
+            ParseFieldValueStringArray(Value, ErrorInfo, "Power Slots", This.ParseSlots);
         }
 
-        private void ParseSlots(JsonArray RawSlots, ParseErrorInfo ErrorInfo)
+        private bool ParseSlots(string RawSlots, ParseErrorInfo ErrorInfo)
         {
-            StringToEnumConversion<ItemSlot>.ParseList(RawSlots, SlotList, ErrorInfo);
+            if (StringToEnumConversion<ItemSlot>.TryParse(RawSlots, out ItemSlot ParsedItemSlot, ErrorInfo))
+                SlotList.Add(ParsedItemSlot);
+
+            return true;
         }
 
         private static void ParseFieldSkill(Power This, object Value, ParseErrorInfo ErrorInfo)

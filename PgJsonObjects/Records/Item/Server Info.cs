@@ -127,7 +127,7 @@ namespace PgJsonObjects
             }
         }
 
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Effects", ParseFieldEffects},
             { "GiveItems", ParseFieldGiveItems},
@@ -178,7 +178,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumItemsToGive(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "ServerInfo NumItemsToGive", This.ParseNumItemsToGive);
+            ParseFieldValueInteger(Value, ErrorInfo, "ServerInfo NumItemsToGive", This.ParseNumItemsToGive);
         }
 
         private void ParseNumItemsToGive(long RawNumItemsToGive, ParseErrorInfo ErrorInfo)
@@ -188,25 +188,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldOtherRequirements(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ArrayList AsArrayList;
-            JsonObject AsJObject;
-
-            if ((AsArrayList = Value as ArrayList) != null)
-            {
-                foreach (object Item in AsArrayList)
-                {
-                    if ((AsJObject = Item as JsonObject) != null)
-                        This.ParseOtherRequirements(AsJObject, ErrorInfo);
-                    else
-                        ErrorInfo.AddInvalidObjectFormat("ServerInfo OtherRequirements");
-                }
-            }
-
-            else if ((AsJObject = Value as JsonObject) != null)
-                This.ParseOtherRequirements(AsJObject, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("ServerInfo OtherRequirements");
+            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "ServerInfo OtherRequirements", This.ParseOtherRequirements);
         }
 
         public void ParseOtherRequirements(JsonObject RawOtherRequirements, ParseErrorInfo ErrorInfo)

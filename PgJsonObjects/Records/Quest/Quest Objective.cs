@@ -308,7 +308,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumber(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "QuestObjective Number", This.ParseNumber);
+            ParseFieldValueInteger(Value, ErrorInfo, "QuestObjective Number", This.ParseNumber);
         }
 
         private void ParseNumber(long RawNumber, ParseErrorInfo ErrorInfo)
@@ -648,7 +648,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumToDeliver(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "QuestObjective NumToDeliver", This.ParseNumToDeliver);
+            ParseFieldValueInteger(Value, ErrorInfo, "QuestObjective NumToDeliver", This.ParseNumToDeliver);
         }
 
         private void ParseNumToDeliver(long RawNumToDeliver, ParseErrorInfo ErrorInfo)

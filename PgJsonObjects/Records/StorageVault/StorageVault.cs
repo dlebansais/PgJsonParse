@@ -47,7 +47,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldID(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "StorageVault ID", This.ParseID);
+            ParseFieldValueInteger(Value, ErrorInfo, "StorageVault ID", This.ParseID);
         }
 
         private void ParseID(long RawId, ParseErrorInfo ErrorInfo)
@@ -88,7 +88,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumSlots(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "StorageVault NumSlots", This.ParseNumSlots);
+            ParseFieldValueInteger(Value, ErrorInfo, "StorageVault NumSlots", This.ParseNumSlots);
         }
 
         private void ParseNumSlots(long RawNumSlots, ParseErrorInfo ErrorInfo)

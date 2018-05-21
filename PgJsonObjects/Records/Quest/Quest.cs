@@ -168,7 +168,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldVersion(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest Version", This.ParseVersion);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest Version", This.ParseVersion);
         }
 
         private void ParseVersion(long RawVersion, ParseErrorInfo ErrorInfo)
@@ -215,7 +215,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldReuseTimeMinutes(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest ReuseTimeMinutes", This.ParseReuseTimeMinutes);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest ReuseTimeMinutes", This.ParseReuseTimeMinutes);
         }
 
         private void ParseReuseTimeMinutes(long RawReuseTimeMinutes, ParseErrorInfo ErrorInfo)
@@ -306,7 +306,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldReuseTimeDays(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest ReuseTimeDays", This.ParseReuseTimeDays);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest ReuseTimeDays", This.ParseReuseTimeDays);
         }
 
         private void ParseReuseTimeDays(long RawReuseTimeDays, ParseErrorInfo ErrorInfo)
@@ -319,7 +319,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldReuseTimeHours(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest ReuseTimeHours", This.ParseReuseTimeHours);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest ReuseTimeHours", This.ParseReuseTimeHours);
         }
 
         private void ParseReuseTimeHours(long RawReuseTimeHours, ParseErrorInfo ErrorInfo)
@@ -332,7 +332,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRewardCombatXP(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest RewardCombatXP", This.ParseRewardCombatXP);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest RewardCombatXP", This.ParseRewardCombatXP);
         }
 
         private void ParseRewardCombatXP(long RawRewardCombatXP, ParseErrorInfo ErrorInfo)
@@ -411,12 +411,12 @@ namespace PgJsonObjects
 
         private static void ParseFieldRewardsFavor(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest RewardFavor", This.ParseRewardFavor);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest RewardFavor", This.ParseRewardFavor);
         }
 
         private static void ParseFieldRewardFavor(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest RewardFavor", This.ParseRewardFavor);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest RewardFavor", This.ParseRewardFavor);
         }
 
         private void ParseRewardFavor(long RawRewardFavor, ParseErrorInfo ErrorInfo)
@@ -615,7 +615,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldTSysLevel(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest TSysLevel", This.ParseTSysLevel);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest TSysLevel", This.ParseTSysLevel);
         }
 
         private void ParseTSysLevel(long RawTSysLevel, ParseErrorInfo ErrorInfo)
@@ -625,7 +625,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRewardGold(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest RewardGold", This.ParseRewardGold);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest RewardGold", This.ParseRewardGold);
         }
 
         private void ParseRewardGold(long RawRewardGold, ParseErrorInfo ErrorInfo)
@@ -772,7 +772,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldNumExpectedParticipants(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest NumExpectedParticipants", This.ParseNumExpectedParticipants);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest NumExpectedParticipants", This.ParseNumExpectedParticipants);
         }
 
         private void ParseNumExpectedParticipants(long RawNumExpectedParticipants, ParseErrorInfo ErrorInfo)
@@ -782,7 +782,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLevel(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "Quest Level", This.ParseLevel);
+            ParseFieldValueInteger(Value, ErrorInfo, "Quest Level", This.ParseLevel);
         }
 
         private void ParseLevel(long RawLevel, ParseErrorInfo ErrorInfo)

@@ -74,7 +74,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemCode(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "RecipeItem ItemCode", This.ParseItemCode);
+            ParseFieldValueInteger(Value, ErrorInfo, "RecipeItem ItemCode", This.ParseItemCode);
         }
 
         private void ParseItemCode(long RawItemCode, ParseErrorInfo ErrorInfo)
@@ -84,7 +84,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldStackSize(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "RecipeItem StackSize", This.ParseStackSize);
+            ParseFieldValueInteger(Value, ErrorInfo, "RecipeItem StackSize", This.ParseStackSize);
         }
 
         private void ParseStackSize(long RawStackSize, ParseErrorInfo ErrorInfo)
@@ -102,17 +102,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldPercentChance(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParsePercentChance(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParsePercentChance(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem PercentChance");
+            ParseFieldValueFloat(Value, ErrorInfo, "RecipeItem PercentChance", This.ParsePercentChance);
         }
 
         private void ParsePercentChance(double RawPercentChance, ParseErrorInfo ErrorInfo)
@@ -152,17 +142,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldChanceToConsume(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseChanceToConsume(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseChanceToConsume(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem ChanceToConsume");
+            ParseFieldValueFloat(Value, ErrorInfo, "RecipeItem ChanceToConsume", This.ParseChanceToConsume);
         }
 
         private void ParseChanceToConsume(double RawChanceToConsume, ParseErrorInfo ErrorInfo)
@@ -172,17 +152,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldDurabilityConsumed(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonInteger AsJsonInteger;
-            JsonFloat AsJsonFloat;
-
-            if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseDurabilityConsumed(AsJsonInteger.Number, ErrorInfo);
-
-            else if ((AsJsonFloat = Value as JsonFloat) != null)
-                This.ParseDurabilityConsumed(AsJsonFloat.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem DurabilityConsumed");
+            ParseFieldValueFloat(Value, ErrorInfo, "RecipeItem DurabilityConsumed", This.ParseDurabilityConsumed);
         }
 
         private void ParseDurabilityConsumed(double RawDurabilityConsumed, ParseErrorInfo ErrorInfo)

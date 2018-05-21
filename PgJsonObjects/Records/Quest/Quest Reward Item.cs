@@ -38,7 +38,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldStackSize(QuestRewardItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueLong(Value, ErrorInfo, "QuestRewardItem StackSize", This.ParseStackSize);
+            ParseFieldValueInteger(Value, ErrorInfo, "QuestRewardItem StackSize", This.ParseStackSize);
         }
 
         private void ParseStackSize(long RawStackSize, ParseErrorInfo ErrorInfo)
