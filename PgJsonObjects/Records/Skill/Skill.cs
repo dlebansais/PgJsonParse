@@ -164,27 +164,6 @@ namespace PgJsonObjects
             CombatSkill = ParsedPowerSkill;
         }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Id", ParseFieldId },
-            { "Description", ParseFieldDescription },
-            { "HideWhenZero", ParseFieldHideWhenZero },
-            { "XpTable", ParseFieldXpTable },
-            { "AdvancementTable", ParseFieldAdvancementTable },
-            { "Combat", ParseFieldCombat },
-            { "CompatibleCombatSkills", ParseFieldCompatibleCombatSkills },
-            { "MaxBonusLevels", ParseFieldMaxBonusLevels },
-            { "InteractionFlagLevelCaps", ParseFieldInteractionFlagLevelCaps },
-            { "AdvancementHints", ParseFieldAdvancementHints },
-            { "Rewards", ParseFieldRewards },
-            { "Reports", ParseFieldReports },
-            { "Name", ParseFieldName },
-            { "Parents", ParseFieldParents },
-            { "SkipBonusLevelsIfSkillUnlearned", ParseFieldSkipBonusLevelsIfSkillUnlearned },
-            { "AuxCombat", ParseFieldAuxCombat },
-            { "TSysCategories", ParseFieldTSysCategories },
-        };
-
         public override void Init(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
         {
             base.Init(EntryRaw, ErrorInfo);
@@ -193,55 +172,31 @@ namespace PgJsonObjects
                 Name = Key;
         }
 
-        private static void ParseFieldId(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Skill Id", This.ParseId);
-        }
-
-        private void ParseId(long RawId, ParseErrorInfo ErrorInfo)
-        {
-            this.RawId = (int)RawId;
-        }
-
-        private static void ParseFieldDescription(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Skill Description", This.ParseDescription);
-        }
-
-        private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
-        {
-            Description = RawDescription;
-        }
-
-        private static void ParseFieldHideWhenZero(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Skill HideWhenZero", This.ParseHideWhenZero);
-        }
-
-        private void ParseHideWhenZero(bool RawHideWhenZero, ParseErrorInfo ErrorInfo)
-        {
-            this.RawHideWhenZero = RawHideWhenZero;
-        }
-
-        private static void ParseFieldXpTable(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Skill XpTable", This.ParseXpTable);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Id", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawId = value; }} },
+            { "Description", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Description = value; }} },
+            { "HideWhenZero", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawHideWhenZero = value; }} },
+            { "XpTable", new FieldParser() { Type = FieldType.String, ParserString = ParseXpTable } },
+            { "AdvancementTable", new FieldParser() { Type = FieldType.String, ParserString = ParseAdvancementTable } },
+            { "Combat", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCombat = value; }} },
+            { "CompatibleCombatSkills", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseCompatibleCombatSkills } },
+            { "MaxBonusLevels", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxBonusLevels = value; }} },
+            { "InteractionFlagLevelCaps", new FieldParser() { Type = FieldType.Object, ParserObject = ParseInteractionFlagLevelCaps } },
+            { "AdvancementHints", new FieldParser() { Type = FieldType.Object, ParserObject = ParseAdvancementHints } },
+            { "Rewards", new FieldParser() { Type = FieldType.Object, ParserObject = ParseRewards } },
+            { "Reports", new FieldParser() { Type = FieldType.Object, ParserObject = ParseReports } },
+            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
+            { "Parents", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseParents } },
+            { "SkipBonusLevelsIfSkillUnlearned", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawSkipBonusLevelsIfSkillUnlearned = value; }} },
+            { "AuxCombat", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawAuxCombat = value; }} },
+            { "TSysCategories", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseTSysCategories } },
+        }; } }
 
         private void ParseXpTable(string RawXpTable, ParseErrorInfo ErrorInfo)
         {
             this.RawXpTable = RawXpTable;
             XpTable = null;
             IsRawXpTableParsed = false;
-        }
-
-        private static void ParseFieldAdvancementTable(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            JsonString RawAdvancementTable;
-            if ((RawAdvancementTable = Value as JsonString) != null)
-                This.ParseAdvancementTable(RawAdvancementTable.String, ErrorInfo);
-            else
-                This.IsRawAdvancementTableEmpty = true;
         }
 
         private void ParseAdvancementTable(string RawAdvancementTable, ParseErrorInfo ErrorInfo)
@@ -252,43 +207,11 @@ namespace PgJsonObjects
             IsRawAdvancementTableParsed = false;
         }
 
-        private static void ParseFieldCombat(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Skill Combat", This.ParseCombat);
-        }
-
-        private void ParseCombat(bool RawCombat, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombat = RawCombat;
-        }
-
-        private static void ParseFieldCompatibleCombatSkills(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Skill CompatibleCombatSkills", This.ParseCompatibleCombatSkills);
-        }
-
-        private bool ParseCompatibleCombatSkills(string RawCompatibleCombatSkills, ParseErrorInfo ErrorInfo)
+        private void ParseCompatibleCombatSkills(string RawCompatibleCombatSkills, ParseErrorInfo ErrorInfo)
         {
             PowerSkill ParsedCompatibleCombatSkill;
             if (StringToEnumConversion<PowerSkill>.TryParse(RawCompatibleCombatSkills, out ParsedCompatibleCombatSkill, ErrorInfo))
                 CompatibleCombatSkillList.Add(ParsedCompatibleCombatSkill);
-
-            return true;
-        }
-
-        private static void ParseFieldMaxBonusLevels(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Skill MaxBonusLevels", This.ParseMaxBonusLevels);
-        }
-
-        private void ParseMaxBonusLevels(long RawMaxBonusLevels, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxBonusLevels = (int)RawMaxBonusLevels;
-        }
-
-        private static void ParseFieldInteractionFlagLevelCaps(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "Skill InteractionFlagLevelCaps", This.ParseInteractionFlagLevelCaps);
         }
 
         private void ParseInteractionFlagLevelCaps(JsonObject InteractionFlagLevelCaps, ParseErrorInfo ErrorInfo)
@@ -348,11 +271,6 @@ namespace PgJsonObjects
             }
         }
 
-        private static void ParseFieldAdvancementHints(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "Skill AdvancementHints", This.ParseAdvancementHints);
-        }
-
         private void ParseAdvancementHints(JsonObject RawAdvancementHints, ParseErrorInfo ErrorInfo)
         {
             foreach (KeyValuePair<string, IJsonValue> RawEntry in RawAdvancementHints)
@@ -373,11 +291,6 @@ namespace PgJsonObjects
             }
         }
 
-        private static void ParseFieldRewards(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "Skill Rewards", This.ParseRewards);
-        }
-
         private void ParseRewards(JsonObject RawRewards, ParseErrorInfo ErrorInfo)
         {
             foreach (KeyValuePair<string, IJsonValue> Entry in RawRewards)
@@ -394,11 +307,6 @@ namespace PgJsonObjects
             }
 
             EmptyRewardList = (RewardList.Count == 0);
-        }
-
-        private static void ParseFieldReports(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "Skill Reports", This.ParseReports);
         }
 
         private void ParseReports(JsonObject RawReports, ParseErrorInfo ErrorInfo)
@@ -421,22 +329,7 @@ namespace PgJsonObjects
             }
         }
 
-        private static void ParseFieldName(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Skill Name", This.ParseName);
-        }
-
-        private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
-        {
-            Name = RawName;
-        }
-
-        private static void ParseFieldParents(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Skill Parents", This.ParseParents);
-        }
-
-        private bool ParseParents(string RawParents, ParseErrorInfo ErrorInfo)
+        private void ParseParents(string RawParents, ParseErrorInfo ErrorInfo)
         {
             PowerSkill ParsedParent;
             if (StringToEnumConversion<PowerSkill>.TryParse(RawParents, out ParsedParent, ErrorInfo))
@@ -446,42 +339,13 @@ namespace PgJsonObjects
                 else
                     ErrorInfo.AddInvalidObjectFormat("Skill Parents");
             }
-
-            return true;
         }
 
-        private static void ParseFieldSkipBonusLevelsIfSkillUnlearned(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Skill SkipBonusLevelsIfSkillUnlearned", This.ParseSkipBonusLevelsIfSkillUnlearned);
-        }
-
-        private void ParseSkipBonusLevelsIfSkillUnlearned(bool RawSkipBonusLevelsIfSkillUnlearned, ParseErrorInfo ErrorInfo)
-        {
-            this.RawSkipBonusLevelsIfSkillUnlearned = RawSkipBonusLevelsIfSkillUnlearned;
-        }
-
-        private static void ParseFieldAuxCombat(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Skill AuxCombat", This.ParseAuxCombat);
-        }
-
-        private void ParseAuxCombat(bool RawAuxCombat, ParseErrorInfo ErrorInfo)
-        {
-            this.RawAuxCombat = RawAuxCombat;
-        }
-
-        private static void ParseFieldTSysCategories(Skill This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Skill TSysCategories", This.ParseTSysCategories);
-        }
-
-        private bool ParseTSysCategories(string RawTSysCategories, ParseErrorInfo ErrorInfo)
+        private void ParseTSysCategories(string RawTSysCategories, ParseErrorInfo ErrorInfo)
         {
             SkillCategory ParsedTSysCategory;
             if (StringToEnumConversion<SkillCategory>.TryParse(RawTSysCategories, out ParsedTSysCategory, ErrorInfo))
                 TSysCategoryList.Add(ParsedTSysCategory);
-
-            return true;
         }
         #endregion
 

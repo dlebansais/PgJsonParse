@@ -45,52 +45,20 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Label", ParseFieldLabel },
-            { "IconIds", ParseFieldIconIds },
-            { "Tooltip", ParseFieldTooltip },
-            { "DisplayType", ParseFieldDisplayType },
-            { "IsHidden", ParseFieldIsHidden },
-            { "DisplayRule", ParseFieldDisplayRule },
-            { "DefaultValue", ParseFieldDefaultValue },
-        };
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Label", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Label = value; }} },
+            { "IconIds", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParserSimpleIntegerArray = ParseIconId } },
+            { "Tooltip", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Tooltip = value; }} },
+            { "DisplayType", new FieldParser() { Type = FieldType.String, ParserString = ParseDisplayType } },
+            { "IsHidden", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsHidden = value; }} },
+            { "DisplayRule", new FieldParser() { Type = FieldType.String, ParserString = ParseDisplayRule } },
+            { "DefaultValue", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawDefaultValue = value; }} },
+        }; } }
 
-        private static void ParseFieldLabel(Attribute This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Attribute Label", This.ParseLabel);
-        }
-
-        private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)
-        {
-            Label = RawLabel;
-        }
-
-        private static void ParseFieldIconIds(Attribute This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueIntegerArray(Value, ErrorInfo, "Attribute IconIds", This.ParseIconId);
-        }
-
-        private bool ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
+        private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)
         {
             IconIdList.Add((int)RawIconId);
             ErrorInfo.AddIconId((int)RawIconId);
-            return true;
-        }
-
-        private static void ParseFieldTooltip(Attribute This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Attribute Tooltip", This.ParseTooltip);
-        }
-
-        private void ParseTooltip(string RawTooltip, ParseErrorInfo ErrorInfo)
-        {
-            Tooltip = RawTooltip;
-        }
-
-        private static void ParseFieldDisplayType(Attribute This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Attribute DisplayType", This.ParseDisplayType);
         }
 
         private void ParseDisplayType(string RawDisplayType, ParseErrorInfo ErrorInfo)
@@ -100,36 +68,11 @@ namespace PgJsonObjects
             DisplayType = ParsedDisplayType;
         }
 
-        private static void ParseFieldIsHidden(Attribute This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Attribute IsHidden", This.ParseIsHidden);
-        }
-
-        private void ParseIsHidden(bool RawIsHidden, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsHidden = RawIsHidden;
-        }
-
-        private static void ParseFieldDisplayRule(Attribute This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Attribute DisplayRule", This.ParseDisplayRule);
-        }
-
         private void ParseDisplayRule(string RawDisplayRule, ParseErrorInfo ErrorInfo)
         {
             DisplayRule ParsedDisplayRule;
             StringToEnumConversion<DisplayRule>.TryParse(RawDisplayRule, out ParsedDisplayRule, ErrorInfo);
             DisplayRule = ParsedDisplayRule;
-        }
-
-        private static void ParseFieldDefaultValue(Attribute This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Attribute DefaultValue", This.ParseDefaultValue);
-        }
-
-        private void ParseDefaultValue(double RawDefaultValue, ParseErrorInfo ErrorInfo)
-        {
-            this.RawDefaultValue = RawDefaultValue;
         }
         #endregion
 

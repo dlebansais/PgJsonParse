@@ -113,23 +113,17 @@ namespace PgJsonObjects
             }
         }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "T", ParseFieldT },
-            { "Quest", ParseFieldQuest },
-            { "Keyword", ParseFieldKeyword },
-            { "Npc", ParseFieldNpc },
-            { "Level", ParseFieldLevel },
-            { "Skill", ParseFieldSkill },
-            { "List", ParseFieldList },
-            { "Rule", ParseFieldRule },
-            { "InteractionFlag", ParseFieldInteractionFlag },
-        };
-
-        private static void ParseFieldT(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "QuestRequirement T", This.ParseT);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() { Type = FieldType.String, ParserString = ParseT } },
+            { "Quest", new FieldParser() { Type = FieldType.String, ParserString = ParseQuest } },
+            { "Keyword", new FieldParser() { Type = FieldType.String, ParserString = ParseKeyword } },
+            { "Npc", new FieldParser() { Type = FieldType.String, ParserString = ParseNpc } },
+            { "Level", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseLevelForSkill } },
+            { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
+            { "List", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseList } },
+            { "Rule", new FieldParser() { Type = FieldType.String, ParserString = ParseRule } },
+            { "InteractionFlag", new FieldParser() { Type = FieldType.String, ParserString = ParseInteractionFlag } },
+        }; } }
 
         private void ParseT(string RawT, ParseErrorInfo ErrorInfo)
         {
@@ -138,22 +132,12 @@ namespace PgJsonObjects
             OtherRequirementType = ParsedT;
         }
 
-        private static void ParseFieldQuest(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "QuestRequirement Quest", This.ParseQuest);
-        }
-
         private void ParseQuest(string RawQuest, ParseErrorInfo ErrorInfo)
         {
             if (OtherRequirementType == OtherRequirementType.QuestCompleted || OtherRequirementType == OtherRequirementType.GuildQuestCompleted)
                 RawRequirementQuestList.Add(RawQuest);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Quest (" + OtherRequirementType + ")");
-        }
-
-        private static void ParseFieldKeyword(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "QuestRequirement Keyword", This.ParseKeyword);
         }
 
         private void ParseKeyword(string RawKeyword, ParseErrorInfo ErrorInfo)
@@ -166,11 +150,6 @@ namespace PgJsonObjects
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Keyword (" + OtherRequirementType + ")");
-        }
-
-        private static void ParseFieldNpc(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "QuestRequirement Npc", This.ParseNpc);
         }
 
         private void ParseNpc(string RawNpc, ParseErrorInfo ErrorInfo)
@@ -224,17 +203,12 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + OtherRequirementType + ")");
         }
 
-        private void ParseLevelForSkill(long RawLevel, ParseErrorInfo ErrorInfo)
+        private void ParseLevelForSkill(int RawLevel, ParseErrorInfo ErrorInfo)
         {
             if (OtherRequirementType == OtherRequirementType.MinSkillLevel)
                 RawRequirementSkillLevel = (int)RawLevel;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + OtherRequirementType + ")");
-        }
-
-        private static void ParseFieldSkill(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "QuestRequirement Skill", This.ParseSkill);
         }
 
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
@@ -247,11 +221,6 @@ namespace PgJsonObjects
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Skill (" + OtherRequirementType + ")");
-        }
-
-        private static void ParseFieldList(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "QuestRequirement List", This.ParseList);
         }
 
         private void ParseList(JsonObject RawList, ParseErrorInfo ErrorInfo)
@@ -269,22 +238,12 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement List (" + OtherRequirementType + ")");
         }
 
-        private static void ParseFieldRule(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "QuestRequirement Rule", This.ParseRule);
-        }
-
         private void ParseRule(string RawRule, ParseErrorInfo ErrorInfo)
         {
             if (OtherRequirementType == OtherRequirementType.RuntimeBehaviorRuleSet)
                 RequirementRule = RawRule;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Rule (" + OtherRequirementType + ")");
-        }
-
-        private static void ParseFieldInteractionFlag(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "QuestRequirement InteractionFlag", This.ParseInteractionFlag);
         }
 
         private void ParseInteractionFlag(string RawInteractionFlag, ParseErrorInfo ErrorInfo)

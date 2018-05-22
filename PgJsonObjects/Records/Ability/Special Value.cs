@@ -26,100 +26,16 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Label", ParseFieldLabel },
-            { "Suffix", ParseFieldSuffix },
-            { "Value", ParseFieldValue },
-            { "AttributesThatDelta", ParseFieldAttributesThatDelta },
-            { "AttributesThatMod", ParseFieldAttributesThatMod },
-            { "AttributesThatModBase", ParseFieldAttributesThatModBase },
-            { "DisplayAsPercent", ParseFieldDisplayAsPercent },
-            { "SkipIfZero", ParseFieldSkipIfZero },
-        };
-
-        private static void ParseFieldLabel(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "SpecialValue Label", This.ParseLabel);
-        }
-
-        private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)
-        {
-            Label = RawLabel;
-        }
-
-        private static void ParseFieldSuffix(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "SpecialValue Suffix", This.ParseSuffix);
-        }
-
-        private void ParseSuffix(string RawSuffix, ParseErrorInfo ErrorInfo)
-        {
-            Suffix = RawSuffix;
-        }
-
-        private static void ParseFieldValue(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "SpecialValue Value", This.ParseValue);
-        }
-
-        private void ParseValue(double RawValue, ParseErrorInfo ErrorInfo)
-        {
-            this.RawValue = RawValue;
-        }
-
-        private static void ParseFieldAttributesThatDelta(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "SpecialValue AttributesThatDelta", This.ParseAttributesThatDelta);
-        }
-
-        private bool ParseAttributesThatDelta(string RawAttributesThatDelta, ParseErrorInfo ErrorInfo)
-        {
-            RawAttributesThatDeltaList.Add(RawAttributesThatDelta);
-            return true;
-        }
-
-        private static void ParseFieldAttributesThatMod(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "SpecialValue AttributesThatMod", This.ParseAttributesThatMod);
-        }
-
-        private bool ParseAttributesThatMod(string RawAttributesThatMod, ParseErrorInfo ErrorInfo)
-        {
-            RawAttributesThatModList.Add(RawAttributesThatMod);
-            return true;
-        }
-
-        private static void ParseFieldAttributesThatModBase(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "SpecialValue AttributesThatModBase", This.ParseAttributesThatModBase);
-        }
-
-        private bool ParseAttributesThatModBase(string RawAttributesThatModBase, ParseErrorInfo ErrorInfo)
-        {
-            RawAttributesThatModBaseList.Add(RawAttributesThatModBase);
-            return true;
-        }
-
-        private static void ParseFieldDisplayAsPercent(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "SpecialValue DisplayAsPercent", This.ParseDisplayAsPercent);
-        }
-
-        private void ParseDisplayAsPercent(bool RawDisplayAsPercent, ParseErrorInfo ErrorInfo)
-        {
-            this.RawDisplayAsPercent = RawDisplayAsPercent;
-        }
-
-        private static void ParseFieldSkipIfZero(SpecialValue This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "SpecialValue SkipIfZero", This.ParseSkipIfZero);
-        }
-
-        private void ParseSkipIfZero(bool RawSkipIfZero, ParseErrorInfo ErrorInfo)
-        {
-            this.RawSkipIfZero = RawSkipIfZero;
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Label", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Label = value; }} },
+            { "Suffix", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Suffix = value; }} },
+            { "Value", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawValue = value; }} },
+            { "AttributesThatDelta", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty = true } },
+            { "AttributesThatMod", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModListIsEmpty = true} },
+            { "AttributesThatModBase", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModBaseList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModBaseListIsEmpty = true} },
+            { "DisplayAsPercent", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawDisplayAsPercent = value; }} },
+            { "SkipIfZero", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawSkipIfZero = value; }} },
+        }; } }
 
         private List<string> RawAttributesThatDeltaList { get; } = new List<string>();
         private bool RawAttributesThatDeltaListIsEmpty;

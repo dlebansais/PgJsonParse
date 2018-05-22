@@ -31,32 +31,21 @@ namespace PgJsonObjects
                 ServerInfo.SetLinkBack(LinkBack);
         }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "UseVerb", ParseFieldUseVerb},
-            { "ServerInfo", ParseFieldServerInfo },
-            { "UseRequirements", ParseFieldUseRequirements },
-            { "UseAnimation", ParseFieldUseAnimation },
-            { "UseDelayAnimation", ParseFieldUseDelayAnimation },
-            { "MetabolismCost", ParseFieldMetabolismCost },
-            { "UseDelay", ParseFieldUseDelay },
-        };
-
-        private static void ParseFieldUseVerb(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "ItemBehavior UseVerb", This.ParseUseVerb);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "UseVerb", new FieldParser() { Type = FieldType.String, ParserString = ParseUseVerb } },
+            { "ServerInfo", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseServerInfo } },
+            { "UseRequirements", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseUseRequirements } },
+            { "UseAnimation", new FieldParser() { Type = FieldType.String, ParserString = ParseUseAnimation } },
+            { "UseDelayAnimation", new FieldParser() { Type = FieldType.String, ParserString = ParseUseDelayAnimation } },
+            { "MetabolismCost", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMetabolismCost = value; }} },
+            { "UseDelay", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawUseDelay = value; }} },
+        }; } }
 
         private void ParseUseVerb(string RawUseVerb, ParseErrorInfo ErrorInfo)
         {
             ItemUseVerb ParsedUseVerb;
             StringToEnumConversion<ItemUseVerb>.TryParse(RawUseVerb, TextMaps.UseVerbMap, out ParsedUseVerb, ErrorInfo);
             UseVerb = ParsedUseVerb;
-        }
-
-        private static void ParseFieldServerInfo(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "ItemBehavior ServerInfo", This.ParseServerInfo);
         }
 
         private void ParseServerInfo(JsonObject RawServerInfo, ParseErrorInfo ErrorInfo)
@@ -73,11 +62,6 @@ namespace PgJsonObjects
                 ServerInfo = null;
         }
 
-        private static void ParseFieldUseRequirements(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "ItemBehavior UseRequirements", This.ParseUseRequirements);
-        }
-
         private bool ParseUseRequirements(string RawUseRequirement, ParseErrorInfo ErrorInfo)
         {
             ItemUseRequirement ParsedUseRequirement;
@@ -90,11 +74,6 @@ namespace PgJsonObjects
             return false;
         }
 
-        private static void ParseFieldUseAnimation(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "ItemBehavior UseAnimation", This.ParseUseAnimation);
-        }
-
         private void ParseUseAnimation(string RawUseAnimation, ParseErrorInfo ErrorInfo)
         {
             ItemUseAnimation ParsedUseAnimation;
@@ -102,36 +81,11 @@ namespace PgJsonObjects
             UseAnimation = ParsedUseAnimation;
         }
 
-        private static void ParseFieldUseDelayAnimation(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "ItemBehavior UseDelayAnimation", This.ParseUseDelayAnimation);
-        }
-
         private void ParseUseDelayAnimation(string RawUseDelayAnimation, ParseErrorInfo ErrorInfo)
         {
             ItemUseAnimation ParsedUseDelayAnimation;
             StringToEnumConversion<ItemUseAnimation>.TryParse(RawUseDelayAnimation, out ParsedUseDelayAnimation, ErrorInfo);
             UseDelayAnimation = ParsedUseDelayAnimation;
-        }
-
-        private static void ParseFieldMetabolismCost(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "ItemBehavior MetabolismCost", This.ParseMetabolismCost);
-        }
-
-        private void ParseMetabolismCost(long RawMetabolismCost, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMetabolismCost = (int)RawMetabolismCost;
-        }
-
-        private static void ParseFieldUseDelay(ItemBehavior This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "ItemBehavior UseDelay", This.ParseUseDelay);
-        }
-
-        private void ParseUseDelay(double RawUseDelay, ParseErrorInfo ErrorInfo)
-        {
-            this.RawUseDelay = RawUseDelay;
         }
 
         private GenericJsonObject LinkBack;

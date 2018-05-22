@@ -33,32 +33,16 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Area Key");
         }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "FriendlyName", ParseFieldFriendlyName },
-            { "ShortFriendlyName", ParseFieldShortFriendlyName },
-        };
-
-        private static void ParseFieldFriendlyName(GameArea This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Area FriendlyName", This.ParseFriendlyName);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "FriendlyName", new FieldParser() { Type = FieldType.String, ParserString = ParseFriendlyName } },
+            { "ShortFriendlyName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { ShortFriendlyName = value; }} },
+        }; } }
 
         private void ParseFriendlyName(string RawFriendlyName, ParseErrorInfo ErrorInfo)
         {
             FriendlyName = RawFriendlyName;
             if (KeyArea != MapAreaName.Internal_None && FriendlyName != TextMaps.MapAreaNameTextMap[KeyArea])
                 ErrorInfo.AddInvalidObjectFormat("Area FriendlyName");
-        }
-
-        private static void ParseFieldShortFriendlyName(GameArea This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Area ShortFriendlyName", This.ParseShortFriendlyName);
-        }
-
-        private void ParseShortFriendlyName(string RawShortFriendlyName, ParseErrorInfo ErrorInfo)
-        {
-            ShortFriendlyName = RawShortFriendlyName;
         }
         #endregion
 

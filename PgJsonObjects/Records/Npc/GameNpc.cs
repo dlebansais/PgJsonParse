@@ -24,28 +24,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Name", ParseFieldName },
-            { "AreaName", ParseFieldAreaName },
-            { "AreaFriendlyName", ParseFieldAreaFriendlyName },
-            { "Preferences", ParseFieldPreferences },
-        };
-
-        private static void ParseFieldName(GameNpc This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "GameNpc Name", This.ParseName);
-        }
-
-        private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
-        {
-            Name = RawName;
-        }
-
-        private static void ParseFieldAreaName(GameNpc This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "GameNpc AreaName", This.ParseAreaName);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
+            { "AreaName", new FieldParser() { Type = FieldType.String, ParserString = ParseAreaName } },
+            { "AreaFriendlyName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { AreaFriendlyName = value; }} },
+            { "Preferences", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParsePreferences } },
+        }; } }
 
         private void ParseAreaName(string RawAreaName, ParseErrorInfo ErrorInfo)
         {
@@ -57,33 +41,6 @@ namespace PgJsonObjects
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("GameNpc AreaName");
-        }
-
-        private static void ParseFieldAreaFriendlyName(GameNpc This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "GameNpc AreaFriendlyName", This.ParseAreaFriendlyName);
-        }
-
-        private void ParseAreaFriendlyName(string RawAreaFriendlyName, ParseErrorInfo ErrorInfo)
-        {
-            AreaFriendlyName = RawAreaFriendlyName;
-        }
-
-        private static void ParseFieldPreferences(GameNpc This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "GameNpc Preferences", This.ParsePreferences);
-        }
-
-        private void ParsePreferences(ArrayList RawPreferences, ParseErrorInfo ErrorInfo)
-        {
-            foreach (object RawPreference in RawPreferences)
-            {
-                JsonObject AsJObject;
-                if ((AsJObject = RawPreference as JsonObject) != null)
-                    ParsePreferences(AsJObject, ErrorInfo);
-                else
-                    ErrorInfo.AddInvalidObjectFormat("GameNpc Preferences");
-            }
         }
 
         private void ParsePreferences(JsonObject RawPreference, ParseErrorInfo ErrorInfo)

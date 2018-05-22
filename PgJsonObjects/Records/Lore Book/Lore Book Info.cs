@@ -16,39 +16,14 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Gods", ParseFieldGods },
-            { "Misc", ParseFieldMisc },
-            { "History", ParseFieldHistory },
-            { "Plot", ParseFieldPlot },
-            { "Stories", ParseFieldStories },
-            { "GuideProgram", ParseFieldGuideProgram },
-        };
-
-        private static void ParseFieldGods(LoreBookInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-        }
-
-        private static void ParseFieldMisc(LoreBookInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-        }
-
-        private static void ParseFieldHistory(LoreBookInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-        }
-
-        private static void ParseFieldPlot(LoreBookInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-        }
-
-        private static void ParseFieldStories(LoreBookInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-        }
-
-        private static void ParseFieldGuideProgram(LoreBookInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Gods", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
+            { "Misc", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
+            { "History", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
+            { "Plot", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
+            { "Stories", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
+            { "GuideProgram", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
+        }; } }
         #endregion
 
         #region Json Reconstruction

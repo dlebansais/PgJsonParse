@@ -31,44 +31,18 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "ID", ParseFieldID },
-            { "NpcFriendlyName", ParseFieldNpcFriendlyName },
-            { "Area", ParseFieldArea },
-            { "NumSlots", ParseFieldNumSlots },
-            { "HasAssociatedNpc", ParseFieldHasAssociatedNpc },
-            { "Levels", ParseFieldLevels },
-            { "RequiredItemKeyword", ParseFieldRequiredItemKeyword },
-            { "RequirementDescription", ParseFieldRequirementDescription },
-            { "Grouping", ParseFieldGrouping },
-            { "Requirements", ParseFieldRequirements },
-        };
-
-        private static void ParseFieldID(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "StorageVault ID", This.ParseID);
-        }
-
-        private void ParseID(long RawId, ParseErrorInfo ErrorInfo)
-        {
-            this.RawId = (int)RawId;
-        }
-
-        private static void ParseFieldNpcFriendlyName(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "StorageVault NpcFriendlyName", This.ParseNpcFriendlyName);
-        }
-
-        private void ParseNpcFriendlyName(string RawNpcFriendlyName, ParseErrorInfo ErrorInfo)
-        {
-            NpcFriendlyName = RawNpcFriendlyName;
-        }
-
-        private static void ParseFieldArea(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "StorageVault Area", This.ParseArea);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "ID", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawId = value; }} },
+            { "NpcFriendlyName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { NpcFriendlyName = value; }} },
+            { "Area", new FieldParser() { Type = FieldType.String, ParserString = ParseArea } },
+            { "NumSlots", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumSlots = value; }} },
+            { "HasAssociatedNpc", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumSlots = value; }} },
+            { "Levels", new FieldParser() { Type = FieldType.Object, ParserObject = ParseLevels } },
+            { "RequiredItemKeyword", new FieldParser() { Type = FieldType.String, ParserString = ParseRequiredItemKeyword } },
+            { "RequirementDescription", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RequirementDescription = value; }} },
+            { "Grouping", new FieldParser() { Type = FieldType.String, ParserString = ParseGrouping } },
+            { "Requirements", new FieldParser() { Type = FieldType.Object, ParserObject = ParseRequirements } },
+        }; } }
 
         private void ParseArea(string RawArea, ParseErrorInfo ErrorInfo)
         {
@@ -84,31 +58,6 @@ namespace PgJsonObjects
             MapAreaName ParsedMapAreaName;
             StringToEnumConversion<MapAreaName>.TryParse(RawArea.Substring(4), TextMaps.MapAreaNameStringMap, out ParsedMapAreaName, ErrorInfo);
             Area = ParsedMapAreaName;
-        }
-
-        private static void ParseFieldNumSlots(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "StorageVault NumSlots", This.ParseNumSlots);
-        }
-
-        private void ParseNumSlots(long RawNumSlots, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNumSlots = (int)RawNumSlots;
-        }
-
-        private static void ParseFieldHasAssociatedNpc(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "StorageVault HasAssociatedNpc", This.ParseHasAssociatedNpc);
-        }
-
-        private void ParseHasAssociatedNpc(bool RawHasAssociatedNpc, ParseErrorInfo ErrorInfo)
-        {
-            this.RawHasAssociatedNpc = RawHasAssociatedNpc;
-        }
-
-        private static void ParseFieldLevels(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "StorageVault Levels", This.ParseLevels);
         }
 
         private void ParseLevels(JsonObject RawLevels, ParseErrorInfo ErrorInfo)
@@ -134,31 +83,11 @@ namespace PgJsonObjects
             }
         }
 
-        private static void ParseFieldRequiredItemKeyword(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "StorageVault RequiredItemKeyword", This.ParseRequiredItemKeyword);
-        }
-
         private void ParseRequiredItemKeyword(string RawRequiredItemKeyword, ParseErrorInfo ErrorInfo)
         {
             ItemKeyword ParsedItemKeyword;
             StringToEnumConversion<ItemKeyword>.TryParse(RawRequiredItemKeyword, out ParsedItemKeyword, ErrorInfo);
             RequiredItemKeyword = ParsedItemKeyword;
-        }
-
-        private static void ParseFieldRequirementDescription(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "StorageVault RequirementDescription", This.ParseRequirementDescription);
-        }
-
-        private void ParseRequirementDescription(string RawRequirementDescription, ParseErrorInfo ErrorInfo)
-        {
-            RequirementDescription = RawRequirementDescription;
-        }
-
-        private static void ParseFieldGrouping(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "StorageVault Grouping", This.ParseRequirementDescription);
         }
 
         private void ParseGrouping(string RawGrouping, ParseErrorInfo ErrorInfo)
@@ -175,11 +104,6 @@ namespace PgJsonObjects
             MapAreaName ParsedGrouping;
             StringToEnumConversion<MapAreaName>.TryParse(RawGrouping.Substring(4), TextMaps.MapAreaNameStringMap, out ParsedGrouping, ErrorInfo);
             Grouping = ParsedGrouping;
-        }
-
-        private static void ParseFieldRequirements(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "StorageVault Requirements", This.ParseRequirements);
         }
 
         private void ParseRequirements(JsonObject RawRequirement, ParseErrorInfo ErrorInfo)

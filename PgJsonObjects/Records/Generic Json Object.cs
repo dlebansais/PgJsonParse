@@ -19,9 +19,11 @@ namespace PgJsonObjects
         protected enum FieldType
         {
             Integer,
+            Bool,
             Float,
             String,
             Object,
+            SimpleIntegerArray,
             IntegerArray,
             SimpleStringArray,
             StringArray,
@@ -32,14 +34,16 @@ namespace PgJsonObjects
         {
             public FieldType Type;
             public Action<int, ParseErrorInfo> ParserInteger;
+            public Action<bool, ParseErrorInfo> ParserBool;
             public Action<float, ParseErrorInfo> ParserFloat;
             public Action<string, ParseErrorInfo> ParserString;
             public Action<JsonObject, ParseErrorInfo> ParserObject;
+            public Action<int, ParseErrorInfo> ParserSimpleIntegerArray;
             public Func<int, ParseErrorInfo, bool> ParserIntegerArray;
             public Action<string, ParseErrorInfo> ParserSimpleStringArray;
-            public Action ParserSetStringListEmpty;
             public Func<string, ParseErrorInfo, bool> ParserStringArray;
             public Action<JsonObject, ParseErrorInfo> ParserObjectArray;
+            public Action ParserSetArrayIsEmpty;
         }
 
         #region Comparison
@@ -112,6 +116,14 @@ namespace PgJsonObjects
 
                     case FieldType.Integer:
                         ParseFieldValueInteger(value, errorInfo, key, Parser.ParserInteger);
+                        break;
+
+                    case FieldType.Bool:
+                        ParseFieldValueBool(value, errorInfo, key, Parser.ParserBool);
+                        break;
+
+                    case FieldType.Float:
+                        ParseFieldValueFloat(value, errorInfo, key, Parser.ParserFloat);
                         break;
 
                     case FieldType.String:
@@ -397,7 +409,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
-        protected static void ParseFieldValueFloat(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<double, ParseErrorInfo> ParseValue)
+        protected static void ParseFieldValueFloat(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<float, ParseErrorInfo> ParseValue)
         {
             JsonInteger AsJsonInteger;
             JsonFloat AsJsonFloat;

@@ -127,19 +127,13 @@ namespace PgJsonObjects
             }
         }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Effects", ParseFieldEffects},
-            { "GiveItems", ParseFieldGiveItems},
-            { "RequiredHotspot", ParseFieldRequiredHotspot},
-            { "OtherRequirements", ParseFieldOtherRequirements},
-            { "NumItemsToGive", ParseFieldNumItemsToGive},
-        };
-
-        private static void ParseFieldEffects(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "ServerInfo Effects", This.ParseEffects);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Effects", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseEffects } },
+            { "GiveItems", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawItemNameList.Add(value); }} },
+            { "RequiredHotspot", new FieldParser() { Type = FieldType.String, ParserString = ParseRequiredHotspot } },
+            { "NumItemsToGive", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumItemsToGive = value; }} },
+            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseOtherRequirements } },
+        }; } }
 
         private bool ParseEffects(string RawEffect, ParseErrorInfo ErrorInfo)
         {
@@ -153,42 +147,11 @@ namespace PgJsonObjects
                 return false;
         }
 
-        private static void ParseFieldGiveItems(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "ServerInfo GiveItems", This.ParseGiveItems);
-        }
-
-        private bool ParseGiveItems(string RawGiveItem, ParseErrorInfo ErrorInfo)
-        {
-            RawItemNameList.Add(RawGiveItem);
-            return true;
-        }
-
-        private static void ParseFieldRequiredHotspot(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "ServerInfo RequiredHotspot", This.ParseRequiredHotspot);
-        }
-
         private void ParseRequiredHotspot(string RawRequiredHotspot, ParseErrorInfo ErrorInfo)
         {
             ItemRequiredHotspot ParsedRequiredHotspot;
             StringToEnumConversion<ItemRequiredHotspot>.TryParse(RawRequiredHotspot, out ParsedRequiredHotspot, ErrorInfo);
             RequiredHotspot = ParsedRequiredHotspot;
-        }
-
-        private static void ParseFieldNumItemsToGive(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "ServerInfo NumItemsToGive", This.ParseNumItemsToGive);
-        }
-
-        private void ParseNumItemsToGive(long RawNumItemsToGive, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNumItemsToGive = (int)RawNumItemsToGive;
-        }
-
-        private static void ParseFieldOtherRequirements(ServerInfo This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "ServerInfo OtherRequirements", This.ParseOtherRequirements);
         }
 
         public void ParseOtherRequirements(JsonObject RawOtherRequirements, ParseErrorInfo ErrorInfo)

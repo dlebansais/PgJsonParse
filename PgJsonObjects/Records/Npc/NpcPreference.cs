@@ -106,16 +106,10 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Keywords", ParseFieldKeywords },
-            { "Pref", ParseFieldPref },
-        };
-
-        private static void ParseFieldKeywords(NpcPreference This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "NpcPreference Keywords", This.ParseKeywords);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Keywords", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseKeywords } },
+            { "Pref", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawPreference = value; }} },
+        }; } }
 
         private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
@@ -140,16 +134,6 @@ namespace PgJsonObjects
                 else
                     return false;
             }
-        }
-
-        private static void ParseFieldPref(NpcPreference This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "NpcPreference Pref", This.ParsePref);
-        }
-
-        private void ParsePref(double RawPref, ParseErrorInfo ErrorInfo)
-        {
-            RawPreference = RawPref;
         }
 
         private bool ParseKeywordAsMinValue(string MinValueString, ParseErrorInfo ErrorInfo)

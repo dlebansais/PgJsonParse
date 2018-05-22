@@ -17,21 +17,9 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "RecipesThatUseItem", ParseFieldRecipesThatUseItem },
-        };
-
-        private static void ParseFieldRecipesThatUseItem(ItemUses This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueIntegerArray(Value, ErrorInfo, "ItemUses RecipesThatUseItem", This.ParseRecipesThatUseItem);
-        }
-
-        private bool ParseRecipesThatUseItem(long RecipeThatUseItem, ParseErrorInfo ErrorInfo)
-        {
-            RecipesThatUseItemList.Add((int)RecipeThatUseItem);
-            return true;
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "RecipesThatUseItem", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParserSimpleIntegerArray = (int value, ParseErrorInfo errorInfo) => { RecipesThatUseItemList.Add(value); }} },
+        }; } }
         #endregion
 
         #region Json Reconstruction

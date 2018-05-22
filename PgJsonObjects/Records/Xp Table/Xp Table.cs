@@ -21,16 +21,10 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "InternalName", ParseFieldInternalName },
-            { "XpAmounts", ParseFieldXpAmounts },
-        };
-
-        private static void ParseFieldInternalName(XpTable This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "XpTable InternalName", This.ParseInternalName);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = ParseInternalName } },
+            { "XpAmounts", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParserSimpleIntegerArray = ParseXpAmounts } },
+        }; } }
 
         private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
         {
@@ -41,17 +35,11 @@ namespace PgJsonObjects
             EnumName = ParsedEnumName;
         }
 
-        private static void ParseFieldXpAmounts(XpTable This, object Value, ParseErrorInfo ErrorInfo)
+        private void ParseXpAmounts(int value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueIntegerArray(Value, ErrorInfo, "XpTable XpAmounts", This.ParseXpAmounts);
-        }
-
-        private bool ParseXpAmounts(long RawXpAmount, ParseErrorInfo ErrorInfo)
-        {
-            TotalXp += (int)RawXpAmount;
+            TotalXp += value;
             Level++;
-            XpAmountList.Add(new XpTableLevel(Level, (int)RawXpAmount, TotalXp));
-            return true;
+            XpAmountList.Add(new XpTableLevel(Level, value, TotalXp));
         }
         #endregion
 

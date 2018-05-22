@@ -141,33 +141,21 @@ namespace PgJsonObjects
             }
         }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Type", ParseFieldType },
-            { "SkillTypeId", ParseFieldSkillTypeId },
-            { "ItemTypeId", ParseFieldItemTypeId },
-            //{ "NpcName", ParseFieldNpcName }, //TODO: clean this up if the field doesn't come back
-            { "Npc", ParseFieldNpc },
-            { "EffectName", ParseFieldEffectName },
-            { "EffectTypeId", ParseFieldEffectTypeId },
-            { "QuestId", ParseFieldQuestId },
-        };
-
-        private static void ParseFieldType(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilitySource Type", This.ParseType);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() { Type = FieldType.String, ParserString = ParseType } },
+            { "SkillTypeId", new FieldParser() { Type = FieldType.String, ParserString = ParseSkillTypeId } },
+            { "ItemTypeId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseItemTypeId } },
+            { "Npc", new FieldParser() { Type = FieldType.String, ParserString = ParseNpc } },
+            { "EffectName", new FieldParser() { Type = FieldType.String, ParserString = ParseEffectName } },
+            { "EffectTypeId", new FieldParser() { Type = FieldType.String, ParserString = ParseEffectTypeId } },
+            { "QuestId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseQuestId } },
+        }; } }
 
         private void ParseType(string RawType, ParseErrorInfo ErrorInfo)
         {
             SourceTypes ParsedType;
             StringToEnumConversion<SourceTypes>.TryParse(RawType, out ParsedType, ErrorInfo);
             Type = ParsedType;
-        }
-
-        private static void ParseFieldSkillTypeId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilitySource SkillTypeId", This.ParseSkillTypeId);
         }
 
         private void ParseSkillTypeId(string RawSkillTypeId, ParseErrorInfo ErrorInfo)
@@ -182,48 +170,12 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource SkillTypeId (type)");
         }
 
-        private static void ParseFieldItemName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilitySource ItemName", This.ParseItemName);
-        }
-
-        private void ParseItemName(string RawItemName, ParseErrorInfo ErrorInfo)
+        private void ParseItemTypeId(int value, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.Item)
-                this.RawItemName = RawItemName;
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource ItemName (type)");
-        }
-
-        private static void ParseFieldItemTypeId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "AbilitySource ItemTypeId", This.ParseItemTypeId);
-        }
-
-        private void ParseItemTypeId(long RawItemTypeId, ParseErrorInfo ErrorInfo)
-        {
-            if (Type == SourceTypes.Item)
-                this.RawItemTypeId = (int)RawItemTypeId;
+                RawItemTypeId = (int)value;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource ItemTypeId (type)");
-        }
-
-        private static void ParseFieldNpcName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilitySource NpcName", This.ParseNpcName);
-        }
-
-        private void ParseNpcName(string RawNpcName, ParseErrorInfo ErrorInfo)
-        {
-            if (Type == SourceTypes.Training || Type == SourceTypes.Gift || Type == SourceTypes.HangOut)
-                this.RawNpcName = RawNpcName;
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource NpcName (type)");
-        }
-
-        private static void ParseFieldNpc(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilitySource Npc", This.ParseNpc);
         }
 
         private void ParseNpc(string RawNpc, ParseErrorInfo ErrorInfo)
@@ -239,11 +191,6 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (for deliver)");
         }
 
-        private static void ParseFieldEffectName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilitySource EffectName", This.ParseEffectName);
-        }
-
         private void ParseEffectName(string RawEffectName, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.Effect)
@@ -252,37 +199,14 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource EffectName (type)");
         }
 
-        private static void ParseFieldEffectTypeId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilitySource EffectTypeId", This.ParseEffectTypeId);
-        }
-
         private void ParseEffectTypeId(string RawEffectTypeId, ParseErrorInfo ErrorInfo)
         {
         }
 
-        private static void ParseFieldQuestName(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilitySource QuestName", This.ParseQuestName);
-        }
-
-        private void ParseQuestName(string RawQuestName, ParseErrorInfo ErrorInfo)
+        private void ParseQuestId(int value, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.Quest)
-                this.RawQuestName = RawQuestName;
-            else
-                ErrorInfo.AddInvalidObjectFormat("AbilitySource QuestName (type)");
-        }
-
-        private static void ParseFieldQuestId(AbilitySource This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "AbilitySource QuestId", This.ParseQuestId);
-        }
-
-        private void ParseQuestId(long RawQuestId, ParseErrorInfo ErrorInfo)
-        {
-            if (Type == SourceTypes.Quest)
-                this.RawQuestId = (int)RawQuestId;
+                RawQuestId = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource QuestId (type)");
         }

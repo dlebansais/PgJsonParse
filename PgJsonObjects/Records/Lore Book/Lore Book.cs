@@ -26,53 +26,22 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Title", ParseFieldTitle },
-            { "LocationHint", ParseFieldLocationHint },
-            { "Category", ParseFieldCategory },
-            { "Keywords", ParseFieldKeywords },
-            { "IsClientLocal", ParseFieldIsClientLocal },
-            { "Visibility", ParseFieldVisibility },
-            { "InternalName", ParseFieldInternalName },
-            { "Text", ParseFieldText },
-        };
-
-        private static void ParseFieldTitle(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "LoreBook Title", This.ParseTitle);
-        }
-
-        private void ParseTitle(string RawTitle, ParseErrorInfo ErrorInfo)
-        {
-            Title = RawTitle;
-        }
-
-        private static void ParseFieldLocationHint(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "LoreBook LocationHint", This.ParseLocationHint);
-        }
-
-        private void ParseLocationHint(string RawLocationHint, ParseErrorInfo ErrorInfo)
-        {
-            LocationHint = RawLocationHint;
-        }
-
-        private static void ParseFieldCategory(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "LoreBook Category", This.ParseCategory);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Title", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Title = value; }} },
+            { "LocationHint", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { LocationHint = value; }} },
+            { "Category", new FieldParser() { Type = FieldType.String, ParserString = ParseCategory } },
+            { "Keywords", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseKeywords } },
+            { "IsClientLocal", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsClientLocal = value; }} },
+            { "Visibility", new FieldParser() { Type = FieldType.String, ParserString = ParseVisibility } },
+            { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
+            { "Text", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Text = value; }} },
+        }; } }
 
         private void ParseCategory(string RawCategory, ParseErrorInfo ErrorInfo)
         {
             LoreBookCategory ParsedLoreBookCategory;
             StringToEnumConversion<LoreBookCategory>.TryParse(RawCategory, out ParsedLoreBookCategory, ErrorInfo);
             Category = ParsedLoreBookCategory;
-        }
-
-        private static void ParseFieldKeywords(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "LoreBook Keywords", This.ParseKeywords);
         }
 
         private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
@@ -87,46 +56,11 @@ namespace PgJsonObjects
                 return false;
         }
 
-        private static void ParseFieldIsClientLocal(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "LoreBook IsClientLocal", This.ParseIsClientLocal);
-        }
-
-        private void ParseIsClientLocal(bool RawIsClientLocal, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsClientLocal = RawIsClientLocal;
-        }
-
-        private static void ParseFieldVisibility(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "LoreBook Visibility", This.ParseVisibility);
-        }
-
         private void ParseVisibility(string RawVisibility, ParseErrorInfo ErrorInfo)
         {
             LoreBookVisibility ParsedLoreBookVisibility;
             StringToEnumConversion<LoreBookVisibility>.TryParse(RawVisibility, out ParsedLoreBookVisibility, ErrorInfo);
             Visibility = ParsedLoreBookVisibility;
-        }
-
-        private static void ParseFieldInternalName(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "LoreBook InternalName", This.ParseInternalName);
-        }
-
-        private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
-        {
-            InternalName = RawInternalName;
-        }
-
-        private static void ParseFieldText(LoreBook This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "LoreBook Text", This.ParseText);
-        }
-
-        private void ParseText(string RawText, ParseErrorInfo ErrorInfo)
-        {
-            Text = RawText;
         }
         #endregion
 
