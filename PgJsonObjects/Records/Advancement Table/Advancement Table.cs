@@ -77,7 +77,7 @@ namespace PgJsonObjects
                 InternalName = Key;
         }
 
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get { return null; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return null; } }
         #endregion
 
         #region Json Reconstruction

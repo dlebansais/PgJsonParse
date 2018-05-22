@@ -84,92 +84,31 @@ namespace PgJsonObjects
             }
         }
 
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
-        {
-            { "T", ParseFieldT },
-            { "Keyword", ParseFieldKeyword },
-            { "Name", ParseFieldName },
-            { "Item", ParseFieldItem },
-            { "Count", ParseFieldCount },
-            { "Health", ParseFieldHealth },
-            { "AllowedRace", ParseFieldAllowedRace },
-            { "Appearance", ParseFieldAppearance },
-            { "List", ParseFieldList },
-            { "ErrorMsg", ParseFieldErrorMsg },
-            { "DisallowedStates", ParseFieldDisallowedStates },
-            { "PetTypeTag", ParseFieldPetTypeTag },
-            { "MaxCount", ParseFieldMaxCount },
-            { "Recipe", ParseFieldRecipe },
-            { "TypeTag", ParseFieldTypeTag },
-            { "Max", ParseFieldMax },
-            { "InteractionFlag", ParseFieldInteractionFlag },
-        };
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() { Type = FieldType.String, ParserString = ParseT } },
+            { "Keyword", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawKeyword = value; }} },
+            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawName = value; }} },
+            { "Item", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawItem = value; }} },
+            { "Count", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCount = value; }} },
+            { "Health", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawHealth = value; }} },
+            { "AllowedRace", new FieldParser() { Type = FieldType.String, ParserString = ParseAllowedRace } },
+            { "Appearance", new FieldParser() { Type = FieldType.String, ParserString = ParseAppearance } },
+            { "List", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseList } },
+            { "ErrorMsg", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawErrorMsg = value; }} },
+            { "DisallowedStates", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseDisallowedStates } },
+            { "PetTypeTag", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawPetTypeTag = value; }} },
+            { "MaxCount", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxCount = value; }} },
+            { "Recipe", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawRecipeKnown = value; }} },
+            { "TypeTag", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawTypeTag = value; }} },
+            { "Max", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMax = value; }} },
+            { "InteractionFlag", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawInteractionFlag = value; }} },
+        }; } }
 
-        private static void ParseFieldT(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement T", This.ParseT);
-        }
-
-        private void ParseT(string RawT, ParseErrorInfo ErrorInfo)
+        private void ParseT(string value, ParseErrorInfo ErrorInfo)
         {
             OtherRequirementType ParsedT;
-            StringToEnumConversion<OtherRequirementType>.TryParse(RawT, out ParsedT, ErrorInfo);
+            StringToEnumConversion<OtherRequirementType>.TryParse(value, out ParsedT, ErrorInfo);
             OtherRequirementType = ParsedT;
-        }
-
-        private static void ParseFieldKeyword(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Keyword", This.ParseKeyword);
-        }
-
-        private void ParseKeyword(string RawKeyword, ParseErrorInfo ErrorInfo)
-        {
-            this.RawKeyword = RawKeyword;
-        }
-
-        private static void ParseFieldName(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Name", This.ParseName);
-        }
-
-        private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
-        {
-            this.RawName = RawName;
-        }
-
-        private static void ParseFieldItem(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Item", This.ParseItem);
-        }
-
-        private void ParseItem(string RawItem, ParseErrorInfo ErrorInfo)
-        {
-            this.RawItem = RawItem;
-        }
-
-        private static void ParseFieldCount(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "AbilityRequirement Count", This.ParseCount);
-        }
-
-        private void ParseCount(double RawCount, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCount = RawCount;
-        }
-
-        private static void ParseFieldHealth(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "AbilityRequirement Health", This.ParseHealth);
-        }
-
-        private void ParseHealth(double RawHealth, ParseErrorInfo ErrorInfo)
-        {
-            this.RawHealth = RawHealth;
-        }
-
-        private static void ParseFieldAllowedRace(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement AllowedRace", This.ParseAllowedRace);
         }
 
         private void ParseAllowedRace(string RawAllowedRace, ParseErrorInfo ErrorInfo)
@@ -188,11 +127,6 @@ namespace PgJsonObjects
                 RawAllowedRaceList.Add(RawAllowedRace);
         }
 
-        private static void ParseFieldAppearance(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Appearance", This.ParseAppearance);
-        }
-
         private void ParseAppearance(string RawAppearance, ParseErrorInfo ErrorInfo)
         {
             if (RawAppearanceList.Count != 0)
@@ -209,11 +143,6 @@ namespace PgJsonObjects
                 RawAppearanceList.Add(RawAppearance);
         }
 
-        private static void ParseFieldList(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "AbilityRequirement List", This.ParseList);
-        }
-
         private void ParseList(JsonObject RawList, ParseErrorInfo ErrorInfo)
         {
             AbilityRequirement ParsedAbilityRequirement;
@@ -222,21 +151,6 @@ namespace PgJsonObjects
             AbilityRequirement ConvertedAbilityRequirement = ParsedAbilityRequirement.ToSpecificAbilityRequirement(ErrorInfo);
             if (ConvertedAbilityRequirement != null)
                 OrList.Add(ConvertedAbilityRequirement);
-        }
-
-        private static void ParseFieldErrorMsg(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement ErrorMsg", This.ParseErrorMsg);
-        }
-
-        private void ParseErrorMsg(string RawErrorMsg, ParseErrorInfo ErrorInfo)
-        {
-            this.RawErrorMsg = RawErrorMsg;
-        }
-
-        private static void ParseFieldDisallowedStates(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "AbilityRequirement DisallowedStates", This.ParseDisallowedStates);
         }
 
         private bool ParseDisallowedStates(string RawDisallowedState, ParseErrorInfo ErrorInfo)
@@ -251,66 +165,6 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement DisallowedStates");
                 return false;
             }
-        }
-
-        private static void ParseFieldPetTypeTag(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement PetTypeTag", This.ParsePetTypeTag);
-        }
-
-        private void ParsePetTypeTag(string RawPetTypeTag, ParseErrorInfo ErrorInfo)
-        {
-            this.RawPetTypeTag = RawPetTypeTag;
-        }
-
-        private static void ParseFieldMaxCount(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "AbilityRequirement MaxCount", This.ParseMaxCount);
-        }
-
-        private void ParseMaxCount(double RawMaxCount, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxCount = RawMaxCount;
-        }
-
-        private static void ParseFieldRecipe(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement Recipe", This.ParseRecipe);
-        }
-
-        private void ParseRecipe(string RawRecipe, ParseErrorInfo ErrorInfo)
-        {
-            RawRecipeKnown = RawRecipe;
-        }
-
-        private static void ParseFieldTypeTag(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement TypeTag", This.ParseTypeTag);
-        }
-
-        private void ParseTypeTag(string RawTypeTag, ParseErrorInfo ErrorInfo)
-        {
-            this.RawTypeTag = RawTypeTag;
-        }
-
-        private static void ParseFieldMax(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "AbilityRequirement Max", This.ParseMax);
-        }
-
-        private void ParseMax(long RawMax, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMax = (int)RawMax;
-        }
-
-        private static void ParseFieldInteractionFlag(AbilityRequirement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "AbilityRequirement InteractionFlag", This.ParseInteractionFlag);
-        }
-
-        private void ParseInteractionFlag(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
-        {
-            this.RawInteractionFlag = RawInteractionFlag;
         }
 
         private OtherRequirementType OtherRequirementType;

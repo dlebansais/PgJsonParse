@@ -33,7 +33,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Area Key");
         }
 
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
         {
             { "FriendlyName", ParseFieldFriendlyName },
             { "ShortFriendlyName", ParseFieldShortFriendlyName },

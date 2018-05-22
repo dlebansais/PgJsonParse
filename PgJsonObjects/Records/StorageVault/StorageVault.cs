@@ -31,7 +31,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
         {
             { "ID", ParseFieldID },
             { "NpcFriendlyName", ParseFieldNpcFriendlyName },
