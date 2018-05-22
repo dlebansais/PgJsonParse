@@ -178,29 +178,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequirementsToSustain(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonObject AsJObject;
-            ArrayList RawRequirementsToSustain;
-
-            if ((AsJObject = Value as JsonObject) != null)
-                This.ParseRequirementToSustainAsDictionary(AsJObject, ErrorInfo);
-
-            else if ((RawRequirementsToSustain = Value as ArrayList) != null)
-                This.ParseRequirementsToSustain(RawRequirementsToSustain, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest RequirementsToSustain");
-        }
-
-        private void ParseRequirementsToSustain(ArrayList RawRequirementsToSustain, ParseErrorInfo ErrorInfo)
-        {
-            foreach (object RawRequirement in RawRequirementsToSustain)
-            {
-                JsonObject AsJObject;
-                if ((AsJObject = RawRequirement as JsonObject) != null)
-                    ParseRequirementToSustainAsDictionary(AsJObject, ErrorInfo);
-                else
-                    ErrorInfo.AddInvalidObjectFormat("Quest RequirementsToSustain");
-            }
+            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "Quest RequirementsToSustain", This.ParseRequirementToSustainAsDictionary);
         }
 
         private void ParseRequirementToSustainAsDictionary(JsonObject RawRequirements, ParseErrorInfo ErrorInfo)
@@ -238,33 +216,22 @@ namespace PgJsonObjects
 
         private static void ParseFieldObjectives(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray AsJArray;
-            if ((AsJArray = Value as JsonArray) != null)
-                This.ParseObjectives(AsJArray, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest Objectives");
+            ParseFieldValueArray(Value, ErrorInfo, "Quest Objectives", This.ParseObjectives);
         }
 
-        private void ParseObjectives(JsonArray RawObjectives, ParseErrorInfo ErrorInfo)
+        private void ParseObjectives(JsonObject RawObjectives, ParseErrorInfo ErrorInfo)
         {
-            List<QuestObjective> ParsedQuestObjectiveList;
-            JsonObjectParser<QuestObjective>.InitAsSublist(RawObjectives, out ParsedQuestObjectiveList, ErrorInfo);
+            QuestObjective ParsedQuestObjective;
+            JsonObjectParser<QuestObjective>.InitAsSubitem("Quest Objectives", RawObjectives, out ParsedQuestObjective, ErrorInfo);
 
-            foreach (QuestObjective Objective in ParsedQuestObjectiveList)
-            {
-                QuestObjective ConvertedQuestObjective = Objective.ToSpecificQuestObjective(ErrorInfo);
-                if (ConvertedQuestObjective != null)
-                    QuestObjectiveList.Add(ConvertedQuestObjective);
-            }
+            QuestObjective ConvertedQuestObjective = ParsedQuestObjective.ToSpecificQuestObjective(ErrorInfo);
+            if (ConvertedQuestObjective != null)
+                QuestObjectiveList.Add(ConvertedQuestObjective);
         }
 
         private static void ParseFieldRewardsXP(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonObject RawRewardsXP;
-            if ((RawRewardsXP = Value as JsonObject) != null)
-                This.ParseRewardsXP(RawRewardsXP, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest RewardsXP");
+            ParseFieldValueArray(Value, ErrorInfo, "Quest RewardsXP", This.ParseRewardsXP);
         }
 
         private void ParseRewardsXP(JsonObject RawRewardsXP, ParseErrorInfo ErrorInfo)
@@ -290,18 +257,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldRewardsItems(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray AsJArray;
-            if ((AsJArray = Value as JsonArray) != null)
-                This.ParseRewardsItems(AsJArray, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest RewardsItems");
+            ParseFieldValueArray(Value, ErrorInfo, "Quest RewardsItems", This.ParseRewardsItems);
         }
 
-        private void ParseRewardsItems(JsonArray RawRewardsItems, ParseErrorInfo ErrorInfo)
+        private void ParseRewardsItems(JsonObject RawRewardsItems, ParseErrorInfo ErrorInfo)
         {
-            List<QuestRewardItem> ParsedRewardItemList;
-            JsonObjectParser<QuestRewardItem>.InitAsSublist(RawRewardsItems, out ParsedRewardItemList, ErrorInfo);
-            QuestRewardsItemList.AddRange(ParsedRewardItemList);
+            QuestRewardItem ParsedRewardItem;
+            JsonObjectParser<QuestRewardItem>.InitAsSubitem("RewardsItems", RawRewardsItems, out ParsedRewardItem, ErrorInfo);
+            if (ParsedRewardItem != null)
+                QuestRewardsItemList.Add(ParsedRewardItem);
         }
 
         private static void ParseFieldReuseTimeDays(Quest This, object Value, ParseErrorInfo ErrorInfo)
@@ -599,18 +563,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldPreGiveItems(Quest This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray AsJArray;
-            if ((AsJArray = Value as JsonArray) != null)
-                This.ParsePreGiveItems(AsJArray, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Quest PreGiveItems");
+            ParseFieldValueArray(Value, ErrorInfo, "Quest PreGiveItems", This.ParsePreGiveItems);
         }
 
-        private void ParsePreGiveItems(JsonArray RawPreGiveItems, ParseErrorInfo ErrorInfo)
+        private void ParsePreGiveItems(JsonObject RawPreGiveItems, ParseErrorInfo ErrorInfo)
         {
-            List<QuestRewardItem> ParsedPreGiveItemList;
-            JsonObjectParser<QuestRewardItem>.InitAsSublist(RawPreGiveItems, out ParsedPreGiveItemList, ErrorInfo);
-            PreGiveItemList.AddRange(ParsedPreGiveItemList);
+            QuestRewardItem ParsedPreGiveItem;
+            JsonObjectParser<QuestRewardItem>.InitAsSubitem("PreGiveItems", RawPreGiveItems, out ParsedPreGiveItem, ErrorInfo);
+            if (ParsedPreGiveItem != null)
+                PreGiveItemList.Add(ParsedPreGiveItem);
         }
 
         private static void ParseFieldTSysLevel(Quest This, object Value, ParseErrorInfo ErrorInfo)

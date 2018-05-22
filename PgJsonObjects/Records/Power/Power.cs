@@ -231,7 +231,8 @@ namespace PgJsonObjects
 
         private bool ParseSlots(string RawSlots, ParseErrorInfo ErrorInfo)
         {
-            if (StringToEnumConversion<ItemSlot>.TryParse(RawSlots, out ItemSlot ParsedItemSlot, ErrorInfo))
+            ItemSlot ParsedItemSlot;
+            if (StringToEnumConversion<ItemSlot>.TryParse(RawSlots, out ParsedItemSlot, ErrorInfo))
                 SlotList.Add(ParsedItemSlot);
 
             return true;

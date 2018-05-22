@@ -195,18 +195,22 @@ namespace PgJsonObjects
 
         private static void ParseFieldLevel(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonString AsJsonString;
-            JsonInteger AsJsonInteger;
-
-            if ((AsJsonString = Value as JsonString) != null)
-                This.ParseLevelForFavor(AsJsonString.String, ErrorInfo);
-
-            else if ((AsJsonInteger = Value as JsonInteger) != null)
-                This.ParseLevelForSkill(AsJsonInteger.Number, ErrorInfo);
-
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level");
+            ParseFieldValueInteger(Value, ErrorInfo, "QuestRequirement Level", This.ParseLevelForSkill);
         }
+
+        /*
+        JsonString AsJsonString;
+        JsonInteger AsJsonInteger;
+
+        if ((AsJsonString = Value as JsonString) != null)
+            This.ParseLevelForFavor(AsJsonString.String, ErrorInfo);
+
+        else if ((AsJsonInteger = Value as JsonInteger) != null)
+            This.ParseLevelForSkill(AsJsonInteger.Number, ErrorInfo);
+
+        else
+            ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level");
+        */
 
         private void ParseLevelForFavor(string RawLevel, ParseErrorInfo ErrorInfo)
         {

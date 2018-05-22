@@ -108,11 +108,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldLevels(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonObject AsJObject;
-            if ((AsJObject = Value as JsonObject) != null)
-                This.ParseLevels(AsJObject, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault Levels");
+            ParseFieldValue(Value, ErrorInfo, "StorageVault Levels", This.ParseLevels);
         }
 
         private void ParseLevels(JsonObject RawLevels, ParseErrorInfo ErrorInfo)
@@ -183,11 +179,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequirements(StorageVault This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonObject AsJObject;
-            if ((AsJObject = Value as JsonObject) != null)
-                This.ParseRequirements(AsJObject, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
+            ParseFieldValue(Value, ErrorInfo, "StorageVault Requirements", This.ParseRequirements);
         }
 
         private void ParseRequirements(JsonObject RawRequirement, ParseErrorInfo ErrorInfo)

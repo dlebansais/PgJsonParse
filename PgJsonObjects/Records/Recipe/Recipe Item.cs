@@ -112,22 +112,16 @@ namespace PgJsonObjects
 
         private static void ParseFieldItemKeys(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawItemKeys;
-            if ((RawItemKeys = Value as JsonArray) != null)
-                This.ParseItemKeys(RawItemKeys, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("RecipeItem ItemKeys");
+            ParseFieldValueStringArray(Value, ErrorInfo, "RecipeItem ItemKeys", This.ParseItemKeys);
         }
 
-        private void ParseItemKeys(JsonArray RawItemKeys, ParseErrorInfo ErrorInfo)
+        private bool ParseItemKeys(string RawItemKeys, ParseErrorInfo ErrorInfo)
         {
-            List<RecipeItemKey> ParsedItemKeyList = new List<RecipeItemKey>();
-            StringToEnumConversion<RecipeItemKey>.ParseList(RawItemKeys, RecipeItemKeyStringMap, ParsedItemKeyList, ErrorInfo);
+            RecipeItemKey ParsedItemKey;
+            if (StringToEnumConversion<RecipeItemKey>.TryParse(RawItemKeys, RecipeItemKeyStringMap, out ParsedItemKey, ErrorInfo))
+                ItemKeyList.Add(ParsedItemKey);
 
-            if (ParsedItemKeyList.Count > 1)
-                ItemKeyList.AddRange(ParsedItemKeyList);
-            else
-                ItemKeyList.AddRange(ParsedItemKeyList);
+            return true;
         }
 
         private static void ParseFieldDesc(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)

@@ -11,6 +11,8 @@ namespace PgJsonObjects
         public string InternalName { get; private set; }
         public XpTableEnum EnumName { get; private set; }
         public List<XpTableLevel> XpAmountList { get; } = new List<XpTableLevel>();
+        private int TotalXp = 0;
+        private int Level = 0;
         private bool IsXpAmountListEmpty = true;
         #endregion
 
@@ -41,26 +43,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldXpAmounts(XpTable This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawXpAmounts;
-            if ((RawXpAmounts = Value as JsonArray) != null)
-                This.ParseXpAmounts(RawXpAmounts, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("XpTable XpAmounts");
+            ParseFieldValueIntegerArray(Value, ErrorInfo, "XpTable XpAmounts", This.ParseXpAmounts);
         }
 
-        private void ParseXpAmounts(JsonArray RawXpAmounts, ParseErrorInfo ErrorInfo)
+        private bool ParseXpAmounts(long RawXpAmount, ParseErrorInfo ErrorInfo)
         {
-            List<int> XpList = new List<int>();
-            ParseIntTable(RawXpAmounts, XpList, "XpAmounts", ErrorInfo, out IsXpAmountListEmpty);
-
-            int Level = 0;
-            int TotalXp = 0;
-            foreach (int Xp in XpList)
-            {
-                TotalXp += Xp;
-                Level++;
-                XpAmountList.Add(new XpTableLevel(Level, Xp, TotalXp));
-            }
+            TotalXp += (int)RawXpAmount;
+            Level++;
+            XpAmountList.Add(new XpTableLevel(Level, (int)RawXpAmount, TotalXp));
+            return true;
         }
         #endregion
 

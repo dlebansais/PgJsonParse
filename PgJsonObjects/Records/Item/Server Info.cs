@@ -127,7 +127,7 @@ namespace PgJsonObjects
             }
         }
 
-        protected override Dictionary<string, FieldValueHandler> FieldTable {  get; } = new Dictionary<string, FieldValueHandler>()
+        protected override Dictionary<string, FieldValueHandler> FieldTable { get; } = new Dictionary<string, FieldValueHandler>()
         {
             { "Effects", ParseFieldEffects},
             { "GiveItems", ParseFieldGiveItems},

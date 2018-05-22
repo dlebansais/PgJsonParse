@@ -145,28 +145,19 @@ namespace PgJsonObjects
 
         private static void ParseFieldIngredients(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray AsJArray;
-            if ((AsJArray = Value as JsonArray) != null)
-                This.ParseIngredients(AsJArray, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Recipe Ingredients");
+            ParseFieldValueArray(Value, ErrorInfo, "Recipe Ingredients", This.ParseIngredients);
         }
 
-        private void ParseIngredients(JsonArray RawIngredients, ParseErrorInfo ErrorInfo)
+        private void ParseIngredients(JsonObject RawIngredients, ParseErrorInfo ErrorInfo)
         {
-            List<RecipeItem> ParsedIngredientList;
-            JsonObjectParser<RecipeItem>.InitAsSublist(RawIngredients, out ParsedIngredientList, ErrorInfo);
+            RecipeItem ParsedIngredient;
+            JsonObjectParser<RecipeItem>.InitAsSubitem("Ingredients", RawIngredients, out ParsedIngredient, ErrorInfo);
 
-            foreach (RecipeItem ParsedIngredient in ParsedIngredientList)
+            if (ParsedIngredient != null)
                 if (ParsedIngredient.AttuneToCrafter)
-                {
                     ErrorInfo.AddInvalidObjectFormat("Recipe Ingredients");
-                    break;
-                }
                 else
                     IngredientList.Add(ParsedIngredient);
-
-            EmptyIngredientList = (IngredientList.Count == 0);
         }
 
         private static void ParseFieldInternalName(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -191,19 +182,19 @@ namespace PgJsonObjects
 
         private static void ParseFieldResultItems(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray AsJArray;
-            if ((AsJArray = Value as JsonArray) != null)
-                This.ParseResultItems(AsJArray, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Recipe ResultItems");
+            ParseFieldValueArray(Value, ErrorInfo, "Recipe ResultItems", This.ParseResultItems);
         }
 
-        private void ParseResultItems(JsonArray RawResultItems, ParseErrorInfo ErrorInfo)
+        private void ParseResultItems(JsonObject RawResultItems, ParseErrorInfo ErrorInfo)
         {
-            List<RecipeItem> ParsedResultItemList;
-            JsonObjectParser<RecipeItem>.InitAsSublist(RawResultItems, out ParsedResultItemList, ErrorInfo);
-            ResultItemList.AddRange(ParsedResultItemList);
-            EmptyResultItemList = (ResultItemList.Count == 0);
+            RecipeItem ParsedResultItem;
+            JsonObjectParser<RecipeItem>.InitAsSubitem("ResultItems", RawResultItems, out ParsedResultItem, ErrorInfo);
+            
+            if (ParsedResultItem != null)
+            {
+                ResultItemList.Add(ParsedResultItem);
+                EmptyResultItemList = false;
+            }
         }
 
         private static void ParseFieldSkill(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -261,16 +252,16 @@ namespace PgJsonObjects
 
         private static void ParseFieldKeywords(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray RawKeywords;
-            if ((RawKeywords = Value as JsonArray) != null)
-                This.ParseKeywords(RawKeywords, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Recipe Keywords");
+            ParseFieldValueStringArray(Value, ErrorInfo, "Recipe Keywords", This.ParseKeywords);
         }
 
-        private void ParseKeywords(JsonArray RawKeywords, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywords(string RawKeywords, ParseErrorInfo ErrorInfo)
         {
-            StringToEnumConversion<RecipeKeyword>.ParseList(RawKeywords, KeywordList, ErrorInfo);
+            RecipeKeyword ParsedKeyword;
+            if (StringToEnumConversion<RecipeKeyword>.TryParse(RawKeywords, out ParsedKeyword, ErrorInfo))
+                KeywordList.Add(ParsedKeyword);
+
+            return true;
         }
 
         private static void ParseFieldActionLabel(Recipe This, object Value, ParseErrorInfo ErrorInfo)
@@ -334,18 +325,15 @@ namespace PgJsonObjects
 
         private static void ParseFieldCosts(Recipe This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonArray AsJArray;
-            if ((AsJArray = Value as JsonArray) != null)
-                This.ParseCosts(AsJArray, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("Recipe Costs");
+            ParseFieldValueArray(Value, ErrorInfo, "Recipe Costs", This.ParseCosts);
         }
 
-        private void ParseCosts(JsonArray RawCosts, ParseErrorInfo ErrorInfo)
+        private void ParseCosts(JsonObject RawCosts, ParseErrorInfo ErrorInfo)
         {
-            List<RecipeCost> ParsedCostList;
-            JsonObjectParser<RecipeCost>.InitAsSublist(RawCosts, out ParsedCostList, ErrorInfo);
-            CostList.AddRange(ParsedCostList);
+            RecipeCost ParsedCost;
+            JsonObjectParser<RecipeCost>.InitAsSubitem("Costs", RawCosts, out ParsedCost, ErrorInfo);
+            if (ParsedCost != null)
+                CostList.Add(ParsedCost);
         }
 
         private static void ParseFieldNumResultItems(Recipe This, object Value, ParseErrorInfo ErrorInfo)

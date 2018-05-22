@@ -569,11 +569,7 @@ namespace PgJsonObjects
 
         private static void ParseFieldRequirements(QuestObjective This, object Value, ParseErrorInfo ErrorInfo)
         {
-            JsonObject AsJObject;
-            if ((AsJObject = Value as JsonObject) != null)
-                This.ParseRequirements(AsJObject, ErrorInfo);
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+            ParseFieldValue(Value, ErrorInfo, "QuestObjective Requirements", This.ParseRequirements);
         }
 
         private void ParseRequirements(JsonObject RawRequirement, ParseErrorInfo ErrorInfo)
