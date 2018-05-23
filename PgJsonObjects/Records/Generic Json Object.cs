@@ -18,6 +18,7 @@ namespace PgJsonObjects
     {
         protected enum FieldType
         {
+            Unknown,
             Integer,
             Bool,
             Float,
@@ -33,6 +34,7 @@ namespace PgJsonObjects
         protected struct FieldParser
         {
             public FieldType Type;
+            public Action<object, ParseErrorInfo> ParserUnknown;
             public Action<int, ParseErrorInfo> ParserInteger;
             public Action<bool, ParseErrorInfo> ParserBool;
             public Action<float, ParseErrorInfo> ParserFloat;
@@ -114,6 +116,10 @@ namespace PgJsonObjects
                         errorInfo.AddMissingField(FieldTableName + " Field Type: " + key);
                         break;
 
+                    case FieldType.Unknown:
+                        Parser.ParserUnknown(value, errorInfo);
+                        break;
+
                     case FieldType.Integer:
                         ParseFieldValueInteger(value, errorInfo, key, Parser.ParserInteger);
                         break;
@@ -134,16 +140,20 @@ namespace PgJsonObjects
                         ParseFieldValueObject(value, errorInfo, key, Parser.ParserObject);
                         break;
 
+                    case FieldType.SimpleIntegerArray:
+                        ParseFieldValueSimpleIntegerArray(value, errorInfo, key, Parser.ParserSimpleIntegerArray);
+                        break;
+
                     case FieldType.IntegerArray:
                         ParseFieldValueIntegerArray(value, errorInfo, key, Parser.ParserIntegerArray);
                         break;
 
                     case FieldType.SimpleStringArray:
-                        ParseFieldValueSimpleStringArray(value, errorInfo, key, Parser.ParserSimpleStringArray, Parser.ParserSetStringListEmpty);
+                        ParseFieldValueSimpleStringArray(value, errorInfo, key, Parser.ParserSimpleStringArray, Parser.ParserSetArrayIsEmpty);
                         break;
 
                     case FieldType.StringArray:
-                        ParseFieldValueStringArray(value, errorInfo, key, Parser.ParserStringArray);
+                        ParseFieldValueStringArray(value, errorInfo, key, Parser.ParserStringArray, Parser.ParserSetArrayIsEmpty);
                         break;
 
                     case FieldType.ObjectArray:
@@ -166,7 +176,11 @@ namespace PgJsonObjects
         protected virtual void ParseFields(JsonArray ArrayFields, ParseErrorInfo ErrorInfo)
         {
             InitParsedFields();
+            ParseFieldsInternal(ArrayFields, ErrorInfo);
+        }
 
+        private void ParseFieldsInternal(JsonArray ArrayFields, ParseErrorInfo ErrorInfo)
+        {
             foreach (object ArrayField in ArrayFields)
             {
                 JsonObject Fields;
@@ -179,7 +193,7 @@ namespace PgJsonObjects
                     ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
             }
         }
-        /*
+
         protected virtual void ParseFields(JsonObject JObjectFields, ParseErrorInfo ErrorInfo)
         {
             InitParsedFields();
@@ -192,14 +206,14 @@ namespace PgJsonObjects
             {
                 JsonArray AsArray;
                 IJsonValue AsValue;
-                //JToken AsToken;
 
                 if ((AsArray = Field.Value as JsonArray) != null)
                 {
                     if (FieldTable.ContainsKey(Field.Key))
                     {
                         ParsedFields[Field.Key] = true;
-                        FieldTable[Field.Key](this as T, Field.Key, AsArray, ErrorInfo);
+                        ParseField(Field.Key, AsArray, ErrorInfo);
+                        //ParseFieldsInternal(AsArray, ErrorInfo);
                     }
                     else
                         ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
@@ -213,7 +227,7 @@ namespace PgJsonObjects
                     if (FieldTable.ContainsKey(Field.Key))
                     {
                         ParsedFields[Field.Key] = true;
-                        FieldTable[Field.Key](this as T, Field.Key, AsValue, ErrorInfo);
+                        ParseField(Field.Key, AsValue, ErrorInfo);
                     }
                     else
                         ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
@@ -223,7 +237,6 @@ namespace PgJsonObjects
                     ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
             }
         }
-        */
 
         protected void ParseStringTable(JsonArray RawArray, List<string> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
         {
@@ -380,6 +393,28 @@ namespace PgJsonObjects
                     ParseValue(IntValue, ErrorInfo);
                 else
                     ErrorInfo.AddInvalidObjectFormat(FieldName);
+            }
+            else
+                ErrorInfo.AddInvalidObjectFormat(FieldName);
+        }
+
+        protected static void ParseFieldValueSimpleIntegerArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<int, ParseErrorInfo> ParseValue)
+        {
+            JsonArray AsArray;
+            if ((AsArray = Value as JsonArray) != null)
+            {
+                foreach (IJsonValue Item in AsArray)
+                {
+                    JsonInteger AsJsonInteger;
+                    if ((AsJsonInteger = Item as JsonInteger) != null)
+                        ParseValue(AsJsonInteger.Number, ErrorInfo);
+
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat(FieldName);
+                        break;
+                    }
+                }
             }
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldName);

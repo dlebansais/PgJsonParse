@@ -79,44 +79,38 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Description", ParseFieldDescription },
-            { "IconId", ParseFieldIconId },
-            { "Ingredients", ParseFieldIngredients },
-            { "InternalName", ParseFieldInternalName },
-            { "Name", ParseFieldName },
-            { "ResultItems", ParseFieldResultItems },
-            { "Skill", ParseFieldSkill },
-            { "SkillLevelReq", ParseFieldSkillLevelReq },
-            { "ResultEffects", ParseFieldResultEffects },
-            { "SortSkill", ParseFieldSortSkill },
-            { "Keywords", ParseFieldKeywords },
-            { "ActionLabel", ParseFieldActionLabel },
-            { "UsageDelay", ParseFieldUsageDelay },
-            { "UsageDelayMessage", ParseFieldUsageDelayMessage },
-            { "UsageAnimation", ParseFieldUsageAnimation },
-            { "OtherRequirements", ParseFieldOtherRequirements },
-            { "Costs", ParseFieldCosts },
-            { "NumResultItems", ParseFieldNumResultItems },
-            { "UsageAnimationEnd", ParseFieldUsageAnimationEnd },
-            { "ResetTimeInSeconds", ParseFieldResetTimeInSeconds },
-            { "DyeColor", ParseFieldDyeColor },
-            { "RewardSkill", ParseFieldRewardSkill },
-            { "RewardSkillXp", ParseFieldRewardSkillXp },
-            { "RewardSkillXpFirstTime", ParseFieldRewardSkillXpFirstTime },
-            { "SharesResetTimerWith", ParseFieldSharesResetTimerWith },
-            { "ItemMenuLabel", ParseFieldItemMenuLabel },
-            { "ItemMenuKeywordReq", ParseFieldItemMenuKeywordReq },
-            { "IsItemMenuKeywordReqSufficient", ParseFieldIsItemMenuKeywordReqSufficient},
-            { "ItemMenuCategory", ParseFieldItemMenuCategory },
-            { "ItemMenuCategoryLevel", ParseFieldItemMenuCategoryLevel },
-        };
-
-        private static void ParseFieldDescription(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe Description", This.ParseDescription);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Description", new FieldParser() { Type = FieldType.String, ParserString = ParseDescription } },
+            { "IconId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseIconId } },
+            { "Ingredients", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseIngredients, ParserSetArrayIsEmpty = () => EmptyIngredientList = true } },
+            { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
+            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
+            { "ResultItems", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseResultItems } },
+            { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
+            { "SkillLevelReq", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawSkillLevelReq = value; }} },
+            { "ResultEffects", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseResultEffects } },
+            { "SortSkill", new FieldParser() { Type = FieldType.String, ParserString = ParseSortSkill } },
+            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
+            { "ActionLabel", new FieldParser() { Type = FieldType.String, ParserString = ParseActionLabel } },
+            { "UsageDelay", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawUsageDelay = value; }} },
+            { "UsageDelayMessage", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UsageDelayMessage = value; }} },
+            { "UsageAnimation", new FieldParser() { Type = FieldType.String, ParserString = ParseUsageAnimation } },
+            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseOtherRequirements } },
+            { "Costs", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseCosts } },
+            { "NumResultItems", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumResultItems = value; }} },
+            { "UsageAnimationEnd", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UsageAnimationEnd = value; }} },
+            { "ResetTimeInSeconds", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawResetTimeInSeconds = value; }} },
+            { "DyeColor", new FieldParser() { Type = FieldType.String, ParserString = ParseDyeColor } },
+            { "RewardSkill", new FieldParser() { Type = FieldType.String, ParserString = ParseRewardSkill } },
+            { "RewardSkillXp", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardSkillXp = value; }} },
+            { "RewardSkillXpFirstTime", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardSkillXpFirstTime = value; }} },
+            { "SharesResetTimerWith", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawSharesResetTimerWith = value; }} },
+            { "ItemMenuLabel", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { ItemMenuLabel = value; }} },
+            { "ItemMenuKeywordReq", new FieldParser() { Type = FieldType.String, ParserString = ParseItemMenuKeywordReq } },
+            { "IsItemMenuKeywordReqSufficient", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsItemMenuKeywordReqSufficient = value; }} },
+            { "ItemMenuCategory", new FieldParser() { Type = FieldType.String, ParserString = ParseItemMenuCategory } },
+            { "ItemMenuCategoryLevel", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawItemMenuCategoryLevel = value; }} },
+        }; } }
 
         private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
         {
@@ -124,28 +118,18 @@ namespace PgJsonObjects
             ErrorInfo.LookForIconId(Description);
         }
 
-        private static void ParseFieldIconId(Recipe This, object Value, ParseErrorInfo ErrorInfo)
+        private void ParseIconId(int value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueInteger(Value, ErrorInfo, "Recipe IconId", This.ParseIconId);
-        }
-
-        private void ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
-        {
-            if (RawIconId > 0)
+            if (value > 0)
             {
-                this.RawIconId = (int)RawIconId;
-                ErrorInfo.AddIconId((int)RawIconId);
+                RawIconId = value;
+                ErrorInfo.AddIconId(value);
 
-                PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
-                PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, this.RawIconId);
+                PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, RawIconId);
+                PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, RawIconId);
             }
             else
-                this.RawIconId = null;
-        }
-
-        private static void ParseFieldIngredients(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Recipe Ingredients", This.ParseIngredients);
+                RawIconId = null;
         }
 
         private void ParseIngredients(JsonObject RawIngredients, ParseErrorInfo ErrorInfo)
@@ -160,31 +144,6 @@ namespace PgJsonObjects
                     IngredientList.Add(ParsedIngredient);
         }
 
-        private static void ParseFieldInternalName(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe InternalName", This.ParseInternalName);
-        }
-
-        private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
-        {
-            InternalName = RawInternalName;
-        }
-
-        private static void ParseFieldName(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe Name", This.ParseName);
-        }
-
-        private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
-        {
-            Name = RawName;
-        }
-
-        private static void ParseFieldResultItems(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Recipe ResultItems", This.ParseResultItems);
-        }
-
         private void ParseResultItems(JsonObject RawResultItems, ParseErrorInfo ErrorInfo)
         {
             RecipeItem ParsedResultItem;
@@ -197,11 +156,6 @@ namespace PgJsonObjects
             }
         }
 
-        private static void ParseFieldSkill(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe Skill", This.ParseSkill);
-        }
-
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
         {
             PowerSkill ParsedSkill;
@@ -209,21 +163,6 @@ namespace PgJsonObjects
             Skill = ParsedSkill;
 
             PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
-        }
-
-        private static void ParseFieldSkillLevelReq(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Recipe SkillLevelReq", This.ParseSkillLevelReq);
-        }
-
-        private void ParseSkillLevelReq(long RawSkillLevelReq, ParseErrorInfo ErrorInfo)
-        {
-            this.RawSkillLevelReq = (int)RawSkillLevelReq;
-        }
-
-        private static void ParseFieldResultEffects(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Quest ResultEffects", This.ParseResultEffects);
         }
 
         private bool ParseResultEffects(string RawResultEffect, ParseErrorInfo ErrorInfo)
@@ -238,11 +177,6 @@ namespace PgJsonObjects
                 return false;
         }
 
-        private static void ParseFieldSortSkill(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe SortSkill", This.ParseSortSkill);
-        }
-
         private void ParseSortSkill(string RawSortSkill, ParseErrorInfo ErrorInfo)
         {
             PowerSkill ParsedSortSkill;
@@ -250,23 +184,11 @@ namespace PgJsonObjects
             SortSkill = ParsedSortSkill;
         }
 
-        private static void ParseFieldKeywords(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Recipe Keywords", This.ParseKeywords);
-        }
-
-        private bool ParseKeywords(string RawKeywords, ParseErrorInfo ErrorInfo)
+        private void ParseKeywords(string RawKeywords, ParseErrorInfo ErrorInfo)
         {
             RecipeKeyword ParsedKeyword;
             if (StringToEnumConversion<RecipeKeyword>.TryParse(RawKeywords, out ParsedKeyword, ErrorInfo))
                 KeywordList.Add(ParsedKeyword);
-
-            return true;
-        }
-
-        private static void ParseFieldActionLabel(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe ActionLabel", This.ParseActionLabel);
         }
 
         private void ParseActionLabel(string RawActionLabel, ParseErrorInfo ErrorInfo)
@@ -276,41 +198,11 @@ namespace PgJsonObjects
             ActionLabel = ParsedActionLabel;
         }
 
-        private static void ParseFieldUsageDelay(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Recipe UsageDelay", This.ParseUsageDelay);
-        }
-
-        private void ParseUsageDelay(long RawUsageDelay, ParseErrorInfo ErrorInfo)
-        {
-            this.RawUsageDelay = (int)RawUsageDelay;
-        }
-
-        private static void ParseFieldUsageDelayMessage(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe UsageDelayMessage", This.ParseUsageDelayMessage);
-        }
-
-        private void ParseUsageDelayMessage(string RawUsageDelayMessage, ParseErrorInfo ErrorInfo)
-        {
-            UsageDelayMessage = RawUsageDelayMessage;
-        }
-
-        private static void ParseFieldUsageAnimation(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe UsageAnimation", This.ParseUsageAnimation);
-        }
-
         private void ParseUsageAnimation(string RawUsageAnimation, ParseErrorInfo ErrorInfo)
         {
             RecipeUsageAnimation ConvertedRecipeUsageAnimation;
             StringToEnumConversion<RecipeUsageAnimation>.TryParse(RawUsageAnimation, out ConvertedRecipeUsageAnimation, ErrorInfo);
             UsageAnimation = ConvertedRecipeUsageAnimation;
-        }
-
-        private static void ParseFieldOtherRequirements(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "Recipe OtherRequirements", This.ParseOtherRequirements);
         }
 
         public void ParseOtherRequirements(JsonObject RawOtherRequirements, ParseErrorInfo ErrorInfo)
@@ -323,52 +215,12 @@ namespace PgJsonObjects
                 OtherRequirementList.Add(ConvertedAbilityRequirement);
         }
 
-        private static void ParseFieldCosts(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Recipe Costs", This.ParseCosts);
-        }
-
         private void ParseCosts(JsonObject RawCosts, ParseErrorInfo ErrorInfo)
         {
             RecipeCost ParsedCost;
             JsonObjectParser<RecipeCost>.InitAsSubitem("Costs", RawCosts, out ParsedCost, ErrorInfo);
             if (ParsedCost != null)
                 CostList.Add(ParsedCost);
-        }
-
-        private static void ParseFieldNumResultItems(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Recipe NumResultItems", This.ParseNumResultItems);
-        }
-
-        private void ParseNumResultItems(long RawNumResultItems, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNumResultItems = (int)RawNumResultItems;
-        }
-
-        private static void ParseFieldUsageAnimationEnd(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe UsageAnimationEnd", This.ParseUsageAnimationEnd);
-        }
-
-        private void ParseUsageAnimationEnd(string RawUsageAnimationEnd, ParseErrorInfo ErrorInfo)
-        {
-            UsageAnimationEnd = RawUsageAnimationEnd;
-        }
-
-        private static void ParseFieldResetTimeInSeconds(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Recipe ResetTimeInSeconds", This.ParseResetTimeInSeconds);
-        }
-
-        private void ParseResetTimeInSeconds(long RawResetTimeInSeconds, ParseErrorInfo ErrorInfo)
-        {
-            this.RawResetTimeInSeconds = (int)RawResetTimeInSeconds;
-        }
-
-        private static void ParseFieldDyeColor(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe DyeColor", This.ParseDyeColor);
         }
 
         private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)
@@ -378,6 +230,31 @@ namespace PgJsonObjects
                 DyeColor = NewColor;
             else
                 ErrorInfo.AddInvalidString("Item DyeColor", RawDyeColor);
+        }
+
+        private void ParseRewardSkill(string RawRewardSkill, ParseErrorInfo ErrorInfo)
+        {
+            PowerSkill ParsedRewardSkill;
+            StringToEnumConversion<PowerSkill>.TryParse(RawRewardSkill, out ParsedRewardSkill, ErrorInfo);
+            RewardSkill = ParsedRewardSkill;
+
+            PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, this.RawIconId);
+        }
+
+        private void ParseItemMenuKeywordReq(string RawItemMenuKeywordReq, ParseErrorInfo ErrorInfo)
+        {
+            ItemKeyword ParsedItemKeyword;
+            StringToEnumConversion<ItemKeyword>.TryParse(RawItemMenuKeywordReq, out ParsedItemKeyword, ErrorInfo);
+            RecipeItemKeyword = ParsedItemKeyword;
+        }
+
+        private void ParseItemMenuCategory(string RawItemMenuCategory, ParseErrorInfo ErrorInfo)
+        {
+            if (RawItemMenuCategory == "TSysExtract")
+                this.RawItemMenuCategory = "Extract";
+
+            else if (RawItemMenuCategory == "TSysDistill")
+                this.RawItemMenuCategory = "Distill";
         }
 
         private bool ParseResultEffect(string RawEffect, ParseErrorInfo ErrorInfo, out RecipeResultEffect NewResultEffect)
@@ -756,106 +633,6 @@ namespace PgJsonObjects
             }
 
             return false;
-        }
-
-        private static void ParseFieldRewardSkill(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe RewardSkill", This.ParseRewardSkill);
-        }
-
-        private void ParseRewardSkill(string RawRewardSkill, ParseErrorInfo ErrorInfo)
-        {
-            PowerSkill ParsedRewardSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(RawRewardSkill, out ParsedRewardSkill, ErrorInfo);
-            RewardSkill = ParsedRewardSkill;
-
-            PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, this.RawIconId);
-        }
-
-        private static void ParseFieldRewardSkillXp(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Recipe RewardSkillXp", This.ParseRewardSkillXp);
-        }
-
-        private void ParseRewardSkillXp(long RawRewardSkillXp, ParseErrorInfo ErrorInfo)
-        {
-            this.RawRewardSkillXp = (int)RawRewardSkillXp;
-        }
-
-        private static void ParseFieldRewardSkillXpFirstTime(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Recipe RewardSkillXpFirstTime", This.ParseRewardSkillXpFirstTime);
-        }
-
-        private void ParseRewardSkillXpFirstTime(long RawRewardSkillXpFirstTime, ParseErrorInfo ErrorInfo)
-        {
-            this.RawRewardSkillXpFirstTime = (int)RawRewardSkillXpFirstTime;
-        }
-
-        private static void ParseFieldSharesResetTimerWith(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe SharesResetTimerWith", This.ParseSharesResetTimerWith);
-        }
-
-        private void ParseSharesResetTimerWith(string RawSharesResetTimerWith, ParseErrorInfo ErrorInfo)
-        {
-            this.RawSharesResetTimerWith = RawSharesResetTimerWith;
-        }
-
-        private static void ParseFieldItemMenuLabel(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe ItemMenuLabel", This.ParseItemMenuLabel);
-        }
-
-        private void ParseItemMenuLabel(string RawItemMenuLabel, ParseErrorInfo ErrorInfo)
-        {
-            ItemMenuLabel = RawItemMenuLabel;
-        }
-
-        private static void ParseFieldItemMenuKeywordReq(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe ItemMenuKeywordReq", This.ParseItemMenuKeywordReq);
-        }
-
-        private void ParseItemMenuKeywordReq(string RawItemMenuKeywordReq, ParseErrorInfo ErrorInfo)
-        {
-            ItemKeyword ParsedItemKeyword;
-            StringToEnumConversion<ItemKeyword>.TryParse(RawItemMenuKeywordReq, out ParsedItemKeyword, ErrorInfo);
-            RecipeItemKeyword = ParsedItemKeyword;
-        }
-
-        private static void ParseFieldIsItemMenuKeywordReqSufficient(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Recipe IsItemMenuKeywordReqSufficient", This.ParseIsItemMenuKeywordReqSufficient);
-        }
-
-        private void ParseIsItemMenuKeywordReqSufficient(bool RawIsItemMenuKeywordReqSufficient, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsItemMenuKeywordReqSufficient = RawIsItemMenuKeywordReqSufficient;
-        }
-
-        private static void ParseFieldItemMenuCategory(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Recipe ItemMenuCategory", This.ParseItemMenuCategory);
-        }
-
-        private void ParseItemMenuCategory(string RawItemMenuCategory, ParseErrorInfo ErrorInfo)
-        {
-            if (RawItemMenuCategory == "TSysExtract")
-                this.RawItemMenuCategory = "Extract";
-
-            else if (RawItemMenuCategory == "TSysDistill")
-                this.RawItemMenuCategory = "Distill";
-        }
-
-        private static void ParseFieldItemMenuCategoryLevel(Recipe This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Recipe ItemMenuCategoryLevel", This.ParseItemMenuCategoryLevel);
-        }
-
-        private void ParseItemMenuCategoryLevel(long RawItemMenuCategoryLevel, ParseErrorInfo ErrorInfo)
-        {
-            this.RawItemMenuCategoryLevel = (int)RawItemMenuCategoryLevel;
         }
         #endregion
 

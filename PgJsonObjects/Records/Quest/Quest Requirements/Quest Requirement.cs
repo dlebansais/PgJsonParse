@@ -118,7 +118,7 @@ namespace PgJsonObjects
             { "Quest", new FieldParser() { Type = FieldType.String, ParserString = ParseQuest } },
             { "Keyword", new FieldParser() { Type = FieldType.String, ParserString = ParseKeyword } },
             { "Npc", new FieldParser() { Type = FieldType.String, ParserString = ParseNpc } },
-            { "Level", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseLevelForSkill } },
+            { "Level", new FieldParser() { Type = FieldType.Unknown, ParserUnknown = ParseLevel } },
             { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
             { "List", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseList } },
             { "Rule", new FieldParser() { Type = FieldType.String, ParserString = ParseRule } },
@@ -172,41 +172,18 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Npc (" + OtherRequirementType + ")");
         }
 
-        private static void ParseFieldLevel(QuestRequirement This, object Value, ParseErrorInfo ErrorInfo)
+        private void ParseLevel(object value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueInteger(Value, ErrorInfo, "QuestRequirement Level", This.ParseLevelForSkill);
-        }
-
-        /*
-        JsonString AsJsonString;
-        JsonInteger AsJsonInteger;
-
-        if ((AsJsonString = Value as JsonString) != null)
-            This.ParseLevelForFavor(AsJsonString.String, ErrorInfo);
-
-        else if ((AsJsonInteger = Value as JsonInteger) != null)
-            This.ParseLevelForSkill(AsJsonInteger.Number, ErrorInfo);
-
-        else
-            ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level");
-        */
-
-        private void ParseLevelForFavor(string RawLevel, ParseErrorInfo ErrorInfo)
-        {
-            if (OtherRequirementType == OtherRequirementType.MinFavorLevel)
+            if (OtherRequirementType == OtherRequirementType.MinFavorLevel && value is JsonString StringValue)
             {
                 Favor ParsedFavor;
-                StringToEnumConversion<Favor>.TryParse(RawLevel, out ParsedFavor, ErrorInfo);
+                StringToEnumConversion<Favor>.TryParse(StringValue.String, out ParsedFavor, ErrorInfo);
                 RequirementFavorLevel = ParsedFavor;
             }
-            else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + OtherRequirementType + ")");
-        }
 
-        private void ParseLevelForSkill(int RawLevel, ParseErrorInfo ErrorInfo)
-        {
-            if (OtherRequirementType == OtherRequirementType.MinSkillLevel)
-                RawRequirementSkillLevel = (int)RawLevel;
+            else if (OtherRequirementType == OtherRequirementType.MinSkillLevel && value is JsonInteger IntegerValue)
+                RawRequirementSkillLevel = IntegerValue.Number;
+
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + OtherRequirementType + ")");
         }

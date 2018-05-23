@@ -17,32 +17,16 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Currency", ParseFieldCurrency },
-            { "Price", ParseFieldPrice },
-        };
-
-        private static void ParseFieldCurrency(RecipeCost This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "RecipeCost Currency", This.ParseCurrency);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Currency", new FieldParser() { Type = FieldType.String, ParserString = ParseCurrency } },
+            { "Price", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawPrice = value; }} },
+        }; } }
 
         private void ParseCurrency(string RawCurrency, ParseErrorInfo ErrorInfo)
         {
             RecipeCurrency ParsedCurrency;
             StringToEnumConversion<RecipeCurrency>.TryParse(RawCurrency, out ParsedCurrency, ErrorInfo);
             Currency = ParsedCurrency;
-        }
-
-        private static void ParseFieldPrice(RecipeCost This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "RecipeCost Price", This.ParsePrice);
-        }
-
-        private void ParsePrice(double RawPrice, ParseErrorInfo ErrorInfo)
-        {
-            this.RawPrice = RawPrice;
         }
         #endregion
 

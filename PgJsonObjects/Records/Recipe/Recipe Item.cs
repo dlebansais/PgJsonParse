@@ -34,18 +34,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "ItemCode", ParseFieldItemCode },
-            { "StackSize", ParseFieldStackSize },
-            { "PercentChance", ParseFieldPercentChance },
-            { "ItemKeys", ParseFieldItemKeys },
-            { "Desc", ParseFieldDesc },
-            { "ChanceToConsume", ParseFieldChanceToConsume },
-            { "DurabilityConsumed", ParseFieldDurabilityConsumed },
-            { "AttuneToCrafter", ParseFieldAttuneToCrafter },
-        };
-
         public static readonly Dictionary<RecipeItemKey, string> RecipeItemKeyStringMap = new Dictionary<RecipeItemKey, string>()
         {
             { RecipeItemKey.EquipmentSlot_MainHand, "EquipmentSlot:MainHand" },
@@ -72,96 +60,35 @@ namespace PgJsonObjects
             { RecipeItemKey.MaxTSysPrereq_90, "MaxTSysPrereq:90" },
         };
 
-        private static void ParseFieldItemCode(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "RecipeItem ItemCode", This.ParseItemCode);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "ItemCode", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawItemCode = value; }} },
+            { "StackSize", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseStackSize } },
+            { "PercentChance", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawPercentChance = value; }} },
+            { "ItemKeys", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseItemKeys } },
+            { "Desc", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Desc = value; }} },
+            { "ChanceToConsume", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawChanceToConsume = value; }} },
+            { "DurabilityConsumed", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawDurabilityConsumed = value; }} },
+            { "AttuneToCrafter", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawAttuneToCrafter = value; }} },
+        }; } }
 
-        private void ParseItemCode(long RawItemCode, ParseErrorInfo ErrorInfo)
+        private void ParseStackSize(int value, ParseErrorInfo ErrorInfo)
         {
-            this.RawItemCode = (int)RawItemCode;
-        }
-
-        private static void ParseFieldStackSize(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "RecipeItem StackSize", This.ParseStackSize);
-        }
-
-        private void ParseStackSize(long RawStackSize, ParseErrorInfo ErrorInfo)
-        {
-            if (RawStackSize > 1)
-                this.RawStackSize = (int)RawStackSize;
+            if (value > 1)
+                RawStackSize = value;
             else
             {
-                this.RawStackSize = 1;
+                RawStackSize = 1;
 
-                if (RawStackSize < 0)
+                if (value < 0)
                     ErrorInfo.AddInvalidObjectFormat("RecipeItem StackSize");
             }
         }
 
-        private static void ParseFieldPercentChance(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "RecipeItem PercentChance", This.ParsePercentChance);
-        }
-
-        private void ParsePercentChance(double RawPercentChance, ParseErrorInfo ErrorInfo)
-        {
-            this.RawPercentChance = RawPercentChance;
-        }
-
-        private static void ParseFieldItemKeys(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "RecipeItem ItemKeys", This.ParseItemKeys);
-        }
-
-        private bool ParseItemKeys(string RawItemKeys, ParseErrorInfo ErrorInfo)
+        private void ParseItemKeys(string RawItemKeys, ParseErrorInfo ErrorInfo)
         {
             RecipeItemKey ParsedItemKey;
             if (StringToEnumConversion<RecipeItemKey>.TryParse(RawItemKeys, RecipeItemKeyStringMap, out ParsedItemKey, ErrorInfo))
                 ItemKeyList.Add(ParsedItemKey);
-
-            return true;
-        }
-
-        private static void ParseFieldDesc(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "RecipeItem Desc", This.ParseDesc);
-        }
-
-        private void ParseDesc(string RawDesc, ParseErrorInfo ErrorInfo)
-        {
-            Desc = RawDesc;
-        }
-
-        private static void ParseFieldChanceToConsume(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "RecipeItem ChanceToConsume", This.ParseChanceToConsume);
-        }
-
-        private void ParseChanceToConsume(double RawChanceToConsume, ParseErrorInfo ErrorInfo)
-        {
-            this.RawChanceToConsume = RawChanceToConsume;
-        }
-
-        private static void ParseFieldDurabilityConsumed(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "RecipeItem DurabilityConsumed", This.ParseDurabilityConsumed);
-        }
-
-        private void ParseDurabilityConsumed(double RawDurabilityConsumed, ParseErrorInfo ErrorInfo)
-        {
-            this.RawDurabilityConsumed = RawDurabilityConsumed;
-        }
-
-        private static void ParseFieldAttuneToCrafter(RecipeItem This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "RecipeItem AttuneToCrafter", This.ParseAttuneToCrafter);
-        }
-
-        private void ParseAttuneToCrafter(bool RawAttuneToCrafter, ParseErrorInfo ErrorInfo)
-        {
-            this.RawAttuneToCrafter = RawAttuneToCrafter;
         }
         #endregion
 

@@ -52,54 +52,18 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Reward");
         }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Ability", ParseFieldAbility },
-            { "BonusToSkill", ParseFieldBonusToSkill },
-            { "Recipe", ParseFieldRecipe },
-            { "Notes", ParseFieldNotes },
-        };
-
-        private static void ParseFieldAbility(Reward This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Reward Ability", This.ParseAbility);
-        }
-
-        private void ParseAbility(string RawAbility, ParseErrorInfo ErrorInfo)
-        {
-            this.RawAbility = RawAbility;
-        }
-
-        private static void ParseFieldBonusToSkill(Reward This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Reward BonusToSkill", This.ParseBonusToSkill);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Ability", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawAbility = value; }} },
+            { "BonusToSkill", new FieldParser() { Type = FieldType.String, ParserString = ParseBonusToSkill } },
+            { "Recipe", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawRecipe = value; }} },
+            { "Notes", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Notes = value; }} },
+        }; } }
 
         private void ParseBonusToSkill(string RawBonusToSkill, ParseErrorInfo ErrorInfo)
         {
             PowerSkill ParsedBonusToSkill;
             StringToEnumConversion<PowerSkill>.TryParse(RawBonusToSkill, out ParsedBonusToSkill, ErrorInfo);
             BonusSkill = ParsedBonusToSkill;
-        }
-
-        private static void ParseFieldRecipe(Reward This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Reward Recipe", This.ParseRecipe);
-        }
-
-        private void ParseRecipe(string RawRecipe, ParseErrorInfo ErrorInfo)
-        {
-            this.RawRecipe = RawRecipe;
-        }
-
-        private static void ParseFieldNotes(Reward This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Reward Notes", This.ParseNotes);
-        }
-
-        private void ParseNotes(string RawNotes, ParseErrorInfo ErrorInfo)
-        {
-            Notes = RawNotes;
         }
         #endregion
 

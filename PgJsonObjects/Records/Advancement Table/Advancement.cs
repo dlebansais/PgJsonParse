@@ -77,8 +77,6 @@ namespace PgJsonObjects
         private double? RawCombatRegenArmorDelta;
         public double CombatRegenDelta { get { return RawCombatRegenDelta.HasValue ? RawCombatRegenDelta.Value : 0; } }
         private double? RawCombatRegenDelta;
-        public double CombatRegenMod { get { return RawCombatRegenMod.HasValue ? RawCombatRegenMod.Value : 0; } }
-        private double? RawCombatRegenMod;
         public double MaxInventorySize { get { return RawMaxInventorySize.HasValue ? RawMaxInventorySize.Value : 0; } }
         private double? RawMaxInventorySize;
         public double MaxMetabolism { get { return RawMaxMetabolism.HasValue ? RawMaxMetabolism.Value : 0; } }
@@ -332,7 +330,6 @@ namespace PgJsonObjects
             Generator.AddDouble("MonsterCombatXpValue", RawMonsterCombatXpValue);
             Generator.AddDouble("CombatRegenArmorDelta", RawCombatRegenArmorDelta);
             Generator.AddDouble("CombatRegenDelta", RawCombatRegenDelta);
-            Generator.AddDouble("CombatRegenMod", RawCombatRegenMod);
             Generator.AddDouble("MaxInventorySize", RawMaxInventorySize);
             Generator.AddDouble("MaxMetabolism", RawMaxMetabolism);
             Generator.AddDouble("NpcModFavorFromGifts", RawNpcModFavorFromGifts);

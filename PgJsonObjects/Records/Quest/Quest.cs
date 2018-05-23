@@ -91,64 +91,48 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "InternalName", ParseFieldInternalName },
-            { "Name", ParseFieldName },
-            { "Description", ParseFieldDescription },
-            { "Version", ParseFieldVersion },
-            { "RequirementsToSustain", ParseFieldRequirementsToSustain },
-            { "ReuseTime_Minutes", ParseFieldReuseTimeMinutes },
-            { "IsCancellable", ParseFieldIsCancellable },
-            { "Objectives", ParseFieldObjectives },
-            { "Rewards_XP", ParseFieldRewardsXP },
-            { "Rewards_Items", ParseFieldRewardsItems },
-            { "ReuseTime_Days", ParseFieldReuseTimeDays },
-            { "ReuseTime_Hours", ParseFieldReuseTimeHours },
-            { "Reward_CombatXP", ParseFieldRewardCombatXP },
-            { "FavorNpc", ParseFieldFavorNpc },
-            { "PrefaceText", ParseFieldPrefaceText },
-            { "SuccessText", ParseFieldSuccessText },
-            { "MidwayText", ParseFieldMidwayText },
-            { "PrerequisiteFavorLevel", ParseFieldPrerequisiteFavorLevel },
-            { "Rewards_Favor", ParseFieldRewardsFavor },
-            { "Rewards_Recipes", ParseFieldRewardsRecipes },
-            { "Rewards_Ability", ParseFieldRewardsAbility },
-            { "Requirements", ParseFieldRequirements },
-            { "Reward_Favor", ParseFieldRewardFavor },
-            { "Rewards", ParseFieldRewards },
-            { "PreGiveItems", ParseFieldPreGiveItems },
-            { "TSysLevel", ParseFieldTSysLevel },
-            { "Reward_Gold", ParseFieldRewardGold },
-            { "Rewards_NamedLootProfile", ParseFieldRewardsNamedLootProfile },
-            { "PreGiveRecipes", ParseFieldPreGiveRecipes },
-            { "Keywords", ParseFieldKeywords },
-            { "Rewards_Effects", ParseFieldRewardsEffects },
-            { "IsAutoPreface", ParseFieldIsAutoPreface },
-            { "IsAutoWrapUp", ParseFieldIsAutoWrapUp },
-            { "GroupingName", ParseFieldGroupingName },
-            { "IsGuildQuest", ParseFieldIsGuildQuest },
-            { "NumExpectedParticipants", ParseFieldNumExpectedParticipants },
-            { "Level", ParseFieldLevel },
-            { "WorkOrderSkill", ParseFieldWorkOrderSkill },
-            { "DisplayedLocation", ParseFieldDisplayedLocation },
-            { "FollowUpQuests", ParseFieldFollowUpQuests },
-        };
-
-        private static void ParseFieldInternalName(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest InternalName", This.ParseInternalName);
-        }
-
-        private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
-        {
-            InternalName = RawInternalName;
-        }
-
-        private static void ParseFieldName(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest Name", This.ParseName);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
+            { "Name", new FieldParser() { Type = FieldType.String, ParserString = ParseName } },
+            { "Description", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Description = value; }} },
+            { "Version", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawVersion = value; }} },
+            { "RequirementsToSustain", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseRequirementsToSustain } },
+            { "ReuseTime_Minutes", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseReuseTime_Minutes } },
+            { "IsCancellable", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsCancellable = value; }} },
+            { "Objectives", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseObjectives } },
+            { "Rewards_XP", new FieldParser() { Type = FieldType.Object, ParserObject = ParseRewards_XP } },
+            { "Rewards_Items", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseRewards_Items } },
+            { "ReuseTime_Days", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseReuseTime_Days } },
+            { "ReuseTime_Hours", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseReuseTime_Hours } },
+            { "Reward_CombatXP", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseReward_CombatXP } },
+            { "FavorNpc", new FieldParser() { Type = FieldType.String, ParserString = ParseFavorNpc } },
+            { "PrefaceText", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { PrefaceText = value; }} },
+            { "SuccessText", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { SuccessText = value; }} },
+            { "MidwayText", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { MidwayText = value; }} },
+            { "PrerequisiteFavorLevel", new FieldParser() { Type = FieldType.String, ParserString = ParsePrerequisiteFavorLevel } },
+            { "Rewards_Favor", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardFavor = value; }} },
+            { "Rewards_Recipes", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseRewards_Recipes } },
+            { "Rewards_Ability", new FieldParser() { Type = FieldType.String, ParserString = ParseRewards_Ability } },
+            { "Requirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseRequirements } },
+            { "Reward_Favor", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardFavor = value; }} },
+            { "Rewards", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseRewards } },
+            { "PreGiveItems", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParsePreGiveItems } },
+            { "TSysLevel", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawTSysLevel = value; }} },
+            { "Reward_Gold", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardGold = value; }} },
+            { "Rewards_NamedLootProfile", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RewardsNamedLootProfile = value; }} },
+            { "PreGiveRecipes", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawPreGiveRecipeList.Add(value); }} },
+            { "Keywords", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseKeywords } },
+            { "Rewards_Effects", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseRewards_Effects } },
+            { "IsAutoPreface", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsAutoPreface = value; }} },
+            { "IsAutoWrapUp", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsAutoWrapUp = value; }} },
+            { "GroupingName", new FieldParser() { Type = FieldType.String, ParserString = ParseGroupingName } },
+            { "IsGuildQuest", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsGuildQuest = value; }} },
+            { "NumExpectedParticipants", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumExpectedParticipants = value; }} },
+            { "Level", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawLevel = value; }} },
+            { "WorkOrderSkill", new FieldParser() { Type = FieldType.String, ParserString = ParseWorkOrderSkill } },
+            { "DisplayedLocation", new FieldParser() { Type = FieldType.String, ParserString = ParseDisplayedLocation } },
+            { "FollowUpQuests", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawFollowUpQuestList.Add(value); }} },
+        }; } }
 
         private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
         {
@@ -156,32 +140,7 @@ namespace PgJsonObjects
             ErrorInfo.AddIconId(SearchResultIconId);
         }
 
-        private static void ParseFieldDescription(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest Description", This.ParseDescription);
-        }
-
-        private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
-        {
-            Description = RawDescription;
-        }
-
-        private static void ParseFieldVersion(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest Version", This.ParseVersion);
-        }
-
-        private void ParseVersion(long RawVersion, ParseErrorInfo ErrorInfo)
-        {
-            this.RawVersion = (int)RawVersion;
-        }
-
-        private static void ParseFieldRequirementsToSustain(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "Quest RequirementsToSustain", This.ParseRequirementToSustainAsDictionary);
-        }
-
-        private void ParseRequirementToSustainAsDictionary(JsonObject RawRequirements, ParseErrorInfo ErrorInfo)
+        private void ParseRequirementsToSustain(JsonObject RawRequirements, ParseErrorInfo ErrorInfo)
         {
             QuestRequirement ParsedQuestRequirement;
             JsonObjectParser<QuestRequirement>.InitAsSubitem("Requirements", RawRequirements, out ParsedQuestRequirement, ErrorInfo);
@@ -191,32 +150,12 @@ namespace PgJsonObjects
                 QuestRequirementToSustainList.Add(ConvertedQuestRequirement);
         }
 
-        private static void ParseFieldReuseTimeMinutes(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest ReuseTimeMinutes", This.ParseReuseTimeMinutes);
-        }
-
-        private void ParseReuseTimeMinutes(long RawReuseTimeMinutes, ParseErrorInfo ErrorInfo)
+        private void ParseReuseTime_Minutes(int value, ParseErrorInfo ErrorInfo)
         {
             if (!RawReuseTime.HasValue)
-                RawReuseTime = TimeSpan.FromMinutes(RawReuseTimeMinutes);
+                RawReuseTime = TimeSpan.FromMinutes(value);
             else
-                RawReuseTime += TimeSpan.FromMinutes(RawReuseTimeMinutes);
-        }
-
-        private static void ParseFieldIsCancellable(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Quest IsCancellable", This.ParseIsCancellable);
-        }
-
-        private void ParseIsCancellable(bool RawIsCancellable, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsCancellable = RawIsCancellable;
-        }
-
-        private static void ParseFieldObjectives(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Quest Objectives", This.ParseObjectives);
+                RawReuseTime += TimeSpan.FromMinutes(value);
         }
 
         private void ParseObjectives(JsonObject RawObjectives, ParseErrorInfo ErrorInfo)
@@ -229,12 +168,7 @@ namespace PgJsonObjects
                 QuestObjectiveList.Add(ConvertedQuestObjective);
         }
 
-        private static void ParseFieldRewardsXP(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Quest RewardsXP", This.ParseRewardsXP);
-        }
-
-        private void ParseRewardsXP(JsonObject RawRewardsXP, ParseErrorInfo ErrorInfo)
+        private void ParseRewards_XP(JsonObject RawRewardsXP, ParseErrorInfo ErrorInfo)
         {
             foreach (KeyValuePair<string, IJsonValue> RawRewardXP in RawRewardsXP)
             {
@@ -255,12 +189,7 @@ namespace PgJsonObjects
             }
         }
 
-        private static void ParseFieldRewardsItems(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Quest RewardsItems", This.ParseRewardsItems);
-        }
-
-        private void ParseRewardsItems(JsonObject RawRewardsItems, ParseErrorInfo ErrorInfo)
+        private void ParseRewards_Items(JsonObject RawRewardsItems, ParseErrorInfo ErrorInfo)
         {
             QuestRewardItem ParsedRewardItem;
             JsonObjectParser<QuestRewardItem>.InitAsSubitem("RewardsItems", RawRewardsItems, out ParsedRewardItem, ErrorInfo);
@@ -268,48 +197,28 @@ namespace PgJsonObjects
                 QuestRewardsItemList.Add(ParsedRewardItem);
         }
 
-        private static void ParseFieldReuseTimeDays(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest ReuseTimeDays", This.ParseReuseTimeDays);
-        }
-
-        private void ParseReuseTimeDays(long RawReuseTimeDays, ParseErrorInfo ErrorInfo)
+        private void ParseReuseTime_Days(int value, ParseErrorInfo ErrorInfo)
         {
             if (!RawReuseTime.HasValue)
-                RawReuseTime = TimeSpan.FromDays(RawReuseTimeDays);
+                RawReuseTime = TimeSpan.FromDays(value);
             else
-                RawReuseTime += TimeSpan.FromDays(RawReuseTimeDays);
+                RawReuseTime += TimeSpan.FromDays(value);
         }
 
-        private static void ParseFieldReuseTimeHours(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest ReuseTimeHours", This.ParseReuseTimeHours);
-        }
-
-        private void ParseReuseTimeHours(long RawReuseTimeHours, ParseErrorInfo ErrorInfo)
+        private void ParseReuseTime_Hours(int value, ParseErrorInfo ErrorInfo)
         {
             if (!RawReuseTime.HasValue)
-                RawReuseTime = TimeSpan.FromHours(RawReuseTimeHours);
+                RawReuseTime = TimeSpan.FromHours(value);
             else
-                RawReuseTime += TimeSpan.FromHours(RawReuseTimeHours);
+                RawReuseTime += TimeSpan.FromHours(value);
         }
 
-        private static void ParseFieldRewardCombatXP(Quest This, object Value, ParseErrorInfo ErrorInfo)
+        private void ParseReward_CombatXP(int value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest RewardCombatXP", This.ParseRewardCombatXP);
-        }
-
-        private void ParseRewardCombatXP(long RawRewardCombatXP, ParseErrorInfo ErrorInfo)
-        {
-            if (this.RawRewardCombatXP == null)
-                this.RawRewardCombatXP = (int)RawRewardCombatXP;
+            if (RawRewardCombatXP == null)
+                RawRewardCombatXP = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("Quest RewardCombatXP");
-        }
-
-        private static void ParseFieldFavorNpc(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest FavorNpc", This.ParseFavorNpc);
         }
 
         private void ParseFavorNpc(string RawFavorNpc, ParseErrorInfo ErrorInfo)
@@ -331,41 +240,6 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Quest FavorNpc");
         }
 
-        private static void ParseFieldPrefaceText(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest PrefaceText", This.ParsePrefaceText);
-        }
-
-        private void ParsePrefaceText(string RawPrefaceText, ParseErrorInfo ErrorInfo)
-        {
-            PrefaceText = RawPrefaceText;
-        }
-
-        private static void ParseFieldSuccessText(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest SuccessText", This.ParseSuccessText);
-        }
-
-        private void ParseSuccessText(string RawSuccessText, ParseErrorInfo ErrorInfo)
-        {
-            SuccessText = RawSuccessText;
-        }
-
-        private static void ParseFieldMidwayText(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest MidwayText", This.ParseMidwayText);
-        }
-
-        private void ParseMidwayText(string RawMidwayText, ParseErrorInfo ErrorInfo)
-        {
-            MidwayText = RawMidwayText;
-        }
-
-        private static void ParseFieldPrerequisiteFavorLevel(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest PrerequisiteFavorLevel", This.ParsePrerequisiteFavorLevel);
-        }
-
         private void ParsePrerequisiteFavorLevel(string RawPrerequisiteFavorLevel, ParseErrorInfo ErrorInfo)
         {
             Favor ParsedFavor;
@@ -373,27 +247,7 @@ namespace PgJsonObjects
             PrerequisiteFavorLevel = ParsedFavor;
         }
 
-        private static void ParseFieldRewardsFavor(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest RewardFavor", This.ParseRewardFavor);
-        }
-
-        private static void ParseFieldRewardFavor(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest RewardFavor", This.ParseRewardFavor);
-        }
-
-        private void ParseRewardFavor(long RawRewardFavor, ParseErrorInfo ErrorInfo)
-        {
-            this.RawRewardFavor = (int)RawRewardFavor;
-        }
-
-        private static void ParseFieldRewardsRecipes(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Quest RewardsRecipes", This.ParseRewardsRecipes);
-        }
-
-        private bool ParseRewardsRecipes(string RawRewardRecipe, ParseErrorInfo ErrorInfo)
+        private bool ParseRewards_Recipes(string RawRewardRecipe, ParseErrorInfo ErrorInfo)
         {
             if (this.RawRewardRecipe == null)
             {
@@ -407,21 +261,11 @@ namespace PgJsonObjects
             }
         }
 
-        private static void ParseFieldRewardsAbility(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest RewardsAbility", This.ParseRewardsAbility);
-        }
-
-        private void ParseRewardsAbility(string RawRewardsAbility, ParseErrorInfo ErrorInfo)
+        private void ParseRewards_Ability(string RawRewardsAbility, ParseErrorInfo ErrorInfo)
         {
             this.RawRewardAbility = RawRewardsAbility;
             RewardAbility = null;
             IsRawRewardAbilityParsed = false;
-        }
-
-        private static void ParseFieldRequirements(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "Quest Requirements", This.ParseRequirements);
         }
 
         private void ParseRequirements(JsonObject RawRequirements, ParseErrorInfo ErrorInfo)
@@ -432,11 +276,6 @@ namespace PgJsonObjects
             QuestRequirement ConvertedQuestRequirement = ParsedQuestRequirement.ToSpecificQuestRequirement(ErrorInfo);
             if (ConvertedQuestRequirement != null)
                 QuestRequirementList.Add(ConvertedQuestRequirement);
-        }
-
-        private static void ParseFieldRewards(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Quest Rewards", This.ParseRewards);
         }
 
         private void ParseRewards(JsonObject RawReward, ParseErrorInfo ErrorInfo)
@@ -561,63 +400,12 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Quest Rewards");
         }
 
-        private static void ParseFieldPreGiveItems(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Quest PreGiveItems", This.ParsePreGiveItems);
-        }
-
         private void ParsePreGiveItems(JsonObject RawPreGiveItems, ParseErrorInfo ErrorInfo)
         {
             QuestRewardItem ParsedPreGiveItem;
             JsonObjectParser<QuestRewardItem>.InitAsSubitem("PreGiveItems", RawPreGiveItems, out ParsedPreGiveItem, ErrorInfo);
             if (ParsedPreGiveItem != null)
                 PreGiveItemList.Add(ParsedPreGiveItem);
-        }
-
-        private static void ParseFieldTSysLevel(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest TSysLevel", This.ParseTSysLevel);
-        }
-
-        private void ParseTSysLevel(long RawTSysLevel, ParseErrorInfo ErrorInfo)
-        {
-            this.RawTSysLevel = (int)RawTSysLevel;
-        }
-
-        private static void ParseFieldRewardGold(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest RewardGold", This.ParseRewardGold);
-        }
-
-        private void ParseRewardGold(long RawRewardGold, ParseErrorInfo ErrorInfo)
-        {
-            this.RawRewardGold = (int)RawRewardGold;
-        }
-
-        private static void ParseFieldRewardsNamedLootProfile(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest RewardsNamedLootProfile", This.ParseRewardsNamedLootProfile);
-        }
-
-        private void ParseRewardsNamedLootProfile(string RawRewardsNamedLootProfile, ParseErrorInfo ErrorInfo)
-        {
-            RewardsNamedLootProfile = RawRewardsNamedLootProfile;
-        }
-
-        private static void ParseFieldPreGiveRecipes(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Quest PreGiveRecipes", This.ParsePreGiveRecipes);
-        }
-
-        private bool ParsePreGiveRecipes(string RawPreGiveRecipe, ParseErrorInfo ErrorInfo)
-        {
-            RawPreGiveRecipeList.Add(RawPreGiveRecipe);
-            return true;
-        }
-
-        private static void ParseFieldKeywords(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Quest Keywords", This.ParseKeywords);
         }
 
         private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
@@ -632,12 +420,7 @@ namespace PgJsonObjects
                 return false;
         }
 
-        private static void ParseFieldRewardsEffects(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Quest RewardsEffects", This.ParseRewardsEffects);
-        }
-
-        private bool ParseRewardsEffects(string RawRewardEffect, ParseErrorInfo ErrorInfo)
+        private bool ParseRewards_Effects(string RawRewardEffect, ParseErrorInfo ErrorInfo)
         {
             if (this.RawRewardEffect == null)
             {
@@ -689,71 +472,11 @@ namespace PgJsonObjects
             }
         }
 
-        private static void ParseFieldIsAutoPreface(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Quest IsAutoPreface", This.ParseIsAutoPreface);
-        }
-
-        private void ParseIsAutoPreface(bool RawIsAutoPreface, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsAutoPreface = RawIsAutoPreface;
-        }
-
-        private static void ParseFieldIsAutoWrapUp(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Quest IsAutoWrapUp", This.ParseIsAutoWrapUp);
-        }
-
-        private void ParseIsAutoWrapUp(bool RawIsAutoWrapUp, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsAutoWrapUp = RawIsAutoWrapUp;
-        }
-
-        private static void ParseFieldGroupingName(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest GroupingName", This.ParseGroupingName);
-        }
-
         private void ParseGroupingName(string RawGroupingName, ParseErrorInfo ErrorInfo)
         {
             QuestGroupingName ParsedGroupingName;
             StringToEnumConversion<QuestGroupingName>.TryParse(RawGroupingName, out ParsedGroupingName, ErrorInfo);
             GroupingName = ParsedGroupingName;
-        }
-
-        private static void ParseFieldIsGuildQuest(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Quest IsGuildQuest", This.ParseIsGuildQuest);
-        }
-
-        private void ParseIsGuildQuest(bool RawIsGuildQuest, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsGuildQuest = RawIsGuildQuest;
-        }
-
-        private static void ParseFieldNumExpectedParticipants(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest NumExpectedParticipants", This.ParseNumExpectedParticipants);
-        }
-
-        private void ParseNumExpectedParticipants(long RawNumExpectedParticipants, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNumExpectedParticipants = (int)RawNumExpectedParticipants;
-        }
-
-        private static void ParseFieldLevel(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Quest Level", This.ParseLevel);
-        }
-
-        private void ParseLevel(long RawLevel, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLevel = (int)RawLevel;
-        }
-
-        private static void ParseFieldWorkOrderSkill(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest WorkOrderSkill", This.ParseWorkOrderSkill);
         }
 
         private void ParseWorkOrderSkill(string RawWorkOrderSkill, ParseErrorInfo ErrorInfo)
@@ -763,27 +486,11 @@ namespace PgJsonObjects
             WorkOrderSkill = ParsedSkill;
         }
 
-        private static void ParseFieldDisplayedLocation(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Quest DisplayedLocation", This.ParseDisplayedLocation);
-        }
-
         private void ParseDisplayedLocation(string RawDisplayedLocation, ParseErrorInfo ErrorInfo)
         {
             MapAreaName ParsedMapAreaName;
             StringToEnumConversion<MapAreaName>.TryParse(RawDisplayedLocation, TextMaps.MapAreaNameStringMap, out ParsedMapAreaName, ErrorInfo);
             DisplayedLocation = ParsedMapAreaName;
-        }
-
-        private static void ParseFieldFollowUpQuests(Quest This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Quest FieldFollowUpQuests", This.ParseFollowUpQuests);
-        }
-
-        private bool ParseFollowUpQuests(string RawFollowUpQuest, ParseErrorInfo ErrorInfo)
-        {
-            RawFollowUpQuestList.Add(RawFollowUpQuest);
-            return true;
         }
 
         public static bool TryParseNPC(string s, out MapAreaName ParsedArea, out string NpcId, out string NpcName, ParseErrorInfo ErrorInfo)

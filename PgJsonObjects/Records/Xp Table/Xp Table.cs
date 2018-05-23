@@ -13,7 +13,6 @@ namespace PgJsonObjects
         public List<XpTableLevel> XpAmountList { get; } = new List<XpTableLevel>();
         private int TotalXp = 0;
         private int Level = 0;
-        private bool IsXpAmountListEmpty = true;
         #endregion
 
         #region Indirect Properties

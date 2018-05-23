@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PgJsonReader;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -17,12 +18,12 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Gods", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
-            { "Misc", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
-            { "History", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
-            { "Plot", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
-            { "Stories", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
-            { "GuideProgram", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { }} },
+            { "Gods", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { }} },
+            { "Misc", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { }} },
+            { "History", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { }} },
+            { "Plot", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { }} },
+            { "Stories", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { }} },
+            { "GuideProgram", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { }} },
         }; } }
         #endregion
 

@@ -36,7 +36,7 @@ namespace PgJsonObjects
             { "NpcFriendlyName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { NpcFriendlyName = value; }} },
             { "Area", new FieldParser() { Type = FieldType.String, ParserString = ParseArea } },
             { "NumSlots", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumSlots = value; }} },
-            { "HasAssociatedNpc", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumSlots = value; }} },
+            { "HasAssociatedNpc", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawHasAssociatedNpc = value; }} },
             { "Levels", new FieldParser() { Type = FieldType.Object, ParserObject = ParseLevels } },
             { "RequiredItemKeyword", new FieldParser() { Type = FieldType.String, ParserString = ParseRequiredItemKeyword } },
             { "RequirementDescription", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RequirementDescription = value; }} },

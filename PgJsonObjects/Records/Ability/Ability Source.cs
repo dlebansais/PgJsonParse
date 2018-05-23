@@ -15,7 +15,6 @@ namespace PgJsonObjects
         public Skill ConnectedSkillTypeId { get; private set; }
         private bool IsSkillTypeIdParsed;
         public Item ConnectedItem { get; private set; }
-        private string RawItemName;
         private bool IsItemNameParsed;
         private int? RawItemTypeId;
         private string RawNpcId;
@@ -29,7 +28,6 @@ namespace PgJsonObjects
         private bool IsRecipeParsed;
         private bool IsMiscEffect;
         public Quest ConnectedQuest { get; private set; }
-        private string RawQuestName;
         private int? RawQuestId;
         private bool IsQuestNameParsed;
         #endregion
@@ -273,8 +271,6 @@ namespace PgJsonObjects
 
             if (RawItemTypeId.HasValue)
                 ConnectedItem = PgJsonObjects.Item.ConnectByKey(ErrorInfo, ItemTable, RawItemTypeId.Value, ConnectedItem, ref IsItemNameParsed, ref IsConnected, ConnectedAbility);
-            else if (RawItemName != null)
-                ConnectedItem = PgJsonObjects.Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItemName, ConnectedItem, ref IsItemNameParsed, ref IsConnected, ConnectedAbility);
 
             if (RawEffectName != null && ConnectedRecipeEffect == null && ConnectedEffect == null)
             {
@@ -286,8 +282,6 @@ namespace PgJsonObjects
 
             if (RawQuestId.HasValue)
                 ConnectedQuest = PgJsonObjects.Quest.ConnectByKey(ErrorInfo, QuestTable, RawQuestId.Value, ConnectedQuest, ref IsQuestNameParsed, ref IsConnected, ConnectedAbility);
-            else if (RawQuestName != null)
-                ConnectedQuest = PgJsonObjects.Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawQuestName, ConnectedQuest, ref IsQuestNameParsed, ref IsConnected, ConnectedAbility);
 
             Npc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, RawNpcId, Npc, ref IsNpcParsed, ref IsConnected, ConnectedAbility);
             if (RawNpcId != null && Npc == null)

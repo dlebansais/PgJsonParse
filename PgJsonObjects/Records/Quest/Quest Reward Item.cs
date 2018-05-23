@@ -20,32 +20,16 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Item", ParseFieldItem },
-            { "StackSize", ParseFieldStackSize },
-        };
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Item", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawItem = value; }} },
+            { "StackSize", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseStackSize } },
+        }; } }
 
-        private static void ParseFieldItem(QuestRewardItem This, object Value, ParseErrorInfo ErrorInfo)
+        private void ParseStackSize(int value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueString(Value, ErrorInfo, "QuestRequirement Item", This.ParseItem);
-        }
-
-        private void ParseItem(string RawItem, ParseErrorInfo ErrorInfo)
-        {
-            this.RawItem = RawItem;
-        }
-
-        private static void ParseFieldStackSize(QuestRewardItem This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "QuestRewardItem StackSize", This.ParseStackSize);
-        }
-
-        private void ParseStackSize(long RawStackSize, ParseErrorInfo ErrorInfo)
-        {
-            if (RawStackSize > 1)
-                this.RawStackSize = (int)RawStackSize;
-            else if (RawStackSize < 1)
+            if (value > 1)
+                RawStackSize = value;
+            else if (value < 1)
                 ErrorInfo.AddInvalidObjectFormat("QuestRewardItem StackSize");
         }
         #endregion

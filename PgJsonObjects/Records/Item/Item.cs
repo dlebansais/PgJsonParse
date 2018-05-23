@@ -81,59 +81,42 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "BestowRecipes", ParseFieldBestowRecipes },
-            { "BestowAbility", ParseFieldBestowAbility },
-            { "BestowQuest", ParseFieldBestowQuest },
-            { "AllowPrefix", ParseFieldAllowPrefix },
-            { "AllowSuffix", ParseFieldAllowSuffix },
-            { "CraftPoints", ParseFieldCraftPoints },
-            { "CraftingTargetLevel", ParseFieldCraftingTargetLevel },
-            { "Description", ParseFieldDescription },
-            { "DroppedAppearance", ParseFieldDroppedAppearance },
-            { "EffectDescs", ParseFieldEffectDescs },
-            { "DyeColor", ParseFieldDyeColor },
-            { "EquipAppearance", ParseFieldEquipAppearance },
-            { "EquipSlot", ParseFieldEquipSlot },
-            { "IconId", ParseFieldIconId },
-            { "InternalName", ParseFieldInternalName },
-            { "IsTemporary", ParseFieldIsTemporary },
-            { "IsCrafted", ParseFieldIsCrafted },
-            { "Keywords", ParseFieldKeywords },
-            { "MacGuffinQuestName", ParseFieldMacGuffinQuestName },
-            { "MaxCarryable", ParseFieldMaxCarryable },
-            { "MaxOnVendor", ParseFieldMaxOnVendor },
-            { "MaxStackSize", ParseFieldMaxStackSize },
-            { "Name", ParseFieldName },
-            { "RequiredAppearance", ParseFieldRequiredAppearance },
-            { "SkillReqs", ParseFieldSkillReqs },
-            { "StockDye", ParseFieldStockDye },
-            { "Value", ParseFieldValue },
-            { "NumUses", ParseFieldNumUses },
-            { "DestroyWhenUsedUp", ParseFieldDestroyWhenUsedUp },
-            { "Behaviors", ParseFieldBehaviors},
-            { "DynamicCraftingSummary", ParseFieldDynamicCraftingSummary},
-            { "IsSkillReqsDefaults", ParseFieldIsSkillReqsDefaults },
-            { "BestowTitle", ParseFieldBestowTitle },
-            { "BestowLoreBook", ParseFieldBestowLoreBook },
-        };
-
-        private static void ParseFieldBestowRecipes(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Item BestowRecipes", This.ParseBestowRecipes);
-        }
-
-        private bool ParseBestowRecipes(string RawBestowRecipes, ParseErrorInfo ErrorInfo)
-        {
-            RawBestowRecipesList.Add(RawBestowRecipes);
-            return true;
-        }
-
-        private static void ParseFieldBestowAbility(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item BestowAbility", This.ParseBestowAbility);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "BestowRecipes", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawBestowRecipesList.Add(value); }, ParserSetArrayIsEmpty = () => RawBestowRecipesListIsEmpty = true } },
+            { "BestowAbility", new FieldParser() { Type = FieldType.String, ParserString = ParseBestowAbility } },
+            { "BestowQuest", new FieldParser() { Type = FieldType.String, ParserString = ParseBestowQuest } },
+            { "AllowPrefix", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawAllowPrefix = value; }} },
+            { "AllowSuffix", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawAllowSuffix = value; }} },
+            { "CraftPoints", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawCraftPoints = value; }} },
+            { "CraftingTargetLevel", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawCraftingTargetLevel = value; }} },
+            { "Description", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Description = value; }} },
+            { "DroppedAppearance", new FieldParser() { Type = FieldType.String, ParserString = ParseDroppedAppearance } },
+            { "EffectDescs", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseEffectDescs } },
+            { "DyeColor", new FieldParser() { Type = FieldType.String, ParserString = ParseDyeColor } },
+            { "EquipAppearance", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { EquipAppearance = value; }} },
+            { "EquipSlot", new FieldParser() { Type = FieldType.String, ParserString = ParseEquipSlot } },
+            { "IconId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseIconId } },
+            { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = ParseInternalName } },
+            { "IsTemporary", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsTemporary = value; }} },
+            { "IsCrafted", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsCrafted = value; }} },
+            { "Keywords", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseKeywords } },
+            { "MacGuffinQuestName", new FieldParser() { Type = FieldType.String, ParserString = ParseMacGuffinQuestName } },
+            { "MaxCarryable", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxCarryable = value; }} },
+            { "MaxOnVendor", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxOnVendor = value; }} },
+            { "MaxStackSize", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxStackSize = value; }} },
+            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
+            { "RequiredAppearance", new FieldParser() { Type = FieldType.String, ParserString = ParseRequiredAppearance } },
+            { "SkillReqs", new FieldParser() { Type = FieldType.Object, ParserObject = ParseSkillReqs } },
+            { "StockDye", new FieldParser() { Type = FieldType.String, ParserString = ParseStockDye } },
+            { "Value", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawValue = value; }} },
+            { "NumUses", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumUses = value; }} },
+            { "DestroyWhenUsedUp", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawDestroyWhenUsedUp = value; }} },
+            { "Behaviors", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseBehaviors } },
+            { "DynamicCraftingSummary", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DynamicCraftingSummary = value; }} },
+            { "IsSkillReqsDefaults", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsSkillReqsDefaults = value; }} },
+            { "BestowTitle", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawBestowTitle = value; }} },
+            { "BestowLoreBook", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawBestowLoreBook = value; }} },
+        }; } }
 
         private void ParseBestowAbility(string RawBestowAbility, ParseErrorInfo ErrorInfo)
         {
@@ -142,71 +125,11 @@ namespace PgJsonObjects
             IsRawBestowAbilityParsed = false;
         }
 
-        private static void ParseFieldBestowQuest(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item BestowQuest", This.ParseBestowQuest);
-        }
-
         private void ParseBestowQuest(string RawBestowQuest, ParseErrorInfo ErrorInfo)
         {
             this.RawBestowQuest = RawBestowQuest;
             BestowQuest = null;
             IsRawBestowQuestParsed = false;
-        }
-
-        private static void ParseFieldAllowPrefix(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Item AllowPrefix", This.ParseAllowPrefix);
-        }
-
-        private void ParseAllowPrefix(bool RawAllowPrefix, ParseErrorInfo ErrorInfo)
-        {
-            this.RawAllowPrefix = RawAllowPrefix;
-        }
-
-        private static void ParseFieldAllowSuffix(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Item AllowSuffix", This.ParseAllowSuffix);
-        }
-
-        private void ParseAllowSuffix(bool RawAllowSuffix, ParseErrorInfo ErrorInfo)
-        {
-            this.RawAllowSuffix = RawAllowSuffix;
-        }
-
-        private static void ParseFieldCraftPoints(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Item CraftPoints", This.ParseCraftPoints);
-        }
-
-        private void ParseCraftPoints(long RawCraftPoints, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCraftPoints = (int)RawCraftPoints;
-        }
-
-        private static void ParseFieldCraftingTargetLevel(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Item CraftingTargetLevel", This.ParseCraftPoints);
-        }
-
-        private void ParseCraftingTargetLevel(long RawCraftingTargetLevel, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCraftingTargetLevel = (int)RawCraftingTargetLevel;
-        }
-
-        private static void ParseFieldDescription(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item Description", This.ParseDescription);
-        }
-
-        private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
-        {
-            Description = RawDescription;
-        }
-
-        private static void ParseFieldDroppedAppearance(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item DroppedAppearance", This.ParseDroppedAppearance);
         }
 
         private void ParseDroppedAppearance(string RawDroppedAppearance, ParseErrorInfo ErrorInfo)
@@ -218,11 +141,6 @@ namespace PgJsonObjects
             ItemDroppedAppearance ParsedDroppedAppearance;
             StringToEnumConversion<ItemDroppedAppearance>.TryParse(RawDroppedAppearance, out ParsedDroppedAppearance, ErrorInfo);
             DroppedAppearance = ParsedDroppedAppearance;
-        }
-
-        private static void ParseFieldEffectDescs(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Item EffectDescs", This.ParseEffectDescs);
         }
 
         private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)
@@ -240,11 +158,6 @@ namespace PgJsonObjects
             }
         }
 
-        private static void ParseFieldDyeColor(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item DyeColor", This.ParseDyeColor);
-        }
-
         private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)
         {
             uint NewColor;
@@ -254,21 +167,6 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidString("Item DyeColor", RawDyeColor);
         }
 
-        private static void ParseFieldEquipAppearance(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item EquipAppearance", This.ParseEquipAppearance);
-        }
-
-        private void ParseEquipAppearance(string RawEquipAppearance, ParseErrorInfo ErrorInfo)
-        {
-            EquipAppearance = RawEquipAppearance;
-        }
-
-        private static void ParseFieldEquipSlot(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item EquipSlot", This.ParseEquipSlot);
-        }
-
         private void ParseEquipSlot(string RawEquipSlot, ParseErrorInfo ErrorInfo)
         {
             ItemSlot ParsedSlot;
@@ -276,25 +174,15 @@ namespace PgJsonObjects
             EquipSlot = ParsedSlot;
         }
 
-        private static void ParseFieldIconId(Item This, object Value, ParseErrorInfo ErrorInfo)
+        private void ParseIconId(int value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueInteger(Value, ErrorInfo, "Item IconId", This.ParseIconId);
-        }
-
-        private void ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
-        {
-            if (RawIconId > 0)
+            if (value > 0)
             {
-                this.RawIconId = (int)RawIconId;
-                ErrorInfo.AddIconId((int)RawIconId);
+                RawIconId = value;
+                ErrorInfo.AddIconId(value);
             }
             else
-                this.RawIconId = null;
-        }
-
-        private static void ParseFieldInternalName(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item InternalName", This.ParseInternalName);
+                RawIconId = null;
         }
 
         private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
@@ -305,31 +193,6 @@ namespace PgJsonObjects
                 PerfectCottonRatio = 1.0F;
             else
                 PerfectCottonRatio = float.NaN;
-        }
-
-        private static void ParseFieldIsTemporary(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Item IsTemporary", This.ParseIsTemporary);
-        }
-
-        private void ParseIsTemporary(bool RawIsTemporary, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsTemporary = RawIsTemporary;
-        }
-
-        private static void ParseFieldIsCrafted(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Item IsCrafted", This.ParseIsCrafted);
-        }
-
-        private void ParseIsCrafted(bool RawIsCrafted, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsCrafted = RawIsCrafted;
-        }
-
-        private static void ParseFieldKeywords(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Item Keywords", This.ParseKeywords);
         }
 
         private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
@@ -386,11 +249,6 @@ namespace PgJsonObjects
             return true;
         }
 
-        private static void ParseFieldMacGuffinQuestName(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item MacGuffinQuestName", This.ParseMacGuffinQuestName);
-        }
-
         private void ParseMacGuffinQuestName(string RawMacGuffinQuestName, ParseErrorInfo ErrorInfo)
         {
             this.RawMacGuffinQuestName = RawMacGuffinQuestName;
@@ -398,61 +256,11 @@ namespace PgJsonObjects
             IsRawMacGuffinQuestNameParsed = false;
         }
 
-        private static void ParseFieldMaxCarryable(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Item MaxCarryable", This.ParseMaxCarryable);
-        }
-
-        private void ParseMaxCarryable(long RawMaxCarryable, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxCarryable = (int)RawMaxCarryable;
-        }
-
-        private static void ParseFieldMaxOnVendor(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Item MaxOnVendor", This.ParseMaxOnVendor);
-        }
-
-        private void ParseMaxOnVendor(long RawMaxOnVendor, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxOnVendor = (int)RawMaxOnVendor;
-        }
-
-        private static void ParseFieldMaxStackSize(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Item MaxStackSize", This.ParseMaxStackSize);
-        }
-
-        private void ParseMaxStackSize(long RawMaxStackSize, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxStackSize = (int)RawMaxStackSize;
-        }
-
-        private static void ParseFieldName(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item Name", This.ParseName);
-        }
-
-        private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
-        {
-            Name = RawName;
-        }
-
-        private static void ParseFieldRequiredAppearance(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item RequiredAppearance", This.ParseRequiredAppearance);
-        }
-
         private void ParseRequiredAppearance(string RawRequiredAppearance, ParseErrorInfo ErrorInfo)
         {
             Appearance ParsedAppearance;
             StringToEnumConversion<Appearance>.TryParse(RawRequiredAppearance, out ParsedAppearance, ErrorInfo);
             RequiredAppearance = ParsedAppearance;
-        }
-
-        private static void ParseFieldSkillReqs(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "Item SkillReqs", This.ParseSkillReqs);
         }
 
         private void ParseSkillReqs(JsonObject RawSkillReqs, ParseErrorInfo ErrorInfo)
@@ -481,11 +289,6 @@ namespace PgJsonObjects
 
             foreach (KeyValuePair<string, ItemSkillLink> ItemSkillEntry in SkillRequirementTable)
                 SkillRequirementList.Add(ItemSkillEntry.Value);
-        }
-
-        private static void ParseFieldStockDye(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item StockDye", This.ParseStockDye);
         }
 
         private void ParseStockDye(string RawStockDye, ParseErrorInfo ErrorInfo)
@@ -542,86 +345,11 @@ namespace PgJsonObjects
                 StockDye.Add(ParsedColor);
         }
 
-        private static void ParseFieldValue(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Item Value", This.ParseValue);
-        }
-
-        private void ParseValue(double RawValue, ParseErrorInfo ErrorInfo)
-        {
-            this.RawValue = RawValue;
-        }
-
-        private static void ParseFieldNumUses(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Item NumUses", This.ParseNumUses);
-        }
-
-        private void ParseNumUses(long RawNumUses, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNumUses = (int)RawNumUses;
-        }
-
-        private static void ParseFieldDestroyWhenUsedUp(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Item DestroyWhenUsedUp", This.ParseDestroyWhenUsedUp);
-        }
-
-        private void ParseDestroyWhenUsedUp(bool RawDestroyWhenUsedUp, ParseErrorInfo ErrorInfo)
-        {
-            this.RawDestroyWhenUsedUp = RawDestroyWhenUsedUp;
-        }
-
-        private static void ParseFieldBehaviors(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Item Behaviors", This.ParseBehaviors);
-        }
-
         private void ParseBehaviors(JsonObject RawBehaviors, ParseErrorInfo ErrorInfo)
         {
             JsonObjectParser<ItemBehavior>.InitAsSubitem("Behaviors", RawBehaviors, out ItemBehavior ParsedBehavior, ErrorInfo);
             ParsedBehavior.SetLinkBack(this);
             BehaviorList.Add(ParsedBehavior);
-        }
-
-        private static void ParseFieldDynamicCraftingSummary(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Item DynamicCraftingSummary", This.ParseDynamicCraftingSummary);
-        }
-
-        private void ParseDynamicCraftingSummary(string RawDynamicCraftingSummary, ParseErrorInfo ErrorInfo)
-        {
-            DynamicCraftingSummary = RawDynamicCraftingSummary;
-        }
-
-        private static void ParseFieldIsSkillReqsDefaults(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Item IsSkillReqsDefaults", This.ParseIsSkillReqsDefaults);
-        }
-
-        private void ParseIsSkillReqsDefaults(bool RawIsSkillReqsDefaults, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsSkillReqsDefaults = RawIsSkillReqsDefaults;
-        }
-
-        private static void ParseFieldBestowTitle(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Item BestowTitle", This.ParseBestowTitle);
-        }
-
-        private void ParseBestowTitle(long RawBestowTitle, ParseErrorInfo ErrorInfo)
-        {
-            this.RawBestowTitle = (int)RawBestowTitle;
-        }
-
-        private static void ParseFieldBestowLoreBook(Item This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Item BestowLoreBook", This.ParseBestowLoreBook);
-        }
-
-        private void ParseBestowLoreBook(long RawBestowLoreBook, ParseErrorInfo ErrorInfo)
-        {
-            this.RawBestowLoreBook = (int)RawBestowLoreBook;
         }
 
         private List<string> RawBestowRecipesList { get; } = new List<string>();
