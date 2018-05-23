@@ -89,12 +89,12 @@ namespace PgJsonObjects
             { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
             { "SkillLevelReq", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawSkillLevelReq = value; }} },
             { "ResultEffects", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseResultEffects } },
-            { "SortSkill", new FieldParser() { Type = FieldType.String, ParserString = ParseSortSkill } },
+            { "SortSkill", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { SortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); }} },
             { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
-            { "ActionLabel", new FieldParser() { Type = FieldType.String, ParserString = ParseActionLabel } },
+            { "ActionLabel", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { ActionLabel = StringToEnumConversion<RecipeAction>.Parse(value, TextMaps.RecipeActionStringMap, errorInfo); }} },
             { "UsageDelay", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawUsageDelay = value; }} },
             { "UsageDelayMessage", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UsageDelayMessage = value; }} },
-            { "UsageAnimation", new FieldParser() { Type = FieldType.String, ParserString = ParseUsageAnimation } },
+            { "UsageAnimation", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UsageAnimation = StringToEnumConversion<RecipeUsageAnimation>.Parse(value, errorInfo); }} },
             { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseOtherRequirements } },
             { "Costs", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseCosts } },
             { "NumResultItems", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumResultItems = value; }} },
@@ -106,7 +106,7 @@ namespace PgJsonObjects
             { "RewardSkillXpFirstTime", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardSkillXpFirstTime = value; }} },
             { "SharesResetTimerWith", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawSharesResetTimerWith = value; }} },
             { "ItemMenuLabel", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { ItemMenuLabel = value; }} },
-            { "ItemMenuKeywordReq", new FieldParser() { Type = FieldType.String, ParserString = ParseItemMenuKeywordReq } },
+            { "ItemMenuKeywordReq", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RecipeItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo); }} },
             { "IsItemMenuKeywordReqSufficient", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsItemMenuKeywordReqSufficient = value; }} },
             { "ItemMenuCategory", new FieldParser() { Type = FieldType.String, ParserString = ParseItemMenuCategory } },
             { "ItemMenuCategoryLevel", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawItemMenuCategoryLevel = value; }} },
@@ -156,13 +156,10 @@ namespace PgJsonObjects
             }
         }
 
-        private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
+        private void ParseSkill(string value, ParseErrorInfo ErrorInfo)
         {
-            PowerSkill ParsedSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedSkill, ErrorInfo);
-            Skill = ParsedSkill;
-
-            PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
+            Skill = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
+            PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, RawIconId);
         }
 
         private bool ParseResultEffects(string RawResultEffect, ParseErrorInfo ErrorInfo)
@@ -177,32 +174,10 @@ namespace PgJsonObjects
                 return false;
         }
 
-        private void ParseSortSkill(string RawSortSkill, ParseErrorInfo ErrorInfo)
-        {
-            PowerSkill ParsedSortSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(RawSortSkill, out ParsedSortSkill, ErrorInfo);
-            SortSkill = ParsedSortSkill;
-        }
-
         private void ParseKeywords(string RawKeywords, ParseErrorInfo ErrorInfo)
         {
-            RecipeKeyword ParsedKeyword;
-            if (StringToEnumConversion<RecipeKeyword>.TryParse(RawKeywords, out ParsedKeyword, ErrorInfo))
+            if (StringToEnumConversion<RecipeKeyword>.TryParse(RawKeywords, out RecipeKeyword ParsedKeyword, ErrorInfo))
                 KeywordList.Add(ParsedKeyword);
-        }
-
-        private void ParseActionLabel(string RawActionLabel, ParseErrorInfo ErrorInfo)
-        {
-            RecipeAction ParsedActionLabel;
-            StringToEnumConversion<RecipeAction>.TryParse(RawActionLabel, TextMaps.RecipeActionStringMap, out ParsedActionLabel, ErrorInfo);
-            ActionLabel = ParsedActionLabel;
-        }
-
-        private void ParseUsageAnimation(string RawUsageAnimation, ParseErrorInfo ErrorInfo)
-        {
-            RecipeUsageAnimation ConvertedRecipeUsageAnimation;
-            StringToEnumConversion<RecipeUsageAnimation>.TryParse(RawUsageAnimation, out ConvertedRecipeUsageAnimation, ErrorInfo);
-            UsageAnimation = ConvertedRecipeUsageAnimation;
         }
 
         public void ParseOtherRequirements(JsonObject RawOtherRequirements, ParseErrorInfo ErrorInfo)
@@ -234,18 +209,9 @@ namespace PgJsonObjects
 
         private void ParseRewardSkill(string RawRewardSkill, ParseErrorInfo ErrorInfo)
         {
-            PowerSkill ParsedRewardSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(RawRewardSkill, out ParsedRewardSkill, ErrorInfo);
-            RewardSkill = ParsedRewardSkill;
+            RewardSkill = StringToEnumConversion<PowerSkill>.Parse(RawRewardSkill, ErrorInfo);
 
             PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, this.RawIconId);
-        }
-
-        private void ParseItemMenuKeywordReq(string RawItemMenuKeywordReq, ParseErrorInfo ErrorInfo)
-        {
-            ItemKeyword ParsedItemKeyword;
-            StringToEnumConversion<ItemKeyword>.TryParse(RawItemMenuKeywordReq, out ParsedItemKeyword, ErrorInfo);
-            RecipeItemKeyword = ParsedItemKeyword;
         }
 
         private void ParseItemMenuCategory(string RawItemMenuCategory, ParseErrorInfo ErrorInfo)
@@ -261,8 +227,7 @@ namespace PgJsonObjects
         {
             NewResultEffect = new RecipeResultEffect();
 
-            RecipeEffect ConvertedRecipeEffect;
-            if (StringToEnumConversion<RecipeEffect>.TryParse(RawEffect, TextMaps.RecipeEffectStringMap, out ConvertedRecipeEffect, null))
+            if (StringToEnumConversion<RecipeEffect>.TryParse(RawEffect, TextMaps.RecipeEffectStringMap, out RecipeEffect ConvertedRecipeEffect, null))
             {
                 NewResultEffect.Effect = ConvertedRecipeEffect;
                 return true;

@@ -38,7 +38,7 @@ namespace PgJsonObjects
             { "NumSlots", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumSlots = value; }} },
             { "HasAssociatedNpc", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawHasAssociatedNpc = value; }} },
             { "Levels", new FieldParser() { Type = FieldType.Object, ParserObject = ParseLevels } },
-            { "RequiredItemKeyword", new FieldParser() { Type = FieldType.String, ParserString = ParseRequiredItemKeyword } },
+            { "RequiredItemKeyword", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RequiredItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo); }} },
             { "RequirementDescription", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RequirementDescription = value; }} },
             { "Grouping", new FieldParser() { Type = FieldType.String, ParserString = ParseGrouping } },
             { "Requirements", new FieldParser() { Type = FieldType.Object, ParserObject = ParseRequirements } },
@@ -55,9 +55,7 @@ namespace PgJsonObjects
                 return;
             }
 
-            MapAreaName ParsedMapAreaName;
-            StringToEnumConversion<MapAreaName>.TryParse(RawArea.Substring(4), TextMaps.MapAreaNameStringMap, out ParsedMapAreaName, ErrorInfo);
-            Area = ParsedMapAreaName;
+            Area = StringToEnumConversion<MapAreaName>.Parse(RawArea.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
         }
 
         private void ParseLevels(JsonObject RawLevels, ParseErrorInfo ErrorInfo)
@@ -75,19 +73,11 @@ namespace PgJsonObjects
                     break;
                 }
 
-                Favor ParsedFavor;
-                if (!StringToEnumConversion<Favor>.TryParse(Entry.Key, out ParsedFavor, ErrorInfo))
+                if (!StringToEnumConversion<Favor>.TryParse(Entry.Key, out Favor ParsedFavor, ErrorInfo))
                     continue;
 
                 FavorLevelTable.Add(ParsedFavor, FavorLevel);
             }
-        }
-
-        private void ParseRequiredItemKeyword(string RawRequiredItemKeyword, ParseErrorInfo ErrorInfo)
-        {
-            ItemKeyword ParsedItemKeyword;
-            StringToEnumConversion<ItemKeyword>.TryParse(RawRequiredItemKeyword, out ParsedItemKeyword, ErrorInfo);
-            RequiredItemKeyword = ParsedItemKeyword;
         }
 
         private void ParseGrouping(string RawGrouping, ParseErrorInfo ErrorInfo)
@@ -101,9 +91,7 @@ namespace PgJsonObjects
                 return;
             }
 
-            MapAreaName ParsedGrouping;
-            StringToEnumConversion<MapAreaName>.TryParse(RawGrouping.Substring(4), TextMaps.MapAreaNameStringMap, out ParsedGrouping, ErrorInfo);
-            Grouping = ParsedGrouping;
+            Grouping = StringToEnumConversion<MapAreaName>.Parse(RawGrouping.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
         }
 
         private void ParseRequirements(JsonObject RawRequirement, ParseErrorInfo ErrorInfo)

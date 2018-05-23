@@ -114,7 +114,7 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "T", new FieldParser() { Type = FieldType.String, ParserString = ParseT } },
+            { "T", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { OtherRequirementType = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo); }} },
             { "Quest", new FieldParser() { Type = FieldType.String, ParserString = ParseQuest } },
             { "Keyword", new FieldParser() { Type = FieldType.String, ParserString = ParseKeyword } },
             { "Npc", new FieldParser() { Type = FieldType.String, ParserString = ParseNpc } },
@@ -124,13 +124,6 @@ namespace PgJsonObjects
             { "Rule", new FieldParser() { Type = FieldType.String, ParserString = ParseRule } },
             { "InteractionFlag", new FieldParser() { Type = FieldType.String, ParserString = ParseInteractionFlag } },
         }; } }
-
-        private void ParseT(string RawT, ParseErrorInfo ErrorInfo)
-        {
-            OtherRequirementType ParsedT;
-            StringToEnumConversion<OtherRequirementType>.TryParse(RawT, out ParsedT, ErrorInfo);
-            OtherRequirementType = ParsedT;
-        }
 
         private void ParseQuest(string RawQuest, ParseErrorInfo ErrorInfo)
         {
@@ -143,11 +136,7 @@ namespace PgJsonObjects
         private void ParseKeyword(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
             if (OtherRequirementType == OtherRequirementType.HasEffectKeyword)
-            {
-                EffectKeyword ParsedEffectKeyword;
-                StringToEnumConversion<EffectKeyword>.TryParse(RawKeyword, out ParsedEffectKeyword, ErrorInfo);
-                RequirementKeyword = ParsedEffectKeyword;
-            }
+                RequirementKeyword = StringToEnumConversion<EffectKeyword>.Parse(RawKeyword, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Keyword (" + OtherRequirementType + ")");
         }
@@ -175,11 +164,7 @@ namespace PgJsonObjects
         private void ParseLevel(object value, ParseErrorInfo ErrorInfo)
         {
             if (OtherRequirementType == OtherRequirementType.MinFavorLevel && value is JsonString StringValue)
-            {
-                Favor ParsedFavor;
-                StringToEnumConversion<Favor>.TryParse(StringValue.String, out ParsedFavor, ErrorInfo);
-                RequirementFavorLevel = ParsedFavor;
-            }
+                RequirementFavorLevel = StringToEnumConversion<Favor>.Parse(StringValue.String, ErrorInfo);
 
             else if (OtherRequirementType == OtherRequirementType.MinSkillLevel && value is JsonInteger IntegerValue)
                 RawRequirementSkillLevel = IntegerValue.Number;
@@ -191,11 +176,7 @@ namespace PgJsonObjects
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
         {
             if (OtherRequirementType == OtherRequirementType.MinSkillLevel)
-            {
-                PowerSkill ParsedSkill;
-                StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedSkill, ErrorInfo);
-                RequirementSkill = ParsedSkill;
-            }
+                RequirementSkill = StringToEnumConversion<PowerSkill>.Parse(RawSkill, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Skill (" + OtherRequirementType + ")");
         }

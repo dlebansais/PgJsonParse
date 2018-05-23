@@ -209,8 +209,7 @@ namespace PgJsonObjects
 
         private void ParseCompatibleCombatSkills(string RawCompatibleCombatSkills, ParseErrorInfo ErrorInfo)
         {
-            PowerSkill ParsedCompatibleCombatSkill;
-            if (StringToEnumConversion<PowerSkill>.TryParse(RawCompatibleCombatSkills, out ParsedCompatibleCombatSkill, ErrorInfo))
+            if (StringToEnumConversion<PowerSkill>.TryParse(RawCompatibleCombatSkills, out PowerSkill ParsedCompatibleCombatSkill, ErrorInfo))
                 CompatibleCombatSkillList.Add(ParsedCompatibleCombatSkill);
         }
 
@@ -254,8 +253,7 @@ namespace PgJsonObjects
                     MergedSkill += Split[i];
                 }
 
-                PowerSkill ConvertedPowerSkill;
-                if (!StringToEnumConversion<PowerSkill>.TryParse(MergedSkill, out ConvertedPowerSkill, ErrorInfo))
+                if (!StringToEnumConversion<PowerSkill>.TryParse(MergedSkill, out PowerSkill ConvertedPowerSkill, ErrorInfo))
                     break;
 
                 int OtherLevel;
@@ -331,8 +329,7 @@ namespace PgJsonObjects
 
         private void ParseParents(string RawParents, ParseErrorInfo ErrorInfo)
         {
-            PowerSkill ParsedParent;
-            if (StringToEnumConversion<PowerSkill>.TryParse(RawParents, out ParsedParent, ErrorInfo))
+            if (StringToEnumConversion<PowerSkill>.TryParse(RawParents, out PowerSkill ParsedParent, ErrorInfo))
             {
                 if (ParentSkill == PowerSkill.Internal_None)
                     ParentSkill = ParsedParent;
@@ -343,8 +340,7 @@ namespace PgJsonObjects
 
         private void ParseTSysCategories(string RawTSysCategories, ParseErrorInfo ErrorInfo)
         {
-            SkillCategory ParsedTSysCategory;
-            if (StringToEnumConversion<SkillCategory>.TryParse(RawTSysCategories, out ParsedTSysCategory, ErrorInfo))
+            if (StringToEnumConversion<SkillCategory>.TryParse(RawTSysCategories, out SkillCategory ParsedTSysCategory, ErrorInfo))
                 TSysCategoryList.Add(ParsedTSysCategory);
         }
         #endregion

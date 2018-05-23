@@ -14,6 +14,41 @@ namespace PgJsonObjects
 
     public static class StringToEnumConversion<T>
     {
+        #region Parse
+        public static T Parse(string StringValue, ParseErrorInfo ErrorInfo)
+        {
+            if (TryParse(StringValue, out T EnumValue, ErrorInfo))
+                return EnumValue;
+            else
+                return default(T);
+        }
+
+        public static T Parse(string StringValue, Dictionary<T, string> StringMap, ParseErrorInfo ErrorInfo)
+        {
+            if (TryParse(StringValue, StringMap, out T EnumValue, ErrorInfo))
+                return EnumValue;
+            else
+                return default(T);
+        }
+
+        public static T Parse(string StringValue, Dictionary<T, string> StringMap, T DefaultValue, ParseErrorInfo ErrorInfo)
+        {
+            if (TryParse(StringValue, StringMap, DefaultValue, out T EnumValue, ErrorInfo))
+                return EnumValue;
+            else
+                return DefaultValue;
+        }
+
+        public static T Parse(string StringValue, Dictionary<T, string> StringMap, T DefaultValue, T EmptyValue, ParseErrorInfo ErrorInfo)
+        {
+            if (TryParse(StringValue, StringMap, DefaultValue, EmptyValue, out T EnumValue, ErrorInfo))
+                return EnumValue;
+            else
+                return DefaultValue;
+        }
+        #endregion
+
+        #region Try Parse
         public static bool TryParse(string StringValue, out T EnumValue, ParseErrorInfo ErrorInfo)
         {
             return TryParse(StringValue, null, out EnumValue, ErrorInfo);
@@ -77,6 +112,7 @@ namespace PgJsonObjects
 
             return false;
         }
+        #endregion
 
         public static void ParseList(JsonArray StringArray, List<T> EnumList, ParseErrorInfo ErrorInfo)
         {

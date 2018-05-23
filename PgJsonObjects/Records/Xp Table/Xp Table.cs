@@ -25,13 +25,10 @@ namespace PgJsonObjects
             { "XpAmounts", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParserSimpleIntegerArray = ParseXpAmounts } },
         }; } }
 
-        private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
+        private void ParseInternalName(string value, ParseErrorInfo ErrorInfo)
         {
-            XpTableEnum ParsedEnumName;
-            InternalName = RawInternalName;
-
-            StringToEnumConversion<XpTableEnum>.TryParse(RawInternalName, out ParsedEnumName, ErrorInfo);
-            EnumName = ParsedEnumName;
+            InternalName = value;
+            EnumName = StringToEnumConversion<XpTableEnum>.Parse(value, ErrorInfo);
         }
 
         private void ParseXpAmounts(int value, ParseErrorInfo ErrorInfo)

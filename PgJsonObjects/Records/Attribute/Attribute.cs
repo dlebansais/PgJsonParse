@@ -49,9 +49,9 @@ namespace PgJsonObjects
             { "Label", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Label = value; }} },
             { "IconIds", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParserSimpleIntegerArray = ParseIconId } },
             { "Tooltip", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Tooltip = value; }} },
-            { "DisplayType", new FieldParser() { Type = FieldType.String, ParserString = ParseDisplayType } },
+            { "DisplayType", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DisplayType = StringToEnumConversion<DisplayType>.Parse(value, errorInfo); }} },
             { "IsHidden", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsHidden = value; }} },
-            { "DisplayRule", new FieldParser() { Type = FieldType.String, ParserString = ParseDisplayRule } },
+            { "DisplayRule", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DisplayRule = StringToEnumConversion<DisplayRule>.Parse(value, errorInfo); }} },
             { "DefaultValue", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawDefaultValue = value; }} },
         }; } }
 
@@ -59,20 +59,6 @@ namespace PgJsonObjects
         {
             IconIdList.Add((int)RawIconId);
             ErrorInfo.AddIconId((int)RawIconId);
-        }
-
-        private void ParseDisplayType(string RawDisplayType, ParseErrorInfo ErrorInfo)
-        {
-            DisplayType ParsedDisplayType;
-            StringToEnumConversion<DisplayType>.TryParse(RawDisplayType, out ParsedDisplayType, ErrorInfo);
-            DisplayType = ParsedDisplayType;
-        }
-
-        private void ParseDisplayRule(string RawDisplayRule, ParseErrorInfo ErrorInfo)
-        {
-            DisplayRule ParsedDisplayRule;
-            StringToEnumConversion<DisplayRule>.TryParse(RawDisplayRule, out ParsedDisplayRule, ErrorInfo);
-            DisplayRule = ParsedDisplayRule;
         }
         #endregion
 

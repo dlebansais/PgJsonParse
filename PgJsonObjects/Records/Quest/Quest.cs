@@ -121,16 +121,16 @@ namespace PgJsonObjects
             { "Reward_Gold", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardGold = value; }} },
             { "Rewards_NamedLootProfile", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RewardsNamedLootProfile = value; }} },
             { "PreGiveRecipes", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawPreGiveRecipeList.Add(value); }} },
-            { "Keywords", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseKeywords } },
+            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
             { "Rewards_Effects", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseRewards_Effects } },
             { "IsAutoPreface", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsAutoPreface = value; }} },
             { "IsAutoWrapUp", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsAutoWrapUp = value; }} },
-            { "GroupingName", new FieldParser() { Type = FieldType.String, ParserString = ParseGroupingName } },
+            { "GroupingName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { GroupingName = StringToEnumConversion<QuestGroupingName>.Parse(value, errorInfo); }} },
             { "IsGuildQuest", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsGuildQuest = value; }} },
             { "NumExpectedParticipants", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumExpectedParticipants = value; }} },
             { "Level", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawLevel = value; }} },
-            { "WorkOrderSkill", new FieldParser() { Type = FieldType.String, ParserString = ParseWorkOrderSkill } },
-            { "DisplayedLocation", new FieldParser() { Type = FieldType.String, ParserString = ParseDisplayedLocation } },
+            { "WorkOrderSkill", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { WorkOrderSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); }} },
+            { "DisplayedLocation", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DisplayedLocation = StringToEnumConversion<MapAreaName>.Parse(value, TextMaps.MapAreaNameStringMap, errorInfo); }} },
             { "FollowUpQuests", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawFollowUpQuestList.Add(value); }} },
         }; } }
 
@@ -296,8 +296,7 @@ namespace PgJsonObjects
                                 JsonInteger XpValue;
                                 if (((SkillValue = RawReward["Skill"] as JsonString) != null) && ((XpValue = RawReward["Xp"] as JsonInteger) != null))
                                 {
-                                    PowerSkill ParsedSkill;
-                                    if (StringToEnumConversion<PowerSkill>.TryParse(SkillValue.String, out ParsedSkill, ErrorInfo))
+                                    if (StringToEnumConversion<PowerSkill>.TryParse(SkillValue.String, out PowerSkill ParsedSkill, ErrorInfo))
                                     {
                                         RewardSkill = ParsedSkill;
                                         RawRewardSkillXp = XpValue.Number;
@@ -408,16 +407,10 @@ namespace PgJsonObjects
                 PreGiveItemList.Add(ParsedPreGiveItem);
         }
 
-        private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
+        private void ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
-            QuestKeyword ParsedKeyword;
-            if (StringToEnumConversion<QuestKeyword>.TryParse(RawKeyword, out ParsedKeyword, ErrorInfo))
-            {
+            if (StringToEnumConversion<QuestKeyword>.TryParse(RawKeyword, out QuestKeyword ParsedKeyword, ErrorInfo))
                 KeywordList.Add(ParsedKeyword);
-                return true;
-            }
-            else
-                return false;
         }
 
         private bool ParseRewards_Effects(string RawRewardEffect, ParseErrorInfo ErrorInfo)
@@ -472,27 +465,6 @@ namespace PgJsonObjects
             }
         }
 
-        private void ParseGroupingName(string RawGroupingName, ParseErrorInfo ErrorInfo)
-        {
-            QuestGroupingName ParsedGroupingName;
-            StringToEnumConversion<QuestGroupingName>.TryParse(RawGroupingName, out ParsedGroupingName, ErrorInfo);
-            GroupingName = ParsedGroupingName;
-        }
-
-        private void ParseWorkOrderSkill(string RawWorkOrderSkill, ParseErrorInfo ErrorInfo)
-        {
-            PowerSkill ParsedSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(RawWorkOrderSkill, out ParsedSkill, ErrorInfo);
-            WorkOrderSkill = ParsedSkill;
-        }
-
-        private void ParseDisplayedLocation(string RawDisplayedLocation, ParseErrorInfo ErrorInfo)
-        {
-            MapAreaName ParsedMapAreaName;
-            StringToEnumConversion<MapAreaName>.TryParse(RawDisplayedLocation, TextMaps.MapAreaNameStringMap, out ParsedMapAreaName, ErrorInfo);
-            DisplayedLocation = ParsedMapAreaName;
-        }
-
         public static bool TryParseNPC(string s, out MapAreaName ParsedArea, out string NpcId, out string NpcName, ParseErrorInfo ErrorInfo)
         {
             ParsedArea = MapAreaName.Internal_None;
@@ -507,7 +479,7 @@ namespace PgJsonObjects
             {
                 string RawMapName = AreaNpc[0];
                 if (RawMapName.StartsWith("Area"))
-                    StringToEnumConversion<MapAreaName>.TryParse(RawMapName.Substring(4), out ParsedArea, ErrorInfo);
+                    ParsedArea = StringToEnumConversion<MapAreaName>.Parse(RawMapName.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
                 else
                     return false;
 
@@ -518,17 +490,13 @@ namespace PgJsonObjects
                     NpcName = Npc.Substring(4);
                     return true;
                 }
-                else
+                else if (StringToEnumConversion<SpecialNpc>.TryParse(Npc, out SpecialNpc ParsedSpecialNpc, ErrorInfo))
                 {
-                    SpecialNpc ParsedSpecialNpc;
-                    if (StringToEnumConversion<SpecialNpc>.TryParse(Npc, out ParsedSpecialNpc, ErrorInfo))
-                    {
-                        NpcName = TextMaps.SpecialNpcTextMap[ParsedSpecialNpc];
-                        return true;
-                    }
-                    else
-                        return false;
+                    NpcName = TextMaps.SpecialNpcTextMap[ParsedSpecialNpc];
+                    return true;
                 }
+                else
+                    return false;
             }
             else
                 return false;

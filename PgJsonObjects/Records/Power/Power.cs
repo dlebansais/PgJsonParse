@@ -155,7 +155,7 @@ namespace PgJsonObjects
             { "Suffix", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Suffix = value; }} },
             { "Tiers", new FieldParser() { Type = FieldType.Object, ParserObject = ParseTiers } },
             { "Slots", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseSlots } },
-            { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
+            { "Skill", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Skill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); }} },
             { "IsUnavailable", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsUnavailable = value; }} },
         }; } }
 
@@ -200,16 +200,8 @@ namespace PgJsonObjects
 
         private void ParseSlots(string RawSlots, ParseErrorInfo ErrorInfo)
         {
-            ItemSlot ParsedItemSlot;
-            if (StringToEnumConversion<ItemSlot>.TryParse(RawSlots, out ParsedItemSlot, ErrorInfo))
+            if (StringToEnumConversion<ItemSlot>.TryParse(RawSlots, out ItemSlot ParsedItemSlot, ErrorInfo))
                 SlotList.Add(ParsedItemSlot);
-        }
-
-        private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
-        {
-            PowerSkill ConvertedPowerSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ConvertedPowerSkill, ErrorInfo);
-            Skill = ConvertedPowerSkill;
         }
         #endregion
 

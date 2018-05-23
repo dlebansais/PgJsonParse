@@ -86,8 +86,7 @@ namespace PgJsonObjects
 
         private void ParseItemKeys(string RawItemKeys, ParseErrorInfo ErrorInfo)
         {
-            RecipeItemKey ParsedItemKey;
-            if (StringToEnumConversion<RecipeItemKey>.TryParse(RawItemKeys, RecipeItemKeyStringMap, out ParsedItemKey, ErrorInfo))
+            if (StringToEnumConversion<RecipeItemKey>.TryParse(RawItemKeys, RecipeItemKeyStringMap, out RecipeItemKey ParsedItemKey, ErrorInfo))
                 ItemKeyList.Add(ParsedItemKey);
         }
         #endregion

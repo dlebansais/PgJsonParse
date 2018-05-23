@@ -146,7 +146,7 @@ namespace PgJsonObjects
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "AbilityGroup", new FieldParser() { Type = FieldType.String, ParserString = ParseAbilityGroup } },
-            { "Animation", new FieldParser() { Type = FieldType.String, ParserString = ParseAnimation } },
+            { "Animation", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Animation = StringToEnumConversion<AbilityAnimation>.Parse(value, errorInfo); }} },
             { "AttributesThatDeltaPowerCost", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaPowerCostList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty = true } },
             { "AttributesThatDeltaResetTime", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaResetTimeList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty = true } },
             { "AttributesThatModPowerCost", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModPowerCostList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty = true } },
@@ -161,7 +161,7 @@ namespace PgJsonObjects
             { "ConsumedItemChanceToStickInCorpse", new FieldParser() { Type = FieldType.Float, ParserFloat = ParseConsumedItemChanceToStickInCorpse } },
             { "ConsumedItemCount", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseConsumedItemCount } },
             { "ConsumedItemKeyword", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawConsumedItemKeyword = value; }} },
-            { "DamageType", new FieldParser() { Type = FieldType.String, ParserString = ParseDamageType } },
+            { "DamageType", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DamageType = StringToEnumConversion<DamageType>.Parse(value, null, DamageType.Internal_None, DamageType.Internal_Empty, errorInfo); }} },
             { "DelayLoopIsAbortedIfAttacked", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawDelayLoopIsAbortedIfAttacked = value; }} },
             { "DelayLoopMessage", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DelayLoopMessage = value; }} },
             { "DelayLoopTime", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseDelayLoopTime } },
@@ -177,10 +177,10 @@ namespace PgJsonObjects
             { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
             { "Level", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawLevel = value; }} },
             { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
-            { "PetTypeTagReq", new FieldParser() { Type = FieldType.String, ParserString = ParsePetTypeTagReq } },
+            { "PetTypeTagReq", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { PetTypeTagReq = StringToEnumConversion<AbilityPetType>.Parse(value, errorInfo); }} },
             { "PetTypeTagReqMax", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParsePetTypeTagReqMax } },
             { "Prerequisite", new FieldParser() { Type = FieldType.String, ParserString = ParsePrerequisite } },
-            { "Projectile", new FieldParser() { Type = FieldType.String, ParserString = ParseProjectile } },
+            { "Projectile", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Projectile = StringToEnumConversion<AbilityProjectile>.Parse(value, errorInfo); }} },
             { "PvE", new FieldParser() { Type = FieldType.Object, ParserObject = ParsePvE } },
             { "PvP", new FieldParser() { Type = FieldType.Object, ParserObject = ParsePvP } },
             { "ResetTime", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawResetTime = value; }} },
@@ -190,9 +190,9 @@ namespace PgJsonObjects
             { "SpecialCasterRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseSpecialCasterRequirements } },
             { "SpecialInfo", new FieldParser() { Type = FieldType.String, ParserString = ParseSpecialInfo } },
             { "SpecialTargetingTypeReq", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawSpecialTargetingTypeReq = value; }} },
-            { "Target", new FieldParser() { Type = FieldType.String, ParserString = ParseTarget } },
-            { "TargetEffectKeywordReq", new FieldParser() { Type = FieldType.String, ParserString = ParseTargetEffectKeywordReq } },
-            { "TargetParticle", new FieldParser() { Type = FieldType.String, ParserString = ParseTargetParticle } },
+            { "Target", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Target = StringToEnumConversion<AbilityTarget>.Parse(value, errorInfo); }} },
+            { "TargetEffectKeywordReq", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { TargetEffectKeywordReq = StringToEnumConversion<TargetEffectKeyword>.Parse(value, errorInfo); }} },
+            { "TargetParticle", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { TargetParticle = StringToEnumConversion<AbilityTargetParticle>.Parse(value, errorInfo); }} },
             { "UpgradeOf", new FieldParser() { Type = FieldType.String, ParserString = ParseUpgradeOf } },
             { "WorksInCombat", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawWorksInCombat = value; }} },
             { "WorksUnderwater", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawWorksUnderwater = value; }} },
@@ -204,13 +204,6 @@ namespace PgJsonObjects
             this.RawAbilityGroup = RawAbilityGroup;
             AbilityGroup = null;
             IsRawAbilityGroupParsed = false;
-        }
-
-        private void ParseAnimation(string RawAnimation, ParseErrorInfo ErrorInfo)
-        {
-            AbilityAnimation ParsedAbilityAnimation;
-            StringToEnumConversion<AbilityAnimation>.TryParse(RawAnimation, out ParsedAbilityAnimation, ErrorInfo);
-            Animation = ParsedAbilityAnimation;
         }
 
         private void ParseCausesOfDeath(string RawCausesOfDeath, ParseErrorInfo ErrorInfo)
@@ -261,13 +254,6 @@ namespace PgJsonObjects
 
             if (RawConsumedItemCount < 1)
                 ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemCount");
-        }
-
-        private void ParseDamageType(string RawDamageType, ParseErrorInfo ErrorInfo)
-        {
-            DamageType ParsedDamageType;
-            StringToEnumConversion<DamageType>.TryParse(RawDamageType, null, DamageType.Internal_None, DamageType.Internal_Empty, out ParsedDamageType, ErrorInfo);
-            DamageType = ParsedDamageType;
         }
 
         private void ParseDelayLoopTime(int value, ParseErrorInfo ErrorInfo)
@@ -331,13 +317,6 @@ namespace PgJsonObjects
             }
         }
 
-        private void ParsePetTypeTagReq(string RawPetTypeTagReq, ParseErrorInfo ErrorInfo)
-        {
-            AbilityPetType ParsedAbilityPetType;
-            StringToEnumConversion<AbilityPetType>.TryParse(RawPetTypeTagReq, out ParsedAbilityPetType, ErrorInfo);
-            PetTypeTagReq = ParsedAbilityPetType;
-        }
-
         private void ParsePetTypeTagReqMax(int value, ParseErrorInfo ErrorInfo)
         {
             RawPetTypeTagReqMax = value;
@@ -349,13 +328,6 @@ namespace PgJsonObjects
             this.RawPrerequisite = RawPrerequisite;
             Prerequisite = null;
             IsRawPrerequisiteParsed = false;
-        }
-
-        private void ParseProjectile(string RawProjectile, ParseErrorInfo ErrorInfo)
-        {
-            AbilityProjectile ParsedAbilityProjectile;
-            StringToEnumConversion<AbilityProjectile>.TryParse(RawProjectile, out ParsedAbilityProjectile, ErrorInfo);
-            Projectile = ParsedAbilityProjectile;
         }
 
         private void ParsePvE(JsonObject RawPvE, ParseErrorInfo ErrorInfo)
@@ -396,27 +368,6 @@ namespace PgJsonObjects
                 SpecialInfo = RawSpecialInfo;
 
             ParseCompleteSpecialInfo(RawSpecialInfo, ErrorInfo);
-        }
-
-        private void ParseTarget(string RawTarget, ParseErrorInfo ErrorInfo)
-        {
-            AbilityTarget ParsedAbilityTarget;
-            StringToEnumConversion<AbilityTarget>.TryParse(RawTarget, out ParsedAbilityTarget, ErrorInfo);
-            Target = ParsedAbilityTarget;
-        }
-
-        private void ParseTargetEffectKeywordReq(string RawTargetEffectKeywordReq, ParseErrorInfo ErrorInfo)
-        {
-            TargetEffectKeyword ParsedTargetEffectKeyword;
-            StringToEnumConversion<TargetEffectKeyword>.TryParse(RawTargetEffectKeywordReq, out ParsedTargetEffectKeyword, ErrorInfo);
-            TargetEffectKeywordReq = ParsedTargetEffectKeyword;
-        }
-
-        private void ParseTargetParticle(string RawTargetParticle, ParseErrorInfo ErrorInfo)
-        {
-            AbilityTargetParticle ParsedAbilityTargetParticle;
-            StringToEnumConversion<AbilityTargetParticle>.TryParse(RawTargetParticle, out ParsedAbilityTargetParticle, ErrorInfo);
-            TargetParticle = ParsedAbilityTargetParticle;
         }
 
         private void ParseUpgradeOf(string RawUpgradeOf, ParseErrorInfo ErrorInfo)

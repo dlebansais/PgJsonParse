@@ -130,7 +130,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Effects", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseEffects } },
             { "GiveItems", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawItemNameList.Add(value); }} },
-            { "RequiredHotspot", new FieldParser() { Type = FieldType.String, ParserString = ParseRequiredHotspot } },
+            { "RequiredHotspot", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo); }} },
             { "NumItemsToGive", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumItemsToGive = value; }} },
             { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseOtherRequirements } },
         }; } }
@@ -145,13 +145,6 @@ namespace PgJsonObjects
             }
             else
                 return false;
-        }
-
-        private void ParseRequiredHotspot(string RawRequiredHotspot, ParseErrorInfo ErrorInfo)
-        {
-            ItemRequiredHotspot ParsedRequiredHotspot;
-            StringToEnumConversion<ItemRequiredHotspot>.TryParse(RawRequiredHotspot, out ParsedRequiredHotspot, ErrorInfo);
-            RequiredHotspot = ParsedRequiredHotspot;
         }
 
         public void ParseOtherRequirements(JsonObject RawOtherRequirements, ParseErrorInfo ErrorInfo)

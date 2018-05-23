@@ -34,11 +34,7 @@ namespace PgJsonObjects
         private void ParseAreaName(string RawAreaName, ParseErrorInfo ErrorInfo)
         {
             if (RawAreaName.StartsWith("Area"))
-            {
-                MapAreaName ParsedMapAreaName;
-                StringToEnumConversion<MapAreaName>.TryParse(RawAreaName.Substring(4), TextMaps.MapAreaNameStringMap, out ParsedMapAreaName, ErrorInfo);
-                AreaName = ParsedMapAreaName;
-            }
+                AreaName = StringToEnumConversion<MapAreaName>.Parse(RawAreaName.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("GameNpc AreaName");
         }

@@ -85,7 +85,7 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "T", new FieldParser() { Type = FieldType.String, ParserString = ParseT } },
+            { "T", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { OtherRequirementType = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo); }} },
             { "Keyword", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawKeyword = value; }} },
             { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawName = value; }} },
             { "Item", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawItem = value; }} },
@@ -103,13 +103,6 @@ namespace PgJsonObjects
             { "Max", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMax = value; }} },
             { "InteractionFlag", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawInteractionFlag = value; }} },
         }; } }
-
-        private void ParseT(string value, ParseErrorInfo ErrorInfo)
-        {
-            OtherRequirementType ParsedT;
-            StringToEnumConversion<OtherRequirementType>.TryParse(value, out ParsedT, ErrorInfo);
-            OtherRequirementType = ParsedT;
-        }
 
         private void ParseAllowedRace(string RawAllowedRace, ParseErrorInfo ErrorInfo)
         {

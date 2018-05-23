@@ -94,7 +94,7 @@ namespace PgJsonObjects
             { "EffectDescs", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseEffectDescs } },
             { "DyeColor", new FieldParser() { Type = FieldType.String, ParserString = ParseDyeColor } },
             { "EquipAppearance", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { EquipAppearance = value; }} },
-            { "EquipSlot", new FieldParser() { Type = FieldType.String, ParserString = ParseEquipSlot } },
+            { "EquipSlot", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { EquipSlot = StringToEnumConversion<ItemSlot>.Parse(value, errorInfo); }} },
             { "IconId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseIconId } },
             { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = ParseInternalName } },
             { "IsTemporary", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsTemporary = value; }} },
@@ -105,7 +105,7 @@ namespace PgJsonObjects
             { "MaxOnVendor", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxOnVendor = value; }} },
             { "MaxStackSize", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxStackSize = value; }} },
             { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
-            { "RequiredAppearance", new FieldParser() { Type = FieldType.String, ParserString = ParseRequiredAppearance } },
+            { "RequiredAppearance", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RequiredAppearance = StringToEnumConversion<Appearance>.Parse(value, errorInfo); }} },
             { "SkillReqs", new FieldParser() { Type = FieldType.Object, ParserObject = ParseSkillReqs } },
             { "StockDye", new FieldParser() { Type = FieldType.String, ParserString = ParseStockDye } },
             { "Value", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawValue = value; }} },
@@ -165,13 +165,6 @@ namespace PgJsonObjects
                 DyeColor = NewColor;
             else
                 ErrorInfo.AddInvalidString("Item DyeColor", RawDyeColor);
-        }
-
-        private void ParseEquipSlot(string RawEquipSlot, ParseErrorInfo ErrorInfo)
-        {
-            ItemSlot ParsedSlot;
-            StringToEnumConversion<ItemSlot>.TryParse(RawEquipSlot, out ParsedSlot, ErrorInfo);
-            EquipSlot = ParsedSlot;
         }
 
         private void ParseIconId(int value, ParseErrorInfo ErrorInfo)
@@ -254,13 +247,6 @@ namespace PgJsonObjects
             this.RawMacGuffinQuestName = RawMacGuffinQuestName;
             MacGuffinQuestName = null;
             IsRawMacGuffinQuestNameParsed = false;
-        }
-
-        private void ParseRequiredAppearance(string RawRequiredAppearance, ParseErrorInfo ErrorInfo)
-        {
-            Appearance ParsedAppearance;
-            StringToEnumConversion<Appearance>.TryParse(RawRequiredAppearance, out ParsedAppearance, ErrorInfo);
-            RequiredAppearance = ParsedAppearance;
         }
 
         private void ParseSkillReqs(JsonObject RawSkillReqs, ParseErrorInfo ErrorInfo)

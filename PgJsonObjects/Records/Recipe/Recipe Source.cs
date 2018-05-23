@@ -130,7 +130,7 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Type", new FieldParser() { Type = FieldType.String, ParserString = ParseType } },
+            { "Type", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Type = StringToEnumConversion<SourceTypes>.Parse(value, errorInfo); }} },
             { "SkillTypeId", new FieldParser() { Type = FieldType.String, ParserString = ParseSkillTypeId } },
             { "ItemTypeId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseItemTypeId } },
             { "Npc", new FieldParser() { Type = FieldType.String, ParserString = ParseNpc } },
@@ -139,21 +139,10 @@ namespace PgJsonObjects
             { "QuestId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseQuestId } },
         }; } }
 
-        private void ParseType(string RawType, ParseErrorInfo ErrorInfo)
-        {
-            SourceTypes ParsedType;
-            StringToEnumConversion<SourceTypes>.TryParse(RawType, out ParsedType, ErrorInfo);
-            Type = ParsedType;
-        }
-
         private void ParseSkillTypeId(string RawSkillTypeId, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.AutomaticFromSkill)
-            {
-                PowerSkill ParsedSkillTypeId;
-                StringToEnumConversion<PowerSkill>.TryParse(RawSkillTypeId, out ParsedSkillTypeId, ErrorInfo);
-                SkillTypeId = ParsedSkillTypeId;
-            }
+                SkillTypeId = StringToEnumConversion<PowerSkill>.Parse(RawSkillTypeId, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource SkillTypeId (type)");
         }

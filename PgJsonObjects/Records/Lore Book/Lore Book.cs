@@ -29,38 +29,18 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Title", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Title = value; }} },
             { "LocationHint", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { LocationHint = value; }} },
-            { "Category", new FieldParser() { Type = FieldType.String, ParserString = ParseCategory } },
-            { "Keywords", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseKeywords } },
+            { "Category", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Category = StringToEnumConversion<LoreBookCategory>.Parse(value, errorInfo); }} },
+            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
             { "IsClientLocal", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsClientLocal = value; }} },
-            { "Visibility", new FieldParser() { Type = FieldType.String, ParserString = ParseVisibility } },
+            { "Visibility", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Visibility = StringToEnumConversion<LoreBookVisibility>.Parse(value, errorInfo); }} },
             { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
             { "Text", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Text = value; }} },
         }; } }
 
-        private void ParseCategory(string RawCategory, ParseErrorInfo ErrorInfo)
+        private void ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
-            LoreBookCategory ParsedLoreBookCategory;
-            StringToEnumConversion<LoreBookCategory>.TryParse(RawCategory, out ParsedLoreBookCategory, ErrorInfo);
-            Category = ParsedLoreBookCategory;
-        }
-
-        private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
-        {
-            LoreBookKeyword ParsedLoreBookKeyword;
-            if (StringToEnumConversion<LoreBookKeyword>.TryParse(RawKeyword, out ParsedLoreBookKeyword, ErrorInfo))
-            {
+            if (StringToEnumConversion<LoreBookKeyword>.TryParse(RawKeyword, out LoreBookKeyword ParsedLoreBookKeyword, ErrorInfo))
                 KeywordList.Add(ParsedLoreBookKeyword);
-                return true;
-            }
-            else
-                return false;
-        }
-
-        private void ParseVisibility(string RawVisibility, ParseErrorInfo ErrorInfo)
-        {
-            LoreBookVisibility ParsedLoreBookVisibility;
-            StringToEnumConversion<LoreBookVisibility>.TryParse(RawVisibility, out ParsedLoreBookVisibility, ErrorInfo);
-            Visibility = ParsedLoreBookVisibility;
         }
         #endregion
 
