@@ -150,40 +150,14 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Prefix", ParseFieldPrefix },
-            { "Suffix", ParseFieldSuffix },
-            { "Tiers", ParseFieldTiers },
-            { "Slots", ParseFieldSlots },
-            { "Skill", ParseFieldSkill },
-            { "IsUnavailable", ParseFieldIsUnavailable },
-        };
-
-        private static void ParseFieldPrefix(Power This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Power Prefix", This.ParsePrefix);
-        }
-
-        private void ParsePrefix(string RawPrefix, ParseErrorInfo ErrorInfo)
-        {
-            Prefix = RawPrefix;
-        }
-
-        private static void ParseFieldSuffix(Power This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Power Suffix", This.ParseSuffix);
-        }
-
-        private void ParseSuffix(string RawSuffix, ParseErrorInfo ErrorInfo)
-        {
-            Suffix = RawSuffix;
-        }
-
-        private static void ParseFieldTiers(Power This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "Power Tiers", This.ParseTiers);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Prefix", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Prefix = value; }} },
+            { "Suffix", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Suffix = value; }} },
+            { "Tiers", new FieldParser() { Type = FieldType.Object, ParserObject = ParseTiers } },
+            { "Slots", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseSlots } },
+            { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
+            { "IsUnavailable", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsUnavailable = value; }} },
+        }; } }
 
         private void ParseTiers(JsonObject RawTiers, ParseErrorInfo ErrorInfo)
         {
@@ -224,23 +198,11 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Power Tiers");
         }
 
-        private static void ParseFieldSlots(Power This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Power Slots", This.ParseSlots);
-        }
-
-        private bool ParseSlots(string RawSlots, ParseErrorInfo ErrorInfo)
+        private void ParseSlots(string RawSlots, ParseErrorInfo ErrorInfo)
         {
             ItemSlot ParsedItemSlot;
             if (StringToEnumConversion<ItemSlot>.TryParse(RawSlots, out ParsedItemSlot, ErrorInfo))
                 SlotList.Add(ParsedItemSlot);
-
-            return true;
-        }
-
-        private static void ParseFieldSkill(Power This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Power Skill", This.ParseSkill);
         }
 
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
@@ -248,16 +210,6 @@ namespace PgJsonObjects
             PowerSkill ConvertedPowerSkill;
             StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ConvertedPowerSkill, ErrorInfo);
             Skill = ConvertedPowerSkill;
-        }
-
-        private static void ParseFieldIsUnavailable(Power This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Power IsUnavailable", This.ParseIsUnavailable);
-        }
-
-        private void ParseIsUnavailable(bool RawIsUnavailable, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsUnavailable = RawIsUnavailable;
         }
         #endregion
 

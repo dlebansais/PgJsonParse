@@ -144,75 +144,74 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "VULNERABILITY", null },
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            /*{ "VULNERABILITY", null },
             { "MITIGATION", null },
             { "MOD_INDIRECT", null },
-            { "MOD_DIRECT", null },
-            { "NONCOMBAT_REGEN_HEALTH_MOD", ParseFieldNonCombatRegenHealthMod },
-            { "COMBAT_REGEN_HEALTH_MOD", ParseFieldCombatRegenHealthMod },
-            { "COMBAT_REGEN_HEALTH_DELTA", ParseFieldCombatRegenHealthDelta },
-            { "NONCOMBAT_REGEN_ARMOR_MOD", ParseFieldNonCombatRegenArmorMod },
-            { "NONCOMBAT_REGEN_ARMOR_DELTA", ParseFieldNonCombatRegenArmordelta },
-            { "COMBAT_REGEN_ARMOR_MOD", ParseFieldCombatRegenArmorMod },
-            { "NONCOMBAT_REGEN_POWER_MOD", ParseFieldNonCombatRegenPowerMod },
-            { "COMBAT_REGEN_POWER_MOD", ParseFieldCombatRegenPowerMod },
-            { "NONCOMBAT_REGEN_RAGE_MOD", ParseFieldNonCombatRegenRageMod },
-            { "COMBAT_REGEN_RAGE_MOD", ParseFieldCombatRegenRageMod },
-            { "MENTAL_DEFENSE_RATING", ParseFieldMentalDefenseRating },
-            { "SPRINT_BOOST", ParseFieldSprintBoost },
-            { "TAUNT_MOD", ParseFieldTauntMod },
-            { "IGNORE_CHANCE_FEAR", ParseFieldIgnoreChanceFear },
-            { "IGNORE_CHANCE_MEZ", ParseFieldIgnoreChanceMezz },
-            { "IGNORE_CHANCE_KNOCKBACK", ParseFieldIgnoreChanceKnockback },
-            { "EVASION_CHANCE", ParseFieldEvasionChance },
-            { "LOOT_BOOST_CHANCE_UNCOMMON", ParseFieldLootBoostChanceUncommon },
-            { "LOOT_BOOST_CHANCE_RARE", ParseFieldLootBoostChanceRare },
-            { "LOOT_BOOST_CHANCE_EXCEPTIONAL", ParseFieldLootBoostChanceExceptional },
-            { "LOOT_BOOST_CHANCE_EPIC", ParseFieldLootBoostChanceEpic },
-            { "LOOT_BOOST_CHANCE_LEGENDARY", ParseFieldLootBoostChanceLegendary },
-            { "MAX_HEALTH", ParseFieldMaxHealth },
-            { "MAX_ARMOR", ParseFieldMaxArmor },
-            { "MAX_RAGE", ParseFieldMaxRage },
-            { "MAX_POWER", ParseFieldMaxPower },
-            { "MAX_BREATH", ParseFieldMaxBreath },
-            { "BOOST_UNIVERSAL_DIRECT", ParseFieldBoostUniversalDirect },
-            { "BOOST_ABILITY_RAGEATTACK", ParseFieldBoostAbilityRageAttack },
-            { "MOD_ABILITY_RAGEATTACK", ParseFieldModAbilityRageAttack },
-            { "MONSTER_COMBAT_XP_VALUE", ParseFieldMonsterCombatXpValue },
-            { "COMBAT_REGEN_ARMOR_DELTA", ParseFieldCombatRegenArmorDelta },
-            { "COMBAT_REGEN_POWER_DELTA", ParseFieldCombatRegenDelta },
-            { "MAX_INVENTORY_SIZE", ParseFieldMaxInventorySize },
-            { "MAX_METABOLISM", ParseFieldMaxMetabolism },
-            { "NPC_MOD_FAVORFROMGIFTS", ParseFieldNpcModFavorFromGifts },
-            { "NPC_MOD_FAVORFROMHANGOUTS", ParseFieldNpcModFavorFromHangouts },
-            { "NPC_MOD_MAXSALESVALUE", ParseFieldNpcModMaxSalesValue },
-            { "NPC_MOD_TRAININGCOST", ParseFieldNpcModTrainingCost },
-            { "NUM_INVENTORY_FOLDERS", ParseFieldNumInventoryFolders },
-            { "HIGH_CLEANLINESS_XP_EARNED_MOD", ParseFieldHighCleanlinessXpEarnedMod },
-            { "LOW_CLEANLINESS_XP_EARNED_MOD", ParseFieldLowCleanlinessXpEarnedMod },
-            { "MAX_ARMOR_MITIGATION_RATIO", ParseFieldMaxArmorMitigationRatio },
-            { "SHOW_CLEANLINESS_INDICATORS", ParseFieldShowCleanlinessIndicators },
-            { "HIGH_COMMUNITY_XP_EARNED_MOD", ParseFieldHighCommunityXpEarnedMod },
-            { "LOW_COMMUNITY_XP_EARNED_MOD", ParseFieldLowCommunityXpEarnedMod },
-            { "SHOW_COMMUNITY_INDICATORS", ParseFieldShowCommunityIndicators },
-            { "HIGH_PEACEABLENESS_XP_EARNED_MOD", ParseFieldHighPeaceblenessXpEarnedMod },
-            { "LOW_PEACEABLENESS_XP_EARNED_MOD", ParseFieldLowPeaceblenessXpEarnedMod },
-            { "SHOW_PEACEABLENESS_INDICATORS", ParseFieldShowPeaceblenessIndicators },
-            { "STAFF_ARMOR_AUTOHEAL", ParseFieldStaffArmorAutoHeal },
-            { "MAX_MAP_PINS_PER_AREA", ParseFieldMaxMapPinsPerArea },
-            { "MAX_MAP_PIN_ICONS", ParseFieldMaxMapPinIcons },
-            { "WORKORDER_COIN_REWARD_MOD", ParseFieldWorkOrderCoinRewardMod },
-            { "MAX_ACTIVE_WORKORDERS", ParseFieldMaxActiveWorkOrders },
-            { "PLAYER_ORDERS_MAX_ACTIVE", ParseFieldPlayerOrdersMaxActive },
-            { "SHOP_INVENTORY_SIZE_DELTA", ParseFieldShopInventorySizeDelta },
-            { "MAIL_SHOP_NUMFREE", ParseFieldMailShopNumFree },
-            { "SHOP_HIRING_MAX_PREPAY_DAYS", ParseFieldShopHiringMaxPrepDays },
-            { "SHOP_LOG_DAYSKEPT", ParseFieldShopLogDaysKept },
-            { "SHOP_HIRING_NUMFREE", ParseFieldShopHiringNumFree },
-            { "MOD_CRITICAL_HIT_DAMAGE", ParseFieldCriticalHitDamage },
-        };
+            { "MOD_DIRECT", null },*/
+            { "NONCOMBAT_REGEN_HEALTH_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenHealthMod = value; }} },
+            { "COMBAT_REGEN_HEALTH_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenHealthMod = value; }} },
+            { "COMBAT_REGEN_HEALTH_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenHealthDelta = value; }} },
+            { "NONCOMBAT_REGEN_ARMOR_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenArmorMod = value; }} },
+            { "NONCOMBAT_REGEN_ARMOR_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenArmordelta = value; }} },
+            { "COMBAT_REGEN_ARMOR_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenArmorMod = value; }} },
+            { "NONCOMBAT_REGEN_POWER_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenPowerMod = value; }} },
+            { "COMBAT_REGEN_POWER_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenPowerMod = value; }} },
+            { "NONCOMBAT_REGEN_RAGE_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenRageMod = value; }} },
+            { "COMBAT_REGEN_RAGE_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenRageMod = value; }} },
+            { "MENTAL_DEFENSE_RATING", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMentalDefenseRating = value; }} },
+            { "SPRINT_BOOST", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawSprintBoost = value; }} },
+            { "TAUNT_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawTauntMod = value; }} },
+            { "IGNORE_CHANCE_FEAR", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawIgnoreChanceFear = value; }} },
+            { "IGNORE_CHANCE_MEZ", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawIgnoreChanceMezz = value; }} },
+            { "IGNORE_CHANCE_KNOCKBACK", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawIgnoreChanceKnockback = value; }} },
+            { "EVASION_CHANCE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawEvasionChance = value; }} },
+            { "LOOT_BOOST_CHANCE_UNCOMMON", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceUncommon = value; }} },
+            { "LOOT_BOOST_CHANCE_RARE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceRare = value; }} },
+            { "LOOT_BOOST_CHANCE_EXCEPTIONAL", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceExceptional = value; }} },
+            { "LOOT_BOOST_CHANCE_EPIC", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceEpic = value; }} },
+            { "LOOT_BOOST_CHANCE_LEGENDARY", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceLegendary = value; }} },
+            { "MAX_HEALTH", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxHealth = value; }} },
+            { "MAX_ARMOR", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxArmor = value; }} },
+            { "MAX_RAGE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxRage = value; }} },
+            { "MAX_POWER", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxPower = value; }} },
+            { "MAX_BREATH", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxBreath = value; }} },
+            { "BOOST_UNIVERSAL_DIRECT", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawBoostUniversalDirect = value; }} },
+            { "BOOST_ABILITY_RAGEATTACK", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawBoostAbilityRageAttack = value; }} },
+            { "MOD_ABILITY_RAGEATTACK", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawModAbilityRageAttack = value; }} },
+            { "MONSTER_COMBAT_XP_VALUE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMonsterCombatXpValue = value; }} },
+            { "COMBAT_REGEN_ARMOR_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenArmorDelta = value; }} },
+            { "COMBAT_REGEN_POWER_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenDelta = value; }} },
+            { "MAX_INVENTORY_SIZE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxInventorySize = value; }} },
+            { "MAX_METABOLISM", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxMetabolism = value; }} },
+            { "NPC_MOD_FAVORFROMGIFTS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNpcModFavorFromGifts = value; }} },
+            { "NPC_MOD_FAVORFROMHANGOUTS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNpcModFavorFromHangouts = value; }} },
+            { "NPC_MOD_MAXSALESVALUE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNpcModMaxSalesValue = value; }} },
+            { "NPC_MOD_TRAININGCOST", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNpcModTrainingCost = value; }} },
+            { "NUM_INVENTORY_FOLDERS", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumInventoryFolders = value; }} },
+            { "HIGH_CLEANLINESS_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawHighCleanlinessXpEarnedMod = value; }} },
+            { "LOW_CLEANLINESS_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLowCleanlinessXpEarnedMod = value; }} },
+            { "MAX_ARMOR_MITIGATION_RATIO", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxArmorMitigationRatio = value; }} },
+            { "SHOW_CLEANLINESS_INDICATORS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShowCleanlinessIndicators = value; }} },
+            { "HIGH_COMMUNITY_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawHighCommunityXpEarnedMod = value; }} },
+            { "LOW_COMMUNITY_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLowCommunityXpEarnedMod = value; }} },
+            { "SHOW_COMMUNITY_INDICATORS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShowCommunityIndicators = value; }} },
+            { "HIGH_PEACEABLENESS_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawHighPeaceblenessXpEarnedMod = value; }} },
+            { "LOW_PEACEABLENESS_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLowPeaceblenessXpEarnedMod = value; }} },
+            { "SHOW_PEACEABLENESS_INDICATORS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShowPeaceblenessIndicators = value; }} },
+            { "STAFF_ARMOR_AUTOHEAL", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawStaffArmorAutoHeal = value; }} },
+            { "MAX_MAP_PINS_PER_AREA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxMapPinsPerArea = value; }} },
+            { "MAX_MAP_PIN_ICONS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxMapPinIcons = value; }} },
+            { "WORKORDER_COIN_REWARD_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawWorkOrderCoinRewardMod = value; }} },
+            { "MAX_ACTIVE_WORKORDERS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxActiveWorkOrders = value; }} },
+            { "PLAYER_ORDERS_MAX_ACTIVE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawPlayerOrdersMaxActive = value; }} },
+            { "SHOP_INVENTORY_SIZE_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShopInventorySizeDelta = value; }} },
+            { "MAIL_SHOP_NUMFREE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMailShopNumFree = value; }} },
+            { "SHOP_HIRING_MAX_PREPAY_DAYS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShopHiringMaxPrepDays = value; }} },
+            { "SHOP_LOG_DAYSKEPT", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShopLogDaysKept = value; }} },
+            { "SHOP_HIRING_NUMFREE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShopHiringNumFree = value; }} },
+            { "MOD_CRITICAL_HIT_DAMAGE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCriticalHitDamage = value; }} },
+        }; } }
 
         protected override bool IsCustomFieldParsed(string FieldKey, object FieldValue, ParseErrorInfo ErrorInfo)
         {
@@ -287,636 +286,6 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Advancement Value");
                 return 0;
             }
-        }
-
-        private static void ParseFieldNonCombatRegenHealthMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenHealthMod", This.ParseNonCombatRegenHealthMod);
-        }
-
-        private void ParseNonCombatRegenHealthMod(double RawNonCombatRegenHealthMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNonCombatRegenHealthMod = RawNonCombatRegenHealthMod;
-        }
-
-        private static void ParseFieldCombatRegenHealthMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenHealthMod", This.ParseCombatRegenHealthMod);
-        }
-
-        private void ParseCombatRegenHealthMod(double RawCombatRegenHealthMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombatRegenHealthMod = RawCombatRegenHealthMod;
-        }
-
-        private static void ParseFieldCombatRegenHealthDelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenHealthDelta", This.ParseCombatRegenHealthDelta);
-        }
-
-        private void ParseCombatRegenHealthDelta(double RawCombatRegenHealthDelta, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombatRegenHealthDelta = RawCombatRegenHealthDelta;
-        }
-
-        private static void ParseFieldNonCombatRegenArmorMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenArmorMod", This.ParseNonCombatRegenArmorMod);
-        }
-
-        private void ParseNonCombatRegenArmorMod(double RawNonCombatRegenArmorMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNonCombatRegenArmorMod = RawNonCombatRegenArmorMod;
-        }
-
-        private static void ParseFieldNonCombatRegenArmordelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenArmordelta", This.ParseNonCombatRegenArmordelta);
-        }
-
-        private void ParseNonCombatRegenArmordelta(double RawNonCombatRegenArmordelta, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNonCombatRegenArmordelta = RawNonCombatRegenArmordelta;
-        }
-
-        private static void ParseFieldCombatRegenArmorMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenArmorMod", This.ParseCombatRegenArmorMod);
-        }
-
-        private void ParseCombatRegenArmorMod(double RawCombatRegenArmorMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombatRegenArmorMod = RawCombatRegenArmorMod;
-        }
-
-        private static void ParseFieldNonCombatRegenPowerMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenPowerMod", This.ParseNonCombatRegenPowerMod);
-        }
-
-        private void ParseNonCombatRegenPowerMod(double RawNonCombatRegenPowerMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNonCombatRegenPowerMod = RawNonCombatRegenPowerMod;
-        }
-
-        private static void ParseFieldCombatRegenPowerMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenPowerMod", This.ParseCombatRegenPowerMod);
-        }
-
-        private void ParseCombatRegenPowerMod(double RawCombatRegenPowerMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombatRegenPowerMod = RawCombatRegenPowerMod;
-        }
-
-        private static void ParseFieldNonCombatRegenRageMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NonCombatRegenRageMod", This.ParseNonCombatRegenRageMod);
-        }
-
-        private void ParseNonCombatRegenRageMod(double RawNonCombatRegenRageMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNonCombatRegenRageMod = RawNonCombatRegenRageMod;
-        }
-
-        private static void ParseFieldCombatRegenRageMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenRageMod", This.ParseCombatRegenRageMod);
-        }
-
-        private void ParseCombatRegenRageMod(double RawCombatRegenRageMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombatRegenRageMod = RawCombatRegenRageMod;
-        }
-
-        private static void ParseFieldMentalDefenseRating(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MentalDefenseRating", This.ParseMentalDefenseRating);
-        }
-
-        private void ParseMentalDefenseRating(double RawMentalDefenseRating, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMentalDefenseRating = RawMentalDefenseRating;
-        }
-
-        private static void ParseFieldSprintBoost(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement SprintBoost", This.ParseSprintBoost);
-        }
-
-        private void ParseSprintBoost(double RawSprintBoost, ParseErrorInfo ErrorInfo)
-        {
-            this.RawSprintBoost = RawSprintBoost;
-        }
-
-        private static void ParseFieldTauntMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement TauntMod", This.ParseTauntMod);
-        }
-
-        private void ParseTauntMod(double RawTauntMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawTauntMod = RawTauntMod;
-        }
-
-        private static void ParseFieldIgnoreChanceFear(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement IgnoreChanceFear", This.ParseIgnoreChanceFear);
-        }
-
-        private void ParseIgnoreChanceFear(double RawIgnoreChanceFear, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIgnoreChanceFear = RawIgnoreChanceFear;
-        }
-
-        private static void ParseFieldIgnoreChanceMezz(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement IgnoreChanceMezz", This.ParseIgnoreChanceMezz);
-        }
-
-        private void ParseIgnoreChanceMezz(double RawIgnoreChanceMezz, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIgnoreChanceMezz = RawIgnoreChanceMezz;
-        }
-
-        private static void ParseFieldIgnoreChanceKnockback(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement IgnoreChanceKnockback", This.ParseIgnoreChanceKnockback);
-        }
-
-        private void ParseIgnoreChanceKnockback(double RawIgnoreChanceKnockback, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIgnoreChanceKnockback = RawIgnoreChanceKnockback;
-        }
-
-        private static void ParseFieldEvasionChance(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement EvasionChance", This.ParseEvasionChance);
-        }
-
-        private void ParseEvasionChance(double RawEvasionChance, ParseErrorInfo ErrorInfo)
-        {
-            this.RawEvasionChance = RawEvasionChance;
-        }
-
-        private static void ParseFieldLootBoostChanceUncommon(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceUncommon", This.ParseLootBoostChanceUncommon);
-        }
-
-        private void ParseLootBoostChanceUncommon(double RawLootBoostChanceUncommon, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLootBoostChanceUncommon = RawLootBoostChanceUncommon;
-        }
-
-        private static void ParseFieldLootBoostChanceRare(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceRare", This.ParseLootBoostChanceRare);
-        }
-
-        private void ParseLootBoostChanceRare(double RawLootBoostChanceRare, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLootBoostChanceRare = RawLootBoostChanceRare;
-        }
-
-        private static void ParseFieldLootBoostChanceExceptional(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceExceptional", This.ParseLootBoostChanceExceptional);
-        }
-
-        private void ParseLootBoostChanceExceptional(double RawLootBoostChanceExceptional, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLootBoostChanceExceptional = RawLootBoostChanceExceptional;
-        }
-
-        private static void ParseFieldLootBoostChanceEpic(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceEpic", This.ParseLootBoostChanceEpic);
-        }
-
-        private void ParseLootBoostChanceEpic(double RawLootBoostChanceEpic, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLootBoostChanceEpic = RawLootBoostChanceEpic;
-        }
-
-        private static void ParseFieldLootBoostChanceLegendary(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LootBoostChanceLegendary", This.ParseLootBoostChanceLegendary);
-        }
-
-        private void ParseLootBoostChanceLegendary(double RawLootBoostChanceLegendary, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLootBoostChanceLegendary = RawLootBoostChanceLegendary;
-        }
-
-        private static void ParseFieldMaxHealth(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxHealth", This.ParseMaxHealth);
-        }
-
-        private void ParseMaxHealth(double RawMaxHealth, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxHealth = RawMaxHealth;
-        }
-
-        private static void ParseFieldMaxArmor(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxArmor", This.ParseMaxArmor);
-        }
-
-        private void ParseMaxArmor(double RawMaxArmor, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxArmor = RawMaxArmor;
-        }
-
-        private static void ParseFieldMaxRage(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxRage", This.ParseMaxRage);
-        }
-
-        private void ParseMaxRage(double RawMaxRage, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxRage = RawMaxRage;
-        }
-
-        private static void ParseFieldMaxPower(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxPower", This.ParseMaxPower);
-        }
-
-        private void ParseMaxPower(double RawMaxPower, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxPower = RawMaxPower;
-        }
-
-        private static void ParseFieldMaxBreath(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxBreath", This.ParseMaxBreath);
-        }
-
-        private void ParseMaxBreath(double RawMaxBreath, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxBreath = RawMaxBreath;
-        }
-
-        private static void ParseFieldBoostUniversalDirect(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement BoostUniversalDirect", This.ParseBoostUniversalDirect);
-        }
-
-        private void ParseBoostUniversalDirect(double RawBoostUniversalDirect, ParseErrorInfo ErrorInfo)
-        {
-            this.RawBoostUniversalDirect = RawBoostUniversalDirect;
-        }
-
-        private static void ParseFieldBoostAbilityRageAttack(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement BoostAbilityRageAttack", This.ParseBoostAbilityRageAttack);
-        }
-
-        private void ParseBoostAbilityRageAttack(double RawBoostAbilityRageAttack, ParseErrorInfo ErrorInfo)
-        {
-            this.RawBoostAbilityRageAttack = RawBoostAbilityRageAttack;
-        }
-
-        private static void ParseFieldModAbilityRageAttack(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ModAbilityRageAttack", This.ParseModAbilityRageAttack);
-        }
-
-        private void ParseModAbilityRageAttack(double RawModAbilityRageAttack, ParseErrorInfo ErrorInfo)
-        {
-            this.RawModAbilityRageAttack = RawModAbilityRageAttack;
-        }
-
-        private static void ParseFieldMonsterCombatXpValue(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MonsterCombatXpValue", This.ParseMonsterCombatXpValue);
-        }
-
-        private void ParseMonsterCombatXpValue(double RawMonsterCombatXpValue, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMonsterCombatXpValue = RawMonsterCombatXpValue;
-        }
-
-        private static void ParseFieldCombatRegenArmorDelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenArmorDelta", This.ParseCombatRegenArmorDelta);
-        }
-
-        private void ParseCombatRegenArmorDelta(double RawCombatRegenArmorDelta, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombatRegenArmorDelta = RawCombatRegenArmorDelta;
-        }
-
-        private static void ParseFieldCombatRegenDelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenDelta", This.ParseCombatRegenDelta);
-        }
-
-        private void ParseCombatRegenDelta(double RawCombatRegenDelta, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombatRegenDelta = RawCombatRegenDelta;
-        }
-
-        private static void ParseFieldCombatRegenMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CombatRegenMod", This.ParseCombatRegenMod);
-        }
-
-        private void ParseCombatRegenMod(double RawCombatRegenMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombatRegenMod = RawCombatRegenMod;
-        }
-
-        private static void ParseFieldMaxInventorySize(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxInventorySize", This.ParseMaxInventorySize);
-        }
-
-        private void ParseMaxInventorySize(double RawMaxInventorySize, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxInventorySize = RawMaxInventorySize;
-        }
-
-        private static void ParseFieldMaxMetabolism(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxMetabolism", This.ParseMaxMetabolism);
-        }
-
-        private void ParseMaxMetabolism(double RawMaxMetabolism, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxMetabolism = RawMaxMetabolism;
-        }
-
-        private static void ParseFieldNpcModFavorFromGifts(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NpcModFavorFromGifts", This.ParseNpcModFavorFromGifts);
-        }
-
-        private void ParseNpcModFavorFromGifts(double RawNpcModFavorFromGifts, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNpcModFavorFromGifts = RawNpcModFavorFromGifts;
-        }
-
-        private static void ParseFieldNpcModFavorFromHangouts(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NpcModFavorFromHangouts", This.ParseNpcModFavorFromHangouts);
-        }
-
-        private void ParseNpcModFavorFromHangouts(double RawNpcModFavorFromHangouts, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNpcModFavorFromHangouts = RawNpcModFavorFromHangouts;
-        }
-
-        private static void ParseFieldNpcModMaxSalesValue(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NpcModMaxSalesValue", This.ParseNpcModMaxSalesValue);
-        }
-
-        private void ParseNpcModMaxSalesValue(double RawNpcModMaxSalesValue, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNpcModMaxSalesValue = RawNpcModMaxSalesValue;
-        }
-
-        private static void ParseFieldNpcModTrainingCost(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement NpcModTrainingCost", This.ParseNpcModTrainingCost);
-        }
-
-        private void ParseNpcModTrainingCost(double RawNpcModTrainingCost, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNpcModTrainingCost = RawNpcModTrainingCost;
-        }
-
-        private static void ParseFieldNumInventoryFolders(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "AdvancementTable NumInventoryFolders", This.ParseNumInventoryFolders);
-        }
-
-        private void ParseNumInventoryFolders(long RawNumInventoryFolders, ParseErrorInfo ErrorInfo)
-        {
-            this.RawNumInventoryFolders = (int)RawNumInventoryFolders;
-        }
-        
-        private static void ParseFieldHighCleanlinessXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement HighCleanlinessXpEarnedMod", This.ParseHighCleanlinessXpEarnedMod);
-        }
-
-        private void ParseHighCleanlinessXpEarnedMod(double RawHighCleanlinessXpEarnedMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawHighCleanlinessXpEarnedMod = RawHighCleanlinessXpEarnedMod;
-        }
-
-        private static void ParseFieldLowCleanlinessXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LowCleanlinessXpEarnedMod", This.ParseLowCleanlinessXpEarnedMod);
-        }
-
-        private void ParseLowCleanlinessXpEarnedMod(double RawLowCleanlinessXpEarnedMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLowCleanlinessXpEarnedMod = RawLowCleanlinessXpEarnedMod;
-        }
-
-        private static void ParseFieldMaxArmorMitigationRatio(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxArmorMitigationRatio", This.ParseMaxArmorMitigationRatio);
-        }
-
-        private void ParseMaxArmorMitigationRatio(double RawMaxArmorMitigationRatio, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxArmorMitigationRatio = RawMaxArmorMitigationRatio;
-        }
-
-        private static void ParseFieldShowCleanlinessIndicators(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShowCleanlinessIndicators", This.ParseShowCleanlinessIndicators);
-        }
-
-        private void ParseShowCleanlinessIndicators(double RawShowCleanlinessIndicators, ParseErrorInfo ErrorInfo)
-        {
-            this.RawShowCleanlinessIndicators = RawShowCleanlinessIndicators;
-        }
-
-        private static void ParseFieldHighCommunityXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement HighCommunityXpEarnedMod", This.ParseHighCommunityXpEarnedMod);
-        }
-
-        private void ParseHighCommunityXpEarnedMod(double RawHighCommunityXpEarnedMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawHighCommunityXpEarnedMod = RawHighCommunityXpEarnedMod;
-        }
-
-        private static void ParseFieldLowCommunityXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LowCommunityXpEarnedMod", This.ParseLowCommunityXpEarnedMod);
-        }
-
-        private void ParseLowCommunityXpEarnedMod(double RawLowCommunityXpEarnedMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLowCommunityXpEarnedMod = RawLowCommunityXpEarnedMod;
-        }
-
-        private static void ParseFieldShowCommunityIndicators(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShowCommunityIndicators", This.ParseShowCommunityIndicators);
-        }
-
-        private void ParseShowCommunityIndicators(double RawShowCommunityIndicators, ParseErrorInfo ErrorInfo)
-        {
-            this.RawShowCommunityIndicators = RawShowCommunityIndicators;
-        }
-
-        private static void ParseFieldHighPeaceblenessXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement HighPeaceblenessXpEarnedMod", This.ParseHighPeaceblenessXpEarnedMod);
-        }
-
-        private void ParseHighPeaceblenessXpEarnedMod(double RawHighPeaceblenessXpEarnedMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawHighPeaceblenessXpEarnedMod = RawHighPeaceblenessXpEarnedMod;
-        }
-
-        private static void ParseFieldLowPeaceblenessXpEarnedMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement LowPeaceblenessXpEarnedMod", This.ParseLowPeaceblenessXpEarnedMod);
-        }
-
-        private void ParseLowPeaceblenessXpEarnedMod(double RawLowPeaceblenessXpEarnedMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLowPeaceblenessXpEarnedMod = RawLowPeaceblenessXpEarnedMod;
-        }
-
-        private static void ParseFieldShowPeaceblenessIndicators(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShowPeaceblenessIndicators", This.ParseShowPeaceblenessIndicators);
-        }
-
-        private void ParseShowPeaceblenessIndicators(double RawShowPeaceblenessIndicators, ParseErrorInfo ErrorInfo)
-        {
-            this.RawShowPeaceblenessIndicators = RawShowPeaceblenessIndicators;
-        }
-
-        private static void ParseFieldStaffArmorAutoHeal(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement StaffArmorAutoHeal", This.ParseStaffArmorAutoHeal);
-        }
-
-        private void ParseStaffArmorAutoHeal(double RawStaffArmorAutoHeal, ParseErrorInfo ErrorInfo)
-        {
-            this.RawStaffArmorAutoHeal = RawStaffArmorAutoHeal;
-        }
-
-        private static void ParseFieldMaxMapPinsPerArea(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxMapPinsPerArea", This.ParseMaxMapPinsPerArea);
-        }
-
-        private void ParseMaxMapPinsPerArea(double RawMaxMapPinsPerArea, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxMapPinsPerArea = RawMaxMapPinsPerArea;
-        }
-
-        private static void ParseFieldMaxMapPinIcons(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxMapPinIcons", This.ParseMaxMapPinIcons);
-        }
-
-        private void ParseMaxMapPinIcons(double RawMaxMapPinIcons, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxMapPinIcons = RawMaxMapPinIcons;
-        }
-
-        private static void ParseFieldWorkOrderCoinRewardMod(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement WorkOrderCoinRewardMod", This.ParseWorkOrderCoinRewardMod);
-        }
-
-        private void ParseWorkOrderCoinRewardMod(double RawWorkOrderCoinRewardMod, ParseErrorInfo ErrorInfo)
-        {
-            this.RawWorkOrderCoinRewardMod = RawWorkOrderCoinRewardMod;
-        }
-
-        private static void ParseFieldMaxActiveWorkOrders(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MaxActiveWorkOrders", This.ParseMaxActiveWorkOrders);
-        }
-
-        private void ParseMaxActiveWorkOrders(double RawMaxActiveWorkOrders, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMaxActiveWorkOrders = RawMaxActiveWorkOrders;
-        }
-
-        private static void ParseFieldPlayerOrdersMaxActive(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement PlayerOrdersMaxActive", This.ParsePlayerOrdersMaxActive);
-        }
-
-        private void ParsePlayerOrdersMaxActive(double RawPlayerOrdersMaxActive, ParseErrorInfo ErrorInfo)
-        {
-            this.RawPlayerOrdersMaxActive = RawPlayerOrdersMaxActive;
-        }
-
-        private static void ParseFieldShopInventorySizeDelta(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShopInventorySizeDelta", This.ParseShopInventorySizeDelta);
-        }
-
-        private void ParseShopInventorySizeDelta(double RawShopInventorySizeDelta, ParseErrorInfo ErrorInfo)
-        {
-            this.RawShopInventorySizeDelta = RawShopInventorySizeDelta;
-        }
-
-        private static void ParseFieldMailShopNumFree(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement MailShopNumFree", This.ParseMailShopNumFree);
-        }
-
-        private void ParseMailShopNumFree(double RawMailShopNumFree, ParseErrorInfo ErrorInfo)
-        {
-            this.RawMailShopNumFree = RawMailShopNumFree;
-        }
-
-        private static void ParseFieldShopHiringMaxPrepDays(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShopHiringMaxPrepDays", This.ParseShopHiringMaxPrepDays);
-        }
-
-        private void ParseShopHiringMaxPrepDays(double RawShopHiringMaxPrepDays, ParseErrorInfo ErrorInfo)
-        {
-            this.RawShopHiringMaxPrepDays = RawShopHiringMaxPrepDays;
-        }
-
-        private static void ParseFieldShopLogDaysKept(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShopLogDaysKept", This.ParseShopLogDaysKept);
-        }
-
-        private void ParseShopLogDaysKept(double RawShopLogDaysKept, ParseErrorInfo ErrorInfo)
-        {
-            this.RawShopLogDaysKept = RawShopLogDaysKept;
-        }
-
-        private static void ParseFieldShopHiringNumFree(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement ShopHiringNumFree", This.ParseShopHiringNumFree);
-        }
-
-        private void ParseShopHiringNumFree(double RawShopHiringNumFree, ParseErrorInfo ErrorInfo)
-        {
-            this.RawShopHiringNumFree = RawShopHiringNumFree;
-        }
-
-        private static void ParseFieldCriticalHitDamage(Advancement This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Advancement CriticalHitDamage", This.ParseCriticalHitDamage);
-        }
-
-        private void ParseCriticalHitDamage(double RawCriticalHitDamage, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCriticalHitDamage = RawCriticalHitDamage;
         }
         #endregion
 

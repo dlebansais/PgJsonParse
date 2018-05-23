@@ -26,86 +26,20 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Id", ParseFieldId },
-            { "Label", ParseFieldLabel },
-            { "Zone", ParseFieldZone },
-            { "IsCategoryGate", ParseFieldIsCategoryGate },
-            { "LargeHint", ParseFieldLargeHint },
-            { "SmallHint", ParseFieldSmallHint },
-            { "CategoryGateId", ParseFieldCategoryGateId },
-        };
-
-        private static void ParseFieldId(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "DirectedGoal Id", This.ParseId);
-        }
-
-        private void ParseId(long RawId, ParseErrorInfo ErrorInfo)
-        {
-            this.RawId = (int)RawId;
-        }
-
-        private static void ParseFieldLabel(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "DirectedGoal Label", This.ParseLabel);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Id", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawId = value; }} },
+            { "Label", new FieldParser() { Type = FieldType.String, ParserString = ParseLabel } },
+            { "Zone", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Zone = value; }} },
+            { "IsCategoryGate", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsCategoryGate = value; }} },
+            { "LargeHint", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { LargeHint = value; }} },
+            { "SmallHint", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { SmallHint = value; }} },
+            { "CategoryGateId", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawCategoryGateId = value; }} },
+        }; } }
 
         private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)
         {
             Label = RawLabel;
             ErrorInfo.AddIconId(SearchResultIconId);
-        }
-
-        private static void ParseFieldZone(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "DirectedGoal Zone", This.ParseZone);
-        }
-
-        private void ParseZone(string RawZone, ParseErrorInfo ErrorInfo)
-        {
-            Zone = RawZone;
-        }
-
-        private static void ParseFieldIsCategoryGate(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "DirectedGoal IsCategoryGate", This.ParseIsCategoryGate);
-        }
-
-        private void ParseIsCategoryGate(bool RawIsCategoryGate, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsCategoryGate = RawIsCategoryGate;
-        }
-
-        private static void ParseFieldLargeHint(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "DirectedGoal LargeHint", This.ParseLargeHint);
-        }
-
-        private void ParseLargeHint(string RawLargeHint, ParseErrorInfo ErrorInfo)
-        {
-            LargeHint = RawLargeHint;
-        }
-
-        private static void ParseFieldSmallHint(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "DirectedGoal SmallHint", This.ParseSmallHint);
-        }
-
-        private void ParseSmallHint(string RawSmallHint, ParseErrorInfo ErrorInfo)
-        {
-            SmallHint = RawSmallHint;
-        }
-
-        private static void ParseFieldCategoryGateId(DirectedGoal This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "DirectedGoal CategoryGateId", This.ParseCategoryGateId);
-        }
-
-        private void ParseCategoryGateId(long RawCategoryGateId, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCategoryGateId = (int)RawCategoryGateId;
         }
         #endregion
 

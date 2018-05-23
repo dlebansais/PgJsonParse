@@ -33,21 +33,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "Name", ParseFieldName },
-            { "Desc", ParseFieldDesc },
-            { "IconId", ParseFieldIconId },
-            { "DisplayMode", ParseFieldDisplayMode },
-            { "SpewText", ParseFieldSpewText },
-            { "Particle", ParseFieldParticle },
-            { "StackingType", ParseFieldStackingType },
-            { "StackingPriority", ParseFieldStackingPriority },
-            { "Duration", ParseFieldDuration },
-            { "Keywords", ParseFieldKeywords },
-            { "AbilityKeywords", ParseFieldAbilityKeywords },
-        };
-
         public static readonly Dictionary<EffectStackingType, string> StackingTypeStringMap = new Dictionary<EffectStackingType, string>()
         {
             { EffectStackingType.LamiasGaze, "Lamia's Gaze" },
@@ -59,45 +44,29 @@ namespace PgJsonObjects
             { EffectKeyword.Hyphen, "-" },
         };
 
-        private static void ParseFieldName(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Effect Name", This.ParseName);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
+            { "Desc", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Desc = value; }} },
+            { "IconId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseIconId } },
+            { "DisplayMode", new FieldParser() { Type = FieldType.String, ParserString = ParseDisplayMode } },
+            { "SpewText", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { SpewText = value; }} },
+            { "Particle", new FieldParser() { Type = FieldType.String, ParserString = ParseParticle } },
+            { "StackingType", new FieldParser() { Type = FieldType.String, ParserString = ParseStackingType } },
+            { "StackingPriority", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawStackingPriority = value; }} },
+            { "Duration", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawDuration = value; }} },
+            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
+            { "AbilityKeywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseAbilityKeywords } },
+        }; } }
 
-        private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
-        {
-            Name = RawName;
-        }
-
-        private static void ParseFieldDesc(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Effect Desc", This.ParseDesc);
-        }
-
-        private void ParseDesc(string RawDesc, ParseErrorInfo ErrorInfo)
-        {
-            Desc = RawDesc;
-        }
-
-        private static void ParseFieldIconId(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Effect IconId", This.ParseIconId);
-        }
-
-        private void ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
+        private void ParseIconId(int value, ParseErrorInfo ErrorInfo)
         {
             if (RawIconId > 0)
             {
-                this.RawIconId = (int)RawIconId;
-                ErrorInfo.AddIconId((int)RawIconId);
+                RawIconId = value;
+                ErrorInfo.AddIconId(value);
             }
             else
-                this.RawIconId = null;
-        }
-
-        private static void ParseFieldDisplayMode(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Effect DisplayMode", This.ParseDisplayMode);
+                RawIconId = null;
         }
 
         private void ParseDisplayMode(string RawDisplayMode, ParseErrorInfo ErrorInfo)
@@ -107,31 +76,11 @@ namespace PgJsonObjects
             DisplayMode = ConvertedDisplayMode;
         }
 
-        private static void ParseFieldSpewText(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Effect SpewText", This.ParseSpewText);
-        }
-
-        private void ParseSpewText(string RawSpewText, ParseErrorInfo ErrorInfo)
-        {
-            SpewText = RawSpewText;
-        }
-
-        private static void ParseFieldParticle(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Effect Particle", This.ParseParticle);
-        }
-
         private void ParseParticle(string RawParticle, ParseErrorInfo ErrorInfo)
         {
             EffectParticle ConvertedParticle;
             StringToEnumConversion<EffectParticle>.TryParse(RawParticle, out ConvertedParticle, ErrorInfo);
             Particle = ConvertedParticle;
-        }
-
-        private static void ParseFieldStackingType(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Effect StackingType", This.ParseStackingType);
         }
 
         private void ParseStackingType(string RawStackingType, ParseErrorInfo ErrorInfo)
@@ -141,32 +90,7 @@ namespace PgJsonObjects
             StackingType = ConvertedStackingType;
         }
 
-        private static void ParseFieldStackingPriority(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Effect StackingPriority", This.ParseStackingPriority);
-        }
-
-        private void ParseStackingPriority(long RawStackingPriority, ParseErrorInfo ErrorInfo)
-        {
-            this.RawStackingPriority = (int)RawStackingPriority;
-        }
-
-        private static void ParseFieldDuration(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Effect Duration", This.ParseDuration);
-        }
-
-        private void ParseDuration(long RawDuration, ParseErrorInfo ErrorInfo)
-        {
-            this.RawDuration = (int)RawDuration;
-        }
-
-        private static void ParseFieldKeywords(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Effect Keywords", This.ParseKeywords);
-        }
-
-        private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
+        private void ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<EffectKeyword>.TryParse(RawKeyword, KeywordStringMap, out EffectKeyword ParsedEffectKeyword, ErrorInfo);
             if (ParsedEffectKeyword != EffectKeyword.TSys)
@@ -175,20 +99,13 @@ namespace PgJsonObjects
                 HasTSysKeyword = true;
 
             //IsKeywordListEmpty = (RawKeywords != null && ParsedKeywordList.Count == 0);
-            return true;
         }
 
-        private static void ParseFieldAbilityKeywords(Effect This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Effect AbilityKeywords", This.ParseAbilityKeywords);
-        }
-
-        private bool ParseAbilityKeywords(string RawAbilityKeyword, ParseErrorInfo ErrorInfo)
+        private void ParseAbilityKeywords(string RawAbilityKeyword, ParseErrorInfo ErrorInfo)
         {
             StringToEnumConversion<AbilityKeyword>.TryParse(RawAbilityKeyword, out AbilityKeyword ParsedAbilityKeyword, ErrorInfo);
             AbilityKeywordList.Add(ParsedAbilityKeyword);
             //IsAbilityKeywordListEmpty = (RawAbilityKeywords != null && RawAbilityKeywords.Count == 0);
-            return true;
         }
         #endregion
 

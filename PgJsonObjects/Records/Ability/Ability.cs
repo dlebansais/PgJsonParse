@@ -144,77 +144,66 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override Dictionary<string, FieldParser> FieldTable { get; } = new Dictionary<string, FieldParser>()
-        {
-            { "AbilityGroup", ParseFieldAbilityGroup },
-            { "Animation", ParseFieldAnimation },
-            { "AttributesThatDeltaPowerCost", ParseFieldAttributesThatDeltaPowerCost },
-            { "AttributesThatDeltaResetTime", ParseFieldAttributesThatDeltaResetTime },
-            { "AttributesThatModPowerCost", ParseFieldAttributesThatModPowerCost },
-            { "CanBeOnSidebar", ParseFieldCanBeOnSidebar },
-            { "CanSuppressMonsterShout", ParseFieldCanSuppressMonsterShout },
-            { "CanTargetUntargetableEnemies", ParseFieldCanTargetUntargetableEnemies },
-            { "CausesOfDeath", ParseFieldCausesOfDeath },
-            { "Costs", ParseFieldCosts },
-            { "CombatRefreshBaseAmount", ParseFieldCombatRefreshBaseAmount },
-            { "CompatibleSkills", ParseFieldCompatibleSkills },
-            { "ConsumedItemChance", ParseFieldConsumedItemChance },
-            { "ConsumedItemChanceToStickInCorpse", ParseFieldConsumedItemChanceToStickInCorpse },
-            { "ConsumedItemCount", ParseFieldConsumedItemCount },
-            { "ConsumedItemKeyword", ParseFieldConsumedItemKeyword },
-            { "DamageType", ParseFieldDamageType },
-            { "DelayLoopIsAbortedIfAttacked", ParseFieldDelayLoopIsAbortedIfAttacked },
-            { "DelayLoopMessage", ParseFieldDelayLoopMessage },
-            { "DelayLoopTime", ParseFieldDelayLoopTime },
-            { "Description", ParseFieldDescription },
-            { "EffectKeywordsIndicatingEnabled", ParseFieldEffectKeywordsIndicatingEnabled },
-            { "ExtraKeywordsForTooltips", ParseFieldExtraKeywordsForTooltips },
-            { "IconID", ParseFieldIconId },
-            { "InternalAbility", ParseFieldInternalAbility },
-            { "InternalName", ParseFieldInternalName },
-            { "IsHarmless", ParseFieldIsHarmless },
-            { "ItemKeywordReqErrorMessage", ParseFieldItemKeywordReqErrorMessage },
-            { "ItemKeywordReqs", ParseFieldItemKeywordReqs },
-            { "Keywords", ParseFieldKeywords },
-            { "Level", ParseFieldLevel },
-            { "Name", ParseFieldName },
-            { "PetTypeTagReq", ParseFieldPetTypeTagReq },
-            { "PetTypeTagReqMax", ParseFieldPetTypeTagReqMax },
-            { "Prerequisite", ParseFieldPrerequisite },
-            { "Projectile", ParseFieldProjectile },
-            { "PvE", ParseFieldPvE },
-            { "PvP", ParseFieldPvP },
-            { "ResetTime", ParseFieldResetTime },
-            { "SelfParticle", ParseFieldSelfParticle },
-            { "SharesResetTimerWith", ParseFieldSharesResetTimerWith },
-            { "Skill", ParseFieldSkill },
-            { "SpecialCasterRequirements", ParseFieldSpecialCasterRequirements },
-            { "SpecialInfo", ParseFieldSpecialInfo },
-            { "SpecialTargetingTypeReq", ParseFieldSpecialTargetingTypeReq },
-            { "Target", ParseFieldTarget },
-            { "TargetEffectKeywordReq", ParseFieldTargetEffectKeywordReq },
-            { "TargetParticle", ParseFieldTargetParticle },
-            { "UpgradeOf", ParseFieldUpgradeOf },
-            { "WorksInCombat", ParseFieldWorksInCombat },
-            { "WorksUnderwater", ParseFieldWorksUnderwater },
-            { "WorksWhileFalling", ParseFieldWorksWhileFalling },
-        };
-
-        private static void ParseFieldAbilityGroup(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability AbilityGroup", This.ParseAbilityGroup);
-        }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "AbilityGroup", new FieldParser() { Type = FieldType.String, ParserString = ParseAbilityGroup } },
+            { "Animation", new FieldParser() { Type = FieldType.String, ParserString = ParseAnimation } },
+            { "AttributesThatDeltaPowerCost", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaPowerCostList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty = true } },
+            { "AttributesThatDeltaResetTime", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaResetTimeList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty = true } },
+            { "AttributesThatModPowerCost", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModPowerCostList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty = true } },
+            { "CanBeOnSidebar", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCanBeOnSidebar = value; }} },
+            { "CanSuppressMonsterShout", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCanSuppressMonsterShout = value; }} },
+            { "CanTargetUntargetableEnemies", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCanTargetUntargetableEnemies = value; }} },
+            { "CausesOfDeath", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseCausesOfDeath } },
+            { "Costs", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseCosts } },
+            { "CombatRefreshBaseAmount", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawCombatRefreshBaseAmount = value; }} },
+            { "CompatibleSkills", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseCompatibleSkills } },
+            { "ConsumedItemChance", new FieldParser() { Type = FieldType.Float, ParserFloat = ParseConsumedItemChance } },
+            { "ConsumedItemChanceToStickInCorpse", new FieldParser() { Type = FieldType.Float, ParserFloat = ParseConsumedItemChanceToStickInCorpse } },
+            { "ConsumedItemCount", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseConsumedItemCount } },
+            { "ConsumedItemKeyword", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawConsumedItemKeyword = value; }} },
+            { "DamageType", new FieldParser() { Type = FieldType.String, ParserString = ParseDamageType } },
+            { "DelayLoopIsAbortedIfAttacked", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawDelayLoopIsAbortedIfAttacked = value; }} },
+            { "DelayLoopMessage", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DelayLoopMessage = value; }} },
+            { "DelayLoopTime", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseDelayLoopTime } },
+            { "Description", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Description = value; }} },
+            { "EffectKeywordsIndicatingEnabled", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseEffectKeywordsIndicatingEnabled } },
+            { "ExtraKeywordsForTooltips", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseExtraKeywordsForTooltips } },
+            { "IconID", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseIconId } },
+            { "InternalAbility", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawInternalAbility = value; }} },
+            { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
+            { "IsHarmless", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsHarmless = value; }} },
+            { "ItemKeywordReqErrorMessage", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { ItemKeywordReqErrorMessage = value; }} },
+            { "ItemKeywordReqs", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseItemKeywordReqs } },
+            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
+            { "Level", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawLevel = value; }} },
+            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
+            { "PetTypeTagReq", new FieldParser() { Type = FieldType.String, ParserString = ParsePetTypeTagReq } },
+            { "PetTypeTagReqMax", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParsePetTypeTagReqMax } },
+            { "Prerequisite", new FieldParser() { Type = FieldType.String, ParserString = ParsePrerequisite } },
+            { "Projectile", new FieldParser() { Type = FieldType.String, ParserString = ParseProjectile } },
+            { "PvE", new FieldParser() { Type = FieldType.Object, ParserObject = ParsePvE } },
+            { "PvP", new FieldParser() { Type = FieldType.Object, ParserObject = ParsePvP } },
+            { "ResetTime", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawResetTime = value; }} },
+            { "SelfParticle", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { SelfParticle = value; }} },
+            { "SharesResetTimerWith", new FieldParser() { Type = FieldType.String, ParserString = ParseSharesResetTimerWith } },
+            { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
+            { "SpecialCasterRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseSpecialCasterRequirements } },
+            { "SpecialInfo", new FieldParser() { Type = FieldType.String, ParserString = ParseSpecialInfo } },
+            { "SpecialTargetingTypeReq", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawSpecialTargetingTypeReq = value; }} },
+            { "Target", new FieldParser() { Type = FieldType.String, ParserString = ParseTarget } },
+            { "TargetEffectKeywordReq", new FieldParser() { Type = FieldType.String, ParserString = ParseTargetEffectKeywordReq } },
+            { "TargetParticle", new FieldParser() { Type = FieldType.String, ParserString = ParseTargetParticle } },
+            { "UpgradeOf", new FieldParser() { Type = FieldType.String, ParserString = ParseUpgradeOf } },
+            { "WorksInCombat", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawWorksInCombat = value; }} },
+            { "WorksUnderwater", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawWorksUnderwater = value; }} },
+            { "WorksWhileFalling", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawWorksWhileFalling = value; }} },
+        }; } }
 
         private void ParseAbilityGroup(string RawAbilityGroup, ParseErrorInfo ErrorInfo)
         {
             this.RawAbilityGroup = RawAbilityGroup;
             AbilityGroup = null;
             IsRawAbilityGroupParsed = false;
-        }
-
-        private static void ParseFieldAnimation(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability Animation", This.ParseAnimation);
         }
 
         private void ParseAnimation(string RawAnimation, ParseErrorInfo ErrorInfo)
@@ -224,84 +213,10 @@ namespace PgJsonObjects
             Animation = ParsedAbilityAnimation;
         }
 
-        private static void ParseFieldAttributesThatDeltaPowerCost(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Ability AttributesThatDeltaPowerCost", This.ParseAttributesThatDeltaPowerCost);
-        }
-
-        private bool ParseAttributesThatDeltaPowerCost(string RawAttributesThatDeltaPowerCost, ParseErrorInfo ErrorInfo)
-        {
-            RawAttributesThatDeltaPowerCostList.Add(RawAttributesThatDeltaPowerCost);
-            return true;
-        }
-
-        private static void ParseFieldAttributesThatDeltaResetTime(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Ability AttributesThatDeltaResetTime", This.ParseAttributesThatDeltaResetTime);
-        }
-
-        private bool ParseAttributesThatDeltaResetTime(string RawAttributesThatDeltaResetTime, ParseErrorInfo ErrorInfo)
-        {
-            RawAttributesThatDeltaResetTimeList.Add(RawAttributesThatDeltaResetTime);
-            return true;
-        }
-
-        private static void ParseFieldAttributesThatModPowerCost(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Ability AttributesThatModPowerCost", This.ParseAttributesThatModPowerCost);
-        }
-
-        private bool ParseAttributesThatModPowerCost(string RawAttributesThatModPowerCost, ParseErrorInfo ErrorInfo)
-        {
-            RawAttributesThatModPowerCostList.Add(RawAttributesThatModPowerCost);
-            return true;
-        }
-
-        private static void ParseFieldCanBeOnSidebar(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Ability CanBeOnSidebar", This.ParseCanBeOnSidebar);
-        }
-
-        private void ParseCanBeOnSidebar(bool RawCanBeOnSidebar, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCanBeOnSidebar = RawCanBeOnSidebar;
-        }
-
-        private static void ParseFieldCanSuppressMonsterShout(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Ability CanSuppressMonsterShout", This.ParseCanSuppressMonsterShout);
-        }
-
-        private void ParseCanSuppressMonsterShout(bool RawCanSuppressMonsterShout, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCanSuppressMonsterShout = RawCanSuppressMonsterShout;
-        }
-
-        private static void ParseFieldCanTargetUntargetableEnemies(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Ability CanTargetUntargetableEnemies", This.ParseCanTargetUntargetableEnemies);
-        }
-
-        private void ParseCanTargetUntargetableEnemies(bool RawCanTargetUntargetableEnemies, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCanTargetUntargetableEnemies = RawCanTargetUntargetableEnemies;
-        }
-
-        private static void ParseFieldCausesOfDeath(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Ability CausesOfDeath", This.ParseCausesOfDeath);
-        }
-
-        private bool ParseCausesOfDeath(string RawCausesOfDeath, ParseErrorInfo ErrorInfo)
+        private void ParseCausesOfDeath(string RawCausesOfDeath, ParseErrorInfo ErrorInfo)
         {
             if (StringToEnumConversion<Deaths>.TryParse(RawCausesOfDeath, out Deaths ParsedCauseOfDeath, ErrorInfo))
                 CausesOfDeathList.Add(ParsedCauseOfDeath);
-            return true;
-        }
-
-        private static void ParseFieldCosts(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueArray(Value, ErrorInfo, "Ability Costs", This.ParseCosts);
         }
 
         private void ParseCosts(JsonObject RawCosts, ParseErrorInfo ErrorInfo)
@@ -311,22 +226,7 @@ namespace PgJsonObjects
                 CostList.Add(ParsedCost);
         }
 
-        private static void ParseFieldCombatRefreshBaseAmount(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Ability CombatRefreshBaseAmount", This.ParseCombatRefreshBaseAmount);
-        }
-
-        private void ParseCombatRefreshBaseAmount(long RawCombatRefreshBaseAmount, ParseErrorInfo ErrorInfo)
-        {
-            this.RawCombatRefreshBaseAmount = (int)RawCombatRefreshBaseAmount;
-        }
-
-        private static void ParseFieldCompatibleSkills(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Ability CompatibleSkills", This.ParseCompatibleSkills);
-        }
-
-        private bool ParseCompatibleSkills(string RawCompatibleSkill, ParseErrorInfo ErrorInfo)
+        private void ParseCompatibleSkills(string RawCompatibleSkill, ParseErrorInfo ErrorInfo)
         {
             if (StringToEnumConversion<PowerSkill>.TryParse(RawCompatibleSkill, out PowerSkill ParsedCompatibleSkill, ErrorInfo))
             {
@@ -335,16 +235,9 @@ namespace PgJsonObjects
 
                 RawCompatibleSkillList.Add(ParsedCompatibleSkill);
             }
-
-            return true;
         }
 
-        private static void ParseFieldConsumedItemChance(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Ability ConsumedItemChance", This.ParseConsumedItemChance);
-        }
-
-        private void ParseConsumedItemChance(double RawConsumedItemChance, ParseErrorInfo ErrorInfo)
+        private void ParseConsumedItemChance(float RawConsumedItemChance, ParseErrorInfo ErrorInfo)
         {
             this.RawConsumedItemChance = RawConsumedItemChance;
 
@@ -353,12 +246,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemChance");
         }
 
-        private static void ParseFieldConsumedItemChanceToStickInCorpse(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Ability ConsumedItemChanceToStickInCorpse", This.ParseConsumedItemChanceToStickInCorpse);
-        }
-
-        private void ParseConsumedItemChanceToStickInCorpse(double RawConsumedItemChanceToStickInCorpse, ParseErrorInfo ErrorInfo)
+        private void ParseConsumedItemChanceToStickInCorpse(float RawConsumedItemChanceToStickInCorpse, ParseErrorInfo ErrorInfo)
         {
             this.RawConsumedItemChanceToStickInCorpse = RawConsumedItemChanceToStickInCorpse;
 
@@ -367,32 +255,12 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemChanceToStickInCorpse");
         }
 
-        private static void ParseFieldConsumedItemCount(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Ability ConsumedItemCount", This.ParseConsumedItemCount);
-        }
-
-        private void ParseConsumedItemCount(long RawConsumedItemCount, ParseErrorInfo ErrorInfo)
+        private void ParseConsumedItemCount(int RawConsumedItemCount, ParseErrorInfo ErrorInfo)
         {
             this.RawConsumedItemCount = (int)RawConsumedItemCount;
 
             if (RawConsumedItemCount < 1)
                 ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemCount");
-        }
-
-        private static void ParseFieldConsumedItemKeyword(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability ConsumedItemKeyword", This.ParseConsumedItemKeyword);
-        }
-
-        private void ParseConsumedItemKeyword(string RawConsumedItemKeyword, ParseErrorInfo ErrorInfo)
-        {
-            this.RawConsumedItemKeyword = RawConsumedItemKeyword;
-        }
-
-        private static void ParseFieldDamageType(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability DamageType", This.ParseDamageType);
         }
 
         private void ParseDamageType(string RawDamageType, ParseErrorInfo ErrorInfo)
@@ -402,55 +270,15 @@ namespace PgJsonObjects
             DamageType = ParsedDamageType;
         }
 
-        private static void ParseFieldDelayLoopIsAbortedIfAttacked(Ability This, object Value, ParseErrorInfo ErrorInfo)
+        private void ParseDelayLoopTime(int value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueBool(Value, ErrorInfo, "Ability DelayLoopIsAbortedIfAttacked", This.ParseDelayLoopIsAbortedIfAttacked);
-        }
+            RawDelayLoopTime = value;
 
-        private void ParseDelayLoopIsAbortedIfAttacked(bool RawDelayLoopIsAbortedIfAttacked, ParseErrorInfo ErrorInfo)
-        {
-            this.RawDelayLoopIsAbortedIfAttacked = RawDelayLoopIsAbortedIfAttacked;
-        }
-
-        private static void ParseFieldDelayLoopMessage(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability DelayLoopMessage", This.ParseDelayLoopMessage);
-        }
-
-        private void ParseDelayLoopMessage(string RawDelayLoopMessage, ParseErrorInfo ErrorInfo)
-        {
-            DelayLoopMessage = RawDelayLoopMessage;
-        }
-
-        private static void ParseFieldDelayLoopTime(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Ability DelayLoopTime", This.ParseDelayLoopTime);
-        }
-
-        private void ParseDelayLoopTime(long RawDelayLoopTime, ParseErrorInfo ErrorInfo)
-        {
-            this.RawDelayLoopTime = (int)RawDelayLoopTime;
-
-            if (RawDelayLoopTime < 0)
+            if (value < 0)
                 ErrorInfo.AddInvalidObjectFormat("Ability DelayLoopTime");
         }
 
-        private static void ParseFieldDescription(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability Description", This.ParseDescription);
-        }
-
-        private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
-        {
-            Description = RawDescription;
-        }
-
-        private static void ParseFieldEffectKeywordsIndicatingEnabled(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Ability EffectKeywordsIndicatingEnabled", This.ParseEffectKeywordsIndicatingEnabled);
-        }
-
-        private bool ParseEffectKeywordsIndicatingEnabled(string RawEffectKeywordIndicatingEnabled, ParseErrorInfo ErrorInfo)
+        private void ParseEffectKeywordsIndicatingEnabled(string RawEffectKeywordIndicatingEnabled, ParseErrorInfo ErrorInfo)
         {
             if (StringToEnumConversion<AbilityIndicatingEnabled>.TryParse(RawEffectKeywordIndicatingEnabled, out AbilityIndicatingEnabled ParsedEffectKeywordIndicatingEnabled, ErrorInfo))
             {
@@ -459,16 +287,9 @@ namespace PgJsonObjects
                 else
                     EffectKeywordsIndicatingEnabled = ParsedEffectKeywordIndicatingEnabled;
             }
-
-            return true;
         }
 
-        private static void ParseFieldExtraKeywordsForTooltips(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Ability FieldExtraKeywordsForTooltips", This.ParseExtraKeywordsForTooltips);
-        }
-
-        private bool ParseExtraKeywordsForTooltips(string RawExtraKeywordForTooltips, ParseErrorInfo ErrorInfo)
+        private void ParseExtraKeywordsForTooltips(string RawExtraKeywordForTooltips, ParseErrorInfo ErrorInfo)
         {
             if (StringToEnumConversion<TooltipsExtraKeywords>.TryParse(RawExtraKeywordForTooltips, out TooltipsExtraKeywords ParsedTooltipsExtraKeywords, ErrorInfo))
             {
@@ -477,16 +298,9 @@ namespace PgJsonObjects
                 else
                     ExtraKeywordsForTooltips = ParsedTooltipsExtraKeywords;
             }
-
-            return true;
         }
 
-        private static void ParseFieldIconId(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Ability IconId", This.ParseIconId);
-        }
-
-        private void ParseIconId(long RawIconId, ParseErrorInfo ErrorInfo)
+        private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)
         {
             if (RawIconId > 0)
             {
@@ -499,65 +313,13 @@ namespace PgJsonObjects
                 this.RawIconId = 0;
         }
 
-        private static void ParseFieldInternalAbility(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Ability InternalAbility", This.ParseInternalAbility);
-        }
-
-        private void ParseInternalAbility(bool RawInternalAbility, ParseErrorInfo ErrorInfo)
-        {
-            this.RawInternalAbility = RawInternalAbility;
-        }
-
-        private static void ParseFieldInternalName(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability InternalName", This.ParseInternalName);
-        }
-
-        private void ParseInternalName(string RawInternalName, ParseErrorInfo ErrorInfo)
-        {
-            InternalName = RawInternalName;
-        }
-
-        private static void ParseFieldIsHarmless(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Ability IsHarmless", This.ParseIsHarmless);
-        }
-
-        private void ParseIsHarmless(bool RawIsHarmless, ParseErrorInfo ErrorInfo)
-        {
-            this.RawIsHarmless = RawIsHarmless;
-        }
-
-        private static void ParseFieldItemKeywordReqErrorMessage(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability ItemKeywordReqErrorMessage", This.ParseItemKeywordReqErrorMessage);
-        }
-
-        private void ParseItemKeywordReqErrorMessage(string RawItemKeywordReqErrorMessage, ParseErrorInfo ErrorInfo)
-        {
-            ItemKeywordReqErrorMessage = RawItemKeywordReqErrorMessage;
-        }
-
-        private static void ParseFieldItemKeywordReqs(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Ability ItemKeywordReqs", This.ParseItemKeywordReqs);
-        }
-
-        private bool ParseItemKeywordReqs(string RawItemKeywordReqs, ParseErrorInfo ErrorInfo)
+        private void ParseItemKeywordReqs(string RawItemKeywordReqs, ParseErrorInfo ErrorInfo)
         {
             if (StringToEnumConversion<AbilityItemKeyword>.TryParse(RawItemKeywordReqs, TextMaps.AbilityItemKeywordStringMap, out AbilityItemKeyword ParsedAbilityItemKeyword, ErrorInfo))
                 ItemKeywordReqList.Add(ParsedAbilityItemKeyword);
-
-            return true;
         }
 
-        private static void ParseFieldKeywords(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringArray(Value, ErrorInfo, "Ability Keywords", This.ParseKeywords);
-        }
-
-        private bool ParseKeywords(string RawKeywords, ParseErrorInfo ErrorInfo)
+        private void ParseKeywords(string RawKeywords, ParseErrorInfo ErrorInfo)
         {
             if (StringToEnumConversion<AbilityKeyword>.TryParse(RawKeywords, out AbilityKeyword ParsedAbilityKeyword, ErrorInfo))
             {
@@ -567,33 +329,6 @@ namespace PgJsonObjects
                 if (HasBasicAttack)
                     PgJsonObjects.Skill.UpdateBasicAttackTable(Skill, this);
             }
-
-            return true;
-        }
-
-        private static void ParseFieldLevel(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Ability Level", This.ParseLevel);
-        }
-
-        private void ParseLevel(long RawLevel, ParseErrorInfo ErrorInfo)
-        {
-            this.RawLevel = (int)RawLevel;
-        }
-
-        private static void ParseFieldName(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability Name", This.ParseName);
-        }
-
-        private void ParseName(string RawName, ParseErrorInfo ErrorInfo)
-        {
-            Name = RawName;
-        }
-
-        private static void ParseFieldPetTypeTagReq(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability PetTypeTagReq", This.ParsePetTypeTagReq);
         }
 
         private void ParsePetTypeTagReq(string RawPetTypeTagReq, ParseErrorInfo ErrorInfo)
@@ -603,20 +338,10 @@ namespace PgJsonObjects
             PetTypeTagReq = ParsedAbilityPetType;
         }
 
-        private static void ParseFieldPetTypeTagReqMax(Ability This, object Value, ParseErrorInfo ErrorInfo)
+        private void ParsePetTypeTagReqMax(int value, ParseErrorInfo ErrorInfo)
         {
-            ParseFieldValueInteger(Value, ErrorInfo, "Ability PetTypeTagReqMax", This.ParsePetTypeTagReqMax);
-        }
-
-        private void ParsePetTypeTagReqMax(long RawPetTypeTagReqMax, ParseErrorInfo ErrorInfo)
-        {
-            this.RawPetTypeTagReqMax = (int)RawPetTypeTagReqMax;
-            PetTypeTagReqMax = (int)RawPetTypeTagReqMax;
-        }
-
-        private static void ParseFieldPrerequisite(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability Prerequisite", This.ParsePrerequisite);
+            RawPetTypeTagReqMax = value;
+            PetTypeTagReqMax = value;
         }
 
         private void ParsePrerequisite(string RawPrerequisite, ParseErrorInfo ErrorInfo)
@@ -626,21 +351,11 @@ namespace PgJsonObjects
             IsRawPrerequisiteParsed = false;
         }
 
-        private static void ParseFieldProjectile(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability Projectile", This.ParseProjectile);
-        }
-
         private void ParseProjectile(string RawProjectile, ParseErrorInfo ErrorInfo)
         {
             AbilityProjectile ParsedAbilityProjectile;
             StringToEnumConversion<AbilityProjectile>.TryParse(RawProjectile, out ParsedAbilityProjectile, ErrorInfo);
             Projectile = ParsedAbilityProjectile;
-        }
-
-        private static void ParseFieldPvE(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "Ability PvE", This.ParsePvE);
         }
 
         private void ParsePvE(JsonObject RawPvE, ParseErrorInfo ErrorInfo)
@@ -650,11 +365,6 @@ namespace PgJsonObjects
             PvE = ParsedPvE;
         }
 
-        private static void ParseFieldPvP(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValue(Value, ErrorInfo, "Ability PvP", This.ParsePvP);
-        }
-
         private void ParsePvP(JsonObject RawPvP, ParseErrorInfo ErrorInfo)
         {
             AbilityPvX ParsedPvP;
@@ -662,41 +372,11 @@ namespace PgJsonObjects
             PvP = ParsedPvP;
         }
 
-        private static void ParseFieldResetTime(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueFloat(Value, ErrorInfo, "Ability ResetTime", This.ParseResetTime);
-        }
-
-        private void ParseResetTime(double RawResetTime, ParseErrorInfo ErrorInfo)
-        {
-            this.RawResetTime = RawResetTime;
-        }
-
-        private static void ParseFieldSelfParticle(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability SelfParticle", This.ParseSelfParticle);
-        }
-
-        private void ParseSelfParticle(string RawSelfParticle, ParseErrorInfo ErrorInfo)
-        {
-            SelfParticle = RawSelfParticle;
-        }
-
-        private static void ParseFieldSharesResetTimerWith(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability SharesResetTimerWith", This.ParseSharesResetTimerWith);
-        }
-
         private void ParseSharesResetTimerWith(string RawSharesResetTimerWith, ParseErrorInfo ErrorInfo)
         {
             this.RawSharesResetTimerWith = RawSharesResetTimerWith;
             SharesResetTimerWith = null;
             IsRawSharesResetTimerWithParsed = false;
-        }
-
-        private static void ParseFieldSkill(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability Skill", This.ParseSkill);
         }
 
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
@@ -710,37 +390,12 @@ namespace PgJsonObjects
                 PgJsonObjects.Skill.UpdateBasicAttackTable(Skill, this);
         }
 
-        private static void ParseFieldSpecialCasterRequirements(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueStringObjectOrArray(Value, ErrorInfo, "Ability SpecialCasterRequirements", This.ParseSpecialCasterRequirement);
-        }
-
-        private static void ParseFieldSpecialInfo(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability SpecialInfo", This.ParseSpecialInfo);
-        }
-
         private void ParseSpecialInfo(string RawSpecialInfo, ParseErrorInfo ErrorInfo)
         {
             if (SpecialInfo == null)
                 SpecialInfo = RawSpecialInfo;
 
             ParseCompleteSpecialInfo(RawSpecialInfo, ErrorInfo);
-        }
-
-        private static void ParseFieldSpecialTargetingTypeReq(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueInteger(Value, ErrorInfo, "Ability SpecialTargetingTypeReq", This.ParseSpecialTargetingTypeReq);
-        }
-
-        private void ParseSpecialTargetingTypeReq(long RawSpecialTargetingTypeReq, ParseErrorInfo ErrorInfo)
-        {
-            this.RawSpecialTargetingTypeReq = (int)RawSpecialTargetingTypeReq;
-        }
-
-        private static void ParseFieldTarget(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability Target", This.ParseTarget);
         }
 
         private void ParseTarget(string RawTarget, ParseErrorInfo ErrorInfo)
@@ -750,21 +405,11 @@ namespace PgJsonObjects
             Target = ParsedAbilityTarget;
         }
 
-        private static void ParseFieldTargetEffectKeywordReq(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability TargetEffectKeywordReq", This.ParseTargetEffectKeywordReq);
-        }
-
         private void ParseTargetEffectKeywordReq(string RawTargetEffectKeywordReq, ParseErrorInfo ErrorInfo)
         {
             TargetEffectKeyword ParsedTargetEffectKeyword;
             StringToEnumConversion<TargetEffectKeyword>.TryParse(RawTargetEffectKeywordReq, out ParsedTargetEffectKeyword, ErrorInfo);
             TargetEffectKeywordReq = ParsedTargetEffectKeyword;
-        }
-
-        private static void ParseFieldTargetParticle(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability TargetParticle", This.ParseTargetParticle);
         }
 
         private void ParseTargetParticle(string RawTargetParticle, ParseErrorInfo ErrorInfo)
@@ -774,11 +419,6 @@ namespace PgJsonObjects
             TargetParticle = ParsedAbilityTargetParticle;
         }
 
-        private static void ParseFieldUpgradeOf(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueString(Value, ErrorInfo, "Ability UpgradeOf", This.ParseUpgradeOf);
-        }
-
         private void ParseUpgradeOf(string RawUpgradeOf, ParseErrorInfo ErrorInfo)
         {
             this.RawUpgradeOf = RawUpgradeOf;
@@ -786,37 +426,7 @@ namespace PgJsonObjects
             IsRawUpgradeOfParsed = false;
         }
 
-        private static void ParseFieldWorksInCombat(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Ability WorksInCombat", This.ParseWorksInCombat);
-        }
-
-        private void ParseWorksInCombat(bool RawWorksInCombat, ParseErrorInfo ErrorInfo)
-        {
-            this.RawWorksInCombat = RawWorksInCombat;
-        }
-
-        private static void ParseFieldWorksUnderwater(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Ability WorksUnderwater", This.ParseWorksUnderwater);
-        }
-
-        private void ParseWorksUnderwater(bool RawWorksUnderwater, ParseErrorInfo ErrorInfo)
-        {
-            this.RawWorksUnderwater = RawWorksUnderwater;
-        }
-
-        private static void ParseFieldWorksWhileFalling(Ability This, object Value, ParseErrorInfo ErrorInfo)
-        {
-            ParseFieldValueBool(Value, ErrorInfo, "Ability WorksWhileFalling", This.ParseWorksWhileFalling);
-        }
-
-        private void ParseWorksWhileFalling(bool RawWorksWhileFalling, ParseErrorInfo ErrorInfo)
-        {
-            this.RawWorksWhileFalling = RawWorksWhileFalling;
-        }
-
-        public void ParseSpecialCasterRequirement(JsonObject RawSpecialCasterRequirement, ParseErrorInfo ErrorInfo)
+        public void ParseSpecialCasterRequirements(JsonObject RawSpecialCasterRequirement, ParseErrorInfo ErrorInfo)
         {
             AbilityRequirement ParsedSpecialCasterRequirement;
             JsonObjectParser<AbilityRequirement>.InitAsSubitem("SpecialCasterRequirement", RawSpecialCasterRequirement, out ParsedSpecialCasterRequirement, ErrorInfo);
