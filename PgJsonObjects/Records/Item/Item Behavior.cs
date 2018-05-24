@@ -34,7 +34,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "UseVerb", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UseVerb = StringToEnumConversion<ItemUseVerb>.Parse(value, TextMaps.UseVerbMap, errorInfo); }} },
             { "ServerInfo", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseServerInfo } },
-            { "UseRequirements", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseUseRequirements } },
+            { "UseRequirements", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<ItemUseRequirement>.ParseList(value, UseRequirementList, errorInfo); }} },
             { "UseAnimation", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UseAnimation = StringToEnumConversion<ItemUseAnimation>.Parse(value, errorInfo); }} },
             { "UseDelayAnimation", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UseDelayAnimation = StringToEnumConversion<ItemUseAnimation>.Parse(value, errorInfo); }} },
             { "MetabolismCost", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMetabolismCost = value; }} },
@@ -53,12 +53,6 @@ namespace PgJsonObjects
             }
             else
                 ServerInfo = null;
-        }
-
-        private void ParseUseRequirements(string RawUseRequirement, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<ItemUseRequirement>.TryParse(RawUseRequirement, out ItemUseRequirement ParsedUseRequirement, ErrorInfo))
-                UseRequirementList.Add(ParsedUseRequirement);
         }
 
         private GenericJsonObject LinkBack;

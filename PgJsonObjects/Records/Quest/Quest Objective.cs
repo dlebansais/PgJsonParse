@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjective : GenericJsonObject<QuestObjective>
+    public class QuestObjective : GenericJsonObject<QuestObjective>, ISpecificRecord
     {
         #region Init
         public QuestObjective()
@@ -73,6 +73,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
+        public object ToSpecific(ParseErrorInfo errorInfo)
+        {
+            return ToSpecificQuestObjective(errorInfo);
+        }
+
         public QuestObjective ToSpecificQuestObjective(ParseErrorInfo ErrorInfo)
         {
             switch (Type)

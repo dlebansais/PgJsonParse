@@ -54,6 +54,7 @@
     <Compile Include="Build Planer\Slot Planer.cs" />
     <Compile Include="Build Planer\Weight Profile.cs" />
     <Compile Include="Float Format.cs" />
+    <Compile Include="ISpecificRecord.cs" />
     <Compile Include="Json Generator.cs" />
     <Compile Include="ObjectDefinition.cs" />
     <Compile Include="ObjectList.cs" />

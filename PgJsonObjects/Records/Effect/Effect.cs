@@ -55,7 +55,7 @@ namespace PgJsonObjects
             { "StackingPriority", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawStackingPriority = value; }} },
             { "Duration", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawDuration = value; }} },
             { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
-            { "AbilityKeywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseAbilityKeywords } },
+            { "AbilityKeywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<AbilityKeyword>.ParseList(value, AbilityKeywordList, errorInfo); }} },
         }; } }
 
         private void ParseIconId(int value, ParseErrorInfo ErrorInfo)
@@ -78,13 +78,6 @@ namespace PgJsonObjects
                     HasTSysKeyword = true;
 
             //IsKeywordListEmpty = (RawKeywords != null && ParsedKeywordList.Count == 0);
-        }
-
-        private void ParseAbilityKeywords(string value, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<AbilityKeyword>.TryParse(value, out AbilityKeyword ParsedAbilityKeyword, ErrorInfo))
-                AbilityKeywordList.Add(ParsedAbilityKeyword);
-            //IsAbilityKeywordListEmpty = (RawAbilityKeywords != null && RawAbilityKeywords.Count == 0);
         }
         #endregion
 

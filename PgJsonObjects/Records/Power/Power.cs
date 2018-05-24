@@ -154,7 +154,7 @@ namespace PgJsonObjects
             { "Prefix", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Prefix = value; }} },
             { "Suffix", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Suffix = value; }} },
             { "Tiers", new FieldParser() { Type = FieldType.Object, ParserObject = ParseTiers } },
-            { "Slots", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseSlots } },
+            { "Slots", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<ItemSlot>.ParseList(value, SlotList, errorInfo); }} },
             { "Skill", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Skill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); }} },
             { "IsUnavailable", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsUnavailable = value; }} },
         }; } }
@@ -196,12 +196,6 @@ namespace PgJsonObjects
 
             if (i < RawTiers.Count)
                 ErrorInfo.AddInvalidObjectFormat("Power Tiers");
-        }
-
-        private void ParseSlots(string RawSlots, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<ItemSlot>.TryParse(RawSlots, out ItemSlot ParsedItemSlot, ErrorInfo))
-                SlotList.Add(ParsedItemSlot);
         }
         #endregion
 

@@ -5,13 +5,18 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AbilityRequirement : GenericJsonObject<AbilityRequirement>
+    public class AbilityRequirement : GenericJsonObject<AbilityRequirement>, ISpecificRecord
     {
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
         #endregion
 
         #region Parsing
+        public object ToSpecific(ParseErrorInfo errorInfo)
+        {
+            return ToSpecificAbilityRequirement(errorInfo);
+        }
+
         public AbilityRequirement ToSpecificAbilityRequirement(ParseErrorInfo ErrorInfo)
         {
             switch (OtherRequirementType)
@@ -93,7 +98,7 @@ namespace PgJsonObjects
             { "Health", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawHealth = value; }} },
             { "AllowedRace", new FieldParser() { Type = FieldType.String, ParserString = ParseAllowedRace } },
             { "Appearance", new FieldParser() { Type = FieldType.String, ParserString = ParseAppearance } },
-            { "List", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseList } },
+            { "List", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("List", value, OrList, errorInfo); }} },
             { "ErrorMsg", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawErrorMsg = value; }} },
             { "DisallowedStates", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseDisallowedStates } },
             { "PetTypeTag", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawPetTypeTag = value; }} },
@@ -134,16 +139,6 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement Appearance & AppearanceList");
             else
                 RawAppearanceList.Add(RawAppearance);
-        }
-
-        private void ParseList(JsonObject RawList, ParseErrorInfo ErrorInfo)
-        {
-            AbilityRequirement ParsedAbilityRequirement;
-            JsonObjectParser<AbilityRequirement>.InitAsSubitem("List", RawList, out ParsedAbilityRequirement, ErrorInfo);
-
-            AbilityRequirement ConvertedAbilityRequirement = ParsedAbilityRequirement.ToSpecificAbilityRequirement(ErrorInfo);
-            if (ConvertedAbilityRequirement != null)
-                OrList.Add(ConvertedAbilityRequirement);
         }
 
         private bool ParseDisallowedStates(string RawDisallowedState, ParseErrorInfo ErrorInfo)

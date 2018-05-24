@@ -30,18 +30,12 @@ namespace PgJsonObjects
             { "Title", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Title = value; }} },
             { "LocationHint", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { LocationHint = value; }} },
             { "Category", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Category = StringToEnumConversion<LoreBookCategory>.Parse(value, errorInfo); }} },
-            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
+            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<LoreBookKeyword>.ParseList(value, KeywordList, errorInfo); }} },
             { "IsClientLocal", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsClientLocal = value; }} },
             { "Visibility", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Visibility = StringToEnumConversion<LoreBookVisibility>.Parse(value, errorInfo); }} },
             { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
             { "Text", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Text = value; }} },
         }; } }
-
-        private void ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<LoreBookKeyword>.TryParse(RawKeyword, out LoreBookKeyword ParsedLoreBookKeyword, ErrorInfo))
-                KeywordList.Add(ParsedLoreBookKeyword);
-        }
         #endregion
 
         #region Json Reconstruction

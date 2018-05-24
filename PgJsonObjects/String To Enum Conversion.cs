@@ -114,6 +114,21 @@ namespace PgJsonObjects
         }
         #endregion
 
+        #region ParseList
+        public static void ParseList(string value, ICollection<T> list, ParseErrorInfo errorInfo)
+        {
+            if (TryParse(value, out T Parsed, errorInfo))
+                list.Add(Parsed);
+        }
+
+        public static void ParseList(string value, Dictionary<T, string> map, ICollection<T> list, ParseErrorInfo errorInfo)
+        {
+            if (TryParse(value, map, out T Parsed, errorInfo))
+                list.Add(Parsed);
+        }
+        #endregion
+
+/*
         public static void ParseList(JsonArray StringArray, List<T> EnumList, ParseErrorInfo ErrorInfo)
         {
             ParseList(StringArray, null, EnumList, ErrorInfo);
@@ -155,7 +170,7 @@ namespace PgJsonObjects
                     EnumList.Add(ParsedValue);
             }
         }
-
+*/
         public static string ToString(T EnumValue)
         {
             return EnumValue.ToString();

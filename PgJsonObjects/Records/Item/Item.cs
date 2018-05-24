@@ -138,15 +138,12 @@ namespace PgJsonObjects
             if (index > 0)
                 RawDroppedAppearance = RawDroppedAppearance.Substring(0, index);
 
-            ItemDroppedAppearance ParsedDroppedAppearance;
-            StringToEnumConversion<ItemDroppedAppearance>.TryParse(RawDroppedAppearance, out ParsedDroppedAppearance, ErrorInfo);
-            DroppedAppearance = ParsedDroppedAppearance;
+            DroppedAppearance = StringToEnumConversion<ItemDroppedAppearance>.Parse(RawDroppedAppearance, ErrorInfo);
         }
 
         private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)
         {
-            ItemEffect ItemEffect;
-            if (ItemEffect.TryParse(RawEffectDesc, out ItemEffect))
+            if (PgJsonObjects.ItemEffect.TryParse(RawEffectDesc, out ItemEffect ItemEffect))
             {
                 EffectDescriptionList.Add(ItemEffect);
                 return true;
@@ -160,8 +157,7 @@ namespace PgJsonObjects
 
         private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)
         {
-            uint NewColor;
-            if (InvariantCulture.TryParseColor(RawDyeColor, out NewColor))
+            if (InvariantCulture.TryParseColor(RawDyeColor, out uint NewColor))
                 DyeColor = NewColor;
             else
                 ErrorInfo.AddInvalidString("Item DyeColor", RawDyeColor);

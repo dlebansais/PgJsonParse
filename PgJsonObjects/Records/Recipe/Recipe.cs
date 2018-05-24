@@ -85,18 +85,18 @@ namespace PgJsonObjects
             { "Ingredients", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseIngredients, ParserSetArrayIsEmpty = () => EmptyIngredientList = true } },
             { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
             { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
-            { "ResultItems", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseResultItems } },
+            { "ResultItems", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<RecipeItem>.ParseList("ResultItems", value, ResultItemList, errorInfo); }, ParserSetArrayIsEmpty = () => EmptyResultItemList = true } },
             { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
             { "SkillLevelReq", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawSkillLevelReq = value; }} },
             { "ResultEffects", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseResultEffects } },
             { "SortSkill", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { SortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); }} },
-            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
+            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<RecipeKeyword>.ParseList(value, KeywordList, errorInfo); }} },
             { "ActionLabel", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { ActionLabel = StringToEnumConversion<RecipeAction>.Parse(value, TextMaps.RecipeActionStringMap, errorInfo); }} },
             { "UsageDelay", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawUsageDelay = value; }} },
             { "UsageDelayMessage", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UsageDelayMessage = value; }} },
             { "UsageAnimation", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UsageAnimation = StringToEnumConversion<RecipeUsageAnimation>.Parse(value, errorInfo); }} },
-            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseOtherRequirements } },
-            { "Costs", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseCosts } },
+            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo); }} },
+            { "Costs", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<RecipeCost>.ParseList("Costs", value, CostList, errorInfo); }} },
             { "NumResultItems", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumResultItems = value; }} },
             { "UsageAnimationEnd", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { UsageAnimationEnd = value; }} },
             { "ResetTimeInSeconds", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawResetTimeInSeconds = value; }} },
@@ -144,18 +144,6 @@ namespace PgJsonObjects
                     IngredientList.Add(ParsedIngredient);
         }
 
-        private void ParseResultItems(JsonObject RawResultItems, ParseErrorInfo ErrorInfo)
-        {
-            RecipeItem ParsedResultItem;
-            JsonObjectParser<RecipeItem>.InitAsSubitem("ResultItems", RawResultItems, out ParsedResultItem, ErrorInfo);
-            
-            if (ParsedResultItem != null)
-            {
-                ResultItemList.Add(ParsedResultItem);
-                EmptyResultItemList = false;
-            }
-        }
-
         private void ParseSkill(string value, ParseErrorInfo ErrorInfo)
         {
             Skill = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
@@ -172,30 +160,6 @@ namespace PgJsonObjects
             }
             else
                 return false;
-        }
-
-        private void ParseKeywords(string RawKeywords, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<RecipeKeyword>.TryParse(RawKeywords, out RecipeKeyword ParsedKeyword, ErrorInfo))
-                KeywordList.Add(ParsedKeyword);
-        }
-
-        public void ParseOtherRequirements(JsonObject RawOtherRequirements, ParseErrorInfo ErrorInfo)
-        {
-            AbilityRequirement ParsedOtherRequirement;
-            JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
-
-            AbilityRequirement ConvertedAbilityRequirement = ParsedOtherRequirement.ToSpecificAbilityRequirement(ErrorInfo);
-            if (ConvertedAbilityRequirement != null)
-                OtherRequirementList.Add(ConvertedAbilityRequirement);
-        }
-
-        private void ParseCosts(JsonObject RawCosts, ParseErrorInfo ErrorInfo)
-        {
-            RecipeCost ParsedCost;
-            JsonObjectParser<RecipeCost>.InitAsSubitem("Costs", RawCosts, out ParsedCost, ErrorInfo);
-            if (ParsedCost != null)
-                CostList.Add(ParsedCost);
         }
 
         private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)

@@ -5,13 +5,18 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestRequirement : GenericJsonObject<QuestRequirement>
+    public class QuestRequirement : GenericJsonObject<QuestRequirement>, ISpecificRecord
     {
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
         #endregion
 
         #region Parsing
+        public object ToSpecific(ParseErrorInfo errorInfo)
+        {
+            return ToSpecificQuestRequirement(errorInfo);
+        }
+
         public QuestRequirement ToSpecificQuestRequirement(ParseErrorInfo ErrorInfo)
         {
             switch (OtherRequirementType)

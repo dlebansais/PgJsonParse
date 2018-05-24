@@ -77,20 +77,12 @@ namespace PgJsonObjects
             { "AttributesThatDeltaRage", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaRageList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaRageListIsEmpty = true } },
             { "AttributesThatModRage", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModRageList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModRageListIsEmpty = true } },
             { "AttributesThatDeltaRange", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaRangeList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true } },
-            { "SpecialValues", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseSpecialValue } },
+            { "SpecialValues", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<SpecialValue>.ParseList("SpecialValue", value, SpecialValueList, errorInfo); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true } },
             { "TauntDelta", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawTauntDelta = value; }} },
             { "TempTauntDelta", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawTempTauntDelta = value; }} },
             { "RageCost", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRageCost = value; }} },
             { "RageCostMod", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawRageCostMod = value; }} },
         }; } }
-
-        private void ParseSpecialValue(JsonObject value, ParseErrorInfo ErrorInfo)
-        {
-            SpecialValue ParsedSpecialValue;
-            JsonObjectParser<SpecialValue>.InitAsSubitem("SpecialValue", value, out ParsedSpecialValue, ErrorInfo);
-
-            SpecialValueList.Add(ParsedSpecialValue);
-        }
 
         private List<string> RawAttributesThatDeltaDamageList { get; } = new List<string>();
         private bool RawAttributesThatDeltaDamageListIsEmpty;

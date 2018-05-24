@@ -64,7 +64,7 @@ namespace PgJsonObjects
             { "ItemCode", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawItemCode = value; }} },
             { "StackSize", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseStackSize } },
             { "PercentChance", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawPercentChance = value; }} },
-            { "ItemKeys", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseItemKeys } },
+            { "ItemKeys", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<RecipeItemKey>.ParseList(value, RecipeItemKeyStringMap, ItemKeyList, errorInfo); }} },
             { "Desc", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Desc = value; }} },
             { "ChanceToConsume", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawChanceToConsume = value; }} },
             { "DurabilityConsumed", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawDurabilityConsumed = value; }} },
@@ -82,12 +82,6 @@ namespace PgJsonObjects
                 if (value < 0)
                     ErrorInfo.AddInvalidObjectFormat("RecipeItem StackSize");
             }
-        }
-
-        private void ParseItemKeys(string RawItemKeys, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<RecipeItemKey>.TryParse(RawItemKeys, RecipeItemKeyStringMap, out RecipeItemKey ParsedItemKey, ErrorInfo))
-                ItemKeyList.Add(ParsedItemKey);
         }
         #endregion
 

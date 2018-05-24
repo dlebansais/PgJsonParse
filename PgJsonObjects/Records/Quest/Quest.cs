@@ -96,12 +96,12 @@ namespace PgJsonObjects
             { "Name", new FieldParser() { Type = FieldType.String, ParserString = ParseName } },
             { "Description", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Description = value; }} },
             { "Version", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawVersion = value; }} },
-            { "RequirementsToSustain", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseRequirementsToSustain } },
+            { "RequirementsToSustain", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<QuestRequirement>.ParseList("Requirements", value, QuestRequirementToSustainList, errorInfo); }} },
             { "ReuseTime_Minutes", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseReuseTime_Minutes } },
             { "IsCancellable", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsCancellable = value; }} },
-            { "Objectives", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseObjectives } },
+            { "Objectives", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<QuestObjective>.ParseList("Quest Objectives", value, QuestObjectiveList, errorInfo); }} },
             { "Rewards_XP", new FieldParser() { Type = FieldType.Object, ParserObject = ParseRewards_XP } },
-            { "Rewards_Items", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseRewards_Items } },
+            { "Rewards_Items", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<QuestRewardItem>.ParseList("RewardItems", value, QuestRewardsItemList, errorInfo); }} },
             { "ReuseTime_Days", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseReuseTime_Days } },
             { "ReuseTime_Hours", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseReuseTime_Hours } },
             { "Reward_CombatXP", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseReward_CombatXP } },
@@ -109,19 +109,19 @@ namespace PgJsonObjects
             { "PrefaceText", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { PrefaceText = value; }} },
             { "SuccessText", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { SuccessText = value; }} },
             { "MidwayText", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { MidwayText = value; }} },
-            { "PrerequisiteFavorLevel", new FieldParser() { Type = FieldType.String, ParserString = ParsePrerequisiteFavorLevel } },
+            { "PrerequisiteFavorLevel", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { PrerequisiteFavorLevel = StringToEnumConversion<Favor>.Parse(value, errorInfo); }} },
             { "Rewards_Favor", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardFavor = value; }} },
             { "Rewards_Recipes", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseRewards_Recipes } },
             { "Rewards_Ability", new FieldParser() { Type = FieldType.String, ParserString = ParseRewards_Ability } },
-            { "Requirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseRequirements } },
+            { "Requirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<QuestRequirement>.ParseList("Requirements", value, QuestRequirementList, errorInfo); }} },
             { "Reward_Favor", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardFavor = value; }} },
             { "Rewards", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseRewards } },
-            { "PreGiveItems", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParsePreGiveItems } },
+            { "PreGiveItems", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<QuestRewardItem>.ParseList("PreGiveItems", value, PreGiveItemList, errorInfo); }} },
             { "TSysLevel", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawTSysLevel = value; }} },
             { "Reward_Gold", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardGold = value; }} },
             { "Rewards_NamedLootProfile", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RewardsNamedLootProfile = value; }} },
             { "PreGiveRecipes", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawPreGiveRecipeList.Add(value); }} },
-            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
+            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<QuestKeyword>.ParseList(value, KeywordList, errorInfo); }} },
             { "Rewards_Effects", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseRewards_Effects } },
             { "IsAutoPreface", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsAutoPreface = value; }} },
             { "IsAutoWrapUp", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsAutoWrapUp = value; }} },
@@ -140,32 +140,12 @@ namespace PgJsonObjects
             ErrorInfo.AddIconId(SearchResultIconId);
         }
 
-        private void ParseRequirementsToSustain(JsonObject RawRequirements, ParseErrorInfo ErrorInfo)
-        {
-            QuestRequirement ParsedQuestRequirement;
-            JsonObjectParser<QuestRequirement>.InitAsSubitem("Requirements", RawRequirements, out ParsedQuestRequirement, ErrorInfo);
-
-            QuestRequirement ConvertedQuestRequirement = ParsedQuestRequirement.ToSpecificQuestRequirement(ErrorInfo);
-            if (ConvertedQuestRequirement != null)
-                QuestRequirementToSustainList.Add(ConvertedQuestRequirement);
-        }
-
         private void ParseReuseTime_Minutes(int value, ParseErrorInfo ErrorInfo)
         {
             if (!RawReuseTime.HasValue)
                 RawReuseTime = TimeSpan.FromMinutes(value);
             else
                 RawReuseTime += TimeSpan.FromMinutes(value);
-        }
-
-        private void ParseObjectives(JsonObject RawObjectives, ParseErrorInfo ErrorInfo)
-        {
-            QuestObjective ParsedQuestObjective;
-            JsonObjectParser<QuestObjective>.InitAsSubitem("Quest Objectives", RawObjectives, out ParsedQuestObjective, ErrorInfo);
-
-            QuestObjective ConvertedQuestObjective = ParsedQuestObjective.ToSpecificQuestObjective(ErrorInfo);
-            if (ConvertedQuestObjective != null)
-                QuestObjectiveList.Add(ConvertedQuestObjective);
         }
 
         private void ParseRewards_XP(JsonObject RawRewardsXP, ParseErrorInfo ErrorInfo)
@@ -187,14 +167,6 @@ namespace PgJsonObjects
                         ErrorInfo.AddInvalidObjectFormat("Quest RewardsXP");
                 }
             }
-        }
-
-        private void ParseRewards_Items(JsonObject RawRewardsItems, ParseErrorInfo ErrorInfo)
-        {
-            QuestRewardItem ParsedRewardItem;
-            JsonObjectParser<QuestRewardItem>.InitAsSubitem("RewardsItems", RawRewardsItems, out ParsedRewardItem, ErrorInfo);
-            if (ParsedRewardItem != null)
-                QuestRewardsItemList.Add(ParsedRewardItem);
         }
 
         private void ParseReuseTime_Days(int value, ParseErrorInfo ErrorInfo)
@@ -240,13 +212,6 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Quest FavorNpc");
         }
 
-        private void ParsePrerequisiteFavorLevel(string RawPrerequisiteFavorLevel, ParseErrorInfo ErrorInfo)
-        {
-            Favor ParsedFavor;
-            StringToEnumConversion<Favor>.TryParse(RawPrerequisiteFavorLevel, out ParsedFavor, ErrorInfo);
-            PrerequisiteFavorLevel = ParsedFavor;
-        }
-
         private bool ParseRewards_Recipes(string RawRewardRecipe, ParseErrorInfo ErrorInfo)
         {
             if (this.RawRewardRecipe == null)
@@ -266,16 +231,6 @@ namespace PgJsonObjects
             this.RawRewardAbility = RawRewardsAbility;
             RewardAbility = null;
             IsRawRewardAbilityParsed = false;
-        }
-
-        private void ParseRequirements(JsonObject RawRequirements, ParseErrorInfo ErrorInfo)
-        {
-            QuestRequirement ParsedQuestRequirement;
-            JsonObjectParser<QuestRequirement>.InitAsSubitem("Requirements", RawRequirements, out ParsedQuestRequirement, ErrorInfo);
-
-            QuestRequirement ConvertedQuestRequirement = ParsedQuestRequirement.ToSpecificQuestRequirement(ErrorInfo);
-            if (ConvertedQuestRequirement != null)
-                QuestRequirementList.Add(ConvertedQuestRequirement);
         }
 
         private void ParseRewards(JsonObject RawReward, ParseErrorInfo ErrorInfo)
@@ -397,20 +352,6 @@ namespace PgJsonObjects
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("Quest Rewards");
-        }
-
-        private void ParsePreGiveItems(JsonObject RawPreGiveItems, ParseErrorInfo ErrorInfo)
-        {
-            QuestRewardItem ParsedPreGiveItem;
-            JsonObjectParser<QuestRewardItem>.InitAsSubitem("PreGiveItems", RawPreGiveItems, out ParsedPreGiveItem, ErrorInfo);
-            if (ParsedPreGiveItem != null)
-                PreGiveItemList.Add(ParsedPreGiveItem);
-        }
-
-        private void ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<QuestKeyword>.TryParse(RawKeyword, out QuestKeyword ParsedKeyword, ErrorInfo))
-                KeywordList.Add(ParsedKeyword);
         }
 
         private bool ParseRewards_Effects(string RawRewardEffect, ParseErrorInfo ErrorInfo)

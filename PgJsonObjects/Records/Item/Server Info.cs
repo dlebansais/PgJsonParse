@@ -132,7 +132,7 @@ namespace PgJsonObjects
             { "GiveItems", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawItemNameList.Add(value); }} },
             { "RequiredHotspot", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo); }} },
             { "NumItemsToGive", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumItemsToGive = value; }} },
-            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseOtherRequirements } },
+            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo); }} },
         }; } }
 
         private bool ParseEffects(string RawEffect, ParseErrorInfo ErrorInfo)
@@ -145,16 +145,6 @@ namespace PgJsonObjects
             }
             else
                 return false;
-        }
-
-        public void ParseOtherRequirements(JsonObject RawOtherRequirements, ParseErrorInfo ErrorInfo)
-        {
-            AbilityRequirement ParsedOtherRequirement;
-            JsonObjectParser<AbilityRequirement>.InitAsSubitem("OtherRequirements", RawOtherRequirements, out ParsedOtherRequirement, ErrorInfo);
-
-            AbilityRequirement ConvertedAbilityRequirement = ParsedOtherRequirement.ToSpecificAbilityRequirement(ErrorInfo);
-            if (ConvertedAbilityRequirement != null)
-                OtherRequirementList.Add(ConvertedAbilityRequirement);
         }
 
         private ServerInfoEffect ParseEffectString(string RawEffect, ParseErrorInfo ErrorInfo)
@@ -197,9 +187,8 @@ namespace PgJsonObjects
                 while (RawEffectString.Length > 0 && RawEffectString[RawEffectString.Length - 1] == '_');
             }
 
-            ServerInfoEffectType ParsedServerInfoEffect;
-            StringToEnumConversion<ServerInfoEffectType>.TryParse(RawEffectString, out ParsedServerInfoEffect, ErrorInfo);
-            ServerInfoEffect = ParsedServerInfoEffect;
+            ServerInfoEffect = StringToEnumConversion< ServerInfoEffectType>.Parse(RawEffectString, ErrorInfo);
+
             if (Level > 0)
                 EffectLevel = Level;
 

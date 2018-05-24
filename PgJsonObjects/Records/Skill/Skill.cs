@@ -179,7 +179,7 @@ namespace PgJsonObjects
             { "XpTable", new FieldParser() { Type = FieldType.String, ParserString = ParseXpTable } },
             { "AdvancementTable", new FieldParser() { Type = FieldType.String, ParserString = ParseAdvancementTable } },
             { "Combat", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCombat = value; }} },
-            { "CompatibleCombatSkills", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseCompatibleCombatSkills } },
+            { "CompatibleCombatSkills", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<PowerSkill>.ParseList(value, CompatibleCombatSkillList, errorInfo); }} },
             { "MaxBonusLevels", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxBonusLevels = value; }} },
             { "InteractionFlagLevelCaps", new FieldParser() { Type = FieldType.Object, ParserObject = ParseInteractionFlagLevelCaps } },
             { "AdvancementHints", new FieldParser() { Type = FieldType.Object, ParserObject = ParseAdvancementHints } },
@@ -189,7 +189,7 @@ namespace PgJsonObjects
             { "Parents", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseParents } },
             { "SkipBonusLevelsIfSkillUnlearned", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawSkipBonusLevelsIfSkillUnlearned = value; }} },
             { "AuxCombat", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawAuxCombat = value; }} },
-            { "TSysCategories", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseTSysCategories } },
+            { "TSysCategories", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<SkillCategory>.ParseList(value, TSysCategoryList, errorInfo); }} },
         }; } }
 
         private void ParseXpTable(string RawXpTable, ParseErrorInfo ErrorInfo)
@@ -205,12 +205,6 @@ namespace PgJsonObjects
             AdvancementTable = null;
             IsRawAdvancementTableEmpty = false;
             IsRawAdvancementTableParsed = false;
-        }
-
-        private void ParseCompatibleCombatSkills(string RawCompatibleCombatSkills, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<PowerSkill>.TryParse(RawCompatibleCombatSkills, out PowerSkill ParsedCompatibleCombatSkill, ErrorInfo))
-                CompatibleCombatSkillList.Add(ParsedCompatibleCombatSkill);
         }
 
         private void ParseInteractionFlagLevelCaps(JsonObject InteractionFlagLevelCaps, ParseErrorInfo ErrorInfo)

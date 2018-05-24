@@ -153,8 +153,8 @@ namespace PgJsonObjects
             { "CanBeOnSidebar", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCanBeOnSidebar = value; }} },
             { "CanSuppressMonsterShout", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCanSuppressMonsterShout = value; }} },
             { "CanTargetUntargetableEnemies", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCanTargetUntargetableEnemies = value; }} },
-            { "CausesOfDeath", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseCausesOfDeath } },
-            { "Costs", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseCosts } },
+            { "CausesOfDeath", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<Deaths>.ParseList(value, CausesOfDeathList, errorInfo); }} },
+            { "Costs", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<RecipeCost>.ParseList("Costs", value, CostList, errorInfo); }} },
             { "CombatRefreshBaseAmount", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawCombatRefreshBaseAmount = value; }} },
             { "CompatibleSkills", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseCompatibleSkills } },
             { "ConsumedItemChance", new FieldParser() { Type = FieldType.Float, ParserFloat = ParseConsumedItemChance } },
@@ -173,7 +173,7 @@ namespace PgJsonObjects
             { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
             { "IsHarmless", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsHarmless = value; }} },
             { "ItemKeywordReqErrorMessage", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { ItemKeywordReqErrorMessage = value; }} },
-            { "ItemKeywordReqs", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseItemKeywordReqs } },
+            { "ItemKeywordReqs", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<AbilityItemKeyword>.ParseList(value, TextMaps.AbilityItemKeywordStringMap, ItemKeywordReqList, errorInfo); }} },
             { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
             { "Level", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawLevel = value; }} },
             { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
@@ -181,13 +181,13 @@ namespace PgJsonObjects
             { "PetTypeTagReqMax", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParsePetTypeTagReqMax } },
             { "Prerequisite", new FieldParser() { Type = FieldType.String, ParserString = ParsePrerequisite } },
             { "Projectile", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Projectile = StringToEnumConversion<AbilityProjectile>.Parse(value, errorInfo); }} },
-            { "PvE", new FieldParser() { Type = FieldType.Object, ParserObject = ParsePvE } },
-            { "PvP", new FieldParser() { Type = FieldType.Object, ParserObject = ParsePvP } },
+            { "PvE", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { PvE = JsonObjectParser<AbilityPvX>.Parse("PvE", value, errorInfo); }} },
+            { "PvP", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { PvP = JsonObjectParser<AbilityPvX>.Parse("PvP", value, errorInfo); }} },
             { "ResetTime", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawResetTime = value; }} },
             { "SelfParticle", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { SelfParticle = value; }} },
             { "SharesResetTimerWith", new FieldParser() { Type = FieldType.String, ParserString = ParseSharesResetTimerWith } },
             { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
-            { "SpecialCasterRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseSpecialCasterRequirements } },
+            { "SpecialCasterRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("SpecialCasterRequirement", value, SpecialCasterRequirementList, errorInfo); }} },
             { "SpecialInfo", new FieldParser() { Type = FieldType.String, ParserString = ParseSpecialInfo } },
             { "SpecialTargetingTypeReq", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawSpecialTargetingTypeReq = value; }} },
             { "Target", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Target = StringToEnumConversion<AbilityTarget>.Parse(value, errorInfo); }} },
@@ -204,19 +204,6 @@ namespace PgJsonObjects
             this.RawAbilityGroup = RawAbilityGroup;
             AbilityGroup = null;
             IsRawAbilityGroupParsed = false;
-        }
-
-        private void ParseCausesOfDeath(string RawCausesOfDeath, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<Deaths>.TryParse(RawCausesOfDeath, out Deaths ParsedCauseOfDeath, ErrorInfo))
-                CausesOfDeathList.Add(ParsedCauseOfDeath);
-        }
-
-        private void ParseCosts(JsonObject RawCosts, ParseErrorInfo ErrorInfo)
-        {
-            JsonObjectParser<RecipeCost>.InitAsSubitem("Costs", RawCosts, out RecipeCost ParsedCost, ErrorInfo);
-            if (ParsedCost != null)
-                CostList.Add(ParsedCost);
         }
 
         private void ParseCompatibleSkills(string RawCompatibleSkill, ParseErrorInfo ErrorInfo)
@@ -299,12 +286,6 @@ namespace PgJsonObjects
                 this.RawIconId = 0;
         }
 
-        private void ParseItemKeywordReqs(string RawItemKeywordReqs, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<AbilityItemKeyword>.TryParse(RawItemKeywordReqs, TextMaps.AbilityItemKeywordStringMap, out AbilityItemKeyword ParsedAbilityItemKeyword, ErrorInfo))
-                ItemKeywordReqList.Add(ParsedAbilityItemKeyword);
-        }
-
         private void ParseKeywords(string RawKeywords, ParseErrorInfo ErrorInfo)
         {
             if (StringToEnumConversion<AbilityKeyword>.TryParse(RawKeywords, out AbilityKeyword ParsedAbilityKeyword, ErrorInfo))
@@ -330,20 +311,6 @@ namespace PgJsonObjects
             IsRawPrerequisiteParsed = false;
         }
 
-        private void ParsePvE(JsonObject RawPvE, ParseErrorInfo ErrorInfo)
-        {
-            AbilityPvX ParsedPvE;
-            JsonObjectParser<AbilityPvX>.InitAsSubitem("PvE", RawPvE, out ParsedPvE, ErrorInfo);
-            PvE = ParsedPvE;
-        }
-
-        private void ParsePvP(JsonObject RawPvP, ParseErrorInfo ErrorInfo)
-        {
-            AbilityPvX ParsedPvP;
-            JsonObjectParser<AbilityPvX>.InitAsSubitem("PvP", RawPvP, out ParsedPvP, ErrorInfo);
-            PvP = ParsedPvP;
-        }
-
         private void ParseSharesResetTimerWith(string RawSharesResetTimerWith, ParseErrorInfo ErrorInfo)
         {
             this.RawSharesResetTimerWith = RawSharesResetTimerWith;
@@ -351,15 +318,16 @@ namespace PgJsonObjects
             IsRawSharesResetTimerWithParsed = false;
         }
 
-        private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
+        private void ParseSkill(string value, ParseErrorInfo errorInfo)
         {
-            PowerSkill ParsedPowerSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(RawSkill, out ParsedPowerSkill, ErrorInfo);
-            Skill = ParsedPowerSkill;
+            if (StringToEnumConversion<PowerSkill>.TryParse(value, out PowerSkill ParsedPowerSkill, errorInfo))
+            {
+                Skill = ParsedPowerSkill;
 
-            PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, RawIconId.HasValue && RawIconId.Value > 0 ? RawIconId : null);
-            if (KeywordList.Contains(AbilityKeyword.BasicAttack))
-                PgJsonObjects.Skill.UpdateBasicAttackTable(Skill, this);
+                PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, RawIconId.HasValue && RawIconId.Value > 0 ? RawIconId : null);
+                if (KeywordList.Contains(AbilityKeyword.BasicAttack))
+                    PgJsonObjects.Skill.UpdateBasicAttackTable(Skill, this);
+            }
         }
 
         private void ParseSpecialInfo(string RawSpecialInfo, ParseErrorInfo ErrorInfo)
@@ -375,16 +343,6 @@ namespace PgJsonObjects
             this.RawUpgradeOf = RawUpgradeOf;
             UpgradeOf = null;
             IsRawUpgradeOfParsed = false;
-        }
-
-        public void ParseSpecialCasterRequirements(JsonObject RawSpecialCasterRequirement, ParseErrorInfo ErrorInfo)
-        {
-            AbilityRequirement ParsedSpecialCasterRequirement;
-            JsonObjectParser<AbilityRequirement>.InitAsSubitem("SpecialCasterRequirement", RawSpecialCasterRequirement, out ParsedSpecialCasterRequirement, ErrorInfo);
-
-            AbilityRequirement ConvertedAbilityRequirement = ParsedSpecialCasterRequirement.ToSpecificAbilityRequirement(ErrorInfo);
-            if (ConvertedAbilityRequirement != null)
-                SpecialCasterRequirementList.Add(ConvertedAbilityRequirement);
         }
 
         public void ParseCompleteSpecialInfo(string s, ParseErrorInfo ErrorInfo)
