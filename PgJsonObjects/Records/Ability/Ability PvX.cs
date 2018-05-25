@@ -41,6 +41,7 @@ namespace PgJsonObjects
         public Dictionary<string, Attribute> AttributesThatModRageTable { get; } = new Dictionary<string, Attribute>();
         public Dictionary<string, Attribute> AttributesThatDeltaRangeTable { get; } = new Dictionary<string, Attribute>();
         public List<SpecialValue> SpecialValueList { get; } = new List<SpecialValue>();
+        public List<DoT> DoTList { get; } = new List<DoT>();
         public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
         private int? RawTauntDelta;
         public int TempTauntDelta { get { return RawTempTauntDelta.HasValue ? RawTempTauntDelta.Value : 0; } }
@@ -49,6 +50,7 @@ namespace PgJsonObjects
         private int? RawRageCost;
         public double RageCostMod { get { return RawRageCostMod.HasValue ? RawRageCostMod.Value : 0; } }
         private double? RawRageCostMod;
+        public List<PreEffect> SelfPreEffectList { get; } = new List<PreEffect>();
         #endregion
 
         #region Indirect Properties
@@ -175,6 +177,14 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawRageCostMod = value,
                 GetFloat = () => RawRageCostMod } },
+            { "DoTs", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<DoT>.ParseList("DoTs", value, DoTList, errorInfo),
+                GetObjectArray = () => DoTList } },
+            { "SelfPreEffects", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<PreEffect>.ParseList(value, SelfPreEffectList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<PreEffect>.ToStringList(SelfPreEffectList) } },
         }; } }
 
         private List<string> RawAttributesThatDeltaDamageList { get; } = new List<string>();
@@ -266,6 +276,9 @@ namespace PgJsonObjects
                     if (FieldContent.Length > 0)
                         AddWithFieldSeparator(ref Result, FieldContent);
                 }
+
+                foreach (PreEffect Item in SelfPreEffectList)
+                    AddWithFieldSeparator(ref Result, TextMaps.PreEffectTextMap[Item]);
 
                 return Result;
             }

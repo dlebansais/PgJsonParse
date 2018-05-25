@@ -45,5 +45,6 @@
         CleanOffDust,
         TakeSoilSample,
         EmptyBottle,
+        ObtainTitle,
     }
 }

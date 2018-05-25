@@ -59,6 +59,9 @@ namespace PgJsonObjects
         public string RawItemMenuCategory { get; private set; }
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get; private set; }
+        public Recipe PrereqRecipe { get; private set; }
+        private string RawPrereqRecipe;
+        private bool IsPrereqRecipeParsed;
         #endregion
 
         #region Indirect Properties
@@ -110,6 +113,7 @@ namespace PgJsonObjects
             { "IsItemMenuKeywordReqSufficient", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsItemMenuKeywordReqSufficient = value; }} },
             { "ItemMenuCategory", new FieldParser() { Type = FieldType.String, ParseString = ParseItemMenuCategory } },
             { "ItemMenuCategoryLevel", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawItemMenuCategoryLevel = value; }} },
+            { "PrereqRecipe", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RawPrereqRecipe = value; }} },
         }; } }
 
         private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
@@ -185,6 +189,11 @@ namespace PgJsonObjects
 
             else if (RawItemMenuCategory == "TSysDistill")
                 this.RawItemMenuCategory = "Distill";
+        }
+
+        private void ParsePrereqRecipe(string value, ParseErrorInfo errorInfo)
+        {
+            //TODO
         }
 
         private bool ParseResultEffect(string RawEffect, ParseErrorInfo ErrorInfo, out RecipeResultEffect NewResultEffect)
@@ -777,6 +786,8 @@ namespace PgJsonObjects
                     if (RecipeItemKeyword != ItemKeyword.Internal_None)
                         AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[RecipeItemKeyword]);
                     AddWithFieldSeparator(ref Result, RawItemMenuCategory);
+                    if (PrereqRecipe != null)
+                        AddWithFieldSeparator(ref Result, PrereqRecipe.Name);
 
                     return Result;
                 }
@@ -818,6 +829,9 @@ namespace PgJsonObjects
 
             if (RawSharesResetTimerWith != null)
                 SharesResetTimerWith = PgJsonObjects.Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsSharesResetTimerWithParsed, ref IsConnected, this);
+
+            if (RawPrereqRecipe != null)
+                PrereqRecipe = PgJsonObjects.Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawPrereqRecipe, PrereqRecipe, ref IsPrereqRecipeParsed, ref IsConnected, this);
 
             return IsConnected;
         }

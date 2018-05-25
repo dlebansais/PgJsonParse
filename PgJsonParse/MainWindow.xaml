@@ -221,8 +221,8 @@
         </DataTemplate>
         <DataTemplate x:Key="EquippedItemKeywordAbilityRequirementTemplate">
             <StackPanel Orientation="Horizontal">
-                <TextBlock>Has</TextBlock>
-                <TextBlock Text="{Binding Count}" Margin="5,0,0,0"/>
+                <TextBlock>Has at least</TextBlock>
+                <TextBlock Text="{Binding MinCount}" Margin="5,0,0,0"/>
                 <TextBlock Margin="5,0,5,0">
                     <TextBlock.Text>
                         <Binding Path="Keyword" Converter="{StaticResource convEnumToText}" ConverterParameter="AbilityKeywordTextMap"/>
@@ -2058,6 +2058,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Animation:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Margin="5,0,0,0">
@@ -2189,12 +2190,14 @@
                     </TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">Ability Group:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="18" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_Ability_AbilityGroup" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run>
-                                            <Binding Path="AbilityGroup.Name" Mode="OneWay"/>
-                                        </Run>
-                                    </Hyperlink>
+                        <Hyperlink x:Name="hyperlink_Ability_AbilityGroup" Click="OnRequestNavigate" NavigateUri="unused">
+                            <Run>
+                                <Binding Path="AbilityGroup.Name" Mode="OneWay"/>
+                            </Run>
+                        </Hyperlink>
                     </TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Special Caster Requirements Error Message:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="19" TextWrapping="Wrap" Margin="5,10,0,0" Text="{Binding RawSpecialCasterRequirementsErrorMessage }"/>
                     <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Keywords:</TextBlock>
                     <Grid Grid.Column="3" Grid.Row="0" Margin="5,0,0,0">
                         <ItemsControl x:Name="ctrl_SearchResultAbilityContent_Keywords" ItemsSource="{Binding KeywordList}">
@@ -2226,11 +2229,11 @@
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Prerequisite:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_Ability_Prerequisite" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run>
-                                            <Binding Path="Prerequisite.Name" Mode="OneWay"/>
-                                        </Run>
-                                    </Hyperlink>
+                        <Hyperlink x:Name="hyperlink_Ability_Prerequisite" Click="OnRequestNavigate" NavigateUri="unused">
+                            <Run>
+                                <Binding Path="Prerequisite.Name" Mode="OneWay"/>
+                            </Run>
+                        </Hyperlink>
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Projectile:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="5" TextWrapping="Wrap" Margin="5,10,0,0">
@@ -2246,19 +2249,19 @@
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Shares Reset Timer With:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="7" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_Ability_SharesResetTimerWith" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run>
-                                            <Binding Path="SharesResetTimerWith.Name" Mode="OneWay"/>
-                                        </Run>
-                                    </Hyperlink>
+                        <Hyperlink x:Name="hyperlink_Ability_SharesResetTimerWith" Click="OnRequestNavigate" NavigateUri="unused">
+                            <Run>
+                                <Binding Path="SharesResetTimerWith.Name" Mode="OneWay"/>
+                            </Run>
+                        </Hyperlink>
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="8" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_Ability_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run>
-                                            <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
-                                        </Run>
-                                    </Hyperlink>
+                        <Hyperlink x:Name="hyperlink_Ability_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
+                            <Run>
+                                <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
+                            </Run>
+                        </Hyperlink>
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Special Info:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="9" Text="{Binding SpecialInfo}" TextWrapping="Wrap" Margin="5,10,0,0"/>
@@ -2315,6 +2318,12 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <TextBlock Grid.Column="2" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">TODO PvE and PvP damage</TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Ignore effect errors:</TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="19" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="RawIgnoreEffectErrors" Converter="{StaticResource convNullableBooleanToObject}" ConverterParameter="{StaticResource NoYesNull}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </Grid>
             </DockPanel>
         </DataTemplate>
@@ -3724,6 +3733,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -3813,6 +3823,14 @@
                         <TextBlock.Text>
                             <Binding Path="RecipeItemKeyword" Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
                         </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Prerequired Recipe:</TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="13" Margin="5,10,0,0">
+                        <Hyperlink x:Name="hyperlink_Recipe_PrereqRecipe" Click="OnRequestNavigate" NavigateUri="unused">
+                            <Run>
+                                <Binding Path="PrereqRecipe.Name" Mode="OneWay"/>
+                            </Run>
+                        </Hyperlink>
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Usage Delay Message:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding UsageDelayMessage}" TextWrapping="Wrap" Margin="5,0,0,0"/>

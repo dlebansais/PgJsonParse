@@ -76,13 +76,16 @@ namespace PgJsonObjects
                     return new OrAbilityRequirement(OrList, RawErrorMsg);
 
                 case OtherRequirementType.EquippedItemKeyword:
-                    return new EquippedItemKeywordAbilityRequirement(RawKeyword, RawCount, ErrorInfo);
+                    return new EquippedItemKeywordAbilityRequirement(RawKeyword, RawMinCount, ErrorInfo);
 
                 case OtherRequirementType.GardenPlantMax:
                     return new GardenPlantMaxAbilityRequirement(RawTypeTag, RawMax, ErrorInfo);
 
                 case OtherRequirementType.InteractionFlagSet:
                     return new InteractionFlagSetAbilityRequirement(RawInteractionFlag);
+
+                case OtherRequirementType.IsVolunteerGuide:
+                    return new IsVolunteerGuideAbilityRequirement();
 
                 default:
                     return null;
@@ -106,10 +109,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawItem = value,
                 GetString  = () => RawItem } },
-            { "Count", new FieldParser() {
-                Type = FieldType.Float,
-                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCount = value,
-                GetFloat = () => RawCount } },
+            { "MinCount", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMinCount = value,
+                GetInteger = () => RawMinCount } },
             { "Health", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawHealth = value,
@@ -231,7 +234,7 @@ namespace PgJsonObjects
         private string RawAppearance;
         private List<AbilityRequirement> OrList { get; } = new List<AbilityRequirement>();
         private string RawErrorMsg;
-        private double? RawCount;
+        private int? RawMinCount;
         private string RawTypeTag;
         private string RawInteractionFlag;
         private int? RawMax;

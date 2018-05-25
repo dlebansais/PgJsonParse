@@ -90,5 +90,10 @@
         StoneImmobilize,
         EarthStormSmall,
         RanalonGuardianGlow,
+        GuidePillarFlare_Red,
+        GuidePillarFlare_Green,
+        GuidePillarFlare_Yellow,
+        GuidePillarPrismatic,
+        GuidePillarFlowers,
     }
 }

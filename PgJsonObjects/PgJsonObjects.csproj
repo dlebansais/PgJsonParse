@@ -31,6 +31,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -76,7 +77,11 @@
     <Compile Include="Records\Ability\Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\Appearance Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\Interaction Flag Set Ability Requirement.cs" />
+    <Compile Include="Records\Ability\Ability Requirement\Is Volunteer Guide Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Source.cs" />
+    <Compile Include="Records\Ability\DoT Special Rule.cs" />
+    <Compile Include="Records\Ability\DoT.cs" />
+    <Compile Include="Records\Ability\Pre Effect.cs" />
     <Compile Include="Records\Ability\SpecialNpc.cs" />
     <Compile Include="Records\Area\GameArea.cs" />
     <Compile Include="Records\Attribute\DisplayRule.cs" />

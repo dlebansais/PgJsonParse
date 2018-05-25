@@ -37,8 +37,8 @@ namespace PgJsonObjects
         public bool DelayLoopIsAbortedIfAttacked { get { return RawDelayLoopIsAbortedIfAttacked.HasValue && RawDelayLoopIsAbortedIfAttacked.Value; } }
         public bool? RawDelayLoopIsAbortedIfAttacked { get; private set; }
         public string DelayLoopMessage { get; private set; }
-        public int DelayLoopTime { get { return RawDelayLoopTime.HasValue ? RawDelayLoopTime.Value : 0; } }
-        public int? RawDelayLoopTime { get; private set; }
+        public double DelayLoopTime { get { return RawDelayLoopTime.HasValue ? RawDelayLoopTime.Value : 0; } }
+        public double? RawDelayLoopTime { get; private set; }
         public string Description { get; private set; }
         public AbilityIndicatingEnabled EffectKeywordsIndicatingEnabled { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
@@ -84,6 +84,11 @@ namespace PgJsonObjects
         public bool? RawWorksWhileFalling { get; private set; }
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; private set; }
         public Ability AbilityGroup { get; private set; }
+        public string RawSpecialCasterRequirementsErrorMessage { get; private set; }
+        public bool IgnoreEffectErrors { get { return RawIgnoreEffectErrors.HasValue && RawIgnoreEffectErrors.Value; } }
+        public bool? RawIgnoreEffectErrors { get; private set; }
+        public Dictionary<string, Attribute> AttributesThatDeltaAmmoStickChanceTable { get; } = new Dictionary<string, Attribute>();
+        public Dictionary<string, Attribute> AttributesThatDeltaDelayLoopTimeTable { get; } = new Dictionary<string, Attribute>();
         #endregion
 
         #region Indirect Properties
@@ -228,9 +233,9 @@ namespace PgJsonObjects
                 ParseString = (string value, ParseErrorInfo errorInfo) => DelayLoopMessage = value,
                 GetString = () => DelayLoopMessage } },
             { "DelayLoopTime", new FieldParser() {
-                Type = FieldType.Integer,
-                ParseInteger = ParseDelayLoopTime,
-                GetInteger = () => RawDelayLoopTime } },
+                Type = FieldType.Float,
+                ParseFloat = ParseDelayLoopTime,
+                GetFloat = () => RawDelayLoopTime } },
             { "Description", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Description = value,
@@ -359,6 +364,26 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawWorksWhileFalling = value,
                 GetBool = () => RawWorksWhileFalling } },
+            { "SpecialCasterRequirementsErrorMessage", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawSpecialCasterRequirementsErrorMessage = value,
+                GetString = () => RawSpecialCasterRequirementsErrorMessage } },
+            { "IgnoreEffectErrors", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIgnoreEffectErrors = value,
+                GetBool = () => RawIgnoreEffectErrors } },
+            { "AttributesThatDeltaAmmoStickChance", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaAmmoStickChanceList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaAmmoStickChanceList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty } },
+            { "AttributesThatDeltaDelayLoopTime", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDelayLoopTimeList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaDelayLoopTimeList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty } },
         }; } }
 
         private void ParseAbilityGroup(string RawAbilityGroup, ParseErrorInfo ErrorInfo)
@@ -405,7 +430,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemCount");
         }
 
-        private void ParseDelayLoopTime(int value, ParseErrorInfo ErrorInfo)
+        private void ParseDelayLoopTime(float value, ParseErrorInfo ErrorInfo)
         {
             RawDelayLoopTime = value;
 
@@ -2265,6 +2290,51 @@ namespace PgJsonObjects
             {
             }
 
+            else if (Tools.Scan(s, "Targets are knocked back", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For %d seconds, you gain Direct Poison Damage +%d and Indirect Poison Damage +%d per tick", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Undead take +%d% damage", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Dispels stun, root, or slow effects", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Grants immunity to stun, root, and slow effects for %d seconds", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "When the target next uses a Rage Attack, they are stunned", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Removes all ongoing Poison effects from the target (up to %d dmg/sec)", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "First ally to die will resurrect a few seconds after death with %d% of their Health and Power", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Target gains Indirect Cold Mitigation +%d for %d seconds", args))
+            {
+                //TODO
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);
@@ -2312,7 +2382,7 @@ namespace PgJsonObjects
             Generator.AddString("DamageType", StringToEnumConversion<DamageType>.ToString(DamageType, null, DamageType.Internal_None, DamageType.Internal_Empty));
             Generator.AddBoolean("DelayLoopIsAbortedIfAttacked", RawDelayLoopIsAbortedIfAttacked);
             Generator.AddString("DelayLoopMessage", DelayLoopMessage);
-            Generator.AddInteger("DelayLoopTime", RawDelayLoopTime);
+            Generator.AddDouble("DelayLoopTime", RawDelayLoopTime);
             Generator.AddString("Description", Description);
 
             List<AbilityIndicatingEnabled> EffectKeywordsIndicatingEnabledList = new List<AbilityIndicatingEnabled>();
@@ -2461,6 +2531,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, "Works While Falling");
                 if (AbilityGroup != null)
                     AddWithFieldSeparator(ref Result, AbilityGroup.Name);
+                if (RawIgnoreEffectErrors.HasValue)
+                    AddWithFieldSeparator(ref Result, "Ignore Effect Errors");
 
                 return Result;
             }
@@ -2480,6 +2552,10 @@ namespace PgJsonObjects
         private bool IsRawUpgradeOfParsed;
         private string RawAbilityGroup;
         private bool IsRawAbilityGroupParsed;
+        private List<string> RawAttributesThatDeltaAmmoStickChanceList = new List<string>();
+        private bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty;
+        private List<string> RawAttributesThatDeltaDelayLoopTimeList = new List<string>();
+        private bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty;
         #endregion
 
         #region Connecting Objects
@@ -2517,7 +2593,10 @@ namespace PgJsonObjects
                 Item.Connect(ErrorInfo, this, AllTables);
 
             ConsumedItemLink = Item.ConnectSingleProperty(null, ItemTable, RawConsumedItemKeyword, ConsumedItemLink, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
-            
+
+            IsConnected |= Attribute.ConnectTable(ErrorInfo, AttributeTable, RawAttributesThatDeltaAmmoStickChanceList, AttributesThatDeltaAmmoStickChanceTable);
+            IsConnected |= Attribute.ConnectTable(ErrorInfo, AttributeTable, RawAttributesThatDeltaDelayLoopTimeList, AttributesThatDeltaDelayLoopTimeTable);
+
             return IsConnected;
         }
 

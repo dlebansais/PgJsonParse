@@ -29,5 +29,6 @@
         GuildQuestCompleted,
         RuntimeBehaviorRuleSet,
         InteractionFlagSet,
+        IsVolunteerGuide,
     }
 }

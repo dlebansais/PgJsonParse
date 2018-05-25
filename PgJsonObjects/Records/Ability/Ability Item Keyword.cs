@@ -38,5 +38,8 @@
         BardHorn,
         IceStaff,
         form_Rabbit,
+        Dirk,
+        Dagger,
+        HolySymbol,
     }
 }

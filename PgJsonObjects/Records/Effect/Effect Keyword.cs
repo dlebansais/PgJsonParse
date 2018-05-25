@@ -205,5 +205,8 @@
         Event_HalloweenEvent,
         Event_Christmas,
         RanalonSpeechCurse,
+        CorruptHateDebuff,
+        CorruptHateDamage,
+        PriestFocus,
     }
 }

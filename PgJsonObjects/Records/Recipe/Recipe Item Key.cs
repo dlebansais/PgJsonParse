@@ -104,5 +104,7 @@
         MinTSysPrereq_61,
         MaxTSysPrereq_90,
         GlassChunk,
+        Dagger,
+        Dirk,
     }
 }

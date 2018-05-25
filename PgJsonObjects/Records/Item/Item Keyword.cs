@@ -861,5 +861,9 @@
         ShamanicInfusionRecipe,
         Watercress,
         Trident,
+        HolySymbol,
+        BarteredHolySymbol,
+        CarpentryRecipe,
+        Dirk,
     }
 }

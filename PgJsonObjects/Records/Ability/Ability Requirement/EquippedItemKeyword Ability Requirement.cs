@@ -2,23 +2,23 @@
 {
     public class EquippedItemKeywordAbilityRequirement : AbilityRequirement
     {
-        public EquippedItemKeywordAbilityRequirement(string RawKeyword, double? RawCount, ParseErrorInfo ErrorInfo)
+        public EquippedItemKeywordAbilityRequirement(string RawKeyword, int? RawMinCount, ParseErrorInfo ErrorInfo)
         {
             AbilityKeyword ParsedKeyword;
             StringToEnumConversion<AbilityKeyword>.TryParse(RawKeyword, out ParsedKeyword, ErrorInfo);
             Keyword = ParsedKeyword;
-            Count = RawCount.HasValue ? RawCount.Value : 0;
+            MinCount = RawMinCount.HasValue ? RawMinCount.Value : 0;
         }
 
         public AbilityKeyword Keyword { get; private set; }
-        public double Count { get; private set; }
+        public int MinCount { get; private set; }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.AddString("T", "EquippedItemKeyword");
             Generator.AddEnum("Keyword", Keyword);
-            Generator.AddDouble("Count", Count);
+            Generator.AddInteger("MinCount", MinCount);
         }
         #endregion
 

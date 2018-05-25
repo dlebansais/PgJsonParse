@@ -27,5 +27,6 @@
         NPC_DyeMonster,
         NPC_Bahdba,
         NPC_Chirrra,
+        ModeratorToolbox,
     }
 }

@@ -52,5 +52,6 @@
         CraftedBardShirt,
         CraftedBardGloves,
         CraftedBardHelm,
+        CraftedPriestStaff,
     }
 }

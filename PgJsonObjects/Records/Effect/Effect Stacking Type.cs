@@ -255,5 +255,7 @@
         AlchemyDmgBoostVsFish,
         MoisteningCream,
         RanalonSpeechCurse,
+        AdmonishPsiVuln,
+        GiveWarmth,
     }
 }

@@ -152,6 +152,7 @@
         Orcish,
         Phrenology_Dwarves,
         AlcoholTolerance,
+        Priest,
     }
 }
 
