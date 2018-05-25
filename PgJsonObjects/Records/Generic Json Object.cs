@@ -12,6 +12,7 @@ namespace PgJsonObjects
         void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo);
         void SortLinkBack();
         string TextContent { get; }
+        void GenerateObjectContent(JsonGenerator Generator);
     }
 
     public abstract class GenericJsonObject
@@ -34,18 +35,32 @@ namespace PgJsonObjects
         protected struct FieldParser
         {
             public FieldType Type;
-            public Action<object, ParseErrorInfo> ParserUnknown;
-            public Action<int, ParseErrorInfo> ParserInteger;
-            public Action<bool, ParseErrorInfo> ParserBool;
-            public Action<float, ParseErrorInfo> ParserFloat;
-            public Action<string, ParseErrorInfo> ParserString;
-            public Action<JsonObject, ParseErrorInfo> ParserObject;
-            public Action<int, ParseErrorInfo> ParserSimpleIntegerArray;
-            public Func<int, ParseErrorInfo, bool> ParserIntegerArray;
-            public Action<string, ParseErrorInfo> ParserSimpleStringArray;
-            public Func<string, ParseErrorInfo, bool> ParserStringArray;
-            public Action<JsonObject, ParseErrorInfo> ParserObjectArray;
-            public Action ParserSetArrayIsEmpty;
+
+            public Action<object, ParseErrorInfo> ParseUnknown;
+            public Action<int, ParseErrorInfo> ParseInteger;
+            public Action<bool, ParseErrorInfo> ParseBool;
+            public Action<float, ParseErrorInfo> ParseFloat;
+            public Action<string, ParseErrorInfo> ParseString;
+            public Action<JsonObject, ParseErrorInfo> ParseObject;
+            public Action<int, ParseErrorInfo> ParseSimpleIntegerArray;
+            public Func<int, ParseErrorInfo, bool> ParseIntegerArray;
+            public Action<string, ParseErrorInfo> ParseSimpleStringArray;
+            public Func<string, ParseErrorInfo, bool> ParseStringArray;
+            public Action<JsonObject, ParseErrorInfo> ParseObjectArray;
+            public Action SetArrayIsEmpty;
+
+            public Action<string, JsonGenerator> CustomGenerator;
+
+            public Func<object> GetUnknown;
+            public Func<int?> GetInteger;
+            public Func<bool?> GetBool;
+            public Func<double?> GetFloat;
+            public Func<string> GetString;
+            public Func<IGenericJsonObject> GetObject;
+            public Func<List<int>> GetIntegerArray;
+            public Func<List<string>> GetStringArray;
+            public Func<IList> GetObjectArray;
+            public Func<bool> GetArrayIsEmpty;
         }
 
         #region Comparison
@@ -117,47 +132,47 @@ namespace PgJsonObjects
                         break;
 
                     case FieldType.Unknown:
-                        Parser.ParserUnknown(value, errorInfo);
+                        Parser.ParseUnknown(value, errorInfo);
                         break;
 
                     case FieldType.Integer:
-                        ParseFieldValueInteger(value, errorInfo, key, Parser.ParserInteger);
+                        ParseFieldValueInteger(value, errorInfo, key, Parser.ParseInteger);
                         break;
 
                     case FieldType.Bool:
-                        ParseFieldValueBool(value, errorInfo, key, Parser.ParserBool);
+                        ParseFieldValueBool(value, errorInfo, key, Parser.ParseBool);
                         break;
 
                     case FieldType.Float:
-                        ParseFieldValueFloat(value, errorInfo, key, Parser.ParserFloat);
+                        ParseFieldValueFloat(value, errorInfo, key, Parser.ParseFloat);
                         break;
 
                     case FieldType.String:
-                        ParseFieldValueString(value, errorInfo, key, Parser.ParserString);
+                        ParseFieldValueString(value, errorInfo, key, Parser.ParseString);
                         break;
 
                     case FieldType.Object:
-                        ParseFieldValueObject(value, errorInfo, key, Parser.ParserObject);
+                        ParseFieldValueObject(value, errorInfo, key, Parser.ParseObject);
                         break;
 
                     case FieldType.SimpleIntegerArray:
-                        ParseFieldValueSimpleIntegerArray(value, errorInfo, key, Parser.ParserSimpleIntegerArray);
+                        ParseFieldValueSimpleIntegerArray(value, errorInfo, key, Parser.ParseSimpleIntegerArray);
                         break;
 
                     case FieldType.IntegerArray:
-                        ParseFieldValueIntegerArray(value, errorInfo, key, Parser.ParserIntegerArray);
+                        ParseFieldValueIntegerArray(value, errorInfo, key, Parser.ParseIntegerArray);
                         break;
 
                     case FieldType.SimpleStringArray:
-                        ParseFieldValueSimpleStringArray(value, errorInfo, key, Parser.ParserSimpleStringArray, Parser.ParserSetArrayIsEmpty);
+                        ParseFieldValueSimpleStringArray(value, errorInfo, key, Parser.ParseSimpleStringArray, Parser.SetArrayIsEmpty);
                         break;
 
                     case FieldType.StringArray:
-                        ParseFieldValueStringArray(value, errorInfo, key, Parser.ParserStringArray, Parser.ParserSetArrayIsEmpty);
+                        ParseFieldValueStringArray(value, errorInfo, key, Parser.ParseStringArray, Parser.SetArrayIsEmpty);
                         break;
 
                     case FieldType.ObjectArray:
-                        ParseFieldValueObjectArray(value, errorInfo, key, Parser.ParserObjectArray);
+                        ParseFieldValueObjectArray(value, errorInfo, key, Parser.ParseObjectArray);
                         break;
                 }
             }
@@ -518,7 +533,73 @@ namespace PgJsonObjects
         #endregion
 
         #region Client Interface
-        public abstract void GenerateObjectContent(JsonGenerator Generator);
+        public virtual void GenerateObjectContent(JsonGenerator Generator)
+        {
+            Generator.OpenObject(Key);
+
+            foreach (KeyValuePair<string, FieldParser> Entry in FieldTable)
+            {
+                FieldParser Parser = Entry.Value;
+
+                switch (Parser.Type)
+                {
+                    default:
+                        break;
+
+                    case FieldType.Unknown:
+                        break;
+
+                    case FieldType.Integer:
+                        Generator.AddInteger(Entry.Key, Parser.GetInteger());
+                        break;
+
+                    case FieldType.Bool:
+                        Generator.AddBoolean(Entry.Key, Parser.GetBool());
+                        break;
+
+                    case FieldType.Float:
+                        Generator.AddDouble(Entry.Key, Parser.GetFloat());
+                        break;
+
+                    case FieldType.String:
+                        Generator.AddString(Entry.Key, Parser.GetString());
+                        break;
+
+                    case FieldType.Object:
+                        break;
+
+                    case FieldType.SimpleIntegerArray:
+                    case FieldType.IntegerArray:
+                        break;
+
+                    case FieldType.SimpleStringArray:
+                    case FieldType.StringArray:
+                        Generator.AddList(Entry.Key, Parser.GetStringArray(), Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
+                        break;
+
+                    case FieldType.ObjectArray:
+                        IList ObjectArray = Parser.GetObjectArray();
+                        bool IsListEmpty;
+                        if (Parser.GetArrayIsEmpty != null)
+                            IsListEmpty = Parser.GetArrayIsEmpty();
+                        else
+                            IsListEmpty = false;
+
+                        if (ObjectArray.Count > 0 || IsListEmpty)
+                        {
+                            Generator.OpenArray(Entry.Key);
+
+                            foreach (IGenericJsonObject Item in ObjectArray)
+                                Item.GenerateObjectContent(Generator);
+
+                            Generator.CloseArray();
+                        }
+                        break;
+                }
+            }
+
+            Generator.CloseObject();
+        }
 
         public string Key { get; private set; }
         public abstract string TextContent { get; }

@@ -21,8 +21,8 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = ParseInternalName } },
-            { "XpAmounts", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParserSimpleIntegerArray = ParseXpAmounts } },
+            { "InternalName", new FieldParser() { Type = FieldType.String, ParseString = ParseInternalName } },
+            { "XpAmounts", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParseSimpleIntegerArray = ParseXpAmounts } },
         }; } }
 
         private void ParseInternalName(string value, ParseErrorInfo ErrorInfo)

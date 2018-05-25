@@ -151,12 +151,12 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Prefix", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Prefix = value; }} },
-            { "Suffix", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Suffix = value; }} },
-            { "Tiers", new FieldParser() { Type = FieldType.Object, ParserObject = ParseTiers } },
-            { "Slots", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<ItemSlot>.ParseList(value, SlotList, errorInfo); }} },
-            { "Skill", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Skill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); }} },
-            { "IsUnavailable", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsUnavailable = value; }} },
+            { "Prefix", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Prefix = value; }} },
+            { "Suffix", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Suffix = value; }} },
+            { "Tiers", new FieldParser() { Type = FieldType.Object, ParseObject = ParseTiers } },
+            { "Slots", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<ItemSlot>.ParseList(value, SlotList, errorInfo); }} },
+            { "Skill", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Skill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); }} },
+            { "IsUnavailable", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsUnavailable = value; }} },
         }; } }
 
         private void ParseTiers(JsonObject RawTiers, ParseErrorInfo ErrorInfo)

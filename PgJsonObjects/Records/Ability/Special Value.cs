@@ -27,14 +27,44 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Label", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Label = value; }} },
-            { "Suffix", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Suffix = value; }} },
-            { "Value", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawValue = value; }} },
-            { "AttributesThatDelta", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty = true } },
-            { "AttributesThatMod", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModListIsEmpty = true} },
-            { "AttributesThatModBase", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModBaseList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModBaseListIsEmpty = true} },
-            { "DisplayAsPercent", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawDisplayAsPercent = value; }} },
-            { "SkipIfZero", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawSkipIfZero = value; }} },
+            { "Label", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Label = value,
+                GetString = () => Label } },
+            { "Suffix", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Suffix = value,
+                GetString = () => Suffix } },
+            { "Value", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawValue = value,
+                GetFloat = () => RawValue } },
+            { "AttributesThatDelta", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty } },
+            { "AttributesThatMod", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatModListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatModList,
+                GetArrayIsEmpty = () => RawAttributesThatModListIsEmpty } },
+            { "AttributesThatModBase", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModBaseList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatModBaseListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatModBaseList,
+                GetArrayIsEmpty = () => RawAttributesThatModBaseListIsEmpty } },
+            { "DisplayAsPercent", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawDisplayAsPercent = value,
+                GetBool = () => RawDisplayAsPercent } },
+            { "SkipIfZero", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawSkipIfZero = value,
+                GetBool = () => RawSkipIfZero } },
         }; } }
 
         private List<string> RawAttributesThatDeltaList { get; } = new List<string>();

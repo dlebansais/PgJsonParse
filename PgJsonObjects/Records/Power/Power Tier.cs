@@ -16,7 +16,7 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "EffectDescs", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseEffectDescs } },
+            { "EffectDescs", new FieldParser() { Type = FieldType.StringArray, ParseStringArray = ParseEffectDescs } },
         }; } }
 
         private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)

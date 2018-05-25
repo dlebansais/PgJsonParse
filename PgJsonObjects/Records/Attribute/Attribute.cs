@@ -46,13 +46,13 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Label", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Label = value; }} },
-            { "IconIds", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParserSimpleIntegerArray = ParseIconId } },
-            { "Tooltip", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Tooltip = value; }} },
-            { "DisplayType", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DisplayType = StringToEnumConversion<DisplayType>.Parse(value, errorInfo); }} },
-            { "IsHidden", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsHidden = value; }} },
-            { "DisplayRule", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DisplayRule = StringToEnumConversion<DisplayRule>.Parse(value, errorInfo); }} },
-            { "DefaultValue", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawDefaultValue = value; }} },
+            { "Label", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Label = value; }} },
+            { "IconIds", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParseSimpleIntegerArray = ParseIconId } },
+            { "Tooltip", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Tooltip = value; }} },
+            { "DisplayType", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { DisplayType = StringToEnumConversion<DisplayType>.Parse(value, errorInfo); }} },
+            { "IsHidden", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsHidden = value; }} },
+            { "DisplayRule", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { DisplayRule = StringToEnumConversion<DisplayRule>.Parse(value, errorInfo); }} },
+            { "DefaultValue", new FieldParser() { Type = FieldType.Float, ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawDefaultValue = value; }} },
         }; } }
 
         private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)

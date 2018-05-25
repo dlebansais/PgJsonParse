@@ -143,72 +143,254 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            /*{ "VULNERABILITY", null },
-            { "MITIGATION", null },
-            { "MOD_INDIRECT", null },
-            { "MOD_DIRECT", null },*/
-            { "NONCOMBAT_REGEN_HEALTH_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenHealthMod = value; }} },
-            { "COMBAT_REGEN_HEALTH_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenHealthMod = value; }} },
-            { "COMBAT_REGEN_HEALTH_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenHealthDelta = value; }} },
-            { "NONCOMBAT_REGEN_ARMOR_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenArmorMod = value; }} },
-            { "NONCOMBAT_REGEN_ARMOR_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenArmordelta = value; }} },
-            { "COMBAT_REGEN_ARMOR_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenArmorMod = value; }} },
-            { "NONCOMBAT_REGEN_POWER_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenPowerMod = value; }} },
-            { "COMBAT_REGEN_POWER_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenPowerMod = value; }} },
-            { "NONCOMBAT_REGEN_RAGE_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNonCombatRegenRageMod = value; }} },
-            { "COMBAT_REGEN_RAGE_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenRageMod = value; }} },
-            { "MENTAL_DEFENSE_RATING", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMentalDefenseRating = value; }} },
-            { "SPRINT_BOOST", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawSprintBoost = value; }} },
-            { "TAUNT_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawTauntMod = value; }} },
-            { "IGNORE_CHANCE_FEAR", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawIgnoreChanceFear = value; }} },
-            { "IGNORE_CHANCE_MEZ", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawIgnoreChanceMezz = value; }} },
-            { "IGNORE_CHANCE_KNOCKBACK", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawIgnoreChanceKnockback = value; }} },
-            { "EVASION_CHANCE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawEvasionChance = value; }} },
-            { "LOOT_BOOST_CHANCE_UNCOMMON", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceUncommon = value; }} },
-            { "LOOT_BOOST_CHANCE_RARE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceRare = value; }} },
-            { "LOOT_BOOST_CHANCE_EXCEPTIONAL", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceExceptional = value; }} },
-            { "LOOT_BOOST_CHANCE_EPIC", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceEpic = value; }} },
-            { "LOOT_BOOST_CHANCE_LEGENDARY", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLootBoostChanceLegendary = value; }} },
-            { "MAX_HEALTH", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxHealth = value; }} },
-            { "MAX_ARMOR", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxArmor = value; }} },
-            { "MAX_RAGE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxRage = value; }} },
-            { "MAX_POWER", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxPower = value; }} },
-            { "MAX_BREATH", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxBreath = value; }} },
-            { "BOOST_UNIVERSAL_DIRECT", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawBoostUniversalDirect = value; }} },
-            { "BOOST_ABILITY_RAGEATTACK", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawBoostAbilityRageAttack = value; }} },
-            { "MOD_ABILITY_RAGEATTACK", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawModAbilityRageAttack = value; }} },
-            { "MONSTER_COMBAT_XP_VALUE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMonsterCombatXpValue = value; }} },
-            { "COMBAT_REGEN_ARMOR_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenArmorDelta = value; }} },
-            { "COMBAT_REGEN_POWER_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCombatRegenDelta = value; }} },
-            { "MAX_INVENTORY_SIZE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxInventorySize = value; }} },
-            { "MAX_METABOLISM", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxMetabolism = value; }} },
-            { "NPC_MOD_FAVORFROMGIFTS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNpcModFavorFromGifts = value; }} },
-            { "NPC_MOD_FAVORFROMHANGOUTS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNpcModFavorFromHangouts = value; }} },
-            { "NPC_MOD_MAXSALESVALUE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNpcModMaxSalesValue = value; }} },
-            { "NPC_MOD_TRAININGCOST", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawNpcModTrainingCost = value; }} },
-            { "NUM_INVENTORY_FOLDERS", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumInventoryFolders = value; }} },
-            { "HIGH_CLEANLINESS_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawHighCleanlinessXpEarnedMod = value; }} },
-            { "LOW_CLEANLINESS_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLowCleanlinessXpEarnedMod = value; }} },
-            { "MAX_ARMOR_MITIGATION_RATIO", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxArmorMitigationRatio = value; }} },
-            { "SHOW_CLEANLINESS_INDICATORS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShowCleanlinessIndicators = value; }} },
-            { "HIGH_COMMUNITY_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawHighCommunityXpEarnedMod = value; }} },
-            { "LOW_COMMUNITY_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLowCommunityXpEarnedMod = value; }} },
-            { "SHOW_COMMUNITY_INDICATORS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShowCommunityIndicators = value; }} },
-            { "HIGH_PEACEABLENESS_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawHighPeaceblenessXpEarnedMod = value; }} },
-            { "LOW_PEACEABLENESS_XP_EARNED_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawLowPeaceblenessXpEarnedMod = value; }} },
-            { "SHOW_PEACEABLENESS_INDICATORS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShowPeaceblenessIndicators = value; }} },
-            { "STAFF_ARMOR_AUTOHEAL", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawStaffArmorAutoHeal = value; }} },
-            { "MAX_MAP_PINS_PER_AREA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxMapPinsPerArea = value; }} },
-            { "MAX_MAP_PIN_ICONS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxMapPinIcons = value; }} },
-            { "WORKORDER_COIN_REWARD_MOD", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawWorkOrderCoinRewardMod = value; }} },
-            { "MAX_ACTIVE_WORKORDERS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxActiveWorkOrders = value; }} },
-            { "PLAYER_ORDERS_MAX_ACTIVE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawPlayerOrdersMaxActive = value; }} },
-            { "SHOP_INVENTORY_SIZE_DELTA", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShopInventorySizeDelta = value; }} },
-            { "MAIL_SHOP_NUMFREE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMailShopNumFree = value; }} },
-            { "SHOP_HIRING_MAX_PREPAY_DAYS", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShopHiringMaxPrepDays = value; }} },
-            { "SHOP_LOG_DAYSKEPT", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShopLogDaysKept = value; }} },
-            { "SHOP_HIRING_NUMFREE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawShopHiringNumFree = value; }} },
-            { "MOD_CRITICAL_HIT_DAMAGE", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCriticalHitDamage = value; }} },
+            { "NONCOMBAT_REGEN_HEALTH_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNonCombatRegenHealthMod = value,
+                GetFloat = () => RawNonCombatRegenHealthMod } },
+            { "COMBAT_REGEN_HEALTH_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCombatRegenHealthMod = value,
+                GetFloat = () => RawCombatRegenHealthMod } },
+            { "COMBAT_REGEN_HEALTH_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCombatRegenHealthDelta = value,
+                GetFloat = () => RawCombatRegenHealthDelta } },
+            { "NONCOMBAT_REGEN_ARMOR_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNonCombatRegenArmorMod = value,
+                GetFloat = () => RawNonCombatRegenArmorMod } },
+            { "NONCOMBAT_REGEN_ARMOR_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNonCombatRegenArmordelta = value,
+                GetFloat = () => RawNonCombatRegenArmordelta } },
+            { "COMBAT_REGEN_ARMOR_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCombatRegenArmorMod = value,
+                GetFloat = () => RawCombatRegenArmorMod } },
+            { "NONCOMBAT_REGEN_POWER_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNonCombatRegenPowerMod = value,
+                GetFloat = () => RawNonCombatRegenPowerMod } },
+            { "COMBAT_REGEN_POWER_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCombatRegenPowerMod = value,
+                GetFloat = () => RawCombatRegenPowerMod } },
+            { "NONCOMBAT_REGEN_RAGE_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNonCombatRegenRageMod = value,
+                GetFloat = () => RawNonCombatRegenRageMod } },
+            { "COMBAT_REGEN_RAGE_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCombatRegenRageMod = value,
+                GetFloat = () => RawCombatRegenRageMod } },
+            { "MENTAL_DEFENSE_RATING", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMentalDefenseRating = value,
+                GetFloat = () => RawMentalDefenseRating } },
+            { "SPRINT_BOOST", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawSprintBoost = value,
+                GetFloat = () => RawSprintBoost } },
+            { "TAUNT_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawTauntMod = value,
+                GetFloat = () => RawTauntMod } },
+            { "IGNORE_CHANCE_FEAR", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawIgnoreChanceFear = value,
+                GetFloat = () => RawIgnoreChanceFear } },
+            { "IGNORE_CHANCE_MEZ", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawIgnoreChanceMezz = value,
+                GetFloat = () => RawIgnoreChanceMezz } },
+            { "IGNORE_CHANCE_KNOCKBACK", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawIgnoreChanceKnockback = value,
+                GetFloat = () => RawIgnoreChanceKnockback } },
+            { "EVASION_CHANCE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawEvasionChance = value,
+                GetFloat = () => RawEvasionChance } },
+            { "LOOT_BOOST_CHANCE_UNCOMMON", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawLootBoostChanceUncommon = value,
+                GetFloat = () => RawLootBoostChanceUncommon } },
+            { "LOOT_BOOST_CHANCE_RARE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawLootBoostChanceRare = value,
+                GetFloat = () => RawLootBoostChanceRare } },
+            { "LOOT_BOOST_CHANCE_EXCEPTIONAL", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawLootBoostChanceExceptional = value,
+                GetFloat = () => RawLootBoostChanceExceptional } },
+            { "LOOT_BOOST_CHANCE_EPIC", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawLootBoostChanceEpic = value,
+                GetFloat = () => RawLootBoostChanceEpic } },
+            { "LOOT_BOOST_CHANCE_LEGENDARY", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawLootBoostChanceLegendary = value,
+                GetFloat = () => RawLootBoostChanceLegendary } },
+            { "MAX_HEALTH", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxHealth = value,
+                GetFloat = () => RawMaxHealth } },
+            { "MAX_ARMOR", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxArmor = value,
+                GetFloat = () => RawMaxArmor } },
+            { "MAX_RAGE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxRage = value,
+                GetFloat = () => RawMaxRage } },
+            { "MAX_POWER", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxPower = value,
+                GetFloat = () => RawMaxPower } },
+            { "MAX_BREATH", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxBreath = value,
+                GetFloat = () => RawMaxBreath } },
+            { "BOOST_UNIVERSAL_DIRECT", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawBoostUniversalDirect = value,
+                GetFloat = () => RawBoostUniversalDirect } },
+            { "BOOST_ABILITY_RAGEATTACK", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawBoostAbilityRageAttack = value,
+                GetFloat = () => RawBoostAbilityRageAttack } },
+            { "MOD_ABILITY_RAGEATTACK", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawModAbilityRageAttack = value,
+                GetFloat = () => RawModAbilityRageAttack } },
+            { "MONSTER_COMBAT_XP_VALUE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMonsterCombatXpValue = value,
+                GetFloat = () => RawMonsterCombatXpValue } },
+            { "COMBAT_REGEN_ARMOR_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCombatRegenArmorDelta = value,
+                GetFloat = () => RawCombatRegenArmorDelta } },
+            { "COMBAT_REGEN_POWER_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCombatRegenDelta = value,
+                GetFloat = () => RawCombatRegenDelta } },
+            { "MAX_INVENTORY_SIZE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxInventorySize = value,
+                GetFloat = () => RawMaxInventorySize } },
+            { "MAX_METABOLISM", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxMetabolism = value,
+                GetFloat = () => RawMaxMetabolism } },
+            { "NPC_MOD_FAVORFROMGIFTS", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNpcModFavorFromGifts = value,
+                GetFloat = () => RawNpcModFavorFromGifts } },
+            { "NPC_MOD_FAVORFROMHANGOUTS", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNpcModFavorFromHangouts = value,
+                GetFloat = () => RawNpcModFavorFromHangouts } },
+            { "NPC_MOD_MAXSALESVALUE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNpcModMaxSalesValue = value,
+                GetFloat = () => RawNpcModMaxSalesValue } },
+            { "NPC_MOD_TRAININGCOST", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNpcModTrainingCost = value,
+                GetFloat = () => RawNpcModTrainingCost } },
+            { "NUM_INVENTORY_FOLDERS", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawNumInventoryFolders = value,
+                GetInteger = () => RawNumInventoryFolders } },
+            { "HIGH_CLEANLINESS_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawHighCleanlinessXpEarnedMod = value,
+                GetFloat = () => RawHighCleanlinessXpEarnedMod } },
+            { "LOW_CLEANLINESS_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawLowCleanlinessXpEarnedMod = value,
+                GetFloat = () => RawLowCleanlinessXpEarnedMod } },
+            { "MAX_ARMOR_MITIGATION_RATIO", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxArmorMitigationRatio = value,
+                GetFloat = () => RawMaxArmorMitigationRatio } },
+            { "SHOW_CLEANLINESS_INDICATORS", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawShowCleanlinessIndicators = value,
+                GetFloat = () => RawShowCleanlinessIndicators } },
+            { "HIGH_COMMUNITY_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawHighCommunityXpEarnedMod = value,
+                GetFloat = () => RawHighCommunityXpEarnedMod } },
+            { "LOW_COMMUNITY_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawLowCommunityXpEarnedMod = value,
+                GetFloat = () => RawLowCommunityXpEarnedMod } },
+            { "SHOW_COMMUNITY_INDICATORS", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawShowCommunityIndicators = value,
+                GetFloat = () => RawShowCommunityIndicators } },
+            { "HIGH_PEACEABLENESS_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawHighPeaceblenessXpEarnedMod = value,
+                GetFloat = () => RawHighPeaceblenessXpEarnedMod } },
+            { "LOW_PEACEABLENESS_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawLowPeaceblenessXpEarnedMod = value,
+                GetFloat = () => RawLowPeaceblenessXpEarnedMod } },
+            { "SHOW_PEACEABLENESS_INDICATORS", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawShowPeaceblenessIndicators = value,
+                GetFloat = () => RawShowPeaceblenessIndicators } },
+            { "STAFF_ARMOR_AUTOHEAL", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawStaffArmorAutoHeal = value,
+                GetFloat = () => RawStaffArmorAutoHeal } },
+            { "MAX_MAP_PINS_PER_AREA", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxMapPinsPerArea = value,
+                GetFloat = () => RawMaxMapPinsPerArea } },
+            { "MAX_MAP_PIN_ICONS", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxMapPinIcons = value,
+                GetFloat = () => RawMaxMapPinIcons } },
+            { "WORKORDER_COIN_REWARD_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawWorkOrderCoinRewardMod = value,
+                GetFloat = () => RawWorkOrderCoinRewardMod } },
+            { "MAX_ACTIVE_WORKORDERS", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxActiveWorkOrders = value,
+                GetFloat = () => RawMaxActiveWorkOrders } },
+            { "PLAYER_ORDERS_MAX_ACTIVE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawPlayerOrdersMaxActive = value,
+                GetFloat = () => RawPlayerOrdersMaxActive } },
+            { "SHOP_INVENTORY_SIZE_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawShopInventorySizeDelta = value,
+                GetFloat = () => RawShopInventorySizeDelta } },
+            { "MAIL_SHOP_NUMFREE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMailShopNumFree = value,
+                GetFloat = () => RawMailShopNumFree } },
+            { "SHOP_HIRING_MAX_PREPAY_DAYS", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawShopHiringMaxPrepDays = value,
+                GetFloat = () => RawShopHiringMaxPrepDays } },
+            { "SHOP_LOG_DAYSKEPT", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawShopLogDaysKept = value,
+                GetFloat = () => RawShopLogDaysKept } },
+            { "SHOP_HIRING_NUMFREE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawShopHiringNumFree = value,
+                GetFloat = () => RawShopHiringNumFree } },
+            { "MOD_CRITICAL_HIT_DAMAGE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCriticalHitDamage = value,
+                GetFloat = () => RawCriticalHitDamage } },
         }; } }
 
         protected override bool IsCustomFieldParsed(string FieldKey, object FieldValue, ParseErrorInfo ErrorInfo)

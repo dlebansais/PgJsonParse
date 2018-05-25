@@ -61,14 +61,14 @@ namespace PgJsonObjects
         };
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "ItemCode", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawItemCode = value; }} },
-            { "StackSize", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseStackSize } },
-            { "PercentChance", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawPercentChance = value; }} },
-            { "ItemKeys", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<RecipeItemKey>.ParseList(value, RecipeItemKeyStringMap, ItemKeyList, errorInfo); }} },
-            { "Desc", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Desc = value; }} },
-            { "ChanceToConsume", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawChanceToConsume = value; }} },
-            { "DurabilityConsumed", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawDurabilityConsumed = value; }} },
-            { "AttuneToCrafter", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawAttuneToCrafter = value; }} },
+            { "ItemCode", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawItemCode = value; }} },
+            { "StackSize", new FieldParser() { Type = FieldType.Integer, ParseInteger = ParseStackSize } },
+            { "PercentChance", new FieldParser() { Type = FieldType.Float, ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawPercentChance = value; }} },
+            { "ItemKeys", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<RecipeItemKey>.ParseList(value, RecipeItemKeyStringMap, ItemKeyList, errorInfo); }} },
+            { "Desc", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Desc = value; }} },
+            { "ChanceToConsume", new FieldParser() { Type = FieldType.Float, ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawChanceToConsume = value; }} },
+            { "DurabilityConsumed", new FieldParser() { Type = FieldType.Float, ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawDurabilityConsumed = value; }} },
+            { "AttuneToCrafter", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawAttuneToCrafter = value; }} },
         }; } }
 
         private void ParseStackSize(int value, ParseErrorInfo ErrorInfo)

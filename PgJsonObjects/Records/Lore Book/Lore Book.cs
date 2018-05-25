@@ -27,14 +27,14 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Title", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Title = value; }} },
-            { "LocationHint", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { LocationHint = value; }} },
-            { "Category", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Category = StringToEnumConversion<LoreBookCategory>.Parse(value, errorInfo); }} },
-            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<LoreBookKeyword>.ParseList(value, KeywordList, errorInfo); }} },
-            { "IsClientLocal", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsClientLocal = value; }} },
-            { "Visibility", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Visibility = StringToEnumConversion<LoreBookVisibility>.Parse(value, errorInfo); }} },
-            { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
-            { "Text", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Text = value; }} },
+            { "Title", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Title = value; }} },
+            { "LocationHint", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { LocationHint = value; }} },
+            { "Category", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Category = StringToEnumConversion<LoreBookCategory>.Parse(value, errorInfo); }} },
+            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<LoreBookKeyword>.ParseList(value, KeywordList, errorInfo); }} },
+            { "IsClientLocal", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsClientLocal = value; }} },
+            { "Visibility", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Visibility = StringToEnumConversion<LoreBookVisibility>.Parse(value, errorInfo); }} },
+            { "InternalName", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
+            { "Text", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Text = value; }} },
         }; } }
         #endregion
 

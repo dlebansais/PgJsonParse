@@ -128,11 +128,11 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Effects", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseEffects } },
-            { "GiveItems", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawItemNameList.Add(value); }} },
-            { "RequiredHotspot", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo); }} },
-            { "NumItemsToGive", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawNumItemsToGive = value; }} },
-            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo); }} },
+            { "Effects", new FieldParser() { Type = FieldType.StringArray, ParseStringArray = ParseEffects } },
+            { "GiveItems", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawItemNameList.Add(value); }} },
+            { "RequiredHotspot", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo); }} },
+            { "NumItemsToGive", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawNumItemsToGive = value; }} },
+            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo); }} },
         }; } }
 
         private bool ParseEffects(string RawEffect, ParseErrorInfo ErrorInfo)

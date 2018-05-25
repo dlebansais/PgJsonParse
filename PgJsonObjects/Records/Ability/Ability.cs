@@ -145,58 +145,220 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "AbilityGroup", new FieldParser() { Type = FieldType.String, ParserString = ParseAbilityGroup } },
-            { "Animation", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Animation = StringToEnumConversion<AbilityAnimation>.Parse(value, errorInfo); }} },
-            { "AttributesThatDeltaPowerCost", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaPowerCostList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty = true } },
-            { "AttributesThatDeltaResetTime", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaResetTimeList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty = true } },
-            { "AttributesThatModPowerCost", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModPowerCostList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty = true } },
-            { "CanBeOnSidebar", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCanBeOnSidebar = value; }} },
-            { "CanSuppressMonsterShout", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCanSuppressMonsterShout = value; }} },
-            { "CanTargetUntargetableEnemies", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawCanTargetUntargetableEnemies = value; }} },
-            { "CausesOfDeath", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<Deaths>.ParseList(value, CausesOfDeathList, errorInfo); }} },
-            { "Costs", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<RecipeCost>.ParseList("Costs", value, CostList, errorInfo); }} },
-            { "CombatRefreshBaseAmount", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawCombatRefreshBaseAmount = value; }} },
-            { "CompatibleSkills", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseCompatibleSkills } },
-            { "ConsumedItemChance", new FieldParser() { Type = FieldType.Float, ParserFloat = ParseConsumedItemChance } },
-            { "ConsumedItemChanceToStickInCorpse", new FieldParser() { Type = FieldType.Float, ParserFloat = ParseConsumedItemChanceToStickInCorpse } },
-            { "ConsumedItemCount", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseConsumedItemCount } },
-            { "ConsumedItemKeyword", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawConsumedItemKeyword = value; }} },
-            { "DamageType", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DamageType = StringToEnumConversion<DamageType>.Parse(value, null, DamageType.Internal_None, DamageType.Internal_Empty, errorInfo); }} },
-            { "DelayLoopIsAbortedIfAttacked", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawDelayLoopIsAbortedIfAttacked = value; }} },
-            { "DelayLoopMessage", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { DelayLoopMessage = value; }} },
-            { "DelayLoopTime", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseDelayLoopTime } },
-            { "Description", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Description = value; }} },
-            { "EffectKeywordsIndicatingEnabled", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseEffectKeywordsIndicatingEnabled } },
-            { "ExtraKeywordsForTooltips", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseExtraKeywordsForTooltips } },
-            { "IconID", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseIconId } },
-            { "InternalAbility", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawInternalAbility = value; }} },
-            { "InternalName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
-            { "IsHarmless", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawIsHarmless = value; }} },
-            { "ItemKeywordReqErrorMessage", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { ItemKeywordReqErrorMessage = value; }} },
-            { "ItemKeywordReqs", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<AbilityItemKeyword>.ParseList(value, TextMaps.AbilityItemKeywordStringMap, ItemKeywordReqList, errorInfo); }} },
-            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = ParseKeywords } },
-            { "Level", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawLevel = value; }} },
-            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
-            { "PetTypeTagReq", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { PetTypeTagReq = StringToEnumConversion<AbilityPetType>.Parse(value, errorInfo); }} },
-            { "PetTypeTagReqMax", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParsePetTypeTagReqMax } },
-            { "Prerequisite", new FieldParser() { Type = FieldType.String, ParserString = ParsePrerequisite } },
-            { "Projectile", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Projectile = StringToEnumConversion<AbilityProjectile>.Parse(value, errorInfo); }} },
-            { "PvE", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { PvE = JsonObjectParser<AbilityPvX>.Parse("PvE", value, errorInfo); }} },
-            { "PvP", new FieldParser() { Type = FieldType.Object, ParserObject = (JsonObject value, ParseErrorInfo errorInfo) => { PvP = JsonObjectParser<AbilityPvX>.Parse("PvP", value, errorInfo); }} },
-            { "ResetTime", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawResetTime = value; }} },
-            { "SelfParticle", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { SelfParticle = value; }} },
-            { "SharesResetTimerWith", new FieldParser() { Type = FieldType.String, ParserString = ParseSharesResetTimerWith } },
-            { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
-            { "SpecialCasterRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("SpecialCasterRequirement", value, SpecialCasterRequirementList, errorInfo); }} },
-            { "SpecialInfo", new FieldParser() { Type = FieldType.String, ParserString = ParseSpecialInfo } },
-            { "SpecialTargetingTypeReq", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawSpecialTargetingTypeReq = value; }} },
-            { "Target", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Target = StringToEnumConversion<AbilityTarget>.Parse(value, errorInfo); }} },
-            { "TargetEffectKeywordReq", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { TargetEffectKeywordReq = StringToEnumConversion<TargetEffectKeyword>.Parse(value, errorInfo); }} },
-            { "TargetParticle", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { TargetParticle = StringToEnumConversion<AbilityTargetParticle>.Parse(value, errorInfo); }} },
-            { "UpgradeOf", new FieldParser() { Type = FieldType.String, ParserString = ParseUpgradeOf } },
-            { "WorksInCombat", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawWorksInCombat = value; }} },
-            { "WorksUnderwater", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawWorksUnderwater = value; }} },
-            { "WorksWhileFalling", new FieldParser() { Type = FieldType.Bool, ParserBool = (bool value, ParseErrorInfo errorInfo) => { RawWorksWhileFalling = value; }} },
+            { "AbilityGroup", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseAbilityGroup,
+                GetString = () => RawAbilityGroup } },
+            { "Animation", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Animation = StringToEnumConversion<AbilityAnimation>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<AbilityAnimation>.ToString(Animation) } },
+            { "AttributesThatDeltaPowerCost", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaPowerCostList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaPowerCostList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty } },
+            { "AttributesThatDeltaResetTime", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaResetTimeList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaResetTimeList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty } },
+            { "AttributesThatModPowerCost", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModPowerCostList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatModPowerCostList,
+                GetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty } },
+            { "CanBeOnSidebar", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawCanBeOnSidebar = value,
+                GetBool = () => RawCanBeOnSidebar } },
+            { "CanSuppressMonsterShout", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawCanSuppressMonsterShout = value,
+                GetBool = () => RawCanSuppressMonsterShout } },
+            { "CanTargetUntargetableEnemies", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawCanTargetUntargetableEnemies = value,
+                GetBool = () => RawCanTargetUntargetableEnemies } },
+            { "CausesOfDeath", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<Deaths>.ParseList(value, CausesOfDeathList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<Deaths>.ToStringList(CausesOfDeathList) } },
+            { "Costs", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<RecipeCost>.ParseList("Costs", value, CostList, errorInfo),
+                GetObjectArray = () => CostList } },
+            { "CombatRefreshBaseAmount", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawCombatRefreshBaseAmount = value,
+                GetInteger = () => RawCombatRefreshBaseAmount } },
+            { "CompatibleSkills", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = ParseCompatibleSkills,
+                GetStringArray = () => StringToEnumConversion<PowerSkill>.ToStringList(RawCompatibleSkillList) } },
+            { "ConsumedItemChance", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = ParseConsumedItemChance,
+                GetFloat = () => RawConsumedItemChance } },
+            { "ConsumedItemChanceToStickInCorpse", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = ParseConsumedItemChanceToStickInCorpse,
+                GetFloat = () => RawConsumedItemChanceToStickInCorpse } },
+            { "ConsumedItemCount", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = ParseConsumedItemCount,
+                GetInteger = () => RawConsumedItemCount } },
+            { "ConsumedItemKeyword", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawConsumedItemKeyword = value,
+                GetString = () => RawConsumedItemKeyword  } },
+            { "DamageType", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => DamageType = StringToEnumConversion<DamageType>.Parse(value, null, DamageType.Internal_None, DamageType.Internal_Empty, errorInfo),
+                GetString = () => StringToEnumConversion<DamageType>.ToString(DamageType, null, DamageType.Internal_None, DamageType.Internal_Empty) } },
+            { "DelayLoopIsAbortedIfAttacked", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawDelayLoopIsAbortedIfAttacked = value,
+                GetBool = () => RawDelayLoopIsAbortedIfAttacked } },
+            { "DelayLoopMessage", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => DelayLoopMessage = value,
+                GetString = () => DelayLoopMessage } },
+            { "DelayLoopTime", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = ParseDelayLoopTime,
+                GetInteger = () => RawDelayLoopTime } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Description = value,
+                GetString = () => Description } },
+            { "EffectKeywordsIndicatingEnabled", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = ParseEffectKeywordsIndicatingEnabled,
+                GetStringArray = () => StringToEnumConversion<AbilityIndicatingEnabled>.ToSingleStringList(EffectKeywordsIndicatingEnabled) } },
+            { "ExtraKeywordsForTooltips", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = ParseExtraKeywordsForTooltips,
+                GetStringArray = () => StringToEnumConversion<TooltipsExtraKeywords>.ToSingleStringList(ExtraKeywordsForTooltips) } },
+            { "IconID", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = ParseIconId,
+                GetInteger = () => RawIconId } },
+            { "InternalAbility", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawInternalAbility = value,
+                GetBool = () => RawInternalAbility } },
+            { "InternalName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => InternalName = value,
+                GetString = () => InternalName } },
+            { "IsHarmless", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsHarmless = value,
+                GetBool = () => RawIsHarmless } },
+            { "ItemKeywordReqErrorMessage", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => ItemKeywordReqErrorMessage = value,
+                GetString = () => ItemKeywordReqErrorMessage } },
+            { "ItemKeywordReqs", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<AbilityItemKeyword>.ParseList(value, TextMaps.AbilityItemKeywordStringMap, ItemKeywordReqList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<AbilityItemKeyword>.ToStringList(ItemKeywordReqList, TextMaps.AbilityItemKeywordStringMap) } },
+            { "Keywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = ParseKeywords,
+                GetStringArray = () => StringToEnumConversion<AbilityKeyword>.ToStringList(KeywordList) } },
+            { "Level", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawLevel = value,
+                GetInteger = () => RawLevel } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Name = value,
+                GetString = () => Name } },
+            { "PetTypeTagReq", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => PetTypeTagReq = StringToEnumConversion<AbilityPetType>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<AbilityPetType>.ToString(PetTypeTagReq) } },
+            { "PetTypeTagReqMax", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = ParsePetTypeTagReqMax,
+                GetInteger = () => RawPetTypeTagReqMax } },
+            { "Prerequisite", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParsePrerequisite,
+                GetString = () => RawPrerequisite } },
+            { "Projectile", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Projectile = StringToEnumConversion<AbilityProjectile>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<AbilityProjectile>.ToString(Projectile) } },
+            { "PvE", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PvE = JsonObjectParser<AbilityPvX>.Parse("PvE", value, errorInfo),
+                GetObject = () => PvE } },
+            { "PvP", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PvP = JsonObjectParser<AbilityPvX>.Parse("PvP", value, errorInfo),
+                GetObject = () => PvP } },
+            { "ResetTime", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawResetTime = value,
+                GetFloat = () => RawResetTime } },
+            { "SelfParticle", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => SelfParticle = value,
+                GetString = () => SelfParticle } },
+            { "SharesResetTimerWith", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseSharesResetTimerWith,
+                GetString = () => RawSharesResetTimerWith } },
+            { "Skill", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseSkill,
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill) } },
+            { "SpecialCasterRequirements", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("SpecialCasterRequirement", value, SpecialCasterRequirementList, errorInfo),
+                GetObjectArray = () => SpecialCasterRequirementList } },
+            { "SpecialInfo", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseSpecialInfo,
+                GetString = () => SpecialInfo } },
+            { "SpecialTargetingTypeReq", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawSpecialTargetingTypeReq = value,
+                GetInteger = () => RawSpecialTargetingTypeReq } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Target = StringToEnumConversion<AbilityTarget>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<AbilityTarget>.ToString(Target) } },
+            { "TargetEffectKeywordReq", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => TargetEffectKeywordReq = StringToEnumConversion<TargetEffectKeyword>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<TargetEffectKeyword>.ToString(TargetEffectKeywordReq) } },
+            { "TargetParticle", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => TargetParticle = StringToEnumConversion<AbilityTargetParticle>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<AbilityTargetParticle>.ToString(TargetParticle) } },
+            { "UpgradeOf", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseUpgradeOf,
+                GetString = () => RawUpgradeOf } },
+            { "WorksInCombat", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawWorksInCombat = value,
+                GetBool = () => RawWorksInCombat } },
+            { "WorksUnderwater", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawWorksUnderwater = value,
+                GetBool = () => RawWorksUnderwater } },
+            { "WorksWhileFalling", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawWorksWhileFalling = value,
+                GetBool = () => RawWorksWhileFalling } },
         }; } }
 
         private void ParseAbilityGroup(string RawAbilityGroup, ParseErrorInfo ErrorInfo)

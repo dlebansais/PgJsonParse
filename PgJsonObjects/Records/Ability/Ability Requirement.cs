@@ -90,23 +90,74 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "T", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { OtherRequirementType = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo); }} },
-            { "Keyword", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawKeyword = value; }} },
-            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawName = value; }} },
-            { "Item", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawItem = value; }} },
-            { "Count", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawCount = value; }} },
-            { "Health", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawHealth = value; }} },
-            { "AllowedRace", new FieldParser() { Type = FieldType.String, ParserString = ParseAllowedRace } },
-            { "Appearance", new FieldParser() { Type = FieldType.String, ParserString = ParseAppearance } },
-            { "List", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("List", value, OrList, errorInfo); }} },
-            { "ErrorMsg", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawErrorMsg = value; }} },
-            { "DisallowedStates", new FieldParser() { Type = FieldType.StringArray, ParserStringArray = ParseDisallowedStates } },
-            { "PetTypeTag", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawPetTypeTag = value; }} },
-            { "MaxCount", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawMaxCount = value; }} },
-            { "Recipe", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawRecipeKnown = value; }} },
-            { "TypeTag", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawTypeTag = value; }} },
-            { "Max", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMax = value; }} },
-            { "InteractionFlag", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawInteractionFlag = value; }} },
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => OtherRequirementType = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType) } },
+            { "Keyword", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawKeyword = value,
+                GetString  = () => RawKeyword } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawName = value,
+                GetString  = () => RawName } },
+            { "Item", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawItem = value,
+                GetString  = () => RawItem } },
+            { "Count", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCount = value,
+                GetFloat = () => RawCount } },
+            { "Health", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawHealth = value,
+                GetFloat = () => RawHealth } },
+            { "AllowedRace", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseAllowedRace,
+                GetString = () => "" } },//TODO
+            { "Appearance", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseAppearance,
+                GetString = () => "" } },//TODO
+            { "List", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("List", value, OrList, errorInfo),
+                GetObjectArray = () => OrList } },
+            { "ErrorMsg", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawErrorMsg = value,
+                GetString = () => RawErrorMsg } },
+            { "DisallowedStates", new FieldParser() {
+                Type = FieldType.StringArray,
+                ParseStringArray = ParseDisallowedStates,
+                GetStringArray = () => GenerateDisallowedStates() } },
+            { "PetTypeTag", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawPetTypeTag = value,
+                GetString = () => RawPetTypeTag } },
+            { "MaxCount", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxCount = value,
+                GetFloat = () => RawMaxCount } },
+            { "Recipe", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawRecipeKnown = value,
+                GetString = () => RawRecipeKnown } },
+            { "TypeTag", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawTypeTag = value,
+                GetString = () => RawTypeTag } },
+            { "Max", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMax = value,
+                GetInteger = () => RawMax } },
+            { "InteractionFlag", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawInteractionFlag = value,
+                GetString = () => RawInteractionFlag } },
         }; } }
 
         private void ParseAllowedRace(string RawAllowedRace, ParseErrorInfo ErrorInfo)
@@ -153,6 +204,16 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AbilityRequirement DisallowedStates");
                 return false;
             }
+        }
+
+        private List<string> GenerateDisallowedStates()
+        {
+            List<string> Result = new List<string>();
+
+            if (RawDisallowedState != null)
+                Result.Add(RawDisallowedState);
+
+            return Result;
         }
 
         private OtherRequirementType OtherRequirementType;

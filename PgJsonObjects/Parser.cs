@@ -82,7 +82,8 @@ namespace PgJsonObjects
                             Generator.End();
 
                             //int FirstDiff = CompareContent(SortedContent, Generator.Content);
-                            int FirstDiff = CompareContent(Content, Generator.Content);
+                            //int FirstDiff = CompareContent(Content, Generator.Content);
+                            int FirstDiff = -1;
                             if (FirstDiff >= 0 && FirstDiff < Content.Length)
                             {
                                 if (FirstDiff > 150)

@@ -130,13 +130,13 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Type", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Type = StringToEnumConversion<SourceTypes>.Parse(value, errorInfo); }} },
-            { "SkillTypeId", new FieldParser() { Type = FieldType.String, ParserString = ParseSkillTypeId } },
-            { "ItemTypeId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseItemTypeId } },
-            { "Npc", new FieldParser() { Type = FieldType.String, ParserString = ParseNpc } },
-            { "EffectName", new FieldParser() { Type = FieldType.String, ParserString = ParseEffectName } },
-            { "EffectTypeId", new FieldParser() { Type = FieldType.String, ParserString = ParseEffectTypeId } },
-            { "QuestId", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseQuestId } },
+            { "Type", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Type = StringToEnumConversion<SourceTypes>.Parse(value, errorInfo); }} },
+            { "SkillTypeId", new FieldParser() { Type = FieldType.String, ParseString = ParseSkillTypeId } },
+            { "ItemTypeId", new FieldParser() { Type = FieldType.Integer, ParseInteger = ParseItemTypeId } },
+            { "Npc", new FieldParser() { Type = FieldType.String, ParseString = ParseNpc } },
+            { "EffectName", new FieldParser() { Type = FieldType.String, ParseString = ParseEffectName } },
+            { "EffectTypeId", new FieldParser() { Type = FieldType.String, ParseString = ParseEffectTypeId } },
+            { "QuestId", new FieldParser() { Type = FieldType.Integer, ParseInteger = ParseQuestId } },
         }; } }
 
         private void ParseSkillTypeId(string RawSkillTypeId, ParseErrorInfo ErrorInfo)

@@ -202,6 +202,34 @@ namespace PgJsonObjects
             return ToString(EnumValue, StringMap, DefaultValue);
         }
 
+        public static List<string> ToStringList(ICollection<T> values, Dictionary<T, string> StringMap)
+        {
+            List<string> Result = new List<string>();
+
+            foreach (T Item in values)
+                Result.Add(ToString(Item, StringMap));
+
+            return Result;
+        }
+
+        public static List<string> ToStringList(ICollection<T> values)
+        {
+            List<string> Result = new List<string>();
+
+            foreach (T Item in values)
+                Result.Add(ToString(Item));
+
+            return Result;
+        }
+
+        public static List<string> ToSingleStringList(T value)
+        {
+            List<string> Result = new List<string>();
+            Result.Add(ToString(value));
+
+            return Result;
+        }
+
         public static void ListToString(JsonGenerator Generator, string ArrayName, List<T> EnumList)
         {
             ListToString(Generator, ArrayName, EnumList, null);

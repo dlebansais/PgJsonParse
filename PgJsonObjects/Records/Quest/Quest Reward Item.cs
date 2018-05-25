@@ -21,8 +21,8 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Item", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { RawItem = value; }} },
-            { "StackSize", new FieldParser() { Type = FieldType.Integer, ParserInteger = ParseStackSize } },
+            { "Item", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RawItem = value; }} },
+            { "StackSize", new FieldParser() { Type = FieldType.Integer, ParseInteger = ParseStackSize } },
         }; } }
 
         private void ParseStackSize(int value, ParseErrorInfo ErrorInfo)

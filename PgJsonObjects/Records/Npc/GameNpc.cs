@@ -25,10 +25,10 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Name", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
-            { "AreaName", new FieldParser() { Type = FieldType.String, ParserString = ParseAreaName } },
-            { "AreaFriendlyName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { AreaFriendlyName = value; }} },
-            { "Preferences", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParsePreferences } },
+            { "Name", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
+            { "AreaName", new FieldParser() { Type = FieldType.String, ParseString = ParseAreaName } },
+            { "AreaFriendlyName", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { AreaFriendlyName = value; }} },
+            { "Preferences", new FieldParser() { Type = FieldType.ObjectArray, ParseObjectArray = ParsePreferences } },
         }; } }
 
         private void ParseAreaName(string RawAreaName, ParseErrorInfo ErrorInfo)

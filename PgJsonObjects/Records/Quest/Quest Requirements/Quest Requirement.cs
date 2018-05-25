@@ -119,15 +119,15 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "T", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { OtherRequirementType = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo); }} },
-            { "Quest", new FieldParser() { Type = FieldType.String, ParserString = ParseQuest } },
-            { "Keyword", new FieldParser() { Type = FieldType.String, ParserString = ParseKeyword } },
-            { "Npc", new FieldParser() { Type = FieldType.String, ParserString = ParseNpc } },
-            { "Level", new FieldParser() { Type = FieldType.Unknown, ParserUnknown = ParseLevel } },
-            { "Skill", new FieldParser() { Type = FieldType.String, ParserString = ParseSkill } },
-            { "List", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = ParseList } },
-            { "Rule", new FieldParser() { Type = FieldType.String, ParserString = ParseRule } },
-            { "InteractionFlag", new FieldParser() { Type = FieldType.String, ParserString = ParseInteractionFlag } },
+            { "T", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { OtherRequirementType = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo); }} },
+            { "Quest", new FieldParser() { Type = FieldType.String, ParseString = ParseQuest } },
+            { "Keyword", new FieldParser() { Type = FieldType.String, ParseString = ParseKeyword } },
+            { "Npc", new FieldParser() { Type = FieldType.String, ParseString = ParseNpc } },
+            { "Level", new FieldParser() { Type = FieldType.Unknown, ParseUnknown = ParseLevel } },
+            { "Skill", new FieldParser() { Type = FieldType.String, ParseString = ParseSkill } },
+            { "List", new FieldParser() { Type = FieldType.ObjectArray, ParseObjectArray = ParseList } },
+            { "Rule", new FieldParser() { Type = FieldType.String, ParseString = ParseRule } },
+            { "InteractionFlag", new FieldParser() { Type = FieldType.String, ParseString = ParseInteractionFlag } },
         }; } }
 
         private void ParseQuest(string RawQuest, ParseErrorInfo ErrorInfo)

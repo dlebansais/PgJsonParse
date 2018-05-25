@@ -57,31 +57,124 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Damage", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawDamage = value; }} },
-            { "ExtraDamageIfTargetVulnerable", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawExtraDamageIfTargetVulnerable = value; }} },
-            { "HealthSpecificDamage", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawHealthSpecificDamage = value; }} },
-            { "ArmorSpecificDamage", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawArmorSpecificDamage = value; }} },
-            { "Range", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRange = value; }} },
-            { "PowerCost", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawPowerCost = value; }} },
-            { "MetabolismCost", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawMetabolismCost = value; }} },
-            { "ArmorMitigationRatio", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawArmorMitigationRatio = value; }} },
-            { "AoE", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawAoE = value; }} },
-            { "RageBoost", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRageBoost = value; }} },
-            { "RageMultiplier", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawRageMultiplier = value; }} },
-            { "Accuracy", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawAccuracy = value; }} },
-            { "AttributesThatDeltaDamage", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaDamageList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaDamageListIsEmpty = true } },
-            { "AttributesThatModDamage", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModDamageList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModDamageListIsEmpty = true } },
-            { "AttributesThatModBaseDamage", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModBaseDamageList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModBaseDamageListIsEmpty = true } },
-            { "AttributesThatDeltaTaunt", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaTauntList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaTauntListIsEmpty = true } },
-            { "AttributesThatModTaunt", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModTauntList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModTauntListIsEmpty = true } },
-            { "AttributesThatDeltaRage", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaRageList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaRageListIsEmpty = true } },
-            { "AttributesThatModRage", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatModRageList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatModRageListIsEmpty = true } },
-            { "AttributesThatDeltaRange", new FieldParser() { Type = FieldType.SimpleStringArray, ParserSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawAttributesThatDeltaRangeList.Add(value); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true } },
-            { "SpecialValues", new FieldParser() { Type = FieldType.ObjectArray, ParserObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<SpecialValue>.ParseList("SpecialValue", value, SpecialValueList, errorInfo); }, ParserSetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true } },
-            { "TauntDelta", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawTauntDelta = value; }} },
-            { "TempTauntDelta", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawTempTauntDelta = value; }} },
-            { "RageCost", new FieldParser() { Type = FieldType.Integer, ParserInteger = (int value, ParseErrorInfo errorInfo) => { RawRageCost = value; }} },
-            { "RageCostMod", new FieldParser() { Type = FieldType.Float, ParserFloat = (float value, ParseErrorInfo errorInfo) => { RawRageCostMod = value; }} },
+            { "Damage", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawDamage = value,
+                GetInteger = () => RawDamage } },
+            { "ExtraDamageIfTargetVulnerable", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawExtraDamageIfTargetVulnerable = value,
+                GetInteger = () => RawExtraDamageIfTargetVulnerable  } },
+            { "HealthSpecificDamage", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawHealthSpecificDamage = value,
+                GetInteger = () => RawHealthSpecificDamage } },
+            { "ArmorSpecificDamage", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawArmorSpecificDamage = value,
+                GetInteger = () => RawArmorSpecificDamage } },
+            { "Range", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRange = value,
+                GetInteger = () => RawRange } },
+            { "PowerCost", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawPowerCost = value,
+                GetInteger = () => RawPowerCost } },
+            { "MetabolismCost", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMetabolismCost = value,
+                GetInteger = () => RawMetabolismCost } },
+            { "ArmorMitigationRatio", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawArmorMitigationRatio = value,
+                GetInteger = () => RawArmorMitigationRatio } },
+            { "AoE", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawAoE = value,
+                GetInteger = () => RawAoE } },
+            { "RageBoost", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRageBoost = value,
+                GetInteger = () => RawRageBoost  } },
+            { "RageMultiplier", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawRageMultiplier = value,
+                GetFloat = () => RawRageMultiplier } },
+            { "Accuracy", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawAccuracy = value,
+                GetFloat = () => RawAccuracy } },
+            { "AttributesThatDeltaDamage", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDamageList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaDamageListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaDamageList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaDamageListIsEmpty } },
+            { "AttributesThatModDamage", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModDamageList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatModDamageListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatModDamageList,
+                GetArrayIsEmpty = () => RawAttributesThatModDamageListIsEmpty } },
+            { "AttributesThatModBaseDamage", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModBaseDamageList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatModBaseDamageListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatModBaseDamageList,
+                GetArrayIsEmpty = () => RawAttributesThatModBaseDamageListIsEmpty } },
+            { "AttributesThatDeltaTaunt", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaTauntList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaTauntListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaTauntList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaTauntListIsEmpty } },
+            { "AttributesThatModTaunt", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModTauntList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatModTauntListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatModTauntList,
+                GetArrayIsEmpty = () => RawAttributesThatModTauntListIsEmpty } },
+            { "AttributesThatDeltaRage", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaRageList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaRageListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaRageList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaRageListIsEmpty } },
+            { "AttributesThatModRage", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModRageList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatModRageListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatModRageList,
+                GetArrayIsEmpty = () => RawAttributesThatModRageListIsEmpty } },
+            { "AttributesThatDeltaRange", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaRangeList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaRangeList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty } },
+            { "SpecialValues", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<SpecialValue>.ParseList("SpecialValue", value, SpecialValueList, errorInfo),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true,
+                GetObjectArray = () => SpecialValueList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty } },
+            { "TauntDelta", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawTauntDelta = value,
+                GetInteger = () => RawTauntDelta } },
+            { "TempTauntDelta", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawTempTauntDelta = value,
+                GetInteger = () => RawTempTauntDelta } },
+            { "RageCost", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRageCost = value,
+                GetInteger = () => RawRageCost } },
+            { "RageCostMod", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawRageCostMod = value,
+                GetFloat = () => RawRageCostMod } },
         }; } }
 
         private List<string> RawAttributesThatDeltaDamageList { get; } = new List<string>();
@@ -103,6 +196,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Json Reconstruction
+        /*
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -144,7 +238,7 @@ namespace PgJsonObjects
             Generator.AddDouble("RageCostMod", RawRageCostMod);
 
             Generator.CloseObject();
-        }
+        }*/
         #endregion
 
         #region Indexing

@@ -34,8 +34,14 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "FriendlyName", new FieldParser() { Type = FieldType.String, ParserString = ParseFriendlyName } },
-            { "ShortFriendlyName", new FieldParser() { Type = FieldType.String, ParserString = (string value, ParseErrorInfo errorInfo) => { ShortFriendlyName = value; }} },
+            { "FriendlyName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseFriendlyName,
+                GetString = () => FriendlyName } },
+            { "ShortFriendlyName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => ShortFriendlyName = value,
+                GetString = () => ShortFriendlyName } },
         }; } }
 
         private void ParseFriendlyName(string RawFriendlyName, ParseErrorInfo ErrorInfo)
