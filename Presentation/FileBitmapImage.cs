@@ -7,7 +7,13 @@ namespace Presentation
     {
         public FileBitmapImage(string fileName)
         {
-            BitmapImage = new BitmapImage(new Uri(fileName));
+            try
+            {
+                BitmapImage = new BitmapImage(new Uri(fileName));
+            }
+            catch
+            {
+            }
         }
 
         public BitmapImage BitmapImage { get; private set; }
