@@ -113,7 +113,7 @@ namespace PgJsonObjects
                 GetStringArray = () => GetKeywords() } },
             { "Pref", new FieldParser() {
                 Type = FieldType.Float,
-                ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawPreference = value; },
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawPreference = value,
                 GetFloat = () => RawPreference } },
         }; } }
 

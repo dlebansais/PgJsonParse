@@ -134,19 +134,19 @@ namespace PgJsonObjects
                 GetStringArray = () => GetEffects() } },
             { "GiveItems", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawItemNameList.Add(value); },
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawItemNameList.Add(value),
                 GetStringArray = () => RawItemNameList } },
             { "RequiredHotspot", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<ItemRequiredHotspot>.ToString(RequiredHotspot) } },
             { "NumItemsToGive", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawNumItemsToGive = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawNumItemsToGive = value,
                 GetInteger = () => RawNumItemsToGive } },
             { "OtherRequirements", new FieldParser() {
                 Type = FieldType.ObjectArray,
-                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo); },
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo),
                 GetObjectArray = () => OtherRequirementList } },
         }; } }
 

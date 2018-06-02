@@ -171,7 +171,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Type = StringToEnumConversion<QuestObjectiveType>.Parse(value, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<QuestObjectiveType>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type) } },
             { "Target", new FieldParser() {
                 Type = FieldType.String,
@@ -179,7 +179,7 @@ namespace PgJsonObjects
                 GetString = () => GetTarget() } },
             { "Description", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Description = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Description = value,
                 GetString = () => Description } },
             { "Number", new FieldParser() {
                 Type = FieldType.Integer,
@@ -195,7 +195,7 @@ namespace PgJsonObjects
                 GetString = () => RawItemName } },
             { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
                 Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawMustCompleteEarlierObjectivesFirst = value; },
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawMustCompleteEarlierObjectivesFirst = value,
                 GetBool = () => RawMustCompleteEarlierObjectivesFirst } },
             { "InteractionFlag", new FieldParser() {
                 Type = FieldType.String,

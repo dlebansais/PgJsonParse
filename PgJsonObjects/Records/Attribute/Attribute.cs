@@ -48,7 +48,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Label", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Label = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Label = value,
                 GetString = () => Label } },
             { "IconIds", new FieldParser() {
                 Type = FieldType.SimpleIntegerArray,
@@ -56,23 +56,23 @@ namespace PgJsonObjects
                 GetIntegerArray = () => IconIdList } },
             { "Tooltip", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Tooltip = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Tooltip = value,
                 GetString = () => Tooltip } },
             { "DisplayType", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { DisplayType = StringToEnumConversion<DisplayType>.Parse(value, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => DisplayType = StringToEnumConversion<DisplayType>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<DisplayType>.ToString(DisplayType) } },
             { "IsHidden", new FieldParser() {
                 Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsHidden = value; },
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsHidden = value,
                 GetBool = () => RawIsHidden } },
             { "DisplayRule", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { DisplayRule = StringToEnumConversion<DisplayRule>.Parse(value, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => DisplayRule = StringToEnumConversion<DisplayRule>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<DisplayRule>.ToString(DisplayRule) } },
             { "DefaultValue", new FieldParser() {
                 Type = FieldType.Float,
-                ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawDefaultValue = value; },
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawDefaultValue = value,
                 GetFloat = () => RawDefaultValue } },
         }; } }
 

@@ -84,37 +84,37 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "BestowRecipes", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawBestowRecipesList.Add(value); },
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawBestowRecipesList.Add(value),
                 SetArrayIsEmpty = () => RawBestowRecipesListIsEmpty = true,
                 GetStringArray = () => RawBestowRecipesList,
                 GetArrayIsEmpty =() => RawBestowRecipesListIsEmpty } },
             { "BestowAbility", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { RawBestowAbility = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawBestowAbility = value,
                 GetString = () => RawBestowAbility } },
             { "BestowQuest", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { RawBestowQuest = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawBestowQuest = value,
                 GetString = () => RawBestowQuest } },
             { "AllowPrefix", new FieldParser() {
                 Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawAllowPrefix = value; },
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawAllowPrefix = value,
                 GetBool = () => RawAllowPrefix } },
             { "AllowSuffix", new FieldParser() {
                 Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawAllowSuffix = value; },
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawAllowSuffix = value,
                 GetBool = () => RawAllowSuffix } },
             { "CraftPoints", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawCraftPoints = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawCraftPoints = value,
                 GetInteger = () => RawCraftPoints } },
             { "CraftingTargetLevel", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawCraftingTargetLevel = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawCraftingTargetLevel = value,
                 GetInteger = () => RawCraftingTargetLevel } },
             { "Description", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Description = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Description = value,
                 GetString = () => Description } },
             { "DroppedAppearance", new FieldParser() {
                 Type = FieldType.String,
@@ -130,11 +130,11 @@ namespace PgJsonObjects
                 GetString = () => DyeColor.HasValue ? InvariantCulture.ColorToString(DyeColor.Value) : null } },
             { "EquipAppearance", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { EquipAppearance = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => EquipAppearance = value,
                 GetString = () => EquipAppearance } },
             { "EquipSlot", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { EquipSlot = StringToEnumConversion<ItemSlot>.Parse(value, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => EquipSlot = StringToEnumConversion<ItemSlot>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<ItemSlot>.ToString(EquipSlot) } },
             { "IconId", new FieldParser() {
                 Type = FieldType.Integer,
@@ -146,11 +146,11 @@ namespace PgJsonObjects
                 GetString = () => InternalName } },
             { "IsTemporary", new FieldParser() {
                 Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsTemporary = value; },
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsTemporary = value,
                 GetBool = () => RawIsTemporary } },
             { "IsCrafted", new FieldParser() {
                 Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsCrafted = value; },
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsCrafted = value,
                 GetBool = () => RawIsCrafted } },
             { "Keywords", new FieldParser() {
                 Type = FieldType.StringArray,
@@ -158,27 +158,27 @@ namespace PgJsonObjects
                 GetStringArray = () => GetKeywords() } },
             { "MacGuffinQuestName", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { RawMacGuffinQuestName = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawMacGuffinQuestName = value,
                 GetString = () => RawMacGuffinQuestName } },
             { "MaxCarryable", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxCarryable = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMaxCarryable = value,
                 GetInteger = () => RawMaxCarryable } },
             { "MaxOnVendor", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxOnVendor = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMaxOnVendor = value,
                 GetInteger = () => RawMaxOnVendor } },
             { "MaxStackSize", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxStackSize = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMaxStackSize = value,
                 GetInteger = () => RawMaxStackSize } },
             { "Name", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Name = value,
                 GetString = () => Name } },
             { "RequiredAppearance", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { RequiredAppearance = StringToEnumConversion<Appearance>.Parse(value, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RequiredAppearance = StringToEnumConversion<Appearance>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<Appearance>.ToString(RequiredAppearance) } },
             { "SkillReqs", new FieldParser() {
                 Type = FieldType.Object,
@@ -190,15 +190,15 @@ namespace PgJsonObjects
                 GetString = () => GetStockDye() } },
             { "Value", new FieldParser() {
                 Type = FieldType.Float,
-                ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawValue = value; },
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawValue = value,
                 GetFloat = () => RawValue } },
             { "NumUses", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawNumUses = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawNumUses = value,
                 GetInteger = () => RawNumUses } },
             { "DestroyWhenUsedUp", new FieldParser() {
                 Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawDestroyWhenUsedUp = value; },
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawDestroyWhenUsedUp = value,
                 GetBool = () => RawDestroyWhenUsedUp } },
             { "Behaviors", new FieldParser() {
                 Type = FieldType.ObjectArray,
@@ -206,19 +206,19 @@ namespace PgJsonObjects
                 GetObjectArray = () => BehaviorList } },
             { "DynamicCraftingSummary", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { DynamicCraftingSummary = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => DynamicCraftingSummary = value,
                 GetString = () => DynamicCraftingSummary } },
             { "IsSkillReqsDefaults", new FieldParser() {
                 Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsSkillReqsDefaults = value; },
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsSkillReqsDefaults = value,
                 GetBool = () => RawIsSkillReqsDefaults } },
             { "BestowTitle", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawBestowTitle = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawBestowTitle = value,
                 GetInteger = () => RawBestowTitle  } },
             { "BestowLoreBook", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawBestowLoreBook = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawBestowLoreBook = value,
                 GetInteger = () => RawBestowLoreBook } },
         }; } }
 

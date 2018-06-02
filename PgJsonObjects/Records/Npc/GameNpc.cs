@@ -28,7 +28,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Name", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Name = value,
                 GetString = () => Name } },
             { "AreaName", new FieldParser() {
                 Type = FieldType.String,
@@ -36,7 +36,7 @@ namespace PgJsonObjects
                 GetString = () => GetAreaName() } },
             { "AreaFriendlyName", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { AreaFriendlyName = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => AreaFriendlyName = value,
                 GetString = () => AreaFriendlyName } },
             { "Preferences", new FieldParser() {
                 Type = FieldType.ObjectArray,

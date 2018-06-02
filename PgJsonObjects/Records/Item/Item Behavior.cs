@@ -34,7 +34,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "UseVerb", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { UseVerb = StringToEnumConversion<ItemUseVerb>.Parse(value, TextMaps.UseVerbMap, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => UseVerb = StringToEnumConversion<ItemUseVerb>.Parse(value, TextMaps.UseVerbMap, errorInfo),
                 GetString = () => StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, TextMaps.UseVerbMap) } },
             { "ServerInfo", new FieldParser() {
                 Type = FieldType.ObjectArray,
@@ -42,23 +42,23 @@ namespace PgJsonObjects
                 GetObjectArray = () => CreateSingleOrEmptyList(ServerInfo) } },
             { "UseRequirements", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<ItemUseRequirement>.ParseList(value, UseRequirementList, errorInfo); },
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemUseRequirement>.ParseList(value, UseRequirementList, errorInfo),
                 GetStringArray = () => StringToEnumConversion<ItemUseRequirement>.ToStringList(UseRequirementList) } },
             { "UseAnimation", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { UseAnimation = StringToEnumConversion<ItemUseAnimation>.Parse(value, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => UseAnimation = StringToEnumConversion<ItemUseAnimation>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<ItemUseAnimation>.ToString(UseAnimation) } },
             { "UseDelayAnimation", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { UseDelayAnimation = StringToEnumConversion<ItemUseAnimation>.Parse(value, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => UseDelayAnimation = StringToEnumConversion<ItemUseAnimation>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<ItemUseAnimation>.ToString(UseDelayAnimation) } },
             { "MetabolismCost", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawMetabolismCost = value; },
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMetabolismCost = value,
                 GetInteger = () => RawMetabolismCost } },
             { "UseDelay", new FieldParser() {
                 Type = FieldType.Float,
-                ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawUseDelay = value; },
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawUseDelay = value,
                 GetFloat = () => RawUseDelay } },
         }; } }
 

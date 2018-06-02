@@ -20,7 +20,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "RecipesThatUseItem", new FieldParser() {
                 Type = FieldType.SimpleIntegerArray,
-                ParseSimpleIntegerArray = (int value, ParseErrorInfo errorInfo) => { RecipesThatUseItemList.Add(value); },
+                ParseSimpleIntegerArray = (int value, ParseErrorInfo errorInfo) => RecipesThatUseItemList.Add(value),
                 GetIntegerArray = () => RecipesThatUseItemList } },
         }; } }
         #endregion

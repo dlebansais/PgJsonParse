@@ -153,11 +153,11 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Prefix", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Prefix = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Prefix = value,
                 GetString = () => Prefix } },
             { "Suffix", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Suffix = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Suffix = value,
                 GetString = () => Suffix  } },
             { "Tiers", new FieldParser() {
                 Type = FieldType.Object,
@@ -165,15 +165,15 @@ namespace PgJsonObjects
                 GetObject = () => null } },
             { "Slots", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<ItemSlot>.ParseList(value, SlotList, errorInfo); },
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemSlot>.ParseList(value, SlotList, errorInfo),
                 GetStringArray = () => StringToEnumConversion<ItemSlot>.ToStringList(SlotList) } },
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { Skill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Skill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill) } },
             { "IsUnavailable", new FieldParser() {
                 Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsUnavailable = value; },
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsUnavailable = value,
                 GetBool = () => RawIsUnavailable } },
         }; } }
 

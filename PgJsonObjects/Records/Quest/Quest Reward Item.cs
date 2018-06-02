@@ -23,7 +23,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Item", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => { RawItem = value; },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawItem = value,
                 GetString = () => RawItem } },
             { "StackSize", new FieldParser() {
                 Type = FieldType.Integer,
