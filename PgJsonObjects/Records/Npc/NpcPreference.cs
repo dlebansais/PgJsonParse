@@ -107,8 +107,14 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Keywords", new FieldParser() { Type = FieldType.StringArray, ParseStringArray = ParseKeywords } },
-            { "Pref", new FieldParser() { Type = FieldType.Float, ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawPreference = value; }} },
+            { "Keywords", new FieldParser() {
+                Type = FieldType.StringArray,
+                ParseStringArray = ParseKeywords,
+                GetStringArray = () => GetKeywords() } },
+            { "Pref", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawPreference = value; },
+                GetFloat = () => RawPreference } },
         }; } }
 
         private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
@@ -134,6 +140,11 @@ namespace PgJsonObjects
                 else
                     return false;
             }
+        }
+
+        private List<string> GetKeywords()
+        {
+            return new List<string>();
         }
 
         private bool ParseKeywordAsMinValue(string MinValueString, ParseErrorInfo ErrorInfo)

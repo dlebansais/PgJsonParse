@@ -83,42 +83,139 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Description", new FieldParser() { Type = FieldType.String, ParseString = ParseDescription } },
-            { "IconId", new FieldParser() { Type = FieldType.Integer, ParseInteger = ParseIconId } },
-            { "Ingredients", new FieldParser() { Type = FieldType.ObjectArray, ParseObjectArray = ParseIngredients, SetArrayIsEmpty = () => EmptyIngredientList = true } },
-            { "InternalName", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { InternalName = value; }} },
-            { "Name", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
-            { "ResultItems", new FieldParser() { Type = FieldType.ObjectArray, ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<RecipeItem>.ParseList("ResultItems", value, ResultItemList, errorInfo); }, SetArrayIsEmpty = () => EmptyResultItemList = true } },
-            { "Skill", new FieldParser() { Type = FieldType.String, ParseString = ParseSkill } },
-            { "SkillLevelReq", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawSkillLevelReq = value; }} },
-            { "ResultEffects", new FieldParser() { Type = FieldType.StringArray, ParseStringArray = ParseResultEffects } },
-            { "SortSkill", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { SortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); }} },
-            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<RecipeKeyword>.ParseList(value, KeywordList, errorInfo); }} },
-            { "ActionLabel", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { ActionLabel = StringToEnumConversion<RecipeAction>.Parse(value, TextMaps.RecipeActionStringMap, errorInfo); }} },
-            { "UsageDelay", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawUsageDelay = value; }} },
-            { "UsageDelayMessage", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { UsageDelayMessage = value; }} },
-            { "UsageAnimation", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { UsageAnimation = StringToEnumConversion<RecipeUsageAnimation>.Parse(value, errorInfo); }} },
-            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo); }} },
-            { "Costs", new FieldParser() { Type = FieldType.ObjectArray, ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<RecipeCost>.ParseList("Costs", value, CostList, errorInfo); }} },
-            { "NumResultItems", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawNumResultItems = value; }} },
-            { "UsageAnimationEnd", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { UsageAnimationEnd = value; }} },
-            { "ResetTimeInSeconds", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawResetTimeInSeconds = value; }} },
-            { "DyeColor", new FieldParser() { Type = FieldType.String, ParseString = ParseDyeColor } },
-            { "RewardSkill", new FieldParser() { Type = FieldType.String, ParseString = ParseRewardSkill } },
-            { "RewardSkillXp", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardSkillXp = value; }} },
-            { "RewardSkillXpFirstTime", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawRewardSkillXpFirstTime = value; }} },
-            { "SharesResetTimerWith", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RawSharesResetTimerWith = value; }} },
-            { "ItemMenuLabel", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { ItemMenuLabel = value; }} },
-            { "ItemMenuKeywordReq", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RecipeItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo); }} },
-            { "IsItemMenuKeywordReqSufficient", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsItemMenuKeywordReqSufficient = value; }} },
-            { "ItemMenuCategory", new FieldParser() { Type = FieldType.String, ParseString = ParseItemMenuCategory } },
-            { "ItemMenuCategoryLevel", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawItemMenuCategoryLevel = value; }} },
-            { "PrereqRecipe", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RawPrereqRecipe = value; }} },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseDescription,
+                GetString = () => Description } },
+            { "IconId", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = ParseIconId,
+                GetInteger = () => RawIconId } },
+            { "Ingredients", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = ParseIngredients,
+                SetArrayIsEmpty = () => EmptyIngredientList = true,
+                GetObjectArray = () => IngredientList,
+                GetArrayIsEmpty = () => EmptyIngredientList} },
+            { "InternalName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => InternalName = value,
+                GetString = () => InternalName } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Name = value,
+                GetString = () => Name } },
+            { "ResultItems", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<RecipeItem>.ParseList("ResultItems", value, ResultItemList, errorInfo),
+                SetArrayIsEmpty = () => EmptyResultItemList = true ,
+                GetObjectArray = () => ResultItemList,
+                GetArrayIsEmpty = () => EmptyResultItemList } },
+            { "Skill", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseSkill,
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill) } },
+            { "SkillLevelReq", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawSkillLevelReq = value,
+                GetInteger = () => RawSkillLevelReq } },
+            { "ResultEffects", new FieldParser() {
+                Type = FieldType.StringArray,
+                ParseStringArray = ParseResultEffects,
+                GetStringArray = () => null } },
+            { "SortSkill", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => SortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(SortSkill) } },
+            { "Keywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<RecipeKeyword>.ParseList(value, KeywordList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<RecipeKeyword>.ToStringList(KeywordList) } },
+            { "ActionLabel", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => ActionLabel = StringToEnumConversion<RecipeAction>.Parse(value, TextMaps.RecipeActionStringMap, errorInfo),
+                GetString = () => StringToEnumConversion<RecipeAction>.ToString(ActionLabel) } },
+            { "UsageDelay", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawUsageDelay = value,
+                GetInteger = () => RawUsageDelay } },
+            { "UsageDelayMessage", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => UsageDelayMessage = value,
+                GetString = () => UsageDelayMessage } },
+            { "UsageAnimation", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => UsageAnimation = StringToEnumConversion<RecipeUsageAnimation>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<RecipeUsageAnimation>.ToString(UsageAnimation) } },
+            { "OtherRequirements", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo),
+                GetObjectArray = () => OtherRequirementList } },
+            { "Costs", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<RecipeCost>.ParseList("Costs", value, CostList, errorInfo),
+                GetObjectArray = () => CostList } },
+            { "NumResultItems", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawNumResultItems = value,
+                GetInteger = () => RawNumResultItems } },
+            { "UsageAnimationEnd", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => UsageAnimationEnd = value,
+                GetString = () => UsageAnimationEnd } },
+            { "ResetTimeInSeconds", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawResetTimeInSeconds = value,
+                GetInteger = () => RawResetTimeInSeconds } },
+            { "DyeColor", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseDyeColor,
+                GetString = () => DyeColor.HasValue ? InvariantCulture.ColorToString(DyeColor.Value) : null } },
+            { "RewardSkill", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseRewardSkill,
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RewardSkill) } },
+            { "RewardSkillXp", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardSkillXp = value,
+                GetInteger = () => RawRewardSkillXp } },
+            { "RewardSkillXpFirstTime", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardSkillXpFirstTime = value,
+                GetInteger = () => RawRewardSkillXpFirstTime } },
+            { "SharesResetTimerWith", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawSharesResetTimerWith = value,
+                GetString = () => RawSharesResetTimerWith } },
+            { "ItemMenuLabel", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => ItemMenuLabel = value,
+                GetString = () => ItemMenuLabel } },
+            { "ItemMenuKeywordReq", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RecipeItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RecipeItemKeyword) } },
+            { "IsItemMenuKeywordReqSufficient", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsItemMenuKeywordReqSufficient = value,
+                GetBool = () => RawIsItemMenuKeywordReqSufficient } },
+            { "ItemMenuCategory", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseItemMenuCategory,
+                GetString = () => RawItemMenuCategory } },
+            { "ItemMenuCategoryLevel", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawItemMenuCategoryLevel = value,
+                GetInteger = () => RawItemMenuCategoryLevel } },
+            { "PrereqRecipe", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawPrereqRecipe = value,
+                GetString = () => RawPrereqRecipe } },
         }; } }
 
-        private void ParseDescription(string RawDescription, ParseErrorInfo ErrorInfo)
+        private void ParseDescription(string value, ParseErrorInfo ErrorInfo)
         {
-            Description = RawDescription;
+            Description = value;
             ErrorInfo.LookForIconId(Description);
         }
 
@@ -136,10 +233,10 @@ namespace PgJsonObjects
                 RawIconId = null;
         }
 
-        private void ParseIngredients(JsonObject RawIngredients, ParseErrorInfo ErrorInfo)
+        private void ParseIngredients(JsonObject value, ParseErrorInfo ErrorInfo)
         {
             RecipeItem ParsedIngredient;
-            JsonObjectParser<RecipeItem>.InitAsSubitem("Ingredients", RawIngredients, out ParsedIngredient, ErrorInfo);
+            JsonObjectParser<RecipeItem>.InitAsSubitem("Ingredients", value, out ParsedIngredient, ErrorInfo);
 
             if (ParsedIngredient != null)
                 if (ParsedIngredient.AttuneToCrafter)
@@ -154,10 +251,10 @@ namespace PgJsonObjects
             PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, RawIconId);
         }
 
-        private bool ParseResultEffects(string RawResultEffect, ParseErrorInfo ErrorInfo)
+        private bool ParseResultEffects(string value, ParseErrorInfo ErrorInfo)
         {
             RecipeResultEffect NewResultEffect;
-            if (ParseResultEffect(RawResultEffect, ErrorInfo, out NewResultEffect))
+            if (ParseResultEffect(value, ErrorInfo, out NewResultEffect))
             {
                 ResultEffectList.Add(NewResultEffect);
                 return true;
@@ -166,29 +263,29 @@ namespace PgJsonObjects
                 return false;
         }
 
-        private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)
+        private void ParseDyeColor(string value, ParseErrorInfo ErrorInfo)
         {
             uint NewColor;
-            if (InvariantCulture.TryParseColor(RawDyeColor, out NewColor))
+            if (InvariantCulture.TryParseColor(value, out NewColor))
                 DyeColor = NewColor;
             else
-                ErrorInfo.AddInvalidString("Item DyeColor", RawDyeColor);
+                ErrorInfo.AddInvalidString("Item DyeColor", value);
         }
 
-        private void ParseRewardSkill(string RawRewardSkill, ParseErrorInfo ErrorInfo)
+        private void ParseRewardSkill(string value, ParseErrorInfo ErrorInfo)
         {
-            RewardSkill = StringToEnumConversion<PowerSkill>.Parse(RawRewardSkill, ErrorInfo);
+            RewardSkill = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
 
-            PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, this.RawIconId);
+            PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, RawIconId);
         }
 
-        private void ParseItemMenuCategory(string RawItemMenuCategory, ParseErrorInfo ErrorInfo)
+        private void ParseItemMenuCategory(string value, ParseErrorInfo ErrorInfo)
         {
-            if (RawItemMenuCategory == "TSysExtract")
-                this.RawItemMenuCategory = "Extract";
+            if (value == "TSysExtract")
+                RawItemMenuCategory = "Extract";
 
-            else if (RawItemMenuCategory == "TSysDistill")
-                this.RawItemMenuCategory = "Distill";
+            else if (value == "TSysDistill")
+                RawItemMenuCategory = "Distill";
         }
 
         private void ParsePrereqRecipe(string value, ParseErrorInfo errorInfo)
@@ -196,11 +293,11 @@ namespace PgJsonObjects
             //TODO
         }
 
-        private bool ParseResultEffect(string RawEffect, ParseErrorInfo ErrorInfo, out RecipeResultEffect NewResultEffect)
+        private bool ParseResultEffect(string value, ParseErrorInfo ErrorInfo, out RecipeResultEffect NewResultEffect)
         {
             NewResultEffect = new RecipeResultEffect();
 
-            if (StringToEnumConversion<RecipeEffect>.TryParse(RawEffect, TextMaps.RecipeEffectStringMap, out RecipeEffect ConvertedRecipeEffect, null))
+            if (StringToEnumConversion<RecipeEffect>.TryParse(value, TextMaps.RecipeEffectStringMap, out RecipeEffect ConvertedRecipeEffect, null))
             {
                 NewResultEffect.Effect = ConvertedRecipeEffect;
                 return true;
@@ -209,28 +306,28 @@ namespace PgJsonObjects
             //if (ParseDecomposeEffect(RawEffect, ErrorInfo, ref NewResultEffect))
             //    return true;
 
-            if (ParseExtractEffect(RawEffect, ErrorInfo, ref NewResultEffect))
+            if (ParseExtractEffect(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
-            if (ParseRepairEffect(RawEffect, ErrorInfo, ref NewResultEffect))
+            if (ParseRepairEffect(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
-            if (ParseCraftEffect(RawEffect, ErrorInfo, ref NewResultEffect))
+            if (ParseCraftEffect(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
-            if (ParseEnhanceEffect(RawEffect, ErrorInfo, ref NewResultEffect))
+            if (ParseEnhanceEffect(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
-            if (ParseAddItemPower(RawEffect, ErrorInfo, ref NewResultEffect))
+            if (ParseAddItemPower(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
-            if (ParseBrewItem(RawEffect, ErrorInfo, ref NewResultEffect))
+            if (ParseBrewItem(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
-            if (ParseAdjustRecipeReuseTime(RawEffect, ErrorInfo, ref NewResultEffect))
+            if (ParseAdjustRecipeReuseTime(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
-            ErrorInfo.AddMissingEnum("RecipeEffect", RawEffect);
+            ErrorInfo.AddMissingEnum("RecipeEffect", value);
             return false;
         }
 

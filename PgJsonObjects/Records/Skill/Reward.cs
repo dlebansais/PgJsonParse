@@ -53,10 +53,22 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Ability", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RawAbility = value; }} },
-            { "BonusToSkill", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { BonusSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo); }} },
-            { "Recipe", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RawRecipe = value; }} },
-            { "Notes", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Notes = value; }} },
+            { "Ability", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawAbility = value,
+                GetString = () => RawAbility } },
+            { "BonusToSkill", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => BonusSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(BonusSkill) } },
+            { "Recipe", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawRecipe = value,
+                GetString = () => RawRecipe  } },
+            { "Notes", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Notes = value,
+                GetString = () => Notes } },
         }; } }
         #endregion
 

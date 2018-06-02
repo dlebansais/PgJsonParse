@@ -32,16 +32,46 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "ID", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawId = value; }} },
-            { "NpcFriendlyName", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { NpcFriendlyName = value; }} },
-            { "Area", new FieldParser() { Type = FieldType.String, ParseString = ParseArea } },
-            { "NumSlots", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawNumSlots = value; }} },
-            { "HasAssociatedNpc", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawHasAssociatedNpc = value; }} },
-            { "Levels", new FieldParser() { Type = FieldType.Object, ParseObject = ParseLevels } },
-            { "RequiredItemKeyword", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RequiredItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo); }} },
-            { "RequirementDescription", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RequirementDescription = value; }} },
-            { "Grouping", new FieldParser() { Type = FieldType.String, ParseString = ParseGrouping } },
-            { "Requirements", new FieldParser() { Type = FieldType.Object, ParseObject = ParseRequirements } },
+            { "ID", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawId = value,
+                GetInteger = () => RawId } },
+            { "NpcFriendlyName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => NpcFriendlyName = value,
+                GetString = () => NpcFriendlyName } },
+            { "Area", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseArea,
+                GetString = () => StringToEnumConversion<MapAreaName>.ToString(Area) } },
+            { "NumSlots", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawNumSlots = value,
+                GetInteger = () => RawNumSlots } },
+            { "HasAssociatedNpc", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawHasAssociatedNpc = value,
+                GetBool = () => RawHasAssociatedNpc } },
+            { "Levels", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = ParseLevels,
+                GetObject = () => null } },
+            { "RequiredItemKeyword", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RequiredItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RequiredItemKeyword) } },
+            { "RequirementDescription", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RequirementDescription = value,
+                GetString = () => RequirementDescription } },
+            { "Grouping", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseGrouping,
+                GetString = () => StringToEnumConversion<MapAreaName>.ToString(Grouping) } },
+            { "Requirements", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = ParseRequirements,
+                GetObject = () => null } },
         }; } }
 
         private void ParseArea(string RawArea, ParseErrorInfo ErrorInfo)

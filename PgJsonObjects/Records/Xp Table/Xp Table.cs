@@ -21,8 +21,14 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "InternalName", new FieldParser() { Type = FieldType.String, ParseString = ParseInternalName } },
-            { "XpAmounts", new FieldParser() { Type = FieldType.SimpleIntegerArray, ParseSimpleIntegerArray = ParseXpAmounts } },
+            { "InternalName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseInternalName,
+                GetString = () => StringToEnumConversion<XpTableEnum>.ToString(EnumName) } },
+            { "XpAmounts", new FieldParser() {
+                Type = FieldType.SimpleIntegerArray,
+                ParseSimpleIntegerArray = ParseXpAmounts,
+                GetIntegerArray = () => GetXpAmounts() } },
         }; } }
 
         private void ParseInternalName(string value, ParseErrorInfo ErrorInfo)
@@ -36,6 +42,16 @@ namespace PgJsonObjects
             TotalXp += value;
             Level++;
             XpAmountList.Add(new XpTableLevel(Level, value, TotalXp));
+        }
+
+        private List<int> GetXpAmounts()
+        {
+            List<int> Result = new List<int>();
+
+            foreach (XpTableLevel Item in XpAmountList)
+                Result.Add(Item.Xp);
+
+            return Result;
         }
         #endregion
 

@@ -128,11 +128,26 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Effects", new FieldParser() { Type = FieldType.StringArray, ParseStringArray = ParseEffects } },
-            { "GiveItems", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawItemNameList.Add(value); }} },
-            { "RequiredHotspot", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo); }} },
-            { "NumItemsToGive", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawNumItemsToGive = value; }} },
-            { "OtherRequirements", new FieldParser() { Type = FieldType.ObjectArray, ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo); }} },
+            { "Effects", new FieldParser() {
+                Type = FieldType.StringArray,
+                ParseStringArray = ParseEffects,
+                GetStringArray = () => GetEffects() } },
+            { "GiveItems", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { RawItemNameList.Add(value); },
+                GetStringArray = () => RawItemNameList } },
+            { "RequiredHotspot", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo); },
+                GetString = () => StringToEnumConversion<ItemRequiredHotspot>.ToString(RequiredHotspot) } },
+            { "NumItemsToGive", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawNumItemsToGive = value; },
+                GetInteger = () => RawNumItemsToGive } },
+            { "OtherRequirements", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => { JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo); },
+                GetObjectArray = () => OtherRequirementList } },
         }; } }
 
         private bool ParseEffects(string RawEffect, ParseErrorInfo ErrorInfo)
@@ -145,6 +160,11 @@ namespace PgJsonObjects
             }
             else
                 return false;
+        }
+
+        private List<string> GetEffects()
+        {
+            return new List<string>();
         }
 
         private ServerInfoEffect ParseEffectString(string RawEffect, ParseErrorInfo ErrorInfo)

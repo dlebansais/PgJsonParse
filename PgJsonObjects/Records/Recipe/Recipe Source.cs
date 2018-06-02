@@ -130,19 +130,40 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Type", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Type = StringToEnumConversion<SourceTypes>.Parse(value, errorInfo); }} },
-            { "SkillTypeId", new FieldParser() { Type = FieldType.String, ParseString = ParseSkillTypeId } },
-            { "ItemTypeId", new FieldParser() { Type = FieldType.Integer, ParseInteger = ParseItemTypeId } },
-            { "Npc", new FieldParser() { Type = FieldType.String, ParseString = ParseNpc } },
-            { "EffectName", new FieldParser() { Type = FieldType.String, ParseString = ParseEffectName } },
-            { "EffectTypeId", new FieldParser() { Type = FieldType.String, ParseString = ParseEffectTypeId } },
-            { "QuestId", new FieldParser() { Type = FieldType.Integer, ParseInteger = ParseQuestId } },
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<SourceTypes>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<SourceTypes>.ToString(Type) } },
+            { "SkillTypeId", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseSkillTypeId,
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(SkillTypeId) } },
+            { "ItemTypeId", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = ParseItemTypeId,
+                GetInteger = () => RawItemTypeId } },
+            { "Npc", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseNpc,
+                GetString = () => Quest.NpcToString(RawNpcId, RawNpcName) } },
+            { "EffectName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseEffectName,
+                GetString = () => RawEffectName } },
+            { "EffectTypeId", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseEffectTypeId,
+                GetString = () => null } },
+            { "QuestId", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = ParseQuestId,
+                GetInteger = () => RawQuestId } },
         }; } }
 
-        private void ParseSkillTypeId(string RawSkillTypeId, ParseErrorInfo ErrorInfo)
+        private void ParseSkillTypeId(string value, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.AutomaticFromSkill)
-                SkillTypeId = StringToEnumConversion<PowerSkill>.Parse(RawSkillTypeId, ErrorInfo);
+                SkillTypeId = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource SkillTypeId (type)");
         }
@@ -155,11 +176,11 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource ItemTypeId (type)");
         }
 
-        private void ParseNpc(string RawNpc, ParseErrorInfo ErrorInfo)
+        private void ParseNpc(string value, ParseErrorInfo ErrorInfo)
         {
             string ParsedNpcId;
             string ParsedNpcName;
-            if (Quest.TryParseNPC(RawNpc, out ParsedNpcId, out ParsedNpcName, ErrorInfo))
+            if (Quest.TryParseNPC(value, out ParsedNpcId, out ParsedNpcName, ErrorInfo))
             {
                 RawNpcId = ParsedNpcId;
                 RawNpcName = ParsedNpcName;
@@ -168,22 +189,22 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource Npc");
         }
 
-        private void ParseEffectName(string RawEffectName, ParseErrorInfo ErrorInfo)
+        private void ParseEffectName(string value, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.Effect)
-                this.RawEffectName = RawEffectName;
+                RawEffectName = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource EffectName (type)");
         }
 
-        private void ParseEffectTypeId(string RawEffectTypeId, ParseErrorInfo ErrorInfo)
+        private void ParseEffectTypeId(string value, ParseErrorInfo ErrorInfo)
         {
         }
 
-        private void ParseQuestId(int RawQuestId, ParseErrorInfo ErrorInfo)
+        private void ParseQuestId(int value, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.Quest)
-                this.RawQuestId = (int)RawQuestId;
+                RawQuestId = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource QuestId (type)");
         }

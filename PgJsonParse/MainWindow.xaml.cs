@@ -497,11 +497,8 @@ namespace PgJsonParse
 
         private void LoadBuild()
         {
-            if (FileTools.OpenTextFile(out string FileName, out string Content))
-            {
-                BuildFileName = FileName;
+            if (FileTools.OpenTextFile(ref BuildFileName, out string Content))
                 LoadBuild(Content);
-            }
         }
 
         private void LoadBuild(string content)
@@ -681,7 +678,7 @@ namespace PgJsonParse
             using (StringWriter sw = new StringWriter())
             {
                 SaveBuild(sw);
-                FileTools.SaveTextFile(BuildFileName, sw.ToString());
+                FileTools.SaveTextFile(ref BuildFileName, sw.ToString());
             }
         }
 

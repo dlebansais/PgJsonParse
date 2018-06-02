@@ -11,6 +11,7 @@ namespace PgJsonObjects
         public string Name { get; private set; }
         public MapAreaName AreaName { get; private set; }
         public string AreaFriendlyName { get; private set; }
+        public List<NpcPreference> PreferenceList { get; private set; } = new List<NpcPreference>();
         public List<NpcPreference> LikeList { get; private set; } = new List<NpcPreference>();
         public List<NpcPreference> HateList { get; private set; } = new List<NpcPreference>();
         #endregion
@@ -25,18 +26,38 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Name", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
-            { "AreaName", new FieldParser() { Type = FieldType.String, ParseString = ParseAreaName } },
-            { "AreaFriendlyName", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { AreaFriendlyName = value; }} },
-            { "Preferences", new FieldParser() { Type = FieldType.ObjectArray, ParseObjectArray = ParsePreferences } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; },
+                GetString = () => Name } },
+            { "AreaName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseAreaName,
+                GetString = () => GetAreaName() } },
+            { "AreaFriendlyName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { AreaFriendlyName = value; },
+                GetString = () => AreaFriendlyName } },
+            { "Preferences", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = ParsePreferences,
+                GetObjectArray= () => PreferenceList } },
         }; } }
 
-        private void ParseAreaName(string RawAreaName, ParseErrorInfo ErrorInfo)
+        private void ParseAreaName(string value, ParseErrorInfo ErrorInfo)
         {
-            if (RawAreaName.StartsWith("Area"))
-                AreaName = StringToEnumConversion<MapAreaName>.Parse(RawAreaName.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
+            if (value.StartsWith("Area"))
+                AreaName = StringToEnumConversion<MapAreaName>.Parse(value.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("GameNpc AreaName");
+        }
+
+        private string GetAreaName()
+        {
+            if (AreaName != MapAreaName.Internal_None)
+                return "area" + StringToEnumConversion<MapAreaName>.ToString(AreaName);
+            else
+                return null;
         }
 
         private void ParsePreferences(JsonObject RawPreference, ParseErrorInfo ErrorInfo)
@@ -44,12 +65,17 @@ namespace PgJsonObjects
             NpcPreference ParsedPreference;
             JsonObjectParser<NpcPreference>.InitAsSubitem("Preference", RawPreference, out ParsedPreference, ErrorInfo);
 
-            if (ParsedPreference.Preference > 0)
-                LikeList.Add(ParsedPreference);
-            else if (ParsedPreference.Preference < 0)
-                HateList.Add(ParsedPreference);
-            else
-                ErrorInfo.AddInvalidObjectFormat("GameNpc Preferences");
+            if (ParsedPreference != null)
+            {
+                PreferenceList.Add(ParsedPreference);
+
+                if (ParsedPreference.Preference > 0)
+                    LikeList.Add(ParsedPreference);
+                else if (ParsedPreference.Preference < 0)
+                    HateList.Add(ParsedPreference);
+                else
+                    ErrorInfo.AddInvalidObjectFormat("GameNpc Preferences");
+            }
         }
         #endregion
 

@@ -27,13 +27,34 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Id", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawId = value; }} },
-            { "Label", new FieldParser() { Type = FieldType.String, ParseString = ParseLabel } },
-            { "Zone", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Zone = value; }} },
-            { "IsCategoryGate", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsCategoryGate = value; }} },
-            { "LargeHint", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { LargeHint = value; }} },
-            { "SmallHint", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { SmallHint = value; }} },
-            { "CategoryGateId", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawCategoryGateId = value; }} },
+            { "Id", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawId = value; },
+                GetInteger = () => RawId } },
+            { "Label", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseLabel,
+                GetString = () => Label } },
+            { "Zone", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { Zone = value; },
+                GetString = () => Zone  } },
+            { "IsCategoryGate", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawIsCategoryGate = value; },
+                GetBool = () => RawIsCategoryGate } },
+            { "LargeHint", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { LargeHint = value; },
+                GetString = () => LargeHint } },
+            { "SmallHint", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { SmallHint = value; },
+                GetString = () => SmallHint } },
+            { "CategoryGateId", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawCategoryGateId = value; },
+                GetInteger = () => RawCategoryGateId } },
         }; } }
 
         private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)

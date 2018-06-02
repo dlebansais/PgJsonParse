@@ -173,39 +173,77 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Id", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawId = value; }} },
-            { "Description", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Description = value; }} },
-            { "HideWhenZero", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawHideWhenZero = value; }} },
-            { "XpTable", new FieldParser() { Type = FieldType.String, ParseString = ParseXpTable } },
-            { "AdvancementTable", new FieldParser() { Type = FieldType.String, ParseString = ParseAdvancementTable } },
-            { "Combat", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawCombat = value; }} },
-            { "CompatibleCombatSkills", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<PowerSkill>.ParseList(value, CompatibleCombatSkillList, errorInfo); }} },
-            { "MaxBonusLevels", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawMaxBonusLevels = value; }} },
-            { "InteractionFlagLevelCaps", new FieldParser() { Type = FieldType.Object, ParseObject = ParseInteractionFlagLevelCaps } },
-            { "AdvancementHints", new FieldParser() { Type = FieldType.Object, ParseObject = ParseAdvancementHints } },
-            { "Rewards", new FieldParser() { Type = FieldType.Object, ParseObject = ParseRewards } },
-            { "Reports", new FieldParser() { Type = FieldType.Object, ParseObject = ParseReports } },
-            { "Name", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
-            { "Parents", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = ParseParents } },
-            { "SkipBonusLevelsIfSkillUnlearned", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawSkipBonusLevelsIfSkillUnlearned = value; }} },
-            { "AuxCombat", new FieldParser() { Type = FieldType.Bool, ParseBool = (bool value, ParseErrorInfo errorInfo) => { RawAuxCombat = value; }} },
-            { "TSysCategories", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<SkillCategory>.ParseList(value, TSysCategoryList, errorInfo); }} },
+            { "Id", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawId = value,
+                GetInteger = () => RawId } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Description = value,
+                GetString = () => Description } },
+            { "HideWhenZero", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawHideWhenZero = value,
+                GetBool = () => RawHideWhenZero } },
+            { "XpTable", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawXpTable = value,
+                GetString = () => RawXpTable } },
+            { "AdvancementTable", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawAdvancementTable = value,
+                SetArrayIsEmpty = () => IsRawAdvancementTableEmpty = true,
+                GetString = () => RawAdvancementTable,
+                GetArrayIsEmpty = () => IsRawAdvancementTableEmpty } },
+            { "Combat", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawCombat = value,
+                GetBool = () => RawCombat } },
+            { "CompatibleCombatSkills", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<PowerSkill>.ParseList(value, CompatibleCombatSkillList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<PowerSkill>.ToStringList(CompatibleCombatSkillList) } },
+            { "MaxBonusLevels", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMaxBonusLevels = value,
+                GetInteger = () => RawMaxBonusLevels } },
+            { "InteractionFlagLevelCaps", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = ParseInteractionFlagLevelCaps,
+                GetObject = () => null } },
+            { "AdvancementHints", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = ParseAdvancementHints,
+                GetObject = () => null } },
+            { "Rewards", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = ParseRewards,
+                GetObject = () => null } },
+            { "Reports", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = ParseReports,
+                GetObject = () => null } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Name = value,
+                GetString = () => Name } },
+            { "Parents", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = ParseParents,
+                GetStringArray = () => null } },
+            { "SkipBonusLevelsIfSkillUnlearned", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawSkipBonusLevelsIfSkillUnlearned = value,
+                GetBool = () => RawSkipBonusLevelsIfSkillUnlearned } },
+            { "AuxCombat", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawAuxCombat = value,
+                GetBool = () => RawAuxCombat } },
+            { "TSysCategories", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<SkillCategory>.ParseList(value, TSysCategoryList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<SkillCategory>.ToStringList(TSysCategoryList) } },
         }; } }
-
-        private void ParseXpTable(string RawXpTable, ParseErrorInfo ErrorInfo)
-        {
-            this.RawXpTable = RawXpTable;
-            XpTable = null;
-            IsRawXpTableParsed = false;
-        }
-
-        private void ParseAdvancementTable(string RawAdvancementTable, ParseErrorInfo ErrorInfo)
-        {
-            this.RawAdvancementTable = RawAdvancementTable;
-            AdvancementTable = null;
-            IsRawAdvancementTableEmpty = false;
-            IsRawAdvancementTableParsed = false;
-        }
 
         private void ParseInteractionFlagLevelCaps(JsonObject InteractionFlagLevelCaps, ParseErrorInfo ErrorInfo)
         {

@@ -9,9 +9,10 @@ namespace Presentation
     public class FileTools
     {
         #region File Dialog
-        public static bool OpenTextFile(out string fileName, out string content)
+        public static bool OpenTextFile(ref string fileName, out string content)
         {
             OpenFileDialog Dlg = new OpenFileDialog();
+            Dlg.FileName = fileName;
             Dlg.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             bool? Result = Dlg.ShowDialog();
 
@@ -33,7 +34,7 @@ namespace Presentation
             return false;
         }
 
-        public static void SaveTextFile(string fileName, string content)
+        public static void SaveTextFile(ref string fileName, string content)
         {
             SaveFileDialog Dlg = new SaveFileDialog();
             Dlg.FileName = fileName;

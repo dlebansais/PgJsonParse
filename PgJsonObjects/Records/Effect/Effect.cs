@@ -45,17 +45,50 @@ namespace PgJsonObjects
         };
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Name", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; }} },
-            { "Desc", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Desc = value; }} },
-            { "IconId", new FieldParser() { Type = FieldType.Integer, ParseInteger = ParseIconId } },
-            { "DisplayMode", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { DisplayMode = StringToEnumConversion<EffectDisplayMode>.Parse(value, errorInfo); }} },
-            { "SpewText", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { SpewText = value; }} },
-            { "Particle", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Particle = StringToEnumConversion<EffectParticle>.Parse(value, errorInfo); }} },
-            { "StackingType", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { StackingType = StringToEnumConversion<EffectStackingType>.Parse(value, StackingTypeStringMap, errorInfo); }} },
-            { "StackingPriority", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawStackingPriority = value; }} },
-            { "Duration", new FieldParser() { Type = FieldType.Integer, ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawDuration = value; }} },
-            { "Keywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = ParseKeywords } },
-            { "AbilityKeywords", new FieldParser() { Type = FieldType.SimpleStringArray, ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<AbilityKeyword>.ParseList(value, AbilityKeywordList, errorInfo); }} },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; },
+                GetString = () => Name } },
+            { "Desc", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { Desc = value; },
+                GetString = () => Desc } },
+            { "IconId", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = ParseIconId,
+                GetInteger = () => RawIconId } },
+            { "DisplayMode", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { DisplayMode = StringToEnumConversion<EffectDisplayMode>.Parse(value, errorInfo); },
+                GetString = () => StringToEnumConversion<EffectDisplayMode>.ToString(DisplayMode) } },
+            { "SpewText", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { SpewText = value; },
+                GetString = () => SpewText } },
+            { "Particle", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { Particle = StringToEnumConversion<EffectParticle>.Parse(value, errorInfo); },
+                GetString = () => StringToEnumConversion<EffectParticle>.ToString(Particle) } },
+            { "StackingType", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { StackingType = StringToEnumConversion<EffectStackingType>.Parse(value, StackingTypeStringMap, errorInfo); },
+                GetString = () => StringToEnumConversion<EffectStackingType>.ToString(StackingType, StackingTypeStringMap) } },
+            { "StackingPriority", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawStackingPriority = value; },
+                GetInteger = () => RawStackingPriority } },
+            { "Duration", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => { RawDuration = value; },
+                GetInteger = () => RawDuration } },
+            { "Keywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = ParseKeywords,
+                GetStringArray = () => StringToEnumConversion<EffectKeyword>.ToStringList(KeywordList, KeywordStringMap) } },
+            { "AbilityKeywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<AbilityKeyword>.ParseList(value, AbilityKeywordList, errorInfo); },
+                GetStringArray = () => StringToEnumConversion<AbilityKeyword>.ToStringList(AbilityKeywordList) } },
         }; } }
 
         private void ParseIconId(int value, ParseErrorInfo ErrorInfo)

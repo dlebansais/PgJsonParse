@@ -16,7 +16,10 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "EffectDescs", new FieldParser() { Type = FieldType.StringArray, ParseStringArray = ParseEffectDescs } },
+            { "EffectDescs", new FieldParser() {
+                Type = FieldType.StringArray,
+                ParseStringArray = ParseEffectDescs,
+                GetStringArray = () => GetEffectDescs() } },
         }; } }
 
         private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)
@@ -32,6 +35,11 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidString("PowerTier EffectDescs", RawEffectDesc);
                 return false;
             }
+        }
+
+        private List<string> GetEffectDescs()
+        {
+            return new List<string>();
         }
         #endregion
 

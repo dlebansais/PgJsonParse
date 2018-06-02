@@ -73,6 +73,17 @@ namespace PgJsonObjects
             return string.Compare(s1, s2, StringComparison.InvariantCulture);
         }
         #endregion
+
+        #region Tools
+        public static IList CreateSingleOrEmptyList(object item)
+        {
+            List<object> Result = new List<object>();
+            if (item != null)
+                Result.Add(item);
+
+            return Result;
+        }
+        #endregion
     }
 
     public abstract class GenericJsonObject<T>: GenericJsonObject, IGenericJsonObject

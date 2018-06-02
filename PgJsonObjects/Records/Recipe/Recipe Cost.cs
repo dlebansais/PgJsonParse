@@ -18,8 +18,14 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "Currency", new FieldParser() { Type = FieldType.String, ParseString = (string value, ParseErrorInfo errorInfo) => { Currency = StringToEnumConversion<RecipeCurrency>.Parse(value, errorInfo); }} },
-            { "Price", new FieldParser() { Type = FieldType.Float, ParseFloat = (float value, ParseErrorInfo errorInfo) => { RawPrice = value; }} },
+            { "Currency", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Currency = StringToEnumConversion<RecipeCurrency>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<RecipeCurrency>.ToString(Currency) } },
+            { "Price", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawPrice = value,
+                GetFloat = () => RawPrice } },
         }; } }
         #endregion
 
