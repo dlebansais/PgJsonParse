@@ -33,7 +33,7 @@ namespace PgJsonObjects
             { "AreaName", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseAreaName,
-                GetString = () => GetAreaName() } },
+                GetString = GetAreaName } },
             { "AreaFriendlyName", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => AreaFriendlyName = value,

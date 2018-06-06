@@ -16,6 +16,14 @@ namespace PgJsonObjects
         public float AttributeEffect { get { return RawAttributeEffect.HasValue ? RawAttributeEffect.Value : 0; } }
         public float? RawAttributeEffect;
 
+        public override string RawEffect
+        {
+            get
+            {
+                return base.RawEffect + "(" + Boost.AsEffectString() + ")";
+            }
+        }
+
         #region Indexing
         public override string TextContent
         {

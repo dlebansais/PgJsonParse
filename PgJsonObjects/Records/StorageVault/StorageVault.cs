@@ -43,7 +43,7 @@ namespace PgJsonObjects
             { "Area", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseArea,
-                GetString = () => StringToEnumConversion<MapAreaName>.ToString(Area) } },
+                GetString = GetArea } },
             { "NumSlots", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawNumSlots = value,
@@ -55,11 +55,11 @@ namespace PgJsonObjects
             { "Levels", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseLevels,
-                GetObject = () => null } },
+                GetObject = GetLevels } },
             { "RequiredItemKeyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RequiredItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RequiredItemKeyword) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RequiredItemKeyword, null, ItemKeyword.Internal_None) } },
             { "RequirementDescription", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RequirementDescription = value,
@@ -67,25 +67,34 @@ namespace PgJsonObjects
             { "Grouping", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseGrouping,
-                GetString = () => StringToEnumConversion<MapAreaName>.ToString(Grouping) } },
+                GetString = GetGrouping } },
             { "Requirements", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseRequirements,
-                GetObject = () => null } },
+                GetObject = GetRequirements } },
         }; } }
 
         private void ParseArea(string RawArea, ParseErrorInfo ErrorInfo)
         {
             if (RawArea == "*")
-                return;
-
-            if (!RawArea.StartsWith("Area"))
             {
-                ErrorInfo.AddInvalidObjectFormat("StorageVault Area");
-                return;
+                Area = MapAreaName.Several;
+                StringToEnumConversion<MapAreaName>.SetCustomParsedEnum(Area);
             }
 
-            Area = StringToEnumConversion<MapAreaName>.Parse(RawArea.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
+            else if (RawArea.StartsWith("Area"))
+                Area = StringToEnumConversion<MapAreaName>.Parse(RawArea.Substring(4), ErrorInfo);
+
+            else
+                ErrorInfo.AddInvalidObjectFormat("StorageVault Area");
+        }
+
+        private string GetArea()
+        {
+            if (Area == MapAreaName.Several)
+                return "*";
+            else
+                return "Area" + StringToEnumConversion<MapAreaName>.ToString(Area);
         }
 
         private void ParseLevels(JsonObject RawLevels, ParseErrorInfo ErrorInfo)
@@ -110,18 +119,37 @@ namespace PgJsonObjects
             }
         }
 
+        private IGenericJsonObject GetLevels()
+        {
+            FavorLevelDesc Result = new FavorLevelDesc();
+
+            foreach (KeyValuePair<Favor, int> Entry in FavorLevelTable)
+                Result.SetFavorLevel(Entry.Key, Entry.Value);
+            
+            return Result;
+        }
+
         private void ParseGrouping(string RawGrouping, ParseErrorInfo ErrorInfo)
         {
             if (RawGrouping == "*")
-                return;
-
-            if (!RawGrouping.StartsWith("Area"))
             {
-                ErrorInfo.AddInvalidObjectFormat("StorageVault Grouping");
-                return;
+                Grouping = MapAreaName.Several;
+                StringToEnumConversion<MapAreaName>.SetCustomParsedEnum(Grouping);
             }
 
-            Grouping = StringToEnumConversion<MapAreaName>.Parse(RawGrouping.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
+            else if (RawGrouping.StartsWith("Area"))
+                Grouping = StringToEnumConversion<MapAreaName>.Parse(RawGrouping.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
+
+            else
+                ErrorInfo.AddInvalidObjectFormat("StorageVault Grouping");
+        }
+
+        private string GetGrouping()
+        {
+            if (Grouping == MapAreaName.Several)
+                return "*";
+            else
+                return "Area" + StringToEnumConversion<MapAreaName>.ToString(Grouping, null);
         }
 
         private void ParseRequirements(JsonObject RawRequirement, ParseErrorInfo ErrorInfo)
@@ -160,6 +188,26 @@ namespace PgJsonObjects
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
+        }
+
+        private IGenericJsonObject GetRequirements()
+        {
+            InteractionFlagSetAbilityRequirement Result;
+
+            if (InteractionFlagRequirement == "Ivyn Gave Passcode")
+                Result = new InteractionFlagSetAbilityRequirement("Ivyn_Gave_Passcode");
+            else if (InteractionFlagRequirement == "Serbule Hills Tapestry Inn Chest")
+                Result = new InteractionFlagSetAbilityRequirement("Serbule2_TapestryInnChest");
+            else
+                Result = null;
+
+            if (Result != null)
+            {
+                List<string> FakeOrder = new List<string>() { "T", "InteractionFlag" };
+                Result.CopyFieldTableOrder("Requirements", FakeOrder);
+            }
+
+            return Result;
         }
         #endregion
 

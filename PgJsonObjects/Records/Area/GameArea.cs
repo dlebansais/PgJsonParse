@@ -19,16 +19,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override void InitializeKey(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        protected override void InitializeKey(string key, int index, IJsonValue value, ParseErrorInfo ErrorInfo)
         {
-            base.InitializeKey(EntryRaw, ErrorInfo);
+            base.InitializeKey(key, index, value, ErrorInfo);
 
             if (Key.StartsWith("Area"))
-            {
-                MapAreaName ParsedMapAreaName;
-                StringToEnumConversion<MapAreaName>.TryParse(Key.Substring(4), TextMaps.MapAreaNameStringMap, out ParsedMapAreaName, ErrorInfo);
-                KeyArea = ParsedMapAreaName;
-            }
+                KeyArea = StringToEnumConversion<MapAreaName>.Parse(Key.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("Area Key");
         }

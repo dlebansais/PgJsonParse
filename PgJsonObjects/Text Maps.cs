@@ -115,9 +115,19 @@ namespace PgJsonObjects
             { RecipeAction.RendSpaceTime, "Rend Space-Time" },
         };
 
+        public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinStringMap = new Dictionary<AppearanceSkin, string>()
+        {
+            { AppearanceSkin.Halloween_CofferItems, "Halloween-CofferItems" },
+            { AppearanceSkin.Medieval_Fruits, "Medieval-Fruits" },
+            { AppearanceSkin.Medieval_Vegetables, "Medieval-Vegetables" },
+            { AppearanceSkin.GF_Food, "GF-Food" },
+            { AppearanceSkin.GF_Dishes, "GF-Dishes" },
+        };
+
         public static readonly Dictionary<MapAreaName, string> MapAreaNameStringMap = new Dictionary<MapAreaName, string>()
         {
             { MapAreaName.Internal_None, "None" },
+            { MapAreaName.Several, "*" },
             { MapAreaName.Serbule, "Serbule" },
             { MapAreaName.Eltibule, "Eltibule" },
             { MapAreaName.Tomb1, "Khyrulek's Crypt" },
@@ -1993,6 +2003,21 @@ namespace PgJsonObjects
             { ItemDroppedAppearance.AlchemyBulb5, "Alchemy Bulb (5)" },
         };
 
+        public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTextMap = new Dictionary<AppearanceSkin, string>()
+        {
+            { AppearanceSkin.Internal_None, "None" },
+            { AppearanceSkin.Halloween_CofferItems, "Halloween Coffer Items" },
+            { AppearanceSkin.AlchemyBulbs, "Alchemy Bulbs" },
+            { AppearanceSkin.Medieval_Fruits, "Medieval Fruits" },
+            { AppearanceSkin.Medieval_Vegetables, "Medieval Vegetables" },
+            { AppearanceSkin.Cheese1, "Cheese #1" },
+            { AppearanceSkin.Cheese2, "Cheese #2" },
+            { AppearanceSkin.Cheese3, "Cheese #3" },
+            { AppearanceSkin.Cheese4, "Cheese #4" },
+            { AppearanceSkin.GF_Food, "GF-Food" },
+            { AppearanceSkin.GF_Dishes, "GF-Dishes" },
+        };
+
         public static readonly Dictionary<ItemSlot, string> ItemSlotTextMap = new Dictionary<ItemSlot, string>()
         {
             { ItemSlot.Internal_None, "None" },
@@ -2955,6 +2980,7 @@ namespace PgJsonObjects
         public static readonly Dictionary<MapAreaName, string> MapAreaNameTextMap = new Dictionary<MapAreaName, string>()
         {
             { MapAreaName.Internal_None, "None" },
+            { MapAreaName.Several, "Several" },
             { MapAreaName.Dungeons, "Dungeons" },
             { MapAreaName.Planes, "Existential Planes" },
             { MapAreaName.Serbule, "Serbule" },

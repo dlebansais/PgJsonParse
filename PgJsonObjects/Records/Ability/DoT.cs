@@ -41,6 +41,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => DamageType = StringToEnumConversion<DamageType>.Parse(value, null, DamageType.Internal_None, DamageType.Internal_Empty, errorInfo),
                 GetString = () => StringToEnumConversion<DamageType>.ToString(DamageType, null, DamageType.Internal_None, DamageType.Internal_Empty) } },
+            { "SpecialRules", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<DoTSpecialRule>.ParseList(value, SpecialRuleList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<DoTSpecialRule>.ToStringList(SpecialRuleList) } },
             { "AttributesThatDelta", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaList.Add(value),
@@ -53,10 +57,6 @@ namespace PgJsonObjects
                 SetArrayIsEmpty = () => RawAttributesThatModListIsEmpty = true,
                 GetStringArray = () => RawAttributesThatModList,
                 GetArrayIsEmpty = () => RawAttributesThatModListIsEmpty } },
-            { "SpecialRules", new FieldParser() {
-                Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<DoTSpecialRule>.ParseList(value, SpecialRuleList, errorInfo),
-                GetStringArray = () => StringToEnumConversion<DoTSpecialRule>.ToStringList(SpecialRuleList) } },
         }; } }
 
         private List<string> RawAttributesThatDeltaList { get; } = new List<string>();

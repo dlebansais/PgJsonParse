@@ -14,6 +14,15 @@ namespace PgJsonObjects
         private string RawRecipeKnown;
         private bool IsRawRecipeKnownParsed;
 
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.RecipeKnown) } },
+            { "Recipe", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RawRecipeKnown } },
+        }; } }
+
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)
         {

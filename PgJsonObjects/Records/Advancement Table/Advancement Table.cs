@@ -16,15 +16,15 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        public override void Init(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        public override void Init(string key, int index, IJsonValue value, bool loadAsArray, ParseErrorInfo ErrorInfo)
         {
-            InitializeKey(EntryRaw, ErrorInfo);
+            InitializeKey(key, index, value, ErrorInfo);
 
             LevelTable = new Dictionary<int, Advancement>();
 
             JsonObject AsJObject;
             Dictionary<string, JsonObject> Levels;
-            if ((AsJObject = EntryRaw.Value as JsonObject) != null)
+            if ((AsJObject = value as JsonObject) != null)
             {
                 foreach (KeyValuePair<string, IJsonValue> Token in AsJObject)
                 {
@@ -39,7 +39,7 @@ namespace PgJsonObjects
                 }
             }
 
-            else if ((Levels = EntryRaw.Value as Dictionary<string, JsonObject>) != null)
+            else if ((Levels = value as Dictionary<string, JsonObject>) != null)
             {
                 foreach (KeyValuePair<string, JsonObject> Level in Levels)
                     Init(Level.Key, Level.Value, ErrorInfo);
@@ -66,9 +66,9 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key + ", " + LevelKey);
         }
 
-        protected override void InitializeKey(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        protected override void InitializeKey(string key, int index, IJsonValue value, ParseErrorInfo ErrorInfo)
         {
-            base.InitializeKey(EntryRaw, ErrorInfo);
+            base.InitializeKey(key, index, value, ErrorInfo);
 
             int Index = Key.LastIndexOf('_');
             if (Index >= 0)
@@ -77,16 +77,16 @@ namespace PgJsonObjects
                 InternalName = Key;
         }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return null; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
         #endregion
 
         #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
+        public override void GenerateObjectContent2(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
         {
             Generator.OpenObject(Key);
 
             foreach (KeyValuePair<int, Advancement> Level in LevelTable)
-                Level.Value.GenerateObjectContent(Generator);
+                Level.Value.GenerateObjectContent2(Generator, true, false);
 
             Generator.CloseObject();
         }

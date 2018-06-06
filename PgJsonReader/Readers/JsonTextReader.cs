@@ -142,11 +142,16 @@ namespace PgJsonReader
             while ((next = reader.Read()) >= 0)
             {
                 var ch = Convert.ToChar(next);
+
                 if (next == '"' && last != '\\')
                     break;
+                else if (last == '\\')
+                    if (ch == 'n')
+                        ch = '\n';
 
                 last = ch;
-                builder.Append(ch);
+                if (ch != '\\')
+                    builder.Append(ch);
             }
 
             return StringHandler.ReadString(builder.ToString());

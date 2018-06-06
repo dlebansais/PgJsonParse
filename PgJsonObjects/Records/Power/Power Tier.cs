@@ -19,7 +19,7 @@ namespace PgJsonObjects
             { "EffectDescs", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseEffectDescs,
-                GetStringArray = () => GetEffectDescs() } },
+                GetStringArray = GetEffectDescs } },
         }; } }
 
         private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)

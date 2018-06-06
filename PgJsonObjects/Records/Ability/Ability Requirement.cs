@@ -14,7 +14,21 @@ namespace PgJsonObjects
         #region Parsing
         public object ToSpecific(ParseErrorInfo errorInfo)
         {
-            return ToSpecificAbilityRequirement(errorInfo);
+            AbilityRequirement Result = ToSpecificAbilityRequirement(errorInfo);
+
+            if (Result != null)
+                Result.CopyFieldTableOrder(null, FieldTableOrder);
+
+            return Result;
+        }
+
+        public void CopyFieldTableOrder(string key, List<string> fieldTableOrder)
+        {
+            if (key != null)
+                InitializeKey(key, 0, null, null);
+
+            foreach (string Key in fieldTableOrder)
+                FieldTableOrder.Add(Key);
         }
 
         public AbilityRequirement ToSpecificAbilityRequirement(ParseErrorInfo ErrorInfo)
@@ -76,7 +90,7 @@ namespace PgJsonObjects
                     return new OrAbilityRequirement(OrList, RawErrorMsg);
 
                 case OtherRequirementType.EquippedItemKeyword:
-                    return new EquippedItemKeywordAbilityRequirement(RawKeyword, RawMinCount, ErrorInfo);
+                    return new EquippedItemKeywordAbilityRequirement(RawKeyword, RawMinCount, RawMaxCount.HasValue ? (int?)RawMaxCount.Value : null, ErrorInfo);
 
                 case OtherRequirementType.GardenPlantMax:
                     return new GardenPlantMaxAbilityRequirement(RawTypeTag, RawMax, ErrorInfo);
@@ -96,7 +110,7 @@ namespace PgJsonObjects
             { "T", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => OtherRequirementType = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
             { "Keyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawKeyword = value,
@@ -136,7 +150,7 @@ namespace PgJsonObjects
             { "DisallowedStates", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseDisallowedStates,
-                GetStringArray = () => GenerateDisallowedStates() } },
+                GetStringArray = GenerateDisallowedStates } },
             { "PetTypeTag", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawPetTypeTag = value,

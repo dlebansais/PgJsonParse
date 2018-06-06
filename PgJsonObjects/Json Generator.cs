@@ -6,12 +6,13 @@ namespace PgJsonObjects
 {
     public class JsonGenerator : IDisposable
     {
-        public static bool UseJavaFormat = true;
         public static char FieldSeparator = '§';
         public static char ObjectSeparator = '|';
 
-        public JsonGenerator()
+        public JsonGenerator(bool useJavaFormat)
         {
+            UseJavaFormat = useJavaFormat;
+
             NestingLevel = 0;
             LastReconstructedContentStack = new Stack<string>();
             ReconstructedContent = "";
@@ -36,6 +37,7 @@ namespace PgJsonObjects
         private string TabLine;
         private string SpaceLine;
 
+        public bool UseJavaFormat { get; private set; }
         public string Content { get { return ReconstructedContent; } }
 
         public void Begin()
@@ -81,6 +83,9 @@ namespace PgJsonObjects
 
         public void OpenArray(string ArrayName)
         {
+            if (ArrayName == "Costs")
+                ArrayName = "Costs";
+
             if (InsertedLines > 0)
                 Next();
 
@@ -255,12 +260,12 @@ namespace PgJsonObjects
             InsertedLines++;
         }
 
-        public void AddList(string ArrayName, List<string> StringList)
+        public void AddStringList(string ArrayName, List<string> StringList)
         {
-            AddList(ArrayName, StringList, false);
+            AddStringList(ArrayName, StringList, false);
         }
 
-        public void AddList(string ArrayName, List<string> StringList, bool IsListEmpty)
+        public void AddStringList(string ArrayName, List<string> StringList, bool IsListEmpty)
         {
             if (StringList.Count > 0)
             {
@@ -268,6 +273,30 @@ namespace PgJsonObjects
 
                 foreach (string s in StringList)
                     AddString(null, s);
+
+                CloseArray();
+            }
+
+            else if (IsListEmpty)
+                AddEmptyArray(ArrayName);
+        }
+
+        public void AddIntegerList(string ArrayName, List<int> IntegerList, bool IsListEmpty)
+        {
+            if (IntegerList.Count > 0)
+            {
+                OpenArray(ArrayName);
+
+                foreach (int n in IntegerList)
+                {
+                    if (InsertedLines > 0)
+                        Next();
+
+                    string StringLine = n.ToString();
+
+                    ReconstructedContent += Indentation() + StringLine;
+                    InsertedLines++;
+                }
 
                 CloseArray();
             }

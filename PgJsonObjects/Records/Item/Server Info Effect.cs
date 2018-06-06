@@ -20,6 +20,14 @@ namespace PgJsonObjects
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get; private set; }
         public GenericJsonObject LinkBack { get; private set; }
+        public virtual string RawEffect
+        {
+            get
+            {
+                return StringToEnumConversion<ServerInfoEffectType>.ToString(Type) + (RawLevel.HasValue ? RawLevel.Value.ToString() : "");
+            }
+        }
+
 
         #region Indexing
         public virtual string TextContent

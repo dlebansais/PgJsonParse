@@ -38,7 +38,7 @@ namespace PgJsonObjects
             { "Category", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Category = StringToEnumConversion<LoreBookCategory>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<LoreBookCategory>.ToString(Category) } },
+                GetString = () => StringToEnumConversion<LoreBookCategory>.ToString(Category, null, LoreBookCategory.Internal_None) } },
             { "Keywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<LoreBookKeyword>.ParseList(value, KeywordList, errorInfo),
@@ -50,7 +50,7 @@ namespace PgJsonObjects
             { "Visibility", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Visibility = StringToEnumConversion<LoreBookVisibility>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<LoreBookVisibility>.ToString(Visibility) } },
+                GetString = () => StringToEnumConversion<LoreBookVisibility>.ToString(Visibility, null, LoreBookVisibility.Internal_None) } },
             { "InternalName", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => InternalName = value,

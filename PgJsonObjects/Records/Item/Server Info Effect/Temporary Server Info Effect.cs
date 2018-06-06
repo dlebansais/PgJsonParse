@@ -19,6 +19,14 @@ namespace PgJsonObjects
         public int Duration { get { return RawDuration.HasValue ? RawDuration.Value : 0; } }
         public int? RawDuration;
 
+        public override string RawEffect
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         #region Indexing
         public override string TextContent
         {

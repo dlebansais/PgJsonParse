@@ -9,6 +9,7 @@ namespace PgJsonObjects
     public class NpcPreference : GenericJsonObject<NpcPreference>
     {
         #region Direct Properties
+        private List<string> RawKeywordList = new List<string>();
         public List<ItemKeyword> ItemKeywordList { get; private set; } = new List<ItemKeyword>();
         public double Preference { get { return RawPreference.HasValue ? RawPreference.Value : 0; } }
         public double? RawPreference { get; private set; }
@@ -110,7 +111,7 @@ namespace PgJsonObjects
             { "Keywords", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseKeywords,
-                GetStringArray = () => GetKeywords() } },
+                GetStringArray = () => RawKeywordList } },
             { "Pref", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawPreference = value,
@@ -119,6 +120,8 @@ namespace PgJsonObjects
 
         private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
+            RawKeywordList.Add(RawKeyword);
+
             if (RawKeyword.StartsWith("MinValue:"))
                 return ParseKeywordAsMinValue(RawKeyword.Substring(9), ErrorInfo);
             else if (RawKeyword.StartsWith("SkillPrereq:"))
@@ -142,17 +145,12 @@ namespace PgJsonObjects
             }
         }
 
-        private List<string> GetKeywords()
+        private bool ParseKeywordAsMinValue(string value, ParseErrorInfo ErrorInfo)
         {
-            return new List<string>();
-        }
-
-        private bool ParseKeywordAsMinValue(string MinValueString, ParseErrorInfo ErrorInfo)
-        {
-            int MinValueRequirement;
-            if (int.TryParse(MinValueString, out MinValueRequirement))
+            int ParsedMinValueRequirement;
+            if (int.TryParse(value, out ParsedMinValueRequirement))
             {
-                this.MinValueRequirement = MinValueRequirement;
+                MinValueRequirement = ParsedMinValueRequirement;
                 return true;
             }
             else

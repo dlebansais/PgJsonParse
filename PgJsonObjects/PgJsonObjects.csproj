@@ -86,6 +86,7 @@
     <Compile Include="Records\Area\GameArea.cs" />
     <Compile Include="Records\Attribute\DisplayRule.cs" />
     <Compile Include="Records\ItemUses\Item Uses.cs" />
+    <Compile Include="Records\Item\AppearanceSkin.cs" />
     <Compile Include="Records\Item\Item Behavior Type.cs" />
     <Compile Include="Records\Item\Item Behavior.cs" />
     <Compile Include="Records\Item\Item Required Hotspot.cs" />
@@ -96,11 +97,13 @@
     <Compile Include="Records\Item\Server Info Effect\Equipment Boost Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Interval Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Poetry Server Info Effect.cs" />
+    <Compile Include="Records\Item\Server Info Effect\Potion Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Simple Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Skill And Level Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Temporary Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info Effect\Value Server Info Effect.cs" />
     <Compile Include="Records\Item\Server Info.cs" />
+    <Compile Include="Records\Item\Skill Requirement.cs" />
     <Compile Include="Records\Lore Book\Lore Book Category.cs" />
     <Compile Include="Records\Lore Book\Lore Book Info.cs" />
     <Compile Include="Records\Lore Book\Lore Book Keyword.cs" />
@@ -252,6 +255,7 @@
     <Compile Include="Records\Skill\Skill Reward Unlock.cs" />
     <Compile Include="Records\Skill\Skill.cs" />
     <Compile Include="Records\Source\Training Source.cs" />
+    <Compile Include="Records\StorageVault\FavorLevelDesc.cs" />
     <Compile Include="Records\StorageVault\StorageVault.cs" />
     <Compile Include="Records\Xp Table\Xp Table Enum.cs" />
     <Compile Include="Records\Xp Table\Xp Table Level.cs" />

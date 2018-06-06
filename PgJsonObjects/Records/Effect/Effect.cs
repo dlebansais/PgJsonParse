@@ -22,7 +22,8 @@ namespace PgJsonObjects
         public int? RawDuration { get; private set; }
         public List<EffectKeyword> KeywordList { get; } = new List<EffectKeyword>();
         public bool IsKeywordListEmpty { get; private set; }
-        public bool HasTSysKeyword { get; private set; }
+        public bool HasTSysKeyword { get { return TSysKeywordIndex >= 0; } }
+        private int TSysKeywordIndex = -1;
         public List<AbilityKeyword> AbilityKeywordList { get; } = new List<AbilityKeyword>();
         public bool IsAbilityKeywordListEmpty { get; private set; }
         #endregion
@@ -60,7 +61,7 @@ namespace PgJsonObjects
             { "DisplayMode", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => DisplayMode = StringToEnumConversion<EffectDisplayMode>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<EffectDisplayMode>.ToString(DisplayMode) } },
+                GetString = () => StringToEnumConversion<EffectDisplayMode>.ToString(DisplayMode, null, EffectDisplayMode.Internal_None) } },
             { "SpewText", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => SpewText = value,
@@ -68,11 +69,11 @@ namespace PgJsonObjects
             { "Particle", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Particle = StringToEnumConversion<EffectParticle>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<EffectParticle>.ToString(Particle) } },
+                GetString = () => StringToEnumConversion<EffectParticle>.ToString(Particle, null, EffectParticle.Internal_None) } },
             { "StackingType", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => StackingType = StringToEnumConversion<EffectStackingType>.Parse(value, StackingTypeStringMap, errorInfo),
-                GetString = () => StringToEnumConversion<EffectStackingType>.ToString(StackingType, StackingTypeStringMap) } },
+                GetString = () => StringToEnumConversion<EffectStackingType>.ToString(StackingType, StackingTypeStringMap, EffectStackingType.Internal_None) } },
             { "StackingPriority", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawStackingPriority = value,
@@ -84,22 +85,23 @@ namespace PgJsonObjects
             { "Keywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = ParseKeywords,
-                GetStringArray = () => StringToEnumConversion<EffectKeyword>.ToStringList(KeywordList, KeywordStringMap) } },
+                SetArrayIsEmpty = () => IsKeywordListEmpty = true,
+                GetStringArray = GetKeywords,
+                GetArrayIsEmpty = () => IsKeywordListEmpty } },
             { "AbilityKeywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<AbilityKeyword>.ParseList(value, AbilityKeywordList, errorInfo),
-                GetStringArray = () => StringToEnumConversion<AbilityKeyword>.ToStringList(AbilityKeywordList) } },
+                SetArrayIsEmpty = () => IsAbilityKeywordListEmpty = true,
+                GetStringArray = () => StringToEnumConversion<AbilityKeyword>.ToStringList(AbilityKeywordList),
+                GetArrayIsEmpty = () => IsAbilityKeywordListEmpty } },
         }; } }
 
         private void ParseIconId(int value, ParseErrorInfo ErrorInfo)
         {
-            if (RawIconId > 0)
-            {
-                RawIconId = value;
+            RawIconId = value;
+
+            if (value > 0)
                 ErrorInfo.AddIconId(value);
-            }
-            else
-                RawIconId = null;
         }
 
         private void ParseKeywords(string value, ParseErrorInfo ErrorInfo)
@@ -108,9 +110,17 @@ namespace PgJsonObjects
                 if (ParsedEffectKeyword != EffectKeyword.TSys)
                     KeywordList.Add(ParsedEffectKeyword);
                 else
-                    HasTSysKeyword = true;
+                    TSysKeywordIndex = KeywordList.Count;
+        }
 
-            //IsKeywordListEmpty = (RawKeywords != null && ParsedKeywordList.Count == 0);
+        private List<string> GetKeywords()
+        {
+            List<string> Result = StringToEnumConversion<EffectKeyword>.ToStringList(KeywordList, KeywordStringMap);
+
+            if (TSysKeywordIndex >= 0)
+                Result.Insert(TSysKeywordIndex, StringToEnumConversion<EffectKeyword>.ToString(EffectKeyword.TSys, KeywordStringMap));
+
+            return Result;
         }
         #endregion
 

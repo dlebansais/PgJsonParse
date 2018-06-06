@@ -122,7 +122,7 @@ namespace PgJsonObjects
             { "T", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => OtherRequirementType = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
             { "Quest", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseQuest,
@@ -130,7 +130,7 @@ namespace PgJsonObjects
             { "Keyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseKeyword,
-                GetString = () => StringToEnumConversion<EffectKeyword>.ToString(RequirementKeyword) } },
+                GetString = () => StringToEnumConversion<EffectKeyword>.ToString(RequirementKeyword, null, EffectKeyword.Internal_None) } },
             { "Npc", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseNpc,
@@ -138,11 +138,11 @@ namespace PgJsonObjects
             { "Level", new FieldParser() {
                 Type = FieldType.Unknown,
                 ParseUnknown = ParseLevel,
-                GetString = () => StringToEnumConversion<Favor>.ToString(RequirementFavorLevel) } },
+                GetString = () => StringToEnumConversion<Favor>.ToString(RequirementFavorLevel, null, Favor.Internal_None) } },
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RequirementSkill) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RequirementSkill, null, PowerSkill.Internal_None) } },
             { "List", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = ParseList,

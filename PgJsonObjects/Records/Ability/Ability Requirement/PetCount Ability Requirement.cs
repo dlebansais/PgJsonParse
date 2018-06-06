@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PetCountAbilityRequirement : AbilityRequirement
     {
@@ -13,6 +15,17 @@
 
         public RecipeKeyword PetTypeTag { get; private set; }
         public double MaxCount { get; private set; }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.PetCount) } },
+            { "PetTypeTag", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<RecipeKeyword>.ToString(PetTypeTag) } },
+            { "MaxCount", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => MaxCount } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

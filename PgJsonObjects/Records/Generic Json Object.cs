@@ -13,6 +13,7 @@ namespace PgJsonObjects
         void SortLinkBack();
         string TextContent { get; }
         void GenerateObjectContent(JsonGenerator Generator);
+        void GenerateObjectContent2(JsonGenerator Generator, bool openWithKey, bool openWithNullKey);
     }
 
     public abstract class GenericJsonObject
@@ -61,6 +62,7 @@ namespace PgJsonObjects
             public Func<List<string>> GetStringArray;
             public Func<IList> GetObjectArray;
             public Func<bool> GetArrayIsEmpty;
+            public bool SimplifyArray;
         }
 
         #region Comparison
@@ -100,12 +102,13 @@ namespace PgJsonObjects
         protected abstract Dictionary<string, FieldParser> FieldTable { get; }
         protected abstract string FieldTableName { get; }
         protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables);
+        protected List<string> FieldTableOrder { get; private set; } = new List<string>();
 
         protected static Dictionary<string, bool> ParsedFields;
 
-        protected virtual void InitializeKey(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        protected virtual void InitializeKey(string key, int index, IJsonValue value, ParseErrorInfo ErrorInfo)
         {
-            Key = EntryRaw.Key;
+            Key = key;
         }
 
         protected virtual void InitParsedFields()
@@ -135,6 +138,7 @@ namespace PgJsonObjects
             {
                 ParsedFields[key] = true;
                 FieldParser Parser = FieldTable[key];
+                FieldTableOrder.Add(key);
 
                 switch (Parser.Type)
                 {
@@ -546,70 +550,126 @@ namespace PgJsonObjects
         #region Client Interface
         public virtual void GenerateObjectContent(JsonGenerator Generator)
         {
-            Generator.OpenObject(Key);
+        }
 
-            foreach (KeyValuePair<string, FieldParser> Entry in FieldTable)
+        public virtual void GenerateObjectContent2(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        {
+            OpenGeneratorKey(Generator, openWithKey, openWithNullKey);
+            ListAllObjectContent(Generator);
+            CloseGeneratorKey(Generator, openWithKey, openWithNullKey);
+        }
+
+        public virtual void OpenGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        {
+            if (Key != null && openWithKey)
+                Generator.OpenObject(Key);
+            else if (openWithNullKey)
+                Generator.OpenObject(null);
+        }
+
+        public virtual void ListAllObjectContent(JsonGenerator Generator)
+        {
+            foreach (string ParserKey in FieldTableOrder)
+                ListObjectContent(Generator, ParserKey);
+        }
+
+        public virtual void ListObjectContent(JsonGenerator Generator, string ParserKey)
+        {
+            FieldParser Parser = FieldTable[ParserKey];
+
+            IGenericJsonObject Subitem;
+            List<int> IntegerList;
+            List<string> StringList;
+
+            switch (Parser.Type)
             {
-                FieldParser Parser = Entry.Value;
+                default:
+                    break;
 
-                switch (Parser.Type)
-                {
-                    default:
-                        break;
+                case FieldType.Unknown:
+                    break;
 
-                    case FieldType.Unknown:
-                        break;
+                case FieldType.Integer:
+                    Generator.AddInteger(ParserKey, Parser.GetInteger());
+                    break;
 
-                    case FieldType.Integer:
-                        Generator.AddInteger(Entry.Key, Parser.GetInteger());
-                        break;
+                case FieldType.Bool:
+                    Generator.AddBoolean(ParserKey, Parser.GetBool());
+                    break;
 
-                    case FieldType.Bool:
-                        Generator.AddBoolean(Entry.Key, Parser.GetBool());
-                        break;
+                case FieldType.Float:
+                    Generator.AddDouble(ParserKey, Parser.GetFloat());
+                    break;
 
-                    case FieldType.Float:
-                        Generator.AddDouble(Entry.Key, Parser.GetFloat());
-                        break;
+                case FieldType.String:
+                    Generator.AddString(ParserKey, Parser.GetString());
+                    break;
 
-                    case FieldType.String:
-                        Generator.AddString(Entry.Key, Parser.GetString());
-                        break;
+                case FieldType.Object:
+                    Subitem = Parser.GetObject();
+                    if (Subitem != null)
+                        Subitem.GenerateObjectContent2(Generator, true, false);
+                    break;
 
-                    case FieldType.Object:
-                        break;
+                case FieldType.SimpleIntegerArray:
+                case FieldType.IntegerArray:
+                    IntegerList = Parser.GetIntegerArray();
 
-                    case FieldType.SimpleIntegerArray:
-                    case FieldType.IntegerArray:
-                        break;
+                    if (Parser.SimplifyArray && IntegerList.Count == 1)
+                        Generator.AddInteger(ParserKey, IntegerList[0]);
+                    else
+                        Generator.AddIntegerList(ParserKey, IntegerList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
+                    break;
 
-                    case FieldType.SimpleStringArray:
-                    case FieldType.StringArray:
-                        Generator.AddList(Entry.Key, Parser.GetStringArray(), Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
-                        break;
+                case FieldType.SimpleStringArray:
+                case FieldType.StringArray:
+                    StringList = Parser.GetStringArray();
 
-                    case FieldType.ObjectArray:
-                        IList ObjectArray = Parser.GetObjectArray();
-                        bool IsListEmpty;
-                        if (Parser.GetArrayIsEmpty != null)
-                            IsListEmpty = Parser.GetArrayIsEmpty();
-                        else
-                            IsListEmpty = false;
+                    if (Parser.SimplifyArray && StringList.Count == 1)
+                        Generator.AddString(ParserKey, StringList[0]);
+                    else
+                        Generator.AddStringList(ParserKey, StringList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
+                    break;
 
-                        if (ObjectArray.Count > 0 || IsListEmpty)
+                case FieldType.ObjectArray:
+                    IList ObjectArray = Parser.GetObjectArray();
+                    bool IsListEmpty;
+                    if (Parser.GetArrayIsEmpty != null)
+                        IsListEmpty = Parser.GetArrayIsEmpty();
+                    else
+                        IsListEmpty = false;
+
+                    if (ObjectArray.Count > 0 || IsListEmpty)
+                    {
+                        if (Parser.SimplifyArray && ObjectArray.Count == 1 && ObjectArray[0] is IGenericJsonObject FirstItem)
                         {
-                            Generator.OpenArray(Entry.Key);
+                            Generator.OpenObject(ParserKey);
+
+                            FirstItem.GenerateObjectContent2(Generator, false, false);
+
+                            Generator.CloseObject();
+                        }
+
+                        else
+                        {
+                            Generator.OpenArray(ParserKey);
 
                             foreach (IGenericJsonObject Item in ObjectArray)
-                                Item.GenerateObjectContent(Generator);
+                                Item.GenerateObjectContent2(Generator, false, true);
 
                             Generator.CloseArray();
                         }
-                        break;
-                }
+                    }
+                    break;
             }
+        }
 
-            Generator.CloseObject();
+        public virtual void CloseGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        {
+            if (Key != null && openWithKey)
+                Generator.CloseObject();
+            else if (openWithNullKey)
+                Generator.CloseObject();
         }
 
         public string Key { get; private set; }
@@ -626,20 +686,11 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public virtual void Init(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        public virtual void Init(string key, int index, IJsonValue value, bool loadAsArray, ParseErrorInfo ErrorInfo)
         {
-            InitializeKey(EntryRaw, ErrorInfo);
+            InitializeKey(key, index, value, ErrorInfo);
 
-            Dictionary<string, object> Fields;
-            JsonArray JArrayFields;
-            JsonObject JObjectFields;
-
-
-            if ((Fields = EntryRaw.Value as Dictionary<string, object>) != null)
-                ParseFields(Fields, ErrorInfo);
-            else if ((JArrayFields = EntryRaw.Value as JsonArray) != null)
-                ParseFields(JArrayFields, ErrorInfo);
-            else if ((JObjectFields = EntryRaw.Value as JsonObject) != null)
+            if (value is JsonObject JObjectFields)
                 ParseFields(JObjectFields, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);

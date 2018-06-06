@@ -21,6 +21,14 @@ namespace PgJsonObjects
         }
 
         public List<Race> AllowedRaceList { get; } = new List<Race>();
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.Race) } },
+            { "AllowedRace", new FieldParser() {
+                Type = FieldType.StringArray,
+                GetStringArray = () => StringToEnumConversion<Race>.ToStringList(AllowedRaceList) } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

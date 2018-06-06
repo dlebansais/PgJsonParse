@@ -163,7 +163,7 @@ namespace PgJsonObjects
             { "PrerequisiteFavorLevel", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => PrerequisiteFavorLevel = StringToEnumConversion<Favor>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<Favor>.ToString(PrerequisiteFavorLevel) } },
+                GetString = () => StringToEnumConversion<Favor>.ToString(PrerequisiteFavorLevel, null, Favor.Internal_None) } },
             { "Rewards_Favor", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardFavor = value,
@@ -227,7 +227,7 @@ namespace PgJsonObjects
             { "GroupingName", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => GroupingName = StringToEnumConversion<QuestGroupingName>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<QuestGroupingName>.ToString(GroupingName) } },
+                GetString = () => StringToEnumConversion<QuestGroupingName>.ToString(GroupingName, null, QuestGroupingName.Internal_None) } },
             { "IsGuildQuest", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsGuildQuest = value,
@@ -243,11 +243,11 @@ namespace PgJsonObjects
             { "WorkOrderSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => WorkOrderSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(WorkOrderSkill) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(WorkOrderSkill, null, PowerSkill.Internal_None) } },
             { "DisplayedLocation", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => DisplayedLocation = StringToEnumConversion<MapAreaName>.Parse(value, TextMaps.MapAreaNameStringMap, errorInfo),
-                GetString = () => StringToEnumConversion<MapAreaName>.ToString(DisplayedLocation) } },
+                GetString = () => StringToEnumConversion<MapAreaName>.ToString(DisplayedLocation, null, MapAreaName.Internal_None) } },
             { "FollowUpQuests", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawFollowUpQuestList.Add(value),

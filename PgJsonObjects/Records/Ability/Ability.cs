@@ -157,7 +157,19 @@ namespace PgJsonObjects
             { "Animation", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Animation = StringToEnumConversion<AbilityAnimation>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<AbilityAnimation>.ToString(Animation) } },
+                GetString = () => StringToEnumConversion<AbilityAnimation>.ToString(Animation, null, AbilityAnimation.Internal_None) } },
+            { "AttributesThatDeltaAmmoStickChance", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaAmmoStickChanceList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaAmmoStickChanceList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty } },
+            { "AttributesThatDeltaDelayLoopTime", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDelayLoopTimeList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty = true,
+                GetStringArray = () => RawAttributesThatDeltaDelayLoopTimeList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty } },
             { "AttributesThatDeltaPowerCost", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaPowerCostList.Add(value),
@@ -252,6 +264,10 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = ParseIconId,
                 GetInteger = () => RawIconId } },
+            { "IgnoreEffectErrors", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIgnoreEffectErrors = value,
+                GetBool = () => RawIgnoreEffectErrors } },
             { "InternalAbility", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawInternalAbility = value,
@@ -287,7 +303,7 @@ namespace PgJsonObjects
             { "PetTypeTagReq", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => PetTypeTagReq = StringToEnumConversion<AbilityPetType>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<AbilityPetType>.ToString(PetTypeTagReq) } },
+                GetString = () => StringToEnumConversion<AbilityPetType>.ToString(PetTypeTagReq, null, AbilityPetType.Internal_None) } },
             { "PetTypeTagReqMax", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParsePetTypeTagReqMax,
@@ -299,7 +315,7 @@ namespace PgJsonObjects
             { "Projectile", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Projectile = StringToEnumConversion<AbilityProjectile>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<AbilityProjectile>.ToString(Projectile) } },
+                GetString = () => StringToEnumConversion<AbilityProjectile>.ToString(Projectile, null, AbilityProjectile.Internal_None) } },
             { "PvE", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PvE = JsonObjectParser<AbilityPvX>.Parse("PvE", value, errorInfo),
@@ -323,11 +339,16 @@ namespace PgJsonObjects
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
             { "SpecialCasterRequirements", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("SpecialCasterRequirement", value, SpecialCasterRequirementList, errorInfo),
-                GetObjectArray = () => SpecialCasterRequirementList } },
+                GetObjectArray = () => SpecialCasterRequirementList,
+                SimplifyArray = true } },
+            { "SpecialCasterRequirementsErrorMessage", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawSpecialCasterRequirementsErrorMessage = value,
+                GetString = () => RawSpecialCasterRequirementsErrorMessage } },
             { "SpecialInfo", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSpecialInfo,
@@ -339,15 +360,15 @@ namespace PgJsonObjects
             { "Target", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Target = StringToEnumConversion<AbilityTarget>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<AbilityTarget>.ToString(Target) } },
+                GetString = () => StringToEnumConversion<AbilityTarget>.ToString(Target, null, AbilityTarget.Internal_None) } },
             { "TargetEffectKeywordReq", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => TargetEffectKeywordReq = StringToEnumConversion<TargetEffectKeyword>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<TargetEffectKeyword>.ToString(TargetEffectKeywordReq) } },
+                GetString = () => StringToEnumConversion<TargetEffectKeyword>.ToString(TargetEffectKeywordReq, null, TargetEffectKeyword.Internal_None) } },
             { "TargetParticle", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => TargetParticle = StringToEnumConversion<AbilityTargetParticle>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<AbilityTargetParticle>.ToString(TargetParticle) } },
+                GetString = () => StringToEnumConversion<AbilityTargetParticle>.ToString(TargetParticle, null, AbilityTargetParticle.Internal_None) } },
             { "UpgradeOf", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseUpgradeOf,
@@ -364,26 +385,6 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawWorksWhileFalling = value,
                 GetBool = () => RawWorksWhileFalling } },
-            { "SpecialCasterRequirementsErrorMessage", new FieldParser() {
-                Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => RawSpecialCasterRequirementsErrorMessage = value,
-                GetString = () => RawSpecialCasterRequirementsErrorMessage } },
-            { "IgnoreEffectErrors", new FieldParser() {
-                Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIgnoreEffectErrors = value,
-                GetBool = () => RawIgnoreEffectErrors } },
-            { "AttributesThatDeltaAmmoStickChance", new FieldParser() {
-                Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaAmmoStickChanceList.Add(value),
-                SetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty = true,
-                GetStringArray = () => RawAttributesThatDeltaAmmoStickChanceList,
-                GetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty } },
-            { "AttributesThatDeltaDelayLoopTime", new FieldParser() {
-                Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDelayLoopTimeList.Add(value),
-                SetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty = true,
-                GetStringArray = () => RawAttributesThatDeltaDelayLoopTimeList,
-                GetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty } },
         }; } }
 
         private void ParseAbilityGroup(string RawAbilityGroup, ParseErrorInfo ErrorInfo)
@@ -2355,9 +2356,9 @@ namespace PgJsonObjects
 
             Generator.AddString("AbilityGroup", RawAbilityGroup);
             Generator.AddString("Animation", Animation.ToString());
-            Generator.AddList("AttributesThatDeltaPowerCost", RawAttributesThatDeltaPowerCostList, RawAttributesThatDeltaPowerCostListIsEmpty);
-            Generator.AddList("AttributesThatDeltaResetTime", RawAttributesThatDeltaResetTimeList, RawAttributesThatDeltaResetTimeListIsEmpty);
-            Generator.AddList("AttributesThatModPowerCost", RawAttributesThatModPowerCostList, RawAttributesThatModPowerCostListIsEmpty);
+            Generator.AddStringList("AttributesThatDeltaPowerCost", RawAttributesThatDeltaPowerCostList, RawAttributesThatDeltaPowerCostListIsEmpty);
+            Generator.AddStringList("AttributesThatDeltaResetTime", RawAttributesThatDeltaResetTimeList, RawAttributesThatDeltaResetTimeListIsEmpty);
+            Generator.AddStringList("AttributesThatModPowerCost", RawAttributesThatModPowerCostList, RawAttributesThatModPowerCostListIsEmpty);
             Generator.AddBoolean("CanBeOnSidebar", RawCanBeOnSidebar);
             Generator.AddBoolean("CanSuppressMonsterShout", RawCanSuppressMonsterShout);
             Generator.AddBoolean("CanTargetUntargetableEnemies", RawCanTargetUntargetableEnemies);

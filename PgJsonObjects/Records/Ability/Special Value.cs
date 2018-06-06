@@ -83,9 +83,9 @@ namespace PgJsonObjects
             Generator.AddString("Label", Label);
             Generator.AddString("Suffix", Suffix);
             Generator.AddDouble("Value", RawValue);
-            Generator.AddList("AttributesThatDelta", RawAttributesThatDeltaList, RawAttributesThatDeltaListIsEmpty);
-            Generator.AddList("AttributesThatMod", RawAttributesThatModList, RawAttributesThatModListIsEmpty);
-            Generator.AddList("AttributesThatModBase", RawAttributesThatModBaseList, RawAttributesThatModBaseListIsEmpty);
+            Generator.AddStringList("AttributesThatDelta", RawAttributesThatDeltaList, RawAttributesThatDeltaListIsEmpty);
+            Generator.AddStringList("AttributesThatMod", RawAttributesThatModList, RawAttributesThatModListIsEmpty);
+            Generator.AddStringList("AttributesThatModBase", RawAttributesThatModBaseList, RawAttributesThatModBaseListIsEmpty);
             Generator.AddBoolean("DisplayAsPercent", RawDisplayAsPercent);
             Generator.AddBoolean("SkipIfZero", RawSkipIfZero);
 

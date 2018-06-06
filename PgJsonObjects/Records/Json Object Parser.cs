@@ -9,8 +9,7 @@ namespace PgJsonObjects
         public static T Parse(string SubitemName, JsonObject value, ParseErrorInfo errorInfo)
         {
             T Parsed = new T();
-            KeyValuePair<string, IJsonValue> RawEntry = new KeyValuePair<string, IJsonValue>(SubitemName, value);
-            Parsed.Init(RawEntry, errorInfo);
+            Parsed.Init(SubitemName, 0, value, false, errorInfo);
 
             if (Parsed is ISpecificRecord AsRefinable)
                 Parsed = AsRefinable.ToSpecific(errorInfo) as T;
@@ -28,19 +27,18 @@ namespace PgJsonObjects
         public static void InitAsSubitem(string SubitemName, JsonObject RawSubarray, out T Subitem, ParseErrorInfo ErrorInfo)
         {
             Subitem = new T();
-            KeyValuePair<string, IJsonValue> RawEntry = new KeyValuePair<string, IJsonValue>(SubitemName, RawSubarray);
-            Subitem.Init(RawEntry, ErrorInfo);
+            Subitem.Init(SubitemName, 0, RawSubarray, false, ErrorInfo);
         }
 
         public static void InitAsSublist(JsonArray RawSubarray, out List<T> Sublist, ParseErrorInfo ErrorInfo)
         {
             Sublist = new List<T>();
 
+            int Index = 0;
             foreach (IJsonValue RawSubitem in RawSubarray)
             {
                 T NewT = new T();
-                KeyValuePair<string, IJsonValue> RawEntry = new KeyValuePair<string, IJsonValue>(null, RawSubitem);
-                NewT.Init(RawEntry, ErrorInfo);
+                NewT.Init(null, Index++, RawSubitem, false, ErrorInfo);
 
                 Sublist.Add(NewT);
             }

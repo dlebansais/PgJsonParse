@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class InteractionFlagSetAbilityRequirement : AbilityRequirement
     {
@@ -8,6 +10,14 @@
         }
 
         public string InteractionFlag { get; private set; }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.InteractionFlagSet) } },
+            { "InteractionFlag", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => InteractionFlag } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

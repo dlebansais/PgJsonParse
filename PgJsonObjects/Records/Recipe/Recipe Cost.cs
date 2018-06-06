@@ -21,7 +21,7 @@ namespace PgJsonObjects
             { "Currency", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Currency = StringToEnumConversion<RecipeCurrency>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<RecipeCurrency>.ToString(Currency) } },
+                GetString = () => StringToEnumConversion<RecipeCurrency>.ToString(Currency, null, RecipeCurrency.Internal_None) } },
             { "Price", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawPrice = value,

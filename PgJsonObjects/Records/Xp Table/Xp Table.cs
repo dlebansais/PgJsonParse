@@ -24,11 +24,11 @@ namespace PgJsonObjects
             { "InternalName", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseInternalName,
-                GetString = () => StringToEnumConversion<XpTableEnum>.ToString(EnumName) } },
+                GetString = () => StringToEnumConversion<XpTableEnum>.ToString(EnumName, null, XpTableEnum.Internal_None) } },
             { "XpAmounts", new FieldParser() {
                 Type = FieldType.SimpleIntegerArray,
                 ParseSimpleIntegerArray = ParseXpAmounts,
-                GetIntegerArray = () => GetXpAmounts() } },
+                GetIntegerArray = GetXpAmounts } },
         }; } }
 
         private void ParseInternalName(string value, ParseErrorInfo ErrorInfo)

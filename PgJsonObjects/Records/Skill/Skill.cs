@@ -155,18 +155,18 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override void InitializeKey(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        protected override void InitializeKey(string key, int index, IJsonValue value, ParseErrorInfo ErrorInfo)
         {
-            base.InitializeKey(EntryRaw, ErrorInfo);
+            base.InitializeKey(key, index, value, ErrorInfo);
 
             PowerSkill ParsedPowerSkill;
             StringToEnumConversion<PowerSkill>.TryParse(Key, out ParsedPowerSkill, ErrorInfo);
             CombatSkill = ParsedPowerSkill;
         }
 
-        public override void Init(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        public override void Init(string key, int index, IJsonValue value, bool loadAsArray, ParseErrorInfo ErrorInfo)
         {
-            base.Init(EntryRaw, ErrorInfo);
+            base.Init(key, index, value, loadAsArray, ErrorInfo);
 
             if (Name == null)
                 Name = Key;

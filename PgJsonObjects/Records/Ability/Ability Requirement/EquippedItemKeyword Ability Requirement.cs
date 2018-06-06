@@ -1,17 +1,38 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class EquippedItemKeywordAbilityRequirement : AbilityRequirement
     {
-        public EquippedItemKeywordAbilityRequirement(string RawKeyword, int? RawMinCount, ParseErrorInfo ErrorInfo)
+        public EquippedItemKeywordAbilityRequirement(string RawKeyword, int? rawMinCount, int? rawMaxCount, ParseErrorInfo ErrorInfo)
         {
             AbilityKeyword ParsedKeyword;
             StringToEnumConversion<AbilityKeyword>.TryParse(RawKeyword, out ParsedKeyword, ErrorInfo);
             Keyword = ParsedKeyword;
-            MinCount = RawMinCount.HasValue ? RawMinCount.Value : 0;
+            RawMinCount = rawMinCount;
+            RawMaxCount = rawMaxCount;
         }
 
         public AbilityKeyword Keyword { get; private set; }
-        public int MinCount { get; private set; }
+        public int MinCount { get { return RawMinCount.HasValue ? RawMinCount.Value : 0; } }
+        private int? RawMinCount;
+        public int MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }
+        private int? RawMaxCount;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.EquippedItemKeyword) } },
+            { "Keyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString  = () => StringToEnumConversion<AbilityKeyword>.ToString(Keyword) } },
+            { "MinCount", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMinCount } },
+            { "MaxCount", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMaxCount } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

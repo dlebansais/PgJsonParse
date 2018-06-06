@@ -114,7 +114,7 @@ namespace PgJsonObjects
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
             { "SkillLevelReq", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawSkillLevelReq = value,
@@ -126,7 +126,7 @@ namespace PgJsonObjects
             { "SortSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => SortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(SortSkill) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(SortSkill, null, PowerSkill.Internal_None) } },
             { "Keywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<RecipeKeyword>.ParseList(value, KeywordList, errorInfo),
@@ -134,7 +134,7 @@ namespace PgJsonObjects
             { "ActionLabel", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => ActionLabel = StringToEnumConversion<RecipeAction>.Parse(value, TextMaps.RecipeActionStringMap, errorInfo),
-                GetString = () => StringToEnumConversion<RecipeAction>.ToString(ActionLabel) } },
+                GetString = () => StringToEnumConversion<RecipeAction>.ToString(ActionLabel, null, RecipeAction.Internal_None) } },
             { "UsageDelay", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawUsageDelay = value,
@@ -146,7 +146,7 @@ namespace PgJsonObjects
             { "UsageAnimation", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => UsageAnimation = StringToEnumConversion<RecipeUsageAnimation>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<RecipeUsageAnimation>.ToString(UsageAnimation) } },
+                GetString = () => StringToEnumConversion<RecipeUsageAnimation>.ToString(UsageAnimation, null, RecipeUsageAnimation.Internal_None) } },
             { "OtherRequirements", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo),
@@ -174,7 +174,7 @@ namespace PgJsonObjects
             { "RewardSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseRewardSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RewardSkill) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RewardSkill, null, PowerSkill.Internal_None) } },
             { "RewardSkillXp", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardSkillXp = value,
@@ -194,7 +194,7 @@ namespace PgJsonObjects
             { "ItemMenuKeywordReq", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RecipeItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RecipeItemKeyword) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RecipeItemKeyword, null, ItemKeyword.Internal_None) } },
             { "IsItemMenuKeywordReqSufficient", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsItemMenuKeywordReqSufficient = value,

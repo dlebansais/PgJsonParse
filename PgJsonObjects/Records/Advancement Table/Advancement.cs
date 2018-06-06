@@ -143,6 +143,22 @@ namespace PgJsonObjects
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "IGNORE_CHANCE_FEAR", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawIgnoreChanceFear = value,
+                GetFloat = () => RawIgnoreChanceFear } },
+            { "IGNORE_CHANCE_MEZ", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawIgnoreChanceMezz = value,
+                GetFloat = () => RawIgnoreChanceMezz } },
+            { "IGNORE_CHANCE_KNOCKBACK", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawIgnoreChanceKnockback = value,
+                GetFloat = () => RawIgnoreChanceKnockback } },
+            { "MENTAL_DEFENSE_RATING", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMentalDefenseRating = value,
+                GetFloat = () => RawMentalDefenseRating } },
             { "NONCOMBAT_REGEN_HEALTH_MOD", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawNonCombatRegenHealthMod = value,
@@ -183,10 +199,6 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCombatRegenRageMod = value,
                 GetFloat = () => RawCombatRegenRageMod } },
-            { "MENTAL_DEFENSE_RATING", new FieldParser() {
-                Type = FieldType.Float,
-                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMentalDefenseRating = value,
-                GetFloat = () => RawMentalDefenseRating } },
             { "SPRINT_BOOST", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawSprintBoost = value,
@@ -195,18 +207,6 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawTauntMod = value,
                 GetFloat = () => RawTauntMod } },
-            { "IGNORE_CHANCE_FEAR", new FieldParser() {
-                Type = FieldType.Float,
-                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawIgnoreChanceFear = value,
-                GetFloat = () => RawIgnoreChanceFear } },
-            { "IGNORE_CHANCE_MEZ", new FieldParser() {
-                Type = FieldType.Float,
-                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawIgnoreChanceMezz = value,
-                GetFloat = () => RawIgnoreChanceMezz } },
-            { "IGNORE_CHANCE_KNOCKBACK", new FieldParser() {
-                Type = FieldType.Float,
-                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawIgnoreChanceKnockback = value,
-                GetFloat = () => RawIgnoreChanceKnockback } },
             { "EVASION_CHANCE", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawEvasionChance = value,
@@ -398,24 +398,28 @@ namespace PgJsonObjects
             if (ParseDamageTypeEntry(FieldKey, FieldValue, "VULN_", null, VulnerabilityTable, ErrorInfo))
             {
                 ParsedFields["VULNERABILITY"] = true;
+                FieldTableOrder.Add(FieldKey);
                 return true;
             }
 
             else if (ParseDamageTypeEntry(FieldKey, FieldValue, "MITIGATION_", null, MitigationTable, ErrorInfo))
             {
                 ParsedFields["MITIGATION"] = true;
+                FieldTableOrder.Add(FieldKey);
                 return true;
             }
 
             else if (ParseDamageTypeEntry(FieldKey, FieldValue, "MOD_", "_INDIRECT", IndirectModTable, ErrorInfo))
             {
                 ParsedFields["MOD_INDIRECT"] = true;
+                FieldTableOrder.Add(FieldKey);
                 return true;
             }
 
             else if (ParseDamageTypeEntry(FieldKey, FieldValue, "MOD_", "_DIRECT", DirectModTable, ErrorInfo))
             {
                 ParsedFields["MOD_DIRECT"] = true;
+                FieldTableOrder.Add(FieldKey);
                 return true;
             }
             else
@@ -424,29 +428,37 @@ namespace PgJsonObjects
 
         private bool ParseDamageTypeEntry(string FieldKey, object FieldValue, string StartPattern, string EndPattern, Dictionary<DamageType, double> DamageTypeTable, ParseErrorInfo ErrorInfo)
         {
-            if (FieldKey.StartsWith(StartPattern) && (EndPattern == null || FieldKey.EndsWith(EndPattern)))
+            if (IsDamageTypeEntry(FieldKey, StartPattern, EndPattern, out string RawDamageType, out DamageType ParsedDamageType, ErrorInfo))
             {
-                string RawDamageType;
-
-                if (EndPattern == null)
-                    RawDamageType = FieldKey[StartPattern.Length] + FieldKey.Substring(StartPattern.Length + 1).ToLower();
+                if (DamageTypeTable.ContainsKey(ParsedDamageType))
+                    ErrorInfo.AddDuplicateString("Advancement", RawDamageType);
                 else
-                    RawDamageType = FieldKey[StartPattern.Length] + FieldKey.Substring(StartPattern.Length + 1, FieldKey.Length - StartPattern.Length - EndPattern.Length - 1).ToLower();
-
-                double Value = ParseValue(FieldValue, ErrorInfo);
-
-                DamageType ParsedDamageType;
-                if (StringToEnumConversion<DamageType>.TryParse(RawDamageType, out ParsedDamageType, ErrorInfo))
                 {
-                    if (DamageTypeTable.ContainsKey(ParsedDamageType))
-                        ErrorInfo.AddDuplicateString("Advancement", RawDamageType);
-                    else
-                        DamageTypeTable.Add(ParsedDamageType, Value);
+                    double Value = ParseValue(FieldValue, ErrorInfo);
+                    DamageTypeTable.Add(ParsedDamageType, Value);
                 }
 
                 return true;
             }
 
+            return false;
+        }
+
+        private bool IsDamageTypeEntry(string FieldKey, string StartPattern, string EndPattern, out string RawDamageType, out DamageType ParsedDamageType, ParseErrorInfo ErrorInfo)
+        {
+            if (FieldKey.StartsWith(StartPattern) && (EndPattern == null || FieldKey.EndsWith(EndPattern)))
+            {
+                if (EndPattern == null)
+                    RawDamageType = FieldKey[StartPattern.Length] + FieldKey.Substring(StartPattern.Length + 1).ToLower();
+                else
+                    RawDamageType = FieldKey[StartPattern.Length] + FieldKey.Substring(StartPattern.Length + 1, FieldKey.Length - StartPattern.Length - EndPattern.Length - 1).ToLower();
+
+                if (StringToEnumConversion<DamageType>.TryParse(RawDamageType, out ParsedDamageType, ErrorInfo))
+                    return true;
+            }
+
+            RawDamageType = null;
+            ParsedDamageType = DamageType.Internal_None;
             return false;
         }
 
@@ -470,6 +482,39 @@ namespace PgJsonObjects
         #endregion
 
         #region Json Reconstruction
+        public override void ListObjectContent(JsonGenerator generator, string ParserKey)
+        {
+            string RawDamageType;
+            DamageType ParsedDamageType;
+
+            if (IsDamageTypeEntry(ParserKey, "VULN_", null, out RawDamageType, out ParsedDamageType, null))
+            {
+                generator.AddDouble("VULN_" + RawDamageType.ToUpper(), VulnerabilityTable[ParsedDamageType]);
+                return;
+            }
+
+            else if (IsDamageTypeEntry(ParserKey, "MITIGATION_", null, out RawDamageType, out ParsedDamageType, null))
+            {
+                generator.AddDouble("MITIGATION_" + RawDamageType.ToUpper(), MitigationTable[ParsedDamageType]);
+                return;
+            }
+
+            else if (IsDamageTypeEntry(ParserKey, "MOD_", "_INDIRECT", out RawDamageType, out ParsedDamageType, null))
+            {
+                generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_INDIRECT", IndirectModTable[ParsedDamageType]);
+                return;
+            }
+
+            else if (IsDamageTypeEntry(ParserKey, "MOD_", "_DIRECT", out RawDamageType, out ParsedDamageType, null))
+            {
+                generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_DIRECT", DirectModTable[ParsedDamageType]);
+                return;
+            }
+
+            else
+                base.ListObjectContent(generator, ParserKey);
+        }
+
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);

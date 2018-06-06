@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class DruidEventStateAbilityRequirement : AbilityRequirement
     {
@@ -10,6 +12,15 @@
         }
 
         public DisallowedState DisallowedState { get; private set; }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.DruidEventState) } },
+            { "DisallowedStates", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<DisallowedState>.ToString(DisallowedState) } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

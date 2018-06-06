@@ -9,5 +9,13 @@
         }
 
         public int Value { get; private set; }
+
+        public override string RawEffect
+        {
+            get
+            {
+                return base.RawEffect + "(" + Value + ")";
+            }
+        }
     }
 }

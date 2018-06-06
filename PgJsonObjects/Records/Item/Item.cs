@@ -28,6 +28,12 @@ namespace PgJsonObjects
         public int? RawCraftingTargetLevel { get; private set; }
         public string Description { get; private set; }
         public ItemDroppedAppearance DroppedAppearance { get; private set; }
+        private List<string> AppearanceDetailList = new List<string>();
+        public AppearanceSkin ItemAppearanceSkin { get; private set; }
+        public AppearanceSkin ItemAppearanceCork { get; private set; }
+        public AppearanceSkin ItemAppearanceFood { get; private set; }
+        public AppearanceSkin ItemAppearancePlate { get; private set; }
+        public uint? ItemAppearanceColor { get; private set; }
         public ObservableCollection<ItemEffect> EffectDescriptionList { get; } = new ObservableCollection<ItemEffect>();
         public bool IsEffectDescriptionEmpty { get; private set; } = false;
         public uint? DyeColor { get; private set; }
@@ -40,6 +46,7 @@ namespace PgJsonObjects
         public bool? RawIsTemporary { get; private set; }
         public bool IsCrafted { get { return RawIsCrafted.HasValue && RawIsCrafted.Value; } }
         public bool? RawIsCrafted { get; private set; }
+        private List<string> RawKeywordList = new List<string>();
         public Dictionary<ItemKeyword, List<float>> KeywordTable { get; } = new Dictionary<ItemKeyword, List<float>>();
         public List<RecipeItemKey> ItemKeyList { get; } = new List<RecipeItemKey>();
         public List<ItemKeyword> EmptyKeywordList { get; } = new List<ItemKeyword>();
@@ -56,6 +63,7 @@ namespace PgJsonObjects
         public string Name { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
         public List<ItemSkillLink> SkillRequirementList { get; } = new List<ItemSkillLink>();
+        private Dictionary<string, ItemSkillLink> SkillRequirementTable = new Dictionary<string, ItemSkillLink>();
         public List<uint> StockDye { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get; private set; }
@@ -119,11 +127,11 @@ namespace PgJsonObjects
             { "DroppedAppearance", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseDroppedAppearance,
-                GetString = () => StringToEnumConversion<ItemDroppedAppearance>.ToString(DroppedAppearance) } },
+                GetString = GetDroppedAppearance } },
             { "EffectDescs", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseEffectDescs,
-                GetStringArray = () => StringToEnumConversion<ItemEffect>.ToStringList(EffectDescriptionList) } },
+                GetStringArray = GetEffectDescs } },
             { "DyeColor", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseDyeColor,
@@ -135,7 +143,7 @@ namespace PgJsonObjects
             { "EquipSlot", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => EquipSlot = StringToEnumConversion<ItemSlot>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<ItemSlot>.ToString(EquipSlot) } },
+                GetString = () => StringToEnumConversion<ItemSlot>.ToString(EquipSlot, null, ItemSlot.Internal_None) } },
             { "IconId", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseIconId,
@@ -155,7 +163,7 @@ namespace PgJsonObjects
             { "Keywords", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseKeywords,
-                GetStringArray = () => GetKeywords() } },
+                GetStringArray = () => RawKeywordList } },
             { "MacGuffinQuestName", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawMacGuffinQuestName = value,
@@ -179,15 +187,15 @@ namespace PgJsonObjects
             { "RequiredAppearance", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RequiredAppearance = StringToEnumConversion<Appearance>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<Appearance>.ToString(RequiredAppearance) } },
+                GetString = () => StringToEnumConversion<Appearance>.ToString(RequiredAppearance, null, Appearance.Internal_None) } },
             { "SkillReqs", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseSkillReqs,
-                GetObject = () => GetSkillReqs() } },
+                GetObject = GetSkillReqs } },
             { "StockDye", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseStockDye,
-                GetString = () => GetStockDye() } },
+                GetString = GetStockDye } },
             { "Value", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawValue = value,
@@ -224,11 +232,104 @@ namespace PgJsonObjects
 
         private void ParseDroppedAppearance(string value, ParseErrorInfo ErrorInfo)
         {
+            string AppearanceString;
+
             int index = value.IndexOf('(');
             if (index > 0)
-                value = value.Substring(0, index);
+            {
+                if (!value.EndsWith(")"))
+                {
+                    ErrorInfo.AddInvalidObjectFormat("Item DroppedAppearance");
+                    return;
+                }
 
-            DroppedAppearance = StringToEnumConversion<ItemDroppedAppearance>.Parse(value, ErrorInfo);
+                AppearanceString = value.Substring(0, index);
+
+                string[] Details = value.Substring(index + 1, value.Length - index - 2).Split(';');
+                foreach (string Detail in Details)
+                {
+                    string[] Splitted = Detail.Split('=');
+                    if (Splitted.Length != 2)
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Item DroppedAppearance");
+                        return;
+                    }
+
+                    string DetailKey = Splitted[0].Trim();
+                    string DetailValue = Splitted[1].Trim();
+
+                    if (string.IsNullOrEmpty(DetailKey) || string.IsNullOrEmpty(DetailValue))
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Item DroppedAppearance");
+                        return;
+                    }
+
+                    if (DetailKey == "Skin" && DetailValue.StartsWith("^"))
+                    {
+                        string RawValue = DetailValue.Substring(1);
+                        ItemAppearanceSkin = StringToEnumConversion<AppearanceSkin>.Parse(RawValue, TextMaps.AppearanceSkinStringMap, ErrorInfo);
+                        AppearanceDetailList.Add("Skin");
+                    }
+                    else if (DetailKey == "^Skin")
+                    {
+                        string RawValue = DetailValue;
+                        ItemAppearanceSkin = StringToEnumConversion<AppearanceSkin>.Parse(RawValue, TextMaps.AppearanceSkinStringMap, ErrorInfo);
+                        AppearanceDetailList.Add("^Skin");
+                    }
+                    else if (DetailKey == "^Cork")
+                    {
+                        string RawValue = DetailValue;
+                        ItemAppearanceCork = StringToEnumConversion<AppearanceSkin>.Parse(RawValue, TextMaps.AppearanceSkinStringMap, ErrorInfo);
+                        AppearanceDetailList.Add("^Cork");
+                    }
+                    else if (DetailKey == "^Food")
+                    {
+                        string RawValue = DetailValue;
+                        ItemAppearanceFood = StringToEnumConversion<AppearanceSkin>.Parse(RawValue, TextMaps.AppearanceSkinStringMap, ErrorInfo);
+                        AppearanceDetailList.Add("^Food");
+                    }
+                    else if (DetailKey == "^Plate")
+                    {
+                        string RawValue = DetailValue;
+                        ItemAppearancePlate = StringToEnumConversion<AppearanceSkin>.Parse(RawValue, TextMaps.AppearanceSkinStringMap, ErrorInfo);
+                        AppearanceDetailList.Add("^Plate");
+                    }
+                    else if (DetailKey == "Skin_Color")
+                    {
+                        string RawValue = DetailValue;
+                        if (InvariantCulture.TryParseColor(RawValue, out uint ParsedColor))
+                        {
+                            ItemAppearanceColor = ParsedColor;
+                            AppearanceDetailList.Add("Skin_Color");
+                        }
+                        else
+                        {
+                            ErrorInfo.AddInvalidObjectFormat("Item DroppedAppearance");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("Item DroppedAppearance: " + DetailKey);
+                        return;
+                    }
+                }
+            }
+            else
+                AppearanceString = value;
+
+            DroppedAppearance = StringToEnumConversion<ItemDroppedAppearance>.Parse(AppearanceString, ErrorInfo);
+        }
+
+        private string GetDroppedAppearance()
+        {
+            if (DroppedAppearance == ItemDroppedAppearance.Internal_None)
+                return null;
+
+            string Line = StringToEnumConversion<ItemDroppedAppearance>.ToString(DroppedAppearance);
+            Line += "(" + ")";
+
+            return Line;
         }
 
         private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)
@@ -243,6 +344,16 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Item EffectDescs");
                 return false;
             }
+        }
+
+        private List<string> GetEffectDescs()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (ItemEffect Effect in EffectDescriptionList)
+                Result.Add(Effect.AsEffectString());
+
+            return Result;
         }
 
         private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)
@@ -276,6 +387,8 @@ namespace PgJsonObjects
 
         private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
+            RawKeywordList.Add(RawKeyword);
+
             string KeyString;
             string ValueString;
             float Value;
@@ -328,20 +441,9 @@ namespace PgJsonObjects
             return true;
         }
 
-        private List<string> GetKeywords()
-        {
-            return new List<string>();
-        }
-
         private void ParseSkillReqs(JsonObject RawSkillReqs, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, ItemSkillLink> SkillRequirementTable = new Dictionary<string, ItemSkillLink>();
-
             foreach (KeyValuePair<string, IJsonValue> SkillEntry in RawSkillReqs)
-            {
-                if (SkillEntry.Key == "Unknown")
-                    continue;
-
                 if (!SkillRequirementTable.ContainsKey(SkillEntry.Key))
                 {
                     JsonInteger AsJsonInteger;
@@ -355,15 +457,24 @@ namespace PgJsonObjects
                 }
                 else
                     ErrorInfo.AddDuplicateString("Item SkillReqs", SkillEntry.Key);
-            }
 
             foreach (KeyValuePair<string, ItemSkillLink> ItemSkillEntry in SkillRequirementTable)
+            {
+                if (ItemSkillEntry.Key == "Unknown")
+                    continue;
+
                 SkillRequirementList.Add(ItemSkillEntry.Value);
+            }
         }
 
         private IGenericJsonObject GetSkillReqs()
         {
-            return null;
+            SkillRequirement Skillreq = new SkillRequirement();
+
+            foreach (KeyValuePair<string, ItemSkillLink> ItemSkillEntry in SkillRequirementTable)
+                Skillreq.SetFieldValue(ItemSkillEntry.Key, ItemSkillEntry.Value);
+
+            return Skillreq;
         }
 
         private void ParseStockDye(string RawStockDye, ParseErrorInfo ErrorInfo)
@@ -441,7 +552,7 @@ namespace PgJsonObjects
         {
             Generator.OpenObject(Key);
 
-            Generator.AddList("BestowRecipes", RawBestowRecipesList, RawBestowRecipesListIsEmpty);
+            Generator.AddStringList("BestowRecipes", RawBestowRecipesList, RawBestowRecipesListIsEmpty);
             Generator.AddString("BestowAbility", RawBestowAbility);
             Generator.AddString("BestowQuest", RawBestowQuest);
             Generator.AddBoolean("AllowPrefix", RawAllowPrefix);

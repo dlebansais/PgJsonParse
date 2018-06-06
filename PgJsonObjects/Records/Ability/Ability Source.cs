@@ -30,6 +30,7 @@ namespace PgJsonObjects
         public Quest ConnectedQuest { get; private set; }
         private int? RawQuestId;
         private bool IsQuestNameParsed;
+        private string RawEffectTypeId;
         #endregion
 
         #region Indirect Properties
@@ -126,15 +127,15 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override void InitializeKey(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        protected override void InitializeKey(string key, int index, IJsonValue value, ParseErrorInfo ErrorInfo)
         {
-            base.InitializeKey(EntryRaw, ErrorInfo);
+            base.InitializeKey(key + "#" + index.ToString(), 0, value, ErrorInfo);
 
-            int Index = Key.LastIndexOf('_');
-            if (Index >= 0)
+            int IdIndex = key.LastIndexOf('_');
+            if (IdIndex >= 0)
             {
                 int ParsedAbilityId;
-                if (int.TryParse(Key.Substring(Index + 1), out ParsedAbilityId))
+                if (int.TryParse(key.Substring(IdIndex + 1), out ParsedAbilityId))
                     RawAbilityId = ParsedAbilityId;
             }
         }
@@ -162,8 +163,8 @@ namespace PgJsonObjects
                 GetString  = () => RawEffectName } },
             { "EffectTypeId", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = ParseEffectTypeId,
-                GetString  = () => null } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawEffectTypeId = value,
+                GetString = () => RawEffectTypeId } },
             { "QuestId", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseQuestId,
@@ -205,10 +206,6 @@ namespace PgJsonObjects
                 this.RawEffectName = RawEffectName;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource EffectName (type)");
-        }
-
-        private void ParseEffectTypeId(string RawEffectTypeId, ParseErrorInfo ErrorInfo)
-        {
         }
 
         private void ParseQuestId(int value, ParseErrorInfo ErrorInfo)

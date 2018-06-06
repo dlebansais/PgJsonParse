@@ -172,11 +172,11 @@ namespace PgJsonObjects
             { "Type", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<QuestObjectiveType>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type) } },
+                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
             { "Target", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseTarget,
-                GetString = () => GetTarget() } },
+                GetString = GetTarget } },
             { "Description", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Description = value,
@@ -216,7 +216,7 @@ namespace PgJsonObjects
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
             { "StringParam", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseStringParam,
@@ -224,7 +224,7 @@ namespace PgJsonObjects
             { "ResultItemKeyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseResultItemKeyword,
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ResultItemKeyword) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ResultItemKeyword, null, ItemKeyword.Internal_None) } },
             { "AbilityKeyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseAbilityKeyword,
@@ -236,19 +236,19 @@ namespace PgJsonObjects
             { "AnatomyType", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseAnatomyType,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(AnatomyType)} },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(AnatomyType, null, PowerSkill.Internal_None)} },
             { "ItemKeyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseItemKeyword,
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemKeyword) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemKeyword, null, ItemKeyword.Internal_None) } },
             { "MonsterTypeTag", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseMonsterTypeTag,
-                GetString = () => StringToEnumConversion<MonsterTypeTag>.ToString(MonsterTypeTag) } },
+                GetString = () => StringToEnumConversion<MonsterTypeTag>.ToString(MonsterTypeTag, null, MonsterTypeTag.Internal_None) } },
             { "Requirements", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseRequirements,
-                GetObject = () => GetRequirements() } },
+                GetObject = GetRequirements } },
             { "Item", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseItem,

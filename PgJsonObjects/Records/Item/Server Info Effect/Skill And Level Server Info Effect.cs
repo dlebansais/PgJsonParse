@@ -17,6 +17,14 @@ namespace PgJsonObjects
         public Skill ConnectedSkill { get; private set; }
         public int SkillLevel { get; private set; }
 
+        public override string RawEffect
+        {
+            get
+            {
+                return base.RawEffect + "(" + StringToEnumConversion<PowerSkill>.ToString(Skill) + "," + SkillLevel.ToString() + ")";
+            }
+        }
+
         #region Indexing
         public override string TextContent
         {

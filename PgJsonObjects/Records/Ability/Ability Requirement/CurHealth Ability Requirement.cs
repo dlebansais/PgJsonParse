@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class CurHealthAbilityRequirement : AbilityRequirement
     {
@@ -8,6 +10,14 @@
         }
 
         public double Health { get; private set; }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.CurHealth) } },
+            { "Health", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => Health } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

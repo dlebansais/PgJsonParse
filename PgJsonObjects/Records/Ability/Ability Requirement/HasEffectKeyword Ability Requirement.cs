@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class HasEffectKeywordAbilityRequirement : AbilityRequirement
     {
@@ -10,6 +12,15 @@
         }
 
         public AbilityKeyword Keyword { get; private set; }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.HasEffectKeyword) } },
+            { "Keyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString  = () => StringToEnumConversion<AbilityKeyword>.ToString(Keyword) } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

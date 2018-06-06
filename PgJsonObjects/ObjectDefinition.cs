@@ -11,16 +11,20 @@ namespace PgJsonObjects
         IParser FileParser { get; }
         IList ObjectList { get; }
         Dictionary<string, IGenericJsonObject> ObjectTable { get; }
+        bool LoadAsArray { get; }
+        bool UseJavaFormat { get; }
     }
 
     public class ObjectDefinition<T> : IObjectDefinition
          where T : GenericJsonObject<T>, new()
     {
-        public ObjectDefinition(string JsonFileName, int MinVersion)
+        public ObjectDefinition(string jsonFileName, int minVersion, bool loadAsArray, bool useJavaFormat, bool VerifyParse)
         {
-            this.JsonFileName = JsonFileName;
-            this.MinVersion = MinVersion;
-            FileParser.VerifyParse = false;
+            JsonFileName = jsonFileName;
+            MinVersion = minVersion;
+            LoadAsArray = loadAsArray;
+            UseJavaFormat = useJavaFormat;
+            FileParser.VerifyParse = VerifyParse;
         }
 
         public string JsonFileName { get; private set; }
@@ -28,5 +32,7 @@ namespace PgJsonObjects
         public IList ObjectList { get; private set; } = new ObservableCollection<T>();
         public IParser FileParser { get; private set; } = new Parser<T>();
         public Dictionary<string, IGenericJsonObject> ObjectTable { get; private set; } = new Dictionary<string, IGenericJsonObject>();
+        public bool LoadAsArray { get; private set; }
+        public bool UseJavaFormat { get; private set; }
     }
 }

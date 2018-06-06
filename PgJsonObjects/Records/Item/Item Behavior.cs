@@ -35,11 +35,12 @@ namespace PgJsonObjects
             { "UseVerb", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => UseVerb = StringToEnumConversion<ItemUseVerb>.Parse(value, TextMaps.UseVerbMap, errorInfo),
-                GetString = () => StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, TextMaps.UseVerbMap) } },
+                GetString = () => StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, TextMaps.UseVerbMap, ItemUseVerb.Internal_None) } },
             { "ServerInfo", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = ParseServerInfo,
-                GetObjectArray = () => CreateSingleOrEmptyList(ServerInfo) } },
+                GetObjectArray = () => CreateSingleOrEmptyList(ServerInfo),
+                SimplifyArray = true } },
             { "UseRequirements", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemUseRequirement>.ParseList(value, UseRequirementList, errorInfo),
@@ -47,11 +48,11 @@ namespace PgJsonObjects
             { "UseAnimation", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => UseAnimation = StringToEnumConversion<ItemUseAnimation>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<ItemUseAnimation>.ToString(UseAnimation) } },
+                GetString = () => StringToEnumConversion<ItemUseAnimation>.ToString(UseAnimation, null, ItemUseAnimation.Internal_None) } },
             { "UseDelayAnimation", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => UseDelayAnimation = StringToEnumConversion<ItemUseAnimation>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<ItemUseAnimation>.ToString(UseDelayAnimation) } },
+                GetString = () => StringToEnumConversion<ItemUseAnimation>.ToString(UseDelayAnimation, null, ItemUseAnimation.Internal_None) } },
             { "MetabolismCost", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMetabolismCost = value,

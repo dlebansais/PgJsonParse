@@ -27,6 +27,7 @@ namespace PgJsonObjects
         public Quest ConnectedQuest { get; private set; }
         private int? RawQuestId;
         private bool IsQuestIdParsed;
+        private string RawEffectTypeId;
         #endregion
 
         #region Indirect Properties
@@ -116,15 +117,15 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override void InitializeKey(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        protected override void InitializeKey(string key, int index, IJsonValue value, ParseErrorInfo ErrorInfo)
         {
-            base.InitializeKey(EntryRaw, ErrorInfo);
+            base.InitializeKey(key + "#" + index.ToString(), 0, value, ErrorInfo);
 
-            int Index = Key.LastIndexOf('_');
-            if (Index >= 0)
+            int IdIndex = key.LastIndexOf('_');
+            if (IdIndex >= 0)
             {
                 int ParsedRecipeId;
-                if (int.TryParse(Key.Substring(Index + 1), out ParsedRecipeId))
+                if (int.TryParse(key.Substring(IdIndex + 1), out ParsedRecipeId))
                     RawRecipeId = ParsedRecipeId;
             }
         }
@@ -133,11 +134,11 @@ namespace PgJsonObjects
             { "Type", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<SourceTypes>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<SourceTypes>.ToString(Type) } },
+                GetString = () => StringToEnumConversion<SourceTypes>.ToString(Type, null, SourceTypes.Internal_None) } },
             { "SkillTypeId", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkillTypeId,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(SkillTypeId) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(SkillTypeId, null, PowerSkill.Internal_None) } },
             { "ItemTypeId", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseItemTypeId,
@@ -152,8 +153,8 @@ namespace PgJsonObjects
                 GetString = () => RawEffectName } },
             { "EffectTypeId", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = ParseEffectTypeId,
-                GetString = () => null } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawEffectTypeId = value,
+                GetString = () => RawEffectTypeId } },
             { "QuestId", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseQuestId,

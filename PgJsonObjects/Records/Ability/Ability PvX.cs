@@ -63,14 +63,14 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawDamage = value,
                 GetInteger = () => RawDamage } },
-            { "ExtraDamageIfTargetVulnerable", new FieldParser() {
-                Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawExtraDamageIfTargetVulnerable = value,
-                GetInteger = () => RawExtraDamageIfTargetVulnerable  } },
             { "HealthSpecificDamage", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawHealthSpecificDamage = value,
                 GetInteger = () => RawHealthSpecificDamage } },
+            { "ExtraDamageIfTargetVulnerable", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawExtraDamageIfTargetVulnerable = value,
+                GetInteger = () => RawExtraDamageIfTargetVulnerable  } },
             { "ArmorSpecificDamage", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawArmorSpecificDamage = value,
@@ -95,6 +95,10 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawAoE = value,
                 GetInteger = () => RawAoE } },
+            { "SelfPreEffects", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<PreEffect>.ParseList(value, SelfPreEffectList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<PreEffect>.ToStringList(SelfPreEffectList) } },
             { "RageBoost", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRageBoost = value,
@@ -159,7 +163,7 @@ namespace PgJsonObjects
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<SpecialValue>.ParseList("SpecialValue", value, SpecialValueList, errorInfo),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true,
-                GetObjectArray = () => SpecialValueList,
+                GetObjectArray = () => { if (SpecialValueList.Count == 1) return SpecialValueList; else return SpecialValueList; },
                 GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty } },
             { "TauntDelta", new FieldParser() {
                 Type = FieldType.Integer,
@@ -181,10 +185,6 @@ namespace PgJsonObjects
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<DoT>.ParseList("DoTs", value, DoTList, errorInfo),
                 GetObjectArray = () => DoTList } },
-            { "SelfPreEffects", new FieldParser() {
-                Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<PreEffect>.ParseList(value, SelfPreEffectList, errorInfo),
-                GetStringArray = () => StringToEnumConversion<PreEffect>.ToStringList(SelfPreEffectList) } },
         }; } }
 
         private List<string> RawAttributesThatDeltaDamageList { get; } = new List<string>();
@@ -206,7 +206,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Json Reconstruction
-        /*
         public override void GenerateObjectContent(JsonGenerator Generator)
         {
             Generator.OpenObject(Key);
@@ -223,14 +222,14 @@ namespace PgJsonObjects
             Generator.AddInteger("RageBoost", RawRageBoost);
             Generator.AddDouble("RageMultiplier", RawRageMultiplier);
             Generator.AddDouble("Accuracy", RawAccuracy);
-            Generator.AddList("AttributesThatDeltaDamage", RawAttributesThatDeltaDamageList, RawAttributesThatDeltaDamageListIsEmpty);
-            Generator.AddList("AttributesThatModDamage", RawAttributesThatModDamageList, RawAttributesThatModDamageListIsEmpty);
-            Generator.AddList("AttributesThatModBaseDamage", RawAttributesThatModBaseDamageList, RawAttributesThatModBaseDamageListIsEmpty);
-            Generator.AddList("AttributesThatDeltaTaunt", RawAttributesThatDeltaTauntList, RawAttributesThatDeltaTauntListIsEmpty);
-            Generator.AddList("AttributesThatModTaunt", RawAttributesThatModTauntList, RawAttributesThatModTauntListIsEmpty);
-            Generator.AddList("AttributesThatDeltaRage", RawAttributesThatDeltaRageList, RawAttributesThatDeltaRageListIsEmpty);
-            Generator.AddList("AttributesThatModRage", RawAttributesThatModRageList, RawAttributesThatModRageListIsEmpty);
-            Generator.AddList("AttributesThatDeltaRange", RawAttributesThatDeltaRangeList, RawAttributesThatDeltaRangeListIsEmpty);
+            Generator.AddStringList("AttributesThatDeltaDamage", RawAttributesThatDeltaDamageList, RawAttributesThatDeltaDamageListIsEmpty);
+            Generator.AddStringList("AttributesThatModDamage", RawAttributesThatModDamageList, RawAttributesThatModDamageListIsEmpty);
+            Generator.AddStringList("AttributesThatModBaseDamage", RawAttributesThatModBaseDamageList, RawAttributesThatModBaseDamageListIsEmpty);
+            Generator.AddStringList("AttributesThatDeltaTaunt", RawAttributesThatDeltaTauntList, RawAttributesThatDeltaTauntListIsEmpty);
+            Generator.AddStringList("AttributesThatModTaunt", RawAttributesThatModTauntList, RawAttributesThatModTauntListIsEmpty);
+            Generator.AddStringList("AttributesThatDeltaRage", RawAttributesThatDeltaRageList, RawAttributesThatDeltaRageListIsEmpty);
+            Generator.AddStringList("AttributesThatModRage", RawAttributesThatModRageList, RawAttributesThatModRageListIsEmpty);
+            Generator.AddStringList("AttributesThatDeltaRange", RawAttributesThatDeltaRangeList, RawAttributesThatDeltaRangeListIsEmpty);
 
             if (SpecialValueList.Count > 0)
             {
@@ -248,7 +247,7 @@ namespace PgJsonObjects
             Generator.AddDouble("RageCostMod", RawRageCostMod);
 
             Generator.CloseObject();
-        }*/
+        }
         #endregion
 
         #region Indexing

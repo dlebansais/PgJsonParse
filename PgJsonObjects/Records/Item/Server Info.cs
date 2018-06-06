@@ -16,6 +16,7 @@ namespace PgJsonObjects
         public int? RawNumItemsToGive { get; private set; }
         public ItemRequiredHotspot RequiredHotspot { get; private set; }
         public List<AbilityRequirement> OtherRequirementList { get; private set; } = new List<AbilityRequirement>();
+        private bool IsOtherRequirementListEmpty;
         #endregion
 
         #region Indirect Properties
@@ -65,7 +66,7 @@ namespace PgJsonObjects
                     if (EffectValue.HasValue)
                         return new ValueServerInfoEffect(ServerInfoEffect, EffectLevel, EffectValue.Value);
                     else
-                        return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel);
+                        return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel, null);
 
                 case ServerInfoEffectType.LearnAbility:
                     if (RawBestowAbility != null)
@@ -98,8 +99,12 @@ namespace PgJsonObjects
                 case ServerInfoEffectType.ArmorPotion:
                 case ServerInfoEffectType.HealthPotion:
                 case ServerInfoEffectType.PowerPotion:
+                    return new PotionServerInfoEffect(ServerInfoEffect, EffectLevel, HealthGainInstant, ArmorGainInstant, PowerGainInstant);
+
                 case ServerInfoEffectType.HealthHOTPotion:
                 case ServerInfoEffectType.PowerHOTPotion:
+                    return new PotionServerInfoEffect(ServerInfoEffect, EffectLevel, HealthGainPerSecond, ArmorGainPerSecond, PowerGainPerSecond, TotalGainDuration);
+
                 case ServerInfoEffectType.SummonFlower:
                 case ServerInfoEffectType.SummonFlowerDisplay:
                 case ServerInfoEffectType.SpawnMushroomFarmBox:
@@ -109,7 +114,8 @@ namespace PgJsonObjects
                 case ServerInfoEffectType.PulseEvent:
                 case ServerInfoEffectType.SetPrimaryCombatSkill:
                 case ServerInfoEffectType.SetInteractionFlag:
-                    return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel);
+                case ServerInfoEffectType.SummonGruesomeSpookyPunch:
+                    return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel, EffectParameter);
 
                 case ServerInfoEffectType.EquipmentBoost:
                     if (RawAttribute != null && RawAttributeEffect.HasValue && RawDuration.HasValue)
@@ -119,11 +125,8 @@ namespace PgJsonObjects
                     else
                         return null;
 
-                case ServerInfoEffectType.SummonGruesomeSpookyPunch:
-                    return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel);
-
                 default:
-                    return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel);
+                    return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel, null);
             }
         }
 
@@ -131,7 +134,7 @@ namespace PgJsonObjects
             { "Effects", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseEffects,
-                GetStringArray = () => GetEffects() } },
+                GetStringArray = GetEffects } },
             { "GiveItems", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawItemNameList.Add(value),
@@ -139,7 +142,7 @@ namespace PgJsonObjects
             { "RequiredHotspot", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<ItemRequiredHotspot>.ToString(RequiredHotspot) } },
+                GetString = () => StringToEnumConversion<ItemRequiredHotspot>.ToString(RequiredHotspot, null, ItemRequiredHotspot.Internal_None) } },
             { "NumItemsToGive", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawNumItemsToGive = value,
@@ -147,7 +150,10 @@ namespace PgJsonObjects
             { "OtherRequirements", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo),
-                GetObjectArray = () => OtherRequirementList } },
+                SetArrayIsEmpty = () => IsOtherRequirementListEmpty = true,
+                GetObjectArray = () => OtherRequirementList,
+                GetArrayIsEmpty = () => IsOtherRequirementListEmpty,
+                SimplifyArray = true } },
         }; } }
 
         private bool ParseEffects(string RawEffect, ParseErrorInfo ErrorInfo)
@@ -164,7 +170,18 @@ namespace PgJsonObjects
 
         private List<string> GetEffects()
         {
-            return new List<string>();
+            List<string> Result = new List<string>();
+
+            foreach (ServerInfoEffect Item in ServerInfoEffectList)
+            {
+                string RawEffect = Item.RawEffect;
+                if (RawEffect != null)
+                    Result.Add(RawEffect);
+                else
+                    Result.Add(RawEffect);
+            }
+
+            return Result;
         }
 
         private ServerInfoEffect ParseEffectString(string RawEffect, ParseErrorInfo ErrorInfo)
@@ -189,6 +206,7 @@ namespace PgJsonObjects
                 RawEffectString = RawEffect;
 
             int Level = 0;
+            int Scale = 1;
             while (RawEffectString.Length > 0 && char.IsDigit(RawEffectString[RawEffectString.Length - 1]))
             {
                 string Digit = RawEffectString[RawEffectString.Length - 1].ToString();
@@ -199,8 +217,8 @@ namespace PgJsonObjects
                     return null;
                 }
 
-                Level *= 10;
-                Level += DigitValue;
+                Level += Scale * DigitValue;
+                Scale *= 10;
 
                 do
                     RawEffectString = RawEffectString.Substring(0, RawEffectString.Length - 1);
@@ -211,6 +229,8 @@ namespace PgJsonObjects
 
             if (Level > 0)
                 EffectLevel = Level;
+            else
+                EffectLevel = null;
 
             switch (ServerInfoEffect)
             {
@@ -264,15 +284,21 @@ namespace PgJsonObjects
                 case ServerInfoEffectType.PowerPotion:
                 case ServerInfoEffectType.HealthHOTPotion:
                 case ServerInfoEffectType.PowerHOTPotion:
+                    ParsePotion(Details, ErrorInfo);
+                    break;
+
                 case ServerInfoEffectType.SummonFlower:
                 case ServerInfoEffectType.SummonFlowerDisplay:
-                case ServerInfoEffectType.SpawnMushroomFarmBox:
-                case ServerInfoEffectType.SpawnItemDispenser:
+                case ServerInfoEffectType.PulseEvent:
                 case ServerInfoEffectType.BestowGolemConditional:
                 case ServerInfoEffectType.BestowGolemAbility:
-                case ServerInfoEffectType.PulseEvent:
+                case ServerInfoEffectType.SpawnItemDispenser:
                 case ServerInfoEffectType.SetPrimaryCombatSkill:
                 case ServerInfoEffectType.SetInteractionFlag:
+                    ParseParameter(Details, ErrorInfo);
+                    break;
+
+                case ServerInfoEffectType.SpawnMushroomFarmBox:
                     if (Details == null)
                     {
                         ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
@@ -467,6 +493,95 @@ namespace PgJsonObjects
             this.AlcoholPowerValue = AlcoholPowerValue;
         }
 
+        private void ParsePotion(string Details, ParseErrorInfo ErrorInfo)
+        {
+            if (Details == null)
+            {
+                ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                return;
+            }
+
+            string[] Splitted = Details.Split(',');
+
+            int HealthGainInstant = 0;
+            int HealthGainPerSecond = 0;
+            int ArmorGainInstant = 0;
+            int ArmorGainPerSecond = 0;
+            int PowerGainInstant = 0;
+            int PowerGainPerSecond = 0;
+            int TotalGainDuration = 0;
+
+            switch (Splitted.Length)
+            {
+                case 1:
+                    if (!int.TryParse(Splitted[0], out HealthGainInstant))
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                        return;
+                    }
+
+                    this.HealthGainInstant = HealthGainInstant;
+                    break;
+
+                case 2:
+                    if (!int.TryParse(Splitted[0], out HealthGainInstant) ||
+                        !int.TryParse(Splitted[1], out ArmorGainInstant))
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                        return;
+                    }
+
+                    this.HealthGainInstant = HealthGainInstant;
+                    this.ArmorGainInstant = ArmorGainInstant;
+                    break;
+
+                case 3:
+                    if (!int.TryParse(Splitted[0], out HealthGainInstant) ||
+                        !int.TryParse(Splitted[1], out ArmorGainInstant) ||
+                        !int.TryParse(Splitted[2], out PowerGainInstant))
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                        return;
+                    }
+
+                    this.HealthGainInstant = HealthGainInstant;
+                    this.ArmorGainInstant = ArmorGainInstant;
+                    this.PowerGainInstant = PowerGainInstant;
+                    break;
+
+                case 5:
+                    if (!int.TryParse(Splitted[0], out HealthGainPerSecond) ||
+                        !int.TryParse(Splitted[1], out ArmorGainPerSecond) ||
+                        !int.TryParse(Splitted[2], out PowerGainPerSecond) ||
+                        !int.TryParse(Splitted[4], out TotalGainDuration))
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                        return;
+                    }
+
+                    this.HealthGainPerSecond = HealthGainPerSecond;
+                    this.ArmorGainPerSecond = ArmorGainPerSecond;
+                    this.PowerGainPerSecond = PowerGainPerSecond;
+                    this.TotalGainDuration = TotalGainDuration;
+                    break;
+
+                default:
+                    ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                    return;
+            }
+        }
+
+        private void ParseParameter(string Details, ParseErrorInfo ErrorInfo)
+        {
+            if (Details == null)
+            {
+                ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
+                return;
+            }
+
+            EffectParameter = Details;
+        }
+
         private void ParseEquipmentBoost(string Details, ParseErrorInfo ErrorInfo)
         {
             if (Details == null)
@@ -546,6 +661,14 @@ namespace PgJsonObjects
         private ItemEffect RawAttribute;
         private float? RawAttributeEffect;
         private int? RawDuration;
+        private int? HealthGainInstant;
+        private int? HealthGainPerSecond;
+        private int? ArmorGainInstant;
+        private int? ArmorGainPerSecond;
+        private int? PowerGainInstant;
+        private int? PowerGainPerSecond;
+        private int? TotalGainDuration;
+        private string EffectParameter;
         #endregion
 
         #region Json Reconstruction

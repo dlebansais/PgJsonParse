@@ -170,7 +170,7 @@ namespace PgJsonObjects
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Skill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
             { "IsUnavailable", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsUnavailable = value,

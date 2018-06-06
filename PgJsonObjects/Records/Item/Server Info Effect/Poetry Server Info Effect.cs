@@ -11,5 +11,13 @@
 
         public int PoetryXpValue { get; private set; }
         public int RecitalXpValue { get; private set; }
+
+        public override string RawEffect
+        {
+            get
+            {
+                return null;
+            }
+        }
     }
 }

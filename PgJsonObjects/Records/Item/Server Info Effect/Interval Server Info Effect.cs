@@ -11,5 +11,13 @@
 
         public int LowValue { get; private set; }
         public int HighValue { get; private set; }
+
+        public override string RawEffect
+        {
+            get
+            {
+                return null;
+            }
+        }
     }
 }

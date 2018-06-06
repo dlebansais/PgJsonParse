@@ -64,6 +64,22 @@ namespace PgJsonObjects
             return TryParse(StringValue, StringMap, DefaultValue, DefaultValue, out EnumValue, ErrorInfo);
         }
 
+        public static void SetCustomParsedEnum(T EnumValue)
+        {
+            bool[] ParsedEnums;
+            if (!StringToEnumConversion.KnownParsedEnumtable.ContainsKey(typeof(T)))
+            {
+                string[] EnumNames = Enum.GetNames(typeof(T));
+                ParsedEnums = new bool[EnumNames.Length];
+                StringToEnumConversion.KnownParsedEnumtable.Add(typeof(T), ParsedEnums);
+            }
+            else
+                ParsedEnums = StringToEnumConversion.KnownParsedEnumtable[typeof(T)];
+
+            if (InvariantCulture.TryFindIndex(EnumValue, out int EnumIndex))
+                ParsedEnums[EnumIndex] = true;
+        }
+
         public static bool TryParse(string StringValue, Dictionary<T, string> StringMap, T DefaultValue, T EmptyValue, out T EnumValue, ParseErrorInfo ErrorInfo)
         {
             EnumValue = DefaultValue;
@@ -225,7 +241,8 @@ namespace PgJsonObjects
         public static List<string> ToSingleStringList(T value)
         {
             List<string> Result = new List<string>();
-            Result.Add(ToString(value));
+            if (!value.Equals(default(T)))
+                Result.Add(ToString(value));
 
             return Result;
         }

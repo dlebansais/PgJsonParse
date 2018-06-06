@@ -11,5 +11,13 @@
 
         public int DrinkATValue { get; private set; }
         public int AlcoholPowerValue { get; private set; }
+
+        public override string RawEffect
+        {
+            get
+            {
+                return base.RawEffect + "(" + DrinkATValue + "," + AlcoholPowerValue + ")";
+            }
+        }
     }
 }

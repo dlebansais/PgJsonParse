@@ -27,9 +27,9 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        protected override void InitializeKey(KeyValuePair<string, IJsonValue> EntryRaw, ParseErrorInfo ErrorInfo)
+        protected override void InitializeKey(string key, int index, IJsonValue value, ParseErrorInfo ErrorInfo)
         {
-            base.InitializeKey(EntryRaw, ErrorInfo);
+            base.InitializeKey(key, index, value, ErrorInfo);
 
             string[] SplitKey = Key.Split('_');
 
@@ -60,7 +60,7 @@ namespace PgJsonObjects
             { "BonusToSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => BonusSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(BonusSkill) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(BonusSkill, null, PowerSkill.Internal_None) } },
             { "Recipe", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawRecipe = value,

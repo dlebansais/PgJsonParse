@@ -5,8 +5,8 @@ namespace PgJsonObjects
 {
     public class AbilityServerInfoEffect : ServerInfoEffect
     {
-        public AbilityServerInfoEffect(ServerInfoEffectType ServerInfoEffect, int? RawLevel, string RawBestowAbility)
-            : base(ServerInfoEffect, RawLevel)
+        public AbilityServerInfoEffect(ServerInfoEffectType type, int? RawLevel, string RawBestowAbility)
+            : base(type, RawLevel)
         {
             this.RawBestowAbility = RawBestowAbility;
             IsRawBestowAbilityParsed = false;
@@ -15,6 +15,14 @@ namespace PgJsonObjects
         private string RawBestowAbility;
         private bool IsRawBestowAbilityParsed;
         public Ability BestowAbility { get; private set; }
+
+        public override string RawEffect
+        {
+            get
+            {
+                return base.RawEffect + "(" + RawBestowAbility + ")";
+            }
+        }
 
         #region Indexing
         public override string TextContent
