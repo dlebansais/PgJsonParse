@@ -5,7 +5,8 @@ namespace PgJsonObjects
 {
     public class MinSkillLevelQuestRequirement : QuestRequirement
     {
-        public MinSkillLevelQuestRequirement(PowerSkill RequirementSkill, int? RawRequirementSkillLevel)
+        public MinSkillLevelQuestRequirement(OtherRequirementType OtherRequirementType, PowerSkill RequirementSkill, int? RawRequirementSkillLevel)
+            : base(OtherRequirementType)
         {
             Skill = RequirementSkill;
             RawSkillLevel = RawRequirementSkillLevel;
@@ -16,6 +17,18 @@ namespace PgJsonObjects
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
         private bool IsConnectedSkillParsed;
         private int? RawSkillLevel;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "Skill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
+            { "Level", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawSkillLevel } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

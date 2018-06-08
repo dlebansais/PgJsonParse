@@ -6,19 +6,43 @@ namespace PgJsonObjects
     public class QuestObjectiveLoot : QuestObjective
     {
         #region Init
-        public QuestObjectiveLoot(string Description, string RawItemName, int? RawNumber, MonsterTypeTag MonsterTypeTag, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
-            : base(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveLoot(QuestObjectiveType Type, string Description, string RawItemName, int? RawNumber, MonsterTypeTag MonsterTypeTag, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.RawItemName = RawItemName;
             this.MonsterTypeTag = MonsterTypeTag;
         }
 
-        public QuestObjectiveLoot(string Description, ItemKeyword ItemTarget, int? RawNumber, MonsterTypeTag MonsterTypeTag, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
-            : base(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveLoot(QuestObjectiveType Type, string Description, ItemKeyword ItemTarget, int? RawNumber, MonsterTypeTag MonsterTypeTag, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.ItemTarget = ItemTarget;
             this.MonsterTypeTag = MonsterTypeTag;
         }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
+            { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawMustCompleteEarlierObjectivesFirst } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "Number", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumber } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemTarget, null, ItemKeyword.Internal_None) } },
+            { "ItemName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RawItemName } },
+            { "MonsterTypeTag", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<MonsterTypeTag>.ToString(MonsterTypeTag, null, MonsterTypeTag.Internal_None) } },
+        }; } }
         #endregion
 
         #region Properties

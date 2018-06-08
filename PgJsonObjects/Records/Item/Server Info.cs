@@ -10,6 +10,7 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public List<ServerInfoEffect> ServerInfoEffectList { get; private set; } = new List<PgJsonObjects.ServerInfoEffect>();
+        private bool IsServerInfoEffectListEmpty;
         public List<Item> GiveItemList { get; private set; } = new List<Item>();
         private List<string> RawItemNameList = new List<string>();
         public int NumItemsToGive { get { return RawNumItemsToGive.HasValue ? RawNumItemsToGive.Value : 0; } }
@@ -58,13 +59,13 @@ namespace PgJsonObjects
                 case ServerInfoEffectType.UseIlmariTreasureMap:
                 case ServerInfoEffectType.Armor:
                     if (EffectValue.HasValue)
-                        return new ValueServerInfoEffect(ServerInfoEffect, EffectLevel, EffectValue.Value);
+                        return new ValueServerInfoEffect(ServerInfoEffect, EffectLevel, EffectValue.Value, false);
                     else
                         return null;
 
                 case ServerInfoEffectType.HouseholdPoison:
                     if (EffectValue.HasValue)
-                        return new ValueServerInfoEffect(ServerInfoEffect, EffectLevel, EffectValue.Value);
+                        return new ValueServerInfoEffect(ServerInfoEffect, EffectLevel, EffectValue.Value, false);
                     else
                         return new SimpleServerInfoEffect(ServerInfoEffect, EffectLevel, null);
 
@@ -75,10 +76,10 @@ namespace PgJsonObjects
                         return null;
 
                 case ServerInfoEffectType.GiveCouncilCoins:
-                    if (LowValue.HasValue && HighValue.HasValue)
+                    if (LowValue.HasValue && HighValue.HasValue && LowValue.Value < HighValue.Value)
                         return new IntervalServerInfoEffect(ServerInfoEffect, EffectLevel, LowValue.Value, HighValue.Value);
                     else if (EffectValue.HasValue)
-                        return new ValueServerInfoEffect(ServerInfoEffect, EffectLevel, EffectValue.Value);
+                        return new ValueServerInfoEffect(ServerInfoEffect, EffectLevel, EffectValue.Value, LowValue.HasValue && HighValue.HasValue);
                     else
                         return null;
 
@@ -134,7 +135,9 @@ namespace PgJsonObjects
             { "Effects", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseEffects,
-                GetStringArray = GetEffects } },
+                SetArrayIsEmpty = () => IsServerInfoEffectListEmpty = true,
+                GetStringArray = GetEffects,
+                GetArrayIsEmpty = () => IsServerInfoEffectListEmpty } },
             { "GiveItems", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawItemNameList.Add(value),
@@ -220,14 +223,12 @@ namespace PgJsonObjects
                 Level += Scale * DigitValue;
                 Scale *= 10;
 
-                do
-                    RawEffectString = RawEffectString.Substring(0, RawEffectString.Length - 1);
-                while (RawEffectString.Length > 0 && RawEffectString[RawEffectString.Length - 1] == '_');
+                RawEffectString = RawEffectString.Substring(0, RawEffectString.Length - 1);
             }
 
-            ServerInfoEffect = StringToEnumConversion< ServerInfoEffectType>.Parse(RawEffectString, ErrorInfo);
+            ServerInfoEffect = StringToEnumConversion<ServerInfoEffectType>.Parse(RawEffectString, ErrorInfo);
 
-            if (Level > 0)
+            if (Scale > 1)
                 EffectLevel = Level;
             else
                 EffectLevel = null;
@@ -299,11 +300,7 @@ namespace PgJsonObjects
                     break;
 
                 case ServerInfoEffectType.SpawnMushroomFarmBox:
-                    if (Details == null)
-                    {
-                        ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
-                        return null;
-                    }
+                    ParseParameter(Details, ErrorInfo);
                     break;
 
                 case ServerInfoEffectType.EquipmentBoost:
@@ -311,6 +308,8 @@ namespace PgJsonObjects
                     break;
 
                 case ServerInfoEffectType.SummonGruesomeSpookyPunch:
+                    if (Details != null)
+                        ParseParameter(Details, ErrorInfo);
                     break;
 
                 default:
@@ -430,13 +429,9 @@ namespace PgJsonObjects
                 return;
             }
 
-            if (LowValue < HighValue)
-            {
-                this.LowValue = LowValue;
-                this.HighValue = HighValue;
-            }
-            else
-                EffectValue = LowValue;
+            this.LowValue = LowValue;
+            this.HighValue = HighValue;
+            EffectValue = LowValue;
         }
 
         private void ParsePoetryXp(string Details, ParseErrorInfo ErrorInfo)

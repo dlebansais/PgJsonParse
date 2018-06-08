@@ -45,7 +45,10 @@ namespace PgJsonObjects
                     return new CurHealthAbilityRequirement(RawHealth);
 
                 case OtherRequirementType.Race:
-                    return new RaceAbilityRequirement(RawAllowedRace, RawAllowedRaceList, ErrorInfo);
+                    if (RawAllowedRace != null)
+                        return new SingleRaceAbilityRequirement(RawAllowedRace, ErrorInfo);
+                    else
+                        return new RaceAbilityRequirement(RawAllowedRaceList, ErrorInfo);
 
                 case OtherRequirementType.HasEffectKeyword:
                     return new HasEffectKeywordAbilityRequirement(RawKeyword, ErrorInfo);
@@ -84,7 +87,10 @@ namespace PgJsonObjects
                     return new InGraveyardAbilityRequirement();
 
                 case OtherRequirementType.Appearance:
-                    return new AppearanceAbilityRequirement(RawAppearance, RawAppearanceList, ErrorInfo);
+                    if (RawAppearance != null)
+                        return new SingleAppearanceAbilityRequirement(RawAppearance, ErrorInfo);
+                    else
+                        return new AppearanceAbilityRequirement(RawAppearanceList, ErrorInfo);
 
                 case OtherRequirementType.Or:
                     return new OrAbilityRequirement(OrList, RawErrorMsg);

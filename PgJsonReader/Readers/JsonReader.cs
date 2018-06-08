@@ -8,7 +8,6 @@ namespace PgJsonReader
         Json.Token Read();
         Json.Token CurrentToken { get; }
         object CurrentValue { get; }
-
     }
 
     public static class JsonReader
@@ -64,7 +63,16 @@ namespace PgJsonReader
                 {
                     var value = reader.ParseValue();
                     if (reader.CurrentToken == Json.Token.ArrayEnd)
-                        break;
+                    {
+                        if (array.Count > 0 || !(value is JsonArray))
+                            break;
+                        else
+                        {
+                            if (array.Count > 0 || !(value is JsonArray))
+                                break;
+                        }
+                    }
+
                     array.Add(value);
                 }
                 return array;

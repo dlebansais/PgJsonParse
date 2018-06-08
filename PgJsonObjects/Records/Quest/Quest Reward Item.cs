@@ -11,6 +11,7 @@ namespace PgJsonObjects
         private string RawItem;
         private bool IsRawItemParsed;
         public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 1; } }
+        public bool HasStackSize { get { return RawStackSize.HasValue && RawStackSize.Value > 1; } }
         public int? RawStackSize { get; private set; }
         #endregion
 
@@ -33,10 +34,10 @@ namespace PgJsonObjects
 
         private void ParseStackSize(int value, ParseErrorInfo ErrorInfo)
         {
-            if (value > 1)
-                RawStackSize = value;
-            else if (value < 1)
+            if (value < 1)
                 ErrorInfo.AddInvalidObjectFormat("QuestRewardItem StackSize");
+            else
+                RawStackSize = value;
         }
         #endregion
 

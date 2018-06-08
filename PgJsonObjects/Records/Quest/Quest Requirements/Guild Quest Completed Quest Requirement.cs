@@ -5,7 +5,8 @@ namespace PgJsonObjects
 {
     public class GuildQuestCompletedQuestRequirement : QuestRequirement
     {
-        public GuildQuestCompletedQuestRequirement(List<string> RawRequirementQuestList)
+        public GuildQuestCompletedQuestRequirement(OtherRequirementType OtherRequirementType, List<string> RawRequirementQuestList)
+            : base(OtherRequirementType)
         {
             this.RawRequirementQuestList = RawRequirementQuestList;
         }
@@ -13,6 +14,15 @@ namespace PgJsonObjects
         private List<string> RawRequirementQuestList;
         public List<Quest> QuestList { get; private set; } = new List<Quest>();
         private bool IsRawRequirementQuestParsed;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "Quest", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RawRequirementQuestList.Count > 0 ? RawRequirementQuestList[0] : null } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

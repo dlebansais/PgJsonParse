@@ -5,7 +5,15 @@ namespace PgJsonObjects
 {
     public class MinFavorLevelQuestRequirement : QuestRequirement
     {
-        public MinFavorLevelQuestRequirement(MapAreaName RequirementFavorNpcArea, string RequirementFavorNpcId, string RequirementFavorNpcName, Favor RequirementFavorLevel)
+        public MinFavorLevelQuestRequirement(OtherRequirementType OtherRequirementType, Favor RequirementFavorLevel)
+            : base (OtherRequirementType)
+        {
+            IsEmpty = true;
+            FavorLevel = RequirementFavorLevel;
+        }
+
+        public MinFavorLevelQuestRequirement(OtherRequirementType OtherRequirementType, MapAreaName RequirementFavorNpcArea, string RequirementFavorNpcId, string RequirementFavorNpcName, Favor RequirementFavorLevel)
+            : base(OtherRequirementType)
         {
             FavorNpcArea = RequirementFavorNpcArea;
             FavorNpcId = RequirementFavorNpcId;
@@ -13,12 +21,25 @@ namespace PgJsonObjects
             FavorLevel = RequirementFavorLevel;
         }
 
+        public bool IsEmpty { get; private set; }
         public GameNpc FavorNpc { get; private set; }
         private bool IsFavorNpcParsed;
         public MapAreaName FavorNpcArea { get; private set; }
         private string FavorNpcId;
         private string FavorNpcName;
         public Favor FavorLevel { get; private set; }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "Npc", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Quest.NpcToString(FavorNpcArea, FavorNpcId, FavorNpcName, IsEmpty) } },
+            { "Level", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<Favor>.ToString(FavorLevel, null, Favor.Internal_None) } },
+        }; } }
 
         #region Json Reconstruction
         public override void GenerateObjectContent(JsonGenerator Generator)

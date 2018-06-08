@@ -83,13 +83,21 @@ namespace PgJsonObjects
 
         public void OpenArray(string ArrayName)
         {
-            if (ArrayName == "Costs")
-                ArrayName = "Costs";
-
             if (InsertedLines > 0)
                 Next();
 
             ReconstructedContent += Indentation() + "\"" + ArrayName + "\":" + SpaceLine + "[" + NewLine;
+
+            ResetInsertedLines();
+            NestingLevel++;
+        }
+
+        public void OpenNestedArray()
+        {
+            if (InsertedLines > 0)
+                Next();
+
+            ReconstructedContent += Indentation() + "[" + NewLine;
 
             ResetInsertedLines();
             NestingLevel++;

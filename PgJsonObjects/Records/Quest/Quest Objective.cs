@@ -12,8 +12,9 @@ namespace PgJsonObjects
         {
         }
 
-        public QuestObjective(string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
+        public QuestObjective(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
         {
+            this.Type = Type;
             this.Description = Description;
             this.RawNumber = RawNumber;
             this.RawMustCompleteEarlierObjectivesFirst = RawMustCompleteEarlierObjectivesFirst;
@@ -26,6 +27,7 @@ namespace PgJsonObjects
         public QuestObjectiveType Type { get; private set; }
         public string Description { get; private set; }
         public int Number { get { return RawNumber.HasValue ? RawNumber.Value : 1; } }
+        public bool HasNumber { get { return RawNumber.HasValue && RawNumber.Value != 1; } }
         public int? RawNumber { get; private set; }
         public bool MustCompleteEarlierObjectivesFirst { get { return RawMustCompleteEarlierObjectivesFirst.HasValue && RawMustCompleteEarlierObjectivesFirst.Value; } }
         public bool? RawMustCompleteEarlierObjectivesFirst;
@@ -54,6 +56,8 @@ namespace PgJsonObjects
         private MonsterTypeTag MonsterTypeTag;
         private EffectKeyword EffectRequirement;
         protected int? RawNumToDeliver;
+        private string InteractionTarget;
+        protected QuestObjectiveRequirement QuestObjectiveRequirement;
         #endregion
 
         #region Indirect Properties
@@ -75,7 +79,21 @@ namespace PgJsonObjects
         #region Parsing
         public object ToSpecific(ParseErrorInfo errorInfo)
         {
-            return ToSpecificQuestObjective(errorInfo);
+            QuestObjective Result = ToSpecificQuestObjective(errorInfo);
+
+            if (Result != null && Result != this)
+                Result.CopyFieldTableOrder(null, FieldTableOrder);
+
+            return Result;
+        }
+
+        public void CopyFieldTableOrder(string key, List<string> fieldTableOrder)
+        {
+            if (key != null)
+                InitializeKey(key, 0, null, null);
+
+            foreach (string Key in fieldTableOrder)
+                FieldTableOrder.Add(Key);
         }
 
         public QuestObjective ToSpecificQuestObjective(ParseErrorInfo ErrorInfo)
@@ -84,20 +102,20 @@ namespace PgJsonObjects
             {
                 case QuestObjectiveType.Kill:
                 case QuestObjectiveType.KillElite:
-                    return new QuestObjectiveKill(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, KillTarget, AbilityKeyword, EffectRequirement);
+                    return new QuestObjectiveKill(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, KillTarget, AbilityKeyword, EffectRequirement, QuestObjectiveRequirement);
 
                 case QuestObjectiveType.TipPlayer:
-                    return new QuestObjectiveTipPlayer(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount);
+                    return new QuestObjectiveTipPlayer(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount);
 
                 case QuestObjectiveType.Special:
-                    return new QuestObjectiveSpecial(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount, RawMaxAmount, StringParam);
+                    return new QuestObjectiveSpecial(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount, RawMaxAmount, StringParam, InteractionTarget, QuestObjectiveRequirement);
 
                 case QuestObjectiveType.MultipleInteractionFlags:
-                    return new QuestObjectiveMultipleInteractionFlags(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawInteractionFlagList);
+                    return new QuestObjectiveMultipleInteractionFlags(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawInteractionFlagList);
 
                 case QuestObjectiveType.Deliver:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
-                        return new QuestObjectiveDeliver(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName, RawNumToDeliver.HasValue && RawNumToDeliver.Value > 0 ? RawNumToDeliver.Value : -1);
+                        return new QuestObjectiveDeliver(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName, RawNumToDeliver.HasValue && RawNumToDeliver.Value > 0 ? RawNumToDeliver.Value : -1);
                     else
                         return this;
 
@@ -106,41 +124,41 @@ namespace PgJsonObjects
                 case QuestObjectiveType.Harvest:
                 case QuestObjectiveType.UseItem:
                     if (RawItemName != null && ItemTarget == ItemKeyword.Internal_None)
-                        return new QuestObjectiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawItemName);
+                        return new QuestObjectiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawItemName, QuestObjectiveRequirement);
                     else if (RawItemName == null && ItemTarget != ItemKeyword.Internal_None)
-                        return new QuestObjectiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, ItemTarget);
+                        return new QuestObjectiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, ItemTarget, QuestObjectiveRequirement);
                     else
                         return this;
 
                 case QuestObjectiveType.GuildGiveItem:
                     if (RawItemName != null && ItemKeyword == ItemKeyword.Internal_None)
-                        return new QuestObjectiveGuildGiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcId, DeliverNpcName, RawItemName);
+                        return new QuestObjectiveGuildGiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcId, DeliverNpcName, RawItemName);
                     else if (RawItemName == null && ItemKeyword != ItemKeyword.Internal_None)
-                        return new QuestObjectiveGuildGiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcId, DeliverNpcName, ItemKeyword);
+                        return new QuestObjectiveGuildGiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcId, DeliverNpcName, ItemKeyword);
                     else
                         return this;
 
                 case QuestObjectiveType.InteractionFlag:
-                    return new QuestObjectiveInteractionFlag(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawInteractionFlag);
+                    return new QuestObjectiveInteractionFlag(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawInteractionFlag, InteractionTarget);
 
                 case QuestObjectiveType.GiveGift:
-                    return new QuestObjectiveGiveGift(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinFavorReceived, RawMaxFavorReceived);
+                    return new QuestObjectiveGiveGift(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinFavorReceived, RawMaxFavorReceived);
 
                 case QuestObjectiveType.UseRecipe:
-                    return new QuestObjectiveUseRecipe(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, Skill, RecipeTarget, ResultItemKeyword);
+                    return new QuestObjectiveUseRecipe(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, Skill, RecipeTarget, ResultItemKeyword);
 
                 case QuestObjectiveType.BeAttacked:
                 case QuestObjectiveType.Bury:
-                    return new QuestObjectiveAnatomy(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, AnatomyType);
+                    return new QuestObjectiveAnatomy(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, AnatomyType);
 
                 case QuestObjectiveType.UseAbility:
-                    return new QuestObjectiveUseAbility(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, AbilityTarget);
+                    return new QuestObjectiveUseAbility(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, AbilityTarget);
 
                 case QuestObjectiveType.Loot:
                     if (RawItemName != null && ItemTarget == ItemKeyword.Internal_None)
-                        return new QuestObjectiveLoot(Description, RawItemName, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
+                        return new QuestObjectiveLoot(Type, Description, RawItemName, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
                     else if (RawItemName == null && ItemTarget != ItemKeyword.Internal_None)
-                        return new QuestObjectiveLoot(Description, ItemTarget, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
+                        return new QuestObjectiveLoot(Type, Description, ItemTarget, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
                     else
                         return this;
 
@@ -154,7 +172,7 @@ namespace PgJsonObjects
 
                 case QuestObjectiveType.ScriptedReceiveItem:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
-                        return new QuestObjectiveScriptedReceiveItem(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName);
+                        return new QuestObjectiveScriptedReceiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName);
                     else
                         return this;
 
@@ -248,7 +266,7 @@ namespace PgJsonObjects
             { "Requirements", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseRequirements,
-                GetObject = GetRequirements } },
+                GetObject = () => QuestObjectiveRequirement } },
             { "Item", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseItem,
@@ -321,27 +339,50 @@ namespace PgJsonObjects
                 AbilityTarget = StringToEnumConversion<AbilityKeyword>.Parse(RawTarget, ErrorInfo);
 
             else if (Type == QuestObjectiveType.Special ||
-                Type == QuestObjectiveType.UniqueSpecial ||
-                Type == QuestObjectiveType.GuildKill ||
-                Type == QuestObjectiveType.DruidKill ||
-                Type == QuestObjectiveType.DruidScripted ||
-                Type == QuestObjectiveType.InteractionFlag ||
-                Type == QuestObjectiveType.SayInChat)
+                     Type == QuestObjectiveType.UniqueSpecial ||
+                     Type == QuestObjectiveType.InteractionFlag ||
+                     Type == QuestObjectiveType.GuildKill ||
+                     Type == QuestObjectiveType.DruidKill ||
+                     Type == QuestObjectiveType.DruidScripted ||
+                     Type == QuestObjectiveType.SayInChat)
+                InteractionTarget = RawTarget;
+
+            else if (Type == QuestObjectiveType.InteractionFlag)
                 return;
 
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (Type)");
         }
 
-        private string GetTarget()
+        protected string GetTarget()
         {
-            return null;
+            if (Type == QuestObjectiveType.Kill || Type == QuestObjectiveType.KillElite)
+                return StringToEnumConversion<QuestObjectiveKillTarget>.ToString(KillTarget, KillTargetStringMap);
+
+            else if (Type == QuestObjectiveType.Harvest ||
+                Type == QuestObjectiveType.Collect ||
+                Type == QuestObjectiveType.Have ||
+                Type == QuestObjectiveType.Loot ||
+                Type == QuestObjectiveType.UseItem)
+                return StringToEnumConversion<ItemKeyword>.ToString(ItemTarget);
+
+            else if (Type == QuestObjectiveType.UseAbility)
+                return StringToEnumConversion<AbilityKeyword>.ToString(AbilityTarget);
+
+            else if (Type == QuestObjectiveType.SayInChat ||
+                     Type == QuestObjectiveType.GuildKill ||
+                     Type == QuestObjectiveType.DruidKill ||
+                     Type == QuestObjectiveType.DruidScripted ||
+                     Type == QuestObjectiveType.UniqueSpecial)
+                return InteractionTarget;
+
+            else
+                return null;
         }
 
         private void ParseNumber(int value, ParseErrorInfo ErrorInfo)
         {
-            if (value != 1)
-                RawNumber = value;
+            RawNumber = value;
         }
 
         private bool ParseInteractionFlags(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
@@ -512,6 +553,14 @@ namespace PgJsonObjects
                             {
                                 MinHour = MinHourJValue.Number;
                                 MaxHour = MaxHourJValue.Number;
+
+                                QuestObjectiveRequirement NewRequirement = new QuestObjectiveRequirement(RequirementType);
+                                NewRequirement.MinHour = MinHour;
+                                NewRequirement.MaxHour = MaxHour;
+                                NewRequirement.AddFieldTableOrder("T");
+                                NewRequirement.AddFieldTableOrder("MinHour");
+                                NewRequirement.AddFieldTableOrder("MaxHour");
+                                QuestObjectiveRequirement = NewRequirement;
                             }
                             else
                                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
@@ -527,7 +576,15 @@ namespace PgJsonObjects
                             if ((KeywordJValue = RawRequirement["Keyword"] as JsonString) != null)
                             {
                                 if (StringToEnumConversion<EffectKeyword>.TryParse(KeywordJValue.String, out EffectKeyword ParsedEffectKeyword, ErrorInfo))
+                                {
                                     EffectRequirement = ParsedEffectKeyword;
+
+                                    QuestObjectiveRequirement NewRequirement = new QuestObjectiveRequirement(RequirementType);
+                                    NewRequirement.Keyword = EffectRequirement;
+                                    NewRequirement.AddFieldTableOrder("T");
+                                    NewRequirement.AddFieldTableOrder("Keyword");
+                                    QuestObjectiveRequirement = NewRequirement;
+                                }
                                 else
                                     ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
                             }
@@ -545,11 +602,6 @@ namespace PgJsonObjects
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
-        }
-
-        private IGenericJsonObject GetRequirements()
-        {
-            return null;
         }
 
         private void ParseItem(string value, ParseErrorInfo ErrorInfo)

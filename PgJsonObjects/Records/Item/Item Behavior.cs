@@ -10,6 +10,7 @@ namespace PgJsonObjects
         #region Direct Properties
         public ItemUseVerb UseVerb { get; private set; }
         public ServerInfo ServerInfo { get; private set; }
+        private bool IsServerInfoEmpty;
         public List<ItemUseRequirement> UseRequirementList { get; private set; } = new List<ItemUseRequirement>();
         public ItemUseAnimation UseAnimation { get; private set; }
         public ItemUseAnimation UseDelayAnimation { get; private set; }
@@ -39,7 +40,9 @@ namespace PgJsonObjects
             { "ServerInfo", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = ParseServerInfo,
+                SetArrayIsEmpty = () => IsServerInfoEmpty = true,
                 GetObjectArray = () => CreateSingleOrEmptyList(ServerInfo),
+                GetArrayIsEmpty = () => IsServerInfoEmpty,
                 SimplifyArray = true } },
             { "UseRequirements", new FieldParser() {
                 Type = FieldType.SimpleStringArray,

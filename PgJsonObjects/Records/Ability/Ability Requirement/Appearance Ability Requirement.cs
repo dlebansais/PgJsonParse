@@ -4,13 +4,10 @@ namespace PgJsonObjects
 {
     public class AppearanceAbilityRequirement : AbilityRequirement
     {
-        public AppearanceAbilityRequirement(string RawAppearance, List<string> RawAppearanceList, ParseErrorInfo ErrorInfo)
+        public AppearanceAbilityRequirement(List<string> RawAppearanceList, ParseErrorInfo ErrorInfo)
         {
             List<string> MixedList = new List<string>();
-            if (RawAppearance != null)
-                MixedList.Add(RawAppearance);
-            else
-                MixedList.AddRange(RawAppearanceList);
+            MixedList.AddRange(RawAppearanceList);
 
             foreach (string Item in MixedList)
             {
@@ -29,14 +26,6 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => StringToEnumConversion<Appearance>.ToStringList(AppearanceList) } },
         }; } }
-
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "Appearance");
-            StringToEnumConversion<Appearance>.ListToString(Generator, "Appearance", AppearanceList);
-        }
-        #endregion
 
         #region Indexing
         public override string TextContent

@@ -1,13 +1,50 @@
-﻿namespace PgJsonObjects
+﻿using Presentation;
+using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class QuestObjectiveGiveGift : QuestObjective
     {
         #region Init
-        public QuestObjectiveGiveGift(string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, float? RawMinFavorReceived, float? RawMaxFavorReceived)
-            : base(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveGiveGift(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, float? RawMinFavorReceived, float? RawMaxFavorReceived)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.RawMinFavorReceived = RawMinFavorReceived;
             this.RawMaxFavorReceived = RawMaxFavorReceived;
+        }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
+            { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawMustCompleteEarlierObjectivesFirst } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "Number", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumber } },
+            { "MinFavorReceived", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => FloatString(RawMinFavorReceived) } },
+            { "MaxFavorReceived", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => FloatString(RawMaxFavorReceived) } },
+        }; } }
+
+        private string FloatString(float? value)
+        {
+            if (!value.HasValue)
+                return null;
+
+            string Result = InvariantCulture.SingleToString(value.Value, "F5");
+
+            while (Result.Length > 1 && Result[Result.Length - 1] == '0')
+                Result = Result.Substring(0, Result.Length - 1);
+
+            return Result;
         }
         #endregion
 

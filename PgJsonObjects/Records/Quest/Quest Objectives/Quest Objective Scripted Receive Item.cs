@@ -6,14 +6,35 @@ namespace PgJsonObjects
     public class QuestObjectiveScriptedReceiveItem : QuestObjective
     {
         #region Indexing
-        public QuestObjectiveScriptedReceiveItem(string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName)
-            : base(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveScriptedReceiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.DeliverNpcArea = DeliverNpcArea;
             this.DeliverNpcId = DeliverNpcId;
             this.DeliverNpcName = DeliverNpcName;
             this.RawItemName = RawItemName;
         }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
+            { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawMustCompleteEarlierObjectivesFirst } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "Number", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumber } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Quest.NpcToString(DeliverNpcArea, DeliverNpcId, DeliverNpcName, false) } },
+            { "Item", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RawItemName } },
+        }; } }
         #endregion
 
         #region Properties

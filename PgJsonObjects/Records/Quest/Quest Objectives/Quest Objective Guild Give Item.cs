@@ -6,21 +6,45 @@ namespace PgJsonObjects
     public class QuestObjectiveGuildGiveItem : QuestObjective
     {
         #region Init
-        public QuestObjectiveGuildGiveItem(string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string DeliverNpcId, string DeliverNpcName, string RawItemName)
-            : base(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveGuildGiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string DeliverNpcId, string DeliverNpcName, string RawItemName)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.DeliverNpcId = DeliverNpcId;
             this.DeliverNpcName = DeliverNpcName;
             this.RawItemName = RawItemName;
         }
 
-        public QuestObjectiveGuildGiveItem(string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string DeliverNpcId, string DeliverNpcName, ItemKeyword ItemKeyword)
-            : base(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveGuildGiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string DeliverNpcId, string DeliverNpcName, ItemKeyword ItemKeyword)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.DeliverNpcId = DeliverNpcId;
             this.DeliverNpcName = DeliverNpcName;
             this.ItemKeyword = ItemKeyword;
         }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
+            { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawMustCompleteEarlierObjectivesFirst } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "Number", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumber } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Quest.NpcToString(DeliverNpcId, DeliverNpcName) } },
+            { "ItemKeyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemKeyword, null, ItemKeyword.Internal_None) } },
+            { "ItemName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RawItemName } },
+        }; } }
         #endregion
 
         #region Properties

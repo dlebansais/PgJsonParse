@@ -6,13 +6,37 @@ namespace PgJsonObjects
     public class QuestObjectiveUseRecipe : QuestObjective
     {
         #region Init
-        public QuestObjectiveUseRecipe(string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, PowerSkill Skill, RecipeKeyword RecipeTarget, ItemKeyword ResultItemKeyword)
-            : base(Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveUseRecipe(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, PowerSkill Skill, RecipeKeyword RecipeTarget, ItemKeyword ResultItemKeyword)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.Skill = Skill;
             this.RecipeTarget = RecipeTarget;
             this.ResultItemKeyword = ResultItemKeyword;
         }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
+            { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawMustCompleteEarlierObjectivesFirst } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "Number", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumber } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<RecipeKeyword>.ToString(RecipeTarget) } },
+            { "Skill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
+            { "ResultItemKeyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ResultItemKeyword, null, ItemKeyword.Internal_None) } },
+        }; } }
         #endregion
 
         #region Properties

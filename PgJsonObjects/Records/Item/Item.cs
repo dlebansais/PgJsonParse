@@ -35,7 +35,7 @@ namespace PgJsonObjects
         public AppearanceSkin ItemAppearancePlate { get; private set; }
         public uint? ItemAppearanceColor { get; private set; }
         public ObservableCollection<ItemEffect> EffectDescriptionList { get; } = new ObservableCollection<ItemEffect>();
-        public bool IsEffectDescriptionEmpty { get; private set; } = false;
+        public bool IsEffectDescriptionEmpty { get; private set; }
         public uint? DyeColor { get; private set; }
         public string EquipAppearance { get; private set; }
         public ItemSlot EquipSlot { get; private set; }
@@ -65,6 +65,7 @@ namespace PgJsonObjects
         public List<ItemSkillLink> SkillRequirementList { get; } = new List<ItemSkillLink>();
         private Dictionary<string, ItemSkillLink> SkillRequirementTable = new Dictionary<string, ItemSkillLink>();
         public List<uint> StockDye { get; private set; }
+        public List<string> StockDyeByName { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get; private set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
@@ -131,7 +132,9 @@ namespace PgJsonObjects
             { "EffectDescs", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseEffectDescs,
-                GetStringArray = GetEffectDescs } },
+                SetArrayIsEmpty = () => IsEffectDescriptionEmpty = true,
+                GetStringArray = GetEffectDescs,
+                GetArrayIsEmpty = () => IsEffectDescriptionEmpty } },
             { "DyeColor", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseDyeColor,
@@ -327,7 +330,37 @@ namespace PgJsonObjects
                 return null;
 
             string Line = StringToEnumConversion<ItemDroppedAppearance>.ToString(DroppedAppearance);
-            Line += "(" + ")";
+
+            if (AppearanceDetailList.Count > 0)
+            {
+                string DetailString = "";
+
+                foreach (string DetailKey in AppearanceDetailList)
+                {
+                    if (DetailString.Length > 0)
+                        DetailString += ";";
+
+                    if (DetailKey == "Skin")
+                        DetailString += "Skin=^" + StringToEnumConversion<AppearanceSkin>.ToString(ItemAppearanceSkin, TextMaps.AppearanceSkinStringMap);
+
+                    else if (DetailKey == "^Skin")
+                        DetailString += "^Skin=" + StringToEnumConversion<AppearanceSkin>.ToString(ItemAppearanceSkin, TextMaps.AppearanceSkinStringMap);
+
+                    else if (DetailKey == "^Cork")
+                        DetailString += "^Cork=" + StringToEnumConversion<AppearanceSkin>.ToString(ItemAppearanceCork, TextMaps.AppearanceSkinStringMap);
+
+                    else if (DetailKey == "^Food")
+                        DetailString += "^Food=" + StringToEnumConversion<AppearanceSkin>.ToString(ItemAppearanceFood, TextMaps.AppearanceSkinStringMap);
+
+                    else if (DetailKey == "^Plate")
+                        DetailString += "^Plate=" + StringToEnumConversion<AppearanceSkin>.ToString(ItemAppearancePlate, TextMaps.AppearanceSkinStringMap);
+
+                    else if (DetailKey == "Skin_Color")
+                        DetailString += "Skin_Color=" + InvariantCulture.ColorToString(ItemAppearanceColor.Value);
+                }
+
+                Line += "(" + DetailString + ")";
+            }
 
             return Line;
         }
@@ -472,7 +505,7 @@ namespace PgJsonObjects
             SkillRequirement Skillreq = new SkillRequirement();
 
             foreach (KeyValuePair<string, ItemSkillLink> ItemSkillEntry in SkillRequirementTable)
-                Skillreq.SetFieldValue(ItemSkillEntry.Key, ItemSkillEntry.Value);
+                    Skillreq.SetFieldValue(ItemSkillEntry.Key, ItemSkillEntry.Value);
 
             return Skillreq;
         }
@@ -501,6 +534,7 @@ namespace PgJsonObjects
             }
 
             uint[] ParsedColors = new uint[3];
+            string[] ParsedColorName = new string[3];
 
             int i;
             for (i = 1; i < Split.Length; i++)
@@ -524,16 +558,32 @@ namespace PgJsonObjects
                 }
 
                 ParsedColors[i - 1] = ParsedColor;
+                ParsedColorName[i - 1] = ColorString;
             }
 
             StockDye = new List<uint>();
-            foreach (uint ParsedColor in ParsedColors)
-                StockDye.Add(ParsedColor);
+            StockDyeByName = new List<string>();
+            for (int n = 0; n < ParsedColors.Length; n++)
+            {
+                StockDye.Add(ParsedColors[n]);
+                StockDyeByName.Add(ParsedColorName[n]);
+            }
         }
 
         private string GetStockDye()
         {
-            return "";
+            if (StockDye == null)
+                return null;
+
+            string Result = "";
+
+            for (int i = 0; i < StockDye.Count; i++)
+            {
+                string ColorPrefix = "Color" + (i + 1).ToString();
+                Result += ";" + ColorPrefix + "=" + StockDyeByName[i];
+            }
+
+            return Result;
         }
 
         private void ParseBehaviors(JsonObject RawBehaviors, ParseErrorInfo ErrorInfo)

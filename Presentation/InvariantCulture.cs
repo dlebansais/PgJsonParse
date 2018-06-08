@@ -89,6 +89,18 @@ namespace Presentation
             return true;
         }
 
+        public static bool IsColorName(string s)
+        {
+            if (s == null)
+                return false;
+
+            Color TryNamed = Color.FromName(s);
+            if (TryNamed.ToArgb() != 0)
+                return true;
+
+            return false;
+        }
+
         public static string ColorToString(uint Value)
         {
             byte R = (byte)((Value >> 16) & 0xFF);

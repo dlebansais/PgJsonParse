@@ -16,7 +16,7 @@
         {
             get
             {
-                return null;
+                return base.RawEffect + "(" + LowValue + "," + HighValue + ")";
             }
         }
     }

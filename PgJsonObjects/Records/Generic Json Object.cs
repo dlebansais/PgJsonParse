@@ -62,7 +62,13 @@ namespace PgJsonObjects
             public Func<List<string>> GetStringArray;
             public Func<IList> GetObjectArray;
             public Func<bool> GetArrayIsEmpty;
+
             public bool SimplifyArray;
+            public Action SetArrayIsSimple;
+            public Func<bool> GetArrayIsSimple;
+
+            public Action SetArrayIsNested;
+            public Func<bool> GetArrayIsNested;
         }
 
         #region Comparison
@@ -80,6 +86,15 @@ namespace PgJsonObjects
         public static IList CreateSingleOrEmptyList(object item)
         {
             List<object> Result = new List<object>();
+            if (item != null)
+                Result.Add(item);
+
+            return Result;
+        }
+
+        public static List<string> CreateSingleOrEmptyStringList(string item)
+        {
+            List<string> Result = new List<string>();
             if (item != null)
                 Result.Add(item);
 
@@ -187,7 +202,7 @@ namespace PgJsonObjects
                         break;
 
                     case FieldType.ObjectArray:
-                        ParseFieldValueObjectArray(value, errorInfo, key, Parser.ParseObjectArray);
+                        ParseFieldValueObjectArray(value, errorInfo, key, Parser.ParseObjectArray, Parser.SetArrayIsEmpty, Parser.SetArrayIsSimple, Parser.SetArrayIsNested);
                         break;
                 }
             }
@@ -508,39 +523,60 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
-        protected static void ParseFieldValueArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<JsonObject, ParseErrorInfo> ParseValue)
+        protected static void ParseFieldValueObjectArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<JsonObject, ParseErrorInfo> ParseValue, Action ParserSetObjectListEmpty, Action ParserSetArrayIsSimple)
         {
-            JsonArray AsArray;
-            if ((AsArray = Value as JsonArray) != null)
+            if (Value is JsonObject AsJObject)
             {
-                foreach (IJsonValue Item in AsArray)
-                {
-                    JsonObject AsJObject;
-                    if ((AsJObject = Item as JsonObject) != null)
-                        ParseValue(AsJObject, ErrorInfo);
-                    else
-                    {
-                        ErrorInfo.AddInvalidObjectFormat(FieldName);
-                        break;
-                    }
-                }
+                ParseValue(AsJObject, ErrorInfo);
+                ParserSetArrayIsSimple?.Invoke();
+            }
+
+            else if (Value is JsonArray AsArray)
+            {
+                if (AsArray.Count == 0 && ParserSetObjectListEmpty != null)
+                    ParserSetObjectListEmpty();
+
+                else
+                    foreach (IJsonValue Item in AsArray)
+                        if (Item is JsonObject AsJObjectItem)
+                            ParseValue(AsJObjectItem, ErrorInfo);
+                        else
+                        {
+                            ErrorInfo.AddInvalidObjectFormat(FieldName);
+                            break;
+                        }
             }
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
 
-        protected static void ParseFieldValueObjectArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<JsonObject, ParseErrorInfo> ParseValue)
+        protected static void ParseFieldValueObjectArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<JsonObject, ParseErrorInfo> ParseValue, Action ParserSetObjectListEmpty, Action ParserSetArrayIsSimple, Action ParserSetArrayIsNested)
         {
-            JsonObject AsJObject;
-            JsonArray AsArray;
-
-            if ((AsJObject = Value as JsonObject) != null)
-                ParseValue(AsJObject, ErrorInfo);
-
-            else if ((AsArray = Value as JsonArray) != null)
+            if (Value is JsonObject AsJObject)
             {
-                foreach (IJsonValue Item in AsArray)
-                    ParseFieldValueObjectArray(Item, ErrorInfo, FieldName, ParseValue);
+                ParseValue(AsJObject, ErrorInfo);
+                ParserSetArrayIsSimple?.Invoke();
+            }
+
+            else if (Value is JsonArray AsArray)
+            {
+                if (AsArray.Count == 0 && ParserSetObjectListEmpty != null)
+                    ParserSetObjectListEmpty();
+
+                else
+                    foreach (IJsonValue Item in AsArray)
+                        if (Item is JsonObject AsJObjectItem)
+                            ParseValue(AsJObjectItem, ErrorInfo);
+                        else if (Item is JsonArray AsJArrayItem)
+                        {
+                            ParserSetArrayIsNested?.Invoke();
+                            ParseFieldValueObjectArray(AsJArrayItem, ErrorInfo, FieldName, ParseValue, ParserSetObjectListEmpty, ParserSetArrayIsSimple, null);
+                        }
+                        else
+                        {
+                            ErrorInfo.AddInvalidObjectFormat(FieldName);
+                            break;
+                        }
             }
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
@@ -575,6 +611,9 @@ namespace PgJsonObjects
 
         public virtual void ListObjectContent(JsonGenerator Generator, string ParserKey)
         {
+            if (!FieldTable.ContainsKey(ParserKey))
+                ParserKey = null;
+
             FieldParser Parser = FieldTable[ParserKey];
 
             IGenericJsonObject Subitem;
@@ -615,7 +654,7 @@ namespace PgJsonObjects
                 case FieldType.IntegerArray:
                     IntegerList = Parser.GetIntegerArray();
 
-                    if (Parser.SimplifyArray && IntegerList.Count == 1)
+                    if (Parser.SimplifyArray && IntegerList.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()))
                         Generator.AddInteger(ParserKey, IntegerList[0]);
                     else
                         Generator.AddIntegerList(ParserKey, IntegerList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
@@ -624,8 +663,10 @@ namespace PgJsonObjects
                 case FieldType.SimpleStringArray:
                 case FieldType.StringArray:
                     StringList = Parser.GetStringArray();
+                    if (StringList == null)
+                        StringList = null;
 
-                    if (Parser.SimplifyArray && StringList.Count == 1)
+                    if (Parser.SimplifyArray && StringList.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()))
                         Generator.AddString(ParserKey, StringList[0]);
                     else
                         Generator.AddStringList(ParserKey, StringList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
@@ -639,9 +680,12 @@ namespace PgJsonObjects
                     else
                         IsListEmpty = false;
 
+                    if (ObjectArray == null)
+                        ObjectArray = null;
+
                     if (ObjectArray.Count > 0 || IsListEmpty)
                     {
-                        if (Parser.SimplifyArray && ObjectArray.Count == 1 && ObjectArray[0] is IGenericJsonObject FirstItem)
+                        if (Parser.SimplifyArray && ObjectArray.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()) && ObjectArray[0] is IGenericJsonObject FirstItem)
                         {
                             Generator.OpenObject(ParserKey);
 
@@ -650,13 +694,20 @@ namespace PgJsonObjects
                             Generator.CloseObject();
                         }
 
+                        else if (IsListEmpty)
+                            Generator.AddEmptyArray(ParserKey);
+
                         else
                         {
                             Generator.OpenArray(ParserKey);
+                            if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
+                                Generator.OpenNestedArray();
 
                             foreach (IGenericJsonObject Item in ObjectArray)
                                 Item.GenerateObjectContent2(Generator, false, true);
 
+                            if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
+                                Generator.CloseArray();
                             Generator.CloseArray();
                         }
                     }
@@ -692,7 +743,8 @@ namespace PgJsonObjects
 
             if (value is JsonObject JObjectFields)
                 ParseFields(JObjectFields, ErrorInfo);
-            else
+
+            else if (ErrorInfo != null)
                 ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
         }
 

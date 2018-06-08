@@ -1,10 +1,9 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class SkillRequirement : GenericJsonObject<SkillRequirement>
+    public class XPReward : GenericJsonObject<SkillRequirement>
     {
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
@@ -29,15 +28,17 @@ namespace PgJsonObjects
 
         private Dictionary<string, int> FieldSetTable = new Dictionary<string, int>();
 
-        public void SetFieldValue(string FieldName, ItemSkillLink link)
+        public void SetFieldValue(PowerSkill skill, int value)
         {
             if (Key == null)
-                base.InitializeKey("SkillReqs", 0, null, null);
+                base.InitializeKey("Rewards_XP", 0, null, null);
+
+            string FieldName = StringToEnumConversion<PowerSkill>.ToString(skill);
 
             foreach (KeyValuePair<string, FieldParser> Entry in FieldTable)
-                if (Entry.Key == FieldName && link.SkillLevel.HasValue)
+                if (Entry.Key == FieldName)
                 {
-                    FieldSetTable[FieldName] = link.SkillLevel.Value;
+                    FieldSetTable[FieldName] = value;
                     FieldTableOrder.Add(FieldName);
                 }
         }

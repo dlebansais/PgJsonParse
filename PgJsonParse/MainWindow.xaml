@@ -211,6 +211,18 @@
                 </ItemsControl>
             </Grid>
         </DataTemplate>
+        <DataTemplate x:Key="SingleAppearanceAbilityRequirementTemplate">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="Look like"/>
+                    <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="Appearance" Converter="{StaticResource convEnumToText}" ConverterParameter="AppearanceTextMap"/>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
         <DataTemplate x:Key="CurHealthAbilityRequirementTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Health ≥</TextBlock>
@@ -408,6 +420,18 @@
                 </ItemsControl>
             </Grid>
         </DataTemplate>
+        <DataTemplate x:Key="SingleRaceAbilityRequirementTemplate">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="Be"/>
+                    <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="AllowedRace" Converter="{StaticResource convEnumToText}" ConverterParameter="AppearanceTextMap"/>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
         <DataTemplate x:Key="RecipeKnownAbilityRequirementTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Knows recipe</TextBlock>
@@ -486,7 +510,7 @@
             <WrapPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
                     <TextBlock Text="{Binding Description}"/>
-                    <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                    <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                         <TextBlock>(x</TextBlock>
                         <TextBlock Text="{Binding Number}"/>
                         <TextBlock>)</TextBlock>
@@ -544,7 +568,7 @@
                         <TextBlock Text="{Binding MaxAmount}" Margin="5,0,0,0"/>
                         <TextBlock>)</TextBlock>
                     </StackPanel>
-                    <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                    <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                         <TextBlock>(x</TextBlock>
                         <TextBlock Text="{Binding Number}"/>
                         <TextBlock>)</TextBlock>
@@ -556,7 +580,7 @@
         <DataTemplate x:Key="QuestObjectiveMultipleInteractionFlagsTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Description}"/>
-                <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                     <TextBlock>(x</TextBlock>
                     <TextBlock Text="{Binding Number}"/>
                     <TextBlock>)</TextBlock>
@@ -629,7 +653,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </Expander>
-                    <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
+                    <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
                         <Expander VerticalAlignment="Center" Width="0"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock>(x</TextBlock>
@@ -653,7 +677,7 @@
                             </Run>
                         </Hyperlink>
                     </TextBlock>
-                    <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                    <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                         <TextBlock>x</TextBlock>
                         <TextBlock Text="{Binding Number}"/>
                     </StackPanel>
@@ -733,7 +757,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </Expander>
-                    <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
+                    <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
                         <Expander VerticalAlignment="Center" Width="0"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock>(x</TextBlock>
@@ -767,7 +791,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </Expander>
-                    <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
+                    <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
                         <Expander VerticalAlignment="Center" Width="0"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock>(x</TextBlock>
@@ -797,7 +821,7 @@
                             <TextBlock>)</TextBlock>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
+                    <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
                         <Expander VerticalAlignment="Center" Width="0"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock>(x</TextBlock>
@@ -816,7 +840,7 @@
                         <Expander Width="0" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding Description}" VerticalAlignment="Center"/>
                         <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">(</TextBlock>
-                        <StackPanel Visibility="{Binding RawNumber, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,5,0">
+                        <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,5,0">
                             <TextBlock>x</TextBlock>
                             <TextBlock Text="{Binding Number}"/>
                         </StackPanel>
@@ -3197,7 +3221,7 @@
                         </Run>
                     </Hyperlink>
                 </TextBlock>
-                <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                     <TextBlock>x</TextBlock>
                     <TextBlock Text="{Binding StackSize}"/>
                 </StackPanel>
@@ -3213,7 +3237,7 @@
                         </Run>
                     </Hyperlink>
                 </TextBlock>
-                <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                     <TextBlock>x</TextBlock>
                     <TextBlock Text="{Binding StackSize}"/>
                 </StackPanel>
@@ -3251,7 +3275,7 @@
                         </Run>
                     </Hyperlink>
                 </TextBlock>
-                <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                     <TextBlock>x</TextBlock>
                     <TextBlock Text="{Binding StackSize}"/>
                 </StackPanel>
@@ -3267,7 +3291,7 @@
                         </Run>
                     </Hyperlink>
                 </TextBlock>
-                <StackPanel Visibility="{Binding RawStackSize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
                     <TextBlock>x</TextBlock>
                     <TextBlock Text="{Binding StackSize}"/>
                 </StackPanel>

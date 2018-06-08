@@ -78,6 +78,8 @@
     <Compile Include="Records\Ability\Ability Requirement\Appearance Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\Interaction Flag Set Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\Is Volunteer Guide Ability Requirement.cs" />
+    <Compile Include="Records\Ability\Ability Requirement\Single Appearance Ability Requirement.cs" />
+    <Compile Include="Records\Ability\Ability Requirement\Single Race Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Source.cs" />
     <Compile Include="Records\Ability\DoT Special Rule.cs" />
     <Compile Include="Records\Ability\DoT.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="Records\Npc\Gift.cs" />
     <Compile Include="Records\Npc\NpcPreference.cs" />
     <Compile Include="Records\Quest\Monster Type Tag.cs" />
+    <Compile Include="Records\Quest\Quest Objective Requirement.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Loot.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Scripted Receive Item.cs" />
     <Compile Include="Records\Quest\Quest Requirements\Guild Quest Completed Quest Requirement.cs" />
@@ -123,8 +126,10 @@
     <Compile Include="Records\Quest\Quest Requirements\Min Skill Level Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\Or Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\Quest Completed Quest Requirement.cs" />
-    <Compile Include="Records\Quest\Quest Requirements\Quest Requirement.cs" />
+    <Compile Include="Records\Quest\Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\RunTime Behavior Rule Set Quest Requirement.cs" />
+    <Compile Include="Records\Quest\Quest Reward.cs" />
+    <Compile Include="Records\Quest\XP Reward.cs" />
     <Compile Include="Records\Recipe\Recipe Source.cs" />
     <Compile Include="Records\Source\Effect Source.cs" />
     <Compile Include="Records\Source\Generic Source.cs" />
@@ -216,7 +221,7 @@
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Interaction Flag.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Kill.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Multiple Interaction Flags.cs" />
-    <Compile Include="Records\Quest\Quest Objectives\Quest Objective Kill Target.cs" />
+    <Compile Include="Records\Quest\Quest Objective Kill Target.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Special.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Tip Player.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Use Ability.cs" />

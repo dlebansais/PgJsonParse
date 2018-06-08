@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation;
+using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -20,7 +21,7 @@ namespace PgJsonObjects
         {
             get
             {
-                return base.RawEffect + "(" + Boost.AsEffectString() + ")";
+                return base.RawEffect + "(" + Boost.AsEffectString() + (RawAttributeEffect.HasValue ? ", " + InvariantCulture.SingleToString(RawAttributeEffect.Value) : "") + ")";
             }
         }
 

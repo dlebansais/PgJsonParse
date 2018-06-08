@@ -17,7 +17,7 @@ namespace PgJsonReader
 
         public Json.Token CurrentToken { get { return token; } }
         public object CurrentValue { get { return value; } }
-        
+
         public JsonBinaryReader(BinaryReader reader)
         {
             this.reader = reader;

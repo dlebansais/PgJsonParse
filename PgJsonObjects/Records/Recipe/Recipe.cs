@@ -122,7 +122,7 @@ namespace PgJsonObjects
             { "ResultEffects", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseResultEffects,
-                GetStringArray = () => null } },
+                GetStringArray = GetResultEffects } },
             { "SortSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => SortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
@@ -150,7 +150,8 @@ namespace PgJsonObjects
             { "OtherRequirements", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo),
-                GetObjectArray = () => OtherRequirementList } },
+                GetObjectArray = () => OtherRequirementList,
+                SimplifyArray = true } },
             { "Costs", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<RecipeCost>.ParseList("Costs", value, CostList, errorInfo),
@@ -261,6 +262,51 @@ namespace PgJsonObjects
             }
             else
                 return false;
+        }
+
+        private List<string> GetResultEffects()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (RecipeResultEffect Item in ResultEffectList)
+            {
+                switch (Item.Effect)
+                {
+                    case RecipeEffect.ExtractTSysPower:
+                        Result.Add(GetExtractResultEffects());
+                        break;
+
+                    case RecipeEffect.RepairItemDurability:
+                        Result.Add(GetRepairItemResultEffects());
+                        break;
+
+                    case RecipeEffect.TSysCraftedEquipment:
+                        Result.Add(GetCraftedResultEffects());
+                        break;
+
+                    case RecipeEffect.CraftingEnhanceItem:
+                        Result.Add(GetCraftingEnhanceResultEffects());
+                        break;
+
+                    case RecipeEffect.AddItemTSysPower:
+                        Result.Add(GetPowerResultEffects());
+                        break;
+
+                    case RecipeEffect.BrewItem:
+                        Result.Add(GetBrewItemResultEffects());
+                        break;
+
+                    case RecipeEffect.AdjustRecipeReuseTime:
+                        Result.Add(GetAdjustRecipeResultEffects());
+                        break;
+
+                    default:
+                        Result.Add(StringToEnumConversion<RecipeEffect>.ToString(Item.Effect, TextMaps.RecipeEffectStringMap));
+                        break;
+                }
+            }
+
+            return Result;
         }
 
         private void ParseDyeColor(string value, ParseErrorInfo ErrorInfo)
@@ -393,6 +439,11 @@ namespace PgJsonObjects
             return false;
         }
 
+        private string GetExtractResultEffects()
+        {
+            return "";
+        }
+
         private bool ParseRepairEffect(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
         {
             string RepairPattern = "RepairItemDurability(";
@@ -430,6 +481,11 @@ namespace PgJsonObjects
             }
 
             return false;
+        }
+
+        private string GetRepairItemResultEffects()
+        {
+            return "";
         }
 
         private bool ParseCraftEffect(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
@@ -521,6 +577,11 @@ namespace PgJsonObjects
             return false;
         }
 
+        private string GetCraftedResultEffects()
+        {
+            return "";
+        }
+
         private bool ParseEnhanceEffect(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
         {
             string EnhancePattern = "CraftingEnhanceItem";
@@ -558,6 +619,11 @@ namespace PgJsonObjects
             return false;
         }
 
+        private string GetCraftingEnhanceResultEffects()
+        {
+            return "";
+        }
+
         private bool ParseAddItemPower(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
         {
             string AddItemPowerPattern = "AddItemTSysPower(";
@@ -585,6 +651,11 @@ namespace PgJsonObjects
             }
 
             return false;
+        }
+
+        private string GetPowerResultEffects()
+        {
+            return "";
         }
 
         private bool ParseBrewItem(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
@@ -644,6 +715,11 @@ namespace PgJsonObjects
             return false;
         }
 
+        private string GetBrewItemResultEffects()
+        {
+            return "";
+        }
+
         private bool ParseAdjustRecipeReuseTime(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
         {
             string AdjustRecipeReuseTimePattern = "AdjustRecipeReuseTime(";
@@ -668,6 +744,11 @@ namespace PgJsonObjects
             }
 
             return false;
+        }
+
+        private string GetAdjustRecipeResultEffects()
+        {
+            return "";
         }
         #endregion
 

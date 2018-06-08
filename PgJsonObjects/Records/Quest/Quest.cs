@@ -18,13 +18,18 @@ namespace PgJsonObjects
         public List<QuestObjective> QuestObjectiveList { get; } = new List<QuestObjective>();
         public List<QuestRewardXp> RewardsXPList { get; } = new List<QuestRewardXp>();
         public List<QuestRewardItem> QuestRewardsItemList { get; } = new List<QuestRewardItem>();
+        private bool IsQuestRewardsItemListEmpty;
         public TimeSpan? RawReuseTime { get; private set; }
+        private int? RawReuseTime_Minutes;
+        private int? RawReuseTime_Hours;
+        private int? RawReuseTime_Days;
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get; private set; }
         public string FavorNpcId { get; private set; }
         private bool IsFavorNpcParsed;
         public GameNpc FavorNpc { get; private set; }
         public string FavorNpcName { get; private set; }
+        private bool IsEmptyNpc;
         public MapAreaName FavorNpcArea { get; private set; }
         public string PrefaceText { get; private set; }
         public string SuccessText { get; private set; }
@@ -42,6 +47,7 @@ namespace PgJsonObjects
         public int? RawRewardSkillXp { get; private set; }
         public Recipe RewardRecipe { get; private set; }
         private string RawRewardRecipe;
+        private bool IsRawRewardRecipeEmpty;
         private bool IsRawRewardRecipeParsed;
         public int RewardGuildXp { get { return RawRewardGuildXp.HasValue ? RawRewardGuildXp.Value : 0; } }
         public int? RawRewardGuildXp { get; private set; }
@@ -81,7 +87,10 @@ namespace PgJsonObjects
         public List<Quest> FollowUpQuestList { get; private set; } = new List<Quest>();
         private List<string> RawFollowUpQuestList = new List<string>();
         public List<QuestRequirement> QuestRequirementList { get; private set; } = new List<QuestRequirement>();
+        private bool IsQuestRequirementListSimple;
+        private bool IsQuestRequirementListNested;
         public List<QuestRequirement> QuestRequirementToSustainList { get; private set; } = new List<QuestRequirement>();
+        private List<QuestReward> QuestRewardList = new List<QuestReward>();
         #endregion
 
         #region Indirect Properties
@@ -111,11 +120,12 @@ namespace PgJsonObjects
             { "RequirementsToSustain", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<QuestRequirement>.ParseList("Requirements", value, QuestRequirementToSustainList, errorInfo),
-                GetObjectArray = () => QuestRequirementToSustainList } },
+                GetObjectArray = () => QuestRequirementToSustainList,
+                SimplifyArray = true } },
             { "ReuseTime_Minutes", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseReuseTime_Minutes,
-                GetInteger = () => 0 } },
+                GetInteger = () => RawReuseTime_Minutes } },
             { "IsCancellable", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsCancellable = value,
@@ -127,19 +137,21 @@ namespace PgJsonObjects
             { "Rewards_XP", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseRewards_XP,
-                GetObject = () => null } },
+                GetObject = GetXPRewards } },
             { "Rewards_Items", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<QuestRewardItem>.ParseList("RewardItems", value, QuestRewardsItemList, errorInfo),
-                GetObjectArray = () => QuestRewardsItemList } },
+                SetArrayIsEmpty = () => IsQuestRewardsItemListEmpty = true,
+                GetObjectArray = () => QuestRewardsItemList,
+                GetArrayIsEmpty = () => IsQuestRewardsItemListEmpty } },
             { "ReuseTime_Days", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseReuseTime_Days,
-                GetInteger = () => 0 } },
+                GetInteger = () => RawReuseTime_Days } },
             { "ReuseTime_Hours", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseReuseTime_Hours,
-                GetInteger = () => 0 } },
+                GetInteger = () => RawReuseTime_Hours } },
             { "Reward_CombatXP", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseReward_CombatXP,
@@ -147,7 +159,7 @@ namespace PgJsonObjects
             { "FavorNpc", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseFavorNpc,
-                GetString = () => NpcToString(FavorNpcId, FavorNpcName) } },
+                GetString = () => NpcToString(FavorNpcArea, FavorNpcId, FavorNpcName, IsEmptyNpc) } },
             { "PrefaceText", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => PrefaceText = value,
@@ -171,7 +183,9 @@ namespace PgJsonObjects
             { "Rewards_Recipes", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseRewards_Recipes,
-                GetStringArray = () => null } },
+                SetArrayIsEmpty = () => IsRawRewardRecipeEmpty = true,
+                GetStringArray = () => CreateSingleOrEmptyStringList(RawRewardRecipe),
+                GetArrayIsEmpty = () => IsRawRewardRecipeEmpty } },
             { "Rewards_Ability", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawRewardAbility = value,
@@ -179,7 +193,12 @@ namespace PgJsonObjects
             { "Requirements", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<QuestRequirement>.ParseList("Requirements", value, QuestRequirementList, errorInfo),
-                GetObjectArray = () => QuestRequirementList } },
+                GetObjectArray = () => QuestRequirementList,
+                SimplifyArray = true,
+                SetArrayIsSimple = () => IsQuestRequirementListSimple = true,
+                GetArrayIsSimple = () => IsQuestRequirementListSimple,
+                SetArrayIsNested = () => IsQuestRequirementListNested = true,
+                GetArrayIsNested = () => IsQuestRequirementListNested } },
             { "Reward_Favor", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardFavor = value,
@@ -187,7 +206,7 @@ namespace PgJsonObjects
             { "Rewards", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = ParseRewards,
-                GetObjectArray = () => new List<object>() } },
+                GetObjectArray = () => QuestRewardList } },
             { "PreGiveItems", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<QuestRewardItem>.ParseList("PreGiveItems", value, PreGiveItemList, errorInfo),
@@ -215,7 +234,7 @@ namespace PgJsonObjects
             { "Rewards_Effects", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseRewards_Effects,
-                GetStringArray = () => null } },
+                GetStringArray = GetRewards_Effects } },
             { "IsAutoPreface", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsAutoPreface = value,
@@ -247,7 +266,7 @@ namespace PgJsonObjects
             { "DisplayedLocation", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => DisplayedLocation = StringToEnumConversion<MapAreaName>.Parse(value, TextMaps.MapAreaNameStringMap, errorInfo),
-                GetString = () => StringToEnumConversion<MapAreaName>.ToString(DisplayedLocation, null, MapAreaName.Internal_None) } },
+                GetString = () => StringToEnumConversion<MapAreaName>.ToString(DisplayedLocation, TextMaps.MapAreaNameStringMap, MapAreaName.Internal_None) } },
             { "FollowUpQuests", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawFollowUpQuestList.Add(value),
@@ -262,6 +281,8 @@ namespace PgJsonObjects
 
         private void ParseReuseTime_Minutes(int value, ParseErrorInfo ErrorInfo)
         {
+            RawReuseTime_Minutes = value;
+
             if (!RawReuseTime.HasValue)
                 RawReuseTime = TimeSpan.FromMinutes(value);
             else
@@ -289,8 +310,20 @@ namespace PgJsonObjects
             }
         }
 
+        private IGenericJsonObject GetXPRewards()
+        {
+            XPReward Rewards = new XPReward();
+
+            foreach (QuestRewardXp Item in RewardsXPList)
+                Rewards.SetFieldValue(Item.Skill, Item.Xp);
+
+            return Rewards;
+        }
+
         private void ParseReuseTime_Days(int value, ParseErrorInfo ErrorInfo)
         {
+            RawReuseTime_Days = value;
+
             if (!RawReuseTime.HasValue)
                 RawReuseTime = TimeSpan.FromDays(value);
             else
@@ -299,6 +332,8 @@ namespace PgJsonObjects
 
         private void ParseReuseTime_Hours(int value, ParseErrorInfo ErrorInfo)
         {
+            RawReuseTime_Hours = value;
+
             if (!RawReuseTime.HasValue)
                 RawReuseTime = TimeSpan.FromHours(value);
             else
@@ -316,7 +351,10 @@ namespace PgJsonObjects
         private void ParseFavorNpc(string value, ParseErrorInfo ErrorInfo)
         {
             if (value.Length == 0)
+            {
+                IsEmptyNpc = true;
                 return;
+            }
 
             MapAreaName ParsedArea;
             string NpcNameId;
@@ -368,6 +406,14 @@ namespace PgJsonObjects
                                     {
                                         RewardSkill = ParsedSkill;
                                         RawRewardSkillXp = XpValue.Number;
+
+                                        QuestReward NewReward = new QuestReward(RewardType);
+                                        NewReward.RewardSkill = RewardSkill;
+                                        NewReward.RewardXp = RawRewardSkillXp;
+                                        NewReward.AddFieldTableOrder("T");
+                                        NewReward.AddFieldTableOrder("Skill");
+                                        NewReward.AddFieldTableOrder("Xp");
+                                        QuestRewardList.Add(NewReward);
                                     }
                                     else
                                         ErrorInfo.AddDuplicateString("Quest", "SkillRewards");
@@ -390,7 +436,15 @@ namespace PgJsonObjects
                             {
                                 JsonString RecipeValue;
                                 if ((RecipeValue = RawReward["Recipe"] as JsonString) != null)
+                                {
                                     RawRewardRecipe = RecipeValue.String;
+
+                                    QuestReward NewReward = new QuestReward(RewardType);
+                                    NewReward.RewardRecipe = RawRewardRecipe;
+                                    NewReward.AddFieldTableOrder("T");
+                                    NewReward.AddFieldTableOrder("Recipe");
+                                    QuestRewardList.Add(NewReward);
+                                }
                                 else
                                     ErrorInfo.AddInvalidObjectFormat("Quest Rewards");
                             }
@@ -409,7 +463,15 @@ namespace PgJsonObjects
                             {
                                 JsonInteger XpValue;
                                 if ((XpValue = RawReward["Xp"] as JsonInteger) != null)
+                                {
                                     RawRewardCombatXP = XpValue.Number;
+
+                                    QuestReward NewReward = new QuestReward(RewardType);
+                                    NewReward.RewardXp = RawRewardCombatXP;
+                                    NewReward.AddFieldTableOrder("T");
+                                    NewReward.AddFieldTableOrder("Xp");
+                                    QuestRewardList.Add(NewReward);
+                                }
                                 else
                                     ErrorInfo.AddDuplicateString("Quest", "CombatXpRewards");
                             }
@@ -428,7 +490,15 @@ namespace PgJsonObjects
                             {
                                 JsonInteger XpValue;
                                 if ((XpValue = RawReward["Xp"] as JsonInteger) != null)
+                                {
                                     RawRewardGuildXp = XpValue.Number;
+
+                                    QuestReward NewReward = new QuestReward(RewardType);
+                                    NewReward.RewardXp = RawRewardGuildXp;
+                                    NewReward.AddFieldTableOrder("T");
+                                    NewReward.AddFieldTableOrder("Xp");
+                                    QuestRewardList.Add(NewReward);
+                                }
                                 else
                                     ErrorInfo.AddDuplicateString("Quest", "GuildXpRewards");
                             }
@@ -447,7 +517,15 @@ namespace PgJsonObjects
                             {
                                 JsonInteger CreditsValue;
                                 if ((CreditsValue = RawReward["Credits"] as JsonInteger) != null)
+                                {
                                     RawRewardGuildCredits = CreditsValue.Number;
+
+                                    QuestReward NewReward = new QuestReward(RewardType);
+                                    NewReward.RewardGuildCredits = RawRewardGuildCredits;
+                                    NewReward.AddFieldTableOrder("T");
+                                    NewReward.AddFieldTableOrder("Credits");
+                                    QuestRewardList.Add(NewReward);
+                                }
                                 else
                                     ErrorInfo.AddDuplicateString("Quest", "GuildCreditsRewards");
                             }
@@ -517,6 +595,22 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
                 return false;
             }
+        }
+
+        private List<string> GetRewards_Effects()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (string RewardInteractionFlag in RawRewardInteractionFlags)
+                Result.Add("SetInteractionFlag(" + RewardInteractionFlag + ")");
+
+            if (RawRewardEnsureLoreBook != null)
+                Result.Add("EnsureLoreBookKnown(" + RawRewardEnsureLoreBook + ")");
+
+            if (RawRewardEffect != null)
+                Result.Add(RawRewardEffect);
+
+            return Result;
         }
 
         public static bool TryParseNPC(string s, out MapAreaName ParsedArea, out string NpcId, out string NpcName, ParseErrorInfo ErrorInfo)
@@ -591,6 +685,31 @@ namespace PgJsonObjects
                     return StringToEnumConversion<SpecialNpc>.ToString(Entry.Key);
 
             return null;
+        }
+
+        public static string NpcToString(MapAreaName area, string NpcId, string NpcName, bool isEmpty)
+        {
+            if (isEmpty)
+                return "";
+
+            if (NpcName == null)
+                return null;
+
+            string Result = "Area" + StringToEnumConversion<MapAreaName>.ToString(area) + "/";
+
+            if (NpcId != null)
+                Result += "NPC_" + NpcName;
+            else
+            {
+                foreach (KeyValuePair<SpecialNpc, string> Entry in TextMaps.SpecialNpcTextMap)
+                    if (Entry.Value == NpcName)
+                    {
+                        Result += StringToEnumConversion<SpecialNpc>.ToString(Entry.Key);
+                        break;
+                    }
+            }
+
+            return Result;
         }
         #endregion
 

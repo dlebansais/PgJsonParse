@@ -7,9 +7,6 @@ namespace PgJsonObjects
     {
         public static Dictionary<Type, IObjectDefinition> SingleDefinitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()
         {
-            { typeof(Item), new ObjectDefinition<Item>("items", 0, false, true, false) },
-            { typeof(ItemUses), new ObjectDefinition<ItemUses>("itemuses", 0, false, true, false) },
-            { typeof(Quest), new ObjectDefinition<Quest>("quests", 0, false, true, false) },
             { typeof(Recipe), new ObjectDefinition<Recipe>("recipes", 0, false, true, false) },
             { typeof(Skill), new ObjectDefinition<Skill>("skills", 0, false, true, false) },
             //{ typeof(PgJsonObjects.String), new ObjectDefinition<PgJsonObjects.String>("strings", false, true, false) },
@@ -26,6 +23,9 @@ namespace PgJsonObjects
             { typeof(GameNpc), new ObjectDefinition<GameNpc>("npcs", 0, false, false, false) },
             { typeof(StorageVault), new ObjectDefinition<StorageVault>("storagevaults", 0, false, true, false) },
             { typeof(Effect), new ObjectDefinition<Effect>("effects", 0, false, true, false) },
+            { typeof(Item), new ObjectDefinition<Item>("items", 0, false, true, false) },
+            { typeof(ItemUses), new ObjectDefinition<ItemUses>("itemuses", 0, false, false, false) },
+            { typeof(Quest), new ObjectDefinition<Quest>("quests", 0, false, true, false) },
         };
 
         public static Dictionary<Type, IObjectDefinition> MultiDefinitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()
