@@ -9,6 +9,7 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public string Title { get; private set; }
+        private string RawTitle;
         public string Tooltip { get; private set; }
         public List<TitleKeyword> KeywordList { get; } = new List<TitleKeyword>();
         #endregion
@@ -24,7 +25,7 @@ namespace PgJsonObjects
             { "Title", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseTitle,
-                GetString = () => Title } },
+                GetString = () => RawTitle } },
             { "Tooltip", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Tooltip = value,
@@ -37,6 +38,7 @@ namespace PgJsonObjects
 
         private void ParseTitle(string value, ParseErrorInfo errorInfo)
         {
+            RawTitle = value;
             Title = StripStringTags(value);
         }
 
