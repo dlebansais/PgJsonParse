@@ -57,10 +57,14 @@ namespace PgJsonObjects
                 SetArrayIsEmpty = () => RawAttributesThatModBaseListIsEmpty = true,
                 GetStringArray = () => RawAttributesThatModBaseList,
                 GetArrayIsEmpty = () => RawAttributesThatModBaseListIsEmpty } },
-            { "DisplayAsPercent", new FieldParser() {
+            /*{ "DisplayAsPercent", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawDisplayAsPercent = value,
-                GetBool = () => RawDisplayAsPercent } },
+                GetBool = () => RawDisplayAsPercent } },*/
+            { "DisplayType", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawDisplayAsPercent = (value == "AsPercent"),
+                GetString = () => RawDisplayAsPercent.HasValue ? (RawDisplayAsPercent.Value ? "AsPercent" : "AsInt") : null } },
             { "SkipIfZero", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawSkipIfZero = value,
@@ -86,7 +90,7 @@ namespace PgJsonObjects
             Generator.AddStringList("AttributesThatDelta", RawAttributesThatDeltaList, RawAttributesThatDeltaListIsEmpty);
             Generator.AddStringList("AttributesThatMod", RawAttributesThatModList, RawAttributesThatModListIsEmpty);
             Generator.AddStringList("AttributesThatModBase", RawAttributesThatModBaseList, RawAttributesThatModBaseListIsEmpty);
-            Generator.AddBoolean("DisplayAsPercent", RawDisplayAsPercent);
+            //Generator.AddBoolean("DisplayAsPercent", RawDisplayAsPercent);
             Generator.AddBoolean("SkipIfZero", RawSkipIfZero);
 
             Generator.CloseObject();

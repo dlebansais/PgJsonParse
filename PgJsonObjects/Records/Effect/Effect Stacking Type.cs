@@ -168,7 +168,7 @@
         GoredPockets,
         DarknessImbued,
         ElementalBees,
-        Neurotoxin_Speed,
+        //Neurotoxin_Speed,
         HuntingSpeed,
         SlimedLegs,
         NotSoSmart,

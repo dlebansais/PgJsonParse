@@ -106,5 +106,7 @@
         GlassChunk,
         Dagger,
         Dirk,
+        BardLute,
+        BardHorn,
     }
 }

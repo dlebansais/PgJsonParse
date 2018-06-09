@@ -12,7 +12,7 @@ namespace PgJsonObjects
         public int ItemCode { get { return RawItemCode.HasValue ? RawItemCode.Value : 0; } }
         private int? RawItemCode;
         private bool IsItemCodeParsed;
-        public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 0; } }
+        public int StackSize { get { return RawStackSize.HasValue ? (RawStackSize.Value > 0 ? RawStackSize.Value : 1) : 0; } }
         public int? RawStackSize { get; private set; }
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
         public double? RawPercentChance { get; private set; }
@@ -97,15 +97,10 @@ namespace PgJsonObjects
 
         private void ParseStackSize(int value, ParseErrorInfo ErrorInfo)
         {
-            if (value > 1)
-                RawStackSize = value;
-            else
-            {
-                RawStackSize = 1;
+            RawStackSize = value;
 
-                if (value < 0)
-                    ErrorInfo.AddInvalidObjectFormat("RecipeItem StackSize");
-            }
+            if (value < 0)
+                ErrorInfo.AddInvalidObjectFormat("RecipeItem StackSize");
         }
         #endregion
 

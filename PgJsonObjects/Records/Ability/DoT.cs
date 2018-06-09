@@ -17,6 +17,7 @@ namespace PgJsonObjects
         public Dictionary<string, Attribute> AttributesThatDeltaTable { get; } = new Dictionary<string, Attribute>();
         public Dictionary<string, Attribute> AttributesThatModTable { get; } = new Dictionary<string, Attribute>();
         public List<DoTSpecialRule> SpecialRuleList { get; } = new List<DoTSpecialRule>();
+        public string RawPreface { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -57,6 +58,10 @@ namespace PgJsonObjects
                 SetArrayIsEmpty = () => RawAttributesThatModListIsEmpty = true,
                 GetStringArray = () => RawAttributesThatModList,
                 GetArrayIsEmpty = () => RawAttributesThatModListIsEmpty } },
+            { "Preface", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawPreface = value,
+                GetString = () => RawPreface } },
         }; } }
 
         private List<string> RawAttributesThatDeltaList { get; } = new List<string>();

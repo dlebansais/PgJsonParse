@@ -133,5 +133,6 @@
         IceShards,
         EarthRoot,
         BlindingLight,
+        FireBite,
     }
 }

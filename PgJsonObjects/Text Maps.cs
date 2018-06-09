@@ -441,6 +441,7 @@ namespace PgJsonObjects
             { Deaths.IceShards, "Ice Shards" },
             { Deaths.EarthRoot, "Earth Root" },
             { Deaths.BlindingLight, "Blinding Light" },
+            { Deaths.FireBite, "Fire Bite" },
         };
 
         public static readonly Dictionary<PowerSkill, string> PowerSkillTextMap = new Dictionary<PowerSkill, string>()
@@ -639,6 +640,7 @@ namespace PgJsonObjects
             { DoTSpecialRule.Internal_None, "None" },
             { DoTSpecialRule.BuffActivated, "Buff Activated" },
             { DoTSpecialRule.IfTargetNotLooking, "If Target Not Looking" },
+            { DoTSpecialRule.DelayedDamage, "Delayed Damage" },
         };
 
         public static readonly Dictionary<PreEffect, string> PreEffectTextMap = new Dictionary<PreEffect, string>()
@@ -1194,6 +1196,7 @@ namespace PgJsonObjects
             { AbilityKeyword.Invigorate, "Invigorate" },
             { AbilityKeyword.GiveWarmth, "Give Warmth" },
             { AbilityKeyword.RageAttack, "Rage Attack" },
+            { AbilityKeyword.PetDoT, "Pet DoT" },
         };
 
         public static readonly Dictionary<AbilityPetType, string> AbilityPetTypeTextMap = new Dictionary<AbilityPetType, string>()
@@ -1621,7 +1624,7 @@ namespace PgJsonObjects
             { EffectStackingType.GoredPockets, "Gored Pockets" },
             { EffectStackingType.DarknessImbued, "Darkness Imbued" },
             { EffectStackingType.ElementalBees, "Elemental Bees" },
-            { EffectStackingType.Neurotoxin_Speed, "Neurotoxin Speed" },
+            //{ EffectStackingType.Neurotoxin_Speed, "Neurotoxin Speed" },
             { EffectStackingType.HuntingSpeed, "Hunting Speed" },
             { EffectStackingType.SlimedLegs, "Slimed Legs" },
             { EffectStackingType.NotSoSmart, "Not So Smart" },
@@ -2906,6 +2909,7 @@ namespace PgJsonObjects
             { ItemKeyword.BarteredHolySymbol, "Bartered Holy Symbol" },
             { ItemKeyword.CarpentryRecipe, "Carpentry Recipe" },
             { ItemKeyword.Dirk, "Dirk" },
+            { ItemKeyword.VipToken, "V.I.P Token" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -3605,6 +3609,8 @@ namespace PgJsonObjects
             { RecipeItemKey.GlassChunk, "Glass Chunk" },
             { RecipeItemKey.Dagger, "Dagger" },
             { RecipeItemKey.Dirk, "Dirk" },
+            { RecipeItemKey.BardLute, "Bard Lute" },
+            { RecipeItemKey.BardHorn, "Bard Horn" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
@@ -3728,7 +3734,7 @@ namespace PgJsonObjects
             { QuestObjectiveKillTarget.Pig, "Pig" },
             { QuestObjectiveKillTarget.ScionOfNorala, "Scion Of Norala" },
             { QuestObjectiveKillTarget.HumanElfRak, "Human/Elf/Rakshasa" },
-            { QuestObjectiveKillTarget.Fae, "Fae" },
+            //{ QuestObjectiveKillTarget.Fae, "Fae" },
             { QuestObjectiveKillTarget.Ciervos, "Ciervos" },
             { QuestObjectiveKillTarget.ScionOfDiscord, "Scion Of Discord" },
             { QuestObjectiveKillTarget.DragonKin, "Dragon Kin" },
@@ -3779,6 +3785,7 @@ namespace PgJsonObjects
             { QuestObjectiveKillTarget.RanalonDenScray, "Ranalon Den Scray" },
             { QuestObjectiveKillTarget.RanalonFarmCaster, "Ranalon Farm Caster" },
             { QuestObjectiveKillTarget.SoloHallsGuardian, "Solo Halls Guardian" },
+            { QuestObjectiveKillTarget.AnatomyType_Fey, "Fey Anatomy" },
         };
 
         public static readonly Dictionary<MoonPhases, string> MoonPhasesTextMap = new Dictionary<MoonPhases, string>()

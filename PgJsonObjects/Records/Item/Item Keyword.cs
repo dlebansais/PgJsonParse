@@ -865,5 +865,6 @@
         BarteredHolySymbol,
         CarpentryRecipe,
         Dirk,
+        VipToken,
     }
 }

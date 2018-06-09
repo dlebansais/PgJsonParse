@@ -51,7 +51,7 @@
         Pig,
         ScionOfNorala,
         HumanElfRak,
-        Fae,
+        //Fae,
         Ciervos,
         ScionOfDiscord,
         DragonKin,
@@ -102,5 +102,6 @@
         RanalonDenScray,
         RanalonFarmCaster,
         SoloHallsGuardian,
+        AnatomyType_Fey,
     }
 }

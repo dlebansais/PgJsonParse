@@ -134,7 +134,7 @@ namespace PgJsonObjects
             { "ActionLabel", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => ActionLabel = StringToEnumConversion<RecipeAction>.Parse(value, TextMaps.RecipeActionStringMap, errorInfo),
-                GetString = () => StringToEnumConversion<RecipeAction>.ToString(ActionLabel, null, RecipeAction.Internal_None) } },
+                GetString = () => StringToEnumConversion<RecipeAction>.ToString(ActionLabel, TextMaps.RecipeActionStringMap, RecipeAction.Internal_None) } },
             { "UsageDelay", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawUsageDelay = value,

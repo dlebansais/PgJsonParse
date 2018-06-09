@@ -5,5 +5,6 @@
         Internal_None,
         BuffActivated,
         IfTargetNotLooking,
+        DelayedDamage,
     }
 }

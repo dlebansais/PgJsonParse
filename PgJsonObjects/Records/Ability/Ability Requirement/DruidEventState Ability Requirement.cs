@@ -18,8 +18,8 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.DruidEventState) } },
             { "DisallowedStates", new FieldParser() {
-                Type = FieldType.String,
-                GetString = () => StringToEnumConversion<DisallowedState>.ToString(DisallowedState) } },
+                Type = FieldType.StringArray,
+                GetStringArray = () => CreateSingleOrEmptyStringList(StringToEnumConversion<DisallowedState>.ToString(DisallowedState)) } },
         }; } }
 
         #region Json Reconstruction
