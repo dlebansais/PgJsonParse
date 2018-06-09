@@ -4463,5 +4463,24 @@ namespace PgJsonObjects
             { LoreBookCategory.Misc, "Misc" },
             { LoreBookCategory.GuideProgram, "Guide Program" },
         };
+
+        public static readonly Dictionary<TitleKeyword, string> TitleKeywordTextMap = new Dictionary<TitleKeyword, string>()
+        {
+            { TitleKeyword.Internal_None, "None" },
+            { TitleKeyword.PlayerBestowedTitle, "Player Bestowed Title" },
+            { TitleKeyword.BehaviorBadge, "Behavior Badge" },
+            { TitleKeyword.GuideTitle, "Guide Title" },
+            { TitleKeyword.Lint_NotObtainable, "Not Obtainable" },
+        };
+
+        public static readonly Dictionary<AbilityCue, string> AbilityCueTextMap = new Dictionary<AbilityCue, string>()
+        {
+            { AbilityCue.Internal_None, "None" },
+            { AbilityCue.Heal, "Heal" },
+            { AbilityCue.DontClose, "Don't Close" },
+            { AbilityCue.Perching, "Perching" },
+            { AbilityCue.Opener, "Opener" },
+            { AbilityCue.ServerRequested, "Server Requested" },
+        };
     }
 }

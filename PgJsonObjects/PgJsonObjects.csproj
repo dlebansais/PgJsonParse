@@ -85,6 +85,10 @@
     <Compile Include="Records\Ability\DoT.cs" />
     <Compile Include="Records\Ability\Pre Effect.cs" />
     <Compile Include="Records\Ability\SpecialNpc.cs" />
+    <Compile Include="Records\AI\Ability Cue.cs" />
+    <Compile Include="Records\AI\AI Ability Set.cs" />
+    <Compile Include="Records\AI\AI Ability.cs" />
+    <Compile Include="Records\AI\AI.cs" />
     <Compile Include="Records\Area\GameArea.cs" />
     <Compile Include="Records\Attribute\DisplayRule.cs" />
     <Compile Include="Records\ItemUses\Item Uses.cs" />
@@ -114,6 +118,8 @@
     <Compile Include="Records\Npc\GameNpc.cs" />
     <Compile Include="Records\Npc\Gift.cs" />
     <Compile Include="Records\Npc\NpcPreference.cs" />
+    <Compile Include="Records\Player Title\Player Title.cs" />
+    <Compile Include="Records\Player Title\Title Keyword.cs" />
     <Compile Include="Records\Quest\Monster Type Tag.cs" />
     <Compile Include="Records\Quest\Quest Objective Requirement.cs" />
     <Compile Include="Records\Quest\Quest Objectives\Quest Objective Loot.cs" />

@@ -715,14 +715,14 @@ namespace PgJsonParse
                     {
                         DownloadState FileDownloadState = DownloadState.Downloaded;
                         foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
-                            if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion >= Version)
+                            if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion <= Version)
                                 if (!FileTools.FileExists(Path.Combine(SubFolder, Entry.Value.JsonFileName + ".json")))
                                 {
                                     FileDownloadState = DownloadState.NotDownloaded;
                                     break;
                                 }
                         foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.MultiDefinitions)
-                            if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion >= Version)
+                            if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion <= Version)
                                 if (!FileTools.FileExists(Path.Combine(SubFolder, Entry.Value.JsonFileName + ".json")))
                                 {
                                     FileDownloadState = DownloadState.NotDownloaded;

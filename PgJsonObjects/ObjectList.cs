@@ -7,6 +7,9 @@ namespace PgJsonObjects
     {
         public static Dictionary<Type, IObjectDefinition> SingleDefinitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()
         {
+            { typeof(AI), new ObjectDefinition<AI>("ai", 0, false, true, false) },
+            { typeof(PlayerTitle), new ObjectDefinition<PlayerTitle>("playertitles", 305, false, true, false) },
+
             { typeof(Recipe), new ObjectDefinition<Recipe>("recipes", 0, false, true, false) },
             { typeof(Skill), new ObjectDefinition<Skill>("skills", 0, false, true, false) },
             //{ typeof(PgJsonObjects.String), new ObjectDefinition<PgJsonObjects.String>("strings", false, true, false) },

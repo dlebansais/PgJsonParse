@@ -24,6 +24,7 @@ namespace PgJsonParse
             Recipe AsRecipe;
             Skill AsSkill;
             Power AsPower;
+            PlayerTitle AsPlayerTitle;
             LoreBook AsLoreBook;
 
             if ((AsAbility = item as Ability) != null)
@@ -83,6 +84,12 @@ namespace PgJsonParse
             else if ((AsPower = item as Power) != null)
             {
                 DataTemplate Result = FindTemplate(element, "SearchResultPowerContentTemplate");
+                return Result;
+            }
+
+            else if ((AsPlayerTitle = item as PlayerTitle) != null)
+            {
+                DataTemplate Result = FindTemplate(element, "SearchResultPlayerTitleContentTemplate");
                 return Result;
             }
 
