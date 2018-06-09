@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Media.Imaging;
 
 namespace Presentation
@@ -11,8 +12,9 @@ namespace Presentation
             {
                 BitmapImage = new BitmapImage(new Uri(fileName));
             }
-            catch
+            catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
             }
         }
 

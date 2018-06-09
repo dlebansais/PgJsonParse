@@ -30,7 +30,7 @@ namespace PgJsonObjects
 
         #region Indirect Properties
         protected override string SortingName { get { return Name; } }
-        public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
+        public string SearchResultIconFileName { get { return RawIconId.HasValue && RawIconId.Value > 0 ? "icon_" + RawIconId.Value : null; } }
         #endregion
 
         #region Parsing
