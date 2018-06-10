@@ -172,29 +172,39 @@ namespace PgJsonObjects
             if (InsertedLines > 0)
                 Next();
 
-            string StringLine = (Field == null) ? "\"" : "\"" + Field + "\":" + SpaceLine + "\"";
+            string StringLine;
 
-            foreach (char c in Value)
+            if (Value == GenericJsonObject.NullString)
+                StringLine = "null";
+
+            else
             {
-                switch (c)
+                StringLine = "\"";
+
+                foreach (char c in Value)
                 {
-                    case '\n':
-                        StringLine += "\\n";
-                        break;
+                    switch (c)
+                    {
+                        case '\n':
+                            StringLine += "\\n";
+                            break;
 
-                    case '"':
-                        StringLine += "\\\"";
-                        break;
+                        case '"':
+                            StringLine += "\\\"";
+                            break;
 
-                    default:
-                        StringLine += c;
-                        break;
+                        default:
+                            StringLine += c;
+                            break;
+                    }
                 }
+
+                StringLine += "\"";
             }
 
-            StringLine += "\"";
+            string StringLineBegin = (Field == null) ? "" : ("\"" + Field + "\":" + SpaceLine);
 
-            ReconstructedContent += Indentation() + StringLine;
+            ReconstructedContent += Indentation() + StringLineBegin + StringLine;
             InsertedLines++;
         }
 

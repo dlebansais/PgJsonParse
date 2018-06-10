@@ -82,6 +82,11 @@ namespace PgJsonReader
                 return reader.ParseObject();
             }
 
+            else if (reader.CurrentToken == Json.Token.Null)
+            {
+                return new JsonString(null);
+            }
+
             return null;
         }
 

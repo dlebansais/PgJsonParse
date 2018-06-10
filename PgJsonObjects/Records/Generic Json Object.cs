@@ -71,6 +71,8 @@ namespace PgJsonObjects
             public Func<bool> GetArrayIsNested;
         }
 
+        public static string NullString = "{3125D9C5-C81F-4507-A422-C9749749CB15}";
+
         #region Comparison
         protected abstract string SortingName { get; }
 

@@ -12,6 +12,7 @@ namespace PgJsonObjects
         public string LocationHint { get; private set; }
         public LoreBookCategory Category { get; private set; }
         public List<LoreBookKeyword> KeywordList { get; private set; } = new List<LoreBookKeyword>();
+        private bool IsKeywordListEmpty;
         public bool IsClientLocal { get { return RawIsClientLocal.HasValue ? RawIsClientLocal.Value : false; } }
         public bool? RawIsClientLocal { get; private set; }
         public LoreBookVisibility Visibility { get; private set; }
@@ -42,7 +43,9 @@ namespace PgJsonObjects
             { "Keywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<LoreBookKeyword>.ParseList(value, KeywordList, errorInfo),
-                GetStringArray = () => StringToEnumConversion<LoreBookKeyword>.ToStringList(KeywordList) } },
+                SetArrayIsEmpty = () => IsKeywordListEmpty = true,
+                GetStringArray = () => StringToEnumConversion<LoreBookKeyword>.ToStringList(KeywordList),
+                GetArrayIsEmpty = () => IsKeywordListEmpty } },
             { "IsClientLocal", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsClientLocal = value,

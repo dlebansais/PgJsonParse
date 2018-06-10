@@ -54,6 +54,7 @@
     <Compile Include="Build Planer\Planer Slot Power.cs" />
     <Compile Include="Build Planer\Slot Planer.cs" />
     <Compile Include="Build Planer\Weight Profile.cs" />
+    <Compile Include="Custom Object.cs" />
     <Compile Include="Float Format.cs" />
     <Compile Include="ISpecificRecord.cs" />
     <Compile Include="Json Generator.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Records\Item\Server Info.cs" />
     <Compile Include="Records\Item\Skill Requirement.cs" />
     <Compile Include="Records\Lore Book\Lore Book Category.cs" />
+    <Compile Include="Records\Lore Book\Lore Book Info Category.cs" />
     <Compile Include="Records\Lore Book\Lore Book Info.cs" />
     <Compile Include="Records\Lore Book\Lore Book Keyword.cs" />
     <Compile Include="Records\Lore Book\Lore Book Visibility.cs" />

@@ -19,8 +19,8 @@ namespace PgJsonObjects
         private bool IsRawXpTableParsed;
         public AdvancementTable AdvancementTable { get; private set; }
         private string RawAdvancementTable;
+        private bool IsAdvancementTableNull;
         private bool IsRawAdvancementTableParsed;
-        private bool IsRawAdvancementTableEmpty;
         public bool Combat { get { return RawCombat.HasValue && RawCombat.Value; } }
         public bool? RawCombat { get; private set; }
         public List<PowerSkill> CompatibleCombatSkillList { get; } = new List<PowerSkill>();
@@ -34,6 +34,7 @@ namespace PgJsonObjects
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         public string Name { get; private set; }
         public PowerSkill ParentSkill { get; private set; }
+        private bool IsParentSkillEmpty;
         public Skill ConnectedParentSkill { get; private set; }
         private bool IsParentSkillParsed;
         public bool EmptyParentList { get; private set; }
@@ -191,10 +192,8 @@ namespace PgJsonObjects
                 GetString = () => RawXpTable } },
             { "AdvancementTable", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => RawAdvancementTable = value,
-                SetArrayIsEmpty = () => IsRawAdvancementTableEmpty = true,
-                GetString = () => RawAdvancementTable,
-                GetArrayIsEmpty = () => IsRawAdvancementTableEmpty } },
+                ParseString = ParseAdvancementTable,
+                GetString = () => IsAdvancementTableNull ? NullString : RawAdvancementTable } },
             { "Combat", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawCombat = value,
@@ -210,19 +209,19 @@ namespace PgJsonObjects
             { "InteractionFlagLevelCaps", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseInteractionFlagLevelCaps,
-                GetObject = () => null } },
+                GetObject = GetInteractionFlagLevelCaps } },
             { "AdvancementHints", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseAdvancementHints,
-                GetObject = () => null } },
+                GetObject = GetAdvancementHints } },
             { "Rewards", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseRewards,
-                GetObject = () => null } },
+                GetObject = GetRewards } },
             { "Reports", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseReports,
-                GetObject = () => null } },
+                GetObject = GetReports } },
             { "Name", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Name = value,
@@ -230,7 +229,9 @@ namespace PgJsonObjects
             { "Parents", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = ParseParents,
-                GetStringArray = () => null } },
+                SetArrayIsEmpty = () => IsParentSkillEmpty = true,
+                GetStringArray = () => CreateSingleOrEmptyStringList(StringToEnumConversion<PowerSkill>.ToString(ParentSkill, null, PowerSkill.Internal_None)),
+                GetArrayIsEmpty = () => IsParentSkillEmpty } },
             { "SkipBonusLevelsIfSkillUnlearned", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawSkipBonusLevelsIfSkillUnlearned = value,
@@ -244,6 +245,14 @@ namespace PgJsonObjects
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<SkillCategory>.ParseList(value, TSysCategoryList, errorInfo),
                 GetStringArray = () => StringToEnumConversion<SkillCategory>.ToStringList(TSysCategoryList) } },
         }; } }
+
+        private void ParseAdvancementTable(string value, ParseErrorInfo errorInfo)
+        {
+            RawAdvancementTable = value;
+
+            if (value == null)
+                IsAdvancementTableNull = true;
+        }
 
         private void ParseInteractionFlagLevelCaps(JsonObject InteractionFlagLevelCaps, ParseErrorInfo ErrorInfo)
         {
@@ -301,6 +310,38 @@ namespace PgJsonObjects
             }
         }
 
+        private IGenericJsonObject GetInteractionFlagLevelCaps()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("InteractionFlagLevelCaps");
+
+            foreach (LevelCapInteraction Interaction in InteractionFlagLevelCapList)
+            {
+                PowerSkill Skill = Interaction.OtherSkill;
+                string FieldKey = "LevelCap_" + StringToEnumConversion<PowerSkill>.ToString(Skill);
+
+                switch (Skill)
+                {
+                    case PowerSkill.Performance_Strings:
+                    case PowerSkill.Performance_Percussion:
+                    case PowerSkill.Performance_Wind:
+                        break;
+
+                    default:
+                        FieldKey += "_";
+                        break;
+                }
+
+                FieldKey += Interaction.OtherLevel;
+
+                int FieldValue = Interaction.Level;
+
+                Result.SetFieldValue(FieldKey, FieldValue);
+            }
+
+            return Result;
+        }
+
         private void ParseAdvancementHints(JsonObject RawAdvancementHints, ParseErrorInfo ErrorInfo)
         {
             foreach (KeyValuePair<string, IJsonValue> RawEntry in RawAdvancementHints)
@@ -321,6 +362,22 @@ namespace PgJsonObjects
             }
         }
 
+        private IGenericJsonObject GetAdvancementHints()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("AdvancementHints");
+
+            foreach (KeyValuePair<int, string> Entry in AdvancementHintTable)
+            {
+                string FieldKey = Entry.Key.ToString();
+                string FieldValue = Entry.Value;
+
+                Result.SetFieldValue(FieldKey, FieldValue);
+            }
+
+            return Result;
+        }
+
         private void ParseRewards(JsonObject RawRewards, ParseErrorInfo ErrorInfo)
         {
             foreach (KeyValuePair<string, IJsonValue> Entry in RawRewards)
@@ -337,6 +394,22 @@ namespace PgJsonObjects
             }
 
             EmptyRewardList = (RewardList.Count == 0);
+        }
+
+        private IGenericJsonObject GetRewards()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("Rewards");
+
+            foreach (Reward Reward in RewardList)
+            {
+                string FieldKey = Reward.Key;
+                IGenericJsonObject FieldValue = Reward;
+
+                Result.SetFieldValue(FieldKey, FieldValue);
+            }
+
+            return Result;
         }
 
         private void ParseReports(JsonObject RawReports, ParseErrorInfo ErrorInfo)
@@ -357,6 +430,22 @@ namespace PgJsonObjects
                 else
                     ErrorInfo.AddInvalidObjectFormat("Skill Reports");
             }
+        }
+
+        private IGenericJsonObject GetReports()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("Reports");
+
+            foreach (KeyValuePair<int, string> Entry in ReportTable)
+            {
+                string FieldKey = Entry.Key.ToString();
+                string FieldValue = Entry.Value;
+
+                Result.SetFieldValue(FieldKey, FieldValue);
+            }
+
+            return Result;
         }
 
         private void ParseParents(string RawParents, ParseErrorInfo ErrorInfo)
@@ -388,10 +477,10 @@ namespace PgJsonObjects
             Generator.AddBoolean("HideWhenZero", RawHideWhenZero);
             //Generator.AddString("XpTable", XpTable.ToString());
 
-            if (IsRawAdvancementTableEmpty)
+            /*if (IsRawAdvancementTableEmpty)
                 Generator.AddNull("AdvancementTable");
             else if (AdvancementTable != null)
-                Generator.AddString("AdvancementTable", AdvancementTable.ToString());
+                Generator.AddString("AdvancementTable", AdvancementTable.ToString());*/
 
             if (TSysCategoryList.Count > 0)
             {

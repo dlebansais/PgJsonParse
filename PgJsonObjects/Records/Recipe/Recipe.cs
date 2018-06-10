@@ -203,7 +203,7 @@ namespace PgJsonObjects
             { "ItemMenuCategory", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseItemMenuCategory,
-                GetString = () => RawItemMenuCategory } },
+                GetString = GetItemMenuCategory } },
             { "ItemMenuCategoryLevel", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawItemMenuCategoryLevel = value,
@@ -273,31 +273,31 @@ namespace PgJsonObjects
                 switch (Item.Effect)
                 {
                     case RecipeEffect.ExtractTSysPower:
-                        Result.Add(GetExtractResultEffects());
+                        Result.Add(GetExtractResultEffects(Item));
                         break;
 
                     case RecipeEffect.RepairItemDurability:
-                        Result.Add(GetRepairItemResultEffects());
+                        Result.Add(GetRepairItemResultEffects(Item));
                         break;
 
                     case RecipeEffect.TSysCraftedEquipment:
-                        Result.Add(GetCraftedResultEffects());
+                        Result.Add(GetCraftedResultEffects(Item));
                         break;
 
                     case RecipeEffect.CraftingEnhanceItem:
-                        Result.Add(GetCraftingEnhanceResultEffects());
+                        Result.Add(GetCraftingEnhanceResultEffects(Item));
                         break;
 
                     case RecipeEffect.AddItemTSysPower:
-                        Result.Add(GetPowerResultEffects());
+                        Result.Add(GetPowerResultEffects(Item));
                         break;
 
                     case RecipeEffect.BrewItem:
-                        Result.Add(GetBrewItemResultEffects());
+                        Result.Add(GetBrewItemResultEffects(Item));
                         break;
 
                     case RecipeEffect.AdjustRecipeReuseTime:
-                        Result.Add(GetAdjustRecipeResultEffects());
+                        Result.Add(GetAdjustRecipeResultEffects(Item));
                         break;
 
                     default:
@@ -332,6 +332,18 @@ namespace PgJsonObjects
 
             else if (value == "TSysDistill")
                 RawItemMenuCategory = "Distill";
+        }
+
+        private string GetItemMenuCategory()
+        {
+            if (RawItemMenuCategory == "Extract")
+                return "TSysExtract";
+
+            else if (RawItemMenuCategory == "Distill")
+                return "TSysDistill";
+
+            else
+                return null;
         }
 
         private void ParsePrereqRecipe(string value, ParseErrorInfo errorInfo)
@@ -439,9 +451,16 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetExtractResultEffects()
+        private string GetExtractResultEffects(RecipeResultEffect Item)
         {
-            return "";
+            string Result = "ExtractTSysPower(";
+
+            Result += StringToEnumConversion<Augment>.ToString(Item.ExtractedAugment) + ",";
+            Result += StringToEnumConversion<DecomposeSkill>.ToString(Item.Skill) + ",";
+            Result += Item.MinLevel.ToString() + ",";
+            Result += Item.MaxLevel.ToString() + ")";
+
+            return Result;
         }
 
         private bool ParseRepairEffect(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
@@ -483,9 +502,17 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetRepairItemResultEffects()
+        private string GetRepairItemResultEffects(RecipeResultEffect Item)
         {
-            return "";
+            string Result = "RepairItemDurability(";
+
+            Result += Tools.FloatToString(Item.RepairMinEfficiency, Item.RepairMinEfficiencyFormat) + ",";
+            Result += Tools.FloatToString(Item.RepairMaxEfficiency, Item.RepairMaxEfficiencyFormat) + ",";
+            Result += Item.RepairCooldown.ToString() + ",";
+            Result += Item.MinLevel.ToString() + ",";
+            Result += Item.MaxLevel.ToString() + ")";
+
+            return Result;
         }
 
         private bool ParseCraftEffect(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
@@ -577,9 +604,22 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetCraftedResultEffects()
+        private string GetCraftedResultEffects(RecipeResultEffect Item)
         {
-            return "";
+            string Result = "TSysCraftedEquipment(";
+
+            Result += StringToEnumConversion<CraftedBoost>.ToString(Item.Boost);
+            Result += Item.BoostLevel.ToString();
+            if (Item.IsCamouflaged)
+                Result += "C";
+            if (Item.AdditionalEnchantments.HasValue)
+                Result += "," + Item.AdditionalEnchantments.Value.ToString();
+            if (Item.BoostedAnimal != Appearance.Internal_None)
+                Result += "," + StringToEnumConversion<Appearance>.ToString(Item.BoostedAnimal);
+
+            Result += ")";
+
+            return Result;
         }
 
         private bool ParseEnhanceEffect(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
@@ -619,9 +659,15 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetCraftingEnhanceResultEffects()
+        private string GetCraftingEnhanceResultEffects(RecipeResultEffect Item)
         {
-            return "";
+            string Result = "CraftingEnhanceItem";
+
+            Result += StringToEnumConversion<EnhancementEffect>.ToString(Item.Enhancement) + "(";
+            Result += InvariantCulture.SingleToString(Item.AddedQuantity) + ",";
+            Result += Item.ConsumedEnhancementPoints.ToString() + ")";
+
+            return Result;
         }
 
         private bool ParseAddItemPower(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
@@ -653,9 +699,14 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetPowerResultEffects()
+        private string GetPowerResultEffects(RecipeResultEffect Item)
         {
-            return "";
+            string Result = "AddItemTSysPower(";
+
+            Result += StringToEnumConversion<ShamanicSlotPower>.ToString(Item.SlotPower) + ",";
+            Result += Item.SlotPowerLevel.ToString() + ")";
+
+            return Result;
         }
 
         private bool ParseBrewItem(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
@@ -715,9 +766,34 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetBrewItemResultEffects()
+        private string GetBrewItemResultEffects(RecipeResultEffect Item)
         {
-            return "";
+            string Result = "BrewItem(";
+
+            Result += Item.BrewPartCount.ToString() + ",";
+            Result += Item.BrewLevel.ToString() + ",";
+
+            string Parts = "";
+            foreach (RecipeItemKey k in Item.BrewPartList)
+            {
+                if (Parts.Length > 0)
+                    Parts += "+";
+
+                Parts += StringToEnumConversion<RecipeItemKey>.ToString(k);
+            }
+
+            string PartResults = "";
+            foreach (RecipeResultKey k in Item.BrewResultList)
+            {
+                if (PartResults.Length > 0)
+                    PartResults += "+";
+
+                PartResults += StringToEnumConversion<RecipeResultKey>.ToString(k);
+            }
+
+            Result += Parts + "=" + PartResults + ")";
+
+            return Result;
         }
 
         private bool ParseAdjustRecipeReuseTime(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
@@ -746,9 +822,14 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetAdjustRecipeResultEffects()
+        private string GetAdjustRecipeResultEffects(RecipeResultEffect Item)
         {
-            return "";
+            string Result = "AdjustRecipeReuseTime(";
+
+            Result += Item.AdjustedReuseTime.ToString() + ",";
+            Result += StringToEnumConversion<MoonPhases>.ToString(Item.MoonPhase) + ")";
+
+            return Result;
         }
         #endregion
 

@@ -721,13 +721,6 @@ namespace PgJsonParse
                                     FileDownloadState = DownloadState.NotDownloaded;
                                     break;
                                 }
-                        foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.MultiDefinitions)
-                            if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion <= Version)
-                                if (!FileTools.FileExists(Path.Combine(SubFolder, Entry.Value.JsonFileName + ".json")))
-                                {
-                                    FileDownloadState = DownloadState.NotDownloaded;
-                                    break;
-                                }
 
                         DownloadState IconDownloadState = IsLastIconLoadedForVersion(Version) ? DownloadState.Downloaded : DownloadState.NotDownloaded;
                         GameVersionInfo NewVersion = new GameVersionInfo(this, Version, FileDownloadState, IconDownloadState);
@@ -777,9 +770,6 @@ namespace PgJsonParse
 
             List<string> JsonFileList = new List<string>();
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
-                if (Entry.Value.MinVersion <= versionInfo.Version)
-                    JsonFileList.Add(Entry.Value.JsonFileName);
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.MultiDefinitions)
                 if (Entry.Value.MinVersion <= versionInfo.Version)
                     JsonFileList.Add(Entry.Value.JsonFileName);
 
@@ -935,8 +925,6 @@ namespace PgJsonParse
             List<KeyValuePair<Type, IObjectDefinition>> EntryList = new List<KeyValuePair<Type, IObjectDefinition>>();
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
                 EntryList.Add(Entry);
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.MultiDefinitions)
-                EntryList.Add(Entry);
 
             IconTable.Clear();
             int ProgressIndex = 0;
@@ -967,7 +955,7 @@ namespace PgJsonParse
             {
                 progressIndex++;
 
-                ParseProgress = (progressIndex * 100.0) / (ObjectList.SingleDefinitions.Count + ObjectList.MultiDefinitions.Count);
+                ParseProgress = (progressIndex * 100.0) / ObjectList.SingleDefinitions.Count;
                 SetTaskbarProgressValue(ParseProgress, 100.0);
 
                 if (progressIndex < entryList.Count)
@@ -1125,23 +1113,8 @@ namespace PgJsonParse
                 AllLists.Add(Entry.Key, definition.ObjectList);
                 AllTables.Add(Entry.Key, definition.ObjectTable);
             }
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.MultiDefinitions)
-            {
-                IObjectDefinition definition = Entry.Value;
-                AllLists.Add(Entry.Key, definition.ObjectList);
-                AllTables.Add(Entry.Key, definition.ObjectTable);
-            }
 
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
-            {
-                IObjectDefinition definition = Entry.Value;
-                foreach (IGenericJsonObject Item in definition.ObjectList)
-                    Item.Connect(errorInfo, null, AllTables);
-
-                if (ParseCancellation.IsCanceled)
-                    return false;
-            }
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.MultiDefinitions)
             {
                 IObjectDefinition definition = Entry.Value;
                 foreach (IGenericJsonObject Item in definition.ObjectList)
@@ -1168,21 +1141,7 @@ namespace PgJsonParse
                     Item.SetIndirectProperties(AllTables, errorInfo);
             }
 
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.MultiDefinitions)
-            {
-                IObjectDefinition definition = Entry.Value;
-                foreach (IGenericJsonObject Item in definition.ObjectList)
-                    Item.SetIndirectProperties(AllTables, errorInfo);
-            }
-
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
-            {
-                IObjectDefinition definition = Entry.Value;
-                foreach (IGenericJsonObject Item in definition.ObjectList)
-                    Item.SortLinkBack();
-            }
-
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.MultiDefinitions)
             {
                 IObjectDefinition definition = Entry.Value;
                 foreach (IGenericJsonObject Item in definition.ObjectList)
@@ -1198,15 +1157,6 @@ namespace PgJsonParse
         private bool CreateIndexes(string versionFolder, string iconFolder, ParseErrorInfo errorInfo)
         {
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
-            {
-                if (!CreateNextIndex(Entry.Value, versionFolder, errorInfo))
-                    return false;
-
-                if (ParseCancellation.IsCanceled)
-                    return false;
-            }
-
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.MultiDefinitions)
             {
                 if (!CreateNextIndex(Entry.Value, versionFolder, errorInfo))
                     return false;

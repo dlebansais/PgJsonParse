@@ -39,7 +39,12 @@ namespace PgJsonObjects
 
         private List<string> GetEffectDescs()
         {
-            return new List<string>();
+            List<string> Result = new List<string>();
+
+            foreach (PowerEffect Effect in EffectList)
+                Result.Add(Effect.AsEffectString());
+
+            return Result;
         }
         #endregion
 

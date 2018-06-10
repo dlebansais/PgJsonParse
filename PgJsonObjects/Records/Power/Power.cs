@@ -162,7 +162,7 @@ namespace PgJsonObjects
             { "Tiers", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = ParseTiers,
-                GetObject = () => null } },
+                GetObject = GetTiers } },
             { "Slots", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemSlot>.ParseList(value, SlotList, errorInfo),
@@ -214,6 +214,20 @@ namespace PgJsonObjects
 
             if (i < RawTiers.Count)
                 ErrorInfo.AddInvalidObjectFormat("Power Tiers");
+        }
+
+        private IGenericJsonObject GetTiers()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("Tiers");
+
+            foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
+            {
+                string FieldKey = "id_" + Entry.Key.ToString();
+                Result.SetFieldValue(FieldKey, Entry.Value);
+            }
+
+            return Result;
         }
         #endregion
 
