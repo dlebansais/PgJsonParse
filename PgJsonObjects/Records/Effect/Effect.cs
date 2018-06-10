@@ -124,33 +124,6 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(Key);
-
-            Generator.AddString("Name", Name);
-            Generator.AddString("Desc", Desc);
-            Generator.AddInteger("IconId", RawIconId);
-            Generator.AddString("DisplayMode", StringToEnumConversion<EffectDisplayMode>.ToString(DisplayMode, null, EffectDisplayMode.Internal_None));
-            Generator.AddString("SpewText", SpewText);
-            Generator.AddString("Particle", StringToEnumConversion<EffectParticle>.ToString(Particle, null, EffectParticle.Internal_None));
-            Generator.AddString("StackingType", StringToEnumConversion<EffectStackingType>.ToString(StackingType, StackingTypeStringMap, EffectStackingType.Internal_None));
-            Generator.AddInteger("StackingPriority", RawStackingPriority);
-            Generator.AddInteger("Duration", RawDuration);
-            if (IsKeywordListEmpty)
-                Generator.AddEmptyArray("Keywords");
-            else
-                StringToEnumConversion<EffectKeyword>.ListToString(Generator, "Keywords", KeywordList, KeywordStringMap);
-            if (IsAbilityKeywordListEmpty)
-                Generator.AddEmptyArray("AbilityKeywords");
-            else
-                StringToEnumConversion<AbilityKeyword>.ListToString(Generator, "AbilityKeywords", AbilityKeywordList);
-
-            Generator.CloseObject();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

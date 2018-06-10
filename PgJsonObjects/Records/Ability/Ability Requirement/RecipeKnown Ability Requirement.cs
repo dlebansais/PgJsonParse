@@ -23,15 +23,6 @@ namespace PgJsonObjects
                 GetString = () => RawRecipeKnown } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "RecipeKnown");
-            //Generator.AddString("Recipe", RecipeKnown != null ? RecipeKnown.Name : null);
-            Generator.AddString("Recipe", RawRecipeKnown);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

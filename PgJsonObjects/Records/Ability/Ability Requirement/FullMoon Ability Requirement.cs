@@ -10,13 +10,6 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.FullMoon) } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "FullMoon");
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

@@ -22,14 +22,6 @@ namespace PgJsonObjects
                 GetStringArray = () => CreateSingleOrEmptyStringList(StringToEnumConversion<DisallowedState>.ToString(DisallowedState)) } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "DruidEventState");
-            Generator.AddEnum("DisallowedStates", DisallowedState);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

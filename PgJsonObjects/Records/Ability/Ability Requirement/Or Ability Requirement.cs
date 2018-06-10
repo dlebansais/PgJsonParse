@@ -24,13 +24,6 @@ namespace PgJsonObjects
                 GetString = () => ErrorMsg } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "Or");
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

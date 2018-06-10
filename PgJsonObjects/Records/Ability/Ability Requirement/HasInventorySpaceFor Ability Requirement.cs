@@ -23,15 +23,6 @@ namespace PgJsonObjects
                 GetString  = () => RawItem } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "HasInventorySpaceFor");
-            //Generator.AddString("Item", Item != null ? Item.Name : null);
-            Generator.AddString("Item", RawItem);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

@@ -48,22 +48,6 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(Key);
-
-            Generator.OpenArray("EffectDescs");
-
-            foreach (PowerEffect Item in EffectList)
-                Generator.AddString(null, Item.AsEffectString());
-
-            Generator.CloseArray();
-
-            Generator.CloseObject();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

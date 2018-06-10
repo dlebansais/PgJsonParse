@@ -10,13 +10,6 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.IsNotInCombat) } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "IsNotInCombat");
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

@@ -27,15 +27,6 @@ namespace PgJsonObjects
                 GetFloat = () => MaxCount } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "PetCount");
-            Generator.AddEnum("PetTypeTag", PetTypeTag);
-            Generator.AddDouble("MaxCount", MaxCount);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

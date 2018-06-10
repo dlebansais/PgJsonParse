@@ -56,6 +56,7 @@
     <Compile Include="Build Planer\Weight Profile.cs" />
     <Compile Include="Custom Object.cs" />
     <Compile Include="Float Format.cs" />
+    <Compile Include="Interfaces\Ability\IPgAbility.cs" />
     <Compile Include="ISpecificRecord.cs" />
     <Compile Include="Json Generator.cs" />
     <Compile Include="ObjectDefinition.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Records\Xp Table\Xp Table Level.cs" />
     <Compile Include="Records\Xp Table\Xp Table.cs" />
     <Compile Include="String To Enum Conversion.cs" />
+    <Compile Include="Synthetic\Ability\PgAbility.cs" />
     <Compile Include="Text Maps.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>

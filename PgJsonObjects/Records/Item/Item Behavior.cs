@@ -83,15 +83,6 @@ namespace PgJsonObjects
         private GenericJsonObject LinkBack;
         #endregion
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(Key);
-
-            Generator.CloseObject();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

@@ -27,15 +27,6 @@ namespace PgJsonObjects
                 GetInteger = () => Max } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "GardenPlantMax");
-            Generator.AddEnum("TypeTag", TypeTag);
-            Generator.AddInteger("Max", Max);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

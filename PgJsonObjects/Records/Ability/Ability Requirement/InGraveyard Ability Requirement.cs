@@ -10,13 +10,6 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.InGraveyard) } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "InGraveyard");
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

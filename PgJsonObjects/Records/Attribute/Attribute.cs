@@ -10,7 +10,6 @@ namespace PgJsonObjects
         #region Direct Properties
         public string Label { get; private set; }
         public List<int> IconIdList { get; } = new List<int>();
-        private bool IsIconIdListEmpty = true;
         public string Tooltip { get; private set; }
         public DisplayType DisplayType { get; private set; }
         public bool IsHidden { get { return RawIsHidden.HasValue && RawIsHidden.Value; } }
@@ -80,31 +79,6 @@ namespace PgJsonObjects
         {
             IconIdList.Add(value);
             ErrorInfo.AddIconId(value);
-        }
-        #endregion
-
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(Key);
-
-            Generator.AddString("Label", Label);
-
-            if (!IsIconIdListEmpty)
-            {
-                Generator.OpenArray("IconIds");
-
-                foreach (int IconId in IconIdList)
-                    Generator.AddInteger(null, IconId);
-
-                Generator.CloseArray();
-            }
-
-            Generator.AddString("Tooltip", Tooltip);
-            Generator.AddString("DisplayType", StringToEnumConversion<DisplayType>.ToString(DisplayType, null, DisplayType.Internal_None));
-            Generator.AddBoolean("IsHidden", RawIsHidden);
-
-            Generator.CloseObject();
         }
         #endregion
 

@@ -72,20 +72,6 @@ namespace PgJsonObjects
         }; } }
         #endregion
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(Key);
-
-            Generator.AddString("Ability", RawAbility);
-            Generator.AddString("Notes", Notes);
-            Generator.AddString("Recipe", RawRecipe);
-            Generator.AddString("BonusToSkill", StringToEnumConversion<PowerSkill>.ToString(BonusSkill, null, PowerSkill.Internal_None));
-
-            Generator.CloseObject();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

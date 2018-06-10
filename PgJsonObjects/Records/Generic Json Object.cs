@@ -12,7 +12,6 @@ namespace PgJsonObjects
         void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo);
         void SortLinkBack();
         string TextContent { get; }
-        void GenerateObjectContent(JsonGenerator Generator);
         void GenerateObjectContent2(JsonGenerator Generator, bool openWithKey, bool openWithNullKey);
     }
 
@@ -586,10 +585,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Client Interface
-        public virtual void GenerateObjectContent(JsonGenerator Generator)
-        {
-        }
-
         public virtual void GenerateObjectContent2(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
         {
             OpenGeneratorKey(Generator, openWithKey, openWithNullKey);

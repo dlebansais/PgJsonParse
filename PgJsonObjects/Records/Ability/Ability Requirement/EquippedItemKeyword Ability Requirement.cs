@@ -34,15 +34,6 @@ namespace PgJsonObjects
                 GetInteger = () => RawMaxCount } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "EquippedItemKeyword");
-            Generator.AddEnum("Keyword", Keyword);
-            Generator.AddInteger("MinCount", MinCount);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

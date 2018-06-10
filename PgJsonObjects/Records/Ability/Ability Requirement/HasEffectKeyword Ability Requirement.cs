@@ -22,14 +22,6 @@ namespace PgJsonObjects
                 GetString  = () => StringToEnumConversion<AbilityKeyword>.ToString(Keyword) } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "HasEffectKeyword");
-            Generator.AddEnum("Keyword", Keyword);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

@@ -1342,7 +1342,7 @@ namespace PgJsonParse
 
             int AbilityCount = 0;
             foreach (Ability Item in AbilityList)
-                if (skillItem.CombatSkill != PowerSkill.Internal_None && Item.Skill == skillItem.CombatSkill)
+                if (skillItem.CombatSkill != PowerSkill.Internal_None && Item.RawSkill == skillItem.CombatSkill)
                     AbilityCount++;
 
             if (AbilityCount < 6)
@@ -1462,7 +1462,7 @@ namespace PgJsonParse
                 if (AbilityItem.Level > MaxLevel)
                     continue;
 
-                if ((AbilityItem.InternalName != null) && (AbilityItem.Skill == selectedSkill.CombatSkill))
+                if ((AbilityItem.InternalName != null) && (AbilityItem.RawSkill == selectedSkill.CombatSkill))
                 {
                     List<Ability> SortedAbilityList;
 

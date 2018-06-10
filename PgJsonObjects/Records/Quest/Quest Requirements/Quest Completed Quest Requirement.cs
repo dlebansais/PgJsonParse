@@ -24,17 +24,6 @@ namespace PgJsonObjects
                 GetString = () => RawRequirementQuestList.Count > 0 ? RawRequirementQuestList[0] : null } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(Key);
-
-            Generator.AddString("T", "QuestCompleted");
-
-            Generator.CloseObject();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

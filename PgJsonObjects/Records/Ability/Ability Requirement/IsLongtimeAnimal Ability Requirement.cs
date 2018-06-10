@@ -10,13 +10,6 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.IsLongtimeAnimal) } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "IsLongtimeAnimal");
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

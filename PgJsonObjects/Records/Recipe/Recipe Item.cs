@@ -104,23 +104,6 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(null);
-
-            Generator.AddInteger("ItemCode", RawItemCode);
-            Generator.AddInteger("StackSize", RawStackSize);
-            Generator.AddString("Desc", Desc);
-            Generator.AddDouble("ChanceToConsume", RawChanceToConsume);
-            Generator.AddDouble("DurabilityConsumed", RawDurabilityConsumed);
-            Generator.AddDouble("PercentChance", RawPercentChance);
-            Generator.AddBoolean("AttuneToCrafter", RawAttuneToCrafter);
-
-            Generator.CloseObject();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

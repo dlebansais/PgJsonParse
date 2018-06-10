@@ -1,6 +1,5 @@
 ﻿using PgJsonReader;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -55,7 +54,7 @@ namespace PgJsonObjects
         public int? RawLevel { get; private set; }
         public string Name { get; private set; }
         public AbilityPetType PetTypeTagReq { get; private set; }
-        public int PetTypeTagReqMax { get; private set; }
+        public int PetTypeTagReqMax { get { return RawPetTypeTagReqMax.HasValue ? RawPetTypeTagReqMax.Value : 0; } }
         public int? RawPetTypeTagReqMax { get; private set; }
         public Ability Prerequisite { get; private set; }
         public AbilityProjectile Projectile { get; private set; }
@@ -65,7 +64,7 @@ namespace PgJsonObjects
         public double? RawResetTime { get; private set; }
         public string SelfParticle { get; private set; }
         public Ability SharesResetTimerWith { get; private set; }
-        public PowerSkill Skill { get; private set; }
+        public PowerSkill RawSkill { get; private set; }
         public Skill ConnectedSkill { get; private set; }
         private bool IsSkillParsed;
         public List<AbilityRequirement> SpecialCasterRequirementList { get; } = new List<AbilityRequirement>();
@@ -306,7 +305,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<AbilityPetType>.ToString(PetTypeTagReq, null, AbilityPetType.Internal_None) } },
             { "PetTypeTagReqMax", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = ParsePetTypeTagReqMax,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawPetTypeTagReqMax = value,
                 GetInteger = () => RawPetTypeTagReqMax } },
             { "Prerequisite", new FieldParser() {
                 Type = FieldType.String,
@@ -339,7 +338,7 @@ namespace PgJsonObjects
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
             { "SpecialCasterRequirements", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("SpecialCasterRequirement", value, SpecialCasterRequirementList, errorInfo),
@@ -468,7 +467,7 @@ namespace PgJsonObjects
                 this.RawIconId = (int)RawIconId;
                 ErrorInfo.AddIconId((int)RawIconId);
 
-                PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, this.RawIconId);
+                PgJsonObjects.Skill.UpdateAnySkillIcon(RawSkill, this.RawIconId);
             }
             else
                 this.RawIconId = 0;
@@ -482,14 +481,8 @@ namespace PgJsonObjects
                 KeywordList.Add(ParsedAbilityKeyword);
 
                 if (HasBasicAttack)
-                    PgJsonObjects.Skill.UpdateBasicAttackTable(Skill, this);
+                    PgJsonObjects.Skill.UpdateBasicAttackTable(RawSkill, this);
             }
-        }
-
-        private void ParsePetTypeTagReqMax(int value, ParseErrorInfo ErrorInfo)
-        {
-            RawPetTypeTagReqMax = value;
-            PetTypeTagReqMax = value;
         }
 
         private void ParsePrerequisite(string RawPrerequisite, ParseErrorInfo ErrorInfo)
@@ -510,11 +503,11 @@ namespace PgJsonObjects
         {
             if (StringToEnumConversion<PowerSkill>.TryParse(value, out PowerSkill ParsedPowerSkill, errorInfo))
             {
-                Skill = ParsedPowerSkill;
+                RawSkill = ParsedPowerSkill;
 
-                PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, RawIconId.HasValue && RawIconId.Value > 0 ? RawIconId : null);
+                PgJsonObjects.Skill.UpdateAnySkillIcon(RawSkill, RawIconId.HasValue && RawIconId.Value > 0 ? RawIconId : null);
                 if (KeywordList.Contains(AbilityKeyword.BasicAttack))
-                    PgJsonObjects.Skill.UpdateBasicAttackTable(Skill, this);
+                    PgJsonObjects.Skill.UpdateBasicAttackTable(RawSkill, this);
             }
         }
 
@@ -2349,117 +2342,6 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(Key);
-
-            Generator.AddString("AbilityGroup", RawAbilityGroup);
-            Generator.AddString("Animation", Animation.ToString());
-            Generator.AddStringList("AttributesThatDeltaPowerCost", RawAttributesThatDeltaPowerCostList, RawAttributesThatDeltaPowerCostListIsEmpty);
-            Generator.AddStringList("AttributesThatDeltaResetTime", RawAttributesThatDeltaResetTimeList, RawAttributesThatDeltaResetTimeListIsEmpty);
-            Generator.AddStringList("AttributesThatModPowerCost", RawAttributesThatModPowerCostList, RawAttributesThatModPowerCostListIsEmpty);
-            Generator.AddBoolean("CanBeOnSidebar", RawCanBeOnSidebar);
-            Generator.AddBoolean("CanSuppressMonsterShout", RawCanSuppressMonsterShout);
-            Generator.AddBoolean("CanTargetUntargetableEnemies", RawCanTargetUntargetableEnemies);
-            StringToEnumConversion<Deaths>.ListToString(Generator, "CausesOfDeath", CausesOfDeathList);
-
-            if (CostList.Count > 0)
-            {
-                Generator.OpenArray("Costs");
-
-                foreach (RecipeCost Cost in CostList)
-                    Cost.GenerateObjectContent(Generator);
-
-                Generator.CloseArray();
-            }
-
-            Generator.AddInteger("CombatRefreshBaseAmount", RawCombatRefreshBaseAmount);
-            StringToEnumConversion<PowerSkill>.ListToString(Generator, "CompatibleSkills", RawCompatibleSkillList);
-            Generator.AddDouble("ConsumedItemChance", RawConsumedItemChance);
-            Generator.AddDouble("ConsumedItemChanceToStickInCorpse", RawConsumedItemChanceToStickInCorpse);
-            Generator.AddInteger("ConsumedItemCount", RawConsumedItemCount);
-            Generator.AddString("ConsumedItemKeyword", RawConsumedItemKeyword);
-            Generator.AddString("DamageType", StringToEnumConversion<DamageType>.ToString(DamageType, null, DamageType.Internal_None, DamageType.Internal_Empty));
-            Generator.AddBoolean("DelayLoopIsAbortedIfAttacked", RawDelayLoopIsAbortedIfAttacked);
-            Generator.AddString("DelayLoopMessage", DelayLoopMessage);
-            Generator.AddDouble("DelayLoopTime", RawDelayLoopTime);
-            Generator.AddString("Description", Description);
-
-            List<AbilityIndicatingEnabled> EffectKeywordsIndicatingEnabledList = new List<AbilityIndicatingEnabled>();
-            if (EffectKeywordsIndicatingEnabled != AbilityIndicatingEnabled.Internal_None)
-                EffectKeywordsIndicatingEnabledList.Add(EffectKeywordsIndicatingEnabled);
-            StringToEnumConversion<AbilityIndicatingEnabled>.ListToString(Generator, "EffectKeywordsIndicatingEnabled", EffectKeywordsIndicatingEnabledList);
-
-            List<TooltipsExtraKeywords> ExtraKeywordsForTooltipList = new List<TooltipsExtraKeywords>();
-            if (ExtraKeywordsForTooltips != TooltipsExtraKeywords.Internal_None)
-                ExtraKeywordsForTooltipList.Add(ExtraKeywordsForTooltips);
-            StringToEnumConversion<TooltipsExtraKeywords>.ListToString(Generator, "ExtraKeywordsForTooltips", ExtraKeywordsForTooltipList);
-
-            Generator.AddInteger("IconID", RawIconId);
-            Generator.AddBoolean("InternalAbility", RawInternalAbility);
-            Generator.AddString("InternalName", InternalName);
-            Generator.AddBoolean("IsHarmless", RawIsHarmless);
-            Generator.AddString("ItemKeywordReqErrorMessage", ItemKeywordReqErrorMessage);
-            StringToEnumConversion<AbilityItemKeyword>.ListToString(Generator, "ItemKeywordReqs", ItemKeywordReqList, TextMaps.AbilityItemKeywordStringMap);
-            StringToEnumConversion<AbilityKeyword>.ListToString(Generator, "Keywords", KeywordList);
-            Generator.AddInteger("Level", RawLevel);
-            Generator.AddString("Name", Name);
-            Generator.AddEnum("PetTypeTagReq", PetTypeTagReq);
-            Generator.AddInteger("PetTypeTagReqMax", RawPetTypeTagReqMax);
-            Generator.AddString("Prerequisite", RawPrerequisite);
-            Generator.AddEnum("Projectile", Projectile);
-
-            if (PvE != null)
-                PvE.GenerateObjectContent(Generator);
-
-            if (PvP != null)
-                PvP.GenerateObjectContent(Generator);
-
-            Generator.AddDouble("ResetTime", RawResetTime);
-            Generator.AddString("SelfParticle", SelfParticle);
-            Generator.AddString("SharesResetTimerWith", RawSharesResetTimerWith);
-            Generator.AddEnum("Skill", Skill);
-
-            if (SpecialCasterRequirementList.Count > 1)
-            {
-                Generator.OpenArray("SpecialCasterRequirements");
-
-                foreach (AbilityRequirement Item in SpecialCasterRequirementList)
-                {
-                    Generator.OpenObject(null);
-
-                    Item.GenerateObjectContent(Generator);
-
-                    Generator.CloseObject();
-                }
-
-                Generator.CloseArray();
-            }
-            else if (SpecialCasterRequirementList.Count > 0)
-            {
-                Generator.OpenObject("SpecialCasterRequirements");
-
-                AbilityRequirement Item = SpecialCasterRequirementList[0];
-                Item.GenerateObjectContent(Generator);
-
-                Generator.CloseObject();
-            }
-
-            Generator.AddString("SpecialInfo", SpecialInfo);
-            Generator.AddInteger("SpecialTargetingTypeReq", RawSpecialTargetingTypeReq);
-            Generator.AddEnum("Target", Target);
-            Generator.AddString("TargetEffectKeywordReq", StringToEnumConversion<TargetEffectKeyword>.ToString(TargetEffectKeywordReq, null, TargetEffectKeyword.Internal_None));
-            Generator.AddEnum("TargetParticle", TargetParticle);
-            Generator.AddString("UpgradeOf", RawUpgradeOf);
-            Generator.AddBoolean("WorksInCombat", RawWorksInCombat);
-            Generator.AddBoolean("WorksUnderwater", RawWorksUnderwater);
-            Generator.AddBoolean("WorksWhileFalling", RawWorksWhileFalling); 
-
-            Generator.CloseObject();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {
@@ -2587,8 +2469,8 @@ namespace PgJsonObjects
             SharesResetTimerWith = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawSharesResetTimerWith, SharesResetTimerWith, ref IsRawSharesResetTimerWithParsed, ref IsConnected, this);
             UpgradeOf = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawUpgradeOf, UpgradeOf, ref IsRawUpgradeOfParsed, ref IsConnected, this);
 
-            if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
-                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
+            if (RawSkill != PowerSkill.Internal_None && RawSkill != PowerSkill.AnySkill && RawSkill != PowerSkill.Unknown)
+                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
 
             foreach (RecipeCost Item in CostList)
                 Item.Connect(ErrorInfo, this, AllTables);

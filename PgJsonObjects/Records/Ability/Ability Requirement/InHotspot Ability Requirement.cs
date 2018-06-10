@@ -19,14 +19,6 @@ namespace PgJsonObjects
                 GetString  = () => Name } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "InHotspot");
-            Generator.AddString("Name", Name);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

@@ -79,24 +79,6 @@ namespace PgJsonObjects
         private bool RawAttributesThatModBaseListIsEmpty;
         #endregion
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(null);
-
-            Generator.AddString("Label", Label);
-            Generator.AddString("Suffix", Suffix);
-            Generator.AddDouble("Value", RawValue);
-            Generator.AddStringList("AttributesThatDelta", RawAttributesThatDeltaList, RawAttributesThatDeltaListIsEmpty);
-            Generator.AddStringList("AttributesThatMod", RawAttributesThatModList, RawAttributesThatModListIsEmpty);
-            Generator.AddStringList("AttributesThatModBase", RawAttributesThatModBaseList, RawAttributesThatModBaseListIsEmpty);
-            //Generator.AddBoolean("DisplayAsPercent", RawDisplayAsPercent);
-            Generator.AddBoolean("SkipIfZero", RawSkipIfZero);
-
-            Generator.CloseObject();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

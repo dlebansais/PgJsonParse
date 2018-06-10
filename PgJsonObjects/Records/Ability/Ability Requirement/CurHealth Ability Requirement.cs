@@ -19,14 +19,6 @@ namespace PgJsonObjects
                 GetFloat = () => Health } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "CurHealth");
-            Generator.AddDouble("Health", Health);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

@@ -5,10 +5,6 @@ namespace PgJsonObjects
     public class IsVolunteerGuideAbilityRequirement : AbilityRequirement
     {
         #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "IsVolunteerGuide");
-        }
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,

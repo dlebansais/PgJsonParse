@@ -19,14 +19,6 @@ namespace PgJsonObjects
                 GetString = () => InteractionFlag } },
         }; } }
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.AddString("T", "InteractionFlagSet");
-            Generator.AddString("InteractionFlag", InteractionFlag);
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

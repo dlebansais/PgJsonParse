@@ -260,13 +260,6 @@ namespace PgJsonObjects
         private int? RawMax;
         #endregion
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            throw new InvalidOperationException();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {

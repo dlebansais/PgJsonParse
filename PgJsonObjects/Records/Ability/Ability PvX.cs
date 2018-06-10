@@ -205,51 +205,6 @@ namespace PgJsonObjects
         private bool RawAttributesThatDeltaRangeListIsEmpty;
         #endregion
 
-        #region Json Reconstruction
-        public override void GenerateObjectContent(JsonGenerator Generator)
-        {
-            Generator.OpenObject(Key);
-
-            Generator.AddInteger("Damage", RawDamage);
-            Generator.AddInteger("HealthSpecificDamage", RawHealthSpecificDamage);
-            Generator.AddInteger("ExtraDamageIfTargetVulnerable", RawExtraDamageIfTargetVulnerable);
-            Generator.AddInteger("ArmorSpecificDamage", RawArmorSpecificDamage);
-            Generator.AddInteger("Range", RawRange);
-            Generator.AddInteger("PowerCost", RawPowerCost);
-            Generator.AddInteger("MetabolismCost", RawMetabolismCost);
-            Generator.AddInteger("ArmorMitigationRatio", RawArmorMitigationRatio);
-            Generator.AddInteger("AoE", RawAoE);
-            Generator.AddInteger("RageBoost", RawRageBoost);
-            Generator.AddDouble("RageMultiplier", RawRageMultiplier);
-            Generator.AddDouble("Accuracy", RawAccuracy);
-            Generator.AddStringList("AttributesThatDeltaDamage", RawAttributesThatDeltaDamageList, RawAttributesThatDeltaDamageListIsEmpty);
-            Generator.AddStringList("AttributesThatModDamage", RawAttributesThatModDamageList, RawAttributesThatModDamageListIsEmpty);
-            Generator.AddStringList("AttributesThatModBaseDamage", RawAttributesThatModBaseDamageList, RawAttributesThatModBaseDamageListIsEmpty);
-            Generator.AddStringList("AttributesThatDeltaTaunt", RawAttributesThatDeltaTauntList, RawAttributesThatDeltaTauntListIsEmpty);
-            Generator.AddStringList("AttributesThatModTaunt", RawAttributesThatModTauntList, RawAttributesThatModTauntListIsEmpty);
-            Generator.AddStringList("AttributesThatDeltaRage", RawAttributesThatDeltaRageList, RawAttributesThatDeltaRageListIsEmpty);
-            Generator.AddStringList("AttributesThatModRage", RawAttributesThatModRageList, RawAttributesThatModRageListIsEmpty);
-            Generator.AddStringList("AttributesThatDeltaRange", RawAttributesThatDeltaRangeList, RawAttributesThatDeltaRangeListIsEmpty);
-
-            if (SpecialValueList.Count > 0)
-            {
-                Generator.OpenArray("SpecialValues");
-
-                foreach (SpecialValue Item in SpecialValueList)
-                    Item.GenerateObjectContent(Generator);
-
-                Generator.CloseArray();
-            }
-
-            Generator.AddInteger("TauntDelta", RawTauntDelta);
-            Generator.AddInteger("TempTauntDelta", RawTempTauntDelta);
-            Generator.AddInteger("RageCost", RawRageCost);
-            Generator.AddDouble("RageCostMod", RawRageCostMod);
-
-            Generator.CloseObject();
-        }
-        #endregion
-
         #region Indexing
         public override string TextContent
         {
