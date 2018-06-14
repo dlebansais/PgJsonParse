@@ -175,9 +175,10 @@ namespace PgJsonObjects
             AddDouble(RawDefaultValue, data, ref offset, BaseOffset, 12);
             AddEnum(DisplayType, data, ref offset, BaseOffset, 16);
             AddEnum(DisplayRule, data, ref offset, BaseOffset, 18);
-            AddBool(RawIsHidden, data, ref offset, ref BitOffset, BaseOffset, 0, 0);
+            AddBool(RawIsHidden, data, ref offset, ref BitOffset, BaseOffset, 20, 0);
+            CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, null, null, null, StoredIntListTable, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, null, StoredIntListTable, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

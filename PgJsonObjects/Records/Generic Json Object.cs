@@ -810,7 +810,8 @@ namespace PgJsonObjects
             SerializeJsonObjectInternal(data, ref offset);
         }
 
-        protected abstract void SerializeJsonObjectInternal(byte[] data, ref int offset);
+        //protected abstract void SerializeJsonObjectInternal(byte[] data, ref int offset);
+        protected virtual void SerializeJsonObjectInternal(byte[] data, ref int offset) { }
 
         protected void AddBool(bool? value, byte[] data, ref int offset, ref int bitOffset, int baseOffset, int expectedOffset, int expectedBitOffset)
         {

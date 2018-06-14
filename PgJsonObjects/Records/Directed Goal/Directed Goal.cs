@@ -102,36 +102,17 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
-            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
-            Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
-            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, IList> StoredObjectistTable = new Dictionary<int, IList>();
 
-            AddEnum(CombatSkill, data, ref offset, BaseOffset, 0);
-            AddBool(RawHideWhenZero, data, ref offset, ref BitOffset, BaseOffset, 2, 0);
-            AddBool(RawCombat, data, ref offset, ref BitOffset, BaseOffset, 2, 2);
-            AddBool(RawSkipBonusLevelsIfSkillUnlearned, data, ref offset, ref BitOffset, BaseOffset, 2, 4);
-            AddBool(RawAuxCombat, data, ref offset, ref BitOffset, BaseOffset, 2, 6);
+            AddInt(RawId, data, ref offset, BaseOffset, 0);
+            AddString(Label, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(Zone, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddString(LargeHint, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddString(SmallHint, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddInt(RawCategoryGateId, data, ref offset, BaseOffset, 20);
+            AddBool(RawIsCategoryGate, data, ref offset, ref BitOffset, BaseOffset, 24, 0);
             CloseBool(ref offset, ref BitOffset);
-            AddInt(RawId, data, ref offset, BaseOffset, 4);
-            AddString(Description, data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddObject(XpTable, data, ref offset, BaseOffset, 12, StoredObjectTable);
-            AddString(RawXpTable, data, ref offset, BaseOffset, 16, StoredStringtable);
-            AddObject(AdvancementTable, data, ref offset, BaseOffset, 20, StoredObjectTable);
-            AddEnumList(CompatibleCombatSkillList, data, ref offset, BaseOffset, 24, StoredEnumListTable);
-            AddInt(RawMaxBonusLevels, data, ref offset, BaseOffset, 28);
-            AddObjectList(InteractionFlagLevelCapList, data, ref offset, BaseOffset, 32, StoredObjectistTable);
-            AddObjectList(RewardList, data, ref offset, BaseOffset, 36, StoredObjectistTable);
-            AddString(Name, data, ref offset, BaseOffset, 40, StoredStringtable);
-            AddObject(ParentSkill, data, ref offset, BaseOffset, 44, StoredObjectTable);
-            AddEnumList(TSysCategoryList, data, ref offset, BaseOffset, 48, StoredEnumListTable);
-            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 52, StoredIntListTable);
-            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 56, StoredStringListTable);
-            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 60, StoredIntListTable);
-            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 64, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, StoredStringListTable, StoredObjectistTable);
+            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion
