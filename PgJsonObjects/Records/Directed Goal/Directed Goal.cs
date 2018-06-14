@@ -1,5 +1,4 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -8,15 +7,15 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
-        private int? RawId;
+        public int? RawId { get; private set; }
         public string Label { get; private set; }
         public string Zone { get; private set; }
-        public bool IsCategoryGate { get { return RawIsCategoryGate.HasValue ? RawIsCategoryGate.Value : false; } }
-        public bool? RawIsCategoryGate { get; private set; }
         public string LargeHint { get; private set; }
         public string SmallHint { get; private set; }
         public int CategoryGateId { get { return RawCategoryGateId.HasValue ? RawCategoryGateId.Value : 0; } }
         public int? RawCategoryGateId { get; private set; }
+        public bool IsCategoryGate { get { return RawIsCategoryGate.HasValue ? RawIsCategoryGate.Value : false; } }
+        public bool? RawIsCategoryGate { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -95,6 +94,46 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "DirectedGoal"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+            Dictionary<int, IList> StoredObjectistTable = new Dictionary<int, IList>();
+
+            AddEnum(CombatSkill, data, ref offset, BaseOffset, 0);
+            AddBool(RawHideWhenZero, data, ref offset, ref BitOffset, BaseOffset, 2, 0);
+            AddBool(RawCombat, data, ref offset, ref BitOffset, BaseOffset, 2, 2);
+            AddBool(RawSkipBonusLevelsIfSkillUnlearned, data, ref offset, ref BitOffset, BaseOffset, 2, 4);
+            AddBool(RawAuxCombat, data, ref offset, ref BitOffset, BaseOffset, 2, 6);
+            CloseBool(ref offset, ref BitOffset);
+            AddInt(RawId, data, ref offset, BaseOffset, 4);
+            AddString(Description, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddObject(XpTable, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddString(RawXpTable, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddObject(AdvancementTable, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddEnumList(CompatibleCombatSkillList, data, ref offset, BaseOffset, 24, StoredEnumListTable);
+            AddInt(RawMaxBonusLevels, data, ref offset, BaseOffset, 28);
+            AddObjectList(InteractionFlagLevelCapList, data, ref offset, BaseOffset, 32, StoredObjectistTable);
+            AddObjectList(RewardList, data, ref offset, BaseOffset, 36, StoredObjectistTable);
+            AddString(Name, data, ref offset, BaseOffset, 40, StoredStringtable);
+            AddObject(ParentSkill, data, ref offset, BaseOffset, 44, StoredObjectTable);
+            AddEnumList(TSysCategoryList, data, ref offset, BaseOffset, 48, StoredEnumListTable);
+            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 52, StoredIntListTable);
+            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 56, StoredStringListTable);
+            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 60, StoredIntListTable);
+            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 64, StoredStringListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, StoredStringListTable, StoredObjectistTable);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

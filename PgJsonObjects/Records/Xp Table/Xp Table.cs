@@ -9,8 +9,8 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public string InternalName { get; private set; }
-        public XpTableEnum EnumName { get; private set; }
         public List<XpTableLevel> XpAmountList { get; } = new List<XpTableLevel>();
+        public XpTableEnum EnumName { get; private set; }
         private int TotalXp = 0;
         private int Level = 0;
         #endregion
@@ -95,6 +95,22 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "XpTable"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IList> StoredObjectistTable = new Dictionary<int, IList>();
+
+            AddString(InternalName, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddObjectList(XpAmountList, data, ref offset, BaseOffset, 4, StoredObjectistTable);
+            AddEnum(EnumName, data, ref offset, BaseOffset, 8);
+
+            FinishSerializing(data, ref offset, BaseOffset, 10, StoredStringtable, null, null, null, null, null, StoredObjectistTable);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

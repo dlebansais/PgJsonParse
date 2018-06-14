@@ -81,12 +81,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Json Reconstruction
-        public override void GenerateObjectContent2(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        public override void GenerateObjectContent(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
         {
             Generator.OpenObject(Key);
 
             foreach (KeyValuePair<int, Advancement> Level in LevelTable)
-                Level.Value.GenerateObjectContent2(Generator, true, false);
+                Level.Value.GenerateObjectContent(Generator, true, false);
 
             Generator.CloseObject();
         }
@@ -135,6 +135,19 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "AdvancementTable"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddString(InternalName, data, ref offset, BaseOffset, 0, StoredStringtable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, StoredStringtable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

@@ -12,8 +12,9 @@ namespace PgJsonObjects
     public interface IParser
     {
         bool VerifyParse { get; set; }
-        bool LoadRaw(string FilePath, ICollection ObjectList, bool loadAsArray, bool useJavaFormat, ParseErrorInfo ErrorInfo);
+        bool LoadRaw(string FilePath, ICollection ObjectList, bool loadAsArray, ParseErrorInfo ErrorInfo);
         void CreateIndex(string IndexFilePath, IDictionary<string, IGenericJsonObject> ObjectTable);
+        bool Verify(string FilePath, ICollection GenericObjectList, bool loadAsArray, bool useJavaFormat);
     }
 
     public class Parser<T> : IParser
@@ -31,7 +32,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Client Interface
-        public bool LoadRaw(string FilePath, ICollection GenericObjectList, bool loadAsArray, bool useJavaFormat, ParseErrorInfo ErrorInfo)
+        public bool LoadRaw(string FilePath, ICollection GenericObjectList, bool loadAsArray, ParseErrorInfo ErrorInfo)
         {
             ICollection<T> ObjectList = GenericObjectList as ICollection<T>;
             ObjectList.Clear();
@@ -89,89 +90,101 @@ namespace PgJsonObjects
 
                     Success = false;
                 }
-
-                if (VerifyParse)
-                {
-                    try
-                    {
-                        using (JsonGenerator Generator = new JsonGenerator(useJavaFormat))
-                        {
-                            Generator.Begin();
-
-                            if (loadAsArray)
-                            {
-                                string LastRootKey = null;
-
-                                foreach (T Item in ObjectList)
-                                {
-                                    string Key = Item.Key;
-                                    string[] Splitted = Key.Split('#');
-                                    if (Splitted.Length == 2)
-                                    {
-                                        string RootKey = Splitted[0];
-
-                                        if (RootKey != LastRootKey)
-                                        {
-                                            if (LastRootKey != null)
-                                                Generator.CloseArray();
-
-                                            Generator.OpenArray(RootKey);
-                                            LastRootKey = RootKey;
-                                        }
-
-                                        Item.OpenGeneratorKey(Generator, false, true);
-                                        Item.ListAllObjectContent(Generator);
-                                        Item.CloseGeneratorKey(Generator, false, true);
-                                    }
-                                }
-
-                                if (LastRootKey != null)
-                                    Generator.CloseArray();
-                            }
-                            else
-                            {
-                                foreach (T Item in ObjectList)
-                                    Item.GenerateObjectContent2(Generator, true, false);
-                            }
-
-                            Generator.End();
-
-                            //int FirstDiff = CompareContent(SortedContent, Generator.Content);
-                            int FirstDiff = CompareContent(Content, Generator.Content);
-                            //int FirstDiff = -1;
-                            if (FirstDiff >= 0 && FirstDiff < Content.Length)
-                            {
-                                if (FirstDiff > 150)
-                                    FirstDiff -= 150;
-                                else
-                                    FirstDiff = 0;
-
-                                int Length = 260;
-                                if (Length > (Content.Length - FirstDiff))
-                                    Length = (Content.Length - FirstDiff);
-                                if (Length > (Generator.Content.Length - FirstDiff))
-                                    Length = (Generator.Content.Length - FirstDiff);
-                                if (Length > 0)
-                                {
-                                    Debug.WriteLine("** " + Path.GetFileName(FilePath));
-                                    Debug.WriteLine(Content.Substring(FirstDiff, Length));
-                                    Debug.WriteLine("**");
-                                    Debug.WriteLine(Generator.Content.Substring(FirstDiff, Length));
-                                    Debug.WriteLine("**");
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Confirmation.Show("Unable to verify " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", false, ConfirmationType.Error);
-                        Success = false;
-                    }
-                }
             }
             else
             {
                 RecordTable = null;
+                Success = false;
+            }
+
+            return Success;
+        }
+
+        public bool Verify(string FilePath, ICollection GenericObjectList, bool loadAsArray, bool useJavaFormat)
+        {
+            if (!VerifyParse)
+                return true;
+
+            string Content = FileTools.LoadTextFile(FilePath, FileMode.Open);
+            if (Content == null)
+                return true;
+
+            ICollection<T> ObjectList = GenericObjectList as ICollection<T>;
+            bool Success = true;
+
+            try
+            {
+                using (JsonGenerator Generator = new JsonGenerator(useJavaFormat))
+                {
+                    Generator.Begin();
+
+                    if (loadAsArray)
+                    {
+                        string LastRootKey = null;
+
+                        foreach (T Item in ObjectList)
+                        {
+                            string Key = Item.Key;
+                            string[] Splitted = Key.Split('#');
+                            if (Splitted.Length == 2)
+                            {
+                                string RootKey = Splitted[0];
+
+                                if (RootKey != LastRootKey)
+                                {
+                                    if (LastRootKey != null)
+                                        Generator.CloseArray();
+
+                                    Generator.OpenArray(RootKey);
+                                    LastRootKey = RootKey;
+                                }
+
+                                Item.OpenGeneratorKey(Generator, false, true);
+                                Item.ListAllObjectContent(Generator);
+                                Item.CloseGeneratorKey(Generator, false, true);
+                            }
+                        }
+
+                        if (LastRootKey != null)
+                            Generator.CloseArray();
+                    }
+                    else
+                    {
+                        foreach (T Item in ObjectList)
+                            Item.GenerateObjectContent(Generator, true, false);
+                    }
+
+                    Generator.End();
+
+                    //int FirstDiff = CompareContent(SortedContent, Generator.Content);
+                    int FirstDiff = CompareContent(Content, Generator.Content);
+                    //int FirstDiff = -1;
+                    if (FirstDiff >= 0 && FirstDiff < Content.Length)
+                    {
+                        if (FirstDiff > 150)
+                            FirstDiff -= 150;
+                        else
+                            FirstDiff = 0;
+
+                        int Length = 260;
+                        if (Length > (Content.Length - FirstDiff))
+                            Length = (Content.Length - FirstDiff);
+                        if (Length > (Generator.Content.Length - FirstDiff))
+                            Length = (Generator.Content.Length - FirstDiff);
+                        if (Length > 0)
+                        {
+                            Debug.WriteLine("** " + Path.GetFileName(FilePath));
+                            Debug.WriteLine(Content.Substring(FirstDiff, Length));
+                            Debug.WriteLine("**");
+                            Debug.WriteLine(Generator.Content.Substring(FirstDiff, Length));
+                            Debug.WriteLine("**");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Confirmation.Show("Unable to verify " + Path.GetFileNameWithoutExtension(FilePath) + "\n\n" + e.Message, "Error", false, ConfirmationType.Error);
                 Success = false;
             }
 

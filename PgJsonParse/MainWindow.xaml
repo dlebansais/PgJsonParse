@@ -2274,7 +2274,7 @@
                     <TextBlock Grid.Column="3" Grid.Row="8" TextWrapping="Wrap" Margin="5,10,0,0">
                         <Hyperlink x:Name="hyperlink_Ability_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
                             <Run>
-                                <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
+                                <Binding Path="Skill.Name" Mode="OneWay"/>
                             </Run>
                         </Hyperlink>
                     </TextBlock>
@@ -2300,11 +2300,11 @@
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Upgrade of:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="13" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_Ability_UpgradeOf" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run>
-                                            <Binding Path="UpgradeOf.Name" Mode="OneWay"/>
-                                        </Run>
-                                    </Hyperlink>
+                        <Hyperlink x:Name="hyperlink_Ability_UpgradeOf" Click="OnRequestNavigate" NavigateUri="unused">
+                            <Run>
+                                <Binding Path="UpgradeOf.Name" Mode="OneWay"/>
+                            </Run>
+                        </Hyperlink>
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Works In Combat:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="14" TextWrapping="Wrap" Margin="5,10,0,0">
@@ -3770,11 +3770,11 @@
                     </ItemsControl>
                     <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run>
-                                            <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
-                                        </Run>
-                                    </Hyperlink>
+                        <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
+                            <Run>
+                                <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
+                            </Run>
+                        </Hyperlink>
                     </TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Required Level:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Margin="5,10,0,0">
@@ -4420,11 +4420,11 @@
                                 </TextBlock.Text>
                             </TextBlock>
                             <TextBlock Visibility="{Binding ConnectedSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                            <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                                <Run>
-                                                    <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
-                                                </Run>
-                                            </Hyperlink>
+                                <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
+                                    <Run>
+                                        <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
+                                    </Run>
+                                </Hyperlink>
                             </TextBlock>
                         </Grid>
                         <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Is Unavailable:</TextBlock>

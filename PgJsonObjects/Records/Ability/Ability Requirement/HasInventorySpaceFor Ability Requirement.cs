@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class HasInventorySpaceForAbilityRequirement : AbilityRequirement
+    public class HasInventorySpaceForAbilityRequirement : AbilityRequirement, IPgAbilityRequirementHasInventorySpaceFor
     {
         public HasInventorySpaceForAbilityRequirement(string RawItem)
         {
@@ -47,6 +47,20 @@ namespace PgJsonObjects
             Item = PgJsonObjects.Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItem, Item, ref IsRawItemParsed, ref IsConnected, this);
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            int BaseOffset = offset;
+
+            AddObject(Item, data, ref offset, BaseOffset, 0, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, StoredObjectTable, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class DruidEventStateAbilityRequirement : AbilityRequirement
+    public class DruidEventStateAbilityRequirement : AbilityRequirement, IPgAbilityRequirementDruidEventState
     {
         public DruidEventStateAbilityRequirement(string RawDisallowedState, ParseErrorInfo ErrorInfo)
         {
@@ -33,6 +33,18 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddEnum(DisallowedState, data, ref offset, BaseOffset, 0);
+
+            FinishSerializing(data, ref offset, BaseOffset, 2, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

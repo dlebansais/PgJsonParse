@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class HasEffectKeywordAbilityRequirement : AbilityRequirement
+    public class HasEffectKeywordAbilityRequirement : AbilityRequirement, IPgAbilityRequirementHasEffectKeyword
     {
         public HasEffectKeywordAbilityRequirement(string RawKeyword, ParseErrorInfo ErrorInfo)
         {
@@ -33,6 +33,18 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddEnum(Keyword, data, ref offset, BaseOffset, 0);
+
+            FinishSerializing(data, ref offset, BaseOffset, 2, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

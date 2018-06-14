@@ -1,6 +1,4 @@
-﻿using PgJsonReader;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -11,14 +9,14 @@ namespace PgJsonObjects
         public string Label { get; private set; }
         public string Suffix { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
-        private double? RawValue;
-        public Dictionary<string, Attribute> AttributesThatDeltaTable { get; } = new Dictionary<string, Attribute>();
-        public Dictionary<string, Attribute> AttributesThatModTable { get; } = new Dictionary<string, Attribute>();
-        public Dictionary<string, Attribute> AttributesThatModBaseTable { get; } = new Dictionary<string, Attribute>();
+        public double? RawValue { get; private set; }
         public bool DisplayAsPercent { get { return RawDisplayAsPercent.HasValue && RawDisplayAsPercent.Value; } }
-        private bool? RawDisplayAsPercent;
+        public bool? RawDisplayAsPercent { get; private set; }
         public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
-        private bool? RawSkipIfZero;
+        public bool? RawSkipIfZero { get; private set; }
+        private Dictionary<string, Attribute> AttributesThatDeltaTable { get; } = new Dictionary<string, Attribute>();
+        private Dictionary<string, Attribute> AttributesThatModTable { get; } = new Dictionary<string, Attribute>();
+        private Dictionary<string, Attribute> AttributesThatModBaseTable { get; } = new Dictionary<string, Attribute>();
         #endregion
 
         #region Indirect Properties
@@ -110,6 +108,25 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "SpecialValue"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddString(Label, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Suffix, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddDouble(RawValue, data, ref offset, BaseOffset, 8);
+            AddBool(RawDisplayAsPercent, data, ref offset, ref BitOffset, BaseOffset, 12, 0);
+            AddBool(RawSkipIfZero, data, ref offset, ref BitOffset, BaseOffset, 12, 2);
+            CloseBool(ref offset, ref BitOffset);
+
+            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

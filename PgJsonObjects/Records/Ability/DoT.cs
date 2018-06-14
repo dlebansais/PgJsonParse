@@ -1,23 +1,23 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class DoT : GenericJsonObject<DoT>
+    public class DoT : GenericJsonObject<DoT>, IPgDoT
     {
         #region Direct Properties
         public int DamagePerTick { get { return RawDamagePerTick.HasValue ? RawDamagePerTick.Value : 0; } }
-        private int? RawDamagePerTick;
+        public int? RawDamagePerTick { get; private set; }
         public int NumTicks { get { return RawNumTicks.HasValue ? RawNumTicks.Value : 0; } }
-        private int? RawNumTicks;
+        public int? RawNumTicks { get; private set; }
         public int Duration { get { return RawDuration.HasValue ? RawDuration.Value : 0; } }
-        private int? RawDuration;
-        public DamageType DamageType { get; private set; }
-        public Dictionary<string, Attribute> AttributesThatDeltaTable { get; } = new Dictionary<string, Attribute>();
-        public Dictionary<string, Attribute> AttributesThatModTable { get; } = new Dictionary<string, Attribute>();
+        public int? RawDuration { get; private set; }
         public List<DoTSpecialRule> SpecialRuleList { get; } = new List<DoTSpecialRule>();
         public string RawPreface { get; private set; }
+        public DamageType DamageType { get; private set; }
+        private Dictionary<string, Attribute> AttributesThatDeltaTable { get; } = new Dictionary<string, Attribute>();
+        private Dictionary<string, Attribute> AttributesThatModTable { get; } = new Dictionary<string, Attribute>();
         #endregion
 
         #region Indirect Properties
@@ -104,6 +104,25 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "DoT"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+
+            AddInt(RawDamagePerTick, data, ref offset, BaseOffset, 0);
+            AddInt(RawNumTicks, data, ref offset, BaseOffset, 4);
+            AddInt(RawDuration, data, ref offset, BaseOffset, 8);
+            AddEnumList(SpecialRuleList, data, ref offset, BaseOffset, 12, StoredEnumListTable);
+            AddString(RawPreface, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddEnum(DamageType, data, ref offset, BaseOffset, 20);
+
+            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, StoredEnumListTable, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

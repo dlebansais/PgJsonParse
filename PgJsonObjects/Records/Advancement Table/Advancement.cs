@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Advancement : GenericJsonObject<Advancement>
+    public class Advancement : GenericJsonObject<Advancement>, IPgAdvancement
     {
         #region Direct Properties
         public Dictionary<DamageType, double> VulnerabilityTable { get; } = new Dictionary<DamageType, double>();
@@ -12,129 +12,129 @@ namespace PgJsonObjects
         public Dictionary<DamageType, double> DirectModTable { get; } = new Dictionary<DamageType, double>();
         public Dictionary<DamageType, double> IndirectModTable { get; } = new Dictionary<DamageType, double>();
         public double NonCombatRegenHealthMod { get { return RawNonCombatRegenHealthMod.HasValue ? RawNonCombatRegenHealthMod.Value : 0; } }
-        private double? RawNonCombatRegenHealthMod;
+        public double? RawNonCombatRegenHealthMod { get; private set; }
         public double CombatRegenHealthMod { get { return RawCombatRegenHealthMod.HasValue ? RawCombatRegenHealthMod.Value : 0; } }
-        private double? RawCombatRegenHealthMod;
+        public double? RawCombatRegenHealthMod { get; private set; }
         public double CombatRegenHealthDelta { get { return RawCombatRegenHealthDelta.HasValue ? RawCombatRegenHealthDelta.Value : 0; } }
-        private double? RawCombatRegenHealthDelta;
+        public double? RawCombatRegenHealthDelta { get; private set; }
         public double NonCombatRegenArmorMod { get { return RawNonCombatRegenArmorMod.HasValue ? RawNonCombatRegenArmorMod.Value : 0; } }
-        private double? RawNonCombatRegenArmorMod;
+        public double? RawNonCombatRegenArmorMod { get; private set; }
         public double NonCombatRegenArmordelta { get { return RawNonCombatRegenArmordelta.HasValue ? RawNonCombatRegenArmordelta.Value : 0; } }
-        private double? RawNonCombatRegenArmordelta;
+        public double? RawNonCombatRegenArmordelta { get; private set; }
         public double CombatRegenArmorMod { get { return RawCombatRegenArmorMod.HasValue ? RawCombatRegenArmorMod.Value : 0; } }
-        private double? RawCombatRegenArmorMod;
+        public double? RawCombatRegenArmorMod { get; private set; }
         public double NonCombatRegenPowerMod { get { return RawNonCombatRegenPowerMod.HasValue ? RawNonCombatRegenPowerMod.Value : 0; } }
-        private double? RawNonCombatRegenPowerMod;
+        public double? RawNonCombatRegenPowerMod { get; private set; }
         public double CombatRegenPowerMod { get { return RawCombatRegenPowerMod.HasValue ? RawCombatRegenPowerMod.Value : 0; } }
-        private double? RawCombatRegenPowerMod;
+        public double? RawCombatRegenPowerMod { get; private set; }
         public double NonCombatRegenRageMod { get { return RawNonCombatRegenRageMod.HasValue ? RawNonCombatRegenRageMod.Value : 0; } }
-        private double? RawNonCombatRegenRageMod;
+        public double? RawNonCombatRegenRageMod { get; private set; }
         public double CombatRegenRageMod { get { return RawCombatRegenRageMod.HasValue ? RawCombatRegenRageMod.Value : 0; } }
-        private double? RawCombatRegenRageMod;
+        public double? RawCombatRegenRageMod { get; private set; }
         public double MentalDefenseRating { get { return RawMentalDefenseRating.HasValue ? RawMentalDefenseRating.Value : 0; } }
-        private double? RawMentalDefenseRating;
+        public double? RawMentalDefenseRating { get; private set; }
         public double SprintBoost { get { return RawSprintBoost.HasValue ? RawSprintBoost.Value : 0; } }
-        private double? RawSprintBoost;
+        public double? RawSprintBoost { get; private set; }
         public double TauntMod { get { return RawTauntMod.HasValue ? RawTauntMod.Value : 0; } }
-        private double? RawTauntMod;
+        public double? RawTauntMod { get; private set; }
         public double IgnoreChanceFear { get { return RawIgnoreChanceFear.HasValue ? RawIgnoreChanceFear.Value : 0; } }
-        private double? RawIgnoreChanceFear;
+        public double? RawIgnoreChanceFear { get; private set; }
         public double IgnoreChanceMezz { get { return RawIgnoreChanceMezz.HasValue ? RawIgnoreChanceMezz.Value : 0; } }
-        private double? RawIgnoreChanceMezz;
+        public double? RawIgnoreChanceMezz { get; private set; }
         public double IgnoreChanceKnockback { get { return RawIgnoreChanceKnockback.HasValue ? RawIgnoreChanceKnockback.Value : 0; } }
-        private double? RawIgnoreChanceKnockback;
+        public double? RawIgnoreChanceKnockback { get; private set; }
         public double EvasionChance { get { return RawEvasionChance.HasValue ? RawEvasionChance.Value : 0; } }
-        private double? RawEvasionChance;
+        public double? RawEvasionChance { get; private set; }
         public double LootBoostChanceUncommon { get { return RawLootBoostChanceUncommon.HasValue ? RawLootBoostChanceUncommon.Value : 0; } }
-        private double? RawLootBoostChanceUncommon;
+        public double? RawLootBoostChanceUncommon { get; private set; }
         public double LootBoostChanceRare { get { return RawLootBoostChanceRare.HasValue ? RawLootBoostChanceRare.Value : 0; } }
-        private double? RawLootBoostChanceRare;
+        public double? RawLootBoostChanceRare { get; private set; }
         public double LootBoostChanceExceptional { get { return RawLootBoostChanceExceptional.HasValue ? RawLootBoostChanceExceptional.Value : 0; } }
-        private double? RawLootBoostChanceExceptional;
+        public double? RawLootBoostChanceExceptional { get; private set; }
         public double LootBoostChanceEpic { get { return RawLootBoostChanceEpic.HasValue ? RawLootBoostChanceEpic.Value : 0; } }
-        private double? RawLootBoostChanceEpic;
+        public double? RawLootBoostChanceEpic { get; private set; }
         public double LootBoostChanceLegendary { get { return RawLootBoostChanceLegendary.HasValue ? RawLootBoostChanceLegendary.Value : 0; } }
-        private double? RawLootBoostChanceLegendary;
+        public double? RawLootBoostChanceLegendary { get; private set; }
         public double MaxHealth { get { return RawMaxHealth.HasValue ? RawMaxHealth.Value : 0; } }
-        private double? RawMaxHealth;
+        public double? RawMaxHealth { get; private set; }
         public double MaxArmor { get { return RawMaxArmor.HasValue ? RawMaxArmor.Value : 0; } }
-        private double? RawMaxArmor;
+        public double? RawMaxArmor { get; private set; }
         public double MaxRage { get { return RawMaxRage.HasValue ? RawMaxRage.Value : 0; } }
-        private double? RawMaxRage;
+        public double? RawMaxRage { get; private set; }
         public double MaxPower { get { return RawMaxPower.HasValue ? RawMaxPower.Value : 0; } }
-        private double? RawMaxPower;
+        public double? RawMaxPower { get; private set; }
         public double MaxBreath { get { return RawMaxBreath.HasValue ? RawMaxBreath.Value : 0; } }
-        private double? RawMaxBreath;
+        public double? RawMaxBreath { get; private set; }
         public double BoostUniversalDirect { get { return RawBoostUniversalDirect.HasValue ? RawBoostUniversalDirect.Value : 0; } }
-        private double? RawBoostUniversalDirect;
+        public double? RawBoostUniversalDirect { get; private set; }
         public double BoostAbilityRageAttack { get { return RawBoostAbilityRageAttack.HasValue ? RawBoostAbilityRageAttack.Value : 0; } }
-        private double? RawBoostAbilityRageAttack;
+        public double? RawBoostAbilityRageAttack { get; private set; }
         public double ModAbilityRageAttack { get { return RawModAbilityRageAttack.HasValue ? RawModAbilityRageAttack.Value : 0; } }
-        private double? RawModAbilityRageAttack;
+        public double? RawModAbilityRageAttack { get; private set; }
         public double MonsterCombatXpValue { get { return RawMonsterCombatXpValue.HasValue ? RawMonsterCombatXpValue.Value : 0; } }
-        private double? RawMonsterCombatXpValue;
+        public double? RawMonsterCombatXpValue { get; private set; }
         public double CombatRegenArmorDelta { get { return RawCombatRegenArmorDelta.HasValue ? RawCombatRegenArmorDelta.Value : 0; } }
-        private double? RawCombatRegenArmorDelta;
+        public double? RawCombatRegenArmorDelta { get; private set; }
         public double CombatRegenDelta { get { return RawCombatRegenDelta.HasValue ? RawCombatRegenDelta.Value : 0; } }
-        private double? RawCombatRegenDelta;
+        public double? RawCombatRegenDelta { get; private set; }
         public double MaxInventorySize { get { return RawMaxInventorySize.HasValue ? RawMaxInventorySize.Value : 0; } }
-        private double? RawMaxInventorySize;
+        public double? RawMaxInventorySize { get; private set; }
         public double MaxMetabolism { get { return RawMaxMetabolism.HasValue ? RawMaxMetabolism.Value : 0; } }
-        private double? RawMaxMetabolism;
+        public double? RawMaxMetabolism { get; private set; }
         public double NpcModFavorFromGifts { get { return RawNpcModFavorFromGifts.HasValue ? RawNpcModFavorFromGifts.Value : 0; } }
-        private double? RawNpcModFavorFromGifts;
+        public double? RawNpcModFavorFromGifts { get; private set; }
         public double NpcModFavorFromHangouts { get { return RawNpcModFavorFromHangouts.HasValue ? RawNpcModFavorFromHangouts.Value : 0; } }
-        private double? RawNpcModFavorFromHangouts;
+        public double? RawNpcModFavorFromHangouts { get; private set; }
         public double NpcModMaxSalesValue { get { return RawNpcModMaxSalesValue.HasValue ? RawNpcModMaxSalesValue.Value : 0; } }
-        private double? RawNpcModMaxSalesValue;
+        public double? RawNpcModMaxSalesValue { get; private set; }
         public double NpcModTrainingCost { get { return RawNpcModTrainingCost.HasValue ? RawNpcModTrainingCost.Value : 0; } }
-        private double? RawNpcModTrainingCost;
+        public double? RawNpcModTrainingCost { get; private set; }
         public int NumInventoryFolders { get { return RawNumInventoryFolders.HasValue ? RawNumInventoryFolders.Value : 0; } }
-        private int? RawNumInventoryFolders;
+        public int? RawNumInventoryFolders { get; private set; }
         public double HighCleanlinessXpEarnedMod { get { return RawHighCleanlinessXpEarnedMod.HasValue ? RawHighCleanlinessXpEarnedMod.Value : 0; } }
-        private double? RawHighCleanlinessXpEarnedMod;
+        public double? RawHighCleanlinessXpEarnedMod { get; private set; }
         public double LowCleanlinessXpEarnedMod { get { return RawLowCleanlinessXpEarnedMod.HasValue ? RawLowCleanlinessXpEarnedMod.Value : 0; } }
-        private double? RawLowCleanlinessXpEarnedMod;
+        public double? RawLowCleanlinessXpEarnedMod { get; private set; }
         public double MaxArmorMitigationRatio { get { return RawMaxArmorMitigationRatio.HasValue ? RawMaxArmorMitigationRatio.Value : 0; } }
-        private double? RawMaxArmorMitigationRatio;
+        public double? RawMaxArmorMitigationRatio { get; private set; }
         public double ShowCleanlinessIndicators { get { return RawShowCleanlinessIndicators.HasValue ? RawShowCleanlinessIndicators.Value : 0; } }
-        private double? RawShowCleanlinessIndicators;
+        public double? RawShowCleanlinessIndicators { get; private set; }
         public double HighCommunityXpEarnedMod { get { return RawHighCommunityXpEarnedMod.HasValue ? RawHighCommunityXpEarnedMod.Value : 0; } }
-        private double? RawHighCommunityXpEarnedMod;
+        public double? RawHighCommunityXpEarnedMod { get; private set; }
         public double LowCommunityXpEarnedMod { get { return RawLowCommunityXpEarnedMod.HasValue ? RawLowCommunityXpEarnedMod.Value : 0; } }
-        private double? RawLowCommunityXpEarnedMod;
+        public double? RawLowCommunityXpEarnedMod { get; private set; }
         public double ShowCommunityIndicators { get { return RawShowCommunityIndicators.HasValue ? RawShowCommunityIndicators.Value : 0; } }
-        private double? RawShowCommunityIndicators;
+        public double? RawShowCommunityIndicators { get; private set; }
         public double HighPeaceblenessXpEarnedMod { get { return RawHighPeaceblenessXpEarnedMod.HasValue ? RawHighPeaceblenessXpEarnedMod.Value : 0; } }
-        private double? RawHighPeaceblenessXpEarnedMod;
+        public double? RawHighPeaceblenessXpEarnedMod { get; private set; }
         public double LowPeaceblenessXpEarnedMod { get { return RawLowPeaceblenessXpEarnedMod.HasValue ? RawLowPeaceblenessXpEarnedMod.Value : 0; } }
-        private double? RawLowPeaceblenessXpEarnedMod;
+        public double? RawLowPeaceblenessXpEarnedMod { get; private set; }
         public double ShowPeaceblenessIndicators { get { return RawShowPeaceblenessIndicators.HasValue ? RawShowPeaceblenessIndicators.Value : 0; } }
-        private double? RawShowPeaceblenessIndicators;
+        public double? RawShowPeaceblenessIndicators { get; private set; }
         public double StaffArmorAutoHeal { get { return RawStaffArmorAutoHeal.HasValue ? RawStaffArmorAutoHeal.Value : 0; } }
-        private double? RawStaffArmorAutoHeal;
+        public double? RawStaffArmorAutoHeal { get; private set; }
         public double MaxMapPinsPerArea { get { return RawMaxMapPinsPerArea.HasValue ? RawMaxMapPinsPerArea.Value : 0; } }
-        private double? RawMaxMapPinsPerArea;
+        public double? RawMaxMapPinsPerArea { get; private set; }
         public double MaxMapPinIcons { get { return RawMaxMapPinIcons.HasValue ? RawMaxMapPinIcons.Value : 0; } }
-        private double? RawMaxMapPinIcons;
+        public double? RawMaxMapPinIcons { get; private set; }
         public double WorkOrderCoinRewardMod { get { return RawWorkOrderCoinRewardMod.HasValue ? RawWorkOrderCoinRewardMod.Value : 0; } }
-        private double? RawWorkOrderCoinRewardMod;
+        public double? RawWorkOrderCoinRewardMod { get; private set; }
         public double MaxActiveWorkOrders { get { return RawMaxActiveWorkOrders.HasValue ? RawMaxActiveWorkOrders.Value : 0; } }
-        private double? RawMaxActiveWorkOrders;
+        public double? RawMaxActiveWorkOrders { get; private set; }
         public double PlayerOrdersMaxActive { get { return RawPlayerOrdersMaxActive.HasValue ? RawPlayerOrdersMaxActive.Value : 0; } }
-        private double? RawPlayerOrdersMaxActive;
+        public double? RawPlayerOrdersMaxActive { get; private set; }
         public double ShopInventorySizeDelta { get { return RawShopInventorySizeDelta.HasValue ? RawShopInventorySizeDelta.Value : 0; } }
-        private double? RawShopInventorySizeDelta;
+        public double? RawShopInventorySizeDelta { get; private set; }
         public double MailShopNumFree { get { return RawMailShopNumFree.HasValue ? RawMailShopNumFree.Value : 0; } }
-        private double? RawMailShopNumFree;
+        public double? RawMailShopNumFree { get; private set; }
         public double ShopHiringMaxPrepDays { get { return RawShopHiringMaxPrepDays.HasValue ? RawShopHiringMaxPrepDays.Value : 0; } }
-        private double? RawShopHiringMaxPrepDays;
+        public double? RawShopHiringMaxPrepDays { get; private set; }
         public double ShopLogDaysKept { get { return RawShopLogDaysKept.HasValue ? RawShopLogDaysKept.Value : 0; } }
-        private double? RawShopLogDaysKept;
+        public double? RawShopLogDaysKept { get; private set; }
         public double ShopHiringNumFree { get { return RawShopHiringNumFree.HasValue ? RawShopHiringNumFree.Value : 0; } }
-        private double? RawShopHiringNumFree;
+        public double? RawShopHiringNumFree { get; private set; }
         public double CriticalHitDamage { get { return RawCriticalHitDamage.HasValue ? RawCriticalHitDamage.Value : 0; } }
-        private double? RawCriticalHitDamage;
+        public double? RawCriticalHitDamage { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -497,6 +497,114 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Advancement"; } }
+        #endregion
+
+        #region Json Reconstruction
+        public override void ListObjectContent(JsonGenerator generator, string ParserKey)
+        {
+            string RawDamageType;
+            DamageType ParsedDamageType;
+
+            if (IsDamageTypeEntry(ParserKey, "VULN_", null, out RawDamageType, out ParsedDamageType, null))
+            {
+                generator.AddDouble("VULN_" + RawDamageType.ToUpper(), VulnerabilityTable[ParsedDamageType]);
+                return;
+            }
+
+            else if (IsDamageTypeEntry(ParserKey, "MITIGATION_", null, out RawDamageType, out ParsedDamageType, null))
+            {
+                generator.AddDouble("MITIGATION_" + RawDamageType.ToUpper(), MitigationTable[ParsedDamageType]);
+                return;
+            }
+
+            else if (IsDamageTypeEntry(ParserKey, "MOD_", "_INDIRECT", out RawDamageType, out ParsedDamageType, null))
+            {
+                generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_INDIRECT", IndirectModTable[ParsedDamageType]);
+                return;
+            }
+
+            else if (IsDamageTypeEntry(ParserKey, "MOD_", "_DIRECT", out RawDamageType, out ParsedDamageType, null))
+            {
+                generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_DIRECT", DirectModTable[ParsedDamageType]);
+                return;
+            }
+
+            else
+                base.ListObjectContent(generator, ParserKey);
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddDouble(RawNonCombatRegenHealthMod, data, ref offset, BaseOffset, 0);
+            AddDouble(RawCombatRegenHealthMod, data, ref offset, BaseOffset, 4);
+            AddDouble(RawCombatRegenHealthDelta, data, ref offset, BaseOffset, 8);
+            AddDouble(RawNonCombatRegenArmorMod, data, ref offset, BaseOffset, 12);
+            AddDouble(RawNonCombatRegenArmordelta, data, ref offset, BaseOffset, 16);
+            AddDouble(RawCombatRegenArmorMod, data, ref offset, BaseOffset, 20);
+            AddDouble(RawNonCombatRegenPowerMod, data, ref offset, BaseOffset, 24);
+            AddDouble(RawCombatRegenPowerMod, data, ref offset, BaseOffset, 28);
+            AddDouble(RawNonCombatRegenRageMod, data, ref offset, BaseOffset, 32);
+            AddDouble(RawCombatRegenRageMod, data, ref offset, BaseOffset, 36);
+            AddDouble(RawMentalDefenseRating, data, ref offset, BaseOffset, 40);
+            AddDouble(RawSprintBoost, data, ref offset, BaseOffset, 44);
+            AddDouble(RawTauntMod, data, ref offset, BaseOffset, 48);
+            AddDouble(RawIgnoreChanceFear, data, ref offset, BaseOffset, 52);
+            AddDouble(RawIgnoreChanceMezz, data, ref offset, BaseOffset, 56);
+            AddDouble(RawIgnoreChanceKnockback, data, ref offset, BaseOffset, 60);
+            AddDouble(RawEvasionChance, data, ref offset, BaseOffset, 64);
+            AddDouble(RawLootBoostChanceUncommon, data, ref offset, BaseOffset, 68);
+            AddDouble(RawLootBoostChanceRare, data, ref offset, BaseOffset, 72);
+            AddDouble(RawLootBoostChanceExceptional, data, ref offset, BaseOffset, 76);
+            AddDouble(RawLootBoostChanceEpic, data, ref offset, BaseOffset, 80);
+            AddDouble(RawLootBoostChanceLegendary, data, ref offset, BaseOffset, 84);
+            AddDouble(RawMaxHealth, data, ref offset, BaseOffset, 88);
+            AddDouble(RawMaxArmor, data, ref offset, BaseOffset, 92);
+            AddDouble(RawMaxRage, data, ref offset, BaseOffset, 96);
+            AddDouble(RawMaxPower, data, ref offset, BaseOffset, 100);
+            AddDouble(RawMaxBreath, data, ref offset, BaseOffset, 104);
+            AddDouble(RawBoostUniversalDirect, data, ref offset, BaseOffset, 108);
+            AddDouble(RawBoostAbilityRageAttack, data, ref offset, BaseOffset, 112);
+            AddDouble(RawModAbilityRageAttack, data, ref offset, BaseOffset, 116);
+            AddDouble(RawMonsterCombatXpValue, data, ref offset, BaseOffset, 120);
+            AddDouble(RawCombatRegenArmorDelta, data, ref offset, BaseOffset, 124);
+            AddDouble(RawCombatRegenDelta, data, ref offset, BaseOffset, 128);
+            AddDouble(RawMaxInventorySize, data, ref offset, BaseOffset, 132);
+            AddDouble(RawMaxMetabolism, data, ref offset, BaseOffset, 136);
+            AddDouble(RawNpcModFavorFromGifts, data, ref offset, BaseOffset, 140);
+            AddDouble(RawNpcModFavorFromHangouts, data, ref offset, BaseOffset, 144);
+            AddDouble(RawNpcModMaxSalesValue, data, ref offset, BaseOffset, 148);
+            AddDouble(RawNpcModTrainingCost, data, ref offset, BaseOffset, 152);
+            AddInt(RawNumInventoryFolders, data, ref offset, BaseOffset, 156);
+            AddDouble(RawHighCleanlinessXpEarnedMod, data, ref offset, BaseOffset, 160);
+            AddDouble(RawLowCleanlinessXpEarnedMod, data, ref offset, BaseOffset, 164);
+            AddDouble(RawMaxArmorMitigationRatio, data, ref offset, BaseOffset, 168);
+            AddDouble(RawShowCleanlinessIndicators, data, ref offset, BaseOffset, 172);
+            AddDouble(RawHighCommunityXpEarnedMod, data, ref offset, BaseOffset, 176);
+            AddDouble(RawLowCommunityXpEarnedMod, data, ref offset, BaseOffset, 180);
+            AddDouble(RawShowCommunityIndicators, data, ref offset, BaseOffset, 184);
+            AddDouble(RawHighPeaceblenessXpEarnedMod, data, ref offset, BaseOffset, 188);
+            AddDouble(RawLowPeaceblenessXpEarnedMod, data, ref offset, BaseOffset, 192);
+            AddDouble(RawShowPeaceblenessIndicators, data, ref offset, BaseOffset, 196);
+            AddDouble(RawStaffArmorAutoHeal, data, ref offset, BaseOffset, 200);
+            AddDouble(RawMaxMapPinsPerArea, data, ref offset, BaseOffset, 204);
+            AddDouble(RawMaxMapPinIcons, data, ref offset, BaseOffset, 208);
+            AddDouble(RawWorkOrderCoinRewardMod, data, ref offset, BaseOffset, 212);
+            AddDouble(RawMaxActiveWorkOrders, data, ref offset, BaseOffset, 216);
+            AddDouble(RawPlayerOrdersMaxActive, data, ref offset, BaseOffset, 220);
+            AddDouble(RawShopInventorySizeDelta, data, ref offset, BaseOffset, 224);
+            AddDouble(RawMailShopNumFree, data, ref offset, BaseOffset, 228);
+            AddDouble(RawShopHiringMaxPrepDays, data, ref offset, BaseOffset, 232);
+            AddDouble(RawShopLogDaysKept, data, ref offset, BaseOffset, 236);
+            AddDouble(RawShopHiringNumFree, data, ref offset, BaseOffset, 240);
+            AddDouble(RawCriticalHitDamage, data, ref offset, BaseOffset, 244);
+
+            FinishSerializing(data, ref offset, BaseOffset, 248, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

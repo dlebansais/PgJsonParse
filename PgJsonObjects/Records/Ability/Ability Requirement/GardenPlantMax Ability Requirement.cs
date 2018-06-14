@@ -2,18 +2,19 @@
 
 namespace PgJsonObjects
 {
-    public class GardenPlantMaxAbilityRequirement : AbilityRequirement
+    public class GardenPlantMaxAbilityRequirement : AbilityRequirement, IPgAbilityRequirementGardenPlantMax
     {
         public GardenPlantMaxAbilityRequirement(string RawTypeTag, int? RawMax, ParseErrorInfo ErrorInfo)
         {
             AbilityTypeTag ParsedTypeTag;
             StringToEnumConversion<AbilityTypeTag>.TryParse(RawTypeTag, out ParsedTypeTag, ErrorInfo);
             TypeTag = ParsedTypeTag;
-            Max = RawMax.HasValue ? RawMax.Value : 0;
+            this.RawMax = RawMax;
         }
 
+        public int Max { get { return RawMax.HasValue ? RawMax.Value : 0; } }
+        public int? RawMax { get; private set; }
         public AbilityTypeTag TypeTag { get; private set; }
-        public int Max { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
@@ -38,6 +39,19 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddInt(RawMax, data, ref offset, BaseOffset, 0);
+            AddEnum(TypeTag, data, ref offset, BaseOffset, 4);
+
+            FinishSerializing(data, ref offset, BaseOffset, 6, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

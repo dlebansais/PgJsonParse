@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class SingleAppearanceAbilityRequirement : AbilityRequirement
+    public class SingleAppearanceAbilityRequirement : AbilityRequirement, IPgAbilityRequirementSingleAppearance
     {
         public SingleAppearanceAbilityRequirement(string RawAppearance, ParseErrorInfo ErrorInfo)
         {
@@ -32,6 +32,18 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddEnum(Appearance, data, ref offset, BaseOffset, 0);
+
+            FinishSerializing(data, ref offset, BaseOffset, 2, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

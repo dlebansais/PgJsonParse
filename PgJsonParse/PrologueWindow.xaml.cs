@@ -714,7 +714,7 @@ namespace PgJsonParse
                     if (int.TryParse(FolderName, out Version) && Version > 0)
                     {
                         DownloadState FileDownloadState = DownloadState.Downloaded;
-                        foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
+                        foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
                             if (Entry.Value.MinVersion == 0 || Entry.Value.MinVersion <= Version)
                                 if (!FileTools.FileExists(Path.Combine(SubFolder, Entry.Value.JsonFileName + ".json")))
                                 {
@@ -769,7 +769,7 @@ namespace PgJsonParse
             string VersionFolder = InitFolder(Path.Combine(VersionCacheFolder, versionInfo.Version.ToString()));
 
             List<string> JsonFileList = new List<string>();
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
                 if (Entry.Value.MinVersion <= versionInfo.Version)
                     JsonFileList.Add(Entry.Value.JsonFileName);
 
@@ -923,7 +923,7 @@ namespace PgJsonParse
             string IconFolder = ShareIconFiles ? IconCacheFolder : VersionFolder;
 
             List<KeyValuePair<Type, IObjectDefinition>> EntryList = new List<KeyValuePair<Type, IObjectDefinition>>();
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
                 EntryList.Add(Entry);
 
             IconTable.Clear();
@@ -955,7 +955,7 @@ namespace PgJsonParse
             {
                 progressIndex++;
 
-                ParseProgress = (progressIndex * 100.0) / ObjectList.SingleDefinitions.Count;
+                ParseProgress = (progressIndex * 100.0) / ObjectList.Definitions.Count;
                 SetTaskbarProgressValue(ParseProgress, 100.0);
 
                 if (progressIndex < entryList.Count)
@@ -987,6 +987,21 @@ namespace PgJsonParse
                 IsGlobalInteractionEnabled = true;
                 return;
             }
+
+
+            int offset;
+
+            offset = 0;
+            SerializeAll(null, ref offset);
+
+            int length = offset;
+            byte[] data = new byte[length];
+
+            offset = 0;
+            SerializeAll(data, ref offset);
+
+
+
 
             LoadedIconCount = 0;
             MissingIconList = new List<int>();
@@ -1065,6 +1080,18 @@ namespace PgJsonParse
             else
                 Dlg.WarningText = "Files loaded and parsed, no warnings.";
 
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+            {
+                IObjectDefinition definition = Entry.Value;
+                IParser FileParser = definition.FileParser;
+
+                string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
+                IList ObjectList = definition.ObjectList;
+
+                if (!FileParser.Verify(FilePath, ObjectList, definition.LoadAsArray, definition.UseJavaFormat))
+                    break;
+            }
+
             Dlg.LoadedVersion = versionInfo;
             Dlg.ApplicationFolder = ApplicationFolder;
             Dlg.IconCacheFolder = IconCacheFolder;
@@ -1077,6 +1104,19 @@ namespace PgJsonParse
             IsGlobalInteractionEnabled = true;
         }
 
+        private void SerializeAll(byte[] data, ref int offset)
+        {
+            GenericJsonObject.ResetSerializedObjectTable();
+
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+            {
+                IObjectDefinition definition = Entry.Value;
+                IList ObjectList = definition.ObjectList;
+                foreach (IGenericJsonObject Item in ObjectList)
+                    Item.SerializeJsonMainObject(data, ref offset);
+            }
+        }
+
         private bool LoadNextFile(IObjectDefinition definition, string versionFolder, ParseErrorInfo errorInfo)
         {
             try
@@ -1086,7 +1126,7 @@ namespace PgJsonParse
                 IParser FileParser = definition.FileParser;
                 IList ObjectList = definition.ObjectList;
                 Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
-                if (!FileParser.LoadRaw(FilePath, ObjectList, definition.LoadAsArray, definition.UseJavaFormat, errorInfo))
+                if (!FileParser.LoadRaw(FilePath, ObjectList, definition.LoadAsArray, errorInfo))
                     return false;
 
                 ObjectTable.Clear();
@@ -1107,14 +1147,14 @@ namespace PgJsonParse
         {
             Dictionary<Type, IList> AllLists = new Dictionary<Type, IList>();
             Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables = new Dictionary<Type, Dictionary<string, IGenericJsonObject>>();
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
                 AllLists.Add(Entry.Key, definition.ObjectList);
                 AllTables.Add(Entry.Key, definition.ObjectTable);
             }
 
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
                 foreach (IGenericJsonObject Item in definition.ObjectList)
@@ -1124,7 +1164,7 @@ namespace PgJsonParse
                     return false;
             }
 
-            IObjectDefinition RecipeDefinition = ObjectList.SingleDefinitions[typeof(Recipe)];
+            IObjectDefinition RecipeDefinition = ObjectList.Definitions[typeof(Recipe)];
             bool Continue;
             do
             {
@@ -1134,14 +1174,14 @@ namespace PgJsonParse
             }
             while (Continue);
 
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
                 foreach (IGenericJsonObject Item in definition.ObjectList)
                     Item.SetIndirectProperties(AllTables, errorInfo);
             }
 
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
                 foreach (IGenericJsonObject Item in definition.ObjectList)
@@ -1156,7 +1196,7 @@ namespace PgJsonParse
 
         private bool CreateIndexes(string versionFolder, string iconFolder, ParseErrorInfo errorInfo)
         {
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 if (!CreateNextIndex(Entry.Value, versionFolder, errorInfo))
                     return false;
@@ -1195,7 +1235,7 @@ namespace PgJsonParse
             string MushroomNameFile = Path.Combine(ApplicationFolder, "Mushrooms.txt");
 
             List<string> MushroomNameList = new List<string>();
-            IObjectDefinition ItemDefinition = ObjectList.SingleDefinitions[typeof(Item)];
+            IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
             Dictionary<string, IGenericJsonObject> ItemTable = ItemDefinition.ObjectTable;
 
             foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)

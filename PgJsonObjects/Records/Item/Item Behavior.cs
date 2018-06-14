@@ -8,9 +8,7 @@ namespace PgJsonObjects
     public class ItemBehavior : GenericJsonObject<ItemBehavior>
     {
         #region Direct Properties
-        public ItemUseVerb UseVerb { get; private set; }
         public ServerInfo ServerInfo { get; private set; }
-        private bool IsServerInfoEmpty;
         public List<ItemUseRequirement> UseRequirementList { get; private set; } = new List<ItemUseRequirement>();
         public ItemUseAnimation UseAnimation { get; private set; }
         public ItemUseAnimation UseDelayAnimation { get; private set; }
@@ -18,6 +16,8 @@ namespace PgJsonObjects
         public int? RawMetabolismCost { get; private set; }
         public double UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
         public double? RawUseDelay { get; private set; }
+        public ItemUseVerb UseVerb { get; private set; }
+        private bool IsServerInfoEmpty;
         #endregion
 
         #region Indirect Properties
@@ -120,6 +120,26 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "ItemBehavior"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+
+            AddObject(ServerInfo, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddEnumList(UseRequirementList, data, ref offset, BaseOffset, 4, StoredEnumListTable);
+            AddEnum(UseAnimation, data, ref offset, BaseOffset, 8);
+            AddEnum(UseDelayAnimation, data, ref offset, BaseOffset, 10);
+            AddInt(RawMetabolismCost, data, ref offset, BaseOffset, 12);
+            AddDouble(RawUseDelay, data, ref offset, BaseOffset, 16);
+            AddEnum(UseVerb, data, ref offset, BaseOffset, 20);
+
+            FinishSerializing(data, ref offset, BaseOffset, 22, null, StoredObjectTable, null, StoredEnumListTable, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

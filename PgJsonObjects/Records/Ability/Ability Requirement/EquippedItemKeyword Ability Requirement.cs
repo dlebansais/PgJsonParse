@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class EquippedItemKeywordAbilityRequirement : AbilityRequirement
+    public class EquippedItemKeywordAbilityRequirement : AbilityRequirement, IPgAbilityRequirementEquippedItemKeyword
     {
         public EquippedItemKeywordAbilityRequirement(string RawKeyword, int? rawMinCount, int? rawMaxCount, ParseErrorInfo ErrorInfo)
         {
@@ -13,11 +13,11 @@ namespace PgJsonObjects
             RawMaxCount = rawMaxCount;
         }
 
-        public AbilityKeyword Keyword { get; private set; }
         public int MinCount { get { return RawMinCount.HasValue ? RawMinCount.Value : 0; } }
-        private int? RawMinCount;
+        public int? RawMinCount { get; private set; }
         public int MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }
-        private int? RawMaxCount;
+        public int? RawMaxCount { get; private set; }
+        public AbilityKeyword Keyword { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
@@ -45,6 +45,20 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddDouble(RawMinCount, data, ref offset, BaseOffset, 0);
+            AddDouble(RawMaxCount, data, ref offset, BaseOffset, 4);
+            AddEnum(Keyword, data, ref offset, BaseOffset, 8);
+
+            FinishSerializing(data, ref offset, BaseOffset, 10, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

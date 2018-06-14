@@ -1,5 +1,6 @@
 ﻿using PgJsonReader;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -8,30 +9,41 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public int Damage { get { return RawDamage.HasValue ? RawDamage.Value : 0; } }
-        private int? RawDamage;
+        public int? RawDamage { get; private set; }
         public int ExtraDamageIfTargetVulnerable { get { return RawExtraDamageIfTargetVulnerable.HasValue ? RawExtraDamageIfTargetVulnerable.Value : 0; } }
-        private int? RawExtraDamageIfTargetVulnerable;
+        public int? RawExtraDamageIfTargetVulnerable { get; private set; }
         public int HealthSpecificDamage { get { return RawHealthSpecificDamage.HasValue ? RawHealthSpecificDamage.Value : 0; } }
-        private int? RawHealthSpecificDamage;
+        public int? RawHealthSpecificDamage { get; private set; }
         public int ArmorSpecificDamage { get { return RawArmorSpecificDamage.HasValue ? RawArmorSpecificDamage.Value : 0; } }
-        private int? RawArmorSpecificDamage;
+        public int? RawArmorSpecificDamage { get; private set; }
         public int Range { get { return RawRange.HasValue ? RawRange.Value : 0; } }
-        private int? RawRange;
+        public int? RawRange { get; private set; }
         public int PowerCost { get { return RawPowerCost.HasValue ? RawPowerCost.Value : 0; } }
-        private int? RawPowerCost;
+        public int? RawPowerCost { get; private set; }
         public int MetabolismCost { get { return RawMetabolismCost.HasValue ? RawMetabolismCost.Value : 0; } }
-        private int? RawMetabolismCost;
+        public int? RawMetabolismCost { get; private set; }
         public int ArmorMitigationRatio { get { return RawArmorMitigationRatio.HasValue ? RawArmorMitigationRatio.Value : 0; } }
-        private int? RawArmorMitigationRatio;
-        public bool IsAoE { get { return RawAoE.HasValue; } }
+        public int? RawArmorMitigationRatio { get; private set; }
         public int AoE { get { return RawAoE.HasValue ? RawAoE.Value : 0; } }
-        private int? RawAoE;
+        public int? RawAoE { get; private set; }
         public int RageBoost { get { return RawRageBoost.HasValue ? RawRageBoost.Value : 0; } }
-        private int? RawRageBoost;
+        public int? RawRageBoost { get; private set; }
         public double RageMultiplier { get { return RawRageMultiplier.HasValue ? RawRageMultiplier.Value : 1.0; } }
-        private double? RawRageMultiplier;
+        public double? RawRageMultiplier { get; private set; }
         public double Accuracy { get { return RawAccuracy.HasValue ? RawAccuracy.Value : 0; } }
-        private double? RawAccuracy;
+        public double? RawAccuracy { get; private set; }
+        public List<SpecialValue> SpecialValueList { get; } = new List<SpecialValue>();
+        public List<DoT> DoTList { get; } = new List<DoT>();
+        public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
+        public int? RawTauntDelta { get; private set; }
+        public int TempTauntDelta { get { return RawTempTauntDelta.HasValue ? RawTempTauntDelta.Value : 0; } }
+        public int? RawTempTauntDelta { get; private set; }
+        public int RageCost { get { return RawRageCost.HasValue ? RawRageCost.Value : 0; } }
+        public int? RawRageCost { get; private set; }
+        public double RageCostMod { get { return RawRageCostMod.HasValue ? RawRageCostMod.Value : 0; } }
+        public double? RawRageCostMod { get; private set; }
+        public List<PreEffect> SelfPreEffectList { get; } = new List<PreEffect>();
+
         public Dictionary<string, Attribute> AttributesThatDeltaDamageTable { get; } = new Dictionary<string, Attribute>();
         public Dictionary<string, Attribute> AttributesThatModDamageTable { get; } = new Dictionary<string, Attribute>();
         public Dictionary<string, Attribute> AttributesThatModBaseDamageTable { get; } = new Dictionary<string, Attribute>();
@@ -40,17 +52,6 @@ namespace PgJsonObjects
         public Dictionary<string, Attribute> AttributesThatDeltaRageTable { get; } = new Dictionary<string, Attribute>();
         public Dictionary<string, Attribute> AttributesThatModRageTable { get; } = new Dictionary<string, Attribute>();
         public Dictionary<string, Attribute> AttributesThatDeltaRangeTable { get; } = new Dictionary<string, Attribute>();
-        public List<SpecialValue> SpecialValueList { get; } = new List<SpecialValue>();
-        public List<DoT> DoTList { get; } = new List<DoT>();
-        public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
-        private int? RawTauntDelta;
-        public int TempTauntDelta { get { return RawTempTauntDelta.HasValue ? RawTempTauntDelta.Value : 0; } }
-        private int? RawTempTauntDelta;
-        public int RageCost { get { return RawRageCost.HasValue ? RawRageCost.Value : 0; } }
-        private int? RawRageCost;
-        public double RageCostMod { get { return RawRageCostMod.HasValue ? RawRageCostMod.Value : 0; } }
-        private double? RawRageCostMod;
-        public List<PreEffect> SelfPreEffectList { get; } = new List<PreEffect>();
         #endregion
 
         #region Indirect Properties
@@ -263,6 +264,38 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "AbilityPvX"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, IList> StoredObjectistTable = new Dictionary<int, IList>();
+
+            AddInt(RawDamage, data, ref offset, BaseOffset, 0);
+            AddInt(RawExtraDamageIfTargetVulnerable, data, ref offset, BaseOffset, 4);
+            AddInt(RawHealthSpecificDamage, data, ref offset, BaseOffset, 8);
+            AddInt(RawArmorSpecificDamage, data, ref offset, BaseOffset, 12);
+            AddInt(RawRange, data, ref offset, BaseOffset, 16);
+            AddInt(RawPowerCost, data, ref offset, BaseOffset, 20);
+            AddInt(RawMetabolismCost, data, ref offset, BaseOffset, 24);
+            AddInt(RawArmorMitigationRatio, data, ref offset, BaseOffset, 28);
+            AddInt(RawAoE, data, ref offset, BaseOffset, 32);
+            AddInt(RawRageBoost, data, ref offset, BaseOffset, 36);
+            AddDouble(RawRageMultiplier, data, ref offset, BaseOffset, 40);
+            AddDouble(RawAccuracy, data, ref offset, BaseOffset, 44);
+            AddObjectList(SpecialValueList, data, ref offset, BaseOffset, 48, StoredObjectistTable);
+            AddObjectList(DoTList, data, ref offset, BaseOffset, 52, StoredObjectistTable);
+            AddInt(RawTauntDelta, data, ref offset, BaseOffset, 56);
+            AddInt(RawTempTauntDelta, data, ref offset, BaseOffset, 60);
+            AddInt(RawRageCost, data, ref offset, BaseOffset, 64);
+            AddDouble(RawRageCostMod, data, ref offset, BaseOffset, 68);
+            AddEnumList(SelfPreEffectList, data, ref offset, BaseOffset, 72, StoredEnumListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 76, null, null, null, StoredEnumListTable, null, null, StoredObjectistTable);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

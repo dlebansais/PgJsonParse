@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class RaceAbilityRequirement : AbilityRequirement
+    public class RaceAbilityRequirement : AbilityRequirement, IPgAbilityRequirementRace
     {
         public RaceAbilityRequirement(List<string> RawAllowedRaceList, ParseErrorInfo ErrorInfo)
         {
@@ -18,6 +19,7 @@ namespace PgJsonObjects
         }
 
         public List<Race> AllowedRaceList { get; } = new List<Race>();
+
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
@@ -39,6 +41,19 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+
+            AddEnumList(AllowedRaceList, data, ref offset, BaseOffset, 0, StoredEnumListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, StoredEnumListTable, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

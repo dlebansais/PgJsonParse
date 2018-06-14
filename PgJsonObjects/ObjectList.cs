@@ -5,7 +5,7 @@ namespace PgJsonObjects
 {
     public static class ObjectList
     {
-        public static Dictionary<Type, IObjectDefinition> SingleDefinitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()
+        public static Dictionary<Type, IObjectDefinition> Definitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()
         {
             { typeof(Ability), new ObjectDefinition<Ability>("abilities", 0, false, true, false) },
             { typeof(AdvancementTable), new ObjectDefinition<AdvancementTable>("advancementtables", 0, false, true, false) },

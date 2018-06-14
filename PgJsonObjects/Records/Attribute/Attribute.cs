@@ -1,5 +1,4 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,11 +10,12 @@ namespace PgJsonObjects
         public string Label { get; private set; }
         public List<int> IconIdList { get; } = new List<int>();
         public string Tooltip { get; private set; }
-        public DisplayType DisplayType { get; private set; }
-        public bool IsHidden { get { return RawIsHidden.HasValue && RawIsHidden.Value; } }
-        private bool? RawIsHidden;
-        public DisplayRule DisplayRule { get; private set; }
+        public double DefaultValue { get { return RawDefaultValue.HasValue ? RawDefaultValue.Value : 0; } }
         public double? RawDefaultValue { get; private set; }
+        public DisplayType DisplayType { get; private set; }
+        public DisplayRule DisplayRule { get; private set; }
+        public bool IsHidden { get { return RawIsHidden.HasValue && RawIsHidden.Value; } }
+        public bool? RawIsHidden { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -159,6 +159,27 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Attribute"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
+
+            AddString(Label, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddIntList(IconIdList, data, ref offset, BaseOffset, 4, StoredIntListTable);
+            AddString(Tooltip, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddDouble(RawDefaultValue, data, ref offset, BaseOffset, 12);
+            AddEnum(DisplayType, data, ref offset, BaseOffset, 16);
+            AddEnum(DisplayRule, data, ref offset, BaseOffset, 18);
+            AddBool(RawIsHidden, data, ref offset, ref BitOffset, BaseOffset, 0, 0);
+
+            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, null, null, null, StoredIntListTable, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

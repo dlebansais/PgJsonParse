@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class RecipeKnownAbilityRequirement : AbilityRequirement
+    public class RecipeKnownAbilityRequirement : AbilityRequirement, IPgAbilityRequirementRecipeKnown
     {
         public RecipeKnownAbilityRequirement(string RawRecipeKnown)
         {
@@ -46,6 +46,19 @@ namespace PgJsonObjects
             RecipeKnown = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRecipeKnown, RecipeKnown, ref IsRawRecipeKnownParsed, ref IsConnected, this);
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            AddObject(RecipeKnown, data, ref offset, BaseOffset, 0, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, StoredObjectTable, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

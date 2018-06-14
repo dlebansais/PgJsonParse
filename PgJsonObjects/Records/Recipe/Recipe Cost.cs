@@ -1,5 +1,4 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -7,9 +6,9 @@ namespace PgJsonObjects
     public class RecipeCost : GenericJsonObject<RecipeCost>
     {
         #region Direct Properties
-        public RecipeCurrency Currency { get; private set; }
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }
-        private double? RawPrice;
+        public double? RawPrice { get; private set; }
+        public RecipeCurrency Currency { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -53,6 +52,19 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "RecipeCost"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddDouble(RawPrice, data, ref offset, BaseOffset, 0);
+            AddEnum(Currency, data, ref offset, BaseOffset, 4);
+
+            FinishSerializing(data, ref offset, BaseOffset, 6, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

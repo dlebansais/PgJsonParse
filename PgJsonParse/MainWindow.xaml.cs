@@ -260,7 +260,7 @@ namespace PgJsonParse
 
             List<PowerSkill> NewCombatSkillList = new List<PowerSkill>();
 
-            IObjectDefinition PowerDefinition = ObjectList.SingleDefinitions[typeof(Power)];
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
             IList PowerList = PowerDefinition.ObjectList;
 
             foreach (Power PowerItem in PowerList)
@@ -359,9 +359,9 @@ namespace PgJsonParse
                 SelectAsSecond = PowerSkill.Internal_None;
             }
 
-            IObjectDefinition PowerDefinition = ObjectList.SingleDefinitions[typeof(Power)];
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
             IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
-            IObjectDefinition AttributeDefinition = ObjectList.SingleDefinitions[typeof(PgJsonObjects.Attribute)];
+            IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
             Dictionary<string, IGenericJsonObject> AttributeTable = AttributeDefinition.ObjectTable;
 
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
@@ -372,7 +372,7 @@ namespace PgJsonParse
         {
             WeightProfileList.Clear();
 
-            IObjectDefinition AttributeDefinition = ObjectList.SingleDefinitions[typeof(PgJsonObjects.Attribute)];
+            IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
             IList<PgJsonObjects.Attribute> AttributeList = AttributeDefinition.ObjectList as IList<PgJsonObjects.Attribute>;
 
             if (!FileTools.FileExists(DefaultProfileName))
@@ -468,9 +468,9 @@ namespace PgJsonParse
             WeightProfile SelectedProfile = (WeightProfileIndex >= 0 && WeightProfileIndex < WeightProfileList.Count) ? WeightProfileList[WeightProfileIndex] : null;
             ItemAttributeLink.SetSelectedProfile(SelectedProfile);
 
-            IObjectDefinition AttributeDefinition = ObjectList.SingleDefinitions[typeof(PgJsonObjects.Attribute)];
+            IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
             IList<PgJsonObjects.Attribute> AttributeList = AttributeDefinition.ObjectList as IList<PgJsonObjects.Attribute>;
-            IObjectDefinition ItemDefinition = ObjectList.SingleDefinitions[typeof(Item)];
+            IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
             IList<Item> ItemList = ItemDefinition.ObjectList as IList<Item>;
 
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
@@ -604,9 +604,9 @@ namespace PgJsonParse
 
                 else
                 {
-                    IObjectDefinition PowerDefinition = ObjectList.SingleDefinitions[typeof(Power)];
+                    IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
                     Dictionary<string, IGenericJsonObject> PowerTable = PowerDefinition.ObjectTable;
-                    IObjectDefinition ItemDefinition = ObjectList.SingleDefinitions[typeof(Item)];
+                    IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
                     Dictionary<string, IGenericJsonObject> ItemTable = ItemDefinition.ObjectTable;
 
                     ItemSlot ParsedSlot;
@@ -1050,7 +1050,7 @@ namespace PgJsonParse
 
         private void PerformSearch(List<string> termList, SearchModes searchMode)
         {
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.SingleDefinitions)
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 Type EntryType = Entry.Key;
 
@@ -1291,7 +1291,7 @@ namespace PgJsonParse
 
             CrunchSelectionList.Clear();
 
-            IObjectDefinition SkillDefinition = ObjectList.SingleDefinitions[typeof(Skill)];
+            IObjectDefinition SkillDefinition = ObjectList.Definitions[typeof(Skill)];
             IList<Skill> SkillList = SkillDefinition.ObjectList as IList<Skill>;
 
             List<Skill> CombatSkillList = new List<Skill>();
@@ -1337,12 +1337,12 @@ namespace PgJsonParse
             if (skillItem.XpTable.InternalName != "TypicalCombatSkill" && skillItem.XpTable.InternalName != "TypicalCombatSkillExt")
                 return false;
 
-            IObjectDefinition AbilityDefinition = ObjectList.SingleDefinitions[typeof(Ability)];
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
             IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
             int AbilityCount = 0;
             foreach (Ability Item in AbilityList)
-                if (skillItem.CombatSkill != PowerSkill.Internal_None && Item.RawSkill == skillItem.CombatSkill)
+                if (skillItem.CombatSkill != PowerSkill.Internal_None && Item.Skill.CombatSkill == skillItem.CombatSkill)
                     AbilityCount++;
 
             if (AbilityCount < 6)
@@ -1451,7 +1451,7 @@ namespace PgJsonParse
                 MaxLevel = int.MaxValue;
 
             Dictionary<Ability, List<Ability>> AbilitiesSortedByLineName = new Dictionary<Ability, List<Ability>>();
-            IObjectDefinition AbilityDefinition = ObjectList.SingleDefinitions[typeof(Ability)];
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
             IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
             foreach (Ability AbilityItem in AbilityList)
@@ -1462,7 +1462,7 @@ namespace PgJsonParse
                 if (AbilityItem.Level > MaxLevel)
                     continue;
 
-                if ((AbilityItem.InternalName != null) && (AbilityItem.RawSkill == selectedSkill.CombatSkill))
+                if ((AbilityItem.InternalName != null) && (AbilityItem.Skill.CombatSkill == selectedSkill.CombatSkill))
                 {
                     List<Ability> SortedAbilityList;
 
@@ -1519,7 +1519,7 @@ namespace PgJsonParse
 
         private Ability AbilityPrevious(Ability abilityItem)
         {
-            IObjectDefinition AbilityDefinition = ObjectList.SingleDefinitions[typeof(Ability)];
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
             IList<Ability> AbilityList = AbilityDefinition.ObjectList as IList<Ability>;
 
             if (abilityItem.UpgradeOf != null)
@@ -1550,7 +1550,7 @@ namespace PgJsonParse
         private Dictionary<ItemSlot, List<Power>> SelectGear(Skill primarySkill, Skill secondarySkill)
         {
             Dictionary<ItemSlot, List<Power>> Gear = new Dictionary<ItemSlot, List<Power>>();
-            IObjectDefinition PowerDefinition = ObjectList.SingleDefinitions[typeof(Power)];
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
             IList<Power> PowerList = PowerDefinition.ObjectList as IList<Power>;
 
             List<ItemSlot> SlotList = new List<ItemSlot>()
