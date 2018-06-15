@@ -1,6 +1,5 @@
 ﻿using PgJsonReader;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -33,6 +32,8 @@ namespace PgJsonObjects
         public bool? RawMustCompleteEarlierObjectivesFirst;
         public int? MinHour { get; private set; }
         public int? MaxHour { get; private set; }
+        public int NumToDeliver { get { return RawNumToDeliver.HasValue ? RawNumToDeliver.Value : 0; } }
+        public int? RawNumToDeliver { get; private set; }
         private int? RawMinAmount;
         private int? RawMaxAmount;
         private QuestObjectiveKillTarget KillTarget;
@@ -55,7 +56,6 @@ namespace PgJsonObjects
         private ItemKeyword ItemKeyword;
         private MonsterTypeTag MonsterTypeTag;
         private EffectKeyword EffectRequirement;
-        protected int? RawNumToDeliver;
         private string InteractionTarget;
         protected QuestObjectiveRequirement QuestObjectiveRequirement;
         #endregion
@@ -648,6 +648,13 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "QuestObjective"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            throw new InvalidOperationException();
+        }
         #endregion
     }
 }

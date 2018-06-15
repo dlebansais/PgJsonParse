@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveGuildGiveItem : QuestObjective
+    public class QuestObjectiveGuildGiveItem : QuestObjective, IPgQuestObjectiveGuildGiveItem
     {
         #region Init
         public QuestObjectiveGuildGiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string DeliverNpcId, string DeliverNpcName, string RawItemName)
@@ -49,15 +50,16 @@ namespace PgJsonObjects
 
         #region Properties
         public Item QuestItem { get; private set; }
-        private string RawItemName;
-        private bool IsItemNameParsed;
-        public string DeliverNpcId { get; private set; }
-        public string DeliverNpcName { get; private set; }
-        private bool IsDeliverNpcParsed;
         public GameNpc DeliverNpc { get; private set; }
         public ItemKeyword ItemKeyword { get; private set; }
         public List<Item> ItemList { get; private set; } = new List<Item>();
+
         private bool IsTargetParsed;
+        private string RawItemName;
+        private bool IsItemNameParsed;
+        private string DeliverNpcId;
+        private string DeliverNpcName;
+        private bool IsDeliverNpcParsed;
         #endregion
 
         #region Indexing
@@ -98,6 +100,23 @@ namespace PgJsonObjects
             QuestItem = Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItemName, QuestItem, ref IsItemNameParsed, ref IsConnected, this);
             ItemList = PgJsonObjects.Item.ConnectByKeyword(ErrorInfo, ItemTable, ItemKeyword, ItemList, ref IsTargetParsed, ref IsConnected, ParentQuest);
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddObject(QuestItem, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(DeliverNpc, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObjectList(ItemList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
+            AddEnum(ItemKeyword, data, ref offset, BaseOffset, 12);
+
+            FinishSerializing(data, ref offset, BaseOffset, 14, null, StoredObjectTable, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

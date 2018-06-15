@@ -2614,7 +2614,7 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
-            Dictionary<int, IList> StoredObjectistTable = new Dictionary<int, IList>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
 
             AddEnum(Animation, data, ref offset, BaseOffset, 0);
             AddBool(RawCanBeOnSidebar, data, ref offset, ref BitOffset, BaseOffset, 2, 0);
@@ -2626,7 +2626,7 @@ namespace PgJsonObjects
             AddBool(RawWorksInCombat, data, ref offset, ref BitOffset, BaseOffset, 2, 12);
             AddBool(RawWorksUnderwater, data, ref offset, ref BitOffset, BaseOffset, 2, 14);
             AddEnumList(CausesOfDeathList, data, ref offset, BaseOffset, 4, StoredEnumListTable);
-            AddObjectList(CostList, data, ref offset, BaseOffset, 8, StoredObjectistTable);
+            AddObjectList(CostList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
             AddInt(RawCombatRefreshBaseAmount, data, ref offset, BaseOffset, 12);
             AddEnum(CompatibleSkill, data, ref offset, BaseOffset, 16);
             AddEnum(DamageType, data, ref offset, BaseOffset, 18);
@@ -2656,7 +2656,7 @@ namespace PgJsonObjects
             AddString(SelfParticle, data, ref offset, BaseOffset, 104, StoredStringtable);
             AddObject(SharesResetTimerWith, data, ref offset, BaseOffset, 108, StoredObjectTable);
             AddObject(Skill, data, ref offset, BaseOffset, 112, StoredObjectTable);
-            AddObjectList(CombinedRequirementList, data, ref offset, BaseOffset, 116, StoredObjectistTable);
+            AddObjectList(CombinedRequirementList, data, ref offset, BaseOffset, 116, StoredObjectListTable);
             AddString(SpecialInfo, data, ref offset, BaseOffset, 120, StoredStringtable);
             AddInt(RawSpecialTargetingTypeReq, data, ref offset, BaseOffset, 124);
             AddEnum(TargetEffectKeywordReq, data, ref offset, BaseOffset, 128);
@@ -2666,12 +2666,12 @@ namespace PgJsonObjects
             AddEnum(ConsumedItems, data, ref offset, BaseOffset, 138);
             AddObject(AbilityGroup, data, ref offset, BaseOffset, 140, StoredObjectTable);
             AddObject(ConsumedItemLink, data, ref offset, BaseOffset, 144, StoredObjectTable);
-            //AddObjectList(SourceList, data, ref offset, BaseOffset, 148, StoredObjectistTable);
+            //AddObjectList(SourceList, data, ref offset, BaseOffset, 148, StoredObjectListTable);
             AddBool(RawWorksWhileFalling, data, ref offset, ref BitOffset, BaseOffset, 148, 0);
             AddBool(RawIgnoreEffectErrors, data, ref offset, ref BitOffset, BaseOffset,  148, 2);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 150, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectistTable);
+            FinishSerializing(data, ref offset, BaseOffset, 150, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveGiveGift : QuestObjective
+    public class QuestObjectiveGiveGift : QuestObjective, IPgQuestObjectiveGiveGift
     {
         #region Init
         public QuestObjectiveGiveGift(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, float? RawMinFavorReceived, float? RawMaxFavorReceived)
@@ -53,6 +53,19 @@ namespace PgJsonObjects
         public float? RawMinFavorReceived { get; private set; }
         public float MaxFavorReceived { get { return RawMaxFavorReceived.HasValue ? RawMaxFavorReceived.Value : 0; } }
         public float? RawMaxFavorReceived { get; private set; }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddDouble(RawMinFavorReceived, data, ref offset, BaseOffset, 0);
+            AddDouble(RawMaxFavorReceived, data, ref offset, BaseOffset, 4);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, null, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

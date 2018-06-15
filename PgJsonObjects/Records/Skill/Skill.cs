@@ -651,7 +651,7 @@ namespace PgJsonObjects
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, IList> StoredObjectistTable = new Dictionary<int, IList>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
 
             AddEnum(CombatSkill, data, ref offset, BaseOffset, 0);
             AddBool(RawHideWhenZero, data, ref offset, ref BitOffset, BaseOffset, 2, 0);
@@ -666,8 +666,8 @@ namespace PgJsonObjects
             AddObject(AdvancementTable, data, ref offset, BaseOffset, 20, StoredObjectTable);
             AddEnumList(CompatibleCombatSkillList, data, ref offset, BaseOffset, 24, StoredEnumListTable);
             AddInt(RawMaxBonusLevels, data, ref offset, BaseOffset, 28);
-            AddObjectList(InteractionFlagLevelCapList, data, ref offset, BaseOffset, 32, StoredObjectistTable);
-            AddObjectList(RewardList, data, ref offset, BaseOffset, 36, StoredObjectistTable);
+            AddObjectList(InteractionFlagLevelCapList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
+            AddObjectList(RewardList, data, ref offset, BaseOffset, 36, StoredObjectListTable);
             AddString(Name, data, ref offset, BaseOffset, 40, StoredStringtable);
             AddObject(ParentSkill, data, ref offset, BaseOffset, 44, StoredObjectTable);
             AddEnumList(TSysCategoryList, data, ref offset, BaseOffset, 48, StoredEnumListTable);
@@ -676,7 +676,7 @@ namespace PgJsonObjects
             AddIntList(ReportTableKey, data, ref offset, BaseOffset, 60, StoredIntListTable);
             AddStringList(ReportTableValue, data, ref offset, BaseOffset, 64, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectistTable);
+            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

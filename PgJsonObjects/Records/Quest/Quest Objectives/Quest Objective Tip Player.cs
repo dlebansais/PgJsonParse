@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveTipPlayer : QuestObjective
+    public class QuestObjectiveTipPlayer : QuestObjective, IPgQuestObjectiveTipPlayer
     {
         #region Init
         public QuestObjectiveTipPlayer(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, int? RawMinAmount)
@@ -33,6 +33,18 @@ namespace PgJsonObjects
         #region Properties
         public int MinAmount { get { return RawMinAmount.HasValue ? RawMinAmount.Value : 0; } }
         public int? RawMinAmount { get; private set; }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddInt(RawMinAmount, data, ref offset, BaseOffset, 0);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

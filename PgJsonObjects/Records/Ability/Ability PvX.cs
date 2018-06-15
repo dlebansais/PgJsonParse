@@ -271,7 +271,7 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
-            Dictionary<int, IList> StoredObjectistTable = new Dictionary<int, IList>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
 
             AddInt(RawDamage, data, ref offset, BaseOffset, 0);
             AddInt(RawExtraDamageIfTargetVulnerable, data, ref offset, BaseOffset, 4);
@@ -285,15 +285,15 @@ namespace PgJsonObjects
             AddInt(RawRageBoost, data, ref offset, BaseOffset, 36);
             AddDouble(RawRageMultiplier, data, ref offset, BaseOffset, 40);
             AddDouble(RawAccuracy, data, ref offset, BaseOffset, 44);
-            AddObjectList(SpecialValueList, data, ref offset, BaseOffset, 48, StoredObjectistTable);
-            AddObjectList(DoTList, data, ref offset, BaseOffset, 52, StoredObjectistTable);
+            AddObjectList(SpecialValueList, data, ref offset, BaseOffset, 48, StoredObjectListTable);
+            AddObjectList(DoTList, data, ref offset, BaseOffset, 52, StoredObjectListTable);
             AddInt(RawTauntDelta, data, ref offset, BaseOffset, 56);
             AddInt(RawTempTauntDelta, data, ref offset, BaseOffset, 60);
             AddInt(RawRageCost, data, ref offset, BaseOffset, 64);
             AddDouble(RawRageCostMod, data, ref offset, BaseOffset, 68);
             AddEnumList(SelfPreEffectList, data, ref offset, BaseOffset, 72, StoredEnumListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 76, null, null, null, StoredEnumListTable, null, null, null, StoredObjectistTable);
+            FinishSerializing(data, ref offset, BaseOffset, 76, null, null, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

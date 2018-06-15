@@ -93,6 +93,22 @@
     <Compile Include="Interfaces\Effect\IPgEffect.cs" />
     <Compile Include="Interfaces\Item\IPgItemBehavior.cs" />
     <Compile Include="Interfaces\Item\IPgItem.cs" />
+    <Compile Include="Interfaces\Power\IPgPower.cs" />
+    <Compile Include="Interfaces\Power\IPgPowerTier.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveAnatomy.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveDeliver.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveGiveGift.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveGuildGiveItem.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveInteractionFlag.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveItem.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveKill.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveLoot.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveMultipleInteractionFlags.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveScriptedReceiveItem.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveSpecial.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveTipPlayer.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveUseAbility.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveUseRecipe.cs" />
     <Compile Include="Interfaces\Recipe\IPgRecipeCost.cs" />
     <Compile Include="Interfaces\Skill\IPgLevelCapInteraction.cs" />
     <Compile Include="Interfaces\Skill\IPgReward.cs" />
@@ -355,6 +371,22 @@
     <Compile Include="Synthetic\GenericPgObject.cs" />
     <Compile Include="Synthetic\Item\PgItem.cs" />
     <Compile Include="Synthetic\Item\PgItemBehavior.cs" />
+    <Compile Include="Synthetic\Power\PgPower.cs" />
+    <Compile Include="Synthetic\Power\PgPowerTier.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveAnatomy.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveDeliver.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveGiveGift.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveGuildGiveItem.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveInteractionFlag.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveItem.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveKill.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveLoot.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveMultipleInteractionFlags.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveScriptedReceiveItem.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveSpecial.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveTipPlayer.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveUseAbility.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveUseRecipe.cs" />
     <Compile Include="Synthetic\Recipe\PgRecipeCost.cs" />
     <Compile Include="Synthetic\Skill\PgLevelCapInteraction.cs" />
     <Compile Include="Synthetic\Skill\PgReward.cs" />
@@ -374,6 +406,7 @@
       <Name>Presentation</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>call "$(SolutionDir)updateversion.bat" "$(SolutionDir)" "$(SolutionPath)"</PreBuildEvent>

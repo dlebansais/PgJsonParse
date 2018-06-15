@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveScriptedReceiveItem : QuestObjective
+    public class QuestObjectiveScriptedReceiveItem : QuestObjective, IPgQuestObjectiveScriptedReceiveItem
     {
         #region Indexing
         public QuestObjectiveScriptedReceiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName)
@@ -38,12 +38,13 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public MapAreaName DeliverNpcArea { get; private set; }
-        public string DeliverNpcId { get; private set; }
-        public string DeliverNpcName { get; private set; }
-        private bool IsDeliverNpcParsed;
         public GameNpc DeliverNpc { get; private set; }
         public Item QuestItem { get; private set; }
+
+        private MapAreaName DeliverNpcArea;
+        private string DeliverNpcId;
+        private string DeliverNpcName;
+        private bool IsDeliverNpcParsed;
         private string RawItemName;
         private bool IsItemNameParsed;
         #endregion
@@ -82,6 +83,20 @@ namespace PgJsonObjects
             }
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            AddObject(DeliverNpc, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(QuestItem, data, ref offset, BaseOffset, 4, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

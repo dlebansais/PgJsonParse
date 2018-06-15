@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveInteractionFlag : QuestObjective
+    public class QuestObjectiveInteractionFlag : QuestObjective, IPgQuestObjectiveInteractionFlag
     {
         #region Init
         public QuestObjectiveInteractionFlag(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string InteractionFlag, string InteractionTarget)
@@ -39,5 +39,19 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => InteractionFlag } },
         }; } }
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddString(InteractionFlag, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(InteractionTarget, data, ref offset, BaseOffset, 4, StoredStringtable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
+        #endregion
     }
 }

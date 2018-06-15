@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveDeliver : QuestObjective
+    public class QuestObjectiveDeliver : QuestObjective, IPgQuestObjectiveDeliver
     {
-        #region Indexing
-        public QuestObjectiveDeliver(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName, int NumToDeliver)
+        #region Init
+        public QuestObjectiveDeliver(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName, int RawNumToDeliver)
             : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.DeliverNpcArea = DeliverNpcArea;
             this.DeliverNpcId = DeliverNpcId;
             this.DeliverNpcName = DeliverNpcName;
             this.RawItemName = RawItemName;
-            this.NumToDeliver = NumToDeliver;
+            this.RawNumToDeliver = NumToDeliver;
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
@@ -37,20 +37,20 @@ namespace PgJsonObjects
                 GetString = () => RawItemName } },
             { "NumToDeliver", new FieldParser() {
                 Type = FieldType.Integer,
-                GetInteger = () => NumToDeliver } },
+                GetInteger = () => RawNumToDeliver } },
         }; } }
         #endregion
 
         #region Properties
-        public MapAreaName DeliverNpcArea { get; private set; }
-        public string DeliverNpcId { get; private set; }
-        public string DeliverNpcName { get; private set; }
-        private bool IsDeliverNpcParsed;
         public GameNpc DeliverNpc { get; private set; }
         public Item QuestItem { get; private set; }
+
+        private MapAreaName DeliverNpcArea;
+        private string DeliverNpcId;
+        private string DeliverNpcName;
+        private bool IsDeliverNpcParsed;
         private string RawItemName;
         private bool IsItemNameParsed;
-        public int NumToDeliver { get; private set; }
         #endregion
 
         #region Indexing
@@ -87,6 +87,21 @@ namespace PgJsonObjects
             }
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            AddObject(DeliverNpc, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(QuestItem, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddInt(RawNumToDeliver, data, ref offset, BaseOffset, 8);
+
+            FinishSerializing(data, ref offset, BaseOffset, 12, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

@@ -946,7 +946,7 @@ namespace PgJsonObjects
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<uint>> StoredUIntListTable = new Dictionary<int, List<uint>>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, IList> StoredObjectistTable = new Dictionary<int, IList>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
 
             AddObject(BestowAbility, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObject(BestowQuest, data, ref offset, BaseOffset, 4, StoredObjectTable);
@@ -960,7 +960,7 @@ namespace PgJsonObjects
             AddEnum(ItemAppearanceFood, data, ref offset, BaseOffset, 28);
             AddEnum(ItemAppearancePlate, data, ref offset, BaseOffset, 30);
             AddUInt(RawItemAppearanceColor, data, ref offset, BaseOffset, 32);
-            AddObjectList(EffectDescriptionList, data, ref offset, BaseOffset, 36, StoredObjectistTable);
+            AddObjectList(EffectDescriptionList, data, ref offset, BaseOffset, 36, StoredObjectListTable);
             AddUInt(RawDyeColor, data, ref offset, BaseOffset, 40);
             AddString(EquipAppearance, data, ref offset, BaseOffset, 44, StoredStringtable);
             AddInt(RawIconId, data, ref offset, BaseOffset, 48);
@@ -980,18 +980,18 @@ namespace PgJsonObjects
             AddInt(RawMaxOnVendor, data, ref offset, BaseOffset, 80);
             AddInt(RawMaxStackSize, data, ref offset, BaseOffset, 84);
             AddString(Name, data, ref offset, BaseOffset, 88, StoredStringtable);
-            AddObjectList(SkillRequirementList, data, ref offset, BaseOffset, 92, StoredObjectistTable);
+            AddObjectList(SkillRequirementList, data, ref offset, BaseOffset, 92, StoredObjectListTable);
             AddUIntList(StockDye, data, ref offset, BaseOffset, 96, StoredUIntListTable);
             AddStringList(StockDyeByName, data, ref offset, BaseOffset, 100, StoredStringListTable);
             AddDouble(RawValue, data, ref offset, BaseOffset, 104);
             AddInt(RawNumUses, data, ref offset, BaseOffset, 108);
-            AddObjectList(BehaviorList, data, ref offset, BaseOffset, 112, StoredObjectistTable);
+            AddObjectList(BehaviorList, data, ref offset, BaseOffset, 112, StoredObjectListTable);
             AddString(DynamicCraftingSummary, data, ref offset, BaseOffset, 116, StoredStringtable);
             AddInt(RawBestowTitle, data, ref offset, BaseOffset, 120);
             AddInt(RawBestowLoreBook, data, ref offset, BaseOffset, 124);
             AddObject(ConnectedLoreBook, data, ref offset, BaseOffset, 128, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectistTable);
+            FinishSerializing(data, ref offset, BaseOffset, 132, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

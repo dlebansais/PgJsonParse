@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveAnatomy : QuestObjective
+    public class QuestObjectiveAnatomy : QuestObjective, IPgQuestObjectiveAnatomy
     {
         #region Init
         public QuestObjectiveAnatomy(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, PowerSkill AnatomyType)
@@ -32,8 +32,8 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public PowerSkill AnatomyType { get; private set; }
         public Skill ConnectedSkill { get; private set; }
+        public PowerSkill AnatomyType { get; private set; }
         private bool IsSkillParsed;
         #endregion
 
@@ -61,6 +61,19 @@ namespace PgJsonObjects
             ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, AnatomyType, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            AddObject(ConnectedSkill, data, ref offset, BaseOffset, 0, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

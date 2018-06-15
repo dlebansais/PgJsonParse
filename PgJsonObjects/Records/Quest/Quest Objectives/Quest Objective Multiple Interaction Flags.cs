@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveMultipleInteractionFlags : QuestObjective
+    public class QuestObjectiveMultipleInteractionFlags : QuestObjective, IPgQuestObjectiveMultipleInteractionFlags
     {
         #region Init
         public QuestObjectiveMultipleInteractionFlags(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, List<string> InteractionFlagList)
@@ -35,6 +35,19 @@ namespace PgJsonObjects
 
         #region Properties
         public List<string> InteractionFlagList { get; private set; }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+
+            AddStringList(InteractionFlagList, data, ref offset, BaseOffset, 0, StoredStringListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, StoredStringListTable, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveSpecial : QuestObjective
+    public class QuestObjectiveSpecial : QuestObjective, IPgQuestObjectiveSpecial
     {
         #region Init
         public QuestObjectiveSpecial(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, int? RawMinAmount, int? RawMaxAmount, string StringParam, string InteractionTarget, QuestObjectiveRequirement QuestObjectiveRequirement)
@@ -53,6 +53,22 @@ namespace PgJsonObjects
         public int? RawMaxAmount { get; private set; }
         public string StringParam { get; private set; }
         public string InteractionTarget { get; private set; }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddInt(RawMinAmount, data, ref offset, BaseOffset, 0);
+            AddInt(RawMaxAmount, data, ref offset, BaseOffset, 4);
+            AddString(StringParam, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddString(InteractionTarget, data, ref offset, BaseOffset, 12, StoredStringtable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

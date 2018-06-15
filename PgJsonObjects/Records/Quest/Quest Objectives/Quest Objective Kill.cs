@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveKill : QuestObjective
+    public class QuestObjectiveKill : QuestObjective, IPgQuestObjectiveKill
     {
         #region Init
         public QuestObjectiveKill(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, QuestObjectiveKillTarget Target, string AbilityKeyword, EffectKeyword EffectRequirement, QuestObjectiveRequirement QuestObjectiveRequirement)
@@ -43,8 +43,8 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public QuestObjectiveKillTarget Target { get; private set; }
         public string AbilityKeyword { get; private set; }
+        public QuestObjectiveKillTarget Target { get; private set; }
         public EffectKeyword EffectRequirement { get; private set; }
         public bool HasEffectRequirement { get { return EffectRequirement != EffectKeyword.Internal_None; } }
         #endregion
@@ -62,6 +62,21 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddString(AbilityKeyword, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddEnum(Target, data, ref offset, BaseOffset, 4);
+            AddEnum(EffectRequirement, data, ref offset, BaseOffset, 6);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

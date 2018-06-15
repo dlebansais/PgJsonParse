@@ -810,8 +810,8 @@ namespace PgJsonObjects
             SerializeJsonObjectInternal(data, ref offset);
         }
 
-        //protected abstract void SerializeJsonObjectInternal(byte[] data, ref int offset);
-        protected virtual void SerializeJsonObjectInternal(byte[] data, ref int offset) { }
+        protected abstract void SerializeJsonObjectInternal(byte[] data, ref int offset);
+        //protected virtual void SerializeJsonObjectInternal(byte[] data, ref int offset) { }
 
         protected void AddBool(bool? value, byte[] data, ref int offset, ref int bitOffset, int baseOffset, int expectedOffset, int expectedBitOffset)
         {
@@ -963,17 +963,17 @@ namespace PgJsonObjects
             offset += 4;
         }
 
-        protected void AddObjectList<TObject>(List<TObject> value, byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, IList> StoredObjectistTable)
+        protected void AddObjectList<TObject>(List<TObject> value, byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, IList> StoredObjectListTable)
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
             if (data == null)
-                StoredObjectistTable.Add(offset, value);
+                StoredObjectListTable.Add(offset, value);
 
             offset += 4;
         }
 
-        protected void FinishSerializing(byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, string> StoredStringtable, Dictionary<int, IGenericJsonObject> StoredObjectTable, Dictionary<int, List<bool>> StoredBoolListTable, Dictionary<int, IList> StoredEnumListTable, Dictionary<int, List<int>> StoredIntListTable, Dictionary<int, List<uint>> StoredUIntListTable, Dictionary<int, List<string>> StoredStringListTable, Dictionary<int, IList> StoredObjectistTable)
+        protected void FinishSerializing(byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, string> StoredStringtable, Dictionary<int, IGenericJsonObject> StoredObjectTable, Dictionary<int, List<bool>> StoredBoolListTable, Dictionary<int, IList> StoredEnumListTable, Dictionary<int, List<int>> StoredIntListTable, Dictionary<int, List<uint>> StoredUIntListTable, Dictionary<int, List<string>> StoredStringListTable, Dictionary<int, IList> StoredObjectListTable)
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
@@ -1005,8 +1005,8 @@ namespace PgJsonObjects
                 foreach (KeyValuePair<int, List<string>> Entry in StoredStringListTable)
                     FinishSerializingStringList(data, ref offset, Entry.Key, Entry.Value);
 
-            if (StoredObjectistTable != null)
-                foreach (KeyValuePair<int, IList> Entry in StoredObjectistTable)
+            if (StoredObjectListTable != null)
+                foreach (KeyValuePair<int, IList> Entry in StoredObjectListTable)
                     FinishSerializingObjectList(data, ref offset, Entry.Key, Entry.Value);
         }
 

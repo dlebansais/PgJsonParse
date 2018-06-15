@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class PowerTier : GenericJsonObject<PowerTier>
+    public class PowerTier : GenericJsonObject<PowerTier>, IPgPowerTier
     {
         #region Direct Properties
         public List<PowerEffect> EffectList { get; } = new List<PowerEffect>();
@@ -90,6 +90,19 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "PowerTier"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddObjectList(EffectList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

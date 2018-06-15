@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveLoot : QuestObjective
+    public class QuestObjectiveLoot : QuestObjective, IPgQuestObjectiveLoot
     {
         #region Init
         public QuestObjectiveLoot(QuestObjectiveType Type, string Description, string RawItemName, int? RawNumber, MonsterTypeTag MonsterTypeTag, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
@@ -47,13 +48,14 @@ namespace PgJsonObjects
 
         #region Properties
         public Item QuestItem { get; private set; }
-        private string RawItemName;
-        private bool IsItemNameParsed;
-        public ItemKeyword ItemTarget { get; private set; }
-        private bool IsTargetParsed;
         public List<Item> ItemList { get; private set; } = new List<Item>();
+        public ItemKeyword ItemTarget { get; private set; }
         public MonsterTypeTag MonsterTypeTag { get; private set; }
         public bool HasMonsterTypeTag { get { return MonsterTypeTag != MonsterTypeTag.Internal_None; } }
+
+        private string RawItemName;
+        private bool IsItemNameParsed;
+        private bool IsTargetParsed;
         #endregion
 
         #region Indexing
@@ -88,6 +90,23 @@ namespace PgJsonObjects
             ItemList = PgJsonObjects.Item.ConnectByKeyword(ErrorInfo, ItemTable, ItemTarget, ItemList, ref IsTargetParsed, ref IsConnected, ParentQuest);
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddObject(QuestItem, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObjectList(ItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
+            AddEnum(ItemTarget, data, ref offset, BaseOffset, 8);
+            AddEnum(MonsterTypeTag, data, ref offset, BaseOffset, 10);
+
+            FinishSerializing(data, ref offset, BaseOffset, 12, null, StoredObjectTable, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

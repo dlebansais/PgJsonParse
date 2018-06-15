@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveItem : QuestObjective
+    public class QuestObjectiveItem : QuestObjective, IPgQuestObjectiveItem
     {
         #region Init
         public QuestObjectiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string RawItemName, QuestObjectiveRequirement QuestObjectiveRequirement)
@@ -47,11 +48,11 @@ namespace PgJsonObjects
 
         #region Properties
         public Item QuestItem { get; private set; }
+        public List<Item> TargetItemList { get; private set; } = new List<Item>();
+        public ItemKeyword Target { get; private set; }
+        private bool IsTargetParsed;
         private string RawItemName;
         private bool IsItemNameParsed;
-        public ItemKeyword Target { get; private set; }
-        public List<Item> TargetItemList { get; private set; } = new List<Item>();
-        private bool IsTargetParsed;
         #endregion
 
         #region Indexing
@@ -83,6 +84,22 @@ namespace PgJsonObjects
             TargetItemList = PgJsonObjects.Item.ConnectByKeyword(ErrorInfo, ItemTable, Target, TargetItemList, ref IsTargetParsed, ref IsConnected, ParentQuest);
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddObject(QuestItem, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObjectList(TargetItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
+            AddEnum(Target, data, ref offset, BaseOffset, 8);
+
+            FinishSerializing(data, ref offset, BaseOffset, 10, null, StoredObjectTable, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

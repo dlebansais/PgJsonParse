@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveUseAbility : QuestObjective
+    public class QuestObjectiveUseAbility : QuestObjective, IPgQuestObjectiveUseAbility
     {
         #region Init
         public QuestObjectiveUseAbility(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, AbilityKeyword AbilityTarget)
@@ -32,8 +33,9 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public AbilityKeyword AbilityTarget { get; private set; }
         public List<Ability> AbilityTargetList { get; private set; } = new List<Ability>();
+        public AbilityKeyword AbilityTarget { get; private set; }
+
         private bool IsAbilityTargetParsed;
         #endregion
 
@@ -63,6 +65,20 @@ namespace PgJsonObjects
             AbilityTargetList = PgJsonObjects.Ability.ConnectByKeyword(ErrorInfo, AbilityTable, AbilityTarget, AbilityTargetList, ref IsAbilityTargetParsed, ref IsConnected, ParentQuest);
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddObjectList(AbilityTargetList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
+            AddEnum(AbilityTarget, data, ref offset, BaseOffset, 4);
+
+            FinishSerializing(data, ref offset, BaseOffset, 6, null, null, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

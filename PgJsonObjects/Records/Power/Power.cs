@@ -5,18 +5,19 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Power : GenericJsonObject<Power>
+    public class Power : GenericJsonObject<Power>, IPgPower
     {
         #region Direct Properties
         public string Prefix { get; private set; }
         public string Suffix { get; private set; }
-        public Dictionary<int, PowerTier> TierEffectTable { get; } = new Dictionary<int, PowerTier>();
         public List<ItemSlot> SlotList { get; } = new List<ItemSlot>();
-        public PowerSkill Skill { get; private set; }
         public Skill ConnectedSkill { get; private set; }
-        private bool IsSkillParsed;
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; private set; }
+
+        public Dictionary<int, PowerTier> TierEffectTable { get; } = new Dictionary<int, PowerTier>();
+        private PowerSkill RawSkill;
+        private bool IsSkillParsed;
         #endregion
 
         #region Indirect Properties
@@ -55,7 +56,7 @@ namespace PgJsonObjects
         {
             get
             {
-                int IconId = PgJsonObjects.Skill.BestIconIdForSkill(Skill);
+                int IconId = PgJsonObjects.Skill.BestIconIdForSkill(RawSkill);
 
                 if (IconId == 0)
                     return null;
@@ -169,8 +170,8 @@ namespace PgJsonObjects
                 GetStringArray = () => StringToEnumConversion<ItemSlot>.ToStringList(SlotList) } },
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => Skill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
             { "IsUnavailable", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsUnavailable = value,
@@ -241,8 +242,8 @@ namespace PgJsonObjects
                 AddWithFieldSeparator(ref Result, ComposedName);
                 foreach (ItemSlot Slot in SlotList)
                     AddWithFieldSeparator(ref Result, TextMaps.ItemSlotTextMap[Slot]);
-                if (Skill != PowerSkill.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Skill]);
+                if (RawSkill != PowerSkill.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RawSkill]);
                 if (RawIsUnavailable.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Unavailable");
                 foreach (string Item in CombinedTierList)
@@ -262,8 +263,8 @@ namespace PgJsonObjects
             foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
                 IsConnected |= Entry.Value.Connect(ErrorInfo, this, AllTables);
 
-            if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
-                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
+            if (RawSkill != PowerSkill.Internal_None && RawSkill != PowerSkill.AnySkill && RawSkill != PowerSkill.Unknown)
+                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
 
             return IsConnected;
         }
@@ -290,6 +291,27 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Power"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+
+            AddString(Prefix, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Suffix, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddEnumList(SlotList, data, ref offset, BaseOffset, 8, StoredEnumListTable);
+            AddObject(ConnectedSkill, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddBool(RawIsUnavailable, data, ref offset, ref BitOffset, BaseOffset, 16, 0);
+            CloseBool(ref offset, ref BitOffset);
+
+            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }
