@@ -863,6 +863,21 @@ namespace PgJsonObjects
             offset += 4;
         }
 
+        protected void AddUInt(uint? value, byte[] data, ref int offset, int baseOffset, int expectedOffset)
+        {
+            Debug.Assert(offset == baseOffset + expectedOffset);
+
+            if (data != null)
+            {
+                uint StoredValue = value.HasValue ? value.Value : GenericPgObject.NoValueInt;
+
+                byte[] valueData = BitConverter.GetBytes(StoredValue);
+                Array.Copy(valueData, 0, data, offset, 4);
+            }
+
+            offset += 4;
+        }
+
         protected void AddDouble(double? value, byte[] data, ref int offset, int baseOffset, int expectedOffset)
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
@@ -928,6 +943,16 @@ namespace PgJsonObjects
             offset += 4;
         }
 
+        protected void AddUIntList(List<uint> value, byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, List<uint>> StoredUIntListTable)
+        {
+            Debug.Assert(offset == baseOffset + expectedOffset);
+
+            if (data == null)
+                StoredUIntListTable.Add(offset, value);
+
+            offset += 4;
+        }
+
         protected void AddStringList(List<string> value, byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, List<string>> StoredStringListTable)
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
@@ -948,7 +973,7 @@ namespace PgJsonObjects
             offset += 4;
         }
 
-        protected void FinishSerializing(byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, string> StoredStringtable, Dictionary<int, IGenericJsonObject> StoredObjectTable, Dictionary<int, List<bool>> StoredBoolListTable, Dictionary<int, IList> StoredEnumListTable, Dictionary<int, List<int>> StoredIntListTable, Dictionary<int, List<string>> StoredStringListTable, Dictionary<int, IList> StoredObjectistTable)
+        protected void FinishSerializing(byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, string> StoredStringtable, Dictionary<int, IGenericJsonObject> StoredObjectTable, Dictionary<int, List<bool>> StoredBoolListTable, Dictionary<int, IList> StoredEnumListTable, Dictionary<int, List<int>> StoredIntListTable, Dictionary<int, List<uint>> StoredUIntListTable, Dictionary<int, List<string>> StoredStringListTable, Dictionary<int, IList> StoredObjectistTable)
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
@@ -971,6 +996,10 @@ namespace PgJsonObjects
             if (StoredIntListTable != null)
                 foreach (KeyValuePair<int, List<int>> Entry in StoredIntListTable)
                     FinishSerializingIntList(data, ref offset, Entry.Key, Entry.Value);
+
+            if (StoredUIntListTable != null)
+                foreach (KeyValuePair<int, List<uint>> Entry in StoredUIntListTable)
+                    FinishSerializingUIntList(data, ref offset, Entry.Key, Entry.Value);
 
             if (StoredStringListTable != null)
                 foreach (KeyValuePair<int, List<string>> Entry in StoredStringListTable)
@@ -1142,6 +1171,36 @@ namespace PgJsonObjects
                 if (data != null)
                 {
                     byte[] IntData = BitConverter.GetBytes(IntValue);
+                    Array.Copy(IntData, 0, data, offset, 4);
+                }
+
+                offset += 4;
+            }
+        }
+
+        protected void FinishSerializingUIntList(byte[] data, ref int offset, int redirectionOffset, List<uint> UIntList)
+        {
+            if (data != null)
+            {
+                byte[] valueData = BitConverter.GetBytes(offset);
+                Array.Copy(valueData, 0, data, redirectionOffset, valueData.Length);
+            }
+
+            if (data != null)
+            {
+                byte[] LengthData = BitConverter.GetBytes(UIntList.Count);
+                Array.Copy(LengthData, 0, data, offset, 4);
+            }
+
+            offset += 4;
+
+            for (int i = 0; i < UIntList.Count; i++)
+            {
+                uint UIntValue = UIntList[i];
+
+                if (data != null)
+                {
+                    byte[] IntData = BitConverter.GetBytes(UIntValue);
                     Array.Copy(IntData, 0, data, offset, 4);
                 }
 

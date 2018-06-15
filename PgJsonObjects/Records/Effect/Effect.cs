@@ -1,5 +1,4 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,20 +10,21 @@ namespace PgJsonObjects
         public string Name { get; private set; }
         public string Desc { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
-        private int? RawIconId;
-        public EffectDisplayMode DisplayMode { get; private set; }
+        public int? RawIconId { get; private set; }
         public string SpewText { get; private set; }
-        public EffectParticle Particle { get; private set; }
         public EffectStackingType StackingType { get; private set; }
+        public EffectDisplayMode DisplayMode { get; private set; }
         public int StackingPriority { get { return RawStackingPriority.HasValue ? RawStackingPriority.Value : 0; } }
         public int? RawStackingPriority { get; private set; }
         public int Duration { get { return RawDuration.HasValue ? RawDuration.Value : 0; } }
         public int? RawDuration { get; private set; }
         public List<EffectKeyword> KeywordList { get; } = new List<EffectKeyword>();
+        public List<AbilityKeyword> AbilityKeywordList { get; } = new List<AbilityKeyword>();
+        public EffectParticle Particle { get; private set; }
+
+        private int TSysKeywordIndex = -1;
         public bool IsKeywordListEmpty { get; private set; }
         public bool HasTSysKeyword { get { return TSysKeywordIndex >= 0; } }
-        private int TSysKeywordIndex = -1;
-        public List<AbilityKeyword> AbilityKeywordList { get; } = new List<AbilityKeyword>();
         public bool IsAbilityKeywordListEmpty { get; private set; }
         #endregion
 
@@ -186,6 +186,30 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Effect"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+
+            AddString(Name, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Desc, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddInt(RawIconId, data, ref offset, BaseOffset, 8);
+            AddString(SpewText, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddEnum(StackingType, data, ref offset, BaseOffset, 16);
+            AddEnum(DisplayMode, data, ref offset, BaseOffset, 18);
+            AddInt(RawStackingPriority, data, ref offset, BaseOffset, 20);
+            AddInt(RawDuration, data, ref offset, BaseOffset, 24);
+            AddEnumList(KeywordList, data, ref offset, BaseOffset, 28, StoredEnumListTable);
+            AddEnumList(AbilityKeywordList, data, ref offset, BaseOffset, 32, StoredEnumListTable);
+            AddEnum(Particle, data, ref offset, BaseOffset, 36);
+
+            FinishSerializing(data, ref offset, BaseOffset, 38, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

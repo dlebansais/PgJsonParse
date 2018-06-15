@@ -131,7 +131,7 @@ namespace PgJsonObjects
             AddObject(Recipe, data, ref offset, BaseOffset, 16, StoredObjectTable);
             AddObject(BonusSkill, data, ref offset, BaseOffset, 20, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 24, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 24, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

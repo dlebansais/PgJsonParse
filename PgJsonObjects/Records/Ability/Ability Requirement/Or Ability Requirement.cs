@@ -51,7 +51,7 @@ namespace PgJsonObjects
             AddObjectList(OrList, data, ref offset, BaseOffset, 0, StoredObjectistTable);
             AddString(ErrorMsg, data, ref offset, BaseOffset, 0, StoredStringtable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, StoredStringtable, null, null, null, null, null, StoredObjectistTable);
+            FinishSerializing(data, ref offset, BaseOffset, 4, StoredStringtable, null, null, null, null, null, null, StoredObjectistTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

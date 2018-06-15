@@ -62,7 +62,7 @@ namespace PgJsonObjects
             AddDouble(RawPrice, data, ref offset, BaseOffset, 0);
             AddEnum(Currency, data, ref offset, BaseOffset, 4);
 
-            FinishSerializing(data, ref offset, BaseOffset, 6, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 6, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

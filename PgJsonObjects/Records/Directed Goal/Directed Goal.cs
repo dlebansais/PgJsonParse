@@ -112,7 +112,7 @@ namespace PgJsonObjects
             AddBool(RawIsCategoryGate, data, ref offset, ref BitOffset, BaseOffset, 24, 0);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

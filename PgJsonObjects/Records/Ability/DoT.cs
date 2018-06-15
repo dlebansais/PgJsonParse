@@ -120,7 +120,7 @@ namespace PgJsonObjects
             AddString(RawPreface, data, ref offset, BaseOffset, 16, StoredStringtable);
             AddEnum(DamageType, data, ref offset, BaseOffset, 20);
 
-            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, StoredEnumListTable, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

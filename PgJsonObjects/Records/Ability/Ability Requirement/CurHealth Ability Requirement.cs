@@ -42,7 +42,7 @@ namespace PgJsonObjects
 
             AddDouble(RawHealth, data, ref offset, BaseOffset, 0);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

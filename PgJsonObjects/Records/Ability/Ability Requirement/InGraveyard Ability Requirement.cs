@@ -27,7 +27,7 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            FinishSerializing(data, ref offset, offset, 0, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, offset, 0, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

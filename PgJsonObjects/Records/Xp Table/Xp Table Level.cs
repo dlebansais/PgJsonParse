@@ -44,7 +44,7 @@ namespace PgJsonObjects
             AddInt(RawXp, data, ref offset, BaseOffset, 4);
             AddInt(RawTotalXp, data, ref offset, BaseOffset, 8);
 
-            FinishSerializing(data, ref offset, BaseOffset, 12, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 12, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

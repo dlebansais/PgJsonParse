@@ -108,7 +108,7 @@ namespace PgJsonObjects
             AddObjectList(XpAmountList, data, ref offset, BaseOffset, 4, StoredObjectistTable);
             AddEnum(EnumName, data, ref offset, BaseOffset, 8);
 
-            FinishSerializing(data, ref offset, BaseOffset, 10, StoredStringtable, null, null, null, null, null, StoredObjectistTable);
+            FinishSerializing(data, ref offset, BaseOffset, 10, StoredStringtable, null, null, null, null, null, null, StoredObjectistTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

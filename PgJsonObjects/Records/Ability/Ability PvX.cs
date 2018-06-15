@@ -293,7 +293,7 @@ namespace PgJsonObjects
             AddDouble(RawRageCostMod, data, ref offset, BaseOffset, 68);
             AddEnumList(SelfPreEffectList, data, ref offset, BaseOffset, 72, StoredEnumListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 76, null, null, null, StoredEnumListTable, null, null, StoredObjectistTable);
+            FinishSerializing(data, ref offset, BaseOffset, 76, null, null, null, StoredEnumListTable, null, null, null, StoredObjectistTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

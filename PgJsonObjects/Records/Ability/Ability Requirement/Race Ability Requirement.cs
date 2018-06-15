@@ -52,7 +52,7 @@ namespace PgJsonObjects
 
             AddEnumList(AllowedRaceList, data, ref offset, BaseOffset, 0, StoredEnumListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, StoredEnumListTable, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

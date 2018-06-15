@@ -57,7 +57,7 @@ namespace PgJsonObjects
             AddDouble(RawMaxCount, data, ref offset, BaseOffset, 4);
             AddEnum(Keyword, data, ref offset, BaseOffset, 8);
 
-            FinishSerializing(data, ref offset, BaseOffset, 10, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 10, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

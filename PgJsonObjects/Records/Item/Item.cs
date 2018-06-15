@@ -3,57 +3,50 @@ using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
 
 namespace PgJsonObjects
 {
-    public class Item : GenericJsonObject<Item>
+    public class Item : GenericJsonObject<Item>, IPgItem
     {
         #region Direct Properties
-        public Dictionary<string, Recipe> BestowRecipeTable { get; } = new Dictionary<string, Recipe>();
         public Ability BestowAbility { get; private set; }
-        private string RawBestowAbility;
-        private bool IsRawBestowAbilityParsed;
         public Quest BestowQuest { get; private set; }
-        private string RawBestowQuest;
-        private bool IsRawBestowQuestParsed;
-        public bool AllowPrefix { get { return RawAllowPrefix.HasValue && RawAllowPrefix.Value; } }
-        public bool? RawAllowPrefix { get; private set; }
-        public bool AllowSuffix { get { return RawAllowSuffix.HasValue && RawAllowSuffix.Value; } }
-        public bool? RawAllowSuffix { get; private set; }
         public int CraftPoints { get { return RawCraftPoints.HasValue ? RawCraftPoints.Value : 0; } }
         public int? RawCraftPoints { get; private set; }
         public int CraftingTargetLevel { get { return RawCraftingTargetLevel.HasValue ? RawCraftingTargetLevel.Value : 0; } }
         public int? RawCraftingTargetLevel { get; private set; }
         public string Description { get; private set; }
         public ItemDroppedAppearance DroppedAppearance { get; private set; }
-        private List<string> AppearanceDetailList = new List<string>();
+        public ItemSlot EquipSlot { get; private set; }
         public AppearanceSkin ItemAppearanceSkin { get; private set; }
         public AppearanceSkin ItemAppearanceCork { get; private set; }
         public AppearanceSkin ItemAppearanceFood { get; private set; }
         public AppearanceSkin ItemAppearancePlate { get; private set; }
-        public uint? ItemAppearanceColor { get; private set; }
-        public ObservableCollection<ItemEffect> EffectDescriptionList { get; } = new ObservableCollection<ItemEffect>();
-        public bool IsEffectDescriptionEmpty { get; private set; }
-        public uint? DyeColor { get; private set; }
+        public uint ItemAppearanceColor { get { return RawItemAppearanceColor.HasValue ? RawItemAppearanceColor.Value : 0; } }
+        public uint? RawItemAppearanceColor { get; private set; }
+        public List<ItemEffect> EffectDescriptionList { get; } = new List<ItemEffect>();
+        public uint DyeColor { get { return RawDyeColor.HasValue ? RawDyeColor.Value : 0; } }
+        public uint? RawDyeColor { get; private set; }
         public string EquipAppearance { get; private set; }
-        public ItemSlot EquipSlot { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
-        private int? RawIconId;
+        public int? RawIconId { get; private set; }
         public string InternalName { get; private set; }
+        public bool AllowPrefix { get { return RawAllowPrefix.HasValue && RawAllowPrefix.Value; } }
+        public bool? RawAllowPrefix { get; private set; }
+        public bool AllowSuffix { get { return RawAllowSuffix.HasValue && RawAllowSuffix.Value; } }
+        public bool? RawAllowSuffix { get; private set; }
         public bool IsTemporary { get { return RawIsTemporary.HasValue && RawIsTemporary.Value; } }
         public bool? RawIsTemporary { get; private set; }
         public bool IsCrafted { get { return RawIsCrafted.HasValue && RawIsCrafted.Value; } }
         public bool? RawIsCrafted { get; private set; }
-        private List<string> RawKeywordList = new List<string>();
-        public Dictionary<ItemKeyword, List<float>> KeywordTable { get; } = new Dictionary<ItemKeyword, List<float>>();
+        public bool DestroyWhenUsedUp { get { return RawDestroyWhenUsedUp.HasValue && RawDestroyWhenUsedUp.Value; } }
+        public bool? RawDestroyWhenUsedUp { get; private set; }
+        public bool IsSkillReqsDefaults { get { return RawIsSkillReqsDefaults.HasValue && RawIsSkillReqsDefaults.Value; } }
+        public bool? RawIsSkillReqsDefaults { get; private set; }
         public List<RecipeItemKey> ItemKeyList { get; } = new List<RecipeItemKey>();
         public List<ItemKeyword> EmptyKeywordList { get; } = new List<ItemKeyword>();
         public List<ItemKeyword> RepeatedKeywordList { get; } = new List<ItemKeyword>();
         public Quest MacGuffinQuestName { get; private set; }
-        private string RawMacGuffinQuestName;
-        private bool IsRawMacGuffinQuestNameParsed;
         public int MaxCarryable { get { return RawMaxCarryable.HasValue ? RawMaxCarryable.Value : 0; } }
         public int? RawMaxCarryable { get; private set; }
         public int MaxOnVendor { get { return RawMaxOnVendor.HasValue ? RawMaxOnVendor.Value : 0; } }
@@ -61,27 +54,35 @@ namespace PgJsonObjects
         public int MaxStackSize { get { return RawMaxStackSize.HasValue ? RawMaxStackSize.Value : 0; } }
         public int? RawMaxStackSize { get; private set; }
         public string Name { get; private set; }
-        public Appearance RequiredAppearance { get; private set; }
         public List<ItemSkillLink> SkillRequirementList { get; } = new List<ItemSkillLink>();
-        private Dictionary<string, ItemSkillLink> SkillRequirementTable = new Dictionary<string, ItemSkillLink>();
         public List<uint> StockDye { get; private set; }
         public List<string> StockDyeByName { get; private set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get; private set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
         public int? RawNumUses { get; private set; }
-        public bool DestroyWhenUsedUp { get { return RawDestroyWhenUsedUp.HasValue && RawDestroyWhenUsedUp.Value; } }
-        public bool? RawDestroyWhenUsedUp { get; private set; }
         public List<ItemBehavior> BehaviorList { get; } = new List<ItemBehavior>();
         public string DynamicCraftingSummary { get; private set; }
-        public bool IsSkillReqsDefaults { get { return RawIsSkillReqsDefaults.HasValue && RawIsSkillReqsDefaults.Value; } }
-        public bool? RawIsSkillReqsDefaults { get; private set; }
         public int BestowTitle { get { return RawBestowTitle.HasValue ? RawBestowTitle.Value : 0; } }
         public int? RawBestowTitle { get; private set; }
         public int BestowLoreBook { get { return RawBestowLoreBook.HasValue ? RawBestowLoreBook.Value : 0; } }
         public int? RawBestowLoreBook { get; private set; }
         public LoreBook ConnectedLoreBook { get; private set; }
+        public Appearance RequiredAppearance { get; private set; }
+
+        public Dictionary<string, Recipe> BestowRecipeTable { get; } = new Dictionary<string, Recipe>();
         private bool IsLoreBookParsed;
+        private string RawBestowAbility;
+        private bool IsRawBestowAbilityParsed;
+        private string RawBestowQuest;
+        private bool IsRawBestowQuestParsed;
+        private List<string> AppearanceDetailList = new List<string>();
+        public bool IsEffectDescriptionEmpty { get; private set; }
+        private List<string> RawKeywordList = new List<string>();
+        public Dictionary<ItemKeyword, List<float>> KeywordTable { get; } = new Dictionary<ItemKeyword, List<float>>();
+        private string RawMacGuffinQuestName;
+        private bool IsRawMacGuffinQuestNameParsed;
+        private Dictionary<string, ItemSkillLink> SkillRequirementTable = new Dictionary<string, ItemSkillLink>();
         #endregion
 
         #region Indirect Properties
@@ -135,10 +136,10 @@ namespace PgJsonObjects
                 SetArrayIsEmpty = () => IsEffectDescriptionEmpty = true,
                 GetStringArray = GetEffectDescs,
                 GetArrayIsEmpty = () => IsEffectDescriptionEmpty } },
-            { "DyeColor", new FieldParser() {
+            { "RawDyeColor", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = ParseDyeColor,
-                GetString = () => DyeColor.HasValue ? InvariantCulture.ColorToString(DyeColor.Value) : null } },
+                ParseString = ParseRawDyeColor,
+                GetString = () => RawDyeColor.HasValue ? InvariantCulture.ColorToString(RawDyeColor.Value) : null } },
             { "EquipAppearance", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => EquipAppearance = value,
@@ -302,7 +303,7 @@ namespace PgJsonObjects
                         string RawValue = DetailValue;
                         if (InvariantCulture.TryParseColor(RawValue, out uint ParsedColor))
                         {
-                            ItemAppearanceColor = ParsedColor;
+                            RawItemAppearanceColor = ParsedColor;
                             AppearanceDetailList.Add("Skin_Color");
                         }
                         else
@@ -356,7 +357,7 @@ namespace PgJsonObjects
                         DetailString += "^Plate=" + StringToEnumConversion<AppearanceSkin>.ToString(ItemAppearancePlate, TextMaps.AppearanceSkinStringMap);
 
                     else if (DetailKey == "Skin_Color")
-                        DetailString += "Skin_Color=" + InvariantCulture.ColorToString(ItemAppearanceColor.Value);
+                        DetailString += "Skin_Color=" + InvariantCulture.ColorToString(RawItemAppearanceColor.Value);
                 }
 
                 Line += "(" + DetailString + ")";
@@ -389,12 +390,12 @@ namespace PgJsonObjects
             return Result;
         }
 
-        private void ParseDyeColor(string RawDyeColor, ParseErrorInfo ErrorInfo)
+        private void ParseRawDyeColor(string RawRawDyeColor, ParseErrorInfo ErrorInfo)
         {
-            if (InvariantCulture.TryParseColor(RawDyeColor, out uint NewColor))
-                DyeColor = NewColor;
+            if (InvariantCulture.TryParseColor(RawRawDyeColor, out uint NewColor))
+                RawDyeColor = NewColor;
             else
-                ErrorInfo.AddInvalidString("Item DyeColor", RawDyeColor);
+                ErrorInfo.AddInvalidString("Item RawDyeColor", RawRawDyeColor);
         }
 
         private void ParseIconId(int value, ParseErrorInfo ErrorInfo)
@@ -932,6 +933,66 @@ namespace PgJsonObjects
         public override string ToString()
         {
             return Name;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, List<uint>> StoredUIntListTable = new Dictionary<int, List<uint>>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+            Dictionary<int, IList> StoredObjectistTable = new Dictionary<int, IList>();
+
+            AddObject(BestowAbility, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(BestowQuest, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddInt(RawCraftPoints, data, ref offset, BaseOffset, 8);
+            AddInt(RawCraftingTargetLevel, data, ref offset, BaseOffset, 12);
+            AddString(Description, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddEnum(DroppedAppearance, data, ref offset, BaseOffset, 20);
+            AddEnum(EquipSlot, data, ref offset, BaseOffset, 22);
+            AddEnum(ItemAppearanceSkin, data, ref offset, BaseOffset, 24);
+            AddEnum(ItemAppearanceCork, data, ref offset, BaseOffset, 26);
+            AddEnum(ItemAppearanceFood, data, ref offset, BaseOffset, 28);
+            AddEnum(ItemAppearancePlate, data, ref offset, BaseOffset, 30);
+            AddUInt(RawItemAppearanceColor, data, ref offset, BaseOffset, 32);
+            AddObjectList(EffectDescriptionList, data, ref offset, BaseOffset, 36, StoredObjectistTable);
+            AddUInt(RawDyeColor, data, ref offset, BaseOffset, 40);
+            AddString(EquipAppearance, data, ref offset, BaseOffset, 44, StoredStringtable);
+            AddInt(RawIconId, data, ref offset, BaseOffset, 48);
+            AddString(InternalName, data, ref offset, BaseOffset, 52, StoredStringtable);
+            AddBool(RawAllowPrefix, data, ref offset, ref BitOffset, BaseOffset, 56, 0);
+            AddBool(RawAllowSuffix, data, ref offset, ref BitOffset, BaseOffset, 56, 2);
+            AddBool(RawIsTemporary, data, ref offset, ref BitOffset, BaseOffset, 56, 4);
+            AddBool(RawIsCrafted, data, ref offset, ref BitOffset, BaseOffset, 56, 6);
+            AddBool( RawDestroyWhenUsedUp, data, ref offset, ref BitOffset, BaseOffset, 56, 8);
+            AddBool(RawIsSkillReqsDefaults, data, ref offset, ref BitOffset, BaseOffset, 56, 10);
+            AddEnum(RequiredAppearance, data, ref offset, BaseOffset, 58);
+            AddEnumList(ItemKeyList, data, ref offset, BaseOffset, 60, StoredEnumListTable);
+            AddEnumList(EmptyKeywordList, data, ref offset, BaseOffset, 64, StoredEnumListTable);
+            AddEnumList(RepeatedKeywordList, data, ref offset, BaseOffset, 68, StoredEnumListTable);
+            AddObject(MacGuffinQuestName, data, ref offset, BaseOffset, 72, StoredObjectTable);
+            AddInt(RawMaxCarryable, data, ref offset, BaseOffset, 76);
+            AddInt(RawMaxOnVendor, data, ref offset, BaseOffset, 80);
+            AddInt(RawMaxStackSize, data, ref offset, BaseOffset, 84);
+            AddString(Name, data, ref offset, BaseOffset, 88, StoredStringtable);
+            AddObjectList(SkillRequirementList, data, ref offset, BaseOffset, 92, StoredObjectistTable);
+            AddUIntList(StockDye, data, ref offset, BaseOffset, 96, StoredUIntListTable);
+            AddStringList(StockDyeByName, data, ref offset, BaseOffset, 100, StoredStringListTable);
+            AddDouble(RawValue, data, ref offset, BaseOffset, 104);
+            AddInt(RawNumUses, data, ref offset, BaseOffset, 108);
+            AddObjectList(BehaviorList, data, ref offset, BaseOffset, 112, StoredObjectistTable);
+            AddString(DynamicCraftingSummary, data, ref offset, BaseOffset, 116, StoredStringtable);
+            AddInt(RawBestowTitle, data, ref offset, BaseOffset, 120);
+            AddInt(RawBestowLoreBook, data, ref offset, BaseOffset, 124);
+            AddObject(ConnectedLoreBook, data, ref offset, BaseOffset, 128, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectistTable);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

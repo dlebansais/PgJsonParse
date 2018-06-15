@@ -42,7 +42,7 @@ namespace PgJsonObjects
 
             AddEnum(Appearance, data, ref offset, BaseOffset, 0);
 
-            FinishSerializing(data, ref offset, BaseOffset, 2, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 2, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

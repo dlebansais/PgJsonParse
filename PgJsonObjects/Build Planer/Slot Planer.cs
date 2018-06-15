@@ -268,7 +268,7 @@ namespace PgJsonObjects
         {
             get { return _SelectedGearIndex >= 0 ? SortedGearList[_SelectedGearIndex].Description : null; }
         }
-        public ObservableCollection<ItemEffect> SelectedGearEffectDescriptionList
+        public List<ItemEffect> SelectedGearEffectDescriptionList
         {
             get { return _SelectedGearIndex >= 0 ? SortedGearList[_SelectedGearIndex].EffectDescriptionList : null; }
         }

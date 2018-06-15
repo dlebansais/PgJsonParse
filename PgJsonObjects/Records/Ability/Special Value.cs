@@ -124,7 +124,7 @@ namespace PgJsonObjects
             AddBool(RawSkipIfZero, data, ref offset, ref BitOffset, BaseOffset, 12, 2);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -57,7 +57,7 @@ namespace PgJsonObjects
 
             AddObject(RecipeKnown, data, ref offset, BaseOffset, 0, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, null, StoredObjectTable, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

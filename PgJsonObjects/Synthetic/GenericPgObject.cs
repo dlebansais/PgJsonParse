@@ -43,6 +43,16 @@ namespace PgJsonObjects
                 return Value;
         }
 
+        protected uint? GetUInt(int valueOffset)
+        {
+            uint Value = BitConverter.ToUInt32(Data, Offset + valueOffset);
+
+            if (Value == NoValueInt)
+                return null;
+            else
+                return Value;
+        }
+
         protected double? GetDouble(int valueOffset)
         {
             float Value = BitConverter.ToSingle(Data, Offset + valueOffset);
@@ -122,6 +132,25 @@ namespace PgJsonObjects
                 for (int i = 0; i < Count; i++)
                 {
                     int StoredValue = BitConverter.ToInt32(Data, i * 4);
+                    cachedList.Add(StoredValue);
+                }
+            }
+
+            return cachedList;
+        }
+
+        protected List<uint> GetUIntList(int redirectionOffset, ref List<uint> cachedList)
+        {
+            if (cachedList == null)
+            {
+                int LengthOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
+                int Count = BitConverter.ToInt32(Data, LengthOffset);
+                int ValueOffset = LengthOffset + 4;
+
+                cachedList = new List<uint>();
+                for (int i = 0; i < Count; i++)
+                {
+                    uint StoredValue = BitConverter.ToUInt32(Data, i * 4);
                     cachedList.Add(StoredValue);
                 }
             }

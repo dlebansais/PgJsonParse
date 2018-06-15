@@ -602,7 +602,7 @@ namespace PgJsonObjects
             AddDouble(RawShopHiringNumFree, data, ref offset, BaseOffset, 240);
             AddDouble(RawCriticalHitDamage, data, ref offset, BaseOffset, 244);
 
-            FinishSerializing(data, ref offset, BaseOffset, 248, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 248, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion
