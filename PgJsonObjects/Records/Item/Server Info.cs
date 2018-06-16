@@ -10,13 +10,14 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public List<ServerInfoEffect> ServerInfoEffectList { get; private set; } = new List<PgJsonObjects.ServerInfoEffect>();
-        private bool IsServerInfoEffectListEmpty;
         public List<Item> GiveItemList { get; private set; } = new List<Item>();
-        private List<string> RawItemNameList = new List<string>();
         public int NumItemsToGive { get { return RawNumItemsToGive.HasValue ? RawNumItemsToGive.Value : 0; } }
         public int? RawNumItemsToGive { get; private set; }
-        public ItemRequiredHotspot RequiredHotspot { get; private set; }
         public List<AbilityRequirement> OtherRequirementList { get; private set; } = new List<AbilityRequirement>();
+        public ItemRequiredHotspot RequiredHotspot { get; private set; }
+
+        private List<string> RawItemNameList = new List<string>();
+        private bool IsServerInfoEffectListEmpty;
         private bool IsOtherRequirementListEmpty;
         #endregion
 
@@ -722,6 +723,23 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "ServerInfo"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddObjectList(ServerInfoEffectList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
+            AddObjectList(GiveItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
+            AddInt(RawNumItemsToGive, data, ref offset, BaseOffset, 8);
+            AddObjectList(OtherRequirementList, data, ref offset, BaseOffset, 12, StoredObjectListTable);
+            AddEnum(RequiredHotspot, data, ref offset, BaseOffset, 16);
+
+            FinishSerializing(data, ref offset, BaseOffset, 18, null, null, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

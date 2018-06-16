@@ -4,24 +4,25 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class StorageVault : GenericJsonObject<StorageVault>
+    public class StorageVault : GenericJsonObject<StorageVault>, IPgStorageVault
     {
         #region Direct Properties
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
-        private int? RawId;
-        private bool IsGameNpcParsed;
+        public int? RawId { get; private set; }
         public GameNpc MatchingNpc { get; private set; }
-        public string NpcFriendlyName { get; private set; }
-        public MapAreaName Area { get; private set; }
         public int NumSlots { get { return RawNumSlots.HasValue ? RawNumSlots.Value : 0; } }
         public int? RawNumSlots { get; private set; }
+        public string RequirementDescription { get; private set; }
+        public string InteractionFlagRequirement { get; private set; }
+        public ItemKeyword RequiredItemKeyword { get; private set; }
+        public MapAreaName Grouping { get; private set; }
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
         public bool? RawHasAssociatedNpc { get; private set; }
+
         public Dictionary<Favor, int> FavorLevelTable { get; private set; } = new Dictionary<Favor, int>();
-        public ItemKeyword RequiredItemKeyword { get; private set; }
-        public string RequirementDescription { get; private set; }
-        public MapAreaName Grouping { get; private set; }
-        public string InteractionFlagRequirement { get; private set; }
+        private bool IsGameNpcParsed;
+        private string NpcFriendlyName;
+        private MapAreaName Area;
         #endregion
 
         #region Indirect Properties
@@ -280,6 +281,29 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "StorageVault"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            AddInt(RawId, data, ref offset, BaseOffset, 0);
+            AddObject(MatchingNpc, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddInt(RawNumSlots, data, ref offset, BaseOffset, 8);
+            AddString(RequirementDescription, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddString(InteractionFlagRequirement, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddEnum(RequiredItemKeyword, data, ref offset, BaseOffset, 20);
+            AddEnum(Grouping, data, ref offset, BaseOffset, 22);
+            AddBool(RawHasAssociatedNpc, data, ref offset, ref BitOffset, BaseOffset, 24, 0);
+            CloseBool(ref offset, ref BitOffset);
+
+            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

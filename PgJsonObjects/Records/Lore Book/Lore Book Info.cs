@@ -1,11 +1,10 @@
 ﻿using PgJsonReader;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class LoreBookInfo : GenericJsonObject<LoreBookInfo>
+    public class LoreBookInfo : GenericJsonObject<LoreBookInfo>, IPgLoreBookInfo
     {
         #region Direct Properties
         public LoreBookInfoCategory Gods { get; private set; }
@@ -74,6 +73,24 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "LoreBookInfo"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            AddObject(Gods, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(Misc, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(History, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddObject(Plot, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddObject(Stories, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddObject(GuideProgram, data, ref offset, BaseOffset, 20, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 24, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

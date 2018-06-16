@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class LoreBookInfoCategory : GenericJsonObject<LoreBookInfoCategory>
+    public class LoreBookInfoCategory : GenericJsonObject<LoreBookInfoCategory>, IPgLoreBookInfoCategory
     {
         #region Direct Properties
         public string Title { get; private set; }
@@ -59,6 +59,21 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "LoreBookInfo Category"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddString(Title, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(SubTitle, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(SortTitle, data, ref offset, BaseOffset, 0, StoredStringtable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

@@ -53,6 +53,16 @@ namespace PgJsonObjects
                 return Value;
         }
 
+        protected TimeSpan? GetTimeSpan(int valueOffset)
+        {
+            int Value = BitConverter.ToInt32(Data, Offset + valueOffset);
+
+            if (Value == NoValueInt)
+                return null;
+            else
+                return TimeSpan.FromSeconds(Value);
+        }
+
         protected double? GetDouble(int valueOffset)
         {
             float Value = BitConverter.ToSingle(Data, Offset + valueOffset);

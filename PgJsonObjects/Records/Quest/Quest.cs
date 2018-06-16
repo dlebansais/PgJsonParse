@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Quest : GenericJsonObject<Quest>
+    public class Quest : GenericJsonObject<Quest>, IPgQuest
     {
         #region Direct Properties
         public string InternalName { get; private set; }
@@ -13,42 +13,23 @@ namespace PgJsonObjects
         public string Description { get; private set; }
         public int Version { get { return RawVersion.HasValue ? RawVersion.Value : 0; } }
         public int? RawVersion { get; private set; }
-        public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
-        public bool? RawIsCancellable { get; private set; }
         public List<QuestObjective> QuestObjectiveList { get; } = new List<QuestObjective>();
         public List<QuestRewardXp> RewardsXPList { get; } = new List<QuestRewardXp>();
         public List<QuestRewardItem> QuestRewardsItemList { get; } = new List<QuestRewardItem>();
-        private bool IsQuestRewardsItemListEmpty;
         public TimeSpan? RawReuseTime { get; private set; }
-        private int? RawReuseTime_Minutes;
-        private int? RawReuseTime_Hours;
-        private int? RawReuseTime_Days;
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get; private set; }
-        public string FavorNpcId { get; private set; }
-        private bool IsFavorNpcParsed;
         public GameNpc FavorNpc { get; private set; }
-        public string FavorNpcName { get; private set; }
-        private bool IsEmptyNpc;
-        public MapAreaName FavorNpcArea { get; private set; }
         public string PrefaceText { get; private set; }
         public string SuccessText { get; private set; }
         public string MidwayText { get; private set; }
-        public Favor PrerequisiteFavorLevel { get; private set; }
         public Ability RewardAbility { get; private set; }
-        private string RawRewardAbility;
-        private bool IsRawRewardAbilityParsed;
         public int RewardFavor { get { return RawRewardFavor.HasValue ? RawRewardFavor.Value : 0; } }
         public int? RawRewardFavor { get; private set; }
-        public PowerSkill RewardSkill { get; private set; }
-        public Skill ConnectedRewardSkill { get; private set; }
-        private bool IsConnectedRewardSkillParsed;
+        public Skill RewardSkill { get; private set; }
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get; private set; }
         public Recipe RewardRecipe { get; private set; }
-        private string RawRewardRecipe;
-        private bool IsRawRewardRecipeEmpty;
-        private bool IsRawRewardRecipeParsed;
         public int RewardGuildXp { get { return RawRewardGuildXp.HasValue ? RawRewardGuildXp.Value : 0; } }
         public int? RawRewardGuildXp { get; private set; }
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
@@ -60,36 +41,56 @@ namespace PgJsonObjects
         public int? RawRewardGold { get; private set; }
         public string RewardsNamedLootProfile { get; private set; }
         public List<Recipe> PreGiveRecipeList { get; private set; } = new List<Recipe>();
-        private List<string> RawPreGiveRecipeList { get; } = new List<string>();
         public List<QuestKeyword> KeywordList { get; } = new List<QuestKeyword>();
         public Effect RewardEffect { get; private set; }
+        public LoreBook RewardLoreBook { get; private set; }
+        public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
+        public bool? RawIsCancellable { get; private set; }
+        public bool IsAutoPreface { get { return RawIsAutoPreface.HasValue && RawIsAutoPreface.Value; } }
+        public bool? RawIsAutoPreface { get; private set; }
+        public bool IsAutoWrapUp { get { return RawIsAutoWrapUp.HasValue && RawIsAutoWrapUp.Value; } }
+        public bool? RawIsAutoWrapUp { get; private set; }
+        public bool IsGuildQuest { get { return RawIsGuildQuest.HasValue && RawIsGuildQuest.Value; } }
+        public bool? RawIsGuildQuest { get; private set; }
+        public MapAreaName DisplayedLocation { get; private set; }
+        public Favor PrerequisiteFavorLevel { get; private set; }
+        public QuestGroupingName GroupingName { get; private set; }
+        public int NumExpectedParticipants { get { return RawNumExpectedParticipants.HasValue ? RawNumExpectedParticipants.Value : 0; } }
+        public int? RawNumExpectedParticipants { get; private set; }
+        public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
+        public int? RawLevel { get; private set; }
+        public Skill WorkOrderSkill { get; private set; }
+        public List<Quest> FollowUpQuestList { get; private set; } = new List<Quest>();
+        public List<QuestRequirement> QuestRequirementList { get; private set; } = new List<QuestRequirement>();
+        public List<QuestRequirement> QuestRequirementToSustainList { get; private set; } = new List<QuestRequirement>();
+
+        private bool IsQuestRewardsItemListEmpty;
+        private int? RawReuseTime_Minutes;
+        private int? RawReuseTime_Hours;
+        private int? RawReuseTime_Days;
+        private bool IsFavorNpcParsed;
+        private MapAreaName FavorNpcArea;
+        private string FavorNpcId;
+        private string FavorNpcName;
+        private bool IsEmptyNpc;
+        private string RawRewardAbility;
+        private bool IsRawRewardAbilityParsed;
+        private PowerSkill RawRewardSkill;
+        private bool IsConnectedRewardSkillParsed;
+        private string RawRewardRecipe;
+        private bool IsRawRewardRecipeEmpty;
+        private bool IsRawRewardRecipeParsed;
+        private List<string> RawPreGiveRecipeList { get; } = new List<string>();
         private string RawRewardEffect;
         private bool IsRawRewardEffectParsed;
         private List<string> RawRewardInteractionFlags = new List<string>();
         private string RawRewardEnsureLoreBook;
         private bool IsRawLoreBookParsed;
-        public LoreBook RewardLoreBook { get; private set; }
-        public bool IsAutoPreface { get { return RawIsAutoPreface.HasValue && RawIsAutoPreface.Value; } }
-        public bool? RawIsAutoPreface { get; private set; }
-        public bool IsAutoWrapUp { get { return RawIsAutoWrapUp.HasValue && RawIsAutoWrapUp.Value; } }
-        public bool? RawIsAutoWrapUp { get; private set; }
-        public QuestGroupingName GroupingName { get; private set; }
-        public bool IsGuildQuest { get { return RawIsGuildQuest.HasValue && RawIsGuildQuest.Value; } }
-        public bool? RawIsGuildQuest { get; private set; }
-        public int NumExpectedParticipants { get { return RawNumExpectedParticipants.HasValue ? RawNumExpectedParticipants.Value : 0; } }
-        public int? RawNumExpectedParticipants { get; private set; }
-        public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
-        public int? RawLevel { get; private set; }
-        public PowerSkill WorkOrderSkill { get; private set; }
-        public Skill ConnectedWorkOrderSkill { get; private set; }
+        private PowerSkill RawWorkOrderSkill;
         private bool IsConnectedWorkOrderSkillParsed;
-        public MapAreaName DisplayedLocation { get; private set; }
-        public List<Quest> FollowUpQuestList { get; private set; } = new List<Quest>();
         private List<string> RawFollowUpQuestList = new List<string>();
-        public List<QuestRequirement> QuestRequirementList { get; private set; } = new List<QuestRequirement>();
         private bool IsQuestRequirementListSimple;
         private bool IsQuestRequirementListNested;
-        public List<QuestRequirement> QuestRequirementToSustainList { get; private set; } = new List<QuestRequirement>();
         private List<QuestReward> QuestRewardList = new List<QuestReward>();
         #endregion
 
@@ -259,10 +260,10 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawLevel = value,
                 GetInteger = () => RawLevel } },
-            { "WorkOrderSkill", new FieldParser() {
+            { "RawWorkOrderSkill", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => WorkOrderSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(WorkOrderSkill, null, PowerSkill.Internal_None) } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawWorkOrderSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawWorkOrderSkill, null, PowerSkill.Internal_None) } },
             { "DisplayedLocation", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => DisplayedLocation = StringToEnumConversion<MapAreaName>.Parse(value, TextMaps.MapAreaNameStringMap, errorInfo),
@@ -396,7 +397,7 @@ namespace PgJsonObjects
                     {
                         if (RawReward.Has("Skill") && RawReward.Has("Xp"))
                         {
-                            if (RewardSkill == PowerSkill.Internal_None && !RawRewardSkillXp.HasValue)
+                            if (RawRewardSkill == PowerSkill.Internal_None && !RawRewardSkillXp.HasValue)
                             {
                                 JsonString SkillValue;
                                 JsonInteger XpValue;
@@ -404,11 +405,11 @@ namespace PgJsonObjects
                                 {
                                     if (StringToEnumConversion<PowerSkill>.TryParse(SkillValue.String, out PowerSkill ParsedSkill, ErrorInfo))
                                     {
-                                        RewardSkill = ParsedSkill;
+                                        RawRewardSkill = ParsedSkill;
                                         RawRewardSkillXp = XpValue.Number;
 
                                         QuestReward NewReward = new QuestReward(RewardType);
-                                        NewReward.RewardSkill = RewardSkill;
+                                        NewReward.RawRewardSkill = RawRewardSkill;
                                         NewReward.RewardXp = RawRewardSkillXp;
                                         NewReward.AddFieldTableOrder("T");
                                         NewReward.AddFieldTableOrder("Skill");
@@ -747,8 +748,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.FavorTextMap[PrerequisiteFavorLevel]);
                 if (RewardAbility != null)
                     AddWithFieldSeparator(ref Result, RewardAbility.Name);
-                if (ConnectedRewardSkill != null)
-                    AddWithFieldSeparator(ref Result, ConnectedRewardSkill.Name);
+                if (RewardSkill != null)
+                    AddWithFieldSeparator(ref Result, RewardSkill.Name);
                 if (RewardRecipe != null)
                     AddWithFieldSeparator(ref Result, RewardRecipe.Name);
                 foreach (QuestRewardItem Item in PreGiveItemList)
@@ -767,8 +768,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.QuestGroupingNameTextMap[GroupingName]);
                 if (RawIsGuildQuest.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Guild Quest");
-                if (WorkOrderSkill != PowerSkill.Internal_None)
-                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[WorkOrderSkill]);
+                if (RawWorkOrderSkill != PowerSkill.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RawWorkOrderSkill]);
                 if (DisplayedLocation != MapAreaName.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.MapAreaNameTextMap[DisplayedLocation]);
                 foreach (Quest Item in FollowUpQuestList)
@@ -811,8 +812,8 @@ namespace PgJsonObjects
             RewardAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawRewardAbility, RewardAbility, ref IsRawRewardAbilityParsed, ref IsConnected, this);
             RewardRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRewardRecipe, RewardRecipe, ref IsRawRewardRecipeParsed, ref IsConnected, this);
             RewardEffect = Effect.ConnectSingleProperty(ErrorInfo, EffectTable, RawRewardEffect, RewardEffect, ref IsRawRewardEffectParsed, ref IsConnected, this);
-            ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsConnectedRewardSkillParsed, ref IsConnected, this);
-            ConnectedWorkOrderSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, WorkOrderSkill, ConnectedWorkOrderSkill, ref IsConnectedWorkOrderSkillParsed, ref IsConnected, this);
+            RewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawRewardSkill, RewardSkill, ref IsConnectedRewardSkillParsed, ref IsConnected, this);
+            WorkOrderSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawWorkOrderSkill, WorkOrderSkill, ref IsConnectedWorkOrderSkillParsed, ref IsConnected, this);
 
             List<string> ToRemove = new List<string>();
             foreach (string RawPreGiveRecipe in RawPreGiveRecipeList)
@@ -943,6 +944,64 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Quest"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddString(InternalName , data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Name , data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(Description , data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddInt(RawVersion , data, ref offset, BaseOffset, 12);
+            AddObjectList(QuestObjectiveList , data, ref offset, BaseOffset,16, StoredObjectListTable);
+            AddObjectList(RewardsXPList , data, ref offset, BaseOffset, 20, StoredObjectListTable);
+            AddObjectList(QuestRewardsItemList , data, ref offset, BaseOffset,24, StoredObjectListTable);
+            AddTimeSpan(RawReuseTime , data, ref offset, BaseOffset,28);
+            AddInt(RawRewardCombatXP , data, ref offset, BaseOffset, 32);
+            AddObject(FavorNpc , data, ref offset, BaseOffset,  36, StoredObjectTable);
+            AddString(PrefaceText , data, ref offset, BaseOffset, 40, StoredStringtable);
+            AddString(SuccessText , data, ref offset, BaseOffset, 44, StoredStringtable);
+            AddString(MidwayText , data, ref offset, BaseOffset,  48, StoredStringtable);
+            AddObject(RewardAbility , data, ref offset, BaseOffset, 52, StoredObjectTable);
+            AddInt(RawRewardFavor , data, ref offset, BaseOffset,56);
+            AddObject(RewardSkill , data, ref offset, BaseOffset, 60, StoredObjectTable);
+            AddInt(RawRewardSkillXp , data, ref offset, BaseOffset,64);
+            AddObject(RewardRecipe , data, ref offset, BaseOffset,68, StoredObjectTable);
+            AddInt(RawRewardGuildXp , data, ref offset, BaseOffset,72);
+            AddInt(RawRewardGuildCredits , data, ref offset, BaseOffset, 76);
+            AddObjectList(PreGiveItemList , data, ref offset, BaseOffset, 80, StoredObjectListTable);
+            AddInt(RawTSysLevel , data, ref offset, BaseOffset, 84);
+            AddInt(RawRewardGold , data, ref offset, BaseOffset,88);
+            AddString(RewardsNamedLootProfile , data, ref offset, BaseOffset, 92, StoredStringtable);
+            AddObjectList(PreGiveRecipeList , data, ref offset, BaseOffset, 96, StoredObjectListTable);
+            AddEnumList(KeywordList , data, ref offset, BaseOffset, 100, StoredEnumListTable);
+            AddObject(RewardEffect , data, ref offset, BaseOffset, 104, StoredObjectTable);
+            AddObject(RewardLoreBook , data, ref offset, BaseOffset, 108, StoredObjectTable);
+            AddBool(RawIsCancellable , data, ref offset, ref BitOffset, BaseOffset, 112, 0);
+            AddBool(RawIsAutoPreface , data, ref offset, ref BitOffset, BaseOffset, 112, 2);
+            AddBool(RawIsAutoWrapUp , data, ref offset, ref BitOffset, BaseOffset,  112, 4);
+            AddBool(RawIsGuildQuest , data, ref offset, ref BitOffset, BaseOffset,  112, 6);
+            CloseBool(ref offset, ref BitOffset);
+            AddEnum(DisplayedLocation , data, ref offset, BaseOffset, 114);
+            AddEnum(PrerequisiteFavorLevel , data, ref offset, BaseOffset,116);
+            AddEnum(GroupingName , data, ref offset, BaseOffset,  118);
+            AddInt(RawNumExpectedParticipants , data, ref offset, BaseOffset, 120);
+            AddInt(RawLevel , data, ref offset, BaseOffset,124);
+            AddObject(WorkOrderSkill , data, ref offset, BaseOffset, 128, StoredObjectTable);
+            AddObjectList(FollowUpQuestList , data, ref offset, BaseOffset,132, StoredObjectListTable);
+            AddObjectList(QuestRequirementList , data, ref offset, BaseOffset,136, StoredObjectListTable);
+            AddObjectList(QuestRequirementToSustainList , data, ref offset, BaseOffset, 144, StoredObjectListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

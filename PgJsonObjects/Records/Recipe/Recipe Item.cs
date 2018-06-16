@@ -1,24 +1,21 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class RecipeItem : GenericJsonObject<RecipeItem>
+    public class RecipeItem : GenericJsonObject<RecipeItem>, IPgRecipeItem
     {
         #region Direct Properties
         public Item Item { get; private set; }
         public int ItemCode { get { return RawItemCode.HasValue ? RawItemCode.Value : 0; } }
-        private int? RawItemCode;
-        private bool IsItemCodeParsed;
+        public int? RawItemCode { get; private set; }
         public int StackSize { get { return RawStackSize.HasValue ? (RawStackSize.Value > 0 ? RawStackSize.Value : 1) : 0; } }
         public int? RawStackSize { get; private set; }
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
         public double? RawPercentChance { get; private set; }
         public List<RecipeItemKey> ItemKeyList { get; private set; } = new List<RecipeItemKey>();
         public List<Item> MatchingKeyItemList { get; } = new List<Item>();
-        private bool IsItemKeyParsed;
         public string Desc { get; private set; }
         public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
         public double? RawChanceToConsume { get; private set; }
@@ -26,6 +23,9 @@ namespace PgJsonObjects
         public double? RawDurabilityConsumed { get; private set; }
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
         public bool? RawAttuneToCrafter { get; private set; }
+
+        private bool IsItemCodeParsed;
+        private bool IsItemKeyParsed;
         #endregion
 
         #region Indirect Properties
@@ -208,6 +208,31 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "RecipeItem"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddObject(Item, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddInt(RawItemCode, data, ref offset, BaseOffset, 4);
+            AddInt(RawStackSize, data, ref offset, BaseOffset, 8);
+            AddDouble(RawPercentChance, data, ref offset, BaseOffset, 12);
+            AddObjectList(ItemKeyList, data, ref offset, BaseOffset, 16, StoredObjectListTable);
+            AddObjectList(MatchingKeyItemList, data, ref offset, BaseOffset, 20, StoredObjectListTable);
+            AddString(Desc, data, ref offset, BaseOffset, 24, StoredStringtable);
+            AddDouble(RawChanceToConsume, data, ref offset, BaseOffset, 28);
+            AddDouble(RawDurabilityConsumed, data, ref offset, BaseOffset, 32);
+            AddBool(RawAttuneToCrafter, data, ref offset, ref BitOffset, BaseOffset, 36, 0);
+
+            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

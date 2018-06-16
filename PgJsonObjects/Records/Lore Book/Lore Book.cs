@@ -1,5 +1,4 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,14 +9,14 @@ namespace PgJsonObjects
         #region Direct Properties
         public string Title { get; private set; }
         public string LocationHint { get; private set; }
-        public LoreBookCategory Category { get; private set; }
         public List<LoreBookKeyword> KeywordList { get; private set; } = new List<LoreBookKeyword>();
-        private bool IsKeywordListEmpty;
-        public bool IsClientLocal { get { return RawIsClientLocal.HasValue ? RawIsClientLocal.Value : false; } }
-        public bool? RawIsClientLocal { get; private set; }
+        public LoreBookCategory Category { get; private set; }
         public LoreBookVisibility Visibility { get; private set; }
         public string InternalName { get; private set; }
         public string Text { get; private set; }
+        public bool IsClientLocal { get { return RawIsClientLocal.HasValue ? RawIsClientLocal.Value : false; } }
+        public bool? RawIsClientLocal { get; private set; }
+        private bool IsKeywordListEmpty;
         #endregion
 
         #region Indirect Properties
@@ -150,6 +149,29 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "LoreBook"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+
+            AddString(Title, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(LocationHint, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddEnumList(KeywordList, data, ref offset, BaseOffset, 8, StoredEnumListTable);
+            AddEnum(Category, data, ref offset, BaseOffset, 12);
+            AddEnum(Visibility, data, ref offset, BaseOffset, 14);
+            AddString(InternalName, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddString(Text, data, ref offset, BaseOffset, 20, StoredStringtable);
+            AddBool(RawIsClientLocal, data, ref offset, ref BitOffset, BaseOffset, 24, 0);
+            CloseBool(ref offset, ref BitOffset);
+
+            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

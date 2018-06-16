@@ -878,6 +878,21 @@ namespace PgJsonObjects
             offset += 4;
         }
 
+        protected void AddTimeSpan(TimeSpan? value, byte[] data, ref int offset, int baseOffset, int expectedOffset)
+        {
+            Debug.Assert(offset == baseOffset + expectedOffset);
+
+            if (data != null)
+            {
+                int StoredValue = value.HasValue ? (int)value.Value.TotalSeconds : GenericPgObject.NoValueInt;
+
+                byte[] valueData = BitConverter.GetBytes(StoredValue);
+                Array.Copy(valueData, 0, data, offset, 4);
+            }
+
+            offset += 4;
+        }
+
         protected void AddDouble(double? value, byte[] data, ref int offset, int baseOffset, int expectedOffset)
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
