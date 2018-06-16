@@ -1,25 +1,25 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace PgJsonObjects
 {
-    public class NpcPreference : GenericJsonObject<NpcPreference>
+    public class NpcPreference : GenericJsonObject<NpcPreference>, IPgNpcPreference
     {
         #region Direct Properties
-        private List<string> RawKeywordList = new List<string>();
         public List<ItemKeyword> ItemKeywordList { get; private set; } = new List<ItemKeyword>();
+        public List<string> RawKeywordList { get; private set; } = new List<string>();
         public double Preference { get { return RawPreference.HasValue ? RawPreference.Value : 0; } }
         public double? RawPreference { get; private set; }
-        public int? MinValueRequirement { get; private set; }
+        public int MinValueRequirement { get { return RawMinValueRequirement.HasValue ? RawMinValueRequirement.Value : 0; } }
+        public int? RawMinValueRequirement { get; private set; }
         public Skill SkillRequirement { get; private set; }
-        public PowerSkill RawSkillRequirement { get; private set; }
-        private bool IsSkillParsed;
         public ItemSlot SlotRequirement { get; private set; }
         public RecipeItemKey RarityRequirement { get; private set; }
         public RecipeItemKey MinRarityRequirement { get; private set; }
+        private PowerSkill RawSkillRequirement;
+        private bool IsSkillParsed;
         #endregion
 
         #region Indirect Properties
@@ -150,7 +150,7 @@ namespace PgJsonObjects
             int ParsedMinValueRequirement;
             if (int.TryParse(value, out ParsedMinValueRequirement))
             {
-                MinValueRequirement = ParsedMinValueRequirement;
+                RawMinValueRequirement = ParsedMinValueRequirement;
                 return true;
             }
             else
@@ -286,12 +286,12 @@ namespace PgJsonObjects
 
                 if (Keyword == ItemKeyword.Any)
                 {
-                    if (MinValueRequirement.HasValue)
+                    if (RawMinValueRequirement.HasValue)
                     {
                         foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
                         {
                             Item ItemValue = Entry.Value as Item;
-                            if (ItemValue.Value >= MinValueRequirement.Value)
+                            if (ItemValue.Value >= RawMinValueRequirement.Value)
                                 ItemList.Add(ItemValue);
                         }
                     }
@@ -310,7 +310,7 @@ namespace PgJsonObjects
 
                 foreach (Item Item in ItemList)
                 {
-                    if (MinValueRequirement.HasValue && Item.Value < MinValueRequirement.Value)
+                    if (RawMinValueRequirement.HasValue && Item.Value < RawMinValueRequirement.Value)
                         continue;
 
                     if (SlotRequirement != ItemSlot.Internal_None && Item.EquipSlot != SlotRequirement)
@@ -327,6 +327,28 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "NpcPreferences"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+
+            AddEnumList(ItemKeywordList, data, ref offset, BaseOffset, 0, StoredEnumListTable);
+            AddStringList(RawKeywordList, data, ref offset, BaseOffset, 4, StoredStringListTable);
+            AddDouble(RawPreference, data, ref offset, BaseOffset, 8);
+            AddInt(RawMinValueRequirement, data, ref offset, BaseOffset, 12);
+            AddObject(SkillRequirement, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddEnum(SlotRequirement, data, ref offset, BaseOffset, 20);
+            AddEnum(RarityRequirement, data, ref offset, BaseOffset, 22);
+            AddEnum(MinRarityRequirement, data, ref offset, BaseOffset, 24);
+
+            FinishSerializing(data, ref offset, BaseOffset, 26, null, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

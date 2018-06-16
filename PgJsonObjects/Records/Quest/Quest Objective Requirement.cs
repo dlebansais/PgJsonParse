@@ -66,5 +66,11 @@ namespace PgJsonObjects
         #region Debugging
         protected override string FieldTableName { get { return "Quest"; } }
         #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+        }
+        #endregion
     }
 }

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class GameArea : GenericJsonObject<GameArea>
+    public class GameArea : GenericJsonObject<GameArea>, IPgGameArea
     {
         #region Direct Properties
-        public MapAreaName KeyArea { get; private set; }
         public string FriendlyName { get; private set; }
         public string ShortFriendlyName { get; private set; }
+        public MapAreaName KeyArea { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -74,6 +74,21 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Area"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddString(FriendlyName, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(ShortFriendlyName, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddEnum(KeyArea, data, ref offset, BaseOffset, 8);
+
+            FinishSerializing(data, ref offset, BaseOffset, 10, StoredStringtable, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

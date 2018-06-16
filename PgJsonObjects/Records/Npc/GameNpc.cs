@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class GameNpc : GenericJsonObject<GameNpc>
+    public class GameNpc : GenericJsonObject<GameNpc>, IPgGameNpc
     {
         #region Direct Properties
         public string Name { get; private set; }
-        public MapAreaName AreaName { get; private set; }
         public string AreaFriendlyName { get; private set; }
         public List<NpcPreference> PreferenceList { get; private set; } = new List<NpcPreference>();
         public List<NpcPreference> LikeList { get; private set; } = new List<NpcPreference>();
         public List<NpcPreference> HateList { get; private set; } = new List<NpcPreference>();
+        public MapAreaName AreaName { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -197,6 +197,25 @@ namespace PgJsonObjects
                 return "\"" + Name + "/" + AreaFriendlyName + "\"";
             else
                 return "\"" + Name + "/??\"";
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddString(Name, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(AreaFriendlyName, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddObjectList(PreferenceList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
+            AddObjectList(LikeList, data, ref offset, BaseOffset, 12, StoredObjectListTable);
+            AddObjectList(HateList, data, ref offset, BaseOffset, 16, StoredObjectListTable);
+            AddEnum(AreaName, data, ref offset, BaseOffset, 20);
+
+            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

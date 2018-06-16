@@ -1,15 +1,14 @@
-﻿using PgJsonReader;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class PlayerTitle : GenericJsonObject<PlayerTitle>
+    public class PlayerTitle : GenericJsonObject<PlayerTitle>, IPgPlayerTitle
     {
         #region Direct Properties
         public string Title { get; private set; }
-        private string RawTitle;
+        public string RawTitle { get; private set; }
         public string Tooltip { get; private set; }
         public List<TitleKeyword> KeywordList { get; } = new List<TitleKeyword>();
         #endregion
@@ -83,6 +82,23 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "PlayerTitle"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+
+            AddString(Title, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(RawTitle, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(Tooltip, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddEnumList(KeywordList, data, ref offset, BaseOffset, 12, StoredEnumListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

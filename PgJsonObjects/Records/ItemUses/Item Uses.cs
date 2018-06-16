@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -83,6 +82,19 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "ItemUses"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
+
+            AddIntList(RecipesThatUseItemList, data, ref offset, BaseOffset, 0, StoredIntListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, StoredIntListTable, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }
