@@ -179,10 +179,7 @@ namespace PgJsonObjects
             foreach (ServerInfoEffect Item in ServerInfoEffectList)
             {
                 string RawEffect = Item.RawEffect;
-                if (RawEffect != null)
-                    Result.Add(RawEffect);
-                else
-                    Result.Add(RawEffect);
+                Result.Add(RawEffect);
             }
 
             return Result;

@@ -55,8 +55,8 @@ namespace PgJsonObjects
         public int? RawMaxStackSize { get; private set; }
         public string Name { get; private set; }
         public List<ItemSkillLink> SkillRequirementList { get; } = new List<ItemSkillLink>();
-        public List<uint> StockDye { get; private set; }
-        public List<string> StockDyeByName { get; private set; }
+        public List<uint> StockDye { get; private set; } = new List<uint>();
+        public List<string> StockDyeByName { get; private set; } = new List<string>();
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get; private set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
@@ -136,7 +136,7 @@ namespace PgJsonObjects
                 SetArrayIsEmpty = () => IsEffectDescriptionEmpty = true,
                 GetStringArray = GetEffectDescs,
                 GetArrayIsEmpty = () => IsEffectDescriptionEmpty } },
-            { "RawDyeColor", new FieldParser() {
+            { "DyeColor", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseRawDyeColor,
                 GetString = () => RawDyeColor.HasValue ? InvariantCulture.ColorToString(RawDyeColor.Value) : null } },
@@ -971,6 +971,7 @@ namespace PgJsonObjects
             AddBool(RawIsCrafted, data, ref offset, ref BitOffset, BaseOffset, 56, 6);
             AddBool( RawDestroyWhenUsedUp, data, ref offset, ref BitOffset, BaseOffset, 56, 8);
             AddBool(RawIsSkillReqsDefaults, data, ref offset, ref BitOffset, BaseOffset, 56, 10);
+            CloseBool(ref offset, ref BitOffset);
             AddEnum(RequiredAppearance, data, ref offset, BaseOffset, 58);
             AddEnumList(ItemKeyList, data, ref offset, BaseOffset, 60, StoredEnumListTable);
             AddEnumList(EmptyKeywordList, data, ref offset, BaseOffset, 64, StoredEnumListTable);

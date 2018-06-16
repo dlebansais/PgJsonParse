@@ -136,7 +136,7 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<SourceTypes>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<SourceTypes>.ToString(Type, null, SourceTypes.Internal_None) } },
-            { "RawSkillTypeId", new FieldParser() {
+            { "SkillTypeId", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkillTypeId,
                 GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkillTypeId, null, PowerSkill.Internal_None) } },

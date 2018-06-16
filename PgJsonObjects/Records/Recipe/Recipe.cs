@@ -123,7 +123,7 @@ namespace PgJsonObjects
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseResultEffects,
                 GetStringArray = GetResultEffects } },
-            { "RawSortSkill", new FieldParser() {
+            { "SortSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawSortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSortSkill, null, PowerSkill.Internal_None) } },
@@ -172,7 +172,7 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = ParseDyeColor,
                 GetString = () => DyeColor.HasValue ? InvariantCulture.ColorToString(DyeColor.Value) : null } },
-            { "RawRewardSkill", new FieldParser() {
+            { "RewardSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseRewardSkill,
                 GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawRewardSkill, null, PowerSkill.Internal_None) } },

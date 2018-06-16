@@ -297,6 +297,8 @@ namespace PgJsonParse
 
                 if (NewCombatSkillList.Contains(PowerItem.RawSkill))
                     continue;
+
+                NewCombatSkillList.Add(PowerItem.RawSkill);
             }
 
             NewCombatSkillList.Sort(SortSkillByName);

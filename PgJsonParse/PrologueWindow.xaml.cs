@@ -988,7 +988,6 @@ namespace PgJsonParse
                 return;
             }
 
-
             int offset;
 
             offset = 0;
@@ -999,7 +998,6 @@ namespace PgJsonParse
 
             offset = 0;
             SerializeAll(data, ref offset);
-
 
 
 

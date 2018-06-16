@@ -260,7 +260,7 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawLevel = value,
                 GetInteger = () => RawLevel } },
-            { "RawWorkOrderSkill", new FieldParser() {
+            { "WorkOrderSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawWorkOrderSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawWorkOrderSkill, null, PowerSkill.Internal_None) } },

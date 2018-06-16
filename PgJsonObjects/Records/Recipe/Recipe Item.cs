@@ -229,8 +229,9 @@ namespace PgJsonObjects
             AddDouble(RawChanceToConsume, data, ref offset, BaseOffset, 28);
             AddDouble(RawDurabilityConsumed, data, ref offset, BaseOffset, 32);
             AddBool(RawAttuneToCrafter, data, ref offset, ref BitOffset, BaseOffset, 36, 0);
+            CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, null, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 38, StoredStringtable, StoredObjectTable, null, null, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion
