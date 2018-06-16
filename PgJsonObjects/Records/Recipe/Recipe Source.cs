@@ -8,23 +8,24 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public Recipe ConnectedRecipe { get; private set; }
+        public Skill SkillTypeId { get; private set; }
+        public Item ConnectedItem { get; private set; }
+        public GameNpc Npc { get; private set; }
+        public Effect ConnectedEffect { get; private set; }
+        public Quest ConnectedQuest { get; private set; }
+        public SourceTypes Type { get; private set; }
+
         private int? RawRecipeId;
         private bool IsRecipeIdParsed;
-        public SourceTypes Type { get; private set; }
-        public PowerSkill SkillTypeId { get; private set; }
-        public Skill ConnectedSkillTypeId { get; private set; }
+        private PowerSkill RawSkillTypeId;
         private bool IsSkillTypeIdParsed;
-        public Item ConnectedItem { get; private set; }
         private int? RawItemTypeId;
         private bool IsItemTypeIdParsed;
         private string RawNpcId;
         private string RawNpcName;
         private bool IsNpcParsed;
-        public GameNpc Npc { get; private set; }
-        public Effect ConnectedEffect { get; private set; }
         private string RawEffectName;
         private bool IsEffectParsed;
-        public Quest ConnectedQuest { get; private set; }
         private int? RawQuestId;
         private bool IsQuestIdParsed;
         private string RawEffectTypeId;
@@ -48,8 +49,8 @@ namespace PgJsonObjects
             switch (Type)
             {
                 case SourceTypes.AutomaticFromSkill:
-                    if (ConnectedSkillTypeId != null)
-                        return new SkillupSource(ConnectedSkillTypeId);
+                    if (SkillTypeId != null)
+                        return new SkillupSource(SkillTypeId);
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("Recipe Source (AutomaticFromSkill)");
@@ -135,10 +136,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<SourceTypes>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<SourceTypes>.ToString(Type, null, SourceTypes.Internal_None) } },
-            { "SkillTypeId", new FieldParser() {
+            { "RawSkillTypeId", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkillTypeId,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(SkillTypeId, null, PowerSkill.Internal_None) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkillTypeId, null, PowerSkill.Internal_None) } },
             { "ItemTypeId", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseItemTypeId,
@@ -164,9 +165,9 @@ namespace PgJsonObjects
         private void ParseSkillTypeId(string value, ParseErrorInfo ErrorInfo)
         {
             if (Type == SourceTypes.AutomaticFromSkill)
-                SkillTypeId = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
+                RawSkillTypeId = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
             else
-                ErrorInfo.AddInvalidObjectFormat("RecipeSource SkillTypeId (type)");
+                ErrorInfo.AddInvalidObjectFormat("RecipeSource RawSkillTypeId (type)");
         }
 
         private void ParseItemTypeId(int value, ParseErrorInfo ErrorInfo)
@@ -221,8 +222,8 @@ namespace PgJsonObjects
                 AddWithFieldSeparator(ref Result, TextMaps.SourceTypesTextMap[Type]);
                 if (ConnectedRecipe != null)
                     AddWithFieldSeparator(ref Result, ConnectedRecipe.Name);
-                if (ConnectedSkillTypeId != null)
-                    AddWithFieldSeparator(ref Result, ConnectedSkillTypeId.Name);
+                if (SkillTypeId != null)
+                    AddWithFieldSeparator(ref Result, SkillTypeId.Name);
                 if (ConnectedItem != null)
                     AddWithFieldSeparator(ref Result, ConnectedItem.Name);
                 if (ConnectedEffect != null)
@@ -250,8 +251,8 @@ namespace PgJsonObjects
             if (RawRecipeId.HasValue)
                 ConnectedRecipe = PgJsonObjects.Recipe.ConnectByKey(ErrorInfo, RecipeTable, RawRecipeId.Value, ConnectedRecipe, ref IsRecipeIdParsed, ref IsConnected, null);
 
-            if (SkillTypeId != PowerSkill.Internal_None && SkillTypeId != PowerSkill.AnySkill && SkillTypeId != PowerSkill.Unknown)
-                ConnectedSkillTypeId = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, SkillTypeId, ConnectedSkillTypeId, ref IsSkillTypeIdParsed, ref IsConnected, ConnectedRecipe);
+            if (RawSkillTypeId != PowerSkill.Internal_None && RawSkillTypeId != PowerSkill.AnySkill && RawSkillTypeId != PowerSkill.Unknown)
+                SkillTypeId = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkillTypeId, SkillTypeId, ref IsSkillTypeIdParsed, ref IsConnected, ConnectedRecipe);
 
             if (RawItemTypeId.HasValue)
                 ConnectedItem = PgJsonObjects.Item.ConnectByKey(ErrorInfo, ItemTable, RawItemTypeId.Value, ConnectedItem, ref IsItemTypeIdParsed, ref IsConnected, ConnectedRecipe);
@@ -276,6 +277,25 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "RecipeSource"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            AddObject(ConnectedRecipe, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(SkillTypeId, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(ConnectedItem, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddObject(Npc, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddObject(ConnectedEffect, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddObject(ConnectedQuest, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddEnum(Type, data, ref offset, BaseOffset, 24);
+
+            FinishSerializing(data, ref offset, BaseOffset, 26, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

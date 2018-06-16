@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -11,8 +12,8 @@ namespace PgJsonObjects
             this.RawRequirementQuestList = RawRequirementQuestList;
         }
 
-        private List<string> RawRequirementQuestList;
         public List<Quest> QuestList { get; private set; } = new List<Quest>();
+        private List<string> RawRequirementQuestList;
         private bool IsRawRequirementQuestParsed;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
@@ -67,6 +68,19 @@ namespace PgJsonObjects
             }
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddObjectList(QuestList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

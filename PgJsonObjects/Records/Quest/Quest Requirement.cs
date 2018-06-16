@@ -1,6 +1,5 @@
 ﻿using PgJsonReader;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -299,6 +298,12 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "QuestRequirement"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+        }
         #endregion
     }
 }

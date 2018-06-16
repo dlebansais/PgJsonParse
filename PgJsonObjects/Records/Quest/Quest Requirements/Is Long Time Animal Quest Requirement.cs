@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class IsLongTimeAnimalQuestRequirement : QuestRequirement
+    public class IsLongTimeAnimalQuestRequirement : QuestRequirement, IPgIsLongTimeAnimalQuestRequirement
     {
         public IsLongTimeAnimalQuestRequirement(OtherRequirementType OtherRequirementType)
             : base(OtherRequirementType)
@@ -24,6 +24,12 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
         }
         #endregion
     }

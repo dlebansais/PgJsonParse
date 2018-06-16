@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class RunTimeBehaviorRuleSetQuestRequirement : QuestRequirement
+    public class RunTimeBehaviorRuleSetQuestRequirement : QuestRequirement, IPgRunTimeBehaviorRuleSetQuestRequirement
     {
         public RunTimeBehaviorRuleSetQuestRequirement(OtherRequirementType OtherRequirementType, string RequirementRule)
             : base(OtherRequirementType)
@@ -39,6 +39,20 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddString(RequirementRule, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Rule, data, ref offset, BaseOffset, 4, StoredStringtable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

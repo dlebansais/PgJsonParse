@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class OrQuestRequirement : QuestRequirement
+    public class OrQuestRequirement : QuestRequirement, IPgOrQuestRequirement
     {
         public OrQuestRequirement(OtherRequirementType OtherRequirementType, List<QuestRequirement> OrList)
             : base(OtherRequirementType)
@@ -33,6 +34,19 @@ namespace PgJsonObjects
 
                 return Result;
             }
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddObjectList(OrList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

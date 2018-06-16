@@ -3,31 +3,33 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class MinFavorLevelQuestRequirement : QuestRequirement
+    public class MinFavorLevelQuestRequirement : QuestRequirement, IPgMinFavorLevelQuestRequirement
     {
         public MinFavorLevelQuestRequirement(OtherRequirementType OtherRequirementType, Favor RequirementFavorLevel)
             : base (OtherRequirementType)
         {
-            IsEmpty = true;
+            RawIsEmpty = true;
             FavorLevel = RequirementFavorLevel;
         }
 
         public MinFavorLevelQuestRequirement(OtherRequirementType OtherRequirementType, MapAreaName RequirementFavorNpcArea, string RequirementFavorNpcId, string RequirementFavorNpcName, Favor RequirementFavorLevel)
             : base(OtherRequirementType)
         {
+            RawIsEmpty = false;
             FavorNpcArea = RequirementFavorNpcArea;
             FavorNpcId = RequirementFavorNpcId;
             FavorNpcName = RequirementFavorNpcName;
             FavorLevel = RequirementFavorLevel;
         }
 
-        public bool IsEmpty { get; private set; }
         public GameNpc FavorNpc { get; private set; }
+        public bool IsEmpty { get { return RawIsEmpty.HasValue && RawIsEmpty.Value; } }
+        public bool? RawIsEmpty { get; private set; }
+        public Favor FavorLevel { get; private set; }
+        private MapAreaName FavorNpcArea;
         private bool IsFavorNpcParsed;
-        public MapAreaName FavorNpcArea { get; private set; }
         private string FavorNpcId;
         private string FavorNpcName;
-        public Favor FavorLevel { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
@@ -81,6 +83,23 @@ namespace PgJsonObjects
             }
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            AddObject(FavorNpc, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddBool(RawIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 4, 0);
+            CloseBool(ref offset, ref BitOffset);
+            AddEnum(FavorLevel, data, ref offset, BaseOffset, 6);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }
