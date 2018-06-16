@@ -6,14 +6,14 @@ namespace PgJsonObjects
     public class QuestObjectiveDeliver : QuestObjective, IPgQuestObjectiveDeliver
     {
         #region Init
-        public QuestObjectiveDeliver(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName, int RawNumToDeliver)
+        public QuestObjectiveDeliver(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName, int? RawNumToDeliver)
             : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
             this.DeliverNpcArea = DeliverNpcArea;
             this.DeliverNpcId = DeliverNpcId;
             this.DeliverNpcName = DeliverNpcName;
             this.RawItemName = RawItemName;
-            this.RawNumToDeliver = NumToDeliver;
+            this.RawNumToDeliver = RawNumToDeliver;
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
@@ -44,6 +44,8 @@ namespace PgJsonObjects
         #region Properties
         public GameNpc DeliverNpc { get; private set; }
         public Item QuestItem { get; private set; }
+        public int NumToDeliver { get { return RawNumToDeliver.HasValue ? RawNumToDeliver.Value : 0; } }
+        public int? RawNumToDeliver { get; private set; }
 
         private MapAreaName DeliverNpcArea;
         private string DeliverNpcId;

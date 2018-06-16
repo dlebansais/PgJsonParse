@@ -45,7 +45,7 @@ namespace PgJsonObjects
         public string RawItemMenuCategory { get { return GetString(100); } }
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get { return GetInt(104); } }
-        public Recipe PrereqRecipe { get { return GetObject(108, ref _SharesResetTimerWith); } } private Recipe _PrereqRecipe;
+        public Recipe PrereqRecipe { get { return GetObject(108, ref _PrereqRecipe); } } private Recipe _PrereqRecipe;
         public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
         public bool? RawIsItemMenuKeywordReqSufficient { get { return GetBool(112, 0); } }
         public ItemKeyword RecipeItemKeyword { get { return GetEnum<ItemKeyword>(114); } }

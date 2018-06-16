@@ -11,12 +11,12 @@ namespace PgJsonObjects
         public string Prefix { get; private set; }
         public string Suffix { get; private set; }
         public List<ItemSlot> SlotList { get; } = new List<ItemSlot>();
-        public Skill ConnectedSkill { get; private set; }
+        public Skill Skill { get; private set; }
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; private set; }
+        public PowerSkill RawSkill { get; private set; }
 
         public Dictionary<int, PowerTier> TierEffectTable { get; } = new Dictionary<int, PowerTier>();
-        private PowerSkill RawSkill;
         private bool IsSkillParsed;
         #endregion
 
@@ -264,16 +264,16 @@ namespace PgJsonObjects
                 IsConnected |= Entry.Value.Connect(ErrorInfo, this, AllTables);
 
             if (RawSkill != PowerSkill.Internal_None && RawSkill != PowerSkill.AnySkill && RawSkill != PowerSkill.Unknown)
-                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
+                Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, Skill, ref IsSkillParsed, ref IsConnected, this);
 
             return IsConnected;
         }
         #endregion
 
         #region Crunching
-        public bool IsValidForSlot(PowerSkill Skill, ItemSlot Slot)
+        public bool IsValidForSlot(PowerSkill RawSkill, ItemSlot Slot)
         {
-            if (this.Skill != Skill)
+            if (this.RawSkill != RawSkill)
                 return false;
 
             if (IsUnavailable)
@@ -305,11 +305,12 @@ namespace PgJsonObjects
             AddString(Prefix, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(Suffix, data, ref offset, BaseOffset, 4, StoredStringtable);
             AddEnumList(SlotList, data, ref offset, BaseOffset, 8, StoredEnumListTable);
-            AddObject(ConnectedSkill, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddObject(Skill, data, ref offset, BaseOffset, 12, StoredObjectTable);
             AddBool(RawIsUnavailable, data, ref offset, ref BitOffset, BaseOffset, 16, 0);
             CloseBool(ref offset, ref BitOffset);
+            AddEnum(RawSkill, data, ref offset, BaseOffset, 18);
 
-            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -32,8 +32,6 @@ namespace PgJsonObjects
         public bool? RawMustCompleteEarlierObjectivesFirst;
         public int? MinHour { get; private set; }
         public int? MaxHour { get; private set; }
-        public int NumToDeliver { get { return RawNumToDeliver.HasValue ? RawNumToDeliver.Value : 0; } }
-        public int? RawNumToDeliver { get; private set; }
         private int? RawMinAmount;
         private int? RawMaxAmount;
         private QuestObjectiveKillTarget KillTarget;
@@ -58,6 +56,7 @@ namespace PgJsonObjects
         private EffectKeyword EffectRequirement;
         private string InteractionTarget;
         protected QuestObjectiveRequirement QuestObjectiveRequirement;
+        private int? RawNumToDeliver;
         #endregion
 
         #region Indirect Properties
@@ -115,7 +114,7 @@ namespace PgJsonObjects
 
                 case QuestObjectiveType.Deliver:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
-                        return new QuestObjectiveDeliver(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName, RawNumToDeliver.HasValue && RawNumToDeliver.Value > 0 ? RawNumToDeliver.Value : -1);
+                        return new QuestObjectiveDeliver(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName, RawNumToDeliver);
                     else
                         return this;
 

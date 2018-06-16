@@ -409,8 +409,8 @@ namespace PgJsonObjects
                                         RawRewardSkillXp = XpValue.Number;
 
                                         QuestReward NewReward = new QuestReward(RewardType);
-                                        NewReward.RawRewardSkill = RawRewardSkill;
-                                        NewReward.RewardXp = RawRewardSkillXp;
+                                        NewReward.RewardSkill = RawRewardSkill;
+                                        NewReward.RawRewardXp = RawRewardSkillXp;
                                         NewReward.AddFieldTableOrder("T");
                                         NewReward.AddFieldTableOrder("Skill");
                                         NewReward.AddFieldTableOrder("Xp");
@@ -468,7 +468,7 @@ namespace PgJsonObjects
                                     RawRewardCombatXP = XpValue.Number;
 
                                     QuestReward NewReward = new QuestReward(RewardType);
-                                    NewReward.RewardXp = RawRewardCombatXP;
+                                    NewReward.RawRewardXp = RawRewardCombatXP;
                                     NewReward.AddFieldTableOrder("T");
                                     NewReward.AddFieldTableOrder("Xp");
                                     QuestRewardList.Add(NewReward);
@@ -495,7 +495,7 @@ namespace PgJsonObjects
                                     RawRewardGuildXp = XpValue.Number;
 
                                     QuestReward NewReward = new QuestReward(RewardType);
-                                    NewReward.RewardXp = RawRewardGuildXp;
+                                    NewReward.RawRewardXp = RawRewardGuildXp;
                                     NewReward.AddFieldTableOrder("T");
                                     NewReward.AddFieldTableOrder("Xp");
                                     QuestRewardList.Add(NewReward);
@@ -522,7 +522,7 @@ namespace PgJsonObjects
                                     RawRewardGuildCredits = CreditsValue.Number;
 
                                     QuestReward NewReward = new QuestReward(RewardType);
-                                    NewReward.RewardGuildCredits = RawRewardGuildCredits;
+                                    NewReward.RawRewardGuildCredits = RawRewardGuildCredits;
                                     NewReward.AddFieldTableOrder("T");
                                     NewReward.AddFieldTableOrder("Credits");
                                     QuestRewardList.Add(NewReward);

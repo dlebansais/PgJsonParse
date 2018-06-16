@@ -107,6 +107,7 @@
     <Compile Include="Interfaces\Power\IPgPower.cs" />
     <Compile Include="Interfaces\Power\IPgPowerTier.cs" />
     <Compile Include="Interfaces\Quest\IPgQuest.cs" />
+    <Compile Include="Interfaces\Quest\IPgQuestReward.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRewardItem.cs" />
     <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveAnatomy.cs" />
     <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveDeliver.cs" />
@@ -411,6 +412,7 @@
     <Compile Include="Synthetic\Power\PgPower.cs" />
     <Compile Include="Synthetic\Power\PgPowerTier.cs" />
     <Compile Include="Synthetic\Quest\PgQuest.cs" />
+    <Compile Include="Synthetic\Quest\PgQuestReward.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRewardItem.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveAnatomy.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveDeliver.cs" />

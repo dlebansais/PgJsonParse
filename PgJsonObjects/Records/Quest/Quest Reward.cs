@@ -16,6 +16,16 @@ namespace PgJsonObjects
         }
         #endregion
 
+        #region Properties
+        public string Type { get; set; }
+        public int RewardXp { get { return RawRewardXp.HasValue ? RawRewardXp.Value : 0; } }
+        public int? RawRewardXp { get; set; }
+        public string RewardRecipe { get; set; }
+        public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
+        public int? RawRewardGuildCredits { get; set; }
+        public PowerSkill RewardSkill { get; set; }
+        #endregion
+
         #region Indirect Properties
         protected override string SortingName { get { return null; } }
         #endregion
@@ -30,27 +40,19 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<PowerSkill>.ToString(RewardSkill, null, PowerSkill.Internal_None) } },
             { "Xp", new FieldParser() {
                 Type = FieldType.Integer,
-                GetInteger = () => RewardXp } },
+                GetInteger = () => RawRewardXp } },
             { "Recipe", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => RewardRecipe } },
             { "Credits", new FieldParser() {
                 Type = FieldType.Integer,
-                GetInteger = () => RewardGuildCredits } },
+                GetInteger = () => RawRewardGuildCredits } },
         }; } }
 
         public void AddFieldTableOrder(string Field)
         {
             FieldTableOrder.Add(Field);
         }
-        #endregion
-
-        #region Properties
-        public string Type { get; set; }
-        public PowerSkill RewardSkill { get; set; }
-        public int? RewardXp { get; set; }
-        public string RewardRecipe { get; set; }
-        public int? RewardGuildCredits { get; set; }
         #endregion
 
         #region Indexing
@@ -66,6 +68,23 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Quest"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddString(Type, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddInt(RawRewardXp, data, ref offset, BaseOffset, 4);
+            AddString(RewardRecipe, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddInt(RawRewardGuildCredits, data, ref offset, BaseOffset, 12);
+            AddEnum(RewardSkill, data, ref offset, BaseOffset, 16);
+
+            FinishSerializing(data, ref offset, BaseOffset, 18, StoredStringtable, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

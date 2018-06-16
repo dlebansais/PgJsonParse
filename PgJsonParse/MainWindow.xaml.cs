@@ -289,19 +289,14 @@ namespace PgJsonParse
                 if (CombatSlotCount == 0)
                     continue;
 
-                if (PowerItem.Skill == PowerSkill.Internal_None ||
-                    PowerItem.Skill == PowerSkill.AnySkill ||
-                    PowerItem.Skill == PowerSkill.Endurance ||
-                    PowerItem.Skill == PowerSkill.ShamanicInfusion)
+                if (PowerItem.RawSkill == PowerSkill.Internal_None ||
+                    PowerItem.RawSkill == PowerSkill.AnySkill ||
+                    PowerItem.RawSkill == PowerSkill.Endurance ||
+                    PowerItem.RawSkill == PowerSkill.ShamanicInfusion)
                     continue;
 
-                if (NewCombatSkillList.Contains(PowerItem.Skill))
+                if (NewCombatSkillList.Contains(PowerItem.RawSkill))
                     continue;
-
-                if (PowerItem.Skill == PowerSkill.Carpentry)
-                    NewCombatSkillList.Add(PowerItem.Skill);
-                else
-                    NewCombatSkillList.Add(PowerItem.Skill);
             }
 
             NewCombatSkillList.Sort(SortSkillByName);
