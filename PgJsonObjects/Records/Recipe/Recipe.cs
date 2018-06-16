@@ -3,36 +3,29 @@ using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace PgJsonObjects
 {
-    public class Recipe : GenericJsonObject<Recipe>
+    public class Recipe : GenericJsonObject<Recipe>, IPgRecipe
     {
         #region Direct Properties
         public string Description { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
-        private int? RawIconId;
+        public int? RawIconId { get; private set; }
         public List<RecipeItem> IngredientList { get; } = new List<RecipeItem>();
-        private bool EmptyIngredientList;
         public string InternalName { get; private set; }
         public string Name { get; private set; }
         public List<RecipeItem> ResultItemList { get; } = new List<RecipeItem>();
-        private bool EmptyResultItemList;
-        public PowerSkill Skill { get; private set; }
-        public Skill ConnectedSkill { get; private set; }
-        private bool IsSkillParsed;
+        public Skill Skill { get; private set; }
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; private set; }
         public List<RecipeResultEffect> ResultEffectList { get; } = new List<RecipeResultEffect>();
-        public PowerSkill SortSkill { get; private set; }
-        public Skill ConnectedSortSkill { get; private set; }
-        private bool IsSortSkillParsed;
+        public Skill SortSkill { get; private set; }
         public List<RecipeKeyword> KeywordList { get; } = new List<RecipeKeyword>();
-        public RecipeAction ActionLabel { get; private set; }
         public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
         public int? RawUsageDelay { get; private set; }
         public string UsageDelayMessage { get; private set; }
+        public RecipeAction ActionLabel { get; private set; }
         public RecipeUsageAnimation UsageAnimation { get; private set; }
         public List<AbilityRequirement> OtherRequirementList { get; } = new List<AbilityRequirement>();
         public List<RecipeCost> CostList { get; } = new List<RecipeCost>();
@@ -42,24 +35,31 @@ namespace PgJsonObjects
         public int ResetTimeInSeconds { get { return RawResetTimeInSeconds.HasValue ? RawResetTimeInSeconds.Value : 0; } }
         public int? RawResetTimeInSeconds { get; private set; }
         public uint? DyeColor { get; private set; }
-        public PowerSkill RewardSkill { get; private set; }
-        public Skill ConnectedRewardSkill { get; private set; }
-        private bool IsRewardSkillParsed;
+        public Skill RewardSkill { get; private set; }
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get; private set; }
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
         public int? RawRewardSkillXpFirstTime { get; private set; }
         public Recipe SharesResetTimerWith { get; private set; }
-        private string RawSharesResetTimerWith;
-        private bool IsSharesResetTimerWithParsed;
         public string ItemMenuLabel { get; private set; }
-        public ItemKeyword RecipeItemKeyword { get; private set; }
-        public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
-        public bool? RawIsItemMenuKeywordReqSufficient { get; private set; }
         public string RawItemMenuCategory { get; private set; }
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get; private set; }
         public Recipe PrereqRecipe { get; private set; }
+        public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
+        public bool? RawIsItemMenuKeywordReqSufficient { get; private set; }
+        public ItemKeyword RecipeItemKeyword { get; private set; }
+
+        private bool EmptyIngredientList;
+        private bool EmptyResultItemList;
+        private PowerSkill RawSkill;
+        private bool IsSkillParsed;
+        private PowerSkill RawSortSkill;
+        private bool IsSortSkillParsed;
+        private PowerSkill RawRewardSkill;
+        private bool IsRewardSkillParsed;
+        private string RawSharesResetTimerWith;
+        private bool IsSharesResetTimerWithParsed;
         private string RawPrereqRecipe;
         private bool IsPrereqRecipeParsed;
         #endregion
@@ -114,7 +114,7 @@ namespace PgJsonObjects
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
             { "SkillLevelReq", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawSkillLevelReq = value,
@@ -123,10 +123,10 @@ namespace PgJsonObjects
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseResultEffects,
                 GetStringArray = GetResultEffects } },
-            { "SortSkill", new FieldParser() {
+            { "RawSortSkill", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => SortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(SortSkill, null, PowerSkill.Internal_None) } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawSortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSortSkill, null, PowerSkill.Internal_None) } },
             { "Keywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<RecipeKeyword>.ParseList(value, KeywordList, errorInfo),
@@ -172,10 +172,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = ParseDyeColor,
                 GetString = () => DyeColor.HasValue ? InvariantCulture.ColorToString(DyeColor.Value) : null } },
-            { "RewardSkill", new FieldParser() {
+            { "RawRewardSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseRewardSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RewardSkill, null, PowerSkill.Internal_None) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawRewardSkill, null, PowerSkill.Internal_None) } },
             { "RewardSkillXp", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardSkillXp = value,
@@ -227,8 +227,8 @@ namespace PgJsonObjects
                 RawIconId = value;
                 ErrorInfo.AddIconId(value);
 
-                PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, RawIconId);
-                PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, RawIconId);
+                PgJsonObjects.Skill.UpdateAnySkillIcon(RawSkill, RawIconId);
+                PgJsonObjects.Skill.UpdateAnySkillIcon(RawRewardSkill, RawIconId);
             }
             else
                 RawIconId = null;
@@ -248,8 +248,8 @@ namespace PgJsonObjects
 
         private void ParseSkill(string value, ParseErrorInfo ErrorInfo)
         {
-            Skill = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
-            PgJsonObjects.Skill.UpdateAnySkillIcon(Skill, RawIconId);
+            RawSkill = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
+            PgJsonObjects.Skill.UpdateAnySkillIcon(RawSkill, RawIconId);
         }
 
         private bool ParseResultEffects(string value, ParseErrorInfo ErrorInfo)
@@ -320,9 +320,9 @@ namespace PgJsonObjects
 
         private void ParseRewardSkill(string value, ParseErrorInfo ErrorInfo)
         {
-            RewardSkill = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
+            RawRewardSkill = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
 
-            PgJsonObjects.Skill.UpdateAnySkillIcon(RewardSkill, RawIconId);
+            PgJsonObjects.Skill.UpdateAnySkillIcon(RawRewardSkill, RawIconId);
         }
 
         private void ParseItemMenuCategory(string value, ParseErrorInfo ErrorInfo)
@@ -848,12 +848,12 @@ namespace PgJsonObjects
                         AddWithFieldSeparator(ref Result, Ingredient.TextContent);
                     foreach (RecipeItem ResultItem in ResultItemList)
                         AddWithFieldSeparator(ref Result, ResultItem.TextContent);
-                    if (ConnectedSkill != null)
-                        AddWithFieldSeparator(ref Result, ConnectedSkill.Name);
+                    if (Skill != null)
+                        AddWithFieldSeparator(ref Result, Skill.Name);
                     foreach (RecipeResultEffect Item in ResultEffectList)
                         AddWithFieldSeparator(ref Result, Item.CombinedEffect);
-                    if (ConnectedSortSkill != null)
-                        AddWithFieldSeparator(ref Result, ConnectedSortSkill.Name);
+                    if (SortSkill != null)
+                        AddWithFieldSeparator(ref Result, SortSkill.Name);
                     foreach (RecipeKeyword Keyword in KeywordList)
                         AddWithFieldSeparator(ref Result, TextMaps.RecipeKeywordTextMap[Keyword]);
                     if (ActionLabel != RecipeAction.Internal_None)
@@ -865,8 +865,8 @@ namespace PgJsonObjects
                         AddWithFieldSeparator(ref Result, Requirement.TextContent);
                     foreach (RecipeCost Item in CostList)
                         AddWithFieldSeparator(ref Result, TextMaps.RecipeCurrencyTextMap[Item.Currency]);
-                    if (ConnectedRewardSkill != null)
-                        AddWithFieldSeparator(ref Result, ConnectedRewardSkill.Name);
+                    if (RewardSkill != null)
+                        AddWithFieldSeparator(ref Result, RewardSkill.Name);
                     if (SharesResetTimerWith != null)
                         AddWithFieldSeparator(ref Result, SharesResetTimerWith.Name);
                     AddWithFieldSeparator(ref Result, ItemMenuLabel);
@@ -899,14 +899,14 @@ namespace PgJsonObjects
             foreach (RecipeItem Item in ResultItemList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
-            if (Skill != PowerSkill.Internal_None && Skill != PowerSkill.AnySkill && Skill != PowerSkill.Unknown)
-                ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
+            if (RawSkill != PowerSkill.Internal_None && RawSkill != PowerSkill.AnySkill && RawSkill != PowerSkill.Unknown)
+                Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, Skill, ref IsSkillParsed, ref IsConnected, this);
 
-            if (SortSkill != PowerSkill.Internal_None && SortSkill != PowerSkill.AnySkill && SortSkill != PowerSkill.Unknown)
-                ConnectedSortSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, SortSkill, ConnectedSortSkill, ref IsSortSkillParsed, ref IsConnected, this);
+            if (RawSortSkill != PowerSkill.Internal_None && RawSortSkill != PowerSkill.AnySkill && RawSortSkill != PowerSkill.Unknown)
+                SortSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSortSkill, SortSkill, ref IsSortSkillParsed, ref IsConnected, this);
 
-            if (RewardSkill != PowerSkill.Internal_None && RewardSkill != PowerSkill.AnySkill && RewardSkill != PowerSkill.Unknown)
-                ConnectedRewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RewardSkill, ConnectedRewardSkill, ref IsRewardSkillParsed, ref IsConnected, this);
+            if (RawRewardSkill != PowerSkill.Internal_None && RawRewardSkill != PowerSkill.AnySkill && RawRewardSkill != PowerSkill.Unknown)
+                RewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawRewardSkill, RewardSkill, ref IsRewardSkillParsed, ref IsConnected, this);
 
             foreach (AbilityRequirement Item in OtherRequirementList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
@@ -1076,6 +1076,54 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Recipe"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+
+            AddString(Description, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddInt(RawIconId, data, ref offset, BaseOffset, 4);
+            AddObjectList(IngredientList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
+            AddString(InternalName, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddString(Name, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddObjectList(ResultItemList, data, ref offset, BaseOffset, 20, StoredObjectListTable);
+            AddObject(Skill, data, ref offset, BaseOffset, 24, StoredObjectTable);
+            AddInt(RawSkillLevelReq, data, ref offset, BaseOffset, 28);
+            AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
+            AddObject(SortSkill, data, ref offset, BaseOffset, 36, StoredObjectTable);
+            AddObjectList(KeywordList, data, ref offset, BaseOffset, 40, StoredEnumListTable);
+            AddInt(RawUsageDelay, data, ref offset, BaseOffset, 44);
+            AddString(UsageDelayMessage, data, ref offset, BaseOffset, 48, StoredStringtable);
+            AddEnum(ActionLabel, data, ref offset, BaseOffset, 52);
+            AddEnum(UsageAnimation, data, ref offset, BaseOffset, 54);
+            AddObjectList(OtherRequirementList, data, ref offset, BaseOffset, 56, StoredObjectListTable);
+            AddObjectList(CostList, data, ref offset, BaseOffset, 60, StoredObjectListTable);
+            AddInt(RawNumResultItems, data, ref offset, BaseOffset, 64);
+            AddString(UsageAnimationEnd, data, ref offset, BaseOffset, 68, StoredStringtable);
+            AddInt(RawResetTimeInSeconds, data, ref offset, BaseOffset, 72);
+            AddUInt(DyeColor, data, ref offset, BaseOffset, 76);
+            AddObject(RewardSkill, data, ref offset, BaseOffset, 80, StoredObjectTable);
+            AddInt(RawRewardSkillXp, data, ref offset, BaseOffset, 84);
+            AddInt(RawRewardSkillXpFirstTime, data, ref offset, BaseOffset, 88);
+            AddObject(SharesResetTimerWith, data, ref offset, BaseOffset, 92, StoredObjectTable);
+            AddString(ItemMenuLabel, data, ref offset, BaseOffset, 96, StoredStringtable);
+            AddString(RawItemMenuCategory, data, ref offset, BaseOffset, 100, StoredStringtable);
+            AddInt(RawItemMenuCategoryLevel, data, ref offset, BaseOffset, 104);
+            AddObject(PrereqRecipe, data, ref offset, BaseOffset, 108, StoredObjectTable);
+            AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 112, 0);
+            CloseBool(ref offset, ref BitOffset);
+            AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 114);
+
+            FinishSerializing(data, ref offset, BaseOffset, 116, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

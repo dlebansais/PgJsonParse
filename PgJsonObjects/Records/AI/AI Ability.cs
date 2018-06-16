@@ -1,11 +1,9 @@
-﻿using PgJsonReader;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AIAbility : GenericJsonObject<AIAbility>
+    public class AIAbility : GenericJsonObject<AIAbility>, IPgAIAbility
     {
         #region Direct Properties
         public int? RawMinLevel { get; private set; }
@@ -13,8 +11,8 @@ namespace PgJsonObjects
         public int? RawMinDistance { get; private set; }
         public int? RawMinRange { get; private set; }
         public int? RawMaxRange { get; private set; }
-        public AbilityCue Cue { get; private set; }
         public int? RawCueValue { get; private set; }
+        public AbilityCue Cue { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -76,6 +74,24 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "AI Ability"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddInt(RawMinLevel, data, ref offset, BaseOffset, 0);
+            AddInt(RawMaxLevel, data, ref offset, BaseOffset, 4);
+            AddInt(RawMinDistance, data, ref offset, BaseOffset, 8);
+            AddInt(RawMinRange, data, ref offset, BaseOffset, 12);
+            AddInt(RawMaxRange, data, ref offset, BaseOffset, 16);
+            AddInt(RawCueValue, data, ref offset, BaseOffset, 20);
+            AddEnum(Cue, data, ref offset, BaseOffset, 24);
+
+            FinishSerializing(data, ref offset, BaseOffset, 26, null, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }

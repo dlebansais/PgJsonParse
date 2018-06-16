@@ -87,6 +87,8 @@
     <Compile Include="Interfaces\Ability\IPgSpecialValue.cs" />
     <Compile Include="Interfaces\AdvancementTable\IPgAdvancement.cs" />
     <Compile Include="Interfaces\AdvancementTable\IPgAdvancementTable.cs" />
+    <Compile Include="Interfaces\AI\IPgAI.cs" />
+    <Compile Include="Interfaces\AI\IPgAIAbility.cs" />
     <Compile Include="Interfaces\AI\IPgAIAbilitySet.cs" />
     <Compile Include="Interfaces\Attribute\IPgAttribute.cs" />
     <Compile Include="Interfaces\DirectedGoal\IPgDirectedGoal.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveTipPlayer.cs" />
     <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveUseAbility.cs" />
     <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveUseRecipe.cs" />
+    <Compile Include="Interfaces\Recipe\IPgRecipe.cs" />
     <Compile Include="Interfaces\Recipe\IPgRecipeCost.cs" />
     <Compile Include="Interfaces\Recipe\IPgRecipeItem.cs" />
     <Compile Include="Interfaces\Skill\IPgLevelCapInteraction.cs" />
@@ -372,6 +375,8 @@
     <Compile Include="Synthetic\Ability\PgSpecialValue.cs" />
     <Compile Include="Synthetic\AdvancementTable\PgAdvancement.cs" />
     <Compile Include="Synthetic\AdvancementTable\PgAdvancementTable.cs" />
+    <Compile Include="Synthetic\AI\PgAI.cs" />
+    <Compile Include="Synthetic\AI\PgAIAbility.cs" />
     <Compile Include="Synthetic\AI\PgAIAbilitySet.cs" />
     <Compile Include="Synthetic\Attribute\PgAttribute.cs" />
     <Compile Include="Synthetic\DirectedGoal\PgDirectedGoal.cs" />
@@ -401,6 +406,7 @@
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveTipPlayer.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveUseAbility.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveUseRecipe.cs" />
+    <Compile Include="Synthetic\Recipe\PgRecipe.cs" />
     <Compile Include="Synthetic\Recipe\PgRecipeCost.cs" />
     <Compile Include="Synthetic\Recipe\PgRecipeItem.cs" />
     <Compile Include="Synthetic\Skill\PgLevelCapInteraction.cs" />

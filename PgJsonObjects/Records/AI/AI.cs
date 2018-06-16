@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AI : GenericJsonObject<AI>
+    public class AI : GenericJsonObject<AI>, IPgAI
     {
         #region Direct Properties
         public AIAbilitySet Abilities { get; private set; }
+        public string Comment { get; private set; }
+        public float? RawMinDelayBetweenAbilities { get; private set; }
         public bool? RawIsMelee { get; private set; }
         public bool? RawIsUncontrolledPet { get; private set; }
         public bool? RawIsStationary { get; private set; }
         public bool? RawIsServerDriven { get; private set; }
-        public string Comment { get; private set; }
-        public float? RawMinDelayBetweenAbilities { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -85,6 +85,28 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "AI"; } }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+
+            AddObject(Abilities, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddString(Comment, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddDouble(RawMinDelayBetweenAbilities, data, ref offset, BaseOffset, 8);
+            AddBool(RawIsMelee, data, ref offset, ref BitOffset, BaseOffset, 12, 0);
+            AddBool(RawIsUncontrolledPet, data, ref offset, ref BitOffset, BaseOffset, 12, 2);
+            AddBool(RawIsStationary, data, ref offset, ref BitOffset, BaseOffset, 12, 4);
+            AddBool(RawIsServerDriven, data, ref offset, ref BitOffset, BaseOffset, 12, 6);
+            CloseBool(ref offset, ref BitOffset);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
         #endregion
     }
 }
