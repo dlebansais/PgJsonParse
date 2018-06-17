@@ -19,36 +19,6 @@ namespace PgJsonObjects
             return SerializedObjectTable.ContainsKey(item);
         }
 
-        public virtual void SerializeJsonMainObject(byte[] data, ref int offset)
-        {
-            if (IsObjectSerialized(this))
-            {
-                int ObjectOffset = SerializedObjectTable[this];
-
-                if (data != null)
-                {
-                    byte[] valueData = BitConverter.GetBytes(ObjectOffset);
-                    Array.Copy(valueData, 0, data, offset, 4);
-                }
-
-                offset += 4;
-            }
-            else
-            {
-                SerializedObjectTable.Add(this, offset);
-
-                if (data != null)
-                {
-                    byte[] valueData = new byte[4];
-                    Array.Copy(valueData, 0, data, offset, 4);
-                }
-
-                offset += 4;
-
-                SerializeJsonObjectInternal(data, ref offset);
-            }
-        }
-
         public virtual void SerializeJsonObject(byte[] data, ref int offset)
         {
             SerializedObjectTable.Add(this, offset);
@@ -57,7 +27,6 @@ namespace PgJsonObjects
         }
 
         protected abstract void SerializeJsonObjectInternal(byte[] data, ref int offset);
-        //protected virtual void SerializeJsonObjectInternal(byte[] data, ref int offset) { }
 
         protected void AddBool(bool? value, byte[] data, ref int offset, ref int bitOffset, int baseOffset, int expectedOffset, int expectedBitOffset)
         {
