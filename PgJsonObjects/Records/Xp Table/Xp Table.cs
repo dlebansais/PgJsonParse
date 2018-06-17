@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class XpTable : GenericJsonObject<XpTable>, IPgXpTable
+    public class XpTable : MainJsonObject<XpTable>, IPgXpTable
     {
         #region Direct Properties
         public string InternalName { get; private set; }

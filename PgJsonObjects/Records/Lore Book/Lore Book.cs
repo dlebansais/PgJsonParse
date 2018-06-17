@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class LoreBook : GenericJsonObject<LoreBook>, IBackLinkable
+    public class LoreBook : MainJsonObject<LoreBook>, IPgLoreBook
     {
         #region Direct Properties
         public string Title { get; private set; }

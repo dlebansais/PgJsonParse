@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Attribute : GenericJsonObject<Attribute>
+    public class Attribute : MainJsonObject<Attribute>, IPgAttribute
     {
         #region Direct Properties
         public string Label { get; private set; }

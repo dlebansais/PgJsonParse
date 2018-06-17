@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Effect : GenericJsonObject<Effect>, IBackLinkable
+    public class Effect : MainJsonObject<Effect>, IPgEffect
     {
         #region Direct Properties
         public string Name { get; private set; }

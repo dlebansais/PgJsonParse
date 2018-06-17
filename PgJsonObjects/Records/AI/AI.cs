@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AI : GenericJsonObject<AI>, IPgAI
+    public class AI : MainJsonObject<AI>, IPgAI
     {
         #region Direct Properties
         public AIAbilitySet Abilities { get; private set; }

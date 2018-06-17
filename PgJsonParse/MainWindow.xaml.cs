@@ -261,7 +261,7 @@ namespace PgJsonParse
             List<PowerSkill> NewCombatSkillList = new List<PowerSkill>();
 
             IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
-            IList PowerList = PowerDefinition.ObjectList;
+            IMainJsonObjectCollection PowerList = PowerDefinition.ObjectList;
 
             foreach (Power PowerItem in PowerList)
             {

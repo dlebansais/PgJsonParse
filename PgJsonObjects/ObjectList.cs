@@ -27,7 +27,6 @@ namespace PgJsonObjects
             //{ typeof(PgJsonObjects.String), new ObjectDefinition<PgJsonObjects.String>("strings", false, true, false) },
             { typeof(Power), new ObjectDefinition<Power>("tsysclientinfo", 0, false, true, false) },
             { typeof(XpTable), new ObjectDefinition<XpTable>("xptables", 0, false, true, false) },
-
             { typeof(StorageVault), new ObjectDefinition<StorageVault>("storagevaults", 0, false, true, false) },
             { typeof(ItemUses), new ObjectDefinition<ItemUses>("itemuses", 0, false, false, false) },
         };

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Power : GenericJsonObject<Power>, IPgPower, IBackLinkable
+    public class Power : MainJsonObject<Power>, IPgPower
     {
         #region Direct Properties
         public string Prefix { get; private set; }

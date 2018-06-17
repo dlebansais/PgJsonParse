@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class RecipeSource : GenericJsonObject<RecipeSource>
+    public class RecipeSource : MainJsonObject<RecipeSource>, IPgRecipeSource
     {
         #region Direct Properties
         public Recipe ConnectedRecipe { get; private set; }

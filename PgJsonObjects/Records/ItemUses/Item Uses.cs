@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class ItemUses : GenericJsonObject<ItemUses>
+    public class ItemUses : MainJsonObject<ItemUses>, IPgItemUses
     {
         #region Direct Properties
         public List<int> RecipesThatUseItemList { get; private set; } = new List<int>();

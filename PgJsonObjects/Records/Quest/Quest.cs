@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Quest : GenericJsonObject<Quest>, IPgQuest, IBackLinkable
+    public class Quest : MainJsonObject<Quest>, IPgQuest
     {
         #region Direct Properties
         public string InternalName { get; private set; }

@@ -208,6 +208,8 @@
     <Compile Include="Records\IIndexableObject.cs" />
     <Compile Include="Records\IJsonKey.cs" />
     <Compile Include="Records\IJsonParsableObject.cs" />
+    <Compile Include="Records\IMainJsonObject.cs" />
+    <Compile Include="Records\IMainJsonObjectCollection.cs" />
     <Compile Include="Records\IObjectContentGenerator.cs" />
     <Compile Include="Records\ISerializableJsonObject.cs" />
     <Compile Include="Records\ISerializableJsonObjectCollection.cs" />
@@ -241,6 +243,8 @@
     <Compile Include="Records\Lore Book\Lore Book Keyword.cs" />
     <Compile Include="Records\Lore Book\Lore Book Visibility.cs" />
     <Compile Include="Records\Lore Book\Lore Book.cs" />
+    <Compile Include="Records\MainJsonObject.cs" />
+    <Compile Include="Records\MainJsonObjectCollection.cs" />
     <Compile Include="Records\Npc\GameNpc.cs" />
     <Compile Include="Records\Npc\Gift.cs" />
     <Compile Include="Records\Npc\NpcPreference.cs" />

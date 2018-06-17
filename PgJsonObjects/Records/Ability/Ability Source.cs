@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AbilitySource : GenericJsonObject<AbilitySource>, IPgAbilitySource
+    public class AbilitySource : MainJsonObject<AbilitySource>, IPgAbilitySource
     {
         #region Direct Properties
         public Ability ConnectedAbility { get; private set; }

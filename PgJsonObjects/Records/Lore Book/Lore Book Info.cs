@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class LoreBookInfo : GenericJsonObject<LoreBookInfo>, IPgLoreBookInfo
+    public class LoreBookInfo : MainJsonObject<LoreBookInfo>, IPgLoreBookInfo
     {
         #region Direct Properties
         public LoreBookInfoCategory Gods { get; private set; }

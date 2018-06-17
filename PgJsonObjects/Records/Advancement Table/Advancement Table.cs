@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AdvancementTable : GenericJsonObject<AdvancementTable>
+    public class AdvancementTable : MainJsonObject<AdvancementTable>, IPgAdvancementTable
     {
         #region Direct Properties
         public Dictionary<int, Advancement> LevelTable { get; private set; }

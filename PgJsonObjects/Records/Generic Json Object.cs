@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class GenericJsonObject
+    public static class GenericJsonObject
     {
         public static string NullString = "{3125D9C5-C81F-4507-A422-C9749749CB15}";
 
@@ -42,24 +42,257 @@ namespace PgJsonObjects
     public abstract class GenericJsonObject<T>: SerializableJsonObject, IGenericJsonObject
         where T: class
     {
-        #region Init
-        public GenericJsonObject()
+        #region Implementation of IBackLinkable
+        public abstract string SortingName { get; }
+        public Dictionary<Type, List<IBackLinkable>> LinkBackTable { get; } = new Dictionary<Type, List<IBackLinkable>>();
+        public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
+
+        static List<Type> LinkBackTypeList = new List<Type>();
+
+        protected void AddLinkBack(IBackLinkable LinkBack)
         {
-            LinkBackTable = new Dictionary<Type, List<IBackLinkable>>();
+            if (LinkBack == null)
+                return;
+
+            if (LinkBack is RecipeItem)
+                LinkBack = (LinkBack as RecipeItem).ParentRecipe;
+            else if (LinkBack is QuestObjective)
+                LinkBack = (LinkBack as QuestObjective).ParentQuest;
+            else if (LinkBack is AbilityRequirement)
+                return;
+            else if (LinkBack is PowerTier)
+                return;
+            else if (LinkBack is QuestRewardItem)
+                LinkBack = (LinkBack as QuestRewardItem).ParentQuest;
+            else if (LinkBack is Reward)
+                LinkBack = (LinkBack as Reward).ParentSkill;
+
+            Type ObjectType = LinkBack.GetType();
+            if (!LinkBackTable.ContainsKey(ObjectType))
+                LinkBackTable.Add(ObjectType, new List<IBackLinkable>());
+
+            List<IBackLinkable> LinkBackList = LinkBackTable[ObjectType];
+            if (!LinkBackList.Contains(LinkBack))
+                LinkBackList.Add(LinkBack);
+        }
+
+        public void SortLinkBack()
+        {
+            foreach (KeyValuePair<Type, List<IBackLinkable>> Entry in LinkBackTable)
+                Entry.Value.Sort(GenericJsonObject.SortByName);
+        }
+
+        public string GetSearchResultTitleTemplateName()
+        {
+            return "SearchResult" + typeof(T).Name + "TitleTemplate";
+        }
+
+        public string GetSearchResultContentTemplateName()
+        {
+            return "SearchResult" + typeof(T).Name + "ContentTemplate";
         }
         #endregion
 
-        #region Descendant Interface
-        protected abstract Dictionary<string, FieldParser> FieldTable { get; }
-        protected abstract string FieldTableName { get; }
-        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables);
-        protected List<string> FieldTableOrder { get; private set; } = new List<string>();
+        #region Implementation of IObjectContentGenerator
+        public virtual void GenerateObjectContent(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        {
+            OpenGeneratorKey(Generator, openWithKey, openWithNullKey);
+            ListAllObjectContent(Generator);
+            CloseGeneratorKey(Generator, openWithKey, openWithNullKey);
+        }
 
-        protected static Dictionary<string, bool> ParsedFields;
+        public virtual void OpenGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        {
+            if (Key != null && openWithKey)
+                Generator.OpenObject(Key);
+            else if (openWithNullKey)
+                Generator.OpenObject(null);
+        }
+
+        public virtual void ListAllObjectContent(JsonGenerator Generator)
+        {
+            foreach (string ParserKey in FieldTableOrder)
+                ListObjectContent(Generator, ParserKey);
+        }
+
+        public virtual void ListObjectContent(JsonGenerator Generator, string ParserKey)
+        {
+            if (!FieldTable.ContainsKey(ParserKey))
+                ParserKey = null;
+
+            FieldParser Parser = FieldTable[ParserKey];
+
+            IObjectContentGenerator Subitem;
+            List<int> IntegerList;
+            List<string> StringList;
+
+            switch (Parser.Type)
+            {
+                default:
+                    break;
+
+                case FieldType.Unknown:
+                    break;
+
+                case FieldType.Integer:
+                    Generator.AddInteger(ParserKey, Parser.GetInteger());
+                    break;
+
+                case FieldType.Bool:
+                    Generator.AddBoolean(ParserKey, Parser.GetBool());
+                    break;
+
+                case FieldType.Float:
+                    Generator.AddDouble(ParserKey, Parser.GetFloat());
+                    break;
+
+                case FieldType.String:
+                    Generator.AddString(ParserKey, Parser.GetString());
+                    break;
+
+                case FieldType.Object:
+                    Subitem = Parser.GetObject();
+                    if (Subitem != null)
+                        Subitem.GenerateObjectContent(Generator, true, false);
+                    break;
+
+                case FieldType.SimpleIntegerArray:
+                case FieldType.IntegerArray:
+                    IntegerList = Parser.GetIntegerArray();
+
+                    if (Parser.SimplifyArray && IntegerList.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()))
+                        Generator.AddInteger(ParserKey, IntegerList[0]);
+                    else
+                        Generator.AddIntegerList(ParserKey, IntegerList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
+                    break;
+
+                case FieldType.SimpleStringArray:
+                case FieldType.StringArray:
+                    StringList = Parser.GetStringArray();
+                    if (StringList == null)
+                        StringList = null;
+
+                    if (Parser.SimplifyArray && StringList.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()))
+                        Generator.AddString(ParserKey, StringList[0]);
+                    else
+                        Generator.AddStringList(ParserKey, StringList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
+                    break;
+
+                case FieldType.ObjectArray:
+                    IList ObjectArray = Parser.GetObjectArray();
+                    bool IsListEmpty;
+                    if (Parser.GetArrayIsEmpty != null)
+                        IsListEmpty = Parser.GetArrayIsEmpty();
+                    else
+                        IsListEmpty = false;
+
+                    if (ObjectArray == null)
+                        ObjectArray = null;
+
+                    if (ObjectArray.Count > 0 || IsListEmpty)
+                    {
+                        if (Parser.SimplifyArray && ObjectArray.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()) && ObjectArray[0] is IObjectContentGenerator FirstItem)
+                        {
+                            Generator.OpenObject(ParserKey);
+
+                            FirstItem.GenerateObjectContent(Generator, false, false);
+
+                            Generator.CloseObject();
+                        }
+
+                        else if (IsListEmpty)
+                            Generator.AddEmptyArray(ParserKey);
+
+                        else
+                        {
+                            Generator.OpenArray(ParserKey);
+                            if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
+                                Generator.OpenNestedArray();
+
+                            foreach (IObjectContentGenerator Item in ObjectArray)
+                                Item.GenerateObjectContent(Generator, false, true);
+
+                            if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
+                                Generator.CloseArray();
+                            Generator.CloseArray();
+                        }
+                    }
+                    break;
+            }
+        }
+
+        public virtual void CloseGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        {
+            if (Key != null && openWithKey)
+                Generator.CloseObject();
+            else if (openWithNullKey)
+                Generator.CloseObject();
+        }
+        #endregion
+
+        #region Implementation of IJsonKey
+        public string Key { get; private set; }
+        #endregion
+
+        #region Implementation of IIndexableObject
+        public abstract string TextContent { get; }
+
+        protected virtual void AddWithFieldSeparator(ref string Result, string s)
+        {
+            if (s != null)
+                Result += s + JsonGenerator.FieldSeparator;
+        }
+        #endregion
+
+        #region Implementation of IConnectableObject
+        public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        {
+            bool IsConnected;
+
+            IsConnected = ConnectFields(ErrorInfo, Parent, AllTables);
+
+            return IsConnected;
+        }
+
+        public virtual void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
+        {
+
+        }
+        #endregion
+
+        #region Implementation of IJsonParsableObject
+        public virtual void Init(string key, int index, IJsonValue value, bool loadAsArray, ParseErrorInfo ErrorInfo)
+        {
+            InitializeKey(key, index, value, ErrorInfo);
+
+            if (value is JsonObject JObjectFields)
+                ParseFields(JObjectFields, ErrorInfo);
+
+            else if (ErrorInfo != null)
+                ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
+        }
+
+        public virtual void CheckUnparsedFields(ParseErrorInfo ErrorInfo)
+        {
+            if (ParsedFields != null)
+            {
+                foreach (KeyValuePair<string, bool> Field in ParsedFields)
+                    if (!Field.Value)
+                        ErrorInfo.AddUnparsedField(FieldTableName + " Field: " + Field.Key);
+
+                ParsedFields = null;
+            }
+        }
 
         protected virtual void InitializeKey(string key, int index, IJsonValue value, ParseErrorInfo ErrorInfo)
         {
             Key = key;
+        }
+
+        protected virtual void ParseFields(JsonObject JObjectFields, ParseErrorInfo ErrorInfo)
+        {
+            InitParsedFields();
+            ParseFieldsInternal(JObjectFields, ErrorInfo);
         }
 
         protected virtual void InitParsedFields()
@@ -70,6 +303,73 @@ namespace PgJsonObjects
                 foreach (KeyValuePair<string, FieldParser> Field in FieldTable)
                     ParsedFields.Add(Field.Key, false);
             }
+        }
+
+        private void ParseFieldsInternal(JsonObject JObjectFields, ParseErrorInfo ErrorInfo)
+        {
+            foreach (KeyValuePair<string, IJsonValue> Field in JObjectFields)
+            {
+                JsonArray AsArray;
+                IJsonValue AsValue;
+
+                if ((AsArray = Field.Value as JsonArray) != null)
+                {
+                    if (FieldTable.ContainsKey(Field.Key))
+                    {
+                        ParsedFields[Field.Key] = true;
+                        ParseField(Field.Key, AsArray, ErrorInfo);
+                        //ParseFieldsInternal(AsArray, ErrorInfo);
+                    }
+                    else
+                        ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
+                }
+
+                else if ((AsValue = Field.Value as IJsonValue) != null)
+                {
+                    if (IsCustomFieldParsed(Field.Key, AsValue, ErrorInfo))
+                        continue;
+
+                    if (FieldTable.ContainsKey(Field.Key))
+                    {
+                        ParsedFields[Field.Key] = true;
+                        ParseField(Field.Key, AsValue, ErrorInfo);
+                    }
+                    else
+                        ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
+                }
+
+                else if (Field.Value != null)
+                    ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
+            }
+        }
+
+        protected void ParseStringTable(JsonArray RawArray, List<string> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
+        {
+            foreach (object Item in RawArray)
+            {
+                JsonString AsJsonString;
+
+                if ((AsJsonString = Item as JsonString) != null)
+                    RawList.Add(AsJsonString.String);
+                else
+                    ErrorInfo.AddInvalidObjectFormat(FieldTableName + " Field: " + FieldName);
+            }
+
+            IsListEmpty = (RawList.Count == 0);
+        }
+
+        protected void ParseIntTable(JsonArray RawArray, List<int> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
+        {
+            foreach (object Item in RawArray)
+            {
+                JsonInteger AsJsonInteger;
+                if ((AsJsonInteger = Item as JsonInteger) != null)
+                    RawList.Add(AsJsonInteger.Number);
+                else if (Item != null)
+                    ErrorInfo.AddInvalidObjectFormat(FieldTableName + " Field: " + FieldName);
+            }
+
+            IsListEmpty = (RawList.Count == 0);
         }
 
         protected virtual bool IsCustomFieldParsed(string FieldKey, object FieldValue, ParseErrorInfo ErrorInfo)
@@ -173,97 +473,6 @@ namespace PgJsonObjects
                 else
                     ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
             }
-        }
-
-        protected virtual void ParseFields(JsonObject JObjectFields, ParseErrorInfo ErrorInfo)
-        {
-            InitParsedFields();
-            ParseFieldsInternal(JObjectFields, ErrorInfo);
-        }
-
-        private void ParseFieldsInternal(JsonObject JObjectFields, ParseErrorInfo ErrorInfo)
-        {
-            foreach (KeyValuePair<string, IJsonValue> Field in JObjectFields)
-            {
-                JsonArray AsArray;
-                IJsonValue AsValue;
-
-                if ((AsArray = Field.Value as JsonArray) != null)
-                {
-                    if (FieldTable.ContainsKey(Field.Key))
-                    {
-                        ParsedFields[Field.Key] = true;
-                        ParseField(Field.Key, AsArray, ErrorInfo);
-                        //ParseFieldsInternal(AsArray, ErrorInfo);
-                    }
-                    else
-                        ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
-                }
-
-                else if ((AsValue = Field.Value as IJsonValue) != null)
-                {
-                    if (IsCustomFieldParsed(Field.Key, AsValue, ErrorInfo))
-                        continue;
-
-                    if (FieldTable.ContainsKey(Field.Key))
-                    {
-                        ParsedFields[Field.Key] = true;
-                        ParseField(Field.Key, AsValue, ErrorInfo);
-                    }
-                    else
-                        ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
-                }
-
-                else if (Field.Value != null)
-                    ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
-            }
-        }
-
-        protected void ParseStringTable(JsonArray RawArray, List<string> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
-        {
-            foreach (object Item in RawArray)
-            {
-                JsonString AsJsonString;
-
-                if ((AsJsonString = Item as JsonString) != null)
-                    RawList.Add(AsJsonString.String);
-                else
-                    ErrorInfo.AddInvalidObjectFormat(FieldTableName + " Field: " + FieldName);
-            }
-
-            IsListEmpty = (RawList.Count == 0);
-        }
-
-        protected void ParseIntTable(JsonArray RawArray, List<int> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
-        {
-            foreach (object Item in RawArray)
-            {
-                JsonInteger AsJsonInteger;
-                if ((AsJsonInteger = Item as JsonInteger) != null)
-                    RawList.Add(AsJsonInteger.Number);
-                else if (Item != null)
-                    ErrorInfo.AddInvalidObjectFormat(FieldTableName + " Field: " + FieldName);
-            }
-
-            IsListEmpty = (RawList.Count == 0);
-        }
-
-        public virtual void CheckUnparsedFields(ParseErrorInfo ErrorInfo)
-        {
-            if (ParsedFields != null)
-            {
-                foreach (KeyValuePair<string, bool> Field in ParsedFields)
-                    if (!Field.Value)
-                        ErrorInfo.AddUnparsedField(FieldTableName + " Field: " + Field.Key);
-
-                ParsedFields = null;
-            }
-        }
-
-        protected virtual void AddWithFieldSeparator(ref string Result, string s)
-        {
-            if (s != null)
-                Result += s + JsonGenerator.FieldSeparator;
         }
 
         protected static void ParseFieldValueString(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<string, ParseErrorInfo> ParseValue)
@@ -485,233 +694,12 @@ namespace PgJsonObjects
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }
-        #endregion
 
-        #region Implementation of IBackLinkable
-        public abstract string SortingName { get; }
-        public Dictionary<Type, List<IBackLinkable>> LinkBackTable { get; private set; }
-        public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
-
-        static List<Type> LinkBackTypeList = new List<Type>();
-
-        protected void AddLinkBack(IBackLinkable LinkBack)
-        {
-            if (LinkBack == null)
-                return;
-
-            if (LinkBack is RecipeItem)
-                LinkBack = (LinkBack as RecipeItem).ParentRecipe;
-            else if (LinkBack is QuestObjective)
-                LinkBack = (LinkBack as QuestObjective).ParentQuest;
-            else if (LinkBack is AbilityRequirement)
-                return;
-            else if (LinkBack is PowerTier)
-                return;
-            else if (LinkBack is QuestRewardItem)
-                LinkBack = (LinkBack as QuestRewardItem).ParentQuest;
-            else if (LinkBack is Reward)
-                LinkBack = (LinkBack as Reward).ParentSkill;
-
-            Type ObjectType = LinkBack.GetType();
-            if (!LinkBackTable.ContainsKey(ObjectType))
-                LinkBackTable.Add(ObjectType, new List<IBackLinkable>());
-
-            List<IBackLinkable> LinkBackList = LinkBackTable[ObjectType];
-            if (!LinkBackList.Contains(LinkBack))
-                LinkBackList.Add(LinkBack);
-        }
-
-        public void SortLinkBack()
-        {
-            foreach (KeyValuePair<Type, List<IBackLinkable>> Entry in LinkBackTable)
-                Entry.Value.Sort(GenericJsonObject.SortByName);
-        }
-        #endregion
-
-        #region Implementation of IObjectContentGenerator
-        public virtual void GenerateObjectContent(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
-        {
-            OpenGeneratorKey(Generator, openWithKey, openWithNullKey);
-            ListAllObjectContent(Generator);
-            CloseGeneratorKey(Generator, openWithKey, openWithNullKey);
-        }
-
-        public virtual void OpenGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
-        {
-            if (Key != null && openWithKey)
-                Generator.OpenObject(Key);
-            else if (openWithNullKey)
-                Generator.OpenObject(null);
-        }
-
-        public virtual void ListAllObjectContent(JsonGenerator Generator)
-        {
-            foreach (string ParserKey in FieldTableOrder)
-                ListObjectContent(Generator, ParserKey);
-        }
-
-        public virtual void ListObjectContent(JsonGenerator Generator, string ParserKey)
-        {
-            if (!FieldTable.ContainsKey(ParserKey))
-                ParserKey = null;
-
-            FieldParser Parser = FieldTable[ParserKey];
-
-            IObjectContentGenerator Subitem;
-            List<int> IntegerList;
-            List<string> StringList;
-
-            switch (Parser.Type)
-            {
-                default:
-                    break;
-
-                case FieldType.Unknown:
-                    break;
-
-                case FieldType.Integer:
-                    Generator.AddInteger(ParserKey, Parser.GetInteger());
-                    break;
-
-                case FieldType.Bool:
-                    Generator.AddBoolean(ParserKey, Parser.GetBool());
-                    break;
-
-                case FieldType.Float:
-                    Generator.AddDouble(ParserKey, Parser.GetFloat());
-                    break;
-
-                case FieldType.String:
-                    Generator.AddString(ParserKey, Parser.GetString());
-                    break;
-
-                case FieldType.Object:
-                    Subitem = Parser.GetObject();
-                    if (Subitem != null)
-                        Subitem.GenerateObjectContent(Generator, true, false);
-                    break;
-
-                case FieldType.SimpleIntegerArray:
-                case FieldType.IntegerArray:
-                    IntegerList = Parser.GetIntegerArray();
-
-                    if (Parser.SimplifyArray && IntegerList.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()))
-                        Generator.AddInteger(ParserKey, IntegerList[0]);
-                    else
-                        Generator.AddIntegerList(ParserKey, IntegerList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
-                    break;
-
-                case FieldType.SimpleStringArray:
-                case FieldType.StringArray:
-                    StringList = Parser.GetStringArray();
-                    if (StringList == null)
-                        StringList = null;
-
-                    if (Parser.SimplifyArray && StringList.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()))
-                        Generator.AddString(ParserKey, StringList[0]);
-                    else
-                        Generator.AddStringList(ParserKey, StringList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
-                    break;
-
-                case FieldType.ObjectArray:
-                    IList ObjectArray = Parser.GetObjectArray();
-                    bool IsListEmpty;
-                    if (Parser.GetArrayIsEmpty != null)
-                        IsListEmpty = Parser.GetArrayIsEmpty();
-                    else
-                        IsListEmpty = false;
-
-                    if (ObjectArray == null)
-                        ObjectArray = null;
-
-                    if (ObjectArray.Count > 0 || IsListEmpty)
-                    {
-                        if (Parser.SimplifyArray && ObjectArray.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()) && ObjectArray[0] is IObjectContentGenerator FirstItem)
-                        {
-                            Generator.OpenObject(ParserKey);
-
-                            FirstItem.GenerateObjectContent(Generator, false, false);
-
-                            Generator.CloseObject();
-                        }
-
-                        else if (IsListEmpty)
-                            Generator.AddEmptyArray(ParserKey);
-
-                        else
-                        {
-                            Generator.OpenArray(ParserKey);
-                            if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
-                                Generator.OpenNestedArray();
-
-                            foreach (IObjectContentGenerator Item in ObjectArray)
-                                Item.GenerateObjectContent(Generator, false, true);
-
-                            if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
-                                Generator.CloseArray();
-                            Generator.CloseArray();
-                        }
-                    }
-                    break;
-            }
-        }
-
-        public virtual void CloseGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
-        {
-            if (Key != null && openWithKey)
-                Generator.CloseObject();
-            else if (openWithNullKey)
-                Generator.CloseObject();
-        }
-        #endregion
-
-        #region Implementation of IJsonKey
-        public string Key { get; private set; }
-        #endregion
-
-        #region Implementation of IIndexableObject
-        public abstract string TextContent { get; }
-        #endregion
-
-        #region Implementation of IConnectableObject
-        public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
-        {
-            bool IsConnected;
-
-            IsConnected = ConnectFields(ErrorInfo, Parent, AllTables);
-
-            return IsConnected;
-        }
-
-        public virtual void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
-        {
-
-        }
-        #endregion
-
-        #region Implementation of IJsonParsableObject
-        public virtual void Init(string key, int index, IJsonValue value, bool loadAsArray, ParseErrorInfo ErrorInfo)
-        {
-            InitializeKey(key, index, value, ErrorInfo);
-
-            if (value is JsonObject JObjectFields)
-                ParseFields(JObjectFields, ErrorInfo);
-
-            else if (ErrorInfo != null)
-                ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
-        }
-        #endregion
-
-        #region Implementation of IBackLinkable
-        public string GetSearchResultTitleTemplateName()
-        {
-            return "SearchResult" + typeof(T).Name + "TitleTemplate";
-        }
-
-        public string GetSearchResultContentTemplateName()
-        {
-            return "SearchResult" + typeof(T).Name + "ContentTemplate";
-        }
+        protected abstract Dictionary<string, FieldParser> FieldTable { get; }
+        protected abstract string FieldTableName { get; }
+        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables);
+        protected static Dictionary<string, bool> ParsedFields;
+        protected List<string> FieldTableOrder { get; private set; } = new List<string>();
         #endregion
     }
 }

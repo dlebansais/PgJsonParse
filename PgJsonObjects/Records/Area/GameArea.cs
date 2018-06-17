@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class GameArea : GenericJsonObject<GameArea>, IPgGameArea
+    public class GameArea : MainJsonObject<GameArea>, IPgGameArea
     {
         #region Direct Properties
         public string FriendlyName { get; private set; }

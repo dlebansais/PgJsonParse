@@ -1083,7 +1083,7 @@ namespace PgJsonParse
                 IParser FileParser = definition.FileParser;
 
                 string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
-                IList ObjectList = definition.ObjectList;
+                IMainJsonObjectCollection ObjectList = definition.ObjectList;
 
                 if (!FileParser.Verify(FilePath, ObjectList, definition.LoadAsArray, definition.UseJavaFormat))
                     break;
@@ -1108,8 +1108,8 @@ namespace PgJsonParse
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
-                IList ObjectList = definition.ObjectList;
-                foreach (ISerializableJsonObject Item in ObjectList)
+                IMainJsonObjectCollection ObjectList = definition.ObjectList;
+                foreach (IMainJsonObject Item in ObjectList)
                     Item.SerializeJsonMainObject(data, ref offset);
             }
         }
@@ -1121,7 +1121,7 @@ namespace PgJsonParse
                 string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
 
                 IParser FileParser = definition.FileParser;
-                IList ObjectList = definition.ObjectList;
+                IMainJsonObjectCollection ObjectList = definition.ObjectList;
                 Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
                 if (!FileParser.LoadRaw(FilePath, ObjectList, definition.LoadAsArray, errorInfo))
                     return false;
@@ -1142,7 +1142,7 @@ namespace PgJsonParse
 
         private bool ConnectTables(string versionFolder, string iconFolder, ParseErrorInfo errorInfo)
         {
-            Dictionary<Type, IList> AllLists = new Dictionary<Type, IList>();
+            Dictionary<Type, IMainJsonObjectCollection> AllLists = new Dictionary<Type, IMainJsonObjectCollection>();
             Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables = new Dictionary<Type, Dictionary<string, IGenericJsonObject>>();
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Item : GenericJsonObject<Item>, IPgItem, IBackLinkable
+    public class Item : MainJsonObject<Item>, IPgItem
     {
         #region Direct Properties
         public Ability BestowAbility { get; private set; }

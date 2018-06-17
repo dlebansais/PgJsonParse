@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class PlayerTitle : GenericJsonObject<PlayerTitle>, IPgPlayerTitle, IBackLinkable
+    public class PlayerTitle : MainJsonObject<PlayerTitle>, IPgPlayerTitle
     {
         #region Direct Properties
         public string Title { get; private set; }
