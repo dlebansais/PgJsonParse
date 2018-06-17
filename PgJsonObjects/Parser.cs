@@ -75,6 +75,10 @@ namespace PgJsonObjects
                                     ObjectList.Add(NewObject);
                                 }
                             }
+
+
+                        foreach (IGenericJsonObject Item in ObjectList)
+                            Item.CheckUnparsedFields(ErrorInfo);
                     }
                 }
                 catch (Exception e)

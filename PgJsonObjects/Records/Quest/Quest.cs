@@ -311,7 +311,7 @@ namespace PgJsonObjects
             }
         }
 
-        private IGenericJsonObject GetXPRewards()
+        private IObjectContentGenerator GetXPRewards()
         {
             XPReward Rewards = new XPReward();
 

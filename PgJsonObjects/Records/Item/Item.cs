@@ -501,7 +501,7 @@ namespace PgJsonObjects
             }
         }
 
-        private IGenericJsonObject GetSkillReqs()
+        private IObjectContentGenerator GetSkillReqs()
         {
             SkillRequirement Skillreq = new SkillRequirement();
 

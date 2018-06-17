@@ -217,7 +217,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("Power Tiers");
         }
 
-        private IGenericJsonObject GetTiers()
+        private IObjectContentGenerator GetTiers()
         {
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("Tiers");

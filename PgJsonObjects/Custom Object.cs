@@ -36,7 +36,7 @@ namespace PgJsonObjects
 
         private Dictionary<string, int> FieldSetTableInt = new Dictionary<string, int>();
         private Dictionary<string, string> FieldSetTableString = new Dictionary<string, string>();
-        private Dictionary<string, IGenericJsonObject> FieldSetTableObject = new Dictionary<string, IGenericJsonObject>();
+        private Dictionary<string, IObjectContentGenerator> FieldSetTableObject = new Dictionary<string, IObjectContentGenerator>();
 
         public void SetCustomKey(string Key)
         {
@@ -55,7 +55,7 @@ namespace PgJsonObjects
             FieldTableOrder.Add(FieldKey);
         }
 
-        public void SetFieldValue(string FieldKey, IGenericJsonObject FieldValue)
+        public void SetFieldValue(string FieldKey, IObjectContentGenerator FieldValue)
         {
             FieldSetTableObject.Add(FieldKey, FieldValue);
             FieldTableOrder.Add(FieldKey);

@@ -120,7 +120,7 @@ namespace PgJsonObjects
             }
         }
 
-        private IGenericJsonObject GetLevels()
+        private IObjectContentGenerator GetLevels()
         {
             FavorLevelDesc Result = new FavorLevelDesc();
 
@@ -191,7 +191,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
         }
 
-        private IGenericJsonObject GetRequirements()
+        private IObjectContentGenerator GetRequirements()
         {
             InteractionFlagSetAbilityRequirement Result;
 

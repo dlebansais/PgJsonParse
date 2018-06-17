@@ -200,7 +200,11 @@
     <Compile Include="Records\AI\AI.cs" />
     <Compile Include="Records\Area\GameArea.cs" />
     <Compile Include="Records\Attribute\DisplayRule.cs" />
+    <Compile Include="Records\IBackLinkable.cs" />
     <Compile Include="Records\IGenericJsonObject.cs" />
+    <Compile Include="Records\IIndexableObject.cs" />
+    <Compile Include="Records\IJsonKey.cs" />
+    <Compile Include="Records\IObjectContentGenerator.cs" />
     <Compile Include="Records\ISearchableObject.cs" />
     <Compile Include="Records\ISerializableJsonObject.cs" />
     <Compile Include="Records\ISerializableJsonObjectCollection.cs" />

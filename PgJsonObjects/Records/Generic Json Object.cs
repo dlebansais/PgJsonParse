@@ -44,7 +44,7 @@ namespace PgJsonObjects
         public Func<bool?> GetBool;
         public Func<double?> GetFloat;
         public Func<string> GetString;
-        public Func<IGenericJsonObject> GetObject;
+        public Func<IObjectContentGenerator> GetObject;
         public Func<List<int>> GetIntegerArray;
         public Func<List<string>> GetStringArray;
         public Func<IList> GetObjectArray;
@@ -301,7 +301,7 @@ namespace PgJsonObjects
             IsListEmpty = (RawList.Count == 0);
         }
 
-        protected virtual void CheckUnparsedFields(ParseErrorInfo ErrorInfo)
+        public virtual void CheckUnparsedFields(ParseErrorInfo ErrorInfo)
         {
             if (ParsedFields != null)
             {
@@ -317,42 +317,6 @@ namespace PgJsonObjects
         {
             if (s != null)
                 Result += s + JsonGenerator.FieldSeparator;
-        }
-
-        public Dictionary<Type, List<ISearchableObject>> LinkBackTable { get; private set; }
-        public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
-
-        static List<Type> LinkBackTypeList = new List<Type>();
-
-        protected void AddLinkBack(GenericJsonObject LinkBack)
-        {
-            if (LinkBack == null)
-                return;
-
-            if (LinkBack is RecipeItem)
-                LinkBack = (LinkBack as RecipeItem).ParentRecipe;
-            else if (LinkBack is QuestObjective)
-                LinkBack = (LinkBack as QuestObjective).ParentQuest;
-            else if (LinkBack is AbilityRequirement)
-                return;
-            else if (LinkBack is PowerTier)
-                return;
-            else if (LinkBack is QuestRewardItem)
-                LinkBack = (LinkBack as QuestRewardItem).ParentQuest;
-            else if (LinkBack is Reward)
-                LinkBack = (LinkBack as Reward).ParentSkill;
-
-            ISearchableObject AsSearchable = LinkBack as ISearchableObject;
-            if (AsSearchable == null)
-                return;
-
-            Type ObjectType = LinkBack.GetType();
-            if (!LinkBackTable.ContainsKey(ObjectType))
-                LinkBackTable.Add(ObjectType, new List<ISearchableObject>());
-
-            List<ISearchableObject> LinkBackList = LinkBackTable[ObjectType];
-            if (!LinkBackList.Contains(AsSearchable))
-                LinkBackList.Add(AsSearchable);
         }
 
         protected static void ParseFieldValueString(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<string, ParseErrorInfo> ParseValue)
@@ -576,7 +540,51 @@ namespace PgJsonObjects
         }
         #endregion
 
-        #region Client Interface
+        #region Implementation of IBackLinkable
+        public Dictionary<Type, List<ISearchableObject>> LinkBackTable { get; private set; }
+        public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
+
+        static List<Type> LinkBackTypeList = new List<Type>();
+
+        protected void AddLinkBack(GenericJsonObject LinkBack)
+        {
+            if (LinkBack == null)
+                return;
+
+            if (LinkBack is RecipeItem)
+                LinkBack = (LinkBack as RecipeItem).ParentRecipe;
+            else if (LinkBack is QuestObjective)
+                LinkBack = (LinkBack as QuestObjective).ParentQuest;
+            else if (LinkBack is AbilityRequirement)
+                return;
+            else if (LinkBack is PowerTier)
+                return;
+            else if (LinkBack is QuestRewardItem)
+                LinkBack = (LinkBack as QuestRewardItem).ParentQuest;
+            else if (LinkBack is Reward)
+                LinkBack = (LinkBack as Reward).ParentSkill;
+
+            ISearchableObject AsSearchable = LinkBack as ISearchableObject;
+            if (AsSearchable == null)
+                return;
+
+            Type ObjectType = LinkBack.GetType();
+            if (!LinkBackTable.ContainsKey(ObjectType))
+                LinkBackTable.Add(ObjectType, new List<ISearchableObject>());
+
+            List<ISearchableObject> LinkBackList = LinkBackTable[ObjectType];
+            if (!LinkBackList.Contains(AsSearchable))
+                LinkBackList.Add(AsSearchable);
+        }
+
+        public void SortLinkBack()
+        {
+            foreach (KeyValuePair<Type, List<ISearchableObject>> Entry in LinkBackTable)
+                Entry.Value.Sort(GenericJsonObject.SortByName);
+        }
+        #endregion
+
+        #region Implementation of IObjectContentGenerator
         public virtual void GenerateObjectContent(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
         {
             OpenGeneratorKey(Generator, openWithKey, openWithNullKey);
@@ -605,7 +613,7 @@ namespace PgJsonObjects
 
             FieldParser Parser = FieldTable[ParserKey];
 
-            IGenericJsonObject Subitem;
+            IObjectContentGenerator Subitem;
             List<int> IntegerList;
             List<string> StringList;
 
@@ -674,7 +682,7 @@ namespace PgJsonObjects
 
                     if (ObjectArray.Count > 0 || IsListEmpty)
                     {
-                        if (Parser.SimplifyArray && ObjectArray.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()) && ObjectArray[0] is IGenericJsonObject FirstItem)
+                        if (Parser.SimplifyArray && ObjectArray.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()) && ObjectArray[0] is IObjectContentGenerator FirstItem)
                         {
                             Generator.OpenObject(ParserKey);
 
@@ -692,7 +700,7 @@ namespace PgJsonObjects
                             if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
                                 Generator.OpenNestedArray();
 
-                            foreach (IGenericJsonObject Item in ObjectArray)
+                            foreach (IObjectContentGenerator Item in ObjectArray)
                                 Item.GenerateObjectContent(Generator, false, true);
 
                             if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
@@ -711,14 +719,19 @@ namespace PgJsonObjects
             else if (openWithNullKey)
                 Generator.CloseObject();
         }
+        #endregion
 
+        #region Implementation of IJsonKey
         public string Key { get; private set; }
-        public abstract string TextContent { get; }
+        #endregion
 
+        #region Implementation of IIndexableObject
+        public abstract string TextContent { get; }
+        #endregion
+
+        #region Client Interface
         public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
-            CheckUnparsedFields(ErrorInfo);
-
             bool IsConnected;
 
             IsConnected = ConnectFields(ErrorInfo, Parent, AllTables);
@@ -741,14 +754,9 @@ namespace PgJsonObjects
         {
 
         }
-
-        public void SortLinkBack()
-        {
-            foreach (KeyValuePair<Type, List<ISearchableObject>> Entry in LinkBackTable)
-                Entry.Value.Sort(GenericJsonObject.SortByName);
-        }
         #endregion
 
+        #region Implementation of ISearchableObject
         public string GetSearchResultTitleTemplateName()
         {
             return "SearchResult" + typeof(T).Name + "TitleTemplate";
@@ -758,5 +766,6 @@ namespace PgJsonObjects
         {
             return "SearchResult" + typeof(T).Name + "ContentTemplate";
         }
+        #endregion
     }
 }

@@ -311,7 +311,7 @@ namespace PgJsonObjects
             }
         }
 
-        private IGenericJsonObject GetInteractionFlagLevelCaps()
+        private IObjectContentGenerator GetInteractionFlagLevelCaps()
         {
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("InteractionFlagLevelCaps");
@@ -366,7 +366,7 @@ namespace PgJsonObjects
             }
         }
 
-        private IGenericJsonObject GetAdvancementHints()
+        private IObjectContentGenerator GetAdvancementHints()
         {
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("AdvancementHints");
@@ -400,7 +400,7 @@ namespace PgJsonObjects
             EmptyRewardList = (RewardList.Count == 0);
         }
 
-        private IGenericJsonObject GetRewards()
+        private IObjectContentGenerator GetRewards()
         {
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("Rewards");
@@ -408,7 +408,7 @@ namespace PgJsonObjects
             foreach (Reward Reward in RewardList)
             {
                 string FieldKey = Reward.Key;
-                IGenericJsonObject FieldValue = Reward;
+                IObjectContentGenerator FieldValue = Reward;
 
                 Result.SetFieldValue(FieldKey, FieldValue);
             }
@@ -439,7 +439,7 @@ namespace PgJsonObjects
             }
         }
 
-        private IGenericJsonObject GetReports()
+        private IObjectContentGenerator GetReports()
         {
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("Reports");
