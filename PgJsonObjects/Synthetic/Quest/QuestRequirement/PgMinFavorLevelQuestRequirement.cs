@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgMinFavorLevelQuestRequirement : GenericPgObject, IPgMinFavorLevelQuestRequirement
+    public class PgMinFavorLevelQuestRequirement : GenericPgObject<PgMinFavorLevelQuestRequirement>, IPgMinFavorLevelQuestRequirement
     {
         public PgMinFavorLevelQuestRequirement(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgMinFavorLevelQuestRequirement CreateItem(byte[] data, int offset)
         {
             return new PgMinFavorLevelQuestRequirement(data, offset);
         }

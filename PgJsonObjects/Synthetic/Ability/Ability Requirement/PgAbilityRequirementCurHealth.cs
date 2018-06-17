@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityRequirementCurHealth: GenericPgObject, IPgAbilityRequirementCurHealth
+    public class PgAbilityRequirementCurHealth: GenericPgObject<PgAbilityRequirementCurHealth>, IPgAbilityRequirementCurHealth
     {
         public PgAbilityRequirementCurHealth(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementCurHealth CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementCurHealth(data, offset);
         }

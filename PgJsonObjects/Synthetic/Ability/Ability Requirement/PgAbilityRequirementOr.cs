@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityRequirementOr: GenericPgObject, IPgAbilityRequirementOr
+    public class PgAbilityRequirementOr: GenericPgObject<PgAbilityRequirementOr>, IPgAbilityRequirementOr
     {
         public PgAbilityRequirementOr(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementOr CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementOr(data, offset);
         }

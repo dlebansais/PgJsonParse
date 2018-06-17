@@ -454,6 +454,7 @@
     <Compile Include="Synthetic\DirectedGoal\PgDirectedGoal.cs" />
     <Compile Include="Synthetic\Effect\PgEffect.cs" />
     <Compile Include="Synthetic\GenericPgObject.cs" />
+    <Compile Include="Synthetic\IDeserializablePgObject.cs" />
     <Compile Include="Synthetic\IGenericPgObject.cs" />
     <Compile Include="Synthetic\IMainPgObject.cs" />
     <Compile Include="Synthetic\ItemUses\PgItemUses.cs" />
@@ -489,7 +490,7 @@
     <Compile Include="Synthetic\Quest\PgQuestReward.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRewardItem.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRewardXp.cs" />
-    <Compile Include="Synthetic\Quest\QuestCollection.cs" />
+    <Compile Include="Records\Quest\QuestCollection.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveSimple.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveAnatomy.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveDeliver.cs" />
@@ -505,7 +506,7 @@
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveTipPlayer.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveUseAbility.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveUseRecipe.cs" />
-    <Compile Include="Synthetic\Quest\QuestRequirementCollection.cs" />
+    <Compile Include="Records\Quest\QuestRequirementCollection.cs" />
     <Compile Include="Synthetic\Quest\QuestRequirement\PgGuildQuestCompletedQuestRequirement.cs" />
     <Compile Include="Synthetic\Quest\QuestRequirement\PgHasEffectKeywordQuestRequirement.cs" />
     <Compile Include="Synthetic\Quest\QuestRequirement\PgInteractionFlagSetQuestRequirement.cs" />
@@ -519,7 +520,7 @@
     <Compile Include="Synthetic\Recipe\PgRecipeCost.cs" />
     <Compile Include="Synthetic\Recipe\PgRecipeItem.cs" />
     <Compile Include="Synthetic\Recipe\PgRecipeSource.cs" />
-    <Compile Include="Synthetic\Recipe\RecipeCostCollection.cs" />
+    <Compile Include="Records\Recipe\RecipeCostCollection.cs" />
     <Compile Include="Synthetic\Skill\PgLevelCapInteraction.cs" />
     <Compile Include="Synthetic\Skill\PgReward.cs" />
     <Compile Include="Synthetic\Skill\PgSkill.cs" />

@@ -8,7 +8,7 @@ namespace PgJsonObjects
     {
         public IMainPgObject CreateItem(byte[] data, ref int offset)
         {
-            return GenericPgObject.CreateObject<TPg>(data, offset);
+            return GenericPgObject<TPg>.CreateObject<TPg>(data, offset);
         }
     }
 }

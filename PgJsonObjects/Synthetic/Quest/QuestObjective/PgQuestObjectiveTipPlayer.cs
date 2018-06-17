@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgQuestObjectiveTipPlayer : GenericPgObject, IPgQuestObjectiveTipPlayer
+    public class PgQuestObjectiveTipPlayer : GenericPgObject<PgQuestObjectiveTipPlayer>, IPgQuestObjectiveTipPlayer
     {
         public PgQuestObjectiveTipPlayer(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgQuestObjectiveTipPlayer CreateItem(byte[] data, int offset)
         {
             return new PgQuestObjectiveTipPlayer(data, offset);
         }

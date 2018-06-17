@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityRequirementInteractionFlagSet: GenericPgObject, IPgAbilityRequirementInteractionFlagSet
+    public class PgAbilityRequirementInteractionFlagSet: GenericPgObject<PgAbilityRequirementInteractionFlagSet>, IPgAbilityRequirementInteractionFlagSet
     {
         public PgAbilityRequirementInteractionFlagSet(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementInteractionFlagSet CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementInteractionFlagSet(data, offset);
         }

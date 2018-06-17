@@ -1,15 +1,15 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgQuestObjectiveInteractionFlag : GenericPgObject, IPgQuestObjectiveInteractionFlag
+    public class PgQuestObjectiveInteractionFlag : GenericPgObject<PgQuestObjectiveInteractionFlag>, IPgQuestObjectiveInteractionFlag
     {
         public PgQuestObjectiveInteractionFlag(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgQuestObjectiveInteractionFlag CreateItem(byte[] data, int offset)
         {
-            return new PgQuestObjectiveGuildGiveItem(data, offset);
+            return new PgQuestObjectiveInteractionFlag(data, offset);
         }
 
         public string InteractionFlag { get { return GetString(0); } }

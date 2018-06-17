@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityRequirementDruidEventState: GenericPgObject, IPgAbilityRequirementDruidEventState
+    public class PgAbilityRequirementDruidEventState: GenericPgObject<PgAbilityRequirementDruidEventState>, IPgAbilityRequirementDruidEventState
     {
         public PgAbilityRequirementDruidEventState(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementDruidEventState CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementDruidEventState(data, offset);
         }

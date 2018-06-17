@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgGameNpc : MainPgObject, IPgGameNpc
+    public class PgGameNpc : MainPgObject<PgGameNpc>, IPgGameNpc
     {
         public PgGameNpc(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgGameNpc CreateItem(byte[] data, int offset)
         {
             return new PgGameNpc(data, offset);
         }

@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityRequirementPetCount: GenericPgObject, IPgAbilityRequirementPetCount
+    public class PgAbilityRequirementPetCount: GenericPgObject<PgAbilityRequirementPetCount>, IPgAbilityRequirementPetCount
     {
         public PgAbilityRequirementPetCount(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementPetCount CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementPetCount(data, offset);
         }

@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityRequirementIsLongtimeAnimal: GenericPgObject, IPgAbilityRequirementIsLongtimeAnimal
+    public class PgAbilityRequirementIsLongtimeAnimal: GenericPgObject<PgAbilityRequirementIsLongtimeAnimal>, IPgAbilityRequirementIsLongtimeAnimal
     {
         public PgAbilityRequirementIsLongtimeAnimal(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementIsLongtimeAnimal CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementIsLongtimeAnimal(data, offset);
         }

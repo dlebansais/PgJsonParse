@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgSpecialValue : GenericPgObject, IPgSpecialValue
+    public class PgSpecialValue : GenericPgObject<PgSpecialValue>, IPgSpecialValue
     {
         public PgSpecialValue(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgSpecialValue CreateItem(byte[] data, int offset)
         {
             return new PgSpecialValue(data, offset);
         }

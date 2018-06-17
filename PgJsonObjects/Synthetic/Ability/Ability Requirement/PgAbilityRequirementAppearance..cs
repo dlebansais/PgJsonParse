@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementAppearance: GenericPgObject, IPgAbilityRequirementAppearance
+    public class PgAbilityRequirementAppearance: GenericPgObject<PgAbilityRequirementAppearance>, IPgAbilityRequirementAppearance
     {
         public PgAbilityRequirementAppearance(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementAppearance CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementAppearance(data, offset);
         }

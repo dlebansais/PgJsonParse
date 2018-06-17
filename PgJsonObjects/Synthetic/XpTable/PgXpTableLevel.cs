@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgXpTableLevel : GenericPgObject, IPgXpTableLevel
+    public class PgXpTableLevel : GenericPgObject<PgXpTableLevel>, IPgXpTableLevel
     {
         public PgXpTableLevel(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgXpTableLevel CreateItem(byte[] data, int offset)
         {
             return new PgXpTableLevel(data, offset);
         }

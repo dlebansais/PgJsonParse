@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgPowerSimpleEffect : GenericPgObject, IPgPowerSimpleEffect
+    public class PgPowerSimpleEffect : GenericPgObject<PgPowerSimpleEffect>, IPgPowerSimpleEffect
     {
         public PgPowerSimpleEffect(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgPowerSimpleEffect CreateItem(byte[] data, int offset)
         {
             return new PgPowerSimpleEffect(data, offset);
         }

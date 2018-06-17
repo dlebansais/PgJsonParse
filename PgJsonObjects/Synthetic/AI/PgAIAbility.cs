@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAIAbility : GenericPgObject, IPgAIAbility
+    public class PgAIAbility : GenericPgObject<PgAIAbility>, IPgAIAbility
     {
         public PgAIAbility(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAIAbility CreateItem(byte[] data, int offset)
         {
             return new PgAIAbility(data, offset);
         }

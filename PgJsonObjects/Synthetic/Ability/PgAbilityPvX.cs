@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityPvX : GenericPgObject, IPgAbilityPvX
+    public class PgAbilityPvX : GenericPgObject<PgAbilityPvX>, IPgAbilityPvX
     {
         public PgAbilityPvX(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityPvX CreateItem(byte[] data, int offset)
         {
             return new PgAbilityPvX(data, offset);
         }

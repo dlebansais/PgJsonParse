@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgPower : MainPgObject, IPgPower
+    public class PgPower : MainPgObject<PgPower>, IPgPower
     {
         public PgPower(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgPower CreateItem(byte[] data, int offset)
         {
             return new PgPower(data, offset);
         }

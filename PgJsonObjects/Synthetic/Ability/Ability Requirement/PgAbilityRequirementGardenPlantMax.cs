@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityRequirementGardenPlantMax: GenericPgObject, IPgAbilityRequirementGardenPlantMax
+    public class PgAbilityRequirementGardenPlantMax: GenericPgObject<PgAbilityRequirementGardenPlantMax>, IPgAbilityRequirementGardenPlantMax
     {
         public PgAbilityRequirementGardenPlantMax(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementGardenPlantMax CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementGardenPlantMax(data, offset);
         }

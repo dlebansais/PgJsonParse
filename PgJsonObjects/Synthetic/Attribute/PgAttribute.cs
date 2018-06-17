@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgAttribute : MainPgObject, IPgAttribute
+    public class PgAttribute : MainPgObject<PgAttribute>, IPgAttribute
     {
         public PgAttribute(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAttribute CreateItem(byte[] data, int offset)
         {
             return new PgAttribute(data, offset);
         }

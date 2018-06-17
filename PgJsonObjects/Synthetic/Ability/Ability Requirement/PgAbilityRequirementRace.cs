@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementRace: GenericPgObject, IPgAbilityRequirementRace
+    public class PgAbilityRequirementRace: GenericPgObject<PgAbilityRequirementRace>, IPgAbilityRequirementRace
     {
         public PgAbilityRequirementRace(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementRace CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementRace(data, offset);
         }

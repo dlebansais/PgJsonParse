@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgDoT : GenericPgObject, IPgDoT
+    public class PgDoT : GenericPgObject<PgDoT>, IPgDoT
     {
         public PgDoT(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgDoT CreateItem(byte[] data, int offset)
         {
             return new PgDoT(data, offset);
         }

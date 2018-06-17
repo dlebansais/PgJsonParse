@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IMainPgObject
+    public interface IMainPgObject : IGenericPgObject, IDeserializablePgObject
     {
     }
 }

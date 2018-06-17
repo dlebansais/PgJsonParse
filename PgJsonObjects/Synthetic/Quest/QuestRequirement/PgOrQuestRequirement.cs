@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgOrQuestRequirement : GenericPgObject, IPgOrQuestRequirement
+    public class PgOrQuestRequirement : GenericPgObject<PgOrQuestRequirement>, IPgOrQuestRequirement
     {
         public PgOrQuestRequirement(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgOrQuestRequirement CreateItem(byte[] data, int offset)
         {
             return new PgOrQuestRequirement(data, offset);
         }

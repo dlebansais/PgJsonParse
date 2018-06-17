@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityRequirementEquippedItemKeyword: GenericPgObject, IPgAbilityRequirementEquippedItemKeyword
+    public class PgAbilityRequirementEquippedItemKeyword: GenericPgObject<PgAbilityRequirementEquippedItemKeyword>, IPgAbilityRequirementEquippedItemKeyword
     {
         public PgAbilityRequirementEquippedItemKeyword(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementEquippedItemKeyword CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementEquippedItemKeyword(data, offset);
         }

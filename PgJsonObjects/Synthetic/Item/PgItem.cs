@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgItem : MainPgObject, IPgItem
+    public class PgItem : MainPgObject<PgItem>, IPgItem
     {
         public PgItem(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgItem CreateItem(byte[] data, int offset)
         {
             return new PgItem(data, offset);
         }

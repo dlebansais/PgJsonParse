@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgRecipeCost : GenericPgObject, IPgRecipeCost
+    public class PgRecipeCost : GenericPgObject<PgRecipeCost>, IPgRecipeCost
     {
         public PgRecipeCost(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgRecipeCost CreateItem(byte[] data, int offset)
         {
             return new PgRecipeCost(data, offset);
         }

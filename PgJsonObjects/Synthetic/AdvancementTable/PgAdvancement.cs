@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAdvancement : GenericPgObject, IPgAdvancement
+    public class PgAdvancement : GenericPgObject<PgAdvancement>, IPgAdvancement
     {
         public PgAdvancement(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAdvancement CreateItem(byte[] data, int offset)
         {
             return new PgAdvancement(data, offset);
         }

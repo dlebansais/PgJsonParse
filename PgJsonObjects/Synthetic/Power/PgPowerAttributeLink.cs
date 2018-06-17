@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgPowerAttributeLink : GenericPgObject, IPgPowerAttributeLink
+    public class PgPowerAttributeLink : GenericPgObject<PgPowerAttributeLink>, IPgPowerAttributeLink
     {
         public PgPowerAttributeLink(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgPowerAttributeLink CreateItem(byte[] data, int offset)
         {
             return new PgPowerAttributeLink(data, offset);
         }

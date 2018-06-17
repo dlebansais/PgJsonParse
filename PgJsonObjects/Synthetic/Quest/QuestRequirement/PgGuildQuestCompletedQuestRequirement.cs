@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgGuildQuestCompletedQuestRequirement : GenericPgObject, IPgGuildQuestCompletedQuestRequirement
+    public class PgGuildQuestCompletedQuestRequirement : GenericPgObject<PgGuildQuestCompletedQuestRequirement>, IPgGuildQuestCompletedQuestRequirement
     {
         public PgGuildQuestCompletedQuestRequirement(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgGuildQuestCompletedQuestRequirement CreateItem(byte[] data, int offset)
         {
             return new PgGuildQuestCompletedQuestRequirement(data, offset);
         }

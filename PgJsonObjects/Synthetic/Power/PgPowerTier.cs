@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgPowerTier : GenericPgObject, IPgPowerTier
+    public class PgPowerTier : GenericPgObject<PgPowerTier>, IPgPowerTier
     {
         public PgPowerTier(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgPowerTier CreateItem(byte[] data, int offset)
         {
             return new PgPowerTier(data, offset);
         }

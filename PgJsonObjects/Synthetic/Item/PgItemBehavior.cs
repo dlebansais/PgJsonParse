@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgItemBehavior : GenericPgObject, IPgItemBehavior
+    public class PgItemBehavior : GenericPgObject<PgItemBehavior>, IPgItemBehavior
     {
         public PgItemBehavior(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgItemBehavior CreateItem(byte[] data, int offset)
         {
             return new PgItemBehavior(data, offset);
         }

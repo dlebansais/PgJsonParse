@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilitySource : MainPgObject, IPgAbilitySource
+    public class PgAbilitySource : MainPgObject<PgAbilitySource>, IPgAbilitySource
     {
         public PgAbilitySource(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilitySource CreateItem(byte[] data, int offset)
         {
             return new PgAbilitySource(data, offset);
         }

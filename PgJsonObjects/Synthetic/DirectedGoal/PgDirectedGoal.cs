@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgDirectedGoal : MainPgObject, IPgDirectedGoal
+    public class PgDirectedGoal : MainPgObject<PgDirectedGoal>, IPgDirectedGoal
     {
         public PgDirectedGoal(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgDirectedGoal CreateItem(byte[] data, int offset)
         {
             return new PgDirectedGoal(data, offset);
         }

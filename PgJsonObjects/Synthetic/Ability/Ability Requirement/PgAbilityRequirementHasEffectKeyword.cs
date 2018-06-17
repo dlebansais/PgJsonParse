@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityRequirementHasEffectKeyword: GenericPgObject, IPgAbilityRequirementHasEffectKeyword
+    public class PgAbilityRequirementHasEffectKeyword: GenericPgObject<PgAbilityRequirementHasEffectKeyword>, IPgAbilityRequirementHasEffectKeyword
     {
         public PgAbilityRequirementHasEffectKeyword(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementHasEffectKeyword CreateItem(byte[] data, int offset)
         {
             return new PgAbilityRequirementHasEffectKeyword(data, offset);
         }

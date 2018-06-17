@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgStorageVault : MainPgObject, IPgStorageVault
+    public class PgStorageVault : MainPgObject<PgStorageVault>, IPgStorageVault
     {
         public PgStorageVault(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgStorageVault CreateItem(byte[] data, int offset)
         {
             return new PgStorageVault(data, offset);
         }

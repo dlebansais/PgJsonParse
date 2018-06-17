@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgXpTable : MainPgObject, IPgXpTable
+    public class PgXpTable : MainPgObject<PgXpTable>, IPgXpTable
     {
         public PgXpTable(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgXpTable CreateItem(byte[] data, int offset)
         {
             return new PgXpTable(data, offset);
         }

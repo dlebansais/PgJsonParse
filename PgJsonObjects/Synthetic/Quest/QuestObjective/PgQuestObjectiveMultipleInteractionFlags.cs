@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgQuestObjectiveMultipleInteractionFlags : GenericPgObject, IPgQuestObjectiveMultipleInteractionFlags
+    public class PgQuestObjectiveMultipleInteractionFlags : GenericPgObject<PgQuestObjectiveMultipleInteractionFlags>, IPgQuestObjectiveMultipleInteractionFlags
     {
         public PgQuestObjectiveMultipleInteractionFlags(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgQuestObjectiveMultipleInteractionFlags CreateItem(byte[] data, int offset)
         {
             return new PgQuestObjectiveMultipleInteractionFlags(data, offset);
         }

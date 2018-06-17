@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgPoetryServerInfoEffect : GenericPgObject, IPgPoetryServerInfoEffect
+    public class PgPoetryServerInfoEffect : GenericPgObject<PgPoetryServerInfoEffect>, IPgPoetryServerInfoEffect
     {
         public PgPoetryServerInfoEffect(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgPoetryServerInfoEffect CreateItem(byte[] data, int offset)
         {
             return new PgPoetryServerInfoEffect(data, offset);
         }

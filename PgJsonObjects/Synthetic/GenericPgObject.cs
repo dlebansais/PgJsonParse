@@ -3,17 +3,26 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public abstract class GenericPgObject : IGenericPgObject
+    public class GenericPgObject
     {
         public const int NoValueInt = 0x6B6B6B6B;
+    }
 
+    public abstract class GenericPgObject<TPg> : GenericPgObject, IGenericPgObject, IDeserializablePgObject
+        where TPg : IDeserializablePgObject
+    {
         public GenericPgObject(byte[] data, int offset)
         {
             Data = data;
             Offset = offset;
         }
 
-        public abstract IGenericPgObject CreateItem(byte[] data, int offset);
+        public IDeserializablePgObject Create(byte[] data, int offset)
+        {
+            return CreateItem(data, offset);
+        }
+
+        protected abstract TPg CreateItem(byte[] data, int offset);
 
         public virtual void Init()
         {

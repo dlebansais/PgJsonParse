@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgIntervalServerInfoEffect : GenericPgObject, IPgIntervalServerInfoEffect
+    public class PgIntervalServerInfoEffect : GenericPgObject<PgIntervalServerInfoEffect>, IPgIntervalServerInfoEffect
     {
         public PgIntervalServerInfoEffect(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgIntervalServerInfoEffect CreateItem(byte[] data, int offset)
         {
             return new PgIntervalServerInfoEffect(data, offset);
         }

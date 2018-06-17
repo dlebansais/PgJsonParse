@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgQuestObjectiveKill : GenericPgObject, IPgQuestObjectiveKill
+    public class PgQuestObjectiveKill : GenericPgObject<PgQuestObjectiveKill>, IPgQuestObjectiveKill
     {
         public PgQuestObjectiveKill(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgQuestObjectiveKill CreateItem(byte[] data, int offset)
         {
             return new PgQuestObjectiveKill(data, offset);
         }

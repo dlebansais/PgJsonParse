@@ -2,14 +2,14 @@
 
 namespace PgJsonObjects
 {
-    public class PgNpcPreference : GenericPgObject, IPgNpcPreference
+    public class PgNpcPreference : GenericPgObject<PgNpcPreference>, IPgNpcPreference
     {
         public PgNpcPreference(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgNpcPreference CreateItem(byte[] data, int offset)
         {
             return new PgNpcPreference(data, offset);
         }

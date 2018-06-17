@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgLevelCapInteraction : GenericPgObject, IPgLevelCapInteraction
+    public class PgLevelCapInteraction : GenericPgObject<PgLevelCapInteraction>, IPgLevelCapInteraction
     {
         public PgLevelCapInteraction(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgLevelCapInteraction CreateItem(byte[] data, int offset)
         {
             return new PgLevelCapInteraction(data, offset);
         }

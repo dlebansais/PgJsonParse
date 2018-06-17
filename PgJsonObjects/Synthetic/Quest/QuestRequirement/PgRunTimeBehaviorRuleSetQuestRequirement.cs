@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgRunTimeBehaviorRuleSetQuestRequirement : GenericPgObject, IPgRunTimeBehaviorRuleSetQuestRequirement
+    public class PgRunTimeBehaviorRuleSetQuestRequirement : GenericPgObject<PgRunTimeBehaviorRuleSetQuestRequirement>, IPgRunTimeBehaviorRuleSetQuestRequirement
     {
         public PgRunTimeBehaviorRuleSetQuestRequirement(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgRunTimeBehaviorRuleSetQuestRequirement CreateItem(byte[] data, int offset)
         {
             return new PgRunTimeBehaviorRuleSetQuestRequirement(data, offset);
         }

@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgItemSkillLink : GenericPgObject, IPgItemSkillLink
+    public class PgItemSkillLink : GenericPgObject<PgItemSkillLink>, IPgItemSkillLink
     {
         public PgItemSkillLink(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgItemSkillLink CreateItem(byte[] data, int offset)
         {
             return new PgItemSkillLink(data, offset);
         }

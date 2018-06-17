@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgQuestObjectiveItem : GenericPgObject, IPgQuestObjectiveItem
+    public class PgQuestObjectiveItem : GenericPgObject<PgQuestObjectiveItem>, IPgQuestObjectiveItem
     {
         public PgQuestObjectiveItem(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgQuestObjectiveItem CreateItem(byte[] data, int offset)
         {
             return new PgQuestObjectiveItem(data, offset);
         }

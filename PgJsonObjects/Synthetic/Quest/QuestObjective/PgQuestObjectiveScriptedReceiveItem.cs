@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgQuestObjectiveScriptedReceiveItem : GenericPgObject, IPgQuestObjectiveScriptedReceiveItem
+    public class PgQuestObjectiveScriptedReceiveItem : GenericPgObject<PgQuestObjectiveScriptedReceiveItem>, IPgQuestObjectiveScriptedReceiveItem
     {
         public PgQuestObjectiveScriptedReceiveItem(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgQuestObjectiveScriptedReceiveItem CreateItem(byte[] data, int offset)
         {
             return new PgQuestObjectiveScriptedReceiveItem(data, offset);
         }

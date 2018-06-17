@@ -1,13 +1,13 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgGameArea : MainPgObject, IPgGameArea
+    public class PgGameArea : MainPgObject<PgGameArea>, IPgGameArea
     {
         public PgGameArea(byte[] data, int offset)
             : base(data, offset)
         {
         }
 
-        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        protected override PgGameArea CreateItem(byte[] data, int offset)
         {
             return new PgGameArea(data, offset);
         }
