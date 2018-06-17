@@ -5,65 +5,12 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public enum FieldType
-    {
-        Unknown,
-        Integer,
-        Bool,
-        Float,
-        String,
-        Object,
-        SimpleIntegerArray,
-        IntegerArray,
-        SimpleStringArray,
-        StringArray,
-        ObjectArray,
-    };
-
-    public struct FieldParser
-    {
-        public FieldType Type;
-
-        public Action<object, ParseErrorInfo> ParseUnknown;
-        public Action<int, ParseErrorInfo> ParseInteger;
-        public Action<bool, ParseErrorInfo> ParseBool;
-        public Action<float, ParseErrorInfo> ParseFloat;
-        public Action<string, ParseErrorInfo> ParseString;
-        public Action<JsonObject, ParseErrorInfo> ParseObject;
-        public Action<int, ParseErrorInfo> ParseSimpleIntegerArray;
-        public Func<int, ParseErrorInfo, bool> ParseIntegerArray;
-        public Action<string, ParseErrorInfo> ParseSimpleStringArray;
-        public Func<string, ParseErrorInfo, bool> ParseStringArray;
-        public Action<JsonObject, ParseErrorInfo> ParseObjectArray;
-        public Action SetArrayIsEmpty;
-
-        public Action<string, JsonGenerator> CustomGenerator;
-
-        public Func<object> GetUnknown;
-        public Func<int?> GetInteger;
-        public Func<bool?> GetBool;
-        public Func<double?> GetFloat;
-        public Func<string> GetString;
-        public Func<IObjectContentGenerator> GetObject;
-        public Func<List<int>> GetIntegerArray;
-        public Func<List<string>> GetStringArray;
-        public Func<IList> GetObjectArray;
-        public Func<bool> GetArrayIsEmpty;
-
-        public bool SimplifyArray;
-        public Action SetArrayIsSimple;
-        public Func<bool> GetArrayIsSimple;
-
-        public Action SetArrayIsNested;
-        public Func<bool> GetArrayIsNested;
-    }
-
-    public abstract class GenericJsonObject : SerializableJsonObject
+    public class GenericJsonObject
     {
         public static string NullString = "{3125D9C5-C81F-4507-A422-C9749749CB15}";
 
         #region Comparison
-        public static int SortByName(ISearchableObject o1, ISearchableObject o2)
+        public static int SortByName(IBackLinkable o1, IBackLinkable o2)
         {
             string s1 = o1.SortingName;
             string s2 = o2.SortingName;
@@ -92,13 +39,13 @@ namespace PgJsonObjects
         #endregion
     }
 
-    public abstract class GenericJsonObject<T>: GenericJsonObject, IGenericJsonObject
+    public abstract class GenericJsonObject<T>: SerializableJsonObject, IGenericJsonObject
         where T: class
     {
         #region Init
         public GenericJsonObject()
         {
-            LinkBackTable = new Dictionary<Type, List<ISearchableObject>>();
+            LinkBackTable = new Dictionary<Type, List<IBackLinkable>>();
         }
         #endregion
 
@@ -541,12 +488,13 @@ namespace PgJsonObjects
         #endregion
 
         #region Implementation of IBackLinkable
-        public Dictionary<Type, List<ISearchableObject>> LinkBackTable { get; private set; }
+        public abstract string SortingName { get; }
+        public Dictionary<Type, List<IBackLinkable>> LinkBackTable { get; private set; }
         public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
 
         static List<Type> LinkBackTypeList = new List<Type>();
 
-        protected void AddLinkBack(GenericJsonObject LinkBack)
+        protected void AddLinkBack(IBackLinkable LinkBack)
         {
             if (LinkBack == null)
                 return;
@@ -564,22 +512,18 @@ namespace PgJsonObjects
             else if (LinkBack is Reward)
                 LinkBack = (LinkBack as Reward).ParentSkill;
 
-            ISearchableObject AsSearchable = LinkBack as ISearchableObject;
-            if (AsSearchable == null)
-                return;
-
             Type ObjectType = LinkBack.GetType();
             if (!LinkBackTable.ContainsKey(ObjectType))
-                LinkBackTable.Add(ObjectType, new List<ISearchableObject>());
+                LinkBackTable.Add(ObjectType, new List<IBackLinkable>());
 
-            List<ISearchableObject> LinkBackList = LinkBackTable[ObjectType];
-            if (!LinkBackList.Contains(AsSearchable))
-                LinkBackList.Add(AsSearchable);
+            List<IBackLinkable> LinkBackList = LinkBackTable[ObjectType];
+            if (!LinkBackList.Contains(LinkBack))
+                LinkBackList.Add(LinkBack);
         }
 
         public void SortLinkBack()
         {
-            foreach (KeyValuePair<Type, List<ISearchableObject>> Entry in LinkBackTable)
+            foreach (KeyValuePair<Type, List<IBackLinkable>> Entry in LinkBackTable)
                 Entry.Value.Sort(GenericJsonObject.SortByName);
         }
         #endregion
@@ -729,7 +673,7 @@ namespace PgJsonObjects
         public abstract string TextContent { get; }
         #endregion
 
-        #region Client Interface
+        #region Implementation of IConnectableObject
         public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
         {
             bool IsConnected;
@@ -739,6 +683,13 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
+        public virtual void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
+        {
+
+        }
+        #endregion
+
+        #region Implementation of IJsonParsableObject
         public virtual void Init(string key, int index, IJsonValue value, bool loadAsArray, ParseErrorInfo ErrorInfo)
         {
             InitializeKey(key, index, value, ErrorInfo);
@@ -749,14 +700,9 @@ namespace PgJsonObjects
             else if (ErrorInfo != null)
                 ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
         }
-
-        public virtual void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
-        {
-
-        }
         #endregion
 
-        #region Implementation of ISearchableObject
+        #region Implementation of IBackLinkable
         public string GetSearchResultTitleTemplateName()
         {
             return "SearchResult" + typeof(T).Name + "TitleTemplate";

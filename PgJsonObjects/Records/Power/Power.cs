@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Power : GenericJsonObject<Power>, IPgPower, ISearchableObject
+    public class Power : GenericJsonObject<Power>, IPgPower, IBackLinkable
     {
         #region Direct Properties
         public string Prefix { get; private set; }
@@ -21,7 +21,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return ComposedName; } }
+        public override string SortingName { get { return ComposedName; } }
         public List<string> CombinedTierList { get; } = new List<string>();
 
         public string ComposedName

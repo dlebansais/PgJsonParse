@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class GameNpc : GenericJsonObject<GameNpc>, IPgGameNpc, ISearchableObject
+    public class GameNpc : GenericJsonObject<GameNpc>, IPgGameNpc, IBackLinkable
     {
         #region Direct Properties
         public string Name { get; private set; }
@@ -19,7 +19,7 @@ namespace PgJsonObjects
         #region Indirect Properties
         private bool IsMatchingVaultParsed;
         public StorageVault MatchingVault { get; private set; }
-        public virtual string SortingName { get { return Name; } }
+        public override string SortingName { get { return Name; } }
         public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion
@@ -137,7 +137,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static GameNpc ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> GameNpcTable, string GameNpcKey, GameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static GameNpc ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> GameNpcTable, string GameNpcKey, GameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawGameNpcParsed)
                 return ParsedGameNpc;
@@ -164,7 +164,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static GameNpc ConnectByName(ParseErrorInfo ErrorInfo, Dictionary<string, GameNpc> GameNpcTable, string RawNpcName, GameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static GameNpc ConnectByName(ParseErrorInfo ErrorInfo, Dictionary<string, GameNpc> GameNpcTable, string RawNpcName, GameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawGameNpcParsed)
                 return ParsedGameNpc;

@@ -74,7 +74,7 @@ namespace PgJsonObjects
             bool IsConnected = false;
             Dictionary<string, IGenericJsonObject> GameNpcTable = AllTables[typeof(GameNpc)];
 
-            FavorNpc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, FavorNpcId, FavorNpc, ref IsFavorNpcParsed, ref IsConnected, Parent as GenericJsonObject);
+            FavorNpc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, FavorNpcId, FavorNpc, ref IsFavorNpcParsed, ref IsConnected, Parent as IBackLinkable);
             if (FavorNpcId != null && FavorNpc == null)
             {
                 SpecialNpc ParsedSpecialNpc;

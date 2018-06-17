@@ -35,7 +35,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return null; } }
+        public override string SortingName { get { return null; } }
 
         public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
         {
@@ -293,7 +293,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static AbilitySource ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, AbilitySource> AbilitySourceTable, string AbilitySourceKey, AbilitySource ParsedAbilitySource, ref bool IsRawAbilitySourceParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static AbilitySource ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, AbilitySource> AbilitySourceTable, string AbilitySourceKey, AbilitySource ParsedAbilitySource, ref bool IsRawAbilitySourceParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAbilitySourceParsed)
                 return ParsedAbilitySource;

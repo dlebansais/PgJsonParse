@@ -7,7 +7,7 @@ namespace PgJsonObjects
     public class SkillRequirement : GenericJsonObject<SkillRequirement>
     {
         #region Indirect Properties
-        public virtual string SortingName { get { return null; } }
+        public override string SortingName { get { return null; } }
         #endregion
 
         #region Parsing

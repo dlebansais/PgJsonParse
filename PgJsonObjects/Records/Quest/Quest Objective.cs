@@ -60,7 +60,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return null; } }
+        public override string SortingName { get { return null; } }
         public Quest ParentQuest { get; private set; }
         public bool HasMinAndMaxHours { get { return MinHour.HasValue && MaxHour.HasValue; } }
         public string TimeCompletion

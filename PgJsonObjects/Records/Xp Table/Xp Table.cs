@@ -14,7 +14,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return InternalName; } }
+        public override string SortingName { get { return InternalName; } }
         #endregion
 
         #region Parsing
@@ -66,7 +66,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawXpTableParsed)
                 return ParsedXpTable;

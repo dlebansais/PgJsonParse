@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Recipe : GenericJsonObject<Recipe>, IPgRecipe, ISearchableObject
+    public class Recipe : GenericJsonObject<Recipe>, IPgRecipe, IBackLinkable
     {
         #region Direct Properties
         public string Description { get; private set; }
@@ -65,7 +65,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Name; } }
+        public override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
 
@@ -952,7 +952,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static Recipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, string RawRecipeName, Recipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Recipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, string RawRecipeName, Recipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawRecipeParsed)
                 return ParsedRecipe;
@@ -990,7 +990,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static RecipeCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, RecipeKeyword Keyword, RecipeCollection RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static RecipeCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, RecipeKeyword Keyword, RecipeCollection RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawRecipeParsed)
                 return RecipeList;
@@ -1019,7 +1019,7 @@ namespace PgJsonObjects
             return RecipeList;
         }
 
-        public static Recipe ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, int RecipeId, Recipe Recipe, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Recipe ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, int RecipeId, Recipe Recipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawRecipeParsed)
                 return Recipe;

@@ -14,7 +14,7 @@ namespace PgJsonParse
         {
             FrameworkElement element = container as FrameworkElement;
 
-            if (item is ISearchableObject AsSearchable)
+            if (item is IBackLinkable AsSearchable)
             {
                 DataTemplate Result = FindTemplate(element, AsSearchable.GetSearchResultTitleTemplateName());
                 return Result;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Quest : GenericJsonObject<Quest>, IPgQuest, ISearchableObject
+    public class Quest : GenericJsonObject<Quest>, IPgQuest, IBackLinkable
     {
         #region Direct Properties
         public string InternalName { get; private set; }
@@ -95,7 +95,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Name; } }
+        public override string SortingName { get { return Name; } }
         public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion
@@ -185,7 +185,7 @@ namespace PgJsonObjects
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseRewards_Recipes,
                 SetArrayIsEmpty = () => IsRawRewardRecipeEmpty = true,
-                GetStringArray = () => CreateSingleOrEmptyStringList(RawRewardRecipe),
+                GetStringArray = () => GenericJsonObject.CreateSingleOrEmptyStringList(RawRewardRecipe),
                 GetArrayIsEmpty = () => IsRawRewardRecipeEmpty } },
             { "Rewards_Ability", new FieldParser() {
                 Type = FieldType.String,
@@ -888,7 +888,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;
@@ -915,7 +915,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Quest ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, int QuestId, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Quest ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, int QuestId, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;

@@ -21,11 +21,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return null; } }
+        public override string SortingName { get { return null; } }
         #endregion
 
         #region Parsing
-        public void SetLinkBack(GenericJsonObject LinkBack)
+        public void SetLinkBack(IBackLinkable LinkBack)
         {
             this.LinkBack = LinkBack;
             if (ServerInfo != null)
@@ -41,7 +41,7 @@ namespace PgJsonObjects
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = ParseServerInfo,
                 SetArrayIsEmpty = () => IsServerInfoEmpty = true,
-                GetObjectArray = () => CreateSingleOrEmptyList(ServerInfo),
+                GetObjectArray = () => GenericJsonObject.CreateSingleOrEmptyList(ServerInfo),
                 GetArrayIsEmpty = () => IsServerInfoEmpty,
                 SimplifyArray = true } },
             { "UseRequirements", new FieldParser() {
@@ -80,7 +80,7 @@ namespace PgJsonObjects
                 ServerInfo = null;
         }
 
-        private GenericJsonObject LinkBack;
+        private IBackLinkable LinkBack;
         #endregion
 
         #region Indexing

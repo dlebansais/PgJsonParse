@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Skill : GenericJsonObject<Skill>, IPgSkill, ISearchableObject
+    public class Skill : GenericJsonObject<Skill>, IPgSkill, IBackLinkable
     {
         #region Direct Properties
         public PowerSkill CombatSkill { get; private set; }
@@ -60,7 +60,7 @@ namespace PgJsonObjects
 
         private static Dictionary<PowerSkill, Ability> BasicAttackTable = new Dictionary<PowerSkill, Ability>();
         private static Dictionary<PowerSkill, int> AnyIconTable = new Dictionary<PowerSkill, int>();
-        public virtual string SortingName { get { return Name; } }
+        public override string SortingName { get { return Name; } }
         public int IconId { get; private set; }
 
         public static void UpdateBasicAttackTable(PowerSkill Skill, Ability Ability)
@@ -194,7 +194,7 @@ namespace PgJsonObjects
             { "AdvancementTable", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseAdvancementTable,
-                GetString = () => IsAdvancementTableNull ? NullString : RawAdvancementTable } },
+                GetString = () => IsAdvancementTableNull ? GenericJsonObject.NullString : RawAdvancementTable } },
             { "Combat", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawCombat = value,
@@ -231,7 +231,7 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = ParseParents,
                 SetArrayIsEmpty = () => IsParentSkillEmpty = true,
-                GetStringArray = () => CreateSingleOrEmptyStringList(StringToEnumConversion<PowerSkill>.ToString(RawParentSkill, null, PowerSkill.Internal_None)),
+                GetStringArray = () => GenericJsonObject.CreateSingleOrEmptyStringList(StringToEnumConversion<PowerSkill>.ToString(RawParentSkill, null, PowerSkill.Internal_None)),
                 GetArrayIsEmpty = () => IsParentSkillEmpty } },
             { "SkipBonusLevelsIfSkillUnlearned", new FieldParser() {
                 Type = FieldType.Bool,
@@ -570,7 +570,7 @@ namespace PgJsonObjects
             return CombinedRewardList;
         }
 
-        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
@@ -595,7 +595,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;

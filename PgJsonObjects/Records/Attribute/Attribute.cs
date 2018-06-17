@@ -19,7 +19,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Label; } }
+        public override string SortingName { get { return Label; } }
         public List<string> IconFileNameList { get; } = new List<string>();
 
         public bool IsLabelWithPercent
@@ -129,7 +129,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static Attribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, string RawAttributeName, Attribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Attribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, string RawAttributeName, Attribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAttributeParsed)
                 return ParsedAttribute;

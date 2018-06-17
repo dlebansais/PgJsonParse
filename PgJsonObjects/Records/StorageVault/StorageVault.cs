@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class StorageVault : GenericJsonObject<StorageVault>, IPgStorageVault, ISearchableObject
+    public class StorageVault : GenericJsonObject<StorageVault>, IPgStorageVault, IBackLinkable
     {
         #region Direct Properties
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
@@ -26,7 +26,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return NpcFriendlyName; } }
+        public override string SortingName { get { return NpcFriendlyName; } }
         public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion
@@ -251,7 +251,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static StorageVault ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> StorageVaultTable, string StorageVaultKey, StorageVault ParsedStorageVault, ref bool IsRawStorageVaultParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static StorageVault ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> StorageVaultTable, string StorageVaultKey, StorageVault ParsedStorageVault, ref bool IsRawStorageVaultParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawStorageVaultParsed)
                 return ParsedStorageVault;

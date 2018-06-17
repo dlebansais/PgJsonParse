@@ -1103,7 +1103,7 @@ namespace PgJsonParse
 
         private void SerializeAll(byte[] data, ref int offset)
         {
-            GenericJsonObject.ResetSerializedObjectTable();
+            SerializableJsonObject.ResetSerializedObjectTable();
 
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {

@@ -55,7 +55,7 @@ namespace PgJsonObjects
                 {
                     Quest RequirementQuest = null;
                     bool IsParsed = false;
-                    RequirementQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementQuestList[0], RequirementQuest, ref IsParsed, ref IsConnected, Parent as GenericJsonObject);
+                    RequirementQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementQuestList[0], RequirementQuest, ref IsParsed, ref IsConnected, Parent as IBackLinkable);
 
                     if (RequirementQuest != null)
                     {

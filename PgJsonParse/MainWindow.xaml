@@ -3453,11 +3453,12 @@
                             <TextBlock Margin="5,0,5,0">in</TextBlock>
                             <TextBlock TextWrapping="Wrap">
                                 <TextBlock.Text>
-                                    <Binding Path="FavorNpcArea" Converter="{StaticResource convEnumToText}" ConverterParameter="MapAreaNameTextMap"/>
+                                    <Binding Path="FavorNpc.AreaName" Converter="{StaticResource convEnumToText}" ConverterParameter="MapAreaNameTextMap"/>
                                 </TextBlock.Text>
                             </TextBlock>
                         </StackPanel>
                     </Grid>
+                    <!--
                     <Grid Grid.Column="1" Grid.Row="8" Visibility="{Binding FavorNpc, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Collapsed}" Margin="5,10,0,0">
                         <StackPanel Orientation="Horizontal" Visibility="{Binding FavorNpcName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
                             <TextBlock Text="{Binding FavorNpcName}" TextWrapping="Wrap"/>
@@ -3469,6 +3470,7 @@
                             </TextBlock>
                         </StackPanel>
                     </Grid>
+                    -->
                     <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Preface Text:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="9" Text="{Binding PrefaceText}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                     <TextBlock Grid.Column="0" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Success Text:</TextBlock>
@@ -3514,7 +3516,7 @@
                     <TextBlock Grid.Column="1" Grid.Row="16" TextWrapping="Wrap" Margin="5,10,0,0">
                         <Hyperlink x:Name="hyperlink_Quest_ConnectedWorkOrderSkill" Click="OnRequestNavigate" NavigateUri="unused">
                             <Run>
-                                <Binding Path="ConnectedWorkOrderSkill.Name" Mode="OneWay"/>
+                                <Binding Path="WorkOrderSkill.Name" Mode="OneWay"/>
                             </Run>
                         </Hyperlink>
                     </TextBlock>
@@ -3531,13 +3533,13 @@
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Skill XP Reward:</TextBlock>
-                    <StackPanel Grid.Column="3" Grid.Row="1" Visibility="{Binding ConnectedRewardSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,10,0,0">
+                    <StackPanel Grid.Column="3" Grid.Row="1" Visibility="{Binding RewardSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,10,0,0">
                         <TextBlock Text="{Binding RewardSkillXp}"/>
                         <TextBlock Margin="5,0,5,0">XP in</TextBlock>
                         <TextBlock TextWrapping="Wrap">
                             <Hyperlink x:Name="hyperlink_Quest_ConnectedRewardSkill" Click="OnRequestNavigate" NavigateUri="unused">
                                 <Run>
-                                    <Binding Path="ConnectedRewardSkill.Name" Mode="OneWay"/>
+                                    <Binding Path="RewardSkill.Name" Mode="OneWay"/>
                                 </Run>
                             </Hyperlink>
                         </TextBlock>
@@ -3770,9 +3772,9 @@
                     </ItemsControl>
                     <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="5,10,0,0">
-                        <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
+                        <Hyperlink x:Name="hyperlink_Recipe_Skill" Click="OnRequestNavigate" NavigateUri="unused">
                             <Run>
-                                <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
+                                <Binding Path="Skill.Name" Mode="OneWay"/>
                             </Run>
                         </Hyperlink>
                     </TextBlock>
@@ -3794,7 +3796,7 @@
                     <TextBlock Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Margin="5,10,0,0">
                         <Hyperlink x:Name="hyperlink_Recipe_ConnectedSortSkill" Click="OnRequestNavigate" NavigateUri="unused">
                             <Run>
-                                <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
+                                <Binding Path="Skill.Name" Mode="OneWay"/>
                             </Run>
                         </Hyperlink>
                     </TextBlock>
@@ -3886,11 +3888,11 @@
                     <Rectangle Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" Width="50" Margin="5,10,0,0" Fill="{Binding DyeColor, Converter={StaticResource convRgbColorToBrush}, FallbackValue=Transparent}"/>
                     <TextBlock Grid.Column="2" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Reward Skill:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="7" TextWrapping="Wrap" Margin="5,10,0,0">
-                                    <Hyperlink x:Name="hyperlink_Recipe_ConnectedRewardSkill" Click="OnRequestNavigate" NavigateUri="unused">
-                                        <Run>
-                                            <Binding Path="ConnectedRewardSkill.Name" Mode="OneWay"/>
-                                        </Run>
-                                    </Hyperlink>
+                        <Hyperlink x:Name="hyperlink_Recipe_RewardSkill" Click="OnRequestNavigate" NavigateUri="unused">
+                            <Run>
+                                <Binding Path="RewardSkill.Name" Mode="OneWay"/>
+                            </Run>
+                        </Hyperlink>
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">XP Reward:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="8" TextWrapping="Wrap" Margin="5,10,0,0">
@@ -4414,15 +4416,15 @@
                         </Grid>
                         <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Skill:</TextBlock>
                         <Grid Grid.Column="1" Grid.Row="3" Margin="5,10,0,0">
-                            <TextBlock Visibility="{Binding ConnectedSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" TextWrapping="Wrap">
+                            <TextBlock Visibility="{Binding Skill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}, FallbackValue=Visible}" TextWrapping="Wrap">
                                 <TextBlock.Text>
                                     <Binding Path="Skill" Converter="{StaticResource convEnumToText}" ConverterParameter="PowerSkillTextMap"/>
                                 </TextBlock.Text>
                             </TextBlock>
-                            <TextBlock Visibility="{Binding ConnectedSkill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
-                                <Hyperlink x:Name="hyperlink_Recipe_ConnectedSkill" Click="OnRequestNavigate" NavigateUri="unused">
+                            <TextBlock Visibility="{Binding Skill, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" TextWrapping="Wrap">
+                                <Hyperlink x:Name="hyperlink_Recipe_Skill" Click="OnRequestNavigate" NavigateUri="unused">
                                     <Run>
-                                        <Binding Path="ConnectedSkill.Name" Mode="OneWay"/>
+                                        <Binding Path="Skill.Name" Mode="OneWay"/>
                                     </Run>
                                 </Hyperlink>
                             </TextBlock>

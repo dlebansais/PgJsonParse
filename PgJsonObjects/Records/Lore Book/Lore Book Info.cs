@@ -16,7 +16,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return ""; } }
+        public override string SortingName { get { return ""; } }
         public const int SearchResultIconId = 5792;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion

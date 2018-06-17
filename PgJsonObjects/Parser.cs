@@ -18,7 +18,7 @@ namespace PgJsonObjects
     }
 
     public class Parser<T> : IParser
-        where T : GenericJsonObject<T>, new()
+        where T : IJsonParsableObject, IJsonKey, IObjectContentGenerator, new()
     {
         #region Init
         public Parser()

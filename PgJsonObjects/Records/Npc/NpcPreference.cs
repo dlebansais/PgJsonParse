@@ -101,7 +101,7 @@ namespace PgJsonObjects
             return -SortGiftByIncreasingName(g1, g2);
         }
 
-        public virtual string SortingName { get { return Key; } }
+        public override string SortingName { get { return Key; } }
         public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion

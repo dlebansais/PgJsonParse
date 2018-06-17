@@ -21,11 +21,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return null; } }
+        public override string SortingName { get { return null; } }
         #endregion
 
         #region Parsing
-        public void SetLinkBack(GenericJsonObject LinkBack)
+        public void SetLinkBack(IBackLinkable LinkBack)
         {
             this.LinkBack = LinkBack;
             foreach (ServerInfoEffect Item in ServerInfoEffectList)
@@ -637,7 +637,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
         }
 
-        private GenericJsonObject LinkBack;
+        private IBackLinkable LinkBack;
         private ServerInfoEffectType ServerInfoEffect;
         private int? EffectLevel;
         private PowerSkill Skill;

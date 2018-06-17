@@ -12,7 +12,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return InternalName; } }
+        public override string SortingName { get { return InternalName; } }
         #endregion
 
         #region Parsing
@@ -105,7 +105,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAdvancementTableParsed)
                 return ParsedAdvancementTable;

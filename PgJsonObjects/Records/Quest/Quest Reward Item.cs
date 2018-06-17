@@ -15,7 +15,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return null; } }
+        public override string SortingName { get { return null; } }
         public Quest ParentQuest { get; private set; }
         #endregion
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Ability : GenericJsonObject<Ability>, IPgAbility, ISearchableObject
+    public class Ability : GenericJsonObject<Ability>, IPgAbility, IBackLinkable
     {
         #region Direct Properties
         public AbilityAnimation Animation { get; private set; }
@@ -95,7 +95,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Name; } }
+        public override string SortingName { get { return Name; } }
         public string DigitStrippedName { get; private set; }
         public int LineIndex { get; private set; }
         public List<AbilityAdditionalResult> AbilityAdditionalResultList { get; } = new List<AbilityAdditionalResult>();
@@ -2499,7 +2499,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAbilityParsed)
                 return ParsedAbility;
@@ -2526,7 +2526,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static AbilityCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, AbilityKeyword Keyword, AbilityCollection AbilityList, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static AbilityCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, AbilityKeyword Keyword, AbilityCollection AbilityList, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAbilityParsed)
                 return AbilityList;
@@ -2555,7 +2555,7 @@ namespace PgJsonObjects
             return AbilityList;
         }
 
-        public static Ability ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, int AbilityId, Ability Ability, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Ability ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, int AbilityId, Ability Ability, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAbilityParsed)
                 return Ability;

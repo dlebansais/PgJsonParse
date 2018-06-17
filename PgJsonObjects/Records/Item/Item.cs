@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Item : GenericJsonObject<Item>, IPgItem, ISearchableObject
+    public class Item : GenericJsonObject<Item>, IPgItem, IBackLinkable
     {
         #region Direct Properties
         public Ability BestowAbility { get; private set; }
@@ -86,7 +86,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Name; } }
+        public override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
         #endregion
 
@@ -709,7 +709,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -747,7 +747,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -775,7 +775,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Item> ConnectByItemKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static List<Item> ConnectByItemKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -804,7 +804,7 @@ namespace PgJsonObjects
             return ItemList;
         }
 
-        public static ItemCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, ItemKeyword Keyword, ItemCollection ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static ItemCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, ItemKeyword Keyword, ItemCollection ItemList, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -836,12 +836,12 @@ namespace PgJsonObjects
             return ItemList;
         }
 
-        public static Item ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int ItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Item ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int ItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             return ConnectById(ErrorInfo, ItemTable, "item_" + ItemId, ParsedItem, ref IsRawItemParsed, ref IsConnected, LinkBack);
         }
 
-        public static Item ConnectById(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Item ConnectById(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;

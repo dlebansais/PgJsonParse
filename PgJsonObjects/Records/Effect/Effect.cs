@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Effect : GenericJsonObject<Effect>, ISearchableObject
+    public class Effect : GenericJsonObject<Effect>, IBackLinkable
     {
         #region Direct Properties
         public string Name { get; private set; }
@@ -29,7 +29,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Name; } }
+        public override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue && RawIconId.Value > 0 ? "icon_" + RawIconId.Value : null; } }
         #endregion
 
@@ -156,7 +156,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawEffectParsed)
                 return ParsedEffect;

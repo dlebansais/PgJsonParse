@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class PlayerTitle : GenericJsonObject<PlayerTitle>, IPgPlayerTitle, ISearchableObject
+    public class PlayerTitle : GenericJsonObject<PlayerTitle>, IPgPlayerTitle, IBackLinkable
     {
         #region Direct Properties
         public string Title { get; private set; }
@@ -14,7 +14,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Title; } }
+        public override string SortingName { get { return Title; } }
         public const int SearchResultIconId = 5851;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion

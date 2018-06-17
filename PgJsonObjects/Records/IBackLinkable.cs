@@ -5,7 +5,11 @@ namespace PgJsonObjects
 {
     public interface IBackLinkable
     {
-        Dictionary<Type, List<ISearchableObject>> LinkBackTable { get; }
+        string SortingName { get; }
+        Dictionary<Type, List<IBackLinkable>> LinkBackTable { get; }
         bool HasLinkBackTableEntries { get; }
+        void SortLinkBack();
+        string GetSearchResultContentTemplateName();
+        string GetSearchResultTitleTemplateName();
     }
 }

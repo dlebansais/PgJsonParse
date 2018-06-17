@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class DirectedGoal : GenericJsonObject<DirectedGoal>, ISearchableObject
+    public class DirectedGoal : GenericJsonObject<DirectedGoal>, IBackLinkable
     {
         #region Direct Properties
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
@@ -19,7 +19,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Label; } }
+        public override string SortingName { get { return Label; } }
         public const int SearchResultIconId = 2118;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion

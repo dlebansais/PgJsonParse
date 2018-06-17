@@ -679,7 +679,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Key; } }
+        public override string SortingName { get { return Key; } }
         #endregion
 
         #region Parsing

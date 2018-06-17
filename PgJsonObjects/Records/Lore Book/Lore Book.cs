@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class LoreBook : GenericJsonObject<LoreBook>, ISearchableObject
+    public class LoreBook : GenericJsonObject<LoreBook>, IBackLinkable
     {
         #region Direct Properties
         public string Title { get; private set; }
@@ -20,7 +20,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        public virtual string SortingName { get { return Title; } }
+        public override string SortingName { get { return Title; } }
         public const int SearchResultIconId = 5792;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion
@@ -97,7 +97,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static LoreBook ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, int LoreBookId, LoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static LoreBook ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, int LoreBookId, LoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawLoreBookParsed)
                 return ParsedLoreBook;
@@ -122,7 +122,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static LoreBook ConnectByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, string RawLoreBookName, LoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static LoreBook ConnectByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, string RawLoreBookName, LoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawLoreBookParsed)
                 return ParsedLoreBook;
