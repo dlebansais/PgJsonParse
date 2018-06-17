@@ -7,6 +7,6 @@
         {
         }
 
-        public string Name { get { return GetString(0); } }
+        public string Name { get { return GetString(4); } }
     }
 }

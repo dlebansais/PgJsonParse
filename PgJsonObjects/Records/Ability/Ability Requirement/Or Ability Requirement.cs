@@ -1,17 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
     public class OrAbilityRequirement : AbilityRequirement, IPgAbilityRequirementOr
     {
-        public OrAbilityRequirement(List<AbilityRequirement> OrList, string RawErrorMsg)
+        public OrAbilityRequirement(AbilityRequirementCollection OrList, string RawErrorMsg)
         {
             this.OrList = OrList;
             ErrorMsg = RawErrorMsg;
         }
 
-        public List<AbilityRequirement> OrList { get; private set; }
+        public AbilityRequirementCollection OrList { get; private set; }
         public string ErrorMsg { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
@@ -46,12 +45,13 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObjectList(OrList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
-            AddString(ErrorMsg, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddObjectList(OrList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
+            AddString(ErrorMsg, data, ref offset, BaseOffset, 8, StoredStringtable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, StoredStringtable, null, null, null, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

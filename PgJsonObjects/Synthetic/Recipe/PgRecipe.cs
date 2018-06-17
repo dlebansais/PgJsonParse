@@ -12,14 +12,14 @@ namespace PgJsonObjects
         public string Description { get { return GetString(0); } }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         public int? RawIconId { get { return GetInt(4); } }
-        public List<RecipeItem> IngredientList { get { return GetObjectList(8, ref _IngredientList); } } private List<RecipeItem> _IngredientList;
+        public RecipeItemCollection IngredientList { get { return GetObjectList(8, ref _IngredientList, RecipeItemCollection.CreateItem, () => new RecipeItemCollection()); } } private RecipeItemCollection _IngredientList;
         public string InternalName { get { return GetString(12); } }
         public string Name { get { return GetString(16); } }
-        public List<RecipeItem> ResultItemList { get { return GetObjectList(20, ref _ResultItemList); } } private List<RecipeItem> _ResultItemList;
+        public RecipeItemCollection ResultItemList { get { return GetObjectList(20, ref _ResultItemList, RecipeItemCollection.CreateItem, () => new RecipeItemCollection()); } } private RecipeItemCollection _ResultItemList;
         public Skill Skill { get { return GetObject(24, ref _Skill); } } private Skill _Skill;
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get { return GetInt(28); } }
-        public List<RecipeResultEffect> ResultEffectList { get { return GetObjectList(32, ref _ResultEffectList); } } private List<RecipeResultEffect> _ResultEffectList;
+        //public RecipeResultEffectCollection ResultEffectList { get { return GetObjectList(32, ref _ResultEffectList, (byte[] data, int offset) => new PgRecipeResultEffect(data, offset), () => new RecipeResultEffectCollection()); } } private RecipeResultEffectCollection _ResultEffectList;
         public Skill SortSkill { get { return GetObject(36, ref _SortSkill); } } private Skill _SortSkill;
         public List<RecipeKeyword> KeywordList { get { return GetEnumList(40, ref _KeywordList); } } private List<RecipeKeyword> _KeywordList;
         public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
@@ -27,8 +27,8 @@ namespace PgJsonObjects
         public string UsageDelayMessage { get { return GetString(48); } }
         public RecipeAction ActionLabel { get { return GetEnum<RecipeAction>(52); } }
         public RecipeUsageAnimation UsageAnimation { get { return GetEnum<RecipeUsageAnimation>(54); } }
-        public List<AbilityRequirement> OtherRequirementList { get { return GetObjectList(56, ref _OtherRequirementList); } } private List<AbilityRequirement> _OtherRequirementList;
-        public List<RecipeCost> CostList { get { return GetObjectList(60, ref _CostList); } } private List<RecipeCost> _CostList;
+        public AbilityRequirementCollection OtherRequirementList { get { return GetObjectList(56, ref _OtherRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OtherRequirementList;
+        public RecipeCostCollection CostList { get { return GetObjectList(60, ref _CostList, RecipeCostCollection.CreateItem, () => new RecipeCostCollection()); } } private RecipeCostCollection _CostList;
         public int NumResultItems { get { return RawNumResultItems.HasValue ? RawNumResultItems.Value : 0; } }
         public int? RawNumResultItems { get { return GetInt(64); } }
         public string UsageAnimationEnd { get { return GetString(68); } }

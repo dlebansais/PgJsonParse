@@ -22,7 +22,7 @@ namespace PgJsonObjects
         bool WorksUnderwater { get; }
         bool? RawWorksUnderwater { get; }
         List<Deaths> CausesOfDeathList { get; }
-        List<RecipeCost> CostList { get; }
+        RecipeCostCollection CostList { get; }
         int CombatRefreshBaseAmount { get; }
         int? RawCombatRefreshBaseAmount { get; }
         PowerSkill CompatibleSkill { get; }
@@ -61,7 +61,7 @@ namespace PgJsonObjects
         string SelfParticle { get; }
         Ability SharesResetTimerWith { get; }
         Skill Skill { get; }
-        List<AbilityRequirement> CombinedRequirementList { get; }
+        AbilityRequirementCollection CombinedRequirementList { get; }
         string SpecialInfo { get; }
         int SpecialTargetingTypeReq { get; }
         int? RawSpecialTargetingTypeReq { get; }

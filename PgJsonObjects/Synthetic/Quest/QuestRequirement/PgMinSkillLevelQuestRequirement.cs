@@ -7,8 +7,8 @@
         {
         }
 
-        public Skill ConnectedSkill { get { return GetObject(0, ref _ConnectedSkill); } } private Skill _ConnectedSkill;
+        public Skill ConnectedSkill { get { return GetObject(4, ref _ConnectedSkill); } } private Skill _ConnectedSkill;
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
-        public int? RawSkillLevel { get { return GetInt(4); } }
+        public int? RawSkillLevel { get { return GetInt(8); } }
     }
 }

@@ -28,8 +28,8 @@ namespace PgJsonObjects
         double? RawRageMultiplier { get; }
         double Accuracy { get; }
         double? RawAccuracy { get; }
-        List<SpecialValue> SpecialValueList { get; }
-        List<DoT> DoTList { get; }
+        SpecialValueCollection SpecialValueList { get; }
+        DoTCollection DoTList { get; }
         int TauntDelta { get; }
         int? RawTauntDelta { get; }
         int TempTauntDelta { get; }

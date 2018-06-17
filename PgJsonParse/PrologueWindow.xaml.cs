@@ -988,6 +988,7 @@ namespace PgJsonParse
                 return;
             }
 
+            /*
             int offset;
 
             offset = 0;
@@ -998,7 +999,7 @@ namespace PgJsonParse
 
             offset = 0;
             SerializeAll(data, ref offset);
-
+            */
 
 
             LoadedIconCount = 0;
@@ -1110,7 +1111,7 @@ namespace PgJsonParse
             {
                 IObjectDefinition definition = Entry.Value;
                 IList ObjectList = definition.ObjectList;
-                foreach (IGenericJsonObject Item in ObjectList)
+                foreach (ISerializableJsonObject Item in ObjectList)
                     Item.SerializeJsonMainObject(data, ref offset);
             }
         }

@@ -41,9 +41,10 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
 
-            AddEnum(Keyword, data, ref offset, BaseOffset, 0);
+            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddEnum(Keyword, data, ref offset, BaseOffset, 4);
 
-            FinishSerializing(data, ref offset, BaseOffset, 2, null, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 6, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

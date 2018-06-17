@@ -8,7 +8,7 @@
         }
 
         public int Max { get { return RawMax.HasValue ? RawMax.Value : 0; } }
-        public int? RawMax { get { return GetInt(0); } }
-        public AbilityTypeTag TypeTag { get; }
+        public int? RawMax { get { return GetInt(4); } }
+        public AbilityTypeTag TypeTag { get { return GetEnum<AbilityTypeTag>(8); } }
     }
 }

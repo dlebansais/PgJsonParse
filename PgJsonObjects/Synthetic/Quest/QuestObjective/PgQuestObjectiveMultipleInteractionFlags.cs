@@ -9,6 +9,6 @@ namespace PgJsonObjects
         {
         }
 
-        public List<string> InteractionFlagList { get { return GetObjectList(0, ref _InteractionFlagList); } } private List<string> _InteractionFlagList;
+        public List<string> InteractionFlagList { get { return GetStringList(0, ref _InteractionFlagList); } } private List<string> _InteractionFlagList;
     }
 }

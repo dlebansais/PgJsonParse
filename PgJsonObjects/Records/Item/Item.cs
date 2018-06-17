@@ -24,7 +24,7 @@ namespace PgJsonObjects
         public AppearanceSkin ItemAppearancePlate { get; private set; }
         public uint ItemAppearanceColor { get { return RawItemAppearanceColor.HasValue ? RawItemAppearanceColor.Value : 0; } }
         public uint? RawItemAppearanceColor { get; private set; }
-        public List<ItemEffect> EffectDescriptionList { get; } = new List<ItemEffect>();
+        public ItemEffectCollection EffectDescriptionList { get; } = new ItemEffectCollection();
         public uint DyeColor { get { return RawDyeColor.HasValue ? RawDyeColor.Value : 0; } }
         public uint? RawDyeColor { get; private set; }
         public string EquipAppearance { get; private set; }
@@ -54,14 +54,14 @@ namespace PgJsonObjects
         public int MaxStackSize { get { return RawMaxStackSize.HasValue ? RawMaxStackSize.Value : 0; } }
         public int? RawMaxStackSize { get; private set; }
         public string Name { get; private set; }
-        public List<ItemSkillLink> SkillRequirementList { get; } = new List<ItemSkillLink>();
+        public ItemSkillLinkCollection SkillRequirementList { get; } = new ItemSkillLinkCollection();
         public List<uint> StockDye { get; private set; } = new List<uint>();
         public List<string> StockDyeByName { get; private set; } = new List<string>();
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get; private set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
         public int? RawNumUses { get; private set; }
-        public List<ItemBehavior> BehaviorList { get; } = new List<ItemBehavior>();
+        public ItemBehaviorCollection BehaviorList { get; } = new ItemBehaviorCollection();
         public string DynamicCraftingSummary { get; private set; }
         public int BestowTitle { get { return RawBestowTitle.HasValue ? RawBestowTitle.Value : 0; } }
         public int? RawBestowTitle { get; private set; }
@@ -804,7 +804,7 @@ namespace PgJsonObjects
             return ItemList;
         }
 
-        public static List<Item> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, ItemKeyword Keyword, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static ItemCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, ItemKeyword Keyword, ItemCollection ItemList, ref bool IsRawItemParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -814,7 +814,7 @@ namespace PgJsonObjects
             if (Keyword == ItemKeyword.Internal_None)
                 return ItemList;
 
-            ItemList = new List<Item>();
+            ItemList = new ItemCollection();
             IsConnected = true;
 
             foreach (KeyValuePair<string, IGenericJsonObject> ItemEntry in ItemTable)
@@ -942,11 +942,11 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<uint>> StoredUIntListTable = new Dictionary<int, List<uint>>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddObject(BestowAbility, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObject(BestowQuest, data, ref offset, BaseOffset, 4, StoredObjectTable);

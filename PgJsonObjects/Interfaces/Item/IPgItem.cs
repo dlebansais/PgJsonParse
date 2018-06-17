@@ -19,7 +19,7 @@ namespace PgJsonObjects
         AppearanceSkin ItemAppearancePlate { get; }
         uint ItemAppearanceColor { get; }
         uint? RawItemAppearanceColor { get; }
-        List<ItemEffect> EffectDescriptionList { get; }
+        ItemEffectCollection EffectDescriptionList { get; }
         uint DyeColor { get; }
         uint? RawDyeColor { get; }
         string EquipAppearance { get; }
@@ -50,14 +50,14 @@ namespace PgJsonObjects
         int MaxStackSize { get; }
         int? RawMaxStackSize { get; }
         string Name { get; }
-        List<ItemSkillLink> SkillRequirementList { get; }
+        ItemSkillLinkCollection SkillRequirementList { get; }
         List<uint> StockDye { get; }
         List<string> StockDyeByName { get; }
         double Value { get; }
         double? RawValue { get; }
         int NumUses { get; }
         int? RawNumUses { get; }
-        List<ItemBehavior> BehaviorList { get; }
+        ItemBehaviorCollection BehaviorList { get; }
         string DynamicCraftingSummary { get; }
         int BestowTitle { get; }
         int? RawBestowTitle { get; }

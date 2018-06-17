@@ -4,11 +4,11 @@ namespace PgJsonObjects
 {
     public interface IPgServerInfo
     {
-        List<ServerInfoEffect> ServerInfoEffectList { get; }
-        List<Item> GiveItemList { get; }
+        ServerInfoEffectCollection ServerInfoEffectList { get; }
+        ItemCollection GiveItemList { get; }
         int NumItemsToGive { get; }
         int? RawNumItemsToGive { get; }
-        List<AbilityRequirement> OtherRequirementList { get; }
+        AbilityRequirementCollection OtherRequirementList { get; }
         ItemRequiredHotspot RequiredHotspot { get; }
     }
 }

@@ -26,8 +26,8 @@ namespace PgJsonObjects
         public List<PowerSkill> CompatibleCombatSkillList { get; } = new List<PowerSkill>();
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
         public int? RawMaxBonusLevels { get; private set; }
-        public List<LevelCapInteraction> InteractionFlagLevelCapList { get; } = new List<LevelCapInteraction>();
-        public List<Reward> RewardList { get; } = new List<Reward>();
+        public LevelCapInteractionCollection InteractionFlagLevelCapList { get; } = new LevelCapInteractionCollection();
+        public RewardCollection RewardList { get; } = new RewardCollection();
         public string Name { get; private set; }
         public Skill ParentSkill { get; private set; }
         public List<SkillCategory> TSysCategoryList { get; } = new List<SkillCategory>();
@@ -647,11 +647,11 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddEnum(CombatSkill, data, ref offset, BaseOffset, 0);
             AddBool(RawHideWhenZero, data, ref offset, ref BitOffset, BaseOffset, 2, 0);

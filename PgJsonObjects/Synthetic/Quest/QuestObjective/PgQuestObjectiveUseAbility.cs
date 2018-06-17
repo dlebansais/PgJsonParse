@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public class PgQuestObjectiveUseAbility : GenericPgObject, IPgQuestObjectiveUseAbility
     {
@@ -9,7 +7,7 @@ namespace PgJsonObjects
         {
         }
 
-        public List<Ability> AbilityTargetList { get { return GetObjectList(0, ref _AbilityTargetList); } } private List<Ability> _AbilityTargetList;
+        public AbilityCollection AbilityTargetList { get { return GetObjectList(0, ref _AbilityTargetList, AbilityCollection.CreateItem, () => new AbilityCollection()); } } private AbilityCollection _AbilityTargetList;
         public AbilityKeyword AbilityTarget { get { return GetEnum<AbilityKeyword>(4); } }
     }
 }

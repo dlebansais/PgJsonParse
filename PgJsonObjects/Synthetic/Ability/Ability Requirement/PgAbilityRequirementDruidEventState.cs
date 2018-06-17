@@ -7,6 +7,6 @@
         {
         }
 
-        public DisallowedState DisallowedState { get { return GetEnum<DisallowedState>(0); } }
+        public DisallowedState DisallowedState { get { return GetEnum<DisallowedState>(4); } }
     }
 }

@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgAbilityRequirementOr
     {
-        List<AbilityRequirement> OrList { get; }
+        AbilityRequirementCollection OrList { get; }
         string ErrorMsg { get; }
     }
 }

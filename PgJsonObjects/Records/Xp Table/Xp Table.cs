@@ -1,15 +1,13 @@
-﻿using PgJsonReader;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class XpTable : GenericJsonObject<XpTable>
+    public class XpTable : GenericJsonObject<XpTable>, IPgXpTable
     {
         #region Direct Properties
         public string InternalName { get; private set; }
-        public List<XpTableLevel> XpAmountList { get; } = new List<XpTableLevel>();
+        public XpTableLevelCollection XpAmountList { get; } = new XpTableLevelCollection();
         public XpTableEnum EnumName { get; private set; }
         private int TotalXp = 0;
         private int Level = 0;
@@ -102,7 +100,7 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddString(InternalName, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddObjectList(XpAmountList, data, ref offset, BaseOffset, 4, StoredObjectListTable);

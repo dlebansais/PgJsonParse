@@ -32,7 +32,7 @@ namespace PgJsonObjects
         public bool WorksUnderwater { get { return RawWorksUnderwater.HasValue && RawWorksUnderwater.Value; } }
         public bool? RawWorksUnderwater { get { return GetBool(2, 14); } }
         public List<Deaths> CausesOfDeathList { get { return GetEnumList(4, ref _CausesOfDeathList); } } private List<Deaths> _CausesOfDeathList;
-        public List<RecipeCost> CostList { get { return GetObjectList(8, ref _CostList); } } private List<RecipeCost> _CostList;
+        public RecipeCostCollection CostList { get { return GetObjectList(8, ref _CostList, RecipeCostCollection.CreateItem, () => new RecipeCostCollection()); } } private RecipeCostCollection _CostList;
         public int CombatRefreshBaseAmount { get { return RawCombatRefreshBaseAmount.HasValue ? RawCombatRefreshBaseAmount.Value : 0; } }
         public int? RawCombatRefreshBaseAmount { get { return GetInt(12); } }
         public PowerSkill CompatibleSkill { get { return GetEnum<PowerSkill>(16); } }
@@ -71,7 +71,7 @@ namespace PgJsonObjects
         public string SelfParticle { get { return GetString(104); } }
         public Ability SharesResetTimerWith { get { return GetObject(108, ref _SharesResetTimerWith); } } private Ability _SharesResetTimerWith;
         public Skill Skill { get { return GetObject(112, ref _Skill); } } private Skill _Skill;
-        public List<AbilityRequirement> CombinedRequirementList { get { return GetObjectList(116, ref _CombinedRequirementList); } } private List<AbilityRequirement> _CombinedRequirementList;
+        public AbilityRequirementCollection CombinedRequirementList { get { return GetObjectList(116, ref _CombinedRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _CombinedRequirementList;
         public string SpecialInfo { get { return GetString(120); } }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
         public int? RawSpecialTargetingTypeReq { get { return GetInt(124); } }

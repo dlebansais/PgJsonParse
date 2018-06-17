@@ -18,7 +18,7 @@ namespace PgJsonObjects
         public bool DelayLoopIsAbortedIfAttacked { get { return RawDelayLoopIsAbortedIfAttacked.HasValue && RawDelayLoopIsAbortedIfAttacked.Value; } }
         public bool? RawDelayLoopIsAbortedIfAttacked { get; private set; }
         public List<Deaths> CausesOfDeathList { get; } = new List<Deaths>();
-        public List<RecipeCost> CostList { get; } = new List<RecipeCost>();
+        public RecipeCostCollection CostList { get; } = new RecipeCostCollection();
         public int CombatRefreshBaseAmount { get { return RawCombatRefreshBaseAmount.HasValue ? RawCombatRefreshBaseAmount.Value : 0; } }
         public int? RawCombatRefreshBaseAmount { get; private set; }
         public PowerSkill CompatibleSkill { get; private set; }
@@ -65,7 +65,7 @@ namespace PgJsonObjects
         public string SelfParticle { get; private set; }
         public Ability SharesResetTimerWith { get; private set; }
         public Skill Skill { get; private set; }
-        public List<AbilityRequirement> CombinedRequirementList { get; } = new List<AbilityRequirement>();
+        public AbilityRequirementCollection CombinedRequirementList { get; } = new AbilityRequirementCollection();
         public string SpecialInfo { get; private set; }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
         public int? RawSpecialTargetingTypeReq { get; private set; }
@@ -2526,7 +2526,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Ability> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, AbilityKeyword Keyword, List<Ability> AbilityList, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static AbilityCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, AbilityKeyword Keyword, AbilityCollection AbilityList, ref bool IsRawAbilityParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawAbilityParsed)
                 return AbilityList;
@@ -2536,7 +2536,7 @@ namespace PgJsonObjects
             if (Keyword == AbilityKeyword.Internal_None)
                 return AbilityList;
 
-            AbilityList = new List<Ability>();
+            AbilityList = new AbilityCollection();
             IsConnected = true;
 
             foreach (KeyValuePair<string, IGenericJsonObject> AbilityEntry in AbilityTable)
@@ -2612,9 +2612,9 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddEnum(Animation, data, ref offset, BaseOffset, 0);
             AddBool(RawCanBeOnSidebar, data, ref offset, ref BitOffset, BaseOffset, 2, 0);

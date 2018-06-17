@@ -7,14 +7,14 @@ namespace PgJsonObjects
         string Description { get; }
         int IconId { get; }
         int? RawIconId { get; }
-        List<RecipeItem> IngredientList { get; }
+        RecipeItemCollection IngredientList { get; }
         string InternalName { get; }
         string Name { get; }
-        List<RecipeItem> ResultItemList { get; }
+        RecipeItemCollection ResultItemList { get; }
         Skill Skill { get; }
         int SkillLevelReq { get; }
         int? RawSkillLevelReq { get; }
-        List<RecipeResultEffect> ResultEffectList { get; }
+        //List<RecipeResultEffect> ResultEffectList { get; }
         Skill SortSkill { get; }
         List<RecipeKeyword> KeywordList { get; }
         int UsageDelay { get; }
@@ -22,8 +22,8 @@ namespace PgJsonObjects
         string UsageDelayMessage { get; }
         RecipeAction ActionLabel { get; }
         RecipeUsageAnimation UsageAnimation { get; }
-        List<AbilityRequirement> OtherRequirementList { get; }
-        List<RecipeCost> CostList { get; }
+        AbilityRequirementCollection OtherRequirementList { get; }
+        RecipeCostCollection CostList { get; }
         int NumResultItems { get; }
         int? RawNumResultItems { get; }
         string UsageAnimationEnd { get; }

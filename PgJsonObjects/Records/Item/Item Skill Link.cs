@@ -5,16 +5,18 @@
         public ItemSkillLink(string SkillName, int? SkillLevel)
         {
             this.SkillName = SkillName;
-            this.SkillLevel = SkillLevel;
+            RawSkillLevel = SkillLevel;
             Link = null;
             IsParsed = false;
         }
 
         public string SkillName { get; private set; }
-        public int? SkillLevel { get; private set; }
+        public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
+        public int? RawSkillLevel { get; private set; }
         public Skill Link { get; private set; }
-        public bool HasLevel { get { return SkillLevel.HasValue && SkillLevel.Value > 0; } }
-        public string ParsedLevel { get { return SkillLevel.HasValue && SkillLevel.Value > 0 ? SkillLevel.Value.ToString() : ""; } }
+
+        public bool HasLevel { get { return RawSkillLevel.HasValue && RawSkillLevel.Value > 0; } }
+        public string ParsedLevel { get { return RawSkillLevel.HasValue && RawSkillLevel.Value > 0 ? RawSkillLevel.Value.ToString() : ""; } }
         public bool IsParsed { get; private set; }
 
         public void SetLink(Skill Link)

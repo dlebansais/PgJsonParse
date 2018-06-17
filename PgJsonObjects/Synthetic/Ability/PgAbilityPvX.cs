@@ -33,8 +33,8 @@ namespace PgJsonObjects
         public double? RawRageMultiplier { get { return GetInt(40); } }
         public double Accuracy { get { return RawAccuracy.HasValue ? RawAccuracy.Value : 0; } }
         public double? RawAccuracy { get { return GetInt(44); } }
-        public List<SpecialValue> SpecialValueList { get { return GetObjectList(48, ref _SpecialValueList); } } private List<SpecialValue> _SpecialValueList;
-        public List<DoT> DoTList { get { return GetObjectList(52, ref _DoTList); } } private List<DoT> _DoTList;
+        public SpecialValueCollection SpecialValueList { get { return GetObjectList(48, ref _SpecialValueList, SpecialValueCollection.CreateItem, () => new SpecialValueCollection()); } } private SpecialValueCollection _SpecialValueList;
+        public DoTCollection DoTList { get { return GetObjectList(52, ref _DoTList, DoTCollection.CreateItem, () => new DoTCollection()); } } private DoTCollection _DoTList;
         public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
         public int? RawTauntDelta { get { return GetInt(56); } }
         public int TempTauntDelta { get { return RawTempTauntDelta.HasValue ? RawTempTauntDelta.Value : 0; } }

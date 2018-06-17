@@ -79,7 +79,7 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddObject(Gods, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObject(Misc, data, ref offset, BaseOffset, 4, StoredObjectTable);

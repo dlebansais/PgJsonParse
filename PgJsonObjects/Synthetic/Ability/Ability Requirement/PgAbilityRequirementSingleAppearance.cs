@@ -7,6 +7,6 @@
         {
         }
 
-        public Appearance Appearance { get { return GetEnum<Appearance>(0); } }
+        public Appearance Appearance { get { return GetEnum<Appearance>(4); } }
     }
 }

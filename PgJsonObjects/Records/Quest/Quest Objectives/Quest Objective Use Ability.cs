@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -33,7 +32,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public List<Ability> AbilityTargetList { get; private set; } = new List<Ability>();
+        public AbilityCollection AbilityTargetList { get; private set; } = new AbilityCollection();
         public AbilityKeyword AbilityTarget { get; private set; }
 
         private bool IsAbilityTargetParsed;
@@ -72,7 +71,7 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddObjectList(AbilityTargetList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
             AddEnum(AbilityTarget, data, ref offset, BaseOffset, 4);

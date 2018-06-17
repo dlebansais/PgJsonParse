@@ -14,9 +14,10 @@
         public int? RawNumSlots { get { return GetInt(8); } }
         public string RequirementDescription { get { return GetString(12); } }
         public string InteractionFlagRequirement { get { return GetString(16); } }
-        public ItemKeyword RequiredItemKeyword { get { return GetEnum<ItemKeyword>(20); } }
-        public MapAreaName Grouping { get { return GetEnum<MapAreaName>(22); } }
+        public string NpcFriendlyName { get { return GetString(20); } }
+        public ItemKeyword RequiredItemKeyword { get { return GetEnum<ItemKeyword>(24); } }
+        public MapAreaName Grouping { get { return GetEnum<MapAreaName>(26); } }
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
-        public bool? RawHasAssociatedNpc { get { return GetBool(24, 0); } }
+        public bool? RawHasAssociatedNpc { get { return GetBool(28, 0); } }
     }
 }

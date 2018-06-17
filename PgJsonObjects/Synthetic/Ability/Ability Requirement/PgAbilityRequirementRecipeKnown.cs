@@ -7,6 +7,6 @@
         {
         }
 
-        public Recipe RecipeKnown { get { return GetObject(0, ref _RecipeKnown); } } private Recipe _RecipeKnown;
+        public Recipe RecipeKnown { get { return GetObject(4, ref _RecipeKnown); } } private Recipe _RecipeKnown;
     }
 }

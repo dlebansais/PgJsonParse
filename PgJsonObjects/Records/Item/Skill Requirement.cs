@@ -35,9 +35,9 @@ namespace PgJsonObjects
                 base.InitializeKey("SkillReqs", 0, null, null);
 
             foreach (KeyValuePair<string, FieldParser> Entry in FieldTable)
-                if (Entry.Key == FieldName && link.SkillLevel.HasValue)
+                if (Entry.Key == FieldName && link.RawSkillLevel.HasValue)
                 {
-                    FieldSetTable[FieldName] = link.SkillLevel.Value;
+                    FieldSetTable[FieldName] = link.RawSkillLevel.Value;
                     FieldTableOrder.Add(FieldName);
                 }
         }

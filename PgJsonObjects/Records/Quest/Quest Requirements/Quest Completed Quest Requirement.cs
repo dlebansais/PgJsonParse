@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestCompletedQuestRequirement : QuestRequirement
+    public class QuestCompletedQuestRequirement : QuestRequirement, IPgQuestCompletedQuestRequirement
     {
         public QuestCompletedQuestRequirement(OtherRequirementType OtherRequirementType, List<string> RawRequirementQuestList)
             : base(OtherRequirementType)
@@ -12,7 +12,7 @@ namespace PgJsonObjects
             this.RawRequirementQuestList = RawRequirementQuestList;
         }
 
-        public List<Quest> QuestList { get; private set; } = new List<Quest>();
+        public QuestCollection QuestList { get; private set; } = new QuestCollection();
         private List<string> RawRequirementQuestList;
         private bool IsRawRequirementQuestParsed;
 
@@ -75,11 +75,12 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObjectList(QuestList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
+            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddObjectList(QuestList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 8, null, null, null, null, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

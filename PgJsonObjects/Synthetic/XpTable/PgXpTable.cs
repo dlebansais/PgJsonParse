@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public class PgXpTable : GenericPgObject, IPgXpTable
     {
@@ -10,7 +8,7 @@ namespace PgJsonObjects
         }
 
         public string InternalName { get { return GetString(0); } }
-        public List<XpTableLevel> XpAmountList { get { return GetObjectList(4, ref _XpAmountList); } } private List<XpTableLevel> _XpAmountList;
+        public XpTableLevelCollection XpAmountList { get { return GetObjectList(4, ref _XpAmountList, (byte[] data, int offset) => new PgXpTableLevel(data, offset), () => new XpTableLevelCollection()); } } private XpTableLevelCollection _XpAmountList;
         public XpTableEnum EnumName { get { return GetEnum<XpTableEnum>(8); } }
     }
 }

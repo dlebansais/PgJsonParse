@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgPowerTier
     {
-        List<PowerEffect> EffectList { get; }
+        PowerEffectCollection EffectList { get; }
     }
 }

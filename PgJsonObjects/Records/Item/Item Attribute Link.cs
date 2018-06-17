@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class ItemAttributeLink : ItemEffect
+    public class ItemAttributeLink : ItemEffect, IPgItemAttributeLink
     {
         private static WeightProfile SelectedProfile;
 

@@ -9,6 +9,6 @@ namespace PgJsonObjects
         {
         }
 
-        public List<Appearance> AppearanceList { get { return GetEnumList(0, ref _AppearanceList); } } private List<Appearance> _AppearanceList;
+        public List<Appearance> AppearanceList { get { return GetEnumList(4, ref _AppearanceList); } } private List<Appearance> _AppearanceList;
     }
 }

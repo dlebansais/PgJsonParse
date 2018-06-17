@@ -13,9 +13,9 @@ namespace PgJsonObjects
         public string Description { get; private set; }
         public int Version { get { return RawVersion.HasValue ? RawVersion.Value : 0; } }
         public int? RawVersion { get; private set; }
-        public List<QuestObjective> QuestObjectiveList { get; } = new List<QuestObjective>();
-        public List<QuestRewardXp> RewardsXPList { get; } = new List<QuestRewardXp>();
-        public List<QuestRewardItem> QuestRewardsItemList { get; } = new List<QuestRewardItem>();
+        public QuestObjectiveCollection QuestObjectiveList { get; } = new QuestObjectiveCollection();
+        public QuestRewardXpCollection RewardsXPList { get; } = new QuestRewardXpCollection();
+        public QuestRewardItemCollection QuestRewardsItemList { get; } = new QuestRewardItemCollection();
         public TimeSpan? RawReuseTime { get; private set; }
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get; private set; }
@@ -34,13 +34,13 @@ namespace PgJsonObjects
         public int? RawRewardGuildXp { get; private set; }
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
         public int? RawRewardGuildCredits { get; private set; }
-        public List<QuestRewardItem> PreGiveItemList { get; } = new List<QuestRewardItem>();
+        public QuestRewardItemCollection PreGiveItemList { get; } = new QuestRewardItemCollection();
         public int TSysLevel { get { return RawTSysLevel.HasValue ? RawTSysLevel.Value : 0; } }
         public int? RawTSysLevel { get; private set; }
         public int RewardGold { get { return RawRewardGold.HasValue ? RawRewardGold.Value : 0; } }
         public int? RawRewardGold { get; private set; }
         public string RewardsNamedLootProfile { get; private set; }
-        public List<Recipe> PreGiveRecipeList { get; private set; } = new List<Recipe>();
+        public RecipeCollection PreGiveRecipeList { get; private set; } = new RecipeCollection();
         public List<QuestKeyword> KeywordList { get; } = new List<QuestKeyword>();
         public Effect RewardEffect { get; private set; }
         public LoreBook RewardLoreBook { get; private set; }
@@ -60,9 +60,9 @@ namespace PgJsonObjects
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get; private set; }
         public Skill WorkOrderSkill { get; private set; }
-        public List<Quest> FollowUpQuestList { get; private set; } = new List<Quest>();
-        public List<QuestRequirement> QuestRequirementList { get; private set; } = new List<QuestRequirement>();
-        public List<QuestRequirement> QuestRequirementToSustainList { get; private set; } = new List<QuestRequirement>();
+        public QuestCollection FollowUpQuestList { get; private set; } = new QuestCollection();
+        public QuestRequirementCollection QuestRequirementList { get; private set; } = new QuestRequirementCollection();
+        public QuestRequirementCollection QuestRequirementToSustainList { get; private set; } = new QuestRequirementCollection();
 
         private bool IsQuestRewardsItemListEmpty;
         private int? RawReuseTime_Minutes;
@@ -301,8 +301,8 @@ namespace PgJsonObjects
                     if ((AsJsonInteger = RawRewardXP.Value as JsonInteger) != null)
                     {
                         QuestRewardXp NewReward = new QuestRewardXp();
-                        NewReward.Skill = ParsedSkill;
-                        NewReward.Xp = AsJsonInteger.Number;
+                        NewReward.RawSkill = ParsedSkill;
+                        NewReward.RawXp = AsJsonInteger.Number;
                         RewardsXPList.Add(NewReward);
                     }
                     else
@@ -316,7 +316,7 @@ namespace PgJsonObjects
             XPReward Rewards = new XPReward();
 
             foreach (QuestRewardXp Item in RewardsXPList)
-                Rewards.SetFieldValue(Item.Skill, Item.Xp);
+                Rewards.SetFieldValue(Item.RawSkill, Item.Xp);
 
             return Rewards;
         }
@@ -728,7 +728,7 @@ namespace PgJsonObjects
                 foreach (QuestObjective Item in QuestObjectiveList)
                     AddWithFieldSeparator(ref Result, Item.Description);
                 foreach (QuestRewardXp Reward in RewardsXPList)
-                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Reward.Skill]);
+                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Reward.RawSkill]);
                 foreach (QuestRewardItem Reward in QuestRewardsItemList)
                     AddWithFieldSeparator(ref Result, Reward.QuestItem.Name);
                 if (FavorNpc != null)
@@ -799,7 +799,7 @@ namespace PgJsonObjects
                 if (!Item.IsSkillParsed)
                 {
                     bool IsSkillParsed = false;
-                    Item.ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Item.Skill, Item.ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
+                    Item.Skill = Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Item.RawSkill, Item.Skill, ref IsSkillParsed, ref IsConnected, this);
                     Item.IsSkillParsed = IsSkillParsed;
                 }
 
@@ -952,9 +952,9 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddString(InternalName , data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(Name , data, ref offset, BaseOffset, 4, StoredStringtable);

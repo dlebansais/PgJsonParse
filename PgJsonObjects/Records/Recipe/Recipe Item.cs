@@ -15,7 +15,7 @@ namespace PgJsonObjects
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
         public double? RawPercentChance { get; private set; }
         public List<RecipeItemKey> ItemKeyList { get; private set; } = new List<RecipeItemKey>();
-        public List<Item> MatchingKeyItemList { get; } = new List<Item>();
+        public ItemCollection MatchingKeyItemList { get; } = new ItemCollection();
         public string Desc { get; private set; }
         public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
         public double? RawChanceToConsume { get; private set; }
@@ -216,14 +216,15 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddObject(Item, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddInt(RawItemCode, data, ref offset, BaseOffset, 4);
             AddInt(RawStackSize, data, ref offset, BaseOffset, 8);
             AddDouble(RawPercentChance, data, ref offset, BaseOffset, 12);
-            AddObjectList(ItemKeyList, data, ref offset, BaseOffset, 16, StoredObjectListTable);
+            AddEnumList(ItemKeyList, data, ref offset, BaseOffset, 16, StoredEnumListTable);
             AddObjectList(MatchingKeyItemList, data, ref offset, BaseOffset, 20, StoredObjectListTable);
             AddString(Desc, data, ref offset, BaseOffset, 24, StoredStringtable);
             AddDouble(RawChanceToConsume, data, ref offset, BaseOffset, 28);
@@ -231,7 +232,7 @@ namespace PgJsonObjects
             AddBool(RawAttuneToCrafter, data, ref offset, ref BitOffset, BaseOffset, 36, 0);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 38, StoredStringtable, StoredObjectTable, null, null, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 38, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

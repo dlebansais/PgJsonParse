@@ -7,6 +7,6 @@
         {
         }
 
-        public EffectKeyword Keyword { get { return GetEnum<EffectKeyword>(0); } }
+        public EffectKeyword Keyword { get { return GetEnum<EffectKeyword>(4); } }
     }
 }

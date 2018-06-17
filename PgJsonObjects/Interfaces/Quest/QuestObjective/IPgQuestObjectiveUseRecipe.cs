@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgQuestObjectiveUseRecipe
     {
         Skill ConnectedSkill { get; }
-        List<Recipe> RecipeTargetList { get; }
-        List<Item> ResultItemList { get; }
+        RecipeCollection RecipeTargetList { get; }
+        ItemCollection ResultItemList { get; }
     }
 }

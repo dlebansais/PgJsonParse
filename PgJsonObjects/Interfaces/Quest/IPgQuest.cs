@@ -10,9 +10,9 @@ namespace PgJsonObjects
         string Description { get; }
         int Version { get; }
         int? RawVersion { get; }
-        List<QuestObjective> QuestObjectiveList { get; }
-        List<QuestRewardXp> RewardsXPList { get; }
-        List<QuestRewardItem> QuestRewardsItemList { get; }
+        QuestObjectiveCollection QuestObjectiveList { get; }
+        QuestRewardXpCollection RewardsXPList { get; }
+        QuestRewardItemCollection QuestRewardsItemList { get; }
         TimeSpan? RawReuseTime { get; }
         int RewardCombatXP { get; }
         int? RawRewardCombatXP { get; }
@@ -31,13 +31,13 @@ namespace PgJsonObjects
         int? RawRewardGuildXp { get; }
         int RewardGuildCredits { get; }
         int? RawRewardGuildCredits { get; }
-        List<QuestRewardItem> PreGiveItemList { get; }
+        QuestRewardItemCollection PreGiveItemList { get; }
         int TSysLevel { get; }
         int? RawTSysLevel { get; }
         int RewardGold { get; }
         int? RawRewardGold { get; }
         string RewardsNamedLootProfile { get; }
-        List<Recipe> PreGiveRecipeList { get; }
+        RecipeCollection PreGiveRecipeList { get; }
         List<QuestKeyword> KeywordList { get; }
         Effect RewardEffect { get; }
         LoreBook RewardLoreBook { get; }
@@ -57,8 +57,8 @@ namespace PgJsonObjects
         int Level { get; }
         int? RawLevel { get; }
         Skill WorkOrderSkill { get; }
-        List<Quest> FollowUpQuestList { get; }
-        List<QuestRequirement> QuestRequirementList { get; }
-        List<QuestRequirement> QuestRequirementToSustainList { get; }
+        QuestCollection FollowUpQuestList { get; }
+        QuestRequirementCollection QuestRequirementList { get; }
+        QuestRequirementCollection QuestRequirementToSustainList { get; }
     }
 }

@@ -12,10 +12,10 @@ namespace PgJsonObjects
         public string Description { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         public int? RawIconId { get; private set; }
-        public List<RecipeItem> IngredientList { get; } = new List<RecipeItem>();
+        public RecipeItemCollection IngredientList { get; } = new RecipeItemCollection();
         public string InternalName { get; private set; }
         public string Name { get; private set; }
-        public List<RecipeItem> ResultItemList { get; } = new List<RecipeItem>();
+        public RecipeItemCollection ResultItemList { get; } = new RecipeItemCollection();
         public Skill Skill { get; private set; }
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; private set; }
@@ -27,8 +27,8 @@ namespace PgJsonObjects
         public string UsageDelayMessage { get; private set; }
         public RecipeAction ActionLabel { get; private set; }
         public RecipeUsageAnimation UsageAnimation { get; private set; }
-        public List<AbilityRequirement> OtherRequirementList { get; } = new List<AbilityRequirement>();
-        public List<RecipeCost> CostList { get; } = new List<RecipeCost>();
+        public AbilityRequirementCollection OtherRequirementList { get; } = new AbilityRequirementCollection();
+        public RecipeCostCollection CostList { get; } = new RecipeCostCollection();
         public int NumResultItems { get { return RawNumResultItems.HasValue ? RawNumResultItems.Value : 0; } }
         public int? RawNumResultItems { get; private set; }
         public string UsageAnimationEnd { get; private set; }
@@ -990,7 +990,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Recipe> ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, RecipeKeyword Keyword, List<Recipe> RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
+        public static RecipeCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, RecipeKeyword Keyword, RecipeCollection RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, GenericJsonObject LinkBack)
         {
             if (IsRawRecipeParsed)
                 return RecipeList;
@@ -1000,7 +1000,7 @@ namespace PgJsonObjects
             if (Keyword == RecipeKeyword.Internal_None)
                 return RecipeList;
 
-            RecipeList = new List<Recipe>();
+            RecipeList = new RecipeCollection();
             IsConnected = true;
 
             foreach (KeyValuePair<string, IGenericJsonObject> RecipeEntry in RecipeTable)
@@ -1085,8 +1085,8 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddString(Description, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddInt(RawIconId, data, ref offset, BaseOffset, 4);
@@ -1096,9 +1096,12 @@ namespace PgJsonObjects
             AddObjectList(ResultItemList, data, ref offset, BaseOffset, 20, StoredObjectListTable);
             AddObject(Skill, data, ref offset, BaseOffset, 24, StoredObjectTable);
             AddInt(RawSkillLevelReq, data, ref offset, BaseOffset, 28);
-            AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
+
+            offset += 4;
+            //AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
+
             AddObject(SortSkill, data, ref offset, BaseOffset, 36, StoredObjectTable);
-            AddObjectList(KeywordList, data, ref offset, BaseOffset, 40, StoredEnumListTable);
+            AddEnumList(KeywordList, data, ref offset, BaseOffset, 40, StoredEnumListTable);
             AddInt(RawUsageDelay, data, ref offset, BaseOffset, 44);
             AddString(UsageDelayMessage, data, ref offset, BaseOffset, 48, StoredStringtable);
             AddEnum(ActionLabel, data, ref offset, BaseOffset, 52);

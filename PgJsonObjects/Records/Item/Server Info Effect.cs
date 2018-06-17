@@ -16,9 +16,9 @@ namespace PgJsonObjects
             this.LinkBack = LinkBack;
         }
 
-        public ServerInfoEffectType Type { get; private set; }
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get; private set; }
+        public ServerInfoEffectType Type { get; private set; }
         public GenericJsonObject LinkBack { get; private set; }
         public virtual string RawEffect
         {

@@ -6,6 +6,5 @@
             : base(data, offset)
         {
         }
-
     }
 }

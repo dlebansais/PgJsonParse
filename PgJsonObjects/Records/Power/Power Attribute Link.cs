@@ -24,12 +24,13 @@
             IsParsed = false;
         }
 
-        public string AttributeName { get; private set; }
         public float AttributeEffect { get; private set; }
-        public FloatFormat AttributeEffectFormat { get; private set; }
-        public PowerSkill AttributeSkill { get; private set; }
         public Attribute AttributeLink { get; private set; }
         public Skill SkillLink { get; private set; }
+
+        public string AttributeName { get; private set; }
+        public FloatFormat AttributeEffectFormat { get; private set; }
+        public PowerSkill AttributeSkill { get; private set; }
         public bool IsParsed { get; private set; }
 
         public override string AsEffectString()

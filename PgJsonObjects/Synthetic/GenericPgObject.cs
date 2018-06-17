@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public abstract class GenericPgObject
+    public abstract class GenericPgObject : IGenericPgObject
     {
         public const int NoValueInt = 0x6B6B6B6B;
 
@@ -189,7 +189,7 @@ namespace PgJsonObjects
             return cachedList;
         }
 
-        protected List<T> GetObjectList<T>(int redirectionOffset, ref List<T> cachedList)
+        protected TList GetObjectList<T, TList>(int redirectionOffset, ref TList cachedList, Func<byte[], int, T> createNewObject, Func<TList> createNewList)
         {
             if (cachedList == null)
             {
@@ -197,13 +197,15 @@ namespace PgJsonObjects
                 int Count = BitConverter.ToInt32(Data, LengthOffset);
                 int ListOffset = LengthOffset + 4;
 
-                cachedList = new List<T>();
+                cachedList = createNewList();
+                System.Collections.IList asList = cachedList as System.Collections.IList;
+
                 for (int i = 0; i < Count; i++)
                 {
                     int StoredOffset = Offset + BitConverter.ToInt32(Data, ListOffset + i * 4);
 
-                    T Object = CreateObject<T>(StoredOffset);
-                    cachedList.Add(Object);
+                    T Object = createNewObject(Data, StoredOffset);
+                    asList.Add(Object);
                 }
             }
 

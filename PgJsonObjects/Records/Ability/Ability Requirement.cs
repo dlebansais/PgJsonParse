@@ -238,7 +238,7 @@ namespace PgJsonObjects
             return Result;
         }
 
-        private OtherRequirementType OtherRequirementType;
+        protected OtherRequirementType OtherRequirementType;
         private double? RawHealth;
         private List<string> RawAllowedRaceList { get; } = new List<string>();
         private string RawAllowedRace;
@@ -251,7 +251,7 @@ namespace PgJsonObjects
         private string RawItem;
         private List<string> RawAppearanceList { get; } = new List<string>();
         private string RawAppearance;
-        private List<AbilityRequirement> OrList { get; } = new List<AbilityRequirement>();
+        private AbilityRequirementCollection OrList { get; } = new AbilityRequirementCollection();
         private string RawErrorMsg;
         private int? RawMinCount;
         private string RawTypeTag;

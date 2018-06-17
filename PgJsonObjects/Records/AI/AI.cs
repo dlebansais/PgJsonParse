@@ -93,7 +93,7 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddObject(Abilities, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddString(Comment, data, ref offset, BaseOffset, 4, StoredStringtable);

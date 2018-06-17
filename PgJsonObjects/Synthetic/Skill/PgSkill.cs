@@ -41,8 +41,8 @@ namespace PgJsonObjects
         public List<PowerSkill> CompatibleCombatSkillList { get { return GetEnumList(24, ref _CompatibleCombatSkillList); } } private List<PowerSkill> _CompatibleCombatSkillList;
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
         public int? RawMaxBonusLevels { get { return GetInt(28); } }
-        public List<LevelCapInteraction> InteractionFlagLevelCapList { get { return GetObjectList(32, ref _InteractionFlagLevelCapList); } } private List<LevelCapInteraction> _InteractionFlagLevelCapList;
-        public List<Reward> RewardList { get { return GetObjectList(36, ref _RewardList); } } private List<Reward> _RewardList;
+        public LevelCapInteractionCollection InteractionFlagLevelCapList { get { return GetObjectList(32, ref _InteractionFlagLevelCapList, (byte[] data, int offset) => new PgLevelCapInteraction(data, offset), () => new LevelCapInteractionCollection()); } } private LevelCapInteractionCollection _InteractionFlagLevelCapList;
+        public RewardCollection RewardList { get { return GetObjectList(36, ref _RewardList, (byte[] data, int offset) => new PgReward(data, offset), () => new RewardCollection()); } } private RewardCollection _RewardList;
         public string Name { get { return GetString(40); } }
         public Skill ParentSkill { get { return GetObject(44, ref _ParentSkill); } } private Skill _ParentSkill;
         public List<SkillCategory> TSysCategoryList { get { return GetEnumList(48, ref _TSysCategoryList); } } private List<SkillCategory> _TSysCategoryList;

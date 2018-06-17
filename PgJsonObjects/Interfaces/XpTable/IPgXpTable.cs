@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgXpTable
     {
         string InternalName { get; }
-        List<XpTableLevel> XpAmountList { get; }
+        XpTableLevelCollection XpAmountList { get; }
         XpTableEnum EnumName { get; }
     }
 }

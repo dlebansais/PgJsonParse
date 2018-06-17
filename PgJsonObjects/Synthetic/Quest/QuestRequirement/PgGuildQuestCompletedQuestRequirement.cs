@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public class PgGuildQuestCompletedQuestRequirement : GenericPgObject, IPgGuildQuestCompletedQuestRequirement
     {
@@ -9,6 +7,6 @@ namespace PgJsonObjects
         {
         }
 
-        public List<Quest> QuestList { get { return GetObject(0, ref _QuestList); } } private List<Quest> _QuestList;
+        public QuestCollection QuestList { get { return GetObjectList(4, ref _QuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _QuestList;
     }
 }

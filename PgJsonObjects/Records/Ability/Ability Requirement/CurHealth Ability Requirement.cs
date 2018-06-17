@@ -40,9 +40,10 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
 
-            AddDouble(RawHealth, data, ref offset, BaseOffset, 0);
+            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddDouble(RawHealth, data, ref offset, BaseOffset, 4);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 8, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

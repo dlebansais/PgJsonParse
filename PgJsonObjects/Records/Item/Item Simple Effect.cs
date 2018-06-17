@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class ItemSimpleEffect : ItemEffect
+    public class ItemSimpleEffect : ItemEffect, IPgItemSimpleEffect
     {
         public ItemSimpleEffect(string Description)
         {

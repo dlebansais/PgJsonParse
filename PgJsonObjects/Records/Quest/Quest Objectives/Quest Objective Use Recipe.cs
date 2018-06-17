@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -42,8 +41,8 @@ namespace PgJsonObjects
 
         #region Properties
         public Skill ConnectedSkill { get; private set; }
-        public List<Recipe> RecipeTargetList { get; private set; } = new List<Recipe>();
-        public List<Item> ResultItemList { get; private set; } = new List<Item>();
+        public RecipeCollection RecipeTargetList { get; private set; } = new RecipeCollection();
+        public ItemCollection ResultItemList { get; private set; } = new ItemCollection();
 
         private PowerSkill RawSkill;
         private bool IsSkillParsed;
@@ -96,8 +95,8 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddObject(ConnectedSkill, data, ref offset, BaseOffset, 12, StoredObjectTable);
             AddObjectList(RecipeTargetList, data, ref offset, BaseOffset, 36, StoredObjectListTable);

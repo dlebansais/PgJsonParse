@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgGameNpc
     {
         string Name { get; }
         string AreaFriendlyName { get; }
-        List<NpcPreference> PreferenceList { get; }
-        List<NpcPreference> LikeList { get; }
-        List<NpcPreference> HateList { get; }
+        NpcPreferenceCollection PreferenceList { get; }
+        NpcPreferenceCollection LikeList { get; }
+        NpcPreferenceCollection HateList { get; }
         MapAreaName AreaName { get; }
     }
 }

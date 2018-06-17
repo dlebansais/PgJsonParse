@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AbilityPvX : GenericJsonObject<AbilityPvX>
+    public class AbilityPvX : GenericJsonObject<AbilityPvX>, IPgAbilityPvX
     {
         #region Direct Properties
         public int Damage { get { return RawDamage.HasValue ? RawDamage.Value : 0; } }
@@ -32,8 +32,8 @@ namespace PgJsonObjects
         public double? RawRageMultiplier { get; private set; }
         public double Accuracy { get { return RawAccuracy.HasValue ? RawAccuracy.Value : 0; } }
         public double? RawAccuracy { get; private set; }
-        public List<SpecialValue> SpecialValueList { get; } = new List<SpecialValue>();
-        public List<DoT> DoTList { get; } = new List<DoT>();
+        public SpecialValueCollection SpecialValueList { get; } = new SpecialValueCollection();
+        public DoTCollection DoTList { get; } = new DoTCollection();
         public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
         public int? RawTauntDelta { get; private set; }
         public int TempTauntDelta { get { return RawTempTauntDelta.HasValue ? RawTempTauntDelta.Value : 0; } }
@@ -271,7 +271,7 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddInt(RawDamage, data, ref offset, BaseOffset, 0);
             AddInt(RawExtraDamageIfTargetVulnerable, data, ref offset, BaseOffset, 4);

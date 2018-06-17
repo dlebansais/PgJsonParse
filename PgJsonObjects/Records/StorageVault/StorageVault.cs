@@ -14,6 +14,7 @@ namespace PgJsonObjects
         public int? RawNumSlots { get; private set; }
         public string RequirementDescription { get; private set; }
         public string InteractionFlagRequirement { get; private set; }
+        public string NpcFriendlyName { get; private set; }
         public ItemKeyword RequiredItemKeyword { get; private set; }
         public MapAreaName Grouping { get; private set; }
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
@@ -21,7 +22,6 @@ namespace PgJsonObjects
 
         public Dictionary<Favor, int> FavorLevelTable { get; private set; } = new Dictionary<Favor, int>();
         private bool IsGameNpcParsed;
-        private string NpcFriendlyName;
         private MapAreaName Area;
         #endregion
 
@@ -289,19 +289,20 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddInt(RawId, data, ref offset, BaseOffset, 0);
             AddObject(MatchingNpc, data, ref offset, BaseOffset, 4, StoredObjectTable);
             AddInt(RawNumSlots, data, ref offset, BaseOffset, 8);
             AddString(RequirementDescription, data, ref offset, BaseOffset, 12, StoredStringtable);
             AddString(InteractionFlagRequirement, data, ref offset, BaseOffset, 16, StoredStringtable);
-            AddEnum(RequiredItemKeyword, data, ref offset, BaseOffset, 20);
-            AddEnum(Grouping, data, ref offset, BaseOffset, 22);
-            AddBool(RawHasAssociatedNpc, data, ref offset, ref BitOffset, BaseOffset, 24, 0);
+            AddString(NpcFriendlyName, data, ref offset, BaseOffset, 20, StoredStringtable);
+            AddEnum(RequiredItemKeyword, data, ref offset, BaseOffset, 24);
+            AddEnum(Grouping, data, ref offset, BaseOffset, 26);
+            AddBool(RawHasAssociatedNpc, data, ref offset, ref BitOffset, BaseOffset, 28, 0);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

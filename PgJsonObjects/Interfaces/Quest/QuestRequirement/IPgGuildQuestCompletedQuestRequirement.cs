@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgGuildQuestCompletedQuestRequirement
     {
-        List<Quest> QuestList { get; }
+        QuestCollection QuestList { get; }
     }
 }

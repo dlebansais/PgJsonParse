@@ -9,6 +9,6 @@ namespace PgJsonObjects
         {
         }
 
-        public List<Race> AllowedRaceList { get { return GetEnumList(0, ref _AllowedRaceList); } } private List<Race> _AllowedRaceList;
+        public List<Race> AllowedRaceList { get { return GetEnumList(4, ref _AllowedRaceList); } } private List<Race> _AllowedRaceList;
     }
 }

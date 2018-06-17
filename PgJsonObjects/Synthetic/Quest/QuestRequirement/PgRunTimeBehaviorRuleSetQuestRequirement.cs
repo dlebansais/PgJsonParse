@@ -7,7 +7,7 @@
         {
         }
 
-        public string RequirementRule { get { return GetString(0); } }
-        public string Rule { get { return GetString(4); } }
+        public string RequirementRule { get { return GetString(4); } }
+        public string Rule { get { return GetString(8); } }
     }
 }

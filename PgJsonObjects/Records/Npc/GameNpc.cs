@@ -10,9 +10,9 @@ namespace PgJsonObjects
         #region Direct Properties
         public string Name { get; private set; }
         public string AreaFriendlyName { get; private set; }
-        public List<NpcPreference> PreferenceList { get; private set; } = new List<NpcPreference>();
-        public List<NpcPreference> LikeList { get; private set; } = new List<NpcPreference>();
-        public List<NpcPreference> HateList { get; private set; } = new List<NpcPreference>();
+        public NpcPreferenceCollection PreferenceList { get; private set; } = new NpcPreferenceCollection();
+        public NpcPreferenceCollection LikeList { get; private set; } = new NpcPreferenceCollection();
+        public NpcPreferenceCollection HateList { get; private set; } = new NpcPreferenceCollection();
         public MapAreaName AreaName { get; private set; }
         #endregion
 
@@ -205,7 +205,7 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddString(Name, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(AreaFriendlyName, data, ref offset, BaseOffset, 4, StoredStringtable);

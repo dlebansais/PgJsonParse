@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgQuestObjectiveLoot
     {
         Item QuestItem { get; }
-        List<Item> ItemList { get; }
+        ItemCollection ItemList { get; }
         ItemKeyword ItemTarget { get; }
         MonsterTypeTag MonsterTypeTag { get; }
     }

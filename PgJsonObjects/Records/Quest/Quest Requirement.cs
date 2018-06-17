@@ -277,7 +277,7 @@ namespace PgJsonObjects
         private List<string> RawRequirementQuestList = new List<string>();
         private EffectKeyword RequirementKeyword;
         private PowerSkill RequirementSkill;
-        private List<QuestRequirement> RequirementOrList = new List<QuestRequirement>();
+        private QuestRequirementCollection RequirementOrList = new QuestRequirementCollection();
         private string RequirementRule;
         private string RequirementInteractionFlag;
         #endregion

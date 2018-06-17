@@ -7,6 +7,6 @@
         {
         }
 
-        public string InteractionFlag { get { return GetString(0); } }
+        public string InteractionFlag { get { return GetString(4); } }
     }
 }

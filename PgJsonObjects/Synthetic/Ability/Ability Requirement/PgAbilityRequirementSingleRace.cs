@@ -7,6 +7,6 @@
         {
         }
 
-        public Race AllowedRace { get { return GetEnum<Race>(0); } }
+        public Race AllowedRace { get { return GetEnum<Race>(4); } }
     }
 }

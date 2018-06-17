@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgOrQuestRequirement
     {
-        List<QuestRequirement> OrList { get; }
+        QuestRequirementCollection OrList { get; }
     }
 }

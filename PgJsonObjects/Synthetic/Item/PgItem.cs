@@ -24,7 +24,7 @@ namespace PgJsonObjects
         public AppearanceSkin ItemAppearancePlate { get { return GetEnum<AppearanceSkin>(30); } }
         public uint ItemAppearanceColor { get { return RawItemAppearanceColor.HasValue ? RawItemAppearanceColor.Value : 0; } }
         public uint? RawItemAppearanceColor { get { return GetUInt(32); } }
-        public List<ItemEffect> EffectDescriptionList { get { return GetObjectList(36, ref _EffectDescriptionList); } } private List<ItemEffect> _EffectDescriptionList;
+        public ItemEffectCollection EffectDescriptionList { get { return GetObjectList(36, ref _EffectDescriptionList, ItemEffectCollection.CreateItem, () => new ItemEffectCollection()); } } private ItemEffectCollection _EffectDescriptionList;
         public uint DyeColor { get { return RawDyeColor.HasValue ? RawDyeColor.Value : 0; } }
         public uint? RawDyeColor { get { return GetUInt(40); } }
         public string EquipAppearance { get { return GetString(44); } }
@@ -55,14 +55,14 @@ namespace PgJsonObjects
         public int MaxStackSize { get { return RawMaxStackSize.HasValue ? RawMaxStackSize.Value : 0; } }
         public int? RawMaxStackSize { get { return GetInt(84); } }
         public string Name { get { return GetString(88); } }
-        public List<ItemSkillLink> SkillRequirementList { get { return GetObjectList(92, ref _SkillRequirementList); } } private List<ItemSkillLink> _SkillRequirementList;
+        public ItemSkillLinkCollection SkillRequirementList { get { return GetObjectList(92, ref _SkillRequirementList, ItemSkillLinkCollection.CreateItem, () => new ItemSkillLinkCollection()); } } private ItemSkillLinkCollection _SkillRequirementList;
         public List<uint> StockDye { get { return GetUIntList(96, ref _StockDye); } } private List<uint> _StockDye;
         public List<string> StockDyeByName { get { return GetStringList(100, ref _StockDyeByName); } } private List<string> _StockDyeByName;
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get { return GetDouble(104); } }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
         public int? RawNumUses { get { return GetInt(108); } }
-        public List<ItemBehavior> BehaviorList { get { return GetObjectList(112, ref _BehaviorList); } } private List<ItemBehavior> _BehaviorList;
+        public ItemBehaviorCollection BehaviorList { get { return GetObjectList(112, ref _BehaviorList, ItemBehaviorCollection.CreateItem, () => new ItemBehaviorCollection()); } } private ItemBehaviorCollection _BehaviorList;
         public string DynamicCraftingSummary { get { return GetString(116); } }
         public int BestowTitle { get { return RawBestowTitle.HasValue ? RawBestowTitle.Value : 0; } }
         public int? RawBestowTitle { get { return GetInt(120); } }

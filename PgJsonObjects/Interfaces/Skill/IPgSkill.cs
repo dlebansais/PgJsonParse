@@ -22,8 +22,8 @@ namespace PgJsonObjects
         List<PowerSkill> CompatibleCombatSkillList { get; }
         int MaxBonusLevels { get; }
         int? RawMaxBonusLevels { get; }
-        List<LevelCapInteraction> InteractionFlagLevelCapList { get; }
-        List<Reward> RewardList { get; }
+        LevelCapInteractionCollection InteractionFlagLevelCapList { get; }
+        RewardCollection RewardList { get; }
         string Name { get; }
         Skill ParentSkill { get; }
         List<SkillCategory> TSysCategoryList { get; }

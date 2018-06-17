@@ -276,7 +276,7 @@ namespace PgJsonObjects
 
             SkillRequirement = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkillRequirement, SkillRequirement, ref IsSkillParsed, ref IsConnected, Parent as GameNpc);
 
-            List<Item> ItemList = new List<Item>();
+            ItemCollection ItemList = new ItemCollection();
             foreach (ItemKeyword Keyword in ItemKeywordList)
             {
                 if (Keyword == ItemKeyword.Internal_None)
@@ -333,7 +333,7 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
-            Dictionary<int, IGenericJsonObject> StoredObjectTable = new Dictionary<int, IGenericJsonObject>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PowerSimpleEffect : PowerEffect
+    public class PowerSimpleEffect : PowerEffect, IPgPowerSimpleEffect
     {
         private static readonly string IconIdPattern = "<icon=";
 

@@ -1,19 +1,18 @@
 ﻿using PgJsonReader;
 using Presentation;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class ServerInfo : GenericJsonObject<ServerInfo>
+    public class ServerInfo : GenericJsonObject<ServerInfo>, IPgServerInfo
     {
         #region Direct Properties
-        public List<ServerInfoEffect> ServerInfoEffectList { get; private set; } = new List<PgJsonObjects.ServerInfoEffect>();
-        public List<Item> GiveItemList { get; private set; } = new List<Item>();
+        public ServerInfoEffectCollection ServerInfoEffectList { get; private set; } = new ServerInfoEffectCollection();
+        public ItemCollection GiveItemList { get; private set; } = new ItemCollection();
         public int NumItemsToGive { get { return RawNumItemsToGive.HasValue ? RawNumItemsToGive.Value : 0; } }
         public int? RawNumItemsToGive { get; private set; }
-        public List<AbilityRequirement> OtherRequirementList { get; private set; } = new List<AbilityRequirement>();
+        public AbilityRequirementCollection OtherRequirementList { get; private set; } = new AbilityRequirementCollection();
         public ItemRequiredHotspot RequiredHotspot { get; private set; }
 
         private List<string> RawItemNameList = new List<string>();
@@ -726,7 +725,7 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
-            Dictionary<int, IList> StoredObjectListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddObjectList(ServerInfoEffectList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
             AddObjectList(GiveItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);

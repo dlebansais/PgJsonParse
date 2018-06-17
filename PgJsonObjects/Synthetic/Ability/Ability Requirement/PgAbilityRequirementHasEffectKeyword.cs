@@ -7,6 +7,6 @@
         {
         }
 
-        public AbilityKeyword Keyword { get { return GetEnum<AbilityKeyword>(0); } }
+        public AbilityKeyword Keyword { get { return GetEnum<AbilityKeyword>(4); } }
     }
 }

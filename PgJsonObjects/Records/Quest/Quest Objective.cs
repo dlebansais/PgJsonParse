@@ -167,7 +167,7 @@ namespace PgJsonObjects
                 case QuestObjectiveType.GuildKill:
                 case QuestObjectiveType.DruidKill:
                 case QuestObjectiveType.DruidScripted:
-                    return this;
+                    return new QuestObjectiveSimple(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
 
                 case QuestObjectiveType.ScriptedReceiveItem:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
@@ -176,7 +176,7 @@ namespace PgJsonObjects
                         return this;
 
                 default:
-                    return this;
+                    return null;
             }
         }
 

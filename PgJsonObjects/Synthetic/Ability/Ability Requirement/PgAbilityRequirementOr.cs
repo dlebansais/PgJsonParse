@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public class PgAbilityRequirementOr: GenericPgObject, IPgAbilityRequirementOr
     {
@@ -9,7 +7,7 @@ namespace PgJsonObjects
         {
         }
 
-        public List<AbilityRequirement> OrList { get { return GetObjectList(0, ref _OrList); } } private List<AbilityRequirement> _OrList;
-        public string ErrorMsg { get { return GetString(4); } }
+        public AbilityRequirementCollection OrList { get { return GetObjectList(4, ref _OrList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OrList;
+        public string ErrorMsg { get { return GetString(8); } }
     }
 }

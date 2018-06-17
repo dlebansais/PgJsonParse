@@ -50,9 +50,10 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
 
-            AddEnumList(AllowedRaceList, data, ref offset, BaseOffset, 0, StoredEnumListTable);
+            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddEnumList(AllowedRaceList, data, ref offset, BaseOffset, 4, StoredEnumListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 8, null, null, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

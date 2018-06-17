@@ -29,7 +29,10 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            FinishSerializing(data, ref offset, offset, 0, null, null, null, null, null, null, null, null);
+            int BaseOffset = offset;
+            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgQuestObjectiveGuildGiveItem
     {
         Item QuestItem { get; }
         GameNpc DeliverNpc { get; }
-        List<Item> ItemList { get; }
+        ItemCollection ItemList { get; }
         ItemKeyword ItemKeyword { get; }
     }
 }

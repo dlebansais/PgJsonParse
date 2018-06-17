@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public interface IPgQuestObjectiveUseAbility
     {
-        List<Ability> AbilityTargetList { get; }
+        AbilityCollection AbilityTargetList { get; }
         AbilityKeyword AbilityTarget { get; }
     }
 }
