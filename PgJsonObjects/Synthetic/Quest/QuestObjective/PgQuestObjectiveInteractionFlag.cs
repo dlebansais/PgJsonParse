@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgQuestObjectiveGuildGiveItem(data, offset);
+        }
+
         public string InteractionFlag { get { return GetString(0); } }
         public string InteractionTarget { get { return GetString(4); } }
     }

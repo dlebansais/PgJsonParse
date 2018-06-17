@@ -2,8 +2,8 @@
 
 namespace PgJsonObjects
 {
-    public interface IMainJsonObjectCollection : ICollection
+    public interface IMainJsonObjectCollection : IList
     {
-        IMainJsonObject GetAt(int index);
+        IMainPgObject CreateItem(byte[] data, ref int offset);
     }
 }

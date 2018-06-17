@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityRequirementSingleRace(data, offset);
+        }
+
         public Race AllowedRace { get { return GetEnum<Race>(4); } }
     }
 }

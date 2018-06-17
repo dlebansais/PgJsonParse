@@ -2,11 +2,16 @@
 
 namespace PgJsonObjects
 {
-    public class PgItem : GenericPgObject, IPgItem
+    public class PgItem : MainPgObject, IPgItem
     {
         public PgItem(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgItem(data, offset);
         }
 
         public Ability BestowAbility { get { return GetObject(0, ref _BestowAbility); } } private Ability _BestowAbility;

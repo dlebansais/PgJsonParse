@@ -6,5 +6,10 @@
             : base(data, offset)
         {
         }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityRequirementInGraveyard(data, offset);
+        }
     }
 }

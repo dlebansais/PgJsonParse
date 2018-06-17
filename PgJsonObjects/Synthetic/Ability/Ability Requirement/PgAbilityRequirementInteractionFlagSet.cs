@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityRequirementInteractionFlagSet(data, offset);
+        }
+
         public string InteractionFlag { get { return GetString(4); } }
     }
 }

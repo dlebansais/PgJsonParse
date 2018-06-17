@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgItemSkillLink(data, offset);
+        }
+
         public string SkillName { get { return GetString(0); } }
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
         public int? RawSkillLevel { get { return GetInt(4); } }

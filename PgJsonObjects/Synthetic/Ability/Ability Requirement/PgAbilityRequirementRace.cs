@@ -9,6 +9,11 @@ namespace PgJsonObjects
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityRequirementRace(data, offset);
+        }
+
         public List<Race> AllowedRaceList { get { return GetEnumList(4, ref _AllowedRaceList); } } private List<Race> _AllowedRaceList;
     }
 }

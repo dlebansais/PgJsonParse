@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgHasEffectKeywordQuestRequirement(data, offset);
+        }
+
         public EffectKeyword Keyword { get { return GetEnum<EffectKeyword>(4); } }
     }
 }

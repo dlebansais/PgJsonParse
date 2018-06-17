@@ -988,6 +988,7 @@ namespace PgJsonParse
                 return;
             }
 
+            /*
             int offset;
 
             offset = 0;
@@ -998,6 +999,10 @@ namespace PgJsonParse
 
             offset = 0;
             SerializeAll(data, ref offset);
+
+            offset = 0;
+            DeserializeAll(data, ref offset);
+            */
 
 
             LoadedIconCount = 0;
@@ -1083,7 +1088,7 @@ namespace PgJsonParse
                 IParser FileParser = definition.FileParser;
 
                 string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
-                IMainJsonObjectCollection ObjectList = definition.ObjectList;
+                IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
 
                 if (!FileParser.Verify(FilePath, ObjectList, definition.LoadAsArray, definition.UseJavaFormat))
                     break;
@@ -1108,9 +1113,40 @@ namespace PgJsonParse
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
-                IMainJsonObjectCollection ObjectList = definition.ObjectList;
+                IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
+
+                if (data != null)
+                {
+                    int Count = ObjectList.Count;
+                    byte[] valueData = BitConverter.GetBytes(Count);
+                    Array.Copy(valueData, 0, data, offset, 4);
+                }
+
+                offset += 4;
+
                 foreach (IMainJsonObject Item in ObjectList)
                     Item.SerializeJsonMainObject(data, ref offset);
+            }
+        }
+
+        private void DeserializeAll(byte[] data, ref int offset)
+        {
+            SerializableJsonObject.ResetSerializedObjectTable();
+
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+            {
+                IObjectDefinition definition = Entry.Value;
+                IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
+
+                int Count = BitConverter.ToInt32(data, offset);
+                offset += 4;
+
+                ObjectList.Clear();
+                for (int i = 0; i < Count; i++)
+                {
+                    IMainPgObject Item = ObjectList.CreateItem(data, ref offset);
+                    ObjectList.Add(Item);
+                }
             }
         }
 
@@ -1121,7 +1157,7 @@ namespace PgJsonParse
                 string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
 
                 IParser FileParser = definition.FileParser;
-                IMainJsonObjectCollection ObjectList = definition.ObjectList;
+                IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
                 Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
                 if (!FileParser.LoadRaw(FilePath, ObjectList, definition.LoadAsArray, errorInfo))
                     return false;
@@ -1147,14 +1183,14 @@ namespace PgJsonParse
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
-                AllLists.Add(Entry.Key, definition.ObjectList);
+                AllLists.Add(Entry.Key, definition.JsonObjectList);
                 AllTables.Add(Entry.Key, definition.ObjectTable);
             }
 
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
-                foreach (IGenericJsonObject Item in definition.ObjectList)
+                foreach (IGenericJsonObject Item in definition.JsonObjectList)
                     Item.Connect(errorInfo, null, AllTables);
 
                 if (ParseCancellation.IsCanceled)
@@ -1166,7 +1202,7 @@ namespace PgJsonParse
             do
             {
                 Continue = false;
-                foreach (Recipe Item in RecipeDefinition.ObjectList)
+                foreach (Recipe Item in RecipeDefinition.JsonObjectList)
                     Item.MeasurePerfectCottonRatio(ref Continue);
             }
             while (Continue);
@@ -1174,14 +1210,14 @@ namespace PgJsonParse
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
-                foreach (IGenericJsonObject Item in definition.ObjectList)
+                foreach (IGenericJsonObject Item in definition.JsonObjectList)
                     Item.SetIndirectProperties(AllTables, errorInfo);
             }
 
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
-                foreach (IGenericJsonObject Item in definition.ObjectList)
+                foreach (IGenericJsonObject Item in definition.JsonObjectList)
                     Item.SortLinkBack();
             }
 

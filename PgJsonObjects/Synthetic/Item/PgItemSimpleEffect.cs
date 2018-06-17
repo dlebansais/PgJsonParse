@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgItemSimpleEffect(data, offset);
+        }
+
         public string Description { get { return GetString(0); } }
     }
 }

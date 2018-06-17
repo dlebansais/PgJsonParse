@@ -1,10 +1,15 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgDirectedGoal : GenericPgObject, IPgDirectedGoal
+    public class PgDirectedGoal : MainPgObject, IPgDirectedGoal
     {
         public PgDirectedGoal(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgDirectedGoal(data, offset);
         }
 
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }

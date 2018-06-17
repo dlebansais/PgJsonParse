@@ -2,11 +2,16 @@
 
 namespace PgJsonObjects
 {
-    public class PgPower : GenericPgObject, IPgPower
+    public class PgPower : MainPgObject, IPgPower
     {
         public PgPower(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgPower(data, offset);
         }
 
         public string Prefix { get { return GetString(0); } }

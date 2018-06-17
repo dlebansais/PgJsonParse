@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgXpTableLevel(data, offset);
+        }
+
         public int Level { get { return RawLevel.Value; } }
         public int? RawLevel { get { return GetInt(0); } }
         public int Xp { get { return RawXp.Value; } }

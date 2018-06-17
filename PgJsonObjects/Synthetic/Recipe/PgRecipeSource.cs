@@ -1,10 +1,15 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgRecipeSource : GenericPgObject, IPgRecipeSource
+    public class PgRecipeSource : MainPgObject, IPgRecipeSource
     {
         public PgRecipeSource(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgRecipeSource(data, offset);
         }
 
         public Recipe ConnectedRecipe { get { return GetObject(0, ref _ConnectedRecipe); } } private Recipe _ConnectedRecipe;

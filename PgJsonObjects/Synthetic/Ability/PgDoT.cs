@@ -9,6 +9,11 @@ namespace PgJsonObjects
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgDoT(data, offset);
+        }
+
         public int DamagePerTick { get { return RawDamagePerTick.HasValue ? RawDamagePerTick.Value : 0; } }
         public int? RawDamagePerTick { get { return GetInt(0); } }
         public int NumTicks { get { return RawNumTicks.HasValue ? RawNumTicks.Value : 0; } }

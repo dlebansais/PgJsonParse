@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgSpecialValue(data, offset);
+        }
+
         public string Label { get { return GetString(0); } }
         public string Suffix { get { return GetString(4); } }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }

@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityServerInfoEffect(data, offset);
+        }
+
         public Ability BestowAbility { get { return GetObject(4, ref _BestowAbility); } } private Ability _BestowAbility;
     }
 }

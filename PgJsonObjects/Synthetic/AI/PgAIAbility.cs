@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAIAbility(data, offset);
+        }
+
         public int? RawMinLevel { get { return GetInt(0); } }
         public int? RawMaxLevel { get { return GetInt(4); } }
         public int? RawMinDistance { get { return GetInt(8); } }

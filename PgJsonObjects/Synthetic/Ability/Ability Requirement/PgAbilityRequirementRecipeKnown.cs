@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityRequirementRecipeKnown(data, offset);
+        }
+
         public Recipe RecipeKnown { get { return GetObject(4, ref _RecipeKnown); } } private Recipe _RecipeKnown;
     }
 }

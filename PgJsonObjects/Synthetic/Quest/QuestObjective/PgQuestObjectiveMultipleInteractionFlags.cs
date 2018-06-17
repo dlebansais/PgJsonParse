@@ -9,6 +9,11 @@ namespace PgJsonObjects
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgQuestObjectiveMultipleInteractionFlags(data, offset);
+        }
+
         public List<string> InteractionFlagList { get { return GetStringList(0, ref _InteractionFlagList); } } private List<string> _InteractionFlagList;
     }
 }

@@ -9,6 +9,11 @@ namespace PgJsonObjects
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgItemBehavior(data, offset);
+        }
+
         public ServerInfo ServerInfo { get { return GetObject(0, ref _ServerInfo); } } private ServerInfo _ServerInfo;
         public List<ItemUseRequirement> UseRequirementList { get { return GetEnumList(4, ref _UseRequirementList); } } private List<ItemUseRequirement> _UseRequirementList;
         public ItemUseAnimation UseAnimation { get { return GetEnum<ItemUseAnimation>(8); } }

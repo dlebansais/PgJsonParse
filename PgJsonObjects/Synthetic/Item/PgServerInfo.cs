@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgServerInfo(data, offset);
+        }
+
         public ServerInfoEffectCollection ServerInfoEffectList { get { return GetObjectList(0, ref _ServerInfoEffectList, ServerInfoEffectCollection.CreateItem, () => new ServerInfoEffectCollection()); } } private ServerInfoEffectCollection _ServerInfoEffectList;
         public ItemCollection GiveItemList { get { return GetObjectList(4, ref _GiveItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _GiveItemList;
         public int NumItemsToGive { get { return RawNumItemsToGive.HasValue ? RawNumItemsToGive.Value : 0; } }

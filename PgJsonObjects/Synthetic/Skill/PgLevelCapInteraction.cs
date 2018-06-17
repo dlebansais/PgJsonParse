@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgLevelCapInteraction(data, offset);
+        }
+
         public int OtherLevel { get { return RawOtherLevel.Value; } }
         public int? RawOtherLevel { get { return GetInt(0); } }
         public int Level { get { return RawLevel.Value; } }

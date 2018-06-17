@@ -13,6 +13,8 @@ namespace PgJsonObjects
             Offset = offset;
         }
 
+        public abstract IGenericPgObject CreateItem(byte[] data, int offset);
+
         public virtual void Init()
         {
         }
@@ -85,7 +87,7 @@ namespace PgJsonObjects
             if (cachedValue == null)
             {
                 int StoredOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
-                cachedValue = CreateObject<T>(StoredOffset);
+                cachedValue = CreateObject<T>(Data, StoredOffset);
             }
 
             return cachedValue;
@@ -212,10 +214,10 @@ namespace PgJsonObjects
             return cachedList;
         }
 
-        protected T CreateObject<T>(int offsetObject)
+        public static T CreateObject<T>(byte[] data, int offsetObject)
         {
             if (typeof(T) == typeof(PgAbility))
-                return (T)(object)(new PgAbility(Data, offsetObject));
+                return (T)(object)(new PgAbility(data, offsetObject));
             else
                 return default(T);
         }

@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAIAbilitySet(data, offset);
+        }
+
         private AIAbility[] Abilities = new AIAbility[100];
         private AIAbility GetAbilityObject(int index) { return GetObject(index * 4, ref Abilities[index]); }
 

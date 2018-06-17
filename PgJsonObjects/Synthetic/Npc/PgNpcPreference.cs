@@ -9,6 +9,11 @@ namespace PgJsonObjects
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgNpcPreference(data, offset);
+        }
+
         public List<ItemKeyword> ItemKeywordList { get { return GetEnumList(0, ref _ItemKeywordList); } } private List<ItemKeyword> _ItemKeywordList;
         public List<string> RawKeywordList { get { return GetStringList(4, ref _RawKeywordList); } } private List<string> _RawKeywordList;
         public double Preference { get { return RawPreference.HasValue ? RawPreference.Value : 0; } }

@@ -1,10 +1,15 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilitySource : GenericPgObject, IPgAbilitySource
+    public class PgAbilitySource : MainPgObject, IPgAbilitySource
     {
         public PgAbilitySource(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilitySource(data, offset);
         }
 
         public Ability ConnectedAbility { get { return GetObject(0, ref _ConnectedAbility); } } private Ability _ConnectedAbility;

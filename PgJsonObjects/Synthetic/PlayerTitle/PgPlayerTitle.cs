@@ -2,11 +2,16 @@
 
 namespace PgJsonObjects
 {
-    public class PgPlayerTitle : GenericPgObject, IPgPlayerTitle
+    public class PgPlayerTitle : MainPgObject, IPgPlayerTitle
     {
         public PgPlayerTitle(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgPlayerTitle(data, offset);
         }
 
         public string Title { get { return GetString(0); } }

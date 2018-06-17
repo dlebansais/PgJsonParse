@@ -2,11 +2,16 @@
 
 namespace PgJsonObjects
 {
-    public class PgSkill : GenericPgObject, IPgSkill
+    public class PgSkill : MainPgObject, IPgSkill
     {
         public PgSkill(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgSkill(data, offset);
         }
 
         public override void Init()

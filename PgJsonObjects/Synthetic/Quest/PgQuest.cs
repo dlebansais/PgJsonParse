@@ -3,11 +3,16 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class PgQuest: GenericPgObject, IPgQuest
+    public class PgQuest: MainPgObject, IPgQuest
     {
         public PgQuest(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgQuest(data, offset);
         }
 
         public string InternalName { get { return GetString(0); } }

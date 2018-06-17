@@ -2,11 +2,16 @@
 
 namespace PgJsonObjects
 {
-    public class PgAttribute : GenericPgObject, IPgAttribute
+    public class PgAttribute : MainPgObject, IPgAttribute
     {
         public PgAttribute(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAttribute(data, offset);
         }
 
         public string Label { get { return GetString(0); } }

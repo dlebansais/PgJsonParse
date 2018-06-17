@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityRequirementEquippedItemKeyword(data, offset);
+        }
+
         public int MinCount { get { return RawMinCount.HasValue ? RawMinCount.Value : 0; } }
         public int? RawMinCount { get { return GetInt(4); } }
         public int MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }

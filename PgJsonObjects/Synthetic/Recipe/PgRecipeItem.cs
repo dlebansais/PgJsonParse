@@ -9,6 +9,11 @@ namespace PgJsonObjects
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgRecipeItem(data, offset);
+        }
+
         public Item Item { get { return GetObject(0, ref _Item); } } private Item _Item;
         public int ItemCode { get { return RawItemCode.HasValue ? RawItemCode.Value : 0; } }
         public int? RawItemCode { get { return GetInt(4); } }

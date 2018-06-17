@@ -9,6 +9,11 @@ namespace PgJsonObjects
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityPvX(data, offset);
+        }
+
         public int Damage { get { return RawDamage.HasValue ? RawDamage.Value : 0; } }
         public int? RawDamage { get { return GetInt(0); } }
         public int ExtraDamageIfTargetVulnerable { get { return RawExtraDamageIfTargetVulnerable.HasValue ? RawExtraDamageIfTargetVulnerable.Value : 0; } }

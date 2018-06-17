@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityRequirementHasEffectKeyword(data, offset);
+        }
+
         public AbilityKeyword Keyword { get { return GetEnum<AbilityKeyword>(4); } }
     }
 }

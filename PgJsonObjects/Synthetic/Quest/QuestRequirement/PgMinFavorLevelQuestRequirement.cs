@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgMinFavorLevelQuestRequirement(data, offset);
+        }
+
         public GameNpc FavorNpc { get { return GetObject(4, ref _FavorNpc); } } private GameNpc _FavorNpc;
         public bool IsEmpty { get { return RawIsEmpty.HasValue && RawIsEmpty.Value; } }
         public bool? RawIsEmpty { get { return GetBool(8, 0); } }

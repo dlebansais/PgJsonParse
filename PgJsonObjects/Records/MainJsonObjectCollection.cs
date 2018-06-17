@@ -2,12 +2,13 @@
 
 namespace PgJsonObjects
 {
-    public class MainJsonObjectCollection<T> : List<T>, IMainJsonObjectCollection
-         where T : MainJsonObject<T>
+    public class MainJsonObjectCollection<TJson, TPg> : List<TJson>, IMainJsonObjectCollection
+        where TJson : MainJsonObject<TJson>, new()
+        where TPg: IMainPgObject
     {
-        public IMainJsonObject GetAt(int index)
+        public IMainPgObject CreateItem(byte[] data, ref int offset)
         {
-            return this[index];
+            return GenericPgObject.CreateObject<TPg>(data, offset);
         }
     }
 }

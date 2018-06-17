@@ -455,6 +455,7 @@
     <Compile Include="Synthetic\Effect\PgEffect.cs" />
     <Compile Include="Synthetic\GenericPgObject.cs" />
     <Compile Include="Synthetic\IGenericPgObject.cs" />
+    <Compile Include="Synthetic\IMainPgObject.cs" />
     <Compile Include="Synthetic\ItemUses\PgItemUses.cs" />
     <Compile Include="Synthetic\Item\PgItem.cs" />
     <Compile Include="Synthetic\Item\PgItemAttributeLink.cs" />
@@ -476,6 +477,7 @@
     <Compile Include="Synthetic\LoreBook\PgLoreBook.cs" />
     <Compile Include="Synthetic\LoreBook\PgLoreBookInfo.cs" />
     <Compile Include="Synthetic\LoreBook\PgLoreBookInfoCategory.cs" />
+    <Compile Include="Synthetic\MainPgObject.cs" />
     <Compile Include="Synthetic\Npc\PgGameNpc.cs" />
     <Compile Include="Synthetic\Npc\PgNpcPreference.cs" />
     <Compile Include="Synthetic\PlayerTitle\PgPlayerTitle.cs" />

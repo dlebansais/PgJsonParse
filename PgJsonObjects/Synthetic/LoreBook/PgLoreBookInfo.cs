@@ -1,10 +1,15 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgLoreBookInfo : GenericPgObject, IPgLoreBookInfo
+    public class PgLoreBookInfo : MainPgObject, IPgLoreBookInfo
     {
         public PgLoreBookInfo(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgLoreBookInfo(data, offset);
         }
 
         public LoreBookInfoCategory Gods { get { return GetObject(0, ref _Gods); } } private LoreBookInfoCategory _Gods;

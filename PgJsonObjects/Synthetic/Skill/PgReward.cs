@@ -9,6 +9,11 @@ namespace PgJsonObjects
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgReward(data, offset);
+        }
+
         public int RewardLevel { get { return RawRewardLevel.HasValue ? RawRewardLevel.Value : 0; } }
         public int? RawRewardLevel { get { return GetInt(0); } }
         public List<Race> RaceRestrictionList { get { return GetEnumList(4, ref _RaceRestrictionList); } } private List<Race> _RaceRestrictionList;

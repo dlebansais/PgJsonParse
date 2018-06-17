@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgPotionServerInfoEffect(data, offset);
+        }
+
         public string EffectString { get { return GetString(0); } }
     }
 }

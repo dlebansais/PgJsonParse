@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityRequirementInHotspot(data, offset);
+        }
+
         public string Name { get { return GetString(4); } }
     }
 }

@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgQuestReward(data, offset);
+        }
+
         public string Type { get { return GetString(0); } }
         public int RewardXp { get { return RawRewardXp.HasValue ? RawRewardXp.Value : 0; } }
         public int? RawRewardXp { get { return GetInt(4); } }

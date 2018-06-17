@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgAbilityRequirementSingleAppearance(data, offset);
+        }
+
         public Appearance Appearance { get { return GetEnum<Appearance>(4); } }
     }
 }

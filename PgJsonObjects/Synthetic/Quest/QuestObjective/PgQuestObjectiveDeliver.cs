@@ -7,6 +7,11 @@
         {
         }
 
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgQuestObjectiveDeliver(data, offset);
+        }
+
         public GameNpc DeliverNpc { get { return GetObject(0, ref _DeliverNpc); } } private GameNpc _DeliverNpc;
         public Item QuestItem { get { return GetObject(4, ref _QuestItem); } } private Item _QuestItem;
         public int NumToDeliver { get { return RawNumToDeliver.HasValue ? RawNumToDeliver.Value : 0; } }

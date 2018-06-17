@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
     public class PgRecipeCost : GenericPgObject, IPgRecipeCost
     {
         public PgRecipeCost(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgRecipeCost(data, offset);
         }
 
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }

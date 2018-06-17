@@ -2,11 +2,16 @@
 
 namespace PgJsonObjects
 {
-    public class PgEffect : GenericPgObject, IPgEffect
+    public class PgEffect : MainPgObject, IPgEffect
     {
         public PgEffect(byte[] data, int offset)
             : base(data, offset)
         {
+        }
+
+        public override IGenericPgObject CreateItem(byte[] data, int offset)
+        {
+            return new PgEffect(data, offset);
         }
 
         public string Name { get { return GetString(0); } }
