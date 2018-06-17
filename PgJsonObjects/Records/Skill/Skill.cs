@@ -60,7 +60,7 @@ namespace PgJsonObjects
 
         private static Dictionary<PowerSkill, Ability> BasicAttackTable = new Dictionary<PowerSkill, Ability>();
         private static Dictionary<PowerSkill, int> AnyIconTable = new Dictionary<PowerSkill, int>();
-        protected override string SortingName { get { return Name; } }
+        public virtual string SortingName { get { return Name; } }
         public int IconId { get; private set; }
 
         public static void UpdateBasicAttackTable(PowerSkill Skill, Ability Ability)

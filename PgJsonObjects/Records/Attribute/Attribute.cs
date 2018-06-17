@@ -19,7 +19,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        protected override string SortingName { get { return Label; } }
+        public virtual string SortingName { get { return Label; } }
         public List<string> IconFileNameList { get; } = new List<string>();
 
         public bool IsLabelWithPercent

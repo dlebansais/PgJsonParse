@@ -1083,29 +1083,29 @@ namespace PgJsonParse
 
         private void PerformSearch(List<string> termList, IDictionary objectTable, string textContent, SearchModes searchMode)
         {
-            List<GenericJsonObject> Result = new List<GenericJsonObject>();
+            List<ISearchableObject> Result = new List<ISearchableObject>();
 
             switch (searchMode)
             {
                 case SearchModes.And:
                     for (int i = 0; i < termList.Count; i++)
                     {
-                        List<GenericJsonObject> SingleTermResult = new List<GenericJsonObject>();
+                        List<ISearchableObject> SingleTermResult = new List<ISearchableObject>();
                         PerformSearch(termList[i], objectTable, textContent, SingleTermResult);
 
                         if (i == 0)
                         {
-                            foreach (GenericJsonObject o in SingleTermResult)
+                            foreach (ISearchableObject o in SingleTermResult)
                                 Result.Add(o);
                         }
                         else
                         {
-                            List<GenericJsonObject> ToRemove = new List<GenericJsonObject>();
-                            foreach (GenericJsonObject o in Result)
+                            List<ISearchableObject> ToRemove = new List<ISearchableObject>();
+                            foreach (ISearchableObject o in Result)
                                 if (!SingleTermResult.Contains(o))
                                     ToRemove.Add(o);
 
-                            foreach (GenericJsonObject o in ToRemove)
+                            foreach (ISearchableObject o in ToRemove)
                                 Result.Remove(o);
                         }
                     }
@@ -1114,10 +1114,10 @@ namespace PgJsonParse
                 case SearchModes.Or:
                     foreach (string Term in termList)
                     {
-                        List<GenericJsonObject> SingleTermResult = new List<GenericJsonObject>();
+                        List<ISearchableObject> SingleTermResult = new List<ISearchableObject>();
                         PerformSearch(Term, objectTable, textContent, SingleTermResult);
 
-                        foreach (GenericJsonObject o in SingleTermResult)
+                        foreach (ISearchableObject o in SingleTermResult)
                             if (!Result.Contains(o))
                                 Result.Add(o);
                     }
@@ -1134,7 +1134,7 @@ namespace PgJsonParse
                 SearchResult.Add(o);
         }
 
-        private void PerformSearch(string term, IDictionary objectTable, string textContent, List<GenericJsonObject> SingleTermResult)
+        private void PerformSearch(string term, IDictionary objectTable, string textContent, List<ISearchableObject> SingleTermResult)
         {
             int MatchIndex = -1;
             StringComparison Comparison = MustMatchCase ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase;
@@ -1174,7 +1174,7 @@ namespace PgJsonParse
                 }
 
                 if (objectTable.Contains(Key))
-                    SingleTermResult.Add((GenericJsonObject)objectTable[Key]);
+                    SingleTermResult.Add(objectTable[Key] as ISearchableObject);
 
                 MatchIndex = KeyIndex;
 

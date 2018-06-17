@@ -35,7 +35,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        protected override string SortingName { get { return null; } }
+        public virtual string SortingName { get { return null; } }
 
         public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
         {

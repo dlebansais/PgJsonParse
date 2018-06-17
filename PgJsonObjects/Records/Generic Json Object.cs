@@ -5,67 +5,65 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
+    public enum FieldType
+    {
+        Unknown,
+        Integer,
+        Bool,
+        Float,
+        String,
+        Object,
+        SimpleIntegerArray,
+        IntegerArray,
+        SimpleStringArray,
+        StringArray,
+        ObjectArray,
+    };
+
+    public struct FieldParser
+    {
+        public FieldType Type;
+
+        public Action<object, ParseErrorInfo> ParseUnknown;
+        public Action<int, ParseErrorInfo> ParseInteger;
+        public Action<bool, ParseErrorInfo> ParseBool;
+        public Action<float, ParseErrorInfo> ParseFloat;
+        public Action<string, ParseErrorInfo> ParseString;
+        public Action<JsonObject, ParseErrorInfo> ParseObject;
+        public Action<int, ParseErrorInfo> ParseSimpleIntegerArray;
+        public Func<int, ParseErrorInfo, bool> ParseIntegerArray;
+        public Action<string, ParseErrorInfo> ParseSimpleStringArray;
+        public Func<string, ParseErrorInfo, bool> ParseStringArray;
+        public Action<JsonObject, ParseErrorInfo> ParseObjectArray;
+        public Action SetArrayIsEmpty;
+
+        public Action<string, JsonGenerator> CustomGenerator;
+
+        public Func<object> GetUnknown;
+        public Func<int?> GetInteger;
+        public Func<bool?> GetBool;
+        public Func<double?> GetFloat;
+        public Func<string> GetString;
+        public Func<IGenericJsonObject> GetObject;
+        public Func<List<int>> GetIntegerArray;
+        public Func<List<string>> GetStringArray;
+        public Func<IList> GetObjectArray;
+        public Func<bool> GetArrayIsEmpty;
+
+        public bool SimplifyArray;
+        public Action SetArrayIsSimple;
+        public Func<bool> GetArrayIsSimple;
+
+        public Action SetArrayIsNested;
+        public Func<bool> GetArrayIsNested;
+    }
+
     public abstract class GenericJsonObject : SerializableJsonObject
     {
-        protected enum FieldType
-        {
-            Unknown,
-            Integer,
-            Bool,
-            Float,
-            String,
-            Object,
-            SimpleIntegerArray,
-            IntegerArray,
-            SimpleStringArray,
-            StringArray,
-            ObjectArray,
-        };
-
-        protected struct FieldParser
-        {
-            public FieldType Type;
-
-            public Action<object, ParseErrorInfo> ParseUnknown;
-            public Action<int, ParseErrorInfo> ParseInteger;
-            public Action<bool, ParseErrorInfo> ParseBool;
-            public Action<float, ParseErrorInfo> ParseFloat;
-            public Action<string, ParseErrorInfo> ParseString;
-            public Action<JsonObject, ParseErrorInfo> ParseObject;
-            public Action<int, ParseErrorInfo> ParseSimpleIntegerArray;
-            public Func<int, ParseErrorInfo, bool> ParseIntegerArray;
-            public Action<string, ParseErrorInfo> ParseSimpleStringArray;
-            public Func<string, ParseErrorInfo, bool> ParseStringArray;
-            public Action<JsonObject, ParseErrorInfo> ParseObjectArray;
-            public Action SetArrayIsEmpty;
-
-            public Action<string, JsonGenerator> CustomGenerator;
-
-            public Func<object> GetUnknown;
-            public Func<int?> GetInteger;
-            public Func<bool?> GetBool;
-            public Func<double?> GetFloat;
-            public Func<string> GetString;
-            public Func<IGenericJsonObject> GetObject;
-            public Func<List<int>> GetIntegerArray;
-            public Func<List<string>> GetStringArray;
-            public Func<IList> GetObjectArray;
-            public Func<bool> GetArrayIsEmpty;
-
-            public bool SimplifyArray;
-            public Action SetArrayIsSimple;
-            public Func<bool> GetArrayIsSimple;
-
-            public Action SetArrayIsNested;
-            public Func<bool> GetArrayIsNested;
-        }
-
         public static string NullString = "{3125D9C5-C81F-4507-A422-C9749749CB15}";
 
         #region Comparison
-        protected abstract string SortingName { get; }
-
-        public static int SortByName(GenericJsonObject o1, GenericJsonObject o2)
+        public static int SortByName(ISearchableObject o1, ISearchableObject o2)
         {
             string s1 = o1.SortingName;
             string s2 = o2.SortingName;
@@ -100,7 +98,7 @@ namespace PgJsonObjects
         #region Init
         public GenericJsonObject()
         {
-            LinkBackTable = new Dictionary<Type, List<GenericJsonObject>>();
+            LinkBackTable = new Dictionary<Type, List<ISearchableObject>>();
         }
         #endregion
 
@@ -321,7 +319,7 @@ namespace PgJsonObjects
                 Result += s + JsonGenerator.FieldSeparator;
         }
 
-        public Dictionary<Type, List<GenericJsonObject>> LinkBackTable { get; private set; }
+        public Dictionary<Type, List<ISearchableObject>> LinkBackTable { get; private set; }
         public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
 
         static List<Type> LinkBackTypeList = new List<Type>();
@@ -344,13 +342,17 @@ namespace PgJsonObjects
             else if (LinkBack is Reward)
                 LinkBack = (LinkBack as Reward).ParentSkill;
 
+            ISearchableObject AsSearchable = LinkBack as ISearchableObject;
+            if (AsSearchable == null)
+                return;
+
             Type ObjectType = LinkBack.GetType();
             if (!LinkBackTable.ContainsKey(ObjectType))
-                LinkBackTable.Add(ObjectType, new List<GenericJsonObject>());
+                LinkBackTable.Add(ObjectType, new List<ISearchableObject>());
 
-            List<GenericJsonObject> LinkBackList = LinkBackTable[ObjectType];
-            if (!LinkBackList.Contains(LinkBack))
-                LinkBackList.Add(LinkBack);
+            List<ISearchableObject> LinkBackList = LinkBackTable[ObjectType];
+            if (!LinkBackList.Contains(AsSearchable))
+                LinkBackList.Add(AsSearchable);
         }
 
         protected static void ParseFieldValueString(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<string, ParseErrorInfo> ParseValue)
@@ -742,7 +744,7 @@ namespace PgJsonObjects
 
         public void SortLinkBack()
         {
-            foreach (KeyValuePair<Type, List<GenericJsonObject>> Entry in LinkBackTable)
+            foreach (KeyValuePair<Type, List<ISearchableObject>> Entry in LinkBackTable)
                 Entry.Value.Sort(GenericJsonObject.SortByName);
         }
         #endregion

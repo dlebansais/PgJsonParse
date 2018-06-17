@@ -20,7 +20,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        protected override string SortingName { get { return Title; } }
+        public virtual string SortingName { get { return Title; } }
         public const int SearchResultIconId = 5792;
         public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
         #endregion

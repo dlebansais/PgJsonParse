@@ -21,7 +21,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        protected override string SortingName { get { return ComposedName; } }
+        public virtual string SortingName { get { return ComposedName; } }
         public List<string> CombinedTierList { get; } = new List<string>();
 
         public string ComposedName

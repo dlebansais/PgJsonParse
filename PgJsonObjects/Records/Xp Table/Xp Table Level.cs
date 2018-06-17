@@ -19,7 +19,7 @@ namespace PgJsonObjects
         public int TotalXp { get { return RawTotalXp.Value; } }
         public int? RawTotalXp { get; private set; }
 
-        protected override string SortingName { get { return null; } }
+        public virtual string SortingName { get { return null; } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
         }; } }

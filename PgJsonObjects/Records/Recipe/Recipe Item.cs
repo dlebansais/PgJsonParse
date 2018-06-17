@@ -29,7 +29,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        protected override string SortingName { get { return null; } }
+        public virtual string SortingName { get { return null; } }
         public Recipe ParentRecipe { get; private set; }
         #endregion
 

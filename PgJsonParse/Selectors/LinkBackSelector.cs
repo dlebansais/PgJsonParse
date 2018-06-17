@@ -15,10 +15,10 @@ namespace PgJsonParse
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             FrameworkElement element = container as FrameworkElement;
-            if (!(item is KeyValuePair<Type, List<GenericJsonObject>>))
+            if (!(item is KeyValuePair<Type, List<ISearchableObject>>)) // For "disconnected item"...
                 return null;
 
-            KeyValuePair<Type, List<GenericJsonObject>> ItemKeyValue = (KeyValuePair<Type, List<GenericJsonObject>>)item;
+            KeyValuePair<Type, List<ISearchableObject>> ItemKeyValue = (KeyValuePair<Type, List<ISearchableObject>>)item;
 
             if (ItemKeyValue.Key == typeof(Ability))
             {

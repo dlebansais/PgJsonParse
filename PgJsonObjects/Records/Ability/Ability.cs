@@ -95,7 +95,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Indirect Properties
-        protected override string SortingName { get { return Name; } }
+        public virtual string SortingName { get { return Name; } }
         public string DigitStrippedName { get; private set; }
         public int LineIndex { get; private set; }
         public List<AbilityAdditionalResult> AbilityAdditionalResultList { get; } = new List<AbilityAdditionalResult>();
