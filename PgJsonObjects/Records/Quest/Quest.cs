@@ -997,9 +997,9 @@ namespace PgJsonObjects
             AddObject(WorkOrderSkill , data, ref offset, BaseOffset, 128, StoredObjectTable);
             AddObjectList(FollowUpQuestList , data, ref offset, BaseOffset,132, StoredObjectListTable);
             AddObjectList(QuestRequirementList , data, ref offset, BaseOffset,136, StoredObjectListTable);
-            AddObjectList(QuestRequirementToSustainList , data, ref offset, BaseOffset, 144, StoredObjectListTable);
+            AddObjectList(QuestRequirementToSustainList , data, ref offset, BaseOffset, 140, StoredObjectListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 144, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -1,6 +1,8 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
-    public class PotionServerInfoEffect : ServerInfoEffect
+    public class PotionServerInfoEffect : ServerInfoEffect, IPgPotionServerInfoEffect
     {
         public PotionServerInfoEffect(ServerInfoEffectType ServerInfoEffect, int? RawLevel, int? HealthGainInstant, int? ArmorGainInstant, int? PowerGainInstant)
             : base(ServerInfoEffect, RawLevel)
@@ -20,7 +22,7 @@
             EffectString = HealthGainPerSecond.Value + "," + ArmorGainPerSecond.Value + "," + PowerGainPerSecond.Value + ",0," + TotalGainDuration.Value;
         }
 
-        private string EffectString;
+        public string EffectString { get; private set; }
 
         public override string RawEffect
         {
@@ -29,5 +31,19 @@
                 return base.RawEffect + "(" + EffectString + ")";
             }
         }
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddInt((int?)Type, data, ref offset, BaseOffset, 0);
+            AddString(EffectString, data, ref offset, BaseOffset, 4, StoredStringtable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
+        #endregion
     }
 }

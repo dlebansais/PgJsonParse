@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class ServerInfoEffect
+    public abstract class ServerInfoEffect : SerializableJsonObject
     {
         public ServerInfoEffect(ServerInfoEffectType Type, int? RawLevel)
         {

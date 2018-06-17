@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public abstract class ItemEffect
+    public abstract class ItemEffect : SerializableJsonObject
     {
         public abstract string AsEffectString();
 

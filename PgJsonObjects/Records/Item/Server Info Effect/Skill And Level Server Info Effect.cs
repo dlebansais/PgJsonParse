@@ -3,25 +3,26 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class SkillAndLevelServerInfoEffect : ServerInfoEffect
+    public class SkillAndLevelServerInfoEffect : ServerInfoEffect, IPgSkillAndLevelServerInfoEffect
     {
-        public SkillAndLevelServerInfoEffect(ServerInfoEffectType ServerInfoEffect, int? RawLevel, PowerSkill Skill, int SkillLevel)
+        public SkillAndLevelServerInfoEffect(ServerInfoEffectType ServerInfoEffect, int? RawLevel, PowerSkill RawSkill, int SkillLevel)
             : base(ServerInfoEffect, RawLevel)
         {
-            this.Skill = Skill;
-            this.SkillLevel = SkillLevel;
+            this.RawSkill = RawSkill;
+            this.RawSkillLevel = SkillLevel;
         }
 
-        private PowerSkill Skill;
+        private PowerSkill RawSkill;
         private bool IsSkillParsed;
-        public Skill ConnectedSkill { get; private set; }
-        public int SkillLevel { get; private set; }
+        public Skill Skill { get; private set; }
+        public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
+        public int? RawSkillLevel { get; private set; }
 
         public override string RawEffect
         {
             get
             {
-                return base.RawEffect + "(" + StringToEnumConversion<PowerSkill>.ToString(Skill) + "," + SkillLevel.ToString() + ")";
+                return base.RawEffect + "(" + StringToEnumConversion<PowerSkill>.ToString(RawSkill) + "," + SkillLevel.ToString() + ")";
             }
         }
 
@@ -32,8 +33,8 @@ namespace PgJsonObjects
             {
                 string Result = base.TextContent;
 
-                if (Skill != PowerSkill.Internal_None)
-                    Result += TextMaps.PowerSkillTextMap[Skill];
+                if (RawSkill != PowerSkill.Internal_None)
+                    Result += TextMaps.PowerSkillTextMap[RawSkill];
 
                 return Result;
             }
@@ -46,9 +47,24 @@ namespace PgJsonObjects
             bool IsConnected = base.ConnectFields(ErrorInfo, Parent, AllTables);
             Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
-            ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, LinkBack);
+            Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, Skill, ref IsSkillParsed, ref IsConnected, LinkBack);
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+
+            AddInt((int?)Type, data, ref offset, BaseOffset, 0);
+            AddObject(Skill, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddInt(RawSkillLevel, data, ref offset, BaseOffset, 8);
+
+            FinishSerializing(data, ref offset, BaseOffset, 12, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

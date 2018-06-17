@@ -64,6 +64,6 @@ namespace PgJsonObjects
         public Skill WorkOrderSkill { get { return GetObject(128, ref _WorkOrderSkill); } } private Skill _WorkOrderSkill;
         public QuestCollection FollowUpQuestList { get { return GetObjectList(132, ref _FollowUpQuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _FollowUpQuestList;
         public QuestRequirementCollection QuestRequirementList { get { return GetObjectList(136, ref _QuestRequirementList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementList;
-        public QuestRequirementCollection QuestRequirementToSustainList { get { return GetObjectList(144, ref _QuestRequirementToSustainList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementToSustainList;
+        public QuestRequirementCollection QuestRequirementToSustainList { get { return GetObjectList(140, ref _QuestRequirementToSustainList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementToSustainList;
     }
 }

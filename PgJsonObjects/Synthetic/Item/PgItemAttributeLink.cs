@@ -7,7 +7,7 @@
         {
         }
 
-        public float AttributeEffect { get { return (float)GetDouble(0); } }
-        public Attribute Link { get { return GetObject(4, ref _Link); } } private Attribute _Link;
+        public float AttributeEffect { get { return (float)GetDouble(4); } }
+        public Attribute Link { get { return GetObject(8, ref _Link); } } private Attribute _Link;
     }
 }

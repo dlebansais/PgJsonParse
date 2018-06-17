@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class EquipmentBoostServerInfoEffect : ServerInfoEffect
+    public class EquipmentBoostServerInfoEffect : ServerInfoEffect, IPgEquipmentBoostServerInfoEffect
     {
         public EquipmentBoostServerInfoEffect(ServerInfoEffectType ServerInfoEffect, int? RawLevel, ItemEffect RawAttribute, float? RawAttributeEffect)
             : base(ServerInfoEffect, RawLevel)
@@ -15,7 +15,7 @@ namespace PgJsonObjects
 
         public ItemEffect Boost { get; private set; }
         public float AttributeEffect { get { return RawAttributeEffect.HasValue ? RawAttributeEffect.Value : 0; } }
-        public float? RawAttributeEffect;
+        public float? RawAttributeEffect { get; private set; }
 
         public override string RawEffect
         {
@@ -59,6 +59,21 @@ namespace PgJsonObjects
             }
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+
+            AddInt((int?)Type, data, ref offset, BaseOffset, 0);
+            AddObject(Boost, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddDouble(RawAttributeEffect, data, ref offset, BaseOffset, 8);
+
+            FinishSerializing(data, ref offset, BaseOffset, 12, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

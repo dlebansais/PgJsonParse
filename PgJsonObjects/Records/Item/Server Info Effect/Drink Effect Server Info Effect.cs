@@ -1,16 +1,18 @@
 ﻿namespace PgJsonObjects
 {
-    public class DrinkEffectServerInfoEffect : ServerInfoEffect
+    public class DrinkEffectServerInfoEffect : ServerInfoEffect, IPgDrinkEffectServerInfoEffect
     {
         public DrinkEffectServerInfoEffect(ServerInfoEffectType ServerInfoEffect, int? RawLevel, int DrinkATValue, int AlcoholPowerValue)
             : base(ServerInfoEffect, RawLevel)
         {
-            this.DrinkATValue = DrinkATValue;
-            this.AlcoholPowerValue = AlcoholPowerValue;
+            RawDrinkATValue = DrinkATValue;
+            RawAlcoholPowerValue = AlcoholPowerValue;
         }
 
-        public int DrinkATValue { get; private set; }
-        public int AlcoholPowerValue { get; private set; }
+        public int DrinkATValue { get { return RawDrinkATValue.HasValue ? RawDrinkATValue.Value : 0; } }
+        public int? RawDrinkATValue { get; private set; }
+        public int AlcoholPowerValue { get { return RawAlcoholPowerValue.HasValue ? RawAlcoholPowerValue.Value : 0; } }
+        public int? RawAlcoholPowerValue { get; private set; }
 
         public override string RawEffect
         {
@@ -19,5 +21,19 @@
                 return base.RawEffect + "(" + DrinkATValue + "," + AlcoholPowerValue + ")";
             }
         }
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+
+            AddInt((int?)Type, data, ref offset, BaseOffset, 0);
+            AddInt(RawDrinkATValue, data, ref offset, BaseOffset, 4);
+            AddInt(RawAlcoholPowerValue, data, ref offset, BaseOffset, 8);
+
+            FinishSerializing(data, ref offset, BaseOffset, 12, null, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
+        #endregion
     }
 }

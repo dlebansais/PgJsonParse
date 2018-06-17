@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class TemporaryServerInfoEffect : ServerInfoEffect
+    public class TemporaryServerInfoEffect : ServerInfoEffect, IPgTemporaryServerInfoEffect
     {
         public TemporaryServerInfoEffect(ServerInfoEffectType ServerInfoEffect, int? RawLevel, ItemEffect RawAttribute, float? RawAttributeEffect, int? RawDuration)
             : base(ServerInfoEffect, RawLevel)
@@ -16,9 +16,9 @@ namespace PgJsonObjects
 
         public ItemEffect Boost { get; private set; }
         public float AttributeEffect { get { return RawAttributeEffect.HasValue ? RawAttributeEffect.Value : 0; } }
-        public float? RawAttributeEffect;
+        public float? RawAttributeEffect { get; private set; }
         public int Duration { get { return RawDuration.HasValue ? RawDuration.Value : 0; } }
-        public int? RawDuration;
+        public int? RawDuration { get; private set; }
 
         public override string RawEffect
         {
@@ -62,6 +62,22 @@ namespace PgJsonObjects
             }
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+
+            AddInt((int?)Type, data, ref offset, BaseOffset, 0);
+            AddObject(Boost, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddDouble(RawAttributeEffect, data, ref offset, BaseOffset, 8);
+            AddInt(RawDuration, data, ref offset, BaseOffset, 12);
+
+            FinishSerializing(data, ref offset, BaseOffset, 16, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

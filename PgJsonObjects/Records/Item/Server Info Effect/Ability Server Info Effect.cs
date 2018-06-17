@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AbilityServerInfoEffect : ServerInfoEffect
+    public class AbilityServerInfoEffect : ServerInfoEffect, IPgAbilityServerInfoEffect
     {
         public AbilityServerInfoEffect(ServerInfoEffectType type, int? RawLevel, string RawBestowAbility)
             : base(type, RawLevel)
@@ -48,6 +48,20 @@ namespace PgJsonObjects
             BestowAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawBestowAbility, BestowAbility, ref IsRawBestowAbilityParsed, ref IsConnected, LinkBack);
 
             return IsConnected;
+        }
+        #endregion
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+
+            AddInt((int?)Type, data, ref offset, BaseOffset, 0);
+            AddObject(BestowAbility, data, ref offset, BaseOffset, 4, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }
