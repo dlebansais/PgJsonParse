@@ -746,5 +746,15 @@ namespace PgJsonObjects
                 Entry.Value.Sort(GenericJsonObject.SortByName);
         }
         #endregion
+
+        public string GetSearchResultTitleTemplateName()
+        {
+            return "SearchResult" + typeof(T).Name + "TitleTemplate";
+        }
+
+        public string GetSearchResultContentTemplateName()
+        {
+            return "SearchResult" + typeof(T).Name + "ContentTemplate";
+        }
     }
 }

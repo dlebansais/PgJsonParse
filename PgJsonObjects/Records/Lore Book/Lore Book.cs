@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class LoreBook : GenericJsonObject<LoreBook>
+    public class LoreBook : GenericJsonObject<LoreBook>, ISearchableObject
     {
         #region Direct Properties
         public string Title { get; private set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class DirectedGoal : GenericJsonObject<DirectedGoal>
+    public class DirectedGoal : GenericJsonObject<DirectedGoal>, ISearchableObject
     {
         #region Direct Properties
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }

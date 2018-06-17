@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Skill : GenericJsonObject<Skill>, IPgSkill
+    public class Skill : GenericJsonObject<Skill>, IPgSkill, ISearchableObject
     {
         #region Direct Properties
         public PowerSkill CombatSkill { get; private set; }

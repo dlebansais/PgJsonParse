@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Item : GenericJsonObject<Item>, IPgItem
+    public class Item : GenericJsonObject<Item>, IPgItem, ISearchableObject
     {
         #region Direct Properties
         public Ability BestowAbility { get; private set; }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Ability : GenericJsonObject<Ability>, IPgAbility
+    public class Ability : GenericJsonObject<Ability>, IPgAbility, ISearchableObject
     {
         #region Direct Properties
         public AbilityAnimation Animation { get; private set; }

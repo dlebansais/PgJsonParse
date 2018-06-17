@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Recipe : GenericJsonObject<Recipe>, IPgRecipe
+    public class Recipe : GenericJsonObject<Recipe>, IPgRecipe, ISearchableObject
     {
         #region Direct Properties
         public string Description { get; private set; }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Effect : GenericJsonObject<Effect>
+    public class Effect : GenericJsonObject<Effect>, ISearchableObject
     {
         #region Direct Properties
         public string Name { get; private set; }

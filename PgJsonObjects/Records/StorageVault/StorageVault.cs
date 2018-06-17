@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class StorageVault : GenericJsonObject<StorageVault>, IPgStorageVault
+    public class StorageVault : GenericJsonObject<StorageVault>, IPgStorageVault, ISearchableObject
     {
         #region Direct Properties
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
