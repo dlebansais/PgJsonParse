@@ -53,14 +53,14 @@ namespace PgJsonObjects
                 int Index = 0;
                 while (Index < RawRequirementQuestList.Count)
                 {
-                    Quest RequirementQuest = null;
+                    IPgQuest RequirementQuest = null;
                     bool IsParsed = false;
                     RequirementQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementQuestList[0], RequirementQuest, ref IsParsed, ref IsConnected, Parent as IBackLinkable);
 
                     if (RequirementQuest != null)
                     {
                         RawRequirementQuestList.RemoveAt(0);
-                        QuestList.Add(RequirementQuest);
+                        QuestList.Add(RequirementQuest as Quest);
                     }
                     else
                         Index++;

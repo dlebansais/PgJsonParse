@@ -2,14 +2,19 @@
 {
     public class PgAbilityRequirementEquippedItemKeyword: GenericPgObject<PgAbilityRequirementEquippedItemKeyword>, IPgAbilityRequirementEquippedItemKeyword
     {
-        public PgAbilityRequirementEquippedItemKeyword(byte[] data, int offset)
+        public PgAbilityRequirementEquippedItemKeyword(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgAbilityRequirementEquippedItemKeyword CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementEquippedItemKeyword CreateItem(byte[] data, ref int offset)
         {
-            return new PgAbilityRequirementEquippedItemKeyword(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgAbilityRequirementEquippedItemKeyword CreateNew(byte[] data, ref int offset)
+        {
+            return new PgAbilityRequirementEquippedItemKeyword(data, ref offset);
         }
 
         public int MinCount { get { return RawMinCount.HasValue ? RawMinCount.Value : 0; } }

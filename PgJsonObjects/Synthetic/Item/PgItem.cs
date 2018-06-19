@@ -4,18 +4,23 @@ namespace PgJsonObjects
 {
     public class PgItem : MainPgObject<PgItem>, IPgItem
     {
-        public PgItem(byte[] data, int offset)
+        public PgItem(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgItem CreateItem(byte[] data, int offset)
+        protected override PgItem CreateItem(byte[] data, ref int offset)
         {
-            return new PgItem(data, offset);
+            return CreateNew(data, ref offset);
         }
 
-        public Ability BestowAbility { get { return GetObject(0, ref _BestowAbility); } } private Ability _BestowAbility;
-        public Quest BestowQuest { get { return GetObject(4, ref _BestowQuest); } } private Quest _BestowQuest;
+        public static PgItem CreateNew(byte[] data, ref int offset)
+        {
+            return new PgItem(data, ref offset);
+        }
+
+        public IPgAbility BestowAbility { get { return GetObject(0, ref _BestowAbility, PgAbility.CreateNew); } } private IPgAbility _BestowAbility;
+        public IPgQuest BestowQuest { get { return GetObject(4, ref _BestowQuest, PgQuest.CreateNew); } } private IPgQuest _BestowQuest;
         public int CraftPoints { get { return RawCraftPoints.HasValue ? RawCraftPoints.Value : 0; } }
         public int? RawCraftPoints { get { return GetInt(8); } }
         public int CraftingTargetLevel { get { return RawCraftingTargetLevel.HasValue ? RawCraftingTargetLevel.Value : 0; } }
@@ -52,7 +57,7 @@ namespace PgJsonObjects
         public List<RecipeItemKey> ItemKeyList { get { return GetEnumList(60, ref _ItemKeyList); } } private List<RecipeItemKey> _ItemKeyList;
         public List<ItemKeyword> EmptyKeywordList { get { return GetEnumList(64, ref _EmptyKeywordList); } } private List<ItemKeyword> _EmptyKeywordList;
         public List<ItemKeyword> RepeatedKeywordList { get { return GetEnumList(68, ref _RepeatedKeywordList); } } private List<ItemKeyword> _RepeatedKeywordList;
-        public Quest MacGuffinQuestName { get { return GetObject(72, ref _MacGuffinQuestName); } } private Quest _MacGuffinQuestName;
+        public IPgQuest MacGuffinQuestName { get { return GetObject(72, ref _MacGuffinQuestName, PgQuest.CreateNew); } } private IPgQuest _MacGuffinQuestName;
         public int MaxCarryable { get { return RawMaxCarryable.HasValue ? RawMaxCarryable.Value : 0; } }
         public int? RawMaxCarryable { get { return GetInt(76); } }
         public int MaxOnVendor { get { return RawMaxOnVendor.HasValue ? RawMaxOnVendor.Value : 0; } }
@@ -73,6 +78,6 @@ namespace PgJsonObjects
         public int? RawBestowTitle { get { return GetInt(120); } }
         public int BestowLoreBook { get { return RawBestowLoreBook.HasValue ? RawBestowLoreBook.Value : 0; } }
         public int? RawBestowLoreBook { get { return GetInt(124); } }
-        public LoreBook ConnectedLoreBook { get { return GetObject(128, ref _ConnectedLoreBook); } } private LoreBook _ConnectedLoreBook;
+        public IPgLoreBook ConnectedLoreBook { get { return GetObject(128, ref _ConnectedLoreBook, PgLoreBook.CreateNew); } } private IPgLoreBook _ConnectedLoreBook;
     }
 }

@@ -11,7 +11,7 @@ namespace PgJsonObjects
         public string Prefix { get; private set; }
         public string Suffix { get; private set; }
         public List<ItemSlot> SlotList { get; } = new List<ItemSlot>();
-        public Skill Skill { get; private set; }
+        public IPgSkill Skill { get; private set; }
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; private set; }
         public PowerSkill RawSkill { get; private set; }
@@ -305,7 +305,7 @@ namespace PgJsonObjects
             AddString(Prefix, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(Suffix, data, ref offset, BaseOffset, 4, StoredStringtable);
             AddEnumList(SlotList, data, ref offset, BaseOffset, 8, StoredEnumListTable);
-            AddObject(Skill, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
             AddBool(RawIsUnavailable, data, ref offset, ref BitOffset, BaseOffset, 16, 0);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RawSkill, data, ref offset, BaseOffset, 18);

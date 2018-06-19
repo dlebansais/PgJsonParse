@@ -2,14 +2,19 @@
 {
     public class PgPoetryServerInfoEffect : GenericPgObject<PgPoetryServerInfoEffect>, IPgPoetryServerInfoEffect
     {
-        public PgPoetryServerInfoEffect(byte[] data, int offset)
+        public PgPoetryServerInfoEffect(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgPoetryServerInfoEffect CreateItem(byte[] data, int offset)
+        protected override PgPoetryServerInfoEffect CreateItem(byte[] data, ref int offset)
         {
-            return new PgPoetryServerInfoEffect(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgPoetryServerInfoEffect CreateNew(byte[] data, ref int offset)
+        {
+            return new PgPoetryServerInfoEffect(data, ref offset);
         }
 
         public int PoetryXpValue { get { return RawPoetryXpValue.HasValue ? RawPoetryXpValue.Value : 0; } }

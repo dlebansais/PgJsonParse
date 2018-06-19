@@ -6,7 +6,7 @@ namespace PgJsonObjects
     public class QuestRewardItem : GenericJsonObject<QuestRewardItem>, IPgQuestRewardItem
     {
         #region Direct Properties
-        public Item QuestItem { get; private set; }
+        public IPgItem QuestItem { get; private set; }
         public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 1; } }
         public int? RawStackSize { get; private set; }
         public bool HasStackSize { get { return RawStackSize.HasValue && RawStackSize.Value > 1; } }
@@ -79,7 +79,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(QuestItem, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddInt(RawStackSize, data, ref offset, BaseOffset, 4);
 
             FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);

@@ -2,7 +2,7 @@
 {
     public interface IPgSkillAndLevelServerInfoEffect
     {
-        Skill Skill { get; }
+        IPgSkill Skill { get; }
         int SkillLevel { get; }
         int? RawSkillLevel { get; }
     }

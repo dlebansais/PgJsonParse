@@ -5,6 +5,6 @@
         string SkillName { get; }
         int SkillLevel { get; }
         int? RawSkillLevel { get; }
-        Skill Link { get; }
+        IPgSkill Link { get; }
     }
 }

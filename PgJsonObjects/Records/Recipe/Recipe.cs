@@ -16,11 +16,11 @@ namespace PgJsonObjects
         public string InternalName { get; private set; }
         public string Name { get; private set; }
         public RecipeItemCollection ResultItemList { get; } = new RecipeItemCollection();
-        public Skill Skill { get; private set; }
+        public IPgSkill Skill { get; private set; }
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; private set; }
         public List<RecipeResultEffect> ResultEffectList { get; } = new List<RecipeResultEffect>();
-        public Skill SortSkill { get; private set; }
+        public IPgSkill SortSkill { get; private set; }
         public List<RecipeKeyword> KeywordList { get; } = new List<RecipeKeyword>();
         public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
         public int? RawUsageDelay { get; private set; }
@@ -35,17 +35,17 @@ namespace PgJsonObjects
         public int ResetTimeInSeconds { get { return RawResetTimeInSeconds.HasValue ? RawResetTimeInSeconds.Value : 0; } }
         public int? RawResetTimeInSeconds { get; private set; }
         public uint? DyeColor { get; private set; }
-        public Skill RewardSkill { get; private set; }
+        public IPgSkill RewardSkill { get; private set; }
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get; private set; }
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
         public int? RawRewardSkillXpFirstTime { get; private set; }
-        public Recipe SharesResetTimerWith { get; private set; }
+        public IPgRecipe SharesResetTimerWith { get; private set; }
         public string ItemMenuLabel { get; private set; }
         public string RawItemMenuCategory { get; private set; }
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get; private set; }
-        public Recipe PrereqRecipe { get; private set; }
+        public IPgRecipe PrereqRecipe { get; private set; }
         public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
         public bool? RawIsItemMenuKeywordReqSufficient { get; private set; }
         public ItemKeyword RecipeItemKeyword { get; private set; }
@@ -952,7 +952,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static Recipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, string RawRecipeName, Recipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgRecipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, string RawRecipeName, IPgRecipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawRecipeParsed)
                 return ParsedRecipe;
@@ -1019,7 +1019,7 @@ namespace PgJsonObjects
             return RecipeList;
         }
 
-        public static Recipe ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, int RecipeId, Recipe Recipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgRecipe ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, int RecipeId, IPgRecipe Recipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawRecipeParsed)
                 return Recipe;
@@ -1094,13 +1094,13 @@ namespace PgJsonObjects
             AddString(InternalName, data, ref offset, BaseOffset, 12, StoredStringtable);
             AddString(Name, data, ref offset, BaseOffset, 16, StoredStringtable);
             AddObjectList(ResultItemList, data, ref offset, BaseOffset, 20, StoredObjectListTable);
-            AddObject(Skill, data, ref offset, BaseOffset, 24, StoredObjectTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
             AddInt(RawSkillLevelReq, data, ref offset, BaseOffset, 28);
 
             offset += 4;
             //AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
 
-            AddObject(SortSkill, data, ref offset, BaseOffset, 36, StoredObjectTable);
+            AddObject(SortSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 36, StoredObjectTable);
             AddEnumList(KeywordList, data, ref offset, BaseOffset, 40, StoredEnumListTable);
             AddInt(RawUsageDelay, data, ref offset, BaseOffset, 44);
             AddString(UsageDelayMessage, data, ref offset, BaseOffset, 48, StoredStringtable);
@@ -1112,14 +1112,14 @@ namespace PgJsonObjects
             AddString(UsageAnimationEnd, data, ref offset, BaseOffset, 68, StoredStringtable);
             AddInt(RawResetTimeInSeconds, data, ref offset, BaseOffset, 72);
             AddUInt(DyeColor, data, ref offset, BaseOffset, 76);
-            AddObject(RewardSkill, data, ref offset, BaseOffset, 80, StoredObjectTable);
+            AddObject(RewardSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 80, StoredObjectTable);
             AddInt(RawRewardSkillXp, data, ref offset, BaseOffset, 84);
             AddInt(RawRewardSkillXpFirstTime, data, ref offset, BaseOffset, 88);
-            AddObject(SharesResetTimerWith, data, ref offset, BaseOffset, 92, StoredObjectTable);
+            AddObject(SharesResetTimerWith as ISerializableJsonObject, data, ref offset, BaseOffset, 92, StoredObjectTable);
             AddString(ItemMenuLabel, data, ref offset, BaseOffset, 96, StoredStringtable);
             AddString(RawItemMenuCategory, data, ref offset, BaseOffset, 100, StoredStringtable);
             AddInt(RawItemMenuCategoryLevel, data, ref offset, BaseOffset, 104);
-            AddObject(PrereqRecipe, data, ref offset, BaseOffset, 108, StoredObjectTable);
+            AddObject(PrereqRecipe as ISerializableJsonObject, data, ref offset, BaseOffset, 108, StoredObjectTable);
             AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 112, 0);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 114);

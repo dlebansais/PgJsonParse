@@ -9,9 +9,9 @@ namespace PgJsonObjects
             return this[index];
         }
 
-        public static PgDoT CreateItem(byte[] data, int offset)
+        public static PgDoT CreateItem(byte[] data, ref int offset)
         {
-            return new PgDoT(data, offset);
+            return new PgDoT(data, ref offset);
         }
     }
 }

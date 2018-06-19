@@ -24,7 +24,7 @@ namespace PgJsonObjects
         public string AttributeName { get; private set; }
         public float AttributeEffect { get; private set; }
         public FloatFormat AttributeEffectFormat { get; private set; }
-        public Attribute Link { get; private set; }
+        public IPgAttribute Link { get; private set; }
         public bool IsParsed { get; private set; }
         
         public override string AsEffectString()
@@ -32,7 +32,7 @@ namespace PgJsonObjects
             return "{" + AttributeName + "}{" + Tools.FloatToString(AttributeEffect, FloatFormat.Standard) + "}";
         }
 
-        public void SetLink(Attribute Link)
+        public void SetLink(IPgAttribute Link)
         {
             this.Link = Link;
             IsParsed = true;
@@ -59,7 +59,7 @@ namespace PgJsonObjects
 
         public string FriendlyName
         {
-            get { return Link.LabelRippedOfPercent; }
+            get { return (Link as Attribute).LabelRippedOfPercent; }
         }
 
         public string FriendlyEffect
@@ -68,7 +68,7 @@ namespace PgJsonObjects
             {
                 string AttributeEffectString;
 
-                if (Link.IsLabelWithPercent)
+                if ((Link as Attribute).IsLabelWithPercent)
                 {
                     AttributeEffectString = Tools.FloatToString(AttributeEffect * 100, AttributeEffectFormat);
 
@@ -114,7 +114,7 @@ namespace PgJsonObjects
 
             AddInt(1, data, ref offset, BaseOffset, 0);
             AddDouble(AttributeEffect, data, ref offset, BaseOffset, 4);
-            AddObject(Link, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddObject(Link as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 12, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

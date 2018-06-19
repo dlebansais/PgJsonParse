@@ -40,7 +40,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public Skill ConnectedSkill { get; private set; }
+        public IPgSkill ConnectedSkill { get; private set; }
         public RecipeCollection RecipeTargetList { get; private set; } = new RecipeCollection();
         public ItemCollection ResultItemList { get; private set; } = new ItemCollection();
 
@@ -98,7 +98,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObject(ConnectedSkill, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(ConnectedSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObjectList(RecipeTargetList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
             AddObjectList(ResultItemList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
 

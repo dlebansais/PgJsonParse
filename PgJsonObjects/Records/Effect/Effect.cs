@@ -156,7 +156,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        public static Effect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> EffectTable, string RawEffectName, Effect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgEffect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> EffectTable, string RawEffectName, IPgEffect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawEffectParsed)
                 return ParsedEffect;

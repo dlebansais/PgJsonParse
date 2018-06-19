@@ -3,14 +3,14 @@
     public class ItemSource : GenericSource
     {
         #region Init
-        public ItemSource(Item Item)
+        public ItemSource(IPgItem Item)
         {
             this.Item = Item;
         }
         #endregion
 
         #region Properties
-        public Item Item { get; private set; }
+        public IPgItem Item { get; private set; }
         #endregion
     }
 }

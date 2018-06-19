@@ -4,14 +4,19 @@ namespace PgJsonObjects
 {
     public class PgLoreBook : MainPgObject<PgLoreBook>, IPgLoreBook
     {
-        public PgLoreBook(byte[] data, int offset)
+        public PgLoreBook(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgLoreBook CreateItem(byte[] data, int offset)
+        protected override PgLoreBook CreateItem(byte[] data, ref int offset)
         {
-            return new PgLoreBook(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgLoreBook CreateNew(byte[] data, ref int offset)
+        {
+            return new PgLoreBook(data, ref offset);
         }
 
         public string Title { get { return GetString(0); } }

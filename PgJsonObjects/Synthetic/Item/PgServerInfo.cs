@@ -2,14 +2,19 @@
 {
     public class PgServerInfo : GenericPgObject<PgServerInfo>, IPgServerInfo
     {
-        public PgServerInfo(byte[] data, int offset)
+        public PgServerInfo(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgServerInfo CreateItem(byte[] data, int offset)
+        protected override PgServerInfo CreateItem(byte[] data, ref int offset)
         {
-            return new PgServerInfo(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgServerInfo CreateNew(byte[] data, ref int offset)
+        {
+            return new PgServerInfo(data, ref offset);
         }
 
         public ServerInfoEffectCollection ServerInfoEffectList { get { return GetObjectList(0, ref _ServerInfoEffectList, ServerInfoEffectCollection.CreateItem, () => new ServerInfoEffectCollection()); } } private ServerInfoEffectCollection _ServerInfoEffectList;

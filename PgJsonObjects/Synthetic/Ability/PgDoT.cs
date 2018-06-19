@@ -4,14 +4,19 @@ namespace PgJsonObjects
 {
     public class PgDoT : GenericPgObject<PgDoT>, IPgDoT
     {
-        public PgDoT(byte[] data, int offset)
+        public PgDoT(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgDoT CreateItem(byte[] data, int offset)
+        protected override PgDoT CreateItem(byte[] data, ref int offset)
         {
-            return new PgDoT(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgDoT CreateNew(byte[] data, ref int offset)
+        {
+            return new PgDoT(data, ref offset);
         }
 
         public int DamagePerTick { get { return RawDamagePerTick.HasValue ? RawDamagePerTick.Value : 0; } }

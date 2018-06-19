@@ -9,9 +9,9 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static PgRecipeCost CreateItem(byte[] data, int offset)
+        public static PgRecipeCost CreateItem(byte[] data, ref int offset)
         {
-            return new PgRecipeCost(data, offset);
+            return PgRecipeCost.CreateNew(data, ref offset);
         }
     }
 }

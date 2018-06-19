@@ -2,19 +2,24 @@
 {
     public class PgStorageVault : MainPgObject<PgStorageVault>, IPgStorageVault
     {
-        public PgStorageVault(byte[] data, int offset)
+        public PgStorageVault(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgStorageVault CreateItem(byte[] data, int offset)
+        protected override PgStorageVault CreateItem(byte[] data, ref int offset)
         {
-            return new PgStorageVault(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgStorageVault CreateNew(byte[] data, ref int offset)
+        {
+            return new PgStorageVault(data, ref offset);
         }
 
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get { return GetInt(0); } }
-        public GameNpc MatchingNpc { get { return GetObject(4, ref _MatchingNpc); } } private GameNpc _MatchingNpc;
+        public IPgGameNpc MatchingNpc { get { return GetObject(4, ref _MatchingNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _MatchingNpc;
         public int NumSlots { get { return RawNumSlots.HasValue ? RawNumSlots.Value : 0; } }
         public int? RawNumSlots { get { return GetInt(8); } }
         public string RequirementDescription { get { return GetString(12); } }

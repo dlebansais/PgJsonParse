@@ -4,7 +4,7 @@ namespace PgJsonObjects
 {
     public class SkillRewardBonusLevel : SkillRewardCommon
     {
-        public SkillRewardBonusLevel(int RewardLevel, List<Race> RaceRestrictionList, Skill Skill)
+        public SkillRewardBonusLevel(int RewardLevel, List<Race> RaceRestrictionList, IPgSkill Skill)
             : base(RewardLevel)
         {
             this.RaceRestrictionList = RaceRestrictionList;
@@ -12,7 +12,7 @@ namespace PgJsonObjects
         }
 
         public List<Race> RaceRestrictionList { get; private set; }
-        public Skill Skill { get; private set; }
+        public IPgSkill Skill { get; private set; }
 
         public override string TextContent
         {

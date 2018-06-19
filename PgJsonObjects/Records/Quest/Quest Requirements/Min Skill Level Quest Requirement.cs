@@ -12,7 +12,7 @@ namespace PgJsonObjects
             RawSkillLevel = RawRequirementSkillLevel;
         }
 
-        public Skill ConnectedSkill { get; private set; }
+        public IPgSkill ConnectedSkill { get; private set; }
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
         public int? RawSkillLevel { get; private set; }
         private PowerSkill Skill;
@@ -64,7 +64,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
-            AddObject(ConnectedSkill, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(ConnectedSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
             AddInt(RawSkillLevel, data, ref offset, BaseOffset, 8);
 
             FinishSerializing(data, ref offset, BaseOffset, 12, null, StoredObjectTable, null, null, null, null, null, null);

@@ -17,12 +17,12 @@ namespace PgJsonObjects
             Offset = offset;
         }
 
-        public IDeserializablePgObject Create(byte[] data, int offset)
+        public IDeserializablePgObject Create(byte[] data, ref int offset)
         {
-            return CreateItem(data, offset);
+            return CreateItem(data, ref offset);
         }
 
-        protected abstract TPg CreateItem(byte[] data, int offset);
+        protected abstract TPg CreateItem(byte[] data, ref int offset);
 
         public virtual void Init()
         {
@@ -41,7 +41,7 @@ namespace PgJsonObjects
 
         protected T GetEnum<T>(int valueOffset)
         {
-            return (T)(object)BitConverter.ToUInt16(Data, Offset + valueOffset);
+            return (T)(object)(int)BitConverter.ToUInt16(Data, Offset + valueOffset);
         }
 
         protected int? GetInt(int valueOffset)
@@ -91,12 +91,12 @@ namespace PgJsonObjects
             return Result;
         }
 
-        protected T GetObject<T>(int redirectionOffset, ref T cachedValue)
+        protected T GetObject<T>(int redirectionOffset, ref T cachedValue, PgObjectCreator<T> createNewObject)
         {
             if (cachedValue == null)
             {
                 int StoredOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
-                cachedValue = CreateObject<T>(Data, StoredOffset);
+                cachedValue = createNewObject(Data, ref StoredOffset);
             }
 
             return cachedValue;
@@ -132,9 +132,8 @@ namespace PgJsonObjects
                 cachedList = new List<T>();
                 for (int i = 0; i < Count; i++)
                 {
-                    int StoredValue = BitConverter.ToUInt16(Data, i * 2);
-                    T Value = (T)(object)StoredValue;
-                    cachedList.Add(Value);
+                    T StoredValue = (T)(object)(int)BitConverter.ToUInt16(Data, i * 2);
+                    cachedList.Add(StoredValue);
                 }
             }
 
@@ -200,7 +199,7 @@ namespace PgJsonObjects
             return cachedList;
         }
 
-        protected TList GetObjectList<T, TList>(int redirectionOffset, ref TList cachedList, Func<byte[], int, T> createNewObject, Func<TList> createNewList)
+        protected TList GetObjectList<T, TList>(int redirectionOffset, ref TList cachedList, PgObjectCreator<T> createNewObject, Func<TList> createNewList)
         {
             if (cachedList == null)
             {
@@ -215,7 +214,7 @@ namespace PgJsonObjects
                 {
                     int StoredOffset = Offset + BitConverter.ToInt32(Data, ListOffset + i * 4);
 
-                    T Object = createNewObject(Data, StoredOffset);
+                    T Object = createNewObject(Data, ref StoredOffset);
                     asList.Add(Object);
                 }
             }
@@ -223,10 +222,10 @@ namespace PgJsonObjects
             return cachedList;
         }
 
-        public static T CreateObject<T>(byte[] data, int offsetObject)
+        public static T CreateObject<T>(byte[] data, ref int offsetObject)
         {
             if (typeof(T) == typeof(PgAbility))
-                return (T)(object)(new PgAbility(data, offsetObject));
+                return (T)(object)(new PgAbility(data, ref offsetObject));
             else
                 return default(T);
         }

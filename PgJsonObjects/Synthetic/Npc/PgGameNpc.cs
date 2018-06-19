@@ -2,14 +2,19 @@
 {
     public class PgGameNpc : MainPgObject<PgGameNpc>, IPgGameNpc
     {
-        public PgGameNpc(byte[] data, int offset)
+        public PgGameNpc(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgGameNpc CreateItem(byte[] data, int offset)
+        protected override PgGameNpc CreateItem(byte[] data, ref int offset)
         {
-            return new PgGameNpc(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgGameNpc CreateNew(byte[] data, ref int offset)
+        {
+            return new PgGameNpc(data, ref offset);
         }
 
         public string Name { get { return GetString(0); } }

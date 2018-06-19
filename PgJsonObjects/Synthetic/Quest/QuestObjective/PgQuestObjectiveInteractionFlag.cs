@@ -2,14 +2,19 @@
 {
     public class PgQuestObjectiveInteractionFlag : GenericPgObject<PgQuestObjectiveInteractionFlag>, IPgQuestObjectiveInteractionFlag
     {
-        public PgQuestObjectiveInteractionFlag(byte[] data, int offset)
+        public PgQuestObjectiveInteractionFlag(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgQuestObjectiveInteractionFlag CreateItem(byte[] data, int offset)
+        protected override PgQuestObjectiveInteractionFlag CreateItem(byte[] data, ref int offset)
         {
-            return new PgQuestObjectiveInteractionFlag(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgQuestObjectiveInteractionFlag CreateNew(byte[] data, ref int offset)
+        {
+            return new PgQuestObjectiveInteractionFlag(data, ref offset);
         }
 
         public string InteractionFlag { get { return GetString(0); } }

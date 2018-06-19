@@ -7,7 +7,7 @@ namespace PgJsonObjects
     public class AI : MainJsonObject<AI>, IPgAI
     {
         #region Direct Properties
-        public AIAbilitySet Abilities { get; private set; }
+        public IPgAIAbilitySet Abilities { get; private set; }
         public string Comment { get; private set; }
         public float? RawMinDelayBetweenAbilities { get; private set; }
         public bool? RawIsMelee { get; private set; }
@@ -25,7 +25,7 @@ namespace PgJsonObjects
             { "Abilities", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => Abilities = JsonObjectParser<AIAbilitySet>.Parse("Abilities", value, errorInfo),
-                GetObject = () => Abilities } },
+                GetObject = () => Abilities as IObjectContentGenerator } },
             { "Melee", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsMelee = value,
@@ -95,7 +95,7 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(Abilities, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(Abilities as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddString(Comment, data, ref offset, BaseOffset, 4, StoredStringtable);
             AddDouble(RawMinDelayBetweenAbilities, data, ref offset, BaseOffset, 8);
             AddBool(RawIsMelee, data, ref offset, ref BitOffset, BaseOffset, 12, 0);

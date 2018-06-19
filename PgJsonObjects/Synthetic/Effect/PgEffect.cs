@@ -4,14 +4,19 @@ namespace PgJsonObjects
 {
     public class PgEffect : MainPgObject<PgEffect>, IPgEffect
     {
-        public PgEffect(byte[] data, int offset)
+        public PgEffect(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgEffect CreateItem(byte[] data, int offset)
+        protected override PgEffect CreateItem(byte[] data, ref int offset)
         {
-            return new PgEffect(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgEffect CreateNew(byte[] data, ref int offset)
+        {
+            return new PgEffect(data, ref offset);
         }
 
         public string Name { get { return GetString(0); } }

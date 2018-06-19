@@ -2,23 +2,28 @@
 {
     public class PgAbilitySource : MainPgObject<PgAbilitySource>, IPgAbilitySource
     {
-        public PgAbilitySource(byte[] data, int offset)
+        public PgAbilitySource(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgAbilitySource CreateItem(byte[] data, int offset)
+        protected override PgAbilitySource CreateItem(byte[] data, ref int offset)
         {
-            return new PgAbilitySource(data, offset);
+            return CreateNew(data, ref offset);
         }
 
-        public Ability ConnectedAbility { get { return GetObject(0, ref _ConnectedAbility); } } private Ability _ConnectedAbility;
-        public Skill SkillTypeId { get { return GetObject(4, ref _SkillTypeId); } } private Skill _SkillTypeId;
-        public Item ConnectedItem { get { return GetObject(8, ref _ConnectedItem); } } private Item _ConnectedItem;
-        public GameNpc Npc { get { return GetObject(12, ref _Npc); } } private GameNpc _Npc;
-        public Effect ConnectedEffect { get { return GetObject(16, ref _ConnectedEffect); } } private Effect _ConnectedEffect;
-        public Recipe ConnectedRecipeEffect { get { return GetObject(20, ref _ConnectedRecipeEffect); } } private Recipe _ConnectedRecipeEffect;
-        public Quest ConnectedQuest { get { return GetObject(24, ref _ConnectedQuest); } } private Quest _ConnectedQuest;
+        public static PgAbilitySource CreateNew(byte[] data, ref int offset)
+        {
+            return new PgAbilitySource(data, ref offset);
+        }
+
+        public IPgAbility ConnectedAbility { get { return GetObject(0, ref _ConnectedAbility, PgAbility.CreateNew); } } private IPgAbility _ConnectedAbility;
+        public IPgSkill SkillTypeId { get { return GetObject(4, ref _SkillTypeId, PgSkill.CreateNew); } } private IPgSkill _SkillTypeId;
+        public IPgItem ConnectedItem { get { return GetObject(8, ref _ConnectedItem, PgItem.CreateNew); } } private IPgItem _ConnectedItem;
+        public IPgGameNpc Npc { get { return GetObject(12, ref _Npc, PgGameNpc.CreateNew); } } private IPgGameNpc _Npc;
+        public IPgEffect ConnectedEffect { get { return GetObject(16, ref _ConnectedEffect, PgEffect.CreateNew); } } private IPgEffect _ConnectedEffect;
+        public IPgRecipe ConnectedRecipeEffect { get { return GetObject(20, ref _ConnectedRecipeEffect, PgRecipe.CreateNew); } } private IPgRecipe _ConnectedRecipeEffect;
+        public IPgQuest ConnectedQuest { get { return GetObject(24, ref _ConnectedQuest, PgQuest.CreateNew); } } private IPgQuest _ConnectedQuest;
         public SourceTypes Type { get { return GetEnum<SourceTypes>(28); } }
     }
 }

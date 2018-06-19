@@ -4,7 +4,7 @@
     {
         int Id { get; }
         int? RawId { get; }
-        GameNpc MatchingNpc { get; }
+        IPgGameNpc MatchingNpc { get; }
         int NumSlots { get; }
         int? RawNumSlots { get; }
         string RequirementDescription { get; }

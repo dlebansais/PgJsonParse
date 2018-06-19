@@ -2,7 +2,7 @@
 {
     public interface IPgQuestObjectiveLoot
     {
-        Item QuestItem { get; }
+        IPgItem QuestItem { get; }
         ItemCollection ItemList { get; }
         ItemKeyword ItemTarget { get; }
         MonsterTypeTag MonsterTypeTag { get; }

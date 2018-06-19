@@ -5,14 +5,19 @@ namespace PgJsonObjects
 {
     public class PgQuest: MainPgObject<PgQuest>, IPgQuest
     {
-        public PgQuest(byte[] data, int offset)
+        public PgQuest(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgQuest CreateItem(byte[] data, int offset)
+        protected override PgQuest CreateItem(byte[] data, ref int offset)
         {
-            return new PgQuest(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgQuest CreateNew(byte[] data, ref int offset)
+        {
+            return new PgQuest(data, ref offset);
         }
 
         public string InternalName { get { return GetString(0); } }
@@ -26,17 +31,17 @@ namespace PgJsonObjects
         public TimeSpan? RawReuseTime { get { return GetTimeSpan(28); } }
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get { return GetInt(32); } }
-        public GameNpc FavorNpc { get { return GetObject(36, ref _FavorNpc); } } private GameNpc _FavorNpc;
+        public IPgGameNpc FavorNpc { get { return GetObject(36, ref _FavorNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _FavorNpc;
         public string PrefaceText { get { return GetString(40); } }
         public string SuccessText { get { return GetString(44); } }
         public string MidwayText { get { return GetString(48); } }
-        public Ability RewardAbility { get { return GetObject(52, ref _RewardAbility); } } private Ability _RewardAbility;
+        public IPgAbility RewardAbility { get { return GetObject(52, ref _RewardAbility, PgAbility.CreateNew); } } private IPgAbility _RewardAbility;
         public int RewardFavor { get { return RawRewardFavor.HasValue ? RawRewardFavor.Value : 0; } }
         public int? RawRewardFavor { get { return GetInt(56); } }
-        public Skill RewardSkill { get { return GetObject(60, ref _RewardSkill); } } private Skill _RewardSkill;
+        public IPgSkill RewardSkill { get { return GetObject(60, ref _RewardSkill, PgSkill.CreateNew); } } private IPgSkill _RewardSkill;
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get { return GetInt(64); } }
-        public Recipe RewardRecipe { get { return GetObject(68, ref _RewardRecipe); } } private Recipe _RewardRecipe;
+        public IPgRecipe RewardRecipe { get { return GetObject(68, ref _RewardRecipe, PgRecipe.CreateNew); } } private IPgRecipe _RewardRecipe;
         public int RewardGuildXp { get { return RawRewardGuildXp.HasValue ? RawRewardGuildXp.Value : 0; } }
         public int? RawRewardGuildXp { get { return GetInt(72); } }
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
@@ -49,8 +54,8 @@ namespace PgJsonObjects
         public string RewardsNamedLootProfile { get { return GetString(92); } }
         public RecipeCollection PreGiveRecipeList { get { return GetObjectList(96, ref _PreGiveRecipeList, RecipeCollection.CreateItem, () => new RecipeCollection()); } } private RecipeCollection _PreGiveRecipeList;
         public List<QuestKeyword> KeywordList { get { return GetEnumList(100, ref _KeywordList); } } private List<QuestKeyword> _KeywordList;
-        public Effect RewardEffect { get { return GetObject(104, ref _RewardEffect); } } private Effect _RewardEffect;
-        public LoreBook RewardLoreBook { get { return GetObject(108, ref _RewardLoreBook); } } private LoreBook _RewardLoreBook;
+        public IPgEffect RewardEffect { get { return GetObject(104, ref _RewardEffect, PgEffect.CreateNew); } } private IPgEffect _RewardEffect;
+        public IPgLoreBook RewardLoreBook { get { return GetObject(108, ref _RewardLoreBook, PgLoreBook.CreateNew); } } private IPgLoreBook _RewardLoreBook;
         public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
         public bool? RawIsCancellable { get { return GetBool(112, 0); } }
         public bool IsAutoPreface { get { return RawIsAutoPreface.HasValue && RawIsAutoPreface.Value; } }
@@ -66,7 +71,7 @@ namespace PgJsonObjects
         public int? RawNumExpectedParticipants { get { return GetInt(120); } }
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get { return GetInt(124); } }
-        public Skill WorkOrderSkill { get { return GetObject(128, ref _WorkOrderSkill); } } private Skill _WorkOrderSkill;
+        public IPgSkill WorkOrderSkill { get { return GetObject(128, ref _WorkOrderSkill, PgSkill.CreateNew); } } private IPgSkill _WorkOrderSkill;
         public QuestCollection FollowUpQuestList { get { return GetObjectList(132, ref _FollowUpQuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _FollowUpQuestList;
         public QuestRequirementCollection QuestRequirementList { get { return GetObjectList(136, ref _QuestRequirementList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementList;
         public QuestRequirementCollection QuestRequirementToSustainList { get { return GetObjectList(140, ref _QuestRequirementToSustainList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementToSustainList;

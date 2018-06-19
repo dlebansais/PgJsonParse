@@ -10,7 +10,7 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static IGenericPgObject CreateItem(byte[] data, int offset)
+        public static IGenericPgObject CreateItem(byte[] data, ref int offset)
         {
             OtherRequirementType OtherRequirementType = (OtherRequirementType)BitConverter.ToInt32(data, offset);
             offset += 4;
@@ -18,31 +18,31 @@ namespace PgJsonObjects
             switch (OtherRequirementType)
             {
                 case OtherRequirementType.Or:
-                    return new PgOrQuestRequirement(data, offset);
+                    return new PgOrQuestRequirement(data, ref offset);
 
                 case OtherRequirementType.QuestCompleted:
-                    return new PgQuestCompletedQuestRequirement(data, offset);
+                    return new PgQuestCompletedQuestRequirement(data, ref offset);
 
                 case OtherRequirementType.GuildQuestCompleted:
-                    return new PgGuildQuestCompletedQuestRequirement(data, offset);
+                    return new PgGuildQuestCompletedQuestRequirement(data, ref offset);
 
                 case OtherRequirementType.MinFavorLevel:
-                    return new PgMinFavorLevelQuestRequirement(data, offset);
+                    return new PgMinFavorLevelQuestRequirement(data, ref offset);
 
                 case OtherRequirementType.MinSkillLevel:
-                    return new PgMinSkillLevelQuestRequirement(data, offset);
+                    return new PgMinSkillLevelQuestRequirement(data, ref offset);
 
                 case OtherRequirementType.RuntimeBehaviorRuleSet:
-                    return new PgRunTimeBehaviorRuleSetQuestRequirement(data, offset);
+                    return new PgRunTimeBehaviorRuleSetQuestRequirement(data, ref offset);
 
                 case OtherRequirementType.HasEffectKeyword:
-                    return new PgHasEffectKeywordQuestRequirement(data, offset);
+                    return new PgHasEffectKeywordQuestRequirement(data, ref offset);
 
                 case OtherRequirementType.IsLongtimeAnimal:
-                    return new PgIsLongTimeAnimalQuestRequirement(data, offset);
+                    return new PgIsLongTimeAnimalQuestRequirement(data, ref offset);
 
                 case OtherRequirementType.InteractionFlagSet:
-                    return new PgInteractionFlagSetQuestRequirement(data, offset);
+                    return new PgInteractionFlagSetQuestRequirement(data, ref offset);
 
                 default:
                     throw new InvalidOperationException();

@@ -4,7 +4,7 @@ namespace PgJsonObjects
 {
     public class QuestRewardXp : SerializableJsonObject, IPgQuestRewardXp
     {
-        public Skill Skill { get; set; }
+        public IPgSkill Skill { get; set; }
         public int Xp { get { return RawXp.HasValue ? RawXp.Value : 0; } }
         public int? RawXp { get; set; }
 
@@ -17,7 +17,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(Skill, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddInt(RawXp, data, ref offset, BaseOffset, 4);
 
             FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);

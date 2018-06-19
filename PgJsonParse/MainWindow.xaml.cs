@@ -1501,7 +1501,7 @@ namespace PgJsonParse
         private Ability AbilityUpgradeOf(Ability abilityItem)
         {
             if (abilityItem.UpgradeOf != null)
-                return abilityItem.UpgradeOf;
+                return abilityItem.UpgradeOf as Ability;
 
             return AbilityPrevious(abilityItem);
         }
@@ -1509,7 +1509,7 @@ namespace PgJsonParse
         private Ability AbilityPrerequisite(Ability abilityItem)
         {
             if (abilityItem.Prerequisite != null)
-                return abilityItem.Prerequisite;
+                return abilityItem.Prerequisite as Ability;
 
             return AbilityPrevious(abilityItem);
         }
@@ -1520,10 +1520,10 @@ namespace PgJsonParse
             IList<Ability> AbilityList = AbilityDefinition.JsonObjectList as IList<Ability>;
 
             if (abilityItem.UpgradeOf != null)
-                return abilityItem.UpgradeOf;
+                return abilityItem.UpgradeOf as Ability;
 
             if (abilityItem.Prerequisite != null)
-                return abilityItem.Prerequisite;
+                return abilityItem.Prerequisite as Ability;
 
             if (abilityItem.LineIndex <= 0)
                 return null;

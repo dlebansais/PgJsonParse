@@ -47,7 +47,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public Item QuestItem { get; private set; }
+        public IPgItem QuestItem { get; private set; }
         public ItemCollection ItemList { get; private set; } = new ItemCollection();
         public ItemKeyword ItemTarget { get; private set; }
         public MonsterTypeTag MonsterTypeTag { get; private set; }
@@ -100,7 +100,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObject(QuestItem, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObjectList(ItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
             AddEnum(ItemTarget, data, ref offset, BaseOffset, 8);
             AddEnum(MonsterTypeTag, data, ref offset, BaseOffset, 10);

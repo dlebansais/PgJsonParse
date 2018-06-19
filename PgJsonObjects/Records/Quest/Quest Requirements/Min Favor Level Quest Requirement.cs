@@ -22,7 +22,7 @@ namespace PgJsonObjects
             FavorLevel = RequirementFavorLevel;
         }
 
-        public GameNpc FavorNpc { get; private set; }
+        public IPgGameNpc FavorNpc { get; private set; }
         public bool IsEmpty { get { return RawIsEmpty.HasValue && RawIsEmpty.Value; } }
         public bool? RawIsEmpty { get; private set; }
         public Favor FavorLevel { get; private set; }
@@ -94,7 +94,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
-            AddObject(FavorNpc, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(FavorNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
             AddBool(RawIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 8, 0);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(FavorLevel, data, ref offset, BaseOffset, 10);

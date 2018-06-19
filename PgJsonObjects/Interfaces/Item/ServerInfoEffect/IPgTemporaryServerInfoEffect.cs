@@ -2,7 +2,7 @@
 {
     public interface IPgTemporaryServerInfoEffect
     {
-        ItemEffect Boost { get; }
+        IPgItemEffect Boost { get; }
         float AttributeEffect { get; }
         float? RawAttributeEffect { get; }
         int Duration { get; }

@@ -2,14 +2,19 @@
 {
     public class PgXpTableLevel : GenericPgObject<PgXpTableLevel>, IPgXpTableLevel
     {
-        public PgXpTableLevel(byte[] data, int offset)
+        public PgXpTableLevel(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgXpTableLevel CreateItem(byte[] data, int offset)
+        protected override PgXpTableLevel CreateItem(byte[] data, ref int offset)
         {
-            return new PgXpTableLevel(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgXpTableLevel CreateNew(byte[] data, ref int offset)
+        {
+            return new PgXpTableLevel(data, ref offset);
         }
 
         public int Level { get { return RawLevel.Value; } }

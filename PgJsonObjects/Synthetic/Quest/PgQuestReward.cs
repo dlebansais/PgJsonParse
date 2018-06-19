@@ -2,14 +2,19 @@
 {
     public class PgQuestReward : GenericPgObject<PgQuestReward>, IPgQuestReward
     {
-        public PgQuestReward(byte[] data, int offset)
+        public PgQuestReward(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgQuestReward CreateItem(byte[] data, int offset)
+        protected override PgQuestReward CreateItem(byte[] data, ref int offset)
         {
-            return new PgQuestReward(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgQuestReward CreateNew(byte[] data, ref int offset)
+        {
+            return new PgQuestReward(data, ref offset);
         }
 
         public string Type { get { return GetString(0); } }

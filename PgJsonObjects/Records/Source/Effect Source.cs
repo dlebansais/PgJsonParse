@@ -3,14 +3,14 @@
     public class EffectSource : GenericSource
     {
         #region Init
-        public EffectSource(Effect Effect)
+        public EffectSource(IPgEffect Effect)
         {
             this.Effect = Effect;
         }
         #endregion
 
         #region Properties
-        public Effect Effect { get; private set; }
+        public IPgEffect Effect { get; private set; }
         #endregion
     }
 }

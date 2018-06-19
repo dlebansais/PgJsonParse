@@ -4,7 +4,7 @@ namespace PgJsonObjects
 {
     public interface IPgItemBehavior
     {
-        ServerInfo ServerInfo { get; }
+        IPgServerInfo ServerInfo { get; }
         List<ItemUseRequirement> UseRequirementList { get; }
         ItemUseAnimation UseAnimation { get; }
         ItemUseAnimation UseDelayAnimation { get; }

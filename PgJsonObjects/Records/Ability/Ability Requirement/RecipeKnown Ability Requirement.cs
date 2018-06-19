@@ -10,7 +10,7 @@ namespace PgJsonObjects
             this.RawRecipeKnown = RawRecipeKnown;
         }
 
-        public Recipe RecipeKnown { get; private set; }
+        public IPgRecipe RecipeKnown { get; private set; }
         private string RawRecipeKnown;
         private bool IsRawRecipeKnownParsed;
 
@@ -56,7 +56,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
-            AddObject(RecipeKnown, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(RecipeKnown as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

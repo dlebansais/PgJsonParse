@@ -4,7 +4,7 @@ namespace PgJsonObjects
 {
     public class SkillRewardRecipe : SkillRewardCommon
     {
-        public SkillRewardRecipe(int RewardLevel, List<Race> RaceRestrictionList, Recipe Recipe)
+        public SkillRewardRecipe(int RewardLevel, List<Race> RaceRestrictionList, IPgRecipe Recipe)
             : base(RewardLevel)
         {
             this.RaceRestrictionList = RaceRestrictionList;
@@ -12,7 +12,7 @@ namespace PgJsonObjects
         }
 
         public List<Race> RaceRestrictionList { get; private set; }
-        public Recipe Recipe { get; private set; }
+        public IPgRecipe Recipe { get; private set; }
 
         public override string TextContent
         {

@@ -9,8 +9,8 @@ namespace PgJsonObjects
     public class Item : MainJsonObject<Item>, IPgItem
     {
         #region Direct Properties
-        public Ability BestowAbility { get; private set; }
-        public Quest BestowQuest { get; private set; }
+        public IPgAbility BestowAbility { get; private set; }
+        public IPgQuest BestowQuest { get; private set; }
         public int CraftPoints { get { return RawCraftPoints.HasValue ? RawCraftPoints.Value : 0; } }
         public int? RawCraftPoints { get; private set; }
         public int CraftingTargetLevel { get { return RawCraftingTargetLevel.HasValue ? RawCraftingTargetLevel.Value : 0; } }
@@ -46,7 +46,7 @@ namespace PgJsonObjects
         public List<RecipeItemKey> ItemKeyList { get; } = new List<RecipeItemKey>();
         public List<ItemKeyword> EmptyKeywordList { get; } = new List<ItemKeyword>();
         public List<ItemKeyword> RepeatedKeywordList { get; } = new List<ItemKeyword>();
-        public Quest MacGuffinQuestName { get; private set; }
+        public IPgQuest MacGuffinQuestName { get; private set; }
         public int MaxCarryable { get { return RawMaxCarryable.HasValue ? RawMaxCarryable.Value : 0; } }
         public int? RawMaxCarryable { get; private set; }
         public int MaxOnVendor { get { return RawMaxOnVendor.HasValue ? RawMaxOnVendor.Value : 0; } }
@@ -67,7 +67,7 @@ namespace PgJsonObjects
         public int? RawBestowTitle { get; private set; }
         public int BestowLoreBook { get { return RawBestowLoreBook.HasValue ? RawBestowLoreBook.Value : 0; } }
         public int? RawBestowLoreBook { get; private set; }
-        public LoreBook ConnectedLoreBook { get; private set; }
+        public IPgLoreBook ConnectedLoreBook { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
 
         public Dictionary<string, Recipe> BestowRecipeTable { get; } = new Dictionary<string, Recipe>();
@@ -368,9 +368,9 @@ namespace PgJsonObjects
 
         private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)
         {
-            if (PgJsonObjects.ItemEffect.TryParse(RawEffectDesc, out ItemEffect ItemEffect))
+            if (PgJsonObjects.ItemEffect.TryParse(RawEffectDesc, out IPgItemEffect ItemEffect))
             {
-                EffectDescriptionList.Add(ItemEffect);
+                EffectDescriptionList.Add(ItemEffect as ItemEffect);
                 return true;
             }
             else
@@ -681,7 +681,7 @@ namespace PgJsonObjects
                     if (!AsItemAttributeLink.IsParsed)
                     {
                         bool IsParsed = false;
-                        Attribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected, this);
+                        IPgAttribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected, this);
                         AsItemAttributeLink.SetLink(Link);
                     }
                 }
@@ -709,7 +709,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static Item ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemName, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItem ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemName, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -747,7 +747,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Item ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int? RawItemCode, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItem ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int? RawItemCode, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -836,12 +836,12 @@ namespace PgJsonObjects
             return ItemList;
         }
 
-        public static Item ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int ItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItem ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int ItemId, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             return ConnectById(ErrorInfo, ItemTable, "item_" + ItemId, ParsedItem, ref IsRawItemParsed, ref IsConnected, LinkBack);
         }
 
-        public static Item ConnectById(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemId, Item ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItem ConnectById(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemId, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -948,8 +948,8 @@ namespace PgJsonObjects
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObject(BestowAbility, data, ref offset, BaseOffset, 0, StoredObjectTable);
-            AddObject(BestowQuest, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(BestowAbility as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(BestowQuest as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
             AddInt(RawCraftPoints, data, ref offset, BaseOffset, 8);
             AddInt(RawCraftingTargetLevel, data, ref offset, BaseOffset, 12);
             AddString(Description, data, ref offset, BaseOffset, 16, StoredStringtable);
@@ -976,7 +976,7 @@ namespace PgJsonObjects
             AddEnumList(ItemKeyList, data, ref offset, BaseOffset, 60, StoredEnumListTable);
             AddEnumList(EmptyKeywordList, data, ref offset, BaseOffset, 64, StoredEnumListTable);
             AddEnumList(RepeatedKeywordList, data, ref offset, BaseOffset, 68, StoredEnumListTable);
-            AddObject(MacGuffinQuestName, data, ref offset, BaseOffset, 72, StoredObjectTable);
+            AddObject(MacGuffinQuestName as ISerializableJsonObject, data, ref offset, BaseOffset, 72, StoredObjectTable);
             AddInt(RawMaxCarryable, data, ref offset, BaseOffset, 76);
             AddInt(RawMaxOnVendor, data, ref offset, BaseOffset, 80);
             AddInt(RawMaxStackSize, data, ref offset, BaseOffset, 84);
@@ -990,7 +990,7 @@ namespace PgJsonObjects
             AddString(DynamicCraftingSummary, data, ref offset, BaseOffset, 116, StoredStringtable);
             AddInt(RawBestowTitle, data, ref offset, BaseOffset, 120);
             AddInt(RawBestowLoreBook, data, ref offset, BaseOffset, 124);
-            AddObject(ConnectedLoreBook, data, ref offset, BaseOffset, 128, StoredObjectTable);
+            AddObject(ConnectedLoreBook as ISerializableJsonObject, data, ref offset, BaseOffset, 128, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 132, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);

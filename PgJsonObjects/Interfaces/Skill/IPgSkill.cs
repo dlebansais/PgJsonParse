@@ -16,16 +16,16 @@ namespace PgJsonObjects
         int Id { get; }
         int? RawId { get; }
         string Description { get; }
-        XpTable XpTable { get; }
+        IPgXpTable XpTable { get; }
         string RawXpTable { get; }
-        AdvancementTable AdvancementTable { get; }
+        IPgAdvancementTable AdvancementTable { get; }
         List<PowerSkill> CompatibleCombatSkillList { get; }
         int MaxBonusLevels { get; }
         int? RawMaxBonusLevels { get; }
         LevelCapInteractionCollection InteractionFlagLevelCapList { get; }
         RewardCollection RewardList { get; }
         string Name { get; }
-        Skill ParentSkill { get; }
+        IPgSkill ParentSkill { get; }
         List<SkillCategory> TSysCategoryList { get; }
         List<SkillRewardCommon> CombinedRewardList { get; }
     }

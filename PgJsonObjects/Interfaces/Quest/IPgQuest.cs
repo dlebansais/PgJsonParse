@@ -16,17 +16,17 @@ namespace PgJsonObjects
         TimeSpan? RawReuseTime { get; }
         int RewardCombatXP { get; }
         int? RawRewardCombatXP { get; }
-        GameNpc FavorNpc { get; }
+        IPgGameNpc FavorNpc { get; }
         string PrefaceText { get; }
         string SuccessText { get; }
         string MidwayText { get; }
-        Ability RewardAbility { get; }
+        IPgAbility RewardAbility { get; }
         int RewardFavor { get; }
         int? RawRewardFavor { get; }
-        Skill RewardSkill { get; }
+        IPgSkill RewardSkill { get; }
         int RewardSkillXp { get; }
         int? RawRewardSkillXp { get; }
-        Recipe RewardRecipe { get; }
+        IPgRecipe RewardRecipe { get; }
         int RewardGuildXp { get; }
         int? RawRewardGuildXp { get; }
         int RewardGuildCredits { get; }
@@ -39,8 +39,8 @@ namespace PgJsonObjects
         string RewardsNamedLootProfile { get; }
         RecipeCollection PreGiveRecipeList { get; }
         List<QuestKeyword> KeywordList { get; }
-        Effect RewardEffect { get; }
-        LoreBook RewardLoreBook { get; }
+        IPgEffect RewardEffect { get; }
+        IPgLoreBook RewardLoreBook { get; }
         bool IsCancellable { get; }
         bool? RawIsCancellable { get; }
         bool IsAutoPreface { get; }
@@ -56,7 +56,7 @@ namespace PgJsonObjects
         int? RawNumExpectedParticipants { get; }
         int Level { get; }
         int? RawLevel { get; }
-        Skill WorkOrderSkill { get; }
+        IPgSkill WorkOrderSkill { get; }
         QuestCollection FollowUpQuestList { get; }
         QuestRequirementCollection QuestRequirementList { get; }
         QuestRequirementCollection QuestRequirementToSustainList { get; }

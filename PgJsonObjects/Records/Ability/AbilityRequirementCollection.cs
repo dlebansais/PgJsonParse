@@ -10,7 +10,7 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static IGenericPgObject CreateItem(byte[] data, int offset)
+        public static IGenericPgObject CreateItem(byte[] data, ref int offset)
         {
             OtherRequirementType OtherRequirementType = (OtherRequirementType)BitConverter.ToInt32(data, offset);
             offset += 4;
@@ -20,76 +20,76 @@ namespace PgJsonObjects
             switch (OtherRequirementType)
             {
                 case OtherRequirementType.IsAdmin:
-                    return new PgAbilityRequirementIsAdmin(data, offset);
+                    return new PgAbilityRequirementIsAdmin(data, ref offset);
 
                 case OtherRequirementType.IsLycanthrope:
-                    return new PgAbilityRequirementIsLycanthrope(data, offset);
+                    return new PgAbilityRequirementIsLycanthrope(data, ref offset);
 
                 case OtherRequirementType.CurHealth:
-                    return new PgAbilityRequirementCurHealth(data, offset);
+                    return new PgAbilityRequirementCurHealth(data, ref offset);
 
                 case OtherRequirementType.Race:
                     if (IsSingle)
-                        return new PgAbilityRequirementSingleRace(data, offset);
+                        return new PgAbilityRequirementSingleRace(data, ref offset);
                     else
-                        return new PgAbilityRequirementRace(data, offset);
+                        return new PgAbilityRequirementRace(data, ref offset);
 
                 case OtherRequirementType.HasEffectKeyword:
-                    return new PgAbilityRequirementHasEffectKeyword(data, offset);
+                    return new PgAbilityRequirementHasEffectKeyword(data, ref offset);
 
                 case OtherRequirementType.FullMoon:
-                    return new PgAbilityRequirementFullMoon(data, offset);
+                    return new PgAbilityRequirementFullMoon(data, ref offset);
 
                 case OtherRequirementType.IsHardcore:
-                    return new PgAbilityRequirementIsHardcore(data, offset);
+                    return new PgAbilityRequirementIsHardcore(data, ref offset);
 
                 case OtherRequirementType.DruidEventState:
-                    return new PgAbilityRequirementDruidEventState(data, offset);
+                    return new PgAbilityRequirementDruidEventState(data, ref offset);
 
                 case OtherRequirementType.PetCount:
-                    return new PgAbilityRequirementPetCount(data, offset);
+                    return new PgAbilityRequirementPetCount(data, ref offset);
 
                 case OtherRequirementType.RecipeKnown:
-                    return new PgAbilityRequirementRecipeKnown(data, offset);
+                    return new PgAbilityRequirementRecipeKnown(data, ref offset);
 
                 case OtherRequirementType.IsNotInCombat:
-                    return new PgAbilityRequirementIsNotInCombat(data, offset);
+                    return new PgAbilityRequirementIsNotInCombat(data, ref offset);
 
                 case OtherRequirementType.IsLongtimeAnimal:
-                    return new PgAbilityRequirementIsLongtimeAnimal(data, offset);
+                    return new PgAbilityRequirementIsLongtimeAnimal(data, ref offset);
 
                 case OtherRequirementType.InHotspot:
-                    return new PgAbilityRequirementInHotspot(data, offset);
+                    return new PgAbilityRequirementInHotspot(data, ref offset);
 
                 case OtherRequirementType.HasInventorySpaceFor:
-                    return new PgAbilityRequirementHasInventorySpaceFor(data, offset);
+                    return new PgAbilityRequirementHasInventorySpaceFor(data, ref offset);
 
                 case OtherRequirementType.IsVegetarian:
-                    return new PgAbilityRequirementIsVegetarian(data, offset);
+                    return new PgAbilityRequirementIsVegetarian(data, ref offset);
 
                 case OtherRequirementType.InGraveyard:
-                    return new PgAbilityRequirementInGraveyard(data, offset);
+                    return new PgAbilityRequirementInGraveyard(data, ref offset);
 
                 case OtherRequirementType.Appearance:
                     if (IsSingle)
-                        return new PgAbilityRequirementSingleAppearance(data, offset);
+                        return new PgAbilityRequirementSingleAppearance(data, ref offset);
                     else
-                        return new PgAbilityRequirementAppearance(data, offset);
+                        return new PgAbilityRequirementAppearance(data, ref offset);
 
                 case OtherRequirementType.Or:
-                    return new PgAbilityRequirementOr(data, offset);
+                    return new PgAbilityRequirementOr(data, ref offset);
 
                 case OtherRequirementType.EquippedItemKeyword:
-                    return new PgAbilityRequirementEquippedItemKeyword(data, offset);
+                    return new PgAbilityRequirementEquippedItemKeyword(data, ref offset);
 
                 case OtherRequirementType.GardenPlantMax:
-                    return new PgAbilityRequirementGardenPlantMax(data, offset);
+                    return new PgAbilityRequirementGardenPlantMax(data, ref offset);
 
                 case OtherRequirementType.InteractionFlagSet:
-                    return new PgAbilityRequirementInteractionFlagSet(data, offset);
+                    return new PgAbilityRequirementInteractionFlagSet(data, ref offset);
 
                 case OtherRequirementType.IsVolunteerGuide:
-                    return new PgAbilityRequirementIsVolunteerGuide(data, offset);
+                    return new PgAbilityRequirementIsVolunteerGuide(data, ref offset);
 
                 default:
                     throw new InvalidOperationException();

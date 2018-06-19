@@ -2,12 +2,12 @@
 {
     public interface IPgRecipeSource
     {
-        Recipe ConnectedRecipe { get; }
-        Skill SkillTypeId { get; }
-        Item ConnectedItem { get; }
-        GameNpc Npc { get; }
-        Effect ConnectedEffect { get; }
-        Quest ConnectedQuest { get; }
+        IPgRecipe ConnectedRecipe { get; }
+        IPgSkill SkillTypeId { get; }
+        IPgItem ConnectedItem { get; }
+        IPgGameNpc Npc { get; }
+        IPgEffect ConnectedEffect { get; }
+        IPgQuest ConnectedQuest { get; }
         SourceTypes Type { get; }
     }
 }

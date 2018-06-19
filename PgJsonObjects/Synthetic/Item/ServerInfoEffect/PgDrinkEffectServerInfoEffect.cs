@@ -2,14 +2,19 @@
 {
     public class PgDrinkEffectServerInfoEffect : GenericPgObject<PgDrinkEffectServerInfoEffect>, IPgDrinkEffectServerInfoEffect
     {
-        public PgDrinkEffectServerInfoEffect(byte[] data, int offset)
+        public PgDrinkEffectServerInfoEffect(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgDrinkEffectServerInfoEffect CreateItem(byte[] data, int offset)
+        protected override PgDrinkEffectServerInfoEffect CreateItem(byte[] data, ref int offset)
         {
-            return new PgDrinkEffectServerInfoEffect(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgDrinkEffectServerInfoEffect CreateNew(byte[] data, ref int offset)
+        {
+            return new PgDrinkEffectServerInfoEffect(data, ref offset);
         }
 
         public int DrinkATValue { get { return RawDrinkATValue.HasValue ? RawDrinkATValue.Value : 0; } }

@@ -2,7 +2,7 @@
 {
     public interface IPgQuestRewardXp
     {
-        Skill Skill { get; }
+        IPgSkill Skill { get; }
         int Xp { get; }
         int? RawXp { get; }
     }

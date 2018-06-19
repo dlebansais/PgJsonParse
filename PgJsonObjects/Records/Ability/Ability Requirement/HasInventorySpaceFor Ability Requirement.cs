@@ -10,7 +10,7 @@ namespace PgJsonObjects
             this.RawItem = RawItem;
         }
 
-        public Item Item { get; private set; }
+        public IPgItem Item { get; private set; }
         private string RawItem;
         private bool IsRawItemParsed;
 
@@ -58,7 +58,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
 
             AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
-            AddObject(Item, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(Item as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

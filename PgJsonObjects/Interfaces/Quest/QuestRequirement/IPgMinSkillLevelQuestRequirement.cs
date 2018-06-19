@@ -2,7 +2,7 @@
 {
     public interface IPgMinSkillLevelQuestRequirement
     {
-        Skill ConnectedSkill { get; }
+        IPgSkill ConnectedSkill { get; }
         int SkillLevel { get; }
         int? RawSkillLevel { get; }
     }

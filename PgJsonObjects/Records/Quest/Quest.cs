@@ -19,17 +19,17 @@ namespace PgJsonObjects
         public TimeSpan? RawReuseTime { get; private set; }
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get; private set; }
-        public GameNpc FavorNpc { get; private set; }
+        public IPgGameNpc FavorNpc { get; private set; }
         public string PrefaceText { get; private set; }
         public string SuccessText { get; private set; }
         public string MidwayText { get; private set; }
-        public Ability RewardAbility { get; private set; }
+        public IPgAbility RewardAbility { get; private set; }
         public int RewardFavor { get { return RawRewardFavor.HasValue ? RawRewardFavor.Value : 0; } }
         public int? RawRewardFavor { get; private set; }
-        public Skill RewardSkill { get; private set; }
+        public IPgSkill RewardSkill { get; private set; }
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get; private set; }
-        public Recipe RewardRecipe { get; private set; }
+        public IPgRecipe RewardRecipe { get; private set; }
         public int RewardGuildXp { get { return RawRewardGuildXp.HasValue ? RawRewardGuildXp.Value : 0; } }
         public int? RawRewardGuildXp { get; private set; }
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
@@ -42,8 +42,8 @@ namespace PgJsonObjects
         public string RewardsNamedLootProfile { get; private set; }
         public RecipeCollection PreGiveRecipeList { get; private set; } = new RecipeCollection();
         public List<QuestKeyword> KeywordList { get; } = new List<QuestKeyword>();
-        public Effect RewardEffect { get; private set; }
-        public LoreBook RewardLoreBook { get; private set; }
+        public IPgEffect RewardEffect { get; private set; }
+        public IPgLoreBook RewardLoreBook { get; private set; }
         public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
         public bool? RawIsCancellable { get; private set; }
         public bool IsAutoPreface { get { return RawIsAutoPreface.HasValue && RawIsAutoPreface.Value; } }
@@ -59,7 +59,7 @@ namespace PgJsonObjects
         public int? RawNumExpectedParticipants { get; private set; }
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get; private set; }
-        public Skill WorkOrderSkill { get; private set; }
+        public IPgSkill WorkOrderSkill { get; private set; }
         public QuestCollection FollowUpQuestList { get; private set; } = new QuestCollection();
         public QuestRequirementCollection QuestRequirementList { get; private set; } = new QuestRequirementCollection();
         public QuestRequirementCollection QuestRequirementToSustainList { get; private set; } = new QuestRequirementCollection();
@@ -818,13 +818,13 @@ namespace PgJsonObjects
             List<string> ToRemove = new List<string>();
             foreach (string RawPreGiveRecipe in RawPreGiveRecipeList)
             {
-                Recipe PreGiveRecipe = null;
+                IPgRecipe PreGiveRecipe = null;
                 bool IsRawPreGiveRecipeParsed = false;
                 PreGiveRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawPreGiveRecipe, PreGiveRecipe, ref IsRawPreGiveRecipeParsed, ref IsConnected, this);
                 if (PreGiveRecipe != null)
                 {
                     ToRemove.Add(RawPreGiveRecipe);
-                    PreGiveRecipeList.Add(PreGiveRecipe);
+                    PreGiveRecipeList.Add(PreGiveRecipe as Recipe);
                 }
             }
 
@@ -833,12 +833,12 @@ namespace PgJsonObjects
 
             foreach (string RawFollowUpQuest in RawFollowUpQuestList)
             {
-                Quest FollowUpQuest = null;
+                IPgQuest FollowUpQuest = null;
                 bool IsParsed = false;
                 FollowUpQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawFollowUpQuest, FollowUpQuest, ref IsParsed, ref IsConnected, this);
 
                 if (FollowUpQuest != null)
-                    FollowUpQuestList.Add(FollowUpQuest);
+                    FollowUpQuestList.Add(FollowUpQuest as Quest);
                 else
                     FollowUpQuest = null;
             }
@@ -888,7 +888,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static Quest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, string RawQuestName, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgQuest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, string RawQuestName, IPgQuest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;
@@ -915,7 +915,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Quest ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, int QuestId, Quest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgQuest ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, int QuestId, IPgQuest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;
@@ -956,48 +956,48 @@ namespace PgJsonObjects
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddString(InternalName , data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddString(Name , data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddString(Description , data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddInt(RawVersion , data, ref offset, BaseOffset, 12);
-            AddObjectList(QuestObjectiveList , data, ref offset, BaseOffset,16, StoredObjectListTable);
-            AddObjectList(RewardsXPList , data, ref offset, BaseOffset, 20, StoredObjectListTable);
-            AddObjectList(QuestRewardsItemList , data, ref offset, BaseOffset,24, StoredObjectListTable);
-            AddTimeSpan(RawReuseTime , data, ref offset, BaseOffset,28);
-            AddInt(RawRewardCombatXP , data, ref offset, BaseOffset, 32);
-            AddObject(FavorNpc , data, ref offset, BaseOffset,  36, StoredObjectTable);
-            AddString(PrefaceText , data, ref offset, BaseOffset, 40, StoredStringtable);
-            AddString(SuccessText , data, ref offset, BaseOffset, 44, StoredStringtable);
-            AddString(MidwayText , data, ref offset, BaseOffset,  48, StoredStringtable);
-            AddObject(RewardAbility , data, ref offset, BaseOffset, 52, StoredObjectTable);
-            AddInt(RawRewardFavor , data, ref offset, BaseOffset,56);
-            AddObject(RewardSkill , data, ref offset, BaseOffset, 60, StoredObjectTable);
-            AddInt(RawRewardSkillXp , data, ref offset, BaseOffset,64);
-            AddObject(RewardRecipe , data, ref offset, BaseOffset,68, StoredObjectTable);
-            AddInt(RawRewardGuildXp , data, ref offset, BaseOffset,72);
-            AddInt(RawRewardGuildCredits , data, ref offset, BaseOffset, 76);
-            AddObjectList(PreGiveItemList , data, ref offset, BaseOffset, 80, StoredObjectListTable);
-            AddInt(RawTSysLevel , data, ref offset, BaseOffset, 84);
-            AddInt(RawRewardGold , data, ref offset, BaseOffset,88);
-            AddString(RewardsNamedLootProfile , data, ref offset, BaseOffset, 92, StoredStringtable);
-            AddObjectList(PreGiveRecipeList , data, ref offset, BaseOffset, 96, StoredObjectListTable);
-            AddEnumList(KeywordList , data, ref offset, BaseOffset, 100, StoredEnumListTable);
-            AddObject(RewardEffect , data, ref offset, BaseOffset, 104, StoredObjectTable);
-            AddObject(RewardLoreBook , data, ref offset, BaseOffset, 108, StoredObjectTable);
-            AddBool(RawIsCancellable , data, ref offset, ref BitOffset, BaseOffset, 112, 0);
-            AddBool(RawIsAutoPreface , data, ref offset, ref BitOffset, BaseOffset, 112, 2);
-            AddBool(RawIsAutoWrapUp , data, ref offset, ref BitOffset, BaseOffset,  112, 4);
-            AddBool(RawIsGuildQuest , data, ref offset, ref BitOffset, BaseOffset,  112, 6);
+            AddString(InternalName, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Name, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(Description, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddInt(RawVersion, data, ref offset, BaseOffset, 12);
+            AddObjectList(QuestObjectiveList, data, ref offset, BaseOffset,16, StoredObjectListTable);
+            AddObjectList(RewardsXPList, data, ref offset, BaseOffset, 20, StoredObjectListTable);
+            AddObjectList(QuestRewardsItemList, data, ref offset, BaseOffset,24, StoredObjectListTable);
+            AddTimeSpan(RawReuseTime, data, ref offset, BaseOffset,28);
+            AddInt(RawRewardCombatXP, data, ref offset, BaseOffset, 32);
+            AddObject(FavorNpc as ISerializableJsonObject, data, ref offset, BaseOffset,  36, StoredObjectTable);
+            AddString(PrefaceText, data, ref offset, BaseOffset, 40, StoredStringtable);
+            AddString(SuccessText, data, ref offset, BaseOffset, 44, StoredStringtable);
+            AddString(MidwayText, data, ref offset, BaseOffset,  48, StoredStringtable);
+            AddObject(RewardAbility as ISerializableJsonObject, data, ref offset, BaseOffset, 52, StoredObjectTable);
+            AddInt(RawRewardFavor, data, ref offset, BaseOffset,56);
+            AddObject(RewardSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 60, StoredObjectTable);
+            AddInt(RawRewardSkillXp, data, ref offset, BaseOffset,64);
+            AddObject(RewardRecipe as ISerializableJsonObject, data, ref offset, BaseOffset,68, StoredObjectTable);
+            AddInt(RawRewardGuildXp, data, ref offset, BaseOffset,72);
+            AddInt(RawRewardGuildCredits, data, ref offset, BaseOffset, 76);
+            AddObjectList(PreGiveItemList, data, ref offset, BaseOffset, 80, StoredObjectListTable);
+            AddInt(RawTSysLevel, data, ref offset, BaseOffset, 84);
+            AddInt(RawRewardGold, data, ref offset, BaseOffset,88);
+            AddString(RewardsNamedLootProfile, data, ref offset, BaseOffset, 92, StoredStringtable);
+            AddObjectList(PreGiveRecipeList, data, ref offset, BaseOffset, 96, StoredObjectListTable);
+            AddEnumList(KeywordList, data, ref offset, BaseOffset, 100, StoredEnumListTable);
+            AddObject(RewardEffect as ISerializableJsonObject, data, ref offset, BaseOffset, 104, StoredObjectTable);
+            AddObject(RewardLoreBook as ISerializableJsonObject, data, ref offset, BaseOffset, 108, StoredObjectTable);
+            AddBool(RawIsCancellable, data, ref offset, ref BitOffset, BaseOffset, 112, 0);
+            AddBool(RawIsAutoPreface, data, ref offset, ref BitOffset, BaseOffset, 112, 2);
+            AddBool(RawIsAutoWrapUp, data, ref offset, ref BitOffset, BaseOffset,  112, 4);
+            AddBool(RawIsGuildQuest, data, ref offset, ref BitOffset, BaseOffset,  112, 6);
             CloseBool(ref offset, ref BitOffset);
-            AddEnum(DisplayedLocation , data, ref offset, BaseOffset, 114);
-            AddEnum(PrerequisiteFavorLevel , data, ref offset, BaseOffset,116);
-            AddEnum(GroupingName , data, ref offset, BaseOffset,  118);
-            AddInt(RawNumExpectedParticipants , data, ref offset, BaseOffset, 120);
-            AddInt(RawLevel , data, ref offset, BaseOffset,124);
-            AddObject(WorkOrderSkill , data, ref offset, BaseOffset, 128, StoredObjectTable);
-            AddObjectList(FollowUpQuestList , data, ref offset, BaseOffset,132, StoredObjectListTable);
-            AddObjectList(QuestRequirementList , data, ref offset, BaseOffset,136, StoredObjectListTable);
-            AddObjectList(QuestRequirementToSustainList , data, ref offset, BaseOffset, 140, StoredObjectListTable);
+            AddEnum(DisplayedLocation, data, ref offset, BaseOffset, 114);
+            AddEnum(PrerequisiteFavorLevel, data, ref offset, BaseOffset,116);
+            AddEnum(GroupingName, data, ref offset, BaseOffset,  118);
+            AddInt(RawNumExpectedParticipants, data, ref offset, BaseOffset, 120);
+            AddInt(RawLevel, data, ref offset, BaseOffset,124);
+            AddObject(WorkOrderSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 128, StoredObjectTable);
+            AddObjectList(FollowUpQuestList, data, ref offset, BaseOffset,132, StoredObjectListTable);
+            AddObjectList(QuestRequirementList, data, ref offset, BaseOffset,136, StoredObjectListTable);
+            AddObjectList(QuestRequirementToSustainList, data, ref offset, BaseOffset, 140, StoredObjectListTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 144, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);

@@ -2,14 +2,19 @@
 {
     public class PgAdvancement : GenericPgObject<PgAdvancement>, IPgAdvancement
     {
-        public PgAdvancement(byte[] data, int offset)
+        public PgAdvancement(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgAdvancement CreateItem(byte[] data, int offset)
+        protected override PgAdvancement CreateItem(byte[] data, ref int offset)
         {
-            return new PgAdvancement(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgAdvancement CreateNew(byte[] data, ref int offset)
+        {
+            return new PgAdvancement(data, ref offset);
         }
 
         public double NonCombatRegenHealthMod { get { return RawNonCombatRegenHealthMod.HasValue ? RawNonCombatRegenHealthMod.Value : 0; } }

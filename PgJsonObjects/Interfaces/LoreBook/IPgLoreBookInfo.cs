@@ -2,11 +2,11 @@
 {
     public interface IPgLoreBookInfo
     {
-        LoreBookInfoCategory Gods { get; }
-        LoreBookInfoCategory Misc { get; }
-        LoreBookInfoCategory History { get; }
-        LoreBookInfoCategory Plot { get; }
-        LoreBookInfoCategory Stories { get; }
-        LoreBookInfoCategory GuideProgram { get; }
+        IPgLoreBookInfoCategory Gods { get; }
+        IPgLoreBookInfoCategory Misc { get; }
+        IPgLoreBookInfoCategory History { get; }
+        IPgLoreBookInfoCategory Plot { get; }
+        IPgLoreBookInfoCategory Stories { get; }
+        IPgLoreBookInfoCategory GuideProgram { get; }
     }
 }

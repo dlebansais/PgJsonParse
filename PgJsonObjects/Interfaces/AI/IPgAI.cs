@@ -2,7 +2,7 @@
 {
     public interface IPgAI
     {
-        AIAbilitySet Abilities { get; }
+        IPgAIAbilitySet Abilities { get; }
         string Comment { get; }
         float? RawMinDelayBetweenAbilities { get; }
         bool? RawIsMelee { get; }

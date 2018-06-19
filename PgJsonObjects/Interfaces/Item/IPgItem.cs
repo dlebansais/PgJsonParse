@@ -2,10 +2,10 @@
 
 namespace PgJsonObjects
 {
-    interface IPgItem
+    public interface IPgItem
     {
-        Ability BestowAbility { get; }
-        Quest BestowQuest { get; }
+        IPgAbility BestowAbility { get; }
+        IPgQuest BestowQuest { get; }
         int CraftPoints { get; }
         int? RawCraftPoints { get; }
         int CraftingTargetLevel { get; }
@@ -42,7 +42,7 @@ namespace PgJsonObjects
         List<RecipeItemKey> ItemKeyList { get; }
         List<ItemKeyword> EmptyKeywordList { get; }
         List<ItemKeyword> RepeatedKeywordList { get; }
-        Quest MacGuffinQuestName { get; }
+        IPgQuest MacGuffinQuestName { get; }
         int MaxCarryable { get; }
         int? RawMaxCarryable { get; }
         int MaxOnVendor { get; }
@@ -63,6 +63,6 @@ namespace PgJsonObjects
         int? RawBestowTitle { get; }
         int BestowLoreBook { get; }
         int? RawBestowLoreBook { get; }
-        LoreBook ConnectedLoreBook { get; }
+        IPgLoreBook ConnectedLoreBook { get; }
     }
 }

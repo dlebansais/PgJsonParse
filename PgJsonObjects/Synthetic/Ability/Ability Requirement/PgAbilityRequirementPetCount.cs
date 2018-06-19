@@ -2,14 +2,19 @@
 {
     public class PgAbilityRequirementPetCount: GenericPgObject<PgAbilityRequirementPetCount>, IPgAbilityRequirementPetCount
     {
-        public PgAbilityRequirementPetCount(byte[] data, int offset)
+        public PgAbilityRequirementPetCount(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgAbilityRequirementPetCount CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementPetCount CreateItem(byte[] data, ref int offset)
         {
-            return new PgAbilityRequirementPetCount(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgAbilityRequirementPetCount CreateNew(byte[] data, ref int offset)
+        {
+            return new PgAbilityRequirementPetCount(data, ref offset);
         }
 
         public double MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }

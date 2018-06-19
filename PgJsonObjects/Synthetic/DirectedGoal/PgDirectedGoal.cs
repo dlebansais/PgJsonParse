@@ -2,14 +2,19 @@
 {
     public class PgDirectedGoal : MainPgObject<PgDirectedGoal>, IPgDirectedGoal
     {
-        public PgDirectedGoal(byte[] data, int offset)
+        public PgDirectedGoal(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgDirectedGoal CreateItem(byte[] data, int offset)
+        protected override PgDirectedGoal CreateItem(byte[] data, ref int offset)
         {
-            return new PgDirectedGoal(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgDirectedGoal CreateNew(byte[] data, ref int offset)
+        {
+            return new PgDirectedGoal(data, ref offset);
         }
 
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }

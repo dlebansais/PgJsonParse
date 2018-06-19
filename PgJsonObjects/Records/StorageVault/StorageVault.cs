@@ -9,7 +9,7 @@ namespace PgJsonObjects
         #region Direct Properties
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; private set; }
-        public GameNpc MatchingNpc { get; private set; }
+        public IPgGameNpc MatchingNpc { get; private set; }
         public int NumSlots { get { return RawNumSlots.HasValue ? RawNumSlots.Value : 0; } }
         public int? RawNumSlots { get; private set; }
         public string RequirementDescription { get; private set; }
@@ -292,7 +292,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddInt(RawId, data, ref offset, BaseOffset, 0);
-            AddObject(MatchingNpc, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(MatchingNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
             AddInt(RawNumSlots, data, ref offset, BaseOffset, 8);
             AddString(RequirementDescription, data, ref offset, BaseOffset, 12, StoredStringtable);
             AddString(InteractionFlagRequirement, data, ref offset, BaseOffset, 16, StoredStringtable);

@@ -14,7 +14,7 @@ namespace PgJsonObjects
 
         private string RawBestowAbility;
         private bool IsRawBestowAbilityParsed;
-        public Ability BestowAbility { get; private set; }
+        public IPgAbility BestowAbility { get; private set; }
 
         public override string RawEffect
         {
@@ -58,7 +58,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddInt((int?)Type, data, ref offset, BaseOffset, 0);
-            AddObject(BestowAbility, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(BestowAbility as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

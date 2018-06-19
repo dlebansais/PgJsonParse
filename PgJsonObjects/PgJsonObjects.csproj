@@ -98,6 +98,7 @@
     <Compile Include="Interfaces\Item\IPgItemAttributeLink.cs" />
     <Compile Include="Interfaces\Item\IPgItemBehavior.cs" />
     <Compile Include="Interfaces\Item\IPgItem.cs" />
+    <Compile Include="Interfaces\Item\IPgItemEffect.cs" />
     <Compile Include="Interfaces\Item\IPgItemSimpleEffect.cs" />
     <Compile Include="Interfaces\Item\IPgItemSkillLink.cs" />
     <Compile Include="Interfaces\Item\IPgServerInfo.cs" />
@@ -457,10 +458,12 @@
     <Compile Include="Synthetic\IDeserializablePgObject.cs" />
     <Compile Include="Synthetic\IGenericPgObject.cs" />
     <Compile Include="Synthetic\IMainPgObject.cs" />
+    <Compile Include="Synthetic\IMainPgObjectCollection.cs" />
     <Compile Include="Synthetic\ItemUses\PgItemUses.cs" />
     <Compile Include="Synthetic\Item\PgItem.cs" />
     <Compile Include="Synthetic\Item\PgItemAttributeLink.cs" />
     <Compile Include="Synthetic\Item\PgItemBehavior.cs" />
+    <Compile Include="Synthetic\Item\PgItemEffect.cs" />
     <Compile Include="Synthetic\Item\PgItemSimpleEffect.cs" />
     <Compile Include="Synthetic\Item\PgItemSkillLink.cs" />
     <Compile Include="Synthetic\Item\PgServerInfo.cs" />
@@ -479,8 +482,10 @@
     <Compile Include="Synthetic\LoreBook\PgLoreBookInfo.cs" />
     <Compile Include="Synthetic\LoreBook\PgLoreBookInfoCategory.cs" />
     <Compile Include="Synthetic\MainPgObject.cs" />
+    <Compile Include="Synthetic\MainPgObjectCollection.cs" />
     <Compile Include="Synthetic\Npc\PgGameNpc.cs" />
     <Compile Include="Synthetic\Npc\PgNpcPreference.cs" />
+    <Compile Include="Synthetic\PgObjectCreator.cs" />
     <Compile Include="Synthetic\PlayerTitle\PgPlayerTitle.cs" />
     <Compile Include="Synthetic\Power\PgPower.cs" />
     <Compile Include="Synthetic\Power\PgPowerAttributeLink.cs" />

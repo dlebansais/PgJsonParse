@@ -32,7 +32,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public Skill ConnectedSkill { get; private set; }
+        public IPgSkill ConnectedSkill { get; private set; }
         public PowerSkill AnatomyType { get; private set; }
         private bool IsSkillParsed;
         #endregion
@@ -70,7 +70,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(ConnectedSkill, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(ConnectedSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 4, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

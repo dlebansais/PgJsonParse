@@ -6,9 +6,9 @@ namespace PgJsonObjects
     {
         int? RawRewardLevel { get; }
         List<Race> RaceRestrictionList { get; }
-        Ability Ability { get; }
+        IPgAbility Ability { get; }
         string Notes { get; }
-        Recipe Recipe { get; }
-        Skill BonusSkill { get; }
+        IPgRecipe Recipe { get; }
+        IPgSkill BonusSkill { get; }
     }
 }

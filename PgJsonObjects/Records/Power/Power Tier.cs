@@ -71,10 +71,10 @@ namespace PgJsonObjects
                         IsConnected = true;
 
                         bool IsAttributeParsed = false;
-                        Attribute AttributeLink = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsPowerAttributeLink.AttributeName, AsPowerAttributeLink.AttributeLink, ref IsAttributeParsed, ref IsConnected, this);
+                        IPgAttribute AttributeLink = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsPowerAttributeLink.AttributeName, AsPowerAttributeLink.AttributeLink, ref IsAttributeParsed, ref IsConnected, this);
 
                         bool IsSkillParsed = false;
-                        Skill SkillLink = Skill.ConnectPowerSkill(ErrorInfo, SkillTable, AsPowerAttributeLink.AttributeSkill, AsPowerAttributeLink.SkillLink, ref IsSkillParsed, ref IsConnected, this);
+                        IPgSkill SkillLink = Skill.ConnectPowerSkill(ErrorInfo, SkillTable, AsPowerAttributeLink.AttributeSkill, AsPowerAttributeLink.SkillLink, ref IsSkillParsed, ref IsConnected, this);
 
                         AsPowerAttributeLink.SetLinks(AttributeLink, SkillLink);
                         foreach (int Id in AttributeLink.IconIdList)

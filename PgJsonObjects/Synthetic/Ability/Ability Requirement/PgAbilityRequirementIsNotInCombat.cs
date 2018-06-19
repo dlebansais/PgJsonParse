@@ -2,14 +2,19 @@
 {
     public class PgAbilityRequirementIsNotInCombat: GenericPgObject<PgAbilityRequirementIsNotInCombat>, IPgAbilityRequirementIsNotInCombat
     {
-        public PgAbilityRequirementIsNotInCombat(byte[] data, int offset)
+        public PgAbilityRequirementIsNotInCombat(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgAbilityRequirementIsNotInCombat CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementIsNotInCombat CreateItem(byte[] data, ref int offset)
         {
-            return new PgAbilityRequirementIsNotInCombat(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgAbilityRequirementIsNotInCombat CreateNew(byte[] data, ref int offset)
+        {
+            return new PgAbilityRequirementIsNotInCombat(data, ref offset);
         }
     }
 }

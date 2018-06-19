@@ -2,8 +2,8 @@
 {
     interface IPgQuestObjectiveDeliver
     {
-        GameNpc DeliverNpc { get; }
-        Item QuestItem { get; }
+        IPgGameNpc DeliverNpc { get; }
+        IPgItem QuestItem { get; }
         int NumToDeliver { get; }
         int? RawNumToDeliver { get; }
     }

@@ -2,21 +2,26 @@
 {
     public class PgLoreBookInfo : MainPgObject<PgLoreBookInfo>, IPgLoreBookInfo
     {
-        public PgLoreBookInfo(byte[] data, int offset)
+        public PgLoreBookInfo(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgLoreBookInfo CreateItem(byte[] data, int offset)
+        protected override PgLoreBookInfo CreateItem(byte[] data, ref int offset)
         {
-            return new PgLoreBookInfo(data, offset);
+            return CreateNew(data, ref offset);
         }
 
-        public LoreBookInfoCategory Gods { get { return GetObject(0, ref _Gods); } } private LoreBookInfoCategory _Gods;
-        public LoreBookInfoCategory Misc { get { return GetObject(4, ref _Misc); } } private LoreBookInfoCategory _Misc;
-        public LoreBookInfoCategory History { get { return GetObject(8, ref _History); } } private LoreBookInfoCategory _History;
-        public LoreBookInfoCategory Plot { get { return GetObject(12, ref _Plot); } } private LoreBookInfoCategory _Plot;
-        public LoreBookInfoCategory Stories { get { return GetObject(16, ref _Stories); } } private LoreBookInfoCategory _Stories;
-        public LoreBookInfoCategory GuideProgram { get { return GetObject(20, ref _GuideProgram); } } private LoreBookInfoCategory _GuideProgram;
+        public static PgLoreBookInfo CreateNew(byte[] data, ref int offset)
+        {
+            return new PgLoreBookInfo(data, ref offset);
+        }
+
+        public IPgLoreBookInfoCategory Gods { get { return GetObject(0, ref _Gods, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _Gods;
+        public IPgLoreBookInfoCategory Misc { get { return GetObject(4, ref _Misc, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _Misc;
+        public IPgLoreBookInfoCategory History { get { return GetObject(8, ref _History, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _History;
+        public IPgLoreBookInfoCategory Plot { get { return GetObject(12, ref _Plot, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _Plot;
+        public IPgLoreBookInfoCategory Stories { get { return GetObject(16, ref _Stories, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _Stories;
+        public IPgLoreBookInfoCategory GuideProgram { get { return GetObject(20, ref _GuideProgram, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _GuideProgram;
     }
 }

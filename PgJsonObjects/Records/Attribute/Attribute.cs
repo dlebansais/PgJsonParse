@@ -129,7 +129,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static Attribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, string RawAttributeName, Attribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgAttribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, string RawAttributeName, IPgAttribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAttributeParsed)
                 return ParsedAttribute;

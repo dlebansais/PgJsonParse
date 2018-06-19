@@ -2,14 +2,19 @@
 {
     public class PgIntervalServerInfoEffect : GenericPgObject<PgIntervalServerInfoEffect>, IPgIntervalServerInfoEffect
     {
-        public PgIntervalServerInfoEffect(byte[] data, int offset)
+        public PgIntervalServerInfoEffect(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgIntervalServerInfoEffect CreateItem(byte[] data, int offset)
+        protected override PgIntervalServerInfoEffect CreateItem(byte[] data, ref int offset)
         {
-            return new PgIntervalServerInfoEffect(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgIntervalServerInfoEffect CreateNew(byte[] data, ref int offset)
+        {
+            return new PgIntervalServerInfoEffect(data, ref offset);
         }
 
         public int LowValue { get { return RawLowValue.HasValue ? RawLowValue.Value : 0; } }

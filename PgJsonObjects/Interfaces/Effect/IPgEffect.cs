@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    interface IPgEffect
+    public interface IPgEffect
     {
         string Name { get; }
         string Desc { get; }

@@ -2,6 +2,6 @@
 {
     public interface IPgAbilityServerInfoEffect
     {
-        Ability BestowAbility { get; }
+        IPgAbility BestowAbility { get; }
     }
 }

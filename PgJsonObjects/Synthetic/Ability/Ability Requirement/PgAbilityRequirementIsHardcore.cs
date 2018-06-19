@@ -2,14 +2,19 @@
 {
     public class PgAbilityRequirementIsHardcore: GenericPgObject<PgAbilityRequirementIsHardcore>, IPgAbilityRequirementIsHardcore
     {
-        public PgAbilityRequirementIsHardcore(byte[] data, int offset)
+        public PgAbilityRequirementIsHardcore(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgAbilityRequirementIsHardcore CreateItem(byte[] data, int offset)
+        protected override PgAbilityRequirementIsHardcore CreateItem(byte[] data, ref int offset)
         {
-            return new PgAbilityRequirementIsHardcore(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgAbilityRequirementIsHardcore CreateNew(byte[] data, ref int offset)
+        {
+            return new PgAbilityRequirementIsHardcore(data, ref offset);
         }
     }
 }

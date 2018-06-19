@@ -2,14 +2,19 @@
 {
     public class PgSpecialValue : GenericPgObject<PgSpecialValue>, IPgSpecialValue
     {
-        public PgSpecialValue(byte[] data, int offset)
+        public PgSpecialValue(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgSpecialValue CreateItem(byte[] data, int offset)
+        protected override PgSpecialValue CreateItem(byte[] data, ref int offset)
         {
-            return new PgSpecialValue(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgSpecialValue CreateNew(byte[] data, ref int offset)
+        {
+            return new PgSpecialValue(data, ref offset);
         }
 
         public string Label { get { return GetString(0); } }

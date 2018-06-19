@@ -7,13 +7,13 @@ namespace PgJsonObjects
     public class AbilitySource : MainJsonObject<AbilitySource>, IPgAbilitySource
     {
         #region Direct Properties
-        public Ability ConnectedAbility { get; private set; }
-        public Skill SkillTypeId { get; private set; }
-        public Item ConnectedItem { get; private set; }
-        public GameNpc Npc { get; private set; }
-        public Effect ConnectedEffect { get; private set; }
-        public Recipe ConnectedRecipeEffect { get; private set; }
-        public Quest ConnectedQuest { get; private set; }
+        public IPgAbility ConnectedAbility { get; private set; }
+        public IPgSkill SkillTypeId { get; private set; }
+        public IPgItem ConnectedItem { get; private set; }
+        public IPgGameNpc Npc { get; private set; }
+        public IPgEffect ConnectedEffect { get; private set; }
+        public IPgRecipe ConnectedRecipeEffect { get; private set; }
+        public IPgQuest ConnectedQuest { get; private set; }
         public SourceTypes Type { get; private set; }
 
         private PowerSkill RawSkillTypeId;
@@ -43,7 +43,10 @@ namespace PgJsonObjects
             {
                 GenericSource ConvertedSource = ToSpecificSource(ErrorInfo);
                 if (ConvertedSource != null)
-                    ConnectedAbility.SetSource(ConvertedSource, ErrorInfo);
+                {
+                    Ability a = ConnectedAbility as Ability;
+                    a.SetSource(ConvertedSource, ErrorInfo);
+                }
             }
         }
 
@@ -266,23 +269,23 @@ namespace PgJsonObjects
             }
 
             if (RawSkillTypeId != PowerSkill.Internal_None && RawSkillTypeId != PowerSkill.AnySkill && RawSkillTypeId != PowerSkill.Unknown)
-                SkillTypeId = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkillTypeId, SkillTypeId, ref IsSkillTypeIdParsed, ref IsConnected, ConnectedAbility);
+                SkillTypeId = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkillTypeId, SkillTypeId, ref IsSkillTypeIdParsed, ref IsConnected, ConnectedAbility as IBackLinkable);
 
             if (RawItemTypeId.HasValue)
-                ConnectedItem = PgJsonObjects.Item.ConnectByKey(ErrorInfo, ItemTable, RawItemTypeId.Value, ConnectedItem, ref IsItemNameParsed, ref IsConnected, ConnectedAbility);
+                ConnectedItem = PgJsonObjects.Item.ConnectByKey(ErrorInfo, ItemTable, RawItemTypeId.Value, ConnectedItem, ref IsItemNameParsed, ref IsConnected, ConnectedAbility as IBackLinkable);
 
             if (RawEffectName != null && ConnectedRecipeEffect == null && ConnectedEffect == null)
             {
-                ConnectedRecipeEffect = PgJsonObjects.Recipe.ConnectSingleProperty(null, RecipeTable, RawEffectName, ConnectedRecipeEffect, ref IsRecipeParsed, ref IsConnected, ConnectedAbility);
-                ConnectedEffect = PgJsonObjects.Effect.ConnectSingleProperty(null, EffectTable, RawEffectName, ConnectedEffect, ref IsEffectParsed, ref IsConnected, ConnectedAbility);
+                ConnectedRecipeEffect = PgJsonObjects.Recipe.ConnectSingleProperty(null, RecipeTable, RawEffectName, ConnectedRecipeEffect, ref IsRecipeParsed, ref IsConnected, ConnectedAbility as IBackLinkable);
+                ConnectedEffect = PgJsonObjects.Effect.ConnectSingleProperty(null, EffectTable, RawEffectName, ConnectedEffect, ref IsEffectParsed, ref IsConnected, ConnectedAbility as IBackLinkable);
                 if (ConnectedRecipeEffect == null && ConnectedEffect == null && !IsMiscEffect)
                     ErrorInfo.AddMissingKey(RawEffectName);
             }
 
             if (RawQuestId.HasValue)
-                ConnectedQuest = PgJsonObjects.Quest.ConnectByKey(ErrorInfo, QuestTable, RawQuestId.Value, ConnectedQuest, ref IsQuestNameParsed, ref IsConnected, ConnectedAbility);
+                ConnectedQuest = PgJsonObjects.Quest.ConnectByKey(ErrorInfo, QuestTable, RawQuestId.Value, ConnectedQuest, ref IsQuestNameParsed, ref IsConnected, ConnectedAbility as IBackLinkable);
 
-            Npc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, RawNpcId, Npc, ref IsNpcParsed, ref IsConnected, ConnectedAbility);
+            Npc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, RawNpcId, Npc, ref IsNpcParsed, ref IsConnected, ConnectedAbility as IBackLinkable);
             if (RawNpcId != null && Npc == null)
             {
                 SpecialNpc ParsedSpecialNpc;
@@ -328,13 +331,13 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(ConnectedAbility, data, ref offset, BaseOffset, 0, StoredObjectTable);
-            AddObject(SkillTypeId, data, ref offset, BaseOffset, 4, StoredObjectTable);
-            AddObject(ConnectedItem, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddObject(Npc, data, ref offset, BaseOffset, 12, StoredObjectTable);
-            AddObject(ConnectedEffect, data, ref offset, BaseOffset, 16, StoredObjectTable);
-            AddObject(ConnectedRecipeEffect, data, ref offset, BaseOffset, 20, StoredObjectTable);
-            AddObject(ConnectedQuest, data, ref offset, BaseOffset, 24, StoredObjectTable);
+            AddObject(ConnectedAbility as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(SkillTypeId as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(ConnectedItem as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddObject(Npc as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddObject(ConnectedEffect as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddObject(ConnectedRecipeEffect as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddObject(ConnectedQuest as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
             AddEnum(Type, data, ref offset, BaseOffset, 28);
 
             FinishSerializing(data, ref offset, BaseOffset, 30, null, StoredObjectTable, null, null, null, null, null, null);

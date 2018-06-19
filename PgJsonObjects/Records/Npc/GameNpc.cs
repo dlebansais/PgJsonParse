@@ -137,7 +137,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static GameNpc ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> GameNpcTable, string GameNpcKey, GameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgGameNpc ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> GameNpcTable, string GameNpcKey, IPgGameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawGameNpcParsed)
                 return ParsedGameNpc;

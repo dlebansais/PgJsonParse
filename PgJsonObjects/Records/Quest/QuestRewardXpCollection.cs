@@ -9,9 +9,9 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static PgQuestRewardXp CreateItem(byte[] data, int offset)
+        public static PgQuestRewardXp CreateItem(byte[] data, ref int offset)
         {
-            return new PgQuestRewardXp(data, offset);
+            return new PgQuestRewardXp(data, ref offset);
         }
     }
 }

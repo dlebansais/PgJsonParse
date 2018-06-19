@@ -51,27 +51,27 @@ namespace PgJsonObjects
         string Name { get; }
         int PetTypeTagReqMax { get; }
         int? RawPetTypeTagReqMax { get; }
-        Ability Prerequisite { get; }
+        IPgAbility Prerequisite { get; }
         AbilityProjectile Projectile { get; }
         AbilityTarget Target { get; }
-        AbilityPvX PvE { get; }
-        AbilityPvX PvP { get; }
+        IPgAbilityPvX PvE { get; }
+        IPgAbilityPvX PvP { get; }
         double ResetTime { get; }
         double? RawResetTime { get; }
         string SelfParticle { get; }
-        Ability SharesResetTimerWith { get; }
-        Skill Skill { get; }
+        IPgAbility SharesResetTimerWith { get; }
+        IPgSkill Skill { get; }
         AbilityRequirementCollection CombinedRequirementList { get; }
         string SpecialInfo { get; }
         int SpecialTargetingTypeReq { get; }
         int? RawSpecialTargetingTypeReq { get; }
         TargetEffectKeyword TargetEffectKeywordReq { get; }
         AbilityTargetParticle TargetParticle { get; }
-        Ability UpgradeOf { get; }
+        IPgAbility UpgradeOf { get; }
         TooltipsExtraKeywords ExtraKeywordsForTooltips { get; }
         ConsumedItems ConsumedItems { get; }
-        Ability AbilityGroup { get; }
-        Item ConsumedItemLink { get; }
+        IPgAbility AbilityGroup { get; }
+        IPgItem ConsumedItemLink { get; }
         //List<GenericSource> SourceList { get; }
         bool WorksWhileFalling { get; }
         bool? RawWorksWhileFalling { get; }

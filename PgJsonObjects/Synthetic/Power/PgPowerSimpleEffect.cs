@@ -4,14 +4,19 @@ namespace PgJsonObjects
 {
     public class PgPowerSimpleEffect : GenericPgObject<PgPowerSimpleEffect>, IPgPowerSimpleEffect
     {
-        public PgPowerSimpleEffect(byte[] data, int offset)
+        public PgPowerSimpleEffect(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgPowerSimpleEffect CreateItem(byte[] data, int offset)
+        protected override PgPowerSimpleEffect CreateItem(byte[] data, ref int offset)
         {
-            return new PgPowerSimpleEffect(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgPowerSimpleEffect CreateNew(byte[] data, ref int offset)
+        {
+            return new PgPowerSimpleEffect(data, ref offset);
         }
 
         public string Description { get { return GetString(0); } }

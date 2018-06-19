@@ -9,9 +9,9 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static PgXpTableLevel CreateItem(byte[] data, int offset)
+        public static PgXpTableLevel CreateItem(byte[] data, ref int offset)
         {
-            return new PgXpTableLevel(data, offset);
+            return new PgXpTableLevel(data, ref offset);
         }
     }
 }

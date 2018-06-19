@@ -7,7 +7,7 @@ namespace PgJsonObjects
     public class RecipeItem : GenericJsonObject<RecipeItem>, IPgRecipeItem
     {
         #region Direct Properties
-        public Item Item { get; private set; }
+        public IPgItem Item { get; private set; }
         public int ItemCode { get { return RawItemCode.HasValue ? RawItemCode.Value : 0; } }
         public int? RawItemCode { get; private set; }
         public int StackSize { get { return RawStackSize.HasValue ? (RawStackSize.Value > 0 ? RawStackSize.Value : 1) : 0; } }
@@ -134,7 +134,7 @@ namespace PgJsonObjects
 
             ParentRecipe = Parent as Recipe;
 
-            Item = Item.ConnectByCode(ErrorInfo, ItemTable, RawItemCode, Item, ref IsItemCodeParsed, ref IsConnected, this);
+            Item = PgJsonObjects.Item.ConnectByCode(ErrorInfo, ItemTable, RawItemCode, Item, ref IsItemCodeParsed, ref IsConnected, this);
             if (Item == null && !IsItemKeyParsed)
             {
                 if (ItemKeyList.Count == 0)
@@ -172,7 +172,7 @@ namespace PgJsonObjects
 
                             default:
                                 List<Item> ParsedList = new List<Item>();
-                                ParsedList = Item.ConnectByItemKey(ErrorInfo, ItemTable, ItemKey, ParsedList, ref IsItemKeyParsed, ref IsConnected, this);
+                                ParsedList = PgJsonObjects.Item.ConnectByItemKey(ErrorInfo, ItemTable, ItemKey, ParsedList, ref IsItemKeyParsed, ref IsConnected, this);
 
                                 foreach (Item Item in ParsedList)
                                     if (!MatchingKeyItemList.Contains(Item))
@@ -193,7 +193,7 @@ namespace PgJsonObjects
             get
             {
                 if (Item != null)
-                    return Item.PerfectCottonRatio;
+                    return (Item as Item).PerfectCottonRatio;
                 else
                     return 0;
             }
@@ -202,7 +202,7 @@ namespace PgJsonObjects
         public void SetPerfectCottonRatio(double RecipePerfectCottonRatio)
         {
             if (Item != null && StackSize > 0)
-                Item.SetPerfectCottonRatio((RecipePerfectCottonRatio * PercentChance) / StackSize);
+                (Item as Item).SetPerfectCottonRatio((RecipePerfectCottonRatio * PercentChance) / StackSize);
         }
         #endregion
 
@@ -220,7 +220,7 @@ namespace PgJsonObjects
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObject(Item, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(Item as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddInt(RawItemCode, data, ref offset, BaseOffset, 4);
             AddInt(RawStackSize, data, ref offset, BaseOffset, 8);
             AddDouble(RawPercentChance, data, ref offset, BaseOffset, 12);

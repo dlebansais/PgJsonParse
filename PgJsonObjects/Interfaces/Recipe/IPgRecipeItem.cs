@@ -4,7 +4,7 @@ namespace PgJsonObjects
 {
     public interface IPgRecipeItem
     {
-        Item Item { get; }
+        IPgItem Item { get; }
         int ItemCode { get; }
         int? RawItemCode { get; }
         int StackSize { get; }

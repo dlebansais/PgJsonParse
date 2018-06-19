@@ -18,11 +18,11 @@ namespace PgJsonObjects
         public int? RawOtherLevel { get; private set; }
         public int Level { get { return RawLevel.Value; } }
         public int? RawLevel { get; private set; }
-        public Skill Link { get; private set; }
+        public IPgSkill Link { get; private set; }
         public bool IsParsed { get; private set; }
         public PowerSkill OtherSkill { get; private set; }
 
-        public void SetLink(Skill Link)
+        public void SetLink(IPgSkill Link)
         {
             this.Link = Link;
             IsParsed = true;
@@ -53,7 +53,7 @@ namespace PgJsonObjects
 
             AddInt(RawOtherLevel, data, ref offset, BaseOffset, 0);
             AddInt(RawLevel, data, ref offset, BaseOffset, 4);
-            AddObject(Link, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddObject(Link as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 12, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

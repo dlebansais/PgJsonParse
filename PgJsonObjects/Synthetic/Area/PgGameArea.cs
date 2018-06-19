@@ -2,14 +2,19 @@
 {
     public class PgGameArea : MainPgObject<PgGameArea>, IPgGameArea
     {
-        public PgGameArea(byte[] data, int offset)
+        public PgGameArea(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgGameArea CreateItem(byte[] data, int offset)
+        protected override PgGameArea CreateItem(byte[] data, ref int offset)
         {
-            return new PgGameArea(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgGameArea CreateNew(byte[] data, ref int offset)
+        {
+            return new PgGameArea(data, ref offset);
         }
 
         public string FriendlyName { get { return GetString(0); } }

@@ -55,29 +55,29 @@ namespace PgJsonObjects
         public string Name { get; private set; }
         public int PetTypeTagReqMax { get { return RawPetTypeTagReqMax.HasValue ? RawPetTypeTagReqMax.Value : 0; } }
         public int? RawPetTypeTagReqMax { get; private set; }
-        public Ability Prerequisite { get; private set; }
+        public IPgAbility Prerequisite { get; private set; }
         public AbilityProjectile Projectile { get; private set; }
         public AbilityTarget Target { get; private set; }
-        public AbilityPvX PvE { get; private set; }
-        public AbilityPvX PvP { get; private set; }
+        public IPgAbilityPvX PvE { get; private set; }
+        public IPgAbilityPvX PvP { get; private set; }
         public double ResetTime { get { return RawResetTime.HasValue ? RawResetTime.Value : 0; } }
         public double? RawResetTime { get; private set; }
         public string SelfParticle { get; private set; }
-        public Ability SharesResetTimerWith { get; private set; }
-        public Skill Skill { get; private set; }
+        public IPgAbility SharesResetTimerWith { get; private set; }
+        public IPgSkill Skill { get; private set; }
         public AbilityRequirementCollection CombinedRequirementList { get; } = new AbilityRequirementCollection();
         public string SpecialInfo { get; private set; }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
         public int? RawSpecialTargetingTypeReq { get; private set; }
         public TargetEffectKeyword TargetEffectKeywordReq { get; private set; }
         public AbilityTargetParticle TargetParticle { get; private set; }
-        public Ability UpgradeOf { get; private set; }
+        public IPgAbility UpgradeOf { get; private set; }
         public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
         public bool? RawWorksWhileFalling { get; private set; }
         public bool IgnoreEffectErrors { get { return RawIgnoreEffectErrors.HasValue && RawIgnoreEffectErrors.Value; } }
         public bool? RawIgnoreEffectErrors { get; private set; }
-        public Ability AbilityGroup { get; private set; }
-        public Item ConsumedItemLink { get; private set; }
+        public IPgAbility AbilityGroup { get; private set; }
+        public IPgItem ConsumedItemLink { get; private set; }
         public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; private set; }
         public ConsumedItems ConsumedItems { get; private set; }
@@ -130,7 +130,7 @@ namespace PgJsonObjects
             ConsumedItem = CreateConsumedItem(ConsumedItemLink, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
         }
 
-        public static ConsumedItem CreateConsumedItem(Item ConsumedItemLink, ConsumedItems ConsumedItems, int? RawConsumedItemCount, double? RawConsumedItemChance, double? RawConsumedItemChanceToStickInCorpse)
+        public static ConsumedItem CreateConsumedItem(IPgItem ConsumedItemLink, ConsumedItems ConsumedItems, int? RawConsumedItemCount, double? RawConsumedItemChance, double? RawConsumedItemChanceToStickInCorpse)
         {
             ConsumedItem Result;
 
@@ -327,11 +327,11 @@ namespace PgJsonObjects
             { "PvE", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PvE = JsonObjectParser<AbilityPvX>.Parse("PvE", value, errorInfo),
-                GetObject = () => PvE } },
+                GetObject = () => PvE as IObjectContentGenerator} },
             { "PvP", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PvP = JsonObjectParser<AbilityPvX>.Parse("PvP", value, errorInfo),
-                GetObject = () => PvP } },
+                GetObject = () => PvP as IObjectContentGenerator } },
             { "ResetTime", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawResetTime = value,
@@ -2473,10 +2473,10 @@ namespace PgJsonObjects
             AbilityGroup = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawAbilityGroup, AbilityGroup, ref IsRawAbilityGroupParsed, ref IsConnected, this);
 
             if (PvE != null)
-                IsConnected |= PvE.Connect(ErrorInfo, this, AllTables);
+                IsConnected |= (PvE as AbilityPvX).Connect(ErrorInfo, this, AllTables);
 
             if (PvP != null)
-                IsConnected |= PvP.Connect(ErrorInfo, this, AllTables);
+                IsConnected |= (PvP as AbilityPvX).Connect(ErrorInfo, this, AllTables);
 
             foreach (AbilityRequirement Item in SpecialCasterRequirementList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
@@ -2499,7 +2499,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static Ability ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, string RawAbilityName, Ability ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgAbility ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, string RawAbilityName, IPgAbility ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAbilityParsed)
                 return ParsedAbility;
@@ -2555,7 +2555,7 @@ namespace PgJsonObjects
             return AbilityList;
         }
 
-        public static Ability ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, int AbilityId, Ability Ability, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgAbility ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, int AbilityId, IPgAbility Ability, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAbilityParsed)
                 return Ability;
@@ -2647,25 +2647,25 @@ namespace PgJsonObjects
             AddInt(RawLevel, data, ref offset, BaseOffset, 72);
             AddString(Name, data, ref offset, BaseOffset, 76, StoredStringtable);
             AddInt(RawPetTypeTagReqMax, data, ref offset, BaseOffset, 80);
-            AddObject(Prerequisite, data, ref offset, BaseOffset, 84, StoredObjectTable);
+            AddObject(Prerequisite as ISerializableJsonObject, data, ref offset, BaseOffset, 84, StoredObjectTable);
             AddEnum(Projectile, data, ref offset, BaseOffset, 88);
             AddEnum(Target, data, ref offset, BaseOffset, 90);
-            AddObject(PvE, data, ref offset, BaseOffset, 92, StoredObjectTable);
-            AddObject(PvP, data, ref offset, BaseOffset, 96, StoredObjectTable);
+            AddObject(PvE as ISerializableJsonObject, data, ref offset, BaseOffset, 92, StoredObjectTable);
+            AddObject(PvP as ISerializableJsonObject, data, ref offset, BaseOffset, 96, StoredObjectTable);
             AddDouble(RawResetTime, data, ref offset, BaseOffset, 100);
             AddString(SelfParticle, data, ref offset, BaseOffset, 104, StoredStringtable);
-            AddObject(SharesResetTimerWith, data, ref offset, BaseOffset, 108, StoredObjectTable);
-            AddObject(Skill, data, ref offset, BaseOffset, 112, StoredObjectTable);
+            AddObject(SharesResetTimerWith as ISerializableJsonObject, data, ref offset, BaseOffset, 108, StoredObjectTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 112, StoredObjectTable);
             AddObjectList(CombinedRequirementList, data, ref offset, BaseOffset, 116, StoredObjectListTable);
             AddString(SpecialInfo, data, ref offset, BaseOffset, 120, StoredStringtable);
             AddInt(RawSpecialTargetingTypeReq, data, ref offset, BaseOffset, 124);
             AddEnum(TargetEffectKeywordReq, data, ref offset, BaseOffset, 128);
             AddEnum(TargetParticle, data, ref offset, BaseOffset, 130);
-            AddObject(UpgradeOf, data, ref offset, BaseOffset, 132, StoredObjectTable);
+            AddObject(UpgradeOf as ISerializableJsonObject, data, ref offset, BaseOffset, 132, StoredObjectTable);
             AddEnum(ExtraKeywordsForTooltips, data, ref offset, BaseOffset, 136);
             AddEnum(ConsumedItems, data, ref offset, BaseOffset, 138);
-            AddObject(AbilityGroup, data, ref offset, BaseOffset, 140, StoredObjectTable);
-            AddObject(ConsumedItemLink, data, ref offset, BaseOffset, 144, StoredObjectTable);
+            AddObject(AbilityGroup as ISerializableJsonObject, data, ref offset, BaseOffset, 140, StoredObjectTable);
+            AddObject(ConsumedItemLink as ISerializableJsonObject, data, ref offset, BaseOffset, 144, StoredObjectTable);
             //AddObjectList(SourceList, data, ref offset, BaseOffset, 148, StoredObjectListTable);
             AddBool(RawWorksWhileFalling, data, ref offset, ref BitOffset, BaseOffset, 148, 0);
             AddBool(RawIgnoreEffectErrors, data, ref offset, ref BitOffset, BaseOffset,  148, 2);

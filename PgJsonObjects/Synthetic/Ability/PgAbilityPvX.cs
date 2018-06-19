@@ -4,14 +4,19 @@ namespace PgJsonObjects
 {
     public class PgAbilityPvX : GenericPgObject<PgAbilityPvX>, IPgAbilityPvX
     {
-        public PgAbilityPvX(byte[] data, int offset)
+        public PgAbilityPvX(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgAbilityPvX CreateItem(byte[] data, int offset)
+        protected override PgAbilityPvX CreateItem(byte[] data, ref int offset)
         {
-            return new PgAbilityPvX(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgAbilityPvX CreateNew(byte[] data, ref int offset)
+        {
+            return new PgAbilityPvX(data, ref offset);
         }
 
         public int Damage { get { return RawDamage.HasValue ? RawDamage.Value : 0; } }

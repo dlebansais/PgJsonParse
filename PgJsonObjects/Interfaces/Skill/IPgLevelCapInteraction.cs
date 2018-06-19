@@ -6,6 +6,6 @@
         int? RawOtherLevel { get; }
         int Level { get; }
         int? RawLevel { get; }
-        Skill Link { get; }
+        IPgSkill Link { get; }
     }
 }

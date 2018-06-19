@@ -9,9 +9,9 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static PgLevelCapInteraction CreateItem(byte[] data, int offset)
+        public static PgLevelCapInteraction CreateItem(byte[] data, ref int offset)
         {
-            return new PgLevelCapInteraction(data, offset);
+            return new PgLevelCapInteraction(data, ref offset);
         }
     }
 }

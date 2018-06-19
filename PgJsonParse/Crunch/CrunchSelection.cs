@@ -152,9 +152,9 @@ namespace PgJsonParse
                 RefreshTable[SelectedIndex] = TimeSpan.FromSeconds(SelectedAbility.ResetTime);
 
                 if (SelectedAbility.SharesResetTimerWith != null)
-                    if (AbilityList.Contains(SelectedAbility.SharesResetTimerWith))
+                    if (AbilityList.Contains(SelectedAbility.SharesResetTimerWith as Ability))
                     {
-                        int OtherAbilityIndex = AbilityList.IndexOf(SelectedAbility.SharesResetTimerWith);
+                        int OtherAbilityIndex = AbilityList.IndexOf(SelectedAbility.SharesResetTimerWith as Ability);
 
                         if (RefreshTable[OtherAbilityIndex] < RefreshTable[SelectedIndex])
                             RefreshTable[OtherAbilityIndex] = RefreshTable[SelectedIndex];

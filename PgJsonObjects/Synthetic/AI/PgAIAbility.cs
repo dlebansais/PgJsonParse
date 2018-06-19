@@ -2,14 +2,19 @@
 {
     public class PgAIAbility : GenericPgObject<PgAIAbility>, IPgAIAbility
     {
-        public PgAIAbility(byte[] data, int offset)
+        public PgAIAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgAIAbility CreateItem(byte[] data, int offset)
+        protected override PgAIAbility CreateItem(byte[] data, ref int offset)
         {
-            return new PgAIAbility(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgAIAbility CreateNew(byte[] data, ref int offset)
+        {
+            return new PgAIAbility(data, ref offset);
         }
 
         public int? RawMinLevel { get { return GetInt(0); } }

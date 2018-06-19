@@ -2,6 +2,6 @@
 {
     public interface IPgQuestObjectiveAnatomy
     {
-        Skill ConnectedSkill { get; }
+        IPgSkill ConnectedSkill { get; }
     }
 }

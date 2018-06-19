@@ -3,7 +3,7 @@
     public class HangOutSource : GenericSource
     {
         #region Init
-        public HangOutSource(string NpcName, GameNpc Npc)
+        public HangOutSource(string NpcName, IPgGameNpc Npc)
         {
             this.NpcName = NpcName;
             this.Npc = Npc;
@@ -12,7 +12,7 @@
 
         #region Properties
         public string NpcName { get; private set; }
-        public GameNpc Npc { get; private set; }
+        public IPgGameNpc Npc { get; private set; }
         #endregion
     }
 }

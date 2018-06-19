@@ -14,7 +14,7 @@ namespace PgJsonObjects
         public double? RawPreference { get; private set; }
         public int MinValueRequirement { get { return RawMinValueRequirement.HasValue ? RawMinValueRequirement.Value : 0; } }
         public int? RawMinValueRequirement { get; private set; }
-        public Skill SkillRequirement { get; private set; }
+        public IPgSkill SkillRequirement { get; private set; }
         public ItemSlot SlotRequirement { get; private set; }
         public RecipeItemKey RarityRequirement { get; private set; }
         public RecipeItemKey MinRarityRequirement { get; private set; }
@@ -341,7 +341,7 @@ namespace PgJsonObjects
             AddStringList(RawKeywordList, data, ref offset, BaseOffset, 4, StoredStringListTable);
             AddDouble(RawPreference, data, ref offset, BaseOffset, 8);
             AddInt(RawMinValueRequirement, data, ref offset, BaseOffset, 12);
-            AddObject(SkillRequirement, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddObject(SkillRequirement as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
             AddEnum(SlotRequirement, data, ref offset, BaseOffset, 20);
             AddEnum(RarityRequirement, data, ref offset, BaseOffset, 22);
             AddEnum(MinRarityRequirement, data, ref offset, BaseOffset, 24);

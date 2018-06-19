@@ -2,7 +2,7 @@
 {
     public interface IPgQuestObjectiveScriptedReceiveItem
     {
-        GameNpc DeliverNpc { get; }
-        Item QuestItem { get; }
+        IPgGameNpc DeliverNpc { get; }
+        IPgItem QuestItem { get; }
     }
 }

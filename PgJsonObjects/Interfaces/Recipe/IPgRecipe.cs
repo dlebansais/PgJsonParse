@@ -11,11 +11,11 @@ namespace PgJsonObjects
         string InternalName { get; }
         string Name { get; }
         RecipeItemCollection ResultItemList { get; }
-        Skill Skill { get; }
+        IPgSkill Skill { get; }
         int SkillLevelReq { get; }
         int? RawSkillLevelReq { get; }
         //List<RecipeResultEffect> ResultEffectList { get; }
-        Skill SortSkill { get; }
+        IPgSkill SortSkill { get; }
         List<RecipeKeyword> KeywordList { get; }
         int UsageDelay { get; }
         int? RawUsageDelay { get; }
@@ -30,17 +30,17 @@ namespace PgJsonObjects
         int ResetTimeInSeconds { get; }
         int? RawResetTimeInSeconds { get; }
         uint? DyeColor { get; }
-        Skill RewardSkill { get; }
+        IPgSkill RewardSkill { get; }
         int RewardSkillXp { get; }
         int? RawRewardSkillXp { get; }
         int RewardSkillXpFirstTime { get; }
         int? RawRewardSkillXpFirstTime { get; }
-        Recipe SharesResetTimerWith { get; }
+        IPgRecipe SharesResetTimerWith { get; }
         string ItemMenuLabel { get; }
         string RawItemMenuCategory { get; }
         int ItemMenuCategoryLevel { get; }
         int? RawItemMenuCategoryLevel { get; }
-        Recipe PrereqRecipe { get; }
+        IPgRecipe PrereqRecipe { get; }
         bool IsItemMenuKeywordReqSufficient { get; }
         bool? RawIsItemMenuKeywordReqSufficient { get; }
         ItemKeyword RecipeItemKeyword { get; }

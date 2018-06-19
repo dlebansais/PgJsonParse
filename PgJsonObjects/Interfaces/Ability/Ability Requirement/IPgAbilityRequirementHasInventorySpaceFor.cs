@@ -2,6 +2,6 @@
 {
     public interface IPgAbilityRequirementHasInventorySpaceFor
     {
-        Item Item { get; }
+        IPgItem Item { get; }
     }
 }

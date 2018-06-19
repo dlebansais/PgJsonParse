@@ -1,10 +1,12 @@
-﻿namespace PgJsonObjects
+﻿using System;
+
+namespace PgJsonObjects
 {
-    public abstract class ItemEffect : SerializableJsonObject
+    public abstract class ItemEffect : SerializableJsonObject, IPgItemEffect
     {
         public abstract string AsEffectString();
 
-        public static bool TryParse(string Effect, out ItemEffect Result)
+        public static bool TryParse(string Effect, out IPgItemEffect Result)
         {
             Result = null;
 
@@ -17,7 +19,7 @@
                 return TryParseSimple(Effect, out Result);
         }
 
-        private static bool TryParseAttributeLink(string Effect, out ItemEffect Result)
+        private static bool TryParseAttributeLink(string Effect, out IPgItemEffect Result)
         {
             Result = null;
 
@@ -50,7 +52,7 @@
             return true;
         }
 
-        private static bool TryParseSimple(string Effect, out ItemEffect Result)
+        private static bool TryParseSimple(string Effect, out IPgItemEffect Result)
         {
             Result = null;
 
@@ -59,6 +61,15 @@
 
             Result = new ItemSimpleEffect(Effect);
             return true;
+        }
+
+        public static IPgItemEffect CreateNew(byte[] data, ref int offset)
+        {
+            int Type = BitConverter.ToInt32(data, offset);
+            if (Type != 0)
+                return PgItemAttributeLink.CreateNew(data, ref offset);
+            else
+                return new PgItemSimpleEffect(data, ref offset);
         }
     }
 }

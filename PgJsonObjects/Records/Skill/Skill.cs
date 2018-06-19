@@ -20,16 +20,16 @@ namespace PgJsonObjects
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; private set; }
         public string Description { get; private set; }
-        public XpTable XpTable { get; private set; }
+        public IPgXpTable XpTable { get; private set; }
         public string RawXpTable { get; private set; }
-        public AdvancementTable AdvancementTable { get; private set; }
+        public IPgAdvancementTable AdvancementTable { get; private set; }
         public List<PowerSkill> CompatibleCombatSkillList { get; } = new List<PowerSkill>();
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
         public int? RawMaxBonusLevels { get; private set; }
         public LevelCapInteractionCollection InteractionFlagLevelCapList { get; } = new LevelCapInteractionCollection();
         public RewardCollection RewardList { get; } = new RewardCollection();
         public string Name { get; private set; }
-        public Skill ParentSkill { get; private set; }
+        public IPgSkill ParentSkill { get; private set; }
         public List<SkillCategory> TSysCategoryList { get; } = new List<SkillCategory>();
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         private bool IsRawXpTableParsed;
@@ -105,7 +105,7 @@ namespace PgJsonObjects
 
             if (!BasicAttackTable.ContainsKey(IconSkill) && !AnyIconTable.ContainsKey(IconSkill))
             {
-                if (ParentSkill != null && (ParentSkill.IconId != 0 || HardcodedSkillIconTable.ContainsKey(RawParentSkill)))
+                if (ParentSkill != null && ((ParentSkill as Skill).IconId != 0 || HardcodedSkillIconTable.ContainsKey(RawParentSkill)))
                     IconSkill = RawParentSkill;
 
                 else
@@ -114,9 +114,9 @@ namespace PgJsonObjects
                     {
                         SkillRewardBonusLevel AsBonusLevelReward;
                         if ((AsBonusLevelReward = Reward as SkillRewardBonusLevel) != null)
-                            if (AnyIconTable.ContainsKey(AsBonusLevelReward.Skill.CombatSkill) && AsBonusLevelReward.Skill.IconId != 0)
+                            if (AnyIconTable.ContainsKey(AsBonusLevelReward.Skill.CombatSkill) && (AsBonusLevelReward.Skill as Skill).IconId != 0)
                             {
-                                AnyIconTable.Add(IconSkill, AsBonusLevelReward.Skill.IconId);
+                                AnyIconTable.Add(IconSkill, (AsBonusLevelReward.Skill as Skill).IconId);
                                 break;
                             }
                     }
@@ -523,7 +523,7 @@ namespace PgJsonObjects
                     IsConnected = true;
 
                     bool IsSkillParsed = false;
-                    Skill SkillLink = ConnectPowerSkill(ErrorInfo, SkillTable, Interaction.OtherSkill, Interaction.Link, ref IsSkillParsed, ref IsConnected, this);
+                    IPgSkill SkillLink = ConnectPowerSkill(ErrorInfo, SkillTable, Interaction.OtherSkill, Interaction.Link, ref IsSkillParsed, ref IsConnected, this);
 
                     Interaction.SetLink(SkillLink);
                 }
@@ -595,7 +595,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static Skill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, PowerSkill RawPowerSkill, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgSkill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, PowerSkill RawPowerSkill, IPgSkill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
@@ -661,15 +661,15 @@ namespace PgJsonObjects
             CloseBool(ref offset, ref BitOffset);
             AddInt(RawId, data, ref offset, BaseOffset, 4);
             AddString(Description, data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddObject(XpTable, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddObject(XpTable as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
             AddString(RawXpTable, data, ref offset, BaseOffset, 16, StoredStringtable);
-            AddObject(AdvancementTable, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddObject(AdvancementTable as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
             AddEnumList(CompatibleCombatSkillList, data, ref offset, BaseOffset, 24, StoredEnumListTable);
             AddInt(RawMaxBonusLevels, data, ref offset, BaseOffset, 28);
             AddObjectList(InteractionFlagLevelCapList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
             AddObjectList(RewardList, data, ref offset, BaseOffset, 36, StoredObjectListTable);
             AddString(Name, data, ref offset, BaseOffset, 40, StoredStringtable);
-            AddObject(ParentSkill, data, ref offset, BaseOffset, 44, StoredObjectTable);
+            AddObject(ParentSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 44, StoredObjectTable);
             AddEnumList(TSysCategoryList, data, ref offset, BaseOffset, 48, StoredEnumListTable);
             AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 52, StoredIntListTable);
             AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 56, StoredStringListTable);

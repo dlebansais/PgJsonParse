@@ -4,14 +4,20 @@ namespace PgJsonObjects
 {
     public class PgAbility: MainPgObject<PgAbility>, IPgAbility
     {
-        public PgAbility(byte[] data, int offset)
+        public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 150;
         }
 
-        protected override PgAbility CreateItem(byte[] data, int offset)
+        protected override PgAbility CreateItem(byte[] data, ref int offset)
         {
-            return new PgAbility(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgAbility CreateNew(byte[] data, ref int offset)
+        {
+            return new PgAbility(data, ref offset);
         }
 
         public override void Init()
@@ -66,27 +72,27 @@ namespace PgJsonObjects
         public string Name { get { return GetString(76); } }
         public int PetTypeTagReqMax { get { return RawPetTypeTagReqMax.HasValue ? RawPetTypeTagReqMax.Value : 0; } }
         public int? RawPetTypeTagReqMax { get { return GetInt(80); } }
-        public Ability Prerequisite { get { return GetObject(84, ref _Prerequisite); } } private Ability _Prerequisite;
+        public IPgAbility Prerequisite { get { return GetObject(84, ref _Prerequisite, PgAbility.CreateNew); } } private IPgAbility _Prerequisite;
         public AbilityProjectile Projectile { get { return GetEnum<AbilityProjectile>(88); } }
         public AbilityTarget Target { get { return GetEnum<AbilityTarget>(90); } }
-        public AbilityPvX PvE { get { return GetObject(92, ref _PvE); } } private AbilityPvX _PvE;
-        public AbilityPvX PvP { get { return GetObject(96, ref _PvP); } } private AbilityPvX _PvP;
+        public IPgAbilityPvX PvE { get { return GetObject(92, ref _PvE, PgAbilityPvX.CreateNew); } } private IPgAbilityPvX _PvE;
+        public IPgAbilityPvX PvP { get { return GetObject(96, ref _PvP, PgAbilityPvX.CreateNew); } } private IPgAbilityPvX _PvP;
         public double ResetTime { get { return RawResetTime.HasValue ? RawResetTime.Value : 0; } }
         public double? RawResetTime { get { return GetDouble(100); } }
         public string SelfParticle { get { return GetString(104); } }
-        public Ability SharesResetTimerWith { get { return GetObject(108, ref _SharesResetTimerWith); } } private Ability _SharesResetTimerWith;
-        public Skill Skill { get { return GetObject(112, ref _Skill); } } private Skill _Skill;
+        public IPgAbility SharesResetTimerWith { get { return GetObject(108, ref _SharesResetTimerWith, CreateNew); } } private IPgAbility _SharesResetTimerWith;
+        public IPgSkill Skill { get { return GetObject(112, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
         public AbilityRequirementCollection CombinedRequirementList { get { return GetObjectList(116, ref _CombinedRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _CombinedRequirementList;
         public string SpecialInfo { get { return GetString(120); } }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
         public int? RawSpecialTargetingTypeReq { get { return GetInt(124); } }
         public TargetEffectKeyword TargetEffectKeywordReq { get { return GetEnum<TargetEffectKeyword>(128); } }
         public AbilityTargetParticle TargetParticle { get { return GetEnum<AbilityTargetParticle>(130); } }
-        public Ability UpgradeOf { get { return GetObject(132, ref _UpgradeOf); } } private Ability _UpgradeOf;
+        public IPgAbility UpgradeOf { get { return GetObject(132, ref _UpgradeOf, CreateNew); } } private IPgAbility _UpgradeOf;
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get { return GetEnum<TooltipsExtraKeywords>(136); } }
         public ConsumedItems ConsumedItems { get { return GetEnum<ConsumedItems>(138); } }
-        public Ability AbilityGroup { get { return GetObject(140, ref _AbilityGroup); } } private Ability _AbilityGroup;
-        public Item ConsumedItemLink { get { return GetObject(144, ref _ConsumedItemLink); } } private Item _ConsumedItemLink;
+        public IPgAbility AbilityGroup { get { return GetObject(140, ref _AbilityGroup, CreateNew); } } private IPgAbility _AbilityGroup;
+        public IPgItem ConsumedItemLink { get { return GetObject(144, ref _ConsumedItemLink, PgItem.CreateNew); } } private IPgItem _ConsumedItemLink;
         //public List<GenericSource> SourceList { get { return GetObjectList(144, ref _SourceList); } } private List<GenericSource> _SourceList;
         public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
         public bool? RawWorksWhileFalling { get { return GetBool(148, 0); } }

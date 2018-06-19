@@ -38,8 +38,8 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public GameNpc DeliverNpc { get; private set; }
-        public Item QuestItem { get; private set; }
+        public IPgGameNpc DeliverNpc { get; private set; }
+        public IPgItem QuestItem { get; private set; }
 
         private MapAreaName DeliverNpcArea;
         private string DeliverNpcId;
@@ -92,8 +92,8 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(DeliverNpc, data, ref offset, BaseOffset, 0, StoredObjectTable);
-            AddObject(QuestItem, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(DeliverNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

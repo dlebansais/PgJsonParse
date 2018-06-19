@@ -10,15 +10,15 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static IGenericPgObject CreateItem(byte[] data, int offset)
+        public static IGenericPgObject CreateItem(byte[] data, ref int offset)
         {
             bool IsSimple = (BitConverter.ToInt32(data, offset) == 0);
             offset += 4;
 
             if (IsSimple)
-                return new PgItemSimpleEffect(data, offset);
+                return new PgItemSimpleEffect(data, ref offset);
             else
-                return new PgItemAttributeLink(data, offset);
+                return new PgItemAttributeLink(data, ref offset);
         }
     }
 }

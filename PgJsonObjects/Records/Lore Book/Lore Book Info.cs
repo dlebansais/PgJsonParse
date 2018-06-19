@@ -7,12 +7,12 @@ namespace PgJsonObjects
     public class LoreBookInfo : MainJsonObject<LoreBookInfo>, IPgLoreBookInfo
     {
         #region Direct Properties
-        public LoreBookInfoCategory Gods { get; private set; }
-        public LoreBookInfoCategory Misc { get; private set; }
-        public LoreBookInfoCategory History { get; private set; }
-        public LoreBookInfoCategory Plot { get; private set; }
-        public LoreBookInfoCategory Stories { get; private set; }
-        public LoreBookInfoCategory GuideProgram { get; private set; }
+        public IPgLoreBookInfoCategory Gods { get; private set; }
+        public IPgLoreBookInfoCategory Misc { get; private set; }
+        public IPgLoreBookInfoCategory History { get; private set; }
+        public IPgLoreBookInfoCategory Plot { get; private set; }
+        public IPgLoreBookInfoCategory Stories { get; private set; }
+        public IPgLoreBookInfoCategory GuideProgram { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -26,27 +26,27 @@ namespace PgJsonObjects
             { "Gods", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => Gods = JsonObjectParser<LoreBookInfoCategory>.Parse("Gods", value, errorInfo),
-                GetObject = () => Gods } },
+                GetObject = () => Gods as IObjectContentGenerator } },
             { "Misc", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => Misc = JsonObjectParser<LoreBookInfoCategory>.Parse("Misc", value, errorInfo),
-                GetObject = () => Misc } },
+                GetObject = () => Misc as IObjectContentGenerator } },
             { "History", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => History = JsonObjectParser<LoreBookInfoCategory>.Parse("History", value, errorInfo),
-                GetObject = () => History } },
+                GetObject = () => History as IObjectContentGenerator } },
             { "Plot", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => Plot = JsonObjectParser<LoreBookInfoCategory>.Parse("Plot", value, errorInfo),
-                GetObject = () => Plot } },
+                GetObject = () => Plot as IObjectContentGenerator } },
             { "Stories", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => Stories = JsonObjectParser<LoreBookInfoCategory>.Parse("Stories", value, errorInfo),
-                GetObject = () => Stories } },
+                GetObject = () => Stories as IObjectContentGenerator } },
             { "GuideProgram", new FieldParser() {
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => GuideProgram = JsonObjectParser<LoreBookInfoCategory>.Parse("GuideProgram", value, errorInfo),
-                GetObject = () => GuideProgram } },
+                GetObject = () => GuideProgram as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -81,12 +81,12 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(Gods, data, ref offset, BaseOffset, 0, StoredObjectTable);
-            AddObject(Misc, data, ref offset, BaseOffset, 4, StoredObjectTable);
-            AddObject(History, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddObject(Plot, data, ref offset, BaseOffset, 12, StoredObjectTable);
-            AddObject(Stories, data, ref offset, BaseOffset, 16, StoredObjectTable);
-            AddObject(GuideProgram, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddObject(Gods as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(Misc as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(History as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddObject(Plot as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddObject(Stories as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddObject(GuideProgram as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 24, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

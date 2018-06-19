@@ -7,7 +7,7 @@ namespace PgJsonObjects
         string Prefix { get; }
         string Suffix { get; }
         List<ItemSlot> SlotList { get; }
-        Skill Skill { get; }
+        IPgSkill Skill { get; }
         bool IsUnavailable { get; }
         bool? RawIsUnavailable { get; }
         PowerSkill RawSkill { get; }

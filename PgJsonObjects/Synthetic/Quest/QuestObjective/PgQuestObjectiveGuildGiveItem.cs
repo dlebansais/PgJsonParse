@@ -2,18 +2,23 @@
 {
     public class PgQuestObjectiveGuildGiveItem : GenericPgObject<PgQuestObjectiveGuildGiveItem>, IPgQuestObjectiveGuildGiveItem
     {
-        public PgQuestObjectiveGuildGiveItem(byte[] data, int offset)
+        public PgQuestObjectiveGuildGiveItem(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgQuestObjectiveGuildGiveItem CreateItem(byte[] data, int offset)
+        protected override PgQuestObjectiveGuildGiveItem CreateItem(byte[] data, ref int offset)
         {
-            return new PgQuestObjectiveGuildGiveItem(data, offset);
+            return CreateNew(data, ref offset);
         }
 
-        public Item QuestItem { get { return GetObject(0, ref _QuestItem); } } private Item _QuestItem;
-        public GameNpc DeliverNpc { get { return GetObject(4, ref _DeliverNpc); } } private GameNpc _DeliverNpc;
+        public static PgQuestObjectiveGuildGiveItem CreateNew(byte[] data, ref int offset)
+        {
+            return new PgQuestObjectiveGuildGiveItem(data, ref offset);
+        }
+
+        public IPgItem QuestItem { get { return GetObject(0, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
+        public IPgGameNpc DeliverNpc { get { return GetObject(4, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
         public ItemCollection ItemList { get { return GetObjectList(8, ref _ItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ItemList;
         public ItemKeyword ItemKeyword { get { return GetEnum<ItemKeyword>(12); } }
     }

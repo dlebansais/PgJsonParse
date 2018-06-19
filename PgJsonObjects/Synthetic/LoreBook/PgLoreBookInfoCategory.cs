@@ -2,14 +2,19 @@
 {
     public class PgLoreBookInfoCategory : GenericPgObject<PgLoreBookInfoCategory>, IPgLoreBookInfoCategory
     {
-        public PgLoreBookInfoCategory(byte[] data, int offset)
+        public PgLoreBookInfoCategory(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgLoreBookInfoCategory CreateItem(byte[] data, int offset)
+        protected override PgLoreBookInfoCategory CreateItem(byte[] data, ref int offset)
         {
-            return new PgLoreBookInfoCategory(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgLoreBookInfoCategory CreateNew(byte[] data, ref int offset)
+        {
+            return new PgLoreBookInfoCategory(data, ref offset);
         }
 
         public string Title { get { return GetString(0); } }

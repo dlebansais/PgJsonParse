@@ -3,14 +3,14 @@
     public class SkillupSource : GenericSource
     {
         #region Init
-        public SkillupSource(Skill Skill)
+        public SkillupSource(IPgSkill Skill)
         {
             this.Skill = Skill;
         }
         #endregion
 
         #region Properties
-        public Skill Skill { get; private set; }
+        public IPgSkill Skill { get; private set; }
         #endregion
     }
 }

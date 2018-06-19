@@ -10,7 +10,7 @@ namespace PgJsonObjects
         double? RawPreference { get; }
         int MinValueRequirement { get; }
         int? RawMinValueRequirement { get; }
-        Skill SkillRequirement { get; }
+        IPgSkill SkillRequirement { get; }
         ItemSlot SlotRequirement { get; }
         RecipeItemKey RarityRequirement { get; }
         RecipeItemKey MinRarityRequirement { get; }

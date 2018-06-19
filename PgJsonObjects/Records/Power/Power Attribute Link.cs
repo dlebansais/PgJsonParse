@@ -25,8 +25,8 @@
         }
 
         public float AttributeEffect { get; private set; }
-        public Attribute AttributeLink { get; private set; }
-        public Skill SkillLink { get; private set; }
+        public IPgAttribute AttributeLink { get; private set; }
+        public IPgSkill SkillLink { get; private set; }
 
         public string AttributeName { get; private set; }
         public FloatFormat AttributeEffectFormat { get; private set; }
@@ -41,7 +41,7 @@
                 return "{" + AttributeName + "}{" + Tools.FloatToString(AttributeEffect, FloatFormat.Standard) + "}{" + AttributeSkill.ToString() + "}";
         }
 
-        public void SetLinks(Attribute AttributeLink, Skill SkillLink)
+        public void SetLinks(IPgAttribute AttributeLink, IPgSkill SkillLink)
         {
             this.AttributeLink = AttributeLink;
             this.SkillLink = SkillLink;

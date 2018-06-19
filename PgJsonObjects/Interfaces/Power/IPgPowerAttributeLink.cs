@@ -3,7 +3,7 @@
     public interface IPgPowerAttributeLink
     {
         float AttributeEffect { get; }
-        Attribute AttributeLink { get; }
-        Skill SkillLink { get; }
+        IPgAttribute AttributeLink { get; }
+        IPgSkill SkillLink { get; }
     }
 }

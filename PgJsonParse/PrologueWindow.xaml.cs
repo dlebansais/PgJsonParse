@@ -988,7 +988,6 @@ namespace PgJsonParse
                 return;
             }
 
-            /*
             int offset;
 
             offset = 0;
@@ -1000,9 +999,8 @@ namespace PgJsonParse
             offset = 0;
             SerializeAll(data, ref offset);
 
-            offset = 0;
-            DeserializeAll(data, ref offset);
-            */
+            /*offset = 0;
+            DeserializeAll(data, ref offset);*/
 
 
             LoadedIconCount = 0;
@@ -1136,16 +1134,18 @@ namespace PgJsonParse
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
-                IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
+
+                definition.JsonObjectList.Clear();
+
+                IMainPgObjectCollection PgObjectList = definition.PgObjectList;
 
                 int Count = BitConverter.ToInt32(data, offset);
                 offset += 4;
 
-                ObjectList.Clear();
                 for (int i = 0; i < Count; i++)
                 {
-                    IMainPgObject Item = ObjectList.CreateItem(data, ref offset);
-                    ObjectList.Add(Item);
+                    IMainPgObject Item = PgObjectList.CreateItem(data, ref offset);
+                    PgObjectList.Add(Item);
                 }
             }
         }

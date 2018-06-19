@@ -2,14 +2,19 @@
 {
     public class PgServerInfoEffect : GenericPgObject<PgServerInfoEffect>, IPgServerInfoEffect
     {
-        public PgServerInfoEffect(byte[] data, int offset)
+        public PgServerInfoEffect(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgServerInfoEffect CreateItem(byte[] data, int offset)
+        protected override PgServerInfoEffect CreateItem(byte[] data, ref int offset)
         {
-            return new PgServerInfoEffect(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgServerInfoEffect CreateNew(byte[] data, ref int offset)
+        {
+            return new PgServerInfoEffect(data, ref offset);
         }
 
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }

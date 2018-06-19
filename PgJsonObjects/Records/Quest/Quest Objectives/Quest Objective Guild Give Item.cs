@@ -49,8 +49,8 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public Item QuestItem { get; private set; }
-        public GameNpc DeliverNpc { get; private set; }
+        public IPgItem QuestItem { get; private set; }
+        public IPgGameNpc DeliverNpc { get; private set; }
         public ItemKeyword ItemKeyword { get; private set; }
         public ItemCollection ItemList { get; private set; } = new ItemCollection();
 
@@ -110,8 +110,8 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObject(QuestItem, data, ref offset, BaseOffset, 0, StoredObjectTable);
-            AddObject(DeliverNpc, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(DeliverNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
             AddObjectList(ItemList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
             AddEnum(ItemKeyword, data, ref offset, BaseOffset, 12);
 

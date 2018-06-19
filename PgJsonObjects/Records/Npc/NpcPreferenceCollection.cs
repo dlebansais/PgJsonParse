@@ -9,9 +9,9 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static PgNpcPreference CreateItem(byte[] data, int offset)
+        public static PgNpcPreference CreateItem(byte[] data, ref int offset)
         {
-            return new PgNpcPreference(data, offset);
+            return new PgNpcPreference(data, ref offset);
         }
     }
 }

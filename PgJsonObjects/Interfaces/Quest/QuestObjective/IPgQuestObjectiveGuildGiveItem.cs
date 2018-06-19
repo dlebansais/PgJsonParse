@@ -2,8 +2,8 @@
 {
     public interface IPgQuestObjectiveGuildGiveItem
     {
-        Item QuestItem { get; }
-        GameNpc DeliverNpc { get; }
+        IPgItem QuestItem { get; }
+        IPgGameNpc DeliverNpc { get; }
         ItemCollection ItemList { get; }
         ItemKeyword ItemKeyword { get; }
     }

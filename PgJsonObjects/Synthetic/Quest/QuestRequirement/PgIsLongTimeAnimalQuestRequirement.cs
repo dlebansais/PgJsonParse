@@ -2,14 +2,19 @@
 {
     public class PgIsLongTimeAnimalQuestRequirement : GenericPgObject<PgIsLongTimeAnimalQuestRequirement>, IPgIsLongTimeAnimalQuestRequirement
     {
-        public PgIsLongTimeAnimalQuestRequirement(byte[] data, int offset)
+        public PgIsLongTimeAnimalQuestRequirement(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgIsLongTimeAnimalQuestRequirement CreateItem(byte[] data, int offset)
+        protected override PgIsLongTimeAnimalQuestRequirement CreateItem(byte[] data, ref int offset)
         {
-            return new PgIsLongTimeAnimalQuestRequirement(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgIsLongTimeAnimalQuestRequirement CreateNew(byte[] data, ref int offset)
+        {
+            return new PgIsLongTimeAnimalQuestRequirement(data, ref offset);
         }
     }
 }

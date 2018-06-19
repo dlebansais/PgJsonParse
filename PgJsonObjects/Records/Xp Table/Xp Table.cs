@@ -66,7 +66,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        public static XpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> XpTableTable, string RawXpTableName, XpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgXpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> XpTableTable, string RawXpTableName, IPgXpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawXpTableParsed)
                 return ParsedXpTable;

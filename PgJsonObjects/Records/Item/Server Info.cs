@@ -596,7 +596,7 @@ namespace PgJsonObjects
                     return;
                 }
 
-                ItemEffect RawAttribute;
+                IPgItemEffect RawAttribute;
                 if (!ItemEffect.TryParse(RawEffectDesc, out RawAttribute))
                 {
                     ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
@@ -621,7 +621,7 @@ namespace PgJsonObjects
                     return;
                 }
 
-                ItemEffect RawAttribute;
+                IPgItemEffect RawAttribute;
                 if (!ItemEffect.TryParse(RawEffectDesc, out RawAttribute))
                 {
                     ErrorInfo.AddInvalidObjectFormat("ServerInfo Effects");
@@ -650,7 +650,7 @@ namespace PgJsonObjects
         private int? DrinkATValue;
         private int? AlcoholPowerValue;
         private string RawBestowAbility;
-        private ItemEffect RawAttribute;
+        private IPgItemEffect RawAttribute;
         private float? RawAttributeEffect;
         private int? RawDuration;
         private int? HealthGainInstant;
@@ -700,13 +700,13 @@ namespace PgJsonObjects
 
             foreach (string RawItemName in RawItemNameList)
             {
-                Item ParsedItem = null;
+                IPgItem ParsedItem = null;
                 bool IsRawItemParsed = false;
                 ParsedItem = Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItemName, ParsedItem, ref IsRawItemParsed, ref IsConnected, LinkBack);
                 if (ParsedItem != null)
                 {
-                    if (!GiveItemList.Contains(ParsedItem))
-                        GiveItemList.Add(ParsedItem);
+                    if (!GiveItemList.Contains(ParsedItem as Item))
+                        GiveItemList.Add(ParsedItem as Item);
                 }
             }
 

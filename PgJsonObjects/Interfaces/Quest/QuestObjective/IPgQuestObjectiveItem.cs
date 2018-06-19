@@ -2,7 +2,7 @@
 {
     public interface IPgQuestObjectiveItem
     {
-        Item QuestItem { get; }
+        IPgItem QuestItem { get; }
         ItemCollection TargetItemList { get; }
         ItemKeyword Target { get; }
     }

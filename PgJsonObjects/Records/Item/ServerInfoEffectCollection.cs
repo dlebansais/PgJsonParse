@@ -10,7 +10,7 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static IGenericPgObject CreateItem(byte[] data, int offset)
+        public static IGenericPgObject CreateItem(byte[] data, ref int offset)
         {
             ServerInfoEffectType ServerInfoEffectType = (ServerInfoEffectType)BitConverter.ToInt32(data, offset);
             offset += 4;
@@ -20,7 +20,7 @@ namespace PgJsonObjects
                 case ServerInfoEffectType.RaiseSkillToLevel:
                 case ServerInfoEffectType.GiveXP:
                 case ServerInfoEffectType.GiveXpVerbose:
-                    return new PgSkillAndLevelServerInfoEffect(data, offset);
+                    return new PgSkillAndLevelServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.BoostHydration:
                 case ServerInfoEffectType.BoostBodyHeat:
@@ -36,35 +36,35 @@ namespace PgJsonObjects
                 case ServerInfoEffectType.UseEltibuleTreasureMap:
                 case ServerInfoEffectType.UseIlmariTreasureMap:
                 case ServerInfoEffectType.Armor:
-                    return new PgValueServerInfoEffect(data, offset);
+                    return new PgValueServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.HouseholdPoison:
-                    return new PgValueServerInfoEffect(data, offset);
-                    //return new PgSimpleServerInfoEffect(data, offset);
+                    return new PgValueServerInfoEffect(data, ref offset);
+                    //return new PgSimpleServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.LearnAbility:
-                    return new PgAbilityServerInfoEffect(data, offset);
+                    return new PgAbilityServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.GiveCouncilCoins:
-                    return new PgIntervalServerInfoEffect(data, offset);
-                    //return new PgValueServerInfoEffect(data, offset);
+                    return new PgIntervalServerInfoEffect(data, ref offset);
+                    //return new PgValueServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.GivePoetryAppreciationXp:
-                    return new PgPoetryServerInfoEffect(data, offset);
+                    return new PgPoetryServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.Drinking_Beer:
                 case ServerInfoEffectType.Drinking_HardLiquor:
                 case ServerInfoEffectType.Drinking_Wine:
-                    return new PgDrinkEffectServerInfoEffect(data, offset);
+                    return new PgDrinkEffectServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.ArmorPotion:
                 case ServerInfoEffectType.HealthPotion:
                 case ServerInfoEffectType.PowerPotion:
-                    return new PgPotionServerInfoEffect(data, offset);
+                    return new PgPotionServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.HealthHOTPotion:
                 case ServerInfoEffectType.PowerHOTPotion:
-                    return new PgPotionServerInfoEffect(data, offset);
+                    return new PgPotionServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.SummonFlower:
                 case ServerInfoEffectType.SummonFlowerDisplay:
@@ -76,11 +76,11 @@ namespace PgJsonObjects
                 case ServerInfoEffectType.SetPrimaryCombatSkill:
                 case ServerInfoEffectType.SetInteractionFlag:
                 case ServerInfoEffectType.SummonGruesomeSpookyPunch:
-                    return new PgSimpleServerInfoEffect(data, offset);
+                    return new PgSimpleServerInfoEffect(data, ref offset);
 
                 case ServerInfoEffectType.EquipmentBoost:
-                    return new PgTemporaryServerInfoEffect(data, offset);
-                    //return new PgEquipmentBoostServerInfoEffect(data, offset);
+                    return new PgTemporaryServerInfoEffect(data, ref offset);
+                    //return new PgEquipmentBoostServerInfoEffect(data, ref offset);
 
                 default:
                     throw new InvalidOperationException();

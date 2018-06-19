@@ -9,9 +9,9 @@ namespace PgJsonObjects
             return this[index];
         }
 
-        public static PgSpecialValue CreateItem(byte[] data, int offset)
+        public static PgSpecialValue CreateItem(byte[] data, ref int offset)
         {
-            return new PgSpecialValue(data, offset);
+            return new PgSpecialValue(data, ref offset);
         }
     }
 }

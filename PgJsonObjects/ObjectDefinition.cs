@@ -7,8 +7,9 @@ namespace PgJsonObjects
         string JsonFileName { get; }
         int MinVersion { get; }
         IParser FileParser { get; }
-        IMainJsonObjectCollection JsonObjectList { get; }
         Dictionary<string, IGenericJsonObject> ObjectTable { get; }
+        IMainJsonObjectCollection JsonObjectList { get; }
+        IMainPgObjectCollection PgObjectList { get; }
         bool LoadAsArray { get; }
         bool UseJavaFormat { get; }
     }
@@ -28,9 +29,10 @@ namespace PgJsonObjects
 
         public string JsonFileName { get; private set; }
         public int MinVersion { get; private set; }
-        public IMainJsonObjectCollection JsonObjectList { get; private set; } = new MainJsonObjectCollection<TJson, TPg>();
         public IParser FileParser { get; private set; } = new Parser<TJson>();
         public Dictionary<string, IGenericJsonObject> ObjectTable { get; private set; } = new Dictionary<string, IGenericJsonObject>();
+        public IMainJsonObjectCollection JsonObjectList { get; private set; } = new MainJsonObjectCollection<TJson, TPg>();
+        public IMainPgObjectCollection PgObjectList { get; private set; } = new MainPgObjectCollection<TPg>();
         public bool LoadAsArray { get; private set; }
         public bool UseJavaFormat { get; private set; }
     }

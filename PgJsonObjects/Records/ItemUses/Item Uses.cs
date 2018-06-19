@@ -43,7 +43,7 @@ namespace PgJsonObjects
             Dictionary<string, IGenericJsonObject> ItemTable = AllTables[typeof(Item)];
             Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
 
-            Item ConnectedItem = null;
+            IPgItem ConnectedItem = null;
             bool IsItemNameParsed = false;
             ConnectedItem = Item.ConnectById(ErrorInfo, ItemTable, Key, ConnectedItem, ref IsItemNameParsed, ref IsConnected, null);
 
@@ -51,7 +51,7 @@ namespace PgJsonObjects
             {
                 foreach (int RecipeId in RecipesThatUseItemList)
                 {
-                    Recipe ConnectedRecipe = null;
+                    IPgRecipe ConnectedRecipe = null;
                     bool IsRecipeIdParsed = false;
                     ConnectedRecipe = PgJsonObjects.Recipe.ConnectByKey(ErrorInfo, RecipeTable, RecipeId, ConnectedRecipe, ref IsRecipeIdParsed, ref IsConnected, null);
                     if (ConnectedRecipe != null)

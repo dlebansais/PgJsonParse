@@ -105,7 +105,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        public static AdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AdvancementTableTable, string RawAdvancementTableName, AdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgAdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AdvancementTableTable, string RawAdvancementTableName, IPgAdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAdvancementTableParsed)
                 return ParsedAdvancementTable;

@@ -97,7 +97,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static LoreBook ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, int LoreBookId, LoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgLoreBook ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, int LoreBookId, IPgLoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawLoreBookParsed)
                 return ParsedLoreBook;
@@ -122,7 +122,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static LoreBook ConnectByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, string RawLoreBookName, LoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgLoreBook ConnectByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, string RawLoreBookName, IPgLoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawLoreBookParsed)
                 return ParsedLoreBook;

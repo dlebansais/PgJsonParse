@@ -1,18 +1,18 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgItemAttributeLink : GenericPgObject<PgItemAttributeLink>, IPgItemAttributeLink
+    public class PgItemAttributeLink : PgItemEffect<PgItemAttributeLink>, IPgItemAttributeLink
     {
-        public PgItemAttributeLink(byte[] data, int offset)
+        public PgItemAttributeLink(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgItemAttributeLink CreateItem(byte[] data, int offset)
+        protected override PgItemAttributeLink CreateItem(byte[] data, ref int offset)
         {
-            return new PgItemAttributeLink(data, offset);
+            return new PgItemAttributeLink(data, ref offset);
         }
 
         public float AttributeEffect { get { return (float)GetDouble(4); } }
-        public Attribute Link { get { return GetObject(8, ref _Link); } } private Attribute _Link;
+        public IPgAttribute Link { get { return GetObject(8, ref _Link, PgAttribute.CreateNew); } } private IPgAttribute _Link;
     }
 }

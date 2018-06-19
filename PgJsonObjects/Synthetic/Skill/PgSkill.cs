@@ -4,14 +4,19 @@ namespace PgJsonObjects
 {
     public class PgSkill : MainPgObject<PgSkill>, IPgSkill
     {
-        public PgSkill(byte[] data, int offset)
+        public PgSkill(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgSkill CreateItem(byte[] data, int offset)
+        protected override PgSkill CreateItem(byte[] data, ref int offset)
         {
-            return new PgSkill(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgSkill CreateNew(byte[] data, ref int offset)
+        {
+            return new PgSkill(data, ref offset);
         }
 
         public override void Init()
@@ -40,16 +45,16 @@ namespace PgJsonObjects
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get { return GetInt(4); } }
         public string Description { get { return GetString(8); } }
-        public XpTable XpTable { get { return GetObject(12, ref _XpTable); } } private XpTable _XpTable;
+        public IPgXpTable XpTable { get { return GetObject(12, ref _XpTable, PgXpTable.CreateNew); } } private IPgXpTable _XpTable;
         public string RawXpTable { get { return GetString(16); } }
-        public AdvancementTable AdvancementTable { get { return GetObject(20, ref _AdvancementTable); } } private AdvancementTable _AdvancementTable;
+        public IPgAdvancementTable AdvancementTable { get { return GetObject(20, ref _AdvancementTable, PgAdvancementTable.CreateNew); } } private IPgAdvancementTable _AdvancementTable;
         public List<PowerSkill> CompatibleCombatSkillList { get { return GetEnumList(24, ref _CompatibleCombatSkillList); } } private List<PowerSkill> _CompatibleCombatSkillList;
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
         public int? RawMaxBonusLevels { get { return GetInt(28); } }
-        public LevelCapInteractionCollection InteractionFlagLevelCapList { get { return GetObjectList(32, ref _InteractionFlagLevelCapList, (byte[] data, int offset) => new PgLevelCapInteraction(data, offset), () => new LevelCapInteractionCollection()); } } private LevelCapInteractionCollection _InteractionFlagLevelCapList;
-        public RewardCollection RewardList { get { return GetObjectList(36, ref _RewardList, (byte[] data, int offset) => new PgReward(data, offset), () => new RewardCollection()); } } private RewardCollection _RewardList;
+        public LevelCapInteractionCollection InteractionFlagLevelCapList { get { return GetObjectList(32, ref _InteractionFlagLevelCapList, LevelCapInteractionCollection.CreateItem, () => new LevelCapInteractionCollection()); } } private LevelCapInteractionCollection _InteractionFlagLevelCapList;
+        public RewardCollection RewardList { get { return GetObjectList(36, ref _RewardList, RewardCollection.CreateItem, () => new RewardCollection()); } } private RewardCollection _RewardList;
         public string Name { get { return GetString(40); } }
-        public Skill ParentSkill { get { return GetObject(44, ref _ParentSkill); } } private Skill _ParentSkill;
+        public IPgSkill ParentSkill { get { return GetObject(44, ref _ParentSkill, PgSkill.CreateNew); } } private IPgSkill _ParentSkill;
         public List<SkillCategory> TSysCategoryList { get { return GetEnumList(48, ref _TSysCategoryList); } } private List<SkillCategory> _TSysCategoryList;
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
     }

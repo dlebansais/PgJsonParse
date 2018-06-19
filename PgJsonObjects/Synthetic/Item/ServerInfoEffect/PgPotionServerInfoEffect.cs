@@ -2,14 +2,19 @@
 {
     public class PgPotionServerInfoEffect : GenericPgObject<PgPotionServerInfoEffect>, IPgPotionServerInfoEffect
     {
-        public PgPotionServerInfoEffect(byte[] data, int offset)
+        public PgPotionServerInfoEffect(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgPotionServerInfoEffect CreateItem(byte[] data, int offset)
+        protected override PgPotionServerInfoEffect CreateItem(byte[] data, ref int offset)
         {
-            return new PgPotionServerInfoEffect(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgPotionServerInfoEffect CreateNew(byte[] data, ref int offset)
+        {
+            return new PgPotionServerInfoEffect(data, ref offset);
         }
 
         public string EffectString { get { return GetString(0); } }

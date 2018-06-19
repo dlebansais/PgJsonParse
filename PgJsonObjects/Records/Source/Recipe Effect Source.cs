@@ -3,14 +3,14 @@
     public class RecipeEffectSource : GenericSource
     {
         #region Init
-        public RecipeEffectSource(Recipe Recipe)
+        public RecipeEffectSource(IPgRecipe Recipe)
         {
             this.Recipe = Recipe;
         }
         #endregion
 
         #region Properties
-        public Recipe Recipe { get; private set; }
+        public IPgRecipe Recipe { get; private set; }
         #endregion
     }
 }

@@ -2,14 +2,19 @@
 {
     public class PgRecipeCost : GenericPgObject<PgRecipeCost>, IPgRecipeCost
     {
-        public PgRecipeCost(byte[] data, int offset)
+        public PgRecipeCost(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgRecipeCost CreateItem(byte[] data, int offset)
+        protected override PgRecipeCost CreateItem(byte[] data, ref int offset)
         {
-            return new PgRecipeCost(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgRecipeCost CreateNew(byte[] data, ref int offset)
+        {
+            return new PgRecipeCost(data, ref offset);
         }
 
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }

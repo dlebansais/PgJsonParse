@@ -6,14 +6,14 @@ namespace PgJsonObjects
 {
     public class EquipmentBoostServerInfoEffect : ServerInfoEffect, IPgEquipmentBoostServerInfoEffect
     {
-        public EquipmentBoostServerInfoEffect(ServerInfoEffectType ServerInfoEffect, int? RawLevel, ItemEffect RawAttribute, float? RawAttributeEffect)
+        public EquipmentBoostServerInfoEffect(ServerInfoEffectType ServerInfoEffect, int? RawLevel, IPgItemEffect RawAttribute, float? RawAttributeEffect)
             : base(ServerInfoEffect, RawLevel)
         {
             this.Boost = RawAttribute;
             this.RawAttributeEffect = RawAttributeEffect;
         }
 
-        public ItemEffect Boost { get; private set; }
+        public IPgItemEffect Boost { get; private set; }
         public float AttributeEffect { get { return RawAttributeEffect.HasValue ? RawAttributeEffect.Value : 0; } }
         public float? RawAttributeEffect { get; private set; }
 
@@ -21,7 +21,8 @@ namespace PgJsonObjects
         {
             get
             {
-                return base.RawEffect + "(" + Boost.AsEffectString() + (RawAttributeEffect.HasValue ? ", " + InvariantCulture.SingleToString(RawAttributeEffect.Value) : "") + ")";
+                ItemEffect JsonBoost = Boost as ItemEffect;
+                return base.RawEffect + "(" + JsonBoost.AsEffectString() + (RawAttributeEffect.HasValue ? ", " + InvariantCulture.SingleToString(RawAttributeEffect.Value) : "") + ")";
             }
         }
 
@@ -53,7 +54,7 @@ namespace PgJsonObjects
                 if (!AsItemAttributeLink.IsParsed)
                 {
                     bool IsParsed = false;
-                    Attribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected, null);
+                    IPgAttribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected, null);
                     AsItemAttributeLink.SetLink(Link);
                 }
             }
@@ -69,7 +70,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddInt((int?)Type, data, ref offset, BaseOffset, 0);
-            AddObject(Boost, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(Boost as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
             AddDouble(RawAttributeEffect, data, ref offset, BaseOffset, 8);
 
             FinishSerializing(data, ref offset, BaseOffset, 12, null, StoredObjectTable, null, null, null, null, null, null);

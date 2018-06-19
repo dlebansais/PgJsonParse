@@ -2,6 +2,6 @@
 {
     public interface IDeserializablePgObject
     {
-        IDeserializablePgObject Create(byte[] data, int offset);
+        IDeserializablePgObject Create(byte[] data, ref int offset);
     }
 }

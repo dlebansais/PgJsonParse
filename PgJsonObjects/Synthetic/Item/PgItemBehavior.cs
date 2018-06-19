@@ -4,17 +4,22 @@ namespace PgJsonObjects
 {
     public class PgItemBehavior : GenericPgObject<PgItemBehavior>, IPgItemBehavior
     {
-        public PgItemBehavior(byte[] data, int offset)
+        public PgItemBehavior(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgItemBehavior CreateItem(byte[] data, int offset)
+        protected override PgItemBehavior CreateItem(byte[] data, ref int offset)
         {
-            return new PgItemBehavior(data, offset);
+            return CreateNew(data, ref offset);
         }
 
-        public ServerInfo ServerInfo { get { return GetObject(0, ref _ServerInfo); } } private ServerInfo _ServerInfo;
+        public static PgItemBehavior CreateNew(byte[] data, ref int offset)
+        {
+            return new PgItemBehavior(data, ref offset);
+        }
+
+        public IPgServerInfo ServerInfo { get { return GetObject(0, ref _ServerInfo, PgServerInfo.CreateNew); } } private IPgServerInfo _ServerInfo;
         public List<ItemUseRequirement> UseRequirementList { get { return GetEnumList(4, ref _UseRequirementList); } } private List<ItemUseRequirement> _UseRequirementList;
         public ItemUseAnimation UseAnimation { get { return GetEnum<ItemUseAnimation>(8); } }
         public ItemUseAnimation UseDelayAnimation { get { return GetEnum<ItemUseAnimation>(10); } }

@@ -9,9 +9,9 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static PgAbility CreateItem(byte[] data, int offset)
+        public static PgAbility CreateItem(byte[] data, ref int offset)
         {
-            return new PgAbility(data, offset);
+            return new PgAbility(data, ref offset);
         }
     }
 }

@@ -3,7 +3,7 @@
     public class TrainingSource : GenericSource
     {
         #region Init
-        public TrainingSource(string NpcName, GameNpc Npc)
+        public TrainingSource(string NpcName, IPgGameNpc Npc)
         {
             this.NpcName = NpcName;
             this.Npc = Npc;
@@ -12,7 +12,7 @@
 
         #region Properties
         public string NpcName { get; private set; }
-        public GameNpc Npc { get; private set; }
+        public IPgGameNpc Npc { get; private set; }
         #endregion
     }
 }

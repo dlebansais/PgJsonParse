@@ -2,14 +2,19 @@
 {
     public class PgRunTimeBehaviorRuleSetQuestRequirement : GenericPgObject<PgRunTimeBehaviorRuleSetQuestRequirement>, IPgRunTimeBehaviorRuleSetQuestRequirement
     {
-        public PgRunTimeBehaviorRuleSetQuestRequirement(byte[] data, int offset)
+        public PgRunTimeBehaviorRuleSetQuestRequirement(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgRunTimeBehaviorRuleSetQuestRequirement CreateItem(byte[] data, int offset)
+        protected override PgRunTimeBehaviorRuleSetQuestRequirement CreateItem(byte[] data, ref int offset)
         {
-            return new PgRunTimeBehaviorRuleSetQuestRequirement(data, offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgRunTimeBehaviorRuleSetQuestRequirement CreateNew(byte[] data, ref int offset)
+        {
+            return new PgRunTimeBehaviorRuleSetQuestRequirement(data, ref offset);
         }
 
         public string RequirementRule { get { return GetString(4); } }
