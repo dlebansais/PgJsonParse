@@ -6,5 +6,6 @@
         BuffActivated,
         IfTargetNotLooking,
         DelayedDamage,
+        ArmorDamage,
     }
 }

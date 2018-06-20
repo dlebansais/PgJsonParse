@@ -46,8 +46,37 @@ namespace PgJsonObjects
                 {
                     using (IJsonReader reader = new JsonTextReader(Content))
                     {
-                        JsonObject RootObject = reader.Parse();
-                        foreach (KeyValuePair<string, IJsonValue> EntryRaw in RootObject.Entries)
+                        IJsonValue RootValue = reader.Parse();
+
+                        Dictionary<string, IJsonValue> Entries = new Dictionary<string, IJsonValue>();
+
+                        if (RootValue is JsonObject RootObject)
+                            Entries = RootObject.Entries;
+
+                        else if (RootValue is JsonArray RootArray)
+                        {
+                            foreach (IJsonValue Item in RootArray)
+                            {
+                                string Id = null;
+
+                                if (Item is JsonObject ItemObject)
+                                {
+                                    if (ItemObject.Entries.ContainsKey("Id"))
+                                    {
+                                        if (ItemObject.Entries["Id"] is JsonString IdString)
+                                            Id = IdString.String;
+
+                                        else if (ItemObject.Entries["Id"] is JsonInteger IdInteger)
+                                            Id = IdInteger.Number.ToString();
+                                    }
+                                }
+
+                                if (Id != null && !Entries.ContainsKey(Id))
+                                    Entries.Add(Id, Item);
+                            }
+                        }
+
+                        foreach (KeyValuePair<string, IJsonValue> EntryRaw in Entries)
                             if (EntryRaw.Key != null && EntryRaw.Key.Length > 0)
                             {
                                 if (loadAsArray && EntryRaw.Value is JsonArray ArrayValue)

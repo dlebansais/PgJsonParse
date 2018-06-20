@@ -32,7 +32,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public IPgSkill ConnectedSkill { get; private set; }
+        public IPgSkill Skill { get; private set; }
         public PowerSkill AnatomyType { get; private set; }
         private bool IsSkillParsed;
         #endregion
@@ -44,8 +44,8 @@ namespace PgJsonObjects
             {
                 string Result = base.TextContent;
 
-                if (ConnectedSkill != null)
-                    AddWithFieldSeparator(ref Result, ConnectedSkill.Name);
+                if (Skill != null)
+                    AddWithFieldSeparator(ref Result, Skill.Name);
 
                 return Result;
             }
@@ -58,7 +58,7 @@ namespace PgJsonObjects
             bool IsConnected = base.ConnectFields(ErrorInfo, Parent, AllTables);
             Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
-            ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, AnatomyType, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
+            Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, AnatomyType, Skill, ref IsSkillParsed, ref IsConnected, this);
 
             return IsConnected;
         }
@@ -70,7 +70,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(ConnectedSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 4, null, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

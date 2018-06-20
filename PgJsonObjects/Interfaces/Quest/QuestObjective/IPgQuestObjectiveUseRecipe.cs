@@ -2,7 +2,7 @@
 {
     public interface IPgQuestObjectiveUseRecipe
     {
-        IPgSkill ConnectedSkill { get; }
+        IPgSkill Skill { get; }
         RecipeCollection RecipeTargetList { get; }
         ItemCollection ResultItemList { get; }
     }

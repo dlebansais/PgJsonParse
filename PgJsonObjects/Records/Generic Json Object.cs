@@ -268,8 +268,11 @@ namespace PgJsonObjects
             if (value is JsonObject JObjectFields)
                 ParseFields(JObjectFields, ErrorInfo);
 
-            else if (ErrorInfo != null)
-                ErrorInfo.AddInvalidObjectFormat(FieldTableName + ": " + Key);
+            else
+            {
+                InitParsedFields();
+                ParseFieldsInternalValue(Key, value, ErrorInfo);
+            }
         }
 
         public virtual void CheckUnparsedFields(ParseErrorInfo ErrorInfo)
@@ -313,34 +316,39 @@ namespace PgJsonObjects
                 IJsonValue AsValue;
 
                 if ((AsArray = Field.Value as JsonArray) != null)
-                {
-                    if (FieldTable.ContainsKey(Field.Key))
-                    {
-                        ParsedFields[Field.Key] = true;
-                        ParseField(Field.Key, AsArray, ErrorInfo);
-                        //ParseFieldsInternal(AsArray, ErrorInfo);
-                    }
-                    else
-                        ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
-                }
+                    ParseFieldsInternalArray(Field.Key, AsArray, ErrorInfo);
 
                 else if ((AsValue = Field.Value as IJsonValue) != null)
-                {
-                    if (IsCustomFieldParsed(Field.Key, AsValue, ErrorInfo))
-                        continue;
-
-                    if (FieldTable.ContainsKey(Field.Key))
-                    {
-                        ParsedFields[Field.Key] = true;
-                        ParseField(Field.Key, AsValue, ErrorInfo);
-                    }
-                    else
-                        ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
-                }
+                    ParseFieldsInternalValue(Field.Key, AsValue, ErrorInfo);
 
                 else if (Field.Value != null)
                     ErrorInfo.AddMissingField(FieldTableName + " Field: " + Field.Key);
             }
+        }
+
+        private void ParseFieldsInternalArray(string Key, JsonArray AsArray, ParseErrorInfo ErrorInfo)
+        {
+            if (FieldTable.ContainsKey(Key))
+            {
+                ParsedFields[Key] = true;
+                ParseField(Key, AsArray, ErrorInfo);
+            }
+            else
+                ErrorInfo.AddMissingField(FieldTableName + " Field: " + Key);
+        }
+
+        private void ParseFieldsInternalValue(string Key, IJsonValue AsValue, ParseErrorInfo ErrorInfo)
+        {
+            if (IsCustomFieldParsed(Key, AsValue, ErrorInfo))
+                return;
+
+            if (FieldTable.ContainsKey(Key))
+            {
+                ParsedFields[Key] = true;
+                ParseField(Key, AsValue, ErrorInfo);
+            }
+            else if (ErrorInfo != null)
+                ErrorInfo.AddMissingField(FieldTableName + " Field: " + Key);
         }
 
         protected void ParseStringTable(JsonArray RawArray, List<string> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)

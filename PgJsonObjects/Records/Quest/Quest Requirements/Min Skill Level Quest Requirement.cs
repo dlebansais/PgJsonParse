@@ -8,23 +8,23 @@ namespace PgJsonObjects
         public MinSkillLevelQuestRequirement(OtherRequirementType OtherRequirementType, PowerSkill RequirementSkill, int? RawRequirementSkillLevel)
             : base(OtherRequirementType)
         {
-            Skill = RequirementSkill;
+            RawSkill = RequirementSkill;
             RawSkillLevel = RawRequirementSkillLevel;
         }
 
-        public IPgSkill ConnectedSkill { get; private set; }
+        public IPgSkill Skill { get; private set; }
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
         public int? RawSkillLevel { get; private set; }
-        private PowerSkill Skill;
+        private PowerSkill RawSkill;
         private bool IsConnectedSkillParsed;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
-            { "Skill", new FieldParser() {
+            { "RawSkill", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(Skill, null, PowerSkill.Internal_None) } },
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
             { "Level", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => RawSkillLevel } },
@@ -37,8 +37,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                if (ConnectedSkill != null)
-                    AddWithFieldSeparator(ref Result, ConnectedSkill.Name);
+                if (Skill != null)
+                    AddWithFieldSeparator(ref Result, Skill.Name);
 
                 return Result;
             }
@@ -51,7 +51,7 @@ namespace PgJsonObjects
             bool IsConnected = false;
             Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
-            ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Skill, ConnectedSkill, ref IsConnectedSkillParsed, ref IsConnected, Parent as IBackLinkable);
+            Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, Skill, ref IsConnectedSkillParsed, ref IsConnected, Parent as IBackLinkable);
 
             return IsConnected;
         }
@@ -64,7 +64,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
-            AddObject(ConnectedSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
             AddInt(RawSkillLevel, data, ref offset, BaseOffset, 8);
 
             FinishSerializing(data, ref offset, BaseOffset, 12, null, StoredObjectTable, null, null, null, null, null, null);

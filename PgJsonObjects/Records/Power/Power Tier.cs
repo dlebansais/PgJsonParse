@@ -7,6 +7,8 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public PowerEffectCollection EffectList { get; } = new PowerEffectCollection();
+        public int SkillLevelPrereq { get { return RawSkillLevelPrereq.HasValue ? RawSkillLevelPrereq.Value : 0; } }
+        public int? RawSkillLevelPrereq { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -19,6 +21,10 @@ namespace PgJsonObjects
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseEffectDescs,
                 GetStringArray = GetEffectDescs } },
+            { "SkillLevelPrereq", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawSkillLevelPrereq = value,
+                GetInteger = () => RawSkillLevelPrereq } },
         }; } }
 
         private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)
@@ -98,8 +104,9 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddObjectList(EffectList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
+            AddInt(RawSkillLevelPrereq, data, ref offset, BaseOffset, 4);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 8, null, null, null, null, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

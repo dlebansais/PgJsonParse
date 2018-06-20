@@ -34,20 +34,20 @@ namespace PgJsonObjects
         {
             switch (OtherRequirementType)
             {
-                case OtherRequirementType.IsAdmin:
-                    return new IsAdminAbilityRequirement();
+/*                case OtherRequirementType.IsAdmin:
+                    return new IsAdminAbilityRequirement();*/
 
                 case OtherRequirementType.IsLycanthrope:
                     return new IsLycanthropeAbilityRequirement();
 
-                case OtherRequirementType.CurHealth:
-                    return new CurHealthAbilityRequirement(RawHealth);
+/*                case OtherRequirementType.CurHealth:
+                    return new CurHealthAbilityRequirement(RawHealth);*/
 
-                case OtherRequirementType.Race:
+/*                case OtherRequirementType.Race:
                     if (RawAllowedRace != null)
                         return new SingleRaceAbilityRequirement(RawAllowedRace, ErrorInfo);
                     else
-                        return new RaceAbilityRequirement(RawAllowedRaceList, ErrorInfo);
+                        return new RaceAbilityRequirement(RawAllowedRaceList, ErrorInfo);*/
 
                 case OtherRequirementType.HasEffectKeyword:
                     return new HasEffectKeywordAbilityRequirement(RawKeyword, ErrorInfo);
@@ -85,11 +85,11 @@ namespace PgJsonObjects
                 case OtherRequirementType.InGraveyard:
                     return new InGraveyardAbilityRequirement();
 
-                case OtherRequirementType.Appearance:
+/*                case OtherRequirementType.Appearance:
                     if (RawAppearance != null)
                         return new SingleAppearanceAbilityRequirement(RawAppearance, ErrorInfo);
                     else
-                        return new AppearanceAbilityRequirement(RawAppearanceList, ErrorInfo);
+                        return new AppearanceAbilityRequirement(RawAppearanceList, ErrorInfo);*/
 
                 case OtherRequirementType.Or:
                     return new OrAbilityRequirement(OrList, RawErrorMsg);
@@ -97,8 +97,8 @@ namespace PgJsonObjects
                 case OtherRequirementType.EquippedItemKeyword:
                     return new EquippedItemKeywordAbilityRequirement(RawKeyword, RawMinCount, RawMaxCount.HasValue ? (int?)RawMaxCount.Value : null, ErrorInfo);
 
-                case OtherRequirementType.GardenPlantMax:
-                    return new GardenPlantMaxAbilityRequirement(RawTypeTag, RawMax, ErrorInfo);
+/*                case OtherRequirementType.GardenPlantMax:
+                    return new GardenPlantMaxAbilityRequirement(RawTypeTag, RawMax, ErrorInfo);*/
 
                 case OtherRequirementType.InteractionFlagSet:
                     return new InteractionFlagSetAbilityRequirement(RawInteractionFlag);

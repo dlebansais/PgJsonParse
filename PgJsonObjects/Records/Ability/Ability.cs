@@ -2344,6 +2344,11 @@ namespace PgJsonObjects
                 //TODO
             }
 
+            else if (Tools.Scan(s, "Note: the electricity damage is dispersed harmlessly if if target is in water when the latent charge ends", args))
+            {
+                //TODO
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);

@@ -4,6 +4,6 @@ namespace PgJsonObjects
 {
     public interface IMainJsonObjectCollection : IList
     {
-        IMainPgObject CreateItem(byte[] data, ref int offset);
+        //IMainPgObject CreateItem(byte[] data, ref int offset);
     }
 }

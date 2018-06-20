@@ -591,7 +591,7 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const double PARSER_VERSION = 305;
+        public const double PARSER_VERSION = 306;
 
         private void InitParserCheck()
         {
@@ -988,6 +988,7 @@ namespace PgJsonParse
                 return;
             }
 
+            /*
             int offset;
 
             offset = 0;
@@ -999,9 +1000,9 @@ namespace PgJsonParse
             offset = 0;
             SerializeAll(data, ref offset);
 
-            /*offset = 0;
-            DeserializeAll(data, ref offset);*/
-
+            offset = 0;
+            DeserializeAll(data, ref offset);
+            */
 
             LoadedIconCount = 0;
             MissingIconList = new List<int>();
@@ -1112,18 +1113,24 @@ namespace PgJsonParse
             {
                 IObjectDefinition definition = Entry.Value;
                 IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
+                int Count = ObjectList.Count;
 
                 if (data != null)
                 {
-                    int Count = ObjectList.Count;
                     byte[] valueData = BitConverter.GetBytes(Count);
                     Array.Copy(valueData, 0, data, offset, 4);
                 }
 
                 offset += 4;
 
+                int ObjectOffset = offset;
+                offset += Count * 4;
+
                 foreach (IMainJsonObject Item in ObjectList)
-                    Item.SerializeJsonMainObject(data, ref offset);
+                {
+                    Item.SerializeJsonMainObject(data, ref offset, ObjectOffset);
+                    ObjectOffset += 4;
+                }
             }
         }
 
@@ -1142,9 +1149,13 @@ namespace PgJsonParse
                 int Count = BitConverter.ToInt32(data, offset);
                 offset += 4;
 
+                int ObjectOffset = offset;
+
                 for (int i = 0; i < Count; i++)
                 {
-                    IMainPgObject Item = PgObjectList.CreateItem(data, ref offset);
+                    offset = BitConverter.ToInt32(data, ObjectOffset + i * 4);
+
+                    IMainPgObject Item = definition.CreateNewObject(data, ref offset);
                     PgObjectList.Add(Item);
                 }
             }

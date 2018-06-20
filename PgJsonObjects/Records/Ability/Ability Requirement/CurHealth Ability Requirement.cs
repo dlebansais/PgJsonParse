@@ -13,9 +13,9 @@ namespace PgJsonObjects
         public double? RawHealth { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-            { "T", new FieldParser() {
+/*            { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.CurHealth) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.CurHealth) } },*/
             { "Health", new FieldParser() {
                 Type = FieldType.Float,
                 GetFloat = () => Health } },

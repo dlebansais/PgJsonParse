@@ -641,6 +641,7 @@ namespace PgJsonObjects
             { DoTSpecialRule.BuffActivated, "Buff Activated" },
             { DoTSpecialRule.IfTargetNotLooking, "If Target Not Looking" },
             { DoTSpecialRule.DelayedDamage, "Delayed Damage" },
+            { DoTSpecialRule.ArmorDamage, "Armor Damage" },
         };
 
         public static readonly Dictionary<PreEffect, string> PreEffectTextMap = new Dictionary<PreEffect, string>()
@@ -1715,6 +1716,9 @@ namespace PgJsonObjects
             { EffectStackingType.RanalonSpeechCurse, "Ranalon Speech Curse" },
             { EffectStackingType.AdmonishPsiVuln, "Admonish Psi Vulnerability" },
             { EffectStackingType.GiveWarmth, "Give Warmth" },
+            { EffectStackingType.SpecialEventBonusGems, "Special Event Bonus: Gems" },
+            { EffectStackingType.SpecialEventBonusMinerals, "Special Event Bonus: Minerals" },
+            { EffectStackingType.SpecialEventBonusSurveying, "Special Event Bonus: Surveying" },
         };
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTextMap = new Dictionary<EffectKeyword, string>()

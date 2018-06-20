@@ -17,6 +17,6 @@
             return new PgQuestObjectiveAnatomy(data, ref offset);
         }
 
-        public IPgSkill ConnectedSkill { get { return GetObject(0, ref _ConnectedSkill, PgSkill.CreateNew); } } private IPgSkill _ConnectedSkill;
+        public IPgSkill Skill { get { return GetObject(0, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
     }
 }

@@ -222,14 +222,6 @@ namespace PgJsonObjects
             return cachedList;
         }
 
-        public static T CreateObject<T>(byte[] data, ref int offsetObject)
-        {
-            if (typeof(T) == typeof(PgAbility))
-                return (T)(object)(new PgAbility(data, ref offsetObject));
-            else
-                return default(T);
-        }
-
         protected string CreateString(int offsetString)
         {
             int Count = BitConverter.ToUInt16(Data, offsetString);

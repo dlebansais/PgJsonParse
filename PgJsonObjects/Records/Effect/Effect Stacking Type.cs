@@ -257,5 +257,8 @@
         RanalonSpeechCurse,
         AdmonishPsiVuln,
         GiveWarmth,
+        SpecialEventBonusGems,
+        SpecialEventBonusMinerals,
+        SpecialEventBonusSurveying,
     }
 }

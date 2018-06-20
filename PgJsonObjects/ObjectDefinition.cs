@@ -6,6 +6,7 @@ namespace PgJsonObjects
     {
         string JsonFileName { get; }
         int MinVersion { get; }
+        PgObjectCreator CreateNewObject { get; }
         IParser FileParser { get; }
         Dictionary<string, IGenericJsonObject> ObjectTable { get; }
         IMainJsonObjectCollection JsonObjectList { get; }
@@ -18,10 +19,11 @@ namespace PgJsonObjects
          where TJson : MainJsonObject<TJson>, new()
          where TPg : IMainPgObject
     {
-        public ObjectDefinition(string jsonFileName, int minVersion, bool loadAsArray, bool useJavaFormat, bool VerifyParse)
+        public ObjectDefinition(string jsonFileName, int minVersion, PgObjectCreator createNewObject, bool loadAsArray, bool useJavaFormat, bool VerifyParse)
         {
             JsonFileName = jsonFileName;
             MinVersion = minVersion;
+            CreateNewObject = createNewObject;
             LoadAsArray = loadAsArray;
             UseJavaFormat = useJavaFormat;
             FileParser.VerifyParse = VerifyParse;
@@ -29,6 +31,7 @@ namespace PgJsonObjects
 
         public string JsonFileName { get; private set; }
         public int MinVersion { get; private set; }
+        public PgObjectCreator CreateNewObject { get; private set; }
         public IParser FileParser { get; private set; } = new Parser<TJson>();
         public Dictionary<string, IGenericJsonObject> ObjectTable { get; private set; } = new Dictionary<string, IGenericJsonObject>();
         public IMainJsonObjectCollection JsonObjectList { get; private set; } = new MainJsonObjectCollection<TJson, TPg>();

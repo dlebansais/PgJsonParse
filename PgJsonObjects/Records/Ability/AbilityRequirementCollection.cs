@@ -19,20 +19,20 @@ namespace PgJsonObjects
 
             switch (OtherRequirementType)
             {
-                case OtherRequirementType.IsAdmin:
-                    return new PgAbilityRequirementIsAdmin(data, ref offset);
+/*                case OtherRequirementType.IsAdmin:
+                    return new PgAbilityRequirementIsAdmin(data, ref offset);*/
 
                 case OtherRequirementType.IsLycanthrope:
                     return new PgAbilityRequirementIsLycanthrope(data, ref offset);
 
-                case OtherRequirementType.CurHealth:
-                    return new PgAbilityRequirementCurHealth(data, ref offset);
+/*                case OtherRequirementType.CurHealth:
+                    return new PgAbilityRequirementCurHealth(data, ref offset);*/
 
-                case OtherRequirementType.Race:
+/*                case OtherRequirementType.Race:
                     if (IsSingle)
                         return new PgAbilityRequirementSingleRace(data, ref offset);
                     else
-                        return new PgAbilityRequirementRace(data, ref offset);
+                        return new PgAbilityRequirementRace(data, ref offset);*/
 
                 case OtherRequirementType.HasEffectKeyword:
                     return new PgAbilityRequirementHasEffectKeyword(data, ref offset);
@@ -70,11 +70,11 @@ namespace PgJsonObjects
                 case OtherRequirementType.InGraveyard:
                     return new PgAbilityRequirementInGraveyard(data, ref offset);
 
-                case OtherRequirementType.Appearance:
+/*                case OtherRequirementType.Appearance:
                     if (IsSingle)
                         return new PgAbilityRequirementSingleAppearance(data, ref offset);
                     else
-                        return new PgAbilityRequirementAppearance(data, ref offset);
+                        return new PgAbilityRequirementAppearance(data, ref offset);*/
 
                 case OtherRequirementType.Or:
                     return new PgAbilityRequirementOr(data, ref offset);
@@ -82,8 +82,8 @@ namespace PgJsonObjects
                 case OtherRequirementType.EquippedItemKeyword:
                     return new PgAbilityRequirementEquippedItemKeyword(data, ref offset);
 
-                case OtherRequirementType.GardenPlantMax:
-                    return new PgAbilityRequirementGardenPlantMax(data, ref offset);
+/*                case OtherRequirementType.GardenPlantMax:
+                    return new PgAbilityRequirementGardenPlantMax(data, ref offset);*/
 
                 case OtherRequirementType.InteractionFlagSet:
                     return new PgAbilityRequirementInteractionFlagSet(data, ref offset);

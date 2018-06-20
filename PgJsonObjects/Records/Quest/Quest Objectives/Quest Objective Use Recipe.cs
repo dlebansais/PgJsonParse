@@ -40,7 +40,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public IPgSkill ConnectedSkill { get; private set; }
+        public IPgSkill Skill { get; private set; }
         public RecipeCollection RecipeTargetList { get; private set; } = new RecipeCollection();
         public ItemCollection ResultItemList { get; private set; } = new ItemCollection();
 
@@ -59,8 +59,8 @@ namespace PgJsonObjects
             {
                 string Result = base.TextContent;
 
-                if (ConnectedSkill != null)
-                    AddWithFieldSeparator(ref Result, ConnectedSkill.Name);
+                if (Skill != null)
+                    AddWithFieldSeparator(ref Result, Skill.Name);
                 if (RecipeTarget != RecipeKeyword.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.RecipeKeywordTextMap[RecipeTarget]);
                 foreach (Recipe Recipe in RecipeTargetList)
@@ -83,7 +83,7 @@ namespace PgJsonObjects
             Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
             Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
-            ConnectedSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, ConnectedSkill, ref IsSkillParsed, ref IsConnected, this);
+            Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, Skill, ref IsSkillParsed, ref IsConnected, this);
             RecipeTargetList = PgJsonObjects.Recipe.ConnectByKeyword(ErrorInfo, RecipeTable, RecipeTarget, RecipeTargetList, ref IsRecipeTargetParsed, ref IsConnected, ParentQuest);
             ResultItemList = PgJsonObjects.Item.ConnectByKeyword(ErrorInfo, ItemTable, ResultItemKeyword, ResultItemList, ref IsResultItemParsed, ref IsConnected, ParentQuest);
 
@@ -98,7 +98,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObject(ConnectedSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObjectList(RecipeTargetList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
             AddObjectList(ResultItemList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
 

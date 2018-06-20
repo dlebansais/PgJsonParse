@@ -12,9 +12,48 @@ namespace PgJsonReader
 
     public static class JsonReader
     {
-        public static JsonObject Parse(this IJsonReader reader)
+        public static IJsonValue Parse(this IJsonReader reader)
         {
-            return reader.ParseObject();
+            if (reader.Read() == Json.Token.EndOfFile)
+                return new JsonObject();
+
+            else if (reader.CurrentToken == Json.Token.ObjectKey)
+            {
+                JsonObject obj = new JsonObject();
+
+                string key = (string)reader.CurrentValue;
+                var value = reader.ParseValue();
+                obj.Add(key, value);
+
+                return obj;
+            }
+
+            else if (reader.CurrentToken == Json.Token.ArrayStart)
+            {
+                JsonArray array = new JsonArray();
+
+                while (reader.CurrentToken != Json.Token.EndOfFile)
+                {
+                    var value = reader.ParseValue();
+                    if (reader.CurrentToken == Json.Token.ArrayEnd)
+                    {
+                        if (array.Count > 0 || !(value is JsonArray))
+                            break;
+                        else
+                        {
+                            if (array.Count > 0 || !(value is JsonArray))
+                                break;
+                        }
+                    }
+
+                    array.Add(value);
+                }
+
+                return array;
+            }
+
+            else
+                return reader.ParseObject();
         }
 
         private static JsonObject ParseObject(this IJsonReader reader)

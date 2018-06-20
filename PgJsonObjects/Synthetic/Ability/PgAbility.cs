@@ -7,7 +7,6 @@ namespace PgJsonObjects
         public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 150;
         }
 
         protected override PgAbility CreateItem(byte[] data, ref int offset)

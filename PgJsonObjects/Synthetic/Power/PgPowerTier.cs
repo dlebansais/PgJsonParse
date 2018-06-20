@@ -18,5 +18,7 @@
         }
 
         public PowerEffectCollection EffectList { get { return GetObjectList(0, ref _EffectList, PowerEffectCollection.CreateItem, () => new PowerEffectCollection()); } } private PowerEffectCollection _EffectList;
+        public int SkillLevelPrereq { get { return RawSkillLevelPrereq.HasValue ? RawSkillLevelPrereq.Value : 0; } }
+        public int? RawSkillLevelPrereq { get { return GetInt(4); } }
     }
 }
