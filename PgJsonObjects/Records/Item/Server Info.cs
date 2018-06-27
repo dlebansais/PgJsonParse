@@ -161,7 +161,7 @@ namespace PgJsonObjects
 
         private bool ParseEffects(string RawEffect, ParseErrorInfo ErrorInfo)
         {
-            ServerInfoEffect NewEffect = ParseEffectString(RawEffect, ErrorInfo);
+            IPgServerInfoEffect NewEffect = ParseEffectString(RawEffect, ErrorInfo);
             if (NewEffect != null)
             {
                 ServerInfoEffectList.Add(NewEffect);

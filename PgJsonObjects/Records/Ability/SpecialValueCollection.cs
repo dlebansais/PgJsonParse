@@ -2,12 +2,12 @@
 
 namespace PgJsonObjects
 {
-    public class SpecialValueCollection : List<SpecialValue>, ISerializableJsonObjectCollection
+    public class SpecialValueCollection : List<IPgSpecialValue>, ISerializableJsonObjectCollection
     {
-        public ISerializableJsonObject GetAt(int index)
+        /*public ISerializableJsonObject GetAt(int index)
         {
             return this[index];
-        }
+        }*/
 
         public static PgSpecialValue CreateItem(byte[] data, ref int offset)
         {

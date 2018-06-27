@@ -8,6 +8,8 @@ namespace PgJsonObjects
         public PgQuest(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 144;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgQuest CreateItem(byte[] data, ref int offset)

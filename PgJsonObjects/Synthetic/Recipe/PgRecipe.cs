@@ -7,6 +7,8 @@ namespace PgJsonObjects
         public PgRecipe(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 116;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgRecipe CreateItem(byte[] data, ref int offset)

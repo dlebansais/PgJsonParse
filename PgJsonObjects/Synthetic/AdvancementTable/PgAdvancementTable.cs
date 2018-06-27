@@ -5,6 +5,8 @@
         public PgAdvancementTable(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 4;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgAdvancementTable CreateItem(byte[] data, ref int offset)

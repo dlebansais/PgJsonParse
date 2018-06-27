@@ -5,6 +5,8 @@
         public PgLoreBookInfo(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 24;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgLoreBookInfo CreateItem(byte[] data, ref int offset)

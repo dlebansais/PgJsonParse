@@ -540,7 +540,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static List<SkillRewardCommon> CreateCombinedRewardList(List<LevelCapInteraction> InteractionFlagLevelCapList, List<int> AdvancementHintTableKey, List<string> AdvancementHintTableValue, List<Reward> RewardList, List<int> ReportTableKey, List<string> ReportTableValue)
+        public static List<SkillRewardCommon> CreateCombinedRewardList(List<IPgLevelCapInteraction> InteractionFlagLevelCapList, List<int> AdvancementHintTableKey, List<string> AdvancementHintTableValue, List<IPgReward> RewardList, List<int> ReportTableKey, List<string> ReportTableValue)
         {
             List<SkillRewardCommon> CombinedRewardList = new List<SkillRewardCommon>();
 

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class LevelCapInteractionCollection : List<LevelCapInteraction>, ISerializableJsonObjectCollection
+    public class LevelCapInteractionCollection : List<IPgLevelCapInteraction>, ISerializableJsonObjectCollection
     {
         public ISerializableJsonObject GetAt(int index)
         {

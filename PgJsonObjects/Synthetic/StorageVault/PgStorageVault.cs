@@ -5,6 +5,8 @@
         public PgStorageVault(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 30;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgStorageVault CreateItem(byte[] data, ref int offset)

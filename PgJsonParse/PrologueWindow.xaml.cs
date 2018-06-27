@@ -1119,17 +1119,25 @@ namespace PgJsonParse
                 {
                     byte[] valueData = BitConverter.GetBytes(Count);
                     Array.Copy(valueData, 0, data, offset, 4);
+
+                    Debug.WriteLine(Count.ToString());
                 }
 
                 offset += 4;
 
                 int ObjectOffset = offset;
-                offset += Count * 4;
+                offset += (Count + 1) * 4;
 
                 foreach (IMainJsonObject Item in ObjectList)
                 {
                     Item.SerializeJsonMainObject(data, ref offset, ObjectOffset);
                     ObjectOffset += 4;
+                }
+
+                if (data != null)
+                {
+                    byte[] valueData = BitConverter.GetBytes(offset);
+                    Array.Copy(valueData, 0, data, ObjectOffset, 4);
                 }
             }
         }
@@ -1149,15 +1157,20 @@ namespace PgJsonParse
                 int Count = BitConverter.ToInt32(data, offset);
                 offset += 4;
 
+                Debug.WriteLine(Count.ToString());
+
                 int ObjectOffset = offset;
+                IMainPgObject Item;
 
                 for (int i = 0; i < Count; i++)
                 {
                     offset = BitConverter.ToInt32(data, ObjectOffset + i * 4);
 
-                    IMainPgObject Item = definition.CreateNewObject(data, ref offset);
+                    Item = definition.CreateNewObject(data, ref offset);
                     PgObjectList.Add(Item);
                 }
+
+                offset = BitConverter.ToInt32(data, ObjectOffset + Count * 4);
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class RecipeItemCollection : List<RecipeItem>, ISerializableJsonObjectCollection
+    public class RecipeItemCollection : List<IPgRecipeItem>, ISerializableJsonObjectCollection
     {
         public ISerializableJsonObject GetAt(int index)
         {

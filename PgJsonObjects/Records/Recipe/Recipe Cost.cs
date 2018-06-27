@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class RecipeCost : GenericJsonObject<RecipeCost>
+    public class RecipeCost : GenericJsonObject<RecipeCost>, IPgRecipeCost
     {
         #region Direct Properties
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }

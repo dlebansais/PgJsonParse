@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgIntervalServerInfoEffect : GenericPgObject<PgIntervalServerInfoEffect>, IPgIntervalServerInfoEffect
+    public class PgIntervalServerInfoEffect : GenericPgObject<PgIntervalServerInfoEffect>, IPgServerInfoEffect, IPgIntervalServerInfoEffect
     {
         public PgIntervalServerInfoEffect(byte[] data, ref int offset)
             : base(data, offset)

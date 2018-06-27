@@ -5,6 +5,8 @@
         public PgAbilitySource(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 30;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgAbilitySource CreateItem(byte[] data, ref int offset)

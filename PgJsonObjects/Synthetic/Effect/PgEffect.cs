@@ -7,6 +7,8 @@ namespace PgJsonObjects
         public PgEffect(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 38;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgEffect CreateItem(byte[] data, ref int offset)

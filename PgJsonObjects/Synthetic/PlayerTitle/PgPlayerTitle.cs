@@ -7,6 +7,8 @@ namespace PgJsonObjects
         public PgPlayerTitle(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 16;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgPlayerTitle CreateItem(byte[] data, ref int offset)

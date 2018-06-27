@@ -17,11 +17,18 @@ namespace PgJsonObjects
             return Parsed;
         }
 
-        public static void ParseList(string SubitemName, JsonObject value, ICollection<T> list, ParseErrorInfo errorInfo)
+        public static void ParseList(string SubitemName, JsonObject value, IList list, ParseErrorInfo errorInfo)
         {
             T Parsed = Parse(SubitemName, value, errorInfo);
-            if (Parsed != null)
-                list.Add(Parsed);
+
+            try
+            {
+                if (Parsed != null)
+                    list.Add(Parsed);
+            }
+            catch
+            {
+            }
         }
 
         public static void InitAsSubitem(string SubitemName, JsonObject RawSubarray, out T Subitem, ParseErrorInfo ErrorInfo)

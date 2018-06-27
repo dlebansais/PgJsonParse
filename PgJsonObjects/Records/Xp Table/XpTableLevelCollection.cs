@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class XpTableLevelCollection : List<XpTableLevel>, ISerializableJsonObjectCollection
+    public class XpTableLevelCollection : List<IPgXpTableLevel>, ISerializableJsonObjectCollection
     {
         public ISerializableJsonObject GetAt(int index)
         {

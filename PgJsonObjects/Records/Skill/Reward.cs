@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class Reward : GenericJsonObject<Reward>
+    public class Reward : GenericJsonObject<Reward>, IPgReward
     {
         #region Direct Properties
         public int RewardLevel { get { return RawRewardLevel.HasValue ? RawRewardLevel.Value : 0; } }

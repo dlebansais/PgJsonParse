@@ -86,17 +86,25 @@ namespace PgJsonObjects
 
         protected string GetString(int redirectionOffset)
         {
-            int StoredOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
-            string Result = CreateString(StoredOffset);
-            return Result;
+            int StoredOffset = /*Offset +*/ BitConverter.ToInt32(Data, Offset + redirectionOffset);
+            if (StoredOffset != 0)
+            {
+                string Result = CreateString(StoredOffset);
+                return Result;
+            }
+            else
+                return null;
         }
 
         protected T GetObject<T>(int redirectionOffset, ref T cachedValue, PgObjectCreator<T> createNewObject)
         {
             if (cachedValue == null)
             {
-                int StoredOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
-                cachedValue = createNewObject(Data, ref StoredOffset);
+                int StoredOffset = /*Offset +*/ BitConverter.ToInt32(Data, Offset + redirectionOffset);
+                if (StoredOffset != 0)
+                    cachedValue = createNewObject(Data, ref StoredOffset);
+                else
+                    cachedValue = default(T);
             }
 
             return cachedValue;
@@ -106,7 +114,7 @@ namespace PgJsonObjects
         {
             if (cachedList == null)
             {
-                int LengthOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
+                int LengthOffset = /*Offset +*/ BitConverter.ToInt32(Data, Offset + redirectionOffset);
                 int Count = BitConverter.ToUInt16(Data, LengthOffset);
                 int ValueOffset = LengthOffset + 2;
 
@@ -125,7 +133,7 @@ namespace PgJsonObjects
         {
             if (cachedList == null)
             {
-                int LengthOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
+                int LengthOffset = /*Offset +*/ BitConverter.ToInt32(Data, Offset + redirectionOffset);
                 int Count = BitConverter.ToUInt16(Data, LengthOffset);
                 int ValueOffset = LengthOffset + 2;
 
@@ -144,7 +152,7 @@ namespace PgJsonObjects
         {
             if (cachedList == null)
             {
-                int LengthOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
+                int LengthOffset = /*Offset +*/ BitConverter.ToInt32(Data, Offset + redirectionOffset);
                 int Count = BitConverter.ToInt32(Data, LengthOffset);
                 int ValueOffset = LengthOffset + 4;
 
@@ -163,7 +171,7 @@ namespace PgJsonObjects
         {
             if (cachedList == null)
             {
-                int LengthOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
+                int LengthOffset = /*Offset +*/ BitConverter.ToInt32(Data, Offset + redirectionOffset);
                 int Count = BitConverter.ToInt32(Data, LengthOffset);
                 int ValueOffset = LengthOffset + 4;
 
@@ -182,7 +190,7 @@ namespace PgJsonObjects
         {
             if (cachedList == null)
             {
-                int LengthOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
+                int LengthOffset = /*Offset +*/ BitConverter.ToInt32(Data, Offset + redirectionOffset);
                 int Count = BitConverter.ToInt32(Data, LengthOffset);
                 int ListOffset = LengthOffset + 4;
 
@@ -203,7 +211,7 @@ namespace PgJsonObjects
         {
             if (cachedList == null)
             {
-                int LengthOffset = Offset + BitConverter.ToInt32(Data, Offset + redirectionOffset);
+                int LengthOffset = /*Offset +*/ BitConverter.ToInt32(Data, Offset + redirectionOffset);
                 int Count = BitConverter.ToInt32(Data, LengthOffset);
                 int ListOffset = LengthOffset + 4;
 
@@ -230,7 +238,7 @@ namespace PgJsonObjects
             string Result = "";
             for (int i = 0; i < Count; i++)
             {
-                char CharacterValue = BitConverter.ToChar(Data, i * 2);
+                char CharacterValue = BitConverter.ToChar(Data, CharacterOffset + i * 2);
                 Result += CharacterValue;
             }
 

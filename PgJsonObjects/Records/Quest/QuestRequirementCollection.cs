@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestRequirementCollection : List<QuestRequirement>, ISerializableJsonObjectCollection
+    public class QuestRequirementCollection : List<IGenericPgObject>, ISerializableJsonObjectCollection
     {
         public ISerializableJsonObject GetAt(int index)
         {

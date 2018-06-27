@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class ItemBehavior : GenericJsonObject<ItemBehavior>
+    public class ItemBehavior : GenericJsonObject<ItemBehavior>, IPgItemBehavior
     {
         #region Direct Properties
-        public ServerInfo ServerInfo { get; private set; }
+        public IPgServerInfo ServerInfo { get; private set; }
         public List<ItemUseRequirement> UseRequirementList { get; private set; } = new List<ItemUseRequirement>();
         public ItemUseAnimation UseAnimation { get; private set; }
         public ItemUseAnimation UseDelayAnimation { get; private set; }
@@ -29,7 +29,7 @@ namespace PgJsonObjects
         {
             this.LinkBack = LinkBack;
             if (ServerInfo != null)
-                ServerInfo.SetLinkBack(LinkBack);
+                (ServerInfo as ServerInfo).SetLinkBack(LinkBack);
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
@@ -74,7 +74,7 @@ namespace PgJsonObjects
             if (ParsedServerInfo != null)
             {
                 ServerInfo = ParsedServerInfo;
-                ServerInfo.SetLinkBack(LinkBack);
+                (ServerInfo as ServerInfo).SetLinkBack(LinkBack);
             }
             else
                 ServerInfo = null;
@@ -93,7 +93,7 @@ namespace PgJsonObjects
                 if (UseVerb != ItemUseVerb.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.ItemUseVerbTextMap[UseVerb]);
                 if (ServerInfo != null)
-                    Result += ServerInfo.TextContent;
+                    Result += (ServerInfo as ServerInfo).TextContent;
                 foreach (ItemUseRequirement Item in UseRequirementList)
                     AddWithFieldSeparator(ref Result, TextMaps.ItemUseRequirementTextMap[Item]);
                 if (UseAnimation != ItemUseAnimation.Internal_None)
@@ -112,7 +112,7 @@ namespace PgJsonObjects
             bool IsConnected = false;
 
             if (ServerInfo != null)
-                IsConnected |= ServerInfo.Connect(ErrorInfo, Parent, AllTables);
+                IsConnected |= (ServerInfo as ServerInfo).Connect(ErrorInfo, Parent, AllTables);
 
             return IsConnected;
         }
@@ -129,7 +129,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
 
-            AddObject(ServerInfo, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(ServerInfo as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddEnumList(UseRequirementList, data, ref offset, BaseOffset, 4, StoredEnumListTable);
             AddEnum(UseAnimation, data, ref offset, BaseOffset, 8);
             AddEnum(UseDelayAnimation, data, ref offset, BaseOffset, 10);

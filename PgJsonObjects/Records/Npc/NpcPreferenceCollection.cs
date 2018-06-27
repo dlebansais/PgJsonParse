@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class NpcPreferenceCollection : List<NpcPreference>, ISerializableJsonObjectCollection
+    public class NpcPreferenceCollection : List<IPgNpcPreference>, ISerializableJsonObjectCollection
     {
         public ISerializableJsonObject GetAt(int index)
         {

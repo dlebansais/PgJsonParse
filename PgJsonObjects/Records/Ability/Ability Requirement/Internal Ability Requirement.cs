@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class InternalAbilityRequirement : AbilityRequirement
+    public class InternalAbilityRequirement : AbilityRequirement, IGenericPgObject
     {
         public InternalAbilityRequirement(AbilityItemKeyword Keyword)
         {

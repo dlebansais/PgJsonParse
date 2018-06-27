@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class SpecialValue : GenericJsonObject<SpecialValue>
+    public class SpecialValue : GenericJsonObject<SpecialValue>, IPgSpecialValue
     {
         #region Direct Properties
         public string Label { get; private set; }

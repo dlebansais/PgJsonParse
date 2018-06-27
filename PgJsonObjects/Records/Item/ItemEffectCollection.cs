@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class ItemEffectCollection : List<ItemEffect>, ISerializableJsonObjectCollection
+    public class ItemEffectCollection : List<IPgItemEffect>, ISerializableJsonObjectCollection
     {
         public ISerializableJsonObject GetAt(int index)
         {

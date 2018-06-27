@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class QuestRewardItemCollection : List<QuestRewardItem>, ISerializableJsonObjectCollection
+    public class QuestRewardItemCollection : List<IPgQuestRewardItem>, ISerializableJsonObjectCollection
     {
         public ISerializableJsonObject GetAt(int index)
         {

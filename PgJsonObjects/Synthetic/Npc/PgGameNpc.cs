@@ -5,6 +5,8 @@
         public PgGameNpc(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 22;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgGameNpc CreateItem(byte[] data, ref int offset)

@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public abstract class PowerEffect
+    public abstract class PowerEffect : IGenericPgObject
     {
         public abstract string AsEffectString();
 

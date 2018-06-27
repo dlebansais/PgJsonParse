@@ -7,6 +7,8 @@ namespace PgJsonObjects
         public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 150;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgAbility CreateItem(byte[] data, ref int offset)
@@ -16,7 +18,10 @@ namespace PgJsonObjects
 
         public static PgAbility CreateNew(byte[] data, ref int offset)
         {
-            return new PgAbility(data, ref offset);
+            PgAbility Result = new PgAbility(data, ref offset);
+            RecipeCostCollection CostList = Result.CostList;
+            IPgAbility Prerequisite = Result.Prerequisite;
+            return Result;
         }
 
         public override void Init()

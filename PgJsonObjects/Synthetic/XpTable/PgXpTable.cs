@@ -5,6 +5,8 @@
         public PgXpTable(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 10;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgXpTable CreateItem(byte[] data, ref int offset)

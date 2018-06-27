@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgAbilityServerInfoEffect : GenericPgObject<PgAbilityServerInfoEffect>, IPgAbilityServerInfoEffect
+    public class PgAbilityServerInfoEffect : GenericPgObject<PgAbilityServerInfoEffect>, IPgServerInfoEffect, IPgAbilityServerInfoEffect
     {
         public PgAbilityServerInfoEffect(byte[] data, ref int offset)
             : base(data, offset)

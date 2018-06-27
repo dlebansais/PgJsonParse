@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class ItemCollection : List<Item>, ISerializableJsonObjectCollection
+    public class ItemCollection : List<IPgItem>, ISerializableJsonObjectCollection
     {
         public ISerializableJsonObject GetAt(int index)
         {

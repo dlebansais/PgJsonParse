@@ -5,6 +5,8 @@
         public PgDirectedGoal(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 26;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgDirectedGoal CreateItem(byte[] data, ref int offset)

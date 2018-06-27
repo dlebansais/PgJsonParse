@@ -37,7 +37,7 @@ namespace PgJsonObjects
                     LastPowerTier = Entry.Value;
                 }
 
-            List<PowerEffect> EffectList = LastPowerTier.EffectList;
+            PowerEffectCollection EffectList = LastPowerTier.EffectList;
 
             string Name = "";
             List<int> CombinedIdList = new List<int>();

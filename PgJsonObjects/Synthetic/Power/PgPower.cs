@@ -7,6 +7,8 @@ namespace PgJsonObjects
         public PgPower(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 20;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgPower CreateItem(byte[] data, ref int offset)

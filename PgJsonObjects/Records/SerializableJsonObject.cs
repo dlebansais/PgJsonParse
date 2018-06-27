@@ -127,9 +127,7 @@ namespace PgJsonObjects
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
-            if (data == null)
-                StoredStringtable.Add(offset, value);
-
+            StoredStringtable.Add(offset, value);
             offset += 4;
         }
 
@@ -137,9 +135,7 @@ namespace PgJsonObjects
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
-            if (data == null)
-                StoredObjectTable.Add(offset, value);
-
+            StoredObjectTable.Add(offset, value);
             offset += 4;
         }
 
@@ -147,9 +143,7 @@ namespace PgJsonObjects
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
-            if (data == null)
-                StoredBoolListTable.Add(offset, value);
-
+            StoredBoolListTable.Add(offset, value);
             offset += 4;
         }
 
@@ -157,9 +151,7 @@ namespace PgJsonObjects
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
-            if (data == null)
-                StoredEnumListTable.Add(offset, value);
-
+            StoredEnumListTable.Add(offset, value);
             offset += 4;
         }
 
@@ -167,9 +159,7 @@ namespace PgJsonObjects
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
-            if (data == null)
-                StoredIntListTable.Add(offset, value);
-
+            StoredIntListTable.Add(offset, value);
             offset += 4;
         }
 
@@ -177,9 +167,7 @@ namespace PgJsonObjects
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
-            if (data == null)
-                StoredUIntListTable.Add(offset, value);
-
+            StoredUIntListTable.Add(offset, value);
             offset += 4;
         }
 
@@ -187,9 +175,7 @@ namespace PgJsonObjects
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
-            if (data == null)
-                StoredStringListTable.Add(offset, value);
-
+            StoredStringListTable.Add(offset, value);
             offset += 4;
         }
 
@@ -197,9 +183,7 @@ namespace PgJsonObjects
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
-            if (data == null)
-                StoredObjectListTable.Add(offset, value);
-
+            StoredObjectListTable.Add(offset, value);
             offset += 4;
         }
 
@@ -499,7 +483,7 @@ namespace PgJsonObjects
 
             for (int i = 0; i < ObjectList.Count; i++)
             {
-                ISerializableJsonObject ObjectValue = ObjectList.GetAt(i);
+                ISerializableJsonObject ObjectValue = ObjectList[i] as ISerializableJsonObject;
 
                 if (IsObjectSerialized(ObjectValue))
                 {
@@ -536,7 +520,7 @@ namespace PgJsonObjects
             bitOffset = 0;
         }
 
-        protected void AlignSerializedLength(ref int offset)
+        public static void AlignSerializedLength(ref int offset)
         {
             offset = ((offset + 3) / 4) * 4;
         }

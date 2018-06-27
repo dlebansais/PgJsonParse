@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestRequirement : GenericJsonObject<QuestRequirement>, ISpecificRecord
+    public class QuestRequirement : GenericJsonObject<QuestRequirement>, IGenericPgObject, ISpecificRecord
     {
         #region Init
         public QuestRequirement()

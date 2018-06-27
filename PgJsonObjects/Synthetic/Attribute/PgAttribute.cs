@@ -7,6 +7,8 @@ namespace PgJsonObjects
         public PgAttribute(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 22;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgAttribute CreateItem(byte[] data, ref int offset)

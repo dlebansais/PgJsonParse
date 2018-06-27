@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AbilityRequirementCollection : List<AbilityRequirement>, ISerializableJsonObjectCollection
+    public class AbilityRequirementCollection : List<IGenericPgObject>, ISerializableJsonObjectCollection
     {
-        public ISerializableJsonObject GetAt(int index)
+        /*public ISerializableJsonObject GetAt(int index)
         {
             return this[index] as ISerializableJsonObject;
-        }
+        }*/
 
         public static IGenericPgObject CreateItem(byte[] data, ref int offset)
         {

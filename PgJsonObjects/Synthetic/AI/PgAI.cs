@@ -5,6 +5,8 @@
         public PgAI(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 14;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgAI CreateItem(byte[] data, ref int offset)

@@ -5,6 +5,8 @@
         public PgGameArea(byte[] data, ref int offset)
             : base(data, offset)
         {
+            offset += 10;
+            SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
         protected override PgGameArea CreateItem(byte[] data, ref int offset)
@@ -14,7 +16,10 @@
 
         public static PgGameArea CreateNew(byte[] data, ref int offset)
         {
-            return new PgGameArea(data, ref offset);
+            PgGameArea Item = new PgGameArea(data, ref offset);
+            string FriendlyName = Item.FriendlyName;
+            string ShortFriendlyName = Item.ShortFriendlyName;
+            return Item;
         }
 
         public string FriendlyName { get { return GetString(0); } }
