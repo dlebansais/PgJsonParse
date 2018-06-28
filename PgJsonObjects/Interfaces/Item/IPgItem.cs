@@ -64,5 +64,7 @@ namespace PgJsonObjects
         int BestowLoreBook { get; }
         int? RawBestowLoreBook { get; }
         IPgLoreBook ConnectedLoreBook { get; }
+        List<string> KeywordValueList { get; }
+        string Key { get; }
     }
 }

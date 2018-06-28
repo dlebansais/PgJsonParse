@@ -15,8 +15,10 @@ namespace PgJsonObjects
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; private set; }
         public PowerSkill RawSkill { get; private set; }
+        public PowerTierCollection TierEffectList { get; } = new PowerTierCollection();
+        public int TierOffset { get { return RawTierOffset.HasValue ? RawTierOffset.Value : 0; } }
+        public int? RawTierOffset { get; private set; }
 
-        public Dictionary<int, PowerTier> TierEffectTable { get; } = new Dictionary<int, PowerTier>();
         private bool IsSkillParsed;
         #endregion
 
@@ -69,11 +71,12 @@ namespace PgJsonObjects
         {
             Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
 
-            foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
+            for (int i = 0; i < TierEffectList.Count; i++)
             {
-                int Tier = Entry.Key;
+                IPgPowerTier Item = TierEffectList[i];
+                int Tier = TierOffset + i;
 
-                foreach (PowerEffect Effect in Entry.Value.EffectList)
+                foreach (PowerEffect Effect in Item.EffectList)
                 {
                     PowerAttributeLink AsPowerAttributeLink;
                     PowerSimpleEffect AsPowerSimpleEffect;
@@ -112,13 +115,13 @@ namespace PgJsonObjects
                                 }
                             }
 
-                            CombinedTierList.Add(PrepareTier(Entry.Key, Name));
+                            CombinedTierList.Add(PrepareTier(Tier, Name));
                         }
                     }
 
                     else if ((AsPowerSimpleEffect = Effect as PowerSimpleEffect) != null)
                     {
-                        CombinedTierList.Add(PrepareTier(Entry.Key, AsPowerSimpleEffect.Description));
+                        CombinedTierList.Add(PrepareTier(Tier, AsPowerSimpleEffect.Description));
                     }
                 }
             }
@@ -196,24 +199,32 @@ namespace PgJsonObjects
             }
 
             int i;
-            for (i = 0; i < RawTiers.Count; i++)
+
+            if (TierOffset != int.MaxValue)
             {
-                string Key = "id_" + (i + TierOffset).ToString();
-                if (!RawTiers.Has(Key))
-                    break;
-
-                JsonObject RawValue;
-                if ((RawValue = RawTiers[Key] as JsonObject) != null)
+                for (i = 0; i < RawTiers.Count; i++)
                 {
-                    PowerTier Subitem;
-                    JsonObjectParser<PowerTier>.InitAsSubitem(Key, RawValue, out Subitem, ErrorInfo);
-                    TierEffectTable.Add(i, Subitem);
-                }
-                else
-                    ErrorInfo.AddInvalidObjectFormat("Power Tiers");
-            }
+                    string Key = "id_" + (i + TierOffset).ToString();
+                    if (!RawTiers.Has(Key))
+                        break;
 
-            if (i < RawTiers.Count)
+                    JsonObject RawValue;
+                    if ((RawValue = RawTiers[Key] as JsonObject) != null)
+                    {
+                        PowerTier Subitem;
+                        JsonObjectParser<PowerTier>.InitAsSubitem(Key, RawValue, out Subitem, ErrorInfo);
+                        TierEffectList.Add(Subitem);
+                    }
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("Power Tiers");
+                }
+            }
+            else
+                i = 0;
+
+            if (i >= RawTiers.Count)
+                RawTierOffset = TierOffset;
+            else
                 ErrorInfo.AddInvalidObjectFormat("Power Tiers");
         }
 
@@ -222,10 +233,13 @@ namespace PgJsonObjects
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("Tiers");
 
-            foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
+            for (int i = 0; i < TierEffectList.Count; i++)
             {
-                string FieldKey = "id_" + Entry.Key.ToString();
-                Result.SetFieldValue(FieldKey, Entry.Value);
+                IPgPowerTier Item = TierEffectList[i];
+                int Tier = TierOffset + i;
+
+                string FieldKey = "id_" + Tier.ToString();
+                Result.SetFieldValue(FieldKey, (PowerTier)Item);
             }
 
             return Result;
@@ -260,8 +274,11 @@ namespace PgJsonObjects
             bool IsConnected = false;
             Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
-            foreach (KeyValuePair<int, PowerTier> Entry in TierEffectTable)
-                IsConnected |= Entry.Value.Connect(ErrorInfo, this, AllTables);
+            for (int i = 0; i < TierEffectList.Count; i++)
+            {
+                PowerTier Item = TierEffectList[i] as PowerTier;
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
+            }
 
             if (RawSkill != PowerSkill.Internal_None && RawSkill != PowerSkill.AnySkill && RawSkill != PowerSkill.Unknown)
                 Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, Skill, ref IsSkillParsed, ref IsConnected, this);
@@ -271,18 +288,18 @@ namespace PgJsonObjects
         #endregion
 
         #region Crunching
-        public bool IsValidForSlot(PowerSkill RawSkill, ItemSlot Slot)
+        public static bool IsValidForSlot(IPgPower power, PowerSkill RawSkill, ItemSlot Slot)
         {
-            if (this.RawSkill != RawSkill)
+            if (power.RawSkill != RawSkill)
                 return false;
 
-            if (IsUnavailable)
+            if (power.IsUnavailable)
                 return false;
 
-            if (TierEffectTable.Count == 0)
+            if (power.TierEffectList.Count == 0)
                 return false;
 
-            if (!SlotList.Contains(Slot))
+            if (!power.SlotList.Contains(Slot))
                 return false;
 
             return true;
@@ -301,16 +318,20 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddString(Prefix, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddString(Suffix, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddEnumList(SlotList, data, ref offset, BaseOffset, 8, StoredEnumListTable);
-            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
-            AddBool(RawIsUnavailable, data, ref offset, ref BitOffset, BaseOffset, 16, 0);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Prefix, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(Suffix, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddEnumList(SlotList, data, ref offset, BaseOffset, 12, StoredEnumListTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddBool(RawIsUnavailable, data, ref offset, ref BitOffset, BaseOffset, 20, 0);
             CloseBool(ref offset, ref BitOffset);
-            AddEnum(RawSkill, data, ref offset, BaseOffset, 18);
+            AddEnum(RawSkill, data, ref offset, BaseOffset, 22);
+            AddObjectList(TierEffectList, data, ref offset, BaseOffset, 24, StoredObjectListTable);
+            AddInt(RawTierOffset, data, ref offset, BaseOffset, 28);
 
-            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 32, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

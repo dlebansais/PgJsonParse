@@ -40,9 +40,9 @@ namespace PgJsonObjects
         public int RageBoost { get { return RawRageBoost.HasValue ? RawRageBoost.Value : 0; } }
         public int? RawRageBoost { get { return GetInt(36); } }
         public double RageMultiplier { get { return RawRageMultiplier.HasValue ? RawRageMultiplier.Value : 1.0; } }
-        public double? RawRageMultiplier { get { return GetInt(40); } }
+        public double? RawRageMultiplier { get { return GetDouble(40); } }
         public double Accuracy { get { return RawAccuracy.HasValue ? RawAccuracy.Value : 0; } }
-        public double? RawAccuracy { get { return GetInt(44); } }
+        public double? RawAccuracy { get { return GetDouble(44); } }
         public SpecialValueCollection SpecialValueList { get { return GetObjectList(48, ref _SpecialValueList, SpecialValueCollection.CreateItem, () => new SpecialValueCollection()); } } private SpecialValueCollection _SpecialValueList;
         public DoTCollection DoTList { get { return GetObjectList(52, ref _DoTList, DoTCollection.CreateItem, () => new DoTCollection()); } } private DoTCollection _DoTList;
         public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }

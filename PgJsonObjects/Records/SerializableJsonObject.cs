@@ -295,8 +295,6 @@ namespace PgJsonObjects
                         Array.Copy(valueData, 0, data, redirectionOffset, 4);
                     }
 
-                    offset += 4;
-
                     ObjectValue.SerializeJsonObject(data, ref offset);
                 }
             }
@@ -480,34 +478,26 @@ namespace PgJsonObjects
             }
 
             offset += 4;
+            int ListOffset = offset;
+            offset += ObjectList.Count * 4;
 
             for (int i = 0; i < ObjectList.Count; i++)
             {
                 ISerializableJsonObject ObjectValue = ObjectList[i] as ISerializableJsonObject;
+                int ObjectOffset;
 
                 if (IsObjectSerialized(ObjectValue))
-                {
-                    int ObjectOffset = SerializedObjectTable[ObjectValue];
-
-                    if (data != null)
-                    {
-                        byte[] valueData = BitConverter.GetBytes(ObjectOffset);
-                        Array.Copy(valueData, 0, data, offset, 4);
-                    }
-
-                    offset += 4;
-                }
+                    ObjectOffset = SerializedObjectTable[ObjectValue];
                 else
                 {
-                    if (data != null)
-                    {
-                        byte[] valueData = new byte[4];
-                        Array.Copy(valueData, 0, data, offset, 4);
-                    }
-
-                    offset += 4;
-
+                    ObjectOffset = offset;
                     ObjectValue.SerializeJsonObject(data, ref offset);
+                }
+
+                if (data != null)
+                {
+                    byte[] valueData = BitConverter.GetBytes(ObjectOffset);
+                    Array.Copy(valueData, 0, data, ListOffset + i * 4, 4);
                 }
             }
         }

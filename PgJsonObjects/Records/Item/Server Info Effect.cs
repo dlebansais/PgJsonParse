@@ -28,7 +28,6 @@ namespace PgJsonObjects
             }
         }
 
-
         #region Indexing
         public virtual string TextContent
         {

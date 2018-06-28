@@ -40,8 +40,8 @@ namespace PgJsonObjects
 
         public override bool Equals(object obj)
         {
-            ItemAttributeLink AsItemAttributeLink;
-            if ((AsItemAttributeLink = obj as ItemAttributeLink) != null)
+            IPgItemAttributeLink AsItemAttributeLink;
+            if ((AsItemAttributeLink = obj as IPgItemAttributeLink) != null)
                 return AsItemAttributeLink.Link == Link;
             else
                 return false;
@@ -59,7 +59,7 @@ namespace PgJsonObjects
 
         public string FriendlyName
         {
-            get { return (Link as Attribute).LabelRippedOfPercent; }
+            get { return Link.LabelRippedOfPercent; }
         }
 
         public string FriendlyEffect
@@ -68,7 +68,7 @@ namespace PgJsonObjects
             {
                 string AttributeEffectString;
 
-                if ((Link as Attribute).IsLabelWithPercent)
+                if (Link.IsLabelWithPercent)
                 {
                     AttributeEffectString = Tools.FloatToString(AttributeEffect * 100, AttributeEffectFormat);
 

@@ -4,6 +4,7 @@ namespace PgJsonObjects
 {
     public interface IPgAttribute
     {
+        string Key { get; }
         string Label { get; }
         List<int> IconIdList { get; }
         string Tooltip { get; }
@@ -13,5 +14,8 @@ namespace PgJsonObjects
         DisplayRule DisplayRule { get; }
         bool IsHidden { get; }
         bool? RawIsHidden { get; }
+
+        bool IsLabelWithPercent { get; }
+        string LabelRippedOfPercent { get; }
     }
 }

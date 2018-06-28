@@ -123,6 +123,7 @@
     <Compile Include="Interfaces\PlayerTitle\IPgPlayerTitle.cs" />
     <Compile Include="Interfaces\Power\IPgPower.cs" />
     <Compile Include="Interfaces\Power\IPgPowerAttributeLink.cs" />
+    <Compile Include="Interfaces\Power\IPgPowerEffect.cs" />
     <Compile Include="Interfaces\Power\IPgPowerSimpleEffect.cs" />
     <Compile Include="Interfaces\Power\IPgPowerTier.cs" />
     <Compile Include="Interfaces\Quest\IPgQuest.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Records\Npc\NpcPreferenceCollection.cs" />
     <Compile Include="Records\Player Title\Player Title.cs" />
     <Compile Include="Records\Player Title\Title Keyword.cs" />
+    <Compile Include="Records\Power\PowerTierCollection.cs" />
     <Compile Include="Records\Power\PowerEffectCollection.cs" />
     <Compile Include="Records\Quest\Monster Type Tag.cs" />
     <Compile Include="Records\Quest\Quest Objective Requirement.cs" />

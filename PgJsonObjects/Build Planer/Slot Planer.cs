@@ -29,7 +29,7 @@ namespace PgJsonObjects
             SelectedPowerList3 = new ObservableCollection<PlanerSlotPower>();
             SelectedPowerList4 = new ObservableCollection<PlanerSlotPower>();
             SelectedPowerList5 = new ObservableCollection<PlanerSlotPower>();
-            SortedGearList = new ObservableCollection<Item>();
+            SortedGearList = new ObservableCollection<IPgItem>();
             GearWeightList = new ObservableCollection<PlanerSlotGear>();
             _AvailablePowerIndex1 = -1;
             _AvailablePowerIndex2 = -1;
@@ -60,7 +60,7 @@ namespace PgJsonObjects
         public ObservableCollection<PlanerSlotPower> SelectedPowerList3 { get; private set; }
         public ObservableCollection<PlanerSlotPower> SelectedPowerList4 { get; private set; }
         public ObservableCollection<PlanerSlotPower> SelectedPowerList5 { get; private set; }
-        public ObservableCollection<Item> SortedGearList { get; private set; }
+        public ObservableCollection<IPgItem> SortedGearList { get; private set; }
         public ObservableCollection<PlanerSlotGear> GearWeightList { get; private set; }
 
         public bool IsFirstSkillSelected { get { return GetFirstSkillHandler() >= 0; } }
@@ -282,7 +282,7 @@ namespace PgJsonObjects
             }
         }
 
-        public void RefreshCombatSkillList(IList<Power> PowerList, Dictionary<string, IGenericJsonObject> AttributeTable, PowerSkill FirstSkill, int MaxLevelFirstSkill, PowerSkill SecondSkill, int MaxLevelSecondSkill, int MaxLevelGeneric)
+        public void RefreshCombatSkillList(IList<IPgPower> PowerList, Dictionary<string, IGenericJsonObject> AttributeTable, PowerSkill FirstSkill, int MaxLevelFirstSkill, PowerSkill SecondSkill, int MaxLevelSecondSkill, int MaxLevelGeneric)
         {
             AvailablePowerList1.Clear();
             AvailablePowerList2.Clear();
@@ -305,24 +305,24 @@ namespace PgJsonObjects
             SelectedPowerIndex4 = -1;
             SelectedPowerIndex5 = -1;
 
-            foreach (Power PowerItem in PowerList)
-                if (PowerItem.IsValidForSlot(FirstSkill, Slot))
+            foreach (IPgPower PowerItem in PowerList)
+                if (Power.IsValidForSlot(PowerItem, FirstSkill, Slot))
                     AvailablePowerList1.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelFirstSkill));
 
-            foreach (Power PowerItem in PowerList)
-                if (PowerItem.IsValidForSlot(SecondSkill, Slot))
+            foreach (IPgPower PowerItem in PowerList)
+                if (Power.IsValidForSlot(PowerItem, SecondSkill, Slot))
                     AvailablePowerList2.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelSecondSkill));
 
-            foreach (Power PowerItem in PowerList)
-                if (PowerItem.IsValidForSlot(PowerSkill.AnySkill, Slot))
+            foreach (IPgPower PowerItem in PowerList)
+                if (Power.IsValidForSlot(PowerItem, PowerSkill.AnySkill, Slot))
                     AvailablePowerList3.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelGeneric));
 
-            foreach (Power PowerItem in PowerList)
-                if (PowerItem.IsValidForSlot(PowerSkill.Endurance, Slot))
+            foreach (IPgPower PowerItem in PowerList)
+                if (Power.IsValidForSlot(PowerItem, PowerSkill.Endurance, Slot))
                     AvailablePowerList4.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelGeneric));
 
-            foreach (Power PowerItem in PowerList)
-                if (PowerItem.IsValidForSlot(PowerSkill.ShamanicInfusion, Slot))
+            foreach (IPgPower PowerItem in PowerList)
+                if (Power.IsValidForSlot(PowerItem, PowerSkill.ShamanicInfusion, Slot))
                     AvailablePowerList5.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelGeneric));
 
             NotifyPropertyChanged(nameof(ColorIndex));
@@ -534,32 +534,41 @@ namespace PgJsonObjects
             }
         }
 
-        public void RefreshGearList(ICollection<Item> ItemList, ICollection<Attribute> AttributeList, WeightProfile WeightProfile, bool IgnoreUnobtainable, bool IgnoreNoAttribute)
+        public void RefreshGearList(ICollection<IPgItem> ItemList, ICollection<IPgAttribute> AttributeList, WeightProfile WeightProfile, bool IgnoreUnobtainable, bool IgnoreNoAttribute)
         {
-            Item OldSelectedGear = SelectedGearIndex >= 0 && SelectedGearIndex < SortedGearList.Count ? SortedGearList[SelectedGearIndex] : null;
+            IPgItem OldSelectedGear = SelectedGearIndex >= 0 && SelectedGearIndex < SortedGearList.Count ? SortedGearList[SelectedGearIndex] : null;
 
             SortedGearList.Clear();
             GearWeightList.Clear();
 
-            foreach (Item Item in ItemList)
+            foreach (IPgItem Item in ItemList)
             {
                 if (Item.EquipSlot != Slot && (Slot != ItemSlot.OffHand || Item.EquipSlot != ItemSlot.OffHandShield))
                     continue;
 
                 if (IgnoreUnobtainable)
                 {
-                    if (Item.KeywordTable.ContainsKey(ItemKeyword.Lint_NotObtainable))
+                    string NotObtainablePattern = ((int)ItemKeyword.Lint_NotObtainable).ToString();
+                    bool IsNotObtainable = false;
+                    foreach (string s in Item.KeywordValueList)
+                        if (s == NotObtainablePattern || s.StartsWith(NotObtainablePattern + ","))
+                        {
+                            IsNotObtainable = true;
+                            break;
+                        }
+
+                    if (IsNotObtainable)
                         continue;
                 }
 
-                float Weight = Item.GetWeight(WeightProfile);
+                float Weight = PgJsonObjects.Item.GetWeight(WeightProfile, Item);
 
                 if (IgnoreNoAttribute && Weight <= 0)
                     continue;
 
                 int i;
                 for (i = 0; i < SortedGearList.Count; i++)
-                    if (SortedGearList[i].GetWeight(WeightProfile) <= Weight)
+                    if (PgJsonObjects.Item.GetWeight(WeightProfile, SortedGearList[i]) <= Weight)
                         break;
 
                 SortedGearList.Insert(i, Item);

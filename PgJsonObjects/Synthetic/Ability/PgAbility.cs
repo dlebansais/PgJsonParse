@@ -19,8 +19,6 @@ namespace PgJsonObjects
         public static PgAbility CreateNew(byte[] data, ref int offset)
         {
             PgAbility Result = new PgAbility(data, ref offset);
-            RecipeCostCollection CostList = Result.CostList;
-            IPgAbility Prerequisite = Result.Prerequisite;
             return Result;
         }
 
@@ -54,7 +52,7 @@ namespace PgJsonObjects
         public DamageType DamageType { get { return GetEnum<DamageType>(18); } }
         public string RawSpecialCasterRequirementsErrorMessage { get { return GetString(20); } }
         public double ConsumedItemChance { get { return RawConsumedItemChance.HasValue ? RawConsumedItemChance.Value : 0; } }
-        public double? RawConsumedItemChance { get { return GetInt(24); } }
+        public double? RawConsumedItemChance { get { return GetDouble(24); } }
         public double ConsumedItemChanceToStickInCorpse { get { return RawConsumedItemChanceToStickInCorpse.HasValue ? RawConsumedItemChanceToStickInCorpse.Value : 0; } }
         public double? RawConsumedItemChanceToStickInCorpse { get { return GetDouble(28); } }
         public int ConsumedItemCount { get { return RawConsumedItemCount.HasValue ? RawConsumedItemCount.Value : 0; } }

@@ -4,25 +4,25 @@ namespace PgJsonObjects
 {
     public class PlanerSlotPower
     {
-        public PlanerSlotPower(Power Reference, Dictionary<string, IGenericJsonObject> AttributeTable, int MaxLevelFirstSkill)
+        public PlanerSlotPower(IPgPower Reference, Dictionary<string, IGenericJsonObject> AttributeTable, int MaxLevelFirstSkill)
         {
             this.Reference = Reference;
 
             int LastTier = 0;
-            PowerTier LastPowerTier = null;
+            IPgPowerTier LastPowerTier = null;
             int MaxTier;
 
             if (MaxLevelFirstSkill > 0 && MaxLevelFirstSkill <= 125)
             {
-                if (Reference.TierEffectTable.Count >= 16)
+                if (Reference.TierEffectList.Count >= 16)
                     MaxTier = MaxLevelFirstSkill / 5;
-                else if (Reference.TierEffectTable.Count >= 8)
+                else if (Reference.TierEffectList.Count >= 8)
                     MaxTier = MaxLevelFirstSkill / 10;
-                else if (Reference.TierEffectTable.Count >= 4)
+                else if (Reference.TierEffectList.Count >= 4)
                     MaxTier = MaxLevelFirstSkill / 20;
-                else if (Reference.TierEffectTable.Count >= 3)
+                else if (Reference.TierEffectList.Count >= 3)
                     MaxTier = MaxLevelFirstSkill / 30;
-                else if (Reference.TierEffectTable.Count >= 2)
+                else if (Reference.TierEffectList.Count >= 2)
                     MaxTier = MaxLevelFirstSkill / 50;
                 else
                     MaxTier = -1;
@@ -30,30 +30,35 @@ namespace PgJsonObjects
             else
                 MaxTier = -1;
 
-            foreach (KeyValuePair<int, PowerTier> Entry in Reference.TierEffectTable)
-                if ((LastTier < Entry.Key && (MaxTier < 0 || Entry.Key < MaxTier)) || LastPowerTier == null)
+            for (int i = 0; i < Reference.TierEffectList.Count; i++)
+            {
+                IPgPowerTier Item = Reference.TierEffectList[i];
+                int Tier = Reference.TierOffset + i;
+
+                if ((LastTier < Tier && (MaxTier < 0 || Tier < MaxTier)) || LastPowerTier == null)
                 {
-                    LastTier = Entry.Key;
-                    LastPowerTier = Entry.Value;
+                    LastTier = Tier;
+                    LastPowerTier = Item;
                 }
+            }
 
             PowerEffectCollection EffectList = LastPowerTier.EffectList;
 
             string Name = "";
             List<int> CombinedIdList = new List<int>();
-            foreach (PowerEffect EffectItem in EffectList)
+            foreach (IPgPowerEffect EffectItem in EffectList)
             {
-                PowerAttributeLink AsPowerAttributeLink;
-                PowerSimpleEffect AsPowerSimpleEffect;
+                IPgPowerAttributeLink AsPowerAttributeLink;
+                IPgPowerSimpleEffect AsPowerSimpleEffect;
 
                 if (Name.Length > 0)
                     Name += ", ";
 
-                if ((AsPowerAttributeLink = EffectItem as PowerAttributeLink) != null)
+                if ((AsPowerAttributeLink = EffectItem as IPgPowerAttributeLink) != null)
                 {
                     if (AttributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
                     {
-                        Attribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName] as Attribute;
+                        IPgAttribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName] as IPgAttribute;
 
                         bool IsPercent = PowerAttribute.IsLabelWithPercent;
                         string Label = PowerAttribute.LabelRippedOfPercent;
@@ -90,7 +95,7 @@ namespace PgJsonObjects
                             CombinedIdList.Add(Id);
                 }
 
-                else if ((AsPowerSimpleEffect = EffectItem as PowerSimpleEffect) != null)
+                else if ((AsPowerSimpleEffect = EffectItem as IPgPowerSimpleEffect) != null)
                 {
                     Name += AsPowerSimpleEffect.Description.Trim();
 
@@ -107,7 +112,7 @@ namespace PgJsonObjects
                 IconFileNameList.Add("icon_" + Id);
         }
 
-        public Power Reference { get; private set; }
+        public IPgPower Reference { get; private set; }
         public string Name { get; private set; }
         public List<string> IconFileNameList { get; private set; }
     }

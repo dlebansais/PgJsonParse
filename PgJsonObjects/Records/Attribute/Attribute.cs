@@ -24,7 +24,10 @@ namespace PgJsonObjects
 
         public bool IsLabelWithPercent
         {
-            get { return Label.EndsWith("%"); }
+            get
+            {
+                return Label.EndsWith("%");
+            }
         }
 
         public string LabelRippedOfPercent
@@ -169,16 +172,17 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
 
-            AddString(Label, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddIntList(IconIdList, data, ref offset, BaseOffset, 4, StoredIntListTable);
-            AddString(Tooltip, data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddDouble(RawDefaultValue, data, ref offset, BaseOffset, 12);
-            AddEnum(DisplayType, data, ref offset, BaseOffset, 16);
-            AddEnum(DisplayRule, data, ref offset, BaseOffset, 18);
-            AddBool(RawIsHidden, data, ref offset, ref BitOffset, BaseOffset, 20, 0);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Label, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddIntList(IconIdList, data, ref offset, BaseOffset, 8, StoredIntListTable);
+            AddString(Tooltip, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddDouble(RawDefaultValue, data, ref offset, BaseOffset, 16);
+            AddEnum(DisplayType, data, ref offset, BaseOffset, 20);
+            AddEnum(DisplayRule, data, ref offset, BaseOffset, 22);
+            AddBool(RawIsHidden, data, ref offset, ref BitOffset, BaseOffset, 24, 0);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, null, StoredIntListTable, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, null, null, null, StoredIntListTable, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -1,7 +1,6 @@
 ﻿using PgJsonObjects;
 using Presentation;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,7 +8,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 #if CSHARP_XAML_FOR_HTML5
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -988,21 +986,22 @@ namespace PgJsonParse
                 return;
             }
 
-            /*
-            int offset;
+            if (!ObjectList.UseJson)
+            {
+                int offset;
 
-            offset = 0;
-            SerializeAll(null, ref offset);
+                offset = 0;
+                SerializeAll(null, ref offset);
 
-            int length = offset;
-            byte[] data = new byte[length];
+                int length = offset;
+                byte[] data = new byte[length];
 
-            offset = 0;
-            SerializeAll(data, ref offset);
+                offset = 0;
+                SerializeAll(data, ref offset);
 
-            offset = 0;
-            DeserializeAll(data, ref offset);
-            */
+                offset = 0;
+                DeserializeAll(data, ref offset);
+            }
 
             LoadedIconCount = 0;
             MissingIconList = new List<int>();

@@ -18,6 +18,6 @@
         }
 
         public double Health { get { return RawHealth.HasValue ? RawHealth.Value : 0; } }
-        public double? RawHealth { get { return GetInt(4); } }
+        public double? RawHealth { get { return GetDouble(4); } }
     }
 }

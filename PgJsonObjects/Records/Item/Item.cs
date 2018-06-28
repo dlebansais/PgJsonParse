@@ -69,6 +69,7 @@ namespace PgJsonObjects
         public int? RawBestowLoreBook { get; private set; }
         public IPgLoreBook ConnectedLoreBook { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
+        public List<string> KeywordValueList { get; } = new List<string>();
 
         public Dictionary<string, Recipe> BestowRecipeTable { get; } = new Dictionary<string, Recipe>();
         private bool IsLoreBookParsed;
@@ -472,6 +473,29 @@ namespace PgJsonObjects
             if (!float.IsNaN(Value))
                 ValueList.Add(Value);
 
+            int Index = -1;
+            for (int i = 0; i < KeywordValueList.Count; i++)
+            {
+                string[] Splitted = KeywordValueList[i].Split(',');
+                if (Splitted.Length > 0 && int.TryParse(Splitted[0], out int KeywordIndex) && KeywordIndex == (int)Key)
+                {
+                    Index = i;
+                    break;
+                }
+            }
+
+            if (Index < 0)
+            {
+                Index = KeywordValueList.Count;
+                KeywordValueList.Add("");
+            }
+
+            string Line = ((int)Key).ToString();
+            foreach (float f in ValueList)
+                Line += "," + InvariantCulture.SingleToString(f);
+
+            KeywordValueList[Index] = Line;
+
             return true;
         }
 
@@ -867,7 +891,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Crunching
-        public float GetWeight(WeightProfile WeightProfile)
+        public static float GetWeight(WeightProfile WeightProfile, IPgItem item)
         {
             if (WeightProfile == null)
                 return 0;
@@ -876,34 +900,34 @@ namespace PgJsonObjects
 
             foreach (AttributeWeight AttributeWeight in WeightProfile.AttributeWeightList)
             {
-                foreach (ItemEffect Effect in EffectDescriptionList)
+                foreach (IPgItemEffect Effect in item.EffectDescriptionList)
                 {
-                    ItemAttributeLink AsItemAttributeLink;
-                    if ((AsItemAttributeLink = Effect as ItemAttributeLink) != null)
+                    IPgItemAttributeLink AsItemAttributeLink;
+                    if ((AsItemAttributeLink = Effect as IPgItemAttributeLink) != null)
                     {
                         if (AsItemAttributeLink.Link == AttributeWeight.Attribute)
                             Weight += AsItemAttributeLink.AttributeEffect * AttributeWeight.Weight;
                     }
                 }
 
-                EquipmentBoostServerInfoEffect AsEquipmentBoost;
+                IPgEquipmentBoostServerInfoEffect AsEquipmentBoost;
 
-                foreach (ItemBehavior Behavior in BehaviorList)
+                foreach (IPgItemBehavior Behavior in item.BehaviorList)
                     if (Behavior.ServerInfo != null)
                     {
-                        foreach (ServerInfoEffect Effect in Behavior.ServerInfo.ServerInfoEffectList)
-                            if ((AsEquipmentBoost = Effect as EquipmentBoostServerInfoEffect) != null)
+                        foreach (IPgServerInfoEffect Effect in Behavior.ServerInfo.ServerInfoEffectList)
+                            if ((AsEquipmentBoost = Effect as IPgEquipmentBoostServerInfoEffect) != null)
                                 if (AsEquipmentBoost.Boost != null)
                                 {
-                                    ItemAttributeLink AsItemAttributeLink;
-                                    ItemSimpleEffect AsItemSimpleEffect;
+                                    IPgItemAttributeLink AsItemAttributeLink;
+                                    IPgItemSimpleEffect AsItemSimpleEffect;
 
-                                    if ((AsItemAttributeLink = AsEquipmentBoost.Boost as ItemAttributeLink) != null)
+                                    if ((AsItemAttributeLink = AsEquipmentBoost.Boost as IPgItemAttributeLink) != null)
                                     {
                                         if (AsItemAttributeLink.Link == AttributeWeight.Attribute)
                                             Weight += AsItemAttributeLink.AttributeEffect * AttributeWeight.Weight;
                                     }
-                                    else if ((AsItemSimpleEffect = AsEquipmentBoost.Boost as ItemSimpleEffect) != null)
+                                    else if ((AsItemSimpleEffect = AsEquipmentBoost.Boost as IPgItemSimpleEffect) != null)
                                     {
                                         if (AsItemSimpleEffect.Description == AttributeWeight.Attribute.Key)
                                             if (AsEquipmentBoost.AttributeEffect != 0)
@@ -991,8 +1015,10 @@ namespace PgJsonObjects
             AddInt(RawBestowTitle, data, ref offset, BaseOffset, 120);
             AddInt(RawBestowLoreBook, data, ref offset, BaseOffset, 124);
             AddObject(ConnectedLoreBook as ISerializableJsonObject, data, ref offset, BaseOffset, 128, StoredObjectTable);
+            AddStringList(KeywordValueList, data, ref offset, BaseOffset, 132, StoredStringListTable);
+            AddString(Key, data, ref offset, BaseOffset, 136, StoredStringtable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 132, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 140, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

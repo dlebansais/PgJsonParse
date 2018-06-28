@@ -1,9 +1,13 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
     public interface IMainJsonObjectCollection : IList
     {
-        //IMainPgObject CreateItem(byte[] data, ref int offset);
+    }
+
+    public interface IMainJsonObjectCollection<TI> : IList<TI>, IMainJsonObjectCollection
+    {
     }
 }

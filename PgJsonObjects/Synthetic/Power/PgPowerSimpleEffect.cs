@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgPowerSimpleEffect(data, ref offset);
         }
 
-        public string Description { get { return GetString(0); } }
-        public List<int> IconIdList { get { return GetIntList(4, ref _IconIdList); } } private List<int> _IconIdList;
+        public string Description { get { return GetString(4); } }
+        public List<int> IconIdList { get { return GetIntList(8, ref _IconIdList); } } private List<int> _IconIdList;
     }
 }

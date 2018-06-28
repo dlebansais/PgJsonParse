@@ -17,8 +17,8 @@ namespace PgJsonObjects
         bool Verify(string FilePath, ICollection GenericObjectList, bool loadAsArray, bool useJavaFormat);
     }
 
-    public class Parser<T> : IParser
-        where T : IJsonParsableObject, IJsonKey, IObjectContentGenerator, new()
+    public class Parser<T, TI> : IParser
+        where T : IJsonParsableObject, IJsonKey, IObjectContentGenerator, TI, new()
     {
         #region Init
         public Parser()
@@ -34,7 +34,7 @@ namespace PgJsonObjects
         #region Client Interface
         public bool LoadRaw(string FilePath, ICollection GenericObjectList, bool loadAsArray, ParseErrorInfo ErrorInfo)
         {
-            ICollection<T> ObjectList = GenericObjectList as ICollection<T>;
+            ICollection<TI> ObjectList = GenericObjectList as ICollection<TI>;
             ObjectList.Clear();
 
             bool Success = true;

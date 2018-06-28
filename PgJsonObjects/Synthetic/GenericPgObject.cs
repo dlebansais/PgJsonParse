@@ -6,6 +6,7 @@ namespace PgJsonObjects
     public class GenericPgObject
     {
         public const int NoValueInt = 0x6B6B6B6B;
+        public static Dictionary<int, object> CreatedObjectTable = new Dictionary<int, object>();
     }
 
     public abstract class GenericPgObject<TPg> : GenericPgObject, IGenericPgObject, IDeserializablePgObject
@@ -102,7 +103,16 @@ namespace PgJsonObjects
             {
                 int StoredOffset = /*Offset +*/ BitConverter.ToInt32(Data, Offset + redirectionOffset);
                 if (StoredOffset != 0)
-                    cachedValue = createNewObject(Data, ref StoredOffset);
+                {
+                    if (CreatedObjectTable.ContainsKey(StoredOffset))
+                        cachedValue = (T)CreatedObjectTable[StoredOffset];
+                    else
+                    {
+                        int TableOffset = StoredOffset;
+                        cachedValue = createNewObject(Data, ref StoredOffset);
+                        CreatedObjectTable.Add(TableOffset, cachedValue);
+                    }
+                }
                 else
                     cachedValue = default(T);
             }
@@ -121,7 +131,7 @@ namespace PgJsonObjects
                 cachedList = new List<bool>();
                 for (int i = 0; i < Count; i++)
                 {
-                    bool StoredValue = (BitConverter.ToUInt16(Data, i * 2) != 0);
+                    bool StoredValue = (BitConverter.ToUInt16(Data, ValueOffset + i * 2) != 0);
                     cachedList.Add(StoredValue);
                 }
             }
@@ -140,7 +150,7 @@ namespace PgJsonObjects
                 cachedList = new List<T>();
                 for (int i = 0; i < Count; i++)
                 {
-                    T StoredValue = (T)(object)(int)BitConverter.ToUInt16(Data, i * 2);
+                    T StoredValue = (T)(object)(int)BitConverter.ToUInt16(Data, ValueOffset + i * 2);
                     cachedList.Add(StoredValue);
                 }
             }
@@ -156,10 +166,13 @@ namespace PgJsonObjects
                 int Count = BitConverter.ToInt32(Data, LengthOffset);
                 int ValueOffset = LengthOffset + 4;
 
+                if (Count > 200000)
+                    ValueOffset = LengthOffset + 4;
+
                 cachedList = new List<int>();
                 for (int i = 0; i < Count; i++)
                 {
-                    int StoredValue = BitConverter.ToInt32(Data, i * 4);
+                    int StoredValue = BitConverter.ToInt32(Data, ValueOffset + i * 4);
                     cachedList.Add(StoredValue);
                 }
             }
@@ -178,7 +191,7 @@ namespace PgJsonObjects
                 cachedList = new List<uint>();
                 for (int i = 0; i < Count; i++)
                 {
-                    uint StoredValue = BitConverter.ToUInt32(Data, i * 4);
+                    uint StoredValue = BitConverter.ToUInt32(Data, ValueOffset + i * 4);
                     cachedList.Add(StoredValue);
                 }
             }
@@ -220,9 +233,19 @@ namespace PgJsonObjects
 
                 for (int i = 0; i < Count; i++)
                 {
-                    int StoredOffset = Offset + BitConverter.ToInt32(Data, ListOffset + i * 4);
+                    int StoredOffset = /*Offset +*/ BitConverter.ToInt32(Data, ListOffset + i * 4);
 
-                    T Object = createNewObject(Data, ref StoredOffset);
+                    T Object;
+
+                    if (CreatedObjectTable.ContainsKey(StoredOffset))
+                        Object = (T)CreatedObjectTable[StoredOffset];
+                    else
+                    {
+                        int TableOffset = StoredOffset;
+                        Object = createNewObject(Data, ref StoredOffset);
+                        CreatedObjectTable.Add(TableOffset, Object);
+                    }
+
                     asList.Add(Object);
                 }
             }

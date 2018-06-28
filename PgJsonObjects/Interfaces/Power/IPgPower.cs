@@ -2,8 +2,9 @@
 
 namespace PgJsonObjects
 {
-    interface IPgPower
+    public interface IPgPower
     {
+        string Key { get; }
         string Prefix { get; }
         string Suffix { get; }
         List<ItemSlot> SlotList { get; }
@@ -11,5 +12,8 @@ namespace PgJsonObjects
         bool IsUnavailable { get; }
         bool? RawIsUnavailable { get; }
         PowerSkill RawSkill { get; }
+        PowerTierCollection TierEffectList { get; }
+        int TierOffset { get; }
+        int? RawTierOffset { get; }
     }
 }

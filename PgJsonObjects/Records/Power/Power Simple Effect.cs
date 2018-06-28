@@ -55,5 +55,21 @@ namespace PgJsonObjects
 
             return Result;
         }
+
+        #region Serializing
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
+
+            AddInt(0, data, ref offset, BaseOffset, 0);
+            AddString(Description, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddIntList(IconIdList, data, ref offset, BaseOffset, 8, StoredIntListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, StoredIntListTable, null, null, null);
+            AlignSerializedLength(ref offset);
+        }
+        #endregion
     }
 }

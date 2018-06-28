@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgItem(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 132;
+            offset += 140;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -18,7 +18,9 @@ namespace PgJsonObjects
 
         public static PgItem CreateNew(byte[] data, ref int offset)
         {
-            return new PgItem(data, ref offset);
+            PgItem Result = new PgItem(data, ref offset);
+            ItemBehaviorCollection BehaviorList = Result.BehaviorList;
+            return Result;
         }
 
         public IPgAbility BestowAbility { get { return GetObject(0, ref _BestowAbility, PgAbility.CreateNew); } } private IPgAbility _BestowAbility;
@@ -81,5 +83,7 @@ namespace PgJsonObjects
         public int BestowLoreBook { get { return RawBestowLoreBook.HasValue ? RawBestowLoreBook.Value : 0; } }
         public int? RawBestowLoreBook { get { return GetInt(124); } }
         public IPgLoreBook ConnectedLoreBook { get { return GetObject(128, ref _ConnectedLoreBook, PgLoreBook.CreateNew); } } private IPgLoreBook _ConnectedLoreBook;
+        public List<string> KeywordValueList { get { return GetStringList(132, ref _KeywordValueList); } } private List<string> _KeywordValueList;
+        public string Key { get { return GetString(136); } }
     }
 }

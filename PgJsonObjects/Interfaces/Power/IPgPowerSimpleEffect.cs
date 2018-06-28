@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgPowerSimpleEffect
+    public interface IPgPowerSimpleEffect : IPgPowerEffect
     {
         string Description { get; }
         List<int> IconIdList { get; }

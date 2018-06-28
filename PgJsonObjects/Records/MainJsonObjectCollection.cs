@@ -2,9 +2,9 @@
 
 namespace PgJsonObjects
 {
-    public class MainJsonObjectCollection<TJson, TPg> : List<TJson>, IMainJsonObjectCollection
-        where TJson : MainJsonObject<TJson>, new()
-        where TPg: IMainPgObject
+    public class MainJsonObjectCollection<TJson, TPg, TI> : List<TI>, IMainJsonObjectCollection<TI>
+        where TJson : MainJsonObject<TJson>, TI, new()
+        where TPg: IMainPgObject, TI
     {
         /*
         public IMainPgObject CreateItem(byte[] data, ref int offset)

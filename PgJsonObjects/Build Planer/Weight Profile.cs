@@ -14,13 +14,13 @@ namespace PgJsonObjects
         public string Name { get; private set; }
         public List<AttributeWeight> AttributeWeightList { get; private set; }
 
-        public void AddAttributeWeight(ICollection<Attribute> AttributeList, string Label, float Weight)
+        public void AddAttributeWeight(ICollection<IPgAttribute> AttributeList, string Label, float Weight)
         {
             foreach (AttributeWeight Item in AttributeWeightList)
                 if (Item.Attribute.Label == Label)
                     return;
 
-            foreach (Attribute Attribute in AttributeList)
+            foreach (IPgAttribute Attribute in AttributeList)
                 if (Attribute.Label == Label)
                 {
                     AttributeWeightList.Add(new AttributeWeight(Attribute, Weight));
@@ -28,7 +28,7 @@ namespace PgJsonObjects
                 }
         }
 
-        public void AddAttributeWeight(Attribute Attribute, float Weight)
+        public void AddAttributeWeight(IPgAttribute Attribute, float Weight)
         {
             foreach (AttributeWeight Item in AttributeWeightList)
                 if (Item.Attribute.Label == Attribute.Label)
