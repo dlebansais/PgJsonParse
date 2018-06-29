@@ -19,14 +19,15 @@ namespace PgJsonObjects
             return new PgItemBehavior(data, ref offset);
         }
 
-        public IPgServerInfo ServerInfo { get { return GetObject(0, ref _ServerInfo, PgServerInfo.CreateNew); } } private IPgServerInfo _ServerInfo;
-        public List<ItemUseRequirement> UseRequirementList { get { return GetEnumList(4, ref _UseRequirementList); } } private List<ItemUseRequirement> _UseRequirementList;
-        public ItemUseAnimation UseAnimation { get { return GetEnum<ItemUseAnimation>(8); } }
-        public ItemUseAnimation UseDelayAnimation { get { return GetEnum<ItemUseAnimation>(10); } }
+        public override string Key { get { return GetString(0); } }
+        public IPgServerInfo ServerInfo { get { return GetObject(4, ref _ServerInfo, PgServerInfo.CreateNew); } } private IPgServerInfo _ServerInfo;
+        public List<ItemUseRequirement> UseRequirementList { get { return GetEnumList(8, ref _UseRequirementList); } } private List<ItemUseRequirement> _UseRequirementList;
+        public ItemUseAnimation UseAnimation { get { return GetEnum<ItemUseAnimation>(12); } }
+        public ItemUseAnimation UseDelayAnimation { get { return GetEnum<ItemUseAnimation>(14); } }
         public int MetabolismCost { get { return RawMetabolismCost.HasValue ? RawMetabolismCost.Value : 0; } }
-        public int? RawMetabolismCost { get { return GetInt(12); } }
+        public int? RawMetabolismCost { get { return GetInt(16); } }
         public double UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
-        public double? RawUseDelay { get { return GetDouble(16); } }
-        public ItemUseVerb UseVerb { get { return GetEnum<ItemUseVerb>(20); } }
+        public double? RawUseDelay { get { return GetDouble(20); } }
+        public ItemUseVerb UseVerb { get { return GetEnum<ItemUseVerb>(24); } }
     }
 }

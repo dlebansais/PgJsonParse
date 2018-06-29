@@ -17,6 +17,7 @@
             return new PgIntervalServerInfoEffect(data, ref offset);
         }
 
+        public override string Key { get { return null; } }
         public int LowValue { get { return RawLowValue.HasValue ? RawLowValue.Value : 0; } }
         public int? RawLowValue { get { return GetInt(4); } }
         public int HighValue { get { return RawHighValue.HasValue ? RawHighValue.Value : 0; } }

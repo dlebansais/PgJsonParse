@@ -19,6 +19,7 @@ namespace PgJsonObjects
             return new PgAbilityRequirementRace(data, ref offset);
         }
 
-        public List<Race> AllowedRaceList { get { return GetEnumList(4, ref _AllowedRaceList); } } private List<Race> _AllowedRaceList;
+        public override string Key { get { return GetString(4); } }
+        public List<Race> AllowedRaceList { get { return GetEnumList(8, ref _AllowedRaceList); } } private List<Race> _AllowedRaceList;
     }
 }

@@ -333,20 +333,22 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddEnumList(ItemKeywordList, data, ref offset, BaseOffset, 0, StoredEnumListTable);
-            AddStringList(RawKeywordList, data, ref offset, BaseOffset, 4, StoredStringListTable);
-            AddDouble(RawPreference, data, ref offset, BaseOffset, 8);
-            AddInt(RawMinValueRequirement, data, ref offset, BaseOffset, 12);
-            AddObject(SkillRequirement as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
-            AddEnum(SlotRequirement, data, ref offset, BaseOffset, 20);
-            AddEnum(RarityRequirement, data, ref offset, BaseOffset, 22);
-            AddEnum(MinRarityRequirement, data, ref offset, BaseOffset, 24);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddEnumList(ItemKeywordList, data, ref offset, BaseOffset, 4, StoredEnumListTable);
+            AddStringList(RawKeywordList, data, ref offset, BaseOffset, 8, StoredStringListTable);
+            AddDouble(RawPreference, data, ref offset, BaseOffset, 12);
+            AddInt(RawMinValueRequirement, data, ref offset, BaseOffset, 16);
+            AddObject(SkillRequirement as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddEnum(SlotRequirement, data, ref offset, BaseOffset, 24);
+            AddEnum(RarityRequirement, data, ref offset, BaseOffset, 26);
+            AddEnum(MinRarityRequirement, data, ref offset, BaseOffset, 28);
 
-            FinishSerializing(data, ref offset, BaseOffset, 26, null, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

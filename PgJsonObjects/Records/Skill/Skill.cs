@@ -653,30 +653,31 @@ namespace PgJsonObjects
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddEnum(CombatSkill, data, ref offset, BaseOffset, 0);
-            AddBool(RawHideWhenZero, data, ref offset, ref BitOffset, BaseOffset, 2, 0);
-            AddBool(RawCombat, data, ref offset, ref BitOffset, BaseOffset, 2, 2);
-            AddBool(RawSkipBonusLevelsIfSkillUnlearned, data, ref offset, ref BitOffset, BaseOffset, 2, 4);
-            AddBool(RawAuxCombat, data, ref offset, ref BitOffset, BaseOffset, 2, 6);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddEnum(CombatSkill, data, ref offset, BaseOffset, 4);
+            AddBool(RawHideWhenZero, data, ref offset, ref BitOffset, BaseOffset, 6, 0);
+            AddBool(RawCombat, data, ref offset, ref BitOffset, BaseOffset, 6, 2);
+            AddBool(RawSkipBonusLevelsIfSkillUnlearned, data, ref offset, ref BitOffset, BaseOffset, 6, 4);
+            AddBool(RawAuxCombat, data, ref offset, ref BitOffset, BaseOffset, 6, 6);
             CloseBool(ref offset, ref BitOffset);
-            AddInt(RawId, data, ref offset, BaseOffset, 4);
-            AddString(Description, data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddObject(XpTable as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
-            AddString(RawXpTable, data, ref offset, BaseOffset, 16, StoredStringtable);
-            AddObject(AdvancementTable as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
-            AddEnumList(CompatibleCombatSkillList, data, ref offset, BaseOffset, 24, StoredEnumListTable);
-            AddInt(RawMaxBonusLevels, data, ref offset, BaseOffset, 28);
-            AddObjectList(InteractionFlagLevelCapList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
-            AddObjectList(RewardList, data, ref offset, BaseOffset, 36, StoredObjectListTable);
-            AddString(Name, data, ref offset, BaseOffset, 40, StoredStringtable);
-            AddObject(ParentSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 44, StoredObjectTable);
-            AddEnumList(TSysCategoryList, data, ref offset, BaseOffset, 48, StoredEnumListTable);
-            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 52, StoredIntListTable);
-            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 56, StoredStringListTable);
-            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 60, StoredIntListTable);
-            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 64, StoredStringListTable);
+            AddInt(RawId, data, ref offset, BaseOffset, 8);
+            AddString(Description, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddObject(XpTable as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddString(RawXpTable, data, ref offset, BaseOffset, 20, StoredStringtable);
+            AddObject(AdvancementTable as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
+            AddEnumList(CompatibleCombatSkillList, data, ref offset, BaseOffset, 28, StoredEnumListTable);
+            AddInt(RawMaxBonusLevels, data, ref offset, BaseOffset, 32);
+            AddObjectList(InteractionFlagLevelCapList, data, ref offset, BaseOffset, 36, StoredObjectListTable);
+            AddObjectList(RewardList, data, ref offset, BaseOffset, 40, StoredObjectListTable);
+            AddString(Name, data, ref offset, BaseOffset, 44, StoredStringtable);
+            AddObject(ParentSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 48, StoredObjectTable);
+            AddEnumList(TSysCategoryList, data, ref offset, BaseOffset, 52, StoredEnumListTable);
+            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 56, StoredIntListTable);
+            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 60, StoredStringListTable);
+            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 64, StoredIntListTable);
+            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 68, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 68, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 72, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

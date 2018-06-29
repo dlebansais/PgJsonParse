@@ -101,12 +101,14 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObjectList(EffectList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
-            AddInt(RawSkillLevelPrereq, data, ref offset, BaseOffset, 4);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddObjectList(EffectList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
+            AddInt(RawSkillLevelPrereq, data, ref offset, BaseOffset, 8);
 
-            FinishSerializing(data, ref offset, BaseOffset, 8, null, null, null, null, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

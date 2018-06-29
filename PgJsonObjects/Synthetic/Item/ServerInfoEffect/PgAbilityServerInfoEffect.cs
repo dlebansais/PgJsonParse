@@ -17,6 +17,7 @@
             return new PgAbilityServerInfoEffect(data, ref offset);
         }
 
+        public override string Key { get { return null; } }
         public IPgAbility BestowAbility { get { return GetObject(4, ref _BestowAbility, PgAbility.CreateNew); } } private IPgAbility _BestowAbility;
     }
 }

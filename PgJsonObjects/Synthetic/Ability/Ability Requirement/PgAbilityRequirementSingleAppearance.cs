@@ -17,6 +17,7 @@
             return new PgAbilityRequirementSingleAppearance(data, ref offset);
         }
 
-        public Appearance Appearance { get { return GetEnum<Appearance>(4); } }
+        public override string Key { get { return GetString(4); } }
+        public Appearance Appearance { get { return GetEnum<Appearance>(8); } }
     }
 }

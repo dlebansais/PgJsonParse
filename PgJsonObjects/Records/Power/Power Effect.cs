@@ -3,6 +3,7 @@
     public abstract class PowerEffect : SerializableJsonObject, IGenericPgObject
     {
         public abstract string AsEffectString();
+        public abstract string Key { get; }
 
         public static bool TryParse(string Effect, ParseErrorInfo ErrorInfo, out PowerEffect Result)
         {

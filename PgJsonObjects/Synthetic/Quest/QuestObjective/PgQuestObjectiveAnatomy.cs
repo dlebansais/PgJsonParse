@@ -17,6 +17,7 @@
             return new PgQuestObjectiveAnatomy(data, ref offset);
         }
 
-        public IPgSkill Skill { get { return GetObject(0, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
+        public override string Key { get { return GetString(0); } }
+        public IPgSkill Skill { get { return GetObject(4, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
     }
 }

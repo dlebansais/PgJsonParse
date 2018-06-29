@@ -17,6 +17,7 @@
             return new PgItemSkillLink(data, ref offset);
         }
 
+        public override string Key { get { return null; } }
         public string SkillName { get { return GetString(0); } }
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
         public int? RawSkillLevel { get { return GetInt(4); } }

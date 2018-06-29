@@ -17,8 +17,9 @@
             return new PgRecipeCost(data, ref offset);
         }
 
+        public override string Key { get { return GetString(0); } }
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }
-        public double? RawPrice { get { return GetDouble(0); } }
-        public RecipeCurrency Currency { get { return GetEnum<RecipeCurrency>(4); } }
+        public double? RawPrice { get { return GetDouble(4); } }
+        public RecipeCurrency Currency { get { return GetEnum<RecipeCurrency>(8); } }
     }
 }

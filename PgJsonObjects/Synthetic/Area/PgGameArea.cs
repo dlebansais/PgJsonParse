@@ -22,8 +22,9 @@
             return Item;
         }
 
-        public string FriendlyName { get { return GetString(0); } }
-        public string ShortFriendlyName { get { return GetString(4); } }
-        public MapAreaName KeyArea { get { return GetEnum<MapAreaName>(8); } }
+        public override string Key { get { return GetString(0); } }
+        public string FriendlyName { get { return GetString(4); } }
+        public string ShortFriendlyName { get { return GetString(8); } }
+        public MapAreaName KeyArea { get { return GetEnum<MapAreaName>(12); } }
     }
 }

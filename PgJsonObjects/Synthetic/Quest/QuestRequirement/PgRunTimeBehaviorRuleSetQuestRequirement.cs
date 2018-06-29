@@ -17,7 +17,8 @@
             return new PgRunTimeBehaviorRuleSetQuestRequirement(data, ref offset);
         }
 
-        public string RequirementRule { get { return GetString(4); } }
-        public string Rule { get { return GetString(8); } }
+        public override string Key { get { return GetString(4); } }
+        public string RequirementRule { get { return GetString(8); } }
+        public string Rule { get { return GetString(12); } }
     }
 }

@@ -24,7 +24,7 @@ namespace PgJsonObjects
             return Result;
         }
 
-        public string Key { get { return GetString(0); } }
+        public override string Key { get { return GetString(0); } }
         public string Label { get { return GetString(4); } }
         public List<int> IconIdList { get { return GetIntList(8, ref _IconIdList); } } private List<int> _IconIdList;
         public string Tooltip { get { return GetString(12); } }

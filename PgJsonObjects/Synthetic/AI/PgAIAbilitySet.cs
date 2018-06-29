@@ -17,9 +17,10 @@
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private IPgAIAbility[] Abilities = new AIAbility[100];
-        private IPgAIAbility GetAbilityObject(int index) { return GetObject(index * 4, ref Abilities[index], PgAIAbility.CreateNew); }
+        private IPgAIAbility[] Abilities = new AIAbility[669];
+        private IPgAIAbility GetAbilityObject(int index) { return GetObject(4 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
+        public override string Key { get { return GetString(0); } }
         public IPgAIAbility AnimalBite { get { return GetAbilityObject(0); } }
         public IPgAIAbility AnimalClaw { get { return GetAbilityObject(1); } }
         public IPgAIAbility AnimalOmegaBite { get { return GetAbilityObject(2); } }

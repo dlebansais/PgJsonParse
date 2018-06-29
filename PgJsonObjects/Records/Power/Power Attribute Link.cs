@@ -26,6 +26,8 @@ namespace PgJsonObjects
             IsParsed = false;
         }
 
+        public override string Key { get { return null; } }
+
         public string AttributeName { get; private set; }
         public float AttributeEffect { get { return RawAttributeEffect.HasValue ? RawAttributeEffect.Value : 0; } }
         public float? RawAttributeEffect { get; private set; }
@@ -59,13 +61,14 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddInt(1, data, ref offset, BaseOffset, 0);
-            AddString(AttributeName, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddDouble((double)RawAttributeEffect, data, ref offset, BaseOffset, 8);
-            AddObject(AttributeLink as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
-            AddObject(SkillLink as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
-            AddEnum(AttributeEffectFormat, data, ref offset, BaseOffset, 20);
+            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(AttributeName, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddDouble((double)RawAttributeEffect, data, ref offset, BaseOffset, 12);
+            AddObject(AttributeLink as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddObject(SkillLink as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddEnum(AttributeEffectFormat, data, ref offset, BaseOffset, 24);
 
-            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

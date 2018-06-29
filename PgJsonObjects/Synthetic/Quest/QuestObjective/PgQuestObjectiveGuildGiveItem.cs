@@ -17,9 +17,10 @@
             return new PgQuestObjectiveGuildGiveItem(data, ref offset);
         }
 
-        public IPgItem QuestItem { get { return GetObject(0, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
-        public IPgGameNpc DeliverNpc { get { return GetObject(4, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
-        public ItemCollection ItemList { get { return GetObjectList(8, ref _ItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ItemList;
-        public ItemKeyword ItemKeyword { get { return GetEnum<ItemKeyword>(12); } }
+        public override string Key { get { return GetString(0); } }
+        public IPgItem QuestItem { get { return GetObject(4, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
+        public IPgGameNpc DeliverNpc { get { return GetObject(8, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
+        public ItemCollection ItemList { get { return GetObjectList(12, ref _ItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ItemList;
+        public ItemKeyword ItemKeyword { get { return GetEnum<ItemKeyword>(16); } }
     }
 }

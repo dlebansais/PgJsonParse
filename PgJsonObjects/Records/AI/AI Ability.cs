@@ -80,16 +80,18 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
 
-            AddInt(RawMinLevel, data, ref offset, BaseOffset, 0);
-            AddInt(RawMaxLevel, data, ref offset, BaseOffset, 4);
-            AddInt(RawMinDistance, data, ref offset, BaseOffset, 8);
-            AddInt(RawMinRange, data, ref offset, BaseOffset, 12);
-            AddInt(RawMaxRange, data, ref offset, BaseOffset, 16);
-            AddInt(RawCueValue, data, ref offset, BaseOffset, 20);
-            AddEnum(Cue, data, ref offset, BaseOffset, 24);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddInt(RawMinLevel, data, ref offset, BaseOffset, 4);
+            AddInt(RawMaxLevel, data, ref offset, BaseOffset, 8);
+            AddInt(RawMinDistance, data, ref offset, BaseOffset, 12);
+            AddInt(RawMinRange, data, ref offset, BaseOffset, 16);
+            AddInt(RawMaxRange, data, ref offset, BaseOffset, 20);
+            AddInt(RawCueValue, data, ref offset, BaseOffset, 24);
+            AddEnum(Cue, data, ref offset, BaseOffset, 28);
 
-            FinishSerializing(data, ref offset, BaseOffset, 26, null, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

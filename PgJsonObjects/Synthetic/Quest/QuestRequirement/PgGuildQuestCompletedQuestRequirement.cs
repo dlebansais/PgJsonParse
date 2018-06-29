@@ -17,6 +17,7 @@
             return new PgGuildQuestCompletedQuestRequirement(data, ref offset);
         }
 
-        public QuestCollection QuestList { get { return GetObjectList(4, ref _QuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _QuestList;
+        public override string Key { get { return GetString(4); } }
+        public QuestCollection QuestList { get { return GetObjectList(8, ref _QuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _QuestList;
     }
 }

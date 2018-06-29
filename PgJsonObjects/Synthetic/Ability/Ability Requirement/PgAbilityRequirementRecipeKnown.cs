@@ -17,6 +17,7 @@
             return new PgAbilityRequirementRecipeKnown(data, ref offset);
         }
 
-        public IPgRecipe RecipeKnown { get { return GetObject(4, ref _RecipeKnown, PgRecipe.CreateNew); } } private IPgRecipe _RecipeKnown;
+        public override string Key { get { return GetString(4); } }
+        public IPgRecipe RecipeKnown { get { return GetObject(8, ref _RecipeKnown, PgRecipe.CreateNew); } } private IPgRecipe _RecipeKnown;
     }
 }

@@ -126,18 +126,20 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
 
-            AddObject(ServerInfo as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
-            AddEnumList(UseRequirementList, data, ref offset, BaseOffset, 4, StoredEnumListTable);
-            AddEnum(UseAnimation, data, ref offset, BaseOffset, 8);
-            AddEnum(UseDelayAnimation, data, ref offset, BaseOffset, 10);
-            AddInt(RawMetabolismCost, data, ref offset, BaseOffset, 12);
-            AddDouble(RawUseDelay, data, ref offset, BaseOffset, 16);
-            AddEnum(UseVerb, data, ref offset, BaseOffset, 20);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddObject(ServerInfo as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddEnumList(UseRequirementList, data, ref offset, BaseOffset, 8, StoredEnumListTable);
+            AddEnum(UseAnimation, data, ref offset, BaseOffset, 12);
+            AddEnum(UseDelayAnimation, data, ref offset, BaseOffset, 14);
+            AddInt(RawMetabolismCost, data, ref offset, BaseOffset, 16);
+            AddDouble(RawUseDelay, data, ref offset, BaseOffset, 20);
+            AddEnum(UseVerb, data, ref offset, BaseOffset, 24);
 
-            FinishSerializing(data, ref offset, BaseOffset, 22, null, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

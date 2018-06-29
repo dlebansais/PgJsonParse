@@ -16,5 +16,7 @@
         {
             return new PgAbilityRequirementIsAdmin(data, ref offset);
         }
+
+        public override string Key { get { return GetString(4); } }
     }
 }

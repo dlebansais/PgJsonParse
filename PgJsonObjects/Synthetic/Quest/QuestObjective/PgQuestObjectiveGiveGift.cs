@@ -17,9 +17,10 @@
             return new PgQuestObjectiveGiveGift(data, ref offset);
         }
 
+        public override string Key { get { return GetString(0); } }
         public float MinFavorReceived { get { return RawMinFavorReceived.HasValue ? RawMinFavorReceived.Value : 0; } }
-        public float? RawMinFavorReceived { get { return (float)GetDouble(0); } }
+        public float? RawMinFavorReceived { get { return (float)GetDouble(4); } }
         public float MaxFavorReceived { get { return RawMaxFavorReceived.HasValue ? RawMaxFavorReceived.Value : 0; } }
-        public float? RawMaxFavorReceived { get { return (float)GetDouble(4); } }
+        public float? RawMaxFavorReceived { get { return (float)GetDouble(8); } }
     }
 }

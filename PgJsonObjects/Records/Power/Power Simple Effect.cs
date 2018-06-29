@@ -41,6 +41,8 @@ namespace PgJsonObjects
             this.Description = Description;
         }
 
+        public override string Key { get { return null; } }
+
         public string Description { get; private set; }
         public List<int> IconIdList { get; private set; }
 
@@ -64,10 +66,11 @@ namespace PgJsonObjects
             Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
 
             AddInt(0, data, ref offset, BaseOffset, 0);
-            AddString(Description, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddIntList(IconIdList, data, ref offset, BaseOffset, 8, StoredIntListTable);
+            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(Description, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddIntList(IconIdList, data, ref offset, BaseOffset, 12, StoredIntListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, StoredIntListTable, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, null, null, null, StoredIntListTable, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

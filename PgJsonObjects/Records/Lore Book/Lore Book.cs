@@ -159,17 +159,18 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
 
-            AddString(Title, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddString(LocationHint, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddEnumList(KeywordList, data, ref offset, BaseOffset, 8, StoredEnumListTable);
-            AddEnum(Category, data, ref offset, BaseOffset, 12);
-            AddEnum(Visibility, data, ref offset, BaseOffset, 14);
-            AddString(InternalName, data, ref offset, BaseOffset, 16, StoredStringtable);
-            AddString(Text, data, ref offset, BaseOffset, 20, StoredStringtable);
-            AddBool(RawIsClientLocal, data, ref offset, ref BitOffset, BaseOffset, 24, 0);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Title, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(LocationHint, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddEnumList(KeywordList, data, ref offset, BaseOffset, 12, StoredEnumListTable);
+            AddEnum(Category, data, ref offset, BaseOffset, 16);
+            AddEnum(Visibility, data, ref offset, BaseOffset, 18);
+            AddString(InternalName, data, ref offset, BaseOffset, 20, StoredStringtable);
+            AddString(Text, data, ref offset, BaseOffset, 24, StoredStringtable);
+            AddBool(RawIsClientLocal, data, ref offset, ref BitOffset, BaseOffset, 28, 0);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

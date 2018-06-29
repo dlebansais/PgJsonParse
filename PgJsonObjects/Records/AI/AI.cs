@@ -95,16 +95,17 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(Abilities as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
-            AddString(Comment, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddDouble(RawMinDelayBetweenAbilities, data, ref offset, BaseOffset, 8);
-            AddBool(RawIsMelee, data, ref offset, ref BitOffset, BaseOffset, 12, 0);
-            AddBool(RawIsUncontrolledPet, data, ref offset, ref BitOffset, BaseOffset, 12, 2);
-            AddBool(RawIsStationary, data, ref offset, ref BitOffset, BaseOffset, 12, 4);
-            AddBool(RawIsServerDriven, data, ref offset, ref BitOffset, BaseOffset, 12, 6);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddObject(Abilities as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddString(Comment, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddDouble(RawMinDelayBetweenAbilities, data, ref offset, BaseOffset, 12);
+            AddBool(RawIsMelee, data, ref offset, ref BitOffset, BaseOffset, 16, 0);
+            AddBool(RawIsUncontrolledPet, data, ref offset, ref BitOffset, BaseOffset, 16, 2);
+            AddBool(RawIsStationary, data, ref offset, ref BitOffset, BaseOffset, 16, 4);
+            AddBool(RawIsServerDriven, data, ref offset, ref BitOffset, BaseOffset, 16, 6);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 18, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

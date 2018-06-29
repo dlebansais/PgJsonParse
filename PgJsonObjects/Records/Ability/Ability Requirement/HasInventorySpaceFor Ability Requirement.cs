@@ -53,14 +53,15 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            int BaseOffset = offset;
-
             AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
-            AddObject(Item as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddObject(Item as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 8, null, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

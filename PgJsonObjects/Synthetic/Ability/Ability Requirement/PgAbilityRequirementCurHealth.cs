@@ -17,7 +17,8 @@
             return new PgAbilityRequirementCurHealth(data, ref offset);
         }
 
+        public override string Key { get { return GetString(4); } }
         public double Health { get { return RawHealth.HasValue ? RawHealth.Value : 0; } }
-        public double? RawHealth { get { return GetDouble(4); } }
+        public double? RawHealth { get { return GetDouble(8); } }
     }
 }

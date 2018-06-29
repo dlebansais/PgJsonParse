@@ -76,13 +76,14 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
 
-            AddString(Type, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddInt(RawRewardXp, data, ref offset, BaseOffset, 4);
-            AddString(RewardRecipe, data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddInt(RawRewardGuildCredits, data, ref offset, BaseOffset, 12);
-            AddEnum(RewardSkill, data, ref offset, BaseOffset, 16);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Type, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddInt(RawRewardXp, data, ref offset, BaseOffset, 8);
+            AddString(RewardRecipe, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddInt(RawRewardGuildCredits, data, ref offset, BaseOffset, 16);
+            AddEnum(RewardSkill, data, ref offset, BaseOffset, 20);
 
-            FinishSerializing(data, ref offset, BaseOffset, 18, StoredStringtable, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

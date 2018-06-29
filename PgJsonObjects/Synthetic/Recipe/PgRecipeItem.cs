@@ -19,21 +19,22 @@ namespace PgJsonObjects
             return new PgRecipeItem(data, ref offset);
         }
 
-        public IPgItem Item { get { return GetObject(0, ref _Item, PgItem.CreateNew); } } private IPgItem _Item;
+        public override string Key { get { return GetString(0); } }
+        public IPgItem Item { get { return GetObject(4, ref _Item, PgItem.CreateNew); } } private IPgItem _Item;
         public int ItemCode { get { return RawItemCode.HasValue ? RawItemCode.Value : 0; } }
-        public int? RawItemCode { get { return GetInt(4); } }
+        public int? RawItemCode { get { return GetInt(8); } }
         public int StackSize { get { return RawStackSize.HasValue ? (RawStackSize.Value > 0 ? RawStackSize.Value : 1) : 0; } }
-        public int? RawStackSize { get { return GetInt(8); } }
+        public int? RawStackSize { get { return GetInt(12); } }
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
-        public double? RawPercentChance { get { return GetDouble(12); } }
-        public List<RecipeItemKey> ItemKeyList { get { return GetEnumList(16, ref _ItemKeyList); } } private List<RecipeItemKey> _ItemKeyList;
-        public ItemCollection MatchingKeyItemList { get { return GetObjectList(20, ref _MatchingKeyItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _MatchingKeyItemList;
-        public string Desc { get { return GetString(24); } }
+        public double? RawPercentChance { get { return GetDouble(16); } }
+        public List<RecipeItemKey> ItemKeyList { get { return GetEnumList(20, ref _ItemKeyList); } } private List<RecipeItemKey> _ItemKeyList;
+        public ItemCollection MatchingKeyItemList { get { return GetObjectList(24, ref _MatchingKeyItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _MatchingKeyItemList;
+        public string Desc { get { return GetString(28); } }
         public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
-        public double? RawChanceToConsume { get { return GetDouble(28); } }
+        public double? RawChanceToConsume { get { return GetDouble(32); } }
         public double DurabilityConsumed { get { return RawDurabilityConsumed.HasValue ? RawDurabilityConsumed.Value : 0; } }
-        public double? RawDurabilityConsumed { get { return GetDouble(32); } }
+        public double? RawDurabilityConsumed { get { return GetDouble(36); } }
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
-        public bool? RawAttuneToCrafter { get { return GetBool(36, 0); } }
+        public bool? RawAttuneToCrafter { get { return GetBool(40, 0); } }
     }
 }

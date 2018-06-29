@@ -725,15 +725,17 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddObjectList(ServerInfoEffectList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
-            AddObjectList(GiveItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
-            AddInt(RawNumItemsToGive, data, ref offset, BaseOffset, 8);
-            AddObjectList(OtherRequirementList, data, ref offset, BaseOffset, 12, StoredObjectListTable);
-            AddEnum(RequiredHotspot, data, ref offset, BaseOffset, 16);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddObjectList(ServerInfoEffectList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
+            AddObjectList(GiveItemList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
+            AddInt(RawNumItemsToGive, data, ref offset, BaseOffset, 12);
+            AddObjectList(OtherRequirementList, data, ref offset, BaseOffset, 16, StoredObjectListTable);
+            AddEnum(RequiredHotspot, data, ref offset, BaseOffset, 20);
 
-            FinishSerializing(data, ref offset, BaseOffset, 18, null, null, null, null, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, null, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -16,5 +16,7 @@
         {
             return new PgAbilityRequirementIsHardcore(data, ref offset);
         }
+
+        public override string Key { get { return GetString(4); } }
     }
 }

@@ -17,6 +17,7 @@
             return new PgAbilityRequirementHasInventorySpaceFor(data, ref offset);
         }
 
-        public IPgItem Item { get { return GetObject(4, ref _Item, PgItem.CreateNew); } } private IPgItem _Item;
+        public override string Key { get { return GetString(4); } }
+        public IPgItem Item { get { return GetObject(8, ref _Item, PgItem.CreateNew); } } private IPgItem _Item;
     }
 }

@@ -17,6 +17,7 @@
             return new PgSkillAndLevelServerInfoEffect(data, ref offset);
         }
 
+        public override string Key { get { return null; } }
         public IPgSkill Skill { get { return GetObject(4, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
         public int? RawSkillLevel { get { return GetInt(8); } }

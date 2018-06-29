@@ -17,9 +17,10 @@
             return new PgQuestObjectiveDeliver(data, ref offset);
         }
 
-        public IPgGameNpc DeliverNpc { get { return GetObject(0, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
-        public IPgItem QuestItem { get { return GetObject(4, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
+        public override string Key { get { return GetString(0); } }
+        public IPgGameNpc DeliverNpc { get { return GetObject(4, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
+        public IPgItem QuestItem { get { return GetObject(8, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
         public int NumToDeliver { get { return RawNumToDeliver.HasValue ? RawNumToDeliver.Value : 0; } }
-        public int? RawNumToDeliver { get { return GetInt(8); } }
+        public int? RawNumToDeliver { get { return GetInt(12); } }
     }
 }

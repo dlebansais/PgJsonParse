@@ -1088,43 +1088,44 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddString(Description, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddInt(RawIconId, data, ref offset, BaseOffset, 4);
-            AddObjectList(IngredientList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
-            AddString(InternalName, data, ref offset, BaseOffset, 12, StoredStringtable);
-            AddString(Name, data, ref offset, BaseOffset, 16, StoredStringtable);
-            AddObjectList(ResultItemList, data, ref offset, BaseOffset, 20, StoredObjectListTable);
-            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
-            AddInt(RawSkillLevelReq, data, ref offset, BaseOffset, 28);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Description, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddInt(RawIconId, data, ref offset, BaseOffset, 8);
+            AddObjectList(IngredientList, data, ref offset, BaseOffset, 12, StoredObjectListTable);
+            AddString(InternalName, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddString(Name, data, ref offset, BaseOffset, 20, StoredStringtable);
+            AddObjectList(ResultItemList, data, ref offset, BaseOffset, 24, StoredObjectListTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 28, StoredObjectTable);
+            AddInt(RawSkillLevelReq, data, ref offset, BaseOffset, 32);
 
             offset += 4;
             //AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
 
-            AddObject(SortSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 36, StoredObjectTable);
-            AddEnumList(KeywordList, data, ref offset, BaseOffset, 40, StoredEnumListTable);
-            AddInt(RawUsageDelay, data, ref offset, BaseOffset, 44);
-            AddString(UsageDelayMessage, data, ref offset, BaseOffset, 48, StoredStringtable);
-            AddEnum(ActionLabel, data, ref offset, BaseOffset, 52);
-            AddEnum(UsageAnimation, data, ref offset, BaseOffset, 54);
-            AddObjectList(OtherRequirementList, data, ref offset, BaseOffset, 56, StoredObjectListTable);
-            AddObjectList(CostList, data, ref offset, BaseOffset, 60, StoredObjectListTable);
-            AddInt(RawNumResultItems, data, ref offset, BaseOffset, 64);
-            AddString(UsageAnimationEnd, data, ref offset, BaseOffset, 68, StoredStringtable);
-            AddInt(RawResetTimeInSeconds, data, ref offset, BaseOffset, 72);
-            AddUInt(DyeColor, data, ref offset, BaseOffset, 76);
-            AddObject(RewardSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 80, StoredObjectTable);
-            AddInt(RawRewardSkillXp, data, ref offset, BaseOffset, 84);
-            AddInt(RawRewardSkillXpFirstTime, data, ref offset, BaseOffset, 88);
-            AddObject(SharesResetTimerWith as ISerializableJsonObject, data, ref offset, BaseOffset, 92, StoredObjectTable);
-            AddString(ItemMenuLabel, data, ref offset, BaseOffset, 96, StoredStringtable);
-            AddString(RawItemMenuCategory, data, ref offset, BaseOffset, 100, StoredStringtable);
-            AddInt(RawItemMenuCategoryLevel, data, ref offset, BaseOffset, 104);
-            AddObject(PrereqRecipe as ISerializableJsonObject, data, ref offset, BaseOffset, 108, StoredObjectTable);
-            AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 112, 0);
+            AddObject(SortSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 40, StoredObjectTable);
+            AddEnumList(KeywordList, data, ref offset, BaseOffset, 44, StoredEnumListTable);
+            AddInt(RawUsageDelay, data, ref offset, BaseOffset, 48);
+            AddString(UsageDelayMessage, data, ref offset, BaseOffset, 52, StoredStringtable);
+            AddEnum(ActionLabel, data, ref offset, BaseOffset, 56);
+            AddEnum(UsageAnimation, data, ref offset, BaseOffset, 58);
+            AddObjectList(OtherRequirementList, data, ref offset, BaseOffset, 60, StoredObjectListTable);
+            AddObjectList(CostList, data, ref offset, BaseOffset, 64, StoredObjectListTable);
+            AddInt(RawNumResultItems, data, ref offset, BaseOffset, 68);
+            AddString(UsageAnimationEnd, data, ref offset, BaseOffset, 72, StoredStringtable);
+            AddInt(RawResetTimeInSeconds, data, ref offset, BaseOffset, 76);
+            AddUInt(DyeColor, data, ref offset, BaseOffset, 80);
+            AddObject(RewardSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 84, StoredObjectTable);
+            AddInt(RawRewardSkillXp, data, ref offset, BaseOffset, 88);
+            AddInt(RawRewardSkillXpFirstTime, data, ref offset, BaseOffset, 92);
+            AddObject(SharesResetTimerWith as ISerializableJsonObject, data, ref offset, BaseOffset, 96, StoredObjectTable);
+            AddString(ItemMenuLabel, data, ref offset, BaseOffset, 100, StoredStringtable);
+            AddString(RawItemMenuCategory, data, ref offset, BaseOffset, 104, StoredStringtable);
+            AddInt(RawItemMenuCategoryLevel, data, ref offset, BaseOffset, 108);
+            AddObject(PrereqRecipe as ISerializableJsonObject, data, ref offset, BaseOffset, 112, StoredObjectTable);
+            AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 116, 0);
             CloseBool(ref offset, ref BitOffset);
-            AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 114);
+            AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 118);
 
-            FinishSerializing(data, ref offset, BaseOffset, 116, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 120, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

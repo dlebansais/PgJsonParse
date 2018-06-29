@@ -17,13 +17,14 @@
             return new PgSpecialValue(data, ref offset);
         }
 
-        public string Label { get { return GetString(0); } }
-        public string Suffix { get { return GetString(4); } }
+        public override string Key { get { return GetString(0); } }
+        public string Label { get { return GetString(4); } }
+        public string Suffix { get { return GetString(8); } }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
-        public double? RawValue { get { return GetDouble(8); } }
+        public double? RawValue { get { return GetDouble(12); } }
         public bool DisplayAsPercent { get { return RawDisplayAsPercent.HasValue && RawDisplayAsPercent.Value; } }
-        public bool? RawDisplayAsPercent { get { return GetBool(12, 0); } }
+        public bool? RawDisplayAsPercent { get { return GetBool(16, 0); } }
         public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
-        public bool? RawSkipIfZero { get { return GetBool(12, 2); } }
+        public bool? RawSkipIfZero { get { return GetBool(16, 2); } }
     }
 }

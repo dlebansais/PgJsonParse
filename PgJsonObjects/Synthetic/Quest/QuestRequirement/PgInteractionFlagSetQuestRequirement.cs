@@ -17,6 +17,7 @@
             return new PgInteractionFlagSetQuestRequirement(data, ref offset);
         }
 
-        public string InteractionFlag { get { return GetString(4); } }
+        public override string Key { get { return GetString(4); } }
+        public string InteractionFlag { get { return GetString(8); } }
     }
 }

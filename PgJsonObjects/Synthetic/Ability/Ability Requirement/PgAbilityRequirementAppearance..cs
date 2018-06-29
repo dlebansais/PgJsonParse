@@ -19,6 +19,7 @@ namespace PgJsonObjects
             return new PgAbilityRequirementAppearance(data, ref offset);
         }
 
-        public List<Appearance> AppearanceList { get { return GetEnumList(4, ref _AppearanceList); } } private List<Appearance> _AppearanceList;
+        public override string Key { get { return GetString(4); } }
+        public List<Appearance> AppearanceList { get { return GetEnumList(8, ref _AppearanceList); } } private List<Appearance> _AppearanceList;
     }
 }

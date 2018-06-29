@@ -41,9 +41,10 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
 
             AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
-            AddString(InteractionFlag, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(InteractionFlag, data, ref offset, BaseOffset, 8, StoredStringtable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

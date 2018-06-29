@@ -17,7 +17,8 @@
             return new PgQuestObjectiveScriptedReceiveItem(data, ref offset);
         }
 
-        public IPgGameNpc DeliverNpc { get { return GetObject(0, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
-        public IPgItem QuestItem { get { return GetObject(4, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
+        public override string Key { get { return GetString(0); } }
+        public IPgGameNpc DeliverNpc { get { return GetObject(4, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
+        public IPgItem QuestItem { get { return GetObject(8, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
     }
 }

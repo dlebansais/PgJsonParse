@@ -19,6 +19,7 @@
             return new PgAdvancementTable(data, ref offset);
         }
 
-        public string InternalName { get { return GetString(0); } }
+        public override string Key { get { return GetString(0); } }
+        public string InternalName { get { return GetString(4); } }
     }
 }

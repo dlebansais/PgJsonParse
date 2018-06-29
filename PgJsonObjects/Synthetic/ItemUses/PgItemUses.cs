@@ -21,6 +21,7 @@ namespace PgJsonObjects
             return new PgItemUses(data, ref offset);
         }
 
-        public List<int> RecipesThatUseItemList { get { return GetIntList(0, ref _RecipesThatUseItemList); } } private List<int> _RecipesThatUseItemList;
+        public override string Key { get { return GetString(0); } }
+        public List<int> RecipesThatUseItemList { get { return GetIntList(4, ref _RecipesThatUseItemList); } } private List<int> _RecipesThatUseItemList;
     }
 }

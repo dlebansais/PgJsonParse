@@ -61,12 +61,13 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
 
-            AddInt(RawMinAmount, data, ref offset, BaseOffset, 0);
-            AddInt(RawMaxAmount, data, ref offset, BaseOffset, 4);
-            AddString(StringParam, data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddString(InteractionTarget, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddInt(RawMinAmount, data, ref offset, BaseOffset, 4);
+            AddInt(RawMaxAmount, data, ref offset, BaseOffset, 8);
+            AddString(StringParam, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddString(InteractionTarget, data, ref offset, BaseOffset, 16, StoredStringtable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

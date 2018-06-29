@@ -88,11 +88,13 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
 
-            AddIntList(RecipesThatUseItemList, data, ref offset, BaseOffset, 0, StoredIntListTable);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddIntList(RecipesThatUseItemList, data, ref offset, BaseOffset, 4, StoredIntListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 4, null, null, null, null, StoredIntListTable, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, null, null, null, StoredIntListTable, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

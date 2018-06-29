@@ -17,8 +17,9 @@
             return new PgLoreBookInfoCategory(data, ref offset);
         }
 
-        public string Title { get { return GetString(0); } }
-        public string SubTitle { get { return GetString(4); } }
-        public string SortTitle { get { return GetString(8); } }
+        public override string Key { get { return GetString(0); } }
+        public string Title { get { return GetString(4); } }
+        public string SubTitle { get { return GetString(8); } }
+        public string SortTitle { get { return GetString(12); } }
     }
 }

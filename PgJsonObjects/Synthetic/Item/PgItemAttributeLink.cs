@@ -12,6 +12,7 @@
             return new PgItemAttributeLink(data, ref offset);
         }
 
+        public override string Key { get { return null; } }
         public float AttributeEffect { get { return (float)GetDouble(4); } }
         public IPgAttribute Link { get { return GetObject(8, ref _Link, PgAttribute.CreateNew); } } private IPgAttribute _Link;
     }

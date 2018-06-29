@@ -195,19 +195,20 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
 
-            AddString(Name, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddString(Desc, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddInt(RawIconId, data, ref offset, BaseOffset, 8);
-            AddString(SpewText, data, ref offset, BaseOffset, 12, StoredStringtable);
-            AddEnum(StackingType, data, ref offset, BaseOffset, 16);
-            AddEnum(DisplayMode, data, ref offset, BaseOffset, 18);
-            AddInt(RawStackingPriority, data, ref offset, BaseOffset, 20);
-            AddInt(RawDuration, data, ref offset, BaseOffset, 24);
-            AddEnumList(KeywordList, data, ref offset, BaseOffset, 28, StoredEnumListTable);
-            AddEnumList(AbilityKeywordList, data, ref offset, BaseOffset, 32, StoredEnumListTable);
-            AddEnum(Particle, data, ref offset, BaseOffset, 36);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Name, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(Desc, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddInt(RawIconId, data, ref offset, BaseOffset, 12);
+            AddString(SpewText, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddEnum(StackingType, data, ref offset, BaseOffset, 20);
+            AddEnum(DisplayMode, data, ref offset, BaseOffset, 22);
+            AddInt(RawStackingPriority, data, ref offset, BaseOffset, 24);
+            AddInt(RawDuration, data, ref offset, BaseOffset, 28);
+            AddEnumList(KeywordList, data, ref offset, BaseOffset, 32, StoredEnumListTable);
+            AddEnumList(AbilityKeywordList, data, ref offset, BaseOffset, 36, StoredEnumListTable);
+            AddEnum(Particle, data, ref offset, BaseOffset, 40);
 
-            FinishSerializing(data, ref offset, BaseOffset, 38, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 42, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

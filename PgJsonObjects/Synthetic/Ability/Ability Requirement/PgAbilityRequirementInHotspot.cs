@@ -17,6 +17,7 @@
             return new PgAbilityRequirementInHotspot(data, ref offset);
         }
 
-        public string Name { get { return GetString(4); } }
+        public override string Key { get { return GetString(4); } }
+        public string Name { get { return GetString(8); } }
     }
 }

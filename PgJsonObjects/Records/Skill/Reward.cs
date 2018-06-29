@@ -124,14 +124,15 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
 
-            AddInt(RawRewardLevel, data, ref offset, BaseOffset, 0);
-            AddEnumList(RaceRestrictionList, data, ref offset, BaseOffset, 4, StoredEnumListTable);
-            AddObject(Ability as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddString(Notes, data, ref offset, BaseOffset, 12, StoredStringtable);
-            AddObject(Recipe as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
-            AddObject(BonusSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddInt(RawRewardLevel, data, ref offset, BaseOffset, 4);
+            AddEnumList(RaceRestrictionList, data, ref offset, BaseOffset, 8, StoredEnumListTable);
+            AddObject(Ability as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddString(Notes, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddObject(Recipe as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddObject(BonusSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 24, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 28, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

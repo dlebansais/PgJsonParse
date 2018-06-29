@@ -19,6 +19,7 @@ namespace PgJsonObjects
             return new PgQuestObjectiveMultipleInteractionFlags(data, ref offset);
         }
 
-        public List<string> InteractionFlagList { get { return GetStringList(0, ref _InteractionFlagList); } } private List<string> _InteractionFlagList;
+        public override string Key { get { return GetString(0); } }
+        public List<string> InteractionFlagList { get { return GetStringList(4, ref _InteractionFlagList); } } private List<string> _InteractionFlagList;
     }
 }

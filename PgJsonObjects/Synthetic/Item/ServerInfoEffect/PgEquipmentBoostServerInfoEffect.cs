@@ -17,6 +17,7 @@
             return new PgEquipmentBoostServerInfoEffect(data, ref offset);
         }
 
+        public override string Key { get { return null; } }
         public IPgItemEffect Boost { get { return GetObject(4, ref _Boost, ItemEffect.CreateNew); } } private IPgItemEffect _Boost;
         public float AttributeEffect { get { return RawAttributeEffect.HasValue ? RawAttributeEffect.Value : 0; } }
         public float? RawAttributeEffect { get { return (float)GetDouble(8); } }

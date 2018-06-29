@@ -17,6 +17,7 @@
             return new PgAbilityRequirementSingleRace(data, ref offset);
         }
 
-        public Race AllowedRace { get { return GetEnum<Race>(4); } }
+        public override string Key { get { return GetString(4); } }
+        public Race AllowedRace { get { return GetEnum<Race>(8); } }
     }
 }

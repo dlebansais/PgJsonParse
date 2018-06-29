@@ -17,7 +17,8 @@
             return new PgAbilityRequirementOr(data, ref offset);
         }
 
-        public AbilityRequirementCollection OrList { get { return GetObjectList(4, ref _OrList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OrList;
-        public string ErrorMsg { get { return GetString(8); } }
+        public override string Key { get { return GetString(4); } }
+        public AbilityRequirementCollection OrList { get { return GetObjectList(8, ref _OrList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OrList;
+        public string ErrorMsg { get { return GetString(12); } }
     }
 }

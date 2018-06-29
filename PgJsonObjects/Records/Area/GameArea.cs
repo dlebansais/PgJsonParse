@@ -82,11 +82,12 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
 
-            AddString(FriendlyName, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddString(ShortFriendlyName, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddEnum(KeyArea, data, ref offset, BaseOffset, 8);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(FriendlyName, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(ShortFriendlyName, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddEnum(KeyArea, data, ref offset, BaseOffset, 12);
 
-            FinishSerializing(data, ref offset, BaseOffset, 10, StoredStringtable, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, null, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

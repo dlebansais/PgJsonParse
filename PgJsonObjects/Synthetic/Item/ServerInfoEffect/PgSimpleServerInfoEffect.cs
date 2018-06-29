@@ -17,6 +17,7 @@
             return new PgSimpleServerInfoEffect(data, ref offset);
         }
 
+        public override string Key { get { return null; } }
         public string EffectParameter { get { return GetString(4); } }
     }
 }

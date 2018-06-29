@@ -17,6 +17,7 @@
             return new PgAbilityRequirementDruidEventState(data, ref offset);
         }
 
-        public DisallowedState DisallowedState { get { return GetEnum<DisallowedState>(4); } }
+        public override string Key { get { return GetString(4); } }
+        public DisallowedState DisallowedState { get { return GetEnum<DisallowedState>(8); } }
     }
 }

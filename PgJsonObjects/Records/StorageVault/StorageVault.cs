@@ -291,18 +291,19 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddInt(RawId, data, ref offset, BaseOffset, 0);
-            AddObject(MatchingNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
-            AddInt(RawNumSlots, data, ref offset, BaseOffset, 8);
-            AddString(RequirementDescription, data, ref offset, BaseOffset, 12, StoredStringtable);
-            AddString(InteractionFlagRequirement, data, ref offset, BaseOffset, 16, StoredStringtable);
-            AddString(NpcFriendlyName, data, ref offset, BaseOffset, 20, StoredStringtable);
-            AddEnum(RequiredItemKeyword, data, ref offset, BaseOffset, 24);
-            AddEnum(Grouping, data, ref offset, BaseOffset, 26);
-            AddBool(RawHasAssociatedNpc, data, ref offset, ref BitOffset, BaseOffset, 28, 0);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddInt(RawId, data, ref offset, BaseOffset, 4);
+            AddObject(MatchingNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddInt(RawNumSlots, data, ref offset, BaseOffset, 12);
+            AddString(RequirementDescription, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddString(InteractionFlagRequirement, data, ref offset, BaseOffset, 20, StoredStringtable);
+            AddString(NpcFriendlyName, data, ref offset, BaseOffset, 24, StoredStringtable);
+            AddEnum(RequiredItemKeyword, data, ref offset, BaseOffset, 28);
+            AddEnum(Grouping, data, ref offset, BaseOffset, 30);
+            AddBool(RawHasAssociatedNpc, data, ref offset, ref BitOffset, BaseOffset, 32, 0);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 34, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

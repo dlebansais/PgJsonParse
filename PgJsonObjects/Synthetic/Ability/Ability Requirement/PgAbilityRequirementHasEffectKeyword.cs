@@ -17,6 +17,7 @@
             return new PgAbilityRequirementHasEffectKeyword(data, ref offset);
         }
 
-        public AbilityKeyword Keyword { get { return GetEnum<AbilityKeyword>(4); } }
+        public override string Key { get { return GetString(4); } }
+        public AbilityKeyword Keyword { get { return GetEnum<AbilityKeyword>(8); } }
     }
 }

@@ -21,7 +21,7 @@ namespace PgJsonObjects
             return new PgPower(data, ref offset);
         }
 
-        public string Key { get { return GetString(0); } }
+        public override string Key { get { return GetString(0); } }
         public string Prefix { get { return GetString(4); } }
         public string Suffix { get { return GetString(8); } }
         public List<ItemSlot> SlotList { get { return GetEnumList(12, ref _SlotList); } } private List<ItemSlot> _SlotList;

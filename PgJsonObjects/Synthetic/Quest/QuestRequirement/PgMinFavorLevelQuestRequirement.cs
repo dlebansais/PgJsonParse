@@ -17,9 +17,10 @@
             return new PgMinFavorLevelQuestRequirement(data, ref offset);
         }
 
-        public IPgGameNpc FavorNpc { get { return GetObject(4, ref _FavorNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _FavorNpc;
+        public override string Key { get { return GetString(4); } }
+        public IPgGameNpc FavorNpc { get { return GetObject(8, ref _FavorNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _FavorNpc;
         public bool IsEmpty { get { return RawIsEmpty.HasValue && RawIsEmpty.Value; } }
-        public bool? RawIsEmpty { get { return GetBool(8, 0); } }
-        public Favor FavorLevel { get { return GetEnum<Favor>(10); } }
+        public bool? RawIsEmpty { get { return GetBool(12, 0); } }
+        public Favor FavorLevel { get { return GetEnum<Favor>(14); } }
     }
 }

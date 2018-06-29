@@ -17,11 +17,12 @@
             return new PgQuestObjectiveSpecial(data, ref offset);
         }
 
+        public override string Key { get { return GetString(0); } }
         public int MinAmount { get { return RawMinAmount.HasValue ? RawMinAmount.Value : 0; } }
-        public int? RawMinAmount { get { return GetInt(0); } }
+        public int? RawMinAmount { get { return GetInt(4); } }
         public int MaxAmount { get { return RawMaxAmount.HasValue ? RawMaxAmount.Value : 0; } }
-        public int? RawMaxAmount { get { return GetInt(4); } }
-        public string StringParam { get { return GetString(8); } }
-        public string InteractionTarget { get { return GetString(12); } }
+        public int? RawMaxAmount { get { return GetInt(8); } }
+        public string StringParam { get { return GetString(12); } }
+        public string InteractionTarget { get { return GetString(16); } }
     }
 }

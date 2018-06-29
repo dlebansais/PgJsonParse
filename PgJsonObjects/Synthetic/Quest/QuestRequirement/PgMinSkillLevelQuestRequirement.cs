@@ -17,8 +17,9 @@
             return new PgMinSkillLevelQuestRequirement(data, ref offset);
         }
 
-        public IPgSkill Skill { get { return GetObject(4, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
+        public override string Key { get { return GetString(4); } }
+        public IPgSkill Skill { get { return GetObject(8, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
-        public int? RawSkillLevel { get { return GetInt(8); } }
+        public int? RawSkillLevel { get { return GetInt(12); } }
     }
 }

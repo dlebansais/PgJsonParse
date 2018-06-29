@@ -17,6 +17,7 @@
             return new PgPotionServerInfoEffect(data, ref offset);
         }
 
-        public string EffectString { get { return GetString(0); } }
+        public override string Key { get { return null; } }
+        public string EffectString { get { return GetString(4); } }
     }
 }

@@ -17,8 +17,9 @@
             return new PgQuestObjectiveKill(data, ref offset);
         }
 
-        public string AbilityKeyword { get { return GetString(0); } }
-        public QuestObjectiveKillTarget Target { get { return GetEnum<QuestObjectiveKillTarget>(4); } }
-        public EffectKeyword EffectRequirement { get { return GetEnum<EffectKeyword>(6); } }
+        public override string Key { get { return GetString(0); } }
+        public string AbilityKeyword { get { return GetString(4); } }
+        public QuestObjectiveKillTarget Target { get { return GetEnum<QuestObjectiveKillTarget>(8); } }
+        public EffectKeyword EffectRequirement { get { return GetEnum<EffectKeyword>(10); } }
     }
 }

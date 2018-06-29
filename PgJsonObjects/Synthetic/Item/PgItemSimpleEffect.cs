@@ -12,6 +12,7 @@
             return new PgItemSimpleEffect(data, ref offset);
         }
 
-        public string Description { get { return GetString(0); } }
+        public override string Key { get { return null; } }
+        public string Description { get { return GetString(4); } }
     }
 }

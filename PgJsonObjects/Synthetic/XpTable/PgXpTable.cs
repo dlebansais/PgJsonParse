@@ -19,8 +19,9 @@
             return new PgXpTable(data, ref offset);
         }
 
-        public string InternalName { get { return GetString(0); } }
-        public XpTableLevelCollection XpAmountList { get { return GetObjectList(4, ref _XpAmountList, XpTableLevelCollection.CreateItem, () => new XpTableLevelCollection()); } } private XpTableLevelCollection _XpAmountList;
-        public XpTableEnum EnumName { get { return GetEnum<XpTableEnum>(8); } }
+        public override string Key { get { return GetString(0); } }
+        public string InternalName { get { return GetString(4); } }
+        public XpTableLevelCollection XpAmountList { get { return GetObjectList(8, ref _XpAmountList, XpTableLevelCollection.CreateItem, () => new XpTableLevelCollection()); } } private XpTableLevelCollection _XpAmountList;
+        public XpTableEnum EnumName { get { return GetEnum<XpTableEnum>(12); } }
     }
 }

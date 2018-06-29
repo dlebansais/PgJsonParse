@@ -27,6 +27,8 @@ namespace PgJsonObjects
             Offset = offset;
         }
 
+        public abstract string Key { get; }
+
         public IDeserializablePgObject Create(byte[] data, ref int offset)
         {
             return CreateItem(data, ref offset);

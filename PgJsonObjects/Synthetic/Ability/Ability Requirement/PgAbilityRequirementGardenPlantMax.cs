@@ -17,8 +17,9 @@
             return new PgAbilityRequirementGardenPlantMax(data, ref offset);
         }
 
+        public override string Key { get { return GetString(4); } }
         public int Max { get { return RawMax.HasValue ? RawMax.Value : 0; } }
-        public int? RawMax { get { return GetInt(4); } }
-        public AbilityTypeTag TypeTag { get { return GetEnum<AbilityTypeTag>(8); } }
+        public int? RawMax { get { return GetInt(8); } }
+        public AbilityTypeTag TypeTag { get { return GetEnum<AbilityTypeTag>(12); } }
     }
 }

@@ -79,16 +79,18 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(Gods as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
-            AddObject(Misc as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
-            AddObject(History as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddObject(Plot as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
-            AddObject(Stories as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
-            AddObject(GuideProgram as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddObject(Gods as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObject(Misc as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddObject(History as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddObject(Plot as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
+            AddObject(Stories as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
+            AddObject(GuideProgram as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 24, null, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 28, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

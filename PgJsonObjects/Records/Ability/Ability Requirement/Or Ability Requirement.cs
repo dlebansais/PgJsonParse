@@ -48,10 +48,11 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
-            AddObjectList(OrList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
-            AddString(ErrorMsg, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddObjectList(OrList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
+            AddString(ErrorMsg, data, ref offset, BaseOffset, 12, StoredStringtable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, null, null, null, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

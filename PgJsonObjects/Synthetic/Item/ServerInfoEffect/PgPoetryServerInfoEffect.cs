@@ -17,6 +17,7 @@
             return new PgPoetryServerInfoEffect(data, ref offset);
         }
 
+        public override string Key { get { return null; } }
         public int PoetryXpValue { get { return RawPoetryXpValue.HasValue ? RawPoetryXpValue.Value : 0; } }
         public int? RawPoetryXpValue { get { return GetInt(4); } }
         public int RecitalXpValue { get { return RawRecitalXpValue.HasValue ? RawRecitalXpValue.Value : 0; } }

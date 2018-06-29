@@ -91,12 +91,13 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
 
-            AddString(Title, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddString(RawTitle, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddString(Tooltip, data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddEnumList(KeywordList, data, ref offset, BaseOffset, 12, StoredEnumListTable);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Title, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(RawTitle, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddString(Tooltip, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddEnumList(KeywordList, data, ref offset, BaseOffset, 16, StoredEnumListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

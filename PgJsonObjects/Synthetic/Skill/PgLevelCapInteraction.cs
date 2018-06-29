@@ -17,10 +17,11 @@
             return new PgLevelCapInteraction(data, ref offset);
         }
 
+        public override string Key { get { return GetString(0); } }
         public int OtherLevel { get { return RawOtherLevel.Value; } }
-        public int? RawOtherLevel { get { return GetInt(0); } }
+        public int? RawOtherLevel { get { return GetInt(4); } }
         public int Level { get { return RawLevel.Value; } }
-        public int? RawLevel { get { return GetInt(4); } }
-        public IPgSkill Link { get { return GetObject(8, ref _Link, PgSkill.CreateNew); } } private IPgSkill _Link;
+        public int? RawLevel { get { return GetInt(8); } }
+        public IPgSkill Link { get { return GetObject(12, ref _Link, PgSkill.CreateNew); } } private IPgSkill _Link;
     }
 }

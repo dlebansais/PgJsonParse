@@ -270,30 +270,32 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddInt(RawDamage, data, ref offset, BaseOffset, 0);
-            AddInt(RawExtraDamageIfTargetVulnerable, data, ref offset, BaseOffset, 4);
-            AddInt(RawHealthSpecificDamage, data, ref offset, BaseOffset, 8);
-            AddInt(RawArmorSpecificDamage, data, ref offset, BaseOffset, 12);
-            AddInt(RawRange, data, ref offset, BaseOffset, 16);
-            AddInt(RawPowerCost, data, ref offset, BaseOffset, 20);
-            AddInt(RawMetabolismCost, data, ref offset, BaseOffset, 24);
-            AddInt(RawArmorMitigationRatio, data, ref offset, BaseOffset, 28);
-            AddInt(RawAoE, data, ref offset, BaseOffset, 32);
-            AddInt(RawRageBoost, data, ref offset, BaseOffset, 36);
-            AddDouble(RawRageMultiplier, data, ref offset, BaseOffset, 40);
-            AddDouble(RawAccuracy, data, ref offset, BaseOffset, 44);
-            AddObjectList(SpecialValueList, data, ref offset, BaseOffset, 48, StoredObjectListTable);
-            AddObjectList(DoTList, data, ref offset, BaseOffset, 52, StoredObjectListTable);
-            AddInt(RawTauntDelta, data, ref offset, BaseOffset, 56);
-            AddInt(RawTempTauntDelta, data, ref offset, BaseOffset, 60);
-            AddInt(RawRageCost, data, ref offset, BaseOffset, 64);
-            AddDouble(RawRageCostMod, data, ref offset, BaseOffset, 68);
-            AddEnumList(SelfPreEffectList, data, ref offset, BaseOffset, 72, StoredEnumListTable);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddInt(RawDamage, data, ref offset, BaseOffset, 4);
+            AddInt(RawExtraDamageIfTargetVulnerable, data, ref offset, BaseOffset, 8);
+            AddInt(RawHealthSpecificDamage, data, ref offset, BaseOffset, 12);
+            AddInt(RawArmorSpecificDamage, data, ref offset, BaseOffset, 16);
+            AddInt(RawRange, data, ref offset, BaseOffset, 20);
+            AddInt(RawPowerCost, data, ref offset, BaseOffset, 24);
+            AddInt(RawMetabolismCost, data, ref offset, BaseOffset, 28);
+            AddInt(RawArmorMitigationRatio, data, ref offset, BaseOffset, 32);
+            AddInt(RawAoE, data, ref offset, BaseOffset, 36);
+            AddInt(RawRageBoost, data, ref offset, BaseOffset, 40);
+            AddDouble(RawRageMultiplier, data, ref offset, BaseOffset, 44);
+            AddDouble(RawAccuracy, data, ref offset, BaseOffset, 48);
+            AddObjectList(SpecialValueList, data, ref offset, BaseOffset, 52, StoredObjectListTable);
+            AddObjectList(DoTList, data, ref offset, BaseOffset, 56, StoredObjectListTable);
+            AddInt(RawTauntDelta, data, ref offset, BaseOffset, 60);
+            AddInt(RawTempTauntDelta, data, ref offset, BaseOffset, 64);
+            AddInt(RawRageCost, data, ref offset, BaseOffset, 68);
+            AddDouble(RawRageCostMod, data, ref offset, BaseOffset, 72);
+            AddEnumList(SelfPreEffectList, data, ref offset, BaseOffset, 76, StoredEnumListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 76, null, null, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 80, StoredStringtable, null, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

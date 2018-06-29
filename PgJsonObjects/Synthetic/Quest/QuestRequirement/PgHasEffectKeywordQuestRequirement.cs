@@ -17,6 +17,7 @@
             return new PgHasEffectKeywordQuestRequirement(data, ref offset);
         }
 
-        public EffectKeyword Keyword { get { return GetEnum<EffectKeyword>(4); } }
+        public override string Key { get { return GetString(4); } }
+        public EffectKeyword Keyword { get { return GetEnum<EffectKeyword>(8); } }
     }
 }

@@ -17,10 +17,11 @@
             return new PgPowerAttributeLink(data, ref offset);
         }
 
-        public string AttributeName { get { return GetString(4); } }
-        public float AttributeEffect { get { return (float)GetDouble(8); } }
-        public IPgAttribute AttributeLink { get { return GetObject(12, ref _AttributeLink, PgAttribute.CreateNew); } } private IPgAttribute _AttributeLink;
-        public IPgSkill SkillLink { get { return GetObject(16, ref _SkillLink, PgSkill.CreateNew); } } private IPgSkill _SkillLink;
-        public FloatFormat AttributeEffectFormat { get { return GetEnum<FloatFormat>(20); } }
+        public override string Key { get { return GetString(4); } }
+        public string AttributeName { get { return GetString(8); } }
+        public float AttributeEffect { get { return (float)GetDouble(12); } }
+        public IPgAttribute AttributeLink { get { return GetObject(16, ref _AttributeLink, PgAttribute.CreateNew); } } private IPgAttribute _AttributeLink;
+        public IPgSkill SkillLink { get { return GetObject(20, ref _SkillLink, PgSkill.CreateNew); } } private IPgSkill _SkillLink;
+        public FloatFormat AttributeEffectFormat { get { return GetEnum<FloatFormat>(24); } }
     }
 }

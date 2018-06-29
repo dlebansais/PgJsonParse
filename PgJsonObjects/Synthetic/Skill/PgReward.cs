@@ -19,12 +19,13 @@ namespace PgJsonObjects
             return new PgReward(data, ref offset);
         }
 
+        public override string Key { get { return GetString(0); } }
         public int RewardLevel { get { return RawRewardLevel.HasValue ? RawRewardLevel.Value : 0; } }
-        public int? RawRewardLevel { get { return GetInt(0); } }
-        public List<Race> RaceRestrictionList { get { return GetEnumList(4, ref _RaceRestrictionList); } } private List<Race> _RaceRestrictionList;
-        public IPgAbility Ability { get { return GetObject(8, ref _Ability, PgAbility.CreateNew); } } private IPgAbility _Ability;
-        public string Notes { get { return GetString(12); } }
-        public IPgRecipe Recipe { get { return GetObject(16, ref _Recipe, PgRecipe.CreateNew); } } private IPgRecipe _Recipe;
-        public IPgSkill BonusSkill { get { return GetObject(20, ref _BonusSkill, PgSkill.CreateNew); } } private IPgSkill _BonusSkill;
+        public int? RawRewardLevel { get { return GetInt(4); } }
+        public List<Race> RaceRestrictionList { get { return GetEnumList(8, ref _RaceRestrictionList); } } private List<Race> _RaceRestrictionList;
+        public IPgAbility Ability { get { return GetObject(12, ref _Ability, PgAbility.CreateNew); } } private IPgAbility _Ability;
+        public string Notes { get { return GetString(16); } }
+        public IPgRecipe Recipe { get { return GetObject(20, ref _Recipe, PgRecipe.CreateNew); } } private IPgRecipe _Recipe;
+        public IPgSkill BonusSkill { get { return GetObject(24, ref _BonusSkill, PgSkill.CreateNew); } } private IPgSkill _BonusSkill;
     }
 }
