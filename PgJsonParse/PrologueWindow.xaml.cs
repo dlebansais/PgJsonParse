@@ -1086,9 +1086,11 @@ namespace PgJsonParse
                 IParser FileParser = definition.FileParser;
 
                 string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
-                IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
+                System.Collections.ICollection JsonObjectList = definition.JsonObjectList;
+                System.Collections.ICollection PgObjectList = definition.PgObjectList;
+                System.Collections.ICollection VerifiedObjectList = ObjectList.UseJson ? JsonObjectList : PgObjectList;
 
-                if (!FileParser.Verify(FilePath, ObjectList, definition.LoadAsArray, definition.UseJavaFormat))
+                if (!FileParser.Verify(FilePath, VerifiedObjectList, definition.LoadAsArray, definition.UseJavaFormat))
                     break;
             }
 
@@ -1165,7 +1167,7 @@ namespace PgJsonParse
                 {
                     offset = BitConverter.ToInt32(data, ObjectOffset + i * 4);
 
-                    Item = definition.CreateNewObject(data, ref offset);
+                    Item = GenericPgObject.CreateMainObject(definition.CreateNewObject, data, ref offset);
                     PgObjectList.Add(Item);
                 }
 

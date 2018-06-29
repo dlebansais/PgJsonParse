@@ -16,7 +16,10 @@
 
         public static PgRecipeSource CreateNew(byte[] data, ref int offset)
         {
-            return new PgRecipeSource(data, ref offset);
+            PgRecipeSource Result = new PgRecipeSource(data, ref offset);
+            IPgRecipe ConnectedRecipe = Result.ConnectedRecipe;
+            IPgGameNpc Npc = Result.Npc;
+            return Result;
         }
 
         public IPgRecipe ConnectedRecipe { get { return GetObject(0, ref _ConnectedRecipe, PgRecipe.CreateNew); } } private IPgRecipe _ConnectedRecipe;

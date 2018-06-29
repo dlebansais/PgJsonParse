@@ -142,7 +142,7 @@ namespace PgJsonObjects
             if (Content == null)
                 return true;
 
-            ICollection<T> ObjectList = GenericObjectList as ICollection<T>;
+            ICollection<TI> ObjectList = GenericObjectList as ICollection<TI>;
             bool Success = true;
 
             try

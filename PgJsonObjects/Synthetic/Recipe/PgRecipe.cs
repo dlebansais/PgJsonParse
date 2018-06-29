@@ -18,7 +18,8 @@ namespace PgJsonObjects
 
         public static PgRecipe CreateNew(byte[] data, ref int offset)
         {
-            return new PgRecipe(data, ref offset);
+            PgRecipe Result = new PgRecipe(data, ref offset);
+            return Result;
         }
 
         public string Description { get { return GetString(0); } }

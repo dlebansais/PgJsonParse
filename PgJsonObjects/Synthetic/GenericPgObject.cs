@@ -7,6 +7,15 @@ namespace PgJsonObjects
     {
         public const int NoValueInt = 0x6B6B6B6B;
         public static Dictionary<int, object> CreatedObjectTable = new Dictionary<int, object>();
+
+        public static IMainPgObject CreateMainObject(PgObjectCreator createNewObject, byte[] data, ref int offset)
+        {
+            int TableOffset = offset;
+            IMainPgObject Item = createNewObject(data, ref offset);
+            CreatedObjectTable.Add(TableOffset, Item);
+
+            return Item;
+        }
     }
 
     public abstract class GenericPgObject<TPg> : GenericPgObject, IGenericPgObject, IDeserializablePgObject

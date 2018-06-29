@@ -13,7 +13,6 @@ namespace PgJsonObjects
         public static IGenericPgObject CreateItem(byte[] data, ref int offset)
         {
             bool IsSimple = (BitConverter.ToInt32(data, offset) == 0);
-            offset += 4;
 
             if (IsSimple)
                 return new PgItemSimpleEffect(data, ref offset);

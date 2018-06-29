@@ -19,7 +19,10 @@ namespace PgJsonObjects
             }
             else
             {
-                SerializedObjectTable.Add(this, objectOffset);
+                SerializedObjectTable.Add(this, offset);
+
+                if (offset == 0x9AF934)
+                    offset = 0x9AF934;
 
                 if (data != null)
                 {

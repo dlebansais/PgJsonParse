@@ -9,13 +9,11 @@ namespace PgJsonObjects
 
         public static Dictionary<Type, IObjectDefinition> Definitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()
         {
-            { typeof(PgJsonObjects.Attribute), new ObjectDefinition<PgJsonObjects.Attribute, PgAttribute, IPgAttribute>("attributes", 0, PgAttribute.CreateNew, false, true, false) },
-
             { typeof(Ability), new ObjectDefinition<Ability, PgAbility, IPgAbility>("abilities", 0, PgAbility.CreateNew, false, true, false) },
             { typeof(AdvancementTable), new ObjectDefinition<AdvancementTable, PgAdvancementTable, IPgAdvancementTable>("advancementtables", 0, PgAdvancementTable.CreateNew, false, true, false) },
             { typeof(AI), new ObjectDefinition<AI, PgAI, IPgAI>("ai", 305, PgAI.CreateNew, false, true, false) },
             { typeof(GameArea), new ObjectDefinition<GameArea, PgGameArea, IPgGameArea>("areas", 0, PgGameArea.CreateNew, false, true, false) },
-            //{ typeof(PgJsonObjects.Attribute), new ObjectDefinition<PgJsonObjects.Attribute, PgAttribute, IPgAttribute>("attributes", 0, PgAttribute.CreateNew, false, true, false) },
+            { typeof(PgJsonObjects.Attribute), new ObjectDefinition<PgJsonObjects.Attribute, PgAttribute, IPgAttribute>("attributes", 0, PgAttribute.CreateNew, false, true, false) },
             { typeof(DirectedGoal), new ObjectDefinition<DirectedGoal, PgDirectedGoal, IPgDirectedGoal>("directedgoals", 0, PgDirectedGoal.CreateNew, false, true, false) },
             { typeof(Effect), new ObjectDefinition<Effect, PgEffect, IPgEffect>("effects", 0, PgEffect.CreateNew, false, true, false) },
             { typeof(Item), new ObjectDefinition<Item, PgItem, IPgItem>("items", 0, PgItem.CreateNew, false, true, false) },

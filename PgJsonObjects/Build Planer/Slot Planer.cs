@@ -575,7 +575,7 @@ namespace PgJsonObjects
                 if (SortedGearList.Count > ListBox.MaxCount)
                     SortedGearList.RemoveAt(SortedGearList.Count - 1);
 
-                foreach (ItemEffect Effect in Item.EffectDescriptionList)
+                foreach (IPgItemEffect Effect in Item.EffectDescriptionList)
                 {
                     bool Found = false;
 

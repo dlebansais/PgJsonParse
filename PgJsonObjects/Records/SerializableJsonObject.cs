@@ -23,6 +23,9 @@ namespace PgJsonObjects
         {
             SerializedObjectTable.Add(this, offset);
 
+            if (offset == 0x9AF934)
+                offset = 0x9AF934;
+
             SerializeJsonObjectInternal(data, ref offset);
         }
 
