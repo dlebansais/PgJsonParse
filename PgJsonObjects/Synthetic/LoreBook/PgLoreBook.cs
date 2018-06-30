@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgLoreBook(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 30;
+            offset += 34;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -29,10 +29,10 @@ namespace PgJsonObjects
         public LoreBookVisibility Visibility { get { return GetEnum<LoreBookVisibility>(18); } }
         public string InternalName { get { return GetString(20); } }
         public string Text { get { return GetString(24); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool IsClientLocal { get { return RawIsClientLocal.HasValue ? RawIsClientLocal.Value : false; } }
-        public bool? RawIsClientLocal { get { return GetBool(28, 0); } }
+        public bool? RawIsClientLocal { get { return GetBool(32, 0); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

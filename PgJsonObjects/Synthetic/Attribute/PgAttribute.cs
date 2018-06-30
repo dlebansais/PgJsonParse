@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgAttribute(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 26;
+            offset += 30;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -30,10 +30,11 @@ namespace PgJsonObjects
         public string Tooltip { get { return GetString(12); } }
         public double DefaultValue { get { return RawDefaultValue.HasValue ? RawDefaultValue.Value : 0; } }
         public double? RawDefaultValue { get { return GetDouble(16); } }
-        public DisplayType DisplayType { get { return GetEnum<DisplayType>(20); } }
-        public DisplayRule DisplayRule { get { return GetEnum<DisplayRule>(22); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(20, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public DisplayType DisplayType { get { return GetEnum<DisplayType>(24); } }
+        public DisplayRule DisplayRule { get { return GetEnum<DisplayRule>(26); } }
         public bool IsHidden { get { return RawIsHidden.HasValue && RawIsHidden.Value; } }
-        public bool? RawIsHidden { get { return GetBool(24, 0); } }
+        public bool? RawIsHidden { get { return GetBool(28, 0); } }
 
         public bool IsLabelWithPercent
         {
@@ -53,6 +54,5 @@ namespace PgJsonObjects
         }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

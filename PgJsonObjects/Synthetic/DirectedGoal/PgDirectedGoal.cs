@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgDirectedGoal(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 30;
+            offset += 34;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -30,10 +30,10 @@ namespace PgJsonObjects
         public string SmallHint { get { return GetString(20); } }
         public int CategoryGateId { get { return RawCategoryGateId.HasValue ? RawCategoryGateId.Value : 0; } }
         public int? RawCategoryGateId { get { return GetInt(24); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool IsCategoryGate { get { return RawIsCategoryGate.HasValue ? RawIsCategoryGate.Value : false; } }
-        public bool? RawIsCategoryGate { get { return GetBool(28, 0); } }
+        public bool? RawIsCategoryGate { get { return GetBool(32, 0); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

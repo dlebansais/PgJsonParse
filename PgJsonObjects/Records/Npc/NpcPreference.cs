@@ -346,9 +346,10 @@ namespace PgJsonObjects
             AddObject(SkillRequirement as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
             AddEnum(SlotRequirement, data, ref offset, BaseOffset, 24);
             AddEnum(RarityRequirement, data, ref offset, BaseOffset, 26);
-            AddEnum(MinRarityRequirement, data, ref offset, BaseOffset, 28);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 28, StoredStringListTable);
+            AddEnum(MinRarityRequirement, data, ref offset, BaseOffset, 32);
 
-            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 34, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

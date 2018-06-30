@@ -3393,9 +3393,11 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
-            int KeyOffset = 4;
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 4, StoredStringListTable);
+            int KeyOffset = 8;
             AddObject(AnimalBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 0 * 4, StoredObjectTable);
             AddObject(AnimalClaw as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 1 * 4, StoredObjectTable);
             AddObject(AnimalOmegaBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 2 * 4, StoredObjectTable);
@@ -4066,7 +4068,7 @@ namespace PgJsonObjects
             AddObject(BearUltra_Pet5 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 667 * 4, StoredObjectTable);
             AddObject(BearUltra_Pet6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 668 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 669 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 669 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

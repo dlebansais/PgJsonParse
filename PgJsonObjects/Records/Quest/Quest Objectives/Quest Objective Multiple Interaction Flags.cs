@@ -46,8 +46,9 @@ namespace PgJsonObjects
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddStringList(InteractionFlagList, data, ref offset, BaseOffset, 4, StoredStringListTable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

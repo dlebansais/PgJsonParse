@@ -24,8 +24,8 @@ namespace PgJsonObjects
         public ItemCollection ItemList { get { return GetObjectList(8, ref _ItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ItemList;
         public ItemKeyword ItemTarget { get { return GetEnum<ItemKeyword>(12); } }
         public MonsterTypeTag MonsterTypeTag { get { return GetEnum<MonsterTypeTag>(14); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

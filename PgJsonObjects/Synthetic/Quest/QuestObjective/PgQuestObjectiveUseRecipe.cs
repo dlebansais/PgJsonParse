@@ -23,8 +23,8 @@ namespace PgJsonObjects
         public IPgSkill Skill { get { return GetObject(4, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
         public RecipeCollection RecipeTargetList { get { return GetObjectList(8, ref _RecipeTargetList, RecipeCollection.CreateItem, () => new RecipeCollection()); } } private RecipeCollection _RecipeTargetList;
         public ItemCollection ResultItemList { get { return GetObjectList(12, ref _ResultItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ResultItemList;
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

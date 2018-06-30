@@ -22,9 +22,9 @@ namespace PgJsonObjects
         public override string Key { get { return GetString(0); } }
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }
         public double? RawPrice { get { return GetDouble(4); } }
-        public RecipeCurrency Currency { get { return GetEnum<RecipeCurrency>(8); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public RecipeCurrency Currency { get { return GetEnum<RecipeCurrency>(12); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

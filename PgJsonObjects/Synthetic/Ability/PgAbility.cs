@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 184;
+            offset += 188;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 

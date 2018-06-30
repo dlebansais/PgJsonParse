@@ -24,8 +24,8 @@ namespace PgJsonObjects
         public IPgItem QuestItem { get { return GetObject(8, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
         public int NumToDeliver { get { return RawNumToDeliver.HasValue ? RawNumToDeliver.Value : 0; } }
         public int? RawNumToDeliver { get { return GetInt(12); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

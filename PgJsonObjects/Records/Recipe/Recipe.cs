@@ -1086,6 +1086,7 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
@@ -1121,11 +1122,12 @@ namespace PgJsonObjects
             AddString(RawItemMenuCategory, data, ref offset, BaseOffset, 104, StoredStringtable);
             AddInt(RawItemMenuCategoryLevel, data, ref offset, BaseOffset, 108);
             AddObject(PrereqRecipe as ISerializableJsonObject, data, ref offset, BaseOffset, 112, StoredObjectTable);
-            AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 116, 0);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 116, StoredStringListTable);
+            AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 120, 0);
             CloseBool(ref offset, ref BitOffset);
-            AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 118);
+            AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 122);
 
-            FinishSerializing(data, ref offset, BaseOffset, 120, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 124, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

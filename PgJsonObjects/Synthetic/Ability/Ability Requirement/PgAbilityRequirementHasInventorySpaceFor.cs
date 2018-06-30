@@ -21,8 +21,8 @@ namespace PgJsonObjects
 
         public override string Key { get { return GetString(4); } }
         public IPgItem Item { get { return GetObject(8, ref _Item, PgItem.CreateNew); } } private IPgItem _Item;
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

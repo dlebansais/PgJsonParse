@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgEffect(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 42;
+            offset += 46;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -35,9 +35,9 @@ namespace PgJsonObjects
         public int? RawDuration { get { return GetInt(28); } }
         public List<EffectKeyword> KeywordList { get { return GetEnumList(32, ref _KeywordList); } } private List<EffectKeyword> _KeywordList;
         public List<AbilityKeyword> AbilityKeywordList { get { return GetEnumList(36, ref _AbilityKeywordList); } } private List<AbilityKeyword> _AbilityKeywordList;
-        public EffectParticle Particle { get { return GetEnum<EffectParticle>(40); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(40, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public EffectParticle Particle { get { return GetEnum<EffectParticle>(44); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

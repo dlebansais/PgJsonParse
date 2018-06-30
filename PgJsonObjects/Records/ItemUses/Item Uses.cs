@@ -90,11 +90,13 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddIntList(RecipesThatUseItemList, data, ref offset, BaseOffset, 4, StoredIntListTable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, null, null, null, StoredIntListTable, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, StoredIntListTable, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

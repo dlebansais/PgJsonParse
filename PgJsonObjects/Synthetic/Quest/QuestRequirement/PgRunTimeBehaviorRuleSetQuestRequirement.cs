@@ -22,8 +22,8 @@ namespace PgJsonObjects
         public override string Key { get { return GetString(4); } }
         public string RequirementRule { get { return GetString(8); } }
         public string Rule { get { return GetString(12); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

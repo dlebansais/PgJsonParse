@@ -20,9 +20,10 @@ namespace PgJsonObjects
         }
 
         private IPgAIAbility[] Abilities = new AIAbility[669];
-        private IPgAIAbility GetAbilityObject(int index) { return GetObject(4 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
+        private IPgAIAbility GetAbilityObject(int index) { return GetObject(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(4, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public IPgAIAbility AnimalBite { get { return GetAbilityObject(0); } }
         public IPgAIAbility AnimalClaw { get { return GetAbilityObject(1); } }
         public IPgAIAbility AnimalOmegaBite { get { return GetAbilityObject(2); } }
@@ -694,6 +695,5 @@ namespace PgJsonObjects
         public IPgAIAbility BearUltra_Pet6 { get { return GetAbilityObject(668); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

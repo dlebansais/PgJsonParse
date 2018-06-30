@@ -25,9 +25,9 @@ namespace PgJsonObjects
         public int NumItemsToGive { get { return RawNumItemsToGive.HasValue ? RawNumItemsToGive.Value : 0; } }
         public int? RawNumItemsToGive { get { return GetInt(12); } }
         public AbilityRequirementCollection OtherRequirementList { get { return GetObjectList(16, ref _OtherRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OtherRequirementList;
-        public ItemRequiredHotspot RequiredHotspot { get { return GetEnum<ItemRequiredHotspot>(20); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(20, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public ItemRequiredHotspot RequiredHotspot { get { return GetEnum<ItemRequiredHotspot>(24); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

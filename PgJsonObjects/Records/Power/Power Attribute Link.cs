@@ -59,6 +59,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddInt(1, data, ref offset, BaseOffset, 0);
             AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
@@ -66,9 +67,10 @@ namespace PgJsonObjects
             AddDouble((double)RawAttributeEffect, data, ref offset, BaseOffset, 12);
             AddObject(AttributeLink as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
             AddObject(SkillLink as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
-            AddEnum(AttributeEffectFormat, data, ref offset, BaseOffset, 24);
+            AddStringList(new List<string>(), data, ref offset, BaseOffset, 24, StoredStringListTable);
+            AddEnum(AttributeEffectFormat, data, ref offset, BaseOffset, 28);
 
-            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

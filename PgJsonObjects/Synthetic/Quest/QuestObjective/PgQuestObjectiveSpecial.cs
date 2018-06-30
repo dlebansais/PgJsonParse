@@ -26,8 +26,8 @@ namespace PgJsonObjects
         public int? RawMaxAmount { get { return GetInt(8); } }
         public string StringParam { get { return GetString(12); } }
         public string InteractionTarget { get { return GetString(16); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(20, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

@@ -27,8 +27,8 @@ namespace PgJsonObjects
         public string Notes { get { return GetString(16); } }
         public IPgRecipe Recipe { get { return GetObject(20, ref _Recipe, PgRecipe.CreateNew); } } private IPgRecipe _Recipe;
         public IPgSkill BonusSkill { get { return GetObject(24, ref _BonusSkill, PgSkill.CreateNew); } } private IPgSkill _BonusSkill;
+        protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

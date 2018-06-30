@@ -23,8 +23,8 @@ namespace PgJsonObjects
         public IPgItem QuestItem { get { return GetObject(4, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
         public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 1; } }
         public int? RawStackSize { get { return GetInt(8); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

@@ -28,9 +28,9 @@ namespace PgJsonObjects
         public int? RawDuration { get { return GetInt(12); } }
         public List<DoTSpecialRule> SpecialRuleList { get { return GetEnumList(16, ref _SpecialRuleList); } } private List<DoTSpecialRule> _SpecialRuleList;
         public string RawPreface { get { return GetString(20); } }
-        public DamageType DamageType { get { return GetEnum<DamageType>(24); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(24, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public DamageType DamageType { get { return GetEnum<DamageType>(28); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

@@ -112,6 +112,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddInt(RawDamagePerTick, data, ref offset, BaseOffset, 4);
@@ -119,9 +120,10 @@ namespace PgJsonObjects
             AddInt(RawDuration, data, ref offset, BaseOffset, 12);
             AddEnumList(SpecialRuleList, data, ref offset, BaseOffset, 16, StoredEnumListTable);
             AddString(RawPreface, data, ref offset, BaseOffset, 20, StoredStringtable);
-            AddEnum(DamageType, data, ref offset, BaseOffset, 24);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 24, StoredStringListTable);
+            AddEnum(DamageType, data, ref offset, BaseOffset, 28);
 
-            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, null, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, null, null, StoredEnumListTable, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

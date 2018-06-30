@@ -116,16 +116,18 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(Label, data, ref offset, BaseOffset, 4, StoredStringtable);
             AddString(Suffix, data, ref offset, BaseOffset, 8, StoredStringtable);
             AddDouble(RawValue, data, ref offset, BaseOffset, 12);
-            AddBool(RawDisplayAsPercent, data, ref offset, ref BitOffset, BaseOffset, 16, 0);
-            AddBool(RawSkipIfZero, data, ref offset, ref BitOffset, BaseOffset, 16, 2);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 16, StoredStringListTable);
+            AddBool(RawDisplayAsPercent, data, ref offset, ref BitOffset, BaseOffset, 20, 0);
+            AddBool(RawSkipIfZero, data, ref offset, ref BitOffset, BaseOffset, 20, 2);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 18, StoredStringtable, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

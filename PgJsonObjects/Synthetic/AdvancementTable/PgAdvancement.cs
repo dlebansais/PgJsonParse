@@ -144,8 +144,8 @@ namespace PgJsonObjects
         public double? RawShopHiringNumFree { get { return GetDouble(244); } }
         public double CriticalHitDamage { get { return RawCriticalHitDamage.HasValue ? RawCriticalHitDamage.Value : 0; } }
         public double? RawCriticalHitDamage { get { return GetDouble(248); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(252, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

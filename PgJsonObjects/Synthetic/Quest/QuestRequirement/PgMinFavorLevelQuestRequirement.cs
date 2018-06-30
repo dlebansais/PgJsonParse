@@ -21,11 +21,11 @@ namespace PgJsonObjects
 
         public override string Key { get { return GetString(4); } }
         public IPgGameNpc FavorNpc { get { return GetObject(8, ref _FavorNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _FavorNpc;
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool IsEmpty { get { return RawIsEmpty.HasValue && RawIsEmpty.Value; } }
-        public bool? RawIsEmpty { get { return GetBool(12, 0); } }
-        public Favor FavorLevel { get { return GetEnum<Favor>(14); } }
+        public bool? RawIsEmpty { get { return GetBool(16, 0); } }
+        public Favor FavorLevel { get { return GetEnum<Favor>(18); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

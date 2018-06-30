@@ -10,9 +10,6 @@ namespace PgJsonObjects
 
         public static Dictionary<Type, IObjectDefinition> Definitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()
         {
-            { typeof(AbilitySource), new ObjectDefinition<AbilitySource, PgAbilitySource, IPgAbilitySource>("sources_abilities", 0, PgAbilitySource.CreateNew, false, true, true, true) },
-            { typeof(RecipeSource), new ObjectDefinition<RecipeSource, PgRecipeSource, IPgRecipeSource>("sources_recipes", 0, PgRecipeSource.CreateNew, false, true, true, true) },
-
             { typeof(Ability), new ObjectDefinition<Ability, PgAbility, IPgAbility>("abilities", 0, PgAbility.CreateNew, false, false, true, true) },
             { typeof(AdvancementTable), new ObjectDefinition<AdvancementTable, PgAdvancementTable, IPgAdvancementTable>("advancementtables", 0, PgAdvancementTable.CreateNew, false, false, true, true) },
             { typeof(AI), new ObjectDefinition<AI, PgAI, IPgAI>("ai", 305, PgAI.CreateNew, false, false, true, true) },
@@ -28,8 +25,8 @@ namespace PgJsonObjects
             { typeof(Quest), new ObjectDefinition<Quest, PgQuest, IPgQuest>("quests", 0, PgQuest.CreateNew, false, false, true, true) },
             { typeof(Recipe), new ObjectDefinition<Recipe, PgRecipe, IPgRecipe>("recipes", 0, PgRecipe.CreateNew, false, false, true, true) },
             { typeof(Skill), new ObjectDefinition<Skill, PgSkill, IPgSkill>("skills", 0, PgSkill.CreateNew, false, false, true, true) },
-
-
+            { typeof(AbilitySource), new ObjectDefinition<AbilitySource, PgAbilitySource, IPgAbilitySource>("sources_abilities", 0, PgAbilitySource.CreateNew, false, true, true, true) },
+            { typeof(RecipeSource), new ObjectDefinition<RecipeSource, PgRecipeSource, IPgRecipeSource>("sources_recipes", 0, PgRecipeSource.CreateNew, false, true, true, true) },
             { typeof(Power), new ObjectDefinition<Power, PgPower, IPgPower>("tsysclientinfo", 0, PgPower.CreateNew, false, false, true, true) },
             { typeof(XpTable), new ObjectDefinition<XpTable, PgXpTable, IPgXpTable>("xptables", 0, PgXpTable.CreateNew, false, false, true, true) },
             { typeof(StorageVault), new ObjectDefinition<StorageVault, PgStorageVault, IPgStorageVault>("storagevaults", 0, PgStorageVault.CreateNew, false, false, true, true) },

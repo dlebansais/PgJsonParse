@@ -24,12 +24,12 @@ namespace PgJsonObjects
         public string Suffix { get { return GetString(8); } }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get { return GetDouble(12); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool DisplayAsPercent { get { return RawDisplayAsPercent.HasValue && RawDisplayAsPercent.Value; } }
-        public bool? RawDisplayAsPercent { get { return GetBool(16, 0); } }
+        public bool? RawDisplayAsPercent { get { return GetBool(20, 0); } }
         public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
-        public bool? RawSkipIfZero { get { return GetBool(16, 2); } }
+        public bool? RawSkipIfZero { get { return GetBool(20, 2); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

@@ -285,6 +285,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddObject(ConnectedRecipe as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
@@ -293,9 +294,10 @@ namespace PgJsonObjects
             AddObject(Npc as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
             AddObject(ConnectedEffect as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
             AddObject(ConnectedQuest as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
-            AddEnum(Type, data, ref offset, BaseOffset, 28);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 28, StoredStringListTable);
+            AddEnum(Type, data, ref offset, BaseOffset, 32);
 
-            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 34, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

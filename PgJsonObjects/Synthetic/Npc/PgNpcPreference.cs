@@ -27,11 +27,11 @@ namespace PgJsonObjects
         public int MinValueRequirement { get { return RawMinValueRequirement.HasValue ? RawMinValueRequirement.Value : 0; } }
         public int? RawMinValueRequirement { get { return GetInt(16); } }
         public IPgSkill SkillRequirement { get { return GetObject(20, ref _SkillRequirement, PgSkill.CreateNew); } } private IPgSkill _SkillRequirement;
-        public ItemSlot SlotRequirement { get { return GetEnum<ItemSlot>(24); } }
-        public RecipeItemKey RarityRequirement { get { return GetEnum<RecipeItemKey>(26); } }
-        public RecipeItemKey MinRarityRequirement { get { return GetEnum<RecipeItemKey>(28); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(24, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public ItemSlot SlotRequirement { get { return GetEnum<ItemSlot>(28); } }
+        public RecipeItemKey RarityRequirement { get { return GetEnum<RecipeItemKey>(30); } }
+        public RecipeItemKey MinRarityRequirement { get { return GetEnum<RecipeItemKey>(32); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

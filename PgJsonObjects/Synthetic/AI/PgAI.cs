@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgAI(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 18;
+            offset += 22;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -25,12 +25,12 @@ namespace PgJsonObjects
         public IPgAIAbilitySet Abilities { get { return GetObject(4, ref _Abilities, PgAIAbilitySet.CreateNew); } } private IPgAIAbilitySet _Abilities;
         public string Comment { get { return GetString(8); } }
         public float? RawMinDelayBetweenAbilities { get { return (float)GetDouble(12); } }
-        public bool? RawIsMelee { get { return GetBool(16, 0); } }
-        public bool? RawIsUncontrolledPet { get { return GetBool(16, 2); } }
-        public bool? RawIsStationary { get { return GetBool(16, 4); } }
-        public bool? RawIsServerDriven { get { return GetBool(16, 6); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public bool? RawIsMelee { get { return GetBool(20, 0); } }
+        public bool? RawIsUncontrolledPet { get { return GetBool(20, 2); } }
+        public bool? RawIsStationary { get { return GetBool(20, 4); } }
+        public bool? RawIsServerDriven { get { return GetBool(20, 6); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

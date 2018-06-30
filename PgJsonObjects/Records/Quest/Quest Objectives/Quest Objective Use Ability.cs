@@ -72,13 +72,15 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddObjectList(AbilityTargetList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
-            AddEnum(AbilityTarget, data, ref offset, BaseOffset, 8);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
+            AddEnum(AbilityTarget, data, ref offset, BaseOffset, 12);
 
-            FinishSerializing(data, ref offset, BaseOffset, 10, StoredStringtable, null, null, null, null, null, null, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, null, null, null, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

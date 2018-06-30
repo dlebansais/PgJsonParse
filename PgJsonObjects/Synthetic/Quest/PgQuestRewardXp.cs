@@ -23,8 +23,8 @@ namespace PgJsonObjects
         public IPgSkill Skill { get { return GetObject(0, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
         public int Xp { get { return RawXp.HasValue ? RawXp.Value : 0; } }
         public int? RawXp { get { return GetInt(4); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

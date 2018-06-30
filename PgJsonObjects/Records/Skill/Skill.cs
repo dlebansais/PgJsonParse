@@ -676,8 +676,9 @@ namespace PgJsonObjects
             AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 60, StoredStringListTable);
             AddIntList(ReportTableKey, data, ref offset, BaseOffset, 64, StoredIntListTable);
             AddStringList(ReportTableValue, data, ref offset, BaseOffset, 68, StoredStringListTable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 72, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 72, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 76, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

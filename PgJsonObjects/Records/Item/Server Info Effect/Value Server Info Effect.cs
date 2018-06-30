@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class ValueServerInfoEffect : ServerInfoEffect, IPgValueServerInfoEffect
     {
@@ -26,11 +28,13 @@
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddInt((int?)Type, data, ref offset, BaseOffset, 0);
             AddInt(RawValue, data, ref offset, BaseOffset, 4);
+            AddStringList(new List<string>(), data, ref offset, BaseOffset, 8, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 8, null, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 12, null, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

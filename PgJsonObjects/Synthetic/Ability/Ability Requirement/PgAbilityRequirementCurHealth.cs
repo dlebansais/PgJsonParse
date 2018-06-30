@@ -22,8 +22,8 @@ namespace PgJsonObjects
         public override string Key { get { return GetString(4); } }
         public double Health { get { return RawHealth.HasValue ? RawHealth.Value : 0; } }
         public double? RawHealth { get { return GetDouble(8); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

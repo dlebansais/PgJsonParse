@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgQuest(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 148;
+            offset += 152;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -78,8 +78,8 @@ namespace PgJsonObjects
         public QuestCollection FollowUpQuestList { get { return GetObjectList(136, ref _FollowUpQuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _FollowUpQuestList;
         public QuestRequirementCollection QuestRequirementList { get { return GetObjectList(140, ref _QuestRequirementList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementList;
         public QuestRequirementCollection QuestRequirementToSustainList { get { return GetObjectList(144, ref _QuestRequirementToSustainList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementToSustainList;
+        protected override List<string> FieldTableOrder { get { return GetStringList(148, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

@@ -24,9 +24,9 @@ namespace PgJsonObjects
         public int? RawMinCount { get { return GetInt(8); } }
         public int MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }
         public int? RawMaxCount { get { return GetInt(12); } }
-        public AbilityKeyword Keyword { get { return GetEnum<AbilityKeyword>(16); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public AbilityKeyword Keyword { get { return GetEnum<AbilityKeyword>(20); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

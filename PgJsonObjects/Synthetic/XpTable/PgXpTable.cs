@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgXpTable(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 14;
+            offset += 18;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -24,9 +24,9 @@ namespace PgJsonObjects
         public override string Key { get { return GetString(0); } }
         public string InternalName { get { return GetString(4); } }
         public XpTableLevelCollection XpAmountList { get { return GetObjectList(8, ref _XpAmountList, XpTableLevelCollection.CreateItem, () => new XpTableLevelCollection()); } } private XpTableLevelCollection _XpAmountList;
-        public XpTableEnum EnumName { get { return GetEnum<XpTableEnum>(12); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public XpTableEnum EnumName { get { return GetEnum<XpTableEnum>(16); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

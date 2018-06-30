@@ -1017,8 +1017,9 @@ namespace PgJsonObjects
             AddInt(RawBestowLoreBook, data, ref offset, BaseOffset, 128);
             AddObject(ConnectedLoreBook as ISerializableJsonObject, data, ref offset, BaseOffset, 132, StoredObjectTable);
             AddStringList(KeywordValueList, data, ref offset, BaseOffset, 136, StoredStringListTable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 140, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 140, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 144, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

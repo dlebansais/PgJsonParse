@@ -28,9 +28,9 @@ namespace PgJsonObjects
         public int? RawMetabolismCost { get { return GetInt(16); } }
         public double UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
         public double? RawUseDelay { get { return GetDouble(20); } }
-        public ItemUseVerb UseVerb { get { return GetEnum<ItemUseVerb>(24); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(24, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public ItemUseVerb UseVerb { get { return GetEnum<ItemUseVerb>(28); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

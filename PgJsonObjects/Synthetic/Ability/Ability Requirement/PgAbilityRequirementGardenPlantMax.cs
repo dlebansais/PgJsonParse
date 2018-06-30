@@ -22,9 +22,9 @@ namespace PgJsonObjects
         public override string Key { get { return GetString(4); } }
         public int Max { get { return RawMax.HasValue ? RawMax.Value : 0; } }
         public int? RawMax { get { return GetInt(8); } }
-        public AbilityTypeTag TypeTag { get { return GetEnum<AbilityTypeTag>(12); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public AbilityTypeTag TypeTag { get { return GetEnum<AbilityTypeTag>(16); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

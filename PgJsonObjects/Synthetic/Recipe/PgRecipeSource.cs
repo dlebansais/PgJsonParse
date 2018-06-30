@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgRecipeSource(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 30;
+            offset += 34;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -31,9 +31,9 @@ namespace PgJsonObjects
         public IPgGameNpc Npc { get { return GetObject(16, ref _Npc, PgGameNpc.CreateNew); } } private IPgGameNpc _Npc;
         public IPgEffect ConnectedEffect { get { return GetObject(20, ref _ConnectedEffect, PgEffect.CreateNew); } } private IPgEffect _ConnectedEffect;
         public IPgQuest ConnectedQuest { get { return GetObject(24, ref _ConnectedQuest, PgQuest.CreateNew); } } private IPgQuest _ConnectedQuest;
-        public SourceTypes Type { get { return GetEnum<SourceTypes>(28); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public SourceTypes Type { get { return GetEnum<SourceTypes>(32); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

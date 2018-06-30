@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgStorageVault(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 34;
+            offset += 38;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -32,10 +32,10 @@ namespace PgJsonObjects
         public string NpcFriendlyName { get { return GetString(24); } }
         public ItemKeyword RequiredItemKeyword { get { return GetEnum<ItemKeyword>(28); } }
         public MapAreaName Grouping { get { return GetEnum<MapAreaName>(30); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(32, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
-        public bool? RawHasAssociatedNpc { get { return GetBool(32, 0); } }
+        public bool? RawHasAssociatedNpc { get { return GetBool(36, 0); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

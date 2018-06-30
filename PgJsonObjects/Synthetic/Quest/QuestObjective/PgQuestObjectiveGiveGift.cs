@@ -24,8 +24,8 @@ namespace PgJsonObjects
         public float? RawMinFavorReceived { get { return (float)GetDouble(4); } }
         public float MaxFavorReceived { get { return RawMaxFavorReceived.HasValue ? RawMaxFavorReceived.Value : 0; } }
         public float? RawMaxFavorReceived { get { return (float)GetDouble(8); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

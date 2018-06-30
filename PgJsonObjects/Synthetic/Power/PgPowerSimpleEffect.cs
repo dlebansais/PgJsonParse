@@ -22,8 +22,8 @@ namespace PgJsonObjects
         public override string Key { get { return GetString(4); } }
         public string Description { get { return GetString(8); } }
         public List<int> IconIdList { get { return GetIntList(12, ref _IconIdList); } } private List<int> _IconIdList;
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgPlayerTitle(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 20;
+            offset += 24;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -26,8 +26,8 @@ namespace PgJsonObjects
         public string RawTitle { get { return GetString(8); } }
         public string Tooltip { get { return GetString(12); } }
         public List<TitleKeyword> KeywordList { get { return GetEnumList(16, ref _KeywordList); } } private List<TitleKeyword> _KeywordList;
+        protected override List<string> FieldTableOrder { get { return GetStringList(20, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

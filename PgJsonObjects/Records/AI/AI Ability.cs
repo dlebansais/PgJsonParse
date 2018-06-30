@@ -81,6 +81,7 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddInt(RawMinLevel, data, ref offset, BaseOffset, 4);
@@ -89,9 +90,10 @@ namespace PgJsonObjects
             AddInt(RawMinRange, data, ref offset, BaseOffset, 16);
             AddInt(RawMaxRange, data, ref offset, BaseOffset, 20);
             AddInt(RawCueValue, data, ref offset, BaseOffset, 24);
-            AddEnum(Cue, data, ref offset, BaseOffset, 28);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 28, StoredStringListTable);
+            AddEnum(Cue, data, ref offset, BaseOffset, 32);
 
-            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 34, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

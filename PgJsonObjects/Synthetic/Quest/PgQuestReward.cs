@@ -26,9 +26,9 @@ namespace PgJsonObjects
         public string RewardRecipe { get { return GetString(12); } }
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
         public int? RawRewardGuildCredits { get { return GetInt(16); } }
-        public PowerSkill RewardSkill { get { return GetEnum<PowerSkill>(20); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(20, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public PowerSkill RewardSkill { get { return GetEnum<PowerSkill>(24); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

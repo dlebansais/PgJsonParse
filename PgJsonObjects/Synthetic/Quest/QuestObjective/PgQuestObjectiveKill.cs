@@ -23,8 +23,8 @@ namespace PgJsonObjects
         public string AbilityKeyword { get { return GetString(4); } }
         public QuestObjectiveKillTarget Target { get { return GetEnum<QuestObjectiveKillTarget>(8); } }
         public EffectKeyword EffectRequirement { get { return GetEnum<EffectKeyword>(10); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

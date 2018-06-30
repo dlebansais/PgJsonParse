@@ -22,9 +22,9 @@ namespace PgJsonObjects
         public override string Key { get { return GetString(4); } }
         public double MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }
         public double? RawMaxCount { get { return GetDouble(8); } }
-        public RecipeKeyword PetTypeTag { get { return GetEnum<RecipeKeyword>(12); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public RecipeKeyword PetTypeTag { get { return GetEnum<RecipeKeyword>(16); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

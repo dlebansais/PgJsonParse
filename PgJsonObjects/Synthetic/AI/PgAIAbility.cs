@@ -26,9 +26,9 @@ namespace PgJsonObjects
         public int? RawMinRange { get { return GetInt(16); } }
         public int? RawMaxRange { get { return GetInt(20); } }
         public int? RawCueValue { get { return GetInt(24); } }
-        public AbilityCue Cue { get { return GetEnum<AbilityCue>(28); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public AbilityCue Cue { get { return GetEnum<AbilityCue>(32); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

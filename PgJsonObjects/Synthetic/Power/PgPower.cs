@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgPower(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 32;
+            offset += 36;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -32,8 +32,8 @@ namespace PgJsonObjects
         public PowerTierCollection TierEffectList { get { return GetObjectList(24, ref _TierEffectList, PowerTierCollection.CreateItem, () => new PowerTierCollection()); } } private PowerTierCollection _TierEffectList;
         public int TierOffset { get { return RawTierOffset.HasValue ? RawTierOffset.Value : 0; } }
         public int? RawTierOffset { get { return GetInt(28); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(32, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

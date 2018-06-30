@@ -539,6 +539,7 @@ namespace PgJsonObjects
         {
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddDouble(RawNonCombatRegenHealthMod, data, ref offset, BaseOffset, 4);
@@ -603,8 +604,9 @@ namespace PgJsonObjects
             AddDouble(RawShopLogDaysKept, data, ref offset, BaseOffset, 240);
             AddDouble(RawShopHiringNumFree, data, ref offset, BaseOffset, 244);
             AddDouble(RawCriticalHitDamage, data, ref offset, BaseOffset, 248);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 252, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 252, StoredStringtable, null, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 256, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -24,8 +24,8 @@ namespace PgJsonObjects
         public int? RawLowValue { get { return GetInt(4); } }
         public int HighValue { get { return RawHighValue.HasValue ? RawHighValue.Value : 0; } }
         public int? RawHighValue { get { return GetInt(8); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

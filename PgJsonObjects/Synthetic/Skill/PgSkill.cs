@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgSkill(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 68;
+            offset += 76;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -24,13 +24,13 @@ namespace PgJsonObjects
         public override void Init()
         {
             List<int> AdvancementHintTableKey = null;
-            GetIntList(52, ref AdvancementHintTableKey);
+            GetIntList(56, ref AdvancementHintTableKey);
             List<string> AdvancementHintTableValue = null;
-            GetStringList(56, ref AdvancementHintTableValue);
+            GetStringList(60, ref AdvancementHintTableValue);
             List<int> ReportTableKey = null;
-            GetIntList(60, ref ReportTableKey);
+            GetIntList(64, ref ReportTableKey);
             List<string> ReportTableValue = null;
-            GetStringList(64, ref ReportTableValue);
+            GetStringList(68, ref ReportTableValue);
 
             CombinedRewardList = Skill.CreateCombinedRewardList(InteractionFlagLevelCapList, AdvancementHintTableKey, AdvancementHintTableValue, RewardList, ReportTableKey, ReportTableValue);
         }
@@ -59,9 +59,9 @@ namespace PgJsonObjects
         public string Name { get { return GetString(44); } }
         public IPgSkill ParentSkill { get { return GetObject(48, ref _ParentSkill, PgSkill.CreateNew); } } private IPgSkill _ParentSkill;
         public List<SkillCategory> TSysCategoryList { get { return GetEnumList(52, ref _TSysCategoryList); } } private List<SkillCategory> _TSysCategoryList;
+        protected override List<string> FieldTableOrder { get { return GetStringList(56, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
-        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

@@ -81,6 +81,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddObject(Gods as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
@@ -89,8 +90,9 @@ namespace PgJsonObjects
             AddObject(Plot as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
             AddObject(Stories as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
             AddObject(GuideProgram as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 28, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 28, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 32, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion
