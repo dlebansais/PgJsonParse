@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgLoreBook(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 26;
+            offset += 30;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -31,5 +31,8 @@ namespace PgJsonObjects
         public string Text { get { return GetString(24); } }
         public bool IsClientLocal { get { return RawIsClientLocal.HasValue ? RawIsClientLocal.Value : false; } }
         public bool? RawIsClientLocal { get { return GetBool(28, 0); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

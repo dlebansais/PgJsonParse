@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgDrinkEffectServerInfoEffect : GenericPgObject<PgDrinkEffectServerInfoEffect>, IPgServerInfoEffect, IPgDrinkEffectServerInfoEffect
     {
@@ -22,5 +24,8 @@
         public int? RawDrinkATValue { get { return GetInt(4); } }
         public int AlcoholPowerValue { get { return RawAlcoholPowerValue.HasValue ? RawAlcoholPowerValue.Value : 0; } }
         public int? RawAlcoholPowerValue { get { return GetInt(8); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

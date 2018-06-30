@@ -29,5 +29,8 @@ namespace PgJsonObjects
         public List<DoTSpecialRule> SpecialRuleList { get { return GetEnumList(16, ref _SpecialRuleList); } } private List<DoTSpecialRule> _SpecialRuleList;
         public string RawPreface { get { return GetString(20); } }
         public DamageType DamageType { get { return GetEnum<DamageType>(24); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

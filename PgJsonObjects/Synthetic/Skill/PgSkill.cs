@@ -60,5 +60,8 @@ namespace PgJsonObjects
         public IPgSkill ParentSkill { get { return GetObject(48, ref _ParentSkill, PgSkill.CreateNew); } } private IPgSkill _ParentSkill;
         public List<SkillCategory> TSysCategoryList { get { return GetEnumList(52, ref _TSysCategoryList); } } private List<SkillCategory> _TSysCategoryList;
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

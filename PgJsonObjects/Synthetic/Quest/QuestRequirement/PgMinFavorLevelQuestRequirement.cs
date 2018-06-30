@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgMinFavorLevelQuestRequirement : GenericPgObject<PgMinFavorLevelQuestRequirement>, IPgMinFavorLevelQuestRequirement
     {
@@ -22,5 +24,8 @@
         public bool IsEmpty { get { return RawIsEmpty.HasValue && RawIsEmpty.Value; } }
         public bool? RawIsEmpty { get { return GetBool(12, 0); } }
         public Favor FavorLevel { get { return GetEnum<Favor>(14); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

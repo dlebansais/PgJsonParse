@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAIAbilitySet : GenericPgObject<PgAIAbilitySet>, IPgAIAbilitySet
     {
@@ -690,5 +692,8 @@
         public IPgAIAbility BearUltra_Pet4 { get { return GetAbilityObject(666); } }
         public IPgAIAbility BearUltra_Pet5 { get { return GetAbilityObject(667); } }
         public IPgAIAbility BearUltra_Pet6 { get { return GetAbilityObject(668); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

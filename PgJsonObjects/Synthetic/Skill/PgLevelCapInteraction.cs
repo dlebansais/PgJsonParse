@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgLevelCapInteraction : GenericPgObject<PgLevelCapInteraction>, IPgLevelCapInteraction
     {
@@ -23,5 +25,8 @@
         public int Level { get { return RawLevel.Value; } }
         public int? RawLevel { get { return GetInt(8); } }
         public IPgSkill Link { get { return GetObject(12, ref _Link, PgSkill.CreateNew); } } private IPgSkill _Link;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

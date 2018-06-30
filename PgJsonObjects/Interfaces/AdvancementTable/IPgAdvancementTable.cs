@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAdvancementTable
+    public interface IPgAdvancementTable : IJsonKey, IObjectContentGenerator
     {
         string InternalName { get; }
     }

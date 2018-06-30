@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgIntervalServerInfoEffect : GenericPgObject<PgIntervalServerInfoEffect>, IPgServerInfoEffect, IPgIntervalServerInfoEffect
     {
@@ -22,5 +24,8 @@
         public int? RawLowValue { get { return GetInt(4); } }
         public int HighValue { get { return RawHighValue.HasValue ? RawHighValue.Value : 0; } }
         public int? RawHighValue { get { return GetInt(8); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

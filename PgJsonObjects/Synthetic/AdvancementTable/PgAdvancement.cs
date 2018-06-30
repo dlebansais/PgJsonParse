@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAdvancement : GenericPgObject<PgAdvancement>, IPgAdvancement
     {
@@ -142,5 +144,8 @@
         public double? RawShopHiringNumFree { get { return GetDouble(244); } }
         public double CriticalHitDamage { get { return RawCriticalHitDamage.HasValue ? RawCriticalHitDamage.Value : 0; } }
         public double? RawCriticalHitDamage { get { return GetDouble(248); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

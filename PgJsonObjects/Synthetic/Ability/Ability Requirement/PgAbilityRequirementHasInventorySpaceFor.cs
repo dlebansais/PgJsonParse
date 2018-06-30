@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAbilityRequirementHasInventorySpaceFor: GenericPgObject<PgAbilityRequirementHasInventorySpaceFor>, IPgAbilityRequirementHasInventorySpaceFor
     {
@@ -19,5 +21,8 @@
 
         public override string Key { get { return GetString(4); } }
         public IPgItem Item { get { return GetObject(8, ref _Item, PgItem.CreateNew); } } private IPgItem _Item;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

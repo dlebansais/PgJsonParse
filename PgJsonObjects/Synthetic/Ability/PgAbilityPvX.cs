@@ -55,5 +55,8 @@ namespace PgJsonObjects
         public double RageCostMod { get { return RawRageCostMod.HasValue ? RawRageCostMod.Value : 0; } }
         public double? RawRageCostMod { get { return GetDouble(72); } }
         public List<PreEffect> SelfPreEffectList { get { return GetEnumList(76, ref _SelfPreEffectList); } } private List<PreEffect> _SelfPreEffectList;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

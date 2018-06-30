@@ -39,7 +39,7 @@ namespace PgJsonObjects
         #endregion
     }
 
-    public abstract class GenericJsonObject<T>: SerializableJsonObject, IGenericJsonObject
+    public abstract class GenericJsonObject<T>: SerializableJsonObject, IGenericJsonObject, IObjectContentGenerator
         where T: class
     {
         #region Implementation of IBackLinkable
@@ -111,16 +111,19 @@ namespace PgJsonObjects
 
         public virtual void ListAllObjectContent(JsonGenerator Generator)
         {
-            foreach (string ParserKey in FieldTableOrder)
+            foreach (string ParserKey in GeneratorFieldTableOrder)
                 ListObjectContent(Generator, ParserKey);
         }
 
         public virtual void ListObjectContent(JsonGenerator Generator, string ParserKey)
         {
-            if (!FieldTable.ContainsKey(ParserKey))
+            if (!GeneratorFieldTable.ContainsKey(ParserKey))
                 ParserKey = null;
 
-            FieldParser Parser = FieldTable[ParserKey];
+            if (ParserKey == null)
+                ParserKey = null;
+
+            FieldParser Parser = GeneratorFieldTable[ParserKey];
 
             IObjectContentGenerator Subitem;
             List<int> IntegerList;
@@ -228,10 +231,13 @@ namespace PgJsonObjects
             else if (openWithNullKey)
                 Generator.CloseObject();
         }
+
+        protected Dictionary<string, FieldParser> GeneratorFieldTable { get { return FieldTable; } }
+        protected List<string> GeneratorFieldTableOrder { get { return FieldTableOrder; } }
         #endregion
 
         #region Implementation of IJsonKey
-        public string Key { get; private set; }
+        public string Key { get; protected set; }
         #endregion
 
         #region Implementation of IIndexableObject

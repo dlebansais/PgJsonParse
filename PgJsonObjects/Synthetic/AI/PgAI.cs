@@ -1,11 +1,13 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAI : MainPgObject<PgAI>, IPgAI
     {
         public PgAI(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 14;
+            offset += 18;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -27,5 +29,8 @@
         public bool? RawIsUncontrolledPet { get { return GetBool(16, 2); } }
         public bool? RawIsStationary { get { return GetBool(16, 4); } }
         public bool? RawIsServerDriven { get { return GetBool(16, 6); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

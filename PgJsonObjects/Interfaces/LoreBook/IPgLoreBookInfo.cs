@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgLoreBookInfo
+    public interface IPgLoreBookInfo : IJsonKey, IObjectContentGenerator
     {
         IPgLoreBookInfoCategory Gods { get; }
         IPgLoreBookInfoCategory Misc { get; }

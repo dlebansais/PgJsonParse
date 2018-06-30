@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAbilityRequirementGardenPlantMax: GenericPgObject<PgAbilityRequirementGardenPlantMax>, IPgAbilityRequirementGardenPlantMax
     {
@@ -21,5 +23,8 @@
         public int Max { get { return RawMax.HasValue ? RawMax.Value : 0; } }
         public int? RawMax { get { return GetInt(8); } }
         public AbilityTypeTag TypeTag { get { return GetEnum<AbilityTypeTag>(12); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

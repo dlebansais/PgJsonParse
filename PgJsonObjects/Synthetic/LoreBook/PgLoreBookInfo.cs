@@ -1,11 +1,13 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgLoreBookInfo : MainPgObject<PgLoreBookInfo>, IPgLoreBookInfo
     {
         public PgLoreBookInfo(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 24;
+            offset += 28;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -26,5 +28,8 @@
         public IPgLoreBookInfoCategory Plot { get { return GetObject(16, ref _Plot, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _Plot;
         public IPgLoreBookInfoCategory Stories { get { return GetObject(20, ref _Stories, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _Stories;
         public IPgLoreBookInfoCategory GuideProgram { get { return GetObject(24, ref _GuideProgram, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _GuideProgram;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

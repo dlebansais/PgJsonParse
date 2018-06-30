@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgQuestCompletedQuestRequirement : GenericPgObject<PgQuestCompletedQuestRequirement>, IPgQuestCompletedQuestRequirement
     {
@@ -19,5 +21,8 @@
 
         public override string Key { get { return GetString(4); } }
         public QuestCollection QuestList { get { return GetObjectList(8, ref _QuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _QuestList;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

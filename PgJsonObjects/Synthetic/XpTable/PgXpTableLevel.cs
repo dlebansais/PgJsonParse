@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgXpTableLevel : GenericPgObject<PgXpTableLevel>, IPgXpTableLevel
     {
@@ -24,5 +26,8 @@
         public int? RawXp { get { return GetInt(8); } }
         public int TotalXp { get { return RawTotalXp.Value; } }
         public int? RawTotalXp { get { return GetInt(12); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

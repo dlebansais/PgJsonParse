@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgRecipeSource
+    public interface IPgRecipeSource : IJsonKey, IObjectContentGenerator
     {
         IPgRecipe ConnectedRecipe { get; }
         IPgSkill SkillTypeId { get; }

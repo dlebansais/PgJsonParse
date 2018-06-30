@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgItem
+    public interface IPgItem : IJsonKey, IObjectContentGenerator
     {
         IPgAbility BestowAbility { get; }
         IPgQuest BestowQuest { get; }
@@ -65,6 +65,5 @@ namespace PgJsonObjects
         int? RawBestowLoreBook { get; }
         IPgLoreBook ConnectedLoreBook { get; }
         List<string> KeywordValueList { get; }
-        string Key { get; }
     }
 }

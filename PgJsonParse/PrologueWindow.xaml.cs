@@ -1090,7 +1090,7 @@ namespace PgJsonParse
                 System.Collections.ICollection PgObjectList = definition.PgObjectList;
                 System.Collections.ICollection VerifiedObjectList = ObjectList.UseJson ? JsonObjectList : PgObjectList;
 
-                if (!FileParser.Verify(FilePath, VerifiedObjectList, definition.LoadAsArray, definition.UseJavaFormat))
+                if (ObjectList.Verify && !FileParser.Verify(FilePath, VerifiedObjectList, definition.LoadAsArray, definition.LoadAsObject, definition.UseJavaFormat))
                     break;
             }
 
@@ -1184,7 +1184,7 @@ namespace PgJsonParse
                 IParser FileParser = definition.FileParser;
                 IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
                 Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
-                if (!FileParser.LoadRaw(FilePath, ObjectList, definition.LoadAsArray, errorInfo))
+                if (!FileParser.LoadRaw(FilePath, ObjectList, definition.LoadAsArray, definition.LoadAsObject, errorInfo))
                     return false;
 
                 ObjectTable.Clear();

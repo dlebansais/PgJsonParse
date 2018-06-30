@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgServerInfo : GenericPgObject<PgServerInfo>, IPgServerInfo
     {
@@ -24,5 +26,8 @@
         public int? RawNumItemsToGive { get { return GetInt(12); } }
         public AbilityRequirementCollection OtherRequirementList { get { return GetObjectList(16, ref _OtherRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OtherRequirementList;
         public ItemRequiredHotspot RequiredHotspot { get { return GetEnum<ItemRequiredHotspot>(20); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

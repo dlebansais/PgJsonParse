@@ -1,11 +1,13 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgStorageVault : MainPgObject<PgStorageVault>, IPgStorageVault
     {
         public PgStorageVault(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 30;
+            offset += 34;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -32,5 +34,8 @@
         public MapAreaName Grouping { get { return GetEnum<MapAreaName>(30); } }
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
         public bool? RawHasAssociatedNpc { get { return GetBool(32, 0); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

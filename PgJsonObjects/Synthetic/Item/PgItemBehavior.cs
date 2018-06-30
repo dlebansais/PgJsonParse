@@ -29,5 +29,8 @@ namespace PgJsonObjects
         public double UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
         public double? RawUseDelay { get { return GetDouble(20); } }
         public ItemUseVerb UseVerb { get { return GetEnum<ItemUseVerb>(24); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

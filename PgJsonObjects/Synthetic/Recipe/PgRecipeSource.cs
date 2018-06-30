@@ -1,11 +1,13 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgRecipeSource : MainPgObject<PgRecipeSource>, IPgRecipeSource
     {
         public PgRecipeSource(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 26;
+            offset += 30;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -30,5 +32,8 @@
         public IPgEffect ConnectedEffect { get { return GetObject(20, ref _ConnectedEffect, PgEffect.CreateNew); } } private IPgEffect _ConnectedEffect;
         public IPgQuest ConnectedQuest { get { return GetObject(24, ref _ConnectedQuest, PgQuest.CreateNew); } } private IPgQuest _ConnectedQuest;
         public SourceTypes Type { get { return GetEnum<SourceTypes>(28); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

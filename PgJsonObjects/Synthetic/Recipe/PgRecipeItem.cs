@@ -36,5 +36,8 @@ namespace PgJsonObjects
         public double? RawDurabilityConsumed { get { return GetDouble(36); } }
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
         public bool? RawAttuneToCrafter { get { return GetBool(40, 0); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

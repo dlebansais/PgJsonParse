@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgTemporaryServerInfoEffect : GenericPgObject<PgTemporaryServerInfoEffect>, IPgServerInfoEffect, IPgTemporaryServerInfoEffect
     {
@@ -23,5 +25,8 @@
         public float? RawAttributeEffect { get { return (float)GetDouble(12); } }
         public int Duration { get { return RawDuration.HasValue ? RawDuration.Value : 0; } }
         public int? RawDuration { get { return GetInt(16); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

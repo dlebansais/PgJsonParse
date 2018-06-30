@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAbilityServerInfoEffect : GenericPgObject<PgAbilityServerInfoEffect>, IPgServerInfoEffect, IPgAbilityServerInfoEffect
     {
@@ -19,5 +21,8 @@
 
         public override string Key { get { return null; } }
         public IPgAbility BestowAbility { get { return GetObject(4, ref _BestowAbility, PgAbility.CreateNew); } } private IPgAbility _BestowAbility;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

@@ -21,5 +21,8 @@ namespace PgJsonObjects
 
         public override string Key { get { return GetString(4); } }
         public List<Race> AllowedRaceList { get { return GetEnumList(8, ref _AllowedRaceList); } } private List<Race> _AllowedRaceList;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

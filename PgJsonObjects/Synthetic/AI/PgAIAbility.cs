@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAIAbility : GenericPgObject<PgAIAbility>, IPgAIAbility
     {
@@ -25,5 +27,8 @@
         public int? RawMaxRange { get { return GetInt(20); } }
         public int? RawCueValue { get { return GetInt(24); } }
         public AbilityCue Cue { get { return GetEnum<AbilityCue>(28); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

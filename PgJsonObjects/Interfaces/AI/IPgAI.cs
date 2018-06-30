@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAI
+    public interface IPgAI : IJsonKey, IObjectContentGenerator
     {
         IPgAIAbilitySet Abilities { get; }
         string Comment { get; }

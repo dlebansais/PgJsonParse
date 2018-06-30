@@ -9,11 +9,11 @@ namespace PgJsonObjects
         public QuestCompletedQuestRequirement(OtherRequirementType OtherRequirementType, List<string> RawRequirementQuestList)
             : base(OtherRequirementType)
         {
-            this.RawRequirementQuestList = RawRequirementQuestList;
+            RequirementQuestList = RawRequirementQuestList;
         }
 
         public QuestCollection QuestList { get; private set; } = new QuestCollection();
-        private List<string> RawRequirementQuestList;
+        private List<string> RequirementQuestList;
         private bool IsRawRequirementQuestParsed;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
@@ -22,7 +22,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
             { "Quest", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RawRequirementQuestList.Count > 0 ? RawRequirementQuestList[0] : null } },
+                GetString = () => QuestList.Count > 0 ? QuestList[0].InternalName : null } },
         }; } }
 
         #region Indexing
@@ -51,15 +51,15 @@ namespace PgJsonObjects
                 IsRawRequirementQuestParsed = true;
 
                 int Index = 0;
-                while (Index < RawRequirementQuestList.Count)
+                while (Index < RequirementQuestList.Count)
                 {
                     IPgQuest RequirementQuest = null;
                     bool IsParsed = false;
-                    RequirementQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawRequirementQuestList[0], RequirementQuest, ref IsParsed, ref IsConnected, Parent as IBackLinkable);
+                    RequirementQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RequirementQuestList[0], RequirementQuest, ref IsParsed, ref IsConnected, Parent as IBackLinkable);
 
                     if (RequirementQuest != null)
                     {
-                        RawRequirementQuestList.RemoveAt(0);
+                        RequirementQuestList.RemoveAt(0);
                         QuestList.Add(RequirementQuest as Quest);
                     }
                     else

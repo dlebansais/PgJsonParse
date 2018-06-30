@@ -12,13 +12,14 @@ namespace PgJsonObjects
     public interface IParser
     {
         bool VerifyParse { get; set; }
-        bool LoadRaw(string FilePath, ICollection ObjectList, bool loadAsArray, ParseErrorInfo ErrorInfo);
+        bool LoadRaw(string FilePath, ICollection ObjectList, bool loadAsArray, bool loadAsObject, ParseErrorInfo ErrorInfo);
         void CreateIndex(string IndexFilePath, IDictionary<string, IGenericJsonObject> ObjectTable);
-        bool Verify(string FilePath, ICollection GenericObjectList, bool loadAsArray, bool useJavaFormat);
+        bool Verify(string FilePath, ICollection GenericObjectList, bool loadAsArray, bool loadAsObject, bool useJavaFormat);
     }
 
     public class Parser<T, TI> : IParser
         where T : IJsonParsableObject, IJsonKey, IObjectContentGenerator, TI, new()
+        where TI: IJsonKey, IObjectContentGenerator
     {
         #region Init
         public Parser()
@@ -32,10 +33,18 @@ namespace PgJsonObjects
         #endregion
 
         #region Client Interface
-        public bool LoadRaw(string FilePath, ICollection GenericObjectList, bool loadAsArray, ParseErrorInfo ErrorInfo)
+        public bool LoadRaw(string FilePath, ICollection GenericObjectList, bool loadAsArray, bool loadAsObject, ParseErrorInfo ErrorInfo)
         {
             ICollection<TI> ObjectList = GenericObjectList as ICollection<TI>;
             ObjectList.Clear();
+
+            if (typeof(TI) == typeof(IPgAttribute))
+            {
+                IPgAttribute CockatriceDebuffCostDelta = new Attribute("COCKATRICEDEBUFF_COST_DELTA");
+                ObjectList.Add((TI)CockatriceDebuffCostDelta);
+                IPgAttribute LamiaDebuffCostDelta = new Attribute("LAMIADEBUFF_COST_DELTA");
+                ObjectList.Add((TI)LamiaDebuffCostDelta);
+            }
 
             bool Success = true;
 
@@ -79,14 +88,14 @@ namespace PgJsonObjects
                         foreach (KeyValuePair<string, IJsonValue> EntryRaw in Entries)
                             if (EntryRaw.Key != null && EntryRaw.Key.Length > 0)
                             {
-                                if (loadAsArray && EntryRaw.Value is JsonArray ArrayValue)
+                                if ((loadAsArray || loadAsObject) && EntryRaw.Value is JsonArray ArrayValue)
                                 {
                                     int Index = 0;
                                     foreach (object ObjectValue in ArrayValue)
                                         if (ObjectValue is JsonObject ObjectFields)
                                         {
                                             T NewSingleObject = new T();
-                                            NewSingleObject.Init(EntryRaw.Key, Index++, ObjectFields, loadAsArray, ErrorInfo);
+                                            NewSingleObject.Init(EntryRaw.Key, Index++, ObjectFields, (loadAsArray || loadAsObject), ErrorInfo);
 
                                             ObjectList.Add(NewSingleObject);
                                         }
@@ -99,7 +108,7 @@ namespace PgJsonObjects
                                 else
                                 {
                                     T NewObject = new T();
-                                    NewObject.Init(EntryRaw.Key, 0, EntryRaw.Value, loadAsArray, ErrorInfo);
+                                    NewObject.Init(EntryRaw.Key, 0, EntryRaw.Value, (loadAsArray || loadAsObject), ErrorInfo);
 
                                     ObjectList.Add(NewObject);
                                 }
@@ -133,7 +142,7 @@ namespace PgJsonObjects
             return Success;
         }
 
-        public bool Verify(string FilePath, ICollection GenericObjectList, bool loadAsArray, bool useJavaFormat)
+        public bool Verify(string FilePath, ICollection GenericObjectList, bool loadAsArray, bool loadAsObject, bool useJavaFormat)
         {
             if (!VerifyParse)
                 return true;
@@ -149,13 +158,14 @@ namespace PgJsonObjects
             {
                 using (JsonGenerator Generator = new JsonGenerator(useJavaFormat))
                 {
-                    Generator.Begin();
-
-                    if (loadAsArray)
+                    if (loadAsArray || loadAsObject)
                     {
+                        if (loadAsObject)
+                            Generator.Begin();
+
                         string LastRootKey = null;
 
-                        foreach (T Item in ObjectList)
+                        foreach (TI Item in ObjectList)
                         {
                             string Key = Item.Key;
                             string[] Splitted = Key.Split('#');
@@ -180,14 +190,29 @@ namespace PgJsonObjects
 
                         if (LastRootKey != null)
                             Generator.CloseArray();
+
+                        if (loadAsObject)
+                            Generator.End();
                     }
                     else
                     {
-                        foreach (T Item in ObjectList)
-                            Item.GenerateObjectContent(Generator, true, false);
-                    }
+                        Generator.Begin();
 
-                    Generator.End();
+                        foreach (T Item in ObjectList)
+                        {
+                            if (typeof(TI) == typeof(IPgAttribute))
+                            {
+                                if (Item.Key == "COCKATRICEDEBUFF_COST_DELTA")
+                                    continue;
+                                if (Item.Key == "LAMIADEBUFF_COST_DELTA")
+                                    continue;
+                            }
+
+                            Item.GenerateObjectContent(Generator, true, false);
+                        }
+
+                        Generator.End();
+                    }
 
                     //int FirstDiff = CompareContent(SortedContent, Generator.Content);
                     int FirstDiff = CompareContent(Content, Generator.Content);

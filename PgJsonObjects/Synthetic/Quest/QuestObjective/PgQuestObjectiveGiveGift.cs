@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgQuestObjectiveGiveGift : GenericPgObject<PgQuestObjectiveGiveGift>, IPgQuestObjectiveGiveGift
     {
@@ -22,5 +24,8 @@
         public float? RawMinFavorReceived { get { return (float)GetDouble(4); } }
         public float MaxFavorReceived { get { return RawMaxFavorReceived.HasValue ? RawMaxFavorReceived.Value : 0; } }
         public float? RawMaxFavorReceived { get { return (float)GetDouble(8); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

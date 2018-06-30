@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 150;
+            offset += 184;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -96,11 +96,263 @@ namespace PgJsonObjects
         public ConsumedItems ConsumedItems { get { return GetEnum<ConsumedItems>(142); } }
         public IPgAbility AbilityGroup { get { return GetObject(144, ref _AbilityGroup, CreateNew); } } private IPgAbility _AbilityGroup;
         public IPgItem ConsumedItemLink { get { return GetObject(148, ref _ConsumedItemLink, PgItem.CreateNew); } } private IPgItem _ConsumedItemLink;
+        public AttributeCollection AttributesThatDeltaAmmoStickChanceList { get { return GetObjectList(152, ref _AttributesThatDeltaAmmoStickChanceList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaAmmoStickChanceList;
+        public AttributeCollection AttributesThatDeltaDelayLoopTimeList { get { return GetObjectList(156, ref _AttributesThatDeltaDelayLoopTimeList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaDelayLoopTimeList;
+        public AttributeCollection AttributesThatDeltaPowerCostList { get { return GetObjectList(160, ref _AttributesThatDeltaPowerCostList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaPowerCostList;
+        public AttributeCollection AttributesThatDeltaResetTimeList { get { return GetObjectList(164, ref _AttributesThatDeltaResetTimeList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaResetTimeList;
+        public AttributeCollection AttributesThatModPowerCostList { get { return GetObjectList(168, ref _AttributesThatModPowerCostList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatModPowerCostList;
+        public string ConsumedItemKeyword { get { return GetString(172); } }
         //public List<GenericSource> SourceList { get { return GetObjectList(148, ref _SourceList); } } private List<GenericSource> _SourceList;
         public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
-        public bool? RawWorksWhileFalling { get { return GetBool(152, 0); } }
+        public bool? RawWorksWhileFalling { get { return GetBool(176, 0); } }
         public bool IgnoreEffectErrors { get { return RawIgnoreEffectErrors.HasValue && RawIgnoreEffectErrors.Value; } }
-        public bool? RawIgnoreEffectErrors { get { return GetBool(152, 2); } }
+        public bool? RawIgnoreEffectErrors { get { return GetBool(176, 2); } }
+        public bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty { get { return GetBool(176, 4).Value; } }
+        public bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty { get { return GetBool(176, 6).Value; } }
+        public bool RawAttributesThatDeltaPowerCostListIsEmpty { get { return GetBool(176, 8).Value; } }
+        public bool RawAttributesThatDeltaResetTimeListIsEmpty { get { return GetBool(176, 10).Value; } }
+        public bool RawAttributesThatModPowerCostListIsEmpty { get { return GetBool(176, 12).Value; } }
+        public PowerSkill RawSkill { get { return GetEnum<PowerSkill>(178); } }
+        public AbilityRequirementCollection SpecialCasterRequirementList { get { return GetObjectList(180, ref _SpecialCasterRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _SpecialCasterRequirementList;
+        protected override List<string> FieldTableOrder { get { return GetStringList(184, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public ConsumedItem ConsumedItem { get; private set; }
+
+        #region Parsing
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "AbilityGroup", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => AbilityGroup.Name } },
+            { "Animation", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<AbilityAnimation>.ToString(Animation, null, AbilityAnimation.Internal_None) } },
+            { "AttributesThatDeltaAmmoStickChance", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = GetAttributesThatDeltaAmmoStickChance,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty } },
+            { "AttributesThatDeltaDelayLoopTime", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = GetAttributesThatDeltaDelayLoopTime,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty } },
+            { "AttributesThatDeltaPowerCost", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = GetAttributesThatDeltaPowerCost,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty } },
+            { "AttributesThatDeltaResetTime", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = GetAttributesThatDeltaResetTime,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty } },
+            { "AttributesThatModPowerCost", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = GetAttributesThatModPowerCost,
+                GetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty } },
+            { "CanBeOnSidebar", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawCanBeOnSidebar } },
+            { "CanSuppressMonsterShout", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawCanSuppressMonsterShout } },
+            { "CanTargetUntargetableEnemies", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawCanTargetUntargetableEnemies } },
+            { "CausesOfDeath", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<Deaths>.ToStringList(CausesOfDeathList) } },
+            { "Costs", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => CostList } },
+            { "CombatRefreshBaseAmount", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawCombatRefreshBaseAmount } },
+            { "CompatibleSkills", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = GetCompatibleSkills } },
+            { "ConsumedItemChance", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawConsumedItemChance } },
+            { "ConsumedItemChanceToStickInCorpse", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawConsumedItemChanceToStickInCorpse } },
+            { "ConsumedItemCount", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawConsumedItemCount } },
+            { "ConsumedItemKeyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => ConsumedItemKeyword } },
+            { "DamageType", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<DamageType>.ToString(DamageType, null, DamageType.Internal_None, DamageType.Internal_Empty) } },
+            { "DelayLoopIsAbortedIfAttacked", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawDelayLoopIsAbortedIfAttacked } },
+            { "DelayLoopMessage", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => DelayLoopMessage } },
+            { "DelayLoopTime", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawDelayLoopTime } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "EffectKeywordsIndicatingEnabled", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<AbilityIndicatingEnabled>.ToSingleStringList(EffectKeywordsIndicatingEnabled) } },
+            { "ExtraKeywordsForTooltips", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<TooltipsExtraKeywords>.ToSingleStringList(ExtraKeywordsForTooltips) } },
+            { "IconID", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawIconId } },
+            { "IgnoreEffectErrors", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIgnoreEffectErrors } },
+            { "InternalAbility", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawInternalAbility } },
+            { "InternalName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => InternalName } },
+            { "IsHarmless", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsHarmless } },
+            { "ItemKeywordReqErrorMessage", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => ItemKeywordReqErrorMessage } },
+            { "ItemKeywordReqs", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<AbilityItemKeyword>.ToStringList(ItemKeywordReqList, TextMaps.AbilityItemKeywordStringMap) } },
+            { "Keywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<AbilityKeyword>.ToStringList(KeywordList) } },
+            { "Level", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawLevel } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Name } },
+            { "PetTypeTagReq", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<AbilityPetType>.ToString(PetTypeTagReq, null, AbilityPetType.Internal_None) } },
+            { "PetTypeTagReqMax", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawPetTypeTagReqMax } },
+            { "Prerequisite", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Prerequisite != null ? Prerequisite.Name : null } },
+            { "Projectile", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<AbilityProjectile>.ToString(Projectile, null, AbilityProjectile.Internal_None) } },
+            { "PvE", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => PvE as IObjectContentGenerator} },
+            { "PvP", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => PvP as IObjectContentGenerator } },
+            { "ResetTime", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawResetTime } },
+            { "SelfParticle", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => SelfParticle } },
+            { "SharesResetTimerWith", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => SharesResetTimerWith != null ? SharesResetTimerWith.Name : null } },
+            { "Skill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
+            { "SpecialCasterRequirements", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => SpecialCasterRequirementList,
+                SimplifyArray = true } },
+            { "SpecialCasterRequirementsErrorMessage", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RawSpecialCasterRequirementsErrorMessage } },
+            { "SpecialInfo", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => SpecialInfo } },
+            { "SpecialTargetingTypeReq", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawSpecialTargetingTypeReq } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<AbilityTarget>.ToString(Target, null, AbilityTarget.Internal_None) } },
+            { "TargetEffectKeywordReq", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<TargetEffectKeyword>.ToString(TargetEffectKeywordReq, null, TargetEffectKeyword.Internal_None) } },
+            { "TargetParticle", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<AbilityTargetParticle>.ToString(TargetParticle, null, AbilityTargetParticle.Internal_None) } },
+            { "UpgradeOf", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => UpgradeOf != null ? UpgradeOf.Name : null } },
+            { "WorksInCombat", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawWorksInCombat } },
+            { "WorksUnderwater", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawWorksUnderwater } },
+            { "WorksWhileFalling", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawWorksWhileFalling } },
+        }; } }
+
+        private List<string> GetAttributesThatDeltaAmmoStickChance()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (IPgAttribute Item in AttributesThatDeltaAmmoStickChanceList)
+                Result.Add(Item.Key);
+
+            return Result;
+        }
+
+        private List<string> GetAttributesThatDeltaDelayLoopTime()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (IPgAttribute Item in AttributesThatDeltaDelayLoopTimeList)
+                Result.Add(Item.Key);
+
+            return Result;
+        }
+
+        private List<string> GetAttributesThatDeltaPowerCost()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (IPgAttribute Item in AttributesThatDeltaPowerCostList)
+                Result.Add(Item.Key);
+
+            return Result;
+        }
+
+        private List<string> GetAttributesThatDeltaResetTime()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (IPgAttribute Item in AttributesThatDeltaResetTimeList)
+                Result.Add(Item.Key);
+
+            return Result;
+        }
+
+        private List<string> GetAttributesThatModPowerCost()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (IPgAttribute Item in AttributesThatModPowerCostList)
+                Result.Add(Item.Key);
+
+            return Result;
+        }
+
+        private List<string> GetCompatibleSkills()
+        {
+            List<string> Result = new List<string>();
+            if (CompatibleSkill != PowerSkill.Internal_None)
+                Result.Add(StringToEnumConversion<PowerSkill>.ToString(CompatibleSkill));
+
+            return Result;
+        }
+        #endregion
     }
 }

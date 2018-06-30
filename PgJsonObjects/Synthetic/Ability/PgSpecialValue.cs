@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgSpecialValue : GenericPgObject<PgSpecialValue>, IPgSpecialValue
     {
@@ -26,5 +28,8 @@
         public bool? RawDisplayAsPercent { get { return GetBool(16, 0); } }
         public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
         public bool? RawSkipIfZero { get { return GetBool(16, 2); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

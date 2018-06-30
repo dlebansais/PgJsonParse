@@ -85,5 +85,8 @@ namespace PgJsonObjects
         public int? RawBestowLoreBook { get { return GetInt(128); } }
         public IPgLoreBook ConnectedLoreBook { get { return GetObject(132, ref _ConnectedLoreBook, PgLoreBook.CreateNew); } } private IPgLoreBook _ConnectedLoreBook;
         public List<string> KeywordValueList { get { return GetStringList(136, ref _KeywordValueList); } } private List<string> _KeywordValueList;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

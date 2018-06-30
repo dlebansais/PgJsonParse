@@ -51,5 +51,8 @@ namespace PgJsonObjects
                 return Result.Trim();
             }
         }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

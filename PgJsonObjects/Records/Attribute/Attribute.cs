@@ -6,6 +6,15 @@ namespace PgJsonObjects
 {
     public class Attribute : MainJsonObject<Attribute>, IPgAttribute
     {
+        public Attribute()
+        {
+        }
+
+        public Attribute(string key)
+        {
+            Key = key;
+        }
+
         #region Direct Properties
         public string Label { get; private set; }
         public List<int> IconIdList { get; } = new List<int>();
@@ -154,7 +163,8 @@ namespace PgJsonObjects
             }
 
             if (ErrorInfo != null)
-                ErrorInfo.AddMissingKey(RawAttributeName);
+                if (RawAttributeName != "COCKATRICEDEBUFF_COST_DELTA" && RawAttributeName != "LAMIADEBUFF_COST_DELTA")
+                    ErrorInfo.AddMissingKey(RawAttributeName);
 
             return null;
         }

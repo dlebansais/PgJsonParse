@@ -2,9 +2,8 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgPower
+    public interface IPgPower : IJsonKey, IObjectContentGenerator
     {
-        string Key { get; }
         string Prefix { get; }
         string Suffix { get; }
         List<ItemSlot> SlotList { get; }

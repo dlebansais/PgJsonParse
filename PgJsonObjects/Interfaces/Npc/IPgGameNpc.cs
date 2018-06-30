@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgGameNpc
+    public interface IPgGameNpc : IJsonKey, IObjectContentGenerator
     {
         string Name { get; }
         string AreaFriendlyName { get; }

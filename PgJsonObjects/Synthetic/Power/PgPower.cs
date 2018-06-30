@@ -32,5 +32,8 @@ namespace PgJsonObjects
         public PowerTierCollection TierEffectList { get { return GetObjectList(24, ref _TierEffectList, PowerTierCollection.CreateItem, () => new PowerTierCollection()); } } private PowerTierCollection _TierEffectList;
         public int TierOffset { get { return RawTierOffset.HasValue ? RawTierOffset.Value : 0; } }
         public int? RawTierOffset { get { return GetInt(28); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

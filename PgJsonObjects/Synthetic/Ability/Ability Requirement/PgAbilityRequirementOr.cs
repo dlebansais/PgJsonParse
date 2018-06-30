@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAbilityRequirementOr: GenericPgObject<PgAbilityRequirementOr>, IPgAbilityRequirementOr
     {
@@ -20,5 +22,8 @@
         public override string Key { get { return GetString(4); } }
         public AbilityRequirementCollection OrList { get { return GetObjectList(8, ref _OrList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OrList;
         public string ErrorMsg { get { return GetString(12); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

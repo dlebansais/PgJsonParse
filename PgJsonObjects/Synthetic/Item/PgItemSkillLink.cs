@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgItemSkillLink : GenericPgObject<PgItemSkillLink>, IPgItemSkillLink
     {
@@ -22,5 +24,8 @@
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
         public int? RawSkillLevel { get { return GetInt(4); } }
         public IPgSkill Link { get { return GetObject(8, ref _Link, PgSkill.CreateNew); } } private IPgSkill _Link;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

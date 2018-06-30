@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAbilityRequirementIsAdmin: GenericPgObject<PgAbilityRequirementIsAdmin>, IPgAbilityRequirementIsAdmin
     {
@@ -18,5 +20,8 @@
         }
 
         public override string Key { get { return GetString(4); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

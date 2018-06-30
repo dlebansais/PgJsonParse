@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgRunTimeBehaviorRuleSetQuestRequirement : GenericPgObject<PgRunTimeBehaviorRuleSetQuestRequirement>, IPgRunTimeBehaviorRuleSetQuestRequirement
     {
@@ -20,5 +22,8 @@
         public override string Key { get { return GetString(4); } }
         public string RequirementRule { get { return GetString(8); } }
         public string Rule { get { return GetString(12); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

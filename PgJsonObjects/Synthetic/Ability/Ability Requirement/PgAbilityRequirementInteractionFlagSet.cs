@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAbilityRequirementInteractionFlagSet: GenericPgObject<PgAbilityRequirementInteractionFlagSet>, IPgAbilityRequirementInteractionFlagSet
     {
@@ -19,5 +21,8 @@
 
         public override string Key { get { return GetString(4); } }
         public string InteractionFlag { get { return GetString(8); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

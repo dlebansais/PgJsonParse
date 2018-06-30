@@ -167,7 +167,7 @@ namespace PgJsonObjects
                 case QuestObjectiveType.GuildKill:
                 case QuestObjectiveType.DruidKill:
                 case QuestObjectiveType.DruidScripted:
-                    return new QuestObjectiveSimple(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
+                    return new QuestObjectiveSimple(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, InteractionTarget);
 
                 case QuestObjectiveType.ScriptedReceiveItem:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
@@ -193,7 +193,7 @@ namespace PgJsonObjects
             { "Target", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseTarget,
-                GetString = GetTarget } },
+                GetString = () => null } },
             { "Description", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Description = value,
@@ -351,32 +351,6 @@ namespace PgJsonObjects
 
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (Type)");
-        }
-
-        protected string GetTarget()
-        {
-            if (Type == QuestObjectiveType.Kill || Type == QuestObjectiveType.KillElite)
-                return StringToEnumConversion<QuestObjectiveKillTarget>.ToString(KillTarget, KillTargetStringMap);
-
-            else if (Type == QuestObjectiveType.Harvest ||
-                Type == QuestObjectiveType.Collect ||
-                Type == QuestObjectiveType.Have ||
-                Type == QuestObjectiveType.Loot ||
-                Type == QuestObjectiveType.UseItem)
-                return StringToEnumConversion<ItemKeyword>.ToString(ItemTarget);
-
-            else if (Type == QuestObjectiveType.UseAbility)
-                return StringToEnumConversion<AbilityKeyword>.ToString(AbilityTarget);
-
-            else if (Type == QuestObjectiveType.SayInChat ||
-                     Type == QuestObjectiveType.GuildKill ||
-                     Type == QuestObjectiveType.DruidKill ||
-                     Type == QuestObjectiveType.DruidScripted ||
-                     Type == QuestObjectiveType.UniqueSpecial)
-                return InteractionTarget;
-
-            else
-                return null;
         }
 
         private void ParseNumber(int value, ParseErrorInfo ErrorInfo)

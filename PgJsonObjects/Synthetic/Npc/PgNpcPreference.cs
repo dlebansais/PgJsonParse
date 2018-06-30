@@ -30,5 +30,8 @@ namespace PgJsonObjects
         public ItemSlot SlotRequirement { get { return GetEnum<ItemSlot>(24); } }
         public RecipeItemKey RarityRequirement { get { return GetEnum<RecipeItemKey>(26); } }
         public RecipeItemKey MinRarityRequirement { get { return GetEnum<RecipeItemKey>(28); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

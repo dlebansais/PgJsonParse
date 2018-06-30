@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgAbilityRequirementPetCount: GenericPgObject<PgAbilityRequirementPetCount>, IPgAbilityRequirementPetCount
     {
@@ -21,5 +23,8 @@
         public double MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }
         public double? RawMaxCount { get { return GetDouble(8); } }
         public RecipeKeyword PetTypeTag { get { return GetEnum<RecipeKeyword>(12); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

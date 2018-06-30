@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgMinSkillLevelQuestRequirement : GenericPgObject<PgMinSkillLevelQuestRequirement>, IPgMinSkillLevelQuestRequirement
     {
@@ -21,5 +23,8 @@
         public IPgSkill Skill { get { return GetObject(8, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
         public int? RawSkillLevel { get { return GetInt(12); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

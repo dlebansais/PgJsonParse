@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgPowerAttributeLink : GenericPgObject<PgPowerAttributeLink>, IPgPowerAttributeLink
     {
@@ -23,5 +25,8 @@
         public IPgAttribute AttributeLink { get { return GetObject(16, ref _AttributeLink, PgAttribute.CreateNew); } } private IPgAttribute _AttributeLink;
         public IPgSkill SkillLink { get { return GetObject(20, ref _SkillLink, PgSkill.CreateNew); } } private IPgSkill _SkillLink;
         public FloatFormat AttributeEffectFormat { get { return GetEnum<FloatFormat>(24); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

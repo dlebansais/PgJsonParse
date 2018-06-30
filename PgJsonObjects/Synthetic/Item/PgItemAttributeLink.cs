@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgItemAttributeLink : PgItemEffect<PgItemAttributeLink>, IPgItemAttributeLink
     {
@@ -15,5 +17,8 @@
         public override string Key { get { return null; } }
         public float AttributeEffect { get { return (float)GetDouble(4); } }
         public IPgAttribute Link { get { return GetObject(8, ref _Link, PgAttribute.CreateNew); } } private IPgAttribute _Link;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

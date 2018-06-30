@@ -22,7 +22,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
             { "Quest", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RawRequirementQuestList.Count > 0 ? RawRequirementQuestList[0] : null } },
+                GetString = () => QuestList.Count > 0 ? QuestList[0].InternalName : null } },
         }; } }
 
         #region Indexing

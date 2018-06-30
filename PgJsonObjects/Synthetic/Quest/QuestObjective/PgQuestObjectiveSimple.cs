@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgQuestObjectiveSimple : GenericPgObject<PgQuestObjectiveSimple>, IPgQuestObjectiveSimple
     {
@@ -18,5 +20,8 @@
         }
 
         public override string Key { get { return GetString(0); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

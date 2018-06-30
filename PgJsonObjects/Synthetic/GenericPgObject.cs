@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -278,5 +279,147 @@ namespace PgJsonObjects
 
             return Result;
         }
+
+        #region Implementation of IObjectContentGenerator
+        public virtual void GenerateObjectContent(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        {
+            OpenGeneratorKey(Generator, openWithKey, openWithNullKey);
+            ListAllObjectContent(Generator);
+            CloseGeneratorKey(Generator, openWithKey, openWithNullKey);
+        }
+
+        public virtual void OpenGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        {
+            if (Key != null && openWithKey)
+                Generator.OpenObject(Key);
+            else if (openWithNullKey)
+                Generator.OpenObject(null);
+        }
+
+        public virtual void ListAllObjectContent(JsonGenerator Generator)
+        {
+            foreach (string ParserKey in GeneratorFieldTableOrder)
+                ListObjectContent(Generator, ParserKey);
+        }
+
+        public virtual void ListObjectContent(JsonGenerator Generator, string ParserKey)
+        {
+            if (!GeneratorFieldTable.ContainsKey(ParserKey))
+                ParserKey = null;
+
+            FieldParser Parser = GeneratorFieldTable[ParserKey];
+
+            IObjectContentGenerator Subitem;
+            List<int> IntegerList;
+            List<string> StringList;
+
+            switch (Parser.Type)
+            {
+                default:
+                    break;
+
+                case FieldType.Unknown:
+                    break;
+
+                case FieldType.Integer:
+                    Generator.AddInteger(ParserKey, Parser.GetInteger());
+                    break;
+
+                case FieldType.Bool:
+                    Generator.AddBoolean(ParserKey, Parser.GetBool());
+                    break;
+
+                case FieldType.Float:
+                    Generator.AddDouble(ParserKey, Parser.GetFloat());
+                    break;
+
+                case FieldType.String:
+                    Generator.AddString(ParserKey, Parser.GetString());
+                    break;
+
+                case FieldType.Object:
+                    Subitem = Parser.GetObject();
+                    if (Subitem != null)
+                        Subitem.GenerateObjectContent(Generator, true, false);
+                    break;
+
+                case FieldType.SimpleIntegerArray:
+                case FieldType.IntegerArray:
+                    IntegerList = Parser.GetIntegerArray();
+
+                    if (Parser.SimplifyArray && IntegerList.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()))
+                        Generator.AddInteger(ParserKey, IntegerList[0]);
+                    else
+                        Generator.AddIntegerList(ParserKey, IntegerList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
+                    break;
+
+                case FieldType.SimpleStringArray:
+                case FieldType.StringArray:
+                    StringList = Parser.GetStringArray();
+                    if (StringList == null)
+                        StringList = null;
+
+                    if (Parser.SimplifyArray && StringList.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()))
+                        Generator.AddString(ParserKey, StringList[0]);
+                    else
+                        Generator.AddStringList(ParserKey, StringList, Parser.GetArrayIsEmpty != null && Parser.GetArrayIsEmpty());
+                    break;
+
+                case FieldType.ObjectArray:
+                    IList ObjectArray = Parser.GetObjectArray();
+                    bool IsListEmpty;
+                    if (Parser.GetArrayIsEmpty != null)
+                        IsListEmpty = Parser.GetArrayIsEmpty();
+                    else
+                        IsListEmpty = false;
+
+                    if (ObjectArray == null)
+                        ObjectArray = null;
+
+                    if (ObjectArray.Count > 0 || IsListEmpty)
+                    {
+                        if (Parser.SimplifyArray && ObjectArray.Count == 1 && (Parser.GetArrayIsSimple == null || Parser.GetArrayIsSimple()) && ObjectArray[0] is IObjectContentGenerator FirstItem)
+                        {
+                            Generator.OpenObject(ParserKey);
+
+                            FirstItem.GenerateObjectContent(Generator, false, false);
+
+                            Generator.CloseObject();
+                        }
+
+                        else if (IsListEmpty)
+                            Generator.AddEmptyArray(ParserKey);
+
+                        else
+                        {
+                            Generator.OpenArray(ParserKey);
+                            if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
+                                Generator.OpenNestedArray();
+
+                            foreach (IObjectContentGenerator Item in ObjectArray)
+                                Item.GenerateObjectContent(Generator, false, true);
+
+                            if (Parser.GetArrayIsNested != null && Parser.GetArrayIsNested())
+                                Generator.CloseArray();
+                            Generator.CloseArray();
+                        }
+                    }
+                    break;
+            }
+        }
+
+        public virtual void CloseGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
+        {
+            if (Key != null && openWithKey)
+                Generator.CloseObject();
+            else if (openWithNullKey)
+                Generator.CloseObject();
+        }
+
+        private Dictionary<string, FieldParser> GeneratorFieldTable { get { return FieldTable; } }
+        private List<string> GeneratorFieldTableOrder { get { return FieldTableOrder; } }
+        protected abstract Dictionary<string, FieldParser> FieldTable { get; }
+        protected abstract List<string> FieldTableOrder { get; }
+        #endregion
     }
 }

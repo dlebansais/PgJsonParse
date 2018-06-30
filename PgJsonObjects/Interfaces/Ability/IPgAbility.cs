@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgAbility
+    public interface IPgAbility : IJsonKey, IObjectContentGenerator
     {
         AbilityAnimation Animation { get; }
         bool CanBeOnSidebar { get; }
@@ -72,11 +72,24 @@ namespace PgJsonObjects
         ConsumedItems ConsumedItems { get; }
         IPgAbility AbilityGroup { get; }
         IPgItem ConsumedItemLink { get; }
+        AttributeCollection AttributesThatDeltaAmmoStickChanceList { get; }
+        AttributeCollection AttributesThatDeltaDelayLoopTimeList { get; }
+        AttributeCollection AttributesThatDeltaPowerCostList { get; }
+        AttributeCollection AttributesThatDeltaResetTimeList { get; }
+        AttributeCollection AttributesThatModPowerCostList { get; }
+        string ConsumedItemKeyword { get; }
         //List<GenericSource> SourceList { get; }
         bool WorksWhileFalling { get; }
         bool? RawWorksWhileFalling { get; }
         bool IgnoreEffectErrors { get; }
         bool? RawIgnoreEffectErrors { get; }
+        bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty { get; }
+        bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty { get; }
+        bool RawAttributesThatDeltaPowerCostListIsEmpty { get; }
+        bool RawAttributesThatDeltaResetTimeListIsEmpty { get; }
+        bool RawAttributesThatModPowerCostListIsEmpty { get; }
+        PowerSkill RawSkill { get; }
+        AbilityRequirementCollection SpecialCasterRequirementList { get; }
         ConsumedItem ConsumedItem { get; }
     }
 }

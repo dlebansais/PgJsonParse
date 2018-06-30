@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgQuestObjectiveSpecial : GenericPgObject<PgQuestObjectiveSpecial>, IPgQuestObjectiveSpecial
     {
@@ -24,5 +26,8 @@
         public int? RawMaxAmount { get { return GetInt(8); } }
         public string StringParam { get { return GetString(12); } }
         public string InteractionTarget { get { return GetString(16); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

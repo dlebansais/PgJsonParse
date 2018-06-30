@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgQuestRewardItem : GenericPgObject<PgQuestRewardItem>, IPgQuestRewardItem
     {
@@ -21,5 +23,8 @@
         public IPgItem QuestItem { get { return GetObject(4, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
         public int StackSize { get { return RawStackSize.HasValue ? RawStackSize.Value : 1; } }
         public int? RawStackSize { get { return GetInt(8); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

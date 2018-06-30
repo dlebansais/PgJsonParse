@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    interface IPgAbilitySource
+    interface IPgAbilitySource : IJsonKey, IObjectContentGenerator
     {
         IPgAbility ConnectedAbility { get; }
         IPgSkill SkillTypeId { get; }

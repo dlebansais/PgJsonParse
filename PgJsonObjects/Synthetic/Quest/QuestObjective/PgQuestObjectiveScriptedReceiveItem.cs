@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgQuestObjectiveScriptedReceiveItem : GenericPgObject<PgQuestObjectiveScriptedReceiveItem>, IPgQuestObjectiveScriptedReceiveItem
     {
@@ -20,5 +22,8 @@
         public override string Key { get { return GetString(0); } }
         public IPgGameNpc DeliverNpc { get { return GetObject(4, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
         public IPgItem QuestItem { get { return GetObject(8, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

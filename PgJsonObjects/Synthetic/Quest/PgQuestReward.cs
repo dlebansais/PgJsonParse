@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgQuestReward : GenericPgObject<PgQuestReward>, IPgQuestReward
     {
@@ -25,5 +27,8 @@
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
         public int? RawRewardGuildCredits { get { return GetInt(16); } }
         public PowerSkill RewardSkill { get { return GetEnum<PowerSkill>(20); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

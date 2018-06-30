@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgRecipeCost : GenericPgObject<PgRecipeCost>, IPgRecipeCost
     {
@@ -21,5 +23,8 @@
         public double Price { get { return RawPrice.HasValue ? RawPrice.Value : 0; } }
         public double? RawPrice { get { return GetDouble(4); } }
         public RecipeCurrency Currency { get { return GetEnum<RecipeCurrency>(8); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

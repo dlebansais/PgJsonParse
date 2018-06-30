@@ -1,11 +1,13 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgGameNpc : MainPgObject<PgGameNpc>, IPgGameNpc
     {
         public PgGameNpc(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 22;
+            offset += 26;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -26,5 +28,8 @@
         public NpcPreferenceCollection LikeList { get { return GetObjectList(16, ref _LikeList, NpcPreferenceCollection.CreateItem, () => new NpcPreferenceCollection()); } } private NpcPreferenceCollection _LikeList;
         public NpcPreferenceCollection HateList { get { return GetObjectList(20, ref _HateList, NpcPreferenceCollection.CreateItem, () => new NpcPreferenceCollection()); } } private NpcPreferenceCollection _HateList;
         public MapAreaName AreaName { get { return GetEnum<MapAreaName>(24); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

@@ -12,19 +12,22 @@ namespace PgJsonObjects
         IMainJsonObjectCollection JsonObjectList { get; }
         IMainPgObjectCollection PgObjectList { get; }
         bool LoadAsArray { get; }
+        bool LoadAsObject { get; }
         bool UseJavaFormat { get; }
     }
 
     public class ObjectDefinition<TJson, TPg, TI> : IObjectDefinition
          where TJson : MainJsonObject<TJson>, TI, new()
          where TPg : IMainPgObject, TI
+         where TI : IJsonKey, IObjectContentGenerator
     {
-        public ObjectDefinition(string jsonFileName, int minVersion, PgObjectCreator createNewObject, bool loadAsArray, bool useJavaFormat, bool VerifyParse)
+        public ObjectDefinition(string jsonFileName, int minVersion, PgObjectCreator createNewObject, bool loadAsArray, bool loadAsObject, bool useJavaFormat, bool VerifyParse)
         {
             JsonFileName = jsonFileName;
             MinVersion = minVersion;
             CreateNewObject = createNewObject;
             LoadAsArray = loadAsArray;
+            LoadAsObject = loadAsObject;
             UseJavaFormat = useJavaFormat;
             FileParser.VerifyParse = VerifyParse;
         }
@@ -37,6 +40,7 @@ namespace PgJsonObjects
         public IMainJsonObjectCollection JsonObjectList { get; private set; } = new MainJsonObjectCollection<TJson, TPg, TI>();
         public IMainPgObjectCollection PgObjectList { get; private set; } = new MainPgObjectCollection<TPg, TI>();
         public bool LoadAsArray { get; private set; }
+        public bool LoadAsObject { get; private set; }
         public bool UseJavaFormat { get; private set; }
     }
 }

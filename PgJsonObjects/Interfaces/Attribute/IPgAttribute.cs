@@ -2,9 +2,8 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgAttribute
+    public interface IPgAttribute : IJsonKey, IObjectContentGenerator
     {
-        string Key { get; }
         string Label { get; }
         List<int> IconIdList { get; }
         string Tooltip { get; }

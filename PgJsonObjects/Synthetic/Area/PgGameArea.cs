@@ -1,11 +1,13 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgGameArea : MainPgObject<PgGameArea>, IPgGameArea
     {
         public PgGameArea(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 10;
+            offset += 14;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -26,5 +28,8 @@
         public string FriendlyName { get { return GetString(4); } }
         public string ShortFriendlyName { get { return GetString(8); } }
         public MapAreaName KeyArea { get { return GetEnum<MapAreaName>(12); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

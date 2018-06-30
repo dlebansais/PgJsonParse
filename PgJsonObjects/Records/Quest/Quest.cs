@@ -227,7 +227,7 @@ namespace PgJsonObjects
             { "PreGiveRecipes", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawPreGiveRecipeList.Add(value),
-                GetStringArray = () => RawPreGiveRecipeList } },
+                GetStringArray = GetPreGiveRecipeList } },
             { "Keywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<QuestKeyword>.ParseList(value, KeywordList, errorInfo),
@@ -544,6 +544,15 @@ namespace PgJsonObjects
             }
             else
                 ErrorInfo.AddInvalidObjectFormat("Quest Rewards");
+        }
+
+        private List<string> GetPreGiveRecipeList()
+        {
+            List<string> Result = new List<string>();
+            foreach (Recipe Item in PreGiveRecipeList)
+                Result.Add(Item.InternalName);
+
+            return Result;
         }
 
         private bool ParseRewards_Effects(string RawRewardEffect, ParseErrorInfo ErrorInfo)

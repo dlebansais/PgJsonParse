@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgXpTable
+    public interface IPgXpTable : IJsonKey, IObjectContentGenerator
     {
         string InternalName { get; }
         XpTableLevelCollection XpAmountList { get; }

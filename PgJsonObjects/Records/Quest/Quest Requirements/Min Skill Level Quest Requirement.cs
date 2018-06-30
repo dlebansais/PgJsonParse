@@ -22,7 +22,7 @@ namespace PgJsonObjects
             { "T", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
-            { "RawSkill", new FieldParser() {
+            { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
             { "Level", new FieldParser() {

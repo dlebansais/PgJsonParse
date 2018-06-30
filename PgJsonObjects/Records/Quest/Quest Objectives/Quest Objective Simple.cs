@@ -6,15 +6,21 @@ namespace PgJsonObjects
     public class QuestObjectiveSimple : QuestObjective, IPgQuestObjectiveSimple
     {
         #region Init
-        public QuestObjectiveSimple(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
+        public QuestObjectiveSimple(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string RawTarget)
             : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
+            InteractionTarget = RawTarget;
         }
+
+        public string InteractionTarget { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => InteractionTarget } },
             { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawMustCompleteEarlierObjectivesFirst } },

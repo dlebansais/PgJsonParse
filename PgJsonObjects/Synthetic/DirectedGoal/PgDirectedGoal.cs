@@ -1,11 +1,13 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public class PgDirectedGoal : MainPgObject<PgDirectedGoal>, IPgDirectedGoal
     {
         public PgDirectedGoal(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 26;
+            offset += 30;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -30,5 +32,8 @@
         public int? RawCategoryGateId { get { return GetInt(24); } }
         public bool IsCategoryGate { get { return RawIsCategoryGate.HasValue ? RawIsCategoryGate.Value : false; } }
         public bool? RawIsCategoryGate { get { return GetBool(28, 0); } }
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override List<string> FieldTableOrder { get { return FieldTableOrder; } }
     }
 }

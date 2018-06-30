@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgItemUses
+    public interface IPgItemUses : IJsonKey, IObjectContentGenerator
     {
         List<int> RecipesThatUseItemList { get; }
     }
