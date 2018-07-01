@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgMinFavorLevelQuestRequirement : GenericPgObject<PgMinFavorLevelQuestRequirement>, IPgMinFavorLevelQuestRequirement
+    public class PgMinFavorLevelQuestRequirement : PgQuestRequirement<PgMinFavorLevelQuestRequirement>, IPgMinFavorLevelQuestRequirement
     {
         public PgMinFavorLevelQuestRequirement(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,13 +19,24 @@ namespace PgJsonObjects
             return new PgMinFavorLevelQuestRequirement(data, ref offset);
         }
 
-        public override string Key { get { return GetString(4); } }
-        public IPgGameNpc FavorNpc { get { return GetObject(8, ref _FavorNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _FavorNpc;
-        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public IPgGameNpc FavorNpc { get { return GetObject(PropertiesOffset + 0, ref _FavorNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _FavorNpc;
         public bool IsEmpty { get { return RawIsEmpty.HasValue && RawIsEmpty.Value; } }
-        public bool? RawIsEmpty { get { return GetBool(16, 0); } }
-        public Favor FavorLevel { get { return GetEnum<Favor>(18); } }
+        public bool? RawIsEmpty { get { return GetBool(PropertiesOffset + 4, 0); } }
+        public Favor FavorLevel { get { return GetEnum<Favor>(PropertiesOffset + 6); } }
+        public string FavorNpcId { get { return GetString(PropertiesOffset + 8); } }
+        public string FavorNpcName { get { return GetString(PropertiesOffset + 12); } }
+        public MapAreaName FavorNpcArea { get { return GetEnum<MapAreaName>(PropertiesOffset + 16); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "Npc", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Quest.NpcToString(FavorNpcArea, FavorNpcId, FavorNpcName, IsEmpty) } },
+            { "Level", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<Favor>.ToString(FavorLevel, null, Favor.Internal_None) } },
+        }; } }
     }
 }

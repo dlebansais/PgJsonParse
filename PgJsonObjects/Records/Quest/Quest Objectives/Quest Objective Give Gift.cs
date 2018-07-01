@@ -58,16 +58,16 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddDouble(RawMinFavorReceived, data, ref offset, BaseOffset, 4);
-            AddDouble(RawMaxFavorReceived, data, ref offset, BaseOffset, 8);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            AddDouble(RawMinFavorReceived, data, ref offset, BaseOffset, 0);
+            AddDouble(RawMaxFavorReceived, data, ref offset, BaseOffset, 4);
+
+            FinishSerializing(data, ref offset, BaseOffset, 8, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

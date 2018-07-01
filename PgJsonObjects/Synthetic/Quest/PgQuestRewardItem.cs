@@ -25,6 +25,13 @@ namespace PgJsonObjects
         public int? RawStackSize { get { return GetInt(8); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Item", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => QuestItem != null ? QuestItem.InternalName : null } },
+            { "StackSize", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawStackSize } },
+        }; } }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgMinSkillLevelQuestRequirement : GenericPgObject<PgMinSkillLevelQuestRequirement>, IPgMinSkillLevelQuestRequirement
+    public class PgMinSkillLevelQuestRequirement : PgQuestRequirement<PgMinSkillLevelQuestRequirement>, IPgMinSkillLevelQuestRequirement
     {
         public PgMinSkillLevelQuestRequirement(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,12 +19,20 @@ namespace PgJsonObjects
             return new PgMinSkillLevelQuestRequirement(data, ref offset);
         }
 
-        public override string Key { get { return GetString(4); } }
-        public IPgSkill Skill { get { return GetObject(8, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
+        public IPgSkill Skill { get { return GetObject(PropertiesOffset + 0, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
-        public int? RawSkillLevel { get { return GetInt(12); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public int? RawSkillLevel { get { return GetInt(PropertiesOffset + 4); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "Skill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Skill != null ? StringToEnumConversion<PowerSkill>.ToString(Skill.CombatSkill, null, PowerSkill.Internal_None) : null } },
+            { "Level", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawSkillLevel } },
+        }; } }
     }
 }

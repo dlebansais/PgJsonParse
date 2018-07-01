@@ -29,6 +29,22 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(20, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public PowerSkill RewardSkill { get { return GetEnum<PowerSkill>(24); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Type } },
+            { "Skill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RewardSkill, null, PowerSkill.Internal_None) } },
+            { "Xp", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardXp } },
+            { "Recipe", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RewardRecipe } },
+            { "Credits", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardGuildCredits } },
+        }; } }
     }
 }

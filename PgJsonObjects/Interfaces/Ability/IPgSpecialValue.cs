@@ -10,5 +10,11 @@
         bool? RawDisplayAsPercent { get; }
         bool SkipIfZero { get; }
         bool? RawSkipIfZero { get; }
+        AttributeCollection AttributesThatDeltaList { get; }
+        AttributeCollection AttributesThatModList { get; }
+        AttributeCollection AttributesThatModBaseList { get; }
+        bool RawAttributesThatDeltaListIsEmpty { get; }
+        bool RawAttributesThatModListIsEmpty { get; }
+        bool RawAttributesThatModBaseListIsEmpty { get; }
     }
 }

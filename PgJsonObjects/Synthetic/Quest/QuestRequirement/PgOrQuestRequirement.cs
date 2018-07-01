@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgOrQuestRequirement : GenericPgObject<PgOrQuestRequirement>, IPgOrQuestRequirement
+    public class PgOrQuestRequirement : PgQuestRequirement<PgOrQuestRequirement>, IPgOrQuestRequirement
     {
         public PgOrQuestRequirement(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,10 +19,15 @@ namespace PgJsonObjects
             return new PgOrQuestRequirement(data, ref offset);
         }
 
-        public override string Key { get { return GetString(4); } }
-        public QuestRequirementCollection OrList { get { return GetObjectList(8, ref _OrList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _OrList;
-        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public QuestRequirementCollection OrList { get { return GetObjectList(PropertiesOffset + 0, ref _OrList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _OrList;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "List", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => OrList } },
+        }; } }
     }
 }

@@ -18,5 +18,7 @@ namespace PgJsonObjects
         List<EffectKeyword> KeywordList { get; }
         List<AbilityKeyword> AbilityKeywordList { get; }
         EffectParticle Particle { get; }
+        bool IsKeywordListEmpty { get; }
+        bool IsAbilityKeywordListEmpty { get; }
     }
 }

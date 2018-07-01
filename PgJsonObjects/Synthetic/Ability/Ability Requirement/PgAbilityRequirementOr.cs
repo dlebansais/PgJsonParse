@@ -24,6 +24,16 @@ namespace PgJsonObjects
         public string ErrorMsg { get { return GetString(12); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.Or) } },
+            { "List", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => OrList } },
+            { "ErrorMsg", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => ErrorMsg } },
+        }; } }
     }
 }

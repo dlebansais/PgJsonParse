@@ -58,15 +58,15 @@ namespace PgJsonObjects
             { "Ability", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawAbility = value,
-                GetString = () => RawAbility } },
+                GetString = () => Ability != null ? Ability.InternalName : null } },
             { "BonusToSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawBonusSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawBonusSkill, null, PowerSkill.Internal_None) } },
+                GetString = () => BonusSkill != null ? StringToEnumConversion<PowerSkill>.ToString(BonusSkill.CombatSkill, null, PowerSkill.Internal_None) : null } },
             { "Recipe", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawRecipe = value,
-                GetString = () => RawRecipe  } },
+                GetString = () => Recipe != null ? Recipe.InternalName : null } },
             { "Notes", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Notes = value,

@@ -20,7 +20,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.HasInventorySpaceFor) } },
             { "Item", new FieldParser() {
                 Type = FieldType.String,
-                GetString  = () => RawItem } },
+                GetString  = () => Item != null ? Item.InternalName : null} },
         }; } }
 
         #region Indexing

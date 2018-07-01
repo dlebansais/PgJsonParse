@@ -49,6 +49,8 @@ namespace PgJsonObjects
         bool? RawIsAutoWrapUp { get; }
         bool IsGuildQuest { get; }
         bool? RawIsGuildQuest { get; }
+        bool IsUnknownWorkOrderSkill { get; }
+        bool? RawIsUnknownWorkOrderSkill { get; }
         MapAreaName DisplayedLocation { get; }
         Favor PrerequisiteFavorLevel { get; }
         QuestGroupingName GroupingName { get; }
@@ -60,5 +62,21 @@ namespace PgJsonObjects
         QuestCollection FollowUpQuestList { get; }
         QuestRequirementCollection QuestRequirementList { get; }
         QuestRequirementCollection QuestRequirementToSustainList { get; }
+        int? RawReuseTime_Minutes { get; }
+        int? RawReuseTime_Hours { get; }
+        int? RawReuseTime_Days { get; }
+        string FavorNpcId { get; }
+        string FavorNpcName { get; }
+        MapAreaName FavorNpcArea { get; }
+        bool IsQuestRewardsItemListEmpty { get; }
+        bool? RawIsQuestRewardsItemListEmpty { get; }
+        bool IsEmptyNpc { get; }
+        bool? RawIsEmptyNpc { get; }
+        bool IsRewardRecipeEmpty { get; }
+        bool? RawIsRewardRecipeEmpty { get; }
+        bool IsQuestRequirementListSimple { get; }
+        bool? RawIsQuestRequirementListSimple { get; }
+        bool IsQuestRequirementListNested { get; }
+        bool? RawIsQuestRequirementListNested { get; }
     }
 }

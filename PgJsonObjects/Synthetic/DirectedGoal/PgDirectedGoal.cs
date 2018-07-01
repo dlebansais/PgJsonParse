@@ -34,6 +34,28 @@ namespace PgJsonObjects
         public bool IsCategoryGate { get { return RawIsCategoryGate.HasValue ? RawIsCategoryGate.Value : false; } }
         public bool? RawIsCategoryGate { get { return GetBool(32, 0); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Id", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawId } },
+            { "Label", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Label } },
+            { "Zone", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Zone  } },
+            { "IsCategoryGate", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsCategoryGate } },
+            { "LargeHint", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => LargeHint } },
+            { "SmallHint", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => SmallHint } },
+            { "CategoryGateId", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawCategoryGateId } },
+        }; } }
     }
 }

@@ -17,7 +17,8 @@ namespace PgJsonObjects
         public double UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
         public double? RawUseDelay { get; private set; }
         public ItemUseVerb UseVerb { get; private set; }
-        private bool IsServerInfoEmpty;
+        public bool IsServerInfoEmpty { get { return RawIsServerInfoEmpty.HasValue && RawIsServerInfoEmpty.Value; } }
+        public bool? RawIsServerInfoEmpty { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -40,7 +41,7 @@ namespace PgJsonObjects
             { "ServerInfo", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = ParseServerInfo,
-                SetArrayIsEmpty = () => IsServerInfoEmpty = true,
+                SetArrayIsEmpty = () => RawIsServerInfoEmpty = true,
                 GetObjectArray = () => GenericJsonObject.CreateSingleOrEmptyList(ServerInfo),
                 GetArrayIsEmpty = () => IsServerInfoEmpty,
                 SimplifyArray = true } },
@@ -125,6 +126,7 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
+            int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
@@ -140,8 +142,10 @@ namespace PgJsonObjects
             AddDouble(RawUseDelay, data, ref offset, BaseOffset, 20);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 24, StoredStringListTable);
             AddEnum(UseVerb, data, ref offset, BaseOffset, 28);
+            AddBool(RawIsServerInfoEmpty, data, ref offset, ref BitOffset, BaseOffset, 30, 0);
+            CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 32, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

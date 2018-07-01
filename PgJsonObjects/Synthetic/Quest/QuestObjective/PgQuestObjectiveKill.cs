@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgQuestObjectiveKill : GenericPgObject<PgQuestObjectiveKill>, IPgQuestObjectiveKill
+    public class PgQuestObjectiveKill : PgQuestObjective<PgQuestObjectiveKill>, IPgQuestObjectiveKill
     {
         public PgQuestObjectiveKill(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,12 +19,36 @@ namespace PgJsonObjects
             return new PgQuestObjectiveKill(data, ref offset);
         }
 
-        public override string Key { get { return GetString(0); } }
-        public string AbilityKeyword { get { return GetString(4); } }
-        public QuestObjectiveKillTarget Target { get { return GetEnum<QuestObjectiveKillTarget>(8); } }
-        public EffectKeyword EffectRequirement { get { return GetEnum<EffectKeyword>(10); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public string AbilityKeyword { get { return GetString(PropertiesOffset + 0); } }
+        public QuestObjectiveKillTarget Target { get { return GetEnum<QuestObjectiveKillTarget>(PropertiesOffset + 4); } }
+        public EffectKeyword EffectRequirement { get { return GetEnum<EffectKeyword>(PropertiesOffset + 6); } }
+        public QuestObjectiveRequirement QuestObjectiveRequirement { get { return GetEnum<QuestObjectiveRequirement>(PropertiesOffset + 8); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
+            { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawMustCompleteEarlierObjectivesFirst } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "Number", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumber } },
+            { "Requirements", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => QuestObjectiveRequirement } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestObjectiveKillTarget>.ToString(Target, TextMaps.KillTargetStringMap, QuestObjectiveKillTarget.Internal_None) } },
+            { "AbilityKeyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => AbilityKeyword } },
+            { "HasEffectKeyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<EffectKeyword>.ToString(EffectRequirement, null, EffectKeyword.Internal_None) } },
+        }; } }
     }
 }

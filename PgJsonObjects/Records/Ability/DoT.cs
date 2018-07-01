@@ -16,8 +16,8 @@ namespace PgJsonObjects
         public List<DoTSpecialRule> SpecialRuleList { get; } = new List<DoTSpecialRule>();
         public string RawPreface { get; private set; }
         public DamageType DamageType { get; private set; }
-        private Dictionary<string, Attribute> AttributesThatDeltaTable { get; } = new Dictionary<string, Attribute>();
-        private Dictionary<string, Attribute> AttributesThatModTable { get; } = new Dictionary<string, Attribute>();
+        public AttributeCollection AttributesThatDeltaList { get; private set; } = null;
+        public AttributeCollection AttributesThatModList { get; private set; } = null;
         #endregion
 
         #region Indirect Properties
@@ -50,13 +50,13 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty = true,
-                GetStringArray = () => RawAttributesThatDeltaList,
+                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaList),
                 GetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty } },
             { "AttributesThatMod", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModListIsEmpty = true,
-                GetStringArray = () => RawAttributesThatModList,
+                GetStringArray = () => GetAttributeKeys(AttributesThatModList),
                 GetArrayIsEmpty = () => RawAttributesThatModListIsEmpty } },
             { "Preface", new FieldParser() {
                 Type = FieldType.String,
@@ -64,10 +64,20 @@ namespace PgJsonObjects
                 GetString = () => RawPreface } },
         }; } }
 
+        private List<string> GetAttributeKeys(AttributeCollection attributes)
+        {
+            List<string> Result = new List<string>();
+
+            foreach (IPgAttribute Item in attributes)
+                Result.Add(Item.Key);
+
+            return Result;
+        }
+
         private List<string> RawAttributesThatDeltaList { get; } = new List<string>();
-        private bool RawAttributesThatDeltaListIsEmpty;
+        public bool RawAttributesThatDeltaListIsEmpty { get; private set; }
         private List<string> RawAttributesThatModList { get; } = new List<string>();
-        private bool RawAttributesThatModListIsEmpty;
+        public bool RawAttributesThatModListIsEmpty { get; private set; }
         #endregion
 
         #region Indexing
@@ -95,10 +105,28 @@ namespace PgJsonObjects
 
             Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
 
-            IsConnected |= Attribute.ConnectTable(ErrorInfo, AttributeTable, RawAttributesThatDeltaList, AttributesThatDeltaTable);
-            IsConnected |= Attribute.ConnectTable(ErrorInfo, AttributeTable, RawAttributesThatModList, AttributesThatModTable);
+            AttributesThatDeltaList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaList, AttributesThatDeltaList, ref IsConnected);
+            AttributesThatModList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatModList, AttributesThatModList, ref IsConnected);
 
             return IsConnected;
+        }
+
+        private AttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, List<string> RawAttributes, AttributeCollection Attributes, ref bool IsConnected)
+        {
+            if (Attributes == null)
+            {
+                Attributes = new AttributeCollection();
+                foreach (string RawAttribute in RawAttributes)
+                {
+                    IPgAttribute ConnectedAttribute = null;
+                    bool IsAttributeParsed = false;
+                    ConnectedAttribute = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, RawAttribute, ConnectedAttribute, ref IsAttributeParsed, ref IsConnected, this);
+                    if (ConnectedAttribute != null)
+                        Attributes.Add(ConnectedAttribute);
+                }
+            }
+
+            return Attributes;
         }
         #endregion
 
@@ -109,10 +137,12 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
+            int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddInt(RawDamagePerTick, data, ref offset, BaseOffset, 4);
@@ -121,9 +151,14 @@ namespace PgJsonObjects
             AddEnumList(SpecialRuleList, data, ref offset, BaseOffset, 16, StoredEnumListTable);
             AddString(RawPreface, data, ref offset, BaseOffset, 20, StoredStringtable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 24, StoredStringListTable);
-            AddEnum(DamageType, data, ref offset, BaseOffset, 28);
+            AddObjectList(AttributesThatDeltaList, data, ref offset, BaseOffset, 28, StoredObjectListTable);
+            AddObjectList(AttributesThatModList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
+            AddEnum(DamageType, data, ref offset, BaseOffset, 36);
+            AddBool(RawAttributesThatDeltaListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 38, 0);
+            AddBool(RawAttributesThatModListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 38, 2);
+            CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 30, StoredStringtable, null, null, StoredEnumListTable, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 40, StoredStringtable, null, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

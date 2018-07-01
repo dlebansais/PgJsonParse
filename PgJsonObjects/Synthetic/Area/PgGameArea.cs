@@ -30,6 +30,13 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public MapAreaName KeyArea { get { return GetEnum<MapAreaName>(16); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "FriendlyName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => FriendlyName } },
+            { "ShortFriendlyName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => ShortFriendlyName } },
+        }; } }
     }
 }

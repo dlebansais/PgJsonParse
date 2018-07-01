@@ -30,7 +30,33 @@ namespace PgJsonObjects
         public double? RawUseDelay { get { return GetDouble(20); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(24, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public ItemUseVerb UseVerb { get { return GetEnum<ItemUseVerb>(28); } }
+        public bool IsServerInfoEmpty { get { return RawIsServerInfoEmpty.HasValue && RawIsServerInfoEmpty.Value; } }
+        public bool? RawIsServerInfoEmpty { get { return GetBool(30, 0); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "UseVerb", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, TextMaps.UseVerbMap, ItemUseVerb.Internal_None) } },
+            { "ServerInfo", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => GenericJsonObject.CreateSingleOrEmptyList(ServerInfo),
+                GetArrayIsEmpty = () => IsServerInfoEmpty,
+                SimplifyArray = true } },
+            { "UseRequirements", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<ItemUseRequirement>.ToStringList(UseRequirementList) } },
+            { "UseAnimation", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemUseAnimation>.ToString(UseAnimation, null, ItemUseAnimation.Internal_None) } },
+            { "UseDelayAnimation", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemUseAnimation>.ToString(UseDelayAnimation, null, ItemUseAnimation.Internal_None) } },
+            { "MetabolismCost", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMetabolismCost } },
+            { "UseDelay", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawUseDelay } },
+        }; } }
     }
 }

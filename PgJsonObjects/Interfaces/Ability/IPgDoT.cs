@@ -13,5 +13,9 @@ namespace PgJsonObjects
         List<DoTSpecialRule> SpecialRuleList { get; }
         string RawPreface { get; }
         DamageType DamageType { get; }
+        AttributeCollection AttributesThatDeltaList { get; }
+        AttributeCollection AttributesThatModList { get; }
+        bool RawAttributesThatDeltaListIsEmpty { get; }
+        bool RawAttributesThatModListIsEmpty { get; }
     }
 }

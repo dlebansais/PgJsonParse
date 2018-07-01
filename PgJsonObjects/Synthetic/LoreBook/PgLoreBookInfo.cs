@@ -30,6 +30,25 @@ namespace PgJsonObjects
         public IPgLoreBookInfoCategory GuideProgram { get { return GetObject(24, ref _GuideProgram, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _GuideProgram;
         protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Gods", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => Gods as IObjectContentGenerator } },
+            { "Misc", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => Misc as IObjectContentGenerator } },
+            { "History", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => History as IObjectContentGenerator } },
+            { "Plot", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => Plot as IObjectContentGenerator } },
+            { "Stories", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => Stories as IObjectContentGenerator } },
+            { "GuideProgram", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => GuideProgram as IObjectContentGenerator } },
+        }; } }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestReward : GenericJsonObject<QuestReward>
+    public class QuestReward : GenericJsonObject<QuestReward>, IPgQuestReward
     {
         #region Init
         public QuestReward()

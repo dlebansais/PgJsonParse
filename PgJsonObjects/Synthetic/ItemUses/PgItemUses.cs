@@ -25,6 +25,10 @@ namespace PgJsonObjects
         public List<int> RecipesThatUseItemList { get { return GetIntList(4, ref _RecipesThatUseItemList); } } private List<int> _RecipesThatUseItemList;
         protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "RecipesThatUseItem", new FieldParser() {
+                Type = FieldType.SimpleIntegerArray,
+                GetIntegerArray = () => RecipesThatUseItemList } },
+        }; } }
     }
 }

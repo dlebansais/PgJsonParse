@@ -23,6 +23,10 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public Race AllowedRace { get { return GetEnum<Race>(12); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "AllowedRace", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<Race>.ToString(AllowedRace) } },
+        }; } }
     }
 }

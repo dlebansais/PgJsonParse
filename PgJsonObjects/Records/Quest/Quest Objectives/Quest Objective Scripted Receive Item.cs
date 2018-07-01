@@ -5,7 +5,7 @@ namespace PgJsonObjects
 {
     public class QuestObjectiveScriptedReceiveItem : QuestObjective, IPgQuestObjectiveScriptedReceiveItem
     {
-        #region Indexing
+        #region Init
         public QuestObjectiveScriptedReceiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName)
             : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
         {
@@ -33,17 +33,17 @@ namespace PgJsonObjects
                 GetString = () => Quest.NpcToString(DeliverNpcArea, DeliverNpcId, DeliverNpcName, false) } },
             { "Item", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RawItemName } },
+                GetString = () => QuestItem != null ? QuestItem.InternalName : null } },
         }; } }
         #endregion
 
         #region Properties
         public IPgGameNpc DeliverNpc { get; private set; }
         public IPgItem QuestItem { get; private set; }
+        public string DeliverNpcId { get; private set; }
+        public string DeliverNpcName { get; private set; }
+        public MapAreaName DeliverNpcArea { get; private set; }
 
-        private MapAreaName DeliverNpcArea;
-        private string DeliverNpcId;
-        private string DeliverNpcName;
         private bool IsDeliverNpcParsed;
         private string RawItemName;
         private bool IsItemNameParsed;
@@ -89,17 +89,21 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddObject(DeliverNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
-            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+
+            AddObject(DeliverNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddString(DeliverNpcId, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddString(DeliverNpcName, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddEnum(DeliverNpcArea, data, ref offset, BaseOffset, 16);
+
+            FinishSerializing(data, ref offset, BaseOffset, 18, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

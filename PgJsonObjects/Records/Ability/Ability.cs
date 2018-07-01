@@ -171,31 +171,31 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaAmmoStickChanceList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty = true,
-                GetStringArray = GetAttributesThatDeltaAmmoStickChance,
+                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaAmmoStickChanceList),
                 GetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty } },
             { "AttributesThatDeltaDelayLoopTime", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDelayLoopTimeList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty = true,
-                GetStringArray = GetAttributesThatDeltaDelayLoopTime,
+                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaDelayLoopTimeList),
                 GetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty } },
             { "AttributesThatDeltaPowerCost", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaPowerCostList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty = true,
-                GetStringArray = GetAttributesThatDeltaPowerCost,
+                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaPowerCostList),
                 GetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty } },
             { "AttributesThatDeltaResetTime", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaResetTimeList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty = true,
-                GetStringArray = GetAttributesThatDeltaResetTime,
+                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaResetTimeList),
                 GetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty } },
             { "AttributesThatModPowerCost", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModPowerCostList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty = true,
-                GetStringArray = GetAttributesThatModPowerCost,
+                GetStringArray = () => GetAttributeKeys(AttributesThatModPowerCostList),
                 GetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty } },
             { "CanBeOnSidebar", new FieldParser() {
                 Type = FieldType.Bool,
@@ -403,51 +403,11 @@ namespace PgJsonObjects
             IsRawAbilityGroupParsed = false;
         }
 
-        private List<string> GetAttributesThatDeltaAmmoStickChance()
+        private List<string> GetAttributeKeys(AttributeCollection attributes)
         {
             List<string> Result = new List<string>();
 
-            foreach (IPgAttribute Item in AttributesThatDeltaAmmoStickChanceList)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
-
-        private List<string> GetAttributesThatDeltaDelayLoopTime()
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in AttributesThatDeltaDelayLoopTimeList)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
-
-        private List<string> GetAttributesThatDeltaPowerCost()
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in AttributesThatDeltaPowerCostList)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
-
-        private List<string> GetAttributesThatDeltaResetTime()
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in AttributesThatDeltaResetTimeList)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
-
-        private List<string> GetAttributesThatModPowerCost()
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in AttributesThatModPowerCostList)
+            foreach (IPgAttribute Item in attributes)
                 Result.Add(Item.Key);
 
             return Result;
@@ -2554,72 +2514,31 @@ namespace PgJsonObjects
             string ConsumedItemKeyword = StringToEnumConversion<ConsumedItems>.ToString(ConsumedItems, null, ConsumedItems.Internal_None);
             ConsumedItemLink = Item.ConnectSingleProperty(null, ItemTable, ConsumedItemKeyword, ConsumedItemLink, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
 
-            if (AttributesThatDeltaAmmoStickChanceList == null)
-            {
-                AttributesThatDeltaAmmoStickChanceList = new AttributeCollection();
-                foreach (string RawAttribute in RawAttributesThatDeltaAmmoStickChanceList)
-                {
-                    IPgAttribute ConnectedAttribute = null;
-                    bool IsAttributeParsed = false;
-                    ConnectedAttribute = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, RawAttribute, ConnectedAttribute, ref IsAttributeParsed, ref IsConnected, this);
-                    if (ConnectedAttribute != null)
-                        AttributesThatDeltaAmmoStickChanceList.Add(ConnectedAttribute);
-                }
-            }
-
-            if (AttributesThatDeltaDelayLoopTimeList == null)
-            {
-                AttributesThatDeltaDelayLoopTimeList = new AttributeCollection();
-                foreach (string RawAttribute in RawAttributesThatDeltaDelayLoopTimeList)
-                {
-                    IPgAttribute ConnectedAttribute = null;
-                    bool IsAttributeParsed = false;
-                    ConnectedAttribute = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, RawAttribute, ConnectedAttribute, ref IsAttributeParsed, ref IsConnected, this);
-                    if (ConnectedAttribute != null)
-                        AttributesThatDeltaDelayLoopTimeList.Add(ConnectedAttribute);
-                }
-            }
-
-            if (AttributesThatDeltaPowerCostList == null)
-            {
-                AttributesThatDeltaPowerCostList = new AttributeCollection();
-                foreach (string RawAttribute in RawAttributesThatDeltaPowerCostList)
-                {
-                    IPgAttribute ConnectedAttribute = null;
-                    bool IsAttributeParsed = false;
-                    ConnectedAttribute = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, RawAttribute, ConnectedAttribute, ref IsAttributeParsed, ref IsConnected, this);
-                    if (ConnectedAttribute != null)
-                        AttributesThatDeltaPowerCostList.Add(ConnectedAttribute);
-                }
-            }
-
-            if (AttributesThatDeltaResetTimeList == null)
-            {
-                AttributesThatDeltaResetTimeList = new AttributeCollection();
-                foreach (string RawAttribute in RawAttributesThatDeltaResetTimeList)
-                {
-                    IPgAttribute ConnectedAttribute = null;
-                    bool IsAttributeParsed = false;
-                    ConnectedAttribute = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, RawAttribute, ConnectedAttribute, ref IsAttributeParsed, ref IsConnected, this);
-                    if (ConnectedAttribute != null)
-                        AttributesThatDeltaResetTimeList.Add(ConnectedAttribute);
-                }
-            }
-
-            if (AttributesThatModPowerCostList == null)
-            {
-                AttributesThatModPowerCostList = new AttributeCollection();
-                foreach (string RawAttribute in RawAttributesThatModPowerCostList)
-                {
-                    IPgAttribute ConnectedAttribute = null;
-                    bool IsAttributeParsed = false;
-                    ConnectedAttribute = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, RawAttribute, ConnectedAttribute, ref IsAttributeParsed, ref IsConnected, this);
-                    if (ConnectedAttribute != null)
-                        AttributesThatModPowerCostList.Add(ConnectedAttribute);
-                }
-            }
+            AttributesThatDeltaAmmoStickChanceList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaAmmoStickChanceList, AttributesThatDeltaAmmoStickChanceList, ref IsConnected);
+            AttributesThatDeltaDelayLoopTimeList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaDelayLoopTimeList, AttributesThatDeltaDelayLoopTimeList, ref IsConnected);
+            AttributesThatDeltaPowerCostList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaPowerCostList, AttributesThatDeltaPowerCostList, ref IsConnected);
+            AttributesThatDeltaResetTimeList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaResetTimeList, AttributesThatDeltaResetTimeList, ref IsConnected);
+            AttributesThatModPowerCostList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatModPowerCostList, AttributesThatModPowerCostList, ref IsConnected);
 
             return IsConnected;
+        }
+
+        private AttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, List<string> RawAttributes, AttributeCollection Attributes, ref bool IsConnected)
+        {
+            if (Attributes == null)
+            {
+                Attributes = new AttributeCollection();
+                foreach (string RawAttribute in RawAttributes)
+                {
+                    IPgAttribute ConnectedAttribute = null;
+                    bool IsAttributeParsed = false;
+                    ConnectedAttribute = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, RawAttribute, ConnectedAttribute, ref IsAttributeParsed, ref IsConnected, this);
+                    if (ConnectedAttribute != null)
+                        Attributes.Add(ConnectedAttribute);
+                }
+            }
+
+            return Attributes;
         }
 
         public static IPgAbility ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, string RawAbilityName, IPgAbility ParsedAbility, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)

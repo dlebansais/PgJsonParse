@@ -16,7 +16,8 @@ namespace PgJsonObjects
         public string Text { get; private set; }
         public bool IsClientLocal { get { return RawIsClientLocal.HasValue ? RawIsClientLocal.Value : false; } }
         public bool? RawIsClientLocal { get; private set; }
-        private bool IsKeywordListEmpty;
+        public bool IsKeywordListEmpty { get { return RawIsKeywordListEmpty.HasValue ? RawIsKeywordListEmpty.Value : false; } }
+        public bool? RawIsKeywordListEmpty { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -42,7 +43,7 @@ namespace PgJsonObjects
             { "Keywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<LoreBookKeyword>.ParseList(value, KeywordList, errorInfo),
-                SetArrayIsEmpty = () => IsKeywordListEmpty = true,
+                SetArrayIsEmpty = () => RawIsKeywordListEmpty = true,
                 GetStringArray = () => StringToEnumConversion<LoreBookKeyword>.ToStringList(KeywordList),
                 GetArrayIsEmpty = () => IsKeywordListEmpty } },
             { "IsClientLocal", new FieldParser() {
@@ -170,6 +171,7 @@ namespace PgJsonObjects
             AddString(Text, data, ref offset, BaseOffset, 24, StoredStringtable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 28, StoredStringListTable);
             AddBool(RawIsClientLocal, data, ref offset, ref BitOffset, BaseOffset, 32, 0);
+            AddBool(RawIsKeywordListEmpty, data, ref offset, ref BitOffset, BaseOffset, 32, 2);
             CloseBool(ref offset, ref BitOffset);
 
             FinishSerializing(data, ref offset, BaseOffset, 34, StoredStringtable, null, null, StoredEnumListTable, null, null, StoredStringListTable, null);

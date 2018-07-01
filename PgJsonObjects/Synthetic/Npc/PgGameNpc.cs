@@ -30,6 +30,27 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(24, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public MapAreaName AreaName { get { return GetEnum<MapAreaName>(28); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Name } },
+            { "AreaName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = GetAreaName } },
+            { "AreaFriendlyName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => AreaFriendlyName } },
+            { "Preferences", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray= () => PreferenceList } },
+        }; } }
+
+        private string GetAreaName()
+        {
+            if (AreaName != MapAreaName.Internal_None)
+                return "area" + StringToEnumConversion<MapAreaName>.ToString(AreaName);
+            else
+                return null;
+        }
     }
 }

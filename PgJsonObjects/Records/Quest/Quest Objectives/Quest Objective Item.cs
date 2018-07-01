@@ -42,7 +42,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<ItemKeyword>.ToString(Target, null, ItemKeyword.Internal_None) } },
             { "ItemName", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RawItemName } },
+                GetString = () => QuestItem != null ? QuestItem.InternalName : null } },
         }; } }
         #endregion
 
@@ -90,19 +90,21 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
+
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
-            AddObjectList(TargetItemList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
-            AddEnum(Target, data, ref offset, BaseOffset, 16);
+            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObjectList(TargetItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
+            AddEnum(Target, data, ref offset, BaseOffset, 8);
+            AddEnum(QuestObjectiveRequirement, data, ref offset, BaseOffset, 10);
 
-            FinishSerializing(data, ref offset, BaseOffset, 18, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -12,9 +12,6 @@ namespace PgJsonObjects
         public Race AllowedRace { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
-/*            { "T", new FieldParser() {
-                Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.Race) } },*/
             { "AllowedRace", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<Race>.ToString(AllowedRace) } },

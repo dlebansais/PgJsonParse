@@ -17,6 +17,9 @@ namespace PgJsonObjects
         public bool? RawSkipBonusLevelsIfSkillUnlearned { get; private set; }
         public bool AuxCombat { get { return RawAuxCombat.HasValue && RawAuxCombat.Value; } }
         public bool? RawAuxCombat { get; private set; }
+        public bool ParentSkillIsEmpty { get { return RawParentSkillIsEmpty.HasValue && RawParentSkillIsEmpty.Value; } }
+        public bool? RawParentSkillIsEmpty { get; private set; }
+        public bool IsAdvancementTableNull { get; private set; }
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; private set; }
         public string Description { get; private set; }
@@ -34,10 +37,8 @@ namespace PgJsonObjects
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         private bool IsRawXpTableParsed;
         private string RawAdvancementTable;
-        private bool IsAdvancementTableNull;
         private bool IsRawAdvancementTableParsed;
         private bool EmptyRewardList;
-        private bool IsParentSkillEmpty;
         private bool IsParentSkillParsed;
         private PowerSkill RawParentSkill;
         private List<int> AdvancementHintTableKey = new List<int>();
@@ -194,7 +195,7 @@ namespace PgJsonObjects
             { "AdvancementTable", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseAdvancementTable,
-                GetString = () => IsAdvancementTableNull ? GenericJsonObject.NullString : RawAdvancementTable } },
+                GetString = () => IsAdvancementTableNull ? GenericJsonObject.NullString : (AdvancementTable != null ? AdvancementTable.InternalName : null)} },
             { "Combat", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawCombat = value,
@@ -230,9 +231,9 @@ namespace PgJsonObjects
             { "Parents", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = ParseParents,
-                SetArrayIsEmpty = () => IsParentSkillEmpty = true,
-                GetStringArray = () => GenericJsonObject.CreateSingleOrEmptyStringList(StringToEnumConversion<PowerSkill>.ToString(RawParentSkill, null, PowerSkill.Internal_None)),
-                GetArrayIsEmpty = () => IsParentSkillEmpty } },
+                SetArrayIsEmpty = () => RawParentSkillIsEmpty = true,
+                GetStringArray = GetParents,
+                GetArrayIsEmpty = () => ParentSkillIsEmpty } },
             { "SkipBonusLevelsIfSkillUnlearned", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawSkipBonusLevelsIfSkillUnlearned = value,
@@ -466,6 +467,16 @@ namespace PgJsonObjects
             }
         }
 
+        private List<string> GetParents()
+        {
+            List<string> Result = new List<string>();
+
+            if (ParentSkill != null)
+                Result.Add(StringToEnumConversion<PowerSkill>.ToString(ParentSkill.CombatSkill, null, PowerSkill.Internal_None));
+
+            return Result;
+        }
+
         private void ParseTSysCategories(string RawTSysCategories, ParseErrorInfo ErrorInfo)
         {
             if (StringToEnumConversion<SkillCategory>.TryParse(RawTSysCategories, out SkillCategory ParsedTSysCategory, ErrorInfo))
@@ -659,6 +670,8 @@ namespace PgJsonObjects
             AddBool(RawCombat, data, ref offset, ref BitOffset, BaseOffset, 6, 2);
             AddBool(RawSkipBonusLevelsIfSkillUnlearned, data, ref offset, ref BitOffset, BaseOffset, 6, 4);
             AddBool(RawAuxCombat, data, ref offset, ref BitOffset, BaseOffset, 6, 6);
+            AddBool(RawParentSkillIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 6, 8);
+            AddBool(IsAdvancementTableNull, data, ref offset, ref BitOffset, BaseOffset, 6, 10);
             CloseBool(ref offset, ref BitOffset);
             AddInt(RawId, data, ref offset, BaseOffset, 8);
             AddString(Description, data, ref offset, BaseOffset, 12, StoredStringtable);

@@ -29,6 +29,28 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public AbilityCue Cue { get { return GetEnum<AbilityCue>(32); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "minLevel", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMinLevel } },
+            { "maxLevel", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMaxLevel } },
+            { "minDistance", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMinDistance } },
+            { "minRange", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMinRange } },
+            { "maxRange", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMaxRange } },
+            { "cue", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<AbilityCue>.ToString(Cue, null, AbilityCue.Internal_None) } },
+            { "cueVal", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawCueValue } },
+        }; } }
     }
 }

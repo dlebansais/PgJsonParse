@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgGuildQuestCompletedQuestRequirement : GenericPgObject<PgGuildQuestCompletedQuestRequirement>, IPgGuildQuestCompletedQuestRequirement
+    public class PgGuildQuestCompletedQuestRequirement : PgQuestRequirement<PgGuildQuestCompletedQuestRequirement>, IPgGuildQuestCompletedQuestRequirement
     {
         public PgGuildQuestCompletedQuestRequirement(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,10 +19,15 @@ namespace PgJsonObjects
             return new PgGuildQuestCompletedQuestRequirement(data, ref offset);
         }
 
-        public override string Key { get { return GetString(4); } }
-        public QuestCollection QuestList { get { return GetObjectList(8, ref _QuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _QuestList;
-        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public QuestCollection QuestList { get { return GetObjectList(PropertiesOffset + 0, ref _QuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _QuestList;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "Quest", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => QuestList.Count > 0 ? QuestList[0].InternalName : null } },
+        }; } }
     }
 }

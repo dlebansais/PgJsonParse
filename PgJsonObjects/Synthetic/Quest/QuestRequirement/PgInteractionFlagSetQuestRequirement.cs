@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgInteractionFlagSetQuestRequirement : GenericPgObject<PgInteractionFlagSetQuestRequirement>, IPgInteractionFlagSetQuestRequirement
+    public class PgInteractionFlagSetQuestRequirement : PgQuestRequirement<PgInteractionFlagSetQuestRequirement>, IPgInteractionFlagSetQuestRequirement
     {
         public PgInteractionFlagSetQuestRequirement(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,10 +19,15 @@ namespace PgJsonObjects
             return new PgInteractionFlagSetQuestRequirement(data, ref offset);
         }
 
-        public override string Key { get { return GetString(4); } }
-        public string InteractionFlag { get { return GetString(8); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public string InteractionFlag { get { return GetString(PropertiesOffset + 0); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "InteractionFlag", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => InteractionFlag } },
+        }; } }
     }
 }

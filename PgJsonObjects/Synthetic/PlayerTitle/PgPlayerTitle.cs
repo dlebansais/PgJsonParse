@@ -28,6 +28,16 @@ namespace PgJsonObjects
         public List<TitleKeyword> KeywordList { get { return GetEnumList(16, ref _KeywordList); } } private List<TitleKeyword> _KeywordList;
         protected override List<string> FieldTableOrder { get { return GetStringList(20, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Title", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RawTitle } },
+            { "Tooltip", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Tooltip } },
+            { "Keywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<TitleKeyword>.ToStringList(KeywordList) } },
+        }; } }
     }
 }

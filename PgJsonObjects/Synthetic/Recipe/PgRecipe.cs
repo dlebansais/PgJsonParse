@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Presentation;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -33,7 +34,7 @@ namespace PgJsonObjects
         public IPgSkill Skill { get { return GetObject(28, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get { return GetInt(32); } }
-        //public RecipeResultEffectCollection ResultEffectList { get { return GetObjectList(32, ref _ResultEffectList, (byte[] data, ref int offset) => new PgRecipeResultEffect(data, offset), () => new RecipeResultEffectCollection()); } } private RecipeResultEffectCollection _ResultEffectList;
+        public RecipeResultEffectCollection ResultEffectList { get { return GetObjectList(36, ref _ResultEffectList, RecipeResultEffectCollection.CreateItem, () => new RecipeResultEffectCollection()); } } private RecipeResultEffectCollection _ResultEffectList;
         public IPgSkill SortSkill { get { return GetObject(40, ref _SortSkill, PgSkill.CreateNew); } } private IPgSkill _SortSkill;
         public List<RecipeKeyword> KeywordList { get { return GetEnumList(44, ref _KeywordList); } } private List<RecipeKeyword> _KeywordList;
         public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
@@ -63,8 +64,270 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(116, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
         public bool? RawIsItemMenuKeywordReqSufficient { get { return GetBool(120, 0); } }
+        public bool IngredientListIsEmpty { get { return RawIngredientListIsEmpty.HasValue && RawIngredientListIsEmpty.Value; } }
+        public bool? RawIngredientListIsEmpty { get { return GetBool(120, 2); } }
+        public bool ResultItemListIsEmpty { get { return RawResultItemListIsEmpty.HasValue && RawResultItemListIsEmpty.Value; } }
+        public bool? RawResultItemListIsEmpty { get { return GetBool(120, 4); } }
         public ItemKeyword RecipeItemKeyword { get { return GetEnum<ItemKeyword>(122); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "IconId", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawIconId } },
+            { "Ingredients", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => IngredientList,
+                GetArrayIsEmpty = () => IngredientListIsEmpty} },
+            { "InternalName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => InternalName } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Name } },
+            { "ResultItems", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => ResultItemList,
+                GetArrayIsEmpty = () => ResultItemListIsEmpty } },
+            { "Skill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Skill != null ? StringToEnumConversion<PowerSkill>.ToString(Skill.CombatSkill, null, PowerSkill.Internal_None) : null } },
+            { "SkillLevelReq", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawSkillLevelReq } },
+            { "ResultEffects", new FieldParser() {
+                Type = FieldType.StringArray,
+                GetStringArray = GetResultEffects } },
+            { "SortSkill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => SortSkill != null ? StringToEnumConversion<PowerSkill>.ToString(SortSkill.CombatSkill, null, PowerSkill.Internal_None) : null } },
+            { "Keywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<RecipeKeyword>.ToStringList(KeywordList) } },
+            { "ActionLabel", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<RecipeAction>.ToString(ActionLabel, TextMaps.RecipeActionStringMap, RecipeAction.Internal_None) } },
+            { "UsageDelay", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawUsageDelay } },
+            { "UsageDelayMessage", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => UsageDelayMessage } },
+            { "UsageAnimation", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<RecipeUsageAnimation>.ToString(UsageAnimation, null, RecipeUsageAnimation.Internal_None) } },
+            { "OtherRequirements", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => OtherRequirementList,
+                SimplifyArray = true } },
+            { "Costs", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => CostList } },
+            { "NumResultItems", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumResultItems } },
+            { "UsageAnimationEnd", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => UsageAnimationEnd } },
+            { "ResetTimeInSeconds", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawResetTimeInSeconds } },
+            { "DyeColor", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => DyeColor.HasValue ? InvariantCulture.ColorToString(DyeColor.Value) : null } },
+            { "RewardSkill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RewardSkill != null ? StringToEnumConversion<PowerSkill>.ToString(RewardSkill.CombatSkill, null, PowerSkill.Internal_None) : null } },
+            { "RewardSkillXp", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardSkillXp } },
+            { "RewardSkillXpFirstTime", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardSkillXpFirstTime } },
+            { "SharesResetTimerWith", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => SharesResetTimerWith != null ? SharesResetTimerWith.InternalName : null } },
+            { "ItemMenuLabel", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => ItemMenuLabel } },
+            { "ItemMenuKeywordReq", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RecipeItemKeyword, null, ItemKeyword.Internal_None) } },
+            { "IsItemMenuKeywordReqSufficient", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsItemMenuKeywordReqSufficient } },
+            { "ItemMenuCategory", new FieldParser() {
+                Type = FieldType.String,
+                GetString = GetItemMenuCategory } },
+            { "ItemMenuCategoryLevel", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawItemMenuCategoryLevel } },
+            { "PrereqRecipe", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => PrereqRecipe != null ? PrereqRecipe.InternalName : null } },
+        }; } }
+
+        private List<string> GetResultEffects()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (IPgRecipeResultEffect Item in ResultEffectList)
+            {
+                switch (Item.Effect)
+                {
+                    case RecipeEffect.ExtractTSysPower:
+                        Result.Add(GetExtractResultEffects(Item));
+                        break;
+
+                    case RecipeEffect.RepairItemDurability:
+                        Result.Add(GetRepairItemResultEffects(Item));
+                        break;
+
+                    case RecipeEffect.TSysCraftedEquipment:
+                        Result.Add(GetCraftedResultEffects(Item));
+                        break;
+
+                    case RecipeEffect.CraftingEnhanceItem:
+                        Result.Add(GetCraftingEnhanceResultEffects(Item));
+                        break;
+
+                    case RecipeEffect.AddItemTSysPower:
+                        Result.Add(GetPowerResultEffects(Item));
+                        break;
+
+                    case RecipeEffect.BrewItem:
+                        Result.Add(GetBrewItemResultEffects(Item));
+                        break;
+
+                    case RecipeEffect.AdjustRecipeReuseTime:
+                        Result.Add(GetAdjustRecipeResultEffects(Item));
+                        break;
+
+                    default:
+                        Result.Add(StringToEnumConversion<RecipeEffect>.ToString(Item.Effect, TextMaps.RecipeEffectStringMap));
+                        break;
+                }
+            }
+
+            return Result;
+        }
+
+        private string GetExtractResultEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "ExtractTSysPower(";
+
+            Result += StringToEnumConversion<Augment>.ToString(Item.ExtractedAugment) + ",";
+            Result += StringToEnumConversion<DecomposeSkill>.ToString(Item.Skill) + ",";
+            Result += Item.MinLevel.ToString() + ",";
+            Result += Item.MaxLevel.ToString() + ")";
+
+            return Result;
+        }
+
+        private string GetRepairItemResultEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "RepairItemDurability(";
+
+            Result += Tools.FloatToString(Item.RepairMinEfficiency, Item.RepairMinEfficiencyFormat) + ",";
+            Result += Tools.FloatToString(Item.RepairMaxEfficiency, Item.RepairMaxEfficiencyFormat) + ",";
+            Result += Item.RepairCooldown.ToString() + ",";
+            Result += Item.MinLevel.ToString() + ",";
+            Result += Item.MaxLevel.ToString() + ")";
+
+            return Result;
+        }
+
+        private string GetCraftedResultEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "TSysCraftedEquipment(";
+
+            Result += StringToEnumConversion<CraftedBoost>.ToString(Item.Boost);
+            Result += Item.BoostLevel.ToString();
+            if (Item.IsCamouflaged)
+                Result += "C";
+            if (Item.RawAdditionalEnchantments.HasValue)
+                Result += "," + Item.RawAdditionalEnchantments.Value.ToString();
+            if (Item.BoostedAnimal != Appearance.Internal_None)
+                Result += "," + StringToEnumConversion<Appearance>.ToString(Item.BoostedAnimal);
+
+            Result += ")";
+
+            return Result;
+        }
+
+        private string GetCraftingEnhanceResultEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "CraftingEnhanceItem";
+
+            Result += StringToEnumConversion<EnhancementEffect>.ToString(Item.Enhancement) + "(";
+            Result += InvariantCulture.SingleToString(Item.AddedQuantity) + ",";
+            Result += Item.ConsumedEnhancementPoints.ToString() + ")";
+
+            return Result;
+        }
+
+        private string GetPowerResultEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "AddItemTSysPower(";
+
+            Result += StringToEnumConversion<ShamanicSlotPower>.ToString(Item.SlotPower) + ",";
+            Result += Item.SlotPowerLevel.ToString() + ")";
+
+            return Result;
+        }
+
+        private string GetBrewItemResultEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "BrewItem(";
+
+            Result += Item.BrewPartCount.ToString() + ",";
+            Result += Item.BrewLevel.ToString() + ",";
+
+            string Parts = "";
+            foreach (RecipeItemKey k in Item.BrewPartList)
+            {
+                if (Parts.Length > 0)
+                    Parts += "+";
+
+                Parts += StringToEnumConversion<RecipeItemKey>.ToString(k);
+            }
+
+            string PartResults = "";
+            foreach (RecipeResultKey k in Item.BrewResultList)
+            {
+                if (PartResults.Length > 0)
+                    PartResults += "+";
+
+                PartResults += StringToEnumConversion<RecipeResultKey>.ToString(k);
+            }
+
+            Result += Parts + "=" + PartResults + ")";
+
+            return Result;
+        }
+
+        private string GetAdjustRecipeResultEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "AdjustRecipeReuseTime(";
+
+            Result += Item.AdjustedReuseTime.ToString() + ",";
+            Result += StringToEnumConversion<MoonPhases>.ToString(Item.MoonPhase) + ")";
+
+            return Result;
+        }
+
+        private string GetItemMenuCategory()
+        {
+            if (RawItemMenuCategory == "Extract")
+                return "TSysExtract";
+
+            else if (RawItemMenuCategory == "Distill")
+                return "TSysDistill";
+
+            else
+                return null;
+        }
     }
 }

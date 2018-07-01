@@ -180,11 +180,6 @@ namespace PgJsonObjects
             }
         }
 
-        public static readonly Dictionary<QuestObjectiveKillTarget, string> KillTargetStringMap = new Dictionary<QuestObjectiveKillTarget, string>()
-        {
-            { QuestObjectiveKillTarget.Any, "*" },
-        };
-
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
                 Type = FieldType.String,
@@ -279,7 +274,7 @@ namespace PgJsonObjects
         private void ParseTarget(string RawTarget, ParseErrorInfo ErrorInfo)
         {
             if (Type == QuestObjectiveType.Kill || Type == QuestObjectiveType.KillElite)
-                KillTarget = StringToEnumConversion<QuestObjectiveKillTarget>.Parse(RawTarget, KillTargetStringMap, ErrorInfo);
+                KillTarget = StringToEnumConversion<QuestObjectiveKillTarget>.Parse(RawTarget, TextMaps.KillTargetStringMap, ErrorInfo);
 
             else if (Type == QuestObjectiveType.Deliver)
             {
@@ -624,6 +619,23 @@ namespace PgJsonObjects
         #endregion
 
         #region Serializing
+        protected void SerializeJsonObjectInternalProlog(byte[] data, ref int offset, Dictionary<int, string> StoredStringtable, Dictionary<int, List<string>> StoredStringListTable)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+
+            AddInt((int)Type, data, ref offset, BaseOffset, 0);
+            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddString(Description, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddInt(RawNumber, data, ref offset, BaseOffset, 12);
+            AddInt(MinHour, data, ref offset, BaseOffset, 16);
+            AddInt(MaxHour, data, ref offset, BaseOffset, 20);
+            AddBool(RawMustCompleteEarlierObjectivesFirst, data, ref offset, ref BitOffset, BaseOffset, 24, 0);
+            CloseBool(ref offset, ref BitOffset);
+            offset += 2;
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 28, StoredStringListTable);
+        }
+
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             throw new InvalidOperationException();

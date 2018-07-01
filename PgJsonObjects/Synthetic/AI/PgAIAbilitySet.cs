@@ -694,6 +694,2014 @@ namespace PgJsonObjects
         public IPgAIAbility BearUltra_Pet5 { get { return GetAbilityObject(667); } }
         public IPgAIAbility BearUltra_Pet6 { get { return GetAbilityObject(668); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+           { "AcidAuraBall1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AcidAuraBall1 as IObjectContentGenerator } },
+           { "AcidAuraBall2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AcidAuraBall2 as IObjectContentGenerator } },
+           { "AcidAuraBall3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AcidAuraBall3 as IObjectContentGenerator } },
+           { "AcidAuraBall4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AcidAuraBall4 as IObjectContentGenerator } },
+           { "AcidBall1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AcidBall1 as IObjectContentGenerator } },
+           { "AcidBall2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AcidBall2 as IObjectContentGenerator } },
+           { "AcidExplosion1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AcidExplosion1 as IObjectContentGenerator } },
+           { "AcidExplosion2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AcidExplosion2 as IObjectContentGenerator } },
+           { "AcidSpew1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AcidSpew1 as IObjectContentGenerator } },
+           { "AlienDog_Punch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AlienDog_Punch as IObjectContentGenerator } },
+           { "AlienDog_Punch2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AlienDog_Punch2 as IObjectContentGenerator } },
+           { "AlienDog_RagePunch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AlienDog_RagePunch as IObjectContentGenerator } },
+           { "AnimalBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalBite as IObjectContentGenerator } },
+           { "AnimalClaw", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalClaw as IObjectContentGenerator } },
+           { "AnimalFlee", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalFlee as IObjectContentGenerator } },
+           { "AnimalHeal", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalHeal as IObjectContentGenerator } },
+           { "AnimalHeal2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalHeal2 as IObjectContentGenerator } },
+           { "AnimalHeal3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalHeal3 as IObjectContentGenerator } },
+           { "AnimalHoofFieryFrontKick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalHoofFieryFrontKick as IObjectContentGenerator } },
+           { "AnimalHoofFieryFrontKick2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalHoofFieryFrontKick2 as IObjectContentGenerator } },
+           { "AnimalHoofFrontKick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalHoofFrontKick as IObjectContentGenerator } },
+           { "AnimalHoofRageKick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalHoofRageKick as IObjectContentGenerator } },
+           { "AnimalHoofRageKick2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalHoofRageKick2 as IObjectContentGenerator } },
+           { "AnimalOmegaBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalOmegaBite as IObjectContentGenerator } },
+           { "AnimalOmegaBite2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => AnimalOmegaBite2 as IObjectContentGenerator } },
+           { "BallistaFire", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BallistaFire as IObjectContentGenerator } },
+           { "BallistaFire_Long", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BallistaFire_Long as IObjectContentGenerator } },
+           { "BarghestBiteA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BarghestBiteA as IObjectContentGenerator } },
+           { "BarghestBiteB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BarghestBiteB as IObjectContentGenerator } },
+           { "BarghestDebuff", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BarghestDebuff as IObjectContentGenerator } },
+           { "BarutiWrapA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BarutiWrapA as IObjectContentGenerator } },
+           { "BarutiWrapB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BarutiWrapB as IObjectContentGenerator } },
+           { "BarutiWrapRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BarutiWrapRage as IObjectContentGenerator } },
+           { "BasiliskCastPerching", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BasiliskCastPerching as IObjectContentGenerator } },
+           { "BasiliskClawA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BasiliskClawA as IObjectContentGenerator } },
+           { "BasiliskClawB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BasiliskClawB as IObjectContentGenerator } },
+           { "BasiliskDebuff", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BasiliskDebuff as IObjectContentGenerator } },
+           { "BasiliskToxicBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BasiliskToxicBite as IObjectContentGenerator } },
+           { "BatIllusionBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BatIllusionBite as IObjectContentGenerator } },
+           { "BatIllusionSlashA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BatIllusionSlashA as IObjectContentGenerator } },
+           { "BatIllusionSlashB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BatIllusionSlashB as IObjectContentGenerator } },
+           { "BearBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearBite as IObjectContentGenerator } },
+           { "BearBite_Pet", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearBite_Pet as IObjectContentGenerator } },
+           { "BearClaw_Pet", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearClaw_Pet as IObjectContentGenerator } },
+           { "BearCrush", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearCrush as IObjectContentGenerator } },
+           { "BearSelfHeal_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearSelfHeal_Pet1 as IObjectContentGenerator } },
+           { "BearSelfHeal_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearSelfHeal_Pet2 as IObjectContentGenerator } },
+           { "BearSelfHeal_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearSelfHeal_Pet3 as IObjectContentGenerator } },
+           { "BearSelfHeal_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearSelfHeal_Pet4 as IObjectContentGenerator } },
+           { "BearSelfHeal_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearSelfHeal_Pet5 as IObjectContentGenerator } },
+           { "BearSelfHeal_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearSelfHeal_Pet6 as IObjectContentGenerator } },
+           { "BearStun_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearStun_Pet1 as IObjectContentGenerator } },
+           { "BearStun_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearStun_Pet2 as IObjectContentGenerator } },
+           { "BearStun_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearStun_Pet3 as IObjectContentGenerator } },
+           { "BearStun_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearStun_Pet4 as IObjectContentGenerator } },
+           { "BearTaunt_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearTaunt_Pet1 as IObjectContentGenerator } },
+           { "BearTaunt_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearTaunt_Pet2 as IObjectContentGenerator } },
+           { "BearTaunt_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearTaunt_Pet3 as IObjectContentGenerator } },
+           { "BearTaunt_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearTaunt_Pet4 as IObjectContentGenerator } },
+           { "BearTaunt_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearTaunt_Pet5 as IObjectContentGenerator } },
+           { "BearTaunt_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearTaunt_Pet6 as IObjectContentGenerator } },
+           { "BearUltra_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearUltra_Pet1 as IObjectContentGenerator } },
+           { "BearUltra_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearUltra_Pet2 as IObjectContentGenerator } },
+           { "BearUltra_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearUltra_Pet3 as IObjectContentGenerator } },
+           { "BearUltra_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearUltra_Pet4 as IObjectContentGenerator } },
+           { "BearUltra_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearUltra_Pet5 as IObjectContentGenerator } },
+           { "BearUltra_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearUltra_Pet6 as IObjectContentGenerator } },
+           { "BearWarmth_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearWarmth_Pet1 as IObjectContentGenerator } },
+           { "BearWarmth_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearWarmth_Pet2 as IObjectContentGenerator } },
+           { "BearWarmth_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearWarmth_Pet3 as IObjectContentGenerator } },
+           { "BearWarmth_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearWarmth_Pet4 as IObjectContentGenerator } },
+           { "BearWarmth_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearWarmth_Pet5 as IObjectContentGenerator } },
+           { "BearWarmth_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BearWarmth_Pet6 as IObjectContentGenerator } },
+           { "BigCatClaw", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatClaw as IObjectContentGenerator } },
+           { "BigCatClaw_Pet", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatClaw_Pet as IObjectContentGenerator } },
+           { "BigCatDebuff", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatDebuff as IObjectContentGenerator } },
+           { "BigCatHeal_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatHeal_Pet1 as IObjectContentGenerator } },
+           { "BigCatHeal_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatHeal_Pet2 as IObjectContentGenerator } },
+           { "BigCatHeal_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatHeal_Pet3 as IObjectContentGenerator } },
+           { "BigCatHeal_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatHeal_Pet4 as IObjectContentGenerator } },
+           { "BigCatHeal_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatHeal_Pet5 as IObjectContentGenerator } },
+           { "BigCatHeal_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatHeal_Pet6 as IObjectContentGenerator } },
+           { "BigCatKill_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatKill_Pet1 as IObjectContentGenerator } },
+           { "BigCatKill_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatKill_Pet2 as IObjectContentGenerator } },
+           { "BigCatKill_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatKill_Pet3 as IObjectContentGenerator } },
+           { "BigCatKill_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatKill_Pet4 as IObjectContentGenerator } },
+           { "BigCatKill_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatKill_Pet5 as IObjectContentGenerator } },
+           { "BigCatKill_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatKill_Pet6 as IObjectContentGenerator } },
+           { "BigCatPounce", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatPounce as IObjectContentGenerator } },
+           { "BigCatPounce_Pet", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatPounce_Pet as IObjectContentGenerator } },
+           { "BigCatRagePounce", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatRagePounce as IObjectContentGenerator } },
+           { "BigCatRoot_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatRoot_Pet1 as IObjectContentGenerator } },
+           { "BigCatRoot_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatRoot_Pet2 as IObjectContentGenerator } },
+           { "BigCatRoot_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatRoot_Pet3 as IObjectContentGenerator } },
+           { "BigCatRoot_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatRoot_Pet4 as IObjectContentGenerator } },
+           { "BigCatUltraKill_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatUltraKill_Pet1 as IObjectContentGenerator } },
+           { "BigCatUltraKill_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatUltraKill_Pet2 as IObjectContentGenerator } },
+           { "BigCatUltraKill_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatUltraKill_Pet3 as IObjectContentGenerator } },
+           { "BigCatUltraKill_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatUltraKill_Pet4 as IObjectContentGenerator } },
+           { "BigCatUltraKill_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatUltraKill_Pet5 as IObjectContentGenerator } },
+           { "BigCatUltraKill_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatUltraKill_Pet6 as IObjectContentGenerator } },
+           { "BigCatVuln_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatVuln_Pet1 as IObjectContentGenerator } },
+           { "BigCatVuln_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatVuln_Pet2 as IObjectContentGenerator } },
+           { "BigCatVuln_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatVuln_Pet3 as IObjectContentGenerator } },
+           { "BigCatVuln_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigCatVuln_Pet4 as IObjectContentGenerator } },
+           { "BigGolemFling", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigGolemFling as IObjectContentGenerator } },
+           { "BigGolemFlingBoss", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigGolemFlingBoss as IObjectContentGenerator } },
+           { "BigGolemFlingBoss2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigGolemFlingBoss2 as IObjectContentGenerator } },
+           { "BigGolemHitA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigGolemHitA as IObjectContentGenerator } },
+           { "BigGolemHitA-NoDisable", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigGolemHitA_NoDisable as IObjectContentGenerator } },
+           { "BigGolemHitB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigGolemHitB as IObjectContentGenerator } },
+           { "BigGolemHitB-NoDisable", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigGolemHitB_NoDisable as IObjectContentGenerator } },
+           { "BigGolemPerchFix", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigGolemPerchFix as IObjectContentGenerator } },
+           { "BigGolemSummonFireSnake", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigGolemSummonFireSnake as IObjectContentGenerator } },
+           { "BigHeadCurseball", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BigHeadCurseball as IObjectContentGenerator } },
+           { "BitingVineAppear", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BitingVineAppear as IObjectContentGenerator } },
+           { "BitingVineBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BitingVineBite as IObjectContentGenerator } },
+           { "BitingVineCast", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BitingVineCast as IObjectContentGenerator } },
+           { "BitingVineDisappear", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BitingVineDisappear as IObjectContentGenerator } },
+           { "BitingVineSpit", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BitingVineSpit as IObjectContentGenerator } },
+           { "BitingVineSpitB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BitingVineSpitB as IObjectContentGenerator } },
+           { "BleddynHowl", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BleddynHowl as IObjectContentGenerator } },
+           { "BossMegaHammer", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossMegaHammer as IObjectContentGenerator } },
+           { "BossMegaHammer2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossMegaHammer2 as IObjectContentGenerator } },
+           { "BossMegaRageHammer", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossMegaRageHammer as IObjectContentGenerator } },
+           { "BossMegaSword1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossMegaSword1 as IObjectContentGenerator } },
+           { "BossMegaSword2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossMegaSword2 as IObjectContentGenerator } },
+           { "BossSlime_SummonSlime1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossSlime_SummonSlime1 as IObjectContentGenerator } },
+           { "BossSlime_SummonSlime4Elite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossSlime_SummonSlime4Elite as IObjectContentGenerator } },
+           { "BossSlimeKick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossSlimeKick as IObjectContentGenerator } },
+           { "BossSlimeKick2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossSlimeKick2 as IObjectContentGenerator } },
+           { "BossSlimeKick2B", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossSlimeKick2B as IObjectContentGenerator } },
+           { "BossSlimeKickB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BossSlimeKickB as IObjectContentGenerator } },
+           { "BrainBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BrainBite as IObjectContentGenerator } },
+           { "BrainDrain", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BrainDrain as IObjectContentGenerator } },
+           { "BrainDrain2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => BrainDrain2 as IObjectContentGenerator } },
+           { "CiervosDarknessBomb", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CiervosDarknessBomb as IObjectContentGenerator } },
+           { "CiervosNightmareHoof", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CiervosNightmareHoof as IObjectContentGenerator } },
+           { "ClaudiaBlizzard", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ClaudiaBlizzard as IObjectContentGenerator } },
+           { "ClaudiaIceSpear", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ClaudiaIceSpear as IObjectContentGenerator } },
+           { "ClaudiaTundraSpikes", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ClaudiaTundraSpikes as IObjectContentGenerator } },
+           { "CockatriceParalyze", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CockatriceParalyze as IObjectContentGenerator } },
+           { "CockatricePeck", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CockatricePeck as IObjectContentGenerator } },
+           { "CockatriceTailWhip", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CockatriceTailWhip as IObjectContentGenerator } },
+           { "ColdAuraBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ColdAuraBurst as IObjectContentGenerator } },
+           { "ColdSphereBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ColdSphereBurst as IObjectContentGenerator } },
+           { "ColdSphereFreezeBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ColdSphereFreezeBurst as IObjectContentGenerator } },
+           { "CultistArrow1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CultistArrow1 as IObjectContentGenerator } },
+           { "CultistArrow2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CultistArrow2 as IObjectContentGenerator } },
+           { "CultistOmegaArrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CultistOmegaArrow as IObjectContentGenerator } },
+           { "CultistSword1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CultistSword1 as IObjectContentGenerator } },
+           { "CultistSword2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CultistSword2 as IObjectContentGenerator } },
+           { "CultistSwordStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => CultistSwordStun as IObjectContentGenerator } },
+           { "DeathRay", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DeathRay as IObjectContentGenerator } },
+           { "DementiaPuckCurse", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DementiaPuckCurse as IObjectContentGenerator } },
+           { "Dinobite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Dinobite as IObjectContentGenerator } },
+           { "Dinobite2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Dinobite2 as IObjectContentGenerator } },
+           { "Dinoslash", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Dinoslash as IObjectContentGenerator } },
+           { "Dinoslash2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Dinoslash2 as IObjectContentGenerator } },
+           { "Dinowhap", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Dinowhap as IObjectContentGenerator } },
+           { "DragonWormBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DragonWormBite as IObjectContentGenerator } },
+           { "DragonWormEscape", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DragonWormEscape as IObjectContentGenerator } },
+           { "DragonWormRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DragonWormRage as IObjectContentGenerator } },
+           { "DragonWormSmack", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DragonWormSmack as IObjectContentGenerator } },
+           { "DragonWormSpitElectricity", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DragonWormSpitElectricity as IObjectContentGenerator } },
+           { "DragonWormSpitFire", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DragonWormSpitFire as IObjectContentGenerator } },
+           { "DroachBiteA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DroachBiteA as IObjectContentGenerator } },
+           { "DroachBiteB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DroachBiteB as IObjectContentGenerator } },
+           { "DroachBreatheFire", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DroachBreatheFire as IObjectContentGenerator } },
+           { "DroachFireball", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DroachFireball as IObjectContentGenerator } },
+           { "DroachFireballPerching", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DroachFireballPerching as IObjectContentGenerator } },
+           { "DroachLightning", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DroachLightning as IObjectContentGenerator } },
+           { "DroachLightningPerching", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DroachLightningPerching as IObjectContentGenerator } },
+           { "DroachShockingKnockback", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DroachShockingKnockback as IObjectContentGenerator } },
+           { "DruidHealingSanctuaryHeal", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => DruidHealingSanctuaryHeal as IObjectContentGenerator } },
+           { "ElectricityAura1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ElectricityAura1 as IObjectContentGenerator } },
+           { "ElectricityAuraBolt1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ElectricityAuraBolt1 as IObjectContentGenerator } },
+           { "ElectricPigAoEStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ElectricPigAoEStun as IObjectContentGenerator } },
+           { "ElectricPigHitAndRun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ElectricPigHitAndRun as IObjectContentGenerator } },
+           { "ElectricPigStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ElectricPigStun as IObjectContentGenerator } },
+           { "ElementalBees", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ElementalBees as IObjectContentGenerator } },
+           { "ElementalBees2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ElementalBees2 as IObjectContentGenerator } },
+           { "ElementalSlam", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ElementalSlam as IObjectContentGenerator } },
+           { "EnemyMinigolemExplode", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => EnemyMinigolemExplode as IObjectContentGenerator } },
+           { "EnemyMinigolemHeal", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => EnemyMinigolemHeal as IObjectContentGenerator } },
+           { "EnemyMinigolemPunch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => EnemyMinigolemPunch as IObjectContentGenerator } },
+           { "FaceOfDeathKill", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FaceOfDeathKill as IObjectContentGenerator } },
+           { "FaeLightningSmite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FaeLightningSmite as IObjectContentGenerator } },
+           { "FaeLightningSmiteHidden", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FaeLightningSmiteHidden as IObjectContentGenerator } },
+           { "FaeSwordA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FaeSwordA as IObjectContentGenerator } },
+           { "FaeSwordB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FaeSwordB as IObjectContentGenerator } },
+           { "FaeSwordKill", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FaeSwordKill as IObjectContentGenerator } },
+           { "FireRatBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FireRatBite as IObjectContentGenerator } },
+           { "FireRatBite_Pet", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FireRatBite_Pet as IObjectContentGenerator } },
+           { "FireRatClaw", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FireRatClaw as IObjectContentGenerator } },
+           { "FireRatClaw_Pet", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FireRatClaw_Pet as IObjectContentGenerator } },
+           { "FireSnakeExplosion1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FireSnakeExplosion1 as IObjectContentGenerator } },
+           { "FireTrapAttack1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FireTrapAttack1 as IObjectContentGenerator } },
+           { "FireWallAttack1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FireWallAttack1 as IObjectContentGenerator } },
+           { "FireWallDotAttack1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FireWallDotAttack1 as IObjectContentGenerator } },
+           { "FlapSkullBigBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FlapSkullBigBite as IObjectContentGenerator } },
+           { "FlapSkullBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => FlapSkullBite as IObjectContentGenerator } },
+           { "GargoyleBossStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GargoyleBossStun as IObjectContentGenerator } },
+           { "GargoyleSlamA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GargoyleSlamA as IObjectContentGenerator } },
+           { "GargoyleSlamB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GargoyleSlamB as IObjectContentGenerator } },
+           { "GargoyleStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GargoyleStun as IObjectContentGenerator } },
+           { "GazlukPriest1Special", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GazlukPriest1Special as IObjectContentGenerator } },
+           { "GazlukPriest2Special", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GazlukPriest2Special as IObjectContentGenerator } },
+           { "GazlukPriest3Special", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GazlukPriest3Special as IObjectContentGenerator } },
+           { "GhostlyBolt", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhostlyBolt as IObjectContentGenerator } },
+           { "GhostlyBossBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhostlyBossBurst as IObjectContentGenerator } },
+           { "GhostlyBossPunchA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhostlyBossPunchA as IObjectContentGenerator } },
+           { "GhostlyBossPunchB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhostlyBossPunchB as IObjectContentGenerator } },
+           { "GhostlyBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhostlyBurst as IObjectContentGenerator } },
+           { "GhostlyPunchA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhostlyPunchA as IObjectContentGenerator } },
+           { "GhostlyPunchB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhostlyPunchB as IObjectContentGenerator } },
+           { "GhoulClawA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhoulClawA as IObjectContentGenerator } },
+           { "GhoulClawB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhoulClawB as IObjectContentGenerator } },
+           { "GhoulHammerA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhoulHammerA as IObjectContentGenerator } },
+           { "GhoulHammerB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhoulHammerB as IObjectContentGenerator } },
+           { "GhoulSelfBuff", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GhoulSelfBuff as IObjectContentGenerator } },
+           { "GiantBatBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GiantBatBite as IObjectContentGenerator } },
+           { "GiantBatSlashA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GiantBatSlashA as IObjectContentGenerator } },
+           { "GiantBatSlashB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GiantBatSlashB as IObjectContentGenerator } },
+           { "GiantBeetleBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GiantBeetleBite as IObjectContentGenerator } },
+           { "GiantBeetleBoulderSpit", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GiantBeetleBoulderSpit as IObjectContentGenerator } },
+           { "GiantBeetleInject", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GiantBeetleInject as IObjectContentGenerator } },
+           { "GiantScorpionClawA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GiantScorpionClawA as IObjectContentGenerator } },
+           { "GiantScorpionClawB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GiantScorpionClawB as IObjectContentGenerator } },
+           { "GiantScorpionSting", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GiantScorpionSting as IObjectContentGenerator } },
+           { "GnasherBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GnasherBite as IObjectContentGenerator } },
+           { "GnasherRend", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GnasherRend as IObjectContentGenerator } },
+           { "GoblinArmorBuff", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinArmorBuff as IObjectContentGenerator } },
+           { "GoblinArrow1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinArrow1 as IObjectContentGenerator } },
+           { "GoblinArrow2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinArrow2 as IObjectContentGenerator } },
+           { "GoblinBossLightning", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinBossLightning as IObjectContentGenerator } },
+           { "GoblinHateZapBall", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinHateZapBall as IObjectContentGenerator } },
+           { "GoblinHateZapBall2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinHateZapBall2 as IObjectContentGenerator } },
+           { "GoblinHeal1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinHeal1 as IObjectContentGenerator } },
+           { "GoblinHeal2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinHeal2 as IObjectContentGenerator } },
+           { "GoblinPunch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinPunch as IObjectContentGenerator } },
+           { "GoblinRageArrow1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinRageArrow1 as IObjectContentGenerator } },
+           { "GoblinRageArrow2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinRageArrow2 as IObjectContentGenerator } },
+           { "GoblinRageSpear1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinRageSpear1 as IObjectContentGenerator } },
+           { "GoblinRageSpear2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinRageSpear2 as IObjectContentGenerator } },
+           { "GoblinSpear1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinSpear1 as IObjectContentGenerator } },
+           { "GoblinSpear2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinSpear2 as IObjectContentGenerator } },
+           { "GoblinSpreadZapBall", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinSpreadZapBall as IObjectContentGenerator } },
+           { "GoblinZapBall", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GoblinZapBall as IObjectContentGenerator } },
+           { "GrimalkinBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinBite as IObjectContentGenerator } },
+           { "GrimalkinClaw", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinClaw as IObjectContentGenerator } },
+           { "GrimalkinFlee_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinFlee_Pet1 as IObjectContentGenerator } },
+           { "GrimalkinFlee_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinFlee_Pet2 as IObjectContentGenerator } },
+           { "GrimalkinFlee_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinFlee_Pet3 as IObjectContentGenerator } },
+           { "GrimalkinPuncture", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinPuncture as IObjectContentGenerator } },
+           { "GrimalkinPuncture_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinPuncture_Pet1 as IObjectContentGenerator } },
+           { "GrimalkinPuncture_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinPuncture_Pet2 as IObjectContentGenerator } },
+           { "GrimalkinPuncture_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinPuncture_Pet3 as IObjectContentGenerator } },
+           { "GrimalkinPuncture_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinPuncture_Pet4 as IObjectContentGenerator } },
+           { "GrimalkinPuncture_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinPuncture_Pet5 as IObjectContentGenerator } },
+           { "GrimalkinPuncture_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => GrimalkinPuncture_Pet6 as IObjectContentGenerator } },
+           { "HagAgingScream", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HagAgingScream as IObjectContentGenerator } },
+           { "HagAgingTouch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HagAgingTouch as IObjectContentGenerator } },
+           { "HealingAura1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HealingAura1 as IObjectContentGenerator } },
+           { "HealingAura2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HealingAura2 as IObjectContentGenerator } },
+           { "HealingAura3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HealingAura3 as IObjectContentGenerator } },
+           { "HealingAura4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HealingAura4 as IObjectContentGenerator } },
+           { "HippoBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HippoBite as IObjectContentGenerator } },
+           { "HippoBiteAndHeal1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HippoBiteAndHeal1 as IObjectContentGenerator } },
+           { "HippogriffBossSlashes", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HippogriffBossSlashes as IObjectContentGenerator } },
+           { "HippogriffPeck", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HippogriffPeck as IObjectContentGenerator } },
+           { "HippogriffSlashes", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HippogriffSlashes as IObjectContentGenerator } },
+           { "HookAcid", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HookAcid as IObjectContentGenerator } },
+           { "HookClaw", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HookClaw as IObjectContentGenerator } },
+           { "HookRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => HookRage as IObjectContentGenerator } },
+           { "IceCockFreeze", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => IceCockFreeze as IObjectContentGenerator } },
+           { "IceCockPeck", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => IceCockPeck as IObjectContentGenerator } },
+           { "IceSlimeBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => IceSlimeBite as IObjectContentGenerator } },
+           { "IceSlimeBiteB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => IceSlimeBiteB as IObjectContentGenerator } },
+           { "IceSlimeKick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => IceSlimeKick as IObjectContentGenerator } },
+           { "IceSlimeKickB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => IceSlimeKickB as IObjectContentGenerator } },
+           { "IcyCocoon", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => IcyCocoon as IObjectContentGenerator } },
+           { "IcyCocoon2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => IcyCocoon2 as IObjectContentGenerator } },
+           { "IcySlam", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => IcySlam as IObjectContentGenerator } },
+           { "InjectorBugBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => InjectorBugBite as IObjectContentGenerator } },
+           { "InjectorBugInject", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => InjectorBugInject as IObjectContentGenerator } },
+           { "InjectorBugInject2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => InjectorBugInject2 as IObjectContentGenerator } },
+           { "KhyrulekCurseBall", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => KhyrulekCurseBall as IObjectContentGenerator } },
+           { "KrakenBabyBeak", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => KrakenBabyBeak as IObjectContentGenerator } },
+           { "KrakenBabyRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => KrakenBabyRage as IObjectContentGenerator } },
+           { "KrakenBabySlam", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => KrakenBabySlam as IObjectContentGenerator } },
+           { "KrakenBeak", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => KrakenBeak as IObjectContentGenerator } },
+           { "KrakenRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => KrakenRage as IObjectContentGenerator } },
+           { "KrakenSlam", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => KrakenSlam as IObjectContentGenerator } },
+           { "LamiaMindControl", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => LamiaMindControl as IObjectContentGenerator } },
+           { "LamiaRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => LamiaRage as IObjectContentGenerator } },
+           { "ManticoreBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ManticoreBite as IObjectContentGenerator } },
+           { "ManticoreClaw", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ManticoreClaw as IObjectContentGenerator } },
+           { "ManticoreSting1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ManticoreSting1 as IObjectContentGenerator } },
+           { "Manticoresting2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Manticoresting2 as IObjectContentGenerator } },
+           { "MantisAcidBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MantisAcidBurst as IObjectContentGenerator } },
+           { "MantisBlast", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MantisBlast as IObjectContentGenerator } },
+           { "MantisClaw", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MantisClaw as IObjectContentGenerator } },
+           { "MantisRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MantisRage as IObjectContentGenerator } },
+           { "MantisSwipe", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MantisSwipe as IObjectContentGenerator } },
+           { "MaronesaInfect", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MaronesaInfect as IObjectContentGenerator } },
+           { "MaronesaStomp", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MaronesaStomp as IObjectContentGenerator } },
+           { "MinigolemAoEHeal", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEHeal as IObjectContentGenerator } },
+           { "MinigolemAoEHeal2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEHeal2 as IObjectContentGenerator } },
+           { "MinigolemAoEHeal3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEHeal3 as IObjectContentGenerator } },
+           { "MinigolemAoEHeal4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEHeal4 as IObjectContentGenerator } },
+           { "MinigolemAoEHeal5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEHeal5 as IObjectContentGenerator } },
+           { "MinigolemAoEPower", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEPower as IObjectContentGenerator } },
+           { "MinigolemAoEPower2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEPower2 as IObjectContentGenerator } },
+           { "MinigolemAoEPower3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEPower3 as IObjectContentGenerator } },
+           { "MinigolemAoEPower4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEPower4 as IObjectContentGenerator } },
+           { "MinigolemAoEPower5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemAoEPower5 as IObjectContentGenerator } },
+           { "MinigolemBombToss", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemBombToss as IObjectContentGenerator } },
+           { "MinigolemBombToss2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemBombToss2 as IObjectContentGenerator } },
+           { "MinigolemBombToss3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemBombToss3 as IObjectContentGenerator } },
+           { "MinigolemBombToss4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemBombToss4 as IObjectContentGenerator } },
+           { "MinigolemBombToss5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemBombToss5 as IObjectContentGenerator } },
+           { "MinigolemDoomAdmixture", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemDoomAdmixture as IObjectContentGenerator } },
+           { "MinigolemDoomAdmixture2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemDoomAdmixture2 as IObjectContentGenerator } },
+           { "MinigolemDoomAdmixture3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemDoomAdmixture3 as IObjectContentGenerator } },
+           { "MinigolemDoomAdmixture4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemDoomAdmixture4 as IObjectContentGenerator } },
+           { "MinigolemDoomAdmixture5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemDoomAdmixture5 as IObjectContentGenerator } },
+           { "MinigolemFireBalm1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemFireBalm1 as IObjectContentGenerator } },
+           { "MinigolemFireBalm2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemFireBalm2 as IObjectContentGenerator } },
+           { "MinigolemFireBalm3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemFireBalm3 as IObjectContentGenerator } },
+           { "MinigolemFireBalm4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemFireBalm4 as IObjectContentGenerator } },
+           { "MinigolemFireBalm5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemFireBalm5 as IObjectContentGenerator } },
+           { "MinigolemHasteConcoction1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemHasteConcoction1 as IObjectContentGenerator } },
+           { "MinigolemHasteConcoction2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemHasteConcoction2 as IObjectContentGenerator } },
+           { "MinigolemHasteConcoction3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemHasteConcoction3 as IObjectContentGenerator } },
+           { "MinigolemHeal", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemHeal as IObjectContentGenerator } },
+           { "MinigolemHeal2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemHeal2 as IObjectContentGenerator } },
+           { "MinigolemHeal3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemHeal3 as IObjectContentGenerator } },
+           { "MinigolemHeal4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemHeal4 as IObjectContentGenerator } },
+           { "MinigolemHeal5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemHeal5 as IObjectContentGenerator } },
+           { "MinigolemPunch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemPunch as IObjectContentGenerator } },
+           { "MinigolemPunch2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemPunch2 as IObjectContentGenerator } },
+           { "MinigolemPunch3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemPunch3 as IObjectContentGenerator } },
+           { "MinigolemPunch4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemPunch4 as IObjectContentGenerator } },
+           { "MinigolemPunch5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemPunch5 as IObjectContentGenerator } },
+           { "MinigolemRageAcidToss1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAcidToss1 as IObjectContentGenerator } },
+           { "MinigolemRageAcidToss2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAcidToss2 as IObjectContentGenerator } },
+           { "MinigolemRageAcidToss3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAcidToss3 as IObjectContentGenerator } },
+           { "MinigolemRageAcidToss4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAcidToss4 as IObjectContentGenerator } },
+           { "MinigolemRageAcidToss5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAcidToss5 as IObjectContentGenerator } },
+           { "MinigolemRageAoEHeal1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAoEHeal1 as IObjectContentGenerator } },
+           { "MinigolemRageAoEHeal2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAoEHeal2 as IObjectContentGenerator } },
+           { "MinigolemRageAoEHeal3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAoEHeal3 as IObjectContentGenerator } },
+           { "MinigolemRageAoEHeal4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAoEHeal4 as IObjectContentGenerator } },
+           { "MinigolemRageAoEHeal5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemRageAoEHeal5 as IObjectContentGenerator } },
+           { "MinigolemSelfDestruct", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfDestruct as IObjectContentGenerator } },
+           { "MinigolemSelfDestruct2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfDestruct2 as IObjectContentGenerator } },
+           { "MinigolemSelfDestruct3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfDestruct3 as IObjectContentGenerator } },
+           { "MinigolemSelfDestruct4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfDestruct4 as IObjectContentGenerator } },
+           { "MinigolemSelfDestruct5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfDestruct5 as IObjectContentGenerator } },
+           { "MinigolemSelfSacrifice", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfSacrifice as IObjectContentGenerator } },
+           { "MinigolemSelfSacrifice2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfSacrifice2 as IObjectContentGenerator } },
+           { "MinigolemSelfSacrifice3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfSacrifice3 as IObjectContentGenerator } },
+           { "MinigolemSelfSacrifice4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfSacrifice4 as IObjectContentGenerator } },
+           { "MinigolemSelfSacrifice5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinigolemSelfSacrifice5 as IObjectContentGenerator } },
+           { "MinotaurBossRageClub", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinotaurBossRageClub as IObjectContentGenerator } },
+           { "MinotaurBoulder", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinotaurBoulder as IObjectContentGenerator } },
+           { "MinotaurClub", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinotaurClub as IObjectContentGenerator } },
+           { "MinotaurRageClub", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MinotaurRageClub as IObjectContentGenerator } },
+           { "MonsterWerewolfHowl", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MonsterWerewolfHowl as IObjectContentGenerator } },
+           { "MonsterWerewolfPackAttack", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MonsterWerewolfPackAttack as IObjectContentGenerator } },
+           { "MonsterWerewolfPouncingRake", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MonsterWerewolfPouncingRake as IObjectContentGenerator } },
+           { "MummySlamA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MummySlamA as IObjectContentGenerator } },
+           { "MummySlamB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MummySlamB as IObjectContentGenerator } },
+           { "MummySlamCombo", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MummySlamCombo as IObjectContentGenerator } },
+           { "MummyWrapA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MummyWrapA as IObjectContentGenerator } },
+           { "MummyWrapB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MummyWrapB as IObjectContentGenerator } },
+           { "MummyWrapRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MummyWrapRage as IObjectContentGenerator } },
+           { "MushroomMonster_Bite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_Bite as IObjectContentGenerator } },
+           { "MushroomMonster_SpawnSpit1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_SpawnSpit1 as IObjectContentGenerator } },
+           { "MushroomMonster_SpawnSpit2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_SpawnSpit2 as IObjectContentGenerator } },
+           { "MushroomMonster_SpawnSuperSpit1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_SpawnSuperSpit1 as IObjectContentGenerator } },
+           { "MushroomMonster_SpawnSuperSpit2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_SpawnSuperSpit2 as IObjectContentGenerator } },
+           { "MushroomMonster_Spit1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_Spit1 as IObjectContentGenerator } },
+           { "MushroomMonster_Spit2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_Spit2 as IObjectContentGenerator } },
+           { "MushroomMonster_SummonMushroomSpawn1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_SummonMushroomSpawn1 as IObjectContentGenerator } },
+           { "MushroomMonster_SummonMushroomSpawn2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_SummonMushroomSpawn2 as IObjectContentGenerator } },
+           { "MushroomMonster_SummonMushroomSpawn3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => MushroomMonster_SummonMushroomSpawn3 as IObjectContentGenerator } },
+           { "Myconian_Bash", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Myconian_Bash as IObjectContentGenerator } },
+           { "Myconian_BossBash", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Myconian_BossBash as IObjectContentGenerator } },
+           { "Myconian_Drain", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Myconian_Drain as IObjectContentGenerator } },
+           { "Myconian_Mindspores", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Myconian_Mindspores as IObjectContentGenerator } },
+           { "Myconian_Mindspores_Permanent", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Myconian_Mindspores_Permanent as IObjectContentGenerator } },
+           { "Myconian_Shock", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Myconian_Shock as IObjectContentGenerator } },
+           { "Myconian_TidalCurse", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Myconian_TidalCurse as IObjectContentGenerator } },
+           { "NecroDarknessWave", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NecroDarknessWave as IObjectContentGenerator } },
+           { "NecroDeathsHold", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NecroDeathsHold as IObjectContentGenerator } },
+           { "NecroPainBubble", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NecroPainBubble as IObjectContentGenerator } },
+           { "NecroSpark", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NecroSpark as IObjectContentGenerator } },
+           { "NecroSparkPerching", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NecroSparkPerching as IObjectContentGenerator } },
+           { "NightmareDarknessBomb", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NightmareDarknessBomb as IObjectContentGenerator } },
+           { "NightmareHoof", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NightmareHoof as IObjectContentGenerator } },
+           { "NpcBlockingStance", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NpcBlockingStance as IObjectContentGenerator } },
+           { "NpcDoubleHitCurse", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NpcDoubleHitCurse as IObjectContentGenerator } },
+           { "NpcHeadcracker", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NpcHeadcracker as IObjectContentGenerator } },
+           { "NpcSmash", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => NpcSmash as IObjectContentGenerator } },
+           { "OgreClubA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OgreClubA as IObjectContentGenerator } },
+           { "OgreClubB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OgreClubB as IObjectContentGenerator } },
+           { "OgreStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OgreStun as IObjectContentGenerator } },
+           { "OgreThrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OgreThrow as IObjectContentGenerator } },
+           { "OrcAreaHalberdAttack", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcAreaHalberdAttack as IObjectContentGenerator } },
+           { "OrcAreaHalberdBoss", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcAreaHalberdBoss as IObjectContentGenerator } },
+           { "OrcArrow1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcArrow1 as IObjectContentGenerator } },
+           { "OrcArrow2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcArrow2 as IObjectContentGenerator } },
+           { "OrcDarknessBall", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcDarknessBall as IObjectContentGenerator } },
+           { "OrcDeathsHold", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcDeathsHold as IObjectContentGenerator } },
+           { "OrcDebuffArrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcDebuffArrow as IObjectContentGenerator } },
+           { "OrcElectricStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcElectricStun as IObjectContentGenerator } },
+           { "OrcEvasionBubble", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcEvasionBubble as IObjectContentGenerator } },
+           { "OrcExtinguishLife", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcExtinguishLife as IObjectContentGenerator } },
+           { "OrcFinishingBlow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcFinishingBlow as IObjectContentGenerator } },
+           { "OrcFinishingBlowFire", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcFinishingBlowFire as IObjectContentGenerator } },
+           { "OrcFireball", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcFireball as IObjectContentGenerator } },
+           { "OrcFireBolts", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcFireBolts as IObjectContentGenerator } },
+           { "OrcHalberdAttack", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcHalberdAttack as IObjectContentGenerator } },
+           { "OrcHeal1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcHeal1 as IObjectContentGenerator } },
+           { "OrcHeal2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcHeal2 as IObjectContentGenerator } },
+           { "OrcHipThrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcHipThrow as IObjectContentGenerator } },
+           { "OrcKneeKick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcKneeKick as IObjectContentGenerator } },
+           { "OrcKnockbackBolt", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcKnockbackBolt as IObjectContentGenerator } },
+           { "OrcLieutenantDebuffTaunt", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcLieutenantDebuffTaunt as IObjectContentGenerator } },
+           { "OrcParry", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcParry as IObjectContentGenerator } },
+           { "OrcParryFire", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcParryFire as IObjectContentGenerator } },
+           { "OrcPunch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcPunch as IObjectContentGenerator } },
+           { "OrcSlice", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcSlice as IObjectContentGenerator } },
+           { "OrcSpearAttack", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcSpearAttack as IObjectContentGenerator } },
+           { "OrcStaffSmash", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcStaffSmash as IObjectContentGenerator } },
+           { "OrcSummonSigil1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcSummonSigil1 as IObjectContentGenerator } },
+           { "OrcSummonUrak2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcSummonUrak2 as IObjectContentGenerator } },
+           { "OrcSwordSlash", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcSwordSlash as IObjectContentGenerator } },
+           { "OrcSwordSlashFire", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcSwordSlashFire as IObjectContentGenerator } },
+           { "OrcVenomstrike0", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcVenomstrike0 as IObjectContentGenerator } },
+           { "OrcVenomstrike1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcVenomstrike1 as IObjectContentGenerator } },
+           { "OrcWaveOfDarkness", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => OrcWaveOfDarkness as IObjectContentGenerator } },
+           { "Peck", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Peck as IObjectContentGenerator } },
+           { "PetUndeadArrow1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadArrow1 as IObjectContentGenerator } },
+           { "PetUndeadArrow2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadArrow2 as IObjectContentGenerator } },
+           { "PetUndeadDefensiveBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadDefensiveBurst as IObjectContentGenerator } },
+           { "PetUndeadFireballA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadFireballA as IObjectContentGenerator } },
+           { "PetUndeadFireballB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadFireballB as IObjectContentGenerator } },
+           { "PetUndeadOmegaArrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadOmegaArrow as IObjectContentGenerator } },
+           { "PetUndeadPunch1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadPunch1 as IObjectContentGenerator } },
+           { "PetUndeadSword1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadSword1 as IObjectContentGenerator } },
+           { "PetUndeadSword2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadSword2 as IObjectContentGenerator } },
+           { "PetUndeadSwordAngry", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PetUndeadSwordAngry as IObjectContentGenerator } },
+           { "RakAcidBomb", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakAcidBomb as IObjectContentGenerator } },
+           { "RakAimedShot", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakAimedShot as IObjectContentGenerator } },
+           { "RakBarrage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakBarrage as IObjectContentGenerator } },
+           { "RakBasicShot", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakBasicShot as IObjectContentGenerator } },
+           { "RakBossPerchSlow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakBossPerchSlow as IObjectContentGenerator } },
+           { "RakBossSlow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakBossSlow as IObjectContentGenerator } },
+           { "RakBowBash", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakBowBash as IObjectContentGenerator } },
+           { "RakBreatheFire", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakBreatheFire as IObjectContentGenerator } },
+           { "RakDecapitate", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakDecapitate as IObjectContentGenerator } },
+           { "RakFireball", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakFireball as IObjectContentGenerator } },
+           { "RakHackingBlade", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakHackingBlade as IObjectContentGenerator } },
+           { "RakHealingMist", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakHealingMist as IObjectContentGenerator } },
+           { "RakHookShot", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakHookShot as IObjectContentGenerator } },
+           { "RakKick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakKick as IObjectContentGenerator } },
+           { "RakKnee", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakKnee as IObjectContentGenerator } },
+           { "RakMindreave", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakMindreave as IObjectContentGenerator } },
+           { "RakPainBubble", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakPainBubble as IObjectContentGenerator } },
+           { "RakPanicCharge", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakPanicCharge as IObjectContentGenerator } },
+           { "RakPoisonArrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakPoisonArrow as IObjectContentGenerator } },
+           { "RakReconstruct", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakReconstruct as IObjectContentGenerator } },
+           { "RakRevitalize", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakRevitalize as IObjectContentGenerator } },
+           { "RakRingOfFire", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakRingOfFire as IObjectContentGenerator } },
+           { "RakSlash", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakSlash as IObjectContentGenerator } },
+           { "RakStaffBlock", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakStaffBlock as IObjectContentGenerator } },
+           { "RakStaffHeavy", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakStaffHeavy as IObjectContentGenerator } },
+           { "RakStaffHit", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakStaffHit as IObjectContentGenerator } },
+           { "RakStaffPin", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakStaffPin as IObjectContentGenerator } },
+           { "RakSwordSlash", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakSwordSlash as IObjectContentGenerator } },
+           { "RakToxinBomb", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RakToxinBomb as IObjectContentGenerator } },
+           { "RanalonDoctrineKeeperBlind", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonDoctrineKeeperBlind as IObjectContentGenerator } },
+           { "RanalonDoctrineKeeperStab", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonDoctrineKeeperStab as IObjectContentGenerator } },
+           { "RanalonGuardianBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonGuardianBite as IObjectContentGenerator } },
+           { "RanalonGuardianBlind", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonGuardianBlind as IObjectContentGenerator } },
+           { "RanalonGuardianStab", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonGuardianStab as IObjectContentGenerator } },
+           { "RanalonGuardianStabB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonGuardianStabB as IObjectContentGenerator } },
+           { "RanalonHeal", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonHeal as IObjectContentGenerator } },
+           { "RanalonHit", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonHit as IObjectContentGenerator } },
+           { "RanalonHitB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonHitB as IObjectContentGenerator } },
+           { "RanalonKick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonKick as IObjectContentGenerator } },
+           { "RanalonRoot", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonRoot as IObjectContentGenerator } },
+           { "RanalonSelfBuff", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonSelfBuff as IObjectContentGenerator } },
+           { "RanalonSelfBuffElite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonSelfBuffElite as IObjectContentGenerator } },
+           { "RanalonTongue", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonTongue as IObjectContentGenerator } },
+           { "RanalonZap", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonZap as IObjectContentGenerator } },
+           { "RanalonZapB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RanalonZapB as IObjectContentGenerator } },
+           { "RatBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatBite as IObjectContentGenerator } },
+           { "RatBite_Pet", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatBite_Pet as IObjectContentGenerator } },
+           { "RatBurn_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatBurn_Pet1 as IObjectContentGenerator } },
+           { "RatBurn_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatBurn_Pet2 as IObjectContentGenerator } },
+           { "RatBurn_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatBurn_Pet3 as IObjectContentGenerator } },
+           { "RatBurn_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatBurn_Pet4 as IObjectContentGenerator } },
+           { "RatBurn_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatBurn_Pet5 as IObjectContentGenerator } },
+           { "RatBurn_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatBurn_Pet6 as IObjectContentGenerator } },
+           { "RatClaw", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatClaw as IObjectContentGenerator } },
+           { "RatClaw_Pet", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatClaw_Pet as IObjectContentGenerator } },
+           { "RatDeRage_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatDeRage_Pet1 as IObjectContentGenerator } },
+           { "RatDeRage_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatDeRage_Pet2 as IObjectContentGenerator } },
+           { "RatDeRage_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatDeRage_Pet3 as IObjectContentGenerator } },
+           { "RatDeRage_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatDeRage_Pet4 as IObjectContentGenerator } },
+           { "RatDeRage_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatDeRage_Pet5 as IObjectContentGenerator } },
+           { "RatDeRage_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatDeRage_Pet6 as IObjectContentGenerator } },
+           { "RatHeal_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatHeal_Pet1 as IObjectContentGenerator } },
+           { "RatHeal_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatHeal_Pet2 as IObjectContentGenerator } },
+           { "RatHeal_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatHeal_Pet3 as IObjectContentGenerator } },
+           { "RatHeal_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatHeal_Pet4 as IObjectContentGenerator } },
+           { "RatHeal_Pet5", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatHeal_Pet5 as IObjectContentGenerator } },
+           { "RatHeal_Pet6", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatHeal_Pet6 as IObjectContentGenerator } },
+           { "RatVuln_Pet1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatVuln_Pet1 as IObjectContentGenerator } },
+           { "RatVuln_Pet2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatVuln_Pet2 as IObjectContentGenerator } },
+           { "RatVuln_Pet3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatVuln_Pet3 as IObjectContentGenerator } },
+           { "RatVuln_Pet4", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RatVuln_Pet4 as IObjectContentGenerator } },
+           { "ReboundAura1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ReboundAura1 as IObjectContentGenerator } },
+           { "RedCrystalBlast", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RedCrystalBlast as IObjectContentGenerator } },
+           { "RedCrystalBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RedCrystalBurst as IObjectContentGenerator } },
+           { "RhinoBossRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RhinoBossRage as IObjectContentGenerator } },
+           { "RhinoFireball", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RhinoFireball as IObjectContentGenerator } },
+           { "RhinoHorn", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RhinoHorn as IObjectContentGenerator } },
+           { "RhinoRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => RhinoRage as IObjectContentGenerator } },
+           { "ScrayBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ScrayBite as IObjectContentGenerator } },
+           { "ScrayStab", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ScrayStab as IObjectContentGenerator } },
+           { "SedgewickMegaSwordAngry", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SedgewickMegaSwordAngry as IObjectContentGenerator } },
+           { "SheepBomb1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SheepBomb1 as IObjectContentGenerator } },
+           { "SherzatAcidSpit", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SherzatAcidSpit as IObjectContentGenerator } },
+           { "SherzatClaw", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SherzatClaw as IObjectContentGenerator } },
+           { "SherzatDisintegrate", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SherzatDisintegrate as IObjectContentGenerator } },
+           { "Slime_SummonSlime", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Slime_SummonSlime as IObjectContentGenerator } },
+           { "SlimeBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlimeBite as IObjectContentGenerator } },
+           { "SlimeBiteB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlimeBiteB as IObjectContentGenerator } },
+           { "SlimeKick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlimeKick as IObjectContentGenerator } },
+           { "SlimeKickB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlimeKickB as IObjectContentGenerator } },
+           { "SlimeSpit", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlimeSpit as IObjectContentGenerator } },
+           { "SlimeSuperSpit", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlimeSuperSpit as IObjectContentGenerator } },
+           { "SlugPoisonBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlugPoisonBite as IObjectContentGenerator } },
+           { "SlugPoisonBite2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlugPoisonBite2 as IObjectContentGenerator } },
+           { "SlugPoisonBite3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlugPoisonBite3 as IObjectContentGenerator } },
+           { "SlugPoisonRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlugPoisonRage as IObjectContentGenerator } },
+           { "SlugPoisonRage2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlugPoisonRage2 as IObjectContentGenerator } },
+           { "SlugPoisonRage3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SlugPoisonRage3 as IObjectContentGenerator } },
+           { "SnailRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SnailRage as IObjectContentGenerator } },
+           { "SnailRageB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SnailRageB as IObjectContentGenerator } },
+           { "SnailRageC", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SnailRageC as IObjectContentGenerator } },
+           { "SnailStrike", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SnailStrike as IObjectContentGenerator } },
+           { "SpiderBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpiderBite as IObjectContentGenerator } },
+           { "SpiderBossFreePin", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpiderBossFreePin as IObjectContentGenerator } },
+           { "SpiderFireball", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpiderFireball as IObjectContentGenerator } },
+           { "SpiderIncubate", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpiderIncubate as IObjectContentGenerator } },
+           { "SpiderInject", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpiderInject as IObjectContentGenerator } },
+           { "SpiderKill", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpiderKill as IObjectContentGenerator } },
+           { "SpiderKill2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpiderKill2 as IObjectContentGenerator } },
+           { "SpiderKill3", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpiderKill3 as IObjectContentGenerator } },
+           { "SpiderPin", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpiderPin as IObjectContentGenerator } },
+           { "SpyPortalZap", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpyPortalZap as IObjectContentGenerator } },
+           { "SpyPortalZap2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => SpyPortalZap2 as IObjectContentGenerator } },
+           { "StrigaBuff", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => StrigaBuff as IObjectContentGenerator } },
+           { "StrigaClawA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => StrigaClawA as IObjectContentGenerator } },
+           { "StrigaClawB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => StrigaClawB as IObjectContentGenerator } },
+           { "StrigaFireBreath", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => StrigaFireBreath as IObjectContentGenerator } },
+           { "StrigaReap", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => StrigaReap as IObjectContentGenerator } },
+           { "StrigaReap2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => StrigaReap2 as IObjectContentGenerator } },
+           { "TheFogCurse", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TheFogCurse as IObjectContentGenerator } },
+           { "TornadoFling", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TornadoFling as IObjectContentGenerator } },
+           { "TornadoJolt1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TornadoJolt1 as IObjectContentGenerator } },
+           { "TornadoToss", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TornadoToss as IObjectContentGenerator } },
+           { "TotalHorrorAttack", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TotalHorrorAttack as IObjectContentGenerator } },
+           { "TotalHorrorHeal", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TotalHorrorHeal as IObjectContentGenerator } },
+           { "TotalHorrorHeal2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TotalHorrorHeal2 as IObjectContentGenerator } },
+           { "TotalHorrorStretch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TotalHorrorStretch as IObjectContentGenerator } },
+           { "TrainingGolemFireBreath", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TrainingGolemFireBreath as IObjectContentGenerator } },
+           { "TrainingGolemFireBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TrainingGolemFireBurst as IObjectContentGenerator } },
+           { "TrainingGolemHeal", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TrainingGolemHeal as IObjectContentGenerator } },
+           { "TrainingGolemHealB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TrainingGolemHealB as IObjectContentGenerator } },
+           { "TrainingGolemPunch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TrainingGolemPunch as IObjectContentGenerator } },
+           { "TrainingGolemStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TrainingGolemStun as IObjectContentGenerator } },
+           { "TriffidClawA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TriffidClawA as IObjectContentGenerator } },
+           { "TriffidClawB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TriffidClawB as IObjectContentGenerator } },
+           { "TriffidShot", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TriffidShot as IObjectContentGenerator } },
+           { "TriffidSpore", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TriffidSpore as IObjectContentGenerator } },
+           { "TriffidTongue", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TriffidTongue as IObjectContentGenerator } },
+           { "TriffidTongueElite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TriffidTongueElite as IObjectContentGenerator } },
+           { "TrollClubA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TrollClubA as IObjectContentGenerator } },
+           { "TrollClubB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TrollClubB as IObjectContentGenerator } },
+           { "TrollKnockdown", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TrollKnockdown as IObjectContentGenerator } },
+           { "TurretCrystalZap", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TurretCrystalZap as IObjectContentGenerator } },
+           { "TurretCrystalZap2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TurretCrystalZap2 as IObjectContentGenerator } },
+           { "TurretCrystalZapLongRange", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TurretCrystalZapLongRange as IObjectContentGenerator } },
+           { "TurretCrystalZapLongRange2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => TurretCrystalZapLongRange2 as IObjectContentGenerator } },
+           { "UndeadArrow1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadArrow1 as IObjectContentGenerator } },
+           { "UndeadArrow2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadArrow2 as IObjectContentGenerator } },
+           { "UndeadBoneWhirlwind", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadBoneWhirlwind as IObjectContentGenerator } },
+           { "UndeadDarknessBall", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadDarknessBall as IObjectContentGenerator } },
+           { "UndeadFireballA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadFireballA as IObjectContentGenerator } },
+           { "UndeadFireballA2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadFireballA2 as IObjectContentGenerator } },
+           { "UndeadFireballB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadFireballB as IObjectContentGenerator } },
+           { "UndeadFireballB2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadFireballB2 as IObjectContentGenerator } },
+           { "UndeadFireballLongA", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadFireballLongA as IObjectContentGenerator } },
+           { "UndeadFireballLongB", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadFireballLongB as IObjectContentGenerator } },
+           { "UndeadFireballLongB2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadFireballLongB2 as IObjectContentGenerator } },
+           { "UndeadFreezeBall", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadFreezeBall as IObjectContentGenerator } },
+           { "UndeadGrappleArrow1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadGrappleArrow1 as IObjectContentGenerator } },
+           { "UndeadIceBall1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadIceBall1 as IObjectContentGenerator } },
+           { "UndeadLightningSmite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadLightningSmite as IObjectContentGenerator } },
+           { "UndeadMegaSword1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadMegaSword1 as IObjectContentGenerator } },
+           { "UndeadMegaSword2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadMegaSword2 as IObjectContentGenerator } },
+           { "UndeadMegaSwordAngry", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadMegaSwordAngry as IObjectContentGenerator } },
+           { "UndeadOmegaArrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadOmegaArrow as IObjectContentGenerator } },
+           { "UndeadPhysicalShield", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadPhysicalShield as IObjectContentGenerator } },
+           { "UndeadSelfDestruct", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadSelfDestruct as IObjectContentGenerator } },
+           { "UndeadSword1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadSword1 as IObjectContentGenerator } },
+           { "UndeadSword1B", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadSword1B as IObjectContentGenerator } },
+           { "UndeadSword2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadSword2 as IObjectContentGenerator } },
+           { "UndeadSwordAngry", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UndeadSwordAngry as IObjectContentGenerator } },
+           { "UrsulaFireball1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UrsulaFireball1 as IObjectContentGenerator } },
+           { "UrsulaFireball1B", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UrsulaFireball1B as IObjectContentGenerator } },
+           { "UrsulaFireball2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UrsulaFireball2 as IObjectContentGenerator } },
+           { "UrsulaIceball1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UrsulaIceball1 as IObjectContentGenerator } },
+           { "UrsulaIceball1B", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UrsulaIceball1B as IObjectContentGenerator } },
+           { "UrsulaIceball2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UrsulaIceball2 as IObjectContentGenerator } },
+           { "UrsulaRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UrsulaRage as IObjectContentGenerator } },
+           { "UrsulaSummon", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => UrsulaSummon as IObjectContentGenerator } },
+           { "WatcherAcidball", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WatcherAcidball as IObjectContentGenerator } },
+           { "WatcherFireball", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WatcherFireball as IObjectContentGenerator } },
+           { "WatcherSlap", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WatcherSlap as IObjectContentGenerator } },
+           { "WebStick", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WebStick as IObjectContentGenerator } },
+           { "Werewolf_Summon_Opener", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Werewolf_Summon_Opener as IObjectContentGenerator } },
+           { "Werewolf_Summon_Rage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => Werewolf_Summon_Rage as IObjectContentGenerator } },
+           { "WerewolfArrow1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WerewolfArrow1 as IObjectContentGenerator } },
+           { "WerewolfArrow2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WerewolfArrow2 as IObjectContentGenerator } },
+           { "WerewolfOmegaArrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WerewolfOmegaArrow as IObjectContentGenerator } },
+           { "WerewolfSword1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WerewolfSword1 as IObjectContentGenerator } },
+           { "WerewolfSword2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WerewolfSword2 as IObjectContentGenerator } },
+           { "WerewolfSwordStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WerewolfSwordStun as IObjectContentGenerator } },
+           { "WorgBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WorgBite as IObjectContentGenerator } },
+           { "WorghestDebuff", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WorghestDebuff as IObjectContentGenerator } },
+           { "WorgOmegaBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WorgOmegaBite as IObjectContentGenerator } },
+           { "WormBite1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WormBite1 as IObjectContentGenerator } },
+           { "WormBossAcidBurst", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WormBossAcidBurst as IObjectContentGenerator } },
+           { "WormBossSpit", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WormBossSpit as IObjectContentGenerator } },
+           { "WormInfect1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WormInfect1 as IObjectContentGenerator } },
+           { "WormShove1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WormShove1 as IObjectContentGenerator } },
+           { "WormSpit1", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WormSpit1 as IObjectContentGenerator } },
+           { "WormSpit2", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WormSpit2 as IObjectContentGenerator } },
+           { "YetiBarrage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiBarrage as IObjectContentGenerator } },
+           { "YetiBoulderThrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiBoulderThrow as IObjectContentGenerator } },
+           { "YetiColdOrb", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiColdOrb as IObjectContentGenerator } },
+           { "YetiDebuff", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiDebuff as IObjectContentGenerator } },
+           { "YetiEncase", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiEncase as IObjectContentGenerator } },
+           { "YetiFlingAway", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiFlingAway as IObjectContentGenerator } },
+           { "YetiFrostRing", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiFrostRing as IObjectContentGenerator } },
+           { "YetiIceBallThrow", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiIceBallThrow as IObjectContentGenerator } },
+           { "YetiIceSpear", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiIceSpear as IObjectContentGenerator } },
+           { "YetiPunch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiPunch as IObjectContentGenerator } },
+           { "YetiRoarStun", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => YetiRoarStun as IObjectContentGenerator } },
+           { "ZombieBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ZombieBite as IObjectContentGenerator } },
+           { "ZombiePunch", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => ZombiePunch as IObjectContentGenerator } },
+        }; } }
     }
 }

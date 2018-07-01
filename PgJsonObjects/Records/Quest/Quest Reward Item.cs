@@ -24,7 +24,7 @@ namespace PgJsonObjects
             { "Item", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawItem = value,
-                GetString = () => RawItem } },
+               GetString = () => QuestItem != null ? QuestItem.InternalName : null } },
             { "StackSize", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseStackSize,

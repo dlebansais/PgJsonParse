@@ -301,8 +301,18 @@ namespace PgJsonObjects
         #endregion
 
         #region Serializing
+        protected void SerializeJsonObjectInternalProlog(byte[] data, ref int offset, Dictionary<int, string> StoredStringtable, Dictionary<int, List<string>> StoredStringListTable)
+        {
+            int BaseOffset = offset;
+
+            AddInt((int)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
+        }
+
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
+            throw new InvalidOperationException();
         }
         #endregion
     }

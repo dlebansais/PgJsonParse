@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgQuestObjectiveGuildGiveItem : GenericPgObject<PgQuestObjectiveGuildGiveItem>, IPgQuestObjectiveGuildGiveItem
+    public class PgQuestObjectiveGuildGiveItem : PgQuestObjective<PgQuestObjectiveGuildGiveItem>, IPgQuestObjectiveGuildGiveItem
     {
         public PgQuestObjectiveGuildGiveItem(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,13 +19,35 @@ namespace PgJsonObjects
             return new PgQuestObjectiveGuildGiveItem(data, ref offset);
         }
 
-        public override string Key { get { return GetString(0); } }
-        public IPgItem QuestItem { get { return GetObject(4, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
-        public IPgGameNpc DeliverNpc { get { return GetObject(8, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
-        public ItemCollection ItemList { get { return GetObjectList(12, ref _ItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ItemList;
-        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public ItemKeyword ItemKeyword { get { return GetEnum<ItemKeyword>(20); } }
+        public IPgItem QuestItem { get { return GetObject(PropertiesOffset + 0, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
+        public IPgGameNpc DeliverNpc { get { return GetObject(PropertiesOffset + 4, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
+        public ItemCollection ItemList { get { return GetObjectList(PropertiesOffset + 8, ref _ItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ItemList;
+        public string DeliverNpcId { get { return GetString(PropertiesOffset + 12); } }
+        public string DeliverNpcName { get { return GetString(PropertiesOffset + 16); } }
+        public ItemKeyword ItemKeyword { get { return GetEnum<ItemKeyword>(PropertiesOffset + 20); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
+            { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawMustCompleteEarlierObjectivesFirst } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "Number", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumber } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Quest.NpcToString(DeliverNpcId, DeliverNpcName) } },
+            { "ItemKeyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemKeyword, null, ItemKeyword.Internal_None) } },
+            { "ItemName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => QuestItem != null ? QuestItem.InternalName : null } },
+        }; } }
     }
 }

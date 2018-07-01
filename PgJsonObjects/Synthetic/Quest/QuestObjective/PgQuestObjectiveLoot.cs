@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgQuestObjectiveLoot : GenericPgObject<PgQuestObjectiveLoot>, IPgQuestObjectiveLoot
+    public class PgQuestObjectiveLoot : PgQuestObjective<PgQuestObjectiveLoot>, IPgQuestObjectiveLoot
     {
         public PgQuestObjectiveLoot(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,13 +19,33 @@ namespace PgJsonObjects
             return new PgQuestObjectiveLoot(data, ref offset);
         }
 
-        public override string Key { get { return GetString(0); } }
-        public IPgItem QuestItem { get { return GetObject(4, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
-        public ItemCollection ItemList { get { return GetObjectList(8, ref _ItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ItemList;
-        public ItemKeyword ItemTarget { get { return GetEnum<ItemKeyword>(12); } }
-        public MonsterTypeTag MonsterTypeTag { get { return GetEnum<MonsterTypeTag>(14); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public IPgItem QuestItem { get { return GetObject(PropertiesOffset + 0, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
+        public ItemCollection ItemList { get { return GetObjectList(PropertiesOffset + 4, ref _ItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ItemList;
+        public ItemKeyword ItemTarget { get { return GetEnum<ItemKeyword>(PropertiesOffset + 8); } }
+        public MonsterTypeTag MonsterTypeTag { get { return GetEnum<MonsterTypeTag>(PropertiesOffset + 10); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
+            { "MustCompleteEarlierObjectivesFirst", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawMustCompleteEarlierObjectivesFirst } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "Number", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumber } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemTarget, null, ItemKeyword.Internal_None) } },
+            { "ItemName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => QuestItem != null ? QuestItem.InternalName : null } },
+            { "MonsterTypeTag", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<MonsterTypeTag>.ToString(MonsterTypeTag, null, MonsterTypeTag.Internal_None) } },
+        }; } }
     }
 }

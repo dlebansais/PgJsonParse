@@ -38,6 +38,31 @@ namespace PgJsonObjects
         public bool AttuneToCrafter { get { return RawAttuneToCrafter.HasValue && RawAttuneToCrafter.Value; } }
         public bool? RawAttuneToCrafter { get { return GetBool(44, 0); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "ItemCode", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawItemCode } },
+            { "StackSize", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawStackSize } },
+            { "PercentChance", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawPercentChance } },
+            { "ItemKeys", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<RecipeItemKey>.ToStringList(ItemKeyList, TextMaps.RecipeItemKeyStringMap) } },
+            { "Desc", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Desc } },
+            { "ChanceToConsume", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawChanceToConsume } },
+            { "DurabilityConsumed", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawDurabilityConsumed } },
+            { "AttuneToCrafter", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawAttuneToCrafter } },
+        }; } }
     }
 }

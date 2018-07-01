@@ -23,13 +23,13 @@ namespace PgJsonObjects
 
         public override void Init()
         {
-            List<int> AdvancementHintTableKey = null;
+            AdvancementHintTableKey = null;
             GetIntList(56, ref AdvancementHintTableKey);
-            List<string> AdvancementHintTableValue = null;
+            AdvancementHintTableValue = null;
             GetStringList(60, ref AdvancementHintTableValue);
-            List<int> ReportTableKey = null;
+            ReportTableKey = null;
             GetIntList(64, ref ReportTableKey);
-            List<string> ReportTableValue = null;
+            ReportTableValue = null;
             GetStringList(68, ref ReportTableValue);
 
             CombinedRewardList = Skill.CreateCombinedRewardList(InteractionFlagLevelCapList, AdvancementHintTableKey, AdvancementHintTableValue, RewardList, ReportTableKey, ReportTableValue);
@@ -45,6 +45,9 @@ namespace PgJsonObjects
         public bool? RawSkipBonusLevelsIfSkillUnlearned { get { return GetBool(6, 4); } }
         public bool AuxCombat { get { return RawAuxCombat.HasValue && RawAuxCombat.Value; } }
         public bool? RawAuxCombat { get { return GetBool(6, 8); } }
+        public bool ParentSkillIsEmpty { get { return RawParentSkillIsEmpty.HasValue && RawParentSkillIsEmpty.Value; } }
+        public bool? RawParentSkillIsEmpty { get { return GetBool(6, 8); } }
+        public bool IsAdvancementTableNull { get { return GetBool(6, 10).Value; } }
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get { return GetInt(8); } }
         public string Description { get { return GetString(12); } }
@@ -60,8 +63,156 @@ namespace PgJsonObjects
         public IPgSkill ParentSkill { get { return GetObject(48, ref _ParentSkill, PgSkill.CreateNew); } } private IPgSkill _ParentSkill;
         public List<SkillCategory> TSysCategoryList { get { return GetEnumList(52, ref _TSysCategoryList); } } private List<SkillCategory> _TSysCategoryList;
         protected override List<string> FieldTableOrder { get { return GetStringList(56, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public List<SkillRewardCommon> CombinedRewardList { get; private set; }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        public List<SkillRewardCommon> CombinedRewardList { get; private set; }
+        private List<int> AdvancementHintTableKey = null;
+        private List<string> AdvancementHintTableValue = null;
+        private List<int> ReportTableKey = null;
+        private List<string> ReportTableValue = null;
+
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Id", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawId } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "HideWhenZero", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawHideWhenZero } },
+            { "XpTable", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RawXpTable } },
+            { "AdvancementTable", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => IsAdvancementTableNull ? GenericJsonObject.NullString : (AdvancementTable != null ? AdvancementTable.InternalName : null)} },
+            { "Combat", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawCombat } },
+            { "CompatibleCombatSkills", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<PowerSkill>.ToStringList(CompatibleCombatSkillList) } },
+            { "MaxBonusLevels", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMaxBonusLevels } },
+            { "InteractionFlagLevelCaps", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = GetInteractionFlagLevelCaps } },
+            { "AdvancementHints", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = GetAdvancementHints } },
+            { "Rewards", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = GetRewards } },
+            { "Reports", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = GetReports } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Name } },
+            { "Parents", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = GetParents,
+                GetArrayIsEmpty = () => ParentSkillIsEmpty } },
+            { "SkipBonusLevelsIfSkillUnlearned", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawSkipBonusLevelsIfSkillUnlearned } },
+            { "AuxCombat", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawAuxCombat } },
+            { "TSysCategories", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<SkillCategory>.ToStringList(TSysCategoryList) } },
+        }; } }
+
+        private IObjectContentGenerator GetInteractionFlagLevelCaps()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("InteractionFlagLevelCaps");
+
+            foreach (LevelCapInteraction Interaction in InteractionFlagLevelCapList)
+            {
+                PowerSkill Skill = Interaction.Link.CombatSkill;
+                string FieldKey = "LevelCap_" + StringToEnumConversion<PowerSkill>.ToString(Skill);
+
+                switch (Skill)
+                {
+                    case PowerSkill.Performance_Strings:
+                    case PowerSkill.Performance_Percussion:
+                    case PowerSkill.Performance_Wind:
+                        break;
+
+                    default:
+                        FieldKey += "_";
+                        break;
+                }
+
+                FieldKey += Interaction.OtherLevel;
+
+                int FieldValue = Interaction.Level;
+
+                Result.SetFieldValue(FieldKey, FieldValue);
+            }
+
+            return Result;
+        }
+
+        private IObjectContentGenerator GetAdvancementHints()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("AdvancementHints");
+
+            for (int i = 0; i < AdvancementHintTableKey.Count; i++)
+            {
+                string FieldKey = AdvancementHintTableKey[i].ToString();
+                string FieldValue = AdvancementHintTableValue[i];
+
+                Result.SetFieldValue(FieldKey, FieldValue);
+            }
+
+            return Result;
+        }
+
+        private IObjectContentGenerator GetRewards()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("Rewards");
+
+            foreach (Reward Reward in RewardList)
+            {
+                string FieldKey = Reward.Key;
+                IObjectContentGenerator FieldValue = Reward;
+
+                Result.SetFieldValue(FieldKey, FieldValue);
+            }
+
+            return Result;
+        }
+
+        private IObjectContentGenerator GetReports()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("Reports");
+
+            for (int i = 0; i < ReportTableKey.Count; i++)
+            {
+                string FieldKey = ReportTableKey[i].ToString();
+                string FieldValue = ReportTableValue[i];
+
+                Result.SetFieldValue(FieldKey, FieldValue);
+            }
+
+            return Result;
+        }
+
+        private List<string> GetParents()
+        {
+            List<string> Result = new List<string>();
+
+            if (ParentSkill != null)
+                Result.Add(StringToEnumConversion<PowerSkill>.ToString(ParentSkill.CombatSkill, null, PowerSkill.Internal_None));
+
+            return Result;
+        }
     }
 }

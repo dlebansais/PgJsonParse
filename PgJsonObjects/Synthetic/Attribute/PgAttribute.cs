@@ -53,6 +53,28 @@ namespace PgJsonObjects
             }
         }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Label", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Label } },
+            { "IconIds", new FieldParser() {
+                Type = FieldType.SimpleIntegerArray,
+                GetIntegerArray = () => IconIdList } },
+            { "Tooltip", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Tooltip } },
+            { "DisplayType", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<DisplayType>.ToString(DisplayType, null, DisplayType.Internal_None) } },
+            { "IsHidden", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsHidden } },
+            { "DisplayRule", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<DisplayRule>.ToString(DisplayRule, null, DisplayRule.Internal_None) } },
+            { "DefaultValue", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawDefaultValue } },
+        }; } }
     }
 }

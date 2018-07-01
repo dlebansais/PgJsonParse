@@ -25,6 +25,16 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public RecipeKeyword PetTypeTag { get { return GetEnum<RecipeKeyword>(16); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.PetCount) } },
+            { "PetTypeTag", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<RecipeKeyword>.ToString(PetTypeTag) } },
+            { "MaxCount", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxCount } },
+        }; } }
     }
 }

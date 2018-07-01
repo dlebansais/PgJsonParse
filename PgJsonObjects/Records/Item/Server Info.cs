@@ -14,10 +14,12 @@ namespace PgJsonObjects
         public int? RawNumItemsToGive { get; private set; }
         public AbilityRequirementCollection OtherRequirementList { get; private set; } = new AbilityRequirementCollection();
         public ItemRequiredHotspot RequiredHotspot { get; private set; }
+        public bool IsServerInfoEffectListEmpty { get { return RawIsServerInfoEffectListEmpty.HasValue && RawIsServerInfoEffectListEmpty.Value; } }
+        public bool? RawIsServerInfoEffectListEmpty { get; private set; }
+        public bool IsOtherRequirementListEmpty { get { return RawIsOtherRequirementListEmpty.HasValue && RawIsOtherRequirementListEmpty.Value; } }
+        public bool? RawIsOtherRequirementListEmpty { get; private set; }
 
         private List<string> RawItemNameList = new List<string>();
-        private bool IsServerInfoEffectListEmpty;
-        private bool IsOtherRequirementListEmpty;
         #endregion
 
         #region Indirect Properties
@@ -135,13 +137,13 @@ namespace PgJsonObjects
             { "Effects", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseEffects,
-                SetArrayIsEmpty = () => IsServerInfoEffectListEmpty = true,
+                SetArrayIsEmpty = () => RawIsServerInfoEffectListEmpty = true,
                 GetStringArray = GetEffects,
                 GetArrayIsEmpty = () => IsServerInfoEffectListEmpty } },
             { "GiveItems", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawItemNameList.Add(value),
-                GetStringArray = () => RawItemNameList } },
+                GetStringArray = GetGiveItems } },
             { "RequiredHotspot", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RequiredHotspot = StringToEnumConversion<ItemRequiredHotspot>.Parse(value, errorInfo),
@@ -153,7 +155,7 @@ namespace PgJsonObjects
             { "OtherRequirements", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityRequirement>.ParseList("OtherRequirements", value, OtherRequirementList, errorInfo),
-                SetArrayIsEmpty = () => IsOtherRequirementListEmpty = true,
+                SetArrayIsEmpty = () => RawIsOtherRequirementListEmpty = true,
                 GetObjectArray = () => OtherRequirementList,
                 GetArrayIsEmpty = () => IsOtherRequirementListEmpty,
                 SimplifyArray = true } },
@@ -184,6 +186,16 @@ namespace PgJsonObjects
             return Result;
         }
 
+        private List<string> GetGiveItems()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (Item Item in GiveItemList)
+                Result.Add(Item.InternalName);
+
+            return Result;
+        }
+        
         private ServerInfoEffect ParseEffectString(string RawEffect, ParseErrorInfo ErrorInfo)
         {
             string RawEffectString = null;
@@ -708,6 +720,8 @@ namespace PgJsonObjects
                     if (!GiveItemList.Contains(ParsedItem as Item))
                         GiveItemList.Add(ParsedItem as Item);
                 }
+                else
+                    ParsedItem = null;
             }
 
             foreach (AbilityRequirement Item in OtherRequirementList)
@@ -724,6 +738,7 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
+            int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
@@ -736,8 +751,11 @@ namespace PgJsonObjects
             AddObjectList(OtherRequirementList, data, ref offset, BaseOffset, 16, StoredObjectListTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 20, StoredStringListTable);
             AddEnum(RequiredHotspot, data, ref offset, BaseOffset, 24);
+            AddBool(RawIsServerInfoEffectListEmpty, data, ref offset, ref BitOffset, BaseOffset, 26, 0);
+            AddBool(RawIsOtherRequirementListEmpty, data, ref offset, ref BitOffset, BaseOffset, 26, 2);
+            CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 26, StoredStringtable, null, null, null, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 28, StoredStringtable, null, null, null, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

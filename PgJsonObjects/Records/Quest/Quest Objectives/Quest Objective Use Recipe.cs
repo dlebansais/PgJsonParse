@@ -32,7 +32,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<RecipeKeyword>.ToString(RecipeTarget) } },
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
+                GetString = () => Skill != null ? StringToEnumConversion<PowerSkill>.ToString(Skill.CombatSkill, null, PowerSkill.Internal_None) : null } },
             { "ResultItemKeyword", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ResultItemKeyword, null, ItemKeyword.Internal_None) } },
@@ -43,12 +43,12 @@ namespace PgJsonObjects
         public IPgSkill Skill { get; private set; }
         public RecipeCollection RecipeTargetList { get; private set; } = new RecipeCollection();
         public ItemCollection ResultItemList { get; private set; } = new ItemCollection();
+        public RecipeKeyword RecipeTarget { get; private set; }
+        public ItemKeyword ResultItemKeyword { get; private set; }
 
         private PowerSkill RawSkill;
         private bool IsSkillParsed;
-        private RecipeKeyword RecipeTarget;
         private bool IsRecipeTargetParsed;
-        private ItemKeyword ResultItemKeyword;
         private bool IsResultItemParsed;
         #endregion
 
@@ -94,19 +94,22 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
+
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
-            AddObjectList(RecipeTargetList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
-            AddObjectList(ResultItemList, data, ref offset, BaseOffset, 12, StoredObjectListTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 16, StoredStringListTable);
+            AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObjectList(RecipeTargetList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
+            AddObjectList(ResultItemList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
+            AddEnum(RecipeTarget, data, ref offset, BaseOffset, 12);
+            AddEnum(ResultItemKeyword, data, ref offset, BaseOffset, 14);
 
-            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgQuest(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 152;
+            offset += 184;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -67,6 +67,8 @@ namespace PgJsonObjects
         public bool? RawIsAutoWrapUp { get { return GetBool(116, 4); } }
         public bool IsGuildQuest { get { return RawIsGuildQuest.HasValue && RawIsGuildQuest.Value; } }
         public bool? RawIsGuildQuest { get { return GetBool(116, 6); } }
+        public bool IsUnknownWorkOrderSkill { get { return RawIsUnknownWorkOrderSkill.HasValue && RawIsUnknownWorkOrderSkill.Value; } }
+        public bool? RawIsUnknownWorkOrderSkill { get { return GetBool(116, 8); } }
         public MapAreaName DisplayedLocation { get { return GetEnum<MapAreaName>(118); } }
         public Favor PrerequisiteFavorLevel { get { return GetEnum<Favor>(120); } }
         public QuestGroupingName GroupingName { get { return GetEnum<QuestGroupingName>(122); } }
@@ -79,7 +81,243 @@ namespace PgJsonObjects
         public QuestRequirementCollection QuestRequirementList { get { return GetObjectList(140, ref _QuestRequirementList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementList;
         public QuestRequirementCollection QuestRequirementToSustainList { get { return GetObjectList(144, ref _QuestRequirementToSustainList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementToSustainList;
         protected override List<string> FieldTableOrder { get { return GetStringList(148, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public int? RawReuseTime_Minutes { get { return GetInt(152); } }
+        public int? RawReuseTime_Hours { get { return GetInt(156); } }
+        public int? RawReuseTime_Days { get { return GetInt(160); } }
+        public string FavorNpcId { get { return GetString(164); } }
+        public string FavorNpcName { get { return GetString(168); } }
+        public MapAreaName FavorNpcArea { get { return GetEnum<MapAreaName>(172); } }
+        public bool IsQuestRewardsItemListEmpty { get { return RawIsQuestRewardsItemListEmpty.HasValue && RawIsQuestRewardsItemListEmpty.Value; } }
+        public bool? RawIsQuestRewardsItemListEmpty { get { return GetBool(174, 0); } }
+        public bool IsEmptyNpc { get { return RawIsEmptyNpc.HasValue && RawIsEmptyNpc.Value; } }
+        public bool? RawIsEmptyNpc { get { return GetBool(174, 2); } }
+        public bool IsRewardRecipeEmpty { get { return RawIsRewardRecipeEmpty.HasValue && RawIsRewardRecipeEmpty.Value; } }
+        public bool? RawIsRewardRecipeEmpty { get { return GetBool(174, 4); } }
+        public bool IsQuestRequirementListSimple { get { return RawIsQuestRequirementListSimple.HasValue && RawIsQuestRequirementListSimple.Value; } }
+        public bool? RawIsQuestRequirementListSimple { get { return GetBool(174, 6); } }
+        public bool IsQuestRequirementListNested { get { return RawIsQuestRequirementListNested.HasValue && RawIsQuestRequirementListNested.Value; } }
+        public bool? RawIsQuestRequirementListNested { get { return GetBool(174, 8); } }
+        public QuestRewardCollection QuestRewardList { get { return GetObjectList(176, ref _QuestRewardList, QuestRewardCollection.CreateItem, () => new QuestRewardCollection()); } } private QuestRewardCollection _QuestRewardList;
+        public List<string> RawRewardInteractionFlags { get { return GetStringList(180, ref _RawRewardInteractionFlags); } } private List<string> _RawRewardInteractionFlags;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "InternalName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => InternalName } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Name } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
+            { "Version", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawVersion } },
+            { "RequirementsToSustain", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => QuestRequirementToSustainList,
+                SimplifyArray = true } },
+            { "ReuseTime_Minutes", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawReuseTime_Minutes } },
+            { "IsCancellable", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsCancellable } },
+            { "Objectives", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => QuestObjectiveList } },
+            { "Rewards_XP", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = GetXPRewards } },
+            { "Rewards_Items", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => QuestRewardsItemList,
+                GetArrayIsEmpty = () => IsQuestRewardsItemListEmpty } },
+            { "ReuseTime_Days", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawReuseTime_Days } },
+            { "ReuseTime_Hours", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawReuseTime_Hours } },
+            { "Reward_CombatXP", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardCombatXP } },
+            { "FavorNpc", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => NpcToString(FavorNpcArea, FavorNpcId, FavorNpcName, IsEmptyNpc) } },
+            { "PrefaceText", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => PrefaceText } },
+            { "SuccessText", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => SuccessText } },
+            { "MidwayText", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => MidwayText } },
+            { "PrerequisiteFavorLevel", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<Favor>.ToString(PrerequisiteFavorLevel, null, Favor.Internal_None) } },
+            { "Rewards_Favor", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardFavor } },
+            { "Rewards_Recipes", new FieldParser() {
+                Type = FieldType.StringArray,
+                GetStringArray = GetRewards_Recipes,
+                GetArrayIsEmpty = () => IsRewardRecipeEmpty } },
+            { "Rewards_Ability", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RewardAbility != null ? RewardAbility.InternalName : null } },
+            { "Requirements", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => QuestRequirementList,
+                SimplifyArray = true,
+                GetArrayIsSimple = () => IsQuestRequirementListSimple,
+                GetArrayIsNested = () => IsQuestRequirementListNested } },
+            { "Reward_Favor", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardFavor } },
+            { "Rewards", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => QuestRewardList } },
+            { "PreGiveItems", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => PreGiveItemList } },
+            { "TSysLevel", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawTSysLevel } },
+            { "Reward_Gold", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardGold } },
+            { "Rewards_NamedLootProfile", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RewardsNamedLootProfile } },
+            { "PreGiveRecipes", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = GetPreGiveRecipeList } },
+            { "Keywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<QuestKeyword>.ToStringList(KeywordList) } },
+            { "Rewards_Effects", new FieldParser() {
+                Type = FieldType.StringArray,
+                GetStringArray = GetRewards_Effects } },
+            { "IsAutoPreface", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsAutoPreface } },
+            { "IsAutoWrapUp", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsAutoWrapUp } },
+            { "GroupingName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<QuestGroupingName>.ToString(GroupingName, null, QuestGroupingName.Internal_None) } },
+            { "IsGuildQuest", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsGuildQuest } },
+            { "NumExpectedParticipants", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumExpectedParticipants } },
+            { "Level", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawLevel } },
+            { "WorkOrderSkill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = GetWorkOrderSkill } },
+            { "DisplayedLocation", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<MapAreaName>.ToString(DisplayedLocation, TextMaps.MapAreaNameStringMap, MapAreaName.Internal_None) } },
+            { "FollowUpQuests", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = GetFollowUpQuestList } },
+        }; } }
+
+        private IObjectContentGenerator GetXPRewards()
+        {
+            XPReward Rewards = new XPReward();
+
+            foreach (QuestRewardXp Item in RewardsXPList)
+                Rewards.SetFieldValue(Item.RawSkill, Item.Xp);
+
+            return Rewards;
+        }
+
+        public static string NpcToString(MapAreaName area, string NpcId, string NpcName, bool isEmpty)
+        {
+            if (isEmpty)
+                return "";
+
+            if (NpcName == null)
+                return null;
+
+            string Result = "Area" + StringToEnumConversion<MapAreaName>.ToString(area) + "/";
+
+            if (NpcId != null)
+                Result += "NPC_" + NpcName;
+            else
+            {
+                foreach (KeyValuePair<SpecialNpc, string> Entry in TextMaps.SpecialNpcTextMap)
+                    if (Entry.Value == NpcName)
+                    {
+                        Result += StringToEnumConversion<SpecialNpc>.ToString(Entry.Key);
+                        break;
+                    }
+            }
+
+            return Result;
+        }
+
+        private List<string> GetRewards_Recipes()
+        {
+            List<string> Result = new List<string>();
+
+            if (RewardRecipe != null)
+                Result.Add(RewardRecipe.InternalName);
+
+            return Result;
+        }
+
+        private List<string> GetPreGiveRecipeList()
+        {
+            List<string> Result = new List<string>();
+            foreach (Recipe Item in PreGiveRecipeList)
+                Result.Add(Item.InternalName);
+
+            return Result;
+        }
+
+        private List<string> GetRewards_Effects()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (string RewardInteractionFlag in RawRewardInteractionFlags)
+                Result.Add("SetInteractionFlag(" + RewardInteractionFlag + ")");
+
+            if (RewardLoreBook != null)
+                Result.Add("EnsureLoreBookKnown(" + RewardLoreBook.InternalName + ")");
+
+            if (RewardEffect != null)
+                Result.Add(RewardEffect.Name);
+
+            return Result;
+        }
+
+        private string GetWorkOrderSkill()
+        {
+            if (IsUnknownWorkOrderSkill)
+                return StringToEnumConversion<PowerSkill>.ToString(PowerSkill.Unknown);
+
+            if (WorkOrderSkill != null)
+                return StringToEnumConversion<PowerSkill>.ToString(WorkOrderSkill.CombatSkill, null, PowerSkill.Internal_None);
+
+            return null;
+        }
+
+        private List<string> GetFollowUpQuestList()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (IPgQuest Item in FollowUpQuestList)
+                Result.Add(Item.InternalName);
+
+            return Result;
+        }
     }
 }

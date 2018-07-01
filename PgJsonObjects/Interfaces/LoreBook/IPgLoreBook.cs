@@ -13,5 +13,7 @@ namespace PgJsonObjects
         string Text { get; }
         bool IsClientLocal { get; }
         bool? RawIsClientLocal { get; }
+        bool IsKeywordListEmpty { get; }
+        bool? RawIsKeywordListEmpty { get; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgHasEffectKeywordQuestRequirement : GenericPgObject<PgHasEffectKeywordQuestRequirement>, IPgHasEffectKeywordQuestRequirement
+    public class PgHasEffectKeywordQuestRequirement : PgQuestRequirement<PgHasEffectKeywordQuestRequirement>, IPgHasEffectKeywordQuestRequirement
     {
         public PgHasEffectKeywordQuestRequirement(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,10 +19,15 @@ namespace PgJsonObjects
             return new PgHasEffectKeywordQuestRequirement(data, ref offset);
         }
 
-        public override string Key { get { return GetString(4); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public EffectKeyword Keyword { get { return GetEnum<EffectKeyword>(12); } }
+        public EffectKeyword Keyword { get { return GetEnum<EffectKeyword>(PropertiesOffset + 0); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "Keyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<EffectKeyword>.ToString(Keyword, null, EffectKeyword.Internal_None) } },
+        }; } }
     }
 }

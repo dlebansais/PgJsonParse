@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgRunTimeBehaviorRuleSetQuestRequirement : GenericPgObject<PgRunTimeBehaviorRuleSetQuestRequirement>, IPgRunTimeBehaviorRuleSetQuestRequirement
+    public class PgRunTimeBehaviorRuleSetQuestRequirement : PgQuestRequirement<PgRunTimeBehaviorRuleSetQuestRequirement>, IPgRunTimeBehaviorRuleSetQuestRequirement
     {
         public PgRunTimeBehaviorRuleSetQuestRequirement(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,11 +19,16 @@ namespace PgJsonObjects
             return new PgRunTimeBehaviorRuleSetQuestRequirement(data, ref offset);
         }
 
-        public override string Key { get { return GetString(4); } }
-        public string RequirementRule { get { return GetString(8); } }
-        public string Rule { get { return GetString(12); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public string RequirementRule { get { return GetString(PropertiesOffset + 0); } }
+        public string Rule { get { return GetString(PropertiesOffset + 4); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+            { "Rule", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RequirementRule } },
+        }; } }
     }
 }

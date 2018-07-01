@@ -25,6 +25,13 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public AbilityTypeTag TypeTag { get { return GetEnum<AbilityTypeTag>(16); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "TypeTag", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<AbilityTypeTag>.ToString(TypeTag) } },
+            { "Max", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => Max } },
+        }; } }
     }
 }

@@ -32,7 +32,35 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool IsClientLocal { get { return RawIsClientLocal.HasValue ? RawIsClientLocal.Value : false; } }
         public bool? RawIsClientLocal { get { return GetBool(32, 0); } }
+        public bool IsKeywordListEmpty { get { return RawIsKeywordListEmpty.HasValue ? RawIsKeywordListEmpty.Value : false; } }
+        public bool? RawIsKeywordListEmpty { get { return GetBool(32, 2); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Title", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Title } },
+            { "LocationHint", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => LocationHint } },
+            { "Category", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<LoreBookCategory>.ToString(Category, null, LoreBookCategory.Internal_None) } },
+            { "Keywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<LoreBookKeyword>.ToStringList(KeywordList),
+                GetArrayIsEmpty = () => IsKeywordListEmpty } },
+            { "IsClientLocal", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsClientLocal  } },
+            { "Visibility", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<LoreBookVisibility>.ToString(Visibility, null, LoreBookVisibility.Internal_None) } },
+            { "InternalName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => InternalName } },
+            { "Text", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Text } },
+        }; } }
     }
 }

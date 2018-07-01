@@ -39,7 +39,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemTarget, null, ItemKeyword.Internal_None) } },
             { "ItemName", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RawItemName } },
+                GetString = () => QuestItem != null ? QuestItem.InternalName : null } },
             { "MonsterTypeTag", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<MonsterTypeTag>.ToString(MonsterTypeTag, null, MonsterTypeTag.Internal_None) } },
@@ -96,20 +96,21 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
+
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
-            AddObjectList(ItemList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
-            AddEnum(ItemTarget, data, ref offset, BaseOffset, 12);
-            AddEnum(MonsterTypeTag, data, ref offset, BaseOffset, 14);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 16, StoredStringListTable);
+            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObjectList(ItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
+            AddEnum(ItemTarget, data, ref offset, BaseOffset, 8);
+            AddEnum(MonsterTypeTag, data, ref offset, BaseOffset, 10);
 
-            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

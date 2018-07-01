@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgAbilitySource(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 38;
+            offset += 54;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -30,8 +30,56 @@ namespace PgJsonObjects
         public IPgRecipe ConnectedRecipeEffect { get { return GetObject(24, ref _ConnectedRecipeEffect, PgRecipe.CreateNew); } } private IPgRecipe _ConnectedRecipeEffect;
         public IPgQuest ConnectedQuest { get { return GetObject(28, ref _ConnectedQuest, PgQuest.CreateNew); } } private IPgQuest _ConnectedQuest;
         protected override List<string> FieldTableOrder { get { return GetStringList(32, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public SourceTypes Type { get { return GetEnum<SourceTypes>(36); } }
+        public string EffectTypeId { get { return GetString(36); } }
+        public string RawNpcId { get { return GetString(40); } }
+        public string RawNpcName { get { return GetString(44); } }
+        public string RawEffectName { get { return GetString(48); } }
+        public SourceTypes Type { get { return GetEnum<SourceTypes>(52); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Type", new FieldParser() {
+                Type = FieldType.String,
+                GetString  = () => StringToEnumConversion<SourceTypes>.ToString(Type) } },
+            { "SkillTypeId", new FieldParser() {
+                Type = FieldType.String,
+                GetString  = () => SkillTypeId != null ? StringToEnumConversion<PowerSkill>.ToString(SkillTypeId.CombatSkill) : null } },
+            { "ItemTypeId", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = GetItemTypeId } },
+            { "Npc", new FieldParser() {
+                Type = FieldType.String,
+                GetString  = () => Quest.NpcToString(RawNpcId, RawNpcName) } },
+            { "EffectName", new FieldParser() {
+                Type = FieldType.String,
+                GetString  = () => RawEffectName } },
+            { "EffectTypeId", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => EffectTypeId } },
+            { "QuestId", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = GetQuestId } },
+        }; } }
+
+        private int? GetItemTypeId()
+        {
+            if (ConnectedItem == null)
+                return null;
+
+            string KeyId = ConnectedItem.Key.Substring(5);
+
+            int.TryParse(KeyId, out int Result);
+            return Result;
+        }
+
+        private int? GetQuestId()
+        {
+            if (ConnectedQuest == null)
+                return null;
+
+            string KeyId = ConnectedQuest.Key.Substring(6);
+
+            int.TryParse(KeyId, out int Result);
+            return Result;
+        }
     }
 }

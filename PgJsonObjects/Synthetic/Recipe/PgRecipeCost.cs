@@ -25,6 +25,13 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public RecipeCurrency Currency { get { return GetEnum<RecipeCurrency>(12); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Currency", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<RecipeCurrency>.ToString(Currency, null, RecipeCurrency.Internal_None) } },
+            { "Price", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawPrice } },
+        }; } }
     }
 }

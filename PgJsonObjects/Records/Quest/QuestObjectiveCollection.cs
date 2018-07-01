@@ -13,7 +13,6 @@ namespace PgJsonObjects
         public static IGenericPgObject CreateItem(byte[] data, ref int offset)
         {
             QuestObjectiveType QuestObjectiveType = (QuestObjectiveType)BitConverter.ToInt32(data, offset);
-            offset += 4;
 
             switch (QuestObjectiveType)
             {

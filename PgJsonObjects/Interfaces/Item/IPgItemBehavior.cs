@@ -13,5 +13,7 @@ namespace PgJsonObjects
         double UseDelay { get; }
         double? RawUseDelay { get; }
         ItemUseVerb UseVerb { get; }
+        bool IsServerInfoEmpty { get; }
+        bool? RawIsServerInfoEmpty { get; }
     }
 }

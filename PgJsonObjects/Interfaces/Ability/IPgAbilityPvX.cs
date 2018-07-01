@@ -39,5 +39,21 @@ namespace PgJsonObjects
         double RageCostMod { get; }
         double? RawRageCostMod { get; }
         List<PreEffect> SelfPreEffectList { get; }
+        AttributeCollection AttributesThatDeltaDamageList { get; }
+        AttributeCollection AttributesThatModDamageList { get; }
+        AttributeCollection AttributesThatModBaseDamageList { get; }
+        AttributeCollection AttributesThatDeltaTauntList { get; }
+        AttributeCollection AttributesThatModTauntList { get; }
+        AttributeCollection AttributesThatDeltaRageList { get; }
+        AttributeCollection AttributesThatModRageList { get; }
+        AttributeCollection AttributesThatDeltaRangeList { get; }
+        bool RawAttributesThatDeltaDamageListIsEmpty { get; }
+        bool RawAttributesThatModDamageListIsEmpty { get; }
+        bool RawAttributesThatModBaseDamageListIsEmpty { get; }
+        bool RawAttributesThatDeltaTauntListIsEmpty { get; }
+        bool RawAttributesThatModTauntListIsEmpty { get; }
+        bool RawAttributesThatDeltaRageListIsEmpty { get; }
+        bool RawAttributesThatModRageListIsEmpty { get; }
+        bool RawAttributesThatDeltaRangeListIsEmpty { get; }
     }
 }

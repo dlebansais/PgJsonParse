@@ -25,6 +25,23 @@ namespace PgJsonObjects
         public int? RawSkillLevelPrereq { get { return GetInt(8); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "EffectDescs", new FieldParser() {
+                Type = FieldType.StringArray,
+                GetStringArray = GetEffectDescs } },
+            { "SkillLevelPrereq", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawSkillLevelPrereq } },
+        }; } }
+
+        private List<string> GetEffectDescs()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (PowerEffect Effect in EffectList)
+                Result.Add(Effect.AsEffectString());
+
+            return Result;
+        }
     }
 }

@@ -34,6 +34,42 @@ namespace PgJsonObjects
         public int? RawTierOffset { get { return GetInt(28); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(32, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Prefix", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Prefix } },
+            { "Suffix", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Suffix  } },
+            { "Tiers", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = GetTiers } },
+            { "Slots", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<ItemSlot>.ToStringList(SlotList) } },
+            { "Skill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
+            { "IsUnavailable", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsUnavailable } },
+        }; } }
+
+        private IObjectContentGenerator GetTiers()
+        {
+            CustomObject Result = new CustomObject();
+            Result.SetCustomKey("Tiers");
+
+            for (int i = 0; i < TierEffectList.Count; i++)
+            {
+                IPgPowerTier Item = TierEffectList[i];
+                int Tier = TierOffset + i;
+
+                string FieldKey = "id_" + Tier.ToString();
+                Result.SetFieldValue(FieldKey, (PowerTier)Item);
+            }
+
+            return Result;
+        }
     }
 }

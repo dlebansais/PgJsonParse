@@ -14,13 +14,13 @@ namespace PgJsonObjects
         public IPgEffect ConnectedEffect { get; private set; }
         public IPgRecipe ConnectedRecipeEffect { get; private set; }
         public IPgQuest ConnectedQuest { get; private set; }
+        public string EffectTypeId { get; private set; }
         public SourceTypes Type { get; private set; }
 
         private PowerSkill RawSkillTypeId;
         private bool IsSkillTypeIdParsed;
         private int? RawQuestId;
         private bool IsQuestNameParsed;
-        private string RawEffectTypeId;
         private int? RawAbilityId;
         private bool IsAbilityIdParsed;
         private bool IsItemNameParsed;
@@ -152,11 +152,11 @@ namespace PgJsonObjects
             { "SkillTypeId", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkillTypeId,
-                GetString  = () => StringToEnumConversion<PowerSkill>.ToString(RawSkillTypeId) } },
+                GetString  = () => SkillTypeId != null ? StringToEnumConversion<PowerSkill>.ToString(SkillTypeId.CombatSkill) : null } },
             { "ItemTypeId", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseItemTypeId,
-                GetInteger = () => RawItemTypeId } },
+                GetInteger = GetItemTypeId } },
             { "Npc", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseNpc,
@@ -167,12 +167,12 @@ namespace PgJsonObjects
                 GetString  = () => RawEffectName } },
             { "EffectTypeId", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => RawEffectTypeId = value,
-                GetString = () => RawEffectTypeId } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => EffectTypeId = value,
+                GetString = () => EffectTypeId } },
             { "QuestId", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseQuestId,
-                GetInteger = () => RawQuestId } },
+                GetInteger = GetQuestId } },
         }; } }
 
         private void ParseSkillTypeId(string value, ParseErrorInfo ErrorInfo)
@@ -189,6 +189,28 @@ namespace PgJsonObjects
                 RawItemTypeId = (int)value;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource ItemTypeId (type)");
+        }
+
+        private int? GetItemTypeId()
+        {
+            if (ConnectedItem == null)
+                return null;
+
+            string KeyId = ConnectedItem.Key.Substring(5);
+
+            int.TryParse(KeyId, out int Result);
+            return Result;
+        }
+
+        private int? GetQuestId()
+        {
+            if (ConnectedQuest == null)
+                return null;
+
+            string KeyId = ConnectedQuest.Key.Substring(6);
+
+            int.TryParse(KeyId, out int Result);
+            return Result;
         }
 
         private void ParseNpc(string RawNpc, ParseErrorInfo ErrorInfo)
@@ -342,9 +364,13 @@ namespace PgJsonObjects
             AddObject(ConnectedRecipeEffect as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
             AddObject(ConnectedQuest as ISerializableJsonObject, data, ref offset, BaseOffset, 28, StoredObjectTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 32, StoredStringListTable);
-            AddEnum(Type, data, ref offset, BaseOffset, 36);
+            AddString(EffectTypeId, data, ref offset, BaseOffset, 36, StoredStringtable);
+            AddString(RawNpcId, data, ref offset, BaseOffset, 40, StoredStringtable);
+            AddString(RawNpcName, data, ref offset, BaseOffset, 44, StoredStringtable);
+            AddString(RawEffectName, data, ref offset, BaseOffset, 48, StoredStringtable);
+            AddEnum(Type, data, ref offset, BaseOffset, 52);
 
-            FinishSerializing(data, ref offset, BaseOffset, 38, null, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 54, null, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -27,6 +27,23 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public XpTableEnum EnumName { get { return GetEnum<XpTableEnum>(16); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "InternalName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<XpTableEnum>.ToString(EnumName, null, XpTableEnum.Internal_None) } },
+            { "XpAmounts", new FieldParser() {
+                Type = FieldType.SimpleIntegerArray,
+                GetIntegerArray = GetXpAmounts } },
+        }; } }
+
+        private List<int> GetXpAmounts()
+        {
+            List<int> Result = new List<int>();
+
+            foreach (XpTableLevel Item in XpAmountList)
+                Result.Add(Item.Xp);
+
+            return Result;
+        }
     }
 }

@@ -146,6 +146,193 @@ namespace PgJsonObjects
         public double? RawCriticalHitDamage { get { return GetDouble(248); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(252, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "IGNORE_CHANCE_FEAR", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawIgnoreChanceFear } },
+            { "IGNORE_CHANCE_MEZ", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawIgnoreChanceMezz } },
+            { "IGNORE_CHANCE_KNOCKBACK", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawIgnoreChanceKnockback } },
+            { "MENTAL_DEFENSE_RATING", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMentalDefenseRating } },
+            { "NONCOMBAT_REGEN_HEALTH_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawNonCombatRegenHealthMod } },
+            { "COMBAT_REGEN_HEALTH_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawCombatRegenHealthMod } },
+            { "COMBAT_REGEN_HEALTH_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawCombatRegenHealthDelta } },
+            { "NONCOMBAT_REGEN_ARMOR_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawNonCombatRegenArmorMod } },
+            { "NONCOMBAT_REGEN_ARMOR_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawNonCombatRegenArmordelta } },
+            { "COMBAT_REGEN_ARMOR_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawCombatRegenArmorMod } },
+            { "NONCOMBAT_REGEN_POWER_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawNonCombatRegenPowerMod } },
+            { "COMBAT_REGEN_POWER_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawCombatRegenPowerMod } },
+            { "NONCOMBAT_REGEN_RAGE_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawNonCombatRegenRageMod } },
+            { "COMBAT_REGEN_RAGE_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawCombatRegenRageMod } },
+            { "SPRINT_BOOST", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawSprintBoost } },
+            { "TAUNT_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawTauntMod } },
+            { "EVASION_CHANCE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawEvasionChance } },
+            { "LOOT_BOOST_CHANCE_UNCOMMON", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawLootBoostChanceUncommon } },
+            { "LOOT_BOOST_CHANCE_RARE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawLootBoostChanceRare } },
+            { "LOOT_BOOST_CHANCE_EXCEPTIONAL", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawLootBoostChanceExceptional } },
+            { "LOOT_BOOST_CHANCE_EPIC", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawLootBoostChanceEpic } },
+            { "LOOT_BOOST_CHANCE_LEGENDARY", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawLootBoostChanceLegendary } },
+            { "MAX_HEALTH", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxHealth } },
+            { "MAX_ARMOR", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxArmor } },
+            { "MAX_RAGE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxRage } },
+            { "MAX_POWER", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxPower } },
+            { "MAX_BREATH", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxBreath } },
+            { "BOOST_UNIVERSAL_DIRECT", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawBoostUniversalDirect } },
+            { "BOOST_ABILITY_RAGEATTACK", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawBoostAbilityRageAttack } },
+            { "MOD_ABILITY_RAGEATTACK", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawModAbilityRageAttack } },
+            { "MONSTER_COMBAT_XP_VALUE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMonsterCombatXpValue } },
+            { "COMBAT_REGEN_ARMOR_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawCombatRegenArmorDelta } },
+            { "COMBAT_REGEN_POWER_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawCombatRegenDelta } },
+            { "MAX_INVENTORY_SIZE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxInventorySize } },
+            { "MAX_METABOLISM", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxMetabolism } },
+            { "NPC_MOD_FAVORFROMGIFTS", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawNpcModFavorFromGifts } },
+            { "NPC_MOD_FAVORFROMHANGOUTS", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawNpcModFavorFromHangouts } },
+            { "NPC_MOD_MAXSALESVALUE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawNpcModMaxSalesValue } },
+            { "NPC_MOD_TRAININGCOST", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawNpcModTrainingCost } },
+            { "NUM_INVENTORY_FOLDERS", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumInventoryFolders } },
+            { "HIGH_CLEANLINESS_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawHighCleanlinessXpEarnedMod } },
+            { "LOW_CLEANLINESS_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawLowCleanlinessXpEarnedMod } },
+            { "MAX_ARMOR_MITIGATION_RATIO", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxArmorMitigationRatio } },
+            { "SHOW_CLEANLINESS_INDICATORS", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawShowCleanlinessIndicators } },
+            { "HIGH_COMMUNITY_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawHighCommunityXpEarnedMod } },
+            { "LOW_COMMUNITY_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawLowCommunityXpEarnedMod } },
+            { "SHOW_COMMUNITY_INDICATORS", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawShowCommunityIndicators } },
+            { "HIGH_PEACEABLENESS_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawHighPeaceblenessXpEarnedMod } },
+            { "LOW_PEACEABLENESS_XP_EARNED_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawLowPeaceblenessXpEarnedMod } },
+            { "SHOW_PEACEABLENESS_INDICATORS", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawShowPeaceblenessIndicators } },
+            { "STAFF_ARMOR_AUTOHEAL", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawStaffArmorAutoHeal } },
+            { "MAX_MAP_PINS_PER_AREA", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxMapPinsPerArea } },
+            { "MAX_MAP_PIN_ICONS", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxMapPinIcons } },
+            { "WORKORDER_COIN_REWARD_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawWorkOrderCoinRewardMod } },
+            { "MAX_ACTIVE_WORKORDERS", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMaxActiveWorkOrders } },
+            { "PLAYER_ORDERS_MAX_ACTIVE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawPlayerOrdersMaxActive } },
+            { "SHOP_INVENTORY_SIZE_DELTA", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawShopInventorySizeDelta } },
+            { "MAIL_SHOP_NUMFREE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMailShopNumFree } },
+            { "SHOP_HIRING_MAX_PREPAY_DAYS", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawShopHiringMaxPrepDays } },
+            { "SHOP_LOG_DAYSKEPT", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawShopLogDaysKept } },
+            { "SHOP_HIRING_NUMFREE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawShopHiringNumFree } },
+            { "MOD_CRITICAL_HIT_DAMAGE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawCriticalHitDamage } },
+        }; } }
     }
 }

@@ -44,7 +44,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemKeyword, null, ItemKeyword.Internal_None) } },
             { "ItemName", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RawItemName } },
+                GetString = () => QuestItem != null ? QuestItem.InternalName : null } },
         }; } }
         #endregion
 
@@ -53,12 +53,12 @@ namespace PgJsonObjects
         public IPgGameNpc DeliverNpc { get; private set; }
         public ItemKeyword ItemKeyword { get; private set; }
         public ItemCollection ItemList { get; private set; } = new ItemCollection();
+        public string DeliverNpcId { get; private set; }
+        public string DeliverNpcName { get; private set; }
 
         private bool IsTargetParsed;
         private string RawItemName;
         private bool IsItemNameParsed;
-        private string DeliverNpcId;
-        private string DeliverNpcName;
         private bool IsDeliverNpcParsed;
         #endregion
 
@@ -106,17 +106,20 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
+
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
-            AddObject(DeliverNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddObjectList(ItemList, data, ref offset, BaseOffset, 12, StoredObjectListTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 16, StoredStringListTable);
+            AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(DeliverNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);
+            AddObjectList(ItemList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
+            AddString(DeliverNpcId, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddString(DeliverNpcName, data, ref offset, BaseOffset, 16, StoredStringtable);
             AddEnum(ItemKeyword, data, ref offset, BaseOffset, 20);
 
             FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, StoredObjectListTable);

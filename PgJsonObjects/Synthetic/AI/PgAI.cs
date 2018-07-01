@@ -31,6 +31,28 @@ namespace PgJsonObjects
         public bool? RawIsStationary { get { return GetBool(20, 4); } }
         public bool? RawIsServerDriven { get { return GetBool(20, 6); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Abilities", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => Abilities as IObjectContentGenerator } },
+            { "Melee", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsMelee } },
+            { "Comment", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Comment } },
+            { "Stationary", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsStationary } },
+            { "UncontrolledPet", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsUncontrolledPet } },
+            { "ServerDriven", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsServerDriven } },
+            { "MinDelayBetweenAbilities", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawMinDelayBetweenAbilities } },
+        }; } }
     }
 }

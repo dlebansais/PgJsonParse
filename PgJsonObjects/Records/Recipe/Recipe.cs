@@ -19,7 +19,7 @@ namespace PgJsonObjects
         public IPgSkill Skill { get; private set; }
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; private set; }
-        public List<RecipeResultEffect> ResultEffectList { get; } = new List<RecipeResultEffect>();
+        public RecipeResultEffectCollection ResultEffectList { get; } = new RecipeResultEffectCollection();
         public IPgSkill SortSkill { get; private set; }
         public List<RecipeKeyword> KeywordList { get; } = new List<RecipeKeyword>();
         public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
@@ -48,10 +48,12 @@ namespace PgJsonObjects
         public IPgRecipe PrereqRecipe { get; private set; }
         public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
         public bool? RawIsItemMenuKeywordReqSufficient { get; private set; }
+        public bool IngredientListIsEmpty { get { return RawIngredientListIsEmpty.HasValue && RawIngredientListIsEmpty.Value; } }
+        public bool? RawIngredientListIsEmpty { get; private set; }
+        public bool ResultItemListIsEmpty { get { return RawResultItemListIsEmpty.HasValue && RawResultItemListIsEmpty.Value; } }
+        public bool? RawResultItemListIsEmpty { get; private set; }
         public ItemKeyword RecipeItemKeyword { get; private set; }
 
-        private bool EmptyIngredientList;
-        private bool EmptyResultItemList;
         private PowerSkill RawSkill;
         private bool IsSkillParsed;
         private PowerSkill RawSortSkill;
@@ -94,9 +96,9 @@ namespace PgJsonObjects
             { "Ingredients", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = ParseIngredients,
-                SetArrayIsEmpty = () => EmptyIngredientList = true,
+                SetArrayIsEmpty = () => RawIngredientListIsEmpty = true,
                 GetObjectArray = () => IngredientList,
-                GetArrayIsEmpty = () => EmptyIngredientList} },
+                GetArrayIsEmpty = () => IngredientListIsEmpty} },
             { "InternalName", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => InternalName = value,
@@ -108,13 +110,13 @@ namespace PgJsonObjects
             { "ResultItems", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<RecipeItem>.ParseList("ResultItems", value, ResultItemList, errorInfo),
-                SetArrayIsEmpty = () => EmptyResultItemList = true ,
+                SetArrayIsEmpty = () => RawResultItemListIsEmpty = true ,
                 GetObjectArray = () => ResultItemList,
-                GetArrayIsEmpty = () => EmptyResultItemList } },
+                GetArrayIsEmpty = () => ResultItemListIsEmpty } },
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
+                GetString = () => Skill != null ? StringToEnumConversion<PowerSkill>.ToString(Skill.CombatSkill, null, PowerSkill.Internal_None) : null } },
             { "SkillLevelReq", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawSkillLevelReq = value,
@@ -126,7 +128,7 @@ namespace PgJsonObjects
             { "SortSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawSortSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSortSkill, null, PowerSkill.Internal_None) } },
+                GetString = () => SortSkill != null ? StringToEnumConversion<PowerSkill>.ToString(SortSkill.CombatSkill, null, PowerSkill.Internal_None) : null } },
             { "Keywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<RecipeKeyword>.ParseList(value, KeywordList, errorInfo),
@@ -175,7 +177,7 @@ namespace PgJsonObjects
             { "RewardSkill", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseRewardSkill,
-                GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawRewardSkill, null, PowerSkill.Internal_None) } },
+                GetString = () => RewardSkill != null ? StringToEnumConversion<PowerSkill>.ToString(RewardSkill.CombatSkill, null, PowerSkill.Internal_None) : null } },
             { "RewardSkillXp", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardSkillXp = value,
@@ -187,7 +189,7 @@ namespace PgJsonObjects
             { "SharesResetTimerWith", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawSharesResetTimerWith = value,
-                GetString = () => RawSharesResetTimerWith } },
+                GetString = () => SharesResetTimerWith != null ? SharesResetTimerWith.InternalName : null } },
             { "ItemMenuLabel", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => ItemMenuLabel = value,
@@ -211,7 +213,7 @@ namespace PgJsonObjects
             { "PrereqRecipe", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawPrereqRecipe = value,
-                GetString = () => RawPrereqRecipe } },
+                GetString = () => PrereqRecipe != null ? PrereqRecipe.InternalName : null } },
         }; } }
 
         private void ParseDescription(string value, ParseErrorInfo ErrorInfo)
@@ -268,7 +270,7 @@ namespace PgJsonObjects
         {
             List<string> Result = new List<string>();
 
-            foreach (RecipeResultEffect Item in ResultEffectList)
+            foreach (IPgRecipeResultEffect Item in ResultEffectList)
             {
                 switch (Item.Effect)
                 {
@@ -441,8 +443,8 @@ namespace PgJsonObjects
                         NewResultEffect.Effect = ConvertedRecipeEffect;
                         NewResultEffect.ExtractedAugment = ConvertedAugment;
                         NewResultEffect.Skill = ConvertedSkill;
-                        NewResultEffect.MinLevel = MinLevel;
-                        NewResultEffect.MaxLevel = MaxLevel;
+                        NewResultEffect.RawMinLevel = MinLevel;
+                        NewResultEffect.RawMaxLevel = MaxLevel;
                         return true;
                     }
                 }
@@ -451,7 +453,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetExtractResultEffects(RecipeResultEffect Item)
+        private string GetExtractResultEffects(IPgRecipeResultEffect Item)
         {
             string Result = "ExtractTSysPower(";
 
@@ -487,13 +489,13 @@ namespace PgJsonObjects
                         int.TryParse(RepairedSplit[4], out MaxLevel))
                     {
                         NewResultEffect.Effect = ConvertedRecipeEffect;
-                        NewResultEffect.RepairMinEfficiency = RepairMinEfficiency;
+                        NewResultEffect.RawRepairMinEfficiency = RepairMinEfficiency;
                         NewResultEffect.RepairMinEfficiencyFormat = RepairMinEfficiencyFormat;
-                        NewResultEffect.RepairMaxEfficiency = RepairMaxEfficiency;
+                        NewResultEffect.RawRepairMaxEfficiency = RepairMaxEfficiency;
                         NewResultEffect.RepairMaxEfficiencyFormat = RepairMaxEfficiencyFormat;
-                        NewResultEffect.RepairCooldown = RepairCooldown;
-                        NewResultEffect.MinLevel = MinLevel;
-                        NewResultEffect.MaxLevel = MaxLevel;
+                        NewResultEffect.RawRepairCooldown = RepairCooldown;
+                        NewResultEffect.RawMinLevel = MinLevel;
+                        NewResultEffect.RawMaxLevel = MaxLevel;
                         return true;
                     }
                 }
@@ -502,7 +504,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetRepairItemResultEffects(RecipeResultEffect Item)
+        private string GetRepairItemResultEffects(IPgRecipeResultEffect Item)
         {
             string Result = "RepairItemDurability(";
 
@@ -593,9 +595,9 @@ namespace PgJsonObjects
 
                     NewResultEffect.Effect = ConvertedRecipeEffect;
                     NewResultEffect.Boost = Boost;
-                    NewResultEffect.BoostLevel = BoostLevel;
-                    NewResultEffect.IsCamouflaged = IsCamouflaged;
-                    NewResultEffect.AdditionalEnchantments = AdditionalEnchantments;
+                    NewResultEffect.RawBoostLevel = BoostLevel;
+                    NewResultEffect.RawIsCamouflaged = IsCamouflaged;
+                    NewResultEffect.RawAdditionalEnchantments = AdditionalEnchantments;
                     NewResultEffect.BoostedAnimal = BoostedAnimal;
                     return true;
                 }
@@ -604,7 +606,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetCraftedResultEffects(RecipeResultEffect Item)
+        private string GetCraftedResultEffects(IPgRecipeResultEffect Item)
         {
             string Result = "TSysCraftedEquipment(";
 
@@ -612,8 +614,8 @@ namespace PgJsonObjects
             Result += Item.BoostLevel.ToString();
             if (Item.IsCamouflaged)
                 Result += "C";
-            if (Item.AdditionalEnchantments.HasValue)
-                Result += "," + Item.AdditionalEnchantments.Value.ToString();
+            if (Item.RawAdditionalEnchantments.HasValue)
+                Result += "," + Item.RawAdditionalEnchantments.Value.ToString();
             if (Item.BoostedAnimal != Appearance.Internal_None)
                 Result += "," + StringToEnumConversion<Appearance>.ToString(Item.BoostedAnimal);
 
@@ -647,8 +649,8 @@ namespace PgJsonObjects
                             {
                                 NewResultEffect.Effect = ConvertedRecipeEffect;
                                 NewResultEffect.Enhancement = ConvertedEnhancementEffect;
-                                NewResultEffect.AddedQuantity = AddedQuantity;
-                                NewResultEffect.ConsumedEnhancementPoints = ConsumedEnhancementPoints;
+                                NewResultEffect.RawAddedQuantity = AddedQuantity;
+                                NewResultEffect.RawConsumedEnhancementPoints = ConsumedEnhancementPoints;
                                 return true;
                             }
                         }
@@ -659,7 +661,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetCraftingEnhanceResultEffects(RecipeResultEffect Item)
+        private string GetCraftingEnhanceResultEffects(IPgRecipeResultEffect Item)
         {
             string Result = "CraftingEnhanceItem";
 
@@ -688,7 +690,7 @@ namespace PgJsonObjects
                     {
                         NewResultEffect.Effect = ConvertedRecipeEffect;
                         NewResultEffect.SlotPower = ConvertedSlot;
-                        NewResultEffect.SlotPowerLevel = PowerLevel;
+                        NewResultEffect.RawSlotPowerLevel = PowerLevel;
                         return true;
                     }
                     else
@@ -699,7 +701,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetPowerResultEffects(RecipeResultEffect Item)
+        private string GetPowerResultEffects(IPgRecipeResultEffect Item)
         {
             string Result = "AddItemTSysPower(";
 
@@ -751,8 +753,8 @@ namespace PgJsonObjects
                                 if (BrewPartList.Count > 0 && BrewResultList.Count > 0)
                                 {
                                     NewResultEffect.Effect = ConvertedRecipeEffect;
-                                    NewResultEffect.BrewPartCount = BrewPartCount;
-                                    NewResultEffect.BrewLevel = BrewLevel;
+                                    NewResultEffect.RawBrewPartCount = BrewPartCount;
+                                    NewResultEffect.RawBrewLevel = BrewLevel;
                                     NewResultEffect.BrewPartList = BrewPartList;
                                     NewResultEffect.BrewResultList = BrewResultList;
                                     return true;
@@ -766,7 +768,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetBrewItemResultEffects(RecipeResultEffect Item)
+        private string GetBrewItemResultEffects(IPgRecipeResultEffect Item)
         {
             string Result = "BrewItem(";
 
@@ -812,7 +814,7 @@ namespace PgJsonObjects
                     if (int.TryParse(AdjustedSplit[0].Trim(), out AdjustedReuseTime) && StringToEnumConversion<MoonPhases>.TryParse(AdjustedSplit[1].Trim(), out MoonPhase, ErrorInfo))
                     {
                         NewResultEffect.Effect = ConvertedRecipeEffect;
-                        NewResultEffect.AdjustedReuseTime = AdjustedReuseTime;
+                        NewResultEffect.RawAdjustedReuseTime = AdjustedReuseTime;
                         NewResultEffect.MoonPhase = MoonPhase;
                         return true;
                     }
@@ -822,7 +824,7 @@ namespace PgJsonObjects
             return false;
         }
 
-        private string GetAdjustRecipeResultEffects(RecipeResultEffect Item)
+        private string GetAdjustRecipeResultEffects(IPgRecipeResultEffect Item)
         {
             string Result = "AdjustRecipeReuseTime(";
 
@@ -1098,10 +1100,7 @@ namespace PgJsonObjects
             AddObjectList(ResultItemList, data, ref offset, BaseOffset, 24, StoredObjectListTable);
             AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 28, StoredObjectTable);
             AddInt(RawSkillLevelReq, data, ref offset, BaseOffset, 32);
-
-            offset += 4;
-            //AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
-
+            AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
             AddObject(SortSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 40, StoredObjectTable);
             AddEnumList(KeywordList, data, ref offset, BaseOffset, 44, StoredEnumListTable);
             AddInt(RawUsageDelay, data, ref offset, BaseOffset, 48);
@@ -1124,6 +1123,8 @@ namespace PgJsonObjects
             AddObject(PrereqRecipe as ISerializableJsonObject, data, ref offset, BaseOffset, 112, StoredObjectTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 116, StoredStringListTable);
             AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 120, 0);
+            AddBool(RawIngredientListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 120, 2);
+            AddBool(RawResultItemListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 120, 4);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 122);
 

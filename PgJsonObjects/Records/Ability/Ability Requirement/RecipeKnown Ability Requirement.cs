@@ -20,7 +20,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.RecipeKnown) } },
             { "Recipe", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RawRecipeKnown } },
+                GetString = () => RecipeKnown != null ? RecipeKnown.InternalName : null } },
         }; } }
 
         #region Indexing

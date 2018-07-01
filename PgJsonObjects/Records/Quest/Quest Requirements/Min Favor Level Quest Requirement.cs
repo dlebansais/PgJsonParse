@@ -26,10 +26,11 @@ namespace PgJsonObjects
         public bool IsEmpty { get { return RawIsEmpty.HasValue && RawIsEmpty.Value; } }
         public bool? RawIsEmpty { get; private set; }
         public Favor FavorLevel { get; private set; }
-        private MapAreaName FavorNpcArea;
+        public string FavorNpcId { get; private set; }
+        public string FavorNpcName { get; private set; }
+        public MapAreaName FavorNpcArea { get; private set; }
+
         private bool IsFavorNpcParsed;
-        private string FavorNpcId;
-        private string FavorNpcName;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
@@ -89,19 +90,22 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BitOffset = 0;
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
-            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddObject(FavorNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
-            AddBool(RawIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 16, 0);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
+
+            int BitOffset = 0;
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+
+            AddObject(FavorNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddBool(RawIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 4, 0);
             CloseBool(ref offset, ref BitOffset);
-            AddEnum(FavorLevel, data, ref offset, BaseOffset, 18);
+            AddEnum(FavorLevel, data, ref offset, BaseOffset, 6);
+            AddString(FavorNpcId, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddString(FavorNpcName, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddEnum(FavorNpcArea, data, ref offset, BaseOffset, 16);
 
             FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);

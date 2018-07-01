@@ -8,6 +8,9 @@
         IPgGameNpc Npc { get; }
         IPgEffect ConnectedEffect { get; }
         IPgQuest ConnectedQuest { get; }
+        string RawNpcId { get; }
+        string RawNpcName { get; }
+        string RawEffectTypeId { get; }
         SourceTypes Type { get; }
     }
 }

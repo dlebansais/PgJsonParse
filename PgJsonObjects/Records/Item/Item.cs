@@ -43,6 +43,8 @@ namespace PgJsonObjects
         public bool? RawDestroyWhenUsedUp { get; private set; }
         public bool IsSkillReqsDefaults { get { return RawIsSkillReqsDefaults.HasValue && RawIsSkillReqsDefaults.Value; } }
         public bool? RawIsSkillReqsDefaults { get; private set; }
+        public bool IsEffectDescriptionEmpty { get { return RawIsEffectDescriptionEmpty.HasValue && RawIsEffectDescriptionEmpty.Value; } }
+        public bool? RawIsEffectDescriptionEmpty { get; private set; }
         public List<RecipeItemKey> ItemKeyList { get; } = new List<RecipeItemKey>();
         public List<ItemKeyword> EmptyKeywordList { get; } = new List<ItemKeyword>();
         public List<ItemKeyword> RepeatedKeywordList { get; } = new List<ItemKeyword>();
@@ -70,16 +72,17 @@ namespace PgJsonObjects
         public IPgLoreBook ConnectedLoreBook { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
         public List<string> KeywordValueList { get; } = new List<string>();
+        public RecipeCollection BestowRecipeList { get; private set; } = null;
+        public List<string> AppearanceDetailList { get; private set; } = new List<string>();
+        public List<string> RawKeywordList { get; private set; } = new List<string>();
+        public int UnknownSkillReqIndex { get { return RawUnknownSkillReqIndex.HasValue ? RawUnknownSkillReqIndex.Value : 0; } }
+        public int? RawUnknownSkillReqIndex { get; private set; }
 
-        public Dictionary<string, Recipe> BestowRecipeTable { get; } = new Dictionary<string, Recipe>();
         private bool IsLoreBookParsed;
         private string RawBestowAbility;
         private bool IsRawBestowAbilityParsed;
         private string RawBestowQuest;
         private bool IsRawBestowQuestParsed;
-        private List<string> AppearanceDetailList = new List<string>();
-        public bool IsEffectDescriptionEmpty { get; private set; }
-        private List<string> RawKeywordList = new List<string>();
         public Dictionary<ItemKeyword, List<float>> KeywordTable { get; } = new Dictionary<ItemKeyword, List<float>>();
         private string RawMacGuffinQuestName;
         private bool IsRawMacGuffinQuestNameParsed;
@@ -97,16 +100,16 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawBestowRecipesList.Add(value),
                 SetArrayIsEmpty = () => RawBestowRecipesListIsEmpty = true,
-                GetStringArray = () => RawBestowRecipesList,
-                GetArrayIsEmpty =() => RawBestowRecipesListIsEmpty } },
+                GetStringArray = GetBestowRecipesList,
+                GetArrayIsEmpty =() => BestowRecipesListIsEmpty } },
             { "BestowAbility", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawBestowAbility = value,
-                GetString = () => RawBestowAbility } },
+                GetString = () => BestowAbility != null ? BestowAbility.InternalName : null } },
             { "BestowQuest", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawBestowQuest = value,
-                GetString = () => RawBestowQuest } },
+                GetString = () => BestowQuest != null ? BestowQuest.InternalName : null } },
             { "AllowPrefix", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawAllowPrefix = value,
@@ -134,7 +137,7 @@ namespace PgJsonObjects
             { "EffectDescs", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseEffectDescs,
-                SetArrayIsEmpty = () => IsEffectDescriptionEmpty = true,
+                SetArrayIsEmpty = () => RawIsEffectDescriptionEmpty = true,
                 GetStringArray = GetEffectDescs,
                 GetArrayIsEmpty = () => IsEffectDescriptionEmpty } },
             { "DyeColor", new FieldParser() {
@@ -172,7 +175,7 @@ namespace PgJsonObjects
             { "MacGuffinQuestName", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawMacGuffinQuestName = value,
-                GetString = () => RawMacGuffinQuestName } },
+                GetString = () => MacGuffinQuestName != null ? MacGuffinQuestName.InternalName : null } },
             { "MaxCarryable", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawMaxCarryable = value,
@@ -234,6 +237,16 @@ namespace PgJsonObjects
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawBestowLoreBook = value,
                 GetInteger = () => RawBestowLoreBook } },
         }; } }
+
+        private List<string> GetBestowRecipesList()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (Recipe Item in BestowRecipeList)
+                Result.Add(Item.InternalName);
+
+            return Result;
+        }
 
         private void ParseDroppedAppearance(string value, ParseErrorInfo ErrorInfo)
         {
@@ -519,7 +532,10 @@ namespace PgJsonObjects
             foreach (KeyValuePair<string, ItemSkillLink> ItemSkillEntry in SkillRequirementTable)
             {
                 if (ItemSkillEntry.Key == "Unknown")
+                {
+                    RawUnknownSkillReqIndex = SkillRequirementList.Count;
                     continue;
+                }
 
                 SkillRequirementList.Add(ItemSkillEntry.Value);
             }
@@ -529,8 +545,18 @@ namespace PgJsonObjects
         {
             SkillRequirement Skillreq = new SkillRequirement();
 
-            foreach (KeyValuePair<string, ItemSkillLink> ItemSkillEntry in SkillRequirementTable)
-                    Skillreq.SetFieldValue(ItemSkillEntry.Key, ItemSkillEntry.Value);
+            int Index = 0;
+            foreach (ItemSkillLink Item in SkillRequirementList)
+            {
+                if (RawUnknownSkillReqIndex.HasValue && RawUnknownSkillReqIndex.Value == Index)
+                    Skillreq.SetFieldValue("Unknown", new ItemSkillLink("Unknown", 0));
+
+                Skillreq.SetFieldValue(Item.SkillName, Item);
+                Index++;
+            }
+
+            if (RawUnknownSkillReqIndex.HasValue && RawUnknownSkillReqIndex.Value == Index)
+                Skillreq.SetFieldValue("Unknown", new ItemSkillLink("Unknown", 0));
 
             return Skillreq;
         }
@@ -619,7 +645,8 @@ namespace PgJsonObjects
         }
 
         private List<string> RawBestowRecipesList { get; } = new List<string>();
-        private bool RawBestowRecipesListIsEmpty;
+        public bool BestowRecipesListIsEmpty { get { return RawBestowRecipesListIsEmpty.HasValue && RawBestowRecipesListIsEmpty.Value; } }
+        public bool? RawBestowRecipesListIsEmpty { get; private set; }
         #endregion
 
         #region Indexing
@@ -631,8 +658,8 @@ namespace PgJsonObjects
 
                 AddWithFieldSeparator(ref Result, Name);
                 AddWithFieldSeparator(ref Result, Description);
-                foreach (KeyValuePair<string, Recipe> Entry in BestowRecipeTable)
-                    AddWithFieldSeparator(ref Result, Entry.Value.Name);
+                foreach (Recipe Item in BestowRecipeList)
+                    AddWithFieldSeparator(ref Result, Item.Name);
                 if (BestowAbility != null)
                     AddWithFieldSeparator(ref Result, BestowAbility.Name);
                 if (BestowQuest != null)
@@ -692,7 +719,32 @@ namespace PgJsonObjects
             Dictionary<string, IGenericJsonObject> QuestTable = AllTables[typeof(Quest)];
             Dictionary<string, IGenericJsonObject> LoreBookTable = AllTables[typeof(LoreBook)];
 
-            IsConnected |= Recipe.ConnectTableByInternalName(ErrorInfo, RecipeTable, RawBestowRecipesList, BestowRecipeTable);
+            if (BestowRecipeList == null)
+            {
+                BestowRecipeList = new RecipeCollection();
+
+                foreach (string RawRecipe in RawBestowRecipesList)
+                {
+                    bool Found = false;
+                    foreach (KeyValuePair<string, IGenericJsonObject> Entry in RecipeTable)
+                    {
+                        Recipe RecipeValue = Entry.Value as Recipe;
+                        if (RecipeValue.InternalName == RawRecipe)
+                        {
+                            Found = true;
+                            IsConnected = true;
+                            if (BestowRecipeList.Contains(RecipeValue))
+                                ErrorInfo.AddDuplicateString("Recipe", RawRecipe);
+                            else
+                                BestowRecipeList.Add(RecipeValue);
+                            break;
+                        }
+                    }
+
+                    if (!Found)
+                        ErrorInfo.AddMissingKey(RawRecipe);
+                }
+            }
 
             BestowAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawBestowAbility, BestowAbility, ref IsRawBestowAbilityParsed, ref IsConnected, this);
             BestowQuest = Quest.ConnectSingleProperty(ErrorInfo, QuestTable, RawBestowQuest, BestowQuest, ref IsRawBestowQuestParsed, ref IsConnected, this);
@@ -994,8 +1046,10 @@ namespace PgJsonObjects
             AddBool(RawAllowSuffix, data, ref offset, ref BitOffset, BaseOffset, 60, 2);
             AddBool(RawIsTemporary, data, ref offset, ref BitOffset, BaseOffset, 60, 4);
             AddBool(RawIsCrafted, data, ref offset, ref BitOffset, BaseOffset, 60, 6);
-            AddBool( RawDestroyWhenUsedUp, data, ref offset, ref BitOffset, BaseOffset, 60, 8);
+            AddBool(RawDestroyWhenUsedUp, data, ref offset, ref BitOffset, BaseOffset, 60, 8);
             AddBool(RawIsSkillReqsDefaults, data, ref offset, ref BitOffset, BaseOffset, 60, 10);
+            AddBool(RawBestowRecipesListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 60, 12);
+            AddBool(RawIsEffectDescriptionEmpty, data, ref offset, ref BitOffset, BaseOffset, 60, 14);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RequiredAppearance, data, ref offset, BaseOffset, 62);
             AddEnumList(ItemKeyList, data, ref offset, BaseOffset, 64, StoredEnumListTable);
@@ -1018,8 +1072,12 @@ namespace PgJsonObjects
             AddObject(ConnectedLoreBook as ISerializableJsonObject, data, ref offset, BaseOffset, 132, StoredObjectTable);
             AddStringList(KeywordValueList, data, ref offset, BaseOffset, 136, StoredStringListTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 140, StoredStringListTable);
+            AddObjectList(BestowRecipeList, data, ref offset, BaseOffset, 144, StoredObjectListTable);
+            AddStringList(AppearanceDetailList, data, ref offset, BaseOffset, 148, StoredStringListTable);
+            AddStringList(RawKeywordList, data, ref offset, BaseOffset, 152, StoredStringListTable);
+            AddInt(RawUnknownSkillReqIndex, data, ref offset, BaseOffset, 156);
 
-            FinishSerializing(data, ref offset, BaseOffset, 144, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 160, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

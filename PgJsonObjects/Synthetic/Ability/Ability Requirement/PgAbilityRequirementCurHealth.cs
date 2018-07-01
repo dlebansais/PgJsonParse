@@ -24,6 +24,10 @@ namespace PgJsonObjects
         public double? RawHealth { get { return GetDouble(8); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Health", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => Health } },
+        }; } }
     }
 }

@@ -38,6 +38,8 @@ namespace PgJsonObjects
         bool? RawDestroyWhenUsedUp { get; }
         bool IsSkillReqsDefaults { get; }
         bool? RawIsSkillReqsDefaults { get; }
+        bool? RawBestowRecipesListIsEmpty { get; }
+        bool? RawIsEffectDescriptionEmpty { get; }
         Appearance RequiredAppearance { get; }
         List<RecipeItemKey> ItemKeyList { get; }
         List<ItemKeyword> EmptyKeywordList { get; }
@@ -65,5 +67,8 @@ namespace PgJsonObjects
         int? RawBestowLoreBook { get; }
         IPgLoreBook ConnectedLoreBook { get; }
         List<string> KeywordValueList { get; }
+        RecipeCollection BestowRecipeList { get; }
+        List<string> AppearanceDetailList { get; }
+        List<string> RawKeywordList { get; }
     }
 }

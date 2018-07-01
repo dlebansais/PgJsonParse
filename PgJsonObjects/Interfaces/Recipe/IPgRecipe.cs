@@ -43,6 +43,10 @@ namespace PgJsonObjects
         IPgRecipe PrereqRecipe { get; }
         bool IsItemMenuKeywordReqSufficient { get; }
         bool? RawIsItemMenuKeywordReqSufficient { get; }
+        bool IngredientListIsEmpty { get; }
+        bool? RawIngredientListIsEmpty { get; }
+        bool ResultItemListIsEmpty { get; }
+        bool? RawResultItemListIsEmpty { get; }
         ItemKeyword RecipeItemKeyword { get; }
     }
 }

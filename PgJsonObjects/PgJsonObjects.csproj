@@ -157,6 +157,7 @@
     <Compile Include="Interfaces\Recipe\IPgRecipe.cs" />
     <Compile Include="Interfaces\Recipe\IPgRecipeCost.cs" />
     <Compile Include="Interfaces\Recipe\IPgRecipeItem.cs" />
+    <Compile Include="Interfaces\Recipe\IPgRecipeResultEffect.cs" />
     <Compile Include="Interfaces\Recipe\IPgRecipeSource.cs" />
     <Compile Include="Interfaces\Skill\IPgLevelCapInteraction.cs" />
     <Compile Include="Interfaces\Skill\IPgReward.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Records\Quest\Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\RunTime Behavior Rule Set Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Reward.cs" />
+    <Compile Include="Records\Quest\QuestRewardCollection.cs" />
     <Compile Include="Records\Quest\QuestObjectiveCollection.cs" />
     <Compile Include="Records\Quest\QuestRewardItemCollection.cs" />
     <Compile Include="Records\Quest\QuestRewardXpCollection.cs" />
@@ -497,6 +499,8 @@
     <Compile Include="Synthetic\Power\PgPowerSimpleEffect.cs" />
     <Compile Include="Synthetic\Power\PgPowerTier.cs" />
     <Compile Include="Synthetic\Quest\PgQuest.cs" />
+    <Compile Include="Synthetic\Quest\PgQuestRequirement.cs" />
+    <Compile Include="Synthetic\Quest\PgQuestObjective.cs" />
     <Compile Include="Synthetic\Quest\PgQuestReward.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRewardItem.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRewardXp.cs" />
@@ -528,6 +532,7 @@
     <Compile Include="Synthetic\Quest\QuestRequirement\PgRunTimeBehaviorRuleSetQuestRequirement.cs" />
     <Compile Include="Synthetic\Recipe\PgRecipe.cs" />
     <Compile Include="Synthetic\Recipe\PgRecipeCost.cs" />
+    <Compile Include="Synthetic\Recipe\PgRecipeResultEffect.cs" />
     <Compile Include="Synthetic\Recipe\PgRecipeItem.cs" />
     <Compile Include="Synthetic\Recipe\PgRecipeSource.cs" />
     <Compile Include="Records\Recipe\RecipeCostCollection.cs" />

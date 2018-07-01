@@ -34,32 +34,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        public static readonly Dictionary<RecipeItemKey, string> RecipeItemKeyStringMap = new Dictionary<RecipeItemKey, string>()
-        {
-            { RecipeItemKey.EquipmentSlot_MainHand, "EquipmentSlot:MainHand" },
-            { RecipeItemKey.EquipmentSlot_OffHand, "EquipmentSlot:OffHand" },
-            { RecipeItemKey.EquipmentSlot_Hands, "EquipmentSlot:Hands" },
-            { RecipeItemKey.EquipmentSlot_Chest, "EquipmentSlot:Chest" },
-            { RecipeItemKey.EquipmentSlot_Legs, "EquipmentSlot:Legs" },
-            { RecipeItemKey.EquipmentSlot_Head, "EquipmentSlot:Head" },
-            { RecipeItemKey.EquipmentSlot_Feet, "EquipmentSlot:Feet" },
-            { RecipeItemKey.EquipmentSlot_Ring, "EquipmentSlot:Ring" },
-            { RecipeItemKey.EquipmentSlot_Necklace, "EquipmentSlot:Necklace" },
-            { RecipeItemKey.Rarity_Common, "Rarity:Common" },
-            { RecipeItemKey.Rarity_Uncommon, "Rarity:Uncommon" },
-            { RecipeItemKey.Rarity_Rare, "Rarity:Rare" },
-            { RecipeItemKey.MinRarity_Exceptional, "MinRarity:Exceptional" },
-            { RecipeItemKey.MinRarity_Uncommon, "MinRarity:Uncommon" },
-            { RecipeItemKey.Rarity_Exceptional, "Rarity:Exceptional" },
-            { RecipeItemKey.MinRarity_Epic, "MinRarity:Epic" },
-            { RecipeItemKey.MinTSysPrereq_0, "MinTSysPrereq:0" },
-            { RecipeItemKey.MaxTSysPrereq_30, "MaxTSysPrereq:30" },
-            { RecipeItemKey.MinTSysPrereq_31, "MinTSysPrereq:31" },
-            { RecipeItemKey.MaxTSysPrereq_60, "MaxTSysPrereq:60" },
-            { RecipeItemKey.MinTSysPrereq_61, "MinTSysPrereq:61" },
-            { RecipeItemKey.MaxTSysPrereq_90, "MaxTSysPrereq:90" },
-        };
-
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "ItemCode", new FieldParser() {
                 Type = FieldType.Integer,
@@ -75,8 +49,8 @@ namespace PgJsonObjects
                 GetFloat = () => RawPercentChance } },
             { "ItemKeys", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<RecipeItemKey>.ParseList(value, RecipeItemKeyStringMap, ItemKeyList, errorInfo),
-                GetStringArray = () => StringToEnumConversion<RecipeItemKey>.ToStringList(ItemKeyList, RecipeItemKeyStringMap) } },
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<RecipeItemKey>.ParseList(value, TextMaps.RecipeItemKeyStringMap, ItemKeyList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<RecipeItemKey>.ToStringList(ItemKeyList, TextMaps.RecipeItemKeyStringMap) } },
             { "Desc", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Desc = value,

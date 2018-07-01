@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public interface IPgStorageVault : IJsonKey, IObjectContentGenerator
     {
@@ -14,5 +16,7 @@
         MapAreaName Grouping { get; }
         bool HasAssociatedNpc { get; }
         bool? RawHasAssociatedNpc { get; }
+        MapAreaName Area { get; }
+        List<int> FavorLevelList { get; }
     }
 }

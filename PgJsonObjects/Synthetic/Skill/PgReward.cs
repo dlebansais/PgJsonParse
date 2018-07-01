@@ -29,6 +29,19 @@ namespace PgJsonObjects
         public IPgSkill BonusSkill { get { return GetObject(24, ref _BonusSkill, PgSkill.CreateNew); } } private IPgSkill _BonusSkill;
         protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Ability", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Ability != null ? Ability.InternalName : null } },
+            { "BonusToSkill", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => BonusSkill != null ? StringToEnumConversion<PowerSkill>.ToString(BonusSkill.CombatSkill, null, PowerSkill.Internal_None) : null } },
+            { "Recipe", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Recipe != null ? Recipe.InternalName : null } },
+            { "Notes", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Notes } },
+        }; } }
     }
 }

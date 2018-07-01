@@ -21,10 +21,9 @@ namespace PgJsonObjects
         public List<EffectKeyword> KeywordList { get; } = new List<EffectKeyword>();
         public List<AbilityKeyword> AbilityKeywordList { get; } = new List<AbilityKeyword>();
         public EffectParticle Particle { get; private set; }
-
-        private int TSysKeywordIndex = -1;
+        public int TSysKeywordIndex { get { return RawTSysKeywordIndex.HasValue ? RawTSysKeywordIndex.Value : 0; } }
+        public int? RawTSysKeywordIndex { get; private set; }
         public bool IsKeywordListEmpty { get; private set; }
-        public bool HasTSysKeyword { get { return TSysKeywordIndex >= 0; } }
         public bool IsAbilityKeywordListEmpty { get; private set; }
         #endregion
 
@@ -34,17 +33,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Parsing
-        public static readonly Dictionary<EffectStackingType, string> StackingTypeStringMap = new Dictionary<EffectStackingType, string>()
-        {
-            { EffectStackingType.LamiasGaze, "Lamia's Gaze" },
-            { EffectStackingType.One, "1" },
-        };
-
-        public static readonly Dictionary<EffectKeyword, string> KeywordStringMap = new Dictionary<EffectKeyword, string>()
-        {
-            { EffectKeyword.Hyphen, "-" },
-        };
-
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Name", new FieldParser() {
                 Type = FieldType.String,
@@ -72,8 +60,8 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<EffectParticle>.ToString(Particle, null, EffectParticle.Internal_None) } },
             { "StackingType", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => StackingType = StringToEnumConversion<EffectStackingType>.Parse(value, StackingTypeStringMap, errorInfo),
-                GetString = () => StringToEnumConversion<EffectStackingType>.ToString(StackingType, StackingTypeStringMap, EffectStackingType.Internal_None) } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => StackingType = StringToEnumConversion<EffectStackingType>.Parse(value, TextMaps.StackingTypeStringMap, errorInfo),
+                GetString = () => StringToEnumConversion<EffectStackingType>.ToString(StackingType, TextMaps.StackingTypeStringMap, EffectStackingType.Internal_None) } },
             { "StackingPriority", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawStackingPriority = value,
@@ -106,19 +94,19 @@ namespace PgJsonObjects
 
         private void ParseKeywords(string value, ParseErrorInfo ErrorInfo)
         {
-            if (StringToEnumConversion<EffectKeyword>.TryParse(value, KeywordStringMap, out EffectKeyword ParsedEffectKeyword, ErrorInfo))
+            if (StringToEnumConversion<EffectKeyword>.TryParse(value, TextMaps.KeywordStringMap, out EffectKeyword ParsedEffectKeyword, ErrorInfo))
                 if (ParsedEffectKeyword != EffectKeyword.TSys)
                     KeywordList.Add(ParsedEffectKeyword);
                 else
-                    TSysKeywordIndex = KeywordList.Count;
+                    RawTSysKeywordIndex = KeywordList.Count;
         }
 
         private List<string> GetKeywords()
         {
-            List<string> Result = StringToEnumConversion<EffectKeyword>.ToStringList(KeywordList, KeywordStringMap);
+            List<string> Result = StringToEnumConversion<EffectKeyword>.ToStringList(KeywordList, TextMaps.KeywordStringMap);
 
-            if (TSysKeywordIndex >= 0)
-                Result.Insert(TSysKeywordIndex, StringToEnumConversion<EffectKeyword>.ToString(EffectKeyword.TSys, KeywordStringMap));
+            if (RawTSysKeywordIndex.HasValue)
+                Result.Insert(RawTSysKeywordIndex.Value, StringToEnumConversion<EffectKeyword>.ToString(EffectKeyword.TSys, TextMaps.KeywordStringMap));
 
             return Result;
         }
@@ -191,6 +179,7 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
+            int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
@@ -208,9 +197,13 @@ namespace PgJsonObjects
             AddEnumList(KeywordList, data, ref offset, BaseOffset, 32, StoredEnumListTable);
             AddEnumList(AbilityKeywordList, data, ref offset, BaseOffset, 36, StoredEnumListTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 40, StoredStringListTable);
-            AddEnum(Particle, data, ref offset, BaseOffset, 44);
+            AddInt(RawTSysKeywordIndex, data, ref offset, BaseOffset, 44);
+            AddEnum(Particle, data, ref offset, BaseOffset, 48);
+            AddBool(IsKeywordListEmpty, data, ref offset, ref BitOffset, BaseOffset, 50, 0);
+            AddBool(IsAbilityKeywordListEmpty, data, ref offset, ref BitOffset, BaseOffset, 50, 2);
+            CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 46, StoredStringtable, null, null, StoredEnumListTable, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 52, StoredStringtable, null, null, StoredEnumListTable, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

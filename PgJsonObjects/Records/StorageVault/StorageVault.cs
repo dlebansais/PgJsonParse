@@ -19,10 +19,10 @@ namespace PgJsonObjects
         public MapAreaName Grouping { get; private set; }
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
         public bool? RawHasAssociatedNpc { get; private set; }
+        public MapAreaName Area { get; private set; }
+        public List<int> FavorLevelList { get; private set; } = new List<int>();
 
-        public Dictionary<Favor, int> FavorLevelTable { get; private set; } = new Dictionary<Favor, int>();
         private bool IsGameNpcParsed;
-        private MapAreaName Area;
         #endregion
 
         #region Indirect Properties
@@ -116,7 +116,8 @@ namespace PgJsonObjects
                 if (!StringToEnumConversion<Favor>.TryParse(Entry.Key, out Favor ParsedFavor, ErrorInfo))
                     continue;
 
-                FavorLevelTable.Add(ParsedFavor, FavorLevel);
+                FavorLevelList.Add((int)ParsedFavor);
+                FavorLevelList.Add(FavorLevel);
             }
         }
 
@@ -124,8 +125,8 @@ namespace PgJsonObjects
         {
             FavorLevelDesc Result = new FavorLevelDesc();
 
-            foreach (KeyValuePair<Favor, int> Entry in FavorLevelTable)
-                Result.SetFavorLevel(Entry.Key, Entry.Value);
+            for (int i = 0; i * 2 < FavorLevelList.Count; i++)
+                Result.SetFavorLevel((Favor)FavorLevelList[(i * 2) + 0], FavorLevelList[(i * 2) + 1]);
             
             return Result;
         }
@@ -227,8 +228,8 @@ namespace PgJsonObjects
                 if (RawHasAssociatedNpc.HasValue)
                     AddWithFieldSeparator(ref Result, HasAssociatedNpc ? "HasAssociatedNpc:Yes" : "HasAssociatedNpc:No");
 
-                foreach (KeyValuePair<Favor, int> Entry in FavorLevelTable)
-                    AddWithFieldSeparator(ref Result, TextMaps.FavorTextMap[Entry.Key]);
+                for (int i = 0; i * 2 < FavorLevelList.Count; i++)
+                    AddWithFieldSeparator(ref Result, TextMaps.FavorTextMap[(Favor)FavorLevelList[(i * 2) + 0]]);
 
                 if (RequiredItemKeyword != ItemKeyword.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[RequiredItemKeyword]);
@@ -290,6 +291,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
@@ -304,8 +306,10 @@ namespace PgJsonObjects
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 32, StoredStringListTable);
             AddBool(RawHasAssociatedNpc, data, ref offset, ref BitOffset, BaseOffset, 36, 0);
             CloseBool(ref offset, ref BitOffset);
+            AddEnum(Area, data, ref offset, BaseOffset, 38);
+            AddIntList(FavorLevelList, data, ref offset, BaseOffset, 40, StoredIntListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 38, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 44, StoredStringtable, StoredObjectTable, null, null, StoredIntListTable, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -27,6 +27,6 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(24, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public FloatFormat AttributeEffectFormat { get { return GetEnum<FloatFormat>(28); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
     }
 }

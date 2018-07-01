@@ -26,7 +26,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<RecipeKeyword>.ToString(PetTypeTag) } },
             { "MaxCount", new FieldParser() {
                 Type = FieldType.Float,
-                GetFloat = () => MaxCount } },
+                GetFloat = () => RawMaxCount } },
         }; } }
 
         #region Indexing

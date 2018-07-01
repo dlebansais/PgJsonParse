@@ -13,6 +13,9 @@ namespace PgJsonObjects
         bool? RawSkipBonusLevelsIfSkillUnlearned { get; }
         bool AuxCombat { get; }
         bool? RawAuxCombat { get; }
+        bool ParentSkillIsEmpty { get; }
+        bool? RawParentSkillIsEmpty { get; }
+        bool IsAdvancementTableNull { get; }
         int Id { get; }
         int? RawId { get; }
         string Description { get; }

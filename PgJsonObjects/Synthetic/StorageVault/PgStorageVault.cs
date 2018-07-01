@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgStorageVault(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 38;
+            offset += 40;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -35,7 +35,86 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(32, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
         public bool? RawHasAssociatedNpc { get { return GetBool(36, 0); } }
+        public MapAreaName Area { get { return GetEnum<MapAreaName>(38); } }
+        public List<int> FavorLevelList { get { return GetIntList(40, ref _FavorLevelList); } } private List<int> _FavorLevelList;
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "ID", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawId } },
+            { "NpcFriendlyName", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => NpcFriendlyName } },
+            { "Area", new FieldParser() {
+                Type = FieldType.String,
+                GetString = GetArea } },
+            { "NumSlots", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawNumSlots } },
+            { "HasAssociatedNpc", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawHasAssociatedNpc } },
+            { "Levels", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = GetLevels } },
+            { "RequiredItemKeyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RequiredItemKeyword, null, ItemKeyword.Internal_None) } },
+            { "RequirementDescription", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => RequirementDescription } },
+            { "Grouping", new FieldParser() {
+                Type = FieldType.String,
+                GetString = GetGrouping } },
+            { "Requirements", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = GetRequirements } },
+        }; } }
+
+        private string GetArea()
+        {
+            if (Area == MapAreaName.Several)
+                return "*";
+            else
+                return "Area" + StringToEnumConversion<MapAreaName>.ToString(Area);
+        }
+
+        private IObjectContentGenerator GetLevels()
+        {
+            FavorLevelDesc Result = new FavorLevelDesc();
+
+            for (int i = 0; i * 2 < FavorLevelList.Count; i++)
+                Result.SetFavorLevel((Favor)FavorLevelList[(i * 2) + 0], FavorLevelList[(i * 2) + 1]);
+
+            return Result;
+        }
+
+        private string GetGrouping()
+        {
+            if (Grouping == MapAreaName.Several)
+                return "*";
+            else
+                return "Area" + StringToEnumConversion<MapAreaName>.ToString(Grouping, null);
+        }
+
+        private IObjectContentGenerator GetRequirements()
+        {
+            InteractionFlagSetAbilityRequirement Result;
+
+            if (InteractionFlagRequirement == "Ivyn Gave Passcode")
+                Result = new InteractionFlagSetAbilityRequirement("Ivyn_Gave_Passcode");
+            else if (InteractionFlagRequirement == "Serbule Hills Tapestry Inn Chest")
+                Result = new InteractionFlagSetAbilityRequirement("Serbule2_TapestryInnChest");
+            else
+                Result = null;
+
+            if (Result != null)
+            {
+                List<string> FakeOrder = new List<string>() { "T", "InteractionFlag" };
+                Result.CopyFieldTableOrder("Requirements", FakeOrder);
+            }
+
+            return Result;
+        }
     }
 }

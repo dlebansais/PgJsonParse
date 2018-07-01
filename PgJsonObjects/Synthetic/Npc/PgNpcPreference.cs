@@ -32,6 +32,13 @@ namespace PgJsonObjects
         public RecipeItemKey RarityRequirement { get { return GetEnum<RecipeItemKey>(30); } }
         public RecipeItemKey MinRarityRequirement { get { return GetEnum<RecipeItemKey>(32); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "Keywords", new FieldParser() {
+                Type = FieldType.StringArray,
+                GetStringArray = () => RawKeywordList } },
+            { "Pref", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawPreference } },
+        }; } }
     }
 }

@@ -27,6 +27,19 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public AbilityKeyword Keyword { get { return GetEnum<AbilityKeyword>(20); } }
 
-        protected override Dictionary<string, FieldParser> FieldTable { get { return FieldTable; } }
+        protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
+            { "T", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.EquippedItemKeyword) } },
+            { "Keyword", new FieldParser() {
+                Type = FieldType.String,
+                GetString  = () => StringToEnumConversion<AbilityKeyword>.ToString(Keyword) } },
+            { "MinCount", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMinCount } },
+            { "MaxCount", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMaxCount } },
+        }; } }
     }
 }
