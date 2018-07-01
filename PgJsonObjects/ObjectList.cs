@@ -5,7 +5,7 @@ namespace PgJsonObjects
 {
     public static class ObjectList
     {
-        public static bool Verify = false;
+        public static bool Verify = true;
         public static bool UseJson = true;
 
         public static Dictionary<Type, IObjectDefinition> Definitions { get; private set; } = new Dictionary<Type, IObjectDefinition>()

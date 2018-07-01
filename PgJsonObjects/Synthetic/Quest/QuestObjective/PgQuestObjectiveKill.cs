@@ -22,7 +22,7 @@ namespace PgJsonObjects
         public string AbilityKeyword { get { return GetString(PropertiesOffset + 0); } }
         public QuestObjectiveKillTarget Target { get { return GetEnum<QuestObjectiveKillTarget>(PropertiesOffset + 4); } }
         public EffectKeyword EffectRequirement { get { return GetEnum<EffectKeyword>(PropertiesOffset + 6); } }
-        public QuestObjectiveRequirement QuestObjectiveRequirement { get { return GetEnum<QuestObjectiveRequirement>(PropertiesOffset + 8); } }
+        public IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return GetObject(PropertiesOffset + 8, ref _QuestObjectiveRequirement, PgQuestObjectiveRequirement.CreateNew); } } private IPgQuestObjectiveRequirement _QuestObjectiveRequirement;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
@@ -39,7 +39,7 @@ namespace PgJsonObjects
                 GetInteger = () => RawNumber } },
             { "Requirements", new FieldParser() {
                 Type = FieldType.Object,
-                GetObject = () => QuestObjectiveRequirement } },
+                GetObject = () => QuestObjectiveRequirement as IObjectContentGenerator } },
             { "Target", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<QuestObjectiveKillTarget>.ToString(Target, TextMaps.KillTargetStringMap, QuestObjectiveKillTarget.Internal_None) } },

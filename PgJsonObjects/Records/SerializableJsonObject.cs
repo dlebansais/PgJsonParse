@@ -22,10 +22,6 @@ namespace PgJsonObjects
         public virtual void SerializeJsonObject(byte[] data, ref int offset)
         {
             SerializedObjectTable.Add(this, offset);
-
-            if (offset == 0x9AF934)
-                offset = 0x9AF934;
-
             SerializeJsonObjectInternal(data, ref offset);
         }
 

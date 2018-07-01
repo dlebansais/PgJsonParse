@@ -64,13 +64,15 @@ namespace PgJsonObjects
             SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
             int BaseOffset = offset;
 
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+
             AddInt(RawMinAmount, data, ref offset, BaseOffset, 0);
             AddInt(RawMaxAmount, data, ref offset, BaseOffset, 4);
             AddString(StringParam, data, ref offset, BaseOffset, 8, StoredStringtable);
             AddString(InteractionTarget, data, ref offset, BaseOffset, 12, StoredStringtable);
-            AddEnum(QuestObjectiveRequirement, data, ref offset, BaseOffset, 16);
+            AddObject(QuestObjectiveRequirement as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 18, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

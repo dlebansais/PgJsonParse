@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class RecipeResultEffect : IPgRecipeResultEffect
+    public class RecipeResultEffect : SerializableJsonObject, IPgRecipeResultEffect
     {
         public RecipeEffect Effect { get; set; }
         public CraftedBoost Boost { get; set; }
@@ -39,8 +40,8 @@ namespace PgJsonObjects
         public int? RawBrewPartCount { get; set; }
         public int BrewLevel { get { return RawBrewLevel.HasValue ? RawBrewLevel.Value : 0; } }
         public int? RawBrewLevel { get; set; }
-        public List<RecipeItemKey> BrewPartList { get; set; }
-        public List<RecipeResultKey> BrewResultList { get; set; }
+        public List<RecipeItemKey> BrewPartList { get; set; } = new List<RecipeItemKey>();
+        public List<RecipeResultKey> BrewResultList { get; set; } = new List<RecipeResultKey>();
         public int AdjustedReuseTime { get { return RawAdjustedReuseTime.HasValue ? RawAdjustedReuseTime.Value : 0; } }
         public int? RawAdjustedReuseTime { get; set; }
         public bool IsCamouflaged { get { return RawIsCamouflaged.HasValue && RawIsCamouflaged.Value; } }
@@ -105,6 +106,44 @@ namespace PgJsonObjects
                         return "Adjust Recipe Reuse Time, " + AdjustedReuseTime + "s during " + MoonPhase;
                 }
             }
+        }
+
+        protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
+        {
+            int BitOffset = 0;
+            int BaseOffset = offset;
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+
+            AddEnum(Effect, data, ref offset, BaseOffset, 0);
+            AddEnum(Boost, data, ref offset, BaseOffset, 2);
+            AddInt(RawMinLevel, data, ref offset, BaseOffset, 4);
+            AddInt(RawMaxLevel, data, ref offset, BaseOffset, 8);
+            AddEnum(Skill, data, ref offset, BaseOffset, 12);
+            AddEnum(ExtractedAugment, data, ref offset, BaseOffset, 14);
+            AddDouble(RawRepairMinEfficiency, data, ref offset, BaseOffset, 16);
+            AddDouble(RawRepairMaxEfficiency, data, ref offset, BaseOffset, 20);
+            AddEnum(RepairMinEfficiencyFormat, data, ref offset, BaseOffset, 24);
+            AddEnum(RepairMaxEfficiencyFormat, data, ref offset, BaseOffset, 26);
+            AddInt(RawRepairCooldown, data, ref offset, BaseOffset, 28);
+            AddInt(RawBoostLevel, data, ref offset, BaseOffset, 32);
+            AddInt(RawAdditionalEnchantments, data, ref offset, BaseOffset, 36);
+            AddEnum(BoostedAnimal, data, ref offset, BaseOffset, 40);
+            AddEnum(Enhancement, data, ref offset, BaseOffset, 42);
+            AddDouble(RawAddedQuantity, data, ref offset, BaseOffset, 44);
+            AddInt(RawConsumedEnhancementPoints, data, ref offset, BaseOffset, 48);
+            AddEnum(SlotPower, data, ref offset, BaseOffset, 52);
+            AddEnum(MoonPhase, data, ref offset, BaseOffset, 54);
+            AddInt(RawSlotPowerLevel, data, ref offset, BaseOffset, 56);
+            AddInt(RawBrewPartCount, data, ref offset, BaseOffset, 60);
+            AddInt(RawBrewLevel, data, ref offset, BaseOffset, 64);
+            AddEnumList(BrewPartList, data, ref offset, BaseOffset, 68, StoredEnumListTable);
+            AddEnumList(BrewResultList, data, ref offset, BaseOffset, 72, StoredEnumListTable);
+            AddInt(RawAdjustedReuseTime, data, ref offset, BaseOffset, 76);
+            AddBool(RawIsCamouflaged, data, ref offset, ref BitOffset, BaseOffset, 80, 0);
+            CloseBool(ref offset, ref BitOffset);
+
+            FinishSerializing(data, ref offset, BaseOffset, 82, null, null, null, StoredEnumListTable, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
     }
 }

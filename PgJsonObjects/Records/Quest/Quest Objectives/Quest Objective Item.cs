@@ -101,10 +101,10 @@ namespace PgJsonObjects
 
             AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObjectList(TargetItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);
-            AddEnum(Target, data, ref offset, BaseOffset, 8);
-            AddEnum(QuestObjectiveRequirement, data, ref offset, BaseOffset, 10);
+            AddObject(QuestObjectiveRequirement as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddEnum(Target, data, ref offset, BaseOffset, 12);
 
-            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

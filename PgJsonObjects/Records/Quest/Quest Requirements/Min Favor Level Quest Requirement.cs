@@ -107,7 +107,7 @@ namespace PgJsonObjects
             AddString(FavorNpcName, data, ref offset, BaseOffset, 12, StoredStringtable);
             AddEnum(FavorNpcArea, data, ref offset, BaseOffset, 16);
 
-            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 18, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

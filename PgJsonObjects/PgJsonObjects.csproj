@@ -127,6 +127,7 @@
     <Compile Include="Interfaces\Power\IPgPowerSimpleEffect.cs" />
     <Compile Include="Interfaces\Power\IPgPowerTier.cs" />
     <Compile Include="Interfaces\Quest\IPgQuest.cs" />
+    <Compile Include="Interfaces\Quest\IPgQuestObjectiveRequirement.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestReward.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRewardItem.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRewardXp.cs" />
@@ -501,6 +502,7 @@
     <Compile Include="Synthetic\Quest\PgQuest.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRequirement.cs" />
     <Compile Include="Synthetic\Quest\PgQuestObjective.cs" />
+    <Compile Include="Synthetic\Quest\PgQuestObjectiveRequirement.cs" />
     <Compile Include="Synthetic\Quest\PgQuestReward.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRewardItem.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRewardXp.cs" />

@@ -20,7 +20,7 @@ namespace PgJsonObjects
         }
 
         public List<string> InteractionFlagList { get { return GetStringList(PropertiesOffset + 0, ref _InteractionFlagList); } } private List<string> _InteractionFlagList;
-        public QuestObjectiveRequirement QuestObjectiveRequirement { get { return GetEnum<QuestObjectiveRequirement>(PropertiesOffset + 4); } }
+        public IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return GetObject(PropertiesOffset + 4, ref _QuestObjectiveRequirement, PgQuestObjectiveRequirement.CreateNew); } } private IPgQuestObjectiveRequirement _QuestObjectiveRequirement;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
@@ -37,7 +37,7 @@ namespace PgJsonObjects
                 GetInteger = () => RawNumber } },
             { "Requirements", new FieldParser() {
                 Type = FieldType.Object,
-                GetObject = () => QuestObjectiveRequirement } },
+                GetObject = () => QuestObjectiveRequirement as IObjectContentGenerator } },
             { "InteractionFlags", new FieldParser() {
                 Type = FieldType.StringArray,
                 GetStringArray = () => InteractionFlagList } },

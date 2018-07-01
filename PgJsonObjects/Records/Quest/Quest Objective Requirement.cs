@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveRequirement : GenericJsonObject<QuestObjectiveRequirement>
+    public class QuestObjectiveRequirement : GenericJsonObject<QuestObjectiveRequirement>, IPgQuestObjectiveRequirement
     {
         #region Init
         public QuestObjectiveRequirement()
@@ -70,6 +70,16 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
+            int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+
+            AddString(Type, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddInt(MinHour, data, ref offset, BaseOffset, 4);
+            AddInt(MaxHour, data, ref offset, BaseOffset, 8);
+            AddEnum(Keyword, data, ref offset, BaseOffset, 12);
+
+            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, null, null, null, null, null, null, null);
+            AlignSerializedLength(ref offset);
         }
         #endregion
     }

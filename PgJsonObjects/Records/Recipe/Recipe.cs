@@ -1100,7 +1100,7 @@ namespace PgJsonObjects
             AddObjectList(ResultItemList, data, ref offset, BaseOffset, 24, StoredObjectListTable);
             AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 28, StoredObjectTable);
             AddInt(RawSkillLevelReq, data, ref offset, BaseOffset, 32);
-            AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 32, StoredObjectListTable);
+            AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 36, StoredObjectListTable);
             AddObject(SortSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 40, StoredObjectTable);
             AddEnumList(KeywordList, data, ref offset, BaseOffset, 44, StoredEnumListTable);
             AddInt(RawUsageDelay, data, ref offset, BaseOffset, 48);
