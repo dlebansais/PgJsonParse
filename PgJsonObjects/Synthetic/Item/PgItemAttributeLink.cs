@@ -11,14 +11,27 @@ namespace PgJsonObjects
 
         protected override PgItemAttributeLink CreateItem(byte[] data, ref int offset)
         {
-            return new PgItemAttributeLink(data, ref offset);
+            return CreateNew(data, ref offset);
+        }
+
+        public static PgItemAttributeLink CreateNew(byte[] data, ref int offset)
+        {
+            PgItemAttributeLink Result = new PgItemAttributeLink(data, ref offset);
+            float AttributeEffect = Result.AttributeEffect;
+            return Result;
         }
 
         public override string Key { get { return null; } }
-        public float AttributeEffect { get { return (float)GetDouble(4); } }
-        public IPgAttribute Link { get { return GetObject(8, ref _Link, PgAttribute.CreateNew); } } private IPgAttribute _Link;
-        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public string AttributeName { get { return GetString(4); } }
+        public float AttributeEffect { get { return (float)GetDouble(8).Value; } }
+        public IPgAttribute Link { get { return GetObject(12, ref _Link, PgAttribute.CreateNew); } } private IPgAttribute _Link;
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
+
+        public override string AsEffectString()
+        {
+            return "{" + AttributeName + "}{" + Tools.FloatToString(AttributeEffect, FloatFormat.Standard) + "}";
+        }
     }
 }

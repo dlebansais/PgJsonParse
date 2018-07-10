@@ -125,7 +125,7 @@ namespace PgJsonObjects
             foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
                 CombinedRequirementList.Add(new InternalAbilityRequirement(Keyword));
 
-            foreach (AbilityRequirement Item in SpecialCasterRequirementList)
+            foreach (IPgAbilityRequirement Item in SpecialCasterRequirementList)
                 CombinedRequirementList.Add(Item);
 
             ConsumedItem = CreateConsumedItem(ConsumedItemLink, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
@@ -162,7 +162,7 @@ namespace PgJsonObjects
             { "AbilityGroup", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseAbilityGroup,
-                GetString = () => RawAbilityGroup } },
+                GetString = () => AbilityGroup.InternalName} },
             { "Animation", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Animation = StringToEnumConversion<AbilityAnimation>.Parse(value, errorInfo),
@@ -381,7 +381,7 @@ namespace PgJsonObjects
             { "UpgradeOf", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseUpgradeOf,
-                GetString = () => RawUpgradeOf } },
+                GetString = () => UpgradeOf != null ? UpgradeOf.InternalName: null } },
             { "WorksInCombat", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawWorksInCombat = value,

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestRequirement : GenericJsonObject<QuestRequirement>, IGenericPgObject, ISpecificRecord
+    public class QuestRequirement : GenericJsonObject<QuestRequirement>, IPgQuestRequirement, ISpecificRecord
     {
         #region Init
         public QuestRequirement()
@@ -244,7 +244,7 @@ namespace PgJsonObjects
                 QuestRequirement ParsedQuestRequirement;
                 JsonObjectParser<QuestRequirement>.InitAsSubitem("List", RawList, out ParsedQuestRequirement, ErrorInfo);
 
-                QuestRequirement ConvertedQuestRequirement = ParsedQuestRequirement.ToSpecific(ErrorInfo) as QuestRequirement;
+                IPgQuestRequirement ConvertedQuestRequirement = ParsedQuestRequirement.ToSpecific(ErrorInfo) as QuestRequirement;
                 if (ConvertedQuestRequirement != null)
                     RequirementOrList.Add(ConvertedQuestRequirement);
             }

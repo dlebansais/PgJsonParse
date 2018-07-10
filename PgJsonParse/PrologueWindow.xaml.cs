@@ -1113,8 +1113,8 @@ namespace PgJsonParse
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
-                IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
-                int Count = ObjectList.Count;
+                IMainJsonObjectCollection JsonObjectList = definition.JsonObjectList;
+                int Count = JsonObjectList.Count;
 
                 if (data != null)
                 {
@@ -1129,8 +1129,10 @@ namespace PgJsonParse
                 int ObjectOffset = offset;
                 offset += (Count + 1) * 4;
 
-                foreach (IMainJsonObject Item in ObjectList)
+                for (int i = 0; i < Count; i++)
                 {
+                    IMainJsonObject Item = JsonObjectList[i] as IMainJsonObject;
+
                     Item.SerializeJsonMainObject(data, ref offset, ObjectOffset);
                     ObjectOffset += 4;
                 }

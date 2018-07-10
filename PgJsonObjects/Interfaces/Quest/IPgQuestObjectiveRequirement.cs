@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgQuestObjectiveRequirement
+    public interface IPgQuestObjectiveRequirement : IObjectContentGenerator
     {
     }
 }

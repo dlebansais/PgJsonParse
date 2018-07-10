@@ -29,7 +29,7 @@ namespace PgJsonObjects
 
         private bool ParseEffectDescs(string RawEffectDesc, ParseErrorInfo ErrorInfo)
         {
-            PowerEffect NewPowerEffect;
+            IPgPowerEffect NewPowerEffect;
             if (PowerEffect.TryParse(RawEffectDesc, ErrorInfo, out NewPowerEffect))
             {
                 EffectList.Add(NewPowerEffect);

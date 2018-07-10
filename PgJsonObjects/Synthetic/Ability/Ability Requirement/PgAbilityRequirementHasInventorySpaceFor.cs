@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementHasInventorySpaceFor: GenericPgObject<PgAbilityRequirementHasInventorySpaceFor>, IPgAbilityRequirementHasInventorySpaceFor
+    public class PgAbilityRequirementHasInventorySpaceFor: PgAbilityRequirement<PgAbilityRequirementHasInventorySpaceFor>, IPgAbilityRequirementHasInventorySpaceFor
     {
         public PgAbilityRequirementHasInventorySpaceFor(byte[] data, ref int offset)
             : base(data, offset)

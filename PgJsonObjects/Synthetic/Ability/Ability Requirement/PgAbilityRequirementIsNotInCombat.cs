@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementIsNotInCombat: GenericPgObject<PgAbilityRequirementIsNotInCombat>, IPgAbilityRequirementIsNotInCombat
+    public class PgAbilityRequirementIsNotInCombat: PgAbilityRequirement<PgAbilityRequirementIsNotInCombat>, IPgAbilityRequirementIsNotInCombat
     {
         public PgAbilityRequirementIsNotInCombat(byte[] data, ref int offset)
             : base(data, offset)

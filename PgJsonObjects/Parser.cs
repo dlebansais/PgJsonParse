@@ -198,7 +198,7 @@ namespace PgJsonObjects
                     {
                         Generator.Begin();
 
-                        foreach (T Item in ObjectList)
+                        foreach (TI Item in ObjectList)
                         {
                             if (typeof(TI) == typeof(IPgAttribute))
                             {

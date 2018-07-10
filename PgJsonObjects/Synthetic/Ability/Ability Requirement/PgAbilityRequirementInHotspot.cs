@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementInHotspot: GenericPgObject<PgAbilityRequirementInHotspot>, IPgAbilityRequirementInHotspot
+    public class PgAbilityRequirementInHotspot: PgAbilityRequirement<PgAbilityRequirementInHotspot>, IPgAbilityRequirementInHotspot
     {
         public PgAbilityRequirementInHotspot(byte[] data, ref int offset)
             : base(data, offset)

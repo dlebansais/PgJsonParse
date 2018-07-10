@@ -29,7 +29,7 @@ namespace PgJsonObjects
 
         private Dictionary<string, int> FieldSetTable = new Dictionary<string, int>();
 
-        public void SetFieldValue(string FieldName, ItemSkillLink link)
+        public void SetFieldValue(string FieldName, IPgItemSkillLink link)
         {
             if (Key == null)
                 base.InitializeKey("SkillReqs", 0, null, null);

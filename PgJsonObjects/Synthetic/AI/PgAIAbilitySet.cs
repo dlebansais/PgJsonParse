@@ -19,8 +19,8 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private IPgAIAbility[] Abilities = new AIAbility[669];
-        private IPgAIAbility GetAbilityObject(int index) { return GetObject(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
+        private PgAIAbility[] Abilities = new PgAIAbility[669];
+        private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(4, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;

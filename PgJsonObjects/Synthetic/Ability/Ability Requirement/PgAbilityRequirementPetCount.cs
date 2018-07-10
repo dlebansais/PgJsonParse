@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementPetCount: GenericPgObject<PgAbilityRequirementPetCount>, IPgAbilityRequirementPetCount
+    public class PgAbilityRequirementPetCount: PgAbilityRequirement<PgAbilityRequirementPetCount>, IPgAbilityRequirementPetCount
     {
         public PgAbilityRequirementPetCount(byte[] data, ref int offset)
             : base(data, offset)

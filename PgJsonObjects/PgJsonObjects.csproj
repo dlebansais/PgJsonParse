@@ -84,6 +84,7 @@
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementSingleRace.cs" />
     <Compile Include="Interfaces\Ability\IPgAbility.cs" />
     <Compile Include="Interfaces\Ability\IPgAbilityPvX.cs" />
+    <Compile Include="Interfaces\Ability\IPgAbilityRequirement.cs" />
     <Compile Include="Interfaces\Ability\IPgAbilitySource.cs" />
     <Compile Include="Interfaces\Ability\IPgDoT.cs" />
     <Compile Include="Interfaces\Ability\IPgSpecialValue.cs" />
@@ -127,7 +128,9 @@
     <Compile Include="Interfaces\Power\IPgPowerSimpleEffect.cs" />
     <Compile Include="Interfaces\Power\IPgPowerTier.cs" />
     <Compile Include="Interfaces\Quest\IPgQuest.cs" />
+    <Compile Include="Interfaces\Quest\IPgQuestObjective.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestObjectiveRequirement.cs" />
+    <Compile Include="Interfaces\Quest\IPgQuestRequirement.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestReward.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRewardItem.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRewardXp.cs" />
@@ -450,6 +453,7 @@
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementSingleRace.cs" />
     <Compile Include="Synthetic\Ability\PgAbility.cs" />
     <Compile Include="Synthetic\Ability\PgAbilityPvX.cs" />
+    <Compile Include="Synthetic\Ability\PgAbilityRequirement.cs" />
     <Compile Include="Synthetic\Ability\PgAbilitySource.cs" />
     <Compile Include="Synthetic\Ability\PgDoT.cs" />
     <Compile Include="Synthetic\Ability\PgSpecialValue.cs" />
@@ -497,6 +501,7 @@
     <Compile Include="Synthetic\PlayerTitle\PgPlayerTitle.cs" />
     <Compile Include="Synthetic\Power\PgPower.cs" />
     <Compile Include="Synthetic\Power\PgPowerAttributeLink.cs" />
+    <Compile Include="Synthetic\Power\PgPowerEffect.cs" />
     <Compile Include="Synthetic\Power\PgPowerSimpleEffect.cs" />
     <Compile Include="Synthetic\Power\PgPowerTier.cs" />
     <Compile Include="Synthetic\Quest\PgQuest.cs" />

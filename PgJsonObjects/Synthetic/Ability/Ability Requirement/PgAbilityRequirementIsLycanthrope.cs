@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementIsLycanthrope: GenericPgObject<PgAbilityRequirementIsLycanthrope>, IPgAbilityRequirementIsLycanthrope
+    public class PgAbilityRequirementIsLycanthrope: PgAbilityRequirement<PgAbilityRequirementIsLycanthrope>, IPgAbilityRequirementIsLycanthrope
     {
         public PgAbilityRequirementIsLycanthrope(byte[] data, ref int offset)
             : base(data, offset)

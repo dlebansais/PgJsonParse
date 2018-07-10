@@ -83,7 +83,7 @@ namespace PgJsonObjects
         public double ResetTime { get { return RawResetTime.HasValue ? RawResetTime.Value : 0; } }
         public double? RawResetTime { get { return GetDouble(104); } }
         public string SelfParticle { get { return GetString(108); } }
-        public IPgAbility SharesResetTimerWith { get { return GetObject(1112, ref _SharesResetTimerWith, CreateNew); } } private IPgAbility _SharesResetTimerWith;
+        public IPgAbility SharesResetTimerWith { get { return GetObject(112, ref _SharesResetTimerWith, CreateNew); } } private IPgAbility _SharesResetTimerWith;
         public IPgSkill Skill { get { return GetObject(116, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
         public AbilityRequirementCollection CombinedRequirementList { get { return GetObjectList(116, ref _CombinedRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _CombinedRequirementList;
         public string SpecialInfo { get { return GetString(124); } }
@@ -121,7 +121,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "AbilityGroup", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => AbilityGroup.Name } },
+                GetString = () => AbilityGroup.InternalName} },
             { "Animation", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<AbilityAnimation>.ToString(Animation, null, AbilityAnimation.Internal_None) } },
@@ -237,7 +237,7 @@ namespace PgJsonObjects
                 GetInteger = () => RawPetTypeTagReqMax } },
             { "Prerequisite", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => Prerequisite != null ? Prerequisite.Name : null } },
+                GetString = () => Prerequisite != null ? Prerequisite.InternalName : null } },
             { "Projectile", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<AbilityProjectile>.ToString(Projectile, null, AbilityProjectile.Internal_None) } },
@@ -255,7 +255,7 @@ namespace PgJsonObjects
                 GetString = () => SelfParticle } },
             { "SharesResetTimerWith", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => SharesResetTimerWith != null ? SharesResetTimerWith.Name : null } },
+                GetString = () => SharesResetTimerWith != null ? SharesResetTimerWith.InternalName : null } },
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<PowerSkill>.ToString(RawSkill, null, PowerSkill.Internal_None) } },
@@ -283,7 +283,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<AbilityTargetParticle>.ToString(TargetParticle, null, AbilityTargetParticle.Internal_None) } },
             { "UpgradeOf", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => UpgradeOf != null ? UpgradeOf.Name : null } },
+                GetString = () => UpgradeOf != null ? UpgradeOf.InternalName: null } },
             { "WorksInCombat", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawWorksInCombat } },

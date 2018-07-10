@@ -208,7 +208,7 @@ namespace PgJsonObjects
         {
             List<string> Result = new List<string>();
 
-            foreach (Recipe Item in BestowRecipeList)
+            foreach (IPgRecipe Item in BestowRecipeList)
                 Result.Add(Item.InternalName);
 
             return Result;
@@ -259,7 +259,7 @@ namespace PgJsonObjects
         {
             List<string> Result = new List<string>();
 
-            foreach (ItemEffect Effect in EffectDescriptionList)
+            foreach (IPgItemEffect Effect in EffectDescriptionList)
                 Result.Add(Effect.AsEffectString());
 
             return Result;
@@ -270,7 +270,7 @@ namespace PgJsonObjects
             SkillRequirement Skillreq = new SkillRequirement();
 
             int Index = 0;
-            foreach (ItemSkillLink Item in SkillRequirementList)
+            foreach (IPgItemSkillLink Item in SkillRequirementList)
             {
                 if (RawUnknownSkillReqIndex.HasValue && RawUnknownSkillReqIndex.Value == Index)
                     Skillreq.SetFieldValue("Unknown", new ItemSkillLink("Unknown", 0));

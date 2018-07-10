@@ -76,7 +76,7 @@ namespace PgJsonObjects
                 GetArrayIsEmpty = () => IsKeywordListEmpty } },
             { "AbilityKeywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<AbilityKeyword>.ParseList(value, AbilityKeywordList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<AbilityKeyword>.ToStringList(AbilityKeywordList),
                 GetArrayIsEmpty = () => IsAbilityKeywordListEmpty } },
         }; } }
 

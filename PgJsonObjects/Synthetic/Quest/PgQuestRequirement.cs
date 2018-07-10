@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public abstract class PgQuestRequirement<TPg> : GenericPgObject<TPg>
+    public abstract class PgQuestRequirement<TPg> : GenericPgObject<TPg>, IPgQuestRequirement
         where TPg : IDeserializablePgObject
     {
         public const int PropertiesOffset = 12;

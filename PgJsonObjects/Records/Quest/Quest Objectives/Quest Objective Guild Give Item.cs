@@ -7,16 +7,16 @@ namespace PgJsonObjects
     public class QuestObjectiveGuildGiveItem : QuestObjective, IPgQuestObjectiveGuildGiveItem
     {
         #region Init
-        public QuestObjectiveGuildGiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string DeliverNpcId, string DeliverNpcName, string RawItemName)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveGuildGiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, string DeliverNpcId, string DeliverNpcName, string RawItemName)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.DeliverNpcId = DeliverNpcId;
             this.DeliverNpcName = DeliverNpcName;
             this.RawItemName = RawItemName;
         }
 
-        public QuestObjectiveGuildGiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string DeliverNpcId, string DeliverNpcName, ItemKeyword ItemKeyword)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveGuildGiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, string DeliverNpcId, string DeliverNpcName, ItemKeyword ItemKeyword)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.DeliverNpcId = DeliverNpcId;
             this.DeliverNpcName = DeliverNpcName;

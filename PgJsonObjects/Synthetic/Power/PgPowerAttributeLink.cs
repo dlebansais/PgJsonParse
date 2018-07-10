@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgPowerAttributeLink : GenericPgObject<PgPowerAttributeLink>, IPgPowerAttributeLink
+    public class PgPowerAttributeLink : PgPowerEffect<PgPowerAttributeLink>, IPgPowerAttributeLink
     {
         public PgPowerAttributeLink(byte[] data, ref int offset)
             : base(data, offset)

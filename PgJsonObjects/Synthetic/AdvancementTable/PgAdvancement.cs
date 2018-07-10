@@ -145,6 +145,10 @@ namespace PgJsonObjects
         public double CriticalHitDamage { get { return RawCriticalHitDamage.HasValue ? RawCriticalHitDamage.Value : 0; } }
         public double? RawCriticalHitDamage { get { return GetDouble(248); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(252, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public List<int> VulnerabilityList { get { return GetIntList(256, ref _VulnerabilityList); } } private List<int> _VulnerabilityList;
+        public List<int> MitigationList { get { return GetIntList(260, ref _MitigationList); } } private List<int> _MitigationList;
+        public List<int> DirectModList { get { return GetIntList(264, ref _DirectModList); } } private List<int> _DirectModList;
+        public List<int> IndirectModList { get { return GetIntList(268, ref _IndirectModList); } } private List<int> _IndirectModList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "IGNORE_CHANCE_FEAR", new FieldParser() {
@@ -334,5 +338,80 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 GetFloat = () => RawCriticalHitDamage } },
         }; } }
+
+        #region Json Reconstruction
+        public const int DamageMultiplier = 10000;
+
+        public override void ListObjectContent(JsonGenerator generator, string ParserKey)
+        {
+            string RawDamageType;
+            DamageType ParsedDamageType;
+
+            if (IsDamageTypeEntry(ParserKey, "VULN_", null, out RawDamageType, out ParsedDamageType, null))
+            {
+                for (int i = 0; i * 2 < VulnerabilityList.Count; i++)
+                    if ((DamageType)VulnerabilityList[i * 2] == ParsedDamageType)
+                    {
+                        generator.AddDouble("VULN_" + RawDamageType.ToUpper(), (double)VulnerabilityList[i * 2 + 1] / DamageMultiplier);
+                        break;
+                    }
+                return;
+            }
+
+            else if (IsDamageTypeEntry(ParserKey, "MITIGATION_", null, out RawDamageType, out ParsedDamageType, null))
+            {
+                for (int i = 0; i * 2 < MitigationList.Count; i++)
+                    if ((DamageType)MitigationList[i * 2] == ParsedDamageType)
+                    {
+                        generator.AddDouble("MITIGATION_" + RawDamageType.ToUpper(), (double)MitigationList[i * 2 + 1] / DamageMultiplier);
+                        break;
+                    }
+                return;
+            }
+
+            else if (IsDamageTypeEntry(ParserKey, "MOD_", "_INDIRECT", out RawDamageType, out ParsedDamageType, null))
+            {
+                for (int i = 0; i * 2 < IndirectModList.Count; i++)
+                    if ((DamageType)IndirectModList[i * 2] == ParsedDamageType)
+                    {
+                        generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_INDIRECT", (double)IndirectModList[i * 2 + 1] / DamageMultiplier);
+                        break;
+                    }
+                return;
+            }
+
+            else if (IsDamageTypeEntry(ParserKey, "MOD_", "_DIRECT", out RawDamageType, out ParsedDamageType, null))
+            {
+                for (int i = 0; i * 2 < DirectModList.Count; i++)
+                    if ((DamageType)DirectModList[i * 2] == ParsedDamageType)
+                    {
+                        generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_DIRECT", (double)DirectModList[i * 2 + 1] / DamageMultiplier);
+                        break;
+                    }
+                return;
+            }
+
+            else
+                base.ListObjectContent(generator, ParserKey);
+        }
+
+        private bool IsDamageTypeEntry(string FieldKey, string StartPattern, string EndPattern, out string RawDamageType, out DamageType ParsedDamageType, ParseErrorInfo ErrorInfo)
+        {
+            if (FieldKey.StartsWith(StartPattern) && (EndPattern == null || FieldKey.EndsWith(EndPattern)))
+            {
+                if (EndPattern == null)
+                    RawDamageType = FieldKey[StartPattern.Length] + FieldKey.Substring(StartPattern.Length + 1).ToLower();
+                else
+                    RawDamageType = FieldKey[StartPattern.Length] + FieldKey.Substring(StartPattern.Length + 1, FieldKey.Length - StartPattern.Length - EndPattern.Length - 1).ToLower();
+
+                if (StringToEnumConversion<DamageType>.TryParse(RawDamageType, out ParsedDamageType, ErrorInfo))
+                    return true;
+            }
+
+            RawDamageType = null;
+            ParsedDamageType = DamageType.Internal_None;
+            return false;
+        }
+        #endregion
     }
 }

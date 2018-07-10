@@ -5,8 +5,8 @@ namespace PgJsonObjects
     public class QuestObjectiveKill : QuestObjective, IPgQuestObjectiveKill
     {
         #region Init
-        public QuestObjectiveKill(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, QuestObjectiveKillTarget Target, string AbilityKeyword, EffectKeyword EffectRequirement, QuestObjectiveRequirement QuestObjectiveRequirement)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveKill(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, QuestObjectiveKillTarget Target, string AbilityKeyword, EffectKeyword EffectRequirement, QuestObjectiveRequirement QuestObjectiveRequirement)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.Target = Target;
             this.AbilityKeyword = AbilityKeyword;

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public abstract class PgQuestObjective<TPg> : GenericPgObject<TPg>
+    public abstract class PgQuestObjective<TPg> : GenericPgObject<TPg>, IPgQuestObjective
         where TPg : IDeserializablePgObject
     {
-        public const int PropertiesOffset = 32;
+        public const int PropertiesOffset = 24;
 
         public PgQuestObjective(byte[] data, int offset)
             : base(data, offset)
@@ -17,12 +18,19 @@ namespace PgJsonObjects
         public string Description { get { return GetString(8); } }
         public int Number { get { return RawNumber.HasValue ? RawNumber.Value : 0; } }
         public int? RawNumber { get { return GetInt(12); } }
-        public int MinHour { get { return RawMinHour.HasValue ? RawMinHour.Value : 0; } }
-        public int? RawMinHour { get { return GetInt(16); } }
-        public int MaxHour { get { return RawMaxHour.HasValue ? RawMaxHour.Value : 0; } }
-        public int? RawMaxHour { get { return GetInt(20); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool MustCompleteEarlierObjectivesFirst { get { return RawMustCompleteEarlierObjectivesFirst.HasValue && RawMustCompleteEarlierObjectivesFirst.Value; } }
-        public bool? RawMustCompleteEarlierObjectivesFirst { get { return GetBool(24, 0); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public bool? RawMustCompleteEarlierObjectivesFirst { get { return GetBool(20, 0); } }
+
+        public Quest ParentQuest { get; private set; }
+
+        public void CopyFieldTableOrder(string key, List<string> fieldTableOrder)
+        {
+        }
+
+        public bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        {
+            return false;
+        }
     }
 }

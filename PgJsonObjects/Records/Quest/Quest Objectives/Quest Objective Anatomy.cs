@@ -6,8 +6,8 @@ namespace PgJsonObjects
     public class QuestObjectiveAnatomy : QuestObjective, IPgQuestObjectiveAnatomy
     {
         #region Init
-        public QuestObjectiveAnatomy(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, PowerSkill AnatomyType)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveAnatomy(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, PowerSkill AnatomyType)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.AnatomyType = AnatomyType;
         }

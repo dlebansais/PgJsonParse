@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AbilityRequirement : GenericJsonObject<AbilityRequirement>, IGenericPgObject, ISpecificRecord
+    public class AbilityRequirement : GenericJsonObject<AbilityRequirement>, IPgAbilityRequirement, ISpecificRecord
     {
         #region Indirect Properties
         public override string SortingName { get { return null; } }
@@ -238,7 +238,7 @@ namespace PgJsonObjects
             return Result;
         }
 
-        protected OtherRequirementType OtherRequirementType;
+        private OtherRequirementType OtherRequirementType;
         private double? RawHealth;
         private List<string> RawAllowedRaceList { get; } = new List<string>();
         private string RawAllowedRace;

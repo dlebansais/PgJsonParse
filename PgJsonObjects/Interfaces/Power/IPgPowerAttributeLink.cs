@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgPowerAttributeLink : IPgPowerEffect
+    public interface IPgPowerAttributeLink
     {
         string AttributeName { get; }
         float AttributeEffect { get; }

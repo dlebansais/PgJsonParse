@@ -20,7 +20,7 @@ namespace PgJsonObjects
         }
 
         public override string Key { get { return null; } }
-        public IPgItemEffect Boost { get { return GetObject(4, ref _Boost, ItemEffect.CreateNew); } } private IPgItemEffect _Boost;
+        public IPgItemEffect Boost { get { return GetObject(4, ref _Boost, ItemEffectCollection.CreateNew); } } private IPgItemEffect _Boost;
         public float AttributeEffect { get { return RawAttributeEffect.HasValue ? RawAttributeEffect.Value : 0; } }
         public float? RawAttributeEffect { get { return (float)GetDouble(8); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;

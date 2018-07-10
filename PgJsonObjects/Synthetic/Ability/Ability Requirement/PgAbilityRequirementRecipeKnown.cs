@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementRecipeKnown: GenericPgObject<PgAbilityRequirementRecipeKnown>, IPgAbilityRequirementRecipeKnown
+    public class PgAbilityRequirementRecipeKnown: PgAbilityRequirement<PgAbilityRequirementRecipeKnown>, IPgAbilityRequirementRecipeKnown
     {
         public PgAbilityRequirementRecipeKnown(byte[] data, ref int offset)
             : base(data, offset)

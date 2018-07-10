@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
+    /*
     public class RaceAbilityRequirement : AbilityRequirement, IPgAbilityRequirementRace
     {
         public RaceAbilityRequirement(List<string> RawAllowedRaceList, ParseErrorInfo ErrorInfo)
@@ -59,4 +60,5 @@ namespace PgJsonObjects
         }
         #endregion
     }
+    */
 }

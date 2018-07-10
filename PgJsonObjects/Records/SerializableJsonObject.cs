@@ -34,10 +34,13 @@ namespace PgJsonObjects
 
             if (data != null)
             {
-                int Mask = value.HasValue ? (0x01 | (value.Value ? 0x02 : 0)) : 0;
+                UInt16 Mask = (UInt16)(value.HasValue ? (0x01 | (value.Value ? 0x02 : 0)) : 0);
                 Mask <<= bitOffset;
 
-                data[offset] |= (byte)Mask;
+                UInt16 DataValue = BitConverter.ToUInt16(data, offset);
+                DataValue |= Mask;
+                byte[] ByteValue = BitConverter.GetBytes(DataValue);
+                Array.Copy(ByteValue, 0, data, offset, 2);
             }
 
             bitOffset += 2;

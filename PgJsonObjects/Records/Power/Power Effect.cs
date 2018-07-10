@@ -1,11 +1,11 @@
 ﻿namespace PgJsonObjects
 {
-    public abstract class PowerEffect : SerializableJsonObject, IGenericPgObject
+    public abstract class PowerEffect : SerializableJsonObject, IPgPowerEffect
     {
         public abstract string AsEffectString();
         public abstract string Key { get; }
 
-        public static bool TryParse(string Effect, ParseErrorInfo ErrorInfo, out PowerEffect Result)
+        public static bool TryParse(string Effect, ParseErrorInfo ErrorInfo, out IPgPowerEffect Result)
         {
             Result = null;
 
@@ -18,7 +18,7 @@
                 return TryParseSimple(Effect, ErrorInfo, out Result);
         }
 
-        private static bool TryParseAttributeLink(string Effect, ParseErrorInfo ErrorInfo, out PowerEffect Result)
+        private static bool TryParseAttributeLink(string Effect, ParseErrorInfo ErrorInfo, out IPgPowerEffect Result)
         {
             Result = null;
 
@@ -70,7 +70,7 @@
             return true;
         }
 
-        private static bool TryParseSimple(string Effect, ParseErrorInfo ErrorInfo, out PowerEffect Result)
+        private static bool TryParseSimple(string Effect, ParseErrorInfo ErrorInfo, out IPgPowerEffect Result)
         {
             Result = null;
 

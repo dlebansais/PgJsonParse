@@ -398,7 +398,7 @@ namespace PgJsonObjects
         {
             List<string> Result = new List<string>();
 
-            foreach (ItemEffect Effect in EffectDescriptionList)
+            foreach (IPgItemEffect Effect in EffectDescriptionList)
                 Result.Add(Effect.AsEffectString());
 
             return Result;
@@ -769,7 +769,7 @@ namespace PgJsonObjects
                 if (!ItemSkill.IsParsed)
                 {
                     bool IsParsed = false;
-                    Skill Link = Skill.ConnectSingleProperty(ErrorInfo, SkillTable, ItemSkill.SkillName, ItemSkill.Link, ref IsParsed, ref IsConnected, this);
+                    IPgSkill Link = Skill.ConnectSingleProperty(ErrorInfo, SkillTable, ItemSkill.SkillName, ItemSkill.Link, ref IsParsed, ref IsConnected, this);
                     ItemSkill.SetLink(Link);
 
                     if (!KeywordTable.ContainsKey(ItemKeyword.Decoction))

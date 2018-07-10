@@ -2,6 +2,7 @@
 
 namespace PgJsonObjects
 {
+    /*
     public class GardenPlantMaxAbilityRequirement : AbilityRequirement, IPgAbilityRequirementGardenPlantMax
     {
         public GardenPlantMaxAbilityRequirement(string RawTypeTag, int? RawMax, ParseErrorInfo ErrorInfo)
@@ -57,4 +58,5 @@ namespace PgJsonObjects
         }
         #endregion
     }
+    */
 }

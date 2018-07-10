@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementFullMoon: GenericPgObject<PgAbilityRequirementFullMoon>, IPgAbilityRequirementFullMoon
+    public class PgAbilityRequirementFullMoon: PgAbilityRequirement<PgAbilityRequirementFullMoon>, IPgAbilityRequirementFullMoon
     {
         public PgAbilityRequirementFullMoon(byte[] data, ref int offset)
             : base(data, offset)

@@ -3,19 +3,20 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class AbilityRequirementCollection : List<IGenericPgObject>, ISerializableJsonObjectCollection
+    public class AbilityRequirementCollection : List<IPgAbilityRequirement>, ISerializableJsonObjectCollection
     {
         /*public ISerializableJsonObject GetAt(int index)
         {
             return this[index] as ISerializableJsonObject;
         }*/
 
-        public static IGenericPgObject CreateItem(byte[] data, ref int offset)
+        public static IPgAbilityRequirement CreateItem(byte[] data, ref int offset)
         {
-            OtherRequirementType OtherRequirementType = (OtherRequirementType)BitConverter.ToInt32(data, offset);
-            offset += 4;
+            int TypeValue = BitConverter.ToInt32(data, offset);
+            //offset += 4;
 
-            bool IsSingle = (((int)OtherRequirementType) & 0x8000) != 0;
+            bool IsSingle = ((TypeValue & 0x8000) != 0);
+            OtherRequirementType OtherRequirementType = (OtherRequirementType)(TypeValue & ~0x8000);
 
             switch (OtherRequirementType)
             {

@@ -6,8 +6,8 @@ namespace PgJsonObjects
     public class QuestObjectiveGiveGift : QuestObjective, IPgQuestObjectiveGiveGift
     {
         #region Init
-        public QuestObjectiveGiveGift(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, float? RawMinFavorReceived, float? RawMaxFavorReceived)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveGiveGift(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, float? RawMinFavorReceived, float? RawMaxFavorReceived)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.RawMinFavorReceived = RawMinFavorReceived;
             this.RawMaxFavorReceived = RawMaxFavorReceived;

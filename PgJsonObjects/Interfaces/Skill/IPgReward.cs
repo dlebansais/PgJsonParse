@@ -4,6 +4,8 @@ namespace PgJsonObjects
 {
     public interface IPgReward
     {
+        string Key { get; }
+        int RewardLevel { get; }
         int? RawRewardLevel { get; }
         List<Race> RaceRestrictionList { get; }
         IPgAbility Ability { get; }

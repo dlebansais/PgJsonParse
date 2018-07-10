@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgQuestObjectiveSimple(data, ref offset);
         }
 
-        public string InteractionTarget { get { return GetString(0); } }
+        public string InteractionTarget { get { return GetString(PropertiesOffset + 0); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {

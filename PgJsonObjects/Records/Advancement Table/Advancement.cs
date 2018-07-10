@@ -540,6 +540,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
+            Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddDouble(RawNonCombatRegenHealthMod, data, ref offset, BaseOffset, 4);
@@ -606,7 +607,39 @@ namespace PgJsonObjects
             AddDouble(RawCriticalHitDamage, data, ref offset, BaseOffset, 248);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 252, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 256, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            List<int> VulnerabilityList = new List<int>();
+            foreach (KeyValuePair<DamageType, double> Entry in VulnerabilityTable)
+            {
+                VulnerabilityList.Add((int)Entry.Key);
+                VulnerabilityList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
+            }
+            AddIntList(VulnerabilityList, data, ref offset, BaseOffset, 256, StoredIntListTable);
+
+            List<int> MitigationList = new List<int>();
+            foreach (KeyValuePair<DamageType, double> Entry in MitigationTable)
+            {
+                MitigationList.Add((int)Entry.Key);
+                MitigationList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
+            }
+            AddIntList(MitigationList, data, ref offset, BaseOffset, 260, StoredIntListTable);
+
+            List<int> DirectModList = new List<int>();
+            foreach (KeyValuePair<DamageType, double> Entry in DirectModTable)
+            {
+                DirectModList.Add((int)Entry.Key);
+                DirectModList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
+            }
+            AddIntList(DirectModList, data, ref offset, BaseOffset, 264, StoredIntListTable);
+
+            List<int> IndirectModList = new List<int>();
+            foreach (KeyValuePair<DamageType, double> Entry in IndirectModTable)
+            {
+                IndirectModList.Add((int)Entry.Key);
+                IndirectModList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
+            }
+            AddIntList(IndirectModList, data, ref offset, BaseOffset, 268, StoredIntListTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 272, StoredStringtable, null, null, null, StoredIntListTable, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgPowerSimpleEffect : GenericPgObject<PgPowerSimpleEffect>, IPgPowerSimpleEffect
+    public class PgPowerSimpleEffect : PgPowerEffect<PgPowerSimpleEffect>, IPgPowerSimpleEffect
     {
         public PgPowerSimpleEffect(byte[] data, ref int offset)
             : base(data, offset)

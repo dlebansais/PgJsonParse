@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
+    /*
     public class AppearanceAbilityRequirement : AbilityRequirement, IPgAbilityRequirementAppearance
     {
         public AppearanceAbilityRequirement(List<string> RawAppearanceList, ParseErrorInfo ErrorInfo)
@@ -49,7 +50,7 @@ namespace PgJsonObjects
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddInt((int?)OtherRequirementType.app, data, ref offset, BaseOffset, 0);
             AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
             AddEnumList(AppearanceList, data, ref offset, BaseOffset, 8, StoredEnumListTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
@@ -59,4 +60,5 @@ namespace PgJsonObjects
         }
         #endregion
     }
+    */
 }

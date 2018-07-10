@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementInteractionFlagSet: GenericPgObject<PgAbilityRequirementInteractionFlagSet>, IPgAbilityRequirementInteractionFlagSet
+    public class PgAbilityRequirementInteractionFlagSet: PgAbilityRequirement<PgAbilityRequirementInteractionFlagSet>, IPgAbilityRequirementInteractionFlagSet
     {
         public PgAbilityRequirementInteractionFlagSet(byte[] data, ref int offset)
             : base(data, offset)

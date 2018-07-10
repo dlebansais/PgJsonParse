@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementInGraveyard: GenericPgObject<PgAbilityRequirementInGraveyard>, IPgAbilityRequirementInGraveyard
+    public class PgAbilityRequirementInGraveyard: PgAbilityRequirement<PgAbilityRequirementInGraveyard>, IPgAbilityRequirementInGraveyard
     {
         public PgAbilityRequirementInGraveyard(byte[] data, ref int offset)
             : base(data, offset)

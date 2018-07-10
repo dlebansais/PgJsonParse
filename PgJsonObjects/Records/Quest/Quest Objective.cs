@@ -4,21 +4,19 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjective : GenericJsonObject<QuestObjective>, IGenericPgObject, ISpecificRecord
+    public class QuestObjective : GenericJsonObject<QuestObjective>, IPgQuestObjective, ISpecificRecord
     {
         #region Init
         public QuestObjective()
         {
         }
 
-        public QuestObjective(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour)
+        public QuestObjective(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst)
         {
             this.Type = Type;
             this.Description = Description;
             this.RawNumber = RawNumber;
             this.RawMustCompleteEarlierObjectivesFirst = RawMustCompleteEarlierObjectivesFirst;
-            this.MinHour = MinHour;
-            this.MaxHour = MaxHour;
         }
         #endregion
 
@@ -78,7 +76,7 @@ namespace PgJsonObjects
         #region Parsing
         public object ToSpecific(ParseErrorInfo errorInfo)
         {
-            QuestObjective Result = ToSpecificQuestObjective(errorInfo);
+            IPgQuestObjective Result = ToSpecificQuestObjective(errorInfo);
 
             if (Result != null && Result != this)
                 Result.CopyFieldTableOrder(null, FieldTableOrder);
@@ -95,26 +93,26 @@ namespace PgJsonObjects
                 FieldTableOrder.Add(Key);
         }
 
-        public QuestObjective ToSpecificQuestObjective(ParseErrorInfo ErrorInfo)
+        public IPgQuestObjective ToSpecificQuestObjective(ParseErrorInfo ErrorInfo)
         {
             switch (Type)
             {
                 case QuestObjectiveType.Kill:
                 case QuestObjectiveType.KillElite:
-                    return new QuestObjectiveKill(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, KillTarget, AbilityKeyword, EffectRequirement, QuestObjectiveRequirement);
+                    return new QuestObjectiveKill(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, KillTarget, AbilityKeyword, EffectRequirement, QuestObjectiveRequirement);
 
                 case QuestObjectiveType.TipPlayer:
-                    return new QuestObjectiveTipPlayer(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount);
+                    return new QuestObjectiveTipPlayer(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, RawMinAmount);
 
                 case QuestObjectiveType.Special:
-                    return new QuestObjectiveSpecial(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinAmount, RawMaxAmount, StringParam, InteractionTarget, QuestObjectiveRequirement);
+                    return new QuestObjectiveSpecial(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, RawMinAmount, RawMaxAmount, StringParam, InteractionTarget, QuestObjectiveRequirement);
 
                 case QuestObjectiveType.MultipleInteractionFlags:
-                    return new QuestObjectiveMultipleInteractionFlags(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawInteractionFlagList);
+                    return new QuestObjectiveMultipleInteractionFlags(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, RawInteractionFlagList);
 
                 case QuestObjectiveType.Deliver:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
-                        return new QuestObjectiveDeliver(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName, RawNumToDeliver);
+                        return new QuestObjectiveDeliver(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName, RawNumToDeliver);
                     else
                         return this;
 
@@ -123,41 +121,41 @@ namespace PgJsonObjects
                 case QuestObjectiveType.Harvest:
                 case QuestObjectiveType.UseItem:
                     if (RawItemName != null && ItemTarget == ItemKeyword.Internal_None)
-                        return new QuestObjectiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawItemName, QuestObjectiveRequirement);
+                        return new QuestObjectiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, RawItemName, QuestObjectiveRequirement);
                     else if (RawItemName == null && ItemTarget != ItemKeyword.Internal_None)
-                        return new QuestObjectiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, ItemTarget, QuestObjectiveRequirement);
+                        return new QuestObjectiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, ItemTarget, QuestObjectiveRequirement);
                     else
                         return this;
 
                 case QuestObjectiveType.GuildGiveItem:
                     if (RawItemName != null && ItemKeyword == ItemKeyword.Internal_None)
-                        return new QuestObjectiveGuildGiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcId, DeliverNpcName, RawItemName);
+                        return new QuestObjectiveGuildGiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, DeliverNpcId, DeliverNpcName, RawItemName);
                     else if (RawItemName == null && ItemKeyword != ItemKeyword.Internal_None)
-                        return new QuestObjectiveGuildGiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcId, DeliverNpcName, ItemKeyword);
+                        return new QuestObjectiveGuildGiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, DeliverNpcId, DeliverNpcName, ItemKeyword);
                     else
                         return this;
 
                 case QuestObjectiveType.InteractionFlag:
-                    return new QuestObjectiveInteractionFlag(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawInteractionFlag, InteractionTarget);
+                    return new QuestObjectiveInteractionFlag(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, RawInteractionFlag, InteractionTarget);
 
                 case QuestObjectiveType.GiveGift:
-                    return new QuestObjectiveGiveGift(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, RawMinFavorReceived, RawMaxFavorReceived);
+                    return new QuestObjectiveGiveGift(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, RawMinFavorReceived, RawMaxFavorReceived);
 
                 case QuestObjectiveType.UseRecipe:
-                    return new QuestObjectiveUseRecipe(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, Skill, RecipeTarget, ResultItemKeyword);
+                    return new QuestObjectiveUseRecipe(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, Skill, RecipeTarget, ResultItemKeyword);
 
                 case QuestObjectiveType.BeAttacked:
                 case QuestObjectiveType.Bury:
-                    return new QuestObjectiveAnatomy(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, AnatomyType);
+                    return new QuestObjectiveAnatomy(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, AnatomyType);
 
                 case QuestObjectiveType.UseAbility:
-                    return new QuestObjectiveUseAbility(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, AbilityTarget);
+                    return new QuestObjectiveUseAbility(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, AbilityTarget);
 
                 case QuestObjectiveType.Loot:
                     if (RawItemName != null && ItemTarget == ItemKeyword.Internal_None)
-                        return new QuestObjectiveLoot(Type, Description, RawItemName, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
+                        return new QuestObjectiveLoot(Type, Description, RawItemName, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst);
                     else if (RawItemName == null && ItemTarget != ItemKeyword.Internal_None)
-                        return new QuestObjectiveLoot(Type, Description, ItemTarget, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour);
+                        return new QuestObjectiveLoot(Type, Description, ItemTarget, RawNumber, MonsterTypeTag, RawMustCompleteEarlierObjectivesFirst);
                     else
                         return this;
 
@@ -167,11 +165,11 @@ namespace PgJsonObjects
                 case QuestObjectiveType.GuildKill:
                 case QuestObjectiveType.DruidKill:
                 case QuestObjectiveType.DruidScripted:
-                    return new QuestObjectiveSimple(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, InteractionTarget);
+                    return new QuestObjectiveSimple(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, InteractionTarget);
 
                 case QuestObjectiveType.ScriptedReceiveItem:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
-                        return new QuestObjectiveScriptedReceiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName);
+                        return new QuestObjectiveScriptedReceiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName);
                     else
                         return this;
 
@@ -628,12 +626,10 @@ namespace PgJsonObjects
             AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
             AddString(Description, data, ref offset, BaseOffset, 8, StoredStringtable);
             AddInt(RawNumber, data, ref offset, BaseOffset, 12);
-            AddInt(MinHour, data, ref offset, BaseOffset, 16);
-            AddInt(MaxHour, data, ref offset, BaseOffset, 20);
-            AddBool(RawMustCompleteEarlierObjectivesFirst, data, ref offset, ref BitOffset, BaseOffset, 24, 0);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 16, StoredStringListTable);
+            AddBool(RawMustCompleteEarlierObjectivesFirst, data, ref offset, ref BitOffset, BaseOffset, 20, 0);
             CloseBool(ref offset, ref BitOffset);
             offset += 2;
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 28, StoredStringListTable);
         }
 
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)

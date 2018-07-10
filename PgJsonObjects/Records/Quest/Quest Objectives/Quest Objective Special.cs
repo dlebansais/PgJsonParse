@@ -5,8 +5,8 @@ namespace PgJsonObjects
     public class QuestObjectiveSpecial : QuestObjective, IPgQuestObjectiveSpecial
     {
         #region Init
-        public QuestObjectiveSpecial(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, int? RawMinAmount, int? RawMaxAmount, string StringParam, string InteractionTarget, QuestObjectiveRequirement QuestObjectiveRequirement)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveSpecial(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? RawMinAmount, int? RawMaxAmount, string StringParam, string InteractionTarget, QuestObjectiveRequirement QuestObjectiveRequirement)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.RawMinAmount = RawMinAmount;
             this.RawMaxAmount = RawMaxAmount;

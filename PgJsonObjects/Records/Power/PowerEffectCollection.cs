@@ -3,14 +3,15 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class PowerEffectCollection : List<IGenericPgObject>, ISerializableJsonObjectCollection
+    public class PowerEffectCollection : List<IPgPowerEffect>, ISerializableJsonObjectCollection
     {
+        /*
         public ISerializableJsonObject GetAt(int index)
         {
             return this[index] as ISerializableJsonObject;
-        }
+        }*/
 
-        public static IGenericPgObject CreateItem(byte[] data, ref int offset)
+        public static IPgPowerEffect CreateItem(byte[] data, ref int offset)
         {
             int SimpleValue = BitConverter.ToInt32(data, offset);
             bool IsSimple = (SimpleValue == 0);

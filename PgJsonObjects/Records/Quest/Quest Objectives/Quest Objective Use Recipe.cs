@@ -6,8 +6,8 @@ namespace PgJsonObjects
     public class QuestObjectiveUseRecipe : QuestObjective, IPgQuestObjectiveUseRecipe
     {
         #region Init
-        public QuestObjectiveUseRecipe(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, PowerSkill RawSkill, RecipeKeyword RecipeTarget, ItemKeyword ResultItemKeyword)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveUseRecipe(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, PowerSkill RawSkill, RecipeKeyword RecipeTarget, ItemKeyword ResultItemKeyword)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.RawSkill = RawSkill;
             this.RecipeTarget = RecipeTarget;

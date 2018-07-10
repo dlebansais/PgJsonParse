@@ -48,7 +48,7 @@ namespace PgJsonObjects
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
             Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
 
-            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddInt((int?)OtherRequirementType.Or, data, ref offset, BaseOffset, 0);
             AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
             AddObjectList(OrList, data, ref offset, BaseOffset, 8, StoredObjectListTable);
             AddString(ErrorMsg, data, ref offset, BaseOffset, 12, StoredStringtable);

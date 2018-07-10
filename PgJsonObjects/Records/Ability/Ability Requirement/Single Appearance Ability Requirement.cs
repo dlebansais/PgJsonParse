@@ -2,6 +2,7 @@
 
 namespace PgJsonObjects
 {
+    /*
     public class SingleAppearanceAbilityRequirement : AbilityRequirement, IPgAbilityRequirementSingleAppearance
     {
         public SingleAppearanceAbilityRequirement(string RawAppearance, ParseErrorInfo ErrorInfo)
@@ -49,4 +50,5 @@ namespace PgJsonObjects
         }
         #endregion
     }
+    */
 }

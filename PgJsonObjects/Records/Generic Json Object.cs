@@ -56,8 +56,8 @@ namespace PgJsonObjects
 
             if (LinkBack is RecipeItem)
                 LinkBack = (LinkBack as RecipeItem).ParentRecipe;
-            else if (LinkBack is QuestObjective)
-                LinkBack = (LinkBack as QuestObjective).ParentQuest;
+            else if (LinkBack is IPgQuestObjective)
+                LinkBack = (LinkBack as IPgQuestObjective).ParentQuest;
             else if (LinkBack is AbilityRequirement)
                 return;
             else if (LinkBack is PowerTier)

@@ -6,8 +6,8 @@ namespace PgJsonObjects
     public class QuestObjectiveDeliver : QuestObjective, IPgQuestObjectiveDeliver
     {
         #region Init
-        public QuestObjectiveDeliver(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName, int? RawNumToDeliver)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveDeliver(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, MapAreaName DeliverNpcArea, string DeliverNpcId, string DeliverNpcName, string RawItemName, int? RawNumToDeliver)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.DeliverNpcArea = DeliverNpcArea;
             this.DeliverNpcId = DeliverNpcId;

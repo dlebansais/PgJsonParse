@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementIsVegetarian: GenericPgObject<PgAbilityRequirementIsVegetarian>, IPgAbilityRequirementIsVegetarian
+    public class PgAbilityRequirementIsVegetarian: PgAbilityRequirement<PgAbilityRequirementIsVegetarian>, IPgAbilityRequirementIsVegetarian
     {
         public PgAbilityRequirementIsVegetarian(byte[] data, ref int offset)
             : base(data, offset)

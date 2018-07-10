@@ -2,6 +2,7 @@
 
 namespace PgJsonObjects
 {
+    /*
     public class IsAdminAbilityRequirement : AbilityRequirement, IPgAbilityRequirementIsAdmin
     {
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
@@ -36,5 +37,5 @@ namespace PgJsonObjects
             AlignSerializedLength(ref offset);
         }
         #endregion
-    }
+    }*/
 }

@@ -233,8 +233,8 @@ namespace PgJsonObjects
         {
             XPReward Rewards = new XPReward();
 
-            foreach (QuestRewardXp Item in RewardsXPList)
-                Rewards.SetFieldValue(Item.RawSkill, Item.Xp);
+            foreach (IPgQuestRewardXp Item in RewardsXPList)
+                Rewards.SetFieldValue(Item.Skill.CombatSkill, Item.Xp);
 
             return Rewards;
         }
@@ -277,7 +277,7 @@ namespace PgJsonObjects
         private List<string> GetPreGiveRecipeList()
         {
             List<string> Result = new List<string>();
-            foreach (Recipe Item in PreGiveRecipeList)
+            foreach (IPgRecipe Item in PreGiveRecipeList)
                 Result.Add(Item.InternalName);
 
             return Result;

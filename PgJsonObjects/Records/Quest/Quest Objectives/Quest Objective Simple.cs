@@ -6,8 +6,8 @@ namespace PgJsonObjects
     public class QuestObjectiveSimple : QuestObjective, IPgQuestObjectiveSimple
     {
         #region Init
-        public QuestObjectiveSimple(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string RawTarget)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveSimple(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, string RawTarget)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             InteractionTarget = RawTarget;
         }

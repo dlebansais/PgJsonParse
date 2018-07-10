@@ -5,8 +5,8 @@ namespace PgJsonObjects
     public class QuestObjectiveMultipleInteractionFlags : QuestObjective, IPgQuestObjectiveMultipleInteractionFlags
     {
         #region Init
-        public QuestObjectiveMultipleInteractionFlags(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, List<string> InteractionFlagList)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveMultipleInteractionFlags(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, List<string> InteractionFlagList)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.InteractionFlagList = InteractionFlagList;
         }

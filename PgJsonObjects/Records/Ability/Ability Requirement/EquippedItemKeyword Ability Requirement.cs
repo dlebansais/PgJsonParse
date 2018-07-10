@@ -55,10 +55,10 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddInt((int?)OtherRequirementType.EquippedItemKeyword, data, ref offset, BaseOffset, 0);
             AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddDouble(RawMinCount, data, ref offset, BaseOffset, 8);
-            AddDouble(RawMaxCount, data, ref offset, BaseOffset, 12);
+            AddInt(RawMinCount, data, ref offset, BaseOffset, 8);
+            AddInt(RawMaxCount, data, ref offset, BaseOffset, 12);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 16, StoredStringListTable);
             AddEnum(Keyword, data, ref offset, BaseOffset, 20);
 

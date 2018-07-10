@@ -5,8 +5,8 @@ namespace PgJsonObjects
     public class QuestObjectiveTipPlayer : QuestObjective, IPgQuestObjectiveTipPlayer
     {
         #region Init
-        public QuestObjectiveTipPlayer(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, int? RawMinAmount)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveTipPlayer(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? RawMinAmount)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.RawMinAmount = RawMinAmount;
         }

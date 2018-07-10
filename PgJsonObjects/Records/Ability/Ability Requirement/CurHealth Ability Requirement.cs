@@ -2,6 +2,7 @@
 
 namespace PgJsonObjects
 {
+    /*
     public class CurHealthAbilityRequirement : AbilityRequirement, IPgAbilityRequirementCurHealth
     {
         public CurHealthAbilityRequirement(double? RawHealth)
@@ -49,4 +50,5 @@ namespace PgJsonObjects
         }
         #endregion
     }
+    */
 }

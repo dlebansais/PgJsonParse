@@ -19,14 +19,14 @@ namespace PgJsonObjects
             return new PgQuestObjectiveRequirement(data, ref offset);
         }
 
-        public override string Key { get { return null; } }
-        protected override List<string> FieldTableOrder { get { return new List<string>(); } }
+        public override string Key { get { return "Requirements"; } }
         public string Type { get { return GetString(0); } }
         public int MinHour { get { return RawMinHour.HasValue ? RawMinHour.Value : 0; } }
         public int? RawMinHour { get { return GetInt(4); } }
         public int MaxHour { get { return RawMaxHour.HasValue ? RawMaxHour.Value : 0; } }
         public int? RawMaxHour { get { return GetInt(8); } }
-        public EffectKeyword Keyword { get { return GetEnum<EffectKeyword>(12); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public EffectKeyword Keyword { get { return GetEnum<EffectKeyword>(16); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {

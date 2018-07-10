@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class ItemSkillLink : SerializableJsonObject
+    public class ItemSkillLink : SerializableJsonObject, IPgItemSkillLink
     {
         public ItemSkillLink(string SkillName, int? SkillLevel)
         {
@@ -15,13 +15,13 @@ namespace PgJsonObjects
         public string SkillName { get; private set; }
         public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
         public int? RawSkillLevel { get; private set; }
-        public Skill Link { get; private set; }
+        public IPgSkill Link { get; private set; }
 
         public bool HasLevel { get { return RawSkillLevel.HasValue && RawSkillLevel.Value > 0; } }
         public string ParsedLevel { get { return RawSkillLevel.HasValue && RawSkillLevel.Value > 0 ? RawSkillLevel.Value.ToString() : ""; } }
         public bool IsParsed { get; private set; }
 
-        public void SetLink(Skill Link)
+        public void SetLink(IPgSkill Link)
         {
             this.Link = Link;
             IsParsed = true;
@@ -36,7 +36,7 @@ namespace PgJsonObjects
 
             AddString(SkillName, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddInt(RawSkillLevel, data, ref offset, BaseOffset, 4);
-            AddObject(Link, data, ref offset, BaseOffset, 8, StoredObjectTable);
+            AddObject(Link as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, StoredObjectTable, null, null, null, null, null, null);
             AlignSerializedLength(ref offset);

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementIsHardcore: GenericPgObject<PgAbilityRequirementIsHardcore>, IPgAbilityRequirementIsHardcore
+    public class PgAbilityRequirementIsHardcore: PgAbilityRequirement<PgAbilityRequirementIsHardcore>, IPgAbilityRequirementIsHardcore
     {
         public PgAbilityRequirementIsHardcore(byte[] data, ref int offset)
             : base(data, offset)

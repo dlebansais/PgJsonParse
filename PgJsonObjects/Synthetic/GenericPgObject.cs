@@ -19,7 +19,7 @@ namespace PgJsonObjects
         }
     }
 
-    public abstract class GenericPgObject<TPg> : GenericPgObject, IGenericPgObject, IDeserializablePgObject
+    public abstract class GenericPgObject<TPg> : GenericPgObject, IGenericPgObject, IDeserializablePgObject, IObjectContentGenerator
         where TPg : IDeserializablePgObject
     {
         public GenericPgObject(byte[] data, int offset)
@@ -46,8 +46,10 @@ namespace PgJsonObjects
 
         protected bool? GetBool(int valueOffset, int valueBit)
         {
-            if (((Data[Offset + valueOffset] >> valueBit) & 0x1) != 0)
-                return ((Data[Offset + valueOffset] >> (valueBit + 1)) & 0x1) != 0;
+            UInt16 Value = BitConverter.ToUInt16(Data, Offset + valueOffset);
+
+            if (((Value >> valueBit) & 0x1) != 0)
+                return ((Value >> (valueBit + 1)) & 0x1) != 0;
             else
                 return null;
         }
@@ -123,6 +125,7 @@ namespace PgJsonObjects
                         int TableOffset = StoredOffset;
                         cachedValue = createNewObject(Data, ref StoredOffset);
                         CreatedObjectTable.Add(TableOffset, cachedValue);
+                        (cachedValue as IGenericPgObject).Init();
                     }
                 }
                 else
@@ -267,12 +270,18 @@ namespace PgJsonObjects
 
         protected string CreateString(int offsetString)
         {
+            if (offsetString < 0 || offsetString >= Data.Length)
+                offsetString = 0;
+
             int Count = BitConverter.ToUInt16(Data, offsetString);
             int CharacterOffset = offsetString + 2;
 
             string Result = "";
             for (int i = 0; i < Count; i++)
             {
+                if (CharacterOffset + i * 2 < 0 || CharacterOffset + i * 2 >= Data.Length)
+                    offsetString = 0;
+
                 char CharacterValue = BitConverter.ToChar(Data, CharacterOffset + i * 2);
                 Result += CharacterValue;
             }
@@ -305,6 +314,8 @@ namespace PgJsonObjects
         public virtual void ListObjectContent(JsonGenerator Generator, string ParserKey)
         {
             if (!GeneratorFieldTable.ContainsKey(ParserKey))
+                ParserKey = null;
+            if (ParserKey == null)
                 ParserKey = null;
 
             FieldParser Parser = GeneratorFieldTable[ParserKey];
@@ -355,6 +366,8 @@ namespace PgJsonObjects
 
                 case FieldType.SimpleStringArray:
                 case FieldType.StringArray:
+                    if (Parser.GetStringArray == null)
+                        StringList = null;
                     StringList = Parser.GetStringArray();
                     if (StringList == null)
                         StringList = null;

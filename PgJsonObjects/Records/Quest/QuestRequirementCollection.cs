@@ -3,17 +3,18 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestRequirementCollection : List<IGenericPgObject>, ISerializableJsonObjectCollection
+    public class QuestRequirementCollection : List<IPgQuestRequirement>, ISerializableJsonObjectCollection
     {
+        /*
         public ISerializableJsonObject GetAt(int index)
         {
             return this[index] as ISerializableJsonObject;
-        }
+        }*/
 
-        public static IGenericPgObject CreateItem(byte[] data, ref int offset)
+        public static IPgQuestRequirement CreateItem(byte[] data, ref int offset)
         {
             OtherRequirementType OtherRequirementType = (OtherRequirementType)BitConverter.ToInt32(data, offset);
-            offset += 4;
+            //offset += 4;
 
             switch (OtherRequirementType)
             {

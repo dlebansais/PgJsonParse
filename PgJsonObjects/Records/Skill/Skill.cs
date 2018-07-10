@@ -555,13 +555,13 @@ namespace PgJsonObjects
         {
             List<SkillRewardCommon> CombinedRewardList = new List<SkillRewardCommon>();
 
-            foreach (LevelCapInteraction Item in InteractionFlagLevelCapList)
+            foreach (IPgLevelCapInteraction Item in InteractionFlagLevelCapList)
                 CombinedRewardList.Add(new SkillRewardUnlock(Item.Level, Item.Link, Item.OtherLevel));
 
             for (int i = 0; i < AdvancementHintTableKey.Count; i++)
                 CombinedRewardList.Add(new SkillRewardMisc(AdvancementHintTableKey[i], new List<Race>(), AdvancementHintTableValue[i]));
 
-            foreach (Reward Item in RewardList)
+            foreach (IPgReward Item in RewardList)
             {
                 if (Item.Ability != null)
                     CombinedRewardList.Add(new SkillRewardAbility(Item.RewardLevel, Item.RaceRestrictionList, Item.Ability));
@@ -581,7 +581,7 @@ namespace PgJsonObjects
             return CombinedRewardList;
         }
 
-        public static Skill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, string RawSkillName, Skill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgSkill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, string RawSkillName, IPgSkill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
@@ -685,11 +685,11 @@ namespace PgJsonObjects
             AddString(Name, data, ref offset, BaseOffset, 44, StoredStringtable);
             AddObject(ParentSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 48, StoredObjectTable);
             AddEnumList(TSysCategoryList, data, ref offset, BaseOffset, 52, StoredEnumListTable);
-            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 56, StoredIntListTable);
-            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 60, StoredStringListTable);
-            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 64, StoredIntListTable);
-            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 68, StoredStringListTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 72, StoredStringListTable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 56, StoredStringListTable);
+            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 60, StoredIntListTable);
+            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 64, StoredStringListTable);
+            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 68, StoredIntListTable);
+            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 72, StoredStringListTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 76, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);

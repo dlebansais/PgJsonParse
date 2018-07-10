@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementDruidEventState: GenericPgObject<PgAbilityRequirementDruidEventState>, IPgAbilityRequirementDruidEventState
+    public class PgAbilityRequirementDruidEventState: PgAbilityRequirement<PgAbilityRequirementDruidEventState>, IPgAbilityRequirementDruidEventState
     {
         public PgAbilityRequirementDruidEventState(byte[] data, ref int offset)
             : base(data, offset)
@@ -20,9 +20,8 @@ namespace PgJsonObjects
         }
 
         public override string Key { get { return GetString(4); } }
-        public DisallowedState DisallowedState { get { return GetEnum<DisallowedState>(8); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-
+        protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public DisallowedState DisallowedState { get { return GetEnum<DisallowedState>(12); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {

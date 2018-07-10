@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class QuestObjectiveCollection : List<IGenericPgObject>, ISerializableJsonObjectCollection
+    public class QuestObjectiveCollection : List<IPgQuestObjective>, ISerializableJsonObjectCollection
     {
         /*public ISerializableJsonObject GetAt(int index)
         {
             return this[index] as ISerializableJsonObject;
         }*/
 
-        public static IGenericPgObject CreateItem(byte[] data, ref int offset)
+        public static IPgQuestObjective CreateItem(byte[] data, ref int offset)
         {
             QuestObjectiveType QuestObjectiveType = (QuestObjectiveType)BitConverter.ToInt32(data, offset);
 

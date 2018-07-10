@@ -7,15 +7,15 @@ namespace PgJsonObjects
     public class QuestObjectiveItem : QuestObjective, IPgQuestObjectiveItem
     {
         #region Init
-        public QuestObjectiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, string RawItemName, QuestObjectiveRequirement QuestObjectiveRequirement)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, string RawItemName, QuestObjectiveRequirement QuestObjectiveRequirement)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.RawItemName = RawItemName;
             this.QuestObjectiveRequirement = QuestObjectiveRequirement;
         }
 
-        public QuestObjectiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, ItemKeyword Target, QuestObjectiveRequirement QuestObjectiveRequirement)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveItem(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, ItemKeyword Target, QuestObjectiveRequirement QuestObjectiveRequirement)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.Target = Target;
             this.QuestObjectiveRequirement = QuestObjectiveRequirement;

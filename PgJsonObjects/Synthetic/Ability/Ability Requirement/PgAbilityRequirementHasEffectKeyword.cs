@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementHasEffectKeyword: GenericPgObject<PgAbilityRequirementHasEffectKeyword>, IPgAbilityRequirementHasEffectKeyword
+    public class PgAbilityRequirementHasEffectKeyword: PgAbilityRequirement<PgAbilityRequirementHasEffectKeyword>, IPgAbilityRequirementHasEffectKeyword
     {
         public PgAbilityRequirementHasEffectKeyword(byte[] data, ref int offset)
             : base(data, offset)

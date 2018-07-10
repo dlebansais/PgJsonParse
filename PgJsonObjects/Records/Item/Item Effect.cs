@@ -62,16 +62,5 @@ namespace PgJsonObjects
             Result = new ItemSimpleEffect(Effect);
             return true;
         }
-
-        public static IPgItemEffect CreateNew(byte[] data, ref int offset)
-        {
-            int Type = BitConverter.ToInt32(data, offset);
-            bool IsSimple = (Type == 0);
-
-            if (IsSimple)
-                return new PgItemSimpleEffect(data, ref offset);
-            else
-                return PgItemAttributeLink.CreateNew(data, ref offset);
-        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementIsVolunteerGuide: GenericPgObject<PgAbilityRequirementIsVolunteerGuide>, IPgAbilityRequirementIsVolunteerGuide
+    public class PgAbilityRequirementIsVolunteerGuide: PgAbilityRequirement<PgAbilityRequirementIsVolunteerGuide>, IPgAbilityRequirementIsVolunteerGuide
     {
         public PgAbilityRequirementIsVolunteerGuide(byte[] data, ref int offset)
             : base(data, offset)

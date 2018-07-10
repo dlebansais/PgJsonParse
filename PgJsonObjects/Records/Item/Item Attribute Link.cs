@@ -38,6 +38,7 @@ namespace PgJsonObjects
             IsParsed = true;
         }
 
+        /*
         public override bool Equals(object obj)
         {
             IPgItemAttributeLink AsItemAttributeLink;
@@ -45,7 +46,7 @@ namespace PgJsonObjects
                 return AsItemAttributeLink.Link == Link;
             else
                 return false;
-        }
+        }*/
 
         public override int GetHashCode()
         {
@@ -110,15 +111,17 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
+            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddInt(1, data, ref offset, BaseOffset, 0);
-            AddDouble(AttributeEffect, data, ref offset, BaseOffset, 4);
-            AddObject(Link as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddStringList(new List<string>(), data, ref offset, BaseOffset, 12, StoredStringListTable);
+            AddString(AttributeName, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddDouble(AttributeEffect, data, ref offset, BaseOffset, 8);
+            AddObject(Link as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
+            AddStringList(new List<string>(), data, ref offset, BaseOffset, 16, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 16, null, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

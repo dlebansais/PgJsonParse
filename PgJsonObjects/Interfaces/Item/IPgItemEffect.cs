@@ -2,5 +2,6 @@
 {
     public interface IPgItemEffect
     {
+        string AsEffectString();
     }
 }

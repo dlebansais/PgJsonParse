@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementIsLongtimeAnimal: GenericPgObject<PgAbilityRequirementIsLongtimeAnimal>, IPgAbilityRequirementIsLongtimeAnimal
+    public class PgAbilityRequirementIsLongtimeAnimal: PgAbilityRequirement<PgAbilityRequirementIsLongtimeAnimal>, IPgAbilityRequirementIsLongtimeAnimal
     {
         public PgAbilityRequirementIsLongtimeAnimal(byte[] data, ref int offset)
             : base(data, offset)

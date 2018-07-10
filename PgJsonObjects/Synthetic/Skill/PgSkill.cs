@@ -18,19 +18,16 @@ namespace PgJsonObjects
 
         public static PgSkill CreateNew(byte[] data, ref int offset)
         {
-            return new PgSkill(data, ref offset);
+            PgSkill Result = new PgSkill(data, ref offset);
+            return Result;
         }
 
         public override void Init()
         {
-            AdvancementHintTableKey = null;
-            GetIntList(56, ref AdvancementHintTableKey);
-            AdvancementHintTableValue = null;
-            GetStringList(60, ref AdvancementHintTableValue);
-            ReportTableKey = null;
-            GetIntList(64, ref ReportTableKey);
-            ReportTableValue = null;
-            GetStringList(68, ref ReportTableValue);
+            GetIntList(60, ref AdvancementHintTableKey);
+            GetStringList(64, ref AdvancementHintTableValue);
+            GetIntList(68, ref ReportTableKey);
+            GetStringList(72, ref ReportTableValue);
 
             CombinedRewardList = Skill.CreateCombinedRewardList(InteractionFlagLevelCapList, AdvancementHintTableKey, AdvancementHintTableValue, RewardList, ReportTableKey, ReportTableValue);
         }
@@ -57,7 +54,7 @@ namespace PgJsonObjects
         public List<PowerSkill> CompatibleCombatSkillList { get { return GetEnumList(28, ref _CompatibleCombatSkillList); } } private List<PowerSkill> _CompatibleCombatSkillList;
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
         public int? RawMaxBonusLevels { get { return GetInt(32); } }
-        public LevelCapInteractionCollection InteractionFlagLevelCapList { get { return GetObjectList(32, ref _InteractionFlagLevelCapList, LevelCapInteractionCollection.CreateItem, () => new LevelCapInteractionCollection()); } } private LevelCapInteractionCollection _InteractionFlagLevelCapList;
+        public LevelCapInteractionCollection InteractionFlagLevelCapList { get { return GetObjectList(36, ref _InteractionFlagLevelCapList, LevelCapInteractionCollection.CreateItem, () => new LevelCapInteractionCollection()); } } private LevelCapInteractionCollection _InteractionFlagLevelCapList;
         public RewardCollection RewardList { get { return GetObjectList(40, ref _RewardList, RewardCollection.CreateItem, () => new RewardCollection()); } } private RewardCollection _RewardList;
         public string Name { get { return GetString(44); } }
         public IPgSkill ParentSkill { get { return GetObject(48, ref _ParentSkill, PgSkill.CreateNew); } } private IPgSkill _ParentSkill;
@@ -130,7 +127,7 @@ namespace PgJsonObjects
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("InteractionFlagLevelCaps");
 
-            foreach (LevelCapInteraction Interaction in InteractionFlagLevelCapList)
+            foreach (IPgLevelCapInteraction Interaction in InteractionFlagLevelCapList)
             {
                 PowerSkill Skill = Interaction.Link.CombatSkill;
                 string FieldKey = "LevelCap_" + StringToEnumConversion<PowerSkill>.ToString(Skill);
@@ -178,10 +175,10 @@ namespace PgJsonObjects
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("Rewards");
 
-            foreach (Reward Reward in RewardList)
+            foreach (IPgReward Reward in RewardList)
             {
                 string FieldKey = Reward.Key;
-                IObjectContentGenerator FieldValue = Reward;
+                IObjectContentGenerator FieldValue = Reward as IObjectContentGenerator;
 
                 Result.SetFieldValue(FieldKey, FieldValue);
             }

@@ -788,7 +788,7 @@ namespace PgJsonObjects
                 AddWithFieldSeparator(ref Result, Description);
                 if (RawIsCancellable.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Cancellable");
-                foreach (QuestObjective Item in QuestObjectiveList)
+                foreach (IPgQuestObjective Item in QuestObjectiveList)
                     AddWithFieldSeparator(ref Result, Item.Description);
                 foreach (QuestRewardXp Reward in RewardsXPList)
                     AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Reward.RawSkill]);
@@ -855,7 +855,7 @@ namespace PgJsonObjects
             Dictionary<string, IGenericJsonObject> GameNpcTable = AllTables[typeof(GameNpc)];
             Dictionary<string, IGenericJsonObject> LoreBookTable = AllTables[typeof(LoreBook)];
 
-            foreach (QuestObjective Item in QuestObjectiveList)
+            foreach (IPgQuestObjective Item in QuestObjectiveList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             foreach (QuestRewardXp Item in RewardsXPList)
@@ -930,7 +930,7 @@ namespace PgJsonObjects
 
                 foreach (string RawRewardInteractionFlag in RawRewardInteractionFlags)
                 {
-                    foreach (QuestObjective QuestObjective in QuestObjectiveList)
+                    foreach (IPgQuestObjective QuestObjective in QuestObjectiveList)
                     {
                         QuestObjectiveInteractionFlag AsQuestObjectiveInteractionFlag;
                         if ((AsQuestObjectiveInteractionFlag = QuestObjective as QuestObjectiveInteractionFlag) != null)

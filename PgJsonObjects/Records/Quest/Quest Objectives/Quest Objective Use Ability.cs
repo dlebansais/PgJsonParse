@@ -6,8 +6,8 @@ namespace PgJsonObjects
     public class QuestObjectiveUseAbility : QuestObjective, IPgQuestObjectiveUseAbility
     {
         #region Init
-        public QuestObjectiveUseAbility(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, int? MinHour, int? MaxHour, AbilityKeyword AbilityTarget)
-            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, MinHour, MaxHour)
+        public QuestObjectiveUseAbility(QuestObjectiveType Type, string Description, int? RawNumber, bool? RawMustCompleteEarlierObjectivesFirst, AbilityKeyword AbilityTarget)
+            : base(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst)
         {
             this.AbilityTarget = AbilityTarget;
         }

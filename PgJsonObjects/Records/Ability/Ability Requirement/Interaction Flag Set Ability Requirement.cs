@@ -41,7 +41,7 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType, data, ref offset, BaseOffset, 0);
+            AddInt((int?)OtherRequirementType.InteractionFlagSet, data, ref offset, BaseOffset, 0);
             AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
             AddString(InteractionFlag, data, ref offset, BaseOffset, 8, StoredStringtable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);

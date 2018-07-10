@@ -2,6 +2,7 @@
 
 namespace PgJsonObjects
 {
+    /*
     public class SingleRaceAbilityRequirement : AbilityRequirement, IPgAbilityRequirementSingleRace
     {
         public SingleRaceAbilityRequirement(string RawAllowedRace, ParseErrorInfo ErrorInfo)
@@ -49,4 +50,5 @@ namespace PgJsonObjects
         }
         #endregion
     }
+    */////////////////
 }
