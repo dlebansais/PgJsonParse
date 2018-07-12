@@ -11,7 +11,9 @@ namespace PgJsonObjects
 
         public static PgSpecialValue CreateItem(byte[] data, ref int offset)
         {
-            return new PgSpecialValue(data, ref offset);
+            PgSpecialValue Result = new PgSpecialValue(data, ref offset);
+            Result.Init();
+            return Result;
         }
     }
 }

@@ -5,14 +5,16 @@ namespace PgJsonObjects
 {
     public class ItemEffectCollection : List<IPgItemEffect>, ISerializableJsonObjectCollection
     {
+        /*
         public ISerializableJsonObject GetAt(int index)
         {
             return this[index] as ISerializableJsonObject;
-        }
+        }*/
 
         public static IPgItemEffect CreateItem(byte[] data, ref int offset)
         {
-            return CreateNew(data, ref offset);
+            IPgItemEffect Result = CreateNew(data, ref offset);
+            return Result;
         }
 
         public static IPgItemEffect CreateNew(byte[] data, ref int offset)
@@ -21,9 +23,17 @@ namespace PgJsonObjects
             bool IsSimple = (Type == 0);
 
             if (IsSimple)
-                return PgItemSimpleEffect.CreateNew(data, ref offset);
+            {
+                PgItemSimpleEffect Result = PgItemSimpleEffect.CreateNew(data, ref offset);
+                Result.Init();
+                return Result;
+            }
             else
-                return PgItemAttributeLink.CreateNew(data, ref offset);
+            {
+                PgItemAttributeLink Result = PgItemAttributeLink.CreateNew(data, ref offset);
+                Result.Init();
+                return Result;
+            }
         }
     }
 }

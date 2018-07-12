@@ -154,6 +154,8 @@ namespace PgJsonObjects
             ICollection<TI> ObjectList = GenericObjectList as ICollection<TI>;
             bool Success = true;
 
+            Debug.WriteLine("Verifying " + FilePath);
+
             try
             {
                 using (JsonGenerator Generator = new JsonGenerator(useJavaFormat))
@@ -162,17 +164,27 @@ namespace PgJsonObjects
                     {
                         if (loadAsObject)
                             Generator.Begin();
+                        else if (loadAsArray)
+                            Generator.BeginAsArray();
 
                         string LastRootKey = null;
 
                         foreach (TI Item in ObjectList)
                         {
-                            string Key = Item.Key;
-                            string[] Splitted = Key.Split('#');
-                            if (Splitted.Length == 2)
-                            {
-                                string RootKey = Splitted[0];
+                            string RootKey = null;
 
+                            string Key = Item.Key;
+                            if (Key != null)
+                            {
+                                string[] Splitted = Key.Split('#');
+                                if (Splitted.Length == 2)
+                                    RootKey = Splitted[0];
+                            }
+                            else
+                                Key = null;
+
+                            if (RootKey != null)
+                            {
                                 if (RootKey != LastRootKey)
                                 {
                                     if (LastRootKey != null)
@@ -186,6 +198,12 @@ namespace PgJsonObjects
                                 Item.ListAllObjectContent(Generator);
                                 Item.CloseGeneratorKey(Generator, false, true);
                             }
+                            else
+                            {
+                                Item.OpenGeneratorKey(Generator, false, true);
+                                Item.ListAllObjectContent(Generator);
+                                Item.CloseGeneratorKey(Generator, false, true);
+                            }
                         }
 
                         if (LastRootKey != null)
@@ -193,6 +211,8 @@ namespace PgJsonObjects
 
                         if (loadAsObject)
                             Generator.End();
+                        else if (loadAsArray)
+                            Generator.EndAsArray();
                     }
                     else
                     {

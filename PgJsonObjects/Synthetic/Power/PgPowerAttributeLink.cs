@@ -28,5 +28,18 @@ namespace PgJsonObjects
         public FloatFormat AttributeEffectFormat { get { return GetEnum<FloatFormat>(28); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
+
+        public override string AsEffectString()
+        {
+            PowerSkill AttributeSkill = PowerSkill.Internal_None;
+
+            if (SkillLink != null)
+                AttributeSkill = SkillLink.CombatSkill;
+
+            if (AttributeSkill == PowerSkill.Internal_None)
+                return "{" + AttributeName + "}{" + Tools.FloatToString(AttributeEffect, FloatFormat.Standard) + "}";
+            else
+                return "{" + AttributeName + "}{" + Tools.FloatToString(AttributeEffect, FloatFormat.Standard) + "}{" + AttributeSkill.ToString() + "}";
+        }
     }
 }

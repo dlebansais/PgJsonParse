@@ -11,7 +11,9 @@ namespace PgJsonObjects
 
         public static PgItemSkillLink CreateItem(byte[] data, ref int offset)
         {
-            return new PgItemSkillLink(data, ref offset);
+            PgItemSkillLink Result = new PgItemSkillLink(data, ref offset);
+            Result.Init();
+            return Result;
         }
     }
 }

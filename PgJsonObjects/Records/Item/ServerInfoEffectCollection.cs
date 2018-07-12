@@ -10,7 +10,7 @@ namespace PgJsonObjects
             return this[index] as ISerializableJsonObject;
         }
 
-        public static IGenericPgObject CreateItem(byte[] data, ref int offset)
+        public static IPgServerInfoEffect CreateItem(byte[] data, ref int offset)
         {
             ServerInfoEffectType ServerInfoEffectType = (ServerInfoEffectType)BitConverter.ToInt32(data, offset);
             offset += 4;

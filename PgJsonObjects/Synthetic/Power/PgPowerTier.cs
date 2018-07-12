@@ -38,7 +38,7 @@ namespace PgJsonObjects
         {
             List<string> Result = new List<string>();
 
-            foreach (PowerEffect Effect in EffectList)
+            foreach (IPgPowerEffect Effect in EffectList)
                 Result.Add(Effect.AsEffectString());
 
             return Result;

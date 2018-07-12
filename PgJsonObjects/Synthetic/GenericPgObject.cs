@@ -13,7 +13,10 @@ namespace PgJsonObjects
         {
             int TableOffset = offset;
             IMainPgObject Item = createNewObject(data, ref offset);
-            CreatedObjectTable.Add(TableOffset, Item);
+            Item.Init();
+
+            if (!CreatedObjectTable.ContainsKey(TableOffset))
+                CreatedObjectTable.Add(TableOffset, Item);
 
             return Item;
         }

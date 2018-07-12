@@ -17,84 +17,104 @@ namespace PgJsonObjects
 
             bool IsSingle = ((TypeValue & 0x8000) != 0);
             OtherRequirementType OtherRequirementType = (OtherRequirementType)(TypeValue & ~0x8000);
+            IPgAbilityRequirement Result;
 
             switch (OtherRequirementType)
             {
 /*                case OtherRequirementType.IsAdmin:
-                    return new PgAbilityRequirementIsAdmin(data, ref offset);*/
+                    Result = PgAbilityRequirementIsAdmin.CreateNew(data, ref offset);*/
 
                 case OtherRequirementType.IsLycanthrope:
-                    return new PgAbilityRequirementIsLycanthrope(data, ref offset);
+                    Result = PgAbilityRequirementIsLycanthrope.CreateNew(data, ref offset);
+                    break;
 
 /*                case OtherRequirementType.CurHealth:
-                    return new PgAbilityRequirementCurHealth(data, ref offset);*/
+                    Result = PgAbilityRequirementCurHealth.CreateNew(data, ref offset);*/
 
 /*                case OtherRequirementType.Race:
                     if (IsSingle)
-                        return new PgAbilityRequirementSingleRace(data, ref offset);
+                        Result = PgAbilityRequirementSingleRace.CreateNew(data, ref offset);
                     else
-                        return new PgAbilityRequirementRace(data, ref offset);*/
+                        Result = PgAbilityRequirementRace.CreateNew(data, ref offset);*/
 
                 case OtherRequirementType.HasEffectKeyword:
-                    return new PgAbilityRequirementHasEffectKeyword(data, ref offset);
+                    Result = PgAbilityRequirementHasEffectKeyword.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.FullMoon:
-                    return new PgAbilityRequirementFullMoon(data, ref offset);
+                    Result = PgAbilityRequirementFullMoon.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.IsHardcore:
-                    return new PgAbilityRequirementIsHardcore(data, ref offset);
+                    Result = PgAbilityRequirementIsHardcore.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.DruidEventState:
-                    return new PgAbilityRequirementDruidEventState(data, ref offset);
+                    Result = PgAbilityRequirementDruidEventState.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.PetCount:
-                    return new PgAbilityRequirementPetCount(data, ref offset);
+                    Result = PgAbilityRequirementPetCount.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.RecipeKnown:
-                    return new PgAbilityRequirementRecipeKnown(data, ref offset);
+                    Result = PgAbilityRequirementRecipeKnown.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.IsNotInCombat:
-                    return new PgAbilityRequirementIsNotInCombat(data, ref offset);
+                    Result = PgAbilityRequirementIsNotInCombat.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.IsLongtimeAnimal:
-                    return new PgAbilityRequirementIsLongtimeAnimal(data, ref offset);
+                    Result = PgAbilityRequirementIsLongtimeAnimal.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.InHotspot:
-                    return new PgAbilityRequirementInHotspot(data, ref offset);
+                    Result = PgAbilityRequirementInHotspot.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.HasInventorySpaceFor:
-                    return new PgAbilityRequirementHasInventorySpaceFor(data, ref offset);
+                    Result = PgAbilityRequirementHasInventorySpaceFor.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.IsVegetarian:
-                    return new PgAbilityRequirementIsVegetarian(data, ref offset);
+                    Result = PgAbilityRequirementIsVegetarian.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.InGraveyard:
-                    return new PgAbilityRequirementInGraveyard(data, ref offset);
+                    Result = PgAbilityRequirementInGraveyard.CreateNew(data, ref offset);
+                    break;
 
 /*                case OtherRequirementType.Appearance:
                     if (IsSingle)
-                        return new PgAbilityRequirementSingleAppearance(data, ref offset);
+                        Result = PgAbilityRequirementSingleAppearance.CreateNew(data, ref offset);
                     else
-                        return new PgAbilityRequirementAppearance(data, ref offset);*/
+                        Result = PgAbilityRequirementAppearance.CreateNew(data, ref offset);*/
 
                 case OtherRequirementType.Or:
-                    return new PgAbilityRequirementOr(data, ref offset);
+                    Result = PgAbilityRequirementOr.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.EquippedItemKeyword:
-                    return new PgAbilityRequirementEquippedItemKeyword(data, ref offset);
+                    Result = PgAbilityRequirementEquippedItemKeyword.CreateNew(data, ref offset);
+                    break;
 
 /*                case OtherRequirementType.GardenPlantMax:
-                    return new PgAbilityRequirementGardenPlantMax(data, ref offset);*/
+                    Result = PgAbilityRequirementGardenPlantMax.CreateNew(data, ref offset);*/
 
                 case OtherRequirementType.InteractionFlagSet:
-                    return new PgAbilityRequirementInteractionFlagSet(data, ref offset);
+                    Result = PgAbilityRequirementInteractionFlagSet.CreateNew(data, ref offset);
+                    break;
 
                 case OtherRequirementType.IsVolunteerGuide:
-                    return new PgAbilityRequirementIsVolunteerGuide(data, ref offset);
+                    Result = PgAbilityRequirementIsVolunteerGuide.CreateNew(data, ref offset);
+                    break;
 
                 default:
                     throw new InvalidOperationException();
             }
+
+            return Result;
         }
     }
 }

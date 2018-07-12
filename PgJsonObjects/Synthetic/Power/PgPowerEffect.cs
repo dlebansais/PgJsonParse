@@ -7,5 +7,7 @@
             : base(data, offset)
         {
         }
+
+        public abstract string AsEffectString();
     }
 }

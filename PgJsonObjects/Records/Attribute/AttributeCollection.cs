@@ -12,7 +12,9 @@ namespace PgJsonObjects
 
         public static PgAttribute CreateItem(byte[] data, ref int offset)
         {
-            return new PgAttribute(data, ref offset);
+            PgAttribute Result = new PgAttribute(data, ref offset);
+            Result.Init();
+            return Result;
         }
     }
 }

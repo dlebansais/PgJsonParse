@@ -40,7 +40,7 @@ namespace PgJsonObjects
         {
             List<int> Result = new List<int>();
 
-            foreach (XpTableLevel Item in XpAmountList)
+            foreach (IPgXpTableLevel Item in XpAmountList)
                 Result.Add(Item.Xp);
 
             return Result;

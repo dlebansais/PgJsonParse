@@ -45,6 +45,11 @@ namespace PgJsonObjects
             ReconstructedContent = "{" + NewLine;
         }
 
+        public void BeginAsArray()
+        {
+            ReconstructedContent = "[" + NewLine;
+        }
+
         public void Next()
         {
             ReconstructedContent += "," + NewLine;
@@ -53,6 +58,11 @@ namespace PgJsonObjects
         public void End()
         {
             ReconstructedContent += NewLine + "}";
+        }
+
+        public void EndAsArray()
+        {
+            ReconstructedContent += NewLine + "]";
         }
 
         public void OpenObject(string ObjectName)

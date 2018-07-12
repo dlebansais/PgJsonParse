@@ -370,7 +370,7 @@ namespace PgJsonObjects
             AddString(RawEffectName, data, ref offset, BaseOffset, 48, StoredStringtable);
             AddEnum(Type, data, ref offset, BaseOffset, 52);
 
-            FinishSerializing(data, ref offset, BaseOffset, 54, null, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 54, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

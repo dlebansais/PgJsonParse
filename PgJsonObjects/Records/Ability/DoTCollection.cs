@@ -11,7 +11,9 @@ namespace PgJsonObjects
 
         public static PgDoT CreateItem(byte[] data, ref int offset)
         {
-            return new PgDoT(data, ref offset);
+            PgDoT Result = new PgDoT(data, ref offset);
+            Result.Init();
+            return Result;
         }
     }
 }

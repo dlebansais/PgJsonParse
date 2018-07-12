@@ -41,7 +41,7 @@ namespace PgJsonObjects
         public bool SkipBonusLevelsIfSkillUnlearned { get { return RawSkipBonusLevelsIfSkillUnlearned.HasValue && RawSkipBonusLevelsIfSkillUnlearned.Value; } }
         public bool? RawSkipBonusLevelsIfSkillUnlearned { get { return GetBool(6, 4); } }
         public bool AuxCombat { get { return RawAuxCombat.HasValue && RawAuxCombat.Value; } }
-        public bool? RawAuxCombat { get { return GetBool(6, 8); } }
+        public bool? RawAuxCombat { get { return GetBool(6, 6); } }
         public bool ParentSkillIsEmpty { get { return RawParentSkillIsEmpty.HasValue && RawParentSkillIsEmpty.Value; } }
         public bool? RawParentSkillIsEmpty { get { return GetBool(6, 8); } }
         public bool IsAdvancementTableNull { get { return GetBool(6, 10).Value; } }

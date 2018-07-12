@@ -66,7 +66,7 @@ namespace PgJsonObjects
                 int Tier = TierOffset + i;
 
                 string FieldKey = "id_" + Tier.ToString();
-                Result.SetFieldValue(FieldKey, (PowerTier)Item);
+                Result.SetFieldValue(FieldKey, Item as IObjectContentGenerator);
             }
 
             return Result;

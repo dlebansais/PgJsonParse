@@ -25,5 +25,17 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
+
+        public override string AsEffectString()
+        {
+            string Result = "";
+
+            foreach (int Id in IconIdList)
+                Result += PowerSimpleEffect.IconIdPattern + Id.ToString() + ">";
+
+            Result += Description;
+
+            return Result;
+        }
     }
 }

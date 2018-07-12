@@ -1121,7 +1121,7 @@ namespace PgJsonParse
                     byte[] valueData = BitConverter.GetBytes(Count);
                     Array.Copy(valueData, 0, data, offset, 4);
 
-                    Debug.WriteLine(Count.ToString());
+                    //Debug.WriteLine(Count.ToString());
                 }
 
                 offset += 4;
@@ -1160,7 +1160,7 @@ namespace PgJsonParse
                 int Count = BitConverter.ToInt32(data, offset);
                 offset += 4;
 
-                Debug.WriteLine(Count.ToString());
+                //Debug.WriteLine(Count.ToString());
 
                 int ObjectOffset = offset;
                 IMainPgObject Item;
