@@ -99,12 +99,12 @@ namespace PgJsonObjects
 
         private IObjectContentGenerator GetRequirements()
         {
-            InteractionFlagSetAbilityRequirement Result;
+            AbilityRequirementInteractionFlagSet Result;
 
             if (InteractionFlagRequirement == "Ivyn Gave Passcode")
-                Result = new InteractionFlagSetAbilityRequirement("Ivyn_Gave_Passcode");
+                Result = new AbilityRequirementInteractionFlagSet("Ivyn_Gave_Passcode");
             else if (InteractionFlagRequirement == "Serbule Hills Tapestry Inn Chest")
-                Result = new InteractionFlagSetAbilityRequirement("Serbule2_TapestryInnChest");
+                Result = new AbilityRequirementInteractionFlagSet("Serbule2_TapestryInnChest");
             else
                 Result = null;
 

@@ -2,9 +2,9 @@
 
 namespace PgJsonObjects
 {
-    public class InteractionFlagSetAbilityRequirement : AbilityRequirement, IPgAbilityRequirementInteractionFlagSet
+    public class AbilityRequirementInteractionFlagSet : AbilityRequirement, IPgAbilityRequirementInteractionFlagSet
     {
-        public InteractionFlagSetAbilityRequirement(string RawInteractionFlag)
+        public AbilityRequirementInteractionFlagSet(string RawInteractionFlag)
         {
             InteractionFlag = RawInteractionFlag;
         }

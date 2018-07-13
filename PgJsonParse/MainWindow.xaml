@@ -229,10 +229,10 @@
                 <TextBlock Text="{Binding Health}" Margin="5,0,0,0"/>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="DruidEventStateAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementDruidEventStateTemplate">
             <TextBlock>During druid event</TextBlock>
         </DataTemplate>
-        <DataTemplate x:Key="EquippedItemKeywordAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementEquippedItemKeywordTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Has at least</TextBlock>
                 <TextBlock Text="{Binding MinCount}" Margin="5,0,0,0"/>
@@ -244,7 +244,7 @@
                 <TextBlock>items equipped</TextBlock>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="FullMoonAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementFullMoonTemplate">
             <TextBlock>Full Moon</TextBlock>
         </DataTemplate>
         <DataTemplate x:Key="GardenPlantMaxAbilityRequirementTemplate">
@@ -259,7 +259,7 @@
                 <TextBlock Text="{Binding Max}"/>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="HasEffectKeywordAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementHasEffectKeywordTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Effect</TextBlock>
                 <TextBlock Margin="5,0,5,0">
@@ -270,11 +270,11 @@
                 <TextBlock>is active</TextBlock>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="HasInventorySpaceForAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementHasInventorySpaceForTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Has inventory space for</TextBlock>
                 <TextBlock TextWrapping="Wrap">
-                    <Hyperlink x:Name="hyperlink_HasInventorySpaceForAbilityRequirement_Item" Click="OnRequestNavigate" NavigateUri="unused">
+                    <Hyperlink x:Name="hyperlink_AbilityRequirementHasInventorySpaceFor_Item" Click="OnRequestNavigate" NavigateUri="unused">
                         <Run>
                             <Binding Path="Item.Name" Mode="OneWay"/>
                         </Run>
@@ -282,16 +282,16 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="InGraveyardAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementInGraveyardTemplate">
             <TextBlock>In Graveyard</TextBlock>
         </DataTemplate>
-        <DataTemplate x:Key="InHotspotAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementInHotspotTemplate">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
-        <DataTemplate x:Key="InteractionFlagSetAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementInteractionFlagSetTemplate">
             <TextBlock Text="{Binding InteractionFlag}"/>
         </DataTemplate>
-        <DataTemplate x:Key="InternalAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementInternalTemplate">
             <TextBlock Margin="5,0,5,0">
                 <TextBlock.Text>
                     <Binding Path="Keyword" Converter="{StaticResource convEnumToText}" ConverterParameter="AbilityItemKeywordTextMap"/>
@@ -301,22 +301,22 @@
         <DataTemplate x:Key="IsAdminAbilityRequirementTemplate">
             <TextBlock>Game Admin Only</TextBlock>
         </DataTemplate>
-        <DataTemplate x:Key="IsHardcoreAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementIsHardcoreTemplate">
             <TextBlock>Be Hardcore</TextBlock>
         </DataTemplate>
-        <DataTemplate x:Key="IsLongtimeAnimalAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementIsLongtimeAnimalTemplate">
             <TextBlock>Animal for a long time</TextBlock>
         </DataTemplate>
-        <DataTemplate x:Key="IsLycanthropeAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementIsLycanthropeTemplate">
             <TextBlock>Be a Lycanthrope</TextBlock>
         </DataTemplate>
-        <DataTemplate x:Key="IsNotInCombatAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementIsNotInCombatTemplate">
             <TextBlock>Out of combat</TextBlock>
         </DataTemplate>
-        <DataTemplate x:Key="IsVegetarianAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementIsVegetarianTemplate">
             <TextBlock>Is Vegetarian</TextBlock>
         </DataTemplate>
-        <DataTemplate x:Key="OrAbilityRequirement_ItemTemplateFirst">
+        <DataTemplate x:Key="AbilityRequirementOr_ItemTemplateFirst">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Height="0">or</TextBlock>
                 <ContentControl Content="{Binding}" Margin="5,0,0,0">
@@ -328,7 +328,7 @@
                 </ContentControl>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="OrAbilityRequirement_ItemTemplate">
+        <DataTemplate x:Key="AbilityRequirementOr_ItemTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>or</TextBlock>
                 <ContentControl Content="{Binding}" Margin="5,0,0,0">
@@ -340,12 +340,12 @@
                 </ContentControl>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="OrAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementOrTemplate">
             <StackPanel>
-                <ItemsControl x:Name="ctrl_OrAbilityRequirement" ItemsSource="{Binding OrList}">
+                <ItemsControl x:Name="ctrl_AbilityRequirementOr" ItemsSource="{Binding OrList}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <app:ListMemberSelector x:Name="OrAbilityRequirement" Content="{Binding}"/>
+                            <app:ListMemberSelector x:Name="AbilityRequirementOr" Content="{Binding}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -355,7 +355,7 @@
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="PetCountAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementPetCountTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Max</TextBlock>
                 <TextBlock Text="{Binding MaxCount}" Margin="5,0,5,0"/>
@@ -432,11 +432,11 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="RecipeKnownAbilityRequirementTemplate">
+        <DataTemplate x:Key="AbilityRequirementRecipeKnownTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Knows recipe</TextBlock>
                 <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
-                    <Hyperlink x:Name="hyperlink_RecipeKnownAbilityRequirement_RecipeKnown" Click="OnRequestNavigate" NavigateUri="unused">
+                    <Hyperlink x:Name="hyperlink_AbilityRequirementRecipeKnown_RecipeKnown" Click="OnRequestNavigate" NavigateUri="unused">
                         <Run>
                             <Binding Path="RecipeKnown.Name" Mode="OneWay"/>
                         </Run>

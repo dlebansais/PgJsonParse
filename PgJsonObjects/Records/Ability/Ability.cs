@@ -123,7 +123,7 @@ namespace PgJsonObjects
                 this.LineIndex = -1;
 
             foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
-                CombinedRequirementList.Add(new InternalAbilityRequirement(Keyword));
+                CombinedRequirementList.Add(new AbilityRequirementInternal(Keyword));
 
             foreach (IPgAbilityRequirement Item in SpecialCasterRequirementList)
                 CombinedRequirementList.Add(Item);

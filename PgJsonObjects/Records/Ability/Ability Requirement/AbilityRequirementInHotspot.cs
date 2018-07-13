@@ -2,15 +2,23 @@
 
 namespace PgJsonObjects
 {
-    public class IsVolunteerGuideAbilityRequirement : AbilityRequirement, IPgAbilityRequirementIsVolunteerGuide
+    public class AbilityRequirementInHotspot : AbilityRequirement, IPgAbilityRequirementInHotspot
     {
-        #region Json Reconstruction
+        public AbilityRequirementInHotspot(string RawName)
+        {
+            Name = RawName;
+        }
+
+        public string Name { get; private set; }
+
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.IsVolunteerGuide) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.InHotspot) } },
+            { "Name", new FieldParser() {
+                Type = FieldType.String,
+                GetString  = () => Name } },
         }; } }
-        #endregion
 
         #region Indexing
         public override string TextContent
@@ -19,7 +27,7 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                AddWithFieldSeparator(ref Result, "Is Volunteer Guide");
+                AddWithFieldSeparator(ref Result, Name);
 
                 return Result;
             }
@@ -33,11 +41,12 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType.IsVolunteerGuide, data, ref offset, BaseOffset, 0);
+            AddInt((int?)OtherRequirementType.InHotspot, data, ref offset, BaseOffset, 0);
             AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
+            AddString(Name, data, ref offset, BaseOffset, 8, StoredStringtable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

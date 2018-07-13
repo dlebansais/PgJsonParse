@@ -38,7 +38,7 @@ namespace PgJsonObjects
                     return new IsAdminAbilityRequirement();*/
 
                 case OtherRequirementType.IsLycanthrope:
-                    return new IsLycanthropeAbilityRequirement();
+                    return new AbilityRequirementIsLycanthrope();
 
 /*                case OtherRequirementType.CurHealth:
                     return new CurHealthAbilityRequirement(RawHealth);*/
@@ -50,40 +50,40 @@ namespace PgJsonObjects
                         return new RaceAbilityRequirement(RawAllowedRaceList, ErrorInfo);*/
 
                 case OtherRequirementType.HasEffectKeyword:
-                    return new HasEffectKeywordAbilityRequirement(RawKeyword, ErrorInfo);
+                    return new AbilityRequirementHasEffectKeyword(RawKeyword, ErrorInfo);
 
                 case OtherRequirementType.FullMoon:
-                    return new FullMoonAbilityRequirement();
+                    return new AbilityRequirementFullMoon();
 
                 case OtherRequirementType.IsHardcore:
-                    return new IsHardcoreAbilityRequirement();
+                    return new AbilityRequirementIsHardcore();
 
                 case OtherRequirementType.DruidEventState:
-                    return new DruidEventStateAbilityRequirement(RawDisallowedState, ErrorInfo);
+                    return new AbilityRequirementDruidEventState(RawDisallowedState, ErrorInfo);
 
                 case OtherRequirementType.PetCount:
-                    return new PetCountAbilityRequirement(RawPetTypeTag, RawMaxCount, ErrorInfo);
+                    return new AbilityRequirementPetCount(RawPetTypeTag, RawMaxCount, ErrorInfo);
 
                 case OtherRequirementType.RecipeKnown:
-                    return new RecipeKnownAbilityRequirement(RawRecipeKnown);
+                    return new AbilityRequirementRecipeKnown(RawRecipeKnown);
 
                 case OtherRequirementType.IsNotInCombat:
-                    return new IsNotInCombatAbilityRequirement();
+                    return new AbilityRequirementIsNotInCombat();
 
                 case OtherRequirementType.IsLongtimeAnimal:
-                    return new IsLongtimeAnimalAbilityRequirement();
+                    return new AbilityRequirementIsLongtimeAnimal();
 
                 case OtherRequirementType.InHotspot:
-                    return new InHotspotAbilityRequirement(RawName);
+                    return new AbilityRequirementInHotspot(RawName);
 
                 case OtherRequirementType.HasInventorySpaceFor:
-                    return new HasInventorySpaceForAbilityRequirement(RawItem);
+                    return new AbilityRequirementHasInventorySpaceFor(RawItem);
 
                 case OtherRequirementType.IsVegetarian:
-                    return new IsVegetarianAbilityRequirement();
+                    return new AbilityRequirementIsVegetarian();
 
                 case OtherRequirementType.InGraveyard:
-                    return new InGraveyardAbilityRequirement();
+                    return new AbilityRequirementInGraveyard();
 
 /*                case OtherRequirementType.Appearance:
                     if (RawAppearance != null)
@@ -92,19 +92,19 @@ namespace PgJsonObjects
                         return new AppearanceAbilityRequirement(RawAppearanceList, ErrorInfo);*/
 
                 case OtherRequirementType.Or:
-                    return new OrAbilityRequirement(OrList, RawErrorMsg);
+                    return new AbilityRequirementOr(OrList, RawErrorMsg);
 
                 case OtherRequirementType.EquippedItemKeyword:
-                    return new EquippedItemKeywordAbilityRequirement(RawKeyword, RawMinCount, RawMaxCount.HasValue ? (int?)RawMaxCount.Value : null, ErrorInfo);
+                    return new AbilityRequirementEquippedItemKeyword(RawKeyword, RawMinCount, RawMaxCount.HasValue ? (int?)RawMaxCount.Value : null, ErrorInfo);
 
 /*                case OtherRequirementType.GardenPlantMax:
                     return new GardenPlantMaxAbilityRequirement(RawTypeTag, RawMax, ErrorInfo);*/
 
                 case OtherRequirementType.InteractionFlagSet:
-                    return new InteractionFlagSetAbilityRequirement(RawInteractionFlag);
+                    return new AbilityRequirementInteractionFlagSet(RawInteractionFlag);
 
                 case OtherRequirementType.IsVolunteerGuide:
-                    return new IsVolunteerGuideAbilityRequirement();
+                    return new AbilityRequirementIsVolunteerGuide();
 
                 default:
                     return null;
