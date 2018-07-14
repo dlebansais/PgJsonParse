@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementInteractionFlagSet
+    public interface IPgAbilityRequirementInteractionFlagSet : IPgAbilityRequirement
     {
         string InteractionFlag { get; }
     }

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbility: MainPgObject<PgAbility>, IPgAbility
+    public class PgAbility : MainPgObject<PgAbility>, IPgAbility
     {
         public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
@@ -24,6 +24,14 @@ namespace PgJsonObjects
 
         public override void Init()
         {
+            CombinedRequirementList = new AbilityRequirementCollection();
+
+            foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
+                CombinedRequirementList.Add(new AbilityRequirementInternal(Keyword));
+
+            foreach (IPgAbilityRequirement Item in SpecialCasterRequirementList)
+                CombinedRequirementList.Add(Item);
+
             ConsumedItem = Ability.CreateConsumedItem(ConsumedItemLink, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
         }
 
@@ -85,7 +93,10 @@ namespace PgJsonObjects
         public string SelfParticle { get { return GetString(108); } }
         public IPgAbility SharesResetTimerWith { get { return GetObject(112, ref _SharesResetTimerWith, CreateNew); } } private IPgAbility _SharesResetTimerWith;
         public IPgSkill Skill { get { return GetObject(116, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
-        public AbilityRequirementCollection CombinedRequirementList { get { return GetObjectList(116, ref _CombinedRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _CombinedRequirementList;
+
+        //public AbilityRequirementCollection CombinedRequirementList { get { return GetObjectList(116, ref _CombinedRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _CombinedRequirementList;
+        public AbilityRequirementCollection CombinedRequirementList { get; private set; }
+
         public string SpecialInfo { get { return GetString(124); } }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
         public int? RawSpecialTargetingTypeReq { get { return GetInt(128); } }

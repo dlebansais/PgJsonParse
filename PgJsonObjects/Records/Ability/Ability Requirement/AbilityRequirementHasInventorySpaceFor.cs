@@ -10,6 +10,7 @@ namespace PgJsonObjects
             this.RawItem = RawItem;
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.HasInventorySpaceFor; } }
         public IPgItem Item { get; private set; }
         private string RawItem;
         private bool IsRawItemParsed;
@@ -17,7 +18,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.HasInventorySpaceFor) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "Item", new FieldParser() {
                 Type = FieldType.String,
                 GetString  = () => Item != null ? Item.InternalName : null} },
@@ -30,7 +31,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                AddWithFieldSeparator(ref Result, Item.Name);
+                if (Item != null)
+                    AddWithFieldSeparator(ref Result, Item.Name);
 
                 return Result;
             }
@@ -42,7 +44,6 @@ namespace PgJsonObjects
         {
             bool IsConnected = false;
             Dictionary<string, IGenericJsonObject> ItemTable = AllTables[typeof(Item)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
             Item = PgJsonObjects.Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItem, Item, ref IsRawItemParsed, ref IsConnected, this);
 
@@ -53,17 +54,17 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType.HasInventorySpaceFor, data, ref offset, BaseOffset, 0);
-            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddObject(Item as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+
+            AddObject(Item as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

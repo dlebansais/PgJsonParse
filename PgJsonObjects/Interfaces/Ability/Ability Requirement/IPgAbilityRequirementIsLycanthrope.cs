@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementIsLycanthrope
+    public interface IPgAbilityRequirementIsLycanthrope : IPgAbilityRequirement
     {
     }
 }

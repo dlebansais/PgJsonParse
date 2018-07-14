@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementIsNotInCombat
+    public interface IPgAbilityRequirementIsNotInCombat : IPgAbilityRequirement
     {
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementHasInventorySpaceFor
+    public interface IPgAbilityRequirementHasInventorySpaceFor : IPgAbilityRequirement
     {
         IPgItem Item { get; }
     }

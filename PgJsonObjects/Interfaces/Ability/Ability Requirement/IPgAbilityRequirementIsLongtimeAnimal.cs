@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementIsLongtimeAnimal
+    public interface IPgAbilityRequirementIsLongtimeAnimal : IPgAbilityRequirement
     {
     }
 }

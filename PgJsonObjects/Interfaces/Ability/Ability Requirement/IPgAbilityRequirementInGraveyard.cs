@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementInGraveyard
+    public interface IPgAbilityRequirementInGraveyard : IPgAbilityRequirement
     {
     }
 }

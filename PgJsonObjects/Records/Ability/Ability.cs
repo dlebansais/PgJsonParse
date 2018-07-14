@@ -65,7 +65,7 @@ namespace PgJsonObjects
         public string SelfParticle { get; private set; }
         public IPgAbility SharesResetTimerWith { get; private set; }
         public IPgSkill Skill { get; private set; }
-        public AbilityRequirementCollection CombinedRequirementList { get; } = new AbilityRequirementCollection();
+        public AbilityRequirementCollection CombinedRequirementList { get; private set; }
         public string SpecialInfo { get; private set; }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
         public int? RawSpecialTargetingTypeReq { get; private set; }
@@ -121,6 +121,8 @@ namespace PgJsonObjects
                 this.LineIndex = LineIndex;
             else
                 this.LineIndex = -1;
+
+            CombinedRequirementList = new AbilityRequirementCollection();
 
             foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
                 CombinedRequirementList.Add(new AbilityRequirementInternal(Keyword));
@@ -2700,7 +2702,10 @@ namespace PgJsonObjects
             AddString(SelfParticle, data, ref offset, BaseOffset, 108, StoredStringtable);
             AddObject(SharesResetTimerWith as ISerializableJsonObject, data, ref offset, BaseOffset, 112, StoredObjectTable);
             AddObject(Skill as ISerializableJsonObject, data, ref offset, BaseOffset, 116, StoredObjectTable);
-            AddObjectList(CombinedRequirementList, data, ref offset, BaseOffset, 120, StoredObjectListTable);
+            
+            //AddObjectList(CombinedRequirementList, data, ref offset, BaseOffset, 120, StoredObjectListTable);
+            offset += 4;
+
             AddString(SpecialInfo, data, ref offset, BaseOffset, 124, StoredStringtable);
             AddInt(RawSpecialTargetingTypeReq, data, ref offset, BaseOffset, 128);
             AddEnum(TargetEffectKeywordReq, data, ref offset, BaseOffset, 132);

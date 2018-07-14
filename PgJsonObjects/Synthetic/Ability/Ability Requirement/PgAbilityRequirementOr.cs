@@ -19,15 +19,16 @@ namespace PgJsonObjects
             return new PgAbilityRequirementOr(data, ref offset);
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.Or; } }
         public override string Key { get { return GetString(4); } }
-        public AbilityRequirementCollection OrList { get { return GetObjectList(8, ref _OrList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OrList;
-        public string ErrorMsg { get { return GetString(12); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public AbilityRequirementCollection OrList { get { return GetObjectList(12, ref _OrList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OrList;
+        public string ErrorMsg { get { return GetString(16); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.Or) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "List", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => OrList } },

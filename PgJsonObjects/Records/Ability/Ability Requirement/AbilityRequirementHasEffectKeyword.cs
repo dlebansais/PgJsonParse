@@ -4,19 +4,18 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementHasEffectKeyword : AbilityRequirement, IPgAbilityRequirementHasEffectKeyword
     {
-        public AbilityRequirementHasEffectKeyword(string RawKeyword, ParseErrorInfo ErrorInfo)
+        public AbilityRequirementHasEffectKeyword(AbilityKeyword keyword)
         {
-            AbilityKeyword ParsedKeyword;
-            StringToEnumConversion<AbilityKeyword>.TryParse(RawKeyword, out ParsedKeyword, ErrorInfo);
-            Keyword = ParsedKeyword;
+            Keyword = keyword;
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.HasEffectKeyword; } }
         public AbilityKeyword Keyword { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.HasEffectKeyword) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "Keyword", new FieldParser() {
                 Type = FieldType.String,
                 GetString  = () => StringToEnumConversion<AbilityKeyword>.ToString(Keyword) } },
@@ -29,7 +28,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                AddWithFieldSeparator(ref Result, TextMaps.AbilityKeywordTextMap[Keyword]);
+                if (Keyword != AbilityKeyword.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.AbilityKeywordTextMap[Keyword]);
 
                 return Result;
             }
@@ -39,16 +39,15 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType.HasEffectKeyword, data, ref offset, BaseOffset, 0);
-            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
-            AddEnum(Keyword, data, ref offset, BaseOffset, 12);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            AddEnum(Keyword, data, ref offset, BaseOffset, 0);
+
+            FinishSerializing(data, ref offset, BaseOffset, 2, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -4,15 +4,14 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementEquippedItemKeyword : AbilityRequirement, IPgAbilityRequirementEquippedItemKeyword
     {
-        public AbilityRequirementEquippedItemKeyword(string RawKeyword, int? rawMinCount, int? rawMaxCount, ParseErrorInfo ErrorInfo)
+        public AbilityRequirementEquippedItemKeyword(AbilityKeyword keyword, int? rawMinCount, int? rawMaxCount, ParseErrorInfo ErrorInfo)
         {
-            AbilityKeyword ParsedKeyword;
-            StringToEnumConversion<AbilityKeyword>.TryParse(RawKeyword, out ParsedKeyword, ErrorInfo);
-            Keyword = ParsedKeyword;
+            Keyword = keyword;
             RawMinCount = rawMinCount;
             RawMaxCount = rawMaxCount;
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.EquippedItemKeyword; } }
         public int MinCount { get { return RawMinCount.HasValue ? RawMinCount.Value : 0; } }
         public int? RawMinCount { get; private set; }
         public int MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }
@@ -22,7 +21,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.EquippedItemKeyword) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "Keyword", new FieldParser() {
                 Type = FieldType.String,
                 GetString  = () => StringToEnumConversion<AbilityKeyword>.ToString(Keyword) } },
@@ -41,7 +40,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                AddWithFieldSeparator(ref Result, TextMaps.AbilityKeywordTextMap[Keyword]);
+                if (Keyword != AbilityKeyword.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.AbilityKeywordTextMap[Keyword]);
 
                 return Result;
             }
@@ -51,18 +51,17 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType.EquippedItemKeyword, data, ref offset, BaseOffset, 0);
-            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddInt(RawMinCount, data, ref offset, BaseOffset, 8);
-            AddInt(RawMaxCount, data, ref offset, BaseOffset, 12);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 16, StoredStringListTable);
-            AddEnum(Keyword, data, ref offset, BaseOffset, 20);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            AddInt(RawMinCount, data, ref offset, BaseOffset, 0);
+            AddInt(RawMaxCount, data, ref offset, BaseOffset, 4);
+            AddEnum(Keyword, data, ref offset, BaseOffset, 8);
+
+            FinishSerializing(data, ref offset, BaseOffset, 10, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

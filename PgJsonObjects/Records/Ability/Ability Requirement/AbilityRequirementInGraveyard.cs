@@ -4,10 +4,12 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementInGraveyard : AbilityRequirement, IPgAbilityRequirementInGraveyard
     {
+        public override OtherRequirementType Type { get { return OtherRequirementType.InGraveyard; } }
+
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.InGraveyard) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
         }; } }
 
         #region Indexing
@@ -27,15 +29,13 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType.InGraveyard, data, ref offset, BaseOffset, 0);
-            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 12, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 0, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

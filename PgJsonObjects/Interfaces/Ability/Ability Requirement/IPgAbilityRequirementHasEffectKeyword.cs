@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementHasEffectKeyword
+    public interface IPgAbilityRequirementHasEffectKeyword : IPgAbilityRequirement
     {
         AbilityKeyword Keyword { get; }
     }

@@ -4,19 +4,18 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementDruidEventState : AbilityRequirement, IPgAbilityRequirementDruidEventState
     {
-        public AbilityRequirementDruidEventState(string RawDisallowedState, ParseErrorInfo ErrorInfo)
+        public AbilityRequirementDruidEventState(DisallowedState DisallowedState)
         {
-            DisallowedState ParsedDisallowedState;
-            StringToEnumConversion<DisallowedState>.TryParse(RawDisallowedState, out ParsedDisallowedState, ErrorInfo);
-            DisallowedState = ParsedDisallowedState;
+            this.DisallowedState = DisallowedState;
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.DruidEventState; } }
         public DisallowedState DisallowedState { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.DruidEventState) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "DisallowedStates", new FieldParser() {
                 Type = FieldType.StringArray,
                 GetStringArray = () => GenericJsonObject.CreateSingleOrEmptyStringList(StringToEnumConversion<DisallowedState>.ToString(DisallowedState)) } },
@@ -29,7 +28,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                AddWithFieldSeparator(ref Result, TextMaps.DisallowedStateTextMap[DisallowedState]);
+                if (DisallowedState != DisallowedState.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.DisallowedStateTextMap[DisallowedState]);
 
                 return Result;
             }
@@ -39,16 +39,15 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType.DruidEventState, data, ref offset, BaseOffset, 0);
-            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
-            AddEnum(DisallowedState, data, ref offset, BaseOffset, 12);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 14, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            AddEnum(DisallowedState, data, ref offset, BaseOffset, 0);
+
+            FinishSerializing(data, ref offset, BaseOffset, 2, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

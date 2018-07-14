@@ -19,14 +19,15 @@ namespace PgJsonObjects
             return new PgAbilityRequirementInteractionFlagSet(data, ref offset);
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.InteractionFlagSet; } }
         public override string Key { get { return GetString(4); } }
-        public string InteractionFlag { get { return GetString(8); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public string InteractionFlag { get { return GetString(12); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.InteractionFlagSet) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "InteractionFlag", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => InteractionFlag } },

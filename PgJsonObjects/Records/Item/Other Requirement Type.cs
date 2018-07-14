@@ -2,12 +2,8 @@
 {
     public enum OtherRequirementType
     {
-        //TODO remove corresponding classes
         Internal_None,
-        //IsAdmin,
         IsLycanthrope,
-        //CurHealth,
-        //Race,
         HasEffectKeyword,
         FullMoon,
         IsHardcore,
@@ -20,10 +16,8 @@
         HasInventorySpaceFor,
         IsVegetarian,
         InGraveyard,
-        //Appearance,
         Or,
         EquippedItemKeyword,
-        //GardenPlantMax,
         QuestCompleted,
         MinFavorLevel,
         MinSkillLevel,

@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementIsVegetarian
+    public interface IPgAbilityRequirementIsVegetarian : IPgAbilityRequirement
     {
     }
 }

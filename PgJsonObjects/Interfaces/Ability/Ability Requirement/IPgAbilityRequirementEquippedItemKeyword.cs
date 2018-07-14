@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementEquippedItemKeyword
+    public interface IPgAbilityRequirementEquippedItemKeyword : IPgAbilityRequirement
     {
         int MinCount { get; }
         int? RawMinCount { get; }

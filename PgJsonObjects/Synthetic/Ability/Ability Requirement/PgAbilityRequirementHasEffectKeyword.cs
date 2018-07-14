@@ -19,6 +19,7 @@ namespace PgJsonObjects
             return new PgAbilityRequirementHasEffectKeyword(data, ref offset);
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.HasEffectKeyword; } }
         public override string Key { get { return GetString(4); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public AbilityKeyword Keyword { get { return GetEnum<AbilityKeyword>(12); } }
@@ -26,7 +27,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.HasEffectKeyword) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "Keyword", new FieldParser() {
                 Type = FieldType.String,
                 GetString  = () => StringToEnumConversion<AbilityKeyword>.ToString(Keyword) } },

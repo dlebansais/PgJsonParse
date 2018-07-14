@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementFullMoon
+    public interface IPgAbilityRequirementFullMoon : IPgAbilityRequirement
     {
     }
 }

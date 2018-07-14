@@ -4,15 +4,13 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementPetCount : AbilityRequirement, IPgAbilityRequirementPetCount
     {
-        public AbilityRequirementPetCount(string RawPetTypeTag, double? RawMaxCount, ParseErrorInfo ErrorInfo)
+        public AbilityRequirementPetCount(RecipeKeyword petTypeTag, double? rawMaxCount)
         {
-            RecipeKeyword ParsedPetTypeTag;
-            StringToEnumConversion<RecipeKeyword>.TryParse(RawPetTypeTag, out ParsedPetTypeTag, ErrorInfo);
-            PetTypeTag = ParsedPetTypeTag;
-
-            this.RawMaxCount = RawMaxCount;
+            PetTypeTag = petTypeTag;
+            RawMaxCount = rawMaxCount;
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.PetCount; } }
         public double MaxCount { get { return RawMaxCount.HasValue ? RawMaxCount.Value : 0; } }
         public double? RawMaxCount { get; private set; }
         public RecipeKeyword PetTypeTag { get; private set; }
@@ -20,7 +18,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.PetCount) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "PetTypeTag", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<RecipeKeyword>.ToString(PetTypeTag) } },
@@ -36,7 +34,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                AddWithFieldSeparator(ref Result, TextMaps.RecipeKeywordTextMap[PetTypeTag]);
+                if (PetTypeTag != RecipeKeyword.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.RecipeKeywordTextMap[PetTypeTag]);
 
                 return Result;
             }
@@ -46,17 +45,16 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType.PetCount, data, ref offset, BaseOffset, 0);
-            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddDouble(RawMaxCount, data, ref offset, BaseOffset, 8);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
-            AddEnum(PetTypeTag, data, ref offset, BaseOffset, 16);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 18, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            AddDouble(RawMaxCount, data, ref offset, BaseOffset, 0);
+            AddEnum(PetTypeTag, data, ref offset, BaseOffset, 4);
+
+            FinishSerializing(data, ref offset, BaseOffset, 6, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

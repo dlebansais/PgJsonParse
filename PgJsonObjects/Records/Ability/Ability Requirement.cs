@@ -32,25 +32,13 @@ namespace PgJsonObjects
 
         public AbilityRequirement ToSpecificAbilityRequirement(ParseErrorInfo ErrorInfo)
         {
-            switch (OtherRequirementType)
+            switch (Type)
             {
-/*                case OtherRequirementType.IsAdmin:
-                    return new IsAdminAbilityRequirement();*/
-
                 case OtherRequirementType.IsLycanthrope:
                     return new AbilityRequirementIsLycanthrope();
 
-/*                case OtherRequirementType.CurHealth:
-                    return new CurHealthAbilityRequirement(RawHealth);*/
-
-/*                case OtherRequirementType.Race:
-                    if (RawAllowedRace != null)
-                        return new SingleRaceAbilityRequirement(RawAllowedRace, ErrorInfo);
-                    else
-                        return new RaceAbilityRequirement(RawAllowedRaceList, ErrorInfo);*/
-
                 case OtherRequirementType.HasEffectKeyword:
-                    return new AbilityRequirementHasEffectKeyword(RawKeyword, ErrorInfo);
+                    return new AbilityRequirementHasEffectKeyword(Keyword);
 
                 case OtherRequirementType.FullMoon:
                     return new AbilityRequirementFullMoon();
@@ -59,10 +47,10 @@ namespace PgJsonObjects
                     return new AbilityRequirementIsHardcore();
 
                 case OtherRequirementType.DruidEventState:
-                    return new AbilityRequirementDruidEventState(RawDisallowedState, ErrorInfo);
+                    return new AbilityRequirementDruidEventState(DisallowedState);
 
                 case OtherRequirementType.PetCount:
-                    return new AbilityRequirementPetCount(RawPetTypeTag, RawMaxCount, ErrorInfo);
+                    return new AbilityRequirementPetCount(PetTypeTag, RawMaxCount);
 
                 case OtherRequirementType.RecipeKnown:
                     return new AbilityRequirementRecipeKnown(RawRecipeKnown);
@@ -85,20 +73,11 @@ namespace PgJsonObjects
                 case OtherRequirementType.InGraveyard:
                     return new AbilityRequirementInGraveyard();
 
-/*                case OtherRequirementType.Appearance:
-                    if (RawAppearance != null)
-                        return new SingleAppearanceAbilityRequirement(RawAppearance, ErrorInfo);
-                    else
-                        return new AppearanceAbilityRequirement(RawAppearanceList, ErrorInfo);*/
-
                 case OtherRequirementType.Or:
                     return new AbilityRequirementOr(OrList, RawErrorMsg);
 
                 case OtherRequirementType.EquippedItemKeyword:
-                    return new AbilityRequirementEquippedItemKeyword(RawKeyword, RawMinCount, RawMaxCount.HasValue ? (int?)RawMaxCount.Value : null, ErrorInfo);
-
-/*                case OtherRequirementType.GardenPlantMax:
-                    return new GardenPlantMaxAbilityRequirement(RawTypeTag, RawMax, ErrorInfo);*/
+                    return new AbilityRequirementEquippedItemKeyword(Keyword, RawMinCount, RawMaxCount.HasValue ? (int?)RawMaxCount.Value : null, ErrorInfo);
 
                 case OtherRequirementType.InteractionFlagSet:
                     return new AbilityRequirementInteractionFlagSet(RawInteractionFlag);
@@ -114,12 +93,12 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => OtherRequirementType = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<OtherRequirementType>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type, null, OtherRequirementType.Internal_None) } },
             { "Keyword", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => RawKeyword = value,
-                GetString  = () => RawKeyword } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Keyword = StringToEnumConversion<AbilityKeyword>.Parse(value, errorInfo),
+                GetString  = () => StringToEnumConversion<AbilityKeyword>.ToString(Keyword) } },
             { "Name", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawName = value,
@@ -155,11 +134,11 @@ namespace PgJsonObjects
             { "DisallowedStates", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseDisallowedStates,
-                GetStringArray = GenerateDisallowedStates } },
+                GetStringArray = () => GenericJsonObject.CreateSingleOrEmptyStringList(StringToEnumConversion<DisallowedState>.ToString(DisallowedState)) } },
             { "PetTypeTag", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => RawPetTypeTag = value,
-                GetString = () => RawPetTypeTag } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => PetTypeTag = StringToEnumConversion<RecipeKeyword>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<RecipeKeyword>.ToString(PetTypeTag) } },
             { "MaxCount", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMaxCount = value,
@@ -214,11 +193,13 @@ namespace PgJsonObjects
                 RawAppearanceList.Add(RawAppearance);
         }
 
-        private bool ParseDisallowedStates(string RawDisallowedState, ParseErrorInfo ErrorInfo)
+        private bool ParseDisallowedStates(string value, ParseErrorInfo ErrorInfo)
         {
-            if (this.RawDisallowedState == null)
+            if (DisallowedState == DisallowedState.Internal_None)
             {
-                this.RawDisallowedState = RawDisallowedState;
+                DisallowedState ParsedDisallowedState;
+                StringToEnumConversion<DisallowedState>.TryParse(value, out ParsedDisallowedState, ErrorInfo);
+                DisallowedState = ParsedDisallowedState;
                 return true;
             }
             else
@@ -228,23 +209,13 @@ namespace PgJsonObjects
             }
         }
 
-        private List<string> GenerateDisallowedStates()
-        {
-            List<string> Result = new List<string>();
-
-            if (RawDisallowedState != null)
-                Result.Add(RawDisallowedState);
-
-            return Result;
-        }
-
-        private OtherRequirementType OtherRequirementType;
+        public virtual OtherRequirementType Type { get; private set; }
         private double? RawHealth;
         private List<string> RawAllowedRaceList { get; } = new List<string>();
         private string RawAllowedRace;
-        private string RawKeyword;
-        private string RawDisallowedState;
-        private string RawPetTypeTag;
+        private AbilityKeyword Keyword;
+        private DisallowedState DisallowedState;
+        private RecipeKeyword PetTypeTag;
         private double? RawMaxCount;
         private string RawRecipeKnown;
         private string RawName;
@@ -278,8 +249,18 @@ namespace PgJsonObjects
         #endregion
 
         #region Serializing
+        protected void SerializeJsonObjectInternalProlog(byte[] data, ref int offset, Dictionary<int, string> StoredStringtable, Dictionary<int, List<string>> StoredStringListTable)
+        {
+            int BaseOffset = offset;
+
+            AddInt((int)Type, data, ref offset, BaseOffset, 0);
+            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
+        }
+
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
+            throw new InvalidOperationException();
         }
         #endregion
     }

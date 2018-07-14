@@ -5,11 +5,12 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementRecipeKnown : AbilityRequirement, IPgAbilityRequirementRecipeKnown
     {
-        public AbilityRequirementRecipeKnown(string RawRecipeKnown)
+        public AbilityRequirementRecipeKnown(string rawRecipeKnown)
         {
-            this.RawRecipeKnown = RawRecipeKnown;
+            RawRecipeKnown = rawRecipeKnown;
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.RecipeKnown; } }
         public IPgRecipe RecipeKnown { get; private set; }
         private string RawRecipeKnown;
         private bool IsRawRecipeKnownParsed;
@@ -17,7 +18,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.RecipeKnown) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "Recipe", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => RecipeKnown != null ? RecipeKnown.InternalName : null } },
@@ -30,7 +31,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                AddWithFieldSeparator(ref Result, RecipeKnown.Name);
+                if (RecipeKnown != null)
+                    AddWithFieldSeparator(ref Result, RecipeKnown.Name);
 
                 return Result;
             }
@@ -52,17 +54,17 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
-            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType.RecipeKnown, data, ref offset, BaseOffset, 0);
-            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddObject(RecipeKnown as ISerializableJsonObject, data, ref offset, BaseOffset, 8, StoredObjectTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+
+            AddObject(RecipeKnown as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementInHotspot
+    public interface IPgAbilityRequirementInHotspot : IPgAbilityRequirement
     {
         string Name { get; }
     }

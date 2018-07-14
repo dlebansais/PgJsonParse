@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementRecipeKnown
+    public interface IPgAbilityRequirementRecipeKnown : IPgAbilityRequirement
     {
         IPgRecipe RecipeKnown { get; }
     }

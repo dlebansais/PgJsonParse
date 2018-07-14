@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IPgAbilityRequirementIsVolunteerGuide
+    public interface IPgAbilityRequirementIsVolunteerGuide : IPgAbilityRequirement
     {
     }
 }

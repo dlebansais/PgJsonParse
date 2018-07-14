@@ -4,17 +4,18 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementInHotspot : AbilityRequirement, IPgAbilityRequirementInHotspot
     {
-        public AbilityRequirementInHotspot(string RawName)
+        public AbilityRequirementInHotspot(string name)
         {
-            Name = RawName;
+            Name = name;
         }
 
+        public override OtherRequirementType Type { get { return OtherRequirementType.InHotspot; } }
         public string Name { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType.InHotspot) } },
+                GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "Name", new FieldParser() {
                 Type = FieldType.String,
                 GetString  = () => Name } },
@@ -37,16 +38,15 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddInt((int?)OtherRequirementType.InHotspot, data, ref offset, BaseOffset, 0);
-            AddString(Key, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddString(Name, data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
+            SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
+            int BaseOffset = offset;
 
-            FinishSerializing(data, ref offset, BaseOffset, 16, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            AddString(Name, data, ref offset, BaseOffset, 0, StoredStringtable);
+
+            FinishSerializing(data, ref offset, BaseOffset, 4, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion
