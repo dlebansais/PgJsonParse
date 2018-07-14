@@ -39,7 +39,7 @@ namespace PgJsonObjects
         #endregion
     }
 
-    public abstract class GenericJsonObject<T>: SerializableJsonObject, IGenericJsonObject, IObjectContentGenerator
+    public abstract class GenericJsonObject<T>: SerializableJsonObject, IGenericJsonObject, IJsonKey, IObjectContentGenerator
         where T: class
     {
         #region Implementation of IBackLinkable

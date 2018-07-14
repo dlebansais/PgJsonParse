@@ -530,6 +530,7 @@
     <Compile Include="Synthetic\XpTable\PgXpTableLevel.cs" />
     <Compile Include="Text Maps.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="Verifyer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgJsonReader\PgJsonReader.csproj">

@@ -986,7 +986,7 @@ namespace PgJsonParse
                 return;
             }
 
-            if (!ObjectList.UseJson)
+            if (!ObjectDefinition.UseJson)
             {
                 int offset;
 
@@ -1083,14 +1083,11 @@ namespace PgJsonParse
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
-                IParser FileParser = definition.FileParser;
+                IVerifyer FileVerifyer = definition.FileVerifyer;
 
                 string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
-                System.Collections.ICollection JsonObjectList = definition.JsonObjectList;
-                System.Collections.ICollection PgObjectList = definition.PgObjectList;
-                System.Collections.ICollection VerifiedObjectList = ObjectList.UseJson ? JsonObjectList : PgObjectList;
 
-                if (ObjectList.Verify && !FileParser.Verify(FilePath, VerifiedObjectList, definition.LoadAsArray, definition.LoadAsObject, definition.UseJavaFormat))
+                if (ObjectDefinition.Verify && !FileVerifyer.Verify(FilePath, definition.VerifedObjectList, definition.LoadAsArray, definition.LoadAsObject, definition.UseJavaFormat))
                     break;
             }
 
