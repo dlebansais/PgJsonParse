@@ -2,24 +2,24 @@
 
 namespace PgJsonObjects
 {
-    public class PgAbilityRequirementFullMoon: PgAbilityRequirement<PgAbilityRequirementFullMoon>, IPgAbilityRequirementFullMoon
+    public class PgAbilityRequirementIsInGraveyard: PgAbilityRequirement<PgAbilityRequirementIsInGraveyard>, IPgAbilityRequirementIsInGraveyard
     {
-        public PgAbilityRequirementFullMoon(byte[] data, ref int offset)
+        public PgAbilityRequirementIsInGraveyard(byte[] data, ref int offset)
             : base(data, offset)
         {
         }
 
-        protected override PgAbilityRequirementFullMoon CreateItem(byte[] data, ref int offset)
+        protected override PgAbilityRequirementIsInGraveyard CreateItem(byte[] data, ref int offset)
         {
             return CreateNew(data, ref offset);
         }
 
-        public static PgAbilityRequirementFullMoon CreateNew(byte[] data, ref int offset)
+        public static PgAbilityRequirementIsInGraveyard CreateNew(byte[] data, ref int offset)
         {
-            return new PgAbilityRequirementFullMoon(data, ref offset);
+            return new PgAbilityRequirementIsInGraveyard(data, ref offset);
         }
 
-        public override OtherRequirementType Type { get { return OtherRequirementType.FullMoon; } }
+        public override OtherRequirementType Type { get { return OtherRequirementType.InGraveyard; } }
         public override string Key { get { return GetString(4); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 

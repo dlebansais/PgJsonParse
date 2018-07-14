@@ -4,9 +4,9 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementInternal : AbilityRequirement, IGenericPgObject
     {
-        public AbilityRequirementInternal(AbilityItemKeyword Keyword)
+        public AbilityRequirementInternal(AbilityItemKeyword keyword)
         {
-            this.Keyword = Keyword;
+            Keyword = keyword;
         }
 
         public virtual void Init()

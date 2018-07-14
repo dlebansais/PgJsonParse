@@ -5,9 +5,9 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementHasInventorySpaceFor : AbilityRequirement, IPgAbilityRequirementHasInventorySpaceFor
     {
-        public AbilityRequirementHasInventorySpaceFor(string RawItem)
+        public AbilityRequirementHasInventorySpaceFor(string rawItem)
         {
-            this.RawItem = RawItem;
+            RawItem = rawItem;
         }
 
         public override OtherRequirementType Type { get { return OtherRequirementType.HasInventorySpaceFor; } }

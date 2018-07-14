@@ -2,6 +2,6 @@
 {
     public interface IPgAbilityRequirementRecipeKnown : IPgAbilityRequirement
     {
-        IPgRecipe RecipeKnown { get; }
+        IPgRecipe Recipe { get; }
     }
 }

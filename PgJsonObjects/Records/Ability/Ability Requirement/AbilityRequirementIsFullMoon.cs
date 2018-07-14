@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class AbilityRequirementFullMoon : AbilityRequirement, IPgAbilityRequirementFullMoon
+    public class AbilityRequirementIsFullMoon : AbilityRequirement, IPgAbilityRequirementIsFullMoon
     {
         public override OtherRequirementType Type { get { return OtherRequirementType.FullMoon; } }
 

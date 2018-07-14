@@ -42,7 +42,7 @@ namespace PgJsonObjects
                     break;
 
                 case OtherRequirementType.FullMoon:
-                    Result = PgAbilityRequirementFullMoon.CreateNew(data, ref offset);
+                    Result = PgAbilityRequirementIsFullMoon.CreateNew(data, ref offset);
                     break;
 
                 case OtherRequirementType.IsHardcore:
@@ -82,7 +82,7 @@ namespace PgJsonObjects
                     break;
 
                 case OtherRequirementType.InGraveyard:
-                    Result = PgAbilityRequirementInGraveyard.CreateNew(data, ref offset);
+                    Result = PgAbilityRequirementIsInGraveyard.CreateNew(data, ref offset);
                     break;
 
 /*                case OtherRequirementType.Appearance:

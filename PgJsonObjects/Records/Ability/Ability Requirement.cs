@@ -41,7 +41,7 @@ namespace PgJsonObjects
                     return new AbilityRequirementHasEffectKeyword(Keyword);
 
                 case OtherRequirementType.FullMoon:
-                    return new AbilityRequirementFullMoon();
+                    return new AbilityRequirementIsFullMoon();
 
                 case OtherRequirementType.IsHardcore:
                     return new AbilityRequirementIsHardcore();
@@ -71,7 +71,7 @@ namespace PgJsonObjects
                     return new AbilityRequirementIsVegetarian();
 
                 case OtherRequirementType.InGraveyard:
-                    return new AbilityRequirementInGraveyard();
+                    return new AbilityRequirementIsInGraveyard();
 
                 case OtherRequirementType.Or:
                     return new AbilityRequirementOr(OrList, RawErrorMsg);

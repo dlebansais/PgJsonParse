@@ -22,7 +22,7 @@ namespace PgJsonObjects
         public override OtherRequirementType Type { get { return OtherRequirementType.RecipeKnown; } }
         public override string Key { get { return GetString(4); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public IPgRecipe RecipeKnown { get { return GetObject(12, ref _RecipeKnown, PgRecipe.CreateNew); } } private IPgRecipe _RecipeKnown;
+        public IPgRecipe Recipe { get { return GetObject(12, ref _Recipe, PgRecipe.CreateNew); } } private IPgRecipe _Recipe;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
@@ -30,7 +30,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "Recipe", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RecipeKnown != null ? RecipeKnown.InternalName : null } },
+                GetString = () => Recipe != null ? Recipe.InternalName : null } },
         }; } }
     }
 }

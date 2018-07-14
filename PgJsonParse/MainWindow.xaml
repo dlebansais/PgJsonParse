@@ -244,7 +244,7 @@
                 <TextBlock>items equipped</TextBlock>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="AbilityRequirementFullMoonTemplate">
+        <DataTemplate x:Key="AbilityRequirementIsFullMoonTemplate">
             <TextBlock>Full Moon</TextBlock>
         </DataTemplate>
         <DataTemplate x:Key="GardenPlantMaxAbilityRequirementTemplate">
@@ -282,7 +282,7 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="AbilityRequirementInGraveyardTemplate">
+        <DataTemplate x:Key="AbilityRequirementIsInGraveyardTemplate">
             <TextBlock>In Graveyard</TextBlock>
         </DataTemplate>
         <DataTemplate x:Key="AbilityRequirementInHotspotTemplate">

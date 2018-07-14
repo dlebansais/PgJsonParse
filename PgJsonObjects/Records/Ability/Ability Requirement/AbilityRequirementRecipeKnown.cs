@@ -5,15 +5,15 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementRecipeKnown : AbilityRequirement, IPgAbilityRequirementRecipeKnown
     {
-        public AbilityRequirementRecipeKnown(string rawRecipeKnown)
+        public AbilityRequirementRecipeKnown(string rawRecipe)
         {
-            RawRecipeKnown = rawRecipeKnown;
+            RawRecipe = rawRecipe;
         }
 
         public override OtherRequirementType Type { get { return OtherRequirementType.RecipeKnown; } }
-        public IPgRecipe RecipeKnown { get; private set; }
-        private string RawRecipeKnown;
-        private bool IsRawRecipeKnownParsed;
+        public IPgRecipe Recipe { get; private set; }
+        private string RawRecipe;
+        private bool IsRawRecipeParsed;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
@@ -21,7 +21,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(Type) } },
             { "Recipe", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RecipeKnown != null ? RecipeKnown.InternalName : null } },
+                GetString = () => Recipe != null ? Recipe.InternalName : null } },
         }; } }
 
         #region Indexing
@@ -31,8 +31,8 @@ namespace PgJsonObjects
             {
                 string Result = "";
 
-                if (RecipeKnown != null)
-                    AddWithFieldSeparator(ref Result, RecipeKnown.Name);
+                if (Recipe != null)
+                    AddWithFieldSeparator(ref Result, Recipe.Name);
 
                 return Result;
             }
@@ -45,7 +45,7 @@ namespace PgJsonObjects
             bool IsConnected = false;
             Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
 
-            RecipeKnown = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRecipeKnown, RecipeKnown, ref IsRawRecipeKnownParsed, ref IsConnected, this);
+            Recipe = PgJsonObjects.Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRecipe, Recipe, ref IsRawRecipeParsed, ref IsConnected, this);
 
             return IsConnected;
         }
@@ -62,7 +62,7 @@ namespace PgJsonObjects
 
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
-            AddObject(RecipeKnown as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
+            AddObject(Recipe as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
 
             FinishSerializing(data, ref offset, BaseOffset, 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);

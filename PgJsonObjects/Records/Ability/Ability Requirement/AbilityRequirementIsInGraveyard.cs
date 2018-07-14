@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class AbilityRequirementInGraveyard : AbilityRequirement, IPgAbilityRequirementInGraveyard
+    public class AbilityRequirementIsInGraveyard : AbilityRequirement, IPgAbilityRequirementIsInGraveyard
     {
         public override OtherRequirementType Type { get { return OtherRequirementType.InGraveyard; } }
 

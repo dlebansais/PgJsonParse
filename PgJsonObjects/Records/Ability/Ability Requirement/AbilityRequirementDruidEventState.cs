@@ -4,9 +4,9 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementDruidEventState : AbilityRequirement, IPgAbilityRequirementDruidEventState
     {
-        public AbilityRequirementDruidEventState(DisallowedState DisallowedState)
+        public AbilityRequirementDruidEventState(DisallowedState disallowedState)
         {
-            this.DisallowedState = DisallowedState;
+            DisallowedState = disallowedState;
         }
 
         public override OtherRequirementType Type { get { return OtherRequirementType.DruidEventState; } }
