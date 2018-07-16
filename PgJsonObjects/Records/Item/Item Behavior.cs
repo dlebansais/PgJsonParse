@@ -42,7 +42,7 @@ namespace PgJsonObjects
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = ParseServerInfo,
                 SetArrayIsEmpty = () => RawIsServerInfoEmpty = true,
-                GetObjectArray = () => GenericJsonObject.CreateSingleOrEmptyList(ServerInfo),
+                GetObjectArray = () => ServerInfoCollection.CreateSingleOrEmptyList(ServerInfo),
                 GetArrayIsEmpty = () => IsServerInfoEmpty,
                 SimplifyArray = true } },
             { "UseRequirements", new FieldParser() {

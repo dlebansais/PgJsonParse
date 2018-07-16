@@ -24,7 +24,7 @@ namespace PgJsonObjects
 
         public override void Init()
         {
-            CombinedRequirementList = new AbilityRequirementCollection();
+            CombinedRequirementList = new PgAbilityRequirementCollection();
 
             foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
                 CombinedRequirementList.Add(new AbilityRequirementInternal(Keyword));
@@ -54,7 +54,7 @@ namespace PgJsonObjects
         public bool WorksUnderwater { get { return RawWorksUnderwater.HasValue && RawWorksUnderwater.Value; } }
         public bool? RawWorksUnderwater { get { return GetBool(6, 14); } }
         public List<Deaths> CausesOfDeathList { get { return GetEnumList(8, ref _CausesOfDeathList); } } private List<Deaths> _CausesOfDeathList;
-        public RecipeCostCollection CostList { get { return GetObjectList(12, ref _CostList, RecipeCostCollection.CreateItem, () => new RecipeCostCollection()); } } private RecipeCostCollection _CostList;
+        public IPgRecipeCostCollection CostList { get { return GetObjectList(12, ref _CostList, PgRecipeCostCollection.CreateItem, () => new PgRecipeCostCollection()); } } private IPgRecipeCostCollection _CostList;
         public int CombatRefreshBaseAmount { get { return RawCombatRefreshBaseAmount.HasValue ? RawCombatRefreshBaseAmount.Value : 0; } }
         public int? RawCombatRefreshBaseAmount { get { return GetInt(16); } }
         public PowerSkill CompatibleSkill { get { return GetEnum<PowerSkill>(20); } }
@@ -93,10 +93,6 @@ namespace PgJsonObjects
         public string SelfParticle { get { return GetString(108); } }
         public IPgAbility SharesResetTimerWith { get { return GetObject(112, ref _SharesResetTimerWith, CreateNew); } } private IPgAbility _SharesResetTimerWith;
         public IPgSkill Skill { get { return GetObject(116, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
-
-        //public AbilityRequirementCollection CombinedRequirementList { get { return GetObjectList(116, ref _CombinedRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _CombinedRequirementList;
-        public AbilityRequirementCollection CombinedRequirementList { get; private set; }
-
         public string SpecialInfo { get { return GetString(124); } }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
         public int? RawSpecialTargetingTypeReq { get { return GetInt(128); } }
@@ -107,11 +103,11 @@ namespace PgJsonObjects
         public ConsumedItems ConsumedItems { get { return GetEnum<ConsumedItems>(142); } }
         public IPgAbility AbilityGroup { get { return GetObject(144, ref _AbilityGroup, CreateNew); } } private IPgAbility _AbilityGroup;
         public IPgItem ConsumedItemLink { get { return GetObject(148, ref _ConsumedItemLink, PgItem.CreateNew); } } private IPgItem _ConsumedItemLink;
-        public AttributeCollection AttributesThatDeltaAmmoStickChanceList { get { return GetObjectList(152, ref _AttributesThatDeltaAmmoStickChanceList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaAmmoStickChanceList;
-        public AttributeCollection AttributesThatDeltaDelayLoopTimeList { get { return GetObjectList(156, ref _AttributesThatDeltaDelayLoopTimeList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaDelayLoopTimeList;
-        public AttributeCollection AttributesThatDeltaPowerCostList { get { return GetObjectList(160, ref _AttributesThatDeltaPowerCostList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaPowerCostList;
-        public AttributeCollection AttributesThatDeltaResetTimeList { get { return GetObjectList(164, ref _AttributesThatDeltaResetTimeList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaResetTimeList;
-        public AttributeCollection AttributesThatModPowerCostList { get { return GetObjectList(168, ref _AttributesThatModPowerCostList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatModPowerCostList;
+        public IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get { return GetObjectList(152, ref _AttributesThatDeltaAmmoStickChanceList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaAmmoStickChanceList;
+        public IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get { return GetObjectList(156, ref _AttributesThatDeltaDelayLoopTimeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaDelayLoopTimeList;
+        public IPgAttributeCollection AttributesThatDeltaPowerCostList { get { return GetObjectList(160, ref _AttributesThatDeltaPowerCostList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaPowerCostList;
+        public IPgAttributeCollection AttributesThatDeltaResetTimeList { get { return GetObjectList(164, ref _AttributesThatDeltaResetTimeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaResetTimeList;
+        public IPgAttributeCollection AttributesThatModPowerCostList { get { return GetObjectList(168, ref _AttributesThatModPowerCostList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModPowerCostList;
         public string ConsumedItemKeyword { get { return GetString(172); } }
         //public List<GenericSource> SourceList { get { return GetObjectList(148, ref _SourceList); } } private List<GenericSource> _SourceList;
         public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
@@ -124,9 +120,10 @@ namespace PgJsonObjects
         public bool RawAttributesThatDeltaResetTimeListIsEmpty { get { return GetBool(176, 10).Value; } }
         public bool RawAttributesThatModPowerCostListIsEmpty { get { return GetBool(176, 12).Value; } }
         public PowerSkill RawSkill { get { return GetEnum<PowerSkill>(178); } }
-        public AbilityRequirementCollection SpecialCasterRequirementList { get { return GetObjectList(180, ref _SpecialCasterRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _SpecialCasterRequirementList;
+        public IPgAbilityRequirementCollection SpecialCasterRequirementList { get { return GetObjectList(180, ref _SpecialCasterRequirementList, PgAbilityRequirementCollection.CreateItem, () => new PgAbilityRequirementCollection()); } } private IPgAbilityRequirementCollection _SpecialCasterRequirementList;
         protected override List<string> FieldTableOrder { get { return GetStringList(184, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public ConsumedItem ConsumedItem { get; private set; }
+        public IPgAbilityRequirementCollection CombinedRequirementList { get; private set; }
 
         #region Parsing
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {

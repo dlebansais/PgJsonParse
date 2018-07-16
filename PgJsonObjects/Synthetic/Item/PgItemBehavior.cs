@@ -39,7 +39,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, TextMaps.UseVerbMap, ItemUseVerb.Internal_None) } },
             { "ServerInfo", new FieldParser() {
                 Type = FieldType.ObjectArray,
-                GetObjectArray = () => GenericJsonObject.CreateSingleOrEmptyList(ServerInfo),
+                GetObjectArray = () => PgServerInfoCollection.CreateSingleOrEmptyList(ServerInfo),
                 GetArrayIsEmpty = () => IsServerInfoEmpty,
                 SimplifyArray = true } },
             { "UseRequirements", new FieldParser() {

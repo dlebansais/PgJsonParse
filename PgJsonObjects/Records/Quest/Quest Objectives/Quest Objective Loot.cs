@@ -48,7 +48,7 @@ namespace PgJsonObjects
 
         #region Properties
         public IPgItem QuestItem { get; private set; }
-        public ItemCollection ItemList { get; private set; } = new ItemCollection();
+        public IPgItemCollection ItemList { get; private set; } = new ItemCollection();
         public ItemKeyword ItemTarget { get; private set; }
         public MonsterTypeTag MonsterTypeTag { get; private set; }
         public bool HasMonsterTypeTag { get { return MonsterTypeTag != MonsterTypeTag.Internal_None; } }
@@ -103,7 +103,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
 
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObjectList(ItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);

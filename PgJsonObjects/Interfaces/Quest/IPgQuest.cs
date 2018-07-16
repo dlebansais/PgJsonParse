@@ -10,9 +10,9 @@ namespace PgJsonObjects
         string Description { get; }
         int Version { get; }
         int? RawVersion { get; }
-        QuestObjectiveCollection QuestObjectiveList { get; }
-        QuestRewardXpCollection RewardsXPList { get; }
-        QuestRewardItemCollection QuestRewardsItemList { get; }
+        IPgQuestObjectiveCollection QuestObjectiveList { get; }
+        IPgQuestRewardXpCollection RewardsXPList { get; }
+        IPgQuestRewardItemCollection QuestRewardsItemList { get; }
         TimeSpan? RawReuseTime { get; }
         int RewardCombatXP { get; }
         int? RawRewardCombatXP { get; }
@@ -31,13 +31,13 @@ namespace PgJsonObjects
         int? RawRewardGuildXp { get; }
         int RewardGuildCredits { get; }
         int? RawRewardGuildCredits { get; }
-        QuestRewardItemCollection PreGiveItemList { get; }
+        IPgQuestRewardItemCollection PreGiveItemList { get; }
         int TSysLevel { get; }
         int? RawTSysLevel { get; }
         int RewardGold { get; }
         int? RawRewardGold { get; }
         string RewardsNamedLootProfile { get; }
-        RecipeCollection PreGiveRecipeList { get; }
+        IPgRecipeCollection PreGiveRecipeList { get; }
         List<QuestKeyword> KeywordList { get; }
         IPgEffect RewardEffect { get; }
         IPgLoreBook RewardLoreBook { get; }
@@ -59,9 +59,9 @@ namespace PgJsonObjects
         int Level { get; }
         int? RawLevel { get; }
         IPgSkill WorkOrderSkill { get; }
-        QuestCollection FollowUpQuestList { get; }
-        QuestRequirementCollection QuestRequirementList { get; }
-        QuestRequirementCollection QuestRequirementToSustainList { get; }
+        IPgQuestCollection FollowUpQuestList { get; }
+        IPgQuestRequirementCollection QuestRequirementList { get; }
+        IPgQuestRequirementCollection QuestRequirementToSustainList { get; }
         int? RawReuseTime_Minutes { get; }
         int? RawReuseTime_Hours { get; }
         int? RawReuseTime_Days { get; }
@@ -78,5 +78,7 @@ namespace PgJsonObjects
         bool? RawIsQuestRequirementListSimple { get; }
         bool IsQuestRequirementListNested { get; }
         bool? RawIsQuestRequirementListNested { get; }
+        IPgQuestRewardCollection QuestRewardList { get; }
+        List<string> RawRewardInteractionFlags { get; }
     }
 }

@@ -181,7 +181,7 @@ namespace PgJsonObjects
             offset += 4;
         }
 
-        protected void AddObjectList(ISerializableJsonObjectCollection value, byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable)
+        protected void AddObjectList(IPgCollection value, byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, IPgCollection> StoredObjectListTable)
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
@@ -189,7 +189,7 @@ namespace PgJsonObjects
             offset += 4;
         }
 
-        protected void FinishSerializing(byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, string> StoredStringtable, Dictionary<int, ISerializableJsonObject> StoredObjectTable, Dictionary<int, List<bool>> StoredBoolListTable, Dictionary<int, IList> StoredEnumListTable, Dictionary<int, List<int>> StoredIntListTable, Dictionary<int, List<uint>> StoredUIntListTable, Dictionary<int, List<string>> StoredStringListTable, Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable)
+        protected void FinishSerializing(byte[] data, ref int offset, int baseOffset, int expectedOffset, Dictionary<int, string> StoredStringtable, Dictionary<int, ISerializableJsonObject> StoredObjectTable, Dictionary<int, List<bool>> StoredBoolListTable, Dictionary<int, IList> StoredEnumListTable, Dictionary<int, List<int>> StoredIntListTable, Dictionary<int, List<uint>> StoredUIntListTable, Dictionary<int, List<string>> StoredStringListTable, Dictionary<int, IPgCollection> StoredObjectListTable)
         {
             Debug.Assert(offset == baseOffset + expectedOffset);
 
@@ -222,7 +222,7 @@ namespace PgJsonObjects
                     FinishSerializingStringList(data, ref offset, Entry.Key, Entry.Value);
 
             if (StoredObjectListTable != null)
-                foreach (KeyValuePair<int, ISerializableJsonObjectCollection> Entry in StoredObjectListTable)
+                foreach (KeyValuePair<int, IPgCollection> Entry in StoredObjectListTable)
                     FinishSerializingObjectList(data, ref offset, Entry.Key, Entry.Value);
         }
 
@@ -465,8 +465,10 @@ namespace PgJsonObjects
             }
         }
 
-        protected void FinishSerializingObjectList(byte[] data, ref int offset, int redirectionOffset, ISerializableJsonObjectCollection ObjectList)
+        protected void FinishSerializingObjectList(byte[] data, ref int offset, int redirectionOffset, IPgCollection ObjectList)
         {
+            int Count = (ObjectList as IList).Count;
+
             if (data != null)
             {
                 byte[] valueData = BitConverter.GetBytes(offset);
@@ -475,17 +477,17 @@ namespace PgJsonObjects
 
             if (data != null)
             {
-                byte[] LengthData = BitConverter.GetBytes(ObjectList.Count);
+                byte[] LengthData = BitConverter.GetBytes(Count);
                 Array.Copy(LengthData, 0, data, offset, 4);
             }
 
             offset += 4;
             int ListOffset = offset;
-            offset += ObjectList.Count * 4;
+            offset += Count * 4;
 
-            for (int i = 0; i < ObjectList.Count; i++)
+            for (int i = 0; i < Count; i++)
             {
-                ISerializableJsonObject ObjectValue = ObjectList[i] as ISerializableJsonObject;
+                ISerializableJsonObject ObjectValue = (ObjectList as IList)[i] as ISerializableJsonObject;
                 int ObjectOffset;
 
                 if (IsObjectSerialized(ObjectValue))

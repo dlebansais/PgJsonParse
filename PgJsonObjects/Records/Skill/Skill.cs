@@ -29,8 +29,8 @@ namespace PgJsonObjects
         public List<PowerSkill> CompatibleCombatSkillList { get; } = new List<PowerSkill>();
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
         public int? RawMaxBonusLevels { get; private set; }
-        public LevelCapInteractionCollection InteractionFlagLevelCapList { get; } = new LevelCapInteractionCollection();
-        public RewardCollection RewardList { get; } = new RewardCollection();
+        public IPgLevelCapInteractionCollection InteractionFlagLevelCapList { get; } = new LevelCapInteractionCollection();
+        public IPgRewardCollection RewardList { get; } = new RewardCollection();
         public string Name { get; private set; }
         public IPgSkill ParentSkill { get; private set; }
         public List<SkillCategory> TSysCategoryList { get; } = new List<SkillCategory>();
@@ -551,7 +551,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static List<SkillRewardCommon> CreateCombinedRewardList(List<IPgLevelCapInteraction> InteractionFlagLevelCapList, List<int> AdvancementHintTableKey, List<string> AdvancementHintTableValue, List<IPgReward> RewardList, List<int> ReportTableKey, List<string> ReportTableValue)
+        public static List<SkillRewardCommon> CreateCombinedRewardList(IPgLevelCapInteractionCollection InteractionFlagLevelCapList, List<int> AdvancementHintTableKey, List<string> AdvancementHintTableValue, IPgRewardCollection RewardList, List<int> ReportTableKey, List<string> ReportTableValue)
         {
             List<SkillRewardCommon> CombinedRewardList = new List<SkillRewardCommon>();
 
@@ -662,7 +662,7 @@ namespace PgJsonObjects
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddEnum(CombatSkill, data, ref offset, BaseOffset, 4);

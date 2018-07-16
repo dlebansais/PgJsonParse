@@ -28,7 +28,7 @@ namespace PgJsonObjects
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
         public double? RawPercentChance { get { return GetDouble(16); } }
         public List<RecipeItemKey> ItemKeyList { get { return GetEnumList(20, ref _ItemKeyList); } } private List<RecipeItemKey> _ItemKeyList;
-        public ItemCollection MatchingKeyItemList { get { return GetObjectList(24, ref _MatchingKeyItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _MatchingKeyItemList;
+        public IPgItemCollection MatchingKeyItemList { get { return GetObjectList(24, ref _MatchingKeyItemList, PgItemCollection.CreateItem, () => new PgItemCollection()); } } private IPgItemCollection _MatchingKeyItemList;
         public string Desc { get { return GetString(28); } }
         public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
         public double? RawChanceToConsume { get { return GetDouble(32); } }

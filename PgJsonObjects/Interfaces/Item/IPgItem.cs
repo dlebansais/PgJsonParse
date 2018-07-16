@@ -19,7 +19,7 @@ namespace PgJsonObjects
         AppearanceSkin ItemAppearancePlate { get; }
         uint ItemAppearanceColor { get; }
         uint? RawItemAppearanceColor { get; }
-        ItemEffectCollection EffectDescriptionList { get; }
+        IPgItemEffectCollection EffectDescriptionList { get; }
         uint DyeColor { get; }
         uint? RawDyeColor { get; }
         string EquipAppearance { get; }
@@ -52,14 +52,14 @@ namespace PgJsonObjects
         int MaxStackSize { get; }
         int? RawMaxStackSize { get; }
         string Name { get; }
-        ItemSkillLinkCollection SkillRequirementList { get; }
+        IPgItemSkillLinkCollection SkillRequirementList { get; }
         List<uint> StockDye { get; }
         List<string> StockDyeByName { get; }
         double Value { get; }
         double? RawValue { get; }
         int NumUses { get; }
         int? RawNumUses { get; }
-        ItemBehaviorCollection BehaviorList { get; }
+        IPgItemBehaviorCollection BehaviorList { get; }
         string DynamicCraftingSummary { get; }
         int BestowTitle { get; }
         int? RawBestowTitle { get; }
@@ -67,7 +67,7 @@ namespace PgJsonObjects
         int? RawBestowLoreBook { get; }
         IPgLoreBook ConnectedLoreBook { get; }
         List<string> KeywordValueList { get; }
-        RecipeCollection BestowRecipeList { get; }
+        IPgRecipeCollection BestowRecipeList { get; }
         List<string> AppearanceDetailList { get; }
         List<string> RawKeywordList { get; }
     }

@@ -23,7 +23,7 @@ namespace PgJsonObjects
 
         public override string Key { get { return GetString(0); } }
         public string InternalName { get { return GetString(4); } }
-        public XpTableLevelCollection XpAmountList { get { return GetObjectList(8, ref _XpAmountList, XpTableLevelCollection.CreateItem, () => new XpTableLevelCollection()); } } private XpTableLevelCollection _XpAmountList;
+        public IPgXpTableLevelCollection XpAmountList { get { return GetObjectList(8, ref _XpAmountList, PgXpTableLevelCollection.CreateItem, () => new PgXpTableLevelCollection()); } } private IPgXpTableLevelCollection _XpAmountList;
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public XpTableEnum EnumName { get { return GetEnum<XpTableEnum>(16); } }
 

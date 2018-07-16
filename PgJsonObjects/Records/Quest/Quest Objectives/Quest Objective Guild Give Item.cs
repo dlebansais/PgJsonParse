@@ -52,7 +52,7 @@ namespace PgJsonObjects
         public IPgItem QuestItem { get; private set; }
         public IPgGameNpc DeliverNpc { get; private set; }
         public ItemKeyword ItemKeyword { get; private set; }
-        public ItemCollection ItemList { get; private set; } = new ItemCollection();
+        public IPgItemCollection ItemList { get; private set; } = new ItemCollection();
         public string DeliverNpcId { get; private set; }
         public string DeliverNpcName { get; private set; }
 
@@ -113,7 +113,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
 
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObject(DeliverNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);

@@ -22,7 +22,7 @@ namespace PgJsonObjects
         public override OtherRequirementType Type { get { return OtherRequirementType.Or; } }
         public override string Key { get { return GetString(4); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public AbilityRequirementCollection OrList { get { return GetObjectList(12, ref _OrList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OrList;
+        public IPgAbilityRequirementCollection OrList { get { return GetObjectList(12, ref _OrList, PgAbilityRequirementCollection.CreateItem, () => new PgAbilityRequirementCollection()); } } private IPgAbilityRequirementCollection _OrList;
         public string ErrorMsg { get { return GetString(16); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {

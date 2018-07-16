@@ -13,9 +13,9 @@ namespace PgJsonObjects
         public string Description { get; private set; }
         public int Version { get { return RawVersion.HasValue ? RawVersion.Value : 0; } }
         public int? RawVersion { get; private set; }
-        public QuestObjectiveCollection QuestObjectiveList { get; } = new QuestObjectiveCollection();
-        public QuestRewardXpCollection RewardsXPList { get; } = new QuestRewardXpCollection();
-        public QuestRewardItemCollection QuestRewardsItemList { get; } = new QuestRewardItemCollection();
+        public IPgQuestObjectiveCollection QuestObjectiveList { get; } = new QuestObjectiveCollection();
+        public IPgQuestRewardXpCollection RewardsXPList { get; } = new QuestRewardXpCollection();
+        public IPgQuestRewardItemCollection QuestRewardsItemList { get; } = new QuestRewardItemCollection();
         public TimeSpan? RawReuseTime { get; private set; }
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get; private set; }
@@ -34,13 +34,13 @@ namespace PgJsonObjects
         public int? RawRewardGuildXp { get; private set; }
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
         public int? RawRewardGuildCredits { get; private set; }
-        public QuestRewardItemCollection PreGiveItemList { get; } = new QuestRewardItemCollection();
+        public IPgQuestRewardItemCollection PreGiveItemList { get; } = new QuestRewardItemCollection();
         public int TSysLevel { get { return RawTSysLevel.HasValue ? RawTSysLevel.Value : 0; } }
         public int? RawTSysLevel { get; private set; }
         public int RewardGold { get { return RawRewardGold.HasValue ? RawRewardGold.Value : 0; } }
         public int? RawRewardGold { get; private set; }
         public string RewardsNamedLootProfile { get; private set; }
-        public RecipeCollection PreGiveRecipeList { get; private set; } = new RecipeCollection();
+        public IPgRecipeCollection PreGiveRecipeList { get; private set; } = new RecipeCollection();
         public List<QuestKeyword> KeywordList { get; } = new List<QuestKeyword>();
         public IPgEffect RewardEffect { get; private set; }
         public IPgLoreBook RewardLoreBook { get; private set; }
@@ -62,9 +62,9 @@ namespace PgJsonObjects
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get; private set; }
         public IPgSkill WorkOrderSkill { get; private set; }
-        public QuestCollection FollowUpQuestList { get; private set; } = new QuestCollection();
-        public QuestRequirementCollection QuestRequirementList { get; private set; } = new QuestRequirementCollection();
-        public QuestRequirementCollection QuestRequirementToSustainList { get; private set; } = new QuestRequirementCollection();
+        public IPgQuestCollection FollowUpQuestList { get; private set; } = new QuestCollection();
+        public IPgQuestRequirementCollection QuestRequirementList { get; private set; } = new QuestRequirementCollection();
+        public IPgQuestRequirementCollection QuestRequirementToSustainList { get; private set; } = new QuestRequirementCollection();
         public int? RawReuseTime_Minutes { get; private set; }
         public int? RawReuseTime_Hours { get; private set; }
         public int? RawReuseTime_Days { get; private set; }
@@ -81,7 +81,7 @@ namespace PgJsonObjects
         public bool? RawIsQuestRequirementListSimple { get; private set; }
         public bool IsQuestRequirementListNested { get { return RawIsQuestRequirementListNested.HasValue && RawIsQuestRequirementListNested.Value; } }
         public bool? RawIsQuestRequirementListNested { get; private set; }
-        public QuestRewardCollection QuestRewardList { get; private set; } = new QuestRewardCollection();
+        public IPgQuestRewardCollection QuestRewardList { get; private set; } = new QuestRewardCollection();
         public List<string> RawRewardInteractionFlags { get; private set; } = new List<string>();
 
         private bool IsFavorNpcParsed;
@@ -1021,7 +1021,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(InternalName, data, ref offset, BaseOffset, 4, StoredStringtable);

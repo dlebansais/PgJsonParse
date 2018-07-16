@@ -12,14 +12,14 @@ namespace PgJsonObjects
         public string Description { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         public int? RawIconId { get; private set; }
-        public RecipeItemCollection IngredientList { get; } = new RecipeItemCollection();
+        public IPgRecipeItemCollection IngredientList { get; } = new RecipeItemCollection();
         public string InternalName { get; private set; }
         public string Name { get; private set; }
-        public RecipeItemCollection ResultItemList { get; } = new RecipeItemCollection();
+        public IPgRecipeItemCollection ResultItemList { get; } = new RecipeItemCollection();
         public IPgSkill Skill { get; private set; }
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; private set; }
-        public RecipeResultEffectCollection ResultEffectList { get; } = new RecipeResultEffectCollection();
+        public IPgRecipeResultEffectCollection ResultEffectList { get; } = new RecipeResultEffectCollection();
         public IPgSkill SortSkill { get; private set; }
         public List<RecipeKeyword> KeywordList { get; } = new List<RecipeKeyword>();
         public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
@@ -27,8 +27,8 @@ namespace PgJsonObjects
         public string UsageDelayMessage { get; private set; }
         public RecipeAction ActionLabel { get; private set; }
         public RecipeUsageAnimation UsageAnimation { get; private set; }
-        public AbilityRequirementCollection OtherRequirementList { get; } = new AbilityRequirementCollection();
-        public RecipeCostCollection CostList { get; } = new RecipeCostCollection();
+        public IPgAbilityRequirementCollection OtherRequirementList { get; } = new AbilityRequirementCollection();
+        public IPgRecipeCostCollection CostList { get; } = new RecipeCostCollection();
         public int NumResultItems { get { return RawNumResultItems.HasValue ? RawNumResultItems.Value : 0; } }
         public int? RawNumResultItems { get; private set; }
         public string UsageAnimationEnd { get; private set; }
@@ -992,7 +992,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static RecipeCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, RecipeKeyword Keyword, RecipeCollection RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgRecipeCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, RecipeKeyword Keyword, IPgRecipeCollection RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawRecipeParsed)
                 return RecipeList;
@@ -1089,7 +1089,7 @@ namespace PgJsonObjects
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(Description, data, ref offset, BaseOffset, 4, StoredStringtable);

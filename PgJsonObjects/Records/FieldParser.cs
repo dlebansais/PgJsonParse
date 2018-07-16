@@ -32,7 +32,7 @@ namespace PgJsonObjects
         public Func<IObjectContentGenerator> GetObject;
         public Func<List<int>> GetIntegerArray;
         public Func<List<string>> GetStringArray;
-        public Func<IList> GetObjectArray;
+        public Func<IPgCollection> GetObjectArray;
         public Func<bool> GetArrayIsEmpty;
 
         public bool SimplifyArray;

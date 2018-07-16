@@ -3,7 +3,7 @@
     public interface IPgXpTable : IJsonKey, IObjectContentGenerator
     {
         string InternalName { get; }
-        XpTableLevelCollection XpAmountList { get; }
+        IPgXpTableLevelCollection XpAmountList { get; }
         XpTableEnum EnumName { get; }
     }
 }

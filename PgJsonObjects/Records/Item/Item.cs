@@ -24,7 +24,7 @@ namespace PgJsonObjects
         public AppearanceSkin ItemAppearancePlate { get; private set; }
         public uint ItemAppearanceColor { get { return RawItemAppearanceColor.HasValue ? RawItemAppearanceColor.Value : 0; } }
         public uint? RawItemAppearanceColor { get; private set; }
-        public ItemEffectCollection EffectDescriptionList { get; } = new ItemEffectCollection();
+        public IPgItemEffectCollection EffectDescriptionList { get; } = new ItemEffectCollection();
         public uint DyeColor { get { return RawDyeColor.HasValue ? RawDyeColor.Value : 0; } }
         public uint? RawDyeColor { get; private set; }
         public string EquipAppearance { get; private set; }
@@ -56,14 +56,14 @@ namespace PgJsonObjects
         public int MaxStackSize { get { return RawMaxStackSize.HasValue ? RawMaxStackSize.Value : 0; } }
         public int? RawMaxStackSize { get; private set; }
         public string Name { get; private set; }
-        public ItemSkillLinkCollection SkillRequirementList { get; } = new ItemSkillLinkCollection();
+        public IPgItemSkillLinkCollection SkillRequirementList { get; } = new ItemSkillLinkCollection();
         public List<uint> StockDye { get; private set; } = new List<uint>();
         public List<string> StockDyeByName { get; private set; } = new List<string>();
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get; private set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
         public int? RawNumUses { get; private set; }
-        public ItemBehaviorCollection BehaviorList { get; } = new ItemBehaviorCollection();
+        public IPgItemBehaviorCollection BehaviorList { get; } = new ItemBehaviorCollection();
         public string DynamicCraftingSummary { get; private set; }
         public int BestowTitle { get { return RawBestowTitle.HasValue ? RawBestowTitle.Value : 0; } }
         public int? RawBestowTitle { get; private set; }
@@ -72,7 +72,7 @@ namespace PgJsonObjects
         public IPgLoreBook ConnectedLoreBook { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
         public List<string> KeywordValueList { get; } = new List<string>();
-        public RecipeCollection BestowRecipeList { get; private set; } = null;
+        public IPgRecipeCollection BestowRecipeList { get; private set; } = null;
         public List<string> AppearanceDetailList { get; private set; } = new List<string>();
         public List<string> RawKeywordList { get; private set; } = new List<string>();
         public int UnknownSkillReqIndex { get { return RawUnknownSkillReqIndex.HasValue ? RawUnknownSkillReqIndex.Value : 0; } }
@@ -880,7 +880,7 @@ namespace PgJsonObjects
             return ItemList;
         }
 
-        public static ItemCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, ItemKeyword Keyword, ItemCollection ItemList, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItemCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, ItemKeyword Keyword, IPgItemCollection ItemList, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -1022,7 +1022,7 @@ namespace PgJsonObjects
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<uint>> StoredUIntListTable = new Dictionary<int, List<uint>>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddObject(BestowAbility as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);

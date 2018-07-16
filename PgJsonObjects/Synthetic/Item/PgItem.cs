@@ -20,7 +20,6 @@ namespace PgJsonObjects
         public static PgItem CreateNew(byte[] data, ref int offset)
         {
             PgItem Result = new PgItem(data, ref offset);
-            ItemBehaviorCollection BehaviorList = Result.BehaviorList;
             return Result;
         }
 
@@ -40,7 +39,7 @@ namespace PgJsonObjects
         public AppearanceSkin ItemAppearancePlate { get { return GetEnum<AppearanceSkin>(34); } }
         public uint ItemAppearanceColor { get { return RawItemAppearanceColor.HasValue ? RawItemAppearanceColor.Value : 0; } }
         public uint? RawItemAppearanceColor { get { return GetUInt(36); } }
-        public ItemEffectCollection EffectDescriptionList { get { return GetObjectList(40, ref _EffectDescriptionList, ItemEffectCollection.CreateItem, () => new ItemEffectCollection()); } } private ItemEffectCollection _EffectDescriptionList;
+        public IPgItemEffectCollection EffectDescriptionList { get { return GetObjectList(40, ref _EffectDescriptionList, PgItemEffectCollection.CreateItem, () => new PgItemEffectCollection()); } } private IPgItemEffectCollection _EffectDescriptionList;
         public uint DyeColor { get { return RawDyeColor.HasValue ? RawDyeColor.Value : 0; } }
         public uint? RawDyeColor { get { return GetUInt(44); } }
         public string EquipAppearance { get { return GetString(48); } }
@@ -75,14 +74,14 @@ namespace PgJsonObjects
         public int MaxStackSize { get { return RawMaxStackSize.HasValue ? RawMaxStackSize.Value : 0; } }
         public int? RawMaxStackSize { get { return GetInt(88); } }
         public string Name { get { return GetString(92); } }
-        public ItemSkillLinkCollection SkillRequirementList { get { return GetObjectList(96, ref _SkillRequirementList, ItemSkillLinkCollection.CreateItem, () => new ItemSkillLinkCollection()); } } private ItemSkillLinkCollection _SkillRequirementList;
+        public IPgItemSkillLinkCollection SkillRequirementList { get { return GetObjectList(96, ref _SkillRequirementList, PgItemSkillLinkCollection.CreateItem, () => new PgItemSkillLinkCollection()); } } private IPgItemSkillLinkCollection _SkillRequirementList;
         public List<uint> StockDye { get { return GetUIntList(100, ref _StockDye); } } private List<uint> _StockDye;
         public List<string> StockDyeByName { get { return GetStringList(104, ref _StockDyeByName); } } private List<string> _StockDyeByName;
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get { return GetDouble(108); } }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
         public int? RawNumUses { get { return GetInt(112); } }
-        public ItemBehaviorCollection BehaviorList { get { return GetObjectList(116, ref _BehaviorList, ItemBehaviorCollection.CreateItem, () => new ItemBehaviorCollection()); } } private ItemBehaviorCollection _BehaviorList;
+        public IPgItemBehaviorCollection BehaviorList { get { return GetObjectList(116, ref _BehaviorList, PgItemBehaviorCollection.CreateItem, () => new PgItemBehaviorCollection()); } } private IPgItemBehaviorCollection _BehaviorList;
         public string DynamicCraftingSummary { get { return GetString(120); } }
         public int BestowTitle { get { return RawBestowTitle.HasValue ? RawBestowTitle.Value : 0; } }
         public int? RawBestowTitle { get { return GetInt(124); } }
@@ -91,7 +90,7 @@ namespace PgJsonObjects
         public IPgLoreBook ConnectedLoreBook { get { return GetObject(132, ref _ConnectedLoreBook, PgLoreBook.CreateNew); } } private IPgLoreBook _ConnectedLoreBook;
         public List<string> KeywordValueList { get { return GetStringList(136, ref _KeywordValueList); } } private List<string> _KeywordValueList;
         protected override List<string> FieldTableOrder { get { return GetStringList(140, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public RecipeCollection BestowRecipeList { get { return GetObjectList(144, ref _BestowRecipeList, RecipeCollection.CreateItem, () => new RecipeCollection()); } } private RecipeCollection _BestowRecipeList;
+        public IPgRecipeCollection BestowRecipeList { get { return GetObjectList(144, ref _BestowRecipeList, PgRecipeCollection.CreateItem, () => new PgRecipeCollection()); } } private IPgRecipeCollection _BestowRecipeList;
         public List<string> AppearanceDetailList { get { return GetStringList(148, ref _AppearanceDetailList); } } private List<string> _AppearanceDetailList;
         public List<string> RawKeywordList { get { return GetStringList(152, ref _RawKeywordList); } } private List<string> _RawKeywordList;
         public int UnknownSkillReqIndex { get { return RawUnknownSkillReqIndex.HasValue ? RawUnknownSkillReqIndex.Value : 0; } }

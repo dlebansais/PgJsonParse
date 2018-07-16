@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgOrQuestRequirement(data, ref offset);
         }
 
-        public QuestRequirementCollection OrList { get { return GetObjectList(PropertiesOffset + 0, ref _OrList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _OrList;
+        public IPgQuestRequirementCollection OrList { get { return GetObjectList(PropertiesOffset + 0, ref _OrList, PgQuestRequirementCollection.CreateItem, () => new PgQuestRequirementCollection()); } } private IPgQuestRequirementCollection _OrList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {

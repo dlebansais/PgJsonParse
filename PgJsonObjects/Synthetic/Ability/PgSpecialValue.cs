@@ -25,9 +25,9 @@ namespace PgJsonObjects
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get { return GetDouble(12); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public AttributeCollection AttributesThatDeltaList { get { return GetObjectList(20, ref _AttributesThatDeltaList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaList;
-        public AttributeCollection AttributesThatModList { get { return GetObjectList(24, ref _AttributesThatModList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatModList;
-        public AttributeCollection AttributesThatModBaseList { get { return GetObjectList(28, ref _AttributesThatModBaseList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatModBaseList;
+        public IPgAttributeCollection AttributesThatDeltaList { get { return GetObjectList(20, ref _AttributesThatDeltaList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaList;
+        public IPgAttributeCollection AttributesThatModList { get { return GetObjectList(24, ref _AttributesThatModList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModList;
+        public IPgAttributeCollection AttributesThatModBaseList { get { return GetObjectList(28, ref _AttributesThatModBaseList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModBaseList;
         public bool DisplayAsPercent { get { return RawDisplayAsPercent.HasValue && RawDisplayAsPercent.Value; } }
         public bool? RawDisplayAsPercent { get { return GetBool(32, 0); } }
         public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
@@ -66,7 +66,7 @@ namespace PgJsonObjects
                 GetBool = () => RawSkipIfZero } },
         }; } }
 
-        private List<string> GetAttributeKeys(AttributeCollection attributes)
+        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
         {
             List<string> Result = new List<string>();
 

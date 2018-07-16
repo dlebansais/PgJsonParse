@@ -24,9 +24,9 @@ namespace PgJsonObjects
         public override string Key { get { return GetString(0); } }
         public string Name { get { return GetString(4); } }
         public string AreaFriendlyName { get { return GetString(8); } }
-        public NpcPreferenceCollection PreferenceList { get { return GetObjectList(12, ref _PreferenceList, NpcPreferenceCollection.CreateItem, () => new NpcPreferenceCollection()); } } private NpcPreferenceCollection _PreferenceList;
-        public NpcPreferenceCollection LikeList { get { return GetObjectList(16, ref _LikeList, NpcPreferenceCollection.CreateItem, () => new NpcPreferenceCollection()); } } private NpcPreferenceCollection _LikeList;
-        public NpcPreferenceCollection HateList { get { return GetObjectList(20, ref _HateList, NpcPreferenceCollection.CreateItem, () => new NpcPreferenceCollection()); } } private NpcPreferenceCollection _HateList;
+        public IPgNpcPreferenceCollection PreferenceList { get { return GetObjectList(12, ref _PreferenceList, PgNpcPreferenceCollection.CreateItem, () => new PgNpcPreferenceCollection()); } } private IPgNpcPreferenceCollection _PreferenceList;
+        public IPgNpcPreferenceCollection LikeList { get { return GetObjectList(16, ref _LikeList, PgNpcPreferenceCollection.CreateItem, () => new PgNpcPreferenceCollection()); } } private IPgNpcPreferenceCollection _LikeList;
+        public IPgNpcPreferenceCollection HateList { get { return GetObjectList(20, ref _HateList, PgNpcPreferenceCollection.CreateItem, () => new PgNpcPreferenceCollection()); } } private IPgNpcPreferenceCollection _HateList;
         protected override List<string> FieldTableOrder { get { return GetStringList(24, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public MapAreaName AreaName { get { return GetEnum<MapAreaName>(28); } }
 

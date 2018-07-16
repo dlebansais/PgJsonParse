@@ -16,8 +16,8 @@ namespace PgJsonObjects
         public List<DoTSpecialRule> SpecialRuleList { get; } = new List<DoTSpecialRule>();
         public string RawPreface { get; private set; }
         public DamageType DamageType { get; private set; }
-        public AttributeCollection AttributesThatDeltaList { get; private set; } = null;
-        public AttributeCollection AttributesThatModList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatDeltaList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatModList { get; private set; } = null;
         #endregion
 
         #region Indirect Properties
@@ -64,7 +64,7 @@ namespace PgJsonObjects
                 GetString = () => RawPreface } },
         }; } }
 
-        private List<string> GetAttributeKeys(AttributeCollection attributes)
+        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
         {
             List<string> Result = new List<string>();
 
@@ -111,7 +111,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        private AttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, List<string> RawAttributes, AttributeCollection Attributes, ref bool IsConnected)
+        private IPgAttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, List<string> RawAttributes, IPgAttributeCollection Attributes, ref bool IsConnected)
         {
             if (Attributes == null)
             {
@@ -142,7 +142,7 @@ namespace PgJsonObjects
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddInt(RawDamagePerTick, data, ref offset, BaseOffset, 4);

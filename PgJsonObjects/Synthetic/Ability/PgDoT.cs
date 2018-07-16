@@ -29,8 +29,8 @@ namespace PgJsonObjects
         public List<DoTSpecialRule> SpecialRuleList { get { return GetEnumList(16, ref _SpecialRuleList); } } private List<DoTSpecialRule> _SpecialRuleList;
         public string RawPreface { get { return GetString(20); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(24, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public AttributeCollection AttributesThatDeltaList { get { return GetObjectList(28, ref _AttributesThatDeltaList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaList;
-        public AttributeCollection AttributesThatModList { get { return GetObjectList(32, ref _AttributesThatModList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatModList;
+        public IPgAttributeCollection AttributesThatDeltaList { get { return GetObjectList(28, ref _AttributesThatDeltaList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaList;
+        public IPgAttributeCollection AttributesThatModList { get { return GetObjectList(32, ref _AttributesThatModList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModList;
         public DamageType DamageType { get { return GetEnum<DamageType>(36); } }
         public bool RawAttributesThatDeltaListIsEmpty { get { return GetBool(38, 0).Value; } }
         public bool RawAttributesThatModListIsEmpty { get { return GetBool(38, 2).Value; } }
@@ -64,7 +64,7 @@ namespace PgJsonObjects
                 GetString = () => RawPreface } },
         }; } }
 
-        private List<string> GetAttributeKeys(AttributeCollection attributes)
+        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
         {
             List<string> Result = new List<string>();
 

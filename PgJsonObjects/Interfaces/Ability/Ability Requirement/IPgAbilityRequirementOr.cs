@@ -2,7 +2,7 @@
 {
     public interface IPgAbilityRequirementOr : IPgAbilityRequirement
     {
-        AbilityRequirementCollection OrList { get; }
+        IPgAbilityRequirementCollection OrList { get; }
         string ErrorMsg { get; }
     }
 }

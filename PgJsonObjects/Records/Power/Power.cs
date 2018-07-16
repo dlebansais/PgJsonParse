@@ -15,7 +15,7 @@ namespace PgJsonObjects
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; private set; }
         public PowerSkill RawSkill { get; private set; }
-        public PowerTierCollection TierEffectList { get; } = new PowerTierCollection();
+        public IPgPowerTierCollection TierEffectList { get; } = new PowerTierCollection();
         public int TierOffset { get { return RawTierOffset.HasValue ? RawTierOffset.Value : 0; } }
         public int? RawTierOffset { get; private set; }
 
@@ -319,7 +319,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(Prefix, data, ref offset, BaseOffset, 4, StoredStringtable);

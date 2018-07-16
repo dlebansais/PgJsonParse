@@ -18,7 +18,7 @@ namespace PgJsonObjects
         public bool DelayLoopIsAbortedIfAttacked { get { return RawDelayLoopIsAbortedIfAttacked.HasValue && RawDelayLoopIsAbortedIfAttacked.Value; } }
         public bool? RawDelayLoopIsAbortedIfAttacked { get; private set; }
         public List<Deaths> CausesOfDeathList { get; } = new List<Deaths>();
-        public RecipeCostCollection CostList { get; } = new RecipeCostCollection();
+        public IPgRecipeCostCollection CostList { get; } = new RecipeCostCollection();
         public int CombatRefreshBaseAmount { get { return RawCombatRefreshBaseAmount.HasValue ? RawCombatRefreshBaseAmount.Value : 0; } }
         public int? RawCombatRefreshBaseAmount { get; private set; }
         public PowerSkill CompatibleSkill { get; private set; }
@@ -65,7 +65,7 @@ namespace PgJsonObjects
         public string SelfParticle { get; private set; }
         public IPgAbility SharesResetTimerWith { get; private set; }
         public IPgSkill Skill { get; private set; }
-        public AbilityRequirementCollection CombinedRequirementList { get; private set; }
+        public IPgAbilityRequirementCollection CombinedRequirementList { get; private set; }
         public string SpecialInfo { get; private set; }
         public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
         public int? RawSpecialTargetingTypeReq { get; private set; }
@@ -80,16 +80,16 @@ namespace PgJsonObjects
         public IPgItem ConsumedItemLink { get; private set; }
         public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; private set; }
-        public AttributeCollection AttributesThatDeltaAmmoStickChanceList { get; private set; } = null;
-        public AttributeCollection AttributesThatDeltaDelayLoopTimeList { get; private set; } = null;
-        public AttributeCollection AttributesThatDeltaPowerCostList { get; private set; } = null;
-        public AttributeCollection AttributesThatDeltaResetTimeList { get; private set; } = null;
-        public AttributeCollection AttributesThatModPowerCostList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatDeltaPowerCostList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatDeltaResetTimeList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatModPowerCostList { get; private set; } = null;
         public PowerSkill RawSkill { get; private set; }
         public string ConsumedItemKeyword { get; private set; }
 
         public ConsumedItems ConsumedItems { get; private set; }
-        public AbilityRequirementCollection SpecialCasterRequirementList { get; } = new AbilityRequirementCollection();
+        public IPgAbilityRequirementCollection SpecialCasterRequirementList { get; } = new AbilityRequirementCollection();
         private List<PowerSkill> RawCompatibleSkillList = new List<PowerSkill>();
         private bool IsRawConsumedItemKeywordParsed;
         private bool IsSkillParsed;
@@ -405,7 +405,7 @@ namespace PgJsonObjects
             IsRawAbilityGroupParsed = false;
         }
 
-        private List<string> GetAttributeKeys(AttributeCollection attributes)
+        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
         {
             List<string> Result = new List<string>();
 
@@ -2525,7 +2525,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        private AttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, List<string> RawAttributes, AttributeCollection Attributes, ref bool IsConnected)
+        private IPgAttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, List<string> RawAttributes, IPgAttributeCollection Attributes, ref bool IsConnected)
         {
             if (Attributes == null)
             {
@@ -2570,7 +2570,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static AbilityCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, AbilityKeyword Keyword, AbilityCollection AbilityList, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgAbilityCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AbilityTable, AbilityKeyword Keyword, IPgAbilityCollection AbilityList, ref bool IsRawAbilityParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAbilityParsed)
                 return AbilityList;
@@ -2659,7 +2659,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddEnum(Animation, data, ref offset, BaseOffset, 4);

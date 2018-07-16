@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgQuestObjectiveUseAbility(data, ref offset);
         }
 
-        public AbilityCollection AbilityTargetList { get { return GetObjectList(PropertiesOffset + 0, ref _AbilityTargetList, AbilityCollection.CreateItem, () => new AbilityCollection()); } } private AbilityCollection _AbilityTargetList;
+        public IPgAbilityCollection AbilityTargetList { get { return GetObjectList(PropertiesOffset + 0, ref _AbilityTargetList, PgAbilityCollection.CreateItem, () => new PgAbilityCollection()); } } private PgAbilityCollection _AbilityTargetList;
         public AbilityKeyword AbilityTarget { get { return GetEnum<AbilityKeyword>(PropertiesOffset + 4); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {

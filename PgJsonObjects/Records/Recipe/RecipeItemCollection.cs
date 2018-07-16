@@ -2,16 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class RecipeItemCollection : List<IPgRecipeItem>, ISerializableJsonObjectCollection
+    public class RecipeItemCollection : List<IPgRecipeItem>, IPgRecipeItemCollection, ISerializableJsonObjectCollection
     {
-        /*public ISerializableJsonObject GetAt(int index)
-        {
-            return this[index] as ISerializableJsonObject;
-        }*/
-
-        public static PgRecipeItem CreateItem(byte[] data, ref int offset)
-        {
-            return new PgRecipeItem(data, ref offset);
-        }
     }
 }

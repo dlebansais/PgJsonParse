@@ -2,6 +2,6 @@
 {
     public interface IPgQuestCompletedQuestRequirement
     {
-        QuestCollection QuestList { get; }
+        IPgQuestCollection QuestList { get; }
     }
 }

@@ -6,7 +6,7 @@ namespace PgJsonObjects
     public class PowerTier : GenericJsonObject<PowerTier>, IPgPowerTier
     {
         #region Direct Properties
-        public PowerEffectCollection EffectList { get; } = new PowerEffectCollection();
+        public IPgPowerEffectCollection EffectList { get; } = new PowerEffectCollection();
         public int SkillLevelPrereq { get { return RawSkillLevelPrereq.HasValue ? RawSkillLevelPrereq.Value : 0; } }
         public int? RawSkillLevelPrereq { get; private set; }
         #endregion
@@ -103,7 +103,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddObjectList(EffectList, data, ref offset, BaseOffset, 4, StoredObjectListTable);

@@ -2,6 +2,6 @@
 {
     public interface IPgOrQuestRequirement
     {
-        QuestRequirementCollection OrList { get; }
+        IPgQuestRequirementCollection OrList { get; }
     }
 }

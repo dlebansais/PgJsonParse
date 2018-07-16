@@ -48,7 +48,7 @@ namespace PgJsonObjects
 
         #region Properties
         public IPgItem QuestItem { get; private set; }
-        public ItemCollection TargetItemList { get; private set; } = new ItemCollection();
+        public IPgItemCollection TargetItemList { get; private set; } = new ItemCollection();
         public ItemKeyword Target { get; private set; }
         private bool IsTargetParsed;
         private string RawItemName;
@@ -97,7 +97,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
 
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddObject(QuestItem as ISerializableJsonObject, data, ref offset, BaseOffset, 0, StoredObjectTable);
             AddObjectList(TargetItemList, data, ref offset, BaseOffset, 4, StoredObjectListTable);

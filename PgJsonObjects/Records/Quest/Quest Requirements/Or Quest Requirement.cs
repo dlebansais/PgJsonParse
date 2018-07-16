@@ -4,13 +4,13 @@ namespace PgJsonObjects
 {
     public class OrQuestRequirement : QuestRequirement, IPgOrQuestRequirement
     {
-        public OrQuestRequirement(OtherRequirementType OtherRequirementType, QuestRequirementCollection OrList)
+        public OrQuestRequirement(OtherRequirementType OtherRequirementType, IPgQuestRequirementCollection OrList)
             : base(OtherRequirementType)
         {
             this.OrList = OrList;
         }
 
-        public QuestRequirementCollection OrList { get; private set; }
+        public IPgQuestRequirementCollection OrList { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
@@ -45,7 +45,7 @@ namespace PgJsonObjects
             SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
             int BaseOffset = offset;
 
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddObjectList(OrList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
 

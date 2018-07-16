@@ -12,7 +12,7 @@ namespace PgJsonObjects
         double PercentChance { get; }
         double? RawPercentChance { get; }
         List<RecipeItemKey> ItemKeyList { get; }
-        ItemCollection MatchingKeyItemList { get; }
+        IPgItemCollection MatchingKeyItemList { get; }
         string Desc { get; }
         double ChanceToConsume { get; }
         double? RawChanceToConsume { get; }

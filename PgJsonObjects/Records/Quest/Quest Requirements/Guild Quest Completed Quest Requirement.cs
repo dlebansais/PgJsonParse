@@ -12,7 +12,7 @@ namespace PgJsonObjects
             this.RawRequirementQuestList = RawRequirementQuestList;
         }
 
-        public QuestCollection QuestList { get; private set; } = new QuestCollection();
+        public IPgQuestCollection QuestList { get; private set; } = new QuestCollection();
         private List<string> RawRequirementQuestList;
         private bool IsRawRequirementQuestParsed;
 
@@ -80,7 +80,7 @@ namespace PgJsonObjects
             SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
             int BaseOffset = offset;
 
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddObjectList(QuestList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
 

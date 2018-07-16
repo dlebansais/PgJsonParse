@@ -14,9 +14,9 @@ namespace PgJsonObjects
         public bool? RawDisplayAsPercent { get; private set; }
         public bool SkipIfZero { get { return RawSkipIfZero.HasValue && RawSkipIfZero.Value; } }
         public bool? RawSkipIfZero { get; private set; }
-        public AttributeCollection AttributesThatDeltaList { get; private set; } = null;
-        public AttributeCollection AttributesThatModList { get; private set; } = null;
-        public AttributeCollection AttributesThatModBaseList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatDeltaList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatModList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatModBaseList { get; private set; } = null;
         #endregion
 
         #region Indirect Properties
@@ -65,7 +65,7 @@ namespace PgJsonObjects
                 GetBool = () => RawSkipIfZero } },
         }; } }
 
-        private List<string> GetAttributeKeys(AttributeCollection attributes)
+        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
         {
             List<string> Result = new List<string>();
 
@@ -111,7 +111,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        private AttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, List<string> RawAttributes, AttributeCollection Attributes, ref bool IsConnected)
+        private IPgAttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, List<string> RawAttributes, IPgAttributeCollection Attributes, ref bool IsConnected)
         {
             if (Attributes == null)
             {
@@ -141,7 +141,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(Label, data, ref offset, BaseOffset, 4, StoredStringtable);

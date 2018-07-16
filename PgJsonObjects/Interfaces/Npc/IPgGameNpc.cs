@@ -4,9 +4,9 @@
     {
         string Name { get; }
         string AreaFriendlyName { get; }
-        NpcPreferenceCollection PreferenceList { get; }
-        NpcPreferenceCollection LikeList { get; }
-        NpcPreferenceCollection HateList { get; }
+        IPgNpcPreferenceCollection PreferenceList { get; }
+        IPgNpcPreferenceCollection LikeList { get; }
+        IPgNpcPreferenceCollection HateList { get; }
         MapAreaName AreaName { get; }
     }
 }

@@ -44,8 +44,8 @@ namespace PgJsonObjects
         public double? RawRageMultiplier { get { return GetDouble(44); } }
         public double Accuracy { get { return RawAccuracy.HasValue ? RawAccuracy.Value : 0; } }
         public double? RawAccuracy { get { return GetDouble(48); } }
-        public SpecialValueCollection SpecialValueList { get { return GetObjectList(52, ref _SpecialValueList, SpecialValueCollection.CreateItem, () => new SpecialValueCollection()); } } private SpecialValueCollection _SpecialValueList;
-        public DoTCollection DoTList { get { return GetObjectList(56, ref _DoTList, DoTCollection.CreateItem, () => new DoTCollection()); } } private DoTCollection _DoTList;
+        public IPgSpecialValueCollection SpecialValueList { get { return GetObjectList(52, ref _SpecialValueList, PgSpecialValueCollection.CreateItem, () => new PgSpecialValueCollection()); } } private IPgSpecialValueCollection _SpecialValueList;
+        public IPgDoTCollection DoTList { get { return GetObjectList(56, ref _DoTList, PgDoTCollection.CreateItem, () => new PgDoTCollection()); } } private IPgDoTCollection _DoTList;
         public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
         public int? RawTauntDelta { get { return GetInt(60); } }
         public int TempTauntDelta { get { return RawTempTauntDelta.HasValue ? RawTempTauntDelta.Value : 0; } }
@@ -56,14 +56,14 @@ namespace PgJsonObjects
         public double? RawRageCostMod { get { return GetDouble(72); } }
         public List<PreEffect> SelfPreEffectList { get { return GetEnumList(76, ref _SelfPreEffectList); } } private List<PreEffect> _SelfPreEffectList;
         protected override List<string> FieldTableOrder { get { return GetStringList(80, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public AttributeCollection AttributesThatDeltaDamageList { get { return GetObjectList(84, ref _AttributesThatDeltaDamageList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaDamageList;
-        public AttributeCollection AttributesThatModDamageList { get { return GetObjectList(88, ref _AttributesThatModDamageList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatModDamageList;
-        public AttributeCollection AttributesThatModBaseDamageList { get { return GetObjectList(92, ref _AttributesThatModBaseDamageList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatModBaseDamageList;
-        public AttributeCollection AttributesThatDeltaTauntList { get { return GetObjectList(96, ref _AttributesThatDeltaTauntList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaTauntList;
-        public AttributeCollection AttributesThatModTauntList { get { return GetObjectList(100, ref _AttributesThatModTauntList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatModTauntList;
-        public AttributeCollection AttributesThatDeltaRageList { get { return GetObjectList(104, ref _AttributesThatDeltaRageList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaRageList;
-        public AttributeCollection AttributesThatModRageList { get { return GetObjectList(108, ref _AttributesThatModRageList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatModRageList;
-        public AttributeCollection AttributesThatDeltaRangeList { get { return GetObjectList(112, ref _AttributesThatDeltaRangeList, AttributeCollection.CreateItem, () => new AttributeCollection()); } } private AttributeCollection _AttributesThatDeltaRangeList;
+        public IPgAttributeCollection AttributesThatDeltaDamageList { get { return GetObjectList(84, ref _AttributesThatDeltaDamageList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaDamageList;
+        public IPgAttributeCollection AttributesThatModDamageList { get { return GetObjectList(88, ref _AttributesThatModDamageList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModDamageList;
+        public IPgAttributeCollection AttributesThatModBaseDamageList { get { return GetObjectList(92, ref _AttributesThatModBaseDamageList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModBaseDamageList;
+        public IPgAttributeCollection AttributesThatDeltaTauntList { get { return GetObjectList(96, ref _AttributesThatDeltaTauntList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaTauntList;
+        public IPgAttributeCollection AttributesThatModTauntList { get { return GetObjectList(100, ref _AttributesThatModTauntList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModTauntList;
+        public IPgAttributeCollection AttributesThatDeltaRageList { get { return GetObjectList(104, ref _AttributesThatDeltaRageList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaRageList;
+        public IPgAttributeCollection AttributesThatModRageList { get { return GetObjectList(108, ref _AttributesThatModRageList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModRageList;
+        public IPgAttributeCollection AttributesThatDeltaRangeList { get { return GetObjectList(112, ref _AttributesThatDeltaRangeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaRangeList;
         public bool RawAttributesThatDeltaDamageListIsEmpty { get { return GetBool(116, 0).Value; } }
         public bool RawAttributesThatModDamageListIsEmpty { get { return GetBool(116, 2).Value; } }
         public bool RawAttributesThatModBaseDamageListIsEmpty { get { return GetBool(116, 4).Value; } }
@@ -166,7 +166,7 @@ namespace PgJsonObjects
                 GetObjectArray = () => DoTList } },
         }; } }
 
-        private List<string> GetAttributeKeys(AttributeCollection attributes)
+        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
         {
             List<string> Result = new List<string>();
 

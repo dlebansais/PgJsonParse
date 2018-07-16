@@ -21,7 +21,7 @@ namespace PgJsonObjects
 
         public IPgItem QuestItem { get { return GetObject(PropertiesOffset + 0, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
         public IPgGameNpc DeliverNpc { get { return GetObject(PropertiesOffset + 4, ref _DeliverNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _DeliverNpc;
-        public ItemCollection ItemList { get { return GetObjectList(PropertiesOffset + 8, ref _ItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ItemList;
+        public IPgItemCollection ItemList { get { return GetObjectList(PropertiesOffset + 8, ref _ItemList, PgItemCollection.CreateItem, () => new PgItemCollection()); } } private IPgItemCollection _ItemList;
         public string DeliverNpcId { get { return GetString(PropertiesOffset + 12); } }
         public string DeliverNpcName { get { return GetString(PropertiesOffset + 16); } }
         public ItemKeyword ItemKeyword { get { return GetEnum<ItemKeyword>(PropertiesOffset + 20); } }

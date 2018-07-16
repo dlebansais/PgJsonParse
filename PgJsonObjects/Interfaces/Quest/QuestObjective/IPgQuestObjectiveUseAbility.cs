@@ -2,7 +2,7 @@
 {
     public interface IPgQuestObjectiveUseAbility
     {
-        AbilityCollection AbilityTargetList { get; }
+        IPgAbilityCollection AbilityTargetList { get; }
         AbilityKeyword AbilityTarget { get; }
     }
 }

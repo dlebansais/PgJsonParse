@@ -42,7 +42,7 @@ namespace PgJsonObjects
                 }
             }
 
-            PowerEffectCollection EffectList = LastPowerTier.EffectList;
+            IPgPowerEffectCollection EffectList = LastPowerTier.EffectList;
 
             string Name = "";
             List<int> CombinedIdList = new List<int>();

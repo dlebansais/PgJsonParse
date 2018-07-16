@@ -22,7 +22,7 @@ namespace PgJsonObjects
         bool WorksUnderwater { get; }
         bool? RawWorksUnderwater { get; }
         List<Deaths> CausesOfDeathList { get; }
-        RecipeCostCollection CostList { get; }
+        IPgRecipeCostCollection CostList { get; }
         int CombatRefreshBaseAmount { get; }
         int? RawCombatRefreshBaseAmount { get; }
         PowerSkill CompatibleSkill { get; }
@@ -61,7 +61,7 @@ namespace PgJsonObjects
         string SelfParticle { get; }
         IPgAbility SharesResetTimerWith { get; }
         IPgSkill Skill { get; }
-        AbilityRequirementCollection CombinedRequirementList { get; }
+        IPgAbilityRequirementCollection CombinedRequirementList { get; }
         string SpecialInfo { get; }
         int SpecialTargetingTypeReq { get; }
         int? RawSpecialTargetingTypeReq { get; }
@@ -72,11 +72,11 @@ namespace PgJsonObjects
         ConsumedItems ConsumedItems { get; }
         IPgAbility AbilityGroup { get; }
         IPgItem ConsumedItemLink { get; }
-        AttributeCollection AttributesThatDeltaAmmoStickChanceList { get; }
-        AttributeCollection AttributesThatDeltaDelayLoopTimeList { get; }
-        AttributeCollection AttributesThatDeltaPowerCostList { get; }
-        AttributeCollection AttributesThatDeltaResetTimeList { get; }
-        AttributeCollection AttributesThatModPowerCostList { get; }
+        IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get; }
+        IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; }
+        IPgAttributeCollection AttributesThatDeltaPowerCostList { get; }
+        IPgAttributeCollection AttributesThatDeltaResetTimeList { get; }
+        IPgAttributeCollection AttributesThatModPowerCostList { get; }
         string ConsumedItemKeyword { get; }
         //List<GenericSource> SourceList { get; }
         bool WorksWhileFalling { get; }
@@ -89,7 +89,7 @@ namespace PgJsonObjects
         bool RawAttributesThatDeltaResetTimeListIsEmpty { get; }
         bool RawAttributesThatModPowerCostListIsEmpty { get; }
         PowerSkill RawSkill { get; }
-        AbilityRequirementCollection SpecialCasterRequirementList { get; }
+        IPgAbilityRequirementCollection SpecialCasterRequirementList { get; }
         ConsumedItem ConsumedItem { get; }
     }
 }

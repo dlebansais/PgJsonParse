@@ -11,7 +11,7 @@ namespace PgJsonObjects
         bool IsUnavailable { get; }
         bool? RawIsUnavailable { get; }
         PowerSkill RawSkill { get; }
-        PowerTierCollection TierEffectList { get; }
+        IPgPowerTierCollection TierEffectList { get; }
         int TierOffset { get; }
         int? RawTierOffset { get; }
     }

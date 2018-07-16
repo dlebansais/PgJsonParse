@@ -4,14 +4,14 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementOr : AbilityRequirement, IPgAbilityRequirementOr
     {
-        public AbilityRequirementOr(AbilityRequirementCollection orList, string errorMsg)
+        public AbilityRequirementOr(IPgAbilityRequirementCollection orList, string errorMsg)
         {
             OrList = orList;
             ErrorMsg = errorMsg;
         }
 
         public override OtherRequirementType Type { get { return OtherRequirementType.Or; } }
-        public AbilityRequirementCollection OrList { get; private set; }
+        public IPgAbilityRequirementCollection OrList { get; private set; }
         public string ErrorMsg { get; private set; }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
@@ -51,7 +51,7 @@ namespace PgJsonObjects
             SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
             int BaseOffset = offset;
 
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddObjectList(OrList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
             AddString(ErrorMsg, data, ref offset, BaseOffset, 4, StoredStringtable);

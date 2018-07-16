@@ -276,7 +276,7 @@ namespace PgJsonObjects
 
             SkillRequirement = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkillRequirement, SkillRequirement, ref IsSkillParsed, ref IsConnected, Parent as GameNpc);
 
-            ItemCollection ItemList = new ItemCollection();
+            IPgItemCollection ItemList = new ItemCollection();
             foreach (ItemKeyword Keyword in ItemKeywordList)
             {
                 if (Keyword == ItemKeyword.Internal_None)

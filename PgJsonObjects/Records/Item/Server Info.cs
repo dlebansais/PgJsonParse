@@ -8,11 +8,11 @@ namespace PgJsonObjects
     public class ServerInfo : GenericJsonObject<ServerInfo>, IPgServerInfo
     {
         #region Direct Properties
-        public ServerInfoEffectCollection ServerInfoEffectList { get; private set; } = new ServerInfoEffectCollection();
-        public ItemCollection GiveItemList { get; private set; } = new ItemCollection();
+        public IPgServerInfoEffectCollection ServerInfoEffectList { get; private set; } = new ServerInfoEffectCollection();
+        public IPgItemCollection GiveItemList { get; private set; } = new ItemCollection();
         public int NumItemsToGive { get { return RawNumItemsToGive.HasValue ? RawNumItemsToGive.Value : 0; } }
         public int? RawNumItemsToGive { get; private set; }
-        public AbilityRequirementCollection OtherRequirementList { get; private set; } = new AbilityRequirementCollection();
+        public IPgAbilityRequirementCollection OtherRequirementList { get; private set; } = new AbilityRequirementCollection();
         public ItemRequiredHotspot RequiredHotspot { get; private set; }
         public bool IsServerInfoEffectListEmpty { get { return RawIsServerInfoEffectListEmpty.HasValue && RawIsServerInfoEffectListEmpty.Value; } }
         public bool? RawIsServerInfoEffectListEmpty { get; private set; }
@@ -742,7 +742,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddObjectList(ServerInfoEffectList, data, ref offset, BaseOffset, 4, StoredObjectListTable);

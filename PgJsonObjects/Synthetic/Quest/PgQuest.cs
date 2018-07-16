@@ -28,9 +28,9 @@ namespace PgJsonObjects
         public string Description { get { return GetString(12); } }
         public int Version { get { return RawVersion.HasValue ? RawVersion.Value : 0; } }
         public int? RawVersion { get { return GetInt(16); } }
-        public QuestObjectiveCollection QuestObjectiveList { get { return GetObjectList(20, ref _QuestObjectiveList, QuestObjectiveCollection.CreateItem, () => new QuestObjectiveCollection()); } } private QuestObjectiveCollection _QuestObjectiveList;
-        public QuestRewardXpCollection RewardsXPList { get { return GetObjectList(24, ref _RewardsXPList, QuestRewardXpCollection.CreateItem, () => new QuestRewardXpCollection()); } } private QuestRewardXpCollection _RewardsXPList;
-        public QuestRewardItemCollection QuestRewardsItemList { get { return GetObjectList(28, ref _QuestRewardsItemList, QuestRewardItemCollection.CreateItem, () => new QuestRewardItemCollection()); } } private QuestRewardItemCollection _QuestRewardsItemList;
+        public IPgQuestObjectiveCollection QuestObjectiveList { get { return GetObjectList(20, ref _QuestObjectiveList, PgQuestObjectiveCollection.CreateItem, () => new PgQuestObjectiveCollection()); } } private IPgQuestObjectiveCollection _QuestObjectiveList;
+        public IPgQuestRewardXpCollection RewardsXPList { get { return GetObjectList(24, ref _RewardsXPList, PgQuestRewardXpCollection.CreateItem, () => new PgQuestRewardXpCollection()); } } private IPgQuestRewardXpCollection _RewardsXPList;
+        public IPgQuestRewardItemCollection QuestRewardsItemList { get { return GetObjectList(28, ref _QuestRewardsItemList, PgQuestRewardItemCollection.CreateItem, () => new PgQuestRewardItemCollection()); } } private IPgQuestRewardItemCollection _QuestRewardsItemList;
         public TimeSpan? RawReuseTime { get { return GetTimeSpan(32); } }
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get { return GetInt(36); } }
@@ -49,13 +49,13 @@ namespace PgJsonObjects
         public int? RawRewardGuildXp { get { return GetInt(76); } }
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
         public int? RawRewardGuildCredits { get { return GetInt(80); } }
-        public QuestRewardItemCollection PreGiveItemList { get { return GetObjectList(84, ref _PreGiveItemList, QuestRewardItemCollection.CreateItem, () => new QuestRewardItemCollection()); } } private QuestRewardItemCollection _PreGiveItemList;
+        public IPgQuestRewardItemCollection PreGiveItemList { get { return GetObjectList(84, ref _PreGiveItemList, PgQuestRewardItemCollection.CreateItem, () => new PgQuestRewardItemCollection()); } } private IPgQuestRewardItemCollection _PreGiveItemList;
         public int TSysLevel { get { return RawTSysLevel.HasValue ? RawTSysLevel.Value : 0; } }
         public int? RawTSysLevel { get { return GetInt(88); } }
         public int RewardGold { get { return RawRewardGold.HasValue ? RawRewardGold.Value : 0; } }
         public int? RawRewardGold { get { return GetInt(92); } }
         public string RewardsNamedLootProfile { get { return GetString(96); } }
-        public RecipeCollection PreGiveRecipeList { get { return GetObjectList(100, ref _PreGiveRecipeList, RecipeCollection.CreateItem, () => new RecipeCollection()); } } private RecipeCollection _PreGiveRecipeList;
+        public IPgRecipeCollection PreGiveRecipeList { get { return GetObjectList(100, ref _PreGiveRecipeList, PgRecipeCollection.CreateItem, () => new PgRecipeCollection()); } } private IPgRecipeCollection _PreGiveRecipeList;
         public List<QuestKeyword> KeywordList { get { return GetEnumList(104, ref _KeywordList); } } private List<QuestKeyword> _KeywordList;
         public IPgEffect RewardEffect { get { return GetObject(108, ref _RewardEffect, PgEffect.CreateNew); } } private IPgEffect _RewardEffect;
         public IPgLoreBook RewardLoreBook { get { return GetObject(112, ref _RewardLoreBook, PgLoreBook.CreateNew); } } private IPgLoreBook _RewardLoreBook;
@@ -77,9 +77,9 @@ namespace PgJsonObjects
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get { return GetInt(128); } }
         public IPgSkill WorkOrderSkill { get { return GetObject(132, ref _WorkOrderSkill, PgSkill.CreateNew); } } private IPgSkill _WorkOrderSkill;
-        public QuestCollection FollowUpQuestList { get { return GetObjectList(136, ref _FollowUpQuestList, QuestCollection.CreateItem, () => new QuestCollection()); } } private QuestCollection _FollowUpQuestList;
-        public QuestRequirementCollection QuestRequirementList { get { return GetObjectList(140, ref _QuestRequirementList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementList;
-        public QuestRequirementCollection QuestRequirementToSustainList { get { return GetObjectList(144, ref _QuestRequirementToSustainList, QuestRequirementCollection.CreateItem, () => new QuestRequirementCollection()); } } private QuestRequirementCollection _QuestRequirementToSustainList;
+        public IPgQuestCollection FollowUpQuestList { get { return GetObjectList(136, ref _FollowUpQuestList, PgQuestCollection.CreateItem, () => new PgQuestCollection()); } } private IPgQuestCollection _FollowUpQuestList;
+        public IPgQuestRequirementCollection QuestRequirementList { get { return GetObjectList(140, ref _QuestRequirementList, PgQuestRequirementCollection.CreateItem, () => new PgQuestRequirementCollection()); } } private IPgQuestRequirementCollection _QuestRequirementList;
+        public IPgQuestRequirementCollection QuestRequirementToSustainList { get { return GetObjectList(144, ref _QuestRequirementToSustainList, PgQuestRequirementCollection.CreateItem, () => new PgQuestRequirementCollection()); } } private IPgQuestRequirementCollection _QuestRequirementToSustainList;
         protected override List<string> FieldTableOrder { get { return GetStringList(148, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public int? RawReuseTime_Minutes { get { return GetInt(152); } }
         public int? RawReuseTime_Hours { get { return GetInt(156); } }
@@ -97,7 +97,7 @@ namespace PgJsonObjects
         public bool? RawIsQuestRequirementListSimple { get { return GetBool(174, 6); } }
         public bool IsQuestRequirementListNested { get { return RawIsQuestRequirementListNested.HasValue && RawIsQuestRequirementListNested.Value; } }
         public bool? RawIsQuestRequirementListNested { get { return GetBool(174, 8); } }
-        public QuestRewardCollection QuestRewardList { get { return GetObjectList(176, ref _QuestRewardList, QuestRewardCollection.CreateItem, () => new QuestRewardCollection()); } } private QuestRewardCollection _QuestRewardList;
+        public IPgQuestRewardCollection QuestRewardList { get { return GetObjectList(176, ref _QuestRewardList, PgQuestRewardCollection.CreateItem, () => new PgQuestRewardCollection()); } } private IPgQuestRewardCollection _QuestRewardList;
         public List<string> RawRewardInteractionFlags { get { return GetStringList(180, ref _RawRewardInteractionFlags); } } private List<string> _RawRewardInteractionFlags;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {

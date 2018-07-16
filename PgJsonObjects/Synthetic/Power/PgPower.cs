@@ -29,7 +29,7 @@ namespace PgJsonObjects
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get { return GetBool(20, 0); } }
         public PowerSkill RawSkill { get { return GetEnum<PowerSkill>(22); } }
-        public PowerTierCollection TierEffectList { get { return GetObjectList(24, ref _TierEffectList, PowerTierCollection.CreateItem, () => new PowerTierCollection()); } } private PowerTierCollection _TierEffectList;
+        public IPgPowerTierCollection TierEffectList { get { return GetObjectList(24, ref _TierEffectList, PgPowerTierCollection.CreateItem, () => new PgPowerTierCollection()); } } private IPgPowerTierCollection _TierEffectList;
         public int TierOffset { get { return RawTierOffset.HasValue ? RawTierOffset.Value : 0; } }
         public int? RawTierOffset { get { return GetInt(28); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(32, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;

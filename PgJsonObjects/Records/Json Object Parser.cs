@@ -17,14 +17,14 @@ namespace PgJsonObjects
             return Parsed;
         }
 
-        public static void ParseList(string SubitemName, JsonObject value, IList list, ParseErrorInfo errorInfo)
+        public static void ParseList(string SubitemName, JsonObject value, IPgCollection list, ParseErrorInfo errorInfo)
         {
             T Parsed = Parse(SubitemName, value, errorInfo);
 
             try
             {
                 if (Parsed != null)
-                    list.Add(Parsed);
+                    (list as IList).Add(Parsed);
             }
             catch
             {

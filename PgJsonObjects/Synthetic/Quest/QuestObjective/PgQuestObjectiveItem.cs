@@ -20,7 +20,7 @@ namespace PgJsonObjects
         }
 
         public IPgItem QuestItem { get { return GetObject(PropertiesOffset + 0, ref _QuestItem, PgItem.CreateNew); } } private IPgItem _QuestItem;
-        public ItemCollection TargetItemList { get { return GetObjectList(PropertiesOffset + 4, ref _TargetItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _TargetItemList;
+        public IPgItemCollection TargetItemList { get { return GetObjectList(PropertiesOffset + 4, ref _TargetItemList, PgItemCollection.CreateItem, () => new PgItemCollection()); } } private IPgItemCollection _TargetItemList;
         public IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return GetObject(PropertiesOffset + 8, ref _QuestObjectiveRequirement, PgQuestObjectiveRequirement.CreateNew); } } private IPgQuestObjectiveRequirement _QuestObjectiveRequirement;
         public ItemKeyword Target { get { return GetEnum<ItemKeyword>(PropertiesOffset + 12); } }
 

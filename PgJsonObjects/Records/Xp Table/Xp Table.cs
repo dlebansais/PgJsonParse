@@ -7,7 +7,7 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public string InternalName { get; private set; }
-        public XpTableLevelCollection XpAmountList { get; } = new XpTableLevelCollection();
+        public IPgXpTableLevelCollection XpAmountList { get; } = new XpTableLevelCollection();
         public XpTableEnum EnumName { get; private set; }
         private int TotalXp = 0;
         private int Level = 0;
@@ -101,7 +101,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddString(InternalName, data, ref offset, BaseOffset, 4, StoredStringtable);

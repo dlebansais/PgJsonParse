@@ -1,25 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public class PowerEffectCollection : List<IPgPowerEffect>, ISerializableJsonObjectCollection
+    public class PowerEffectCollection : List<IPgPowerEffect>, IPgPowerEffectCollection, ISerializableJsonObjectCollection
     {
-        /*
-        public ISerializableJsonObject GetAt(int index)
-        {
-            return this[index] as ISerializableJsonObject;
-        }*/
-
-        public static IPgPowerEffect CreateItem(byte[] data, ref int offset)
-        {
-            int SimpleValue = BitConverter.ToInt32(data, offset);
-            bool IsSimple = (SimpleValue == 0);
-
-            if (IsSimple)
-                return new PgPowerSimpleEffect(data, ref offset);
-            else
-                return new PgPowerAttributeLink(data, ref offset);
-        }
     }
 }

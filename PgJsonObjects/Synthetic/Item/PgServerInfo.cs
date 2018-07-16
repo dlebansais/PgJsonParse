@@ -20,11 +20,11 @@ namespace PgJsonObjects
         }
 
         public override string Key { get { return GetString(0); } }
-        public ServerInfoEffectCollection ServerInfoEffectList { get { return GetObjectList(4, ref _ServerInfoEffectList, ServerInfoEffectCollection.CreateItem, () => new ServerInfoEffectCollection()); } } private ServerInfoEffectCollection _ServerInfoEffectList;
-        public ItemCollection GiveItemList { get { return GetObjectList(8, ref _GiveItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _GiveItemList;
+        public IPgServerInfoEffectCollection ServerInfoEffectList { get { return GetObjectList(4, ref _ServerInfoEffectList, PgServerInfoEffectCollection.CreateItem, () => new PgServerInfoEffectCollection()); } } private IPgServerInfoEffectCollection _ServerInfoEffectList;
+        public IPgItemCollection GiveItemList { get { return GetObjectList(8, ref _GiveItemList, PgItemCollection.CreateItem, () => new PgItemCollection()); } } private IPgItemCollection _GiveItemList;
         public int NumItemsToGive { get { return RawNumItemsToGive.HasValue ? RawNumItemsToGive.Value : 0; } }
         public int? RawNumItemsToGive { get { return GetInt(12); } }
-        public AbilityRequirementCollection OtherRequirementList { get { return GetObjectList(16, ref _OtherRequirementList, AbilityRequirementCollection.CreateItem, () => new AbilityRequirementCollection()); } } private AbilityRequirementCollection _OtherRequirementList;
+        public IPgAbilityRequirementCollection OtherRequirementList { get { return GetObjectList(16, ref _OtherRequirementList, PgAbilityRequirementCollection.CreateItem, () => new PgAbilityRequirementCollection()); } } private IPgAbilityRequirementCollection _OtherRequirementList;
         protected override List<string> FieldTableOrder { get { return GetStringList(20, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public ItemRequiredHotspot RequiredHotspot { get { return GetEnum<ItemRequiredHotspot>(24); } }
         public bool IsServerInfoEffectListEmpty { get { return RawIsServerInfoEffectListEmpty.HasValue && RawIsServerInfoEffectListEmpty.Value; } }

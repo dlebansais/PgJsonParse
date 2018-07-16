@@ -20,8 +20,8 @@ namespace PgJsonObjects
         }
 
         public IPgSkill Skill { get { return GetObject(PropertiesOffset + 0, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
-        public RecipeCollection RecipeTargetList { get { return GetObjectList(PropertiesOffset + 4, ref _RecipeTargetList, RecipeCollection.CreateItem, () => new RecipeCollection()); } } private RecipeCollection _RecipeTargetList;
-        public ItemCollection ResultItemList { get { return GetObjectList(PropertiesOffset + 8, ref _ResultItemList, ItemCollection.CreateItem, () => new ItemCollection()); } } private ItemCollection _ResultItemList;
+        public IPgRecipeCollection RecipeTargetList { get { return GetObjectList(PropertiesOffset + 4, ref _RecipeTargetList, PgRecipeCollection.CreateItem, () => new PgRecipeCollection()); } } private IPgRecipeCollection _RecipeTargetList;
+        public IPgItemCollection ResultItemList { get { return GetObjectList(PropertiesOffset + 8, ref _ResultItemList, PgItemCollection.CreateItem, () => new PgItemCollection()); } } private IPgItemCollection _ResultItemList;
         public RecipeKeyword RecipeTarget { get { return GetEnum<RecipeKeyword>(PropertiesOffset + 12); } }
         public ItemKeyword ResultItemKeyword { get { return GetEnum<ItemKeyword>(PropertiesOffset + 14); } }
 

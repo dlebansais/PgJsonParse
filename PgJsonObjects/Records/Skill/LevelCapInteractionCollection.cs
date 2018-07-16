@@ -2,16 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class LevelCapInteractionCollection : List<IPgLevelCapInteraction>, ISerializableJsonObjectCollection
+    public class LevelCapInteractionCollection : List<IPgLevelCapInteraction>, IPgLevelCapInteractionCollection, ISerializableJsonObjectCollection
     {
-        public ISerializableJsonObject GetAt(int index)
-        {
-            return this[index] as ISerializableJsonObject;
-        }
-
-        public static PgLevelCapInteraction CreateItem(byte[] data, ref int offset)
-        {
-            return new PgLevelCapInteraction(data, ref offset);
-        }
     }
 }

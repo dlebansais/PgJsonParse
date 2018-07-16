@@ -2,7 +2,7 @@
 {
     public interface IPgPowerTier
     {
-        PowerEffectCollection EffectList { get; }
+        IPgPowerEffectCollection EffectList { get; }
         int SkillLevelPrereq { get; }
         int? RawSkillLevelPrereq { get; }
     }

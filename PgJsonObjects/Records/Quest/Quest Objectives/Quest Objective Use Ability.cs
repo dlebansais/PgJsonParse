@@ -32,7 +32,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Properties
-        public AbilityCollection AbilityTargetList { get; private set; } = new AbilityCollection();
+        public IPgAbilityCollection AbilityTargetList { get; private set; } = new AbilityCollection();
         public AbilityKeyword AbilityTarget { get; private set; }
 
         private bool IsAbilityTargetParsed;
@@ -76,7 +76,7 @@ namespace PgJsonObjects
             SerializeJsonObjectInternalProlog(data, ref offset, StoredStringtable, StoredStringListTable);
             int BaseOffset = offset;
 
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddObjectList(AbilityTargetList, data, ref offset, BaseOffset, 0, StoredObjectListTable);
             AddEnum(AbilityTarget, data, ref offset, BaseOffset, 4);

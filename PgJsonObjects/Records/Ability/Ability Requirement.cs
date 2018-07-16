@@ -222,7 +222,7 @@ namespace PgJsonObjects
         private string RawItem;
         private List<string> RawAppearanceList { get; } = new List<string>();
         private string RawAppearance;
-        private AbilityRequirementCollection OrList { get; } = new AbilityRequirementCollection();
+        private IPgAbilityRequirementCollection OrList { get; } = new AbilityRequirementCollection();
         private string RawErrorMsg;
         private int? RawMinCount;
         private string RawTypeTag;

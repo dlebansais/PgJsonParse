@@ -20,7 +20,7 @@ namespace PgJsonObjects
         }
 
         public override string Key { get { return GetString(0); } }
-        public PowerEffectCollection EffectList { get { return GetObjectList(4, ref _EffectList, PowerEffectCollection.CreateItem, () => new PowerEffectCollection()); } } private PowerEffectCollection _EffectList;
+        public IPgPowerEffectCollection EffectList { get { return GetObjectList(4, ref _EffectList, PgPowerEffectCollection.CreateItem, () => new PgPowerEffectCollection()); } } private IPgPowerEffectCollection _EffectList;
         public int SkillLevelPrereq { get { return RawSkillLevelPrereq.HasValue ? RawSkillLevelPrereq.Value : 0; } }
         public int? RawSkillLevelPrereq { get { return GetInt(8); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(12, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;

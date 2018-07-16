@@ -15,7 +15,7 @@ namespace PgJsonObjects
         public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
         public double? RawPercentChance { get; private set; }
         public List<RecipeItemKey> ItemKeyList { get; private set; } = new List<RecipeItemKey>();
-        public ItemCollection MatchingKeyItemList { get; } = new ItemCollection();
+        public IPgItemCollection MatchingKeyItemList { get; } = new ItemCollection();
         public string Desc { get; private set; }
         public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
         public double? RawChanceToConsume { get; private set; }
@@ -193,7 +193,7 @@ namespace PgJsonObjects
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
-            Dictionary<int, ISerializableJsonObjectCollection> StoredObjectListTable = new Dictionary<int, ISerializableJsonObjectCollection>();
+            Dictionary<int, IPgCollection> StoredObjectListTable = new Dictionary<int, IPgCollection>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
             AddObject(Item as ISerializableJsonObject, data, ref offset, BaseOffset, 4, StoredObjectTable);

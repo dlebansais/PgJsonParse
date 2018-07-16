@@ -28,8 +28,8 @@ namespace PgJsonObjects
         double? RawRageMultiplier { get; }
         double Accuracy { get; }
         double? RawAccuracy { get; }
-        SpecialValueCollection SpecialValueList { get; }
-        DoTCollection DoTList { get; }
+        IPgSpecialValueCollection SpecialValueList { get; }
+        IPgDoTCollection DoTList { get; }
         int TauntDelta { get; }
         int? RawTauntDelta { get; }
         int TempTauntDelta { get; }
@@ -39,14 +39,14 @@ namespace PgJsonObjects
         double RageCostMod { get; }
         double? RawRageCostMod { get; }
         List<PreEffect> SelfPreEffectList { get; }
-        AttributeCollection AttributesThatDeltaDamageList { get; }
-        AttributeCollection AttributesThatModDamageList { get; }
-        AttributeCollection AttributesThatModBaseDamageList { get; }
-        AttributeCollection AttributesThatDeltaTauntList { get; }
-        AttributeCollection AttributesThatModTauntList { get; }
-        AttributeCollection AttributesThatDeltaRageList { get; }
-        AttributeCollection AttributesThatModRageList { get; }
-        AttributeCollection AttributesThatDeltaRangeList { get; }
+        IPgAttributeCollection AttributesThatDeltaDamageList { get; }
+        IPgAttributeCollection AttributesThatModDamageList { get; }
+        IPgAttributeCollection AttributesThatModBaseDamageList { get; }
+        IPgAttributeCollection AttributesThatDeltaTauntList { get; }
+        IPgAttributeCollection AttributesThatModTauntList { get; }
+        IPgAttributeCollection AttributesThatDeltaRageList { get; }
+        IPgAttributeCollection AttributesThatModRageList { get; }
+        IPgAttributeCollection AttributesThatDeltaRangeList { get; }
         bool RawAttributesThatDeltaDamageListIsEmpty { get; }
         bool RawAttributesThatModDamageListIsEmpty { get; }
         bool RawAttributesThatModBaseDamageListIsEmpty { get; }
