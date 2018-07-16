@@ -398,7 +398,7 @@ namespace PgJsonObjects
                     ErrorInfo.AddInvalidObjectFormat("Skill Rewards");
             }
 
-            EmptyRewardList = (RewardList.Count == 0);
+            EmptyRewardList = ((RewardList as IList<IPgReward>).Count == 0);
         }
 
         private IObjectContentGenerator GetRewards()

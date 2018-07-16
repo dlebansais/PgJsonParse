@@ -60,9 +60,11 @@ namespace PgJsonObjects
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("Tiers");
 
-            for (int i = 0; i < TierEffectList.Count; i++)
+            IList<IPgPowerTier> AsList = TierEffectList;
+
+            for (int i = 0; i < AsList.Count; i++)
             {
-                IPgPowerTier Item = TierEffectList[i];
+                IPgPowerTier Item = AsList[i];
                 int Tier = TierOffset + i;
 
                 string FieldKey = "id_" + Tier.ToString();

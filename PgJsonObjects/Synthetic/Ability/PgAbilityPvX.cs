@@ -147,8 +147,7 @@ namespace PgJsonObjects
                 GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty } },
             { "SpecialValues", new FieldParser() {
                 Type = FieldType.ObjectArray,
-                GetObjectArray = () => { if (SpecialValueList.Count == 1) return SpecialValueList; else return SpecialValueList; },
-                /*GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty*/ } },
+                GetObjectArray = () => SpecialValueList } },
             { "TauntDelta", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => RawTauntDelta } },

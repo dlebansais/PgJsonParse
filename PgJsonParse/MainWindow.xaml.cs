@@ -268,7 +268,8 @@ namespace PgJsonParse
                 if (PowerItem.IsUnavailable)
                     continue;
 
-                if (PowerItem.TierEffectList.Count == 0)
+                IList<IPgPowerTier> TierEffectList = PowerItem.TierEffectList;
+                if (TierEffectList.Count == 0)
                     continue;
 
                 int CombatSlotCount = 0;

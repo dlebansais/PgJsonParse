@@ -70,10 +70,11 @@ namespace PgJsonObjects
         public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
         {
             Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
+            IList<IPgPowerTier> AsTierEffectList = TierEffectList;
 
-            for (int i = 0; i < TierEffectList.Count; i++)
+            for (int i = 0; i < AsTierEffectList.Count; i++)
             {
-                IPgPowerTier Item = TierEffectList[i];
+                IPgPowerTier Item = AsTierEffectList[i];
                 int Tier = TierOffset + i;
 
                 foreach (PowerEffect Effect in Item.EffectList)
@@ -233,9 +234,11 @@ namespace PgJsonObjects
             CustomObject Result = new CustomObject();
             Result.SetCustomKey("Tiers");
 
-            for (int i = 0; i < TierEffectList.Count; i++)
+            IList<IPgPowerTier> AsTierEffectList = TierEffectList;
+
+            for (int i = 0; i < AsTierEffectList.Count; i++)
             {
-                IPgPowerTier Item = TierEffectList[i];
+                IPgPowerTier Item = AsTierEffectList[i];
                 int Tier = TierOffset + i;
 
                 string FieldKey = "id_" + Tier.ToString();
@@ -274,9 +277,11 @@ namespace PgJsonObjects
             bool IsConnected = false;
             Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
 
-            for (int i = 0; i < TierEffectList.Count; i++)
+            IList<IPgPowerTier> AsTierEffectList = TierEffectList;
+
+            for (int i = 0; i < AsTierEffectList.Count; i++)
             {
-                PowerTier Item = TierEffectList[i] as PowerTier;
+                PowerTier Item = AsTierEffectList[i] as PowerTier;
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
             }
 
@@ -296,7 +301,7 @@ namespace PgJsonObjects
             if (power.IsUnavailable)
                 return false;
 
-            if (power.TierEffectList.Count == 0)
+            if ((power.TierEffectList as IList<IPgPowerTier>).Count == 0)
                 return false;
 
             if (!power.SlotList.Contains(Slot))

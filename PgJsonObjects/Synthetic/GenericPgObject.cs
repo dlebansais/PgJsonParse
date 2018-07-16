@@ -382,7 +382,7 @@ namespace PgJsonObjects
                     break;
 
                 case FieldType.ObjectArray:
-                    IList ObjectArray = Parser.GetObjectArray() as IList;
+                    IPgCollection ObjectArray = Parser.GetObjectArray() as IPgCollection;
                     bool IsListEmpty;
                     if (Parser.GetArrayIsEmpty != null)
                         IsListEmpty = Parser.GetArrayIsEmpty();

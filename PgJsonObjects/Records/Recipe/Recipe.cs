@@ -1015,7 +1015,7 @@ namespace PgJsonObjects
                 }
             }
 
-            if (RecipeList.Count == 0 && ErrorInfo != null)
+            if ((RecipeList as IList<IPgRecipe>).Count == 0 && ErrorInfo != null)
                 ErrorInfo.AddMissingKey(Keyword.ToString());
 
             return RecipeList;

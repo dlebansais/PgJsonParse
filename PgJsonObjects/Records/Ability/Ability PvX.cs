@@ -162,9 +162,7 @@ namespace PgJsonObjects
             { "SpecialValues", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<SpecialValue>.ParseList("SpecialValue", value, SpecialValueList, errorInfo),
-                //SetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true,
-                GetObjectArray = () => { if (SpecialValueList.Count == 1) return SpecialValueList; else return SpecialValueList; },
-                /*GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty*/ } },
+                GetObjectArray = () => SpecialValueList } },
             { "TauntDelta", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawTauntDelta = value,

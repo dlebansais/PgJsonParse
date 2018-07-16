@@ -282,7 +282,7 @@ namespace PgJsonObjects
                 if (Keyword == ItemKeyword.Internal_None)
                     continue;
 
-                ItemList.Clear();
+                (ItemList as IPgCollection).Clear();
 
                 if (Keyword == ItemKeyword.Any)
                 {

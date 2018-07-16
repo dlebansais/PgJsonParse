@@ -20,6 +20,7 @@ namespace PgJsonObjects
         }
 
         public IPgQuestCollection QuestList { get { return GetObjectList(PropertiesOffset + 0, ref _QuestList, PgQuestCollection.CreateItem, () => new PgQuestCollection()); } } private IPgQuestCollection _QuestList;
+        private IList<IPgQuest> QuestListAsList { get { return QuestList; } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
@@ -27,7 +28,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<OtherRequirementType>.ToString(OtherRequirementType, null, OtherRequirementType.Internal_None) } },
             { "Quest", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => QuestList.Count > 0 ? QuestList[0].InternalName : null } },
+                GetString = () => QuestListAsList.Count > 0 ? QuestListAsList[0].InternalName : null } },
         }; } }
     }
 }

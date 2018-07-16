@@ -43,10 +43,12 @@ namespace PgJsonObjects
 
         public QuestRequirement ToSpecificQuestRequirement(ParseErrorInfo ErrorInfo)
         {
+            IList<IPgQuestRequirement> AsRequirementOrList = RequirementOrList;
+
             switch (OtherRequirementType)
             {
                 case OtherRequirementType.Or:
-                    if (RequirementOrList.Count >= 2)
+                    if (AsRequirementOrList.Count >= 2)
                         return new OrQuestRequirement(OtherRequirementType, RequirementOrList);
                     else
                     {

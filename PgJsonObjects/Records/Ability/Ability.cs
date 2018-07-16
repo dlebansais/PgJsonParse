@@ -2092,9 +2092,11 @@ namespace PgJsonObjects
 
             else if (Tools.Scan(s, "You regain health, and your target decides not to attack you for %d-%d seconds (even if you attack it during that time)", args))
             {
+                IList<IPgSpecialValue> SpecialValueList = PvE.SpecialValueList;
+
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.Heal, TimeSpan.Zero);
-                if (PvE != null && PvE.SpecialValueList.Count > 0)
-                    AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = PvE.SpecialValueList[0].Value });
+                if (PvE != null && SpecialValueList.Count > 0)
+                    AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = SpecialValueList[0].Value });
                 AddResult(AdditionalResult);
 
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.Peacefulness, TimeSpan.FromSeconds((int)args[0]));
@@ -2593,7 +2595,7 @@ namespace PgJsonObjects
                 }
             }
 
-            if (AbilityList.Count == 0 && ErrorInfo != null)
+            if ((AbilityList as IList<IPgAbility>).Count == 0 && ErrorInfo != null)
                 ErrorInfo.AddMissingKey(Keyword.ToString());
 
             return AbilityList;

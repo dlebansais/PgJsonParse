@@ -533,7 +533,7 @@ namespace PgJsonObjects
             {
                 if (ItemSkillEntry.Key == "Unknown")
                 {
-                    RawUnknownSkillReqIndex = SkillRequirementList.Count;
+                    RawUnknownSkillReqIndex = (SkillRequirementList as IList<IPgItemSkillLink>).Count;
                     continue;
                 }
 
@@ -906,7 +906,7 @@ namespace PgJsonObjects
                 }
             }
 
-            if (ItemList.Count == 0 && ErrorInfo != null)
+            if ((ItemList as IList<IPgItem>).Count == 0 && ErrorInfo != null)
                 ErrorInfo.AddMissingKey(Keyword.ToString());
 
             return ItemList;

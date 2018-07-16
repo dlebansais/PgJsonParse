@@ -7,6 +7,7 @@ namespace PgJsonObjects
         public PlanerSlotPower(IPgPower Reference, Dictionary<string, IGenericJsonObject> AttributeTable, int MaxLevelFirstSkill)
         {
             this.Reference = Reference;
+            IList<IPgPowerTier> TierEffectList = Reference.TierEffectList;
 
             int LastTier = 0;
             IPgPowerTier LastPowerTier = null;
@@ -14,15 +15,15 @@ namespace PgJsonObjects
 
             if (MaxLevelFirstSkill > 0 && MaxLevelFirstSkill <= 125)
             {
-                if (Reference.TierEffectList.Count >= 16)
+                if (TierEffectList.Count >= 16)
                     MaxTier = MaxLevelFirstSkill / 5;
-                else if (Reference.TierEffectList.Count >= 8)
+                else if (TierEffectList.Count >= 8)
                     MaxTier = MaxLevelFirstSkill / 10;
-                else if (Reference.TierEffectList.Count >= 4)
+                else if (TierEffectList.Count >= 4)
                     MaxTier = MaxLevelFirstSkill / 20;
-                else if (Reference.TierEffectList.Count >= 3)
+                else if (TierEffectList.Count >= 3)
                     MaxTier = MaxLevelFirstSkill / 30;
-                else if (Reference.TierEffectList.Count >= 2)
+                else if (TierEffectList.Count >= 2)
                     MaxTier = MaxLevelFirstSkill / 50;
                 else
                     MaxTier = -1;
@@ -30,9 +31,9 @@ namespace PgJsonObjects
             else
                 MaxTier = -1;
 
-            for (int i = 0; i < Reference.TierEffectList.Count; i++)
+            for (int i = 0; i < TierEffectList.Count; i++)
             {
-                IPgPowerTier Item = Reference.TierEffectList[i];
+                IPgPowerTier Item = TierEffectList[i];
                 int Tier = Reference.TierOffset + i;
 
                 if ((LastTier < Tier && (MaxTier < 0 || Tier < MaxTier)) || LastPowerTier == null)

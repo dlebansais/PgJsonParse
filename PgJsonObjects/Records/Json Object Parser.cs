@@ -24,7 +24,7 @@ namespace PgJsonObjects
             try
             {
                 if (Parsed != null)
-                    (list as IList).Add(Parsed);
+                    list.Add(Parsed);
             }
             catch
             {
