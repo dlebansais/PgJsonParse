@@ -115,49 +115,49 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDamageList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaDamageListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaDamageList),
+                GetStringArray = () => AttributesThatDeltaDamageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaDamageListIsEmpty } },
             { "AttributesThatModDamage", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModDamageList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModDamageListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModDamageList),
+                GetStringArray = () => AttributesThatModDamageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModDamageListIsEmpty } },
             { "AttributesThatModBaseDamage", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModBaseDamageList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModBaseDamageListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModBaseDamageList),
+                GetStringArray = () => AttributesThatModBaseDamageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModBaseDamageListIsEmpty } },
             { "AttributesThatDeltaTaunt", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaTauntList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaTauntListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaTauntList),
+                GetStringArray = () => AttributesThatDeltaTauntList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaTauntListIsEmpty } },
             { "AttributesThatModTaunt", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModTauntList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModTauntListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModTauntList),
+                GetStringArray = () => AttributesThatModTauntList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModTauntListIsEmpty } },
             { "AttributesThatDeltaRage", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaRageList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaRageListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaRageList),
+                GetStringArray = () => AttributesThatDeltaRageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaRageListIsEmpty } },
             { "AttributesThatModRage", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModRageList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModRageListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModRageList),
+                GetStringArray = () => AttributesThatModRageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModRageListIsEmpty } },
             { "AttributesThatDeltaRange", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaRangeList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaRangeList),
+                GetStringArray = () => AttributesThatDeltaRangeList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty } },
             { "SpecialValues", new FieldParser() {
                 Type = FieldType.ObjectArray,
@@ -184,16 +184,6 @@ namespace PgJsonObjects
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<DoT>.ParseList("DoTs", value, DoTList, errorInfo),
                 GetObjectArray = () => DoTList } },
         }; } }
-
-        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in attributes)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
 
         private List<string> RawAttributesThatDeltaDamageList { get; } = new List<string>();
         public bool RawAttributesThatDeltaDamageListIsEmpty { get; private set; }

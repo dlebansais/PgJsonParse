@@ -78,7 +78,6 @@ namespace PgJsonObjects
         public bool? RawIgnoreEffectErrors { get; private set; }
         public IPgAbility AbilityGroup { get; private set; }
         public IPgItem ConsumedItemLink { get; private set; }
-        public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; private set; }
         public IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; private set; } = null;
@@ -93,6 +92,7 @@ namespace PgJsonObjects
         private List<PowerSkill> RawCompatibleSkillList = new List<PowerSkill>();
         private bool IsRawConsumedItemKeywordParsed;
         private bool IsSkillParsed;
+        private List<GenericSource> SourceList = new List<GenericSource>();
         #endregion
 
         #region Indirect Properties
@@ -163,8 +163,8 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "AbilityGroup", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = ParseAbilityGroup,
-                GetString = () => AbilityGroup.InternalName} },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawAbilityGroup = value,
+                GetString = () => AbilityGroup != null ? AbilityGroup.InternalName : null } },
             { "Animation", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Animation = StringToEnumConversion<AbilityAnimation>.Parse(value, errorInfo),
@@ -173,31 +173,31 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaAmmoStickChanceList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaAmmoStickChanceList),
+                GetStringArray = () => AttributesThatDeltaAmmoStickChanceList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty } },
             { "AttributesThatDeltaDelayLoopTime", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDelayLoopTimeList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaDelayLoopTimeList),
+                GetStringArray = () => AttributesThatDeltaDelayLoopTimeList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty } },
             { "AttributesThatDeltaPowerCost", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaPowerCostList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaPowerCostList),
+                GetStringArray = () => AttributesThatDeltaPowerCostList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty } },
             { "AttributesThatDeltaResetTime", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaResetTimeList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaResetTimeList),
+                GetStringArray = () => AttributesThatDeltaResetTimeList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty } },
             { "AttributesThatModPowerCost", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModPowerCostList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModPowerCostList),
+                GetStringArray = () => AttributesThatModPowerCostList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty } },
             { "CanBeOnSidebar", new FieldParser() {
                 Type = FieldType.Bool,
@@ -397,23 +397,6 @@ namespace PgJsonObjects
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawWorksWhileFalling = value,
                 GetBool = () => RawWorksWhileFalling } },
         }; } }
-
-        private void ParseAbilityGroup(string RawAbilityGroup, ParseErrorInfo ErrorInfo)
-        {
-            this.RawAbilityGroup = RawAbilityGroup;
-            AbilityGroup = null;
-            IsRawAbilityGroupParsed = false;
-        }
-
-        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in attributes)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
 
         private void ParseCompatibleSkills(string RawCompatibleSkill, ParseErrorInfo ErrorInfo)
         {

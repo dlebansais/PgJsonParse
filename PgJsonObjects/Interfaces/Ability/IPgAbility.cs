@@ -78,7 +78,6 @@ namespace PgJsonObjects
         IPgAttributeCollection AttributesThatDeltaResetTimeList { get; }
         IPgAttributeCollection AttributesThatModPowerCostList { get; }
         string ConsumedItemKeyword { get; }
-        //List<GenericSource> SourceList { get; }
         bool WorksWhileFalling { get; }
         bool? RawWorksWhileFalling { get; }
         bool IgnoreEffectErrors { get; }

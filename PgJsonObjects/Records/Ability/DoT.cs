@@ -50,29 +50,19 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaList),
+                GetStringArray = () => AttributesThatDeltaList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty } },
             { "AttributesThatMod", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModList),
+                GetStringArray = () => AttributesThatModList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModListIsEmpty } },
             { "Preface", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawPreface = value,
                 GetString = () => RawPreface } },
         }; } }
-
-        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in attributes)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
 
         private List<string> RawAttributesThatDeltaList { get; } = new List<string>();
         public bool RawAttributesThatDeltaListIsEmpty { get; private set; }

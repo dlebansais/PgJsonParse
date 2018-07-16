@@ -41,19 +41,19 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaList),
+                GetStringArray = () => AttributesThatDeltaList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty } },
             { "AttributesThatMod", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModList),
+                GetStringArray = () => AttributesThatModList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModListIsEmpty } },
             { "AttributesThatModBase", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModBaseList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatModBaseListIsEmpty = true,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModBaseList),
+                GetStringArray = () => AttributesThatModBaseList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModBaseListIsEmpty } },
             { "DisplayType", new FieldParser() {
                 Type = FieldType.String,
@@ -64,16 +64,6 @@ namespace PgJsonObjects
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawSkipIfZero = value,
                 GetBool = () => RawSkipIfZero } },
         }; } }
-
-        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in attributes)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
 
         private List<string> RawAttributesThatDeltaList { get; } = new List<string>();
         public bool RawAttributesThatDeltaListIsEmpty { get; private set; }

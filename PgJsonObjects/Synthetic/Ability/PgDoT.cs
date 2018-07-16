@@ -53,25 +53,15 @@ namespace PgJsonObjects
                 GetStringArray = () => StringToEnumConversion<DoTSpecialRule>.ToStringList(SpecialRuleList) } },
             { "AttributesThatDelta", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaList),
+                GetStringArray = () => AttributesThatDeltaList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty } },
             { "AttributesThatMod", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModList),
+                GetStringArray = () => AttributesThatModList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModListIsEmpty } },
             { "Preface", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => RawPreface } },
         }; } }
-
-        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in attributes)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
     }
 }

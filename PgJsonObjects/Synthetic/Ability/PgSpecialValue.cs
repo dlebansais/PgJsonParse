@@ -48,15 +48,15 @@ namespace PgJsonObjects
                 GetFloat = () => RawValue } },
             { "AttributesThatDelta", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaList),
+                GetStringArray = () => AttributesThatDeltaList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaListIsEmpty } },
             { "AttributesThatMod", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModList),
+                GetStringArray = () => AttributesThatModList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModListIsEmpty } },
             { "AttributesThatModBase", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModBaseList),
+                GetStringArray = () => AttributesThatModBaseList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModBaseListIsEmpty } },
             { "DisplayType", new FieldParser() {
                 Type = FieldType.String,
@@ -65,15 +65,5 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 GetBool = () => RawSkipIfZero } },
         }; } }
-
-        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in attributes)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
     }
 }

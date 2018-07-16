@@ -109,7 +109,6 @@ namespace PgJsonObjects
         public IPgAttributeCollection AttributesThatDeltaResetTimeList { get { return GetObjectList(164, ref _AttributesThatDeltaResetTimeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaResetTimeList;
         public IPgAttributeCollection AttributesThatModPowerCostList { get { return GetObjectList(168, ref _AttributesThatModPowerCostList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModPowerCostList;
         public string ConsumedItemKeyword { get { return GetString(172); } }
-        //public List<GenericSource> SourceList { get { return GetObjectList(148, ref _SourceList); } } private List<GenericSource> _SourceList;
         public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
         public bool? RawWorksWhileFalling { get { return GetBool(176, 0); } }
         public bool IgnoreEffectErrors { get { return RawIgnoreEffectErrors.HasValue && RawIgnoreEffectErrors.Value; } }

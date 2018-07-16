@@ -115,35 +115,35 @@ namespace PgJsonObjects
                 GetFloat = () => RawAccuracy } },
             { "AttributesThatDeltaDamage", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaDamageList),
+                GetStringArray = () => AttributesThatDeltaDamageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaDamageListIsEmpty } },
             { "AttributesThatModDamage", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModDamageList),
+                GetStringArray = () => AttributesThatModDamageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModDamageListIsEmpty } },
             { "AttributesThatModBaseDamage", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModBaseDamageList),
+                GetStringArray = () => AttributesThatModBaseDamageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModBaseDamageListIsEmpty } },
             { "AttributesThatDeltaTaunt", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaTauntList),
+                GetStringArray = () => AttributesThatDeltaTauntList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaTauntListIsEmpty } },
             { "AttributesThatModTaunt", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModTauntList),
+                GetStringArray = () => AttributesThatModTauntList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModTauntListIsEmpty } },
             { "AttributesThatDeltaRage", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaRageList),
+                GetStringArray = () => AttributesThatDeltaRageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaRageListIsEmpty } },
             { "AttributesThatModRage", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatModRageList),
+                GetStringArray = () => AttributesThatModRageList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModRageListIsEmpty } },
             { "AttributesThatDeltaRange", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => GetAttributeKeys(AttributesThatDeltaRangeList),
+                GetStringArray = () => AttributesThatDeltaRangeList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty } },
             { "SpecialValues", new FieldParser() {
                 Type = FieldType.ObjectArray,
@@ -164,15 +164,5 @@ namespace PgJsonObjects
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => DoTList } },
         }; } }
-
-        private List<string> GetAttributeKeys(IPgAttributeCollection attributes)
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in attributes)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
     }
 }
