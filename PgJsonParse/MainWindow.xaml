@@ -2084,7 +2084,7 @@
                     <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,10,0,0">Can be on sidebar:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Margin="5,10,0,0">
                         <TextBlock.Text>
-                            <Binding Path="CanBeOnSidebar" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource NoYes}"/>
+                            <Binding Path="RawCanBeOnSidebar" Converter="{StaticResource convBooleanToObject}" ConverterParameter="{StaticResource NoYesNull}"/>
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Suppress monster shout:</TextBlock>

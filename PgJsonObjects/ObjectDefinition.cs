@@ -5,7 +5,7 @@ namespace PgJsonObjects
 {
     public class ObjectDefinition
     {
-        public static bool Verify = true;
+        public static bool Verify = false;
         public static bool UseJson = false;
     }
 

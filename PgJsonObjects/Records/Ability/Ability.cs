@@ -218,7 +218,7 @@ namespace PgJsonObjects
                 GetBool = () => RawCanTargetUntargetableEnemies } },
             { "CausesOfDeath", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<Deaths>.ParseList(value, CausesOfDeathList, errorInfo),
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => { StringToEnumConversion<Deaths>.ParseList(value, CausesOfDeathList, errorInfo); /* StringToEnumConversion<Deaths>.ParseList(value, CausesOfDeathList, errorInfo);*/ },
                 GetStringArray = () => StringToEnumConversion<Deaths>.ToStringList(CausesOfDeathList) } },
             { "Costs", new FieldParser() {
                 Type = FieldType.ObjectArray,
