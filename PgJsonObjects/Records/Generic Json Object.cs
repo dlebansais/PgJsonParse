@@ -17,17 +17,6 @@ namespace PgJsonObjects
             return string.Compare(s1, s2, StringComparison.InvariantCulture);
         }
         #endregion
-
-        #region Tools
-        public static List<string> CreateSingleOrEmptyStringList(string item)
-        {
-            List<string> Result = new List<string>();
-            if (item != null)
-                Result.Add(item);
-
-            return Result;
-        }
-        #endregion
     }
 
     public abstract class GenericJsonObject<T>: SerializableJsonObject, IGenericJsonObject, IJsonKey, IObjectContentGenerator
