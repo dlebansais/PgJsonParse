@@ -17,6 +17,14 @@ namespace PgJsonObjects
         public bool? RawCanTargetUntargetableEnemies { get; private set; }
         public bool DelayLoopIsAbortedIfAttacked { get { return RawDelayLoopIsAbortedIfAttacked.HasValue && RawDelayLoopIsAbortedIfAttacked.Value; } }
         public bool? RawDelayLoopIsAbortedIfAttacked { get; private set; }
+        public bool InternalAbility { get { return RawInternalAbility.HasValue && RawInternalAbility.Value; } }
+        public bool? RawInternalAbility { get; private set; }
+        public bool IsHarmless { get { return RawIsHarmless.HasValue && RawIsHarmless.Value; } }
+        public bool? RawIsHarmless { get; private set; }
+        public bool WorksInCombat { get { return RawWorksInCombat.HasValue && RawWorksInCombat.Value; } }
+        public bool? RawWorksInCombat { get; private set; }
+        public bool WorksUnderwater { get { return RawWorksUnderwater.HasValue && RawWorksUnderwater.Value; } }
+        public bool? RawWorksUnderwater { get; private set; }
         public List<Deaths> CausesOfDeathList { get; } = new List<Deaths>();
         public IPgRecipeCostCollection CostList { get; } = new RecipeCostCollection();
         public int CombatRefreshBaseAmount { get { return RawCombatRefreshBaseAmount.HasValue ? RawCombatRefreshBaseAmount.Value : 0; } }
@@ -38,14 +46,6 @@ namespace PgJsonObjects
         public AbilityPetType PetTypeTagReq { get; private set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         public int? RawIconId { get; private set; }
-        public bool InternalAbility { get { return RawInternalAbility.HasValue && RawInternalAbility.Value; } }
-        public bool? RawInternalAbility { get; private set; }
-        public bool IsHarmless { get { return RawIsHarmless.HasValue && RawIsHarmless.Value; } }
-        public bool? RawIsHarmless { get; private set; }
-        public bool WorksInCombat { get { return RawWorksInCombat.HasValue && RawWorksInCombat.Value; } }
-        public bool? RawWorksInCombat { get; private set; }
-        public bool WorksUnderwater { get { return RawWorksUnderwater.HasValue && RawWorksUnderwater.Value; } }
-        public bool? RawWorksUnderwater { get; private set; }
         public string InternalName { get; private set; }
         public string ItemKeywordReqErrorMessage { get; private set; }
         public List<AbilityItemKeyword> ItemKeywordReqList { get; } = new List<AbilityItemKeyword>();
@@ -72,27 +72,32 @@ namespace PgJsonObjects
         public TargetEffectKeyword TargetEffectKeywordReq { get; private set; }
         public AbilityTargetParticle TargetParticle { get; private set; }
         public IPgAbility UpgradeOf { get; private set; }
-        public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
-        public bool? RawWorksWhileFalling { get; private set; }
-        public bool IgnoreEffectErrors { get { return RawIgnoreEffectErrors.HasValue && RawIgnoreEffectErrors.Value; } }
-        public bool? RawIgnoreEffectErrors { get; private set; }
-        public IPgAbility AbilityGroup { get; private set; }
-        public IPgItem ConsumedItemLink { get; private set; }
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; private set; }
+        public ConsumedItems ConsumedItems { get; private set; }
+        public IPgAbility AbilityGroup { get; private set; }
+        public IPgAbilityRequirementCollection SpecialCasterRequirementList { get; } = new AbilityRequirementCollection();
         public IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaPowerCostList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaResetTimeList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatModPowerCostList { get; private set; } = null;
+        public IPgItem ConsumedItemLink { get; private set; }
+        public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
+        public bool? RawWorksWhileFalling { get; private set; }
+        public bool IgnoreEffectErrors { get { return RawIgnoreEffectErrors.HasValue && RawIgnoreEffectErrors.Value; } }
+        public bool? RawIgnoreEffectErrors { get; private set; }
+        public bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty { get; private set; }
+        public bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty { get; private set; }
+        public bool RawAttributesThatDeltaPowerCostListIsEmpty { get; private set; }
+        public bool RawAttributesThatDeltaResetTimeListIsEmpty { get; private set; }
+        public bool RawAttributesThatModPowerCostListIsEmpty { get; private set; }
         public PowerSkill RawSkill { get; private set; }
-        public string ConsumedItemKeyword { get; private set; }
 
-        public ConsumedItems ConsumedItems { get; private set; }
-        public IPgAbilityRequirementCollection SpecialCasterRequirementList { get; } = new AbilityRequirementCollection();
         private List<PowerSkill> RawCompatibleSkillList = new List<PowerSkill>();
-        private bool IsRawConsumedItemKeywordParsed;
         private bool IsSkillParsed;
         private List<GenericSource> SourceList = new List<GenericSource>();
+        private bool IsRawConsumedItemKeywordParsed;
+        private ItemKeyword ConsumedItemKeyword;
         #endregion
 
         #region Indirect Properties
@@ -225,15 +230,15 @@ namespace PgJsonObjects
                 GetInteger = () => RawCombatRefreshBaseAmount } },
             { "CompatibleSkills", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = ParseCompatibleSkills,
-                GetStringArray = GetCompatibleSkills } },
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => CompatibleSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
+                GetStringArray = () => StringToEnumConversion<PowerSkill>.ToSingleOrEmptyStringList(CompatibleSkill) } },
             { "ConsumedItemChance", new FieldParser() {
                 Type = FieldType.Float,
-                ParseFloat = ParseConsumedItemChance,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawConsumedItemChance = value,
                 GetFloat = () => RawConsumedItemChance } },
             { "ConsumedItemChanceToStickInCorpse", new FieldParser() {
                 Type = FieldType.Float,
-                ParseFloat = ParseConsumedItemChanceToStickInCorpse,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawConsumedItemChanceToStickInCorpse = value,
                 GetFloat = () => RawConsumedItemChanceToStickInCorpse } },
             { "ConsumedItemCount", new FieldParser() {
                 Type = FieldType.Integer,
@@ -242,7 +247,7 @@ namespace PgJsonObjects
             { "ConsumedItemKeyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseConsumedItemKeyword,
-                GetString = () => ConsumedItemKeyword } },
+                GetString = GetConsumedItemKeyword } },
             { "DamageType", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => DamageType = StringToEnumConversion<DamageType>.Parse(value, null, DamageType.Internal_None, DamageType.Internal_Empty, errorInfo),
@@ -266,11 +271,11 @@ namespace PgJsonObjects
             { "EffectKeywordsIndicatingEnabled", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = ParseEffectKeywordsIndicatingEnabled,
-                GetStringArray = () => StringToEnumConversion<AbilityIndicatingEnabled>.ToSingleStringList(EffectKeywordsIndicatingEnabled) } },
+                GetStringArray = () => StringToEnumConversion<AbilityIndicatingEnabled>.ToSingleOrEmptyStringList(EffectKeywordsIndicatingEnabled) } },
             { "ExtraKeywordsForTooltips", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = ParseExtraKeywordsForTooltips,
-                GetStringArray = () => StringToEnumConversion<TooltipsExtraKeywords>.ToSingleStringList(ExtraKeywordsForTooltips) } },
+                GetStringArray = () => StringToEnumConversion<TooltipsExtraKeywords>.ToSingleOrEmptyStringList(ExtraKeywordsForTooltips) } },
             { "IconID", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = ParseIconId,
@@ -398,56 +403,29 @@ namespace PgJsonObjects
                 GetBool = () => RawWorksWhileFalling } },
         }; } }
 
-        private void ParseCompatibleSkills(string RawCompatibleSkill, ParseErrorInfo ErrorInfo)
+        private void ParseConsumedItemCount(int value, ParseErrorInfo errorInfo)
         {
-            if (StringToEnumConversion<PowerSkill>.TryParse(RawCompatibleSkill, out PowerSkill ParsedCompatibleSkill, ErrorInfo))
-            {
-                if (RawCompatibleSkillList.Count == 0)
-                    CompatibleSkill = ParsedCompatibleSkill;
-
-                RawCompatibleSkillList.Add(ParsedCompatibleSkill);
-            }
-        }
-
-        private List<string> GetCompatibleSkills()
-        {
-            List<string> Result = new List<string>();
-            if (CompatibleSkill != PowerSkill.Internal_None)
-                Result.Add(StringToEnumConversion<PowerSkill>.ToString(CompatibleSkill));
-
-            return Result;
-        }
-
-        private void ParseConsumedItemChance(float RawConsumedItemChance, ParseErrorInfo ErrorInfo)
-        {
-            this.RawConsumedItemChance = RawConsumedItemChance;
-
-            int Percent = (int)(RawConsumedItemChance * 100);
-            if (Percent <= 0 || Percent >= 100)
-                ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemChance");
-        }
-
-        private void ParseConsumedItemChanceToStickInCorpse(float RawConsumedItemChanceToStickInCorpse, ParseErrorInfo ErrorInfo)
-        {
-            this.RawConsumedItemChanceToStickInCorpse = RawConsumedItemChanceToStickInCorpse;
-
-            int Percent = (int)(RawConsumedItemChanceToStickInCorpse * 100);
-            if (Percent <= 0 || Percent >= 100)
-                ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemChanceToStickInCorpse");
-        }
-
-        private void ParseConsumedItemCount(int RawConsumedItemCount, ParseErrorInfo ErrorInfo)
-        {
-            this.RawConsumedItemCount = (int)RawConsumedItemCount;
+            RawConsumedItemCount = value;
 
             if (RawConsumedItemCount < 1)
-                ErrorInfo.AddInvalidObjectFormat("Ability ConsumedItemCount");
+                errorInfo.AddInvalidObjectFormat("Ability ConsumedItemCount");
         }
 
         private void ParseConsumedItemKeyword(string value, ParseErrorInfo errorInfo)
         {
-            ConsumedItemKeyword = value;
             ConsumedItems = StringToEnumConversion<ConsumedItems>.Parse(value, null);
+            if (ConsumedItems == ConsumedItems.Internal_None)
+                ConsumedItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo);
+        }
+
+        private string GetConsumedItemKeyword()
+        {
+            if (ConsumedItemLink != null)
+                return ConsumedItemLink.InternalName;
+            else if (ConsumedItems != ConsumedItems.Internal_None)
+                return StringToEnumConversion<ConsumedItems>.ToString(ConsumedItems);
+            else
+                return null;
         }
 
         private void ParseDelayLoopTime(float value, ParseErrorInfo ErrorInfo)
@@ -2449,15 +2427,10 @@ namespace PgJsonObjects
         }
 
         private List<string> RawAttributesThatDeltaAmmoStickChanceList = new List<string>();
-        public bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty { get; private set; }
         private List<string> RawAttributesThatDeltaDelayLoopTimeList = new List<string>();
-        public bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty { get; private set; }
         private List<string> RawAttributesThatDeltaPowerCostList = new List<string>();
-        public bool RawAttributesThatDeltaPowerCostListIsEmpty { get; private set; }
         private List<string> RawAttributesThatDeltaResetTimeList = new List<string>();
-        public bool RawAttributesThatDeltaResetTimeListIsEmpty { get; private set; }
         private List<string> RawAttributesThatModPowerCostList = new List<string>();
-        public bool RawAttributesThatModPowerCostListIsEmpty { get; private set; }
         private string RawPrerequisite;
         private bool IsRawPrerequisiteParsed;
         private string RawSharesResetTimerWith;
@@ -2498,8 +2471,11 @@ namespace PgJsonObjects
             foreach (RecipeCost Item in CostList)
                 Item.Connect(ErrorInfo, this, AllTables);
 
-            string ConsumedItemKeyword = StringToEnumConversion<ConsumedItems>.ToString(ConsumedItems, null, ConsumedItems.Internal_None);
-            ConsumedItemLink = Item.ConnectSingleProperty(null, ItemTable, ConsumedItemKeyword, ConsumedItemLink, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
+            if (ConsumedItemKeyword != ItemKeyword.Internal_None)
+            {
+                string ConsumedItemName = StringToEnumConversion<ItemKeyword>.ToString(ConsumedItemKeyword, null, ItemKeyword.Internal_None);
+                ConsumedItemLink = Item.ConnectSingleProperty(null, ItemTable, ConsumedItemName, ConsumedItemLink, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
+            }
 
             AttributesThatDeltaAmmoStickChanceList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaAmmoStickChanceList, AttributesThatDeltaAmmoStickChanceList, ref IsConnected);
             AttributesThatDeltaDelayLoopTimeList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaDelayLoopTimeList, AttributesThatDeltaDelayLoopTimeList, ref IsConnected);
@@ -2699,28 +2675,25 @@ namespace PgJsonObjects
             AddEnum(ExtraKeywordsForTooltips, data, ref offset, BaseOffset, 140);
             AddEnum(ConsumedItems, data, ref offset, BaseOffset, 142);
             AddObject(AbilityGroup as ISerializableJsonObject, data, ref offset, BaseOffset, 144, StoredObjectTable);
-            AddObject(ConsumedItemLink as ISerializableJsonObject, data, ref offset, BaseOffset, 148, StoredObjectTable);
+            AddObjectList(SpecialCasterRequirementList, data, ref offset, BaseOffset, 148, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaAmmoStickChanceList, data, ref offset, BaseOffset, 152, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaDelayLoopTimeList, data, ref offset, BaseOffset, 156, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaPowerCostList, data, ref offset, BaseOffset, 160, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaResetTimeList, data, ref offset, BaseOffset, 164, StoredObjectListTable);
             AddObjectList(AttributesThatModPowerCostList, data, ref offset, BaseOffset, 168, StoredObjectListTable);
-            AddString(ConsumedItemKeyword, data, ref offset, BaseOffset, 172, StoredStringtable);
-
-            //AddObjectList(SourceList, data, ref offset, BaseOffset, 148, StoredObjectListTable);
-            AddBool(RawWorksWhileFalling, data, ref offset, ref BitOffset, BaseOffset, 176, 0);
-            AddBool(RawIgnoreEffectErrors, data, ref offset, ref BitOffset, BaseOffset, 176, 2);
-            AddBool(RawAttributesThatDeltaAmmoStickChanceListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 176, 4);
-            AddBool(RawAttributesThatDeltaDelayLoopTimeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 176, 6);
-            AddBool(RawAttributesThatDeltaPowerCostListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 176, 8);
-            AddBool(RawAttributesThatDeltaResetTimeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 176, 10);
-            AddBool(RawAttributesThatModPowerCostListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 176, 12);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 172, StoredStringListTable);
+            AddObject(ConsumedItemLink as ISerializableJsonObject, data, ref offset, BaseOffset, 176, StoredObjectTable);
+            AddBool(RawWorksWhileFalling, data, ref offset, ref BitOffset, BaseOffset, 180, 0);
+            AddBool(RawIgnoreEffectErrors, data, ref offset, ref BitOffset, BaseOffset, 180, 2);
+            AddBool(RawAttributesThatDeltaAmmoStickChanceListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 4);
+            AddBool(RawAttributesThatDeltaDelayLoopTimeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 6);
+            AddBool(RawAttributesThatDeltaPowerCostListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 8);
+            AddBool(RawAttributesThatDeltaResetTimeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 10);
+            AddBool(RawAttributesThatModPowerCostListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 12);
             CloseBool(ref offset, ref BitOffset);
-            AddEnum(RawSkill, data, ref offset, BaseOffset, 178);
-            AddObjectList(SpecialCasterRequirementList, data, ref offset, BaseOffset, 180, StoredObjectListTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 184, StoredStringListTable);
+            AddEnum(RawSkill, data, ref offset, BaseOffset, 182);
 
-            FinishSerializing(data, ref offset, BaseOffset, 188, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 184, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

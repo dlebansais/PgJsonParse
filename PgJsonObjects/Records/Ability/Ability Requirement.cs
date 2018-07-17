@@ -134,7 +134,7 @@ namespace PgJsonObjects
             { "DisallowedStates", new FieldParser() {
                 Type = FieldType.StringArray,
                 ParseStringArray = ParseDisallowedStates,
-                GetStringArray = () => GenericJsonObject.CreateSingleOrEmptyStringList(StringToEnumConversion<DisallowedState>.ToString(DisallowedState)) } },
+                GetStringArray = () => StringToEnumConversion<DisallowedState>.ToSingleOrEmptyStringList(DisallowedState) } },
             { "PetTypeTag", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => PetTypeTag = StringToEnumConversion<RecipeKeyword>.Parse(value, errorInfo),

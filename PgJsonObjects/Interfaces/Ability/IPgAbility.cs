@@ -71,13 +71,13 @@ namespace PgJsonObjects
         TooltipsExtraKeywords ExtraKeywordsForTooltips { get; }
         ConsumedItems ConsumedItems { get; }
         IPgAbility AbilityGroup { get; }
-        IPgItem ConsumedItemLink { get; }
+        IPgAbilityRequirementCollection SpecialCasterRequirementList { get; }
         IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get; }
         IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; }
         IPgAttributeCollection AttributesThatDeltaPowerCostList { get; }
         IPgAttributeCollection AttributesThatDeltaResetTimeList { get; }
         IPgAttributeCollection AttributesThatModPowerCostList { get; }
-        string ConsumedItemKeyword { get; }
+        IPgItem ConsumedItemLink { get; }
         bool WorksWhileFalling { get; }
         bool? RawWorksWhileFalling { get; }
         bool IgnoreEffectErrors { get; }
@@ -88,7 +88,7 @@ namespace PgJsonObjects
         bool RawAttributesThatDeltaResetTimeListIsEmpty { get; }
         bool RawAttributesThatModPowerCostListIsEmpty { get; }
         PowerSkill RawSkill { get; }
-        IPgAbilityRequirementCollection SpecialCasterRequirementList { get; }
+
         ConsumedItem ConsumedItem { get; }
     }
 }

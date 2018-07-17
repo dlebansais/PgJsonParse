@@ -144,49 +144,6 @@ namespace PgJsonObjects
         }
         #endregion
 
-/*
-        public static void ParseList(JsonArray StringArray, List<T> EnumList, ParseErrorInfo ErrorInfo)
-        {
-            ParseList(StringArray, null, EnumList, ErrorInfo);
-        }
-
-        public static void ParseList(string[] StringArray, List<T> EnumList, ParseErrorInfo ErrorInfo)
-        {
-            ParseList(StringArray, null, EnumList, ErrorInfo);
-        }
-
-        public static void ParseList(JsonArray StringArray, Dictionary<T, string> StringMap, List<T> EnumList, ParseErrorInfo ErrorInfo)
-        {
-            if (StringArray == null)
-                return;
-
-            foreach (object Item in StringArray)
-            {
-                JsonString AsJsonString;
-                if ((AsJsonString = Item as JsonString) != null)
-                {
-                    T ParsedValue;
-                    if (TryParse(AsJsonString.String, StringMap, out ParsedValue, ErrorInfo))
-                        EnumList.Add(ParsedValue);
-                }
-                else
-                    ErrorInfo.AddInvalidObjectFormat("Enum List");
-            }
-        }
-
-        public static void ParseList(string[] StringArray, Dictionary<T, string> StringMap, List<T> EnumList, ParseErrorInfo ErrorInfo)
-        {
-            if (StringArray == null)
-                return;
-
-            foreach (string s in StringArray)
-            {
-                T ParsedValue;
-                if (StringToEnumConversion<T>.TryParse(s, StringMap, out ParsedValue, ErrorInfo))
-                    EnumList.Add(ParsedValue);
-            }
-        }
-*/
         public static string ToString(T EnumValue)
         {
             return EnumValue.ToString();
@@ -238,7 +195,7 @@ namespace PgJsonObjects
             return Result;
         }
 
-        public static List<string> ToSingleStringList(T value)
+        public static List<string> ToSingleOrEmptyStringList(T value)
         {
             List<string> Result = new List<string>();
             if (!value.Equals(default(T)))

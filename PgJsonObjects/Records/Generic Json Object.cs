@@ -19,15 +19,6 @@ namespace PgJsonObjects
         #endregion
 
         #region Tools
-        public static IList CreateSingleOrEmptyList(object item)
-        {
-            List<object> Result = new List<object>();
-            if (item != null)
-                Result.Add(item);
-
-            return Result;
-        }
-
         public static List<string> CreateSingleOrEmptyStringList(string item)
         {
             List<string> Result = new List<string>();

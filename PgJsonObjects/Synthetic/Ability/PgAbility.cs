@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 188;
+            offset += 184;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -32,7 +32,7 @@ namespace PgJsonObjects
             foreach (IPgAbilityRequirement Item in SpecialCasterRequirementList)
                 CombinedRequirementList.Add(Item);
 
-            ConsumedItem = Ability.CreateConsumedItem(ConsumedItemLink, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
+            ConsumedItem = Ability.CreateConsumedItem(null, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
         }
 
         public override string Key { get { return GetString(0); } }
@@ -102,25 +102,25 @@ namespace PgJsonObjects
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get { return GetEnum<TooltipsExtraKeywords>(140); } }
         public ConsumedItems ConsumedItems { get { return GetEnum<ConsumedItems>(142); } }
         public IPgAbility AbilityGroup { get { return GetObject(144, ref _AbilityGroup, CreateNew); } } private IPgAbility _AbilityGroup;
-        public IPgItem ConsumedItemLink { get { return GetObject(148, ref _ConsumedItemLink, PgItem.CreateNew); } } private IPgItem _ConsumedItemLink;
+        public IPgAbilityRequirementCollection SpecialCasterRequirementList { get { return GetObjectList(148, ref _SpecialCasterRequirementList, PgAbilityRequirementCollection.CreateItem, () => new PgAbilityRequirementCollection()); } } private IPgAbilityRequirementCollection _SpecialCasterRequirementList;
         public IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get { return GetObjectList(152, ref _AttributesThatDeltaAmmoStickChanceList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaAmmoStickChanceList;
         public IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get { return GetObjectList(156, ref _AttributesThatDeltaDelayLoopTimeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaDelayLoopTimeList;
         public IPgAttributeCollection AttributesThatDeltaPowerCostList { get { return GetObjectList(160, ref _AttributesThatDeltaPowerCostList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaPowerCostList;
         public IPgAttributeCollection AttributesThatDeltaResetTimeList { get { return GetObjectList(164, ref _AttributesThatDeltaResetTimeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaResetTimeList;
         public IPgAttributeCollection AttributesThatModPowerCostList { get { return GetObjectList(168, ref _AttributesThatModPowerCostList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModPowerCostList;
-        public string ConsumedItemKeyword { get { return GetString(172); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(172, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public IPgItem ConsumedItemLink { get { return GetObject(176, ref _ConsumedItemLink, PgItem.CreateNew); } } private IPgItem _ConsumedItemLink;
         public bool WorksWhileFalling { get { return RawWorksWhileFalling.HasValue && RawWorksWhileFalling.Value; } }
-        public bool? RawWorksWhileFalling { get { return GetBool(176, 0); } }
+        public bool? RawWorksWhileFalling { get { return GetBool(180, 0); } }
         public bool IgnoreEffectErrors { get { return RawIgnoreEffectErrors.HasValue && RawIgnoreEffectErrors.Value; } }
-        public bool? RawIgnoreEffectErrors { get { return GetBool(176, 2); } }
-        public bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty { get { return GetBool(176, 4).Value; } }
-        public bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty { get { return GetBool(176, 6).Value; } }
-        public bool RawAttributesThatDeltaPowerCostListIsEmpty { get { return GetBool(176, 8).Value; } }
-        public bool RawAttributesThatDeltaResetTimeListIsEmpty { get { return GetBool(176, 10).Value; } }
-        public bool RawAttributesThatModPowerCostListIsEmpty { get { return GetBool(176, 12).Value; } }
-        public PowerSkill RawSkill { get { return GetEnum<PowerSkill>(178); } }
-        public IPgAbilityRequirementCollection SpecialCasterRequirementList { get { return GetObjectList(180, ref _SpecialCasterRequirementList, PgAbilityRequirementCollection.CreateItem, () => new PgAbilityRequirementCollection()); } } private IPgAbilityRequirementCollection _SpecialCasterRequirementList;
-        protected override List<string> FieldTableOrder { get { return GetStringList(184, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public bool? RawIgnoreEffectErrors { get { return GetBool(180, 2); } }
+        public bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty { get { return GetBool(180, 4).Value; } }
+        public bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty { get { return GetBool(180, 6).Value; } }
+        public bool RawAttributesThatDeltaPowerCostListIsEmpty { get { return GetBool(180, 8).Value; } }
+        public bool RawAttributesThatDeltaResetTimeListIsEmpty { get { return GetBool(180, 10).Value; } }
+        public bool RawAttributesThatModPowerCostListIsEmpty { get { return GetBool(180, 12).Value; } }
+        public PowerSkill RawSkill { get { return GetEnum<PowerSkill>(182); } }
+
         public ConsumedItem ConsumedItem { get; private set; }
         public IPgAbilityRequirementCollection CombinedRequirementList { get; private set; }
 
@@ -128,29 +128,29 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "AbilityGroup", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => AbilityGroup.InternalName} },
+                GetString = () => AbilityGroup != null ? AbilityGroup.InternalName : null } },
             { "Animation", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<AbilityAnimation>.ToString(Animation, null, AbilityAnimation.Internal_None) } },
             { "AttributesThatDeltaAmmoStickChance", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = GetAttributesThatDeltaAmmoStickChance,
+                GetStringArray = () => AttributesThatDeltaAmmoStickChanceList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty } },
             { "AttributesThatDeltaDelayLoopTime", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = GetAttributesThatDeltaDelayLoopTime,
+                GetStringArray = () => AttributesThatDeltaDelayLoopTimeList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaDelayLoopTimeListIsEmpty } },
             { "AttributesThatDeltaPowerCost", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = GetAttributesThatDeltaPowerCost,
+                GetStringArray = () => AttributesThatDeltaPowerCostList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaPowerCostListIsEmpty } },
             { "AttributesThatDeltaResetTime", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = GetAttributesThatDeltaResetTime,
+                GetStringArray = () => AttributesThatDeltaResetTimeList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaResetTimeListIsEmpty } },
             { "AttributesThatModPowerCost", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = GetAttributesThatModPowerCost,
+                GetStringArray = () => AttributesThatModPowerCostList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatModPowerCostListIsEmpty } },
             { "CanBeOnSidebar", new FieldParser() {
                 Type = FieldType.Bool,
@@ -172,7 +172,7 @@ namespace PgJsonObjects
                 GetInteger = () => RawCombatRefreshBaseAmount } },
             { "CompatibleSkills", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = GetCompatibleSkills } },
+                GetStringArray = () => StringToEnumConversion<PowerSkill>.ToSingleOrEmptyStringList(CompatibleSkill) } },
             { "ConsumedItemChance", new FieldParser() {
                 Type = FieldType.Float,
                 GetFloat = () => RawConsumedItemChance } },
@@ -184,7 +184,7 @@ namespace PgJsonObjects
                 GetInteger = () => RawConsumedItemCount } },
             { "ConsumedItemKeyword", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => ConsumedItemKeyword } },
+                GetString = GetConsumedItemKeyword } },
             { "DamageType", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<DamageType>.ToString(DamageType, null, DamageType.Internal_None, DamageType.Internal_Empty) } },
@@ -202,10 +202,10 @@ namespace PgJsonObjects
                 GetString = () => Description } },
             { "EffectKeywordsIndicatingEnabled", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => StringToEnumConversion<AbilityIndicatingEnabled>.ToSingleStringList(EffectKeywordsIndicatingEnabled) } },
+                GetStringArray = () => StringToEnumConversion<AbilityIndicatingEnabled>.ToSingleOrEmptyStringList(EffectKeywordsIndicatingEnabled) } },
             { "ExtraKeywordsForTooltips", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => StringToEnumConversion<TooltipsExtraKeywords>.ToSingleStringList(ExtraKeywordsForTooltips) } },
+                GetStringArray = () => StringToEnumConversion<TooltipsExtraKeywords>.ToSingleOrEmptyStringList(ExtraKeywordsForTooltips) } },
             { "IconID", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => RawIconId } },
@@ -302,63 +302,14 @@ namespace PgJsonObjects
                 GetBool = () => RawWorksWhileFalling } },
         }; } }
 
-        private List<string> GetAttributesThatDeltaAmmoStickChance()
+        private string GetConsumedItemKeyword()
         {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in AttributesThatDeltaAmmoStickChanceList)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
-
-        private List<string> GetAttributesThatDeltaDelayLoopTime()
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in AttributesThatDeltaDelayLoopTimeList)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
-
-        private List<string> GetAttributesThatDeltaPowerCost()
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in AttributesThatDeltaPowerCostList)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
-
-        private List<string> GetAttributesThatDeltaResetTime()
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in AttributesThatDeltaResetTimeList)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
-
-        private List<string> GetAttributesThatModPowerCost()
-        {
-            List<string> Result = new List<string>();
-
-            foreach (IPgAttribute Item in AttributesThatModPowerCostList)
-                Result.Add(Item.Key);
-
-            return Result;
-        }
-
-        private List<string> GetCompatibleSkills()
-        {
-            List<string> Result = new List<string>();
-            if (CompatibleSkill != PowerSkill.Internal_None)
-                Result.Add(StringToEnumConversion<PowerSkill>.ToString(CompatibleSkill));
-
-            return Result;
+            if (ConsumedItemLink != null)
+                return ConsumedItemLink.InternalName;
+            else if (ConsumedItems != ConsumedItems.Internal_None)
+                return StringToEnumConversion<ConsumedItems>.ToString(ConsumedItems);
+            else
+                return null;
         }
         #endregion
     }
