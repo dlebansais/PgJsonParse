@@ -242,7 +242,7 @@ namespace PgJsonObjects
                 GetFloat = () => RawConsumedItemChanceToStickInCorpse } },
             { "ConsumedItemCount", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = ParseConsumedItemCount,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawConsumedItemCount = value,
                 GetInteger = () => RawConsumedItemCount } },
             { "ConsumedItemKeyword", new FieldParser() {
                 Type = FieldType.String,
@@ -262,7 +262,7 @@ namespace PgJsonObjects
                 GetString = () => DelayLoopMessage } },
             { "DelayLoopTime", new FieldParser() {
                 Type = FieldType.Float,
-                ParseFloat = ParseDelayLoopTime,
+                ParseFloat = (float value, ParseErrorInfo ErrorInfo) => RawDelayLoopTime = value,
                 GetFloat = () => RawDelayLoopTime } },
             { "Description", new FieldParser() {
                 Type = FieldType.String,
@@ -270,11 +270,11 @@ namespace PgJsonObjects
                 GetString = () => Description } },
             { "EffectKeywordsIndicatingEnabled", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = ParseEffectKeywordsIndicatingEnabled,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => EffectKeywordsIndicatingEnabled = StringToEnumConversion<AbilityIndicatingEnabled>.Parse(value, errorInfo),
                 GetStringArray = () => StringToEnumConversion<AbilityIndicatingEnabled>.ToSingleOrEmptyStringList(EffectKeywordsIndicatingEnabled) } },
             { "ExtraKeywordsForTooltips", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = ParseExtraKeywordsForTooltips,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => ExtraKeywordsForTooltips = StringToEnumConversion<TooltipsExtraKeywords>.Parse(value, errorInfo),
                 GetStringArray = () => StringToEnumConversion<TooltipsExtraKeywords>.ToSingleOrEmptyStringList(ExtraKeywordsForTooltips) } },
             { "IconID", new FieldParser() {
                 Type = FieldType.Integer,
@@ -326,7 +326,7 @@ namespace PgJsonObjects
                 GetInteger = () => RawPetTypeTagReqMax } },
             { "Prerequisite", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = ParsePrerequisite,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawPrerequisite = value,
                 GetString = () => Prerequisite != null ? Prerequisite.InternalName : null } },
             { "Projectile", new FieldParser() {
                 Type = FieldType.String,
@@ -350,7 +350,7 @@ namespace PgJsonObjects
                 GetString = () => SelfParticle } },
             { "SharesResetTimerWith", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = ParseSharesResetTimerWith,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawSharesResetTimerWith = value,
                 GetString = () => SharesResetTimerWith != null ? SharesResetTimerWith.InternalName : null } },
             { "Skill", new FieldParser() {
                 Type = FieldType.String,
@@ -387,7 +387,7 @@ namespace PgJsonObjects
                 GetString = () => StringToEnumConversion<AbilityTargetParticle>.ToString(TargetParticle, null, AbilityTargetParticle.Internal_None) } },
             { "UpgradeOf", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = ParseUpgradeOf,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawUpgradeOf = value,
                 GetString = () => UpgradeOf != null ? UpgradeOf.InternalName: null } },
             { "WorksInCombat", new FieldParser() {
                 Type = FieldType.Bool,
@@ -402,14 +402,6 @@ namespace PgJsonObjects
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawWorksWhileFalling = value,
                 GetBool = () => RawWorksWhileFalling } },
         }; } }
-
-        private void ParseConsumedItemCount(int value, ParseErrorInfo errorInfo)
-        {
-            RawConsumedItemCount = value;
-
-            if (RawConsumedItemCount < 1)
-                errorInfo.AddInvalidObjectFormat("Ability ConsumedItemCount");
-        }
 
         private void ParseConsumedItemKeyword(string value, ParseErrorInfo errorInfo)
         {
@@ -428,47 +420,15 @@ namespace PgJsonObjects
                 return null;
         }
 
-        private void ParseDelayLoopTime(float value, ParseErrorInfo ErrorInfo)
+        private void ParseIconId(int value, ParseErrorInfo errorInfo)
         {
-            RawDelayLoopTime = value;
+            RawIconId = value;
 
-            if (value < 0)
-                ErrorInfo.AddInvalidObjectFormat("Ability DelayLoopTime");
-        }
-
-        private void ParseEffectKeywordsIndicatingEnabled(string RawEffectKeywordIndicatingEnabled, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<AbilityIndicatingEnabled>.TryParse(RawEffectKeywordIndicatingEnabled, out AbilityIndicatingEnabled ParsedEffectKeywordIndicatingEnabled, ErrorInfo))
+            if (value > 0)
             {
-                if (EffectKeywordsIndicatingEnabled != AbilityIndicatingEnabled.Internal_None)
-                    ErrorInfo.AddInvalidObjectFormat("Ability EffectKeywordsIndicatingEnabled");
-                else
-                    EffectKeywordsIndicatingEnabled = ParsedEffectKeywordIndicatingEnabled;
+                errorInfo.AddIconId(value);
+                PgJsonObjects.Skill.UpdateAnySkillIcon(RawSkill, value);
             }
-        }
-
-        private void ParseExtraKeywordsForTooltips(string RawExtraKeywordForTooltips, ParseErrorInfo ErrorInfo)
-        {
-            if (StringToEnumConversion<TooltipsExtraKeywords>.TryParse(RawExtraKeywordForTooltips, out TooltipsExtraKeywords ParsedTooltipsExtraKeywords, ErrorInfo))
-            {
-                if (ExtraKeywordsForTooltips != TooltipsExtraKeywords.Internal_None)
-                    ErrorInfo.AddInvalidObjectFormat("Ability ExtraKeywordsForTooltips");
-                else
-                    ExtraKeywordsForTooltips = ParsedTooltipsExtraKeywords;
-            }
-        }
-
-        private void ParseIconId(int RawIconId, ParseErrorInfo ErrorInfo)
-        {
-            if (RawIconId > 0)
-            {
-                this.RawIconId = (int)RawIconId;
-                ErrorInfo.AddIconId((int)RawIconId);
-
-                PgJsonObjects.Skill.UpdateAnySkillIcon(RawSkill, this.RawIconId);
-            }
-            else
-                this.RawIconId = 0;
         }
 
         private void ParseKeywords(string RawKeywords, ParseErrorInfo ErrorInfo)
@@ -483,20 +443,6 @@ namespace PgJsonObjects
             }
         }
 
-        private void ParsePrerequisite(string RawPrerequisite, ParseErrorInfo ErrorInfo)
-        {
-            this.RawPrerequisite = RawPrerequisite;
-            Prerequisite = null;
-            IsRawPrerequisiteParsed = false;
-        }
-
-        private void ParseSharesResetTimerWith(string RawSharesResetTimerWith, ParseErrorInfo ErrorInfo)
-        {
-            this.RawSharesResetTimerWith = RawSharesResetTimerWith;
-            SharesResetTimerWith = null;
-            IsRawSharesResetTimerWithParsed = false;
-        }
-
         private void ParseSkill(string value, ParseErrorInfo errorInfo)
         {
             if (StringToEnumConversion<PowerSkill>.TryParse(value, out PowerSkill ParsedPowerSkill, errorInfo))
@@ -509,19 +455,10 @@ namespace PgJsonObjects
             }
         }
 
-        private void ParseSpecialInfo(string RawSpecialInfo, ParseErrorInfo ErrorInfo)
+        private void ParseSpecialInfo(string value, ParseErrorInfo errorInfo)
         {
-            if (SpecialInfo == null)
-                SpecialInfo = RawSpecialInfo;
-
-            ParseCompleteSpecialInfo(RawSpecialInfo, ErrorInfo);
-        }
-
-        private void ParseUpgradeOf(string RawUpgradeOf, ParseErrorInfo ErrorInfo)
-        {
-            this.RawUpgradeOf = RawUpgradeOf;
-            UpgradeOf = null;
-            IsRawUpgradeOfParsed = false;
+            SpecialInfo = value;
+            ParseCompleteSpecialInfo(value, errorInfo);
         }
 
         public void ParseCompleteSpecialInfo(string s, ParseErrorInfo ErrorInfo)
@@ -537,8 +474,8 @@ namespace PgJsonObjects
                 string s1 = s.Substring(0, Index);
                 string s2 = s.Substring(Index + 2).Trim();
 
-                ParseSpecialInfo(s1, ErrorInfo);
-                ParseSpecialInfo(s2, ErrorInfo);
+                ParseCompleteSpecialInfo(s1, ErrorInfo);
+                ParseCompleteSpecialInfo(s2, ErrorInfo);
                 return;
             }
 
