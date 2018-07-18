@@ -78,7 +78,7 @@ namespace PgJsonObjects
                     AnyIconTable.Add(Skill, RawIconId.Value);
         }
 
-        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IJsonKey>> AllTables, ParseErrorInfo ErrorInfo)
         {
             PowerSkill IconSkill = CombatSkill;
 
@@ -518,12 +518,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
-            Dictionary<string, IGenericJsonObject> XpTableTable = AllTables[typeof(XpTable)];
-            Dictionary<string, IGenericJsonObject> AdvancementTableTable = AllTables[typeof(AdvancementTable)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> XpTableTable = AllTables[typeof(XpTable)];
+            Dictionary<string, IJsonKey> AdvancementTableTable = AllTables[typeof(AdvancementTable)];
 
             XpTable = PgJsonObjects.XpTable.ConnectSingleProperty(ErrorInfo, XpTableTable, RawXpTable, XpTable, ref IsRawXpTableParsed, ref IsConnected, this);
             AdvancementTable = PgJsonObjects.AdvancementTable.ConnectSingleProperty(ErrorInfo, AdvancementTableTable, RawAdvancementTable, AdvancementTable, ref IsRawAdvancementTableParsed, ref IsConnected, this);
@@ -581,7 +581,7 @@ namespace PgJsonObjects
             return CombinedRewardList;
         }
 
-        public static IPgSkill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, string RawSkillName, IPgSkill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgSkill ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> SkillTable, string RawSkillName, IPgSkill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
@@ -591,7 +591,7 @@ namespace PgJsonObjects
             if (RawSkillName == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in SkillTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in SkillTable)
             {
                 Skill SkillValue = Entry.Value as Skill;
                 if (Entry.Key == RawSkillName)
@@ -606,14 +606,14 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static IPgSkill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> SkillTable, PowerSkill RawPowerSkill, IPgSkill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgSkill ConnectPowerSkill(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> SkillTable, PowerSkill RawPowerSkill, IPgSkill ParsedSkill, ref bool IsRawSkillParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawSkillParsed)
                 return ParsedSkill;
 
             IsRawSkillParsed = true;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in SkillTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in SkillTable)
             {
                 Skill SkillValue = Entry.Value as Skill;
                 if (SkillValue.CombatSkill == RawPowerSkill)

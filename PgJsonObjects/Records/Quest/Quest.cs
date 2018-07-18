@@ -844,16 +844,16 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
-            Dictionary<string, IGenericJsonObject> AbilityTable = AllTables[typeof(Ability)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
-            Dictionary<string, IGenericJsonObject> QuestTable = AllTables[typeof(Quest)];
-            Dictionary<string, IGenericJsonObject> EffectTable = AllTables[typeof(Effect)];
-            Dictionary<string, IGenericJsonObject> GameNpcTable = AllTables[typeof(GameNpc)];
-            Dictionary<string, IGenericJsonObject> LoreBookTable = AllTables[typeof(LoreBook)];
+            Dictionary<string, IJsonKey> RecipeTable = AllTables[typeof(Recipe)];
+            Dictionary<string, IJsonKey> AbilityTable = AllTables[typeof(Ability)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> QuestTable = AllTables[typeof(Quest)];
+            Dictionary<string, IJsonKey> EffectTable = AllTables[typeof(Effect)];
+            Dictionary<string, IJsonKey> GameNpcTable = AllTables[typeof(GameNpc)];
+            Dictionary<string, IJsonKey> LoreBookTable = AllTables[typeof(LoreBook)];
 
             foreach (IPgQuestObjective Item in QuestObjectiveList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
@@ -954,7 +954,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static IPgQuest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, string RawQuestName, IPgQuest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgQuest ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> QuestTable, string RawQuestName, IPgQuest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;
@@ -964,7 +964,7 @@ namespace PgJsonObjects
             if (RawQuestName == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in QuestTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in QuestTable)
             {
                 Quest QuestValue = Entry.Value as Quest;
                 if (QuestValue.InternalName == RawQuestName)
@@ -981,7 +981,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static IPgQuest ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> QuestTable, int QuestId, IPgQuest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgQuest ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> QuestTable, int QuestId, IPgQuest ParsedQuest, ref bool IsRawQuestParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawQuestParsed)
                 return ParsedQuest;
@@ -990,7 +990,7 @@ namespace PgJsonObjects
 
             string RawQuestId = "quest_" + QuestId;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in QuestTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in QuestTable)
             {
                 Quest QuestValue = Entry.Value as Quest;
                 if (QuestValue.Key == RawQuestId)

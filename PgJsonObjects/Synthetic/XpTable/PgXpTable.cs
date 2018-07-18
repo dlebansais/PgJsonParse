@@ -45,5 +45,9 @@ namespace PgJsonObjects
 
             return Result;
         }
+
+        #region Indirect Properties
+        public override string SortingName { get { return InternalName; } }
+        #endregion
     }
 }

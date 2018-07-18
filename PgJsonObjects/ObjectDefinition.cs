@@ -16,7 +16,7 @@ namespace PgJsonObjects
         PgObjectCreator CreateNewObject { get; }
         IParser FileParser { get; }
         IVerifyer FileVerifyer { get; }
-        Dictionary<string, IGenericJsonObject> ObjectTable { get; }
+        Dictionary<string, IJsonKey> ObjectTable { get; }
         IMainJsonObjectCollection JsonObjectList { get; }
         IMainPgObjectCollection PgObjectList { get; }
         bool LoadAsArray { get; }
@@ -46,7 +46,7 @@ namespace PgJsonObjects
         public PgObjectCreator CreateNewObject { get; private set; }
         public IParser FileParser { get; private set; } = new Parser<TJson, TI>();
         public IVerifyer FileVerifyer { get; private set; } = new Verifyer<TPg, TI>();
-        public Dictionary<string, IGenericJsonObject> ObjectTable { get; private set; } = new Dictionary<string, IGenericJsonObject>();
+        public Dictionary<string, IJsonKey> ObjectTable { get; private set; } = new Dictionary<string, IJsonKey>();
         public IMainJsonObjectCollection JsonObjectList { get; private set; } = new MainJsonObjectCollection<TJson, TPg, TI>();
         public IMainPgObjectCollection PgObjectList { get; private set; } = new MainPgObjectCollection<TPg, TI>();
         public bool LoadAsArray { get; private set; }

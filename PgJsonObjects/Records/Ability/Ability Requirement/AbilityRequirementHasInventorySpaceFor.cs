@@ -40,10 +40,10 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> ItemTable = AllTables[typeof(Item)];
+            Dictionary<string, IJsonKey> ItemTable = AllTables[typeof(Item)];
 
             Item = PgJsonObjects.Item.ConnectSingleProperty(ErrorInfo, ItemTable, RawItem, Item, ref IsRawItemParsed, ref IsConnected, this);
 

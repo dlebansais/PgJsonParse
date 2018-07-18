@@ -43,10 +43,10 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        public override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        public override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = base.ConnectFields(ErrorInfo, Parent, AllTables);
-            Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
+            Dictionary<string, IJsonKey> AttributeTable = AllTables[typeof(Attribute)];
 
             ItemAttributeLink AsItemAttributeLink;
             if ((AsItemAttributeLink = Boost as ItemAttributeLink) != null)

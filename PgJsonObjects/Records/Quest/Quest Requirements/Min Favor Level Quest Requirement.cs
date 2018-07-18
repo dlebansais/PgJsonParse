@@ -70,10 +70,10 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> GameNpcTable = AllTables[typeof(GameNpc)];
+            Dictionary<string, IJsonKey> GameNpcTable = AllTables[typeof(GameNpc)];
 
             FavorNpc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, FavorNpcId, FavorNpc, ref IsFavorNpcParsed, ref IsConnected, Parent as IBackLinkable);
             if (FavorNpcId != null && FavorNpc == null)

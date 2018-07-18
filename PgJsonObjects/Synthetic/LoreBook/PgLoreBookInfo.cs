@@ -50,5 +50,7 @@ namespace PgJsonObjects
                 Type = FieldType.Object,
                 GetObject = () => GuideProgram as IObjectContentGenerator } },
         }; } }
+
+        public override string SortingName { get { return ""; } }
     }
 }

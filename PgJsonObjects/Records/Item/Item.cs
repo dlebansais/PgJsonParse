@@ -709,15 +709,15 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
-            Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
-            Dictionary<string, IGenericJsonObject> AbilityTable = AllTables[typeof(Ability)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
-            Dictionary<string, IGenericJsonObject> QuestTable = AllTables[typeof(Quest)];
-            Dictionary<string, IGenericJsonObject> LoreBookTable = AllTables[typeof(LoreBook)];
+            Dictionary<string, IJsonKey> AttributeTable = AllTables[typeof(Attribute)];
+            Dictionary<string, IJsonKey> RecipeTable = AllTables[typeof(Recipe)];
+            Dictionary<string, IJsonKey> AbilityTable = AllTables[typeof(Ability)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> QuestTable = AllTables[typeof(Quest)];
+            Dictionary<string, IJsonKey> LoreBookTable = AllTables[typeof(LoreBook)];
 
             if (BestowRecipeList == null)
             {
@@ -726,7 +726,7 @@ namespace PgJsonObjects
                 foreach (string RawRecipe in RawBestowRecipesList)
                 {
                     bool Found = false;
-                    foreach (KeyValuePair<string, IGenericJsonObject> Entry in RecipeTable)
+                    foreach (KeyValuePair<string, IJsonKey> Entry in RecipeTable)
                     {
                         Recipe RecipeValue = Entry.Value as Recipe;
                         if (RecipeValue.InternalName == RawRecipe)
@@ -785,7 +785,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static IPgItem ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemName, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItem ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> ItemTable, string RawItemName, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -795,7 +795,7 @@ namespace PgJsonObjects
             if (RawItemName == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
             {
                 Item ItemValue = Entry.Value as Item;
                 if (ItemValue.InternalName == RawItemName)
@@ -806,7 +806,7 @@ namespace PgJsonObjects
                 }
             }
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
             {
                 Item ItemValue = Entry.Value as Item;
                 if (ItemValue.Name == RawItemName)
@@ -823,7 +823,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static IPgItem ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int? RawItemCode, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItem ConnectByCode(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> ItemTable, int? RawItemCode, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
@@ -835,7 +835,7 @@ namespace PgJsonObjects
 
             string FullKey = "item_" + RawItemCode.Value;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
                 if (Entry.Key == FullKey)
                 {
                     Item ItemValue = Entry.Value as Item;
@@ -851,7 +851,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static List<Item> ConnectByItemKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static List<Item> ConnectByItemKey(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> ItemTable, RecipeItemKey ItemKey, List<Item> ItemList, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -864,7 +864,7 @@ namespace PgJsonObjects
             ItemList = new List<Item>();
             IsConnected = true;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
             {
                 Item ItemValue = Entry.Value as Item;
                 if (ItemValue.ItemKeyList.Contains(ItemKey))
@@ -880,7 +880,7 @@ namespace PgJsonObjects
             return ItemList;
         }
 
-        public static IPgItemCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, ItemKeyword Keyword, IPgItemCollection ItemList, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItemCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> ItemTable, ItemKeyword Keyword, IPgItemCollection ItemList, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ItemList;
@@ -893,7 +893,7 @@ namespace PgJsonObjects
             ItemList = new ItemCollection();
             IsConnected = true;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> ItemEntry in ItemTable)
+            foreach (KeyValuePair<string, IJsonKey> ItemEntry in ItemTable)
             {
                 Item ItemValue = ItemEntry.Value as Item;
                 foreach (KeyValuePair<ItemKeyword, List<float>> KeywordEntry in ItemValue.KeywordTable)
@@ -912,19 +912,19 @@ namespace PgJsonObjects
             return ItemList;
         }
 
-        public static IPgItem ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, int ItemId, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItem ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> ItemTable, int ItemId, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             return ConnectById(ErrorInfo, ItemTable, "item_" + ItemId, ParsedItem, ref IsRawItemParsed, ref IsConnected, LinkBack);
         }
 
-        public static IPgItem ConnectById(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> ItemTable, string RawItemId, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgItem ConnectById(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> ItemTable, string RawItemId, IPgItem ParsedItem, ref bool IsRawItemParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawItemParsed)
                 return ParsedItem;
 
             IsRawItemParsed = true;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
             {
                 Item ItemValue = Entry.Value as Item;
                 if (ItemValue.Key == RawItemId)

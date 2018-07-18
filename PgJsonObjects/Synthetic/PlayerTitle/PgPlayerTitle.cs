@@ -39,5 +39,7 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => StringToEnumConversion<TitleKeyword>.ToStringList(KeywordList) } },
         }; } }
+
+        public override string SortingName { get { return Title; } }
     }
 }

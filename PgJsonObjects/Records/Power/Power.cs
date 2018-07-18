@@ -67,9 +67,9 @@ namespace PgJsonObjects
             }
         }
 
-        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IJsonKey>> AllTables, ParseErrorInfo ErrorInfo)
         {
-            Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
+            Dictionary<string, IJsonKey> AttributeTable = AllTables[typeof(Attribute)];
             IList<IPgPowerTier> AsTierEffectList = TierEffectList;
 
             for (int i = 0; i < AsTierEffectList.Count; i++)
@@ -272,10 +272,10 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
 
             IList<IPgPowerTier> AsTierEffectList = TierEffectList;
 

@@ -100,12 +100,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             return false;
         }
 
-        public static IPgAdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AdvancementTableTable, string RawAdvancementTableName, IPgAdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgAdvancementTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> AdvancementTableTable, string RawAdvancementTableName, IPgAdvancementTable ParsedAdvancementTable, ref bool IsRawAdvancementTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAdvancementTableParsed)
                 return ParsedAdvancementTable;
@@ -115,7 +115,7 @@ namespace PgJsonObjects
             if (RawAdvancementTableName == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in AdvancementTableTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in AdvancementTableTable)
             {
                 AdvancementTable AdvancementTableValue = Entry.Value as AdvancementTable;
                 if (AdvancementTableValue.InternalName == RawAdvancementTableName)

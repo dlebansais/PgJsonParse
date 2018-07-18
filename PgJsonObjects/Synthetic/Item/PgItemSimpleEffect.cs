@@ -29,5 +29,7 @@ namespace PgJsonObjects
         {
             return Description;
         }
+
+        public override string SortingName { get { return Description; } }
     }
 }

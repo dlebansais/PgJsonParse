@@ -53,10 +53,10 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = base.ConnectFields(ErrorInfo, Parent, AllTables);
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
 
             Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, AnatomyType, Skill, ref IsSkillParsed, ref IsConnected, this);
 

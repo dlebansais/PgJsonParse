@@ -62,5 +62,7 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => Text } },
         }; } }
+
+        public override string SortingName { get { return Title; } }
     }
 }

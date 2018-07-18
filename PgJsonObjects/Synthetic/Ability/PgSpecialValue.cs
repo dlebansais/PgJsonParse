@@ -65,5 +65,9 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 GetBool = () => RawSkipIfZero } },
         }; } }
+
+        #region Indirect Properties
+        public override string SortingName { get { return Label; } }
+        #endregion
     }
 }

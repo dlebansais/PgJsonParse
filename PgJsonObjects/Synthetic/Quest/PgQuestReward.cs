@@ -46,5 +46,9 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 GetInteger = () => RawRewardGuildCredits } },
         }; } }
+
+        #region Indirect Properties
+        public override string SortingName { get { return null; } }
+        #endregion
     }
 }

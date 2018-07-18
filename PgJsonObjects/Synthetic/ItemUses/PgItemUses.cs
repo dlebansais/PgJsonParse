@@ -30,5 +30,7 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleIntegerArray,
                 GetIntegerArray = () => RecipesThatUseItemList } },
         }; } }
+
+        public override string SortingName { get { return ""; } }
     }
 }

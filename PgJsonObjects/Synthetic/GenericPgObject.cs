@@ -22,7 +22,7 @@ namespace PgJsonObjects
         }
     }
 
-    public abstract class GenericPgObject<TPg> : GenericPgObject, IGenericPgObject, IDeserializablePgObject, IObjectContentGenerator
+    public abstract class GenericPgObject<TPg> : GenericPgObject, IGenericPgObject, IBackLinkable, IDeserializablePgObject, IObjectContentGenerator
         where TPg : IDeserializablePgObject
     {
         public GenericPgObject(byte[] data, int offset)
@@ -291,6 +291,69 @@ namespace PgJsonObjects
 
             return Result;
         }
+
+        #region Implementation of IBackLinkable
+        public abstract string SortingName { get; }
+        public Dictionary<Type, List<IBackLinkable>> LinkBackTable { get; } = new Dictionary<Type, List<IBackLinkable>>();
+        public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
+
+        static List<Type> LinkBackTypeList = new List<Type>();
+
+        protected void AddLinkBack(IBackLinkable LinkBack)
+        {
+            if (LinkBack == null)
+                return;
+
+            if (LinkBack is RecipeItem)
+                LinkBack = (LinkBack as RecipeItem).ParentRecipe;
+            else if (LinkBack is IPgQuestObjective)
+                LinkBack = (LinkBack as IPgQuestObjective).ParentQuest;
+            else if (LinkBack is AbilityRequirement)
+                return;
+            else if (LinkBack is PowerTier)
+                return;
+            else if (LinkBack is QuestRewardItem)
+                LinkBack = (LinkBack as QuestRewardItem).ParentQuest;
+            else if (LinkBack is Reward)
+                LinkBack = (LinkBack as Reward).ParentSkill;
+
+            Type ObjectType = LinkBack.GetType();
+            if (!LinkBackTable.ContainsKey(ObjectType))
+                LinkBackTable.Add(ObjectType, new List<IBackLinkable>());
+
+            List<IBackLinkable> LinkBackList = LinkBackTable[ObjectType];
+            if (!LinkBackList.Contains(LinkBack))
+                LinkBackList.Add(LinkBack);
+        }
+
+        public void SortLinkBack()
+        {
+            foreach (KeyValuePair<Type, List<IBackLinkable>> Entry in LinkBackTable)
+                Entry.Value.Sort(GenericJsonObject.SortByName);
+        }
+
+        private string TemplateName()
+        {
+            string Result = typeof(TPg).Name;
+
+            if (Result.StartsWith("Pg"))
+                Result = Result.Substring(2);
+            else if (Result.StartsWith("Json"))
+                Result = Result.Substring(4);
+
+            return Result;
+        }
+
+        public string GetSearchResultTitleTemplateName()
+        {
+            return "SearchResult" + TemplateName() + "TitleTemplate";
+        }
+
+        public string GetSearchResultContentTemplateName()
+        {
+            return "SearchResult" + TemplateName() + "ContentTemplate";
+        }
+        #endregion
 
         #region Implementation of IObjectContentGenerator
         public virtual void GenerateObjectContent(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)

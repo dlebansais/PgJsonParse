@@ -48,7 +48,7 @@ namespace PgJsonObjects
             }
         }
 
-        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IJsonKey>> AllTables, ParseErrorInfo ErrorInfo)
         {
             foreach (int Id in IconIdList)
                 IconFileNameList.Add("icon_" + Id);
@@ -114,7 +114,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             return false;
         }
@@ -141,7 +141,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static IPgAttribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, string RawAttributeName, IPgAttribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgAttribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> AttributeTable, string RawAttributeName, IPgAttribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawAttributeParsed)
                 return ParsedAttribute;
@@ -151,7 +151,7 @@ namespace PgJsonObjects
             if (RawAttributeName == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in AttributeTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in AttributeTable)
             {
                 Attribute AttributeValue = Entry.Value as Attribute;
                 if (Entry.Key == RawAttributeName)

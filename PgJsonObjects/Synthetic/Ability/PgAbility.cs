@@ -312,5 +312,7 @@ namespace PgJsonObjects
                 return null;
         }
         #endregion
+
+        public override string SortingName { get { return Name; } }
     }
 }

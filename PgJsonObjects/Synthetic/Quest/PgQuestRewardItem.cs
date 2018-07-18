@@ -33,5 +33,7 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 GetInteger = () => RawStackSize } },
         }; } }
+
+        public override string SortingName { get { return null; } }
     }
 }

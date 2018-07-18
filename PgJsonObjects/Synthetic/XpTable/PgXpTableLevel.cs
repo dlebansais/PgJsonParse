@@ -29,5 +29,7 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
+
+        public override string SortingName { get { return null; } }
     }
 }

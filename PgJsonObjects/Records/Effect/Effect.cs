@@ -139,12 +139,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             return false;
         }
 
-        public static IPgEffect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> EffectTable, string RawEffectName, IPgEffect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgEffect ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> EffectTable, string RawEffectName, IPgEffect ParsedEffect, ref bool IsRawEffectParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawEffectParsed)
                 return ParsedEffect;
@@ -154,7 +154,7 @@ namespace PgJsonObjects
             if (RawEffectName == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in EffectTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in EffectTable)
             {
                 Effect EffectValue = Entry.Value as Effect;
                 if (EffectValue.Name == RawEffectName)

@@ -76,12 +76,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = base.ConnectFields(ErrorInfo, Parent, AllTables);
-            Dictionary<string, IGenericJsonObject> ItemTable = AllTables[typeof(Item)];
-            Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> ItemTable = AllTables[typeof(Item)];
+            Dictionary<string, IJsonKey> RecipeTable = AllTables[typeof(Recipe)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
 
             Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, Skill, ref IsSkillParsed, ref IsConnected, this);
             RecipeTargetList = PgJsonObjects.Recipe.ConnectByKeyword(ErrorInfo, RecipeTable, RecipeTarget, RecipeTargetList, ref IsRecipeTargetParsed, ref IsConnected, ParentQuest);

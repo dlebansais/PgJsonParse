@@ -103,11 +103,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
-            Dictionary<string, IGenericJsonObject> StorageVaultTable = AllTables[typeof(StorageVault)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> StorageVaultTable = AllTables[typeof(StorageVault)];
 
             List<Item> HatedGiftList = new List<Item>();
 
@@ -137,7 +137,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static IPgGameNpc ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> GameNpcTable, string GameNpcKey, IPgGameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgGameNpc ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> GameNpcTable, string GameNpcKey, IPgGameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawGameNpcParsed)
                 return ParsedGameNpc;
@@ -147,7 +147,7 @@ namespace PgJsonObjects
             if (GameNpcKey == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in GameNpcTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in GameNpcTable)
             {
                 GameNpc GameNpcValue = Entry.Value as GameNpc;
                 if (GameNpcValue.Key == GameNpcKey)

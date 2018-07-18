@@ -700,11 +700,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> ItemTable = AllTables[typeof(Item)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> ItemTable = AllTables[typeof(Item)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
 
             foreach (ServerInfoEffect Item in ServerInfoEffectList)
                 if (Item.ConnectFields(ErrorInfo, Parent, AllTables))

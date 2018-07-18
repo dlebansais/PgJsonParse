@@ -34,7 +34,7 @@ namespace PgJsonObjects
         #region Indirect Properties
         public override string SortingName { get { return null; } }
 
-        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
+        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IJsonKey>> AllTables, ParseErrorInfo ErrorInfo)
         {
             if (ConnectedRecipe != null)
             {
@@ -260,15 +260,15 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> ItemTable = AllTables[typeof(Item)];
-            Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
-            Dictionary<string, IGenericJsonObject> EffectTable = AllTables[typeof(Effect)];
-            Dictionary<string, IGenericJsonObject> QuestTable = AllTables[typeof(Quest)];
-            Dictionary<string, IGenericJsonObject> GameNpcTable = AllTables[typeof(GameNpc)];
+            Dictionary<string, IJsonKey> ItemTable = AllTables[typeof(Item)];
+            Dictionary<string, IJsonKey> RecipeTable = AllTables[typeof(Recipe)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> EffectTable = AllTables[typeof(Effect)];
+            Dictionary<string, IJsonKey> QuestTable = AllTables[typeof(Quest)];
+            Dictionary<string, IJsonKey> GameNpcTable = AllTables[typeof(GameNpc)];
 
             if (RawRecipeId.HasValue)
                 ConnectedRecipe = PgJsonObjects.Recipe.ConnectByKey(ErrorInfo, RecipeTable, RawRecipeId.Value, ConnectedRecipe, ref IsRecipeIdParsed, ref IsConnected, null);

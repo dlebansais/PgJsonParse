@@ -265,11 +265,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> ItemTable = AllTables[typeof(Item)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> ItemTable = AllTables[typeof(Item)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
 
             if (ItemKeywordList.Count == 0)
                 ItemKeywordList.Add(ItemKeyword.Any);
@@ -288,7 +288,7 @@ namespace PgJsonObjects
                 {
                     if (RawMinValueRequirement.HasValue)
                     {
-                        foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+                        foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
                         {
                             Item ItemValue = Entry.Value as Item;
                             if (ItemValue.Value >= RawMinValueRequirement.Value)
@@ -297,7 +297,7 @@ namespace PgJsonObjects
                     }
                     else if (SlotRequirement != ItemSlot.Internal_None)
                     {
-                        foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+                        foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
                         {
                             Item ItemValue = Entry.Value as Item;
                             if (ItemValue.EquipSlot == SlotRequirement)

@@ -89,11 +89,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
 
-            Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
+            Dictionary<string, IJsonKey> AttributeTable = AllTables[typeof(Attribute)];
 
             AttributesThatDeltaList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaList, AttributesThatDeltaList, ref IsConnected);
             AttributesThatModList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatModList, AttributesThatModList, ref IsConnected);
@@ -101,7 +101,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        private IPgAttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> AttributeTable, List<string> RawAttributes, IPgAttributeCollection Attributes, ref bool IsConnected)
+        private IPgAttributeCollection ConnectAttributes(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> AttributeTable, List<string> RawAttributes, IPgAttributeCollection Attributes, ref bool IsConnected)
         {
             if (Attributes == null)
             {

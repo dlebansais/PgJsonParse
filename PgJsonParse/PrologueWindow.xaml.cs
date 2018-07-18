@@ -590,6 +590,8 @@ namespace PgJsonParse
 
         #region Parser Check
         public const double PARSER_VERSION = 306;
+        public const double PG_CACHE_VERSION = 306;
+        public const double PG_CACHE_SIZE = 34910008;
 
         private void InitParserCheck()
         {
@@ -920,6 +922,41 @@ namespace PgJsonParse
             string VersionFolder = Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
             string IconFolder = ShareIconFiles ? IconCacheFolder : VersionFolder;
 
+            if (!ObjectDefinition.UseJson && versionInfo.Version == PG_CACHE_VERSION)
+            {
+                try
+                {
+                    string CacheFileName = Path.Combine(VersionFolder, "cache.pg");
+                    if (FileTools.FileExists(CacheFileName))
+                    {
+                        byte[] Data = FileTools.LoadBinaryFile(CacheFileName);
+                        if (Data.Length == PG_CACHE_SIZE)
+                        {
+                            int offset = 0;
+                            DeserializeAll(Data, ref offset);
+
+                            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+                            {
+                                IObjectDefinition Definition = Entry.Value;
+                                Dictionary<string, IJsonKey> ObjectTable = Definition.ObjectTable;
+                                IMainPgObjectCollection PgObjectList = Definition.PgObjectList;
+
+                                ObjectTable.Clear();
+                                foreach (IJsonKey Item in PgObjectList)
+                                    ObjectTable.Add(Item.Key, Item);
+                            }
+
+                            OnStart2(true, versionInfo, ErrorInfo, VersionFolder, IconFolder);
+                            return;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+            }
+
             List<KeyValuePair<Type, IObjectDefinition>> EntryList = new List<KeyValuePair<Type, IObjectDefinition>>();
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
                 EntryList.Add(Entry);
@@ -972,6 +1009,33 @@ namespace PgJsonParse
             if (success)
                 success = ConnectTables(versionFolder, iconFolder, errorInfo);
 
+            if (success)
+                if (!ObjectDefinition.UseJson && versionInfo.Version == PG_CACHE_VERSION)
+                {
+                    int offset;
+
+                    offset = 0;
+                    SerializeAll(null, ref offset);
+
+                    int length = offset;
+                    byte[] Data = new byte[length];
+
+                    offset = 0;
+                    SerializeAll(Data, ref offset);
+
+                    offset = 0;
+                    DeserializeAll(Data, ref offset);
+
+                    string CacheFileName = Path.Combine(versionFolder, "cache.pg");
+                    FileTools.CommitBinaryFile(CacheFileName, Data);
+
+                }
+
+            OnStart2(success, versionInfo, errorInfo, versionFolder, iconFolder);
+        }
+
+        private void OnStart2(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
+        {
             SetTaskbarState(TaskbarStates.NoProgress);
 
             IsParsing = false;
@@ -984,23 +1048,6 @@ namespace PgJsonParse
                 Dlg = null;
                 IsGlobalInteractionEnabled = true;
                 return;
-            }
-
-            if (!ObjectDefinition.UseJson)
-            {
-                int offset;
-
-                offset = 0;
-                SerializeAll(null, ref offset);
-
-                int length = offset;
-                byte[] data = new byte[length];
-
-                offset = 0;
-                SerializeAll(data, ref offset);
-
-                offset = 0;
-                DeserializeAll(data, ref offset);
             }
 
             LoadedIconCount = 0;
@@ -1182,12 +1229,12 @@ namespace PgJsonParse
 
                 IParser FileParser = definition.FileParser;
                 IMainJsonObjectCollection ObjectList = definition.JsonObjectList;
-                Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
+                Dictionary<string, IJsonKey> ObjectTable = definition.ObjectTable;
                 if (!FileParser.LoadRaw(FilePath, ObjectList, definition.LoadAsArray, definition.LoadAsObject, errorInfo))
                     return false;
 
                 ObjectTable.Clear();
-                foreach (IGenericJsonObject Item in ObjectList)
+                foreach (IJsonKey Item in ObjectList)
                     ObjectTable.Add(Item.Key, Item);
             }
             catch (Exception e)
@@ -1203,7 +1250,7 @@ namespace PgJsonParse
         private bool ConnectTables(string versionFolder, string iconFolder, ParseErrorInfo errorInfo)
         {
             Dictionary<Type, IMainJsonObjectCollection> AllLists = new Dictionary<Type, IMainJsonObjectCollection>();
-            Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables = new Dictionary<Type, Dictionary<string, IGenericJsonObject>>();
+            Dictionary<Type, Dictionary<string, IJsonKey>> AllTables = new Dictionary<Type, Dictionary<string, IJsonKey>>();
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
@@ -1274,7 +1321,7 @@ namespace PgJsonParse
             {
                 string IndexFilePath = Path.Combine(versionFolder, definition.JsonFileName + "-index.txt");
                 IParser FileParser = definition.FileParser;
-                Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
+                Dictionary<string, IJsonKey> ObjectTable = definition.ObjectTable;
                 FileParser.CreateIndex(IndexFilePath, ObjectTable);
             }
             catch (Exception e)
@@ -1293,9 +1340,9 @@ namespace PgJsonParse
 
             List<string> MushroomNameList = new List<string>();
             IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
-            Dictionary<string, IGenericJsonObject> ItemTable = ItemDefinition.ObjectTable;
+            Dictionary<string, IJsonKey> ItemTable = ItemDefinition.ObjectTable;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in ItemTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
             {
                 Item Item = Entry.Value as Item;
                 if (Item.KeywordTable.ContainsKey(ItemKeyword.RawMushroom))

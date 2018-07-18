@@ -61,11 +61,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> AttributeTable = AllTables[typeof(Attribute)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> AttributeTable = AllTables[typeof(Attribute)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
 
             foreach (PowerEffect Effect in EffectList)
             {

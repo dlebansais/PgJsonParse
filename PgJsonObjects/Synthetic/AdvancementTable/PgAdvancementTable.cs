@@ -64,5 +64,9 @@ namespace PgJsonObjects
         }
 
         private Dictionary<string, FieldParser> _FieldTable = new Dictionary<string, FieldParser>();
+
+        #region Indirect Properties
+        public override string SortingName { get { return InternalName; } }
+        #endregion
     }
 }

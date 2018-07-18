@@ -52,5 +52,9 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 GetInteger = () => RawCueValue } },
         }; } }
+
+        #region Indirect Properties
+        public override string SortingName { get { return null; } }
+        #endregion
     }
 }

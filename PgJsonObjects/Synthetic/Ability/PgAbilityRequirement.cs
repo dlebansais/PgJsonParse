@@ -9,5 +9,10 @@
         }
 
         public abstract OtherRequirementType Type { get; }
+
+        #region Indirect Properties
+        public override string SortingName { get { return null; } }
+        #endregion
+
     }
 }

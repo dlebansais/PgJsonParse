@@ -33,5 +33,9 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 GetFloat = () => RawPrice } },
         }; } }
+
+        #region Indirect Properties
+        public override string SortingName { get { return null; } }
+        #endregion
     }
 }

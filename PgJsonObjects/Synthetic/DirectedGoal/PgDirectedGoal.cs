@@ -57,5 +57,7 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 GetInteger = () => RawCategoryGateId } },
         }; } }
+
+        public override string SortingName { get { return Label; } }
     }
 }

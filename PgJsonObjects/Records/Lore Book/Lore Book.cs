@@ -91,14 +91,14 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
 
             return IsConnected;
         }
 
-        public static IPgLoreBook ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, int LoreBookId, IPgLoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgLoreBook ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> LoreBookTable, int LoreBookId, IPgLoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawLoreBookParsed)
                 return ParsedLoreBook;
@@ -106,7 +106,7 @@ namespace PgJsonObjects
             IsRawLoreBookParsed = true;
             string LoreBookName = "Book_" + LoreBookId;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in LoreBookTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in LoreBookTable)
             {
                 LoreBook LoreBookValue = Entry.Value as LoreBook;
                 if (Entry.Key == LoreBookName)
@@ -123,14 +123,14 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static IPgLoreBook ConnectByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> LoreBookTable, string RawLoreBookName, IPgLoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgLoreBook ConnectByInternalName(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> LoreBookTable, string RawLoreBookName, IPgLoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawLoreBookParsed)
                 return ParsedLoreBook;
 
             IsRawLoreBookParsed = true;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in LoreBookTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in LoreBookTable)
             {
                 LoreBook LoreBookValue = Entry.Value as LoreBook;
                 if (LoreBookValue.InternalName == RawLoreBookName)

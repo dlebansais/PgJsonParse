@@ -8,6 +8,6 @@ namespace PgJsonObjects
         string Description { get; }
         Quest ParentQuest { get; }
         void CopyFieldTableOrder(string key, List<string> fieldTableOrder);
-        bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables);
+        bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables);
     }
 }

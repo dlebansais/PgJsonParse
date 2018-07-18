@@ -37,5 +37,7 @@ namespace PgJsonObjects
 
             return Result;
         }
+
+        public override string SortingName { get { return Description; } }
     }
 }

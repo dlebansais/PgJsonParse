@@ -61,12 +61,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             return false;
         }
 
-        public static IPgXpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> XpTableTable, string RawXpTableName, IPgXpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgXpTable ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> XpTableTable, string RawXpTableName, IPgXpTable ParsedXpTable, ref bool IsRawXpTableParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawXpTableParsed)
                 return ParsedXpTable;
@@ -76,7 +76,7 @@ namespace PgJsonObjects
             if (RawXpTableName == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in XpTableTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in XpTableTable)
             {
                 XpTable XpTableValue = Entry.Value as XpTable;
                 if (XpTableValue.InternalName == RawXpTableName)

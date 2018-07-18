@@ -41,5 +41,7 @@ namespace PgJsonObjects
             else
                 return "{" + AttributeName + "}{" + Tools.FloatToString(AttributeEffect, FloatFormat.Standard) + "}{" + AttributeSkill.ToString() + "}";
         }
+
+        public override string SortingName { get { return AttributeName; } }
     }
 }

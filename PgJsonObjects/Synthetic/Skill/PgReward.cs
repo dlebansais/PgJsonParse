@@ -43,5 +43,7 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => Notes } },
         }; } }
+
+        public override string SortingName { get { return null; } }
     }
 }

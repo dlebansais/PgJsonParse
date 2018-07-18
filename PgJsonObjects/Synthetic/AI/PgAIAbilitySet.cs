@@ -2703,5 +2703,9 @@ namespace PgJsonObjects
                Type = FieldType.Object, 
                 GetObject = () => ZombiePunch as IObjectContentGenerator } },
         }; } }
+
+        #region Indirect Properties
+        public override string SortingName { get { return Key; } }
+        #endregion
     }
 }

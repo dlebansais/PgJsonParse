@@ -42,5 +42,9 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<EffectKeyword>.ToString(Keyword, null, EffectKeyword.Internal_None) } },
         }; } }
+
+        #region Indirect Properties
+        public override string SortingName { get { return null; } }
+        #endregion
     }
 }

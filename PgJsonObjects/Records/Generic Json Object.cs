@@ -62,14 +62,26 @@ namespace PgJsonObjects
                 Entry.Value.Sort(GenericJsonObject.SortByName);
         }
 
+        private string TemplateName()
+        {
+            string Result = typeof(T).Name;
+
+            if (Result.StartsWith("Pg"))
+                Result = Result.Substring(2);
+            else if (Result.StartsWith("Json"))
+                Result = Result.Substring(4);
+
+            return Result;
+        }
+
         public string GetSearchResultTitleTemplateName()
         {
-            return "SearchResult" + typeof(T).Name + "TitleTemplate";
+            return "SearchResult" + TemplateName() + "TitleTemplate";
         }
 
         public string GetSearchResultContentTemplateName()
         {
-            return "SearchResult" + typeof(T).Name + "ContentTemplate";
+            return "SearchResult" + TemplateName() + "ContentTemplate";
         }
         #endregion
 
@@ -231,7 +243,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Implementation of IConnectableObject
-        public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected;
 
@@ -240,7 +252,7 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public virtual void SetIndirectProperties(Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables, ParseErrorInfo ErrorInfo)
+        public virtual void SetIndirectProperties(Dictionary<Type, Dictionary<string, IJsonKey>> AllTables, ParseErrorInfo ErrorInfo)
         {
 
         }
@@ -691,7 +703,7 @@ namespace PgJsonObjects
 
         protected abstract Dictionary<string, FieldParser> FieldTable { get; }
         protected abstract string FieldTableName { get; }
-        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables);
+        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables);
         protected static Dictionary<string, bool> ParsedFields;
         protected List<string> FieldTableOrder { get; private set; } = new List<string>();
         #endregion

@@ -36,5 +36,9 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => SortTitle } },
         }; } }
+
+        #region Indirect Properties
+        public override string SortingName { get { return ""; } }
+        #endregion
     }
 }

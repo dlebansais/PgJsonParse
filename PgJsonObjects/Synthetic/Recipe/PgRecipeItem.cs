@@ -64,5 +64,7 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 GetBool = () => RawAttuneToCrafter } },
         }; } }
+
+        public override string SortingName { get { return null; } }
     }
 }

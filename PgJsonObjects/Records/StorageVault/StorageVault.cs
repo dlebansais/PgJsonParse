@@ -242,17 +242,17 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> GameNpcTable = AllTables[typeof(GameNpc)];
+            Dictionary<string, IJsonKey> GameNpcTable = AllTables[typeof(GameNpc)];
 
             MatchingNpc = GameNpc.ConnectByKey(null, GameNpcTable, Key, MatchingNpc, ref IsGameNpcParsed, ref IsConnected, this);
 
             return IsConnected;
         }
 
-        public static StorageVault ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> StorageVaultTable, string StorageVaultKey, StorageVault ParsedStorageVault, ref bool IsRawStorageVaultParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static StorageVault ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> StorageVaultTable, string StorageVaultKey, StorageVault ParsedStorageVault, ref bool IsRawStorageVaultParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawStorageVaultParsed)
                 return ParsedStorageVault;
@@ -262,7 +262,7 @@ namespace PgJsonObjects
             if (StorageVaultKey == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in StorageVaultTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in StorageVaultTable)
             {
                 StorageVault StorageVaultValue = Entry.Value as StorageVault;
                 if (StorageVaultValue.Key == StorageVaultKey)

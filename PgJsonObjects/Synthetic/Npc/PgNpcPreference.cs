@@ -40,5 +40,7 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 GetFloat = () => RawPreference } },
         }; } }
+
+        public override string SortingName { get { return Key; } }
     }
 }

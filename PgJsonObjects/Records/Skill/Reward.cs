@@ -93,12 +93,12 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
-            Dictionary<string, IGenericJsonObject> AbilityTable = AllTables[typeof(Ability)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> RecipeTable = AllTables[typeof(Recipe)];
+            Dictionary<string, IJsonKey> AbilityTable = AllTables[typeof(Ability)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
 
             ParentSkill = Parent as Skill;
 

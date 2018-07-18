@@ -164,5 +164,9 @@ namespace PgJsonObjects
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => DoTList } },
         }; } }
+
+        #region Indirect Properties
+        public override string SortingName { get { return null; } }
+        #endregion
     }
 }

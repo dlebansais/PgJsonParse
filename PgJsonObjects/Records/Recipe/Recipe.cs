@@ -889,11 +889,11 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
-            Dictionary<string, IGenericJsonObject> RecipeTable = AllTables[typeof(Recipe)];
-            Dictionary<string, IGenericJsonObject> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> RecipeTable = AllTables[typeof(Recipe)];
+            Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
 
             foreach (RecipeItem Item in IngredientList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
@@ -954,7 +954,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static IPgRecipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, string RawRecipeName, IPgRecipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgRecipe ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> RecipeTable, string RawRecipeName, IPgRecipe ParsedRecipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawRecipeParsed)
                 return ParsedRecipe;
@@ -964,7 +964,7 @@ namespace PgJsonObjects
             if (RawRecipeName == null)
                 return null;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in RecipeTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in RecipeTable)
             {
                 Recipe RecipeValue = Entry.Value as Recipe;
                 if (RecipeValue.InternalName == RawRecipeName)
@@ -975,7 +975,7 @@ namespace PgJsonObjects
                 }
             }
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in RecipeTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in RecipeTable)
             {
                 Recipe RecipeValue = Entry.Value as Recipe;
                 if (RecipeValue.Name == RawRecipeName)
@@ -992,7 +992,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static IPgRecipeCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, RecipeKeyword Keyword, IPgRecipeCollection RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgRecipeCollection ConnectByKeyword(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> RecipeTable, RecipeKeyword Keyword, IPgRecipeCollection RecipeList, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawRecipeParsed)
                 return RecipeList;
@@ -1005,7 +1005,7 @@ namespace PgJsonObjects
             RecipeList = new RecipeCollection();
             IsConnected = true;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> RecipeEntry in RecipeTable)
+            foreach (KeyValuePair<string, IJsonKey> RecipeEntry in RecipeTable)
             {
                 Recipe RecipeValue = RecipeEntry.Value as Recipe;
                 if (RecipeValue.KeywordList.Contains(Keyword))
@@ -1021,7 +1021,7 @@ namespace PgJsonObjects
             return RecipeList;
         }
 
-        public static IPgRecipe ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IGenericJsonObject> RecipeTable, int RecipeId, IPgRecipe Recipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgRecipe ConnectByKey(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> RecipeTable, int RecipeId, IPgRecipe Recipe, ref bool IsRawRecipeParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawRecipeParsed)
                 return Recipe;
@@ -1029,7 +1029,7 @@ namespace PgJsonObjects
             IsRawRecipeParsed = true;
             string RawRecipeId = "recipe_" + RecipeId;
 
-            foreach (KeyValuePair<string, IGenericJsonObject> Entry in RecipeTable)
+            foreach (KeyValuePair<string, IJsonKey> Entry in RecipeTable)
             {
                 Recipe RecipeValue = Entry.Value as Recipe;
                 if (RecipeValue.Key == RawRecipeId)

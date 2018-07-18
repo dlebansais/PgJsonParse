@@ -413,5 +413,9 @@ namespace PgJsonObjects
             return false;
         }
         #endregion
+
+        #region Indirect Properties
+        public override string SortingName { get { return null; } }
+        #endregion
     }
 }

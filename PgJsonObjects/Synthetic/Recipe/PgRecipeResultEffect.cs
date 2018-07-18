@@ -63,5 +63,7 @@ namespace PgJsonObjects
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
         protected override List<string> FieldTableOrder { get { return new List<string>(); } }
+
+        public override string SortingName { get { return null; } }
     }
 }

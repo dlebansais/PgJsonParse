@@ -4,7 +4,7 @@ namespace PgJsonObjects
 {
     public class PlanerSlotPower
     {
-        public PlanerSlotPower(IPgPower Reference, Dictionary<string, IGenericJsonObject> AttributeTable, int MaxLevelFirstSkill)
+        public PlanerSlotPower(IPgPower Reference, Dictionary<string, IJsonKey> AttributeTable, int MaxLevelFirstSkill)
         {
             this.Reference = Reference;
             IList<IPgPowerTier> TierEffectList = Reference.TierEffectList;

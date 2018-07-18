@@ -82,5 +82,7 @@ namespace PgJsonObjects
             int.TryParse(KeyId, out int Result);
             return Result;
         }
+
+        public override string SortingName { get { return null; } }
     }
 }

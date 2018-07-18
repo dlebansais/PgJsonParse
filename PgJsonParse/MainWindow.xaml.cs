@@ -360,7 +360,7 @@ namespace PgJsonParse
             IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
             IList<IPgPower> PowerList = PowerDefinition.VerifedObjectList as IList<IPgPower>;
             IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
-            Dictionary<string, IGenericJsonObject> AttributeTable = AttributeDefinition.ObjectTable;
+            Dictionary<string, IJsonKey> AttributeTable = AttributeDefinition.ObjectTable;
 
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
                 PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill, DefaultMaxLevel);
@@ -603,9 +603,9 @@ namespace PgJsonParse
                 else
                 {
                     IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
-                    Dictionary<string, IGenericJsonObject> PowerTable = PowerDefinition.ObjectTable;
+                    Dictionary<string, IJsonKey> PowerTable = PowerDefinition.ObjectTable;
                     IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
-                    Dictionary<string, IGenericJsonObject> ItemTable = ItemDefinition.ObjectTable;
+                    Dictionary<string, IJsonKey> ItemTable = ItemDefinition.ObjectTable;
 
                     ItemSlot ParsedSlot;
                     if (StringToEnumConversion<ItemSlot>.TryParse(FieldName, out ParsedSlot, null))
@@ -1077,7 +1077,7 @@ namespace PgJsonParse
             string TextContent = FileTools.LoadTextFile(IndexFilePath, FileMode.OpenOrCreate);
             if (!string.IsNullOrEmpty(TextContent))
             {
-                Dictionary<string, IGenericJsonObject> ObjectTable = definition.ObjectTable;
+                Dictionary<string, IJsonKey> ObjectTable = definition.ObjectTable;
                 PerformSearch(termList, ObjectTable, TextContent, searchMode);
             }
         }

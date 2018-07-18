@@ -329,5 +329,7 @@ namespace PgJsonObjects
             else
                 return null;
         }
+
+        public override string SortingName { get { return Name; } }
     }
 }

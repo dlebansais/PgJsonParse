@@ -40,10 +40,10 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        public override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IGenericJsonObject>> AllTables)
+        public override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = base.ConnectFields(ErrorInfo, Parent, AllTables);
-            Dictionary<string, IGenericJsonObject> AbilityTable = AllTables[typeof(Ability)];
+            Dictionary<string, IJsonKey> AbilityTable = AllTables[typeof(Ability)];
 
             BestowAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawBestowAbility, BestowAbility, ref IsRawBestowAbilityParsed, ref IsConnected, LinkBack);
 

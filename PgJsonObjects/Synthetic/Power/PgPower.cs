@@ -73,5 +73,35 @@ namespace PgJsonObjects
 
             return Result;
         }
+
+        public string ComposedName
+        {
+            get
+            {
+                string Result;
+
+                if (Prefix != null || Suffix != null)
+                {
+                    Result = "";
+
+                    if (Prefix != null)
+                        Result += Prefix;
+
+                    if (Suffix != null)
+                    {
+                        if (Result.Length > 0)
+                            Result += " ";
+
+                        Result += Suffix;
+                    }
+                }
+                else
+                    Result = "(no name)";
+
+                return Result;
+            }
+        }
+
+        public override string SortingName { get { return ComposedName; } }
     }
 }

@@ -12,7 +12,7 @@ namespace PgJsonObjects
     public interface IParser
     {
         bool LoadRaw(string FilePath, ICollection ObjectList, bool loadAsArray, bool loadAsObject, ParseErrorInfo ErrorInfo);
-        void CreateIndex(string IndexFilePath, IDictionary<string, IGenericJsonObject> ObjectTable);
+        void CreateIndex(string IndexFilePath, IDictionary<string, IJsonKey> ObjectTable);
     }
 
     public class Parser<T, TI> : IParser
@@ -142,7 +142,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Index
-        public void CreateIndex(string IndexFilePath, IDictionary<string, IGenericJsonObject> ObjectTable)
+        public void CreateIndex(string IndexFilePath, IDictionary<string, IJsonKey> ObjectTable)
         {
             try
             {
@@ -151,11 +151,12 @@ namespace PgJsonObjects
 
                 StringBuilder Builder = new StringBuilder();
 
-                foreach (KeyValuePair<string, IGenericJsonObject> Entry in ObjectTable)
+                foreach (KeyValuePair<string, IJsonKey> Entry in ObjectTable)
                 {
                     try
                     {
-                        string StringValue = Entry.Value.TextContent;
+                        IIndexableObject Value = Entry.Value as IIndexableObject;
+                        string StringValue = Value.TextContent;
                         if (StringValue.Length > 0)
                         {
                             string Line = StringValue + JsonGenerator.ObjectSeparator + Entry.Key + InvariantCulture.NewLine;

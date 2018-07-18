@@ -15,5 +15,9 @@ namespace PgJsonObjects
         public OtherRequirementType OtherRequirementType { get { return GetEnum<OtherRequirementType>(0); } }
         public override string Key { get { return GetString(4); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(8, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+
+        #region Indirect Properties
+        public override string SortingName { get { return null; } }
+        #endregion
     }
 }
