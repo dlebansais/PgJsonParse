@@ -26,12 +26,50 @@ namespace PgJsonObjects
         public float AttributeEffect { get { return (float)GetDouble(8).Value; } }
         public IPgAttribute Link { get { return GetObject(12, ref _Link, PgAttribute.CreateNew); } } private IPgAttribute _Link;
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public FloatFormat AttributeEffectFormat { get { return GetEnum<FloatFormat>(20); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
 
         public override string AsEffectString()
         {
             return "{" + AttributeName + "}{" + Tools.FloatToString(AttributeEffect, FloatFormat.Standard) + "}";
+        }
+
+        public string FriendlyNameAndEffect
+        {
+            get { return FriendlyName + " " + FriendlyEffect; }
+        }
+
+        public string FriendlyName
+        {
+            get { return Link.LabelRippedOfPercent; }
+        }
+
+        public string FriendlyEffect
+        {
+            get
+            {
+                string AttributeEffectString;
+
+                if (Link.IsLabelWithPercent)
+                {
+                    AttributeEffectString = Tools.FloatToString(AttributeEffect * 100, AttributeEffectFormat);
+
+                    if (AttributeEffect > 0)
+                        AttributeEffectString = "+" + AttributeEffectString;
+
+                    AttributeEffectString += "%";
+                }
+                else
+                {
+                    AttributeEffectString = AttributeEffect.ToString();
+
+                    if (AttributeEffect > 0)
+                        AttributeEffectString = "+" + AttributeEffectString;
+                }
+
+                return AttributeEffectString;
+            }
         }
 
         public override string SortingName { get { return AttributeName; } }

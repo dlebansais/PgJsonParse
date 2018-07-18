@@ -54,6 +54,18 @@ namespace PgJsonObjects
             }
         }
 
+        public List<string> IconFileNameList
+        {
+            get
+            {
+                List<string> Result = new List<string>();
+                foreach (int Id in IconIdList)
+                    Result.Add("icon_" + Id);
+
+                return Result;
+            }
+        }
+
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Label", new FieldParser() {
                 Type = FieldType.String,

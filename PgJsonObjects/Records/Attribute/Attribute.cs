@@ -29,7 +29,6 @@ namespace PgJsonObjects
 
         #region Indirect Properties
         public override string SortingName { get { return Label; } }
-        public List<string> IconFileNameList { get; } = new List<string>();
 
         public bool IsLabelWithPercent
         {
@@ -48,10 +47,16 @@ namespace PgJsonObjects
             }
         }
 
-        public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IJsonKey>> AllTables, ParseErrorInfo ErrorInfo)
+        public List<string> IconFileNameList
         {
-            foreach (int Id in IconIdList)
-                IconFileNameList.Add("icon_" + Id);
+            get
+            {
+                List<string> Result = new List<string>();
+                foreach (int Id in IconIdList)
+                    Result.Add("icon_" + Id);
+
+                return Result;
+            }
         }
         #endregion
 

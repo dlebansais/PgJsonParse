@@ -16,16 +16,16 @@ namespace PgJsonParse
         {
             FrameworkElement element = container as FrameworkElement;
 
-            ItemAttributeLink AsItemAttributeLink;
-            ItemSimpleEffect AsItemSimpleEffect;
+            IPgItemAttributeLink AsItemAttributeLink;
+            IPgItemSimpleEffect AsItemSimpleEffect;
 
-            if ((AsItemAttributeLink = item as ItemAttributeLink) != null)
+            if ((AsItemAttributeLink = item as IPgItemAttributeLink) != null)
             {
                 DataTemplate Result = FindTemplate(element, (Prefix ?? "") + "AttributeLinkGearTemplate");
                 return Result;
             }
 
-            else if ((AsItemSimpleEffect = item as ItemSimpleEffect) != null)
+            else if ((AsItemSimpleEffect = item as IPgItemSimpleEffect) != null)
             {
                 DataTemplate Result = FindTemplate(element, (Prefix ?? "") + "SimpleEffectGearTemplate");
                 return Result;

@@ -594,7 +594,7 @@ namespace PgJsonObjects
             SelectedGearIndex = SortedGearList.IndexOf(OldSelectedGear);
         }
 
-        public void SelectGear(Item SlotItem)
+        public void SelectGear(IPgItem SlotItem)
         {
             for (int i = 0; i < SortedGearList.Count; i++)
                 if (SortedGearList[i] == SlotItem)

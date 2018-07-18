@@ -612,7 +612,7 @@ namespace PgJsonParse
                     {
                         if (PowerTable.ContainsKey(FieldValue))
                         {
-                            Power SlotPower = PowerTable[FieldValue] as Power;
+                            IPgPower SlotPower = PowerTable[FieldValue] as IPgPower;
 
                             foreach (SlotPlaner Planer in SlotPlanerList)
                                 if (Planer.Slot == ParsedSlot)
@@ -657,7 +657,7 @@ namespace PgJsonParse
                         }
                         else if (ItemTable.ContainsKey(FieldValue))
                         {
-                            Item SlotItem = ItemTable[FieldValue] as Item;
+                            IPgItem SlotItem = ItemTable[FieldValue] as IPgItem;
 
                             foreach (SlotPlaner Planer in SlotPlanerList)
                                 if (Planer.Slot == ParsedSlot)

@@ -120,8 +120,9 @@ namespace PgJsonObjects
             AddDouble(AttributeEffect, data, ref offset, BaseOffset, 8);
             AddObject(Link as ISerializableJsonObject, data, ref offset, BaseOffset, 12, StoredObjectTable);
             AddStringList(new List<string>(), data, ref offset, BaseOffset, 16, StoredStringListTable);
-
-            FinishSerializing(data, ref offset, BaseOffset, 20, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            AddEnum(AttributeEffectFormat, data, ref offset, BaseOffset, 20);
+            
+            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

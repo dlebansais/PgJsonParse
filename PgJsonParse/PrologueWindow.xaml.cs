@@ -591,7 +591,7 @@ namespace PgJsonParse
         #region Parser Check
         public const double PARSER_VERSION = 306;
         public const double PG_CACHE_VERSION = 306;
-        public const double PG_CACHE_SIZE = 34910600;
+        public const double PG_CACHE_SIZE = 34917080;
 
         private void InitParserCheck()
         {

@@ -16,5 +16,6 @@ namespace PgJsonObjects
 
         bool IsLabelWithPercent { get; }
         string LabelRippedOfPercent { get; }
+        List<string> IconFileNameList { get; }
     }
 }
