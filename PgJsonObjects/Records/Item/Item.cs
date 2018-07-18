@@ -433,14 +433,31 @@ namespace PgJsonObjects
                 PerfectCottonRatio = float.NaN;
         }
 
-        private bool ParseKeywords(string RawKeyword, ParseErrorInfo ErrorInfo)
+        private bool ParseKeywords(string value, ParseErrorInfo errorInfo)
         {
-            RawKeywordList.Add(RawKeyword);
+            RawKeywordList.Add(value);
 
+            bool Success = ParseRawKeyword(value, errorInfo, KeywordValueList, KeywordTable, out string ParsedKeyString);
+            if (Success)
+            {
+                if (ParsedKeyString != null)
+                {
+                    if (StringToEnumConversion<RecipeItemKey>.TryParse(ParsedKeyString, out RecipeItemKey ParsedKey, errorInfo))
+                        ItemKeyList.Add(ParsedKey);
+                }
+            }
+
+            return Success;
+        }
+
+        public static bool ParseRawKeyword(string RawKeyword, ParseErrorInfo ErrorInfo, List<string> KeywordValueList, Dictionary<ItemKeyword, List<float>> KeywordTable, out string ParsedKeyString)
+        {
             string KeyString;
             string ValueString;
             float Value;
             FloatFormat ValueFormat;
+
+            ParsedKeyString = null;
 
             string[] Pairs = RawKeyword.Split('=');
             if (Pairs.Length == 1)
@@ -477,10 +494,7 @@ namespace PgJsonObjects
             {
                 ValueList = new List<float>();
                 KeywordTable.Add(Key, ValueList);
-
-                RecipeItemKey ParsedKey;
-                if (StringToEnumConversion<RecipeItemKey>.TryParse(KeyString, out ParsedKey, null))
-                    ItemKeyList.Add(ParsedKey);
+                ParsedKeyString = KeyString;
             }
 
             if (!float.IsNaN(Value))

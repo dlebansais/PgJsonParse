@@ -23,6 +23,10 @@ namespace PgJsonParse
             while (ItemType != null && Result == null)
             {
                 string TemplateName = ItemType.Name + "Template";
+                if (TemplateName.StartsWith("Pg"))
+                    TemplateName = TemplateName.Substring(2);
+                else if (TemplateName.StartsWith("Json"))
+                    TemplateName = TemplateName.Substring(4);
 
                 Result = FindTemplate(element, TemplateName);
                 if (Result == null)

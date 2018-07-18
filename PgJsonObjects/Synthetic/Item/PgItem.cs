@@ -23,6 +23,12 @@ namespace PgJsonObjects
             return Result;
         }
 
+        public override void Init()
+        {
+            foreach (string s in RawKeywordList)
+                Item.ParseRawKeyword(s, null, KeywordValueList, KeywordTable, out string ParsedKeyString);
+        }
+
         public override string Key { get { return GetString(0); } }
         public IPgAbility BestowAbility { get { return GetObject(4, ref _BestowAbility, PgAbility.CreateNew); } } private IPgAbility _BestowAbility;
         public IPgQuest BestowQuest { get { return GetObject(8, ref _BestowQuest, PgQuest.CreateNew); } } private IPgQuest _BestowQuest;
@@ -95,6 +101,8 @@ namespace PgJsonObjects
         public List<string> RawKeywordList { get { return GetStringList(152, ref _RawKeywordList); } } private List<string> _RawKeywordList;
         public int UnknownSkillReqIndex { get { return RawUnknownSkillReqIndex.HasValue ? RawUnknownSkillReqIndex.Value : 0; } }
         public int? RawUnknownSkillReqIndex { get { return GetInt(156); } }
+
+        public Dictionary<ItemKeyword, List<float>> KeywordTable { get; } = new Dictionary<ItemKeyword, List<float>>();
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "BestowRecipes", new FieldParser() {
