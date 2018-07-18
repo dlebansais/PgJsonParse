@@ -686,12 +686,13 @@ namespace PgJsonObjects
             AddObject(ParentSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 48, StoredObjectTable);
             AddEnumList(TSysCategoryList, data, ref offset, BaseOffset, 52, StoredEnumListTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 56, StoredStringListTable);
-            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 60, StoredIntListTable);
-            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 64, StoredStringListTable);
-            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 68, StoredIntListTable);
-            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 72, StoredStringListTable);
+            AddInt(IconId, data, ref offset, BaseOffset, 60);
+            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 64, StoredIntListTable);
+            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 68, StoredStringListTable);
+            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 72, StoredIntListTable);
+            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 76, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 76, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 80, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

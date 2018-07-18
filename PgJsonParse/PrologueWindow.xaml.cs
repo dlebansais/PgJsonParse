@@ -591,7 +591,7 @@ namespace PgJsonParse
         #region Parser Check
         public const double PARSER_VERSION = 306;
         public const double PG_CACHE_VERSION = 306;
-        public const double PG_CACHE_SIZE = 34910008;
+        public const double PG_CACHE_SIZE = 34910600;
 
         private void InitParserCheck()
         {
@@ -1192,6 +1192,7 @@ namespace PgJsonParse
         private void DeserializeAll(byte[] data, ref int offset)
         {
             SerializableJsonObject.ResetSerializedObjectTable();
+            GenericPgObject.ResetCreatedObjectTable();
 
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {

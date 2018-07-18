@@ -103,7 +103,7 @@ namespace PgJsonObjects
 
         public override string SortingName { get { return Key; } }
         public const int SearchResultIconId = 2118;
-        public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
+        public string SearchResultIconFileName { get { return "icon_" + NpcPreference.SearchResultIconId; } }
         #endregion
 
         #region Parsing

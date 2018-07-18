@@ -52,5 +52,6 @@ namespace PgJsonObjects
         }; } }
 
         public override string SortingName { get { return ""; } }
+        public string SearchResultIconFileName { get { return "icon_" + LoreBookInfo.SearchResultIconId; } }
     }
 }

@@ -21,7 +21,7 @@ namespace PgJsonObjects
         public StorageVault MatchingVault { get; private set; }
         public override string SortingName { get { return Name; } }
         public const int SearchResultIconId = 2118;
-        public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
+        public string SearchResultIconFileName { get { return "icon_" + GameNpc.SearchResultIconId; } }
         #endregion
 
         #region Parsing

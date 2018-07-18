@@ -42,5 +42,6 @@ namespace PgJsonObjects
         }; } }
 
         public override string SortingName { get { return Key; } }
+        public string SearchResultIconFileName { get { return "icon_" + NpcPreference.SearchResultIconId; } }
     }
 }

@@ -9,14 +9,22 @@ namespace PgJsonObjects
         public const int NoValueInt = 0x6B6B6B6B;
         public static Dictionary<int, object> CreatedObjectTable = new Dictionary<int, object>();
 
+        public static void ResetCreatedObjectTable()
+        {
+            CreatedObjectTable.Clear();
+        }
+
         public static IMainPgObject CreateMainObject(PgObjectCreator createNewObject, byte[] data, ref int offset)
         {
             int TableOffset = offset;
-            IMainPgObject Item = createNewObject(data, ref offset);
-            Item.Init();
 
-            if (!CreatedObjectTable.ContainsKey(TableOffset))
-                CreatedObjectTable.Add(TableOffset, Item);
+            if (CreatedObjectTable.ContainsKey(TableOffset))
+                return CreatedObjectTable[TableOffset] as IMainPgObject;
+
+            IMainPgObject Item = createNewObject(data, ref offset);
+            CreatedObjectTable.Add(TableOffset, Item);
+
+            Item.Init();
 
             return Item;
         }
@@ -128,6 +136,7 @@ namespace PgJsonObjects
                         int TableOffset = StoredOffset;
                         cachedValue = createNewObject(Data, ref StoredOffset);
                         CreatedObjectTable.Add(TableOffset, cachedValue);
+
                         (cachedValue as IGenericPgObject).Init();
                     }
                 }
@@ -262,6 +271,8 @@ namespace PgJsonObjects
                         int TableOffset = StoredOffset;
                         Object = createNewObject(Data, ref StoredOffset);
                         CreatedObjectTable.Add(TableOffset, Object);
+
+                        (Object as IGenericPgObject).Init();
                     }
 
                     asList.Add(Object);

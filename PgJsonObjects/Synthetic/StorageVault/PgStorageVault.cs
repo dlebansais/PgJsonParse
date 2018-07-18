@@ -118,5 +118,6 @@ namespace PgJsonObjects
         }
 
         public override string SortingName { get { return NpcFriendlyName; } }
+        public string SearchResultIconFileName { get { return "icon_" + StorageVault.SearchResultIconId; } }
     }
 }

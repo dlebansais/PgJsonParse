@@ -321,5 +321,6 @@ namespace PgJsonObjects
         }
 
         public override string SortingName { get { return Name; } }
+        public string SearchResultIconFileName { get { return "icon_" + Quest.SearchResultIconId; } }
     }
 }

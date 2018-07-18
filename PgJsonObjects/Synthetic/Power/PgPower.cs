@@ -103,5 +103,18 @@ namespace PgJsonObjects
         }
 
         public override string SortingName { get { return ComposedName; } }
+
+        public string SearchResultIconFileName
+        {
+            get
+            {
+                int IconId = PgJsonObjects.Skill.BestIconIdForSkill(RawSkill);
+
+                if (IconId == 0)
+                    return null;
+
+                return "icon_" + IconId;
+            }
+        }
     }
 }

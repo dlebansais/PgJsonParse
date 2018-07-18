@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgSkill(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 76;
+            offset += 80;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -24,10 +24,10 @@ namespace PgJsonObjects
 
         public override void Init()
         {
-            GetIntList(60, ref AdvancementHintTableKey);
-            GetStringList(64, ref AdvancementHintTableValue);
-            GetIntList(68, ref ReportTableKey);
-            GetStringList(72, ref ReportTableValue);
+            GetIntList(64, ref AdvancementHintTableKey);
+            GetStringList(68, ref AdvancementHintTableValue);
+            GetIntList(72, ref ReportTableKey);
+            GetStringList(76, ref ReportTableValue);
 
             CombinedRewardList = Skill.CreateCombinedRewardList(InteractionFlagLevelCapList, AdvancementHintTableKey, AdvancementHintTableValue, RewardList, ReportTableKey, ReportTableValue);
         }
@@ -60,6 +60,7 @@ namespace PgJsonObjects
         public IPgSkill ParentSkill { get { return GetObject(48, ref _ParentSkill, PgSkill.CreateNew); } } private IPgSkill _ParentSkill;
         public List<SkillCategory> TSysCategoryList { get { return GetEnumList(52, ref _TSysCategoryList); } } private List<SkillCategory> _TSysCategoryList;
         protected override List<string> FieldTableOrder { get { return GetStringList(56, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public int IconId { get { return GetInt(60).Value; } }
 
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         private List<int> AdvancementHintTableKey = null;
@@ -213,5 +214,16 @@ namespace PgJsonObjects
         }
 
         public override string SortingName { get { return Name; } }
+
+        public string SearchResultIconFileName
+        {
+            get
+            {
+                if (IconId == 0)
+                    return null;
+
+                return "icon_" + IconId;
+            }
+        }
     }
 }

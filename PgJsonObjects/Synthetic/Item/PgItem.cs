@@ -301,5 +301,6 @@ namespace PgJsonObjects
         }
 
         public override string SortingName { get { return Name; } }
+        public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
     }
 }

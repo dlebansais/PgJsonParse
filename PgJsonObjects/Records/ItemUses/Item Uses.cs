@@ -12,7 +12,7 @@ namespace PgJsonObjects
         #region Indirect Properties
         public override string SortingName { get { return ""; } }
         public const int SearchResultIconId = 2118;
-        public string SearchResultIconFileName { get { return "icon_" + SearchResultIconId; } }
+        public string SearchResultIconFileName { get { return "icon_" + ItemUses.SearchResultIconId; } }
         #endregion
 
         #region Parsing
