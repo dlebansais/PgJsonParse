@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgRecipe(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 124;
+            offset += 128;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -92,6 +92,7 @@ namespace PgJsonObjects
         public bool ResultItemListIsEmpty { get { return RawResultItemListIsEmpty.HasValue && RawResultItemListIsEmpty.Value; } }
         public bool? RawResultItemListIsEmpty { get { return GetBool(120, 4); } }
         public ItemKeyword RecipeItemKeyword { get { return GetEnum<ItemKeyword>(122); } }
+        public IPgGenericSourceCollection SourceList { get { return GetObjectList(124, ref _SourceList, (byte[] data, ref int offset) => PgGenericSourceCollection.CreateItem(this, data, ref offset), () => new PgGenericSourceCollection()); } } private PgGenericSourceCollection _SourceList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Description", new FieldParser() {

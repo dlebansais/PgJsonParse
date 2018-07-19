@@ -69,9 +69,9 @@ namespace PgJsonObjects
         #region Indirect Properties
         public override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue ? "icon_" + RawIconId.Value : null; } }
-        public List<GenericSource> SourceList { get; private set; } = new List<GenericSource>();
+        public IPgGenericSourceCollection SourceList { get; private set; } = new PgGenericSourceCollection();
 
-        public void SetSource(GenericSource Source, ParseErrorInfo ErrorInfo)
+        public void SetSource(IPgGenericSource Source, ParseErrorInfo ErrorInfo)
         {
             if (Source == null)
                 return;
@@ -1127,8 +1127,9 @@ namespace PgJsonObjects
             AddBool(RawResultItemListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 120, 4);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 122);
+            AddObjectList(SourceList, data, ref offset, BaseOffset, 124, StoredObjectListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 124, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 128, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

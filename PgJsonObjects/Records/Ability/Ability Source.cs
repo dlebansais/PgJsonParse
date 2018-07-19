@@ -41,7 +41,7 @@ namespace PgJsonObjects
         {
             if (ConnectedAbility != null)
             {
-                GenericSource ConvertedSource = ToSpecificSource(ErrorInfo);
+                IPgGenericSource ConvertedSource = ToSpecificSource(ErrorInfo);
                 if (ConvertedSource != null)
                 {
                     Ability a = ConnectedAbility as Ability;
@@ -50,7 +50,7 @@ namespace PgJsonObjects
             }
         }
 
-        private GenericSource ToSpecificSource(ParseErrorInfo ErrorInfo)
+        private IPgGenericSource ToSpecificSource(ParseErrorInfo ErrorInfo)
         {
             switch (Type)
             {

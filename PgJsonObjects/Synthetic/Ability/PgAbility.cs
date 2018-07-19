@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 184;
+            offset += 188;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -131,6 +131,7 @@ namespace PgJsonObjects
         public bool RawAttributesThatDeltaResetTimeListIsEmpty { get { return GetBool(180, 10).Value; } }
         public bool RawAttributesThatModPowerCostListIsEmpty { get { return GetBool(180, 12).Value; } }
         public PowerSkill RawSkill { get { return GetEnum<PowerSkill>(182); } }
+        public IPgGenericSourceCollection SourceList { get { return GetObjectList(184, ref _SourceList, (byte[] data, ref int offset) => PgGenericSourceCollection.CreateItem(this, data, ref offset), () => new PgGenericSourceCollection()); } } private PgGenericSourceCollection _SourceList;
 
         public ConsumedItem ConsumedItem { get; private set; }
         public IPgAbilityRequirementCollection CombinedRequirementList { get; private set; }

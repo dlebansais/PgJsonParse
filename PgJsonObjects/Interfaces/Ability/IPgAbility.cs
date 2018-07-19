@@ -88,6 +88,7 @@ namespace PgJsonObjects
         bool RawAttributesThatDeltaResetTimeListIsEmpty { get; }
         bool RawAttributesThatModPowerCostListIsEmpty { get; }
         PowerSkill RawSkill { get; }
+        IPgGenericSourceCollection SourceList { get; }
 
         ConsumedItem ConsumedItem { get; }
     }

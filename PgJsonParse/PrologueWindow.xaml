@@ -499,8 +499,9 @@
                             <CheckBox IsChecked="{Binding OptimizeLoad, Mode=TwoWay}" Margin="0,0,0,10">
                                 <CheckBox.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock>Fast load for version</TextBlock>
-                                        <TextBlock Text="{Binding OptimizedVersion}" Margin="5,0,0,0"/>
+                                        <TextBlock>Load version</TextBlock>
+                                        <TextBlock Text="{Binding OptimizedVersion}" Margin="5,0,5,0"/>
+                                        <TextBlock>fast</TextBlock>
                                     </StackPanel>
                                 </CheckBox.Content>
                             </CheckBox>
@@ -615,8 +616,9 @@
                             <CheckBox IsChecked="{Binding OptimizeLoad, Mode=TwoWay}" Margin="0,10,0,0">
                                 <CheckBox.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock>Fast load for version</TextBlock>
-                                        <TextBlock Text="{Binding OptimizedVersion}" Margin="5,0,0,0"/>
+                                        <TextBlock>Load version</TextBlock>
+                                        <TextBlock Text="{Binding OptimizedVersion}" Margin="5,0,5,0"/>
+                                        <TextBlock>fast</TextBlock>
                                     </StackPanel>
                                 </CheckBox.Content>
                             </CheckBox>

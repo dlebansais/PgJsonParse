@@ -38,13 +38,13 @@ namespace PgJsonObjects
         {
             if (ConnectedRecipe != null)
             {
-                GenericSource ConvertedSource = ToSpecificSource(ErrorInfo);
+                IPgGenericSource ConvertedSource = ToSpecificSource(ErrorInfo);
                 if (ConvertedSource != null)
                     (ConnectedRecipe as Recipe).SetSource(ConvertedSource, ErrorInfo);
             }
         }
 
-        private GenericSource ToSpecificSource(ParseErrorInfo ErrorInfo)
+        private IPgGenericSource ToSpecificSource(ParseErrorInfo ErrorInfo)
         {
             switch (Type)
             {

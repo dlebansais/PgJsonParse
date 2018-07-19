@@ -321,13 +321,13 @@ namespace PgJsonObjects
             }
         }
 
-        protected void AddLinkBackCollection(IPgBackLinkableCollection LinkBackCollection)
+        public void AddLinkBackCollection(IPgBackLinkableCollection LinkBackCollection)
         {
             foreach (IBackLinkable LinkBack in LinkBackCollection)
                 AddLinkBack(LinkBack);
         }
 
-        protected void AddLinkBack(IBackLinkable LinkBack)
+        public void AddLinkBack(IBackLinkable LinkBack)
         {
             if (LinkBack == null)
                 return;

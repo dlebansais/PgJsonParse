@@ -29,7 +29,7 @@ namespace PgJsonObjects
 
         static List<Type> LinkBackTypeList = new List<Type>();
 
-        protected void AddLinkBack(IBackLinkable LinkBack)
+        public void AddLinkBack(IBackLinkable LinkBack)
         {
             if (LinkBack == null)
                 return;

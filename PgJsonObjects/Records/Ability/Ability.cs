@@ -92,10 +92,10 @@ namespace PgJsonObjects
         public bool RawAttributesThatDeltaResetTimeListIsEmpty { get; private set; }
         public bool RawAttributesThatModPowerCostListIsEmpty { get; private set; }
         public PowerSkill RawSkill { get; private set; }
+        public IPgGenericSourceCollection SourceList { get; private set; } = new PgGenericSourceCollection();
 
         private List<PowerSkill> RawCompatibleSkillList = new List<PowerSkill>();
         private bool IsSkillParsed;
-        private List<GenericSource> SourceList = new List<GenericSource>();
         private bool IsRawConsumedItemKeywordParsed;
         private ItemKeyword ConsumedItemKeyword;
         #endregion
@@ -152,7 +152,7 @@ namespace PgJsonObjects
             return Result;
         }
 
-        public void SetSource(GenericSource Source, ParseErrorInfo ErrorInfo)
+        public void SetSource(IPgGenericSource Source, ParseErrorInfo ErrorInfo)
         {
             if (Source == null)
                 return;
@@ -2629,8 +2629,9 @@ namespace PgJsonObjects
             AddBool(RawAttributesThatModPowerCostListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 12);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RawSkill, data, ref offset, BaseOffset, 182);
+            AddObjectList(SourceList, data, ref offset, BaseOffset, 184, StoredObjectListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 184, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 188, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion
