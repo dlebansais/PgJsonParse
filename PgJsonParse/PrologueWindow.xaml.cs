@@ -952,17 +952,6 @@ namespace PgJsonParse
                             int offset = 0;
                             DeserializeAll(Data, ref offset);
 
-                            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-                            {
-                                IObjectDefinition Definition = Entry.Value;
-                                Dictionary<string, IJsonKey> ObjectTable = Definition.ObjectTable;
-                                IMainPgObjectCollection PgObjectList = Definition.PgObjectList;
-
-                                ObjectTable.Clear();
-                                foreach (IJsonKey Item in PgObjectList)
-                                    ObjectTable.Add(Item.Key, Item);
-                            }
-
                             OnStart2(true, versionInfo, ErrorInfo, VersionFolder, IconFolder);
                             return;
                         }
@@ -1249,6 +1238,27 @@ namespace PgJsonParse
                 foreach (IGenericPgObject Item in PgObjectList)
                     if (Item is IBackLinkable AsLinkBack)
                         AsLinkBack.SortLinkBack();
+            }
+
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+            {
+                IObjectDefinition Definition = Entry.Value;
+                Dictionary<string, IJsonKey> ObjectTable = Definition.ObjectTable;
+                IMainPgObjectCollection PgObjectList = Definition.PgObjectList;
+
+                if (ObjectTable.Count == 0)
+                    foreach (IJsonKey Item in PgObjectList)
+                        ObjectTable.Add(Item.Key, Item);
+            }
+
+            Dictionary<string, IJsonKey> NpcTable = ObjectList.Definitions[typeof(GameNpc)].ObjectTable;
+            Dictionary<string, IJsonKey> ItemTable = ObjectList.Definitions[typeof(Item)].ObjectTable;
+
+            foreach (KeyValuePair<string, IJsonKey> Entry in NpcTable)
+            {
+                IPgGameNpc Npc = Entry.Value as IPgGameNpc;
+                foreach (IPgNpcPreference NpcPreference in Npc.PreferenceList)
+                    NpcPreference.InitFavorList(ItemTable);
             }
         }
 

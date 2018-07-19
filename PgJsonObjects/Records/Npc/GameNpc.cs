@@ -109,7 +109,7 @@ namespace PgJsonObjects
             Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
             Dictionary<string, IJsonKey> StorageVaultTable = AllTables[typeof(StorageVault)];
 
-            List<Item> HatedGiftList = new List<Item>();
+            List<IPgItem> HatedGiftList = new List<IPgItem>();
 
             foreach (NpcPreference Preference in HateList)
             {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace PgJsonObjects
 {
@@ -17,6 +18,68 @@ namespace PgJsonObjects
         public static PgNpcPreference CreateNew(byte[] data, ref int offset)
         {
             return new PgNpcPreference(data, ref offset);
+        }
+
+        public void InitFavorList(Dictionary<string, IJsonKey> ItemTable)
+        {
+            InitNpcFavorList(ItemTable, this);
+        }
+
+        public static void InitNpcFavorList(Dictionary<string, IJsonKey> ItemTable, IPgNpcPreference NpcPreference)
+        {
+             //= ObjectList.Definitions[typeof(Item)].ObjectTable;
+
+            foreach (ItemKeyword Keyword in NpcPreference.ItemKeywordList)
+            {
+                if (Keyword == ItemKeyword.Internal_None)
+                    continue;
+
+                ItemCollection ItemList = new ItemCollection();
+
+                if (Keyword == ItemKeyword.Any)
+                {
+                    if (NpcPreference.RawMinValueRequirement.HasValue)
+                    {
+                        foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
+                        {
+                            IPgItem ItemValue = Entry.Value as IPgItem;
+                            if (ItemValue.Value >= NpcPreference.RawMinValueRequirement.Value)
+                                ItemList.Add(ItemValue);
+                        }
+                    }
+                    else if (NpcPreference.SlotRequirement != ItemSlot.Internal_None)
+                    {
+                        foreach (KeyValuePair<string, IJsonKey> Entry in ItemTable)
+                        {
+                            IPgItem ItemValue = Entry.Value as IPgItem;
+                            if (ItemValue.EquipSlot == NpcPreference.SlotRequirement)
+                                ItemList.Add(ItemValue);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (KeyValuePair<string, IJsonKey> ItemEntry in ItemTable)
+                    {
+                        IPgItem ItemValue = ItemEntry.Value as IPgItem;
+                        foreach (KeyValuePair<ItemKeyword, List<float>> KeywordEntry in ItemValue.KeywordTable)
+                            if (KeywordEntry.Key == Keyword)
+                                ItemList.Add(ItemValue);
+                    }
+                }
+
+                foreach (IPgItem Item in ItemList)
+                {
+                    if (NpcPreference.RawMinValueRequirement.HasValue && Item.Value < NpcPreference.RawMinValueRequirement.Value)
+                        continue;
+
+                    if (NpcPreference.SlotRequirement != ItemSlot.Internal_None && Item.EquipSlot != NpcPreference.SlotRequirement)
+                        continue;
+
+                    double Value = NpcPreference.Preference * Item.Value;
+                    NpcPreference.ItemFavorList.Add(new Gift(Keyword, Item, Value));
+                }
+            }
         }
 
         public override string Key { get { return GetString(0); } }
@@ -40,6 +103,25 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 GetFloat = () => RawPreference } },
         }; } }
+
+        public string PreferenceType
+        {
+            get
+            {
+                if (Preference <= -2)
+                    return "Hates";
+                else if (Preference < 0)
+                    return "Dislikes";
+                else if (Preference > 2)
+                    return "Loves";
+                else if (Preference > 0)
+                    return "Likes";
+                else
+                    return "";
+            }
+        }
+
+        public ICollection<Gift> ItemFavorList { get; } = new ObservableCollection<Gift>();
 
         public override string SortingName { get { return Key; } }
         public string SearchResultIconFileName { get { return "icon_" + NpcPreference.SearchResultIconId; } }

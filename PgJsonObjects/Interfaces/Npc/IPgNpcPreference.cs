@@ -14,5 +14,8 @@ namespace PgJsonObjects
         ItemSlot SlotRequirement { get; }
         RecipeItemKey RarityRequirement { get; }
         RecipeItemKey MinRarityRequirement { get; }
+
+        ICollection<Gift> ItemFavorList { get; }
+        void InitFavorList(Dictionary<string, IJsonKey> ItemTable);
     }
 }

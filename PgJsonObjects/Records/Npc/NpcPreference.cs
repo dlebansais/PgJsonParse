@@ -42,7 +42,12 @@ namespace PgJsonObjects
 
         private bool IsItemFavorListParsed;
         private bool IsSortIncreasing;
-        public ObservableCollection<Gift> ItemFavorList { get; private set; } = new ObservableCollection<Gift>();
+        public ICollection<Gift> ItemFavorList { get; } = new ObservableCollection<Gift>();
+
+        public void InitFavorList(Dictionary<string, IJsonKey> ItemTable)
+        {
+            PgNpcPreference.InitNpcFavorList(ItemTable, this);
+        }
 
         public void SortByValue()
         {
@@ -274,8 +279,9 @@ namespace PgJsonObjects
             if (ItemKeywordList.Count == 0)
                 ItemKeywordList.Add(ItemKeyword.Any);
 
-            SkillRequirement = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkillRequirement, SkillRequirement, ref IsSkillParsed, ref IsConnected, Parent as GameNpc);
+            SkillRequirement = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkillRequirement, SkillRequirement, ref IsSkillParsed, ref IsConnected, Parent);
 
+            /*
             IPgItemCollection ItemList = new ItemCollection();
             foreach (ItemKeyword Keyword in ItemKeywordList)
             {
@@ -306,7 +312,7 @@ namespace PgJsonObjects
                     }
                 }
                 else
-                    ItemList = Item.ConnectByKeyword(ErrorInfo, ItemTable, Keyword, ItemList, ref IsItemFavorListParsed, ref IsConnected, Parent as GameNpc);
+                    ItemList = Item.ConnectByKeyword(ErrorInfo, ItemTable, Keyword, ItemList, ref IsItemFavorListParsed, ref IsConnected, Parent);
 
                 foreach (Item Item in ItemList)
                 {
@@ -319,6 +325,12 @@ namespace PgJsonObjects
                     double Value = Preference * Item.Value;
                     ItemFavorList.Add(new Gift(Keyword, Item, Value));
                 }
+            }*/
+
+            if (!IsItemFavorListParsed)
+            {
+                IsItemFavorListParsed = true;
+                PgNpcPreference.InitNpcFavorList(ItemTable, this);
             }
 
             return IsConnected;
