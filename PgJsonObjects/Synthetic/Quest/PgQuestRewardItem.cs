@@ -35,5 +35,6 @@ namespace PgJsonObjects
         }; } }
 
         public override string SortingName { get { return null; } }
+        public bool HasStackSize { get { return RawStackSize.HasValue && RawStackSize.Value > 1; } }
     }
 }

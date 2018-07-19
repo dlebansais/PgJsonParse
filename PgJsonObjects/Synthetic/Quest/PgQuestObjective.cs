@@ -21,8 +21,7 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool MustCompleteEarlierObjectivesFirst { get { return RawMustCompleteEarlierObjectivesFirst.HasValue && RawMustCompleteEarlierObjectivesFirst.Value; } }
         public bool? RawMustCompleteEarlierObjectivesFirst { get { return GetBool(20, 0); } }
-
-        public Quest ParentQuest { get; private set; }
+        public abstract IPgQuestObjectiveRequirement QuestObjectiveRequirement { get; }
 
         public void CopyFieldTableOrder(string key, List<string> fieldTableOrder)
         {
@@ -38,6 +37,19 @@ namespace PgJsonObjects
         public virtual IList<IBackLinkable> GetLinkBack()
         {
             return null;
+        }
+
+        public bool HasNumber { get { return RawNumber.HasValue && RawNumber.Value != 1; } }
+        public bool HasMinAndMaxHours { get { return QuestObjectiveRequirement != null && QuestObjectiveRequirement.RawMinHour.HasValue && QuestObjectiveRequirement.RawMaxHour.HasValue; } }
+        public string TimeCompletion
+        {
+            get
+            {
+                if (QuestObjectiveRequirement == null || !QuestObjectiveRequirement.RawMinHour.HasValue || !QuestObjectiveRequirement.RawMaxHour.HasValue)
+                    return null;
+
+                return "(this step must be completed between " + QuestObjectiveRequirement.RawMinHour.Value.ToString("D02") + ":00" + " and " + QuestObjectiveRequirement.RawMaxHour.Value.ToString("D02") + ":00" + ")";
+            }
         }
     }
 }

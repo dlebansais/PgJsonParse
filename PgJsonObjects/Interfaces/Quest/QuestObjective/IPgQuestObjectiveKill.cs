@@ -5,5 +5,6 @@
         string AbilityKeyword { get; }
         QuestObjectiveKillTarget Target { get; }
         EffectKeyword EffectRequirement { get; }
+        bool HasEffectRequirement { get; }
     }
 }

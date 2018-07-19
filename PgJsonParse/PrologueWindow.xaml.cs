@@ -22,7 +22,7 @@ namespace PgJsonParse
     {
         public const double PARSER_VERSION = 306;
         public const int PG_CACHE_VERSION = 306;
-        public const int PG_CACHE_SIZE = 35072700;
+        public const int PG_CACHE_SIZE = 35080936;
 
         #region Init
         public PrologueWindow()

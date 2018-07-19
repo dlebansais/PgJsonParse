@@ -1128,8 +1128,9 @@ namespace PgJsonObjects
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 122);
             AddObjectList(SourceList, data, ref offset, BaseOffset, 124, StoredObjectListTable);
+            AddDouble(PerfectCottonRatio, data, ref offset, BaseOffset, 128);
 
-            FinishSerializing(data, ref offset, BaseOffset, 128, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 132, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

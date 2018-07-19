@@ -42,5 +42,7 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => InteractionFlag } },
         }; } }
+
+        public override IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return null; } }
     }
 }

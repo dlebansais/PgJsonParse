@@ -22,7 +22,7 @@ namespace PgJsonObjects
         public string AbilityKeyword { get { return GetString(PropertiesOffset + 0); } }
         public QuestObjectiveKillTarget Target { get { return GetEnum<QuestObjectiveKillTarget>(PropertiesOffset + 4); } }
         public EffectKeyword EffectRequirement { get { return GetEnum<EffectKeyword>(PropertiesOffset + 6); } }
-        public IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return GetObject(PropertiesOffset + 8, ref _QuestObjectiveRequirement, PgQuestObjectiveRequirement.CreateNew); } } private IPgQuestObjectiveRequirement _QuestObjectiveRequirement;
+        public override IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return GetObject(PropertiesOffset + 8, ref _QuestObjectiveRequirement, PgQuestObjectiveRequirement.CreateNew); } } private IPgQuestObjectiveRequirement _QuestObjectiveRequirement;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
@@ -50,5 +50,7 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<EffectKeyword>.ToString(EffectRequirement, null, EffectKeyword.Internal_None) } },
         }; } }
+
+        public bool HasEffectRequirement { get { return EffectRequirement != EffectKeyword.Internal_None; } }
     }
 }

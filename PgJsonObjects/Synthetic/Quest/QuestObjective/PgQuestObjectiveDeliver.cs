@@ -55,5 +55,7 @@ namespace PgJsonObjects
         {
             return new List<IBackLinkable>() { DeliverNpc, QuestItem };
         }
+
+        public override IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return null; } }
     }
 }

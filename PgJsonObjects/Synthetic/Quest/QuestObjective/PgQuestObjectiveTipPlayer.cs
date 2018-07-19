@@ -39,5 +39,7 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => RawMinAmount.ToString() } },
         }; } }
+
+        public override IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return null; } }
     }
 }

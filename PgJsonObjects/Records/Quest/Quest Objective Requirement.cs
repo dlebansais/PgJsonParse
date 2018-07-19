@@ -27,10 +27,10 @@ namespace PgJsonObjects
                 GetString = () => Type } },
             { "MinHour", new FieldParser() {
                 Type = FieldType.Integer,
-                GetInteger = () => MinHour } },
+                GetInteger = () => RawMinHour } },
             { "MaxHour", new FieldParser() {
                 Type = FieldType.Integer,
-                GetInteger = () => MaxHour } },
+                GetInteger = () => RawMaxHour } },
             { "Keyword", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<EffectKeyword>.ToString(Keyword, null, EffectKeyword.Internal_None) } },
@@ -47,8 +47,8 @@ namespace PgJsonObjects
 
         #region Properties
         public string Type { get; set; }
-        public int? MinHour { get; set; }
-        public int? MaxHour { get; set; }
+        public int? RawMinHour { get; set; }
+        public int? RawMaxHour { get; set; }
         public EffectKeyword Keyword { get; set; }
         #endregion
 
@@ -75,8 +75,8 @@ namespace PgJsonObjects
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Type, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddInt(MinHour, data, ref offset, BaseOffset, 4);
-            AddInt(MaxHour, data, ref offset, BaseOffset, 8);
+            AddInt(RawMinHour, data, ref offset, BaseOffset, 4);
+            AddInt(RawMaxHour, data, ref offset, BaseOffset, 8);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 12, StoredStringListTable);
             AddEnum(Keyword, data, ref offset, BaseOffset, 16);
 

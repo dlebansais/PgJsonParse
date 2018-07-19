@@ -60,5 +60,7 @@ namespace PgJsonObjects
 
             return Result;
         }
+
+        public override IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return null; } }
     }
 }

@@ -25,7 +25,7 @@ namespace PgJsonObjects
         public int? RawMaxAmount { get { return GetInt(PropertiesOffset + 4); } }
         public string StringParam { get { return GetString(PropertiesOffset + 8); } }
         public string InteractionTarget { get { return GetString(PropertiesOffset + 12); } }
-        public IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return GetObject(PropertiesOffset + 16, ref _QuestObjectiveRequirement, PgQuestObjectiveRequirement.CreateNew); } } private IPgQuestObjectiveRequirement _QuestObjectiveRequirement;
+        public override IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return GetObject(PropertiesOffset + 16, ref _QuestObjectiveRequirement, PgQuestObjectiveRequirement.CreateNew); } } private IPgQuestObjectiveRequirement _QuestObjectiveRequirement;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {

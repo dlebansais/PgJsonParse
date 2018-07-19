@@ -57,5 +57,8 @@ namespace PgJsonObjects
 
             return Result;
         }
+
+        public override IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return null; } }
+        public bool HasMonsterTypeTag { get { return MonsterTypeTag != MonsterTypeTag.Internal_None; } }
     }
 }

@@ -38,5 +38,7 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 GetInteger = () => RawNumber } },
         }; } }
+
+        public override IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return null; } }
     }
 }

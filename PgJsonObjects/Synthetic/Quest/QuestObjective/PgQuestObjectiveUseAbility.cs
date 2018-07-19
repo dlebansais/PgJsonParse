@@ -44,5 +44,7 @@ namespace PgJsonObjects
         {
             return new List<IBackLinkable>(AbilityTargetList);
         }
+
+        public override IPgQuestObjectiveRequirement QuestObjectiveRequirement { get { return null; } }
     }
 }

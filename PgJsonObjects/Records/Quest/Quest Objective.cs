@@ -520,8 +520,8 @@ namespace PgJsonObjects
                                 MaxHour = MaxHourJValue.Number;
 
                                 QuestObjectiveRequirement NewRequirement = new QuestObjectiveRequirement(RequirementType);
-                                NewRequirement.MinHour = MinHour;
-                                NewRequirement.MaxHour = MaxHour;
+                                NewRequirement.RawMinHour = MinHour;
+                                NewRequirement.RawMaxHour = MaxHour;
                                 NewRequirement.AddFieldTableOrder("T");
                                 NewRequirement.AddFieldTableOrder("MinHour");
                                 NewRequirement.AddFieldTableOrder("MaxHour");
