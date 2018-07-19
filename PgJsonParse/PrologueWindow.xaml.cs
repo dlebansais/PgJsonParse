@@ -20,6 +20,10 @@ namespace PgJsonParse
 {
     public partial class PrologueWindow : RootControl, INotifyPropertyChanged
     {
+        public const double PARSER_VERSION = 306;
+        public const int PG_CACHE_VERSION = 306;
+        public const int PG_CACHE_SIZE = 34917080;
+
         #region Init
         public PrologueWindow()
             : base(RootControlMode.CustomShape)
@@ -70,6 +74,7 @@ namespace PgJsonParse
         public string ApplicationFolder { get; private set; }
         public string VersionCacheFolder { get; private set; }
         public string IconCacheFolder { get; private set; }
+        public string OptimizedVersion { get { return PG_CACHE_VERSION.ToString(); } }
 
         public bool IsGlobalInteractionEnabled
         {
@@ -258,6 +263,21 @@ namespace PgJsonParse
         }
         private bool _CheckNewParserOnStartup;
 
+        public bool OptimizeLoad
+        {
+            get { return _OptimizeLoad; }
+            set
+            {
+                if (_OptimizeLoad != value)
+                {
+                    _OptimizeLoad = value;
+                    NotifyThisPropertyChanged();
+                    Persistent.SetSettingBool(nameof(OptimizeLoad), _OptimizeLoad);
+                }
+            }
+        }
+        private bool _OptimizeLoad;
+
         public MissingIconsAction MissingIconsAction
         {
             get { return _MissingIconsAction; }
@@ -313,6 +333,7 @@ namespace PgJsonParse
             _IsIconStateUpdated = false;
             _CheckLastVersionOnStartup = Persistent.GetSettingBool(nameof(CheckLastVersionOnStartup), true);
             _CheckNewParserOnStartup = Persistent.GetSettingBool(nameof(CheckNewParserOnStartup), true);
+            _OptimizeLoad = Persistent.GetSettingBool(nameof(OptimizeLoad), true);
             _DownloadNewVersionsAutomatically = Persistent.GetSettingBool(nameof(DownloadNewVersionsAutomatically), false);
             _DefaultSelectedVersion = Persistent.GetSettingInt(nameof(DefaultSelectedVersion), 0);
             _ShareIconFiles = Persistent.GetSettingBool(nameof(ShareIconFiles), true);
@@ -589,10 +610,6 @@ namespace PgJsonParse
         #endregion
 
         #region Parser Check
-        public const double PARSER_VERSION = 306;
-        public const double PG_CACHE_VERSION = 306;
-        public const double PG_CACHE_SIZE = 34917080;
-
         private void InitParserCheck()
         {
             _IsNewParserAvailable = false;
@@ -922,7 +939,7 @@ namespace PgJsonParse
             string VersionFolder = Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
             string IconFolder = ShareIconFiles ? IconCacheFolder : VersionFolder;
 
-            if (!ObjectDefinition.UseJson && versionInfo.Version == PG_CACHE_VERSION)
+            if (!ObjectDefinition.UseJson && versionInfo.Version == PG_CACHE_VERSION && OptimizeLoad)
             {
                 try
                 {
@@ -1026,8 +1043,11 @@ namespace PgJsonParse
                     offset = 0;
                     DeserializeAll(Data, ref offset);
 
-                    string CacheFileName = Path.Combine(versionFolder, "cache.pg");
-                    FileTools.CommitBinaryFile(CacheFileName, Data);
+                    if (OptimizeLoad)
+                    {
+                        string CacheFileName = Path.Combine(versionFolder, "cache.pg");
+                        FileTools.CommitBinaryFile(CacheFileName, Data);
+                    }
 
                 }
 

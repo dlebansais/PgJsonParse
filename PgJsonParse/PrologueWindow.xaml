@@ -496,6 +496,14 @@
                             <CheckBox IsChecked="{Binding DownloadNewVersionsAutomatically, Mode=TwoWay}" Margin="0,0,0,10">Download latest version</CheckBox>
                             <CheckBox IsChecked="{Binding StartAutomatically, Mode=TwoWay}" Margin="0,0,0,10">Start when ready</CheckBox>
                             <CheckBox IsChecked="{Binding CheckNewParserOnStartup, Mode=TwoWay}" Margin="0,0,0,10">Check for the latest parser</CheckBox>
+                            <CheckBox IsChecked="{Binding OptimizeLoad, Mode=TwoWay}" Margin="0,0,0,10">
+                                <CheckBox.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock>Fast load for version</TextBlock>
+                                        <TextBlock Text="{Binding OptimizedVersion}" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                </CheckBox.Content>
+                            </CheckBox>
                         </StackPanel>
                     </TabItem>
                     <TabItem Style="{StaticResource TabItemStyle}">
@@ -589,18 +597,29 @@
                         </DockPanel>
                     </p:SelectorItem>
                     <p:SelectorItem Value="True">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock HorizontalAlignment="Center">Parsing, please wait...</TextBlock>
-                            <Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Center" Height="12" Width="{StaticResource Column3}" Margin="10,0,0,0">
-                                <p:PercentProgressBar Dock="Right" Value="{Binding ParseProgress}" Foreground="White" Background="{Binding SelectedVersion.GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_ParsingColor}}"/>
-                            </Border>
-                            <Button Command="{StaticResource CancelStartCommand}" VerticalAlignment="Center" Margin="6,0,0,0">
-                                <Button.Template>
-                                    <ControlTemplate>
-                                        <Image Source="{StaticResource imgCancel}" Width="13" Height="13"/>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Center">Parsing, please wait...</TextBlock>
+                                <Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Center" Height="12" Width="{StaticResource Column3}" Margin="10,0,0,0">
+                                    <p:PercentProgressBar Dock="Right" Value="{Binding ParseProgress}" Foreground="White" Background="{Binding SelectedVersion.GlobalDownloadState, Converter={StaticResource convEnumToObject}, ConverterParameter={StaticResource GlobalDownloadState_ParsingColor}}"/>
+                                </Border>
+                                <Button Command="{StaticResource CancelStartCommand}" VerticalAlignment="Center" Margin="6,0,0,0">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Image Source="{StaticResource imgCancel}" Width="13" Height="13"/>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">Checking the box below will make parsing faster (except the first time).</TextBlock>
+                            <CheckBox IsChecked="{Binding OptimizeLoad, Mode=TwoWay}" Margin="0,10,0,0">
+                                <CheckBox.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock>Fast load for version</TextBlock>
+                                        <TextBlock Text="{Binding OptimizedVersion}" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                </CheckBox.Content>
+                            </CheckBox>
                         </StackPanel>
                     </p:SelectorItem>
                 </p:SelectorControl>
