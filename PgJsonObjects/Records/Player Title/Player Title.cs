@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,6 +12,17 @@ namespace PgJsonObjects
         public string RawTitle { get; private set; }
         public string Tooltip { get; private set; }
         public List<TitleKeyword> KeywordList { get; } = new List<TitleKeyword>();
+        public int? Id
+        {
+            get
+            {
+                int Result;
+                if (Key.Length > 6 && int.TryParse(Key.Substring(6), out Result))
+                    return Result;
+                else
+                    return null;
+            }
+        }
         #endregion
 
         #region Indirect Properties
@@ -77,6 +89,34 @@ namespace PgJsonObjects
         {
             bool IsConnected = false;
             return IsConnected;
+        }
+
+        public static IPgPlayerTitle ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> PlayerTitleTable, int? PlayerTitleId, IPgPlayerTitle ParsedPlayerTitle, ref bool IsRawPlayerTitleParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        {
+            if (IsRawPlayerTitleParsed)
+                return ParsedPlayerTitle;
+
+            if (!PlayerTitleId.HasValue)
+                return null;
+
+            IsRawPlayerTitleParsed = true;
+            string PlayerTitleName = "Title_" + PlayerTitleId.Value;
+
+            foreach (KeyValuePair<string, IJsonKey> Entry in PlayerTitleTable)
+            {
+                PlayerTitle PlayerTitleValue = Entry.Value as PlayerTitle;
+                if (Entry.Key == PlayerTitleName)
+                {
+                    IsConnected = true;
+                    PlayerTitleValue.AddLinkBack(LinkBack);
+                    return PlayerTitleValue;
+                }
+            }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(PlayerTitleName);
+
+            return null;
         }
         #endregion
 

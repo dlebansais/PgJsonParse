@@ -61,8 +61,7 @@ namespace PgJsonObjects
         int? RawNumUses { get; }
         IPgItemBehaviorCollection BehaviorList { get; }
         string DynamicCraftingSummary { get; }
-        int BestowTitle { get; }
-        int? RawBestowTitle { get; }
+        IPgPlayerTitle BestowTitle { get; }
         int BestowLoreBook { get; }
         int? RawBestowLoreBook { get; }
         IPgLoreBook ConnectedLoreBook { get; }

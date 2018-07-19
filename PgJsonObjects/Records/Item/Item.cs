@@ -65,8 +65,7 @@ namespace PgJsonObjects
         public int? RawNumUses { get; private set; }
         public IPgItemBehaviorCollection BehaviorList { get; } = new ItemBehaviorCollection();
         public string DynamicCraftingSummary { get; private set; }
-        public int BestowTitle { get { return RawBestowTitle.HasValue ? RawBestowTitle.Value : 0; } }
-        public int? RawBestowTitle { get; private set; }
+        public IPgPlayerTitle BestowTitle { get; private set; }
         public int BestowLoreBook { get { return RawBestowLoreBook.HasValue ? RawBestowLoreBook.Value : 0; } }
         public int? RawBestowLoreBook { get; private set; }
         public IPgLoreBook ConnectedLoreBook { get; private set; }
@@ -231,7 +230,7 @@ namespace PgJsonObjects
             { "BestowTitle", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawBestowTitle = value,
-                GetInteger = () => RawBestowTitle  } },
+                GetInteger = () => BestowTitle != null ? BestowTitle.Id : null  } },
             { "BestowLoreBook", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawBestowLoreBook = value,
@@ -661,6 +660,8 @@ namespace PgJsonObjects
         private List<string> RawBestowRecipesList { get; } = new List<string>();
         public bool BestowRecipesListIsEmpty { get { return RawBestowRecipesListIsEmpty.HasValue && RawBestowRecipesListIsEmpty.Value; } }
         public bool? RawBestowRecipesListIsEmpty { get; private set; }
+        private int? RawBestowTitle;
+        private bool IsRawBestowTitleParsed;
         #endregion
 
         #region Indexing
@@ -732,6 +733,7 @@ namespace PgJsonObjects
             Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
             Dictionary<string, IJsonKey> QuestTable = AllTables[typeof(Quest)];
             Dictionary<string, IJsonKey> LoreBookTable = AllTables[typeof(LoreBook)];
+            Dictionary<string, IJsonKey> PlayerTitleTable = AllTables[typeof(PlayerTitle)];
 
             if (BestowRecipeList == null)
             {
@@ -795,6 +797,8 @@ namespace PgJsonObjects
 
             if (RawBestowLoreBook.HasValue)
                 ConnectedLoreBook = LoreBook.ConnectSingleProperty(ErrorInfo, LoreBookTable, BestowLoreBook, ConnectedLoreBook, ref IsLoreBookParsed, ref IsConnected, this);
+
+            BestowTitle = PlayerTitle.ConnectSingleProperty(ErrorInfo, PlayerTitleTable, RawBestowTitle, BestowTitle, ref IsRawBestowTitleParsed, ref IsConnected, this);
 
             return IsConnected;
         }
@@ -1081,7 +1085,7 @@ namespace PgJsonObjects
             AddInt(RawNumUses, data, ref offset, BaseOffset, 112);
             AddObjectList(BehaviorList, data, ref offset, BaseOffset, 116, StoredObjectListTable);
             AddString(DynamicCraftingSummary, data, ref offset, BaseOffset, 120, StoredStringtable);
-            AddInt(RawBestowTitle, data, ref offset, BaseOffset, 124);
+            AddObject(BestowTitle as ISerializableJsonObject, data, ref offset, BaseOffset, 124, StoredObjectTable);
             AddInt(RawBestowLoreBook, data, ref offset, BaseOffset, 128);
             AddObject(ConnectedLoreBook as ISerializableJsonObject, data, ref offset, BaseOffset, 132, StoredObjectTable);
             AddStringList(KeywordValueList, data, ref offset, BaseOffset, 136, StoredStringListTable);

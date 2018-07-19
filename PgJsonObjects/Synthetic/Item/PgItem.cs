@@ -34,6 +34,7 @@ namespace PgJsonObjects
             AddLinkBack(MacGuffinQuestName);
             AddLinkBackCollection(SkillRequirementList, (IPgItemSkillLink value) => new List<IBackLinkable>() { value.Link });
             AddLinkBackCollection(BehaviorList, GetBehaviorLinkBacks);
+            AddLinkBack(BestowTitle);
             AddLinkBack(ConnectedLoreBook);
             AddLinkBackCollection(BestowRecipeList);
         }
@@ -136,8 +137,7 @@ namespace PgJsonObjects
         public int? RawNumUses { get { return GetInt(112); } }
         public IPgItemBehaviorCollection BehaviorList { get { return GetObjectList(116, ref _BehaviorList, PgItemBehaviorCollection.CreateItem, () => new PgItemBehaviorCollection()); } } private IPgItemBehaviorCollection _BehaviorList;
         public string DynamicCraftingSummary { get { return GetString(120); } }
-        public int BestowTitle { get { return RawBestowTitle.HasValue ? RawBestowTitle.Value : 0; } }
-        public int? RawBestowTitle { get { return GetInt(124); } }
+        public IPgPlayerTitle BestowTitle { get { return GetObject(124, ref _BestowTitle, PgPlayerTitle.CreateNew); } } private IPgPlayerTitle _BestowTitle;
         public int BestowLoreBook { get { return RawBestowLoreBook.HasValue ? RawBestowLoreBook.Value : 0; } }
         public int? RawBestowLoreBook { get { return GetInt(128); } }
         public IPgLoreBook ConnectedLoreBook { get { return GetObject(132, ref _ConnectedLoreBook, PgLoreBook.CreateNew); } } private IPgLoreBook _ConnectedLoreBook;
@@ -252,7 +252,7 @@ namespace PgJsonObjects
                 GetBool = () => RawIsSkillReqsDefaults } },
             { "BestowTitle", new FieldParser() {
                 Type = FieldType.Integer,
-                GetInteger = () => RawBestowTitle  } },
+                GetInteger = () => BestowTitle != null ? BestowTitle.Id : null  } },
             { "BestowLoreBook", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => RawBestowLoreBook } },

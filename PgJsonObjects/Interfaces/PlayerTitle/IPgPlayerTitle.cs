@@ -2,11 +2,12 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgPlayerTitle : IJsonKey, IObjectContentGenerator
+    public interface IPgPlayerTitle : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         string Title { get; }
         string RawTitle { get; }
         string Tooltip { get; }
         List<TitleKeyword> KeywordList { get; }
+        int? Id { get; }
     }
 }
