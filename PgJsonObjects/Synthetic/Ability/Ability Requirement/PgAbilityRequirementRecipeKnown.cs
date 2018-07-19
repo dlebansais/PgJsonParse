@@ -32,5 +32,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => Recipe != null ? Recipe.InternalName : null } },
         }; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            return new List<IBackLinkable>() { Recipe };
+        }
     }
 }

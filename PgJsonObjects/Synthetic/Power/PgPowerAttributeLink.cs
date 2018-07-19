@@ -43,5 +43,10 @@ namespace PgJsonObjects
         }
 
         public override string SortingName { get { return AttributeName; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            return new List<IBackLinkable>() { SkillLink };
+        }
     }
 }

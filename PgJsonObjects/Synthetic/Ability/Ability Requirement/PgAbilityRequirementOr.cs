@@ -25,6 +25,21 @@ namespace PgJsonObjects
         public IPgAbilityRequirementCollection OrList { get { return GetObjectList(12, ref _OrList, PgAbilityRequirementCollection.CreateItem, () => new PgAbilityRequirementCollection()); } } private IPgAbilityRequirementCollection _OrList;
         public string ErrorMsg { get { return GetString(16); } }
 
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            List<IBackLinkable> Result = new List<IBackLinkable>();
+
+            if (OrList != null)
+                foreach (IPgAbilityRequirement Item in OrList)
+                {
+                    IList<IBackLinkable> ItemResult = Item.GetLinkBack();
+                    if (ItemResult != null)
+                        Result.AddRange(ItemResult);
+                }
+
+            return Result;
+        }
+
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
                 Type = FieldType.String,

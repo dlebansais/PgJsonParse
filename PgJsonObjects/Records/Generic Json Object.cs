@@ -36,8 +36,8 @@ namespace PgJsonObjects
 
             if (LinkBack is RecipeItem)
                 LinkBack = (LinkBack as RecipeItem).ParentRecipe;
-            else if (LinkBack is IPgQuestObjective)
-                LinkBack = (LinkBack as IPgQuestObjective).ParentQuest;
+            /*else if (LinkBack is IPgQuestObjective)
+                LinkBack = (LinkBack as IPgQuestObjective).ParentQuest;*/
             else if (LinkBack is AbilityRequirement)
                 return;
             else if (LinkBack is PowerTier)
@@ -243,7 +243,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Implementation of IConnectableObject
-        public virtual bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
+        public virtual bool Connect(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected;
 
@@ -703,7 +703,7 @@ namespace PgJsonObjects
 
         protected abstract Dictionary<string, FieldParser> FieldTable { get; }
         protected abstract string FieldTableName { get; }
-        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables);
+        protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables);
         protected static Dictionary<string, bool> ParsedFields;
         protected List<string> FieldTableOrder { get; private set; } = new List<string>();
         #endregion

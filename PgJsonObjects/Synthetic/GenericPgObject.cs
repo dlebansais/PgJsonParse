@@ -30,7 +30,7 @@ namespace PgJsonObjects
         }
     }
 
-    public abstract class GenericPgObject<TPg> : GenericPgObject, IGenericPgObject, IBackLinkable, IDeserializablePgObject, IObjectContentGenerator
+    public abstract class GenericPgObject<TPg> : GenericPgObject, IGenericPgObject, IDeserializablePgObject, IObjectContentGenerator
         where TPg : IDeserializablePgObject
     {
         public GenericPgObject(byte[] data, int offset)
@@ -310,31 +310,41 @@ namespace PgJsonObjects
 
         static List<Type> LinkBackTypeList = new List<Type>();
 
+        protected void AddLinkBackCollection<TI>(IList<TI> LinkBackCollection, Func<TI, IList<IBackLinkable>> getLinkBack)
+        {
+            foreach (TI Item in LinkBackCollection)
+            {
+                IList<IBackLinkable> Result = getLinkBack(Item);
+                if (Result != null)
+                    foreach (IBackLinkable LinkBack in Result)
+                        AddLinkBack(LinkBack);
+            }
+        }
+
+        protected void AddLinkBackCollection(IPgBackLinkableCollection LinkBackCollection)
+        {
+            foreach (IBackLinkable LinkBack in LinkBackCollection)
+                AddLinkBack(LinkBack);
+        }
+
         protected void AddLinkBack(IBackLinkable LinkBack)
         {
             if (LinkBack == null)
                 return;
 
-            if (LinkBack is RecipeItem)
-                LinkBack = (LinkBack as RecipeItem).ParentRecipe;
-            else if (LinkBack is IPgQuestObjective)
-                LinkBack = (LinkBack as IPgQuestObjective).ParentQuest;
-            else if (LinkBack is AbilityRequirement)
+            IBackLinkable ThisLinkBack = this as IBackLinkable;
+            if (ThisLinkBack == null)
                 return;
-            else if (LinkBack is PowerTier)
-                return;
-            else if (LinkBack is QuestRewardItem)
-                LinkBack = (LinkBack as QuestRewardItem).ParentQuest;
-            else if (LinkBack is Reward)
-                LinkBack = (LinkBack as Reward).ParentSkill;
 
-            Type ObjectType = LinkBack.GetType();
-            if (!LinkBackTable.ContainsKey(ObjectType))
-                LinkBackTable.Add(ObjectType, new List<IBackLinkable>());
+            Dictionary<Type, List<IBackLinkable>> RemoteLinkBackTable = LinkBack.LinkBackTable;
 
-            List<IBackLinkable> LinkBackList = LinkBackTable[ObjectType];
-            if (!LinkBackList.Contains(LinkBack))
-                LinkBackList.Add(LinkBack);
+            Type ThisType = GetType();
+            if (!RemoteLinkBackTable.ContainsKey(ThisType))
+                RemoteLinkBackTable.Add(ThisType, new List<IBackLinkable>());
+
+            List<IBackLinkable> LinkBackList = RemoteLinkBackTable[ThisType];
+            if (!LinkBackList.Contains(ThisLinkBack))
+                LinkBackList.Add(ThisLinkBack);
         }
 
         public void SortLinkBack()

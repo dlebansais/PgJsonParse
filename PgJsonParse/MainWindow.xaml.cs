@@ -1175,7 +1175,13 @@ namespace PgJsonParse
                 }
 
                 if (objectTable.Contains(Key))
-                    SingleTermResult.Add(objectTable[Key] as IBackLinkable);
+                {
+                    IBackLinkable AsBackLinkable = objectTable[Key] as IBackLinkable;
+                    if (AsBackLinkable != null)
+                        SingleTermResult.Add(AsBackLinkable);
+                    else
+                        AsBackLinkable = null;
+                }
 
                 MatchIndex = KeyIndex;
 

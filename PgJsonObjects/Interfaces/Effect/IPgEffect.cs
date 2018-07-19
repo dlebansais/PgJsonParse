@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgEffect : IJsonKey, IObjectContentGenerator
+    public interface IPgEffect : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         string Name { get; }
         string Desc { get; }

@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public interface IGenericJsonObject : IObjectContentGenerator, IBackLinkable, IJsonKey, IIndexableObject, IJsonParsableObject, IConnectableObject
+    public interface IGenericJsonObject : IObjectContentGenerator, IJsonKey, IIndexableObject, IJsonParsableObject, IConnectableObject
     {
     }
 }

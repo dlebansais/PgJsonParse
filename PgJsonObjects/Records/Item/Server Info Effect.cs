@@ -45,6 +45,11 @@ namespace PgJsonObjects
 
             return IsConnected;
         }
+
+        public IList<IBackLinkable> GetLinkBack()
+        {
+            return new List<IBackLinkable>() { LinkBack };
+        }
         #endregion
     }
 }

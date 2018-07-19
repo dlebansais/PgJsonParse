@@ -57,7 +57,7 @@ namespace PgJsonObjects
                 if (!AsItemAttributeLink.IsParsed)
                 {
                     bool IsParsed = false;
-                    IPgAttribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected, null);
+                    IPgAttribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected);
                     AsItemAttributeLink.SetLink(Link);
                 }
             }

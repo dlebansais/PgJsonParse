@@ -28,11 +28,16 @@ namespace PgJsonObjects
         {
         }
 
-        public bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
+        public bool Connect(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             return false;
         }
 
         public override string SortingName { get { return null; } }
+
+        public virtual IList<IBackLinkable> GetLinkBack()
+        {
+            return null;
+        }
     }
 }

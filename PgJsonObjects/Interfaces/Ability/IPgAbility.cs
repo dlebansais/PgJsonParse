@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgAbility : IJsonKey, IObjectContentGenerator
+    public interface IPgAbility : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         AbilityAnimation Animation { get; }
         bool CanBeOnSidebar { get; }

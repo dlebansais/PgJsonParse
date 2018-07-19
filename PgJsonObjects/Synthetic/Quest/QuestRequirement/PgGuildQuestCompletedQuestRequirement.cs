@@ -30,5 +30,14 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => QuestListAsList.Count > 0 ? QuestListAsList[0].InternalName : null } },
         }; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            List<IBackLinkable> Result = new List<IBackLinkable>();
+            if (QuestList != null)
+                Result.AddRange(QuestList);
+
+            return Result;
+        }
     }
 }

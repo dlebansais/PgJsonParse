@@ -27,6 +27,53 @@ namespace PgJsonObjects
         {
             foreach (string s in RawKeywordList)
                 Item.ParseRawKeyword(s, null, KeywordValueList, KeywordTable, out string ParsedKeyString);
+
+            AddLinkBack(BestowAbility);
+            AddLinkBack(BestowQuest);
+            AddLinkBackCollection(EffectDescriptionList, (IPgItemEffect value) => value.GetLinkBack());
+            AddLinkBack(MacGuffinQuestName);
+            AddLinkBackCollection(SkillRequirementList, (IPgItemSkillLink value) => new List<IBackLinkable>() { value.Link });
+            AddLinkBackCollection(BehaviorList, GetBehaviorLinkBacks);
+            AddLinkBack(ConnectedLoreBook);
+            AddLinkBackCollection(BestowRecipeList);
+        }
+
+        public IList<IBackLinkable> GetBehaviorLinkBacks(IPgItemBehavior value)
+        {
+            if (value.ServerInfo != null)
+                return GetBehaviorLinkBacks(value.ServerInfo);
+            else
+                return null;
+        }
+
+        public IList<IBackLinkable> GetBehaviorLinkBacks(IPgServerInfo value)
+        {
+            IPgServerInfoEffectCollection ServerInfoEffectList = value.ServerInfoEffectList;
+            IPgItemCollection GiveItemList = value.GiveItemList;
+            IPgAbilityRequirementCollection OtherRequirementList = value.OtherRequirementList;
+
+            List<IBackLinkable> Result = new List<IBackLinkable>();
+
+            if (ServerInfoEffectList != null)
+                foreach (IPgServerInfoEffect Item in ServerInfoEffectList)
+                {
+                    IList<IBackLinkable> ItemResult = Item.GetLinkBack();
+                    if (ItemResult != null)
+                        Result.AddRange(ItemResult);
+                }
+
+            if (GiveItemList != null)
+                Result.AddRange(GiveItemList);
+
+            if (OtherRequirementList != null)
+                foreach (IPgAbilityRequirement Item in OtherRequirementList)
+                {
+                    IList<IBackLinkable> ItemResult = Item.GetLinkBack();
+                    if (ItemResult != null)
+                        Result.AddRange(ItemResult);
+                }
+
+            return Result;
         }
 
         public override string Key { get { return GetString(0); } }

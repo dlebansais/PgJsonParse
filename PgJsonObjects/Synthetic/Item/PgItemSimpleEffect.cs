@@ -31,5 +31,10 @@ namespace PgJsonObjects
         }
 
         public override string SortingName { get { return Description; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            return null;
+        }
     }
 }

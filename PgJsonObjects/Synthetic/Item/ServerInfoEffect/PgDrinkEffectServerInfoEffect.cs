@@ -29,5 +29,10 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
 
         public override string SortingName { get { return null; } }
+
+        public IList<IBackLinkable> GetLinkBack()
+        {
+            return null;
+        }
     }
 }

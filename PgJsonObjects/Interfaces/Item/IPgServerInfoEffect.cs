@@ -1,11 +1,9 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public interface IPgServerInfoEffect
     {
-        /*
-        int Level { get; }
-        int? RawLevel { get; }
-        ServerInfoEffectType Type { get; }
-        */
+        IList<IBackLinkable> GetLinkBack();
     }
 }

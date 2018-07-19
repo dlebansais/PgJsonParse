@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
-    public interface IPgQuest : IJsonKey, IObjectContentGenerator
+    public interface IPgQuest : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         string InternalName { get; }
         string Name { get; }

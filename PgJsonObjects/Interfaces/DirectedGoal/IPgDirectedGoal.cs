@@ -1,6 +1,6 @@
 namespace PgJsonObjects
 {
-    public interface IPgDirectedGoal : IJsonKey, IObjectContentGenerator
+    public interface IPgDirectedGoal : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         int Id { get; }
         int? RawId { get; }

@@ -22,6 +22,26 @@ namespace PgJsonObjects
             return new PgQuest(data, ref offset);
         }
 
+        public override void Init()
+        {
+            AddLinkBackCollection(QuestObjectiveList, (IPgQuestObjective value) => value.GetLinkBack());
+            AddLinkBackCollection(RewardsXPList, (IPgQuestRewardXp value) => new List<IBackLinkable>() { value.Skill });
+            AddLinkBackCollection(QuestRewardsItemList, (IPgQuestRewardItem value) => new List<IBackLinkable>() { value.QuestItem });
+            AddLinkBack(FavorNpc);
+            AddLinkBack(RewardAbility);
+            AddLinkBack(RewardSkill);
+            AddLinkBack(RewardRecipe);
+            AddLinkBackCollection(PreGiveItemList, (IPgQuestRewardItem value) => new List<IBackLinkable>() { value.QuestItem });
+            AddLinkBackCollection(PreGiveRecipeList);
+            AddLinkBack(RewardEffect);
+            AddLinkBack(RewardLoreBook);
+            AddLinkBack(WorkOrderSkill);
+            AddLinkBackCollection(FollowUpQuestList);
+            AddLinkBackCollection(QuestRequirementList, (IPgQuestRequirement value) => value.GetLinkBack());
+            AddLinkBackCollection(QuestRequirementToSustainList, (IPgQuestRequirement value) => value.GetLinkBack());
+            //AddLinkBackCollection(QuestRewardList);
+        }
+
         public override string Key { get { return GetString(0); } }
         public string InternalName { get { return GetString(4); } }
         public string Name { get { return GetString(8); } }

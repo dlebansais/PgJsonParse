@@ -6,8 +6,9 @@ namespace PgJsonObjects
     public interface IPgQuestObjective
     {
         string Description { get; }
-        Quest ParentQuest { get; }
+        IList<IBackLinkable> GetLinkBack();
+
         void CopyFieldTableOrder(string key, List<string> fieldTableOrder);
-        bool Connect(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables);
+        bool Connect(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables);
     }
 }

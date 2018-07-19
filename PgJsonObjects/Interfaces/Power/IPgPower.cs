@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgPower : IJsonKey, IObjectContentGenerator
+    public interface IPgPower : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         string Prefix { get; }
         string Suffix { get; }

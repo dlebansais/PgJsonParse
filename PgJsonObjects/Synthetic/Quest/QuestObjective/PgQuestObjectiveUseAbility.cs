@@ -39,5 +39,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<AbilityKeyword>.ToString(AbilityTarget) } },
         }; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            return new List<IBackLinkable>(AbilityTargetList);
+        }
     }
 }

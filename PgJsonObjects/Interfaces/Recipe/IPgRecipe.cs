@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgRecipe : IJsonKey, IObjectContentGenerator
+    public interface IPgRecipe : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         string Description { get; }
         int IconId { get; }

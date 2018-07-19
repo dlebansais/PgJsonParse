@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgItemCollection : IList<IPgItem>, IPgCollection
+    public interface IPgItemCollection : IList<IPgItem>, IPgCollection, IPgBackLinkableCollection<IPgItem>
     {
     }
 }

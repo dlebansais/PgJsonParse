@@ -34,5 +34,10 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 GetInteger = () => RawSkillLevel } },
         }; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            return new List<IBackLinkable>() { Skill };
+        }
     }
 }

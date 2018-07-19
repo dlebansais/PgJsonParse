@@ -33,6 +33,17 @@ namespace PgJsonObjects
                 CombinedRequirementList.Add(Item);
 
             ConsumedItem = Ability.CreateConsumedItem(null, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
+
+            //AddLinkBackCollection(CostList);
+            AddLinkBack(Prerequisite);
+            //AddLinkBack(PvE);
+            //AddLinkBack(PvP);
+            AddLinkBack(SharesResetTimerWith);
+            AddLinkBack(Skill);
+            AddLinkBack(UpgradeOf);
+            AddLinkBack(AbilityGroup);
+            AddLinkBackCollection(SpecialCasterRequirementList, (IPgAbilityRequirement value) => value.GetLinkBack());
+            AddLinkBack(ConsumedItemLink);
         }
 
         public override string Key { get { return GetString(0); } }

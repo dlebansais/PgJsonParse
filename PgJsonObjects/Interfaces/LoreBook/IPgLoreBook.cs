@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgLoreBook : IJsonKey, IObjectContentGenerator
+    public interface IPgLoreBook : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         string Title { get; }
         string LocationHint { get; }

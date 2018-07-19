@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgQuestCollection : IList<IPgQuest>, IPgCollection
+    public interface IPgQuestCollection : IList<IPgQuest>, IPgCollection, IPgBackLinkableCollection<IPgQuest>
     {
     }
 }

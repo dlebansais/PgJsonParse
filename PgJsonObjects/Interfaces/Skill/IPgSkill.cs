@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgSkill : IJsonKey, IObjectContentGenerator
+    public interface IPgSkill : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         PowerSkill CombatSkill { get; }
         bool HideWhenZero { get; }

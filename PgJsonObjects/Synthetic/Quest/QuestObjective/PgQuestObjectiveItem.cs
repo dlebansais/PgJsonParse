@@ -47,5 +47,15 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => QuestItem != null ? QuestItem.InternalName : null } },
         }; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            List<IBackLinkable> Result = new List<IBackLinkable>();
+            Result.Add(QuestItem);
+            if (TargetItemList != null)
+                Result.AddRange(TargetItemList);
+
+            return Result;
+        }
     }
 }

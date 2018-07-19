@@ -89,7 +89,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
             Dictionary<string, IJsonKey> AttributeTable = AllTables[typeof(Attribute)];
@@ -110,7 +110,7 @@ namespace PgJsonObjects
                 {
                     IPgAttribute ConnectedAttribute = null;
                     bool IsAttributeParsed = false;
-                    ConnectedAttribute = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, RawAttribute, ConnectedAttribute, ref IsAttributeParsed, ref IsConnected, this);
+                    ConnectedAttribute = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, RawAttribute, ConnectedAttribute, ref IsAttributeParsed, ref IsConnected);
                     if (ConnectedAttribute != null)
                         Attributes.Add(ConnectedAttribute);
                 }

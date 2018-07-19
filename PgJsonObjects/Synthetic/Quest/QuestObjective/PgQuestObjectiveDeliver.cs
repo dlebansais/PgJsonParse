@@ -50,5 +50,10 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 GetInteger = () => RawNumToDeliver } },
         }; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            return new List<IBackLinkable>() { DeliverNpc, QuestItem };
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -61,6 +62,11 @@ namespace PgJsonObjects
 
             Result = new ItemSimpleEffect(Effect);
             return true;
+        }
+
+        public IList<IBackLinkable> GetLinkBack()
+        {
+            return null;
         }
     }
 }

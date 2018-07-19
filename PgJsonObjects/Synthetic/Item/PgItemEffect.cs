@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -11,5 +12,6 @@ namespace PgJsonObjects
         }
 
         public abstract string AsEffectString();
+        public abstract IList<IBackLinkable> GetLinkBack();
     }
 }

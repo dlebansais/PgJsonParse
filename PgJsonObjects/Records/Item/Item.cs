@@ -442,7 +442,7 @@ namespace PgJsonObjects
             {
                 if (ParsedKeyString != null)
                 {
-                    if (StringToEnumConversion<RecipeItemKey>.TryParse(ParsedKeyString, out RecipeItemKey ParsedKey, errorInfo))
+                    if (StringToEnumConversion<RecipeItemKey>.TryParse(ParsedKeyString, out RecipeItemKey ParsedKey, null))
                         ItemKeyList.Add(ParsedKey);
                 }
             }
@@ -723,7 +723,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
             Dictionary<string, IJsonKey> AttributeTable = AllTables[typeof(Attribute)];
@@ -771,7 +771,7 @@ namespace PgJsonObjects
                     if (!AsItemAttributeLink.IsParsed)
                     {
                         bool IsParsed = false;
-                        IPgAttribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected, this);
+                        IPgAttribute Link = Attribute.ConnectSingleProperty(ErrorInfo, AttributeTable, AsItemAttributeLink.AttributeName, AsItemAttributeLink.Link, ref IsParsed, ref IsConnected);
                         AsItemAttributeLink.SetLink(Link);
                     }
                 }

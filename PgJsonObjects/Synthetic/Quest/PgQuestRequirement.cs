@@ -19,5 +19,10 @@ namespace PgJsonObjects
         #region Indirect Properties
         public override string SortingName { get { return null; } }
         #endregion
+
+        public virtual IList<IBackLinkable> GetLinkBack()
+        {
+            return null;
+        }
     }
 }

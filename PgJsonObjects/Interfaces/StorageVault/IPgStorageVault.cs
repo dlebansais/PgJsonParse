@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgStorageVault : IJsonKey, IObjectContentGenerator
+    public interface IPgStorageVault : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         int Id { get; }
         int? RawId { get; }

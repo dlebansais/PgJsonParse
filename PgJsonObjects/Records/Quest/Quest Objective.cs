@@ -59,7 +59,6 @@ namespace PgJsonObjects
 
         #region Indirect Properties
         public override string SortingName { get { return null; } }
-        public Quest ParentQuest { get; private set; }
         public bool HasMinAndMaxHours { get { return MinHour.HasValue && MaxHour.HasValue; } }
         public string TimeCompletion
         {
@@ -602,13 +601,16 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
 
-            ParentQuest = Parent as Quest;
-
             return IsConnected;
+        }
+
+        public IList<IBackLinkable> GetLinkBack()
+        {
+            return null;
         }
         #endregion
 

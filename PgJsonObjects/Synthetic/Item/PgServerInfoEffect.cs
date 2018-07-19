@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public abstract class PgServerInfoEffect : GenericPgObject<PgServerInfoEffect>, IPgServerInfoEffect
     {
@@ -20,5 +22,10 @@
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get { return GetInt(0); } }
         public ServerInfoEffectType Type { get { return GetEnum<ServerInfoEffectType>(4); } }
+
+        public IList<IBackLinkable> GetLinkBack()
+        {
+            return null;
+        }
     }
 }

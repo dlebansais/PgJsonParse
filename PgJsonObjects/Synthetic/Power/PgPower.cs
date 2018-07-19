@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public class PgPower : MainPgObject<PgPower>, IPgPower
+    public class PgPower : MainPgObject<PgPower>, IPgPower, IBackLinkable
     {
         public PgPower(byte[] data, ref int offset)
             : base(data, offset)
@@ -19,6 +19,29 @@ namespace PgJsonObjects
         public static PgPower CreateNew(byte[] data, ref int offset)
         {
             return new PgPower(data, ref offset);
+        }
+
+        public override void Init()
+        {
+            AddLinkBack(Skill);
+            AddLinkBackCollection(TierEffectList, GetTierEffectkBacks);
+        }
+
+        public IList<IBackLinkable> GetTierEffectkBacks(IPgPowerTier value)
+        {
+            IPgPowerEffectCollection EffectList = value.EffectList;
+
+            List<IBackLinkable> Result = new List<IBackLinkable>();
+
+            if (EffectList != null)
+                foreach (IPgPowerEffect Item in EffectList)
+                {
+                    IList<IBackLinkable> ItemResult = Item.GetLinkBack();
+                    if (ItemResult != null)
+                        Result.AddRange(ItemResult);
+                }
+
+            return Result;
         }
 
         public override string Key { get { return GetString(0); } }

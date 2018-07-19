@@ -119,7 +119,7 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             return false;
         }
@@ -146,7 +146,7 @@ namespace PgJsonObjects
             return Connected;
         }
 
-        public static IPgAttribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> AttributeTable, string RawAttributeName, IPgAttribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgAttribute ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> AttributeTable, string RawAttributeName, IPgAttribute ParsedAttribute, ref bool IsRawAttributeParsed, ref bool IsConnected /*, IBackLinkable LinkBack*/)
         {
             if (IsRawAttributeParsed)
                 return ParsedAttribute;

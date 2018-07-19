@@ -1,4 +1,6 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
     public abstract class PowerEffect : SerializableJsonObject, IPgPowerEffect
     {
@@ -83,6 +85,11 @@
 
             Result = NewPowerEffect;
             return true;
+        }
+
+        public IList<IBackLinkable> GetLinkBack()
+        {
+            return null;
         }
     }
 }

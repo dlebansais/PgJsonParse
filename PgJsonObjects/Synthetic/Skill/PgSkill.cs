@@ -30,6 +30,12 @@ namespace PgJsonObjects
             GetStringList(76, ref ReportTableValue);
 
             CombinedRewardList = Skill.CreateCombinedRewardList(InteractionFlagLevelCapList, AdvancementHintTableKey, AdvancementHintTableValue, RewardList, ReportTableKey, ReportTableValue);
+
+            //AddLinkBack(XpTable);
+            //AddLinkBack(AdvancementTable);
+            AddLinkBackCollection(InteractionFlagLevelCapList, (IPgLevelCapInteraction value) => new List<IBackLinkable>() { value.Link });
+            AddLinkBackCollection(RewardList, (IPgReward value) => new List<IBackLinkable>() { value.Ability, value.Recipe, value.BonusSkill });
+            AddLinkBack(ParentSkill);
         }
 
         public override string Key { get { return GetString(0); } }

@@ -2,7 +2,7 @@
 
 namespace PgJsonObjects
 {
-    public interface IPgItem : IJsonKey, IObjectContentGenerator
+    public interface IPgItem : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         IPgAbility BestowAbility { get; }
         IPgQuest BestowQuest { get; }

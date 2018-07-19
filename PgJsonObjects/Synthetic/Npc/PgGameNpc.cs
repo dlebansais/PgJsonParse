@@ -21,6 +21,22 @@ namespace PgJsonObjects
             return new PgGameNpc(data, ref offset);
         }
 
+        public override void Init()
+        {
+            AddLinkBackCollection(PreferenceList, GetPreferenceLinkBacks);
+            AddLinkBackCollection(LikeList, GetPreferenceLinkBacks);
+            AddLinkBackCollection(HateList, GetPreferenceLinkBacks);
+        }
+
+        public IList<IBackLinkable> GetPreferenceLinkBacks(IPgNpcPreference value)
+        {
+            IPgSkill SkillRequirement = value.SkillRequirement;
+
+            List<IBackLinkable> Result = new List<IBackLinkable>() { SkillRequirement };
+
+            return Result;
+        }
+
         public override string Key { get { return GetString(0); } }
         public string Name { get { return GetString(4); } }
         public string AreaFriendlyName { get { return GetString(8); } }

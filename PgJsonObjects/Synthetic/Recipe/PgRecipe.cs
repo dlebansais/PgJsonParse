@@ -23,6 +23,29 @@ namespace PgJsonObjects
             return Result;
         }
 
+        public override void Init()
+        {
+            AddLinkBackCollection(IngredientList, GetIngredientLinkBacks);
+            AddLinkBackCollection(ResultItemList, GetIngredientLinkBacks);
+            AddLinkBack(Skill);
+            //AddLinkBackCollection(ResultEffectList);
+            AddLinkBack(SortSkill);
+            AddLinkBackCollection(OtherRequirementList, (IPgAbilityRequirement value) => value.GetLinkBack());
+            //AddLinkBackCollection(CostList);
+            AddLinkBack(RewardSkill);
+            AddLinkBack(SharesResetTimerWith);
+            AddLinkBack(PrereqRecipe);
+        }
+
+        public IList<IBackLinkable> GetIngredientLinkBacks(IPgRecipeItem value)
+        {
+            List<IBackLinkable> Result = new List<IBackLinkable>();
+            Result.Add(value.Item);
+            Result.AddRange(value.MatchingKeyItemList);
+
+            return Result;
+        }
+
         public override string Key { get { return GetString(0); } }
         public string Description { get { return GetString(4); } }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }

@@ -101,14 +101,14 @@ namespace PgJsonObjects
         #endregion
 
         #region Connecting Objects
-        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, object Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
+        protected override bool ConnectFields(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
             bool IsConnected = false;
             Dictionary<string, IJsonKey> ItemTable = AllTables[typeof(Item)];
 
             ParentRecipe = Parent as Recipe;
 
-            Item = PgJsonObjects.Item.ConnectByCode(ErrorInfo, ItemTable, RawItemCode, Item, ref IsItemCodeParsed, ref IsConnected, this);
+            Item = PgJsonObjects.Item.ConnectByCode(ErrorInfo, ItemTable, RawItemCode, Item, ref IsItemCodeParsed, ref IsConnected, Parent);
             if (Item == null && !IsItemKeyParsed)
             {
                 if (ItemKeyList.Count == 0)
@@ -146,7 +146,7 @@ namespace PgJsonObjects
 
                             default:
                                 List<Item> ParsedList = new List<Item>();
-                                ParsedList = PgJsonObjects.Item.ConnectByItemKey(ErrorInfo, ItemTable, ItemKey, ParsedList, ref IsItemKeyParsed, ref IsConnected, this);
+                                ParsedList = PgJsonObjects.Item.ConnectByItemKey(ErrorInfo, ItemTable, ItemKey, ParsedList, ref IsItemKeyParsed, ref IsConnected, Parent);
 
                                 foreach (Item Item in ParsedList)
                                     if (!MatchingKeyItemList.Contains(Item))

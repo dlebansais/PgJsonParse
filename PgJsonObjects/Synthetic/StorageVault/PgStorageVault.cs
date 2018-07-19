@@ -21,6 +21,11 @@ namespace PgJsonObjects
             return new PgStorageVault(data, ref offset);
         }
 
+        public override void Init()
+        {
+            AddLinkBack(MatchingNpc);
+        }
+
         public override string Key { get { return GetString(0); } }
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get { return GetInt(4); } }

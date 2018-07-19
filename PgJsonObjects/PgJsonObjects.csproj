@@ -96,6 +96,7 @@
     <Compile Include="Interfaces\DirectedGoal\IPgDirectedGoal.cs" />
     <Compile Include="Interfaces\Effect\IPgServerInfoCollection.cs" />
     <Compile Include="Interfaces\Effect\IPgEffect.cs" />
+    <Compile Include="Interfaces\IPgBackLinkableCollection.cs" />
     <Compile Include="Interfaces\IPgCollection.cs" />
     <Compile Include="Interfaces\ItemUses\IPgItemUses.cs" />
     <Compile Include="Interfaces\Item\IPgItemAttributeLink.cs" />

@@ -29,5 +29,20 @@ namespace PgJsonObjects
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => OrList } },
         }; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            List<IBackLinkable> Result = new List<IBackLinkable>();
+
+            if (OrList != null)
+                foreach (IPgQuestRequirement Item in OrList)
+                {
+                    IList<IBackLinkable> ItemResult = Item.GetLinkBack();
+                    if (ItemResult != null)
+                        Result.AddRange(ItemResult);
+                }
+
+            return Result;
+        }
     }
 }

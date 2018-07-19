@@ -1220,6 +1220,16 @@ namespace PgJsonParse
 
                 offset = BitConverter.ToInt32(data, ObjectOffset + Count * 4);
             }
+
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+            {
+                IObjectDefinition definition = Entry.Value;
+                IMainPgObjectCollection PgObjectList = definition.PgObjectList;
+
+                foreach (IGenericPgObject Item in PgObjectList)
+                    if (Item is IBackLinkable AsLinkBack)
+                        AsLinkBack.SortLinkBack();
+            }
         }
 
         private bool LoadNextFile(IObjectDefinition definition, string versionFolder, ParseErrorInfo errorInfo)
@@ -1284,13 +1294,6 @@ namespace PgJsonParse
                 IObjectDefinition definition = Entry.Value;
                 foreach (IGenericJsonObject Item in definition.JsonObjectList)
                     Item.SetIndirectProperties(AllTables, errorInfo);
-            }
-
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                IObjectDefinition definition = Entry.Value;
-                foreach (IGenericJsonObject Item in definition.JsonObjectList)
-                    Item.SortLinkBack();
             }
 
             if (ParseCancellation.IsCanceled)

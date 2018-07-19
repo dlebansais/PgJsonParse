@@ -48,5 +48,17 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ResultItemKeyword, null, ItemKeyword.Internal_None) } },
         }; } }
+
+        public override IList<IBackLinkable> GetLinkBack()
+        {
+            List<IBackLinkable> Result = new List<IBackLinkable>();
+            Result.Add(Skill);
+            if (RecipeTargetList != null)
+                Result.AddRange(RecipeTargetList);
+            if (ResultItemList != null)
+                Result.AddRange(ResultItemList);
+
+            return Result;
+        }
     }
 }
