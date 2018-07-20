@@ -21,6 +21,7 @@ namespace PgJsonObjects
         public bool? RawHasAssociatedNpc { get; private set; }
         public MapAreaName Area { get; private set; }
         public List<int> FavorLevelList { get; private set; } = new List<int>();
+        public Dictionary<Favor, int> FavorLevelTable { get; private set; } = new Dictionary<Favor, int>();
 
         private bool IsGameNpcParsed;
         #endregion
@@ -119,6 +120,8 @@ namespace PgJsonObjects
                 FavorLevelList.Add((int)ParsedFavor);
                 FavorLevelList.Add(FavorLevel);
             }
+
+            PgStorageVault.FromFavorListToTable(FavorLevelList, FavorLevelTable);
         }
 
         private IObjectContentGenerator GetLevels()

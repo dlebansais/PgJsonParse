@@ -23,6 +23,8 @@ namespace PgJsonObjects
 
         public override void Init()
         {
+            FromFavorListToTable(FavorLevelList, FavorLevelTable);
+
             AddLinkBack(MatchingNpc);
         }
 
@@ -124,5 +126,18 @@ namespace PgJsonObjects
 
         public override string SortingName { get { return NpcFriendlyName; } }
         public string SearchResultIconFileName { get { return "icon_" + StorageVault.SearchResultIconId; } }
+        public Dictionary<Favor, int> FavorLevelTable { get; private set; } = new Dictionary<Favor, int>();
+
+        public static void FromFavorListToTable(List<int> favorLevelList, Dictionary<Favor, int> favorLevelTable)
+        {
+            favorLevelTable.Clear();
+
+            for (int i = 0; i * 2 < favorLevelList.Count; i++)
+            {
+                Favor FavorLevel = (Favor)favorLevelList[i * 2 + 0];
+                int SlotCount = favorLevelList[i * 2 + 1];
+                favorLevelTable.Add(FavorLevel, SlotCount);
+            }
+        }
     }
 }

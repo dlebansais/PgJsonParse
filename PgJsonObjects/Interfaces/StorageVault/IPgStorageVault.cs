@@ -18,5 +18,6 @@ namespace PgJsonObjects
         bool? RawHasAssociatedNpc { get; }
         MapAreaName Area { get; }
         List<int> FavorLevelList { get; }
+        Dictionary<Favor, int> FavorLevelTable { get; }
     }
 }
