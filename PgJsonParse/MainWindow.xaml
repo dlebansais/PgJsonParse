@@ -2212,7 +2212,7 @@
                         </Hyperlink>
                     </TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Special Caster Requirements Error Message:</TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="19" TextWrapping="Wrap" Margin="5,10,0,0" Text="{Binding RawSpecialCasterRequirementsErrorMessage }"/>
+                    <TextBlock Grid.Column="1" Grid.Row="19" TextWrapping="Wrap" Margin="5,10,0,0" Text="{Binding SpecialCasterRequirementsErrorMessage }"/>
                     <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Keywords:</TextBlock>
                     <Grid Grid.Column="3" Grid.Row="0" Margin="5,0,0,0">
                         <ItemsControl x:Name="ctrl_SearchResultAbilityContent_Keywords" ItemsSource="{Binding KeywordList}">
@@ -4462,6 +4462,13 @@
                 <TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="5,0,0,0"/>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="SearchResultAdvancementTableTitleTemplate">
+            <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
+                <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
+                <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0">Power-up:</TextBlock>
+                <TextBlock Text="{Binding FriendlyName}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="SearchResultLoreBookContent_ItemTemplateFirst">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>
@@ -4600,6 +4607,28 @@
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
                     </Grid>
+                </Grid>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultAdvancementTableContentTemplate">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top">
+                    <Image DockPanel.Dock="Left" Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="64" Height="64"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock FontWeight="Bold" FontSize="40" VerticalAlignment="Center" Margin="20,0,0,0">Power-up:</TextBlock>
+                        <TextBlock Text="{Binding FriendlyName}" FontSize="40" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </DockPanel>
+                <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,5,5,5"/>
+                <Grid VerticalAlignment="Top" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                 </Grid>
             </DockPanel>
         </DataTemplate>
@@ -5228,6 +5257,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0">Search:</TextBlock>
                             <DockPanel Grid.Column="1" Grid.Row="0" Margin="5,0,0,0">
@@ -5250,6 +5280,7 @@
                             <CheckBox Grid.Column="1" Grid.Row="12" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects (mods)</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="13" IsChecked="{Binding IncludeLoreBook}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Lore Books</CheckBox>
                             <CheckBox Grid.Column="1" Grid.Row="14" IsChecked="{Binding IncludePlayerTitle}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Player Titles</CheckBox>
+                            <CheckBox Grid.Column="1" Grid.Row="15" IsChecked="{Binding IncludeAdvancement}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Power-ups and vulnerabilities</CheckBox>
                         </Grid>
                         <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,10,5,10"/>
                         <Expander DockPanel.Dock="Top" Header="Search instructions">

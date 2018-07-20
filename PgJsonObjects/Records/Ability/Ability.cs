@@ -31,7 +31,7 @@ namespace PgJsonObjects
         public int? RawCombatRefreshBaseAmount { get; private set; }
         public PowerSkill CompatibleSkill { get; private set; }
         public DamageType DamageType { get; private set; }
-        public string RawSpecialCasterRequirementsErrorMessage { get; private set; }
+        public string SpecialCasterRequirementsErrorMessage { get; private set; }
         public double ConsumedItemChance { get { return RawConsumedItemChance.HasValue ? RawConsumedItemChance.Value : 0; } }
         public double? RawConsumedItemChance { get; private set; }
         public double ConsumedItemChanceToStickInCorpse { get { return RawConsumedItemChanceToStickInCorpse.HasValue ? RawConsumedItemChanceToStickInCorpse.Value : 0; } }
@@ -110,22 +110,9 @@ namespace PgJsonObjects
 
         public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IJsonKey>> AllTables, ParseErrorInfo ErrorInfo)
         {
-            string DigitStrippedName = InternalName;
-            string LineIndexString = "";
-
-            while (DigitStrippedName.Length > 0 && Char.IsDigit(DigitStrippedName[DigitStrippedName.Length - 1]))
-            {
-                LineIndexString = DigitStrippedName.Substring(DigitStrippedName.Length - 1) + LineIndexString;
-                DigitStrippedName = DigitStrippedName.Substring(0, DigitStrippedName.Length - 1);
-            }
-
+            PgAbility.GetDigitStrippedName(InternalName, out string DigitStrippedName, out int LineIndex);
             this.DigitStrippedName = DigitStrippedName;
-
-            int LineIndex;
-            if (int.TryParse(LineIndexString, out LineIndex))
-                this.LineIndex = LineIndex;
-            else
-                this.LineIndex = -1;
+            this.LineIndex = LineIndex;
 
             CombinedRequirementList = new AbilityRequirementCollection();
 
@@ -363,8 +350,8 @@ namespace PgJsonObjects
                 SimplifyArray = true } },
             { "SpecialCasterRequirementsErrorMessage", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => RawSpecialCasterRequirementsErrorMessage = value,
-                GetString = () => RawSpecialCasterRequirementsErrorMessage } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => SpecialCasterRequirementsErrorMessage = value,
+                GetString = () => SpecialCasterRequirementsErrorMessage } },
             { "SpecialInfo", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSpecialInfo,
@@ -2310,6 +2297,7 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, ConsumedItem.TextContent);
                 if (DamageType != DamageType.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.DamageTypeTextMap[DamageType]);
+                AddWithFieldSeparator(ref Result, SpecialCasterRequirementsErrorMessage);
                 AddWithFieldSeparator(ref Result, DelayLoopMessage);
                 if (RawDelayLoopIsAbortedIfAttacked.HasValue)
                     AddWithFieldSeparator(ref Result, RawDelayLoopIsAbortedIfAttacked.Value ? "aborted if attacked" : "not aborted if attacked");
@@ -2574,7 +2562,7 @@ namespace PgJsonObjects
             AddInt(RawCombatRefreshBaseAmount, data, ref offset, BaseOffset, 16);
             AddEnum(CompatibleSkill, data, ref offset, BaseOffset, 20);
             AddEnum(DamageType, data, ref offset, BaseOffset, 22);
-            AddString(RawSpecialCasterRequirementsErrorMessage, data, ref offset, BaseOffset, 24, StoredStringtable);
+            AddString(SpecialCasterRequirementsErrorMessage, data, ref offset, BaseOffset, 24, StoredStringtable);
             AddDouble(RawConsumedItemChance, data, ref offset, BaseOffset, 28);
             AddDouble(RawConsumedItemChanceToStickInCorpse, data, ref offset, BaseOffset, 32);
             AddInt(RawConsumedItemCount , data, ref offset, BaseOffset, 36);

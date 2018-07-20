@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -24,6 +25,10 @@ namespace PgJsonObjects
 
         public override void Init()
         {
+            PgAbility.GetDigitStrippedName(InternalName, out string DigitStrippedName, out int LineIndex);
+            this.DigitStrippedName = DigitStrippedName;
+            this.LineIndex = LineIndex;
+
             CombinedRequirementList = new PgAbilityRequirementCollection();
 
             foreach (AbilityItemKeyword Keyword in ItemKeywordReqList)
@@ -32,7 +37,7 @@ namespace PgJsonObjects
             foreach (IPgAbilityRequirement Item in SpecialCasterRequirementList)
                 CombinedRequirementList.Add(Item);
 
-            ConsumedItem = Ability.CreateConsumedItem(null, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
+            ConsumedItem = Ability.CreateConsumedItem(ConsumedItemLink, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
 
             //AddLinkBackCollection(CostList);
             AddLinkBack(Prerequisite);
@@ -70,7 +75,7 @@ namespace PgJsonObjects
         public int? RawCombatRefreshBaseAmount { get { return GetInt(16); } }
         public PowerSkill CompatibleSkill { get { return GetEnum<PowerSkill>(20); } }
         public DamageType DamageType { get { return GetEnum<DamageType>(22); } }
-        public string RawSpecialCasterRequirementsErrorMessage { get { return GetString(24); } }
+        public string SpecialCasterRequirementsErrorMessage { get { return GetString(24); } }
         public double ConsumedItemChance { get { return RawConsumedItemChance.HasValue ? RawConsumedItemChance.Value : 0; } }
         public double? RawConsumedItemChance { get { return GetDouble(28); } }
         public double ConsumedItemChanceToStickInCorpse { get { return RawConsumedItemChanceToStickInCorpse.HasValue ? RawConsumedItemChanceToStickInCorpse.Value : 0; } }
@@ -284,7 +289,7 @@ namespace PgJsonObjects
                 SimplifyArray = true } },
             { "SpecialCasterRequirementsErrorMessage", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => RawSpecialCasterRequirementsErrorMessage } },
+                GetString = () => SpecialCasterRequirementsErrorMessage } },
             { "SpecialInfo", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => SpecialInfo } },
@@ -327,5 +332,22 @@ namespace PgJsonObjects
 
         public override string SortingName { get { return Name; } }
         public string SearchResultIconFileName { get { return RawIconId.HasValue && RawIconId.Value > 0 ? "icon_" + RawIconId.Value : null; } }
+        public string DigitStrippedName { get; private set; }
+        public int LineIndex { get; private set; }
+
+        public static void GetDigitStrippedName(string internalName, out string digitStrippedName, out int lineIndex)
+        {
+            digitStrippedName = internalName;
+            string LineIndexString = "";
+
+            while (digitStrippedName.Length > 0 && Char.IsDigit(digitStrippedName[digitStrippedName.Length - 1]))
+            {
+                LineIndexString = digitStrippedName.Substring(digitStrippedName.Length - 1) + LineIndexString;
+                digitStrippedName = digitStrippedName.Substring(0, digitStrippedName.Length - 1);
+            }
+
+            if (!int.TryParse(LineIndexString, out lineIndex))
+                lineIndex = -1;
+        }
     }
 }

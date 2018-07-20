@@ -11,5 +11,6 @@ namespace PgJsonObjects
         void SortLinkBack();
         string GetSearchResultContentTemplateName();
         string GetSearchResultTitleTemplateName();
+        string SearchResultIconFileName { get; }
     }
 }

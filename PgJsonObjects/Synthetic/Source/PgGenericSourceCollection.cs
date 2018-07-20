@@ -17,7 +17,6 @@ namespace PgJsonObjects
                 Result = new PgMiscSource(data, ref offset);
             else
             {
-                SourceTypes Type;
                 bool IsRecipeEffect;
 
                 if ((SourceTypeValue & RecipeEffectTag) != 0)
@@ -28,9 +27,7 @@ namespace PgJsonObjects
                 else
                     IsRecipeEffect = false;
 
-                Type = (SourceTypes)BitConverter.ToInt32(data, offset);
-
-                switch (Type)
+                switch ((SourceTypes)SourceTypeValue)
                 {
                     case SourceTypes.AutomaticFromSkill:
                         Result = new PgSkillupSource(data, ref offset);

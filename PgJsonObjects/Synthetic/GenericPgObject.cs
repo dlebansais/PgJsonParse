@@ -270,9 +270,13 @@ namespace PgJsonObjects
                     {
                         int TableOffset = StoredOffset;
                         Object = createNewObject(Data, ref StoredOffset);
-                        CreatedObjectTable.Add(TableOffset, Object);
-
-                        (Object as IGenericPgObject).Init();
+                        if (Object != null)
+                        {
+                            CreatedObjectTable.Add(TableOffset, Object);
+                            (Object as IGenericPgObject).Init();
+                        }
+                        else
+                            Object = default(T);
                     }
 
                     asList.Add(Object);

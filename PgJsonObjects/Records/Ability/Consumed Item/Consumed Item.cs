@@ -13,8 +13,8 @@
         public double? RawConsumedChance { get; private set; }
         public double? RawChanceToStickInCorpse { get; private set; }
         public int Count { get { return RawCount.HasValue ? RawCount.Value : 0; } }
-        public double ConsumedChance { get { return RawConsumedChance.HasValue ? RawConsumedChance.Value : 0; } }
-        public double ChanceToStickInCorpse { get { return RawChanceToStickInCorpse.HasValue ? RawChanceToStickInCorpse.Value : 0; } }
+        public float ConsumedChance { get { return RawConsumedChance.HasValue ? (float)(RawConsumedChance.Value * 100): 0; } }
+        public float ChanceToStickInCorpse { get { return RawChanceToStickInCorpse.HasValue ? (float)(RawChanceToStickInCorpse.Value * 100): 0; } }
 
         public abstract string Name { get; }
 
@@ -28,7 +28,7 @@
                     Result += ", Can Be Consumed";
 
                 if (RawConsumedChance.HasValue)
-                    Result += ", Can Stick Corpse";
+                    Result += ", Can Stick In Corpse";
 
                 return Result;
             }

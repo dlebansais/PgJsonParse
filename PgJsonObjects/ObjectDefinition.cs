@@ -46,6 +46,7 @@ namespace PgJsonObjects
         public PgObjectCreator CreateNewObject { get; private set; }
         public IParser FileParser { get; private set; } = new Parser<TJson, TI>();
         public IVerifyer FileVerifyer { get; private set; } = new Verifyer<TPg, TI>();
+        //public IVerifyer FileVerifyer { get; private set; } = new Verifyer<TJson, TI>();
         public Dictionary<string, IJsonKey> ObjectTable { get; private set; } = new Dictionary<string, IJsonKey>();
         public IMainJsonObjectCollection JsonObjectList { get; private set; } = new MainJsonObjectCollection<TJson, TPg, TI>();
         public IMainPgObjectCollection PgObjectList { get; private set; } = new MainPgObjectCollection<TPg, TI>();

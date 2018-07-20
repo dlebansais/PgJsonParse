@@ -901,6 +901,7 @@ namespace PgJsonParse
         public bool IncludePower { get; set; }
         public bool IncludePlayerTitle { get; set; }
         public bool IncludeLoreBook { get; set; }
+        public bool IncludeAdvancement { get; set; }
 
         public ObservableCollection<object> SearchResult { get; private set; }
 
@@ -986,6 +987,7 @@ namespace PgJsonParse
             IncludePower = true;
             IncludePlayerTitle = true;
             IncludeLoreBook = true;
+            IncludeAdvancement = true;
             SearchResult = new ObservableCollection<object>();
             SearchHistory = new List<object>();
             _CurrentSearchItem = null;
@@ -1063,6 +1065,7 @@ namespace PgJsonParse
                     (EntryType == typeof(Skill) && IncludeSkill) ||
                     (EntryType == typeof(Power) && IncludePower) ||
                     (EntryType == typeof(PlayerTitle) && IncludePlayerTitle) ||
+                    (EntryType == typeof(AdvancementTable) && IncludeAdvancement) ||
                     (EntryType == typeof(LoreBook) && IncludeLoreBook))
                     PerformSearch(termList, Entry.Value, searchMode);
             }

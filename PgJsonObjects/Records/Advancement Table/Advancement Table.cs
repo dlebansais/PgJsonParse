@@ -8,11 +8,15 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public Dictionary<int, Advancement> LevelTable { get; private set; }
-        public string InternalName { get; private set; }
         #endregion
 
         #region Indirect Properties
         public override string SortingName { get { return InternalName; } }
+        public const int SearchResultIconId = 2118;
+        public string SearchResultIconFileName { get { return "icon_" + AdvancementTable.SearchResultIconId; } }
+        public int Id { get { return PgAdvancementTable.KeyToId(Key); } }
+        public string InternalName { get { return PgAdvancementTable.KeyToInternalName(Key); } }
+        public string FriendlyName { get { return PgAdvancementTable.KeyToFriendlyName(Key); } }
         #endregion
 
         #region Parsing
@@ -66,17 +70,6 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("AdvancementTable: " + Key + ", " + LevelKey);
         }
 
-        protected override void InitializeKey(string key, int index, IJsonValue value, ParseErrorInfo ErrorInfo)
-        {
-            base.InitializeKey(key, index, value, ErrorInfo);
-
-            int Index = Key.LastIndexOf('_');
-            if (Index >= 0)
-                InternalName = Key.Substring(Index + 1);
-            else
-                InternalName = Key;
-        }
-
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
         #endregion
 
@@ -95,13 +88,26 @@ namespace PgJsonObjects
         #region Indexing
         public override string TextContent
         {
-            get { return ""; }
+            get
+            {
+                string Result = "";
+
+                AddWithFieldSeparator(ref Result, FriendlyName);
+
+                //foreach (KeyValuePair<int, Advancement> Entry in LevelTable)
+                //    AddWithFieldSeparator(ref Result, null);
+
+                return Result;
+            }
         }
         #endregion
 
         #region Connecting Objects
         protected override bool ConnectFields(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables)
         {
+            if (FriendlyName == null)
+                ErrorInfo.AddInvalidObjectFormat("Internal Name " + InternalName + " not recognized");
+
             return false;
         }
 
@@ -148,10 +154,9 @@ namespace PgJsonObjects
             FieldTableOrder.Clear();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddString(InternalName, data, ref offset, BaseOffset, 4, StoredStringtable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 8, StoredStringListTable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 4, StoredStringListTable);
 
-            int LevelOffset = 12;
+            int LevelOffset = 8;
             foreach (KeyValuePair<int, Advancement> Level in LevelTable)
             {
                 FieldTableOrder.Add("level_" + Level.Key);

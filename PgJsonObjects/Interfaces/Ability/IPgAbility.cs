@@ -27,7 +27,7 @@ namespace PgJsonObjects
         int? RawCombatRefreshBaseAmount { get; }
         PowerSkill CompatibleSkill { get; }
         DamageType DamageType { get; }
-        string RawSpecialCasterRequirementsErrorMessage { get; }
+        string SpecialCasterRequirementsErrorMessage { get; }
         double ConsumedItemChance { get; }
         double? RawConsumedItemChance { get; }
         double ConsumedItemChanceToStickInCorpse { get; }
@@ -58,12 +58,12 @@ namespace PgJsonObjects
         IPgAbilityPvX PvP { get; }
         double ResetTime { get; }
         double? RawResetTime { get; }
-        string SelfParticle { get; }
+        string SelfParticle { get; } //TODO: display it
         IPgAbility SharesResetTimerWith { get; }
         IPgSkill Skill { get; }
         IPgAbilityRequirementCollection CombinedRequirementList { get; }
         string SpecialInfo { get; }
-        int SpecialTargetingTypeReq { get; }
+        int SpecialTargetingTypeReq { get; } //TODO: display it
         int? RawSpecialTargetingTypeReq { get; }
         TargetEffectKeyword TargetEffectKeywordReq { get; }
         AbilityTargetParticle TargetParticle { get; }
@@ -91,5 +91,7 @@ namespace PgJsonObjects
         IPgGenericSourceCollection SourceList { get; }
 
         ConsumedItem ConsumedItem { get; }
+        string DigitStrippedName { get; }
+        int LineIndex { get; }
     }
 }
