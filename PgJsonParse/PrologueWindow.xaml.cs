@@ -958,7 +958,7 @@ namespace PgJsonParse
             if (success)
                 OnStart3(true, versionInfo, errorInfo, versionFolder, iconFolder);
 
-            else
+            else if (!ParseCancellation.IsCanceled)
             {
                 List<KeyValuePair<Type, IObjectDefinition>> EntryList = new List<KeyValuePair<Type, IObjectDefinition>>();
                 foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
@@ -968,8 +968,10 @@ namespace PgJsonParse
                 int ProgressIndex = 0;
 
                 StartTask(() => ExecuteParse0(versionInfo, errorInfo, versionFolder, EntryList, ProgressIndex),
-                          (bool Success) => ExecuteParse1(Success, versionInfo, errorInfo, versionFolder, iconFolder, EntryList, ProgressIndex));
+                          (bool nextStepSuccess) => ExecuteParse1(nextStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, EntryList, ProgressIndex));
             }
+            else
+                OnStart3(false, versionInfo, errorInfo, versionFolder, iconFolder);
         }
 
         public bool LoadCachedData(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
@@ -983,7 +985,7 @@ namespace PgJsonParse
                     if (Data.Length == PG_CACHE_SIZE)
                     {
                         DeserializeAll(versionInfo, errorInfo, versionFolder, iconFolder, Data, 
-                                       (byte[] data) => OnStart1(true, versionInfo, errorInfo, versionFolder, iconFolder));
+                                       (bool success, byte[] data) => OnStart1(success, versionInfo, errorInfo, versionFolder, iconFolder));
                         return true;
                     }
                 }
@@ -1052,7 +1054,7 @@ namespace PgJsonParse
                     SerializeAll(Data, ref offset);
 
                     DeserializeAll(versionInfo, errorInfo, versionFolder, iconFolder, Data,
-                                   (byte[] data) => CompleteDeserializeCommit(versionInfo, errorInfo, versionFolder, iconFolder, data));
+                                   (bool lastStepSuccess, byte[] data) => CompleteDeserializeCommit(lastStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, data));
                     return;
                 }
 
@@ -1214,7 +1216,7 @@ namespace PgJsonParse
             }
         }
 
-        private void DeserializeAll(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<byte[]> callback)
+        private void DeserializeAll(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<bool, byte[]> callback)
         {
             SerializableJsonObject.ResetSerializedObjectTable();
             GenericPgObject.ResetCreatedObjectTable();
@@ -1231,6 +1233,9 @@ namespace PgJsonParse
 
         private bool DeserializeAll0(byte[] data, byte[] currentOffset, List<IObjectDefinition> definitionList, int progressIndex)
         {
+            if (ParseCancellation.IsCanceled)
+                return false;
+
             try
             {
                 IObjectDefinition definition = definitionList[progressIndex];
@@ -1239,6 +1244,7 @@ namespace PgJsonParse
                 definition.JsonObjectList.Clear();
 
                 IMainPgObjectCollection PgObjectList = definition.PgObjectList;
+                PgObjectList.Clear();
 
                 int Count = BitConverter.ToInt32(data, Offset);
                 Offset += 4;
@@ -1270,19 +1276,21 @@ namespace PgJsonParse
             }
         }
 
-        private void DeserializeAll1(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<byte[]> callback, byte[] currentOffset, List<IObjectDefinition> definitionList, int progressIndex)
+        private void DeserializeAll1(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<bool, byte[]> callback, byte[] currentOffset, List<IObjectDefinition> definitionList, int progressIndex)
         {
-            if (!success)
-                return;
-
-            if (++progressIndex < definitionList.Count)
-                StartTask(() => DeserializeAll0(data, currentOffset, definitionList, progressIndex),
-                            (bool nextStepSuccess) => DeserializeAll1(nextStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, data, callback, currentOffset, definitionList, progressIndex));
+            if (success)
+            {
+                if (++progressIndex < definitionList.Count)
+                    StartTask(() => DeserializeAll0(data, currentOffset, definitionList, progressIndex),
+                                (bool nextStepSuccess) => DeserializeAll1(nextStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, data, callback, currentOffset, definitionList, progressIndex));
+                else
+                    DeserializeAll2(versionInfo, errorInfo, versionFolder, iconFolder, data, callback);
+            }
             else
-                DeserializeAll2(versionInfo, errorInfo, versionFolder, iconFolder, data, callback);
+                callback(false, data);
         }
 
-        private void DeserializeAll2(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<byte[]> callback)
+        private void DeserializeAll2(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<bool, byte[]> callback)
         {
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
@@ -1315,18 +1323,19 @@ namespace PgJsonParse
                     NpcPreference.InitFavorList(ItemTable);
             }
 
-            callback(data);
+            callback(true, data);
         }
 
-        private void CompleteDeserializeCommit(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data)
+        private void CompleteDeserializeCommit(bool succcess, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data)
         {
-            if (OptimizeLoad)
-            {
-                string CacheFileName = Path.Combine(versionFolder, "cache.pg");
-                FileTools.CommitBinaryFile(CacheFileName, data);
-            }
+            if (succcess)
+                if (OptimizeLoad)
+                {
+                    string CacheFileName = Path.Combine(versionFolder, "cache.pg");
+                    FileTools.CommitBinaryFile(CacheFileName, data);
+                }
 
-            OnStart3(true, versionInfo, errorInfo, versionFolder, iconFolder);
+            OnStart3(succcess, versionInfo, errorInfo, versionFolder, iconFolder);
         }
 
         private bool LoadNextFile(IObjectDefinition definition, string versionFolder, ParseErrorInfo errorInfo)
