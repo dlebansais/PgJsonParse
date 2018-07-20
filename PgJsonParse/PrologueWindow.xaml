@@ -495,7 +495,6 @@
                             <CheckBox IsChecked="{Binding CheckLastVersionOnStartup, Mode=TwoWay}" Margin="0,0,0,10">Check Lastest Version</CheckBox>
                             <CheckBox IsChecked="{Binding DownloadNewVersionsAutomatically, Mode=TwoWay}" Margin="0,0,0,10">Download latest version</CheckBox>
                             <CheckBox IsChecked="{Binding StartAutomatically, Mode=TwoWay}" Margin="0,0,0,10">Start when ready</CheckBox>
-                            <CheckBox IsChecked="{Binding CheckNewParserOnStartup, Mode=TwoWay}" Margin="0,0,0,10">Check for the latest parser</CheckBox>
                             <CheckBox IsChecked="{Binding OptimizeLoad, Mode=TwoWay}" Margin="0,0,0,10">
                                 <CheckBox.Content>
                                     <StackPanel Orientation="Horizontal">
@@ -505,6 +504,7 @@
                                     </StackPanel>
                                 </CheckBox.Content>
                             </CheckBox>
+                            <CheckBox IsChecked="{Binding CheckNewParserOnStartup, Mode=TwoWay}" Margin="0,0,0,10">Check for the latest parser</CheckBox>
                         </StackPanel>
                     </TabItem>
                     <TabItem Style="{StaticResource TabItemStyle}">
@@ -612,16 +612,18 @@
                                     </Button.Template>
                                 </Button>
                             </StackPanel>
-                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">Checking the box below will make parsing faster (except the first time).</TextBlock>
-                            <CheckBox IsChecked="{Binding OptimizeLoad, Mode=TwoWay}" Margin="0,10,0,0">
-                                <CheckBox.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock>Load version</TextBlock>
-                                        <TextBlock Text="{Binding OptimizedVersion}" Margin="5,0,5,0"/>
-                                        <TextBlock>fast</TextBlock>
-                                    </StackPanel>
-                                </CheckBox.Content>
-                            </CheckBox>
+                            <StackPanel Visibility="{Binding SelectedVersionIsOptimized, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}">
+                                <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">Checking the box below will make parsing faster (except the first time).</TextBlock>
+                                <CheckBox IsChecked="{Binding OptimizeLoad, Mode=TwoWay}" Margin="0,10,0,0">
+                                    <CheckBox.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock>Load version</TextBlock>
+                                            <TextBlock Text="{Binding OptimizedVersion}" Margin="5,0,5,0"/>
+                                            <TextBlock>fast</TextBlock>
+                                        </StackPanel>
+                                    </CheckBox.Content>
+                                </CheckBox>
+                            </StackPanel>
                         </StackPanel>
                     </p:SelectorItem>
                 </p:SelectorControl>

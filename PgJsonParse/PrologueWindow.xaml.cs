@@ -710,8 +710,13 @@ namespace PgJsonParse
                     NotifyThisPropertyChanged();
                     NotifyPropertyChanged(nameof(SelectedVersion));
                     NotifyPropertyChanged(nameof(IsLatestVersionSelectable));
+                    NotifyPropertyChanged(nameof(SelectedVersionIsOptimized));
                 }
             }
+        }
+        public bool SelectedVersionIsOptimized
+        {
+            get { return SelectedVersion != null && SelectedVersion.Version == PG_CACHE_VERSION; }
         }
         private int _CachedVersionIndex;
 
@@ -869,6 +874,7 @@ namespace PgJsonParse
                     NotifyThisPropertyChanged();
                     NotifyPropertyChanged(nameof(SelectedVersion));
                     NotifyPropertyChanged(nameof(IsLatestVersionSelectable));
+                    NotifyPropertyChanged(nameof(SelectedVersionIsOptimized));
                 }
             }
         }
@@ -885,6 +891,7 @@ namespace PgJsonParse
                     NotifyThisPropertyChanged();
                     NotifyPropertyChanged(nameof(SelectedVersion));
                     NotifyPropertyChanged(nameof(IsLatestVersionSelectable));
+                    NotifyPropertyChanged(nameof(SelectedVersionIsOptimized));
                 }
             }
         }
@@ -940,38 +947,53 @@ namespace PgJsonParse
             string IconFolder = ShareIconFiles ? IconCacheFolder : VersionFolder;
 
             if (!ObjectDefinition.UseJson && versionInfo.Version == PG_CACHE_VERSION && OptimizeLoad)
-            {
-                try
-                {
-                    string CacheFileName = Path.Combine(VersionFolder, "cache.pg");
-                    if (FileTools.FileExists(CacheFileName))
-                    {
-                        byte[] Data = FileTools.LoadBinaryFile(CacheFileName);
-                        if (Data.Length == PG_CACHE_SIZE)
-                        {
-                            int offset = 0;
-                            DeserializeAll(Data, ref offset);
+                if (LoadCachedData(versionInfo, ErrorInfo, VersionFolder, IconFolder))
+                    return;
 
-                            OnStart2(true, versionInfo, ErrorInfo, VersionFolder, IconFolder);
-                            return;
-                        }
+            OnStart1(false, versionInfo, ErrorInfo, VersionFolder, IconFolder);
+        }
+
+        private void OnStart1(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
+        {
+            if (success)
+                OnStart3(true, versionInfo, errorInfo, versionFolder, iconFolder);
+
+            else
+            {
+                List<KeyValuePair<Type, IObjectDefinition>> EntryList = new List<KeyValuePair<Type, IObjectDefinition>>();
+                foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+                    EntryList.Add(Entry);
+
+                IconTable.Clear();
+                int ProgressIndex = 0;
+
+                StartTask(() => ExecuteParse0(versionInfo, errorInfo, versionFolder, EntryList, ProgressIndex),
+                          (bool Success) => ExecuteParse1(Success, versionInfo, errorInfo, versionFolder, iconFolder, EntryList, ProgressIndex));
+            }
+        }
+
+        public bool LoadCachedData(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
+        {
+            try
+            {
+                string CacheFileName = Path.Combine(versionFolder, "cache.pg");
+                if (FileTools.FileExists(CacheFileName))
+                {
+                    byte[] Data = FileTools.LoadBinaryFile(CacheFileName);
+                    if (Data.Length == PG_CACHE_SIZE)
+                    {
+                        DeserializeAll(versionInfo, errorInfo, versionFolder, iconFolder, Data, 
+                                       (byte[] data) => OnStart1(true, versionInfo, errorInfo, versionFolder, iconFolder));
+                        return true;
                     }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
 
-            List<KeyValuePair<Type, IObjectDefinition>> EntryList = new List<KeyValuePair<Type, IObjectDefinition>>();
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-                EntryList.Add(Entry);
-
-            IconTable.Clear();
-            int ProgressIndex = 0;
-
-            StartTask(() => { return ExecuteParse0(versionInfo, ErrorInfo, VersionFolder, EntryList, ProgressIndex); },
-                      (bool Success) => { ExecuteParse1(Success, versionInfo, ErrorInfo, VersionFolder, IconFolder, EntryList, ProgressIndex); });
+            return false;
         }
 
         public bool ExecuteParse0(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, List<KeyValuePair<Type, IObjectDefinition>> entryList, int progressIndex)
@@ -1001,16 +1023,16 @@ namespace PgJsonParse
 
                 if (progressIndex < entryList.Count)
                 {
-                    StartTask(() => { return ExecuteParse0(versionInfo, errorInfo, versionFolder, entryList, progressIndex); },
-                                (bool nextStepSuccess) => { ExecuteParse1(nextStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, entryList, progressIndex); });
+                    StartTask(() => ExecuteParse0(versionInfo, errorInfo, versionFolder, entryList, progressIndex),
+                                (bool nextStepSuccess) => ExecuteParse1(nextStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, entryList, progressIndex));
                     return;
                 }
             }
 
-            OnStart1(success, versionInfo, errorInfo, versionFolder, iconFolder);
+            OnStart2(success, versionInfo, errorInfo, versionFolder, iconFolder);
         }
 
-        private void OnStart1(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
+        private void OnStart2(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
         {
             if (success)
                 success = ConnectTables(versionFolder, iconFolder, errorInfo);
@@ -1029,21 +1051,15 @@ namespace PgJsonParse
                     offset = 0;
                     SerializeAll(Data, ref offset);
 
-                    offset = 0;
-                    DeserializeAll(Data, ref offset);
-
-                    if (OptimizeLoad)
-                    {
-                        string CacheFileName = Path.Combine(versionFolder, "cache.pg");
-                        FileTools.CommitBinaryFile(CacheFileName, Data);
-                    }
-
+                    DeserializeAll(versionInfo, errorInfo, versionFolder, iconFolder, Data,
+                                   (byte[] data) => CompleteDeserializeCommit(versionInfo, errorInfo, versionFolder, iconFolder, data));
+                    return;
                 }
 
-            OnStart2(success, versionInfo, errorInfo, versionFolder, iconFolder);
+            OnStart3(success, versionInfo, errorInfo, versionFolder, iconFolder);
         }
 
-        private void OnStart2(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
+        private void OnStart3(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
         {
             SetTaskbarState(TaskbarStates.NoProgress);
 
@@ -1198,38 +1214,76 @@ namespace PgJsonParse
             }
         }
 
-        private void DeserializeAll(byte[] data, ref int offset)
+        private void DeserializeAll(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<byte[]> callback)
         {
             SerializableJsonObject.ResetSerializedObjectTable();
             GenericPgObject.ResetCreatedObjectTable();
+            byte[] CurrentOffset = new byte[4];
+            int progressIndex = 0;
 
+            List<IObjectDefinition> DefinitionList = new List<IObjectDefinition>();
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
+                DefinitionList.Add(Entry.Value);
+
+            StartTask(() => DeserializeAll0(data, CurrentOffset, DefinitionList, progressIndex),
+                      (bool nextStepSuccess) => DeserializeAll1(nextStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, data, callback, CurrentOffset, DefinitionList, progressIndex));
+        }
+
+        private bool DeserializeAll0(byte[] data, byte[] currentOffset, List<IObjectDefinition> definitionList, int progressIndex)
+        {
+            try
             {
-                IObjectDefinition definition = Entry.Value;
+                IObjectDefinition definition = definitionList[progressIndex];
+                int Offset = BitConverter.ToInt32(currentOffset, 0);
 
                 definition.JsonObjectList.Clear();
 
                 IMainPgObjectCollection PgObjectList = definition.PgObjectList;
 
-                int Count = BitConverter.ToInt32(data, offset);
-                offset += 4;
+                int Count = BitConverter.ToInt32(data, Offset);
+                Offset += 4;
 
-                //Debug.WriteLine(Count.ToString());
-
-                int ObjectOffset = offset;
+                int ObjectOffset = Offset;
                 IMainPgObject Item;
 
                 for (int i = 0; i < Count; i++)
                 {
-                    offset = BitConverter.ToInt32(data, ObjectOffset + i * 4);
+                    Offset = BitConverter.ToInt32(data, ObjectOffset + i * 4);
 
-                    Item = GenericPgObject.CreateMainObject(definition.CreateNewObject, data, ref offset);
+                    Item = GenericPgObject.CreateMainObject(definition.CreateNewObject, data, ref Offset);
                     PgObjectList.Add(Item);
                 }
 
-                offset = BitConverter.ToInt32(data, ObjectOffset + Count * 4);
-            }
+                Offset = BitConverter.ToInt32(data, ObjectOffset + Count * 4);
+                Array.Copy(BitConverter.GetBytes(Offset), 0, currentOffset, 0, 4);
 
+                ParseProgress = (progressIndex * 100.0) / ObjectList.Definitions.Count;
+                SetTaskbarProgressValue(ParseProgress, 100.0);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                StatusMessage = "Fast load error.";
+                LastExceptionMessage = e.Message;
+                return false;
+            }
+        }
+
+        private void DeserializeAll1(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<byte[]> callback, byte[] currentOffset, List<IObjectDefinition> definitionList, int progressIndex)
+        {
+            if (!success)
+                return;
+
+            if (++progressIndex < definitionList.Count)
+                StartTask(() => DeserializeAll0(data, currentOffset, definitionList, progressIndex),
+                            (bool nextStepSuccess) => DeserializeAll1(nextStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, data, callback, currentOffset, definitionList, progressIndex));
+            else
+                DeserializeAll2(versionInfo, errorInfo, versionFolder, iconFolder, data, callback);
+        }
+
+        private void DeserializeAll2(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<byte[]> callback)
+        {
             foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
             {
                 IObjectDefinition definition = Entry.Value;
@@ -1260,6 +1314,19 @@ namespace PgJsonParse
                 foreach (IPgNpcPreference NpcPreference in Npc.PreferenceList)
                     NpcPreference.InitFavorList(ItemTable);
             }
+
+            callback(data);
+        }
+
+        private void CompleteDeserializeCommit(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data)
+        {
+            if (OptimizeLoad)
+            {
+                string CacheFileName = Path.Combine(versionFolder, "cache.pg");
+                FileTools.CommitBinaryFile(CacheFileName, data);
+            }
+
+            OnStart3(true, versionInfo, errorInfo, versionFolder, iconFolder);
         }
 
         private bool LoadNextFile(IObjectDefinition definition, string versionFolder, ParseErrorInfo errorInfo)
