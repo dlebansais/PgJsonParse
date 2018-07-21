@@ -79,6 +79,7 @@
     <Compile Include="Converters\NullToObjectConverter.cs" />
     <Compile Include="Converters\NullableIntConverter.cs" />
     <Compile Include="Converters\NullableBooleanToObjectConverter.cs" />
+    <Compile Include="Converters\PercentConverter.cs" />
     <Compile Include="Converters\ReplaceMacroConverter.cs" />
     <Compile Include="Converters\RgbColorToBrushConverter.cs" />
     <Compile Include="Crunch\CrunchSelection.cs" />

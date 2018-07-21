@@ -1,130 +1,138 @@
-﻿namespace PgJsonObjects
+﻿using System.Collections.Generic;
+
+namespace PgJsonObjects
 {
-    interface IPgAdvancement
+    public interface IPgAdvancement
     {
-        double NonCombatRegenHealthMod { get; }
+        int Id { get; }
+        float NonCombatRegenHealthMod { get; }
         double? RawNonCombatRegenHealthMod { get; }
-        double CombatRegenHealthMod { get; }
+        float CombatRegenHealthMod { get; }
         double? RawCombatRegenHealthMod { get; }
-        double CombatRegenHealthDelta { get; }
+        float CombatRegenHealthDelta { get; }
         double? RawCombatRegenHealthDelta { get; }
-        double NonCombatRegenArmorMod { get; }
+        float NonCombatRegenArmorMod { get; }
         double? RawNonCombatRegenArmorMod { get; }
-        double NonCombatRegenArmordelta { get; }
+        float NonCombatRegenArmordelta { get; }
         double? RawNonCombatRegenArmordelta { get; }
-        double CombatRegenArmorMod { get; }
+        float CombatRegenArmorMod { get; }
         double? RawCombatRegenArmorMod { get; }
-        double NonCombatRegenPowerMod { get; }
+        float NonCombatRegenPowerMod { get; }
         double? RawNonCombatRegenPowerMod { get; }
-        double CombatRegenPowerMod { get; }
+        float CombatRegenPowerMod { get; }
         double? RawCombatRegenPowerMod { get; }
-        double NonCombatRegenRageMod { get; }
+        float NonCombatRegenRageMod { get; }
         double? RawNonCombatRegenRageMod { get; }
-        double CombatRegenRageMod { get; }
+        float CombatRegenRageMod { get; }
         double? RawCombatRegenRageMod { get; }
-        double MentalDefenseRating { get; }
+        float MentalDefenseRating { get; }
         double? RawMentalDefenseRating { get; }
-        double SprintBoost { get; }
+        float SprintBoost { get; }
         double? RawSprintBoost { get; }
-        double TauntMod { get; }
+        float TauntMod { get; }
         double? RawTauntMod { get; }
-        double IgnoreChanceFear { get; }
+        float IgnoreChanceFear { get; }
         double? RawIgnoreChanceFear { get; }
-        double IgnoreChanceMezz { get; }
+        float IgnoreChanceMezz { get; }
         double? RawIgnoreChanceMezz { get; }
-        double IgnoreChanceKnockback { get; }
+        float IgnoreChanceKnockback { get; }
         double? RawIgnoreChanceKnockback { get; }
-        double EvasionChance { get; }
+        float EvasionChance { get; }
         double? RawEvasionChance { get; }
-        double LootBoostChanceUncommon { get; }
+        float LootBoostChanceUncommon { get; }
         double? RawLootBoostChanceUncommon { get; }
-        double LootBoostChanceRare { get; }
+        float LootBoostChanceRare { get; }
         double? RawLootBoostChanceRare { get; }
-        double LootBoostChanceExceptional { get; }
+        float LootBoostChanceExceptional { get; }
         double? RawLootBoostChanceExceptional { get; }
-        double LootBoostChanceEpic { get; }
+        float LootBoostChanceEpic { get; }
         double? RawLootBoostChanceEpic { get; }
-        double LootBoostChanceLegendary { get; }
+        float LootBoostChanceLegendary { get; }
         double? RawLootBoostChanceLegendary { get; }
-        double MaxHealth { get; }
+        float MaxHealth { get; }
         double? RawMaxHealth { get; }
-        double MaxArmor { get; }
+        float MaxArmor { get; }
         double? RawMaxArmor { get; }
-        double MaxRage { get; }
+        float MaxRage { get; }
         double? RawMaxRage { get; }
-        double MaxPower { get; }
+        float MaxPower { get; }
         double? RawMaxPower { get; }
-        double MaxBreath { get; }
+        float MaxBreath { get; }
         double? RawMaxBreath { get; }
-        double BoostUniversalDirect { get; }
+        float BoostUniversalDirect { get; }
         double? RawBoostUniversalDirect { get; }
-        double BoostAbilityRageAttack { get; }
+        float BoostAbilityRageAttack { get; }
         double? RawBoostAbilityRageAttack { get; }
-        double ModAbilityRageAttack { get; }
+        float ModAbilityRageAttack { get; }
         double? RawModAbilityRageAttack { get; }
-        double MonsterCombatXpValue { get; }
+        float MonsterCombatXpValue { get; }
         double? RawMonsterCombatXpValue { get; }
-        double CombatRegenArmorDelta { get; }
+        float CombatRegenArmorDelta { get; }
         double? RawCombatRegenArmorDelta { get; }
-        double CombatRegenDelta { get; }
+        float CombatRegenDelta { get; }
         double? RawCombatRegenDelta { get; }
-        double MaxInventorySize { get; }
+        float MaxInventorySize { get; }
         double? RawMaxInventorySize { get; }
-        double MaxMetabolism { get; }
+        float MaxMetabolism { get; }
         double? RawMaxMetabolism { get; }
-        double NpcModFavorFromGifts { get; }
+        float NpcModFavorFromGifts { get; }
         double? RawNpcModFavorFromGifts { get; }
-        double NpcModFavorFromHangouts { get; }
+        float NpcModFavorFromHangouts { get; }
         double? RawNpcModFavorFromHangouts { get; }
-        double NpcModMaxSalesValue { get; }
+        float NpcModMaxSalesValue { get; }
         double? RawNpcModMaxSalesValue { get; }
-        double NpcModTrainingCost { get; }
+        float NpcModTrainingCost { get; }
         double? RawNpcModTrainingCost { get; }
         int NumInventoryFolders { get; }
         int? RawNumInventoryFolders { get; }
-        double HighCleanlinessXpEarnedMod { get; }
+        float HighCleanlinessXpEarnedMod { get; }
         double? RawHighCleanlinessXpEarnedMod { get; }
-        double LowCleanlinessXpEarnedMod { get; }
+        float LowCleanlinessXpEarnedMod { get; }
         double? RawLowCleanlinessXpEarnedMod { get; }
-        double MaxArmorMitigationRatio { get; }
+        float MaxArmorMitigationRatio { get; }
         double? RawMaxArmorMitigationRatio { get; }
-        double ShowCleanlinessIndicators { get; }
+        float ShowCleanlinessIndicators { get; }
         double? RawShowCleanlinessIndicators { get; }
-        double HighCommunityXpEarnedMod { get; }
+        float HighCommunityXpEarnedMod { get; }
         double? RawHighCommunityXpEarnedMod { get; }
-        double LowCommunityXpEarnedMod { get; }
+        float LowCommunityXpEarnedMod { get; }
         double? RawLowCommunityXpEarnedMod { get; }
-        double ShowCommunityIndicators { get; }
+        float ShowCommunityIndicators { get; }
         double? RawShowCommunityIndicators { get; }
-        double HighPeaceblenessXpEarnedMod { get; }
+        float HighPeaceblenessXpEarnedMod { get; }
         double? RawHighPeaceblenessXpEarnedMod { get; }
-        double LowPeaceblenessXpEarnedMod { get; }
+        float LowPeaceblenessXpEarnedMod { get; }
         double? RawLowPeaceblenessXpEarnedMod { get; }
-        double ShowPeaceblenessIndicators { get; }
+        float ShowPeaceblenessIndicators { get; }
         double? RawShowPeaceblenessIndicators { get; }
-        double StaffArmorAutoHeal { get; }
+        float StaffArmorAutoHeal { get; }
         double? RawStaffArmorAutoHeal { get; }
-        double MaxMapPinsPerArea { get; }
+        float MaxMapPinsPerArea { get; }
         double? RawMaxMapPinsPerArea { get; }
-        double MaxMapPinIcons { get; }
+        float MaxMapPinIcons { get; }
         double? RawMaxMapPinIcons { get; }
-        double WorkOrderCoinRewardMod { get; }
+        float WorkOrderCoinRewardMod { get; }
         double? RawWorkOrderCoinRewardMod { get; }
-        double MaxActiveWorkOrders { get; }
+        float MaxActiveWorkOrders { get; }
         double? RawMaxActiveWorkOrders { get; }
-        double PlayerOrdersMaxActive { get; }
+        float PlayerOrdersMaxActive { get; }
         double? RawPlayerOrdersMaxActive { get; }
-        double ShopInventorySizeDelta { get; }
+        float ShopInventorySizeDelta { get; }
         double? RawShopInventorySizeDelta { get; }
-        double MailShopNumFree { get; }
+        float MailShopNumFree { get; }
         double? RawMailShopNumFree { get; }
-        double ShopHiringMaxPrepDays { get; }
+        float ShopHiringMaxPrepDays { get; }
         double? RawShopHiringMaxPrepDays { get; }
-        double ShopLogDaysKept { get; }
+        float ShopLogDaysKept { get; }
         double? RawShopLogDaysKept { get; }
-        double ShopHiringNumFree { get; }
+        float ShopHiringNumFree { get; }
         double? RawShopHiringNumFree { get; }
-        double CriticalHitDamage { get; }
+        float CriticalHitDamage { get; }
         double? RawCriticalHitDamage { get; }
+
+        List<string> VulnerabilityList { get; }
+        List<string> MitigationList { get; }
+        List<string> DirectModList { get; }
+        List<string> IndirectModList { get; }
     }
 }

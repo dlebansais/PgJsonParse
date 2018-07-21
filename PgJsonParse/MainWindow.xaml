@@ -21,6 +21,7 @@
         <conv:RgbColorToBrushConverter x:Key="convRgbColorToBrush"/>
         <conv:ReplaceMacroConverter x:Key="convReplaceMacro"/>
         <conv:NullableTimeSpanToDurationConverter x:Key="convNullableTimeSpanToDuration"/>
+        <conv:PercentConverter x:Key="convPercent"/>
         <p:ValueConverterGroup x:Key="convchainIsEnumInSetVisibility">
             <conv:IsEnumInSetConverter/>
             <conv:BooleanToVisibilityConverter/>
@@ -49,6 +50,8 @@
         <p:ApplicationCommand x:Key="BackwardCommand"/>
         <p:ApplicationCommand x:Key="ForwardCommand"/>
         <p:ApplicationCommand x:Key="GoToCommand"/>
+        <p:ApplicationCommand x:Key="LevelUpCommand"/>
+        <p:ApplicationCommand x:Key="LevelDownCommand"/>
         <app:CustomCompositeCollection x:Key="VisibleCollapsed">
             <Visibility>Visible</Visibility>
             <Visibility>Collapsed</Visibility>
@@ -4274,7 +4277,13 @@
                             </p:Popup>
                         </Grid>
                         <TextBlock Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="0,10,0,0">Advancement Table:</TextBlock>
-                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding AdvancementTable.InternalName}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                        <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="5,10,0,0">
+                            <Hyperlink x:Name="hyperlink_Skill_AdvancementTable" Click="OnRequestNavigate" NavigateUri="unused">
+                                <Run>
+                                    <Binding Path="AdvancementTable.FriendlyName" Mode="OneWay"/>
+                                </Run>
+                            </Hyperlink>
+                        </TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">Combat:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Margin="5,10,0,0">
                             <TextBlock.Text>
@@ -4304,7 +4313,7 @@
                         </TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Parent Skill:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="7" TextWrapping="Wrap" Margin="5,10,0,0">
-                            <Hyperlink x:Name="hyperlink_Recipe_ParentSkill" Click="OnRequestNavigate" NavigateUri="unused">
+                            <Hyperlink x:Name="hyperlink_Skill_ParentSkill" Click="OnRequestNavigate" NavigateUri="unused">
                                 <Run>
                                     <Binding Path="ParentSkill.Name" Mode="OneWay"/>
                                 </Run>
@@ -4610,6 +4619,208 @@
                 </Grid>
             </DockPanel>
         </DataTemplate>
+        <DataTemplate x:Key="AdvancementContentTemplate">
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding VulnerabilityList}"/>
+                <ItemsControl ItemsSource="{Binding MitigationList}"/>
+                <ItemsControl ItemsSource="{Binding DirectModList}"/>
+                <ItemsControl ItemsSource="{Binding IndirectModList}"/>
+                <Grid HorizontalAlignment="Left" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Non Combat Regen Health Modifier:" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding NonCombatRegenHealthMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Combat Regen Health Modifier:" Visibility="{Binding RawCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding CombatRegenHealthMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Combat Regen Health Delta:" Visibility="{Binding RawCombatRegenHealthDelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding CombatRegenHealthDelta}" Visibility="{Binding RawCombatRegenHealthDelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Non Combat Regen Armor Modifier:" Visibility="{Binding RawNonCombatRegenArmorMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding NonCombatRegenArmorMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawNonCombatRegenArmorMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Non Combat Regen Armor Delta:" Visibility="{Binding RawNonCombatRegenArmordelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding NonCombatRegenArmordelta}" Visibility="{Binding RawNonCombatRegenArmordelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Combat Regen Armor Modifier:" Visibility="{Binding RawCombatRegenArmorMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding CombatRegenArmorMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawCombatRegenArmorMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="6" Text="Non Combat Regen Power Modifier:" Visibility="{Binding RawNonCombatRegenPowerMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding NonCombatRegenPowerMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawNonCombatRegenPowerMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="7" Text="Combat Regen Power Modifier:" Visibility="{Binding RawCombatRegenPowerMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding CombatRegenPowerMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawCombatRegenPowerMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="8" Text="Non Combat Regen Rage Modifier:" Visibility="{Binding RawNonCombatRegenRageMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding NonCombatRegenRageMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawNonCombatRegenRageMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="9" Text="Combat Regen Rage Modifier:" Visibility="{Binding RawCombatRegenRageMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="9" Text="{Binding CombatRegenRageMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawCombatRegenRageMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="10" Text="Mental Defense Rating:" Visibility="{Binding RawMentalDefenseRating, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="10" Text="{Binding MentalDefenseRating}" Visibility="{Binding RawMentalDefenseRating, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="11" Text="Sprint Boost:" Visibility="{Binding RawSprintBoost, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="11" Text="{Binding SprintBoost}" Visibility="{Binding RawSprintBoost, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="12" Text="Taunt Modifier:" Visibility="{Binding RawTauntMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="12" Text="{Binding TauntMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawTauntMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="13" Text="Chance to Ignore Fear:" Visibility="{Binding RawIgnoreChanceFear, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="13" Text="{Binding IgnoreChanceFear, Converter={StaticResource convPercent}}" Visibility="{Binding RawIgnoreChanceFear, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="14" Text="Chance to Ignore Mezz:" Visibility="{Binding RawIgnoreChanceMezz, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="14" Text="{Binding IgnoreChanceMezz, Converter={StaticResource convPercent}}" Visibility="{Binding RawIgnoreChanceMezz, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="15" Text="Chance to Ignore Knockback:" Visibility="{Binding RawIgnoreChanceKnockback, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="15" Text="{Binding IgnoreChanceKnockback, Converter={StaticResource convPercent}}" Visibility="{Binding RawIgnoreChanceKnockback, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="16" Text="Evasion Chance:" Visibility="{Binding RawEvasionChance, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="16" Text="{Binding EvasionChance, Converter={StaticResource convPercent}}" Visibility="{Binding RawEvasionChance, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="17" Text="Uncommon Loot Chance Boost:" Visibility="{Binding RawLootBoostChanceUncommon, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="17" Text="{Binding LootBoostChanceUncommon, Converter={StaticResource convPercent}}" Visibility="{Binding RawLootBoostChanceUncommon, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="18" Text="Rare Loot Chance Boost:" Visibility="{Binding RawLootBoostChanceRare, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="18" Text="{Binding LootBoostChanceRare, Converter={StaticResource convPercent}}" Visibility="{Binding RawLootBoostChanceRare, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="19" Text="Exceptional Loot Chance Boost:" Visibility="{Binding RawLootBoostChanceExceptional, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="19" Text="{Binding LootBoostChanceExceptional, Converter={StaticResource convPercent}}" Visibility="{Binding RawLootBoostChanceExceptional, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="20" Text="Epic Loot Chance Boost:" Visibility="{Binding RawLootBoostChanceEpic, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="20" Text="{Binding LootBoostChanceEpic, Converter={StaticResource convPercent}}" Visibility="{Binding RawLootBoostChanceEpic, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="21" Text="Legendary Loot Chance Boost:" Visibility="{Binding RawLootBoostChanceLegendary, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="21" Text="{Binding LootBoostChanceLegendary, Converter={StaticResource convPercent}}" Visibility="{Binding RawLootBoostChanceLegendary, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="22" Text="Max Health:" Visibility="{Binding RawMaxHealth, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="22" Text="{Binding MaxHealth}" Visibility="{Binding RawMaxHealth, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="23" Text="Max Armor:" Visibility="{Binding RawMaxArmor, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="23" Text="{Binding MaxArmor}" Visibility="{Binding RawMaxArmor, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="24" Text="Max Rage:" Visibility="{Binding RawMaxRage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="24" Text="{Binding MaxRage}" Visibility="{Binding RawMaxRage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="25" Text="Max Power:" Visibility="{Binding RawMaxPower, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="25" Text="{Binding MaxPower}" Visibility="{Binding RawMaxPower, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="26" Text="Max Breath:" Visibility="{Binding RawMaxBreath, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="26" Text="{Binding MaxBreath}" Visibility="{Binding RawMaxBreath, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="27" Text="Universal Direct Damage Boost:" Visibility="{Binding RawBoostUniversalDirect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="27" Text="{Binding BoostUniversalDirect}" Visibility="{Binding RawBoostUniversalDirect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="28" Text="Rage Attack Ability Boost:" Visibility="{Binding RawBoostAbilityRageAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="28" Text="{Binding BoostAbilityRageAttack}" Visibility="{Binding RawBoostAbilityRageAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="29" Text="Rage Attack Ability Modifier:" Visibility="{Binding RawModAbilityRageAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="29" Text="{Binding ModAbilityRageAttack, Converter={StaticResource convPercent}}" Visibility="{Binding RawModAbilityRageAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="30" Text="Monster Xp Value:" Visibility="{Binding RawMonsterCombatXpValue, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="30" Text="{Binding MonsterCombatXpValue}" Visibility="{Binding RawMonsterCombatXpValue, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="31" Text="Combat Armor Regen Delta:" Visibility="{Binding RawCombatRegenArmorDelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="31" Text="{Binding CombatRegenArmorDelta}" Visibility="{Binding RawCombatRegenArmorDelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="32" Text="Combat Regen Delta:" Visibility="{Binding RawCombatRegenDelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="32" Text="{Binding CombatRegenDelta}" Visibility="{Binding RawCombatRegenDelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="33" Text="Max Inventory Size:" Visibility="{Binding RawMaxInventorySize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="33" Text="{Binding MaxInventorySize}" Visibility="{Binding RawMaxInventorySize, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="34" Text="Max Metabolism:" Visibility="{Binding RawMaxMetabolism, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="34" Text="{Binding MaxMetabolism}" Visibility="{Binding RawMaxMetabolism, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="35" Text="NPC Favor Modifier from Gifts:" Visibility="{Binding RawNpcModFavorFromGifts, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="35" Text="{Binding NpcModFavorFromGifts, Converter={StaticResource convPercent}}" Visibility="{Binding RawNpcModFavorFromGifts, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="36" Text="NPC Favor Modifier from Hangouts:" Visibility="{Binding RawNpcModFavorFromHangouts, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="36" Text="{Binding NpcModFavorFromHangouts, Converter={StaticResource convPercent}}" Visibility="{Binding RawNpcModFavorFromHangouts, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="37" Text="NPC Max Sale Modifier:" Visibility="{Binding RawNpcModMaxSalesValue, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="37" Text="{Binding NpcModMaxSalesValue, Converter={StaticResource convPercent}}" Visibility="{Binding RawNpcModMaxSalesValue, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="38" Text="NPC Training Cost Modifier:" Visibility="{Binding RawNpcModTrainingCost, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="38" Text="{Binding NpcModTrainingCost, Converter={StaticResource convPercent}}" Visibility="{Binding RawNpcModTrainingCost, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="39" Text="Inventory Folders:" Visibility="{Binding RawNumInventoryFolders, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="39" Text="{Binding NumInventoryFolders}" Visibility="{Binding RawNumInventoryFolders, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="40" Text="High Cleanliness Xp Modifier:" Visibility="{Binding RawHighCleanlinessXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="40" Text="{Binding HighCleanlinessXpEarnedMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawHighCleanlinessXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="41" Text="Low Cleanliness Xp Modifier:" Visibility="{Binding RawLowCleanlinessXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="41" Text="{Binding LowCleanlinessXpEarnedMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawLowCleanlinessXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="42" Text="Max Armor Mitigation ratio:" Visibility="{Binding RawMaxArmorMitigationRatio, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="42" Text="{Binding MaxArmorMitigationRatio}" Visibility="{Binding RawMaxArmorMitigationRatio, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="43" Text="Show Cleanliness Indicators:" Visibility="{Binding RawShowCleanlinessIndicators, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="43" Text="{Binding ShowCleanlinessIndicators}" Visibility="{Binding RawShowCleanlinessIndicators, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="44" Text="High Community Xp Modifier:" Visibility="{Binding RawHighCommunityXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="44" Text="{Binding HighCommunityXpEarnedMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawHighCommunityXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="45" Text="Low Community Xp Modifier:" Visibility="{Binding RawLowCommunityXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="45" Text="{Binding LowCommunityXpEarnedMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawLowCommunityXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="46" Text="Show Community Indicators:" Visibility="{Binding RawShowCommunityIndicators, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="46" Text="{Binding ShowCommunityIndicators}" Visibility="{Binding RawShowCommunityIndicators, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="47" Text="High Peacebleness Xp Modifier:" Visibility="{Binding RawHighPeaceblenessXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="47" Text="{Binding HighPeaceblenessXpEarnedMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawHighPeaceblenessXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="48" Text="Low Peacebleness Xp Modifier:" Visibility="{Binding RawLowPeaceblenessXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="48" Text="{Binding LowPeaceblenessXpEarnedMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawLowPeaceblenessXpEarnedMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="49" Text="Show Peacebleness Indicators:" Visibility="{Binding RawShowPeaceblenessIndicators, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="49" Text="{Binding ShowPeaceblenessIndicators}" Visibility="{Binding RawShowPeaceblenessIndicators, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="50" Text="Staff Armor Auto Heal:" Visibility="{Binding RawStaffArmorAutoHeal, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="50" Text="{Binding StaffArmorAutoHeal}" Visibility="{Binding RawStaffArmorAutoHeal, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="51" Text="Max Map Pins Per Area:" Visibility="{Binding RawMaxMapPinsPerArea, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="51" Text="{Binding MaxMapPinsPerArea}" Visibility="{Binding RawMaxMapPinsPerArea, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="52" Text="Max Map Pin Icons:" Visibility="{Binding RawMaxMapPinIcons, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="52" Text="{Binding MaxMapPinIcons}" Visibility="{Binding RawMaxMapPinIcons, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="53" Text="Work Order Coin Reward Modifier:" Visibility="{Binding RawWorkOrderCoinRewardMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="53" Text="{Binding WorkOrderCoinRewardMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawWorkOrderCoinRewardMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="54" Text="Max Active Work Orders:" Visibility="{Binding RawMaxActiveWorkOrders, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="54" Text="{Binding MaxActiveWorkOrders}" Visibility="{Binding RawMaxActiveWorkOrders, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="55" Text="Max Active Player Orders:" Visibility="{Binding RawPlayerOrdersMaxActive, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="55" Text="{Binding PlayerOrdersMaxActive}" Visibility="{Binding RawPlayerOrdersMaxActive, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="56" Text="Shop Inventory Size Delta:" Visibility="{Binding RawShopInventorySizeDelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="56" Text="{Binding ShopInventorySizeDelta}" Visibility="{Binding RawShopInventorySizeDelta, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="57" Text="Free Shop Mail:" Visibility="{Binding RawMailShopNumFree, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="57" Text="{Binding MailShopNumFree}" Visibility="{Binding RawMailShopNumFree, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="58" Text="Max Shop PrepDays Hiring:" Visibility="{Binding RawShopHiringMaxPrepDays, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="58" Text="{Binding ShopHiringMaxPrepDays}" Visibility="{Binding RawShopHiringMaxPrepDays, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="59" Text="Shop Kept Days:" Visibility="{Binding RawShopLogDaysKept, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="59" Text="{Binding ShopLogDaysKept}" Visibility="{Binding RawShopLogDaysKept, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="60" Text="Free Shop Hiring:" Visibility="{Binding RawShopHiringNumFree, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="60" Text="{Binding ShopHiringNumFree}" Visibility="{Binding RawShopHiringNumFree, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="61" Text="Critical Hit Damage Modifier:" Visibility="{Binding RawCriticalHitDamage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="61" Text="{Binding CriticalHitDamage, Converter={StaticResource convPercent}}" Visibility="{Binding RawCriticalHitDamage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="SearchResultAdvancementTableContentTemplate">
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top">
@@ -4620,16 +4831,15 @@
                     </StackPanel>
                 </DockPanel>
                 <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,5,5,5"/>
-                <Grid VerticalAlignment="Top" Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                </Grid>
+                <StackPanel VerticalAlignment="Top" Margin="0,10,0,0">
+                    <DockPanel Visibility="{Binding HasManyLevels, Converter={StaticResource convBooleanToObject},ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" HorizontalAlignment="Left">
+                        <Button DockPanel.Dock="Right" Command="{StaticResource LevelUpCommand}" Width="20" Height="20" Margin="10,0,0,0">+</Button>
+                        <Button DockPanel.Dock="Right" Command="{StaticResource LevelDownCommand}" Width="20" Height="20" Margin="10,0,0,0">-</Button>
+                        <TextBlock DockPanel.Dock="Left" Text="Level:" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentLevel}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    </DockPanel>
+                    <ContentControl ContentTemplate="{StaticResource AdvancementContentTemplate}" Content="{Binding CurrentAdvancement}"/>
+                </StackPanel>
             </DockPanel>
         </DataTemplate>
         <DataTemplate x:Key="PowerSkillTemplate">

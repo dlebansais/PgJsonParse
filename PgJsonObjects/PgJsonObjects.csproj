@@ -481,6 +481,7 @@
     <Compile Include="Synthetic\Ability\PgAbilityCollection.cs" />
     <Compile Include="Synthetic\Ability\PgSpecialValue.cs" />
     <Compile Include="Synthetic\Ability\PgSpecialValueCollection.cs" />
+    <Compile Include="Synthetic\AdvancementTable\AdvancementFriendlyNames.cs" />
     <Compile Include="Synthetic\AdvancementTable\PgAdvancement.cs" />
     <Compile Include="Synthetic\AdvancementTable\PgAdvancementTable.cs" />
     <Compile Include="Synthetic\AI\PgAI.cs" />

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Presentation;
+using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -16,139 +18,141 @@ namespace PgJsonObjects
 
         public static PgAdvancement CreateNew(byte[] data, ref int offset)
         {
-            return new PgAdvancement(data, ref offset);
+            PgAdvancement Result = new PgAdvancement(data, ref offset);
+            string Key = Result.Key;
+            return Result;
         }
 
         public override string Key { get { return GetString(0); } }
-        public double NonCombatRegenHealthMod { get { return RawNonCombatRegenHealthMod.HasValue ? RawNonCombatRegenHealthMod.Value : 0; } }
+        public float NonCombatRegenHealthMod { get { return (float)(RawNonCombatRegenHealthMod.HasValue ? RawNonCombatRegenHealthMod.Value : 0); } }
         public double? RawNonCombatRegenHealthMod { get { return GetDouble(4); } }
-        public double CombatRegenHealthMod { get { return RawCombatRegenHealthMod.HasValue ? RawCombatRegenHealthMod.Value : 0; } }
+        public float CombatRegenHealthMod { get { return (float)(RawCombatRegenHealthMod.HasValue ? RawCombatRegenHealthMod.Value : 0); } }
         public double? RawCombatRegenHealthMod { get { return GetDouble(8); } }
-        public double CombatRegenHealthDelta { get { return RawCombatRegenHealthDelta.HasValue ? RawCombatRegenHealthDelta.Value : 0; } }
+        public float CombatRegenHealthDelta { get { return (float)(RawCombatRegenHealthDelta.HasValue ? RawCombatRegenHealthDelta.Value : 0); } }
         public double? RawCombatRegenHealthDelta { get { return GetDouble(12); } }
-        public double NonCombatRegenArmorMod { get { return RawNonCombatRegenArmorMod.HasValue ? RawNonCombatRegenArmorMod.Value : 0; } }
+        public float NonCombatRegenArmorMod { get { return (float)(RawNonCombatRegenArmorMod.HasValue ? RawNonCombatRegenArmorMod.Value : 0); } }
         public double? RawNonCombatRegenArmorMod { get { return GetDouble(16); } }
-        public double NonCombatRegenArmordelta { get { return RawNonCombatRegenArmordelta.HasValue ? RawNonCombatRegenArmordelta.Value : 0; } }
+        public float NonCombatRegenArmordelta { get { return (float)(RawNonCombatRegenArmordelta.HasValue ? RawNonCombatRegenArmordelta.Value : 0); } }
         public double? RawNonCombatRegenArmordelta { get { return GetDouble(20); } }
-        public double CombatRegenArmorMod { get { return RawCombatRegenArmorMod.HasValue ? RawCombatRegenArmorMod.Value : 0; } }
+        public float CombatRegenArmorMod { get { return (float)(RawCombatRegenArmorMod.HasValue ? RawCombatRegenArmorMod.Value : 0); } }
         public double? RawCombatRegenArmorMod { get { return GetDouble(24); } }
-        public double NonCombatRegenPowerMod { get { return RawNonCombatRegenPowerMod.HasValue ? RawNonCombatRegenPowerMod.Value : 0; } }
+        public float NonCombatRegenPowerMod { get { return (float)(RawNonCombatRegenPowerMod.HasValue ? RawNonCombatRegenPowerMod.Value : 0); } }
         public double? RawNonCombatRegenPowerMod { get { return GetDouble(28); } }
-        public double CombatRegenPowerMod { get { return RawCombatRegenPowerMod.HasValue ? RawCombatRegenPowerMod.Value : 0; } }
+        public float CombatRegenPowerMod { get { return (float)(RawCombatRegenPowerMod.HasValue ? RawCombatRegenPowerMod.Value : 0); } }
         public double? RawCombatRegenPowerMod { get { return GetDouble(32); } }
-        public double NonCombatRegenRageMod { get { return RawNonCombatRegenRageMod.HasValue ? RawNonCombatRegenRageMod.Value : 0; } }
+        public float NonCombatRegenRageMod { get { return (float)(RawNonCombatRegenRageMod.HasValue ? RawNonCombatRegenRageMod.Value : 0); } }
         public double? RawNonCombatRegenRageMod { get { return GetDouble(36); } }
-        public double CombatRegenRageMod { get { return RawCombatRegenRageMod.HasValue ? RawCombatRegenRageMod.Value : 0; } }
+        public float CombatRegenRageMod { get { return (float)(RawCombatRegenRageMod.HasValue ? RawCombatRegenRageMod.Value : 0); } }
         public double? RawCombatRegenRageMod { get { return GetDouble(40); } }
-        public double MentalDefenseRating { get { return RawMentalDefenseRating.HasValue ? RawMentalDefenseRating.Value : 0; } }
+        public float MentalDefenseRating { get { return (float)(RawMentalDefenseRating.HasValue ? RawMentalDefenseRating.Value : 0); } }
         public double? RawMentalDefenseRating { get { return GetDouble(44); } }
-        public double SprintBoost { get { return RawSprintBoost.HasValue ? RawSprintBoost.Value : 0; } }
+        public float SprintBoost { get { return (float)(RawSprintBoost.HasValue ? RawSprintBoost.Value : 0); } }
         public double? RawSprintBoost { get { return GetDouble(48); } }
-        public double TauntMod { get { return RawTauntMod.HasValue ? RawTauntMod.Value : 0; } }
+        public float TauntMod { get { return (float)(RawTauntMod.HasValue ? RawTauntMod.Value : 0); } }
         public double? RawTauntMod { get { return GetDouble(52); } }
-        public double IgnoreChanceFear { get { return RawIgnoreChanceFear.HasValue ? RawIgnoreChanceFear.Value : 0; } }
+        public float IgnoreChanceFear { get { return (float)(RawIgnoreChanceFear.HasValue ? RawIgnoreChanceFear.Value : 0); } }
         public double? RawIgnoreChanceFear { get { return GetDouble(56); } }
-        public double IgnoreChanceMezz { get { return RawIgnoreChanceMezz.HasValue ? RawIgnoreChanceMezz.Value : 0; } }
+        public float IgnoreChanceMezz { get { return (float)(RawIgnoreChanceMezz.HasValue ? RawIgnoreChanceMezz.Value : 0); } }
         public double? RawIgnoreChanceMezz { get { return GetDouble(60); } }
-        public double IgnoreChanceKnockback { get { return RawIgnoreChanceKnockback.HasValue ? RawIgnoreChanceKnockback.Value : 0; } }
+        public float IgnoreChanceKnockback { get { return (float)(RawIgnoreChanceKnockback.HasValue ? RawIgnoreChanceKnockback.Value : 0); } }
         public double? RawIgnoreChanceKnockback { get { return GetDouble(64); } }
-        public double EvasionChance { get { return RawEvasionChance.HasValue ? RawEvasionChance.Value : 0; } }
+        public float EvasionChance { get { return (float)(RawEvasionChance.HasValue ? RawEvasionChance.Value : 0); } }
         public double? RawEvasionChance { get { return GetDouble(68); } }
-        public double LootBoostChanceUncommon { get { return RawLootBoostChanceUncommon.HasValue ? RawLootBoostChanceUncommon.Value : 0; } }
+        public float LootBoostChanceUncommon { get { return (float)(RawLootBoostChanceUncommon.HasValue ? RawLootBoostChanceUncommon.Value : 0); } }
         public double? RawLootBoostChanceUncommon { get { return GetDouble(72); } }
-        public double LootBoostChanceRare { get { return RawLootBoostChanceRare.HasValue ? RawLootBoostChanceRare.Value : 0; } }
+        public float LootBoostChanceRare { get { return (float)(RawLootBoostChanceRare.HasValue ? RawLootBoostChanceRare.Value : 0); } }
         public double? RawLootBoostChanceRare { get { return GetDouble(76); } }
-        public double LootBoostChanceExceptional { get { return RawLootBoostChanceExceptional.HasValue ? RawLootBoostChanceExceptional.Value : 0; } }
+        public float LootBoostChanceExceptional { get { return (float)(RawLootBoostChanceExceptional.HasValue ? RawLootBoostChanceExceptional.Value : 0); } }
         public double? RawLootBoostChanceExceptional { get { return GetDouble(80); } }
-        public double LootBoostChanceEpic { get { return RawLootBoostChanceEpic.HasValue ? RawLootBoostChanceEpic.Value : 0; } }
+        public float LootBoostChanceEpic { get { return (float)(RawLootBoostChanceEpic.HasValue ? RawLootBoostChanceEpic.Value : 0); } }
         public double? RawLootBoostChanceEpic { get { return GetDouble(84); } }
-        public double LootBoostChanceLegendary { get { return RawLootBoostChanceLegendary.HasValue ? RawLootBoostChanceLegendary.Value : 0; } }
+        public float LootBoostChanceLegendary { get { return (float)(RawLootBoostChanceLegendary.HasValue ? RawLootBoostChanceLegendary.Value : 0); } }
         public double? RawLootBoostChanceLegendary { get { return GetDouble(88); } }
-        public double MaxHealth { get { return RawMaxHealth.HasValue ? RawMaxHealth.Value : 0; } }
+        public float MaxHealth { get { return (float)(RawMaxHealth.HasValue ? RawMaxHealth.Value : 0); } }
         public double? RawMaxHealth { get { return GetDouble(92); } }
-        public double MaxArmor { get { return RawMaxArmor.HasValue ? RawMaxArmor.Value : 0; } }
+        public float MaxArmor { get { return (float)(RawMaxArmor.HasValue ? RawMaxArmor.Value : 0); } }
         public double? RawMaxArmor { get { return GetDouble(96); } }
-        public double MaxRage { get { return RawMaxRage.HasValue ? RawMaxRage.Value : 0; } }
+        public float MaxRage { get { return (float)(RawMaxRage.HasValue ? RawMaxRage.Value : 0); } }
         public double? RawMaxRage { get { return GetDouble(100); } }
-        public double MaxPower { get { return RawMaxPower.HasValue ? RawMaxPower.Value : 0; } }
+        public float MaxPower { get { return (float)(RawMaxPower.HasValue ? RawMaxPower.Value : 0); } }
         public double? RawMaxPower { get { return GetDouble(104); } }
-        public double MaxBreath { get { return RawMaxBreath.HasValue ? RawMaxBreath.Value : 0; } }
+        public float MaxBreath { get { return (float)(RawMaxBreath.HasValue ? RawMaxBreath.Value : 0); } }
         public double? RawMaxBreath { get { return GetDouble(108); } }
-        public double BoostUniversalDirect { get { return RawBoostUniversalDirect.HasValue ? RawBoostUniversalDirect.Value : 0; } }
+        public float BoostUniversalDirect { get { return (float)(RawBoostUniversalDirect.HasValue ? RawBoostUniversalDirect.Value : 0); } }
         public double? RawBoostUniversalDirect { get { return GetDouble(112); } }
-        public double BoostAbilityRageAttack { get { return RawBoostAbilityRageAttack.HasValue ? RawBoostAbilityRageAttack.Value : 0; } }
+        public float BoostAbilityRageAttack { get { return (float)(RawBoostAbilityRageAttack.HasValue ? RawBoostAbilityRageAttack.Value : 0); } }
         public double? RawBoostAbilityRageAttack { get { return GetDouble(116); } }
-        public double ModAbilityRageAttack { get { return RawModAbilityRageAttack.HasValue ? RawModAbilityRageAttack.Value : 0; } }
+        public float ModAbilityRageAttack { get { return (float)(RawModAbilityRageAttack.HasValue ? RawModAbilityRageAttack.Value : 0); } }
         public double? RawModAbilityRageAttack { get { return GetDouble(120); } }
-        public double MonsterCombatXpValue { get { return RawMonsterCombatXpValue.HasValue ? RawMonsterCombatXpValue.Value : 0; } }
+        public float MonsterCombatXpValue { get { return (float)(RawMonsterCombatXpValue.HasValue ? RawMonsterCombatXpValue.Value : 0); } }
         public double? RawMonsterCombatXpValue { get { return GetDouble(124); } }
-        public double CombatRegenArmorDelta { get { return RawCombatRegenArmorDelta.HasValue ? RawCombatRegenArmorDelta.Value : 0; } }
+        public float CombatRegenArmorDelta { get { return (float)(RawCombatRegenArmorDelta.HasValue ? RawCombatRegenArmorDelta.Value : 0); } }
         public double? RawCombatRegenArmorDelta { get { return GetDouble(128); } }
-        public double CombatRegenDelta { get { return RawCombatRegenDelta.HasValue ? RawCombatRegenDelta.Value : 0; } }
+        public float CombatRegenDelta { get { return (float)(RawCombatRegenDelta.HasValue ? RawCombatRegenDelta.Value : 0); } }
         public double? RawCombatRegenDelta { get { return GetDouble(132); } }
-        public double MaxInventorySize { get { return RawMaxInventorySize.HasValue ? RawMaxInventorySize.Value : 0; } }
+        public float MaxInventorySize { get { return (float)(RawMaxInventorySize.HasValue ? RawMaxInventorySize.Value : 0); } }
         public double? RawMaxInventorySize { get { return GetDouble(136); } }
-        public double MaxMetabolism { get { return RawMaxMetabolism.HasValue ? RawMaxMetabolism.Value : 0; } }
+        public float MaxMetabolism { get { return (float)(RawMaxMetabolism.HasValue ? RawMaxMetabolism.Value : 0); } }
         public double? RawMaxMetabolism { get { return GetDouble(140); } }
-        public double NpcModFavorFromGifts { get { return RawNpcModFavorFromGifts.HasValue ? RawNpcModFavorFromGifts.Value : 0; } }
+        public float NpcModFavorFromGifts { get { return (float)(RawNpcModFavorFromGifts.HasValue ? RawNpcModFavorFromGifts.Value : 0); } }
         public double? RawNpcModFavorFromGifts { get { return GetDouble(144); } }
-        public double NpcModFavorFromHangouts { get { return RawNpcModFavorFromHangouts.HasValue ? RawNpcModFavorFromHangouts.Value : 0; } }
+        public float NpcModFavorFromHangouts { get { return (float)(RawNpcModFavorFromHangouts.HasValue ? RawNpcModFavorFromHangouts.Value : 0); } }
         public double? RawNpcModFavorFromHangouts { get { return GetDouble(148); } }
-        public double NpcModMaxSalesValue { get { return RawNpcModMaxSalesValue.HasValue ? RawNpcModMaxSalesValue.Value : 0; } }
+        public float NpcModMaxSalesValue { get { return (float)(RawNpcModMaxSalesValue.HasValue ? RawNpcModMaxSalesValue.Value : 0); } }
         public double? RawNpcModMaxSalesValue { get { return GetDouble(152); } }
-        public double NpcModTrainingCost { get { return RawNpcModTrainingCost.HasValue ? RawNpcModTrainingCost.Value : 0; } }
+        public float NpcModTrainingCost { get { return (float)(RawNpcModTrainingCost.HasValue ? RawNpcModTrainingCost.Value : 0); } }
         public double? RawNpcModTrainingCost { get { return GetDouble(156); } }
         public int NumInventoryFolders { get { return RawNumInventoryFolders.HasValue ? RawNumInventoryFolders.Value : 0; } }
         public int? RawNumInventoryFolders { get { return GetInt(160); } }
-        public double HighCleanlinessXpEarnedMod { get { return RawHighCleanlinessXpEarnedMod.HasValue ? RawHighCleanlinessXpEarnedMod.Value : 0; } }
+        public float HighCleanlinessXpEarnedMod { get { return (float)(RawHighCleanlinessXpEarnedMod.HasValue ? RawHighCleanlinessXpEarnedMod.Value : 0); } }
         public double? RawHighCleanlinessXpEarnedMod { get { return GetDouble(164); } }
-        public double LowCleanlinessXpEarnedMod { get { return RawLowCleanlinessXpEarnedMod.HasValue ? RawLowCleanlinessXpEarnedMod.Value : 0; } }
+        public float LowCleanlinessXpEarnedMod { get { return (float)(RawLowCleanlinessXpEarnedMod.HasValue ? RawLowCleanlinessXpEarnedMod.Value : 0); } }
         public double? RawLowCleanlinessXpEarnedMod { get { return GetDouble(168); } }
-        public double MaxArmorMitigationRatio { get { return RawMaxArmorMitigationRatio.HasValue ? RawMaxArmorMitigationRatio.Value : 0; } }
+        public float MaxArmorMitigationRatio { get { return (float)(RawMaxArmorMitigationRatio.HasValue ? RawMaxArmorMitigationRatio.Value : 0); } }
         public double? RawMaxArmorMitigationRatio { get { return GetDouble(172); } }
-        public double ShowCleanlinessIndicators { get { return RawShowCleanlinessIndicators.HasValue ? RawShowCleanlinessIndicators.Value : 0; } }
+        public float ShowCleanlinessIndicators { get { return (float)(RawShowCleanlinessIndicators.HasValue ? RawShowCleanlinessIndicators.Value : 0); } }
         public double? RawShowCleanlinessIndicators { get { return GetDouble(176); } }
-        public double HighCommunityXpEarnedMod { get { return RawHighCommunityXpEarnedMod.HasValue ? RawHighCommunityXpEarnedMod.Value : 0; } }
+        public float HighCommunityXpEarnedMod { get { return (float)(RawHighCommunityXpEarnedMod.HasValue ? RawHighCommunityXpEarnedMod.Value : 0); } }
         public double? RawHighCommunityXpEarnedMod { get { return GetDouble(180); } }
-        public double LowCommunityXpEarnedMod { get { return RawLowCommunityXpEarnedMod.HasValue ? RawLowCommunityXpEarnedMod.Value : 0; } }
+        public float LowCommunityXpEarnedMod { get { return (float)(RawLowCommunityXpEarnedMod.HasValue ? RawLowCommunityXpEarnedMod.Value : 0); } }
         public double? RawLowCommunityXpEarnedMod { get { return GetDouble(184); } }
-        public double ShowCommunityIndicators { get { return RawShowCommunityIndicators.HasValue ? RawShowCommunityIndicators.Value : 0; } }
+        public float ShowCommunityIndicators { get { return (float)(RawShowCommunityIndicators.HasValue ? RawShowCommunityIndicators.Value : 0); } }
         public double? RawShowCommunityIndicators { get { return GetDouble(188); } }
-        public double HighPeaceblenessXpEarnedMod { get { return RawHighPeaceblenessXpEarnedMod.HasValue ? RawHighPeaceblenessXpEarnedMod.Value : 0; } }
+        public float HighPeaceblenessXpEarnedMod { get { return (float)(RawHighPeaceblenessXpEarnedMod.HasValue ? RawHighPeaceblenessXpEarnedMod.Value : 0); } }
         public double? RawHighPeaceblenessXpEarnedMod { get { return GetDouble(192); } }
-        public double LowPeaceblenessXpEarnedMod { get { return RawLowPeaceblenessXpEarnedMod.HasValue ? RawLowPeaceblenessXpEarnedMod.Value : 0; } }
+        public float LowPeaceblenessXpEarnedMod { get { return (float)(RawLowPeaceblenessXpEarnedMod.HasValue ? RawLowPeaceblenessXpEarnedMod.Value : 0); } }
         public double? RawLowPeaceblenessXpEarnedMod { get { return GetDouble(196); } }
-        public double ShowPeaceblenessIndicators { get { return RawShowPeaceblenessIndicators.HasValue ? RawShowPeaceblenessIndicators.Value : 0; } }
+        public float ShowPeaceblenessIndicators { get { return (float)(RawShowPeaceblenessIndicators.HasValue ? RawShowPeaceblenessIndicators.Value : 0); } }
         public double? RawShowPeaceblenessIndicators { get { return GetDouble(200); } }
-        public double StaffArmorAutoHeal { get { return RawStaffArmorAutoHeal.HasValue ? RawStaffArmorAutoHeal.Value : 0; } }
+        public float StaffArmorAutoHeal { get { return (float)(RawStaffArmorAutoHeal.HasValue ? RawStaffArmorAutoHeal.Value : 0); } }
         public double? RawStaffArmorAutoHeal { get { return GetDouble(204); } }
-        public double MaxMapPinsPerArea { get { return RawMaxMapPinsPerArea.HasValue ? RawMaxMapPinsPerArea.Value : 0; } }
+        public float MaxMapPinsPerArea { get { return (float)(RawMaxMapPinsPerArea.HasValue ? RawMaxMapPinsPerArea.Value : 0); } }
         public double? RawMaxMapPinsPerArea { get { return GetDouble(208); } }
-        public double MaxMapPinIcons { get { return RawMaxMapPinIcons.HasValue ? RawMaxMapPinIcons.Value : 0; } }
+        public float MaxMapPinIcons { get { return (float)(RawMaxMapPinIcons.HasValue ? RawMaxMapPinIcons.Value : 0); } }
         public double? RawMaxMapPinIcons { get { return GetDouble(212); } }
-        public double WorkOrderCoinRewardMod { get { return RawWorkOrderCoinRewardMod.HasValue ? RawWorkOrderCoinRewardMod.Value : 0; } }
+        public float WorkOrderCoinRewardMod { get { return (float)(RawWorkOrderCoinRewardMod.HasValue ? RawWorkOrderCoinRewardMod.Value : 0); } }
         public double? RawWorkOrderCoinRewardMod { get { return GetDouble(216); } }
-        public double MaxActiveWorkOrders { get { return RawMaxActiveWorkOrders.HasValue ? RawMaxActiveWorkOrders.Value : 0; } }
+        public float MaxActiveWorkOrders { get { return (float)(RawMaxActiveWorkOrders.HasValue ? RawMaxActiveWorkOrders.Value : 0); } }
         public double? RawMaxActiveWorkOrders { get { return GetDouble(220); } }
-        public double PlayerOrdersMaxActive { get { return RawPlayerOrdersMaxActive.HasValue ? RawPlayerOrdersMaxActive.Value : 0; } }
+        public float PlayerOrdersMaxActive { get { return (float)(RawPlayerOrdersMaxActive.HasValue ? RawPlayerOrdersMaxActive.Value : 0); } }
         public double? RawPlayerOrdersMaxActive { get { return GetDouble(224); } }
-        public double ShopInventorySizeDelta { get { return RawShopInventorySizeDelta.HasValue ? RawShopInventorySizeDelta.Value : 0; } }
+        public float ShopInventorySizeDelta { get { return (float)(RawShopInventorySizeDelta.HasValue ? RawShopInventorySizeDelta.Value : 0); } }
         public double? RawShopInventorySizeDelta { get { return GetDouble(228); } }
-        public double MailShopNumFree { get { return RawMailShopNumFree.HasValue ? RawMailShopNumFree.Value : 0; } }
+        public float MailShopNumFree { get { return (float)(RawMailShopNumFree.HasValue ? RawMailShopNumFree.Value : 0); } }
         public double? RawMailShopNumFree { get { return GetDouble(232); } }
-        public double ShopHiringMaxPrepDays { get { return RawShopHiringMaxPrepDays.HasValue ? RawShopHiringMaxPrepDays.Value : 0; } }
+        public float ShopHiringMaxPrepDays { get { return (float)(RawShopHiringMaxPrepDays.HasValue ? RawShopHiringMaxPrepDays.Value : 0); } }
         public double? RawShopHiringMaxPrepDays { get { return GetDouble(236); } }
-        public double ShopLogDaysKept { get { return RawShopLogDaysKept.HasValue ? RawShopLogDaysKept.Value : 0; } }
+        public float ShopLogDaysKept { get { return (float)(RawShopLogDaysKept.HasValue ? RawShopLogDaysKept.Value : 0); } }
         public double? RawShopLogDaysKept { get { return GetDouble(240); } }
-        public double ShopHiringNumFree { get { return RawShopHiringNumFree.HasValue ? RawShopHiringNumFree.Value : 0; } }
+        public float ShopHiringNumFree { get { return (float)(RawShopHiringNumFree.HasValue ? RawShopHiringNumFree.Value : 0); } }
         public double? RawShopHiringNumFree { get { return GetDouble(244); } }
-        public double CriticalHitDamage { get { return RawCriticalHitDamage.HasValue ? RawCriticalHitDamage.Value : 0; } }
+        public float CriticalHitDamage { get { return (float)(RawCriticalHitDamage.HasValue ? RawCriticalHitDamage.Value : 0); } }
         public double? RawCriticalHitDamage { get { return GetDouble(248); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(252, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public List<int> VulnerabilityList { get { return GetIntList(256, ref _VulnerabilityList); } } private List<int> _VulnerabilityList;
-        public List<int> MitigationList { get { return GetIntList(260, ref _MitigationList); } } private List<int> _MitigationList;
-        public List<int> DirectModList { get { return GetIntList(264, ref _DirectModList); } } private List<int> _DirectModList;
-        public List<int> IndirectModList { get { return GetIntList(268, ref _IndirectModList); } } private List<int> _IndirectModList;
+        public List<int> VulnerabilityDataList { get { return GetIntList(256, ref _VulnerabilityDataList); } } private List<int> _VulnerabilityDataList;
+        public List<int> MitigationDataList { get { return GetIntList(260, ref _MitigationDataList); } } private List<int> _MitigationDataList;
+        public List<int> DirectModDataList { get { return GetIntList(264, ref _DirectModDataList); } } private List<int> _DirectModDataList;
+        public List<int> IndirectModDataList { get { return GetIntList(268, ref _IndirectModDataList); } } private List<int> _IndirectModDataList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "IGNORE_CHANCE_FEAR", new FieldParser() {
@@ -349,10 +353,10 @@ namespace PgJsonObjects
 
             if (IsDamageTypeEntry(ParserKey, "VULN_", null, out RawDamageType, out ParsedDamageType, null))
             {
-                for (int i = 0; i * 2 < VulnerabilityList.Count; i++)
-                    if ((DamageType)VulnerabilityList[i * 2] == ParsedDamageType)
+                for (int i = 0; i * 2 < VulnerabilityDataList.Count; i++)
+                    if ((DamageType)VulnerabilityDataList[i * 2] == ParsedDamageType)
                     {
-                        generator.AddDouble("VULN_" + RawDamageType.ToUpper(), (double)VulnerabilityList[i * 2 + 1] / DamageMultiplier);
+                        generator.AddDouble("VULN_" + RawDamageType.ToUpper(), (double)VulnerabilityDataList[i * 2 + 1] / DamageMultiplier);
                         break;
                     }
                 return;
@@ -360,10 +364,10 @@ namespace PgJsonObjects
 
             else if (IsDamageTypeEntry(ParserKey, "MITIGATION_", null, out RawDamageType, out ParsedDamageType, null))
             {
-                for (int i = 0; i * 2 < MitigationList.Count; i++)
-                    if ((DamageType)MitigationList[i * 2] == ParsedDamageType)
+                for (int i = 0; i * 2 < MitigationDataList.Count; i++)
+                    if ((DamageType)MitigationDataList[i * 2] == ParsedDamageType)
                     {
-                        generator.AddDouble("MITIGATION_" + RawDamageType.ToUpper(), (double)MitigationList[i * 2 + 1] / DamageMultiplier);
+                        generator.AddDouble("MITIGATION_" + RawDamageType.ToUpper(), (double)MitigationDataList[i * 2 + 1] / DamageMultiplier);
                         break;
                     }
                 return;
@@ -371,10 +375,10 @@ namespace PgJsonObjects
 
             else if (IsDamageTypeEntry(ParserKey, "MOD_", "_INDIRECT", out RawDamageType, out ParsedDamageType, null))
             {
-                for (int i = 0; i * 2 < IndirectModList.Count; i++)
-                    if ((DamageType)IndirectModList[i * 2] == ParsedDamageType)
+                for (int i = 0; i * 2 < IndirectModDataList.Count; i++)
+                    if ((DamageType)IndirectModDataList[i * 2] == ParsedDamageType)
                     {
-                        generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_INDIRECT", (double)IndirectModList[i * 2 + 1] / DamageMultiplier);
+                        generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_INDIRECT", (double)IndirectModDataList[i * 2 + 1] / DamageMultiplier);
                         break;
                     }
                 return;
@@ -382,10 +386,10 @@ namespace PgJsonObjects
 
             else if (IsDamageTypeEntry(ParserKey, "MOD_", "_DIRECT", out RawDamageType, out ParsedDamageType, null))
             {
-                for (int i = 0; i * 2 < DirectModList.Count; i++)
-                    if ((DamageType)DirectModList[i * 2] == ParsedDamageType)
+                for (int i = 0; i * 2 < DirectModDataList.Count; i++)
+                    if ((DamageType)DirectModDataList[i * 2] == ParsedDamageType)
                     {
-                        generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_DIRECT", (double)DirectModList[i * 2 + 1] / DamageMultiplier);
+                        generator.AddDouble("MOD_" + RawDamageType.ToUpper() + "_DIRECT", (double)DirectModDataList[i * 2 + 1] / DamageMultiplier);
                         break;
                     }
                 return;
@@ -417,5 +421,97 @@ namespace PgJsonObjects
         #region Indirect Properties
         public override string SortingName { get { return null; } }
         #endregion
+
+        public int Id
+        {
+            get
+            {
+                if (Key.StartsWith("Level_"))
+                {
+                    if (int.TryParse(Key.Substring(6), out int Result))
+                        return Result;
+                }
+
+                return 0;
+            }
+        }
+
+        public List<string> VulnerabilityList { get { return GetDamageList(VulnerabilityDataList, PgAdvancement.GetVulnerabilityText); } }
+        public List<string> MitigationList { get { return GetDamageList(MitigationDataList, PgAdvancement.GetMitigationText); } }
+        public List<string> DirectModList { get { return GetDamageList(DirectModDataList, PgAdvancement.GetDirectModText); } }
+        public List<string> IndirectModList { get { return GetDamageList(IndirectModDataList, PgAdvancement.GetIndirectModText); } }
+
+        public static List<string> GetDamageList(List<int> dataList, Func<DamageType, float, string> getText)
+        {
+            List<string> Result = new List<string>();
+            for (int i = 0; i * 2 < dataList.Count; i++)
+            {
+                DamageType DamageType = (DamageType)dataList[i * 2 + 0];
+                float Value = (float)((double)dataList[i * 2 + 1] / DamageMultiplier);
+
+                Result.Add(getText(DamageType, Value));
+            }
+
+            return Result;
+        }
+
+        public static string GetVulnerabilityText(DamageType damageType, float value)
+        {
+            string DamageTypeString = TextMaps.DamageTypeTextMap[damageType];
+
+            if (value == -1)
+                return "Immune to " + DamageTypeString;
+            else
+            {
+                string ValueString = InvariantCulture.SingleToString(value * 100);
+                if (value > 0)
+                    ValueString = "+" + ValueString;
+
+                string Suffix;
+
+                if (value == 0.25F)
+                    Suffix = " (Effective)";
+                else if (value == 0.5F)
+                    Suffix = " (Very Effective)";
+                else if (value == -0.25F)
+                    Suffix = " (Ineffective)";
+                else if (value == -0.5F)
+                    Suffix = " (Very Ineffective)";
+                else
+                    Suffix = "";
+
+                return "Vulnerability to " + DamageTypeString + ": " + ValueString + "%" + Suffix;
+            }
+        }
+
+        public static string GetMitigationText(DamageType damageType, float value)
+        {
+            string DamageTypeString = TextMaps.DamageTypeTextMap[damageType];
+            string ValueString = InvariantCulture.SingleToString(value);
+            if (value > 0)
+                ValueString = "+" + ValueString;
+
+            return DamageTypeString + " Mitigation: " + ValueString;
+        }
+
+        public static string GetDirectModText(DamageType damageType, float value)
+        {
+            string DamageTypeString = TextMaps.DamageTypeTextMap[damageType];
+            string ValueString = InvariantCulture.SingleToString(value);
+            if (value > 0)
+                ValueString = "+" + ValueString;
+
+            return DamageTypeString + " Direct Damage: " + ValueString + "%";
+        }
+
+        public static string GetIndirectModText(DamageType damageType, float value)
+        {
+            string DamageTypeString = TextMaps.DamageTypeTextMap[damageType];
+            string ValueString = InvariantCulture.SingleToString(value);
+            if (value > 0)
+                ValueString = "+" + ValueString;
+
+            return DamageTypeString + " Indirect Damage: " + ValueString + "%";
+        }
     }
 }

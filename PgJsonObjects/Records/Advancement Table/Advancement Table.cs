@@ -1,13 +1,16 @@
 ﻿using PgJsonReader;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace PgJsonObjects
 {
-    public class AdvancementTable : MainJsonObject<AdvancementTable>, IPgAdvancementTable
+    public class AdvancementTable : MainJsonObject<AdvancementTable>, IPgAdvancementTable, INotifyPropertyChanged
     {
         #region Direct Properties
-        public Dictionary<int, Advancement> LevelTable { get; private set; }
+        public Dictionary<int, IPgAdvancement> LevelTable { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -17,6 +20,35 @@ namespace PgJsonObjects
         public int Id { get { return PgAdvancementTable.KeyToId(Key); } }
         public string InternalName { get { return PgAdvancementTable.KeyToInternalName(Key); } }
         public string FriendlyName { get { return PgAdvancementTable.KeyToFriendlyName(Key); } }
+
+        public bool HasManyLevels { get { return LevelTable.Count > 1; } }
+
+        public int CurrentLevel
+        {
+            get
+            {
+                int Index = _CurrentLevelIndex;
+                foreach (KeyValuePair<int, IPgAdvancement> Entry in LevelTable)
+                    if (Index-- <= 0)
+                        return Entry.Key;
+
+                return 0;
+            }
+        }
+        private static int _CurrentLevelIndex;
+
+        public IPgAdvancement CurrentAdvancement
+        {
+            get
+            {
+                int Index = _CurrentLevelIndex;
+                foreach (KeyValuePair<int, IPgAdvancement> Entry in LevelTable)
+                    if (Index-- <= 0)
+                        return Entry.Value;
+
+                return null;
+            }
+        }
         #endregion
 
         #region Parsing
@@ -24,7 +56,7 @@ namespace PgJsonObjects
         {
             InitializeKey(key, index, value, ErrorInfo);
 
-            LevelTable = new Dictionary<int, Advancement>();
+            LevelTable = new Dictionary<int, IPgAdvancement>();
 
             JsonObject AsJObject;
             Dictionary<string, JsonObject> Levels;
@@ -78,8 +110,8 @@ namespace PgJsonObjects
         {
             Generator.OpenObject(Key);
 
-            foreach (KeyValuePair<int, Advancement> Level in LevelTable)
-                Level.Value.GenerateObjectContent(Generator, true, false);
+            foreach (KeyValuePair<int, IPgAdvancement> Level in LevelTable)
+                (Level.Value as Advancement).GenerateObjectContent(Generator, true, false);
 
             Generator.CloseObject();
         }
@@ -94,8 +126,14 @@ namespace PgJsonObjects
 
                 AddWithFieldSeparator(ref Result, FriendlyName);
 
-                //foreach (KeyValuePair<int, Advancement> Entry in LevelTable)
-                //    AddWithFieldSeparator(ref Result, null);
+                string Longest = "";
+                foreach (KeyValuePair<int, IPgAdvancement> Entry in LevelTable)
+                {
+                    string Content = (Entry.Value as Advancement).TextContent;
+                    if (Content != null && Longest.Length < Content.Length)
+                        Longest = Content;
+                }
+                AddWithFieldSeparator(ref Result, Longest);
 
                 return Result;
             }
@@ -157,7 +195,7 @@ namespace PgJsonObjects
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 4, StoredStringListTable);
 
             int LevelOffset = 8;
-            foreach (KeyValuePair<int, Advancement> Level in LevelTable)
+            foreach (KeyValuePair<int, IPgAdvancement> Level in LevelTable)
             {
                 FieldTableOrder.Add("level_" + Level.Key);
                 AddObject(Level.Value as ISerializableJsonObject, data, ref offset, BaseOffset, LevelOffset, StoredObjectTable);
@@ -166,6 +204,36 @@ namespace PgJsonObjects
 
             FinishSerializing(data, ref offset, BaseOffset, LevelOffset, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
+        }
+        #endregion
+
+        public void OnLevelChange(int change)
+        {
+            int NewIndex = _CurrentLevelIndex + change;
+
+            if (NewIndex >= 0 && NewIndex < LevelTable.Count)
+            {
+                _CurrentLevelIndex = NewIndex;
+                NotifyPropertyChanged(nameof(CurrentLevel));
+                NotifyPropertyChanged(nameof(CurrentAdvancement));
+            }
+        }
+
+        #region Implementation of INotifyPropertyChanged
+        /// <summary>
+        ///     Implements the PropertyChanged event.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        internal void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Default parameter is mandatory with [CallerMemberName]")]
+        internal void NotifyThisPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

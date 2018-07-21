@@ -61,6 +61,8 @@ namespace PgJsonParse
             SubscribeToCommand("BackwardCommand", OnBackward);
             SubscribeToCommand("ForwardCommand", OnForward);
             SubscribeToCommand("GoToCommand", OnGoTo);
+            SubscribeToCommand("LevelUpCommand", OnLevelUp);
+            SubscribeToCommand("LevelDownCommand", OnLevelDown);
         }
         #endregion
 
@@ -1747,6 +1749,22 @@ namespace PgJsonParse
         private void OnGoTo(object sender, EventArgs e)
         {
             OnSearchTermsEntered();
+        }
+
+        private void OnLevelUp(object sender, EventArgs e)
+        {
+            OnLevelChange(+1);
+        }
+
+        private void OnLevelDown(object sender, EventArgs e)
+        {
+            OnLevelChange(-1);
+        }
+
+        private void OnLevelChange(int change)
+        {
+            if (CurrentSearchItem is IPgAdvancementTable CurrentAdvancementTable)
+                CurrentAdvancementTable.OnLevelChange(change);
         }
 
         private void OnRequestNavigate(object sender, RoutedEventArgs e)
