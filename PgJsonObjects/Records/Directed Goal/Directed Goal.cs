@@ -12,10 +12,7 @@ namespace PgJsonObjects
         public string Zone { get; private set; }
         public string LargeHint { get; private set; }
         public string SmallHint { get; private set; }
-        public int CategoryGateId { get { return RawCategoryGateId.HasValue ? RawCategoryGateId.Value : 0; } }
-        public int? RawCategoryGateId { get; private set; }
-        public bool IsCategoryGate { get { return RawIsCategoryGate.HasValue ? RawIsCategoryGate.Value : false; } }
-        public bool? RawIsCategoryGate { get; private set; }
+        public IPgDirectedGoal CategoryGate { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -41,7 +38,7 @@ namespace PgJsonObjects
             { "IsCategoryGate", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsCategoryGate = value,
-                GetBool = () => RawIsCategoryGate } },
+                GetBool = () => CategoryGate != null ? null : (bool?)true} },
             { "LargeHint", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => LargeHint = value,
@@ -53,7 +50,7 @@ namespace PgJsonObjects
             { "CategoryGateId", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawCategoryGateId = value,
-                GetInteger = () => RawCategoryGateId } },
+                GetInteger = () => CategoryGate != null ? CategoryGate.RawId : null } },
         }; } }
 
         private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)
@@ -61,6 +58,10 @@ namespace PgJsonObjects
             Label = RawLabel;
             ErrorInfo.AddIconId(SearchResultIconId);
         }
+
+        private bool? RawIsCategoryGate;
+        private int? RawCategoryGateId;
+        private bool IsRawCategoryGateIdParsed;
         #endregion
 
         #region Indexing
@@ -88,7 +89,46 @@ namespace PgJsonObjects
         {
             bool IsConnected = false;
 
+            Dictionary<string, IJsonKey> DirectedGoalTable = AllTables[typeof(DirectedGoal)];
+
+            CategoryGate = DirectedGoal.ConnectSingleProperty(ErrorInfo, DirectedGoalTable, RawCategoryGateId, CategoryGate, ref IsRawCategoryGateIdParsed, ref IsConnected, this);
+
+            if (CategoryGate != null)
+                if (RawIsCategoryGate.HasValue && RawIsCategoryGate.Value == true)
+                    ErrorInfo.AddInvalidObjectFormat("DirectedGoal " + Key);
+
+            if (CategoryGate == null)
+                if ((!RawIsCategoryGate.HasValue || !RawIsCategoryGate.Value))
+                    ErrorInfo.AddInvalidObjectFormat("DirectedGoal " + Key);
+
             return IsConnected;
+        }
+
+        public static IPgDirectedGoal ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> DirectedGoalTable, int? RawDirectedGoalId, IPgDirectedGoal ParsedDirectedGoal, ref bool IsRawDirectedGoalParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        {
+            if (IsRawDirectedGoalParsed)
+                return ParsedDirectedGoal;
+
+            IsRawDirectedGoalParsed = true;
+
+            if (!RawDirectedGoalId.HasValue)
+                return null;
+
+            foreach (KeyValuePair<string, IJsonKey> Entry in DirectedGoalTable)
+            {
+                DirectedGoal DirectedGoalValue = Entry.Value as DirectedGoal;
+                if (DirectedGoalValue.RawId.HasValue && DirectedGoalValue.RawId.Value == RawDirectedGoalId.Value)
+                {
+                    IsConnected = true;
+                    DirectedGoalValue.AddLinkBack(LinkBack);
+                    return DirectedGoalValue;
+                }
+            }
+
+            if (ErrorInfo != null)
+                ErrorInfo.AddMissingKey(RawDirectedGoalId.Value.ToString());
+
+            return null;
         }
         #endregion
 
@@ -99,23 +139,21 @@ namespace PgJsonObjects
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
-            int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
             AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
-            AddInt(RawId, data, ref offset, BaseOffset, 4);
-            AddString(Label, data, ref offset, BaseOffset, 8, StoredStringtable);
-            AddString(Zone, data, ref offset, BaseOffset, 12, StoredStringtable);
-            AddString(LargeHint, data, ref offset, BaseOffset, 16, StoredStringtable);
-            AddString(SmallHint, data, ref offset, BaseOffset, 20, StoredStringtable);
-            AddInt(RawCategoryGateId, data, ref offset, BaseOffset, 24);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 28, StoredStringListTable);
-            AddBool(RawIsCategoryGate, data, ref offset, ref BitOffset, BaseOffset, 32, 0);
-            CloseBool(ref offset, ref BitOffset);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 4, StoredStringListTable);
+            AddInt(RawId, data, ref offset, BaseOffset, 8);
+            AddString(Label, data, ref offset, BaseOffset, 12, StoredStringtable);
+            AddString(Zone, data, ref offset, BaseOffset, 16, StoredStringtable);
+            AddString(LargeHint, data, ref offset, BaseOffset, 20, StoredStringtable);
+            AddString(SmallHint, data, ref offset, BaseOffset, 24, StoredStringtable);
+            AddObject(CategoryGate as ISerializableJsonObject, data, ref offset, BaseOffset, 28, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 34, StoredStringtable, null, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 32, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -8,9 +8,6 @@ namespace PgJsonObjects
         string Zone { get; }
         string LargeHint { get; }
         string SmallHint { get; }
-        int CategoryGateId { get; }
-        int? RawCategoryGateId { get; }
-        bool IsCategoryGate { get; }
-        bool? RawIsCategoryGate { get; }
+        IPgDirectedGoal CategoryGate { get; }
     }
 }
