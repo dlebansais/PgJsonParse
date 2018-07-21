@@ -65,5 +65,19 @@ namespace PgJsonObjects
 
         public override string SortingName { get { return Title; } }
         public string SearchResultIconFileName { get { return "icon_" + LoreBook.SearchResultIconId; } }
+
+        public int? Id
+        {
+            get
+            {
+                if (Key.Length > 5)
+                {
+                    if (int.TryParse(Key.Substring(5), out int Result))
+                        return Result;
+                }
+
+                return null;
+            }
+        }
     }
 }

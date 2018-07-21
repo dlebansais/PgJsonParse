@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgItem(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 160;
+            offset += 156;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -138,16 +138,14 @@ namespace PgJsonObjects
         public IPgItemBehaviorCollection BehaviorList { get { return GetObjectList(116, ref _BehaviorList, PgItemBehaviorCollection.CreateItem, () => new PgItemBehaviorCollection()); } } private IPgItemBehaviorCollection _BehaviorList;
         public string DynamicCraftingSummary { get { return GetString(120); } }
         public IPgPlayerTitle BestowTitle { get { return GetObject(124, ref _BestowTitle, PgPlayerTitle.CreateNew); } } private IPgPlayerTitle _BestowTitle;
-        public int BestowLoreBook { get { return RawBestowLoreBook.HasValue ? RawBestowLoreBook.Value : 0; } }
-        public int? RawBestowLoreBook { get { return GetInt(128); } }
+        public int UnknownSkillReqIndex { get { return RawUnknownSkillReqIndex.HasValue ? RawUnknownSkillReqIndex.Value : 0; } }
+        public int? RawUnknownSkillReqIndex { get { return GetInt(128); } }
         public IPgLoreBook ConnectedLoreBook { get { return GetObject(132, ref _ConnectedLoreBook, PgLoreBook.CreateNew); } } private IPgLoreBook _ConnectedLoreBook;
         public List<string> KeywordValueList { get { return GetStringList(136, ref _KeywordValueList); } } private List<string> _KeywordValueList;
         protected override List<string> FieldTableOrder { get { return GetStringList(140, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public IPgRecipeCollection BestowRecipeList { get { return GetObjectList(144, ref _BestowRecipeList, PgRecipeCollection.CreateItem, () => new PgRecipeCollection()); } } private IPgRecipeCollection _BestowRecipeList;
         public List<string> AppearanceDetailList { get { return GetStringList(148, ref _AppearanceDetailList); } } private List<string> _AppearanceDetailList;
         public List<string> RawKeywordList { get { return GetStringList(152, ref _RawKeywordList); } } private List<string> _RawKeywordList;
-        public int UnknownSkillReqIndex { get { return RawUnknownSkillReqIndex.HasValue ? RawUnknownSkillReqIndex.Value : 0; } }
-        public int? RawUnknownSkillReqIndex { get { return GetInt(156); } }
 
         public Dictionary<ItemKeyword, List<float>> KeywordTable { get; } = new Dictionary<ItemKeyword, List<float>>();
 
@@ -255,7 +253,7 @@ namespace PgJsonObjects
                 GetInteger = () => BestowTitle != null ? BestowTitle.Id : null  } },
             { "BestowLoreBook", new FieldParser() {
                 Type = FieldType.Integer,
-                GetInteger = () => RawBestowLoreBook } },
+                GetInteger = () => ConnectedLoreBook != null ? ConnectedLoreBook.Id : null } },
         }; } }
 
         private List<string> GetBestowRecipesList()

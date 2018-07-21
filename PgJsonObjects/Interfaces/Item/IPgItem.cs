@@ -13,10 +13,10 @@ namespace PgJsonObjects
         string Description { get; }
         ItemDroppedAppearance DroppedAppearance { get; }
         ItemSlot EquipSlot { get; }
-        AppearanceSkin ItemAppearanceSkin { get; }
-        AppearanceSkin ItemAppearanceCork { get; }
-        AppearanceSkin ItemAppearanceFood { get; }
-        AppearanceSkin ItemAppearancePlate { get; }
+        AppearanceSkin ItemAppearanceSkin { get; } //TODO: display
+        AppearanceSkin ItemAppearanceCork { get; } //TODO: display
+        AppearanceSkin ItemAppearanceFood { get; } //TODO: display
+        AppearanceSkin ItemAppearancePlate { get; } //TODO: display
         uint ItemAppearanceColor { get; }
         uint? RawItemAppearanceColor { get; }
         IPgItemEffectCollection EffectDescriptionList { get; }
@@ -62,8 +62,8 @@ namespace PgJsonObjects
         IPgItemBehaviorCollection BehaviorList { get; }
         string DynamicCraftingSummary { get; }
         IPgPlayerTitle BestowTitle { get; }
-        int BestowLoreBook { get; }
-        int? RawBestowLoreBook { get; }
+        int UnknownSkillReqIndex { get; }
+        int? RawUnknownSkillReqIndex { get; }
         IPgLoreBook ConnectedLoreBook { get; }
         List<string> KeywordValueList { get; }
         IPgRecipeCollection BestowRecipeList { get; }

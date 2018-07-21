@@ -15,5 +15,6 @@ namespace PgJsonObjects
         bool? RawIsClientLocal { get; }
         bool IsKeywordListEmpty { get; }
         bool? RawIsKeywordListEmpty { get; }
+        int? Id { get; }
     }
 }

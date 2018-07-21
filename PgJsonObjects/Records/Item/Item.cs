@@ -66,8 +66,6 @@ namespace PgJsonObjects
         public IPgItemBehaviorCollection BehaviorList { get; } = new ItemBehaviorCollection();
         public string DynamicCraftingSummary { get; private set; }
         public IPgPlayerTitle BestowTitle { get; private set; }
-        public int BestowLoreBook { get { return RawBestowLoreBook.HasValue ? RawBestowLoreBook.Value : 0; } }
-        public int? RawBestowLoreBook { get; private set; }
         public IPgLoreBook ConnectedLoreBook { get; private set; }
         public Appearance RequiredAppearance { get; private set; }
         public List<string> KeywordValueList { get; } = new List<string>();
@@ -86,6 +84,7 @@ namespace PgJsonObjects
         private string RawMacGuffinQuestName;
         private bool IsRawMacGuffinQuestNameParsed;
         private Dictionary<string, ItemSkillLink> SkillRequirementTable = new Dictionary<string, ItemSkillLink>();
+        private int? RawBestowLoreBook;
         #endregion
 
         #region Indirect Properties
@@ -234,7 +233,7 @@ namespace PgJsonObjects
             { "BestowLoreBook", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawBestowLoreBook = value,
-                GetInteger = () => RawBestowLoreBook } },
+                GetInteger = () => ConnectedLoreBook != null ? ConnectedLoreBook.Id : null } },
         }; } }
 
         private List<string> GetBestowRecipesList()
@@ -795,9 +794,7 @@ namespace PgJsonObjects
             foreach (ItemBehavior Behavior in BehaviorList)
                 IsConnected |= Behavior.Connect(ErrorInfo, this, AllTables);
 
-            if (RawBestowLoreBook.HasValue)
-                ConnectedLoreBook = LoreBook.ConnectSingleProperty(ErrorInfo, LoreBookTable, BestowLoreBook, ConnectedLoreBook, ref IsLoreBookParsed, ref IsConnected, this);
-
+            ConnectedLoreBook = LoreBook.ConnectSingleProperty(ErrorInfo, LoreBookTable, RawBestowLoreBook, ConnectedLoreBook, ref IsLoreBookParsed, ref IsConnected, this);
             BestowTitle = PlayerTitle.ConnectSingleProperty(ErrorInfo, PlayerTitleTable, RawBestowTitle, BestowTitle, ref IsRawBestowTitleParsed, ref IsConnected, this);
 
             return IsConnected;
@@ -1086,16 +1083,15 @@ namespace PgJsonObjects
             AddObjectList(BehaviorList, data, ref offset, BaseOffset, 116, StoredObjectListTable);
             AddString(DynamicCraftingSummary, data, ref offset, BaseOffset, 120, StoredStringtable);
             AddObject(BestowTitle as ISerializableJsonObject, data, ref offset, BaseOffset, 124, StoredObjectTable);
-            AddInt(RawBestowLoreBook, data, ref offset, BaseOffset, 128);
+            AddInt(RawUnknownSkillReqIndex, data, ref offset, BaseOffset, 128);
             AddObject(ConnectedLoreBook as ISerializableJsonObject, data, ref offset, BaseOffset, 132, StoredObjectTable);
             AddStringList(KeywordValueList, data, ref offset, BaseOffset, 136, StoredStringListTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 140, StoredStringListTable);
             AddObjectList(BestowRecipeList, data, ref offset, BaseOffset, 144, StoredObjectListTable);
             AddStringList(AppearanceDetailList, data, ref offset, BaseOffset, 148, StoredStringListTable);
             AddStringList(RawKeywordList, data, ref offset, BaseOffset, 152, StoredStringListTable);
-            AddInt(RawUnknownSkillReqIndex, data, ref offset, BaseOffset, 156);
 
-            FinishSerializing(data, ref offset, BaseOffset, 160, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 156, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -24,6 +24,19 @@ namespace PgJsonObjects
         public override string SortingName { get { return Title; } }
         public const int SearchResultIconId = 5792;
         public string SearchResultIconFileName { get { return "icon_" + LoreBook.SearchResultIconId; } }
+        public int? Id
+        {
+            get
+            {
+                if (Key.Length > 5)
+                {
+                    if (int.TryParse(Key.Substring(5), out int Result))
+                        return Result;
+                }
+
+                return null;
+            }
+        }
         #endregion
 
         #region Parsing
@@ -98,12 +111,17 @@ namespace PgJsonObjects
             return IsConnected;
         }
 
-        public static IPgLoreBook ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> LoreBookTable, int LoreBookId, IPgLoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static IPgLoreBook ConnectSingleProperty(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> LoreBookTable, int? RawLoreBookId, IPgLoreBook ParsedLoreBook, ref bool IsRawLoreBookParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawLoreBookParsed)
                 return ParsedLoreBook;
 
             IsRawLoreBookParsed = true;
+
+            if (!RawLoreBookId.HasValue)
+                return null;
+
+            int LoreBookId = RawLoreBookId.Value;
             string LoreBookName = "Book_" + LoreBookId;
 
             foreach (KeyValuePair<string, IJsonKey> Entry in LoreBookTable)
