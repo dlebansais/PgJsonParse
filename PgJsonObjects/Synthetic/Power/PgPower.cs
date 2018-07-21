@@ -44,6 +44,11 @@ namespace PgJsonObjects
             return Result;
         }
 
+        public void InitTierList(Dictionary<string, IJsonKey> attributeTable)
+        {
+            PgPower.FillcombinedTierList(CombinedTierList, attributeTable, TierEffectList, TierOffset);
+        }
+
         public override string Key { get { return GetString(0); } }
         public string Prefix { get { return GetString(4); } }
         public string Suffix { get { return GetString(8); } }
@@ -126,6 +131,7 @@ namespace PgJsonObjects
         }
 
         public override string SortingName { get { return ComposedName; } }
+        public List<string> CombinedTierList { get; } = new List<string>();
 
         public string SearchResultIconFileName
         {
@@ -138,6 +144,89 @@ namespace PgJsonObjects
 
                 return "icon_" + IconId;
             }
+        }
+
+        public static void FillcombinedTierList(List<string> combinedTierList, Dictionary<string, IJsonKey> attributeTable, IList<IPgPowerTier> tierEffectList, int TierOffset)
+        {
+            for (int i = 0; i < tierEffectList.Count; i++)
+            {
+                IPgPowerTier Item = tierEffectList[i];
+                int Tier = TierOffset + i;
+
+                foreach (IPgPowerEffect Effect in Item.EffectList)
+                {
+                    IPgPowerAttributeLink AsPowerAttributeLink;
+                    IPgPowerSimpleEffect AsPowerSimpleEffect;
+
+                    if ((AsPowerAttributeLink = Effect as IPgPowerAttributeLink) != null)
+                    {
+                        if (attributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
+                        {
+                            IPgAttribute PowerAttribute = attributeTable[AsPowerAttributeLink.AttributeName] as IPgAttribute;
+
+                            bool IsPercent = PowerAttribute.IsLabelWithPercent;
+                            string Label = PowerAttribute.LabelRippedOfPercent;
+                            string Name = Label;
+
+                            if (AsPowerAttributeLink.AttributeEffect != 0)
+                            {
+                                float PowerValue = AsPowerAttributeLink.AttributeEffect;
+
+                                if (IsPercent)
+                                {
+                                    string PowerValueString = Tools.FloatToString(PowerValue * 100, AsPowerAttributeLink.AttributeEffectFormat);
+
+                                    if (PowerValue > 0)
+                                        PowerValueString = "+" + PowerValueString;
+
+                                    Name += " " + PowerValueString + "%";
+                                }
+                                else
+                                {
+                                    string PowerValueString = Tools.FloatToString(PowerValue, AsPowerAttributeLink.AttributeEffectFormat);
+
+                                    if (PowerValue > 0)
+                                        PowerValueString = "+" + PowerValueString;
+
+                                    Name += " " + PowerValueString;
+                                }
+                            }
+
+                            combinedTierList.Add(PrepareTier(Tier, Name));
+                        }
+                    }
+
+                    else if ((AsPowerSimpleEffect = Effect as IPgPowerSimpleEffect) != null)
+                    {
+                        combinedTierList.Add(PrepareTier(Tier, AsPowerSimpleEffect.Description));
+                    }
+                }
+            }
+
+            combinedTierList.Sort(SortByLevel);
+        }
+
+        private static string PrepareTier(int Level, string s)
+        {
+            return "Tier " + Level + ": " + s;
+        }
+
+        private static int SortByLevel(string s1, string s2)
+        {
+            int i1 = s1.IndexOf(':');
+            int i2 = s2.IndexOf(':');
+
+            int l1 = 0;
+            int.TryParse(s1.Substring(5, i1 - 5), out l1);
+            int l2 = 0;
+            int.TryParse(s2.Substring(5, i2 - 5), out l2);
+
+            if (l1 > l2)
+                return 1;
+            else if (l1 < l2)
+                return -1;
+            else
+                return 0;
         }
     }
 }

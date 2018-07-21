@@ -70,64 +70,11 @@ namespace PgJsonObjects
         public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IJsonKey>> AllTables, ParseErrorInfo ErrorInfo)
         {
             Dictionary<string, IJsonKey> AttributeTable = AllTables[typeof(Attribute)];
-            IList<IPgPowerTier> AsTierEffectList = TierEffectList;
+            PgPower.FillcombinedTierList(CombinedTierList, AttributeTable, TierEffectList, TierOffset);
+        }
 
-            for (int i = 0; i < AsTierEffectList.Count; i++)
-            {
-                IPgPowerTier Item = AsTierEffectList[i];
-                int Tier = TierOffset + i;
-
-                foreach (PowerEffect Effect in Item.EffectList)
-                {
-                    PowerAttributeLink AsPowerAttributeLink;
-                    PowerSimpleEffect AsPowerSimpleEffect;
-
-                    if ((AsPowerAttributeLink = Effect as PowerAttributeLink) != null)
-                    {
-                        if (AttributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
-                        {
-                            Attribute PowerAttribute = AttributeTable[AsPowerAttributeLink.AttributeName] as Attribute;
-
-                            bool IsPercent = PowerAttribute.IsLabelWithPercent;
-                            string Label = PowerAttribute.LabelRippedOfPercent;
-                            string Name = Label;
-
-                            if (AsPowerAttributeLink.AttributeEffect != 0)
-                            {
-                                float PowerValue = AsPowerAttributeLink.AttributeEffect;
-
-                                if (IsPercent)
-                                {
-                                    string PowerValueString = Tools.FloatToString(PowerValue * 100, AsPowerAttributeLink.AttributeEffectFormat);
-
-                                    if (PowerValue > 0)
-                                        PowerValueString = "+" + PowerValueString;
-
-                                    Name += " " + PowerValueString + "%";
-                                }
-                                else
-                                {
-                                    string PowerValueString = Tools.FloatToString(PowerValue, AsPowerAttributeLink.AttributeEffectFormat);
-
-                                    if (PowerValue > 0)
-                                        PowerValueString = "+" + PowerValueString;
-
-                                    Name += " " + PowerValueString;
-                                }
-                            }
-
-                            CombinedTierList.Add(PrepareTier(Tier, Name));
-                        }
-                    }
-
-                    else if ((AsPowerSimpleEffect = Effect as PowerSimpleEffect) != null)
-                    {
-                        CombinedTierList.Add(PrepareTier(Tier, AsPowerSimpleEffect.Description));
-                    }
-                }
-            }
-
-            CombinedTierList.Sort(SortByLevel);
+        public void InitTierList(Dictionary<string, IJsonKey> attributeTable)
+        {
         }
 
         private static int SortByLevel(string s1, string s2)

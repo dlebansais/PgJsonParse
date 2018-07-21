@@ -14,5 +14,7 @@ namespace PgJsonObjects
         IPgPowerTierCollection TierEffectList { get; }
         int TierOffset { get; }
         int? RawTierOffset { get; }
+        List<string> CombinedTierList { get; }
+        void InitTierList(Dictionary<string, IJsonKey> attributeTable);
     }
 }

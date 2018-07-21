@@ -4,44 +4,21 @@ namespace PgJsonObjects
 {
     public class PlanerSlotPower
     {
-        public PlanerSlotPower(IPgPower Reference, Dictionary<string, IJsonKey> AttributeTable, int MaxLevelFirstSkill)
+        public PlanerSlotPower(IPgPower Reference, Dictionary<string, IJsonKey> AttributeTable, int maxSkillLevel)
         {
             this.Reference = Reference;
             IList<IPgPowerTier> TierEffectList = Reference.TierEffectList;
 
-            int LastTier = 0;
+            int LastSkillLevelPrereq = 0;
             IPgPowerTier LastPowerTier = null;
-            int MaxTier;
 
-            if (MaxLevelFirstSkill > 0 && MaxLevelFirstSkill <= 125)
-            {
-                if (TierEffectList.Count >= 16)
-                    MaxTier = MaxLevelFirstSkill / 5;
-                else if (TierEffectList.Count >= 8)
-                    MaxTier = MaxLevelFirstSkill / 10;
-                else if (TierEffectList.Count >= 4)
-                    MaxTier = MaxLevelFirstSkill / 20;
-                else if (TierEffectList.Count >= 3)
-                    MaxTier = MaxLevelFirstSkill / 30;
-                else if (TierEffectList.Count >= 2)
-                    MaxTier = MaxLevelFirstSkill / 50;
-                else
-                    MaxTier = -1;
-            }
-            else
-                MaxTier = -1;
-
-            for (int i = 0; i < TierEffectList.Count; i++)
-            {
-                IPgPowerTier Item = TierEffectList[i];
-                int Tier = Reference.TierOffset + i;
-
-                if ((LastTier < Tier && (MaxTier < 0 || Tier < MaxTier)) || LastPowerTier == null)
+            foreach (IPgPowerTier Item in TierEffectList)
+                if (LastPowerTier == null || (Item.RawSkillLevelPrereq.HasValue && Item.RawSkillLevelPrereq.Value <= maxSkillLevel && LastSkillLevelPrereq < Item.RawSkillLevelPrereq.Value))
                 {
-                    LastTier = Tier;
                     LastPowerTier = Item;
+                    if (Item.RawSkillLevelPrereq.HasValue)
+                        LastSkillLevelPrereq = Item.RawSkillLevelPrereq.Value;
                 }
-            }
 
             IPgPowerEffectCollection EffectList = LastPowerTier.EffectList;
 

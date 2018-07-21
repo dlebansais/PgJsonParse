@@ -1315,12 +1315,20 @@ namespace PgJsonParse
 
             Dictionary<string, IJsonKey> NpcTable = ObjectList.Definitions[typeof(GameNpc)].ObjectTable;
             Dictionary<string, IJsonKey> ItemTable = ObjectList.Definitions[typeof(Item)].ObjectTable;
+            Dictionary<string, IJsonKey> PowerTable = ObjectList.Definitions[typeof(Power)].ObjectTable;
+            Dictionary<string, IJsonKey> AttributeTable = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)].ObjectTable;
 
             foreach (KeyValuePair<string, IJsonKey> Entry in NpcTable)
             {
                 IPgGameNpc Npc = Entry.Value as IPgGameNpc;
                 foreach (IPgNpcPreference NpcPreference in Npc.PreferenceList)
                     NpcPreference.InitFavorList(ItemTable);
+            }
+
+            foreach (KeyValuePair<string, IJsonKey> Entry in PowerTable)
+            {
+                IPgPower Power = Entry.Value as IPgPower;
+                Power.InitTierList(AttributeTable);
             }
 
             callback(true, data);
