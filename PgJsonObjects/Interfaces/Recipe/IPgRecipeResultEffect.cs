@@ -44,5 +44,7 @@ namespace PgJsonObjects
         int? RawAdjustedReuseTime { get; }
         bool IsCamouflaged { get; }
         bool? RawIsCamouflaged { get; }
+
+        string CombinedEffect { get; }
     }
 }

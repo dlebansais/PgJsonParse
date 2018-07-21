@@ -1,5 +1,6 @@
 ﻿using System;
 using Presentation;
+using PgJsonObjects;
 #if CSHARP_XAML_FOR_HTML5
 using Windows.UI.Xaml;
 #else
@@ -12,7 +13,7 @@ namespace PgJsonParse
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item == null)
+            if (item as IObjectContentGenerator == null)
                 return null;
 
             FrameworkElement element = container as FrameworkElement;
@@ -22,7 +23,11 @@ namespace PgJsonParse
 
             while (ItemType != null && Result == null)
             {
-                string TemplateName = ItemType.Name + "Template";
+                string ItemTypeName = ItemType.Name;
+                if (ItemTypeName.Contains("`"))
+                    ItemTypeName = ItemTypeName.Substring(0, ItemTypeName.IndexOf("`"));
+                string TemplateName = ItemTypeName + "Template";
+
                 if (TemplateName.StartsWith("Pg"))
                     TemplateName = TemplateName.Substring(2);
                 else if (TemplateName.StartsWith("Json"))

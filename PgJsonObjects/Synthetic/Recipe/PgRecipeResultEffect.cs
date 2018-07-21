@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -65,5 +66,65 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return new List<string>(); } }
 
         public override string SortingName { get { return null; } }
+
+        public string CombinedEffect
+        {
+            get { return PgRecipeResultEffect.GetCombinedEffect(this); }
+        }
+
+        public static string GetCombinedEffect(IPgRecipeResultEffect item)
+        {
+            string Result;
+
+            switch (item.Effect)
+            {
+                default:
+                    return TextMaps.RecipeEffectTextMap[item.Effect];
+
+                case RecipeEffect.ExtractTSysPower:
+                    return "Extract " + TextMaps.AugmentTextMap[item.ExtractedAugment] + " using material level " + item.MinLevel + "-" + item.MaxLevel + " with " + TextMaps.DecomposeSkillTextMap[item.Skill];
+
+                case RecipeEffect.RepairItemDurability:
+                    return "Repair Between " + (item.RepairMinEfficiency * 100) + "% and " + (item.RepairMaxEfficiency * 100) + "% Of Item Durability, with a cooldown of " + TimeSpan.FromHours(item.RepairCooldown).ToString() + ", items in level range " + item.MinLevel + "-" + item.MaxLevel;
+
+                case RecipeEffect.TSysCraftedEquipment:
+                    Result = "Craft " + TextMaps.CraftedBoostTextMap[item.Boost] + " Tier " + item.BoostLevel;
+
+                    if (item.RawAdditionalEnchantments.HasValue)
+                        Result += " with " + item.RawAdditionalEnchantments.Value + " additional enchantments";
+
+                    if (item.BoostedAnimal != Appearance.Internal_None)
+                        Result += " for " + TextMaps.AppearanceTextMap[item.BoostedAnimal] + " only";
+
+                    return Result;
+
+                case RecipeEffect.CraftingEnhanceItem:
+                    Result = "Add " + TextMaps.EnhancementEffectTextMap[item.Enhancement];
+
+                    switch (item.Enhancement)
+                    {
+                        case EnhancementEffect.Pockets:
+                        case EnhancementEffect.Armor:
+                            Result += " (" + (int)item.AddedQuantity + ")";
+                            break;
+
+                        default:
+                            Result += " (" + (int)(item.AddedQuantity * 100) + "%)";
+                            break;
+                    }
+
+                    Result += " and consume " + item.ConsumedEnhancementPoints + " Craft Points";
+                    return Result;
+
+                case RecipeEffect.AddItemTSysPower:
+                    return "Infuse " + TextMaps.ShamanicSlotPowerTextMap[item.SlotPower] + " (Tier " + item.SlotPowerLevel + "), consuming 100 Craft Points";
+
+                case RecipeEffect.BrewItem:
+                    return "Brewed drink";
+
+                case RecipeEffect.AdjustRecipeReuseTime:
+                    return "Adjust Recipe Reuse Time, " + item.AdjustedReuseTime + "s during " + item.MoonPhase;
+            }
+        }
     }
 }

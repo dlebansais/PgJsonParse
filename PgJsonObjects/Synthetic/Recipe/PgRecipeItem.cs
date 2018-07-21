@@ -25,12 +25,12 @@ namespace PgJsonObjects
         public int? RawItemCode { get { return GetInt(8); } }
         public int StackSize { get { return RawStackSize.HasValue ? (RawStackSize.Value > 0 ? RawStackSize.Value : 1) : 0; } }
         public int? RawStackSize { get { return GetInt(12); } }
-        public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 0; } }
+        public double PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 1.0; } }
         public double? RawPercentChance { get { return GetDouble(16); } }
         public List<RecipeItemKey> ItemKeyList { get { return GetEnumList(20, ref _ItemKeyList); } } private List<RecipeItemKey> _ItemKeyList;
         public IPgItemCollection MatchingKeyItemList { get { return GetObjectList(24, ref _MatchingKeyItemList, PgItemCollection.CreateItem, () => new PgItemCollection()); } } private IPgItemCollection _MatchingKeyItemList;
         public string Desc { get { return GetString(28); } }
-        public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 0; } }
+        public double ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 1.0; } }
         public double? RawChanceToConsume { get { return GetDouble(32); } }
         public double DurabilityConsumed { get { return RawDurabilityConsumed.HasValue ? RawDurabilityConsumed.Value : 0; } }
         public double? RawDurabilityConsumed { get { return GetDouble(36); } }
