@@ -140,7 +140,7 @@ namespace PgJsonObjects
             else
             {
                 ItemKeyword ParsedItemKeyword;
-                if (StringToEnumConversion<ItemKeyword>.TryParse(RawKeyword, out ParsedItemKeyword, ErrorInfo))
+                if (StringToEnumConversion<ItemKeyword>.TryParse(RawKeyword, TextMaps.ItemKeywordStringMap, out ParsedItemKeyword, ErrorInfo))
                 {
                     ItemKeywordList.Add(ParsedItemKeyword);
                     return true;

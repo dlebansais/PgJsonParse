@@ -53,6 +53,7 @@ namespace PgJsonObjects
         public bool ResultItemListIsEmpty { get { return RawResultItemListIsEmpty.HasValue && RawResultItemListIsEmpty.Value; } }
         public bool? RawResultItemListIsEmpty { get; private set; }
         public ItemKeyword RecipeItemKeyword { get; private set; }
+        public List<ItemKeyword> ValidationIngredientKeywordList { get; } = new List<ItemKeyword>();
 
         private PowerSkill RawSkill;
         private bool IsSkillParsed;
@@ -196,8 +197,8 @@ namespace PgJsonObjects
                 GetString = () => ItemMenuLabel } },
             { "ItemMenuKeywordReq", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => RecipeItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RecipeItemKeyword, null, ItemKeyword.Internal_None) } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RecipeItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, TextMaps.ItemKeywordStringMap, errorInfo),
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RecipeItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
             { "IsItemMenuKeywordReqSufficient", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsItemMenuKeywordReqSufficient = value,
@@ -214,6 +215,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawPrereqRecipe = value,
                 GetString = () => PrereqRecipe != null ? PrereqRecipe.InternalName : null } },
+            { "ValidationIngredientKeywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemKeyword>.ParseList(value, ValidationIngredientKeywordList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(ValidationIngredientKeywordList) } },
         }; } }
 
         private void ParseDescription(string value, ParseErrorInfo ErrorInfo)
@@ -877,6 +882,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, RawItemMenuCategory);
                     if (PrereqRecipe != null)
                         AddWithFieldSeparator(ref Result, PrereqRecipe.Name);
+                    foreach (ItemKeyword Keyword in ValidationIngredientKeywordList)
+                        AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[Keyword]);
 
                     return Result;
                 }
@@ -1129,8 +1136,9 @@ namespace PgJsonObjects
             AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 122);
             AddObjectList(SourceList, data, ref offset, BaseOffset, 124, StoredObjectListTable);
             AddDouble(PerfectCottonRatio, data, ref offset, BaseOffset, 128);
+            AddEnumList(ValidationIngredientKeywordList, data, ref offset, BaseOffset, 132, StoredEnumListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 132, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 136, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

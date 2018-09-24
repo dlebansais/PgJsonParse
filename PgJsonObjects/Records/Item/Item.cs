@@ -74,6 +74,7 @@ namespace PgJsonObjects
         public List<string> RawKeywordList { get; private set; } = new List<string>();
         public int UnknownSkillReqIndex { get { return RawUnknownSkillReqIndex.HasValue ? RawUnknownSkillReqIndex.Value : 0; } }
         public int? RawUnknownSkillReqIndex { get; private set; }
+        public WorkOrderSign LintVendorNpc { get; private set; }
 
         private bool IsLoreBookParsed;
         private string RawBestowAbility;
@@ -234,6 +235,10 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawBestowLoreBook = value,
                 GetInteger = () => ConnectedLoreBook != null ? ConnectedLoreBook.Id : null } },
+            { "Lint_VendorNpc", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => LintVendorNpc = StringToEnumConversion<WorkOrderSign>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<WorkOrderSign>.ToString(LintVendorNpc, null, WorkOrderSign.Internal_None) } },
         }; } }
 
         private List<string> GetBestowRecipesList()
@@ -482,7 +487,7 @@ namespace PgJsonObjects
             }
 
             ItemKeyword Key;
-            if (!StringToEnumConversion<ItemKeyword>.TryParse(KeyString, out Key, ErrorInfo))
+            if (!StringToEnumConversion<ItemKeyword>.TryParse(KeyString, TextMaps.ItemKeywordStringMap, out Key, ErrorInfo))
                 return false;
 
             List<float> ValueList;
@@ -716,6 +721,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, Behavior.TextContent);
                 if (RawIsSkillReqsDefaults.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Skill Requirement The Default");
+                if (LintVendorNpc != WorkOrderSign.Internal_None)
+                    AddWithFieldSeparator(ref Result, TextMaps.WorkOrderSignTextMap[LintVendorNpc]);
 
                 return Result;
             }
@@ -1090,8 +1097,9 @@ namespace PgJsonObjects
             AddObjectList(BestowRecipeList, data, ref offset, BaseOffset, 144, StoredObjectListTable);
             AddStringList(AppearanceDetailList, data, ref offset, BaseOffset, 148, StoredStringListTable);
             AddStringList(RawKeywordList, data, ref offset, BaseOffset, 152, StoredStringListTable);
+            AddEnum(LintVendorNpc, data, ref offset, BaseOffset, 156);
 
-            FinishSerializing(data, ref offset, BaseOffset, 156, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 158, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, StoredUIntListTable, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

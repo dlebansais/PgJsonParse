@@ -8,5 +8,6 @@
         IPgLoreBookInfoCategory Plot { get; }
         IPgLoreBookInfoCategory Stories { get; }
         IPgLoreBookInfoCategory GuideProgram { get; }
+        IPgLoreBookInfoCategory NotesAndSigns { get; }
     }
 }

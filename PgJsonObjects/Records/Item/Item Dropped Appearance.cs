@@ -72,5 +72,6 @@
         LootBracelet1,
         GreenMarbleVase,
         AlchemyBulb5,
+        StuffedBear,
     }
 }

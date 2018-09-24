@@ -19,5 +19,11 @@
         ShamanicNecklacePower,
         ShamanicHeadBoostLungs,
         ShamanicLegsWaterBoost,
+        ShamanicChestCrushingTraumaMitigation,
+        ShamanicHandsSlashingAcidMitigation,
+        ShamanicLegsFlySpeed,
+        ShamanicFeetPsychologyBaseDmg,
+        ShamanicRingMentalismBaseDmg,
+        ShamanicNecklaceHealthWave,
     }
 }

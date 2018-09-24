@@ -103,5 +103,17 @@
         RanalonFarmCaster,
         SoloHallsGuardian,
         AnatomyType_Fey,
+        Sedgewick,
+        HaridiusTheExemplary,
+        DementiaPuck,
+        DespairPuck,
+        Bloodsoaker,
+        Grottofang,
+        Chitterface,
+        Urraghur,
+        Karnag,
+        TimothyElerimon,
+        CrazedAlpha,
+        AcclimatedMantis,
     }
 }

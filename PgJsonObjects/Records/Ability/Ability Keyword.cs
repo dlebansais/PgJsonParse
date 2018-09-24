@@ -485,5 +485,10 @@
         GiveWarmth,
         RageAttack,
         PetDoT,
+        CraftingAttack,
+        FishGut,
+        Lint_NoAttackType,
+        SpadeAssault,
+        Summon,
     }
 }

@@ -10,5 +10,7 @@
         CastigateUndeadDmgMod100,
         FlamestrikeUndeadDmgMod33,
         ResetTetheredSoul,
+        FishGutFishMod100,
+        SpadeAssaultPlantMod100,
     }
 }

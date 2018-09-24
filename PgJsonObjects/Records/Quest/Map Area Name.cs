@@ -26,5 +26,6 @@
         GazlukKeep,
         FaeRealm1,
         RanalonDen,
+        Casino,
     }
 }

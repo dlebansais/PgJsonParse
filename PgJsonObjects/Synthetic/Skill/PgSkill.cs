@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgSkill(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 80;
+            offset += 84;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -24,10 +24,10 @@ namespace PgJsonObjects
 
         public override void Init()
         {
-            GetIntList(64, ref AdvancementHintTableKey);
-            GetStringList(68, ref AdvancementHintTableValue);
-            GetIntList(72, ref ReportTableKey);
-            GetStringList(76, ref ReportTableValue);
+            GetIntList(68, ref AdvancementHintTableKey);
+            GetStringList(72, ref AdvancementHintTableValue);
+            GetIntList(76, ref ReportTableKey);
+            GetStringList(80, ref ReportTableValue);
 
             CombinedRewardList = Skill.CreateCombinedRewardList(InteractionFlagLevelCapList, AdvancementHintTableKey, AdvancementHintTableValue, RewardList, ReportTableKey, ReportTableValue);
 
@@ -67,6 +67,7 @@ namespace PgJsonObjects
         public List<SkillCategory> TSysCategoryList { get { return GetEnumList(52, ref _TSysCategoryList); } } private List<SkillCategory> _TSysCategoryList;
         protected override List<string> FieldTableOrder { get { return GetStringList(56, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public int IconId { get { return GetInt(60).Value; } }
+        public List<ItemKeyword> RecipeIngredientKeywordList { get { return GetEnumList(64, ref _RecipeIngredientKeywordList); } } private List<ItemKeyword> _RecipeIngredientKeywordList;
 
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         private List<int> AdvancementHintTableKey = null;
@@ -127,6 +128,9 @@ namespace PgJsonObjects
             { "TSysCategories", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => StringToEnumConversion<SkillCategory>.ToStringList(TSysCategoryList) } },
+            { "RecipeIngredientKeywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(RecipeIngredientKeywordList) } },
         }; } }
 
         private IObjectContentGenerator GetInteractionFlagLevelCaps()

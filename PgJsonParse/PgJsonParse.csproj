@@ -92,6 +92,9 @@
       <DependentUpon>PrologueWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SearchModes.cs" />
+    <Compile Include="SelectionWindow.xaml.cs">
+      <DependentUpon>SelectionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Selectors\EquipmentBoost_ItemEffectGearSelector.cs" />
     <Compile Include="Selectors\Planer_ItemEffectGearSelector.cs" />
     <Compile Include="Selectors\Temporary_ItemEffectGearSelector.cs" />
@@ -119,6 +122,10 @@
     <Page Include="PrologueWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

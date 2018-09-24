@@ -233,7 +233,7 @@ namespace PgJsonObjects
             { "ResultItemKeyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseResultItemKeyword,
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ResultItemKeyword, null, ItemKeyword.Internal_None) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ResultItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
             { "AbilityKeyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseAbilityKeyword,
@@ -249,7 +249,7 @@ namespace PgJsonObjects
             { "ItemKeyword", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseItemKeyword,
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemKeyword, null, ItemKeyword.Internal_None) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
             { "MonsterTypeTag", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseMonsterTypeTag,
@@ -321,7 +321,7 @@ namespace PgJsonObjects
                 Type == QuestObjectiveType.Have ||
                 Type == QuestObjectiveType.Loot ||
                 Type == QuestObjectiveType.UseItem)
-                ItemTarget = StringToEnumConversion<ItemKeyword>.Parse(RawTarget, ErrorInfo);
+                ItemTarget = StringToEnumConversion<ItemKeyword>.Parse(RawTarget, TextMaps.ItemKeywordStringMap, ErrorInfo);
 
             else if (Type == QuestObjectiveType.UseRecipe)
                 RecipeTarget = StringToEnumConversion<RecipeKeyword>.Parse(RawTarget, ErrorInfo);
@@ -449,7 +449,7 @@ namespace PgJsonObjects
         private void ParseResultItemKeyword(string value, ParseErrorInfo ErrorInfo)
         {
             if (Type == QuestObjectiveType.UseRecipe)
-                ResultItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, ErrorInfo);
+                ResultItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, TextMaps.ItemKeywordStringMap, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective ResultItemKeyword (Type)");
         }
@@ -487,7 +487,7 @@ namespace PgJsonObjects
         private void ParseItemKeyword(string value, ParseErrorInfo ErrorInfo)
         {
             if (Type == QuestObjectiveType.GuildGiveItem)
-                ItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, ErrorInfo);
+                ItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, TextMaps.ItemKeywordStringMap, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective ItemKeyword (Type)");
         }

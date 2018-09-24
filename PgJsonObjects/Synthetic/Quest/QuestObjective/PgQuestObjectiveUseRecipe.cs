@@ -46,7 +46,7 @@ namespace PgJsonObjects
                 GetString = () => Skill != null ? StringToEnumConversion<PowerSkill>.ToString(Skill.CombatSkill, null, PowerSkill.Internal_None) : null } },
             { "ResultItemKeyword", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ResultItemKeyword, null, ItemKeyword.Internal_None) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ResultItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
         }; } }
 
         public override IList<IBackLinkable> GetLinkBack()

@@ -266,6 +266,9 @@
         SpawnPlayerPortal1,
         SpawnPlayerPortal2,
         Calligraphy5D,
+        CraftingEnhanceItemSwordFlatDmg,
+        CraftingEnhanceItemKnifeFlatDmg,
+        CraftingEnhanceItemHammerFlatDmg,
 
         ExtractTSysPower,
         RepairItemDurability,

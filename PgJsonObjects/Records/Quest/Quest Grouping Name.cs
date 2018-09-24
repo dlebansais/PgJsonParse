@@ -16,5 +16,6 @@
         Druid_IceGiants,
         Druid_DesertWatchers,
         Druid_Rotflowers,
+        CasinoExcursion,
     }
 }

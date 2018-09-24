@@ -46,5 +46,6 @@
         TakeSoilSample,
         EmptyBottle,
         ObtainTitle,
+        HugBear,
     }
 }

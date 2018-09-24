@@ -34,6 +34,7 @@ namespace PgJsonObjects
         public string Name { get; private set; }
         public IPgSkill ParentSkill { get; private set; }
         public List<SkillCategory> TSysCategoryList { get; } = new List<SkillCategory>();
+        public List<ItemKeyword> RecipeIngredientKeywordList { get; } = new List<ItemKeyword>();
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         private bool IsRawXpTableParsed;
         private string RawAdvancementTable;
@@ -246,6 +247,10 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<SkillCategory>.ParseList(value, TSysCategoryList, errorInfo),
                 GetStringArray = () => StringToEnumConversion<SkillCategory>.ToStringList(TSysCategoryList) } },
+            { "RecipeIngredientKeywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemKeyword>.ParseList(value, RecipeIngredientKeywordList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(RecipeIngredientKeywordList) } },
         }; } }
 
         private void ParseAdvancementTable(string value, ParseErrorInfo errorInfo)
@@ -476,12 +481,12 @@ namespace PgJsonObjects
 
             return Result;
         }
-
+/*
         private void ParseTSysCategories(string RawTSysCategories, ParseErrorInfo ErrorInfo)
         {
             if (StringToEnumConversion<SkillCategory>.TryParse(RawTSysCategories, out SkillCategory ParsedTSysCategory, ErrorInfo))
                 TSysCategoryList.Add(ParsedTSysCategory);
-        }
+        }*/
         #endregion
 
         #region Indexing
@@ -687,12 +692,13 @@ namespace PgJsonObjects
             AddEnumList(TSysCategoryList, data, ref offset, BaseOffset, 52, StoredEnumListTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 56, StoredStringListTable);
             AddInt(IconId, data, ref offset, BaseOffset, 60);
-            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 64, StoredIntListTable);
-            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 68, StoredStringListTable);
-            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 72, StoredIntListTable);
-            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 76, StoredStringListTable);
+            AddEnumList(RecipeIngredientKeywordList, data, ref offset, BaseOffset, 64, StoredEnumListTable);
+            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 68, StoredIntListTable);
+            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 72, StoredStringListTable);
+            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 76, StoredIntListTable);
+            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 80, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 80, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 84, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

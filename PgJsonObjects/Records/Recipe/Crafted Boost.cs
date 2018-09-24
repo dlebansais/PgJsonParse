@@ -53,5 +53,10 @@
         CraftedBardGloves,
         CraftedBardHelm,
         CraftedPriestStaff,
+        CraftedNimbleShoes,
+        CraftedNimblePants,
+        CraftedNimbleCoat,
+        CraftedNimbleGloves,
+        CraftedNimbleHelm,
     }
 }

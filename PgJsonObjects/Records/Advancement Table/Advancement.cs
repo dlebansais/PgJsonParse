@@ -136,6 +136,8 @@ namespace PgJsonObjects
         public double? RawShopHiringNumFree { get; private set; }
         public float CriticalHitDamage { get { return (float)(RawCriticalHitDamage.HasValue ? RawCriticalHitDamage.Value : 0); } }
         public double? RawCriticalHitDamage { get; private set; }
+        public float MonsterCritChance { get { return (float)(RawMonsterCritChance.HasValue ? RawMonsterCritChance.Value : 0); } }
+        public double? RawMonsterCritChance { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -420,6 +422,10 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCriticalHitDamage = value,
                 GetFloat = () => RawCriticalHitDamage } },
+            { "MONSTER_CRIT_CHANCE", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMonsterCritChance = value,
+                GetFloat = () => RawMonsterCritChance } },
         }; } }
 
         protected override bool IsCustomFieldParsed(string FieldKey, object FieldValue, ParseErrorInfo ErrorInfo)
@@ -648,7 +654,8 @@ namespace PgJsonObjects
             AddDouble(RawShopLogDaysKept, data, ref offset, BaseOffset, 240);
             AddDouble(RawShopHiringNumFree, data, ref offset, BaseOffset, 244);
             AddDouble(RawCriticalHitDamage, data, ref offset, BaseOffset, 248);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 252, StoredStringListTable);
+            AddDouble(RawMonsterCritChance, data, ref offset, BaseOffset, 252);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 256, StoredStringListTable);
 
             List<int> VulnerabilityList = new List<int>();
             foreach (KeyValuePair<DamageType, double> Entry in VulnerabilityTable)
@@ -656,7 +663,7 @@ namespace PgJsonObjects
                 VulnerabilityList.Add((int)Entry.Key);
                 VulnerabilityList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
             }
-            AddIntList(VulnerabilityList, data, ref offset, BaseOffset, 256, StoredIntListTable);
+            AddIntList(VulnerabilityList, data, ref offset, BaseOffset, 260, StoredIntListTable);
 
             List<int> MitigationList = new List<int>();
             foreach (KeyValuePair<DamageType, double> Entry in MitigationTable)
@@ -664,7 +671,7 @@ namespace PgJsonObjects
                 MitigationList.Add((int)Entry.Key);
                 MitigationList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
             }
-            AddIntList(MitigationList, data, ref offset, BaseOffset, 260, StoredIntListTable);
+            AddIntList(MitigationList, data, ref offset, BaseOffset, 264, StoredIntListTable);
 
             List<int> DirectModList = new List<int>();
             foreach (KeyValuePair<DamageType, double> Entry in DirectModTable)
@@ -672,7 +679,7 @@ namespace PgJsonObjects
                 DirectModList.Add((int)Entry.Key);
                 DirectModList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
             }
-            AddIntList(DirectModList, data, ref offset, BaseOffset, 264, StoredIntListTable);
+            AddIntList(DirectModList, data, ref offset, BaseOffset, 268, StoredIntListTable);
 
             List<int> IndirectModList = new List<int>();
             foreach (KeyValuePair<DamageType, double> Entry in IndirectModTable)
@@ -680,9 +687,9 @@ namespace PgJsonObjects
                 IndirectModList.Add((int)Entry.Key);
                 IndirectModList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
             }
-            AddIntList(IndirectModList, data, ref offset, BaseOffset, 268, StoredIntListTable);
+            AddIntList(IndirectModList, data, ref offset, BaseOffset, 272, StoredIntListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 272, StoredStringtable, null, null, null, StoredIntListTable, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 276, StoredStringtable, null, null, null, StoredIntListTable, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

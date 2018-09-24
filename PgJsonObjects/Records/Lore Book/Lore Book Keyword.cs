@@ -11,6 +11,7 @@
         AreaCave1,
         AreaCave2,
         AreaEltibule,
-        Loot
+        Loot,
+        AreaCasino,
     }
 }

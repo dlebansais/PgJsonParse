@@ -1,0 +1,57 @@
+﻿<p:RootControl x:Class="PgJsonParse.SelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:Presentation;assembly=Presentation"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:app="clr-namespace:PgJsonParse"
+        xmlns:conv="clr-namespace:Converters">
+    <p:RootControl.Resources>
+        <p:ApplicationCommand x:Key="BuildPlanerCommand"/>
+        <p:ApplicationCommand x:Key="SearchCommand"/>
+        <p:ApplicationCommand x:Key="HomeCommand"/>
+        <BitmapImage x:Key="imgClose" UriSource="/PgJsonParse;component/Resources/close.png"/>
+        <BitmapImage x:Key="imgDownload" UriSource="/PgJsonParse;component/Resources/download.png"/>
+    </p:RootControl.Resources>
+    <Border CornerRadius="3" Background="#F4F4F4" BorderBrush="DarkGray" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <Grid>
+            <DockPanel Margin="10,10,10,10">
+                <DockPanel DockPanel.Dock="Top">
+                    <Grid DockPanel.Dock="Left" Height="30" Margin="1,0,20,0">
+                        <Button Command="{StaticResource BuildPlanerCommand}" CommandParameter="{Binding}" HorizontalContentAlignment="Left" Background="DarkGray">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Image Source="{StaticResource imgDownload}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
+                                <TextBlock VerticalAlignment="Center">Build Planer</TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                    <Grid DockPanel.Dock="Left" Height="30" Margin="1,0,20,0">
+                        <Button Command="{StaticResource SearchCommand}" CommandParameter="{Binding}" HorizontalContentAlignment="Left" Background="DarkGray">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Image Source="{StaticResource imgDownload}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
+                                <TextBlock VerticalAlignment="Center">Search</TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                    <Grid DockPanel.Dock="Right" Height="30" Margin="1,0,20,0">
+                        <Button Command="{StaticResource HomeCommand}" CommandParameter="{Binding}" HorizontalContentAlignment="Left" Background="DarkGray">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Image Source="{StaticResource imgDownload}" VerticalAlignment="Center" Width="16" Height="16" Margin="5,0,5,0"/>
+                                <TextBlock VerticalAlignment="Center">Back to Versions</TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                    <Grid/>
+                </DockPanel>
+                <Border DockPanel.Dock="Bottom" BorderThickness="0" BorderBrush="{x:Null}">
+                    <TextBlock TextAlignment="Center" Margin="0,5,0,5">Downloaded content copyright © 2017, Elder Game, LLC</TextBlock>
+                </Border>
+                <Grid>
+                    <CheckBox IsChecked="{Binding GoToSameSelection, Mode=TwoWay}" VerticalAlignment="Bottom" Margin="0,10,0,0">Automatically go to the same selection next time.</CheckBox>
+                </Grid>
+            </DockPanel>
+            <p:CloseButton Background="#F4F4F4" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1,0,0,1">
+                <Image Source="{StaticResource imgClose}" Width="16" Height="16"/>
+            </p:CloseButton>
+        </Grid>
+    </Border>
+</p:RootControl>

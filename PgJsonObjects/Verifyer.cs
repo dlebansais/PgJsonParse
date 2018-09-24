@@ -109,9 +109,7 @@ namespace PgJsonObjects
                         {
                             if (typeof(TI) == typeof(IPgAttribute))
                             {
-                                if (Item.Key == "COCKATRICEDEBUFF_COST_DELTA")
-                                    continue;
-                                if (Item.Key == "LAMIADEBUFF_COST_DELTA")
+                                if (Item.Key == "COCKATRICEDEBUFF_COST_DELTA" || Item.Key == "LAMIADEBUFF_COST_DELTA" || Item.Key == "FLY_INCOMBAT_COST_PER_SEC")
                                     continue;
                             }
 

@@ -148,11 +148,13 @@ namespace PgJsonObjects
         public double? RawShopHiringNumFree { get { return GetDouble(244); } }
         public float CriticalHitDamage { get { return (float)(RawCriticalHitDamage.HasValue ? RawCriticalHitDamage.Value : 0); } }
         public double? RawCriticalHitDamage { get { return GetDouble(248); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(252, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public List<int> VulnerabilityDataList { get { return GetIntList(256, ref _VulnerabilityDataList); } } private List<int> _VulnerabilityDataList;
-        public List<int> MitigationDataList { get { return GetIntList(260, ref _MitigationDataList); } } private List<int> _MitigationDataList;
-        public List<int> DirectModDataList { get { return GetIntList(264, ref _DirectModDataList); } } private List<int> _DirectModDataList;
-        public List<int> IndirectModDataList { get { return GetIntList(268, ref _IndirectModDataList); } } private List<int> _IndirectModDataList;
+        public float MonsterCritChance { get { return (float)(RawMonsterCritChance.HasValue ? RawMonsterCritChance.Value : 0); } }
+        public double? RawMonsterCritChance { get { return GetDouble(252); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(256, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public List<int> VulnerabilityDataList { get { return GetIntList(260, ref _VulnerabilityDataList); } } private List<int> _VulnerabilityDataList;
+        public List<int> MitigationDataList { get { return GetIntList(264, ref _MitigationDataList); } } private List<int> _MitigationDataList;
+        public List<int> DirectModDataList { get { return GetIntList(268, ref _DirectModDataList); } } private List<int> _DirectModDataList;
+        public List<int> IndirectModDataList { get { return GetIntList(272, ref _IndirectModDataList); } } private List<int> _IndirectModDataList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "IGNORE_CHANCE_FEAR", new FieldParser() {

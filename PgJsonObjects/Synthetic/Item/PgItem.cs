@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgItem(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 156;
+            offset += 158;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -146,6 +146,7 @@ namespace PgJsonObjects
         public IPgRecipeCollection BestowRecipeList { get { return GetObjectList(144, ref _BestowRecipeList, PgRecipeCollection.CreateItem, () => new PgRecipeCollection()); } } private IPgRecipeCollection _BestowRecipeList;
         public List<string> AppearanceDetailList { get { return GetStringList(148, ref _AppearanceDetailList); } } private List<string> _AppearanceDetailList;
         public List<string> RawKeywordList { get { return GetStringList(152, ref _RawKeywordList); } } private List<string> _RawKeywordList;
+        public WorkOrderSign LintVendorNpc { get { return GetEnum<WorkOrderSign>(156); } }
 
         public Dictionary<ItemKeyword, List<float>> KeywordTable { get; } = new Dictionary<ItemKeyword, List<float>>();
 
@@ -254,6 +255,9 @@ namespace PgJsonObjects
             { "BestowLoreBook", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => ConnectedLoreBook != null ? ConnectedLoreBook.Id : null } },
+            { "Lint_VendorNpc", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<WorkOrderSign>.ToString(LintVendorNpc, null, WorkOrderSign.Internal_None) } },
         }; } }
 
         private List<string> GetBestowRecipesList()

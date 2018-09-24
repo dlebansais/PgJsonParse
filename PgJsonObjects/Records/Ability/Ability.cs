@@ -394,7 +394,7 @@ namespace PgJsonObjects
         {
             ConsumedItems = StringToEnumConversion<ConsumedItems>.Parse(value, null);
             if (ConsumedItems == ConsumedItems.Internal_None)
-                ConsumedItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo);
+                ConsumedItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, TextMaps.ItemKeywordStringMap, errorInfo);
         }
 
         private string GetConsumedItemKeyword()
@@ -2258,6 +2258,36 @@ namespace PgJsonObjects
                 //TODO
             }
 
+            else if (Tools.Scan(s, "Creatures with Fish anatomy take double damage", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "You must have hands to use this ability", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "This is considered a (non-bleed-inducing) variant of Gut for purposes of equipment and combos", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Target's movement speed is reduced %d%", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Creatures with Plant anatomy take double damage", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "This is considered a variant of Front Kick for purposes of equipment and combos", args))
+            {
+                //TODO
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);
@@ -2398,7 +2428,7 @@ namespace PgJsonObjects
 
             if (ConsumedItemKeyword != ItemKeyword.Internal_None)
             {
-                string ConsumedItemName = StringToEnumConversion<ItemKeyword>.ToString(ConsumedItemKeyword, null, ItemKeyword.Internal_None);
+                string ConsumedItemName = StringToEnumConversion<ItemKeyword>.ToString(ConsumedItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None);
                 ConsumedItemLink = Item.ConnectSingleProperty(null, ItemTable, ConsumedItemName, ConsumedItemLink, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
             }
 

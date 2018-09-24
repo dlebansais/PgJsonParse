@@ -68,9 +68,10 @@ namespace PgJsonObjects
                         }
                     }
 
-                    foreach (int Id in AsPowerAttributeLink.AttributeLink.IconIdList)
-                        if (!CombinedIdList.Contains(Id))
-                            CombinedIdList.Add(Id);
+                    if (AsPowerAttributeLink.AttributeLink != null)
+                        foreach (int Id in AsPowerAttributeLink.AttributeLink.IconIdList)
+                            if (!CombinedIdList.Contains(Id))
+                                CombinedIdList.Add(Id);
                 }
 
                 else if ((AsPowerSimpleEffect = EffectItem as IPgPowerSimpleEffect) != null)

@@ -9,7 +9,7 @@
         Nature,
         Fire,
         Cold,
-        Smiting,
+        //Smiting,
         Piercing,
         Psychic,
         Trauma,

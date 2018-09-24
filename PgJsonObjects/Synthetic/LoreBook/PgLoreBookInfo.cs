@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgLoreBookInfo(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 32;
+            offset += 36;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -28,7 +28,8 @@ namespace PgJsonObjects
         public IPgLoreBookInfoCategory Plot { get { return GetObject(16, ref _Plot, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _Plot;
         public IPgLoreBookInfoCategory Stories { get { return GetObject(20, ref _Stories, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _Stories;
         public IPgLoreBookInfoCategory GuideProgram { get { return GetObject(24, ref _GuideProgram, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _GuideProgram;
-        protected override List<string> FieldTableOrder { get { return GetStringList(28, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public IPgLoreBookInfoCategory NotesAndSigns { get { return GetObject(28, ref _NotesAndSigns, PgLoreBookInfoCategory.CreateNew); } } private IPgLoreBookInfoCategory _NotesAndSigns;
+        protected override List<string> FieldTableOrder { get { return GetStringList(32, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Gods", new FieldParser() {
@@ -49,6 +50,9 @@ namespace PgJsonObjects
             { "GuideProgram", new FieldParser() {
                 Type = FieldType.Object,
                 GetObject = () => GuideProgram as IObjectContentGenerator } },
+            { "NotesAndSigns", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = () => NotesAndSigns as IObjectContentGenerator } },
         }; } }
 
         public override string SortingName { get { return ""; } }

@@ -153,6 +153,7 @@
         Phrenology_Dwarves,
         AlcoholTolerance,
         Priest,
+        Gaming,
     }
 }
 

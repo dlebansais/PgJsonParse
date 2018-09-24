@@ -95,5 +95,7 @@
         GuidePillarFlare_Yellow,
         GuidePillarPrismatic,
         GuidePillarFlowers,
+        AcidBomb,
+        Stunned5Sec,
     }
 }

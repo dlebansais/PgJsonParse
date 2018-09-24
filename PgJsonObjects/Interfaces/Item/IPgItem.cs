@@ -69,6 +69,7 @@ namespace PgJsonObjects
         IPgRecipeCollection BestowRecipeList { get; }
         List<string> AppearanceDetailList { get; }
         List<string> RawKeywordList { get; }
+        WorkOrderSign LintVendorNpc { get; }
 
         Dictionary<ItemKeyword, List<float>> KeywordTable { get; }
     }

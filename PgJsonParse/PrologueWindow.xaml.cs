@@ -20,9 +20,9 @@ namespace PgJsonParse
 {
     public partial class PrologueWindow : RootControl, INotifyPropertyChanged
     {
-        public const double PARSER_VERSION = 306;
-        public const int PG_CACHE_VERSION = 306;
-        public const int PG_CACHE_SIZE = 35052632;
+        public const double PARSER_VERSION = 307;
+        public const int PG_CACHE_VERSION = 307;
+        public const int PG_CACHE_SIZE = 36495928;
 
         #region Init
         public PrologueWindow()
@@ -910,6 +910,20 @@ namespace PgJsonParse
             }
         }
         private double _ParseProgress;
+/*
+        public SelectionWindow Dlg
+        {
+            get { return _Dlg; }
+            private set
+            {
+                if (_Dlg != value)
+                {
+                    _Dlg = value;
+                    NotifyThisPropertyChanged();
+                }
+            }
+        }
+        private SelectionWindow _Dlg;*/
 
         public MainWindow Dlg
         {
@@ -934,6 +948,8 @@ namespace PgJsonParse
         {
             IsGlobalInteractionEnabled = false;
 
+            FrameworkElement RootContent = Content as FrameworkElement;
+            //Dlg = new SelectionWindow(RootContent.ActualWidth, RootContent.ActualHeight);
             Dlg = new MainWindow();
             IsParsing = true;
             IsParsingCancelable = true;

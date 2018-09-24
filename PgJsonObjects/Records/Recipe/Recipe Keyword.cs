@@ -24,5 +24,6 @@
         InstantSnackRecipe,
         SnackRecipe,
         Lint_MealCategory,
+        Lint_IconId,
     }
 }

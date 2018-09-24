@@ -9,5 +9,6 @@
         Plot,
         Misc,
         GuideProgram,
+        NotesAndSigns,
     }
 }

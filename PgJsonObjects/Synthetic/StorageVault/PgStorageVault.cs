@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgStorageVault(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 40;
+            offset += 52;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -37,13 +37,15 @@ namespace PgJsonObjects
         public string RequirementDescription { get { return GetString(16); } }
         public string InteractionFlagRequirement { get { return GetString(20); } }
         public string NpcFriendlyName { get { return GetString(24); } }
-        public ItemKeyword RequiredItemKeyword { get { return GetEnum<ItemKeyword>(28); } }
+//        public ItemKeyword RequiredItemKeyword { get { return GetEnum<ItemKeyword>(28); } }
         public MapAreaName Grouping { get { return GetEnum<MapAreaName>(30); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(32, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
         public bool? RawHasAssociatedNpc { get { return GetBool(36, 0); } }
         public MapAreaName Area { get { return GetEnum<MapAreaName>(38); } }
         public List<int> FavorLevelList { get { return GetIntList(40, ref _FavorLevelList); } } private List<int> _FavorLevelList;
+        public List<ItemKeyword> RequiredItemKeywordList { get { return GetEnumList(44, ref _RequiredItemKeywordList); } } private List<ItemKeyword> _RequiredItemKeywordList;
+        public string SlotAttribute { get { return GetString(48); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "ID", new FieldParser() {
@@ -64,9 +66,11 @@ namespace PgJsonObjects
             { "Levels", new FieldParser() {
                 Type = FieldType.Object,
                 GetObject = GetLevels } },
+/*
             { "RequiredItemKeyword", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RequiredItemKeyword, null, ItemKeyword.Internal_None) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RequiredItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
+*/
             { "RequirementDescription", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => RequirementDescription } },
@@ -76,6 +80,12 @@ namespace PgJsonObjects
             { "Requirements", new FieldParser() {
                 Type = FieldType.Object,
                 GetObject = GetRequirements } },
+            { "RequiredItemKeywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(RequiredItemKeywordList) } },
+            { "SlotAttribute", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => SlotAttribute } },
         }; } }
 
         private string GetArea()

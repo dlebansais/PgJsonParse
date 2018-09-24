@@ -39,7 +39,7 @@ namespace PgJsonObjects
                 GetInteger = () => RawNumber } },
             { "Target", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemTarget, null, ItemKeyword.Internal_None) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemTarget, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
             { "ItemName", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => QuestItem != null ? QuestItem.InternalName : null } },

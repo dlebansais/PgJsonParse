@@ -38,5 +38,6 @@
         Hoplology,
         Oratory,
         Cartography,
+        Gaming,
     }
 }

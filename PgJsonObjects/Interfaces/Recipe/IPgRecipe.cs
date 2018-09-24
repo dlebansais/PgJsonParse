@@ -48,6 +48,7 @@ namespace PgJsonObjects
         bool ResultItemListIsEmpty { get; }
         bool? RawResultItemListIsEmpty { get; }
         ItemKeyword RecipeItemKeyword { get; }
+        List<ItemKeyword> ValidationIngredientKeywordList { get; }
         IPgGenericSourceCollection SourceList { get; }
         double? PerfectCottonRatio { get; }
     }

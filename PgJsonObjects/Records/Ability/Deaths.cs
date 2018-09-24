@@ -134,5 +134,9 @@
         EarthRoot,
         BlindingLight,
         FireBite,
+        Filleted,
+        PriestAdmonish,
+        PriestNuke,
+        Shovel,
     }
 }

@@ -8,5 +8,6 @@
         Eat,
         UseItem,
         Pickup,
+        Cry,
     }
 }

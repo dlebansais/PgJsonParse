@@ -12,12 +12,14 @@ namespace PgJsonObjects
         string RequirementDescription { get; }
         string InteractionFlagRequirement { get; }
         string NpcFriendlyName { get; }
-        ItemKeyword RequiredItemKeyword { get; }
+//        ItemKeyword RequiredItemKeyword { get; }
         MapAreaName Grouping { get; }
         bool HasAssociatedNpc { get; }
         bool? RawHasAssociatedNpc { get; }
         MapAreaName Area { get; }
         List<int> FavorLevelList { get; }
         Dictionary<Favor, int> FavorLevelTable { get; }
+        List<ItemKeyword> RequiredItemKeywordList { get; }
+        string SlotAttribute { get; } //TODO
     }
 }

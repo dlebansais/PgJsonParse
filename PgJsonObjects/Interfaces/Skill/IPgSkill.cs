@@ -30,6 +30,7 @@ namespace PgJsonObjects
         string Name { get; }
         IPgSkill ParentSkill { get; }
         List<SkillCategory> TSysCategoryList { get; }
+        List<ItemKeyword> RecipeIngredientKeywordList { get; }
         List<SkillRewardCommon> CombinedRewardList { get; }
         int IconId { get; }
     }

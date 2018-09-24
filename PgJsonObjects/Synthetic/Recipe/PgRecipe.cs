@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgRecipe(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 132;
+            offset += 136;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -94,6 +94,7 @@ namespace PgJsonObjects
         public ItemKeyword RecipeItemKeyword { get { return GetEnum<ItemKeyword>(122); } }
         public IPgGenericSourceCollection SourceList { get { return GetObjectList(124, ref _SourceList, (byte[] data, ref int offset) => PgGenericSourceCollection.CreateItem(this, data, ref offset), () => new PgGenericSourceCollection()); } } private PgGenericSourceCollection _SourceList;
         public double? PerfectCottonRatio { get { return GetDouble(128); } }
+        public List<ItemKeyword> ValidationIngredientKeywordList { get { return GetEnumList(132, ref _ValidationIngredientKeywordList); } } private List<ItemKeyword> _ValidationIngredientKeywordList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Description", new FieldParser() {
@@ -179,7 +180,7 @@ namespace PgJsonObjects
                 GetString = () => ItemMenuLabel } },
             { "ItemMenuKeywordReq", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RecipeItemKeyword, null, ItemKeyword.Internal_None) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RecipeItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
             { "IsItemMenuKeywordReqSufficient", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawIsItemMenuKeywordReqSufficient } },
@@ -192,6 +193,9 @@ namespace PgJsonObjects
             { "PrereqRecipe", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => PrereqRecipe != null ? PrereqRecipe.InternalName : null } },
+            { "ValidationIngredientKeywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(ValidationIngredientKeywordList) } },
         }; } }
 
         private List<string> GetResultEffects()

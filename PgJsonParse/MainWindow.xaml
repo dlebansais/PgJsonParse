@@ -1858,7 +1858,7 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="PowerNameTemplate">
-            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" HorizontalAlignment="Stretch"/>
+            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" HorizontalAlignment="Stretch" ToolTip="{Binding Reference.ComposedName}"/>
         </DataTemplate>
         <DataTemplate x:Key="FullPowerTemplate">
             <DockPanel>
@@ -2595,6 +2595,25 @@
                 <TextBlock Text="{Binding Value}" Margin="5,0,0,0"/>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="SearchResultStorageVaultContent_RequiredItemKeyword_ItemTemplateFirst">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultStorageVaultContent_RequiredItemKeyword_ItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="SearchResultStorageVaultContentTemplate">
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top">
@@ -2611,6 +2630,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -2655,16 +2675,33 @@
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
                     </Grid>
+<!--                     
                     <TextBlock Grid.Column="0" Grid.Row="5" TextAlignment="Right" Margin="0,10,0,0">Required Item:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Margin="5,10,0,0">
                         <TextBlock.Text>
                             <Binding Path="RequiredItemKeyword" Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
                         </TextBlock.Text>
                     </TextBlock>
+-->                    
                     <TextBlock Grid.Column="0" Grid.Row="6" TextAlignment="Right" Margin="0,10,0,0">Requirement Description:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding RequirementDescription}" TextWrapping="Wrap" Margin="5,10,0,0"/>
                     <TextBlock Grid.Column="0" Grid.Row="7" TextAlignment="Right" Margin="0,10,0,0">Interaction Requirement:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding InteractionFlagRequirement}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="8" TextAlignment="Right" Margin="0,10,0,0">Required Item Keywords:</TextBlock>
+                    <Grid Grid.Column="1" Grid.Row="8" Margin="5,10,0,0">
+                        <ItemsControl x:Name="ctrl_SearchResultStorageVaultContent_RequiredItemKeyword" ItemsSource="{Binding RequiredItemKeywordList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <app:ListMemberSelector x:Name="SearchResultStorageVaultContent_RequiredItemKeyword" Content="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
                 </Grid>
             </DockPanel>
         </DataTemplate>
@@ -2960,6 +2997,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -3189,6 +3227,12 @@
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Crafting Summary:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="14" Text="{Binding DynamicCraftingSummary}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="2" Grid.Row="15" TextAlignment="Right" Margin="0,10,0,0">Vendor NPC:</TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="15" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="LintVendorNpc" Converter="{StaticResource convEnumToText}" ConverterParameter="WorkOrderSignTextMap"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </Grid>
             </DockPanel>
         </DataTemplate>
@@ -3736,6 +3780,25 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="SearchResultRecipeContent_ValidationIngredientKeyword_ItemTemplateFirst">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultRecipeContent_ValidationIngredientKeyword_ItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="SearchResultRecipeContentTemplate">
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top">
@@ -3857,8 +3920,8 @@
                             <Binding Path="RecipeItemKeyword" Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
                         </TextBlock.Text>
                     </TextBlock>
-                    <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Prerequired Recipe:</TextBlock>
-                    <TextBlock Grid.Column="3" Grid.Row="13" Margin="5,10,0,0">
+                    <TextBlock Grid.Column="0" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Prerequired Recipe:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="13" Margin="5,10,0,0">
                         <Hyperlink x:Name="hyperlink_Recipe_PrereqRecipe" Click="OnRequestNavigate" NavigateUri="unused">
                             <Run>
                                 <Binding Path="PrereqRecipe.Name" Mode="OneWay"/>
@@ -3943,6 +4006,21 @@
                         <TextBlock Text="{Binding ItemMenuCategoryLevel}"/>
                         <TextBlock>)</TextBlock>
                     </StackPanel>
+                    <TextBlock Grid.Column="2" Grid.Row="13" TextAlignment="Right" Margin="0,10,0,0">Ingredient Validation Keywords:</TextBlock>
+                    <Grid Grid.Column="3" Grid.Row="13" Margin="5,10,0,0">
+                        <ItemsControl x:Name="ctrl_SearchResultRecipeContent_ValidationIngredientKeyword" ItemsSource="{Binding ValidationIngredientKeywordList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <app:ListMemberSelector x:Name="SearchResultRecipeContent_ValidationIngredientKeyword" Content="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
                 </Grid>
             </DockPanel>
         </DataTemplate>
@@ -3968,6 +4046,25 @@
                 <TextBlock>
                     <TextBlock.Text>
                         <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="PowerSkillTextMap"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultSkillContent_RecipeIngredientKeyword_ItemTemplateFirst">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultSkillContent_RecipeIngredientKeyword_ItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
                     </TextBlock.Text>
                 </TextBlock>
             </StackPanel>
@@ -4239,6 +4336,7 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -4342,6 +4440,21 @@
                                 <Binding Path="RawAuxCombat" Converter="{StaticResource convNullableBooleanToObject}" ConverterParameter="{StaticResource NoYesNull}"/>
                             </TextBlock.Text>
                         </TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="10" TextAlignment="Right" Margin="0,10,0,0">Ingredient Keywords:</TextBlock>
+                        <Grid Grid.Column="1" Grid.Row="10" Margin="5,10,0,0">
+                            <ItemsControl x:Name="ctrl_SearchResultSkillContent_RecipeIngredientKeyword" ItemsSource="{Binding RecipeIngredientKeywordList}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <app:ListMemberSelector x:Name="SearchResultSkillContent_RecipeIngredientKeyword" Content="{Binding}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </Grid>
                     </Grid>
                     <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -4704,6 +4817,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="Non Combat Regen Health Modifier:" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding NonCombatRegenHealthMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
@@ -4829,6 +4943,8 @@
                     <TextBlock Grid.Column="1" Grid.Row="60" Text="{Binding ShopHiringNumFree}" Visibility="{Binding RawShopHiringNumFree, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                     <TextBlock Grid.Column="0" Grid.Row="61" Text="Critical Hit Damage Modifier:" Visibility="{Binding RawCriticalHitDamage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="61" Text="{Binding CriticalHitDamage, Converter={StaticResource convPercent}}" Visibility="{Binding RawCriticalHitDamage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="62" Text="Monster Crit Chance:" Visibility="{Binding RawMonsterCritChance, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="62" Text="{Binding MonsterCritChance, Converter={StaticResource convPercent}}" Visibility="{Binding RawMonsterCritChance, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>

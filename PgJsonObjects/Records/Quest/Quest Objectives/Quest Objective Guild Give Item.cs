@@ -41,7 +41,7 @@ namespace PgJsonObjects
                 GetString = () => Quest.NpcToString(DeliverNpcId, DeliverNpcName) } },
             { "ItemKeyword", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemKeyword, null, ItemKeyword.Internal_None) } },
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(ItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
             { "ItemName", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => QuestItem != null ? QuestItem.InternalName : null } },

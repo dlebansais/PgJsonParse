@@ -10,9 +10,10 @@ namespace PgJsonObjects
         {
         }
 
-        public Attribute(string key)
+        public Attribute(string key, string label)
         {
             Key = key;
+            Label = label;
         }
 
         #region Direct Properties
@@ -139,7 +140,7 @@ namespace PgJsonObjects
                 }
                 else
                 {
-                    if (s != "COCKATRICEDEBUFF_COST_DELTA" && s != "LAMIADEBUFF_COST_DELTA")
+                    if (s != "COCKATRICEDEBUFF_COST_DELTA" && s != "LAMIADEBUFF_COST_DELTA" && s != "FLY_INCOMBAT_COST_PER_SEC")
                         ErrorInfo.AddMissingKey(s);
                 }
 
@@ -168,7 +169,7 @@ namespace PgJsonObjects
             }
 
             if (ErrorInfo != null)
-                if (RawAttributeName != "COCKATRICEDEBUFF_COST_DELTA" && RawAttributeName != "LAMIADEBUFF_COST_DELTA")
+                if (RawAttributeName != "COCKATRICEDEBUFF_COST_DELTA" && RawAttributeName != "LAMIADEBUFF_COST_DELTA" && RawAttributeName != "FLY_INCOMBAT_COST_PER_SEC")
                     ErrorInfo.AddMissingKey(RawAttributeName);
 
             return null;

@@ -278,6 +278,7 @@
     <Compile Include="Records\Item\Server Info.cs" />
     <Compile Include="Records\Item\ServerInfoEffectCollection.cs" />
     <Compile Include="Records\Item\Skill Requirement.cs" />
+    <Compile Include="Records\Item\WorkOrderSign.cs" />
     <Compile Include="Records\Lore Book\Lore Book Category.cs" />
     <Compile Include="Records\Lore Book\Lore Book Info Category.cs" />
     <Compile Include="Records\Lore Book\Lore Book Info.cs" />

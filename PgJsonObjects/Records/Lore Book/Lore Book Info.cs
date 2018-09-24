@@ -13,6 +13,7 @@ namespace PgJsonObjects
         public IPgLoreBookInfoCategory Plot { get; private set; }
         public IPgLoreBookInfoCategory Stories { get; private set; }
         public IPgLoreBookInfoCategory GuideProgram { get; private set; }
+        public IPgLoreBookInfoCategory NotesAndSigns { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -47,6 +48,10 @@ namespace PgJsonObjects
                 Type = FieldType.Object,
                 ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => GuideProgram = JsonObjectParser<LoreBookInfoCategory>.Parse("GuideProgram", value, errorInfo),
                 GetObject = () => GuideProgram as IObjectContentGenerator } },
+            { "NotesAndSigns", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => NotesAndSigns = JsonObjectParser<LoreBookInfoCategory>.Parse("NotesAndSigns", value, errorInfo),
+                GetObject = () => NotesAndSigns as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -90,9 +95,10 @@ namespace PgJsonObjects
             AddObject(Plot as ISerializableJsonObject, data, ref offset, BaseOffset, 16, StoredObjectTable);
             AddObject(Stories as ISerializableJsonObject, data, ref offset, BaseOffset, 20, StoredObjectTable);
             AddObject(GuideProgram as ISerializableJsonObject, data, ref offset, BaseOffset, 24, StoredObjectTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 28, StoredStringListTable);
+            AddObject(NotesAndSigns as ISerializableJsonObject, data, ref offset, BaseOffset, 28, StoredObjectTable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 32, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 32, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 36, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

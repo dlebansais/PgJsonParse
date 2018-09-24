@@ -1,5 +1,6 @@
 ﻿using PgJsonReader;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -22,6 +23,8 @@ namespace PgJsonObjects
         public MapAreaName Area { get; private set; }
         public List<int> FavorLevelList { get; private set; } = new List<int>();
         public Dictionary<Favor, int> FavorLevelTable { get; private set; } = new Dictionary<Favor, int>();
+        public List<ItemKeyword> RequiredItemKeywordList { get; } = new List<ItemKeyword>();
+        public string SlotAttribute { get; private set; }
 
         private bool IsGameNpcParsed;
         #endregion
@@ -58,10 +61,12 @@ namespace PgJsonObjects
                 Type = FieldType.Object,
                 ParseObject = ParseLevels,
                 GetObject = GetLevels } },
+/*
             { "RequiredItemKeyword", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => RequiredItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RequiredItemKeyword, null, ItemKeyword.Internal_None) } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => RequiredItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, TextMaps.ItemKeywordStringMap, errorInfo),
+                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RequiredItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
+*/
             { "RequirementDescription", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RequirementDescription = value,
@@ -74,6 +79,14 @@ namespace PgJsonObjects
                 Type = FieldType.Object,
                 ParseObject = ParseRequirements,
                 GetObject = GetRequirements } },
+            { "RequiredItemKeywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemKeyword>.ParseList(value, RequiredItemKeywordList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(RequiredItemKeywordList) } },
+            { "SlotAttribute", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => SlotAttribute = value,
+                GetString = () => SlotAttribute } },
         }; } }
 
         private void ParseArea(string RawArea, ParseErrorInfo ErrorInfo)
@@ -176,6 +189,8 @@ namespace PgJsonObjects
                                     InteractionFlagRequirement = "Ivyn Gave Passcode";
                                 else if (InteractionFlag.String == "Serbule2_TapestryInnChest")
                                     InteractionFlagRequirement = "Serbule Hills Tapestry Inn Chest";
+                                else if (InteractionFlag.String == "Tomb1_StoryPuzzleComplete_Looted")
+                                    InteractionFlagRequirement = "Khyrulek's Crypt Story Puzzle Complete Looted";
                                 else
                                     ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
                             }
@@ -184,6 +199,11 @@ namespace PgJsonObjects
                         }
                         else
                             ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
+                    }
+
+                    else if (RequirementType == "IsLongtimeAnimal")
+                    {
+                        InteractionFlagRequirement = "Long Time Animal";
                     }
                     else
                         ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
@@ -238,6 +258,7 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[RequiredItemKeyword]);
                 AddWithFieldSeparator(ref Result, RequirementDescription);
                 AddWithFieldSeparator(ref Result, InteractionFlagRequirement);
+                AddWithFieldSeparator(ref Result, SlotAttribute);
 
                 return Result;
             }
@@ -294,6 +315,7 @@ namespace PgJsonObjects
             int BaseOffset = offset;
             Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, List<int>> StoredIntListTable = new Dictionary<int, List<int>>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
@@ -311,8 +333,10 @@ namespace PgJsonObjects
             CloseBool(ref offset, ref BitOffset);
             AddEnum(Area, data, ref offset, BaseOffset, 38);
             AddIntList(FavorLevelList, data, ref offset, BaseOffset, 40, StoredIntListTable);
+            AddEnumList(RequiredItemKeywordList, data, ref offset, BaseOffset, 44, StoredEnumListTable);
+            AddString(SlotAttribute, data, ref offset, BaseOffset, 48, StoredStringtable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 44, StoredStringtable, StoredObjectTable, null, null, StoredIntListTable, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 52, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion
