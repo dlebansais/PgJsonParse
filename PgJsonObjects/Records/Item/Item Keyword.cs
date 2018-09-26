@@ -882,6 +882,6 @@
         SkillBoostPotion,
         Onion,
         NA,
-        //CookingRelated,
+        CookingRelated,
     }
 }

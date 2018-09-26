@@ -3029,7 +3029,7 @@ namespace PgJsonObjects
             { ItemKeyword.SkillBoostPotion, "Skill Boost Potion" },
             { ItemKeyword.Onion, "Onion" },
             { ItemKeyword.NA, "n/a" },
-            //{ ItemKeyword.CookingRelated, "Cooking Related" },
+            { ItemKeyword.CookingRelated, "Cooking Related" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()

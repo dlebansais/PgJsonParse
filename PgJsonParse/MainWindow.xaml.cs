@@ -498,10 +498,13 @@ namespace PgJsonParse
         private void LoadBuild()
         {
             if (FileTools.OpenTextFile(ref BuildFileName, out string Content))
-                LoadBuild(Content);
+            {
+                UpdateSelections(Content);
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => LoadBuild(Content)));
+            }
         }
 
-        private void LoadBuild(string content)
+        private void UpdateSelections(string content)
         {
             string[] Lines = content.Split(new string[] { InvariantCulture.NewLine }, StringSplitOptions.None);
 
@@ -601,73 +604,90 @@ namespace PgJsonParse
                         WeightProfileIndex = -1;
                     NotifyPropertyChanged("WeightProfileIndex");
                 }
+            }
+        }
 
-                else
+        private void LoadBuild(string content)
+        {
+            string[] Lines = content.Split(new string[] { InvariantCulture.NewLine }, StringSplitOptions.None);
+
+            foreach (string s in Lines)
+            {
+                string Line = s.Trim();
+
+                if (Line.Length > 0 && Line[0] == ';')
+                    continue;
+
+                string[] Split = Line.Split('=');
+                if (Split.Length != 2)
+                    continue;
+
+                string FieldName = Split[0];
+                string FieldValue = Split[1];
+
+                IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
+                Dictionary<string, IJsonKey> PowerTable = PowerDefinition.ObjectTable;
+                IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
+                Dictionary<string, IJsonKey> ItemTable = ItemDefinition.ObjectTable;
+
+                ItemSlot ParsedSlot;
+                if (StringToEnumConversion<ItemSlot>.TryParse(FieldName, out ParsedSlot, null))
                 {
-                    IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
-                    Dictionary<string, IJsonKey> PowerTable = PowerDefinition.ObjectTable;
-                    IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
-                    Dictionary<string, IJsonKey> ItemTable = ItemDefinition.ObjectTable;
-
-                    ItemSlot ParsedSlot;
-                    if (StringToEnumConversion<ItemSlot>.TryParse(FieldName, out ParsedSlot, null))
+                    if (PowerTable.ContainsKey(FieldValue))
                     {
-                        if (PowerTable.ContainsKey(FieldValue))
-                        {
-                            IPgPower SlotPower = PowerTable[FieldValue] as IPgPower;
+                        IPgPower SlotPower = PowerTable[FieldValue] as IPgPower;
 
-                            foreach (SlotPlaner Planer in SlotPlanerList)
-                                if (Planer.Slot == ParsedSlot)
-                                {
-                                    foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList1)
-                                        if (PlanerSlot.Reference == SlotPower)
-                                        {
-                                            Planer.SelectPower1(PlanerSlot);
-                                            break;
-                                        }
+                        foreach (SlotPlaner Planer in SlotPlanerList)
+                            if (Planer.Slot == ParsedSlot)
+                            {
+                                foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList1)
+                                    if (PlanerSlot.Reference == SlotPower)
+                                    {
+                                        Planer.SelectPower1(PlanerSlot);
+                                        break;
+                                    }
 
-                                    foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList2)
-                                        if (PlanerSlot.Reference == SlotPower)
-                                        {
-                                            Planer.SelectPower2(PlanerSlot);
-                                            break;
-                                        }
+                                foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList2)
+                                    if (PlanerSlot.Reference == SlotPower)
+                                    {
+                                        Planer.SelectPower2(PlanerSlot);
+                                        break;
+                                    }
 
-                                    foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList3)
-                                        if (PlanerSlot.Reference == SlotPower)
-                                        {
-                                            Planer.SelectPower3(PlanerSlot);
-                                            break;
-                                        }
+                                foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList3)
+                                    if (PlanerSlot.Reference == SlotPower)
+                                    {
+                                        Planer.SelectPower3(PlanerSlot);
+                                        break;
+                                    }
 
-                                    foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList4)
-                                        if (PlanerSlot.Reference == SlotPower)
-                                        {
-                                            Planer.SelectPower4(PlanerSlot);
-                                            break;
-                                        }
+                                foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList4)
+                                    if (PlanerSlot.Reference == SlotPower)
+                                    {
+                                        Planer.SelectPower4(PlanerSlot);
+                                        break;
+                                    }
 
-                                    foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList5)
-                                        if (PlanerSlot.Reference == SlotPower)
-                                        {
-                                            Planer.SelectPower5(PlanerSlot);
-                                            break;
-                                        }
+                                foreach (PlanerSlotPower PlanerSlot in Planer.AvailablePowerList5)
+                                    if (PlanerSlot.Reference == SlotPower)
+                                    {
+                                        Planer.SelectPower5(PlanerSlot);
+                                        break;
+                                    }
 
-                                    break;
-                                }
-                        }
-                        else if (ItemTable.ContainsKey(FieldValue))
-                        {
-                            IPgItem SlotItem = ItemTable[FieldValue] as IPgItem;
+                                break;
+                            }
+                    }
+                    else if (ItemTable.ContainsKey(FieldValue))
+                    {
+                        IPgItem SlotItem = ItemTable[FieldValue] as IPgItem;
 
-                            foreach (SlotPlaner Planer in SlotPlanerList)
-                                if (Planer.Slot == ParsedSlot)
-                                {
-                                    Planer.SelectGear(SlotItem);
-                                    break;
-                                }
-                        }
+                        foreach (SlotPlaner Planer in SlotPlanerList)
+                            if (Planer.Slot == ParsedSlot)
+                            {
+                                Planer.SelectGear(SlotItem);
+                                break;
+                            }
                     }
                 }
             }

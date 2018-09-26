@@ -27,6 +27,7 @@ namespace PgJsonObjects
         public List<int> IconList { get; private set; }
         private List<string> UnparsedFieldList;
         private List<string> MissingFieldList;
+        public bool IgnoreUnparsedEnums = false;
 
         public void AddInvalidObjectFormat(string ObjectFormatName)
         {
@@ -95,6 +96,10 @@ namespace PgJsonObjects
         {
             if (s == null)
                 return;
+
+            if (s.Contains("Ice Spear Power Cost"))
+                if (s == null)
+                    return;
 
             string Pattern = "<icon=";
 
@@ -237,36 +242,39 @@ namespace PgJsonObjects
                 Result += "Missing field info:\r\n" + MissingField + "\r\n";
             }
 
-            string AllNotEnumerated = "";
-            foreach (KeyValuePair<Type, bool[]> Entry in StringToEnumConversion.KnownParsedEnumtable)
+            if (!IgnoreUnparsedEnums)
             {
-                string NotEnumerated = "";
-                string[] EnumNames = Enum.GetNames(Entry.Key);
-                for (int i = 1; i < Entry.Value.Length; i++)
-                    if (!Entry.Value[i])
-                    {
-                        if (Entry.Key == typeof(ItemKeyword) && i == (int)ItemKeyword.Any)
-                            continue;
-                        if (Entry.Key == typeof(RecipeItemKey) && (i == (int)RecipeItemKey.Rarity_Common || i == (int)RecipeItemKey.MinRarity_Rare))
-                            continue;
-                        if (Entry.Key == typeof(RecipeEffect) && (i >= (int)RecipeEffect.ExtractTSysPower))
-                            continue;
-
-                        if (NotEnumerated.Length > 0)
-                            NotEnumerated += "\n";
-                        NotEnumerated += "\t\t" + EnumNames[i];
-                    }
-
-                if (NotEnumerated.Length > 0)
+                string AllNotEnumerated = "";
+                foreach (KeyValuePair<Type, bool[]> Entry in StringToEnumConversion.KnownParsedEnumtable)
                 {
-                    if (AllNotEnumerated.Length == 0)
-                        AllNotEnumerated += "The following enums have not been found:\n";
+                    string NotEnumerated = "";
+                    string[] EnumNames = Enum.GetNames(Entry.Key);
+                    for (int i = 1; i < Entry.Value.Length; i++)
+                        if (!Entry.Value[i])
+                        {
+                            if (Entry.Key == typeof(ItemKeyword) && i == (int)ItemKeyword.Any)
+                                continue;
+                            if (Entry.Key == typeof(RecipeItemKey) && (i == (int)RecipeItemKey.Rarity_Common || i == (int)RecipeItemKey.MinRarity_Rare))
+                                continue;
+                            if (Entry.Key == typeof(RecipeEffect) && (i >= (int)RecipeEffect.ExtractTSysPower))
+                                continue;
 
-                    AllNotEnumerated += "\t" + Entry.Key.Name + "\n" + NotEnumerated + "\n";
+                            if (NotEnumerated.Length > 0)
+                                NotEnumerated += "\n";
+                            NotEnumerated += "\t\t" + EnumNames[i];
+                        }
+
+                    if (NotEnumerated.Length > 0)
+                    {
+                        if (AllNotEnumerated.Length == 0)
+                            AllNotEnumerated += "The following enums have not been found:\n";
+
+                        AllNotEnumerated += "\t" + Entry.Key.Name + "\n" + NotEnumerated + "\n";
+                    }
                 }
-            }
 
-            Result += AllNotEnumerated;
+                Result += AllNotEnumerated;
+            }
 
             return Result;
         }

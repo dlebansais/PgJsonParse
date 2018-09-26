@@ -1000,6 +1000,7 @@ namespace PgJsonParse
                     byte[] Data = FileTools.LoadBinaryFile(CacheFileName);
                     if (Data.Length == PG_CACHE_SIZE)
                     {
+                        errorInfo.IgnoreUnparsedEnums = true;
                         DeserializeAll(versionInfo, errorInfo, versionFolder, iconFolder, Data, 
                                        (bool success, byte[] data) => OnStart1(success, versionInfo, errorInfo, versionFolder, iconFolder));
                         return true;
