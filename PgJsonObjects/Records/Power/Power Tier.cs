@@ -82,7 +82,7 @@ namespace PgJsonObjects
                         bool IsSkillParsed = false;
                         IPgSkill SkillLink = Skill.ConnectPowerSkill(ErrorInfo, SkillTable, AsPowerAttributeLink.AttributeSkill, AsPowerAttributeLink.SkillLink, ref IsSkillParsed, ref IsConnected, Parent);
 
-                        if (AttributeLink != null && SkillLink != null)
+                        if (AttributeLink != null)
                         {
                             AsPowerAttributeLink.SetLinks(AttributeLink, SkillLink);
                             foreach (int Id in AttributeLink.IconIdList)
