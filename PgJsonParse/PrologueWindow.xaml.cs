@@ -33,6 +33,7 @@ namespace PgJsonParse
                 InitializeComponent();
                 DataContext = this;
 
+                CheckOldDlls();
                 InitSettings();
                 InitStatus();
                 InitVersionCheck();
@@ -52,6 +53,24 @@ namespace PgJsonParse
             catch (Exception e)
             {
                 MessageBox.Show(e.Message + "\r\n" + e.StackTrace);
+            }
+        }
+
+        private void CheckOldDlls()
+        {
+            string AssemblyLocation = System.Reflection.Assembly.GetCallingAssembly().Location;
+            if (AssemblyLocation != null)
+            {
+                string RootPath = Path.GetDirectoryName(AssemblyLocation);
+
+                if (File.Exists(Path.Combine(RootPath, "PgJsonObjects.dll")) ||
+                    File.Exists(Path.Combine(RootPath, "PgJsonReader.dll")) ||
+                    File.Exists(Path.Combine(RootPath, "Presentation.dll")))
+                {
+                    MessageBox.Show($"Please delete all .dll files in folder '{RootPath}', they are no longer needed.");
+                    Close();
+                    return;
+                }
             }
         }
 
