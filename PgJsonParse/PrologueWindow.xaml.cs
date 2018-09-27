@@ -847,7 +847,11 @@ namespace PgJsonParse
                 else if (VersionList.Count > 0)
                     CachedVersionIndex = VersionList.Count - 1;
                 else
+                {
                     CachedVersionIndex = -1;
+                    if (CheckLastVersionOnStartup)
+                        StartTask(OnCheckVersion);
+                }
             }
             catch (Exception e)
             {
@@ -1000,6 +1004,7 @@ namespace PgJsonParse
                     byte[] Data = FileTools.LoadBinaryFile(CacheFileName);
                     if (Data.Length == PG_CACHE_SIZE)
                     {
+                        IconTable.Clear();
                         errorInfo.IgnoreUnparsedEnums = true;
                         DeserializeAll(versionInfo, errorInfo, versionFolder, iconFolder, Data, 
                                        (bool success, byte[] data) => OnStart1(success, versionInfo, errorInfo, versionFolder, iconFolder));
