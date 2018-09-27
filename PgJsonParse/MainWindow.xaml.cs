@@ -610,6 +610,7 @@ namespace PgJsonParse
         private void LoadBuild(string content)
         {
             string[] Lines = content.Split(new string[] { InvariantCulture.NewLine }, StringSplitOptions.None);
+            bool PowerSelected = false;
 
             foreach (string s in Lines)
             {
@@ -644,6 +645,7 @@ namespace PgJsonParse
                                     if (PlanerSlot.Reference == SlotPower)
                                     {
                                         Planer.SelectPower1(PlanerSlot);
+                                        PowerSelected = true;
                                         break;
                                     }
 
@@ -651,6 +653,7 @@ namespace PgJsonParse
                                     if (PlanerSlot.Reference == SlotPower)
                                     {
                                         Planer.SelectPower2(PlanerSlot);
+                                        PowerSelected = true;
                                         break;
                                     }
 
@@ -658,6 +661,7 @@ namespace PgJsonParse
                                     if (PlanerSlot.Reference == SlotPower)
                                     {
                                         Planer.SelectPower3(PlanerSlot);
+                                        PowerSelected = true;
                                         break;
                                     }
 
@@ -665,6 +669,7 @@ namespace PgJsonParse
                                     if (PlanerSlot.Reference == SlotPower)
                                     {
                                         Planer.SelectPower4(PlanerSlot);
+                                        PowerSelected = true;
                                         break;
                                     }
 
@@ -672,6 +677,7 @@ namespace PgJsonParse
                                     if (PlanerSlot.Reference == SlotPower)
                                     {
                                         Planer.SelectPower5(PlanerSlot);
+                                        PowerSelected = true;
                                         break;
                                     }
 
@@ -691,6 +697,9 @@ namespace PgJsonParse
                     }
                 }
             }
+
+            if (!PowerSelected)
+                MessageBox.Show("You might have to restart the program for the gear to be properly selected");
         }
 
         private void SaveBuild()
