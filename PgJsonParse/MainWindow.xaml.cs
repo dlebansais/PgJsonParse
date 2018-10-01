@@ -58,6 +58,7 @@ namespace PgJsonParse
             SubscribeToCommand("CopyBuildCommand", OnCopyBuild);
             SubscribeToCommand("CrunchCommand", OnCrunch);
             SubscribeToCommand("OpenProfileFolderCommand", OnOpenProfileFolder);
+            SubscribeToCommand("CreateFromSkillCommand", OnCreateFromSkill);
             SubscribeToCommand("BackwardCommand", OnBackward);
             SubscribeToCommand("ForwardCommand", OnForward);
             SubscribeToCommand("GoToCommand", OnGoTo);
@@ -245,6 +246,7 @@ namespace PgJsonParse
         public int WeightProfileIndex { get; set; }
         public bool IgnoreUnobtainable { get; set; }
         public bool IgnoreNoAttribute { get; set; }
+        public bool IsSkillSelected { get { return SelectedFirstSkill >= 0 || SelectedSecondSkill >= 0; } }
 
         private void RefreshCombatSkillList()
         {
@@ -353,8 +355,8 @@ namespace PgJsonParse
             {
                 SelectedFirstSkill = -1;
                 SelectedSecondSkill = -1;
-                NotifyPropertyChanged("SelectedFirstSkill");
-                NotifyPropertyChanged("SelectedSecondSkill");
+                NotifyPropertyChanged(nameof(SelectedFirstSkill));
+                NotifyPropertyChanged(nameof(SelectedSecondSkill));
                 SelectAsFirst = PowerSkill.Internal_None;
                 SelectAsSecond = PowerSkill.Internal_None;
             }
@@ -366,6 +368,8 @@ namespace PgJsonParse
 
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
                 PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill, DefaultMaxLevel);
+
+            NotifyPropertyChanged(nameof(IsSkillSelected));
         }
 
         private void RefreshWeightProfileList()
@@ -550,7 +554,8 @@ namespace PgJsonParse
                         {
                             SelectedFirstSkill = SkillIndex;
                             RefreshBuildPlaner();
-                            NotifyPropertyChanged("SelectedFirstSkill");
+                            NotifyPropertyChanged(nameof(SelectedFirstSkill));
+                            NotifyPropertyChanged(nameof(IsSkillSelected));
                         }
                     }
                 }
@@ -583,7 +588,8 @@ namespace PgJsonParse
                         {
                             SelectedSecondSkill = SkillIndex;
                             RefreshBuildPlaner();
-                            NotifyPropertyChanged("SelectedSecondSkill");
+                            NotifyPropertyChanged(nameof(SelectedSecondSkill));
+                            NotifyPropertyChanged(nameof(IsSkillSelected));
                         }
                     }
                 }
@@ -602,7 +608,7 @@ namespace PgJsonParse
                         WeightProfileIndex = GearProfileIndex;
                     else
                         WeightProfileIndex = -1;
-                    NotifyPropertyChanged("WeightProfileIndex");
+                    NotifyPropertyChanged(nameof(WeightProfileIndex));
                 }
             }
         }
@@ -852,6 +858,105 @@ namespace PgJsonParse
             Clipboard.SetText(Text);
 
             Confirmation.Show("The clipboard now contains a text description of this build.", "Build Planner", false, ConfirmationType.Info);
+        }
+
+        private void CreateFromSkill()
+        {
+            using (StringWriter sw = new StringWriter())
+            {
+                if (CreateFromSkill(sw))
+                {
+                    string ComboFileName = "";
+
+                    if (SelectedFirstSkill >= 0 && SelectedFirstSkill < CombatSkillList.Count)
+                    {
+                        if (ComboFileName.Length > 0)
+                            ComboFileName += "-";
+                        ComboFileName += StringToEnumConversion<PowerSkill>.ToString(CombatSkillList[SelectedFirstSkill], null, PowerSkill.Internal_None);
+                    }
+
+                    if (SelectedSecondSkill >= 0 && SelectedSecondSkill < CombatSkillList.Count)
+                    {
+                        if (ComboFileName.Length > 0)
+                            ComboFileName += "-";
+                        ComboFileName += StringToEnumConversion<PowerSkill>.ToString(CombatSkillList[SelectedSecondSkill], null, PowerSkill.Internal_None);
+                    }
+
+                    ComboFileName = Path.Combine(ProfileFolder, ComboFileName + ".txt");
+
+                    if (FileTools.SaveTextFile(ref ComboFileName, sw.ToString()))
+                        RefreshWeightProfileList();
+                }
+            }
+        }
+
+        private bool CreateFromSkill(StringWriter sw)
+        {
+            List<IPgAttribute> AttributeList = new List<IPgAttribute>();
+
+            if (SelectedFirstSkill >= 0 && SelectedFirstSkill < CombatSkillList.Count)
+                FillMatchingAttributes(AttributeList, CombatSkillList[SelectedFirstSkill]);
+            if (SelectedSecondSkill >= 0 && SelectedSecondSkill < CombatSkillList.Count)
+                FillMatchingAttributes(AttributeList, CombatSkillList[SelectedSecondSkill]);
+
+            if (AttributeList.Count == 0)
+                return false;
+
+            foreach (IPgAttribute Attribute in AttributeList)
+            {
+                string Line = Attribute.Label + " " + "=" + " " + "1.0" + InvariantCulture.NewLine;
+                sw.WriteLine(Line);
+            }
+
+            return true;
+        }
+
+        private void FillMatchingAttributes(List<IPgAttribute> AttributeList, PowerSkill SelectedSkill)
+        {
+            IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
+            Dictionary<string, IJsonKey> AttributeTable = AttributeDefinition.ObjectTable;
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
+            Dictionary<string, IJsonKey> AbilityTable = AbilityDefinition.ObjectTable;
+
+            string SkillName = StringToEnumConversion<PowerSkill>.ToString(SelectedSkill, null, PowerSkill.Internal_None).ToUpper();
+            string CostMod = SkillName + "_COST_MOD";
+            string BoostMod = "BOOST_SKILL_" + SkillName;
+            string DmgMod = "MOD_SKILL_" + SkillName;
+
+            foreach (KeyValuePair<string, IJsonKey> AttributeEntry in AttributeTable)
+            {
+                IPgAttribute Attribute = AttributeEntry.Value as IPgAttribute;
+                if (Attribute.Label == null)
+                    continue;
+
+                bool IsMatchingAttribute = false;
+
+                if (Attribute.IconIdList.Count > 0)
+                {
+                    foreach (KeyValuePair<string, IJsonKey> AbilityEntry in AbilityTable)
+                    {
+                        IPgAbility Ability = AbilityEntry.Value as IPgAbility;
+
+                        if (Ability.RawSkill == SelectedSkill && Attribute.IconIdList.Contains(Ability.IconId))
+                        {
+                            IsMatchingAttribute = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!IsMatchingAttribute && AttributeEntry.Key == CostMod)
+                    IsMatchingAttribute = true;
+
+                if (!IsMatchingAttribute && AttributeEntry.Key.StartsWith(BoostMod))
+                    IsMatchingAttribute = true;
+
+                if (!IsMatchingAttribute && AttributeEntry.Key.StartsWith(DmgMod))
+                    IsMatchingAttribute = true;
+
+                if (IsMatchingAttribute)
+                    AttributeList.Add(Attribute);
+            }
         }
 
         private void OnProfileSelected(object sender, SelectionChangedEventArgs e)
@@ -1760,6 +1865,11 @@ namespace PgJsonParse
             WebClientTool.OpenFileExplorer(ProfileFolder);
         }
 
+        private void OnCreateFromSkill(object sender, EventArgs e)
+        {
+            CreateFromSkill();
+        }
+        
         private void OnSearchCheckChanged(object sender, RoutedEventArgs e)
         {
             OnSearchCheckChanged();

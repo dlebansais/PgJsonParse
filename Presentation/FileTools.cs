@@ -34,7 +34,7 @@ namespace Presentation
             return false;
         }
 
-        public static void SaveTextFile(ref string fileName, string content)
+        public static bool SaveTextFile(ref string fileName, string content)
         {
             SaveFileDialog Dlg = new SaveFileDialog();
             Dlg.FileName = fileName;
@@ -48,9 +48,12 @@ namespace Presentation
                     using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
                     {
                         sw.Write(content);
+                        return true;
                     }
                 }
             }
+
+            return false;
         }
         #endregion
 

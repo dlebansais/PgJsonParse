@@ -47,6 +47,7 @@
         <p:ApplicationCommand x:Key="CopyBuildCommand"/>
         <p:ApplicationCommand x:Key="CrunchCommand"/>
         <p:ApplicationCommand x:Key="OpenProfileFolderCommand"/>
+        <p:ApplicationCommand x:Key="CreateFromSkillCommand"/>
         <p:ApplicationCommand x:Key="BackwardCommand"/>
         <p:ApplicationCommand x:Key="ForwardCommand"/>
         <p:ApplicationCommand x:Key="GoToCommand"/>
@@ -5524,6 +5525,7 @@
                                     <DockPanel Grid.Row="0">
                                         <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Profile:</TextBlock>
                                         <Button DockPanel.Dock="Right" Command="{StaticResource OpenProfileFolderCommand}" VerticalAlignment="Center" Width="120" Height="24" Margin="10,0,0,0">Open Profile Folder</Button>
+                                        <Button DockPanel.Dock="Right" Command="{StaticResource CreateFromSkillCommand}" IsEnabled="{Binding IsSkillSelected}" VerticalAlignment="Center" Width="120" Height="24" Margin="10,0,0,0">Create from skill(s)</Button>
                                         <p:ComboBox ItemsSource="{Binding WeightProfileList}" ControlSelectedIndex="{Binding WeightProfileIndex, Mode=TwoWay}" SelectionChanged="OnProfileSelected" VerticalAlignment="Center" MinWidth="150" Margin="5,0,0,0"/>
                                     </DockPanel>
                                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
