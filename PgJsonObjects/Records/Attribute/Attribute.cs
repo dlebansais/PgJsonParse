@@ -139,10 +139,7 @@ namespace PgJsonObjects
                         ConnectedTable.Add(s, AttributeTable[s] as Attribute);
                 }
                 else
-                {
-                    if (s != "COCKATRICEDEBUFF_COST_DELTA" && s != "LAMIADEBUFF_COST_DELTA" && s != "FLY_INCOMBAT_COST_PER_SEC")
-                        ErrorInfo.AddMissingKey(s);
-                }
+                    ErrorInfo.AddMissingKey(s);
 
             return Connected;
         }
@@ -169,8 +166,7 @@ namespace PgJsonObjects
             }
 
             if (ErrorInfo != null)
-                if (RawAttributeName != "COCKATRICEDEBUFF_COST_DELTA" && RawAttributeName != "LAMIADEBUFF_COST_DELTA" && RawAttributeName != "FLY_INCOMBAT_COST_PER_SEC")
-                    ErrorInfo.AddMissingKey(RawAttributeName);
+                ErrorInfo.AddMissingKey(RawAttributeName);
 
             return null;
         }

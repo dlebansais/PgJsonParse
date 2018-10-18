@@ -36,16 +36,6 @@ namespace PgJsonObjects
             ICollection<TI> ObjectList = GenericObjectList as ICollection<TI>;
             ObjectList.Clear();
 
-            if (typeof(TI) == typeof(IPgAttribute))
-            {
-                IPgAttribute CockatriceDebuffCostDelta = new Attribute("COCKATRICEDEBUFF_COST_DELTA", null);
-                ObjectList.Add((TI)CockatriceDebuffCostDelta);
-                IPgAttribute LamiaDebuffCostDelta = new Attribute("LAMIADEBUFF_COST_DELTA", null);
-                ObjectList.Add((TI)LamiaDebuffCostDelta);
-                IPgAttribute FlyInCombatCostPerSec = new Attribute("FLY_INCOMBAT_COST_PER_SEC", "In-Combat Fly Cost/s");
-                ObjectList.Add((TI)FlyInCombatCostPerSec);
-            }
-
             bool Success = true;
 
             string Content = FileTools.LoadTextFile(FilePath, FileMode.Open);

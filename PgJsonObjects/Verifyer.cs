@@ -106,15 +106,7 @@ namespace PgJsonObjects
                         Generator.Begin();
 
                         foreach (TAny Item in ObjectList)
-                        {
-                            if (typeof(TI) == typeof(IPgAttribute))
-                            {
-                                if (Item.Key == "COCKATRICEDEBUFF_COST_DELTA" || Item.Key == "LAMIADEBUFF_COST_DELTA" || Item.Key == "FLY_INCOMBAT_COST_PER_SEC")
-                                    continue;
-                            }
-
                             Item.GenerateObjectContent(Generator, true, false);
-                        }
 
                         Generator.End();
                     }
