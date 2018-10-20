@@ -73,5 +73,6 @@
         GreenMarbleVase,
         AlchemyBulb5,
         StuffedBear,
+        CymbalMonkey,
     }
 }

@@ -671,5 +671,15 @@
         IPgAIAbility BearUltra_Pet4 { get; }
         IPgAIAbility BearUltra_Pet5 { get; }
         IPgAIAbility BearUltra_Pet6 { get; }
+        IPgAIAbility PumpkinMimicBite { get; }
+        IPgAIAbility PumpkinMimicRage { get; }
+        IPgAIAbility WorldBossCiervosNightmareHoof { get; }
+        IPgAIAbility PumpkinBomb { get; }
+        IPgAIAbility PumpkinFire { get; }
+        IPgAIAbility WorldBossKarnag_Opener { get; }
+        IPgAIAbility WorldBossKarnag_Rage { get; }
+        IPgAIAbility WorldBossClaudiaTundraSpikes { get; }
+        IPgAIAbility WorldBossClaudiaIceSpear { get; }
+        IPgAIAbility WorldBossClaudiaBlizzard { get; }
     }
 }

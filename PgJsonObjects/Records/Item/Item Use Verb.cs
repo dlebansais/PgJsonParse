@@ -47,5 +47,6 @@
         EmptyBottle,
         ObtainTitle,
         HugBear,
+        HugMonkey,
     }
 }

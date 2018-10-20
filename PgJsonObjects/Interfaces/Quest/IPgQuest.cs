@@ -39,7 +39,7 @@ namespace PgJsonObjects
         string RewardsNamedLootProfile { get; }
         IPgRecipeCollection PreGiveRecipeList { get; }
         List<QuestKeyword> KeywordList { get; }
-        IPgEffect RewardEffect { get; }
+        IPgEffectCollection RewardEffectList { get; }
         IPgLoreBook RewardLoreBook { get; }
         bool IsCancellable { get; }
         bool? RawIsCancellable { get; }

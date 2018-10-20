@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgQuest(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 184;
+            offset += 188;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -33,13 +33,14 @@ namespace PgJsonObjects
             AddLinkBack(RewardRecipe);
             AddLinkBackCollection(PreGiveItemList, (IPgQuestRewardItem value) => new List<IBackLinkable>() { value.QuestItem });
             AddLinkBackCollection(PreGiveRecipeList);
-            AddLinkBack(RewardEffect);
+            AddLinkBackCollection(RewardEffectList);
             AddLinkBack(RewardLoreBook);
             AddLinkBack(WorkOrderSkill);
             AddLinkBackCollection(FollowUpQuestList);
             AddLinkBackCollection(QuestRequirementList, (IPgQuestRequirement value) => value.GetLinkBack());
             AddLinkBackCollection(QuestRequirementToSustainList, (IPgQuestRequirement value) => value.GetLinkBack());
             //AddLinkBackCollection(QuestRewardList);
+            AddLinkBack(RewardTitle);
         }
 
         public override string Key { get { return GetString(0); } }
@@ -77,7 +78,7 @@ namespace PgJsonObjects
         public string RewardsNamedLootProfile { get { return GetString(96); } }
         public IPgRecipeCollection PreGiveRecipeList { get { return GetObjectList(100, ref _PreGiveRecipeList, PgRecipeCollection.CreateItem, () => new PgRecipeCollection()); } } private IPgRecipeCollection _PreGiveRecipeList;
         public List<QuestKeyword> KeywordList { get { return GetEnumList(104, ref _KeywordList); } } private List<QuestKeyword> _KeywordList;
-        public IPgEffect RewardEffect { get { return GetObject(108, ref _RewardEffect, PgEffect.CreateNew); } } private IPgEffect _RewardEffect;
+        public IPgEffectCollection RewardEffectList { get { return GetObjectList(108, ref _RewardEffectList, PgEffectCollection.CreateItem, () => new PgEffectCollection()); } } private IPgEffectCollection _RewardEffectList;
         public IPgLoreBook RewardLoreBook { get { return GetObject(112, ref _RewardLoreBook, PgLoreBook.CreateNew); } } private IPgLoreBook _RewardLoreBook;
         public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
         public bool? RawIsCancellable { get { return GetBool(116, 0); } }
@@ -117,8 +118,11 @@ namespace PgJsonObjects
         public bool? RawIsQuestRequirementListSimple { get { return GetBool(174, 6); } }
         public bool IsQuestRequirementListNested { get { return RawIsQuestRequirementListNested.HasValue && RawIsQuestRequirementListNested.Value; } }
         public bool? RawIsQuestRequirementListNested { get { return GetBool(174, 8); } }
+        public bool IsLearnAbility { get { return RawIsLearnAbility.HasValue && RawIsLearnAbility.Value; } }
+        public bool? RawIsLearnAbility { get { return GetBool(174, 10); } }
         public IPgQuestRewardCollection QuestRewardList { get { return GetObjectList(176, ref _QuestRewardList, PgQuestRewardCollection.CreateItem, () => new PgQuestRewardCollection()); } } private IPgQuestRewardCollection _QuestRewardList;
         public List<string> RawRewardInteractionFlags { get { return GetStringList(180, ref _RawRewardInteractionFlags); } } private List<string> _RawRewardInteractionFlags;
+        public IPgPlayerTitle RewardTitle { get { return GetObject(184, ref _RewardTitle, PgPlayerTitle.CreateNew); } } private PgPlayerTitle _RewardTitle;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "InternalName", new FieldParser() {
@@ -313,7 +317,10 @@ namespace PgJsonObjects
             if (RewardLoreBook != null)
                 Result.Add("EnsureLoreBookKnown(" + RewardLoreBook.InternalName + ")");
 
-            if (RewardEffect != null)
+            if (RewardTitle != null)
+                Result.Add("BestowTitle(" + PlayerTitle.KeyToTitleMap[RewardTitle.Key] + ")");
+
+            foreach (IPgEffect RewardEffect in RewardEffectList)
                 Result.Add(RewardEffect.Name);
 
             return Result;

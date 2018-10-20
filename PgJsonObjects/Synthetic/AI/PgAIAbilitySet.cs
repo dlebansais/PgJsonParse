@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[669];
+        private PgAIAbility[] Abilities = new PgAIAbility[679];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -693,6 +693,16 @@ namespace PgJsonObjects
         public IPgAIAbility BearUltra_Pet4 { get { return GetAbilityObject(666); } }
         public IPgAIAbility BearUltra_Pet5 { get { return GetAbilityObject(667); } }
         public IPgAIAbility BearUltra_Pet6 { get { return GetAbilityObject(668); } }
+        public IPgAIAbility PumpkinMimicBite { get { return GetAbilityObject(669); } }
+        public IPgAIAbility PumpkinMimicRage { get { return GetAbilityObject(670); } }
+        public IPgAIAbility WorldBossCiervosNightmareHoof { get { return GetAbilityObject(671); } }
+        public IPgAIAbility PumpkinBomb { get { return GetAbilityObject(672); } }
+        public IPgAIAbility PumpkinFire { get { return GetAbilityObject(673); } }
+        public IPgAIAbility WorldBossKarnag_Opener { get { return GetAbilityObject(674); } }
+        public IPgAIAbility WorldBossKarnag_Rage { get { return GetAbilityObject(675); } }
+        public IPgAIAbility WorldBossClaudiaTundraSpikes { get { return GetAbilityObject(676); } }
+        public IPgAIAbility WorldBossClaudiaIceSpear { get { return GetAbilityObject(677); } }
+        public IPgAIAbility WorldBossClaudiaBlizzard { get { return GetAbilityObject(678); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
@@ -2702,6 +2712,36 @@ namespace PgJsonObjects
            { "ZombiePunch", new FieldParser() {
                Type = FieldType.Object, 
                 GetObject = () => ZombiePunch as IObjectContentGenerator } },
+           { "PumpkinMimicBite", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PumpkinMimicBite as IObjectContentGenerator } },
+           { "PumpkinMimicRage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PumpkinMimicRage as IObjectContentGenerator } },
+           { "WorldBossCiervosNightmareHoof", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WorldBossCiervosNightmareHoof as IObjectContentGenerator } },
+           { "PumpkinBomb", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PumpkinBomb as IObjectContentGenerator } },
+           { "PumpkinFire", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => PumpkinFire as IObjectContentGenerator } },
+           { "WorldBossKarnag_Opener", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WorldBossKarnag_Opener as IObjectContentGenerator } },
+           { "WorldBossKarnag_Rage", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WorldBossKarnag_Rage as IObjectContentGenerator } },
+           { "WorldBossClaudiaTundraSpikes", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WorldBossClaudiaTundraSpikes as IObjectContentGenerator } },
+           { "WorldBossClaudiaIceSpear", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WorldBossClaudiaIceSpear as IObjectContentGenerator } },
+           { "WorldBossClaudiaBlizzard", new FieldParser() {
+               Type = FieldType.Object, 
+                GetObject = () => WorldBossClaudiaBlizzard as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

@@ -115,5 +115,6 @@
         TimothyElerimon,
         CrazedAlpha,
         AcclimatedMantis,
+        PumpkinMimic,
     }
 }

@@ -305,6 +305,7 @@ namespace PgJsonObjects
             { "AlcoholTolerance", "Alcohol Tolerance" },
             { "BonusInventoryFolderAt25", "Bonus Inventory Folder At 25" },
             { "BonusInventoryFolderAt50", "Bonus Inventory Folder At 50" },
+            { "PumpkinMimic", "Pumpkin Mimic" },
         };
     }
 }

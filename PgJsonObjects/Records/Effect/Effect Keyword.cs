@@ -208,5 +208,7 @@
         CorruptHateDebuff,
         CorruptHateDamage,
         PriestFocus,
+        PumpkinTurret,
+        Pumpkinbomb,
     }
 }

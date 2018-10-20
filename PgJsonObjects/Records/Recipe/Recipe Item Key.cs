@@ -98,6 +98,7 @@
         Crossbow,
         AlcoholBarrel,
         MinTSysPrereq_0,
+        MinTSysPrereq_30,
         MaxTSysPrereq_30,
         MinTSysPrereq_31,
         MaxTSysPrereq_60,

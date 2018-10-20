@@ -64,14 +64,16 @@ namespace PgJsonObjects
         public IPgAttributeCollection AttributesThatDeltaRageList { get { return GetObjectList(104, ref _AttributesThatDeltaRageList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaRageList;
         public IPgAttributeCollection AttributesThatModRageList { get { return GetObjectList(108, ref _AttributesThatModRageList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModRageList;
         public IPgAttributeCollection AttributesThatDeltaRangeList { get { return GetObjectList(112, ref _AttributesThatDeltaRangeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaRangeList;
-        public bool RawAttributesThatDeltaDamageListIsEmpty { get { return GetBool(116, 0).Value; } }
-        public bool RawAttributesThatModDamageListIsEmpty { get { return GetBool(116, 2).Value; } }
-        public bool RawAttributesThatModBaseDamageListIsEmpty { get { return GetBool(116, 4).Value; } }
-        public bool RawAttributesThatDeltaTauntListIsEmpty { get { return GetBool(116, 6).Value; } }
-        public bool RawAttributesThatModTauntListIsEmpty { get { return GetBool(116, 8).Value; } }
-        public bool RawAttributesThatDeltaRageListIsEmpty { get { return GetBool(116, 10).Value; } }
-        public bool RawAttributesThatModRageListIsEmpty { get { return GetBool(116, 12).Value; } }
-        public bool RawAttributesThatDeltaRangeListIsEmpty { get { return GetBool(116, 14).Value; } }
+        public IPgAttributeCollection AttributesThatDeltaDamageLastList { get { return GetObjectList(116, ref _AttributesThatDeltaDamageLastList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaDamageLastList;
+        public bool RawAttributesThatDeltaDamageListIsEmpty { get { return GetBool(120, 0).Value; } }
+        public bool RawAttributesThatModDamageListIsEmpty { get { return GetBool(120, 2).Value; } }
+        public bool RawAttributesThatModBaseDamageListIsEmpty { get { return GetBool(120, 4).Value; } }
+        public bool RawAttributesThatDeltaTauntListIsEmpty { get { return GetBool(120, 6).Value; } }
+        public bool RawAttributesThatModTauntListIsEmpty { get { return GetBool(120, 8).Value; } }
+        public bool RawAttributesThatDeltaRageListIsEmpty { get { return GetBool(120, 10).Value; } }
+        public bool RawAttributesThatModRageListIsEmpty { get { return GetBool(120, 12).Value; } }
+        public bool RawAttributesThatDeltaRangeListIsEmpty { get { return GetBool(120, 14).Value; } }
+        public bool RawAttributesThatDeltaDamageLastListIsEmpty { get { return GetBool(122, 0).Value; } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Damage", new FieldParser() {
@@ -163,6 +165,10 @@ namespace PgJsonObjects
             { "DoTs", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => DoTList } },
+            { "AttributesThatDeltaDamageLast", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => AttributesThatDeltaDamageLastList.ToKeyList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaDamageLastListIsEmpty } },
         }; } }
 
         #region Indirect Properties

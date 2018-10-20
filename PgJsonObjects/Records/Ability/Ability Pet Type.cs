@@ -13,5 +13,7 @@
         SummonedCorpse,
         SummonedWebTrap,
         SummonedSpider,
+        PumpkinBomb,
+        PumpkinTurret,
     }
 }

@@ -18,7 +18,7 @@ namespace PgJsonObjects
 
         public static readonly Dictionary<ItemKeyword, string> ItemKeywordStringMap = new Dictionary<ItemKeyword, string>()
         {
-            { ItemKeyword.NA, "n/a" },
+            //{ ItemKeyword.NA, "n/a" },
         };
 
         public static readonly Dictionary<ItemUseVerb, string> UseVerbMap = new Dictionary<ItemUseVerb, string>()
@@ -66,6 +66,7 @@ namespace PgJsonObjects
             { ItemUseVerb.EmptyBottle, "Empty Bottle" },
             { ItemUseVerb.ObtainTitle, "Obtain Title" },
             { ItemUseVerb.HugBear, "Hug Bear" },
+            { ItemUseVerb.HugMonkey, "Hug Monkey" },
         };
 
         public static readonly Dictionary<RecipeEffect, string> RecipeEffectStringMap = new Dictionary<RecipeEffect, string>()
@@ -190,6 +191,7 @@ namespace PgJsonObjects
             { RecipeItemKey.Rarity_Exceptional, "Rarity:Exceptional" },
             { RecipeItemKey.MinRarity_Epic, "MinRarity:Epic" },
             { RecipeItemKey.MinTSysPrereq_0, "MinTSysPrereq:0" },
+            { RecipeItemKey.MinTSysPrereq_30, "MinTSysPrereq:30" },
             { RecipeItemKey.MaxTSysPrereq_30, "MaxTSysPrereq:30" },
             { RecipeItemKey.MinTSysPrereq_31, "MinTSysPrereq:31" },
             { RecipeItemKey.MaxTSysPrereq_60, "MaxTSysPrereq:60" },
@@ -495,6 +497,9 @@ namespace PgJsonObjects
             { Deaths.PriestAdmonish, "Priest Admonish" },
             { Deaths.PriestNuke, "Priest Nuke" },
             { Deaths.Shovel, "Shovel" },
+            { Deaths.PumpkinBomb, "Pumpkin Bomb" },
+            { Deaths.PumpkinBlast, "Pumpkin Blast" },
+            { Deaths.PumpkinBite, "Pumpkin Bite" },
         };
 
         public static readonly Dictionary<PowerSkill, string> PowerSkillTextMap = new Dictionary<PowerSkill, string>()
@@ -1274,6 +1279,8 @@ namespace PgJsonObjects
             { AbilityPetType.SummonedCorpse, "Summoned Corpse" },
             { AbilityPetType.SummonedWebTrap, "Summoned Web Trap" },
             { AbilityPetType.SummonedSpider, "Summoned Spider" },
+            { AbilityPetType.PumpkinBomb, "Pumpkin Bomb" },
+            { AbilityPetType.PumpkinTurret, "Pumpkin Turret" },
         };
 
         public static readonly Dictionary<AbilityProjectile, string> AbilityProjectileTextMap = new Dictionary<AbilityProjectile, string>()
@@ -2032,6 +2039,8 @@ namespace PgJsonObjects
             { EffectKeyword.CorruptHateDebuff, "Corrupt Hate Debuff" },
             { EffectKeyword.CorruptHateDamage, "Corrupt Hate Damage" },
             { EffectKeyword.PriestFocus, "Priest Focus" },
+            { EffectKeyword.PumpkinTurret, "Pumpkin Turret" },
+            { EffectKeyword.Pumpkinbomb, "Pumpkin Bomb" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -2107,6 +2116,7 @@ namespace PgJsonObjects
             { ItemDroppedAppearance.GreenMarbleVase, "Green Marble Vase" },
             { ItemDroppedAppearance.AlchemyBulb5, "Alchemy Bulb (5)" },
             { ItemDroppedAppearance.StuffedBear, "Stuffed Bear" },
+            { ItemDroppedAppearance.CymbalMonkey, "Cymbal Monkey" },
         };
 
         public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTextMap = new Dictionary<AppearanceSkin, string>()
@@ -3024,12 +3034,15 @@ namespace PgJsonObjects
             { ItemKeyword.Peach, "Peach" },
             { ItemKeyword.Lint_AbilityIngredient, "Ability Ingredient" },
             { ItemKeyword.Marigold, "Marigold" },
-            { ItemKeyword.VendorTrask, "Vendor Trash" },
+            //{ ItemKeyword.VendorTrask, "Vendor Trash" },
             { ItemKeyword.RedWingToken, "RedWing Token" },
             { ItemKeyword.SkillBoostPotion, "Skill Boost Potion" },
             { ItemKeyword.Onion, "Onion" },
-            { ItemKeyword.NA, "n/a" },
+            //{ ItemKeyword.NA, "n/a" },
             { ItemKeyword.CookingRelated, "Cooking Related" },
+            { ItemKeyword.EvilPumpkin, "Evil Pumpkin" },
+            { ItemKeyword.GardeningRelated, "Gardening Related" },
+            { ItemKeyword.MasqueradeMask, "Masquerade Mask" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -3101,6 +3114,7 @@ namespace PgJsonObjects
             { ItemUseVerb.EmptyBottle, "Empty Bottle" },
             { ItemUseVerb.ObtainTitle, "Obtain Title" },
             { ItemUseVerb.HugBear, "Hug Bear" },
+            { ItemUseVerb.HugMonkey, "Hug Monkey" },
         };
 
         public static readonly Dictionary<MapAreaName, string> MapAreaNameTextMap = new Dictionary<MapAreaName, string>()
@@ -3599,6 +3613,10 @@ namespace PgJsonObjects
             { CraftedBoost.CraftedNimbleCoat, "Nimble Coat" },
             { CraftedBoost.CraftedNimbleGloves, "Nimble Gloves" },
             { CraftedBoost.CraftedNimbleHelm, "Nimble Helm" },
+            { CraftedBoost.MasqueradeMaskFire, "Masquerade Mask Fire" },
+            { CraftedBoost.MasqueradeMaskNature, "Masquerade Mask Nature" },
+            { CraftedBoost.MasqueradeMaskCold, "Masquerade Mask Cold" },
+            { CraftedBoost.MasqueradeMaskElectricity, "Masquerade Mask Electricity" },
         };
 
         public static readonly Dictionary<EnhancementEffect, string> EnhancementEffectTextMap = new Dictionary<EnhancementEffect, string>()
@@ -3739,6 +3757,7 @@ namespace PgJsonObjects
             { RecipeItemKey.Crossbow, "Crossbow" },
             { RecipeItemKey.AlcoholBarrel, "Alcohol Barrel" },
             { RecipeItemKey.MinTSysPrereq_0, "Prerequisite: Min Level 0" },
+            { RecipeItemKey.MinTSysPrereq_30, "Prerequisite: Min Level 30" },
             { RecipeItemKey.MaxTSysPrereq_30, "Prerequisite: Max Level 30" },
             { RecipeItemKey.MinTSysPrereq_31, "Prerequisite: Min Level 31" },
             { RecipeItemKey.MaxTSysPrereq_60, "Prerequisite: Max Level 60" },
@@ -3937,6 +3956,7 @@ namespace PgJsonObjects
             { QuestObjectiveKillTarget.TimothyElerimon, "Timothy Elerimon" },
             { QuestObjectiveKillTarget.CrazedAlpha, "Crazed Alpha" },
             { QuestObjectiveKillTarget.AcclimatedMantis, "Acclimated Mantis" },
+            { QuestObjectiveKillTarget.PumpkinMimic, "Pumpkin Mimic" },
         };
 
         public static readonly Dictionary<MoonPhases, string> MoonPhasesTextMap = new Dictionary<MoonPhases, string>()
@@ -4581,6 +4601,10 @@ namespace PgJsonObjects
             { SpecialNpc.NPC_Bahdba, "Bahdba" },
             { SpecialNpc.NPC_Chirrra, "Chirrra" },
             { SpecialNpc.ModeratorToolbox, "Moderator Toolbox" },
+            { SpecialNpc.NPC_Halloween_BrandonMellus, "Brandon Mellus (Halloween)" },
+            { SpecialNpc.NPC_Halloween_Westley, "Westley (Halloween)" },
+            { SpecialNpc.NPC_Halloween_Deville, "Deville (Halloween)" },
+            { SpecialNpc.NPC_Halloween_ChafSpringfield, "Chaf Springfield (Halloween)" },
         };
 
         public static readonly Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap = new Dictionary<LoreBookKeyword, string>()

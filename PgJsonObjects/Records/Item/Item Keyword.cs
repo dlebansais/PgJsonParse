@@ -877,11 +877,14 @@
         Peach,
         Lint_AbilityIngredient,
         Marigold,
-        VendorTrask,
+        //VendorTrask,
         RedWingToken,
         SkillBoostPotion,
         Onion,
-        NA,
+        //NA,
         CookingRelated,
+        EvilPumpkin,
+        GardeningRelated,
+        MasqueradeMask,
     }
 }

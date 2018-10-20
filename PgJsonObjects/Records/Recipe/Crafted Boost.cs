@@ -58,5 +58,9 @@
         CraftedNimbleCoat,
         CraftedNimbleGloves,
         CraftedNimbleHelm,
+        MasqueradeMaskFire,
+        MasqueradeMaskNature,
+        MasqueradeMaskCold,
+        MasqueradeMaskElectricity,
     }
 }

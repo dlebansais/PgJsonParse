@@ -94,6 +94,7 @@
     <Compile Include="Interfaces\Attribute\IPgAttributeCollection.cs" />
     <Compile Include="Interfaces\Attribute\IPgAttribute.cs" />
     <Compile Include="Interfaces\DirectedGoal\IPgDirectedGoal.cs" />
+    <Compile Include="Interfaces\Effect\IPgEffectCollection.cs" />
     <Compile Include="Interfaces\Effect\IPgServerInfoCollection.cs" />
     <Compile Include="Interfaces\Effect\IPgEffect.cs" />
     <Compile Include="Interfaces\IPgBackLinkableCollection.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Records\Area\GameArea.cs" />
     <Compile Include="Records\Attribute\DisplayRule.cs" />
     <Compile Include="Records\Attribute\AttributeCollection.cs" />
+    <Compile Include="Records\Effect\EffectCollection.cs" />
     <Compile Include="Records\FieldParser.cs" />
     <Compile Include="Records\FieldType.cs" />
     <Compile Include="Records\IBackLinkable.cs" />
@@ -493,6 +495,7 @@
     <Compile Include="Synthetic\Attribute\PgAttribute.cs" />
     <Compile Include="Synthetic\DirectedGoal\PgDirectedGoal.cs" />
     <Compile Include="Synthetic\Effect\PgEffect.cs" />
+    <Compile Include="Synthetic\Effect\PgEffectCollection.cs" />
     <Compile Include="Synthetic\GenericPgObject.cs" />
     <Compile Include="Synthetic\IDeserializablePgObject.cs" />
     <Compile Include="Interfaces\IGenericPgObject.cs" />

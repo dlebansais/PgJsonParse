@@ -7,6 +7,18 @@ namespace PgJsonObjects
 {
     public class PlayerTitle : MainJsonObject<PlayerTitle>, IPgPlayerTitle
     {
+        public static Dictionary<string, string> KeyToTitleMap = new Dictionary<string, string>()
+        {
+            { "Title_5009", "Event_Halloween_CultistOfZhiaLian" },
+            { "Title_5010", "Event_Halloween_SeniorCultistOfZhiaLian" },
+        };
+
+        public static Dictionary<string, int> TitleToKeyMap = new Dictionary<string, int>()
+        {
+            { "Event_Halloween_CultistOfZhiaLian", 5009 },
+            { "Event_Halloween_SeniorCultistOfZhiaLian", 5010 },
+        };
+
         #region Direct Properties
         public string Title { get; private set; }
         public string RawTitle { get; private set; }

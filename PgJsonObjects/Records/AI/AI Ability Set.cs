@@ -676,6 +676,16 @@ namespace PgJsonObjects
         public IPgAIAbility BearUltra_Pet4 { get; private set; }
         public IPgAIAbility BearUltra_Pet5 { get; private set; }
         public IPgAIAbility BearUltra_Pet6 { get; private set; }
+        public IPgAIAbility PumpkinMimicBite { get; private set; }
+        public IPgAIAbility PumpkinMimicRage { get; private set; }
+        public IPgAIAbility WorldBossCiervosNightmareHoof { get; private set; }
+        public IPgAIAbility PumpkinBomb { get; private set; }
+        public IPgAIAbility PumpkinFire { get; private set; }
+        public IPgAIAbility WorldBossKarnag_Opener { get; private set; }
+        public IPgAIAbility WorldBossKarnag_Rage { get; private set; }
+        public IPgAIAbility WorldBossClaudiaTundraSpikes { get; private set; }
+        public IPgAIAbility WorldBossClaudiaIceSpear { get; private set; }
+        public IPgAIAbility WorldBossClaudiaBlizzard { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -3360,6 +3370,46 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => ZombiePunch = 
                    JsonObjectParser<AIAbility>.Parse("ZombiePunch", value, errorInfo),
                 GetObject = () => ZombiePunch as IObjectContentGenerator } },
+           { "PumpkinMimicBite", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PumpkinMimicBite =
+                   JsonObjectParser<AIAbility>.Parse("PumpkinMimicBite", value, errorInfo),
+                GetObject = () => PumpkinMimicBite as IObjectContentGenerator } },
+           { "PumpkinMimicRage", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PumpkinMimicRage =
+                   JsonObjectParser<AIAbility>.Parse("PumpkinMimicRage", value, errorInfo),
+                GetObject = () => PumpkinMimicRage as IObjectContentGenerator } },
+           { "WorldBossCiervosNightmareHoof", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WorldBossCiervosNightmareHoof =
+                   JsonObjectParser<AIAbility>.Parse("WorldBossCiervosNightmareHoof", value, errorInfo),
+                GetObject = () => WorldBossCiervosNightmareHoof as IObjectContentGenerator } },
+           { "PumpkinBomb", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PumpkinBomb =
+                   JsonObjectParser<AIAbility>.Parse("PumpkinBomb", value, errorInfo),
+                GetObject = () => PumpkinBomb as IObjectContentGenerator } },
+           { "PumpkinFire", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PumpkinFire =
+                   JsonObjectParser<AIAbility>.Parse("PumpkinFire", value, errorInfo),
+                GetObject = () => PumpkinFire as IObjectContentGenerator } },
+           { "WorldBossKarnag_Opener", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WorldBossKarnag_Opener =
+                   JsonObjectParser<AIAbility>.Parse("WorldBossKarnag_Opener", value, errorInfo),
+                GetObject = () => WorldBossKarnag_Opener as IObjectContentGenerator } },
+           { "WorldBossKarnag_Rage", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WorldBossKarnag_Rage =
+                   JsonObjectParser<AIAbility>.Parse("WorldBossKarnag_Rage", value, errorInfo),
+                GetObject = () => WorldBossKarnag_Rage as IObjectContentGenerator } },
+           { "WorldBossClaudiaTundraSpikes", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WorldBossClaudiaTundraSpikes =
+                   JsonObjectParser<AIAbility>.Parse("WorldBossClaudiaTundraSpikes", value, errorInfo),
+                GetObject = () => WorldBossClaudiaTundraSpikes as IObjectContentGenerator } },
+           { "WorldBossClaudiaIceSpear", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WorldBossClaudiaIceSpear =
+                   JsonObjectParser<AIAbility>.Parse("WorldBossClaudiaIceSpear", value, errorInfo),
+                GetObject = () => WorldBossClaudiaIceSpear as IObjectContentGenerator } },
+           { "WorldBossClaudiaBlizzard", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WorldBossClaudiaBlizzard =
+                   JsonObjectParser<AIAbility>.Parse("WorldBossClaudiaBlizzard", value, errorInfo),
+                GetObject = () => WorldBossClaudiaBlizzard as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4067,8 +4117,18 @@ namespace PgJsonObjects
             AddObject(BearUltra_Pet4 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 666 * 4, StoredObjectTable);
             AddObject(BearUltra_Pet5 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 667 * 4, StoredObjectTable);
             AddObject(BearUltra_Pet6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 668 * 4, StoredObjectTable);
+            AddObject(PumpkinMimicBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 669 * 4, StoredObjectTable);
+            AddObject(PumpkinMimicRage as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 670 * 4, StoredObjectTable);
+            AddObject(WorldBossCiervosNightmareHoof as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 671 * 4, StoredObjectTable);
+            AddObject(PumpkinBomb as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 672 * 4, StoredObjectTable);
+            AddObject(PumpkinFire as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 673 * 4, StoredObjectTable);
+            AddObject(WorldBossKarnag_Opener as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 674 * 4, StoredObjectTable);
+            AddObject(WorldBossKarnag_Rage as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 675 * 4, StoredObjectTable);
+            AddObject(WorldBossClaudiaTundraSpikes as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 676 * 4, StoredObjectTable);
+            AddObject(WorldBossClaudiaIceSpear as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 677 * 4, StoredObjectTable);
+            AddObject(WorldBossClaudiaBlizzard as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 678 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 669 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 679 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

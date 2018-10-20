@@ -42,7 +42,7 @@ namespace PgJsonObjects
         public string RewardsNamedLootProfile { get; private set; }
         public IPgRecipeCollection PreGiveRecipeList { get; private set; } = new RecipeCollection();
         public List<QuestKeyword> KeywordList { get; } = new List<QuestKeyword>();
-        public IPgEffect RewardEffect { get; private set; }
+        public IPgEffectCollection RewardEffectList { get; private set; } = new EffectCollection();
         public IPgLoreBook RewardLoreBook { get; private set; }
         public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
         public bool? RawIsCancellable { get; private set; }
@@ -81,8 +81,11 @@ namespace PgJsonObjects
         public bool? RawIsQuestRequirementListSimple { get; private set; }
         public bool IsQuestRequirementListNested { get { return RawIsQuestRequirementListNested.HasValue && RawIsQuestRequirementListNested.Value; } }
         public bool? RawIsQuestRequirementListNested { get; private set; }
+        public bool IsLearnAbility { get { return RawIsLearnAbility.HasValue && RawIsLearnAbility.Value; } }
+        public bool? RawIsLearnAbility { get; private set; }
         public IPgQuestRewardCollection QuestRewardList { get; private set; } = new QuestRewardCollection();
         public List<string> RawRewardInteractionFlags { get; private set; } = new List<string>();
+        public IPgPlayerTitle RewardTitle { get; private set; }
 
         private bool IsFavorNpcParsed;
         private string RawRewardAbility;
@@ -92,10 +95,11 @@ namespace PgJsonObjects
         private string RawRewardRecipe;
         private bool IsRawRewardRecipeParsed;
         private List<string> RawPreGiveRecipeList { get; } = new List<string>();
-        private string RawRewardEffect;
-        private bool IsRawRewardEffectParsed;
+        private List<string> RawRewardEffects { get; } = new List<string>();
         private string RawRewardEnsureLoreBook;
         private bool IsRawLoreBookParsed;
+        private int? RawRewardBestowTitle;
+        private bool IsRawTitleParsed;
         private PowerSkill RawWorkOrderSkill;
         private bool IsConnectedWorkOrderSkillParsed;
         private List<string> RawFollowUpQuestList = new List<string>();
@@ -574,32 +578,52 @@ namespace PgJsonObjects
 
         private bool ParseRewards_Effects(string RawRewardEffect, ParseErrorInfo ErrorInfo)
         {
-            if (this.RawRewardEffect == null)
+            if (RawRewardEffect.StartsWith("SetInteractionFlag("))
             {
-                if (RawRewardEffect.StartsWith("SetInteractionFlag("))
+                int IndexEnd = RawRewardEffect.IndexOf(')');
+                if (IndexEnd >= 19)
                 {
-                    int IndexEnd = RawRewardEffect.IndexOf(')');
-                    if (IndexEnd >= 19)
+                    string RawRewardInteractionFlag = RawRewardEffect.Substring(19, IndexEnd - 19);
+                    if (!RawRewardInteractionFlags.Contains(RawRewardInteractionFlag))
+                        RawRewardInteractionFlags.Add(RawRewardInteractionFlag);
+                }
+                else
+                    RawRewardEffects.Add(RawRewardEffect);
+
+                return true;
+            }
+
+            else if (RawRewardEffect.StartsWith("EnsureLoreBookKnown("))
+            {
+                int IndexEnd = RawRewardEffect.IndexOf(')');
+                if (IndexEnd >= 20)
+                {
+                    string RawRewardEnsureLoreBook = RawRewardEffect.Substring(20, IndexEnd - 20);
+                    if (this.RawRewardEnsureLoreBook == null)
                     {
-                        string RawRewardInteractionFlag = RawRewardEffect.Substring(19, IndexEnd - 19);
-                        if (!RawRewardInteractionFlags.Contains(RawRewardInteractionFlag))
-                            RawRewardInteractionFlags.Add(RawRewardInteractionFlag);
+                        this.RawRewardEnsureLoreBook = RawRewardEnsureLoreBook;
+                        return true;
                     }
                     else
-                        this.RawRewardEffect = RawRewardEffect;
-
-                    return true;
+                        ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
                 }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
 
-                else if (RawRewardEffect.StartsWith("EnsureLoreBookKnown("))
+                return false;
+            }
+
+            else if (RawRewardEffect.StartsWith("BestowTitle("))
+            {
+                int IndexEnd = RawRewardEffect.IndexOf(')');
+                if (IndexEnd >= 12)
                 {
-                    int IndexEnd = RawRewardEffect.IndexOf(')');
-                    if (IndexEnd >= 20)
+                    string RawRewardBestowTitle = RawRewardEffect.Substring(12, IndexEnd - 12);
+                    if (this.RawRewardBestowTitle == null)
                     {
-                        string RawRewardEnsureLoreBook = RawRewardEffect.Substring(20, IndexEnd - 20);
-                        if (this.RawRewardEnsureLoreBook == null)
+                        if (PlayerTitle.TitleToKeyMap.ContainsKey(RawRewardBestowTitle))
                         {
-                            this.RawRewardEnsureLoreBook = RawRewardEnsureLoreBook;
+                            this.RawRewardBestowTitle = PlayerTitle.TitleToKeyMap[RawRewardBestowTitle];
                             return true;
                         }
                         else
@@ -607,38 +631,40 @@ namespace PgJsonObjects
                     }
                     else
                         ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
-
-                    return false;
                 }
-
                 else
-                {
-                    this.RawRewardEffect = RawRewardEffect;
-                    return true;
-                }
-            }
-            else
-            {
-                ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+                    ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+
                 return false;
             }
+
+            else if (RawRewardEffect.StartsWith("LearnAbility("))
+            {
+                int IndexEnd = RawRewardEffect.IndexOf(')');
+                if (IndexEnd >= 13)
+                {
+                    string RawRewardLearnAbility = RawRewardEffect.Substring(13, IndexEnd - 13);
+                    if (this.RawRewardAbility == null)
+                    {
+                        RawIsLearnAbility = true;
+                        this.RawRewardAbility = RawRewardLearnAbility;
+                        return true;
+                    }
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+
+                return false;
+            }
+
+            else
+            {
+                RawRewardEffects.Add(RawRewardEffect);
+                return true;
+            }
         }
-
-        /*private List<string> GetRewards_Effects()
-        {
-            List<string> Result = new List<string>();
-
-            foreach (string RewardInteractionFlag in RawRewardInteractionFlags)
-                Result.Add("SetInteractionFlag(" + RewardInteractionFlag + ")");
-
-            if (RawRewardEnsureLoreBook != null)
-                Result.Add("EnsureLoreBookKnown(" + RawRewardEnsureLoreBook + ")");
-
-            if (RawRewardEffect != null)
-                Result.Add(RawRewardEffect);
-
-            return Result;
-        }*/
 
         private List<string> GetRewards_Effects()
         {
@@ -650,7 +676,10 @@ namespace PgJsonObjects
             if (RewardLoreBook != null)
                 Result.Add("EnsureLoreBookKnown(" + RewardLoreBook.InternalName + ")");
 
-            if (RewardEffect != null)
+            if (RewardTitle != null)
+                Result.Add("BestowTitle(" + PlayerTitle.KeyToTitleMap[RewardTitle.Key] + ")");
+
+            foreach (IPgEffect RewardEffect in RewardEffectList)
                 Result.Add(RewardEffect.Name);
 
             return Result;
@@ -821,7 +850,7 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, Item.Name);
                 foreach (QuestKeyword Keyword in KeywordList)
                     AddWithFieldSeparator(ref Result, TextMaps.QuestKeywordTextMap[Keyword]);
-                if (RewardEffect != null)
+                foreach (IPgEffect RewardEffect in RewardEffectList)
                     AddWithFieldSeparator(ref Result, RewardEffect.Name);
                 if (RawIsAutoPreface.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Auto Preface");
@@ -854,6 +883,7 @@ namespace PgJsonObjects
             Dictionary<string, IJsonKey> EffectTable = AllTables[typeof(Effect)];
             Dictionary<string, IJsonKey> GameNpcTable = AllTables[typeof(GameNpc)];
             Dictionary<string, IJsonKey> LoreBookTable = AllTables[typeof(LoreBook)];
+            Dictionary<string, IJsonKey> PlayerTitleTable = AllTables[typeof(PlayerTitle)];
 
             foreach (IPgQuestObjective Item in QuestObjectiveList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
@@ -874,7 +904,20 @@ namespace PgJsonObjects
 
             RewardAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawRewardAbility, RewardAbility, ref IsRawRewardAbilityParsed, ref IsConnected, this);
             RewardRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRewardRecipe, RewardRecipe, ref IsRawRewardRecipeParsed, ref IsConnected, this);
-            RewardEffect = Effect.ConnectSingleProperty(ErrorInfo, EffectTable, RawRewardEffect, RewardEffect, ref IsRawRewardEffectParsed, ref IsConnected, this);
+
+            foreach (string RawRewardEffect in RawRewardEffects)
+            {
+                IPgEffect RewardEffect = null;
+                bool IsRawRewardEffectParsed = false;
+                RewardEffect = Effect.ConnectSingleProperty(ErrorInfo, EffectTable, RawRewardEffect, RewardEffect, ref IsRawRewardEffectParsed, ref IsConnected, this);
+                if (RewardEffect != null)
+                {
+                    if (!RewardEffectList.Contains(RewardEffect))
+                        RewardEffectList.Add(RewardEffect);
+                }
+                else
+                    RewardEffect = null;
+            }
             RewardSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawRewardSkill, RewardSkill, ref IsConnectedRewardSkillParsed, ref IsConnected, this);
             WorkOrderSkill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawWorkOrderSkill, WorkOrderSkill, ref IsConnectedWorkOrderSkillParsed, ref IsConnected, this);
 
@@ -950,6 +993,9 @@ namespace PgJsonObjects
 
             if (RawRewardEnsureLoreBook != null)
                 RewardLoreBook = LoreBook.ConnectByInternalName(ErrorInfo, LoreBookTable, RawRewardEnsureLoreBook, RewardLoreBook, ref IsRawLoreBookParsed, ref IsConnected, this);
+
+            if (RawRewardBestowTitle != null)
+                RewardTitle = PlayerTitle.ConnectSingleProperty(ErrorInfo, PlayerTitleTable, RawRewardBestowTitle, RewardTitle, ref IsRawTitleParsed, ref IsConnected, this);
 
             return IsConnected;
         }
@@ -1050,7 +1096,7 @@ namespace PgJsonObjects
             AddString(RewardsNamedLootProfile, data, ref offset, BaseOffset, 96, StoredStringtable);
             AddObjectList(PreGiveRecipeList, data, ref offset, BaseOffset, 100, StoredObjectListTable);
             AddEnumList(KeywordList, data, ref offset, BaseOffset, 104, StoredEnumListTable);
-            AddObject(RewardEffect as ISerializableJsonObject, data, ref offset, BaseOffset, 108, StoredObjectTable);
+            AddObjectList(RewardEffectList, data, ref offset, BaseOffset, 108, StoredObjectListTable);
             AddObject(RewardLoreBook as ISerializableJsonObject, data, ref offset, BaseOffset, 112, StoredObjectTable);
             AddBool(RawIsCancellable, data, ref offset, ref BitOffset, BaseOffset, 116, 0);
             AddBool(RawIsAutoPreface, data, ref offset, ref BitOffset, BaseOffset, 116, 2);
@@ -1079,11 +1125,13 @@ namespace PgJsonObjects
             AddBool(RawIsRewardRecipeEmpty, data, ref offset, ref BitOffset, BaseOffset, 174, 4);
             AddBool(RawIsQuestRequirementListSimple, data, ref offset, ref BitOffset, BaseOffset, 174, 6);
             AddBool(RawIsQuestRequirementListNested, data, ref offset, ref BitOffset, BaseOffset, 174, 8);
+            AddBool(RawIsLearnAbility, data, ref offset, ref BitOffset, BaseOffset, 174, 10);
             CloseBool(ref offset, ref BitOffset);
             AddObjectList(QuestRewardList, data, ref offset, BaseOffset, 176, StoredObjectListTable);
             AddStringList(RawRewardInteractionFlags, data, ref offset, BaseOffset, 180, StoredStringListTable);
+            AddObject(RewardTitle as ISerializableJsonObject, data, ref offset, BaseOffset, 184, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 184, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 188, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

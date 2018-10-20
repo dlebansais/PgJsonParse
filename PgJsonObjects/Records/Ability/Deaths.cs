@@ -138,5 +138,8 @@
         PriestAdmonish,
         PriestNuke,
         Shovel,
+        PumpkinBomb,
+        PumpkinBlast,
+        PumpkinBite,
     }
 }
