@@ -5629,24 +5629,6 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0">Search:</TextBlock>
                             <DockPanel Grid.Column="1" Grid.Row="0" Margin="5,0,0,0">
                                 <Button DockPanel.Dock="Right" Command="{StaticResource GoToCommand}" VerticalAlignment="Center" Margin="10,0,0,0">
@@ -5654,22 +5636,50 @@
                                 </Button>
                                 <TextBox Text="{Binding SearchTerms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" KeyDown="OnSearchTermsEntered" VerticalAlignment="Center"/>
                             </DockPanel>
-                            <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding MustMatchCase}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Match case</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding MustMatchWholeWord}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Visibility="Collapsed" Margin="5,10,0,0">Match whole word</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding IncludeAbility}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Abilities</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding IncludeDirectedGoal}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Goals</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IncludeGameNpc}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Npc</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding IncludeStorageVault}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Storage</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="7" IsChecked="{Binding IncludeEffect}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Effects, buffs and debuffs</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="8" IsChecked="{Binding IncludeItem}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Items</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding IncludeQuest}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Quests</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="10" IsChecked="{Binding IncludeRecipe}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Recipes</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="11" IsChecked="{Binding IncludeSkill}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Skills</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="12" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects (mods)</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="13" IsChecked="{Binding IncludeLoreBook}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Lore Books</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="14" IsChecked="{Binding IncludePlayerTitle}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Player Titles</CheckBox>
-                            <CheckBox Grid.Column="1" Grid.Row="15" IsChecked="{Binding IncludeAdvancement}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Power-ups and vulnerabilities</CheckBox>
                         </Grid>
+                        <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,10,5,10"/>
+                        <Expander DockPanel.Dock="Top" Header="Search options">
+                            <Grid DockPanel.Dock="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Height="0">Search:</TextBlock>
+                                <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding MustMatchCase}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Match case</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding MustMatchWholeWord}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Visibility="Collapsed" Margin="5,10,0,0">Match whole word</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding IncludeAbility}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Abilities</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding IncludeDirectedGoal}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Goals</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IncludeGameNpc}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Npc</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding IncludeStorageVault}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Storage</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="7" IsChecked="{Binding IncludeEffect}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Effects, buffs and debuffs</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="8" IsChecked="{Binding IncludeItem}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Items</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding IncludeQuest}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Quests</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="10" IsChecked="{Binding IncludeRecipe}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Recipes</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="11" IsChecked="{Binding IncludeSkill}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Skills</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="12" IsChecked="{Binding IncludePower}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Treasure effects (mods)</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="13" IsChecked="{Binding IncludeLoreBook}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Lore Books</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="14" IsChecked="{Binding IncludePlayerTitle}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Player Titles</CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="15" IsChecked="{Binding IncludeAdvancement}" Checked="OnSearchCheckChanged" Unchecked="OnSearchCheckChanged" Margin="5,10,0,0">Power-ups and vulnerabilities</CheckBox>
+                            </Grid>
+                        </Expander>
                         <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,1,0,0" Height="2" Margin="5,10,5,10"/>
                         <Expander DockPanel.Dock="Top" Header="Search instructions">
                             <StackPanel>
