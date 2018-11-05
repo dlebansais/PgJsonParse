@@ -25,5 +25,6 @@
         RuntimeBehaviorRuleSet,
         InteractionFlagSet,
         IsVolunteerGuide,
+        IsNotGuest,
     }
 }

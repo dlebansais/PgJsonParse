@@ -83,6 +83,10 @@ namespace PgJsonObjects
                     Result = PgAbilityRequirementIsVolunteerGuide.CreateNew(data, ref offset);
                     break;
 
+                case OtherRequirementType.IsNotGuest:
+                    Result = PgAbilityRequirementIsNotGuest.CreateNew(data, ref offset);
+                    break;
+
                 default:
                     throw new InvalidOperationException();
             }

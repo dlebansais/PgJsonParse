@@ -4377,6 +4377,7 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -4495,6 +4496,12 @@
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
                         </Grid>
+                        <TextBlock Grid.Column="0" Grid.Row="11" TextAlignment="Right" Margin="0,10,0,0">Guest Level Cap:</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="11" TextWrapping="Wrap" Margin="5,10,0,0">
+                            <TextBlock.Text>
+                                <Binding Path="RawGuestLevelCap" Converter="{StaticResource convNullableInt}"/>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </Grid>
                     <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>

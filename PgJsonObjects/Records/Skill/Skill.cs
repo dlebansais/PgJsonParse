@@ -35,6 +35,8 @@ namespace PgJsonObjects
         public IPgSkill ParentSkill { get; private set; }
         public List<SkillCategory> TSysCategoryList { get; } = new List<SkillCategory>();
         public List<ItemKeyword> RecipeIngredientKeywordList { get; } = new List<ItemKeyword>();
+        public int GuestLevelCap { get { return RawGuestLevelCap.HasValue ? RawGuestLevelCap.Value : 0; } }
+        public int? RawGuestLevelCap { get; private set; }
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         private bool IsRawXpTableParsed;
         private string RawAdvancementTable;
@@ -251,6 +253,10 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemKeyword>.ParseList(value, RecipeIngredientKeywordList, errorInfo),
                 GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(RecipeIngredientKeywordList) } },
+            { "GuestLevelCap", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawGuestLevelCap = value,
+                GetInteger = () => RawGuestLevelCap } },
         }; } }
 
         private void ParseAdvancementTable(string value, ParseErrorInfo errorInfo)
@@ -693,12 +699,13 @@ namespace PgJsonObjects
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 56, StoredStringListTable);
             AddInt(IconId, data, ref offset, BaseOffset, 60);
             AddEnumList(RecipeIngredientKeywordList, data, ref offset, BaseOffset, 64, StoredEnumListTable);
-            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 68, StoredIntListTable);
-            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 72, StoredStringListTable);
-            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 76, StoredIntListTable);
-            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 80, StoredStringListTable);
+            AddInt(RawGuestLevelCap, data, ref offset, BaseOffset, 68);
+            AddIntList(AdvancementHintTableKey, data, ref offset, BaseOffset, 72, StoredIntListTable);
+            AddStringList(AdvancementHintTableValue, data, ref offset, BaseOffset, 76, StoredStringListTable);
+            AddIntList(ReportTableKey, data, ref offset, BaseOffset, 80, StoredIntListTable);
+            AddStringList(ReportTableValue, data, ref offset, BaseOffset, 84, StoredStringListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 84, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 88, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, StoredIntListTable, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

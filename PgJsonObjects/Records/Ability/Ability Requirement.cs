@@ -85,6 +85,9 @@ namespace PgJsonObjects
                 case OtherRequirementType.IsVolunteerGuide:
                     return new AbilityRequirementIsVolunteerGuide();
 
+                case OtherRequirementType.IsNotGuest:
+                    return new AbilityRequirementIsNotGuest();
+
                 default:
                     return null;
             }
