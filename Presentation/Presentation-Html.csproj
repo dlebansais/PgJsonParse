@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4F047ABC-04AB-454C-872B-40F63E30DBA9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Presentation</RootNamespace>
+    <AssemblyName>Presentation</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsCSharpXamlForHtml5>true</IsCSharpXamlForHtml5>
+    <CSharpXamlForHtml5OutputType>Library</CSharpXamlForHtml5OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;CSHARP_XAML_FOR_HTML5;CSHTML5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CSHARP_XAML_FOR_HTML5;CSHTML5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CSharpXamlForHtml5">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.Runtime.Serialization.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.Runtime.Serialization.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.ServiceModel.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.ServiceModel.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.Xaml.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.Xaml.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.Xml.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.Xml.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="JSIL.Meta">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\JSIL.Meta.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyTools.cs" />
+    <Compile Include="Cancellation.cs" />
+    <Compile Include="CloseButton.cs" />
+    <Compile Include="Controls\ComboBox.cs" />
+    <Compile Include="ComboBoxContentPresenter.cs" />
+    <Compile Include="ComboBoxTemplateSelector.cs" />
+    <Compile Include="Commands\ApplicationCommand.cs" />
+    <Compile Include="Commands\ExecutedEventArgs.cs" />
+    <Compile Include="Confirmation.cs" />
+    <Compile Include="ConfirmationType.cs" />
+    <Compile Include="Controls\BoldHeaderTabControl.cs" />
+    <Compile Include="Controls\ObjectToIndexConverter.cs" />
+    <Compile Include="Controls\PercentProgressBar.xaml.cs">
+      <DependentUpon>PercentProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PercentProgressBarPropertyConverter.cs" />
+    <Compile Include="DataTemplateSelector.cs" />
+    <Compile Include="DispatchableDelegate.cs" />
+    <Compile Include="DispatcherSource.cs" />
+    <Compile Include="Controls\ListBox.cs" />
+    <Compile Include="Controls\Popup.cs" />
+    <Compile Include="FileBitmapImage.cs" />
+    <Compile Include="FileTools.cs" />
+    <Compile Include="FolderTools.cs" />
+    <Compile Include="GenericValueConverter.cs" />
+    <Compile Include="ImageConversion.cs" />
+    <Compile Include="NetTools.cs" />
+    <Compile Include="Persistent.cs" />
+    <Compile Include="PresentationEnvironment.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RootControl.cs" />
+    <Compile Include="RootControlMode.cs" />
+    <Compile Include="Controls\SelectorControl.cs" />
+    <Compile Include="Controls\SelectorItem.cs" />
+    <Compile Include="InvariantCulture.cs" />
+    <Compile Include="StaticContainer.cs" />
+    <Compile Include="Taskbar\TaskbarProgress.cs" />
+    <Compile Include="Taskbar\TaskbarShortcut.cs" />
+    <Compile Include="Taskbar\TaskbarStates.cs" />
+    <Compile Include="Controls\ToolTipControl.cs" />
+    <Compile Include="UserUI.cs" />
+    <Compile Include="ValueConverterGroup.cs" />
+    <Compile Include="WebClientTool.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\PercentProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zip\Zip.csproj">
+      <Project>{3c843815-5d36-490a-b1d2-f3691139caa3}</Project>
+      <Name>Zip</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\InternalStuff\Targets\CSharpXamlForHtml5.Build.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

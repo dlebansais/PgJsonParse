@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if CSHTML5
+#else
+using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -64,3 +66,4 @@ namespace Presentation
         }
     }
 }
+#endif

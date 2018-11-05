@@ -1,4 +1,23 @@
-﻿using System;
+﻿#if CSHTML5
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+
+namespace Presentation
+{
+    public static class ImageConversion
+    {
+        public static ImageSource IconFileToImageSource(string IconFile)
+        {
+            return null;
+        }
+
+        public static void UpdateWindowIconUsingFile(Page window, string FileName)
+        {
+        }
+    }
+}
+#else
+using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -35,3 +54,4 @@ namespace Presentation
         }
     }
 }
+#endif

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if CSHTML5
+#else
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
@@ -90,3 +92,4 @@ namespace Presentation
         public ToggleButton DropDownToggle { get; private set; }
     }
 }
+#endif

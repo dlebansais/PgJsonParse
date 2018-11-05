@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{851661EC-CE70-462F-820F-09E9482D298B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PgJsonParse</RootNamespace>
+    <AssemblyName>PgJsonParse</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsCSharpXamlForHtml5>true</IsCSharpXamlForHtml5>
+    <CSharpXamlForHtml5OutputType>Application</CSharpXamlForHtml5OutputType>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\InternalStuff\Simulator\CSharpXamlForHtml5.Simulator.exe</StartProgram>
+    <StartArguments>"PgJsonParse.dll"</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CSHARP_XAML_FOR_HTML5;CSHTML5;USE_WEBCCLIENT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CSHARP_XAML_FOR_HTML5;CSHTML5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CSharpXamlForHtml5">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.Runtime.Serialization.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.Runtime.Serialization.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.ServiceModel.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.ServiceModel.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.Xaml.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.Xaml.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpXamlForHtml5.System.Xml.dll">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\CSharpXamlForHtml5.System.Xml.dll.dll</HintPath>
+    </Reference>
+    <Reference Include="JSIL.Meta">
+      <HintPath>$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\AssembliesToReference\JSIL.Meta.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Converters\BooleanToObject Converter.cs" />
+    <Compile Include="Converters\BooleanInvertedConverter.cs" />
+    <Compile Include="Converters\CountToOpacityConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\DoubleConverter.cs" />
+    <Compile Include="Converters\EnumToTextConverter.cs" />
+    <Compile Include="Converters\EnumToObjectConverter.cs" />
+    <Compile Include="Converters\FileNameToBitmapImageConverter.cs" />
+    <Compile Include="Converters\FloatListToStringConverter.cs" />
+    <Compile Include="Converters\FriendlyNameConverter.cs" />
+    <Compile Include="Converters\IndexToObjectConverter.cs" />
+    <Compile Include="Converters\IntThresholdConverter.cs" />
+    <Compile Include="Converters\IntToObjectConverter.cs" />
+    <Compile Include="Converters\IsEnumInSetConverter.cs" />
+    <Compile Include="Converters\NullableTimeSpanToDurationConverter.cs" />
+    <Compile Include="Converters\NullToObjectConverter.cs" />
+    <Compile Include="Converters\NullableIntConverter.cs" />
+    <Compile Include="Converters\NullableBooleanToObjectConverter.cs" />
+    <Compile Include="Converters\PercentConverter.cs" />
+    <Compile Include="Converters\ReplaceMacroConverter.cs" />
+    <Compile Include="Converters\RgbColorToBrushConverter.cs" />
+    <Compile Include="Crunch\CrunchSelection.cs" />
+    <Compile Include="Crunch\CrunchTarget.cs" />
+    <Compile Include="CustomCompositeCollection.cs" />
+    <Compile Include="DownloadState.cs" />
+    <Compile Include="GameVersionInfo.cs" />
+    <Compile Include="MissingIconsAction.cs" />
+    <Compile Include="SearchModes.cs" />
+    <Compile Include="SelectionWindow.xaml.cs">
+      <DependentUpon>SelectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Selectors\EquipmentBoost_ItemEffectGearSelector.cs" />
+    <Compile Include="Selectors\Planer_ItemEffectGearSelector.cs" />
+    <Compile Include="Selectors\Temporary_ItemEffectGearSelector.cs" />
+    <Compile Include="Selectors\TypeToTemplateNameSelector.cs" />
+    <Compile Include="Selectors\ItemEffectGearSelector.cs" />
+    <Compile Include="Selectors\LinkBackSelector.cs" />
+    <Compile Include="Selectors\ListMemberSelector.cs" />
+    <Compile Include="Selectors\SearchResultContentSelector.cs" />
+    <Compile Include="Selectors\SearchResultTitleSelector.cs" />
+    <Compile Include="Selectors\SkillRewardSelector.cs" />
+    <Compile Include="Sequence.cs" />
+    <Compile Include="VersionCheckState.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="SelectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+    <Resource Include="Resources\goto.png" />
+    <Resource Include="Resources\cancel.png" />
+    <Resource Include="Resources\close.png" />
+    <Resource Include="Resources\device.png" />
+    <Resource Include="Resources\download.png" />
+    <Resource Include="Resources\dropdown.png" />
+    <Resource Include="Resources\icon_info.png" />
+    <Resource Include="Resources\Locked.png" />
+    <Resource Include="Resources\mainicon.i" />
+    <Resource Include="Resources\recycle.png" />
+    <Resource Include="Resources\Redo.png" />
+    <Resource Include="Resources\search.png" />
+    <Resource Include="Resources\setting.png" />
+    <Resource Include="Resources\start.png" />
+    <Resource Include="Resources\Undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PrologueWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mainicon.p" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PgJsonObjects\PgJsonObjects.csproj">
+      <Project>{dd627de0-952f-48cb-bb91-6cfd6c3d6417}</Project>
+      <Name>PgJsonObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Presentation\Presentation.csproj">
+      <Project>{4f047abc-04ab-454c-872b-40f63e30dba9}</Project>
+      <Name>Presentation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\InternalStuff\Targets\CSharpXamlForHtml5.Build.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
