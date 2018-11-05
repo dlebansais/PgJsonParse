@@ -70,6 +70,7 @@
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsHardcore.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsLongtimeAnimal.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsLycanthrope.cs" />
+    <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsNotGuest.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsNotInCombat.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsVegetarian.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsVolunteerGuide.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Records\Ability\Ability PvX.cs" />
     <Compile Include="Records\Ability\Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementInteractionFlagSet.cs" />
+    <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementIsNotGuest.cs" />
     <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementIsVolunteerGuide.cs" />
     <Compile Include="Records\Ability\Ability Source.cs" />
     <Compile Include="Records\Ability\AbilityCollection.cs" />
@@ -471,6 +473,7 @@
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsLycanthrope.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsNotInCombat.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsVegetarian.cs" />
+    <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsNotGuest.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsVolunteerGuide.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementOr.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementPetCount.cs" />

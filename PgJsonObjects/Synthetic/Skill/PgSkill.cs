@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgSkill(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 84;
+            offset += 88;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -24,10 +24,10 @@ namespace PgJsonObjects
 
         public override void Init()
         {
-            GetIntList(68, ref AdvancementHintTableKey);
-            GetStringList(72, ref AdvancementHintTableValue);
-            GetIntList(76, ref ReportTableKey);
-            GetStringList(80, ref ReportTableValue);
+            GetIntList(72, ref AdvancementHintTableKey);
+            GetStringList(76, ref AdvancementHintTableValue);
+            GetIntList(80, ref ReportTableKey);
+            GetStringList(84, ref ReportTableValue);
 
             CombinedRewardList = Skill.CreateCombinedRewardList(InteractionFlagLevelCapList, AdvancementHintTableKey, AdvancementHintTableValue, RewardList, ReportTableKey, ReportTableValue);
 
@@ -68,6 +68,8 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(56, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public int IconId { get { return GetInt(60).Value; } }
         public List<ItemKeyword> RecipeIngredientKeywordList { get { return GetEnumList(64, ref _RecipeIngredientKeywordList); } } private List<ItemKeyword> _RecipeIngredientKeywordList;
+        public int GuestLevelCap { get { return RawGuestLevelCap.HasValue ? RawGuestLevelCap.Value : 0; } }
+        public int? RawGuestLevelCap { get { return GetInt(68); } }
 
         public List<SkillRewardCommon> CombinedRewardList { get; private set; }
         private List<int> AdvancementHintTableKey = null;
@@ -131,6 +133,9 @@ namespace PgJsonObjects
             { "RecipeIngredientKeywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(RecipeIngredientKeywordList) } },
+            { "GuestLevelCap", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawGuestLevelCap } },
         }; } }
 
         private IObjectContentGenerator GetInteractionFlagLevelCaps()

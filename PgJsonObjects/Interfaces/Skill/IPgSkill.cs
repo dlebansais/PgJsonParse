@@ -31,6 +31,8 @@ namespace PgJsonObjects
         IPgSkill ParentSkill { get; }
         List<SkillCategory> TSysCategoryList { get; }
         List<ItemKeyword> RecipeIngredientKeywordList { get; }
+        int GuestLevelCap { get; }
+        int? RawGuestLevelCap { get; }
         List<SkillRewardCommon> CombinedRewardList { get; }
         int IconId { get; }
     }
