@@ -302,8 +302,11 @@
                 </TextBlock.Text>
             </TextBlock>
         </DataTemplate>
-        <DataTemplate x:Key="IsAdminAbilityRequirementTemplate">
-            <TextBlock>Game Admin Only</TextBlock>
+        <DataTemplate x:Key="AbilityRequirementIsVolunteerGuideTemplate">
+            <TextBlock>Volunteer Guide</TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="AbilityRequirementIsNotGuestTemplate">
+            <TextBlock>Not Guest</TextBlock>
         </DataTemplate>
         <DataTemplate x:Key="AbilityRequirementIsHardcoreTemplate">
             <TextBlock>Be Hardcore</TextBlock>
