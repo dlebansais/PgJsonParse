@@ -1,4 +1,20 @@
-﻿using System;
+﻿#if CSHTML5
+namespace Presentation
+{
+    public class NetTools
+    {
+        public static void EnableSecurityProtocol(out object oldSecurityProtocol)
+        {
+            oldSecurityProtocol = null;
+        }
+
+        public static void RestoreSecurityProtocol(object oldSecurityProtocol)
+        {
+        }
+    }
+}
+#else
+using System;
 using System.Net;
 
 namespace Presentation
@@ -23,3 +39,4 @@ namespace Presentation
         }
     }
 }
+#endif

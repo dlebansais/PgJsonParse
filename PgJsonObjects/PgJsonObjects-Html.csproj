@@ -75,6 +75,7 @@
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsHardcore.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsLongtimeAnimal.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsLycanthrope.cs" />
+    <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsNotGuest.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsNotInCombat.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsVegetarian.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementIsVolunteerGuide.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Records\Ability\Ability PvX.cs" />
     <Compile Include="Records\Ability\Ability Requirement.cs" />
     <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementInteractionFlagSet.cs" />
+    <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementIsNotGuest.cs" />
     <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementIsVolunteerGuide.cs" />
     <Compile Include="Records\Ability\Ability Source.cs" />
     <Compile Include="Records\Ability\AbilityCollection.cs" />
@@ -474,6 +476,7 @@
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsHardcore.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsLongtimeAnimal.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsLycanthrope.cs" />
+    <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsNotGuest.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsNotInCombat.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsVegetarian.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementIsVolunteerGuide.cs" />
@@ -623,13 +626,13 @@
     <Compile Include="Verifyer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PgJsonReader\PgJsonReader.csproj">
+    <ProjectReference Include="..\PgJsonReader\PgJsonReader-Html.csproj">
       <Project>{92aa701d-7675-4846-9eb3-145f3dc9b633}</Project>
-      <Name>PgJsonReader</Name>
+      <Name>PgJsonReader-Html</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Presentation\Presentation.csproj">
+    <ProjectReference Include="..\Presentation\Presentation-Html.csproj">
       <Project>{4f047abc-04ab-454c-872b-40f63e30dba9}</Project>
-      <Name>Presentation</Name>
+      <Name>Presentation-Html</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildProgramFiles32)\MSBuild\CSharpXamlForHtml5\InternalStuff\Targets\CSharpXamlForHtml5.Build.targets" />

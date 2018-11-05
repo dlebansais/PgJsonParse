@@ -1,4 +1,24 @@
-﻿using System;
+﻿#if CSHTML5
+using System;
+using System.Diagnostics;
+using System.Threading;
+
+namespace Presentation
+{
+    public static class UserUI
+    {
+        public static void MinimalSleep(Stopwatch Watch)
+        {
+            MinimalSleep(Watch, TimeSpan.FromSeconds(4));
+        }
+
+        public static void MinimalSleep(Stopwatch Watch, TimeSpan MinimumTime)
+        {
+        }
+    }
+}
+#else
+using System;
 using System.Diagnostics;
 using System.Threading;
 
@@ -19,3 +39,4 @@ namespace Presentation
         }
     }
 }
+#endif

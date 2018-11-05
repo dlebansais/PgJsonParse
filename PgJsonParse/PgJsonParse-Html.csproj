@@ -154,13 +154,13 @@
     <Resource Include="Resources\mainicon.p" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PgJsonObjects\PgJsonObjects.csproj">
+    <ProjectReference Include="..\PgJsonObjects\PgJsonObjects-Html.csproj">
       <Project>{dd627de0-952f-48cb-bb91-6cfd6c3d6417}</Project>
-      <Name>PgJsonObjects</Name>
+      <Name>PgJsonObjects-Html</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Presentation\Presentation.csproj">
+    <ProjectReference Include="..\Presentation\Presentation-Html.csproj">
       <Project>{4f047abc-04ab-454c-872b-40f63e30dba9}</Project>
-      <Name>Presentation</Name>
+      <Name>Presentation-Html</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -300,7 +300,9 @@ namespace PgJsonObjects
                 if (CharacterOffset + i * 2 < 0 || CharacterOffset + i * 2 >= Data.Length)
                     offsetString = 0;
 
-                char CharacterValue = BitConverter.ToChar(Data, CharacterOffset + i * 2);
+                byte b0 = Data[CharacterOffset + i * 2];
+                byte b1 = Data[CharacterOffset + i * 2 + 1];
+                char CharacterValue = (char)(b0 + b1 * 256);
                 Result += CharacterValue;
             }
 

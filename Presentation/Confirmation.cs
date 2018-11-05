@@ -1,4 +1,18 @@
-﻿using System;
+﻿#if CSHTML5
+using Windows.UI.Xaml;
+
+namespace Presentation
+{
+    public static class Confirmation
+    {
+        public static MessageBoxResult Show(string messageBoxText, string caption, bool allowCancel, ConfirmationType type)
+        {
+            return MessageBox.Show(messageBoxText, caption, allowCancel ? MessageBoxButton.OKCancel : MessageBoxButton.OK);
+        }
+    }
+}
+#else
+using System;
 using System.Windows;
 
 namespace Presentation
@@ -31,3 +45,4 @@ namespace Presentation
         }
     }
 }
+#endif

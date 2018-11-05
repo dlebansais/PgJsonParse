@@ -1,7 +1,7 @@
 ﻿#if CSHTML5
+using NetTools;
 using System;
 using System.Diagnostics;
-using System.Net;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
@@ -79,7 +79,7 @@ namespace Presentation
         #region Implementation
         private static void Download(string address, string ProxyName, DownloadStringCompletedEventHandler handlerAddEvent, EventHandler<object> handlerTick, Action<string, Exception> callback)
         {
-            string ProxyAddress = "http://www.easly.org/support/" + ProxyName + ".php? addr=" + address;
+            string ProxyAddress = "http://www.easly.org/support/" + ProxyName + ".php?addr=" + address;
 
             DownloadClient = new WebClient();
             AddDownloadedEvent(handlerAddEvent);
@@ -91,7 +91,7 @@ namespace Presentation
             DownloadTimer.Tick += handlerTick;
             MaxTicks = 30;
 
-            DownloadTask = DownloadClient.DownloadStringTaskAsync(ProxyAddress);
+            DownloadClient.DownloadStringAsync(new Uri(ProxyAddress, UriKind.RelativeOrAbsolute));
             DownloadTimer.Start();
         }
 
@@ -176,7 +176,7 @@ namespace Presentation
 {
     public class WebClientTool
     {
-#region Download Text
+        #region Download Text
         public delegate void DownloadTextResultHandler(string content, Exception downloadException);
 
         public static void DownloadText(IDispatcherSource dispatcherSource, string address, Stopwatch watch, DownloadTextResultHandler callback)
@@ -253,9 +253,9 @@ namespace Presentation
             else
                 PollDownload(DownloadTask, callback);
         }
-#endregion
+        #endregion
 
-#region Download Binary
+        #region Download Binary
         public delegate void DownloadDataResultHandler(byte[] data, Exception downloadException);
 
         public static void DownloadDataToFile(IDispatcherSource dispatcherSource, string address, DownloadDataResultHandler callback)
@@ -304,9 +304,9 @@ namespace Presentation
             else
                 PollDownload(DownloadTask, callback);
         }
-#endregion
+        #endregion
 
-#region Explorer
+        #region Explorer
         public static void OpenFileExplorer(string folder)
         {
             Process Explorer = new Process();
@@ -316,7 +316,7 @@ namespace Presentation
 
             Explorer.Start();
         }
-#endregion
+        #endregion
     }
 }
 #endif

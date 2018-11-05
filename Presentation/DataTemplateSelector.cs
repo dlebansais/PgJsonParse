@@ -1,4 +1,35 @@
-﻿using System.Windows;
+﻿#if CSHTML5
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+
+namespace Presentation
+{
+    public abstract class DataTemplateSelector : ContentControl
+    {
+        public virtual DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            return null;
+        }
+
+        protected DataTemplate FindTemplate(FrameworkElement element, string resourceName)
+        {
+            if (Application.Current.MainWindow.Content is RootControl AsRootControl)
+                if (AsRootControl.Resources.Contains(resourceName))
+                    return AsRootControl.Resources[resourceName] as DataTemplate;
+
+            return null;
+        }
+
+        protected override void OnContentChanged(object oldContent, object newContent)
+        {
+            base.OnContentChanged(oldContent, newContent);
+
+            ContentTemplate = SelectTemplate(newContent, this);
+        }
+    }
+}
+#else
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -46,3 +77,4 @@ namespace Presentation
         }
     }
 }
+#endif

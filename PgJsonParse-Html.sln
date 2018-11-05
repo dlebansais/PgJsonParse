@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PgJsonReader-Html", "PgJson
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zip", "Zip\Zip.csproj", "{3C843815-5D36-490A-B1D2-F3691139CAA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTools", "NetTools\NetTools.csproj", "{5A9484FA-3316-4E96-9EAB-95AC997B40DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,14 @@ Global
 		{3C843815-5D36-490A-B1D2-F3691139CAA3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3C843815-5D36-490A-B1D2-F3691139CAA3}.Release|x64.ActiveCfg = Release|Any CPU
 		{3C843815-5D36-490A-B1D2-F3691139CAA3}.Release|x64.Build.0 = Release|Any CPU
+		{5A9484FA-3316-4E96-9EAB-95AC997B40DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A9484FA-3316-4E96-9EAB-95AC997B40DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A9484FA-3316-4E96-9EAB-95AC997B40DA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5A9484FA-3316-4E96-9EAB-95AC997B40DA}.Debug|x64.Build.0 = Debug|Any CPU
+		{5A9484FA-3316-4E96-9EAB-95AC997B40DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9484FA-3316-4E96-9EAB-95AC997B40DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A9484FA-3316-4E96-9EAB-95AC997B40DA}.Release|x64.ActiveCfg = Release|Any CPU
+		{5A9484FA-3316-4E96-9EAB-95AC997B40DA}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
