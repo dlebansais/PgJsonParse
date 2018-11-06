@@ -109,6 +109,8 @@ namespace PgJsonObjects
 
         public virtual void ListObjectContent(JsonGenerator Generator, string ParserKey)
         {
+#if CSHTML5
+#else
             if (!GeneratorFieldTable.ContainsKey(ParserKey))
                 ParserKey = null;
 
@@ -214,6 +216,7 @@ namespace PgJsonObjects
                     }
                     break;
             }
+#endif
         }
 
         public virtual void CloseGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)

@@ -350,7 +350,11 @@ namespace PgJsonObjects
 
             for (int i = 0; i < EnumList.Count; i++)
             {
+#if CSHTML5
+                UInt16 EnumValue = 0;
+#else
                 UInt16 EnumValue = (UInt16)(int)EnumList[i];
+#endif
 
                 if (data != null)
                 {
@@ -487,7 +491,11 @@ namespace PgJsonObjects
 
             for (int i = 0; i < Count; i++)
             {
+#if CSHTML5
+                ISerializableJsonObject ObjectValue = null;
+#else
                 ISerializableJsonObject ObjectValue = (ObjectList as IList)[i] as ISerializableJsonObject;
+#endif
                 int ObjectOffset;
 
                 if (IsObjectSerialized(ObjectValue))

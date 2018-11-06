@@ -406,6 +406,8 @@ namespace PgJsonObjects
 
         public virtual void ListObjectContent(JsonGenerator Generator, string ParserKey)
         {
+#if CSHTML5
+#else
             if (!GeneratorFieldTable.ContainsKey(ParserKey))
                 ParserKey = null;
             if (ParserKey == null)
@@ -512,6 +514,7 @@ namespace PgJsonObjects
                     }
                     break;
             }
+#endif
         }
 
         public virtual void CloseGeneratorKey(JsonGenerator Generator, bool openWithKey, bool openWithNullKey)
@@ -526,6 +529,6 @@ namespace PgJsonObjects
         private List<string> GeneratorFieldTableOrder { get { return FieldTableOrder; } }
         protected abstract Dictionary<string, FieldParser> FieldTable { get; }
         protected abstract List<string> FieldTableOrder { get; }
-        #endregion
+#endregion
     }
 }

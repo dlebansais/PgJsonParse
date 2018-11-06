@@ -1221,7 +1221,7 @@ namespace PgJsonParse
             }
         }
 
-        private void PerformSearch(List<string> termList, IDictionary objectTable, string textContent, SearchModes searchMode)
+        private void PerformSearch(List<string> termList, Dictionary<string, IJsonKey> objectTable, string textContent, SearchModes searchMode)
         {
             List<IBackLinkable> Result = new List<IBackLinkable>();
 
@@ -1274,7 +1274,7 @@ namespace PgJsonParse
                 SearchResult.Add(o);
         }
 
-        private void PerformSearch(string term, IDictionary objectTable, string textContent, List<IBackLinkable> SingleTermResult)
+        private void PerformSearch(string term, Dictionary<string, IJsonKey> objectTable, string textContent, List<IBackLinkable> SingleTermResult)
         {
             int MatchIndex = -1;
             StringComparison Comparison = MustMatchCase ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase;
@@ -1313,7 +1313,7 @@ namespace PgJsonParse
                     KeyIndex++;
                 }
 
-                if (objectTable.Contains(Key))
+                if (objectTable.ContainsKey(Key))
                 {
                     IBackLinkable AsBackLinkable = objectTable[Key] as IBackLinkable;
                     if (AsBackLinkable != null)
