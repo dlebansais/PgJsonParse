@@ -88,7 +88,7 @@ namespace PgJsonObjects
                 if (Item != null)
                     AddWithFieldSeparator(ref Result, Item.Name);
                 foreach (RecipeItemKey ItemKey in ItemKeyList)
-                    AddWithFieldSeparator(ref Result, TextMaps.RecipeItemKeyTextMap[ItemKey]);
+                    AddWithFieldSeparator(ref Result, "Any " + TextMaps.RecipeItemKeyTextMap[ItemKey]);
                 foreach (Item Item in MatchingKeyItemList)
                     AddWithFieldSeparator(ref Result, Item.Name);
                 AddWithFieldSeparator(ref Result, Desc);
