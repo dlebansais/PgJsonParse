@@ -166,7 +166,8 @@ namespace PgJsonObjects
             }
 
             if (ErrorInfo != null)
-                ErrorInfo.AddMissingKey(RawAttributeName);
+                if (RawAttributeName != "COCKATRICEDEBUFF_COST_DELTA" && RawAttributeName != "LAMIADEBUFF_COST_DELTA")
+                    ErrorInfo.AddMissingKey(RawAttributeName);
 
             return null;
         }

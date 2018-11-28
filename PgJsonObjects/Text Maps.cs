@@ -3043,6 +3043,8 @@ namespace PgJsonObjects
             { ItemKeyword.EvilPumpkin, "Evil Pumpkin" },
             { ItemKeyword.GardeningRelated, "Gardening Related" },
             { ItemKeyword.MasqueradeMask, "Masquerade Mask" },
+            { ItemKeyword.RawCotton, "Raw Cotton" },
+            { ItemKeyword.Thread, "Thread" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()

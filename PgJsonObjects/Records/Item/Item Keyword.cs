@@ -886,5 +886,7 @@
         EvilPumpkin,
         GardeningRelated,
         MasqueradeMask,
+        RawCotton,
+        Thread,
     }
 }

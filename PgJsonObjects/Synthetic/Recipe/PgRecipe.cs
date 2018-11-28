@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgRecipe(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 136;
+            offset += 140;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -35,6 +35,7 @@ namespace PgJsonObjects
             AddLinkBack(RewardSkill);
             AddLinkBack(SharesResetTimerWith);
             AddLinkBack(PrereqRecipe);
+            AddLinkBackCollection(ProtoResultItemList, GetIngredientLinkBacks);
         }
 
         public IList<IBackLinkable> GetIngredientLinkBacks(IPgRecipeItem value)
@@ -91,10 +92,13 @@ namespace PgJsonObjects
         public bool? RawIngredientListIsEmpty { get { return GetBool(120, 2); } }
         public bool ResultItemListIsEmpty { get { return RawResultItemListIsEmpty.HasValue && RawResultItemListIsEmpty.Value; } }
         public bool? RawResultItemListIsEmpty { get { return GetBool(120, 4); } }
+        public bool ProtoResultItemListIsEmpty { get { return RawProtoResultItemListIsEmpty.HasValue && RawProtoResultItemListIsEmpty.Value; } }
+        public bool? RawProtoResultItemListIsEmpty { get { return GetBool(120, 6); } }
         public ItemKeyword RecipeItemKeyword { get { return GetEnum<ItemKeyword>(122); } }
         public IPgGenericSourceCollection SourceList { get { return GetObjectList(124, ref _SourceList, (byte[] data, ref int offset) => PgGenericSourceCollection.CreateItem(this, data, ref offset), () => new PgGenericSourceCollection()); } } private PgGenericSourceCollection _SourceList;
         public double? PerfectCottonRatio { get { return GetDouble(128); } }
         public List<ItemKeyword> ValidationIngredientKeywordList { get { return GetEnumList(132, ref _ValidationIngredientKeywordList); } } private List<ItemKeyword> _ValidationIngredientKeywordList;
+        public IPgRecipeItemCollection ProtoResultItemList { get { return GetObjectList(136, ref _ProtoResultItemList, PgRecipeItemCollection.CreateItem, () => new PgRecipeItemCollection()); } } private IPgRecipeItemCollection _ProtoResultItemList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Description", new FieldParser() {
@@ -196,6 +200,10 @@ namespace PgJsonObjects
             { "ValidationIngredientKeywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(ValidationIngredientKeywordList) } },
+            { "ProtoResultItems", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => ProtoResultItemList,
+                GetArrayIsEmpty = () => ProtoResultItemListIsEmpty } },
         }; } }
 
         private List<string> GetResultEffects()

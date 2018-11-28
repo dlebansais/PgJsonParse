@@ -52,8 +52,11 @@ namespace PgJsonObjects
         public bool? RawIngredientListIsEmpty { get; private set; }
         public bool ResultItemListIsEmpty { get { return RawResultItemListIsEmpty.HasValue && RawResultItemListIsEmpty.Value; } }
         public bool? RawResultItemListIsEmpty { get; private set; }
+        public bool ProtoResultItemListIsEmpty { get { return RawProtoResultItemListIsEmpty.HasValue && RawProtoResultItemListIsEmpty.Value; } }
+        public bool? RawProtoResultItemListIsEmpty { get; private set; }
         public ItemKeyword RecipeItemKeyword { get; private set; }
         public List<ItemKeyword> ValidationIngredientKeywordList { get; } = new List<ItemKeyword>();
+        public IPgRecipeItemCollection ProtoResultItemList { get; } = new RecipeItemCollection();
 
         private PowerSkill RawSkill;
         private bool IsSkillParsed;
@@ -219,6 +222,12 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemKeyword>.ParseList(value, ValidationIngredientKeywordList, errorInfo),
                 GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(ValidationIngredientKeywordList) } },
+            { "ProtoResultItems", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<RecipeItem>.ParseList("ProtoResultItems", value, ProtoResultItemList, errorInfo),
+                SetArrayIsEmpty = () => RawProtoResultItemListIsEmpty = true ,
+                GetObjectArray = () => ProtoResultItemList,
+                GetArrayIsEmpty = () => ProtoResultItemListIsEmpty } },
         }; } }
 
         private void ParseDescription(string value, ParseErrorInfo ErrorInfo)
@@ -884,6 +893,8 @@ namespace PgJsonObjects
                         AddWithFieldSeparator(ref Result, PrereqRecipe.Name);
                     foreach (ItemKeyword Keyword in ValidationIngredientKeywordList)
                         AddWithFieldSeparator(ref Result, TextMaps.ItemKeywordTextMap[Keyword]);
+                    foreach (RecipeItem ResultItem in ProtoResultItemList)
+                        AddWithFieldSeparator(ref Result, ResultItem.TextContent);
 
                     return Result;
                 }
@@ -928,6 +939,9 @@ namespace PgJsonObjects
 
             if (RawPrereqRecipe != null)
                 PrereqRecipe = PgJsonObjects.Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawPrereqRecipe, PrereqRecipe, ref IsPrereqRecipeParsed, ref IsConnected, this);
+
+            foreach (RecipeItem Item in ProtoResultItemList)
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             return IsConnected;
         }
@@ -1132,13 +1146,15 @@ namespace PgJsonObjects
             AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 120, 0);
             AddBool(RawIngredientListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 120, 2);
             AddBool(RawResultItemListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 120, 4);
+            AddBool(RawProtoResultItemListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 120, 6);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 122);
             AddObjectList(SourceList, data, ref offset, BaseOffset, 124, StoredObjectListTable);
             AddDouble(PerfectCottonRatio, data, ref offset, BaseOffset, 128);
             AddEnumList(ValidationIngredientKeywordList, data, ref offset, BaseOffset, 132, StoredEnumListTable);
+            AddObjectList(ProtoResultItemList, data, ref offset, BaseOffset, 136, StoredObjectListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 136, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 140, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion
