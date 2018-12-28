@@ -68,7 +68,7 @@
         Attack_Staff_Redirect,
         Attack_Necromancy_RaiseSkeleton,
         Attack_Necromancy_RaiseZombie,
-        Attack_Necromancy_RaiseSuperZombie,
+        //Attack_Necromancy_RaiseSuperZombie,
         Attack_Necromancy_LifeCrush,
         Attack_Necromancy_LifeSteal,
         Attack_Necromancy_HealUndead,

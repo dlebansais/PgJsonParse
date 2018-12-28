@@ -141,5 +141,8 @@
         PumpkinBomb,
         PumpkinBlast,
         PumpkinBite,
+        DeadlyGas,
+        OverAgitation,
+        LoveTap,
     }
 }

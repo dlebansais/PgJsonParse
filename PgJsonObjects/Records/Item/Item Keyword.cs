@@ -873,7 +873,7 @@
         StandardShovel,
         AlchemyIngredient,
         CookingIngredient,
-        BlacksmithingRecipe,
+        //BlacksmithingRecipe,
         Peach,
         Lint_AbilityIngredient,
         Marigold,
@@ -888,5 +888,6 @@
         MasqueradeMask,
         RawCotton,
         Thread,
+        RedGem,
     }
 }

@@ -681,5 +681,7 @@
         IPgAIAbility WorldBossClaudiaTundraSpikes { get; }
         IPgAIAbility WorldBossClaudiaIceSpear { get; }
         IPgAIAbility WorldBossClaudiaBlizzard { get; }
+        IPgAIAbility DeerFrontKick { get; }
+        IPgAIAbility DeerRageKick { get; }
     }
 }

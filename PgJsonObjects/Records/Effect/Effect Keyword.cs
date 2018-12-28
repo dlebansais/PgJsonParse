@@ -210,5 +210,6 @@
         PriestFocus,
         PumpkinTurret,
         Pumpkinbomb,
+        ToughHoofTagged,
     }
 }

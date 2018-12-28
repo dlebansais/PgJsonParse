@@ -686,6 +686,8 @@ namespace PgJsonObjects
         public IPgAIAbility WorldBossClaudiaTundraSpikes { get; private set; }
         public IPgAIAbility WorldBossClaudiaIceSpear { get; private set; }
         public IPgAIAbility WorldBossClaudiaBlizzard { get; private set; }
+        public IPgAIAbility DeerFrontKick { get; private set; }
+        public IPgAIAbility DeerRageKick { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -3410,6 +3412,14 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WorldBossClaudiaBlizzard =
                    JsonObjectParser<AIAbility>.Parse("WorldBossClaudiaBlizzard", value, errorInfo),
                 GetObject = () => WorldBossClaudiaBlizzard as IObjectContentGenerator } },
+           { "DeerFrontKick", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => DeerFrontKick =
+                   JsonObjectParser<AIAbility>.Parse("DeerFrontKick", value, errorInfo),
+                GetObject = () => DeerFrontKick as IObjectContentGenerator } },
+           { "DeerRageKick", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => DeerRageKick =
+                   JsonObjectParser<AIAbility>.Parse("DeerRageKick", value, errorInfo),
+                GetObject = () => DeerRageKick as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4127,8 +4137,10 @@ namespace PgJsonObjects
             AddObject(WorldBossClaudiaTundraSpikes as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 676 * 4, StoredObjectTable);
             AddObject(WorldBossClaudiaIceSpear as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 677 * 4, StoredObjectTable);
             AddObject(WorldBossClaudiaBlizzard as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 678 * 4, StoredObjectTable);
+            AddObject(DeerFrontKick as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 679 * 4, StoredObjectTable);
+            AddObject(DeerRageKick as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 680 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 679 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 681 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -76,7 +76,7 @@ namespace PgJsonObjects
         public ConsumedItems ConsumedItems { get; private set; }
         public IPgAbility AbilityGroup { get; private set; }
         public IPgAbilityRequirementCollection SpecialCasterRequirementList { get; } = new AbilityRequirementCollection();
-        public IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaPowerCostList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaResetTimeList { get; private set; } = null;
@@ -86,18 +86,21 @@ namespace PgJsonObjects
         public bool? RawWorksWhileFalling { get; private set; }
         public bool IgnoreEffectErrors { get { return RawIgnoreEffectErrors.HasValue && RawIgnoreEffectErrors.Value; } }
         public bool? RawIgnoreEffectErrors { get; private set; }
-        public bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty { get; private set; }
+        public bool RawAttributesThatModAmmoConsumeChanceListIsEmpty { get; private set; }
         public bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty { get; private set; }
         public bool RawAttributesThatDeltaPowerCostListIsEmpty { get; private set; }
         public bool RawAttributesThatDeltaResetTimeListIsEmpty { get; private set; }
         public bool RawAttributesThatModPowerCostListIsEmpty { get; private set; }
         public PowerSkill RawSkill { get; private set; }
         public IPgGenericSourceCollection SourceList { get; private set; } = new PgGenericSourceCollection();
+        public IPgItem ConsumedItemDescription { get; private set; }
 
         private List<PowerSkill> RawCompatibleSkillList = new List<PowerSkill>();
         private bool IsSkillParsed;
         private bool IsRawConsumedItemKeywordParsed;
         private ItemKeyword ConsumedItemKeyword;
+        private string RawConsumedItemDescription;
+        private bool IsRawConsumedItemDescriptionParsed;
         #endregion
 
         #region Indirect Properties
@@ -161,12 +164,12 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Animation = StringToEnumConversion<AbilityAnimation>.Parse(value, errorInfo),
                 GetString = () => StringToEnumConversion<AbilityAnimation>.ToString(Animation, null, AbilityAnimation.Internal_None) } },
-            { "AttributesThatDeltaAmmoStickChance", new FieldParser() {
+            { "AttributesThatModAmmoConsumeChance", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaAmmoStickChanceList.Add(value),
-                SetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty = true,
-                GetStringArray = () => AttributesThatDeltaAmmoStickChanceList.ToKeyList,
-                GetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty } },
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModAmmoConsumeChanceList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatModAmmoConsumeChanceListIsEmpty = true,
+                GetStringArray = () => AttributesThatModAmmoConsumeChanceList.ToKeyList,
+                GetArrayIsEmpty = () => RawAttributesThatModAmmoConsumeChanceListIsEmpty } },
             { "AttributesThatDeltaDelayLoopTime", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDelayLoopTimeList.Add(value),
@@ -388,6 +391,10 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawWorksWhileFalling = value,
                 GetBool = () => RawWorksWhileFalling } },
+            { "ConsumedItemDescription", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawConsumedItemDescription = value,
+                GetString = () => RawConsumedItemDescription } },
         }; } }
 
         private void ParseConsumedItemKeyword(string value, ParseErrorInfo errorInfo)
@@ -2293,6 +2300,16 @@ namespace PgJsonObjects
                 //TODO
             }
 
+            else if (Tools.Scan(s, "Each time target attacks and damages you within %d seconds, you regain %d Health", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Summon Pet from first Stable Slot with a Living Pet", args))
+            {
+                //TODO
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);
@@ -2381,12 +2398,13 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, AbilityGroup.Name);
                 if (RawIgnoreEffectErrors.HasValue)
                     AddWithFieldSeparator(ref Result, "Ignore Effect Errors");
+                AddWithFieldSeparator(ref Result, RawConsumedItemDescription);
 
                 return Result;
             }
         }
 
-        private List<string> RawAttributesThatDeltaAmmoStickChanceList = new List<string>();
+        private List<string> RawAttributesThatModAmmoConsumeChanceList = new List<string>();
         private List<string> RawAttributesThatDeltaDelayLoopTimeList = new List<string>();
         private List<string> RawAttributesThatDeltaPowerCostList = new List<string>();
         private List<string> RawAttributesThatDeltaResetTimeList = new List<string>();
@@ -2437,11 +2455,13 @@ namespace PgJsonObjects
                 ConsumedItemLink = Item.ConnectSingleProperty(null, ItemTable, ConsumedItemName, ConsumedItemLink, ref IsRawConsumedItemKeywordParsed, ref IsConnected, this);
             }
 
-            AttributesThatDeltaAmmoStickChanceList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaAmmoStickChanceList, AttributesThatDeltaAmmoStickChanceList, ref IsConnected);
+            AttributesThatModAmmoConsumeChanceList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatModAmmoConsumeChanceList, AttributesThatModAmmoConsumeChanceList, ref IsConnected);
             AttributesThatDeltaDelayLoopTimeList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaDelayLoopTimeList, AttributesThatDeltaDelayLoopTimeList, ref IsConnected);
             AttributesThatDeltaPowerCostList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaPowerCostList, AttributesThatDeltaPowerCostList, ref IsConnected);
             AttributesThatDeltaResetTimeList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaResetTimeList, AttributesThatDeltaResetTimeList, ref IsConnected);
             AttributesThatModPowerCostList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatModPowerCostList, AttributesThatModPowerCostList, ref IsConnected);
+
+            ConsumedItemDescription = Item.ConnectSingleProperty(null, ItemTable, RawConsumedItemDescription, ConsumedItemDescription, ref IsRawConsumedItemDescriptionParsed, ref IsConnected, this);
 
             return IsConnected;
         }
@@ -2636,7 +2656,7 @@ namespace PgJsonObjects
             AddEnum(ConsumedItems, data, ref offset, BaseOffset, 142);
             AddObject(AbilityGroup as ISerializableJsonObject, data, ref offset, BaseOffset, 144, StoredObjectTable);
             AddObjectList(SpecialCasterRequirementList, data, ref offset, BaseOffset, 148, StoredObjectListTable);
-            AddObjectList(AttributesThatDeltaAmmoStickChanceList, data, ref offset, BaseOffset, 152, StoredObjectListTable);
+            AddObjectList(AttributesThatModAmmoConsumeChanceList, data, ref offset, BaseOffset, 152, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaDelayLoopTimeList, data, ref offset, BaseOffset, 156, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaPowerCostList, data, ref offset, BaseOffset, 160, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaResetTimeList, data, ref offset, BaseOffset, 164, StoredObjectListTable);
@@ -2645,7 +2665,7 @@ namespace PgJsonObjects
             AddObject(ConsumedItemLink as ISerializableJsonObject, data, ref offset, BaseOffset, 176, StoredObjectTable);
             AddBool(RawWorksWhileFalling, data, ref offset, ref BitOffset, BaseOffset, 180, 0);
             AddBool(RawIgnoreEffectErrors, data, ref offset, ref BitOffset, BaseOffset, 180, 2);
-            AddBool(RawAttributesThatDeltaAmmoStickChanceListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 4);
+            AddBool(RawAttributesThatModAmmoConsumeChanceListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 4);
             AddBool(RawAttributesThatDeltaDelayLoopTimeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 6);
             AddBool(RawAttributesThatDeltaPowerCostListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 8);
             AddBool(RawAttributesThatDeltaResetTimeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 10);
@@ -2653,8 +2673,9 @@ namespace PgJsonObjects
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RawSkill, data, ref offset, BaseOffset, 182);
             AddObjectList(SourceList, data, ref offset, BaseOffset, 184, StoredObjectListTable);
+            AddObject(ConsumedItemDescription as ISerializableJsonObject, data, ref offset, BaseOffset, 188, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 188, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 192, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

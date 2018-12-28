@@ -26,5 +26,6 @@
         Projectile_Sword20,
         Projectile_Lightning,
         Projectile_ElectricSpell,
+        Projectile_ChaosMissile,
     }
 }

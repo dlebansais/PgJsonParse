@@ -21,7 +21,7 @@
         Flight,
         WinterCoat,
         ColdBoost,
-        SummonedZombieBuff,
+        //SummonedZombieBuff,
         CloudNaturalSenses,
         GruesomeSpookyPunch,
         Concussed1,
@@ -160,7 +160,7 @@
         WorgDebuff,
         PantherDebuff,
         RatDebuff,
-        ProvokeUndead,
+        //ProvokeUndead,
         Disabled,
         OrcEvasion,
         AmnesiaSpores,
@@ -282,5 +282,6 @@
         CowBoostPotion,
         GiantBatBoostPotion,
         RabbitBoostPotion,
+        HolyWarmth,
     }
 }

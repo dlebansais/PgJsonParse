@@ -285,24 +285,40 @@ namespace Presentation
                 return true;
             }
 
-            if (s.Length != 6)
+            if (s.Length != 6 && s.Length != 8)
             {
                 Value = 0;
                 return false;
             }
 
-            byte R, G, B;
+            byte A, R, G, B;
 
-            if (!TryParseByteHex(s.Substring(0, 2), out R) ||
-                !TryParseByteHex(s.Substring(2, 2), out G) ||
-                !TryParseByteHex(s.Substring(4, 2), out B))
+            if (s.Length == 6)
             {
-                Value = 0;
-                return false;
+                if (!TryParseByteHex(s.Substring(0, 2), out R) ||
+                    !TryParseByteHex(s.Substring(2, 2), out G) ||
+                    !TryParseByteHex(s.Substring(4, 2), out B))
+                {
+                    Value = 0;
+                    return false;
+                }
+
+                A = 0xFF;
+            }
+            else
+            {
+                if (!TryParseByteHex(s.Substring(0, 2), out A) ||
+                    !TryParseByteHex(s.Substring(2, 2), out R) ||
+                    !TryParseByteHex(s.Substring(4, 2), out G) ||
+                    !TryParseByteHex(s.Substring(6, 2), out B))
+                {
+                    Value = 0;
+                    return false;
+                }
             }
 
-            Color c = Color.FromArgb(0xFF, R, G, B);
-            Value = (0xFF000000 + ((uint)R << 16) + ((uint)G << 8) + ((uint)B << 0));
+            Color c = Color.FromArgb(A, R, G, B);
+            Value = (0x0000000 + ((uint)A << 24) + ((uint)R << 16) + ((uint)G << 8) + ((uint)B << 0));
             return true;
         }
 

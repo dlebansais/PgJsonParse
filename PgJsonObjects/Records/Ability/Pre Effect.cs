@@ -12,5 +12,12 @@
         ResetTetheredSoul,
         FishGutFishMod100,
         SpadeAssaultPlantMod100,
+        SuperZombie1,
+        SuperZombie2,
+        SuperZombie3,
+        SuperZombie4,
+        SuperZombie5,
+        SuperZombie6,
+        SuperZombie7,
     }
 }

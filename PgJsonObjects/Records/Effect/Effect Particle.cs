@@ -18,7 +18,7 @@
         ClawMarks,
         HolyDefensePerm,
         Sparkler,
-        StaminaRegenerationPerm,
+        //StaminaRegenerationPerm,
         Cure,
         FireTrail,
         Sparkled,
@@ -97,5 +97,6 @@
         GuidePillarFlowers,
         AcidBomb,
         Stunned5Sec,
+        FloatyHearts,
     }
 }

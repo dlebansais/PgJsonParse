@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 188;
+            offset += 192;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -49,6 +49,7 @@ namespace PgJsonObjects
             AddLinkBack(AbilityGroup);
             AddLinkBackCollection(SpecialCasterRequirementList, (IPgAbilityRequirement value) => value.GetLinkBack());
             AddLinkBack(ConsumedItemLink);
+            AddLinkBack(ConsumedItemDescription);
         }
 
         public override string Key { get { return GetString(0); } }
@@ -119,7 +120,7 @@ namespace PgJsonObjects
         public ConsumedItems ConsumedItems { get { return GetEnum<ConsumedItems>(142); } }
         public IPgAbility AbilityGroup { get { return GetObject(144, ref _AbilityGroup, CreateNew); } } private IPgAbility _AbilityGroup;
         public IPgAbilityRequirementCollection SpecialCasterRequirementList { get { return GetObjectList(148, ref _SpecialCasterRequirementList, PgAbilityRequirementCollection.CreateItem, () => new PgAbilityRequirementCollection()); } } private IPgAbilityRequirementCollection _SpecialCasterRequirementList;
-        public IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get { return GetObjectList(152, ref _AttributesThatDeltaAmmoStickChanceList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaAmmoStickChanceList;
+        public IPgAttributeCollection AttributesThatModAmmoConsumeChanceList { get { return GetObjectList(152, ref _AttributesThatModAmmoConsumeChanceList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModAmmoConsumeChanceList;
         public IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get { return GetObjectList(156, ref _AttributesThatDeltaDelayLoopTimeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaDelayLoopTimeList;
         public IPgAttributeCollection AttributesThatDeltaPowerCostList { get { return GetObjectList(160, ref _AttributesThatDeltaPowerCostList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaPowerCostList;
         public IPgAttributeCollection AttributesThatDeltaResetTimeList { get { return GetObjectList(164, ref _AttributesThatDeltaResetTimeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaResetTimeList;
@@ -130,13 +131,14 @@ namespace PgJsonObjects
         public bool? RawWorksWhileFalling { get { return GetBool(180, 0); } }
         public bool IgnoreEffectErrors { get { return RawIgnoreEffectErrors.HasValue && RawIgnoreEffectErrors.Value; } }
         public bool? RawIgnoreEffectErrors { get { return GetBool(180, 2); } }
-        public bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty { get { return GetBool(180, 4).Value; } }
+        public bool RawAttributesThatModAmmoConsumeChanceListIsEmpty { get { return GetBool(180, 4).Value; } }
         public bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty { get { return GetBool(180, 6).Value; } }
         public bool RawAttributesThatDeltaPowerCostListIsEmpty { get { return GetBool(180, 8).Value; } }
         public bool RawAttributesThatDeltaResetTimeListIsEmpty { get { return GetBool(180, 10).Value; } }
         public bool RawAttributesThatModPowerCostListIsEmpty { get { return GetBool(180, 12).Value; } }
         public PowerSkill RawSkill { get { return GetEnum<PowerSkill>(182); } }
         public IPgGenericSourceCollection SourceList { get { return GetObjectList(184, ref _SourceList, (byte[] data, ref int offset) => PgGenericSourceCollection.CreateItem(this, data, ref offset), () => new PgGenericSourceCollection()); } } private PgGenericSourceCollection _SourceList;
+        public IPgItem ConsumedItemDescription { get { return GetObject(188, ref _ConsumedItemDescription, PgItem.CreateNew); } } private IPgItem _ConsumedItemDescription;
 
         public ConsumedItem ConsumedItem { get; private set; }
         public IPgAbilityRequirementCollection CombinedRequirementList { get; private set; }
@@ -149,10 +151,10 @@ namespace PgJsonObjects
             { "Animation", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<AbilityAnimation>.ToString(Animation, null, AbilityAnimation.Internal_None) } },
-            { "AttributesThatDeltaAmmoStickChance", new FieldParser() {
+            { "AttributesThatModAmmoConsumeChance", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => AttributesThatDeltaAmmoStickChanceList.ToKeyList,
-                GetArrayIsEmpty = () => RawAttributesThatDeltaAmmoStickChanceListIsEmpty } },
+                GetStringArray = () => AttributesThatModAmmoConsumeChanceList.ToKeyList,
+                GetArrayIsEmpty = () => RawAttributesThatModAmmoConsumeChanceListIsEmpty } },
             { "AttributesThatDeltaDelayLoopTime", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => AttributesThatDeltaDelayLoopTimeList.ToKeyList,
@@ -317,6 +319,9 @@ namespace PgJsonObjects
             { "WorksWhileFalling", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawWorksWhileFalling } },
+            { "ConsumedItemDescription", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => ConsumedItemDescription != null ? ConsumedItemDescription.Name : null } },
         }; } }
 
         private string GetConsumedItemKeyword()

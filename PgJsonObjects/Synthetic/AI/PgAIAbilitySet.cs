@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[679];
+        private PgAIAbility[] Abilities = new PgAIAbility[681];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -703,6 +703,8 @@ namespace PgJsonObjects
         public IPgAIAbility WorldBossClaudiaTundraSpikes { get { return GetAbilityObject(676); } }
         public IPgAIAbility WorldBossClaudiaIceSpear { get { return GetAbilityObject(677); } }
         public IPgAIAbility WorldBossClaudiaBlizzard { get { return GetAbilityObject(678); } }
+        public IPgAIAbility DeerFrontKick { get { return GetAbilityObject(679); } }
+        public IPgAIAbility DeerRageKick { get { return GetAbilityObject(680); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
@@ -2742,6 +2744,12 @@ namespace PgJsonObjects
            { "WorldBossClaudiaBlizzard", new FieldParser() {
                Type = FieldType.Object, 
                 GetObject = () => WorldBossClaudiaBlizzard as IObjectContentGenerator } },
+           { "DeerFrontKick", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => DeerFrontKick as IObjectContentGenerator } },
+           { "DeerRageKick", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => DeerRageKick as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

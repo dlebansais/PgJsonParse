@@ -72,7 +72,7 @@ namespace PgJsonObjects
         ConsumedItems ConsumedItems { get; }
         IPgAbility AbilityGroup { get; }
         IPgAbilityRequirementCollection SpecialCasterRequirementList { get; }
-        IPgAttributeCollection AttributesThatDeltaAmmoStickChanceList { get; }
+        IPgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; }
         IPgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; }
         IPgAttributeCollection AttributesThatDeltaPowerCostList { get; }
         IPgAttributeCollection AttributesThatDeltaResetTimeList { get; }
@@ -82,13 +82,14 @@ namespace PgJsonObjects
         bool? RawWorksWhileFalling { get; }
         bool IgnoreEffectErrors { get; }
         bool? RawIgnoreEffectErrors { get; }
-        bool RawAttributesThatDeltaAmmoStickChanceListIsEmpty { get; }
+        bool RawAttributesThatModAmmoConsumeChanceListIsEmpty { get; }
         bool RawAttributesThatDeltaDelayLoopTimeListIsEmpty { get; }
         bool RawAttributesThatDeltaPowerCostListIsEmpty { get; }
         bool RawAttributesThatDeltaResetTimeListIsEmpty { get; }
         bool RawAttributesThatModPowerCostListIsEmpty { get; }
         PowerSkill RawSkill { get; }
         IPgGenericSourceCollection SourceList { get; }
+        IPgItem ConsumedItemDescription { get; }
 
         ConsumedItem ConsumedItem { get; }
         string DigitStrippedName { get; }

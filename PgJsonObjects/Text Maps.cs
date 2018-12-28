@@ -191,7 +191,7 @@ namespace PgJsonObjects
             { RecipeItemKey.Rarity_Exceptional, "Rarity:Exceptional" },
             { RecipeItemKey.MinRarity_Epic, "MinRarity:Epic" },
             { RecipeItemKey.MinTSysPrereq_0, "MinTSysPrereq:0" },
-            { RecipeItemKey.MinTSysPrereq_30, "MinTSysPrereq:30" },
+            //{ RecipeItemKey.MinTSysPrereq_30, "MinTSysPrereq:30" },
             { RecipeItemKey.MaxTSysPrereq_30, "MaxTSysPrereq:30" },
             { RecipeItemKey.MinTSysPrereq_31, "MinTSysPrereq:31" },
             { RecipeItemKey.MaxTSysPrereq_60, "MaxTSysPrereq:60" },
@@ -267,7 +267,7 @@ namespace PgJsonObjects
             { AbilityAnimation.Attack_Staff_Redirect, "Staff Redirect" },
             { AbilityAnimation.Attack_Necromancy_RaiseSkeleton, "Raise Skeleton" },
             { AbilityAnimation.Attack_Necromancy_RaiseZombie, "Raise Zombie" },
-            { AbilityAnimation.Attack_Necromancy_RaiseSuperZombie, "Raise Super Zombie" },
+            //{ AbilityAnimation.Attack_Necromancy_RaiseSuperZombie, "Raise Super Zombie" },
             { AbilityAnimation.Attack_Necromancy_LifeCrush, "Life Crush" },
             { AbilityAnimation.Attack_Necromancy_LifeSteal, "Life Steal" },
             { AbilityAnimation.Attack_Necromancy_HealUndead, "Heal Undead" },
@@ -500,6 +500,9 @@ namespace PgJsonObjects
             { Deaths.PumpkinBomb, "Pumpkin Bomb" },
             { Deaths.PumpkinBlast, "Pumpkin Blast" },
             { Deaths.PumpkinBite, "Pumpkin Bite" },
+            { Deaths.DeadlyGas, "Deadly Gas" },
+            { Deaths.OverAgitation, "Over Agitation" },
+            { Deaths.LoveTap, "Love Tap" },
         };
 
         public static readonly Dictionary<PowerSkill, string> PowerSkillTextMap = new Dictionary<PowerSkill, string>()
@@ -676,7 +679,7 @@ namespace PgJsonObjects
             { DamageType.Nature, "Nature" },
             { DamageType.Fire, "Fire" },
             { DamageType.Cold, "Cold" },
-            //{ DamageType.Smiting, "None" },
+            { DamageType.Smiting, "Smiting" },
             { DamageType.Piercing, "Piercing" },
             { DamageType.Psychic, "Psychic" },
             { DamageType.Trauma, "Trauma" },
@@ -715,6 +718,13 @@ namespace PgJsonObjects
             { PreEffect.ResetTetheredSoul, "Reset Tethered Soul" },
             { PreEffect.FishGutFishMod100, "Fish Gut Fish Modifier 100%" },
             { PreEffect.SpadeAssaultPlantMod100, "Spade Assault Plant Modifier 100%" },
+            { PreEffect.SuperZombie1, "Enhance Zombie #1" },
+            { PreEffect.SuperZombie2, "Enhance Zombie #2" },
+            { PreEffect.SuperZombie3, "Enhance Zombie #3" },
+            { PreEffect.SuperZombie4, "Enhance Zombie #4" },
+            { PreEffect.SuperZombie5, "Enhance Zombie #5" },
+            { PreEffect.SuperZombie6, "Enhance Zombie #6" },
+            { PreEffect.SuperZombie7, "Enhance Zombie #7" },
         };
 
         public static readonly Dictionary<AbilityIndicatingEnabled, string> AbilityIndicatingEnabledTextMap = new Dictionary<AbilityIndicatingEnabled, string>()
@@ -961,12 +971,12 @@ namespace PgJsonObjects
             { AbilityKeyword.HeedTheStick, "Heed The Stick" },
             { AbilityKeyword.PhoenixStrike, "Phoenix Strike" },
             { AbilityKeyword.Necromancy, "Necromancy" },
-            { AbilityKeyword.RaiseSkeleton, "Raise Skeleton" },
-            { AbilityKeyword.RaiseSkeletalArcher, "Raise Skeletal Archer" },
-            { AbilityKeyword.RaiseSkeletalSwordsman, "Raise Skeletal Swordsman" },
-            { AbilityKeyword.RaiseSkeletalMage, "Raise Skeletal Mage" },
-            { AbilityKeyword.RaiseZombie, "Raise Zombie" },
-            { AbilityKeyword.CreateSuperZombie, "Create Super Zombie" },
+            //{ AbilityKeyword.RaiseSkeleton, "Raise Skeleton" },
+            //{ AbilityKeyword.RaiseSkeletalArcher, "Raise Skeletal Archer" },
+            //{ AbilityKeyword.RaiseSkeletalSwordsman, "Raise Skeletal Swordsman" },
+            //{ AbilityKeyword.RaiseSkeletalMage, "Raise Skeletal Mage" },
+            //{ AbilityKeyword.RaiseZombie, "Raise Zombie" },
+            //{ AbilityKeyword.CreateSuperZombie, "Create Super Zombie" },
             { AbilityKeyword.LifeCrush, "Life Crush" },
             { AbilityKeyword.LifeSteal, "Life Steal" },
             { AbilityKeyword.HealUndead, "Heal Undead" },
@@ -1264,6 +1274,27 @@ namespace PgJsonObjects
             { AbilityKeyword.Lint_NoAttackType, "No Attack Type" },
             { AbilityKeyword.SpadeAssault, "Spade Assault" },
             { AbilityKeyword.Summon, "Summon" },
+            { AbilityKeyword.SummonedFireWall, "Summoned FireWall" },
+            { AbilityKeyword.ForestChallenge, "Forest Challenge" },
+            { AbilityKeyword.DeadlyEmission, "Deadly Emission" },
+            { AbilityKeyword.StabledPet, "Stabled Pet" },
+            { AbilityKeyword.SummonSkeleton, "Summon Skeleton" },
+            { AbilityKeyword.SummonSkeletonArcher, "Summon Skeleton Archer" },
+            { AbilityKeyword.SummonSkeletonArcherOrMage, "Summon Skeleton Archer Or Mage" },
+            { AbilityKeyword.SummonSkeletonArcherOrSwordsman, "Summon Skeleton Archer Or Swordsman" },
+            { AbilityKeyword.SummonSkeletonSwordsman, "Summon Skeleton Swordsman" },
+            { AbilityKeyword.SummonSkeletonSwordsmanOrMage, "Summon Skeleton Swordsman Or Mage" },
+            { AbilityKeyword.SummonSkeletonMage, "Summon Skeleton Mage" },
+            { AbilityKeyword.SummonZombie, "Summon Zombie" },
+            { AbilityKeyword.RaiseSkeletonSwordsmanOrMage, "Raise Skeleton Swordsman Or Mage" },
+            { AbilityKeyword.SuperZombie, "Super Zombie" },
+            { AbilityKeyword.BodyPartAttack, "Body Part Attack" },
+            { AbilityKeyword.SummonedColdSphere, "Summoned Cold Sphere" },
+            { AbilityKeyword.LoveTap, "Love Tap" },
+            { AbilityKeyword.BunFuBlast, "Bun Fu Blast" },
+            { AbilityKeyword.Minigolem, "Mini-golem" },
+            { AbilityKeyword.SummonDeer, "Summon Deer" },
+            { AbilityKeyword.SummonedSpider, "Summoned Spider" },
         };
 
         public static readonly Dictionary<AbilityPetType, string> AbilityPetTypeTextMap = new Dictionary<AbilityPetType, string>()
@@ -1276,7 +1307,7 @@ namespace PgJsonObjects
             { AbilityPetType.Minigolem_Pet, "Minigolem Pet" },
             { AbilityPetType.StabledPet, "Stabled Pet" },
             { AbilityPetType.SummonedSkeleton, "Summoned Skeleton" },
-            { AbilityPetType.SummonedCorpse, "Summoned Corpse" },
+            //{ AbilityPetType.SummonedCorpse, "Summoned Corpse" },
             { AbilityPetType.SummonedWebTrap, "Summoned Web Trap" },
             { AbilityPetType.SummonedSpider, "Summoned Spider" },
             { AbilityPetType.PumpkinBomb, "Pumpkin Bomb" },
@@ -1309,6 +1340,7 @@ namespace PgJsonObjects
             { AbilityProjectile.Projectile_Sword20, "Swords" },
             { AbilityProjectile.Projectile_Lightning, "Lightning" },
             { AbilityProjectile.Projectile_ElectricSpell, "Electric Spell" },
+            { AbilityProjectile.Projectile_ChaosMissile, "Chaos Missile" },
         };
 
         public static readonly Dictionary<Race, string> RaceTextMap = new Dictionary<Race, string>()
@@ -1423,6 +1455,9 @@ namespace PgJsonObjects
         {
             { TooltipsExtraKeywords.Internal_None, "None" },
             { TooltipsExtraKeywords.SongOfDiscordActivation, "Song of Discord Activation" },
+            { TooltipsExtraKeywords.SummonDeer, "Summon Deer" },
+            { TooltipsExtraKeywords.Minigolem, "Mini-golem" },
+            { TooltipsExtraKeywords.SummonedSpider, "Summoned Spider" },
         };
 
         public static readonly Dictionary<EffectDisplayMode, string> EffectDisplayModeTextMap = new Dictionary<EffectDisplayMode, string>()
@@ -1452,7 +1487,7 @@ namespace PgJsonObjects
             { EffectParticle.ClawMarks, "Claw Marks" },
             { EffectParticle.HolyDefensePerm, "Holy Defense Permanent" },
             { EffectParticle.Sparkler, "Sparkler" },
-            { EffectParticle.StaminaRegenerationPerm, "Stamina Regeneration Permanent" },
+            //{ EffectParticle.StaminaRegenerationPerm, "Stamina Regeneration Permanent" },
             { EffectParticle.Cure, "Cure" },
             { EffectParticle.FireTrail, "Fire Trail" },
             { EffectParticle.Sparkled, "Sparkled" },
@@ -1531,6 +1566,7 @@ namespace PgJsonObjects
             { EffectParticle.GuidePillarFlowers, "Guide Pillar Flowers" },
             { EffectParticle.AcidBomb, "Acid Bomb" },
             { EffectParticle.Stunned5Sec, "Stunned 5s" },
+            { EffectParticle.FloatyHearts, "Floaty Hearts" },
         };
 
         public static readonly Dictionary<EffectStackingType, string> EffectStackingTypeTextMap = new Dictionary<EffectStackingType, string>()
@@ -1552,10 +1588,9 @@ namespace PgJsonObjects
             { EffectStackingType.FireReply, "Fire Reply" },
             { EffectStackingType.UrsulasCurse, "Ursula's Curse" },
             { EffectStackingType.Flight, "Flight" },
-            //{ EffectStackingType.TundraCold, "Tundra Cold" },
             { EffectStackingType.WinterCoat, "Winter Coat" },
             { EffectStackingType.ColdBoost, "Cold Boost" },
-            { EffectStackingType.SummonedZombieBuff, "Summoned Zombie Buff" },
+            //{ EffectStackingType.SummonedZombieBuff, "Summoned Zombie Buff" },
             { EffectStackingType.CloudNaturalSenses, "Cloud Natural Senses" },
             { EffectStackingType.GruesomeSpookyPunch, "Gruesome Spooky Punch" },
             { EffectStackingType.Concussed1, "Concussed (1)" },
@@ -1700,7 +1735,7 @@ namespace PgJsonObjects
             { EffectStackingType.WorgDebuff, "Worg Debuff" },
             { EffectStackingType.PantherDebuff, "Panther Debuff" },
             { EffectStackingType.RatDebuff, "Rat Debuff" },
-            { EffectStackingType.ProvokeUndead, "Provoke Undead" },
+            //{ EffectStackingType.ProvokeUndead, "Provoke Undead" },
             { EffectStackingType.Disabled, "Disabled" },
             { EffectStackingType.OrcEvasion, "Orc Evasion" },
             { EffectStackingType.AmnesiaSpores, "Amnesia Spores" },
@@ -1824,6 +1859,7 @@ namespace PgJsonObjects
             { EffectStackingType.CowBoostPotion, "Cow Boost Potion" },
             { EffectStackingType.GiantBatBoostPotion, "Giant Bat Boost Potion" },
             { EffectStackingType.RabbitBoostPotion, "Rabbit Boost Potion" },
+            { EffectStackingType.HolyWarmth, "Holy Warmth" },
         };
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTextMap = new Dictionary<EffectKeyword, string>()
@@ -2041,6 +2077,7 @@ namespace PgJsonObjects
             { EffectKeyword.PriestFocus, "Priest Focus" },
             { EffectKeyword.PumpkinTurret, "Pumpkin Turret" },
             { EffectKeyword.Pumpkinbomb, "Pumpkin Bomb" },
+            { EffectKeyword.ToughHoofTagged, "Tough Hoof Tagged" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -3030,7 +3067,7 @@ namespace PgJsonObjects
             { ItemKeyword.StandardShovel, "Standard Shovel" },
             { ItemKeyword.AlchemyIngredient, "Alchemy Ingredient" },
             { ItemKeyword.CookingIngredient, "Cooking Ingredient" },
-            { ItemKeyword.BlacksmithingRecipe, "Blacksmithing Recipe" },
+            //{ ItemKeyword.BlacksmithingRecipe, "Blacksmithing Recipe" },
             { ItemKeyword.Peach, "Peach" },
             { ItemKeyword.Lint_AbilityIngredient, "Ability Ingredient" },
             { ItemKeyword.Marigold, "Marigold" },
@@ -3045,6 +3082,7 @@ namespace PgJsonObjects
             { ItemKeyword.MasqueradeMask, "Masquerade Mask" },
             { ItemKeyword.RawCotton, "Raw Cotton" },
             { ItemKeyword.Thread, "Thread" },
+            { ItemKeyword.RedGem, "Red Gem" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -3515,9 +3553,9 @@ namespace PgJsonObjects
             { RecipeEffect.SpawnPlayerPortal1, "Spawn Player Portal #1" },
             { RecipeEffect.SpawnPlayerPortal2, "Spawn Player Portal #2" },
             { RecipeEffect.Calligraphy5D, "Calligraphy 5D" },
-            { RecipeEffect.CraftingEnhanceItemSwordFlatDmg, "Crafting Enhance Item Sword Flat Damage" },
-            { RecipeEffect.CraftingEnhanceItemKnifeFlatDmg, "Crafting Enhance Item Knife Flat Damage" },
-            { RecipeEffect.CraftingEnhanceItemHammerFlatDmg, "Crafting Enhance Item Hammer Flat Damage" },
+            //{ RecipeEffect.CraftingEnhanceItemSwordFlatDmg, "Crafting Enhance Item Sword Flat Damage" },
+            //{ RecipeEffect.CraftingEnhanceItemKnifeFlatDmg, "Crafting Enhance Item Knife Flat Damage" },
+            //{ RecipeEffect.CraftingEnhanceItemHammerFlatDmg, "Crafting Enhance Item Hammer Flat Damage" },
         };
 
         public static readonly Dictionary<DecomposeMaterial, string> DecomposeMaterialTextMap = new Dictionary<DecomposeMaterial, string>()
@@ -3759,7 +3797,7 @@ namespace PgJsonObjects
             { RecipeItemKey.Crossbow, "Crossbow" },
             { RecipeItemKey.AlcoholBarrel, "Alcohol Barrel" },
             { RecipeItemKey.MinTSysPrereq_0, "Prerequisite: Min Level 0" },
-            { RecipeItemKey.MinTSysPrereq_30, "Prerequisite: Min Level 30" },
+            //{ RecipeItemKey.MinTSysPrereq_30, "Prerequisite: Min Level 30" },
             { RecipeItemKey.MaxTSysPrereq_30, "Prerequisite: Max Level 30" },
             { RecipeItemKey.MinTSysPrereq_31, "Prerequisite: Min Level 31" },
             { RecipeItemKey.MaxTSysPrereq_60, "Prerequisite: Max Level 60" },

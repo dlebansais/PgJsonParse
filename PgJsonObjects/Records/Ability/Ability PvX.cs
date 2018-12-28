@@ -98,8 +98,8 @@ namespace PgJsonObjects
                 GetInteger = () => RawAoE } },
             { "SelfPreEffects", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<PreEffect>.ParseList(value, SelfPreEffectList, errorInfo),
-                GetStringArray = () => StringToEnumConversion<PreEffect>.ToStringList(SelfPreEffectList) } },
+                ParseSimpleStringArray = ParseSelfPreEffects,
+                GetStringArray = GetSelfPreEffects } },
             { "RageBoost", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRageBoost = value,
@@ -191,6 +191,43 @@ namespace PgJsonObjects
                 GetStringArray = () => AttributesThatDeltaDamageLastList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaDamageLastListIsEmpty } },
         }; } }
+
+        private void ParseSelfPreEffects(string value, ParseErrorInfo errorInfo)
+        {
+            int StartIndex = value.IndexOf('(');
+            int EndIndex = value.IndexOf(')');
+            if (StartIndex > 0 && EndIndex > StartIndex + 1 && EndIndex + 1 == value.Length)
+            {
+                string Prefix = value.Substring(0, StartIndex);
+                if (Prefix == "EnhanceZombie")
+                {
+                    string Enhancement = value.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
+                    StringToEnumConversion<PreEffect>.ParseList(Enhancement, SelfPreEffectList, errorInfo);
+                    return;
+                }
+            }
+
+            StringToEnumConversion<PreEffect>.ParseList(value, SelfPreEffectList, errorInfo);
+        }
+
+        private List<string> GetSelfPreEffects()
+        {
+            List<string> Result = new List<string>();
+
+            foreach (PreEffect Item in SelfPreEffectList)
+            {
+                string s;
+                
+                if (Item >= PreEffect.SuperZombie1 && Item <= PreEffect.SuperZombie7)
+                    s = $"EnhanceZombie({StringToEnumConversion<PreEffect>.ToString(Item)})";
+                else
+                    s = StringToEnumConversion<PreEffect>.ToString(Item);
+
+                Result.Add(s);
+            }
+
+            return Result;
+        }
 
         private List<string> RawAttributesThatDeltaDamageList { get; } = new List<string>();
         public bool RawAttributesThatDeltaDamageListIsEmpty { get; private set; }
