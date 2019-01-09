@@ -2528,8 +2528,8 @@ namespace PgJsonObjects
             { ItemKeyword.VolatileInk4, "Volatile Ink #4" },
             { ItemKeyword.HolisticInk4, "Holistic Ink #4" },
             { ItemKeyword.Decoction, "Decoction" },
-            { ItemKeyword.GolemConditional, "Golem Conditional" },
-            { ItemKeyword.GolemAbility, "Golem Ability" },
+            //{ ItemKeyword.GolemConditional, "Golem Conditional" },
+            //{ ItemKeyword.GolemAbility, "Golem Ability" },
             { ItemKeyword.DeerSkin, "Deer Skin" },
             { ItemKeyword.FlawlessPigSkin, "Flawless Pig Skin" },
             { ItemKeyword.FlawlessSheepSkin, "Flawless Sheep Skin" },
@@ -3083,6 +3083,9 @@ namespace PgJsonObjects
             { ItemKeyword.RawCotton, "Raw Cotton" },
             { ItemKeyword.Thread, "Thread" },
             { ItemKeyword.RedGem, "Red Gem" },
+            { ItemKeyword.WritingRelated, "Writing Related" },
+            { ItemKeyword.WoodGlue, "Wood Glue" },
+            { ItemKeyword.FlowerArrangement, "Flower Arrangement" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()

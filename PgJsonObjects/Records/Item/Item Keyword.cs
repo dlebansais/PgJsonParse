@@ -335,8 +335,8 @@
         VolatileInk4,
         HolisticInk4,
         Decoction,
-        GolemConditional,
-        GolemAbility,
+        //GolemConditional,
+        //GolemAbility,
         DeerSkin,
         FlawlessPigSkin,
         FlawlessSheepSkin,
@@ -889,5 +889,8 @@
         RawCotton,
         Thread,
         RedGem,
+        WritingRelated,
+        WoodGlue,
+        FlowerArrangement,
     }
 }

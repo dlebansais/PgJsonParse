@@ -683,5 +683,7 @@
         IPgAIAbility WorldBossClaudiaBlizzard { get; }
         IPgAIAbility DeerFrontKick { get; }
         IPgAIAbility DeerRageKick { get; }
+        IPgAIAbility PetUndeadReapPunch { get; }
+        IPgAIAbility PetUndeadRageReap { get; }
     }
 }

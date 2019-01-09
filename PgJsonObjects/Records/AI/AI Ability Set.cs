@@ -688,6 +688,8 @@ namespace PgJsonObjects
         public IPgAIAbility WorldBossClaudiaBlizzard { get; private set; }
         public IPgAIAbility DeerFrontKick { get; private set; }
         public IPgAIAbility DeerRageKick { get; private set; }
+        public IPgAIAbility PetUndeadReapPunch { get; private set; }
+        public IPgAIAbility PetUndeadRageReap { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -3420,6 +3422,14 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => DeerRageKick =
                    JsonObjectParser<AIAbility>.Parse("DeerRageKick", value, errorInfo),
                 GetObject = () => DeerRageKick as IObjectContentGenerator } },
+           { "PetUndeadReapPunch", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PetUndeadReapPunch = 
+                   JsonObjectParser<AIAbility>.Parse("PetUndeadReapPunch", value, errorInfo),
+                GetObject = () => PetUndeadReapPunch as IObjectContentGenerator } },
+           { "PetUndeadRageReap", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PetUndeadRageReap = 
+                   JsonObjectParser<AIAbility>.Parse("PetUndeadRageReap", value, errorInfo),
+                GetObject = () => PetUndeadRageReap as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4139,8 +4149,10 @@ namespace PgJsonObjects
             AddObject(WorldBossClaudiaBlizzard as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 678 * 4, StoredObjectTable);
             AddObject(DeerFrontKick as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 679 * 4, StoredObjectTable);
             AddObject(DeerRageKick as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 680 * 4, StoredObjectTable);
+            AddObject(PetUndeadReapPunch as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 681 * 4, StoredObjectTable);
+            AddObject(PetUndeadRageReap as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 682 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 681 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 683 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion
