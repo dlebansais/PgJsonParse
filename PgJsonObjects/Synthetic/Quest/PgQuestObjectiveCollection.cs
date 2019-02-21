@@ -66,6 +66,9 @@ namespace PgJsonObjects
                 case QuestObjectiveType.ScriptedReceiveItem:
                     return new PgQuestObjectiveScriptedReceiveItem(data, ref offset);
 
+                case QuestObjectiveType.UseAbilityOnTargets:
+                    return new PgQuestObjectiveUseAbilityOnTargets(data, ref offset);
+
                 default:
                     throw new InvalidOperationException();
             }

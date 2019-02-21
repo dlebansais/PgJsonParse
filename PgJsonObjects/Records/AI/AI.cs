@@ -14,6 +14,7 @@ namespace PgJsonObjects
         public bool? RawIsUncontrolledPet { get; private set; }
         public bool? RawIsStationary { get; private set; }
         public bool? RawIsServerDriven { get; private set; }
+        public bool? RawUseAbilitiesWithoutEnemyTarget { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -50,6 +51,10 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMinDelayBetweenAbilities = value,
                 GetFloat = () => RawMinDelayBetweenAbilities } },
+            { "UseAbilitiesWithoutEnemyTarget", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawUseAbilitiesWithoutEnemyTarget = value,
+                GetBool = () => RawUseAbilitiesWithoutEnemyTarget } },
         }; } }
         #endregion
 
@@ -69,6 +74,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, "Is Uncontrolled Pet: " + (RawIsUncontrolledPet.Value ? "Yes" : "No"));
                 if (RawIsServerDriven.HasValue)
                     AddWithFieldSeparator(ref Result, "Is ServerDriven: " + (RawIsServerDriven.Value ? "Yes" : "No"));
+                if (RawUseAbilitiesWithoutEnemyTarget.HasValue)
+                    AddWithFieldSeparator(ref Result, "Use Abilities Without Enemy Target: " + (RawUseAbilitiesWithoutEnemyTarget.Value ? "Yes" : "No"));
 
                 return Result;
             }
@@ -105,6 +112,7 @@ namespace PgJsonObjects
             AddBool(RawIsUncontrolledPet, data, ref offset, ref BitOffset, BaseOffset, 20, 2);
             AddBool(RawIsStationary, data, ref offset, ref BitOffset, BaseOffset, 20, 4);
             AddBool(RawIsServerDriven, data, ref offset, ref BitOffset, BaseOffset, 20, 6);
+            AddBool(RawUseAbilitiesWithoutEnemyTarget, data, ref offset, ref BitOffset, BaseOffset, 20, 8);
             CloseBool(ref offset, ref BitOffset);
 
             FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);

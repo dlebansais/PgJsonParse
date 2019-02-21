@@ -690,6 +690,40 @@ namespace PgJsonObjects
         public IPgAIAbility DeerRageKick { get; private set; }
         public IPgAIAbility PetUndeadReapPunch { get; private set; }
         public IPgAIAbility PetUndeadRageReap { get; private set; }
+        public IPgAIAbility ViperSpitPoison { get; private set; }
+        public IPgAIAbility ViperBite { get; private set; }
+        public IPgAIAbility Slime_SummonSlime6 { get; private set; }
+        public IPgAIAbility BossSlime_SummonSlime7Elite { get; private set; }
+        public IPgAIAbility SpiderBite_ProblemSpider { get; private set; }
+        public IPgAIAbility PetRatkinUndeadElectricityA { get; private set; }
+        public IPgAIAbility PetRatkinUndeadElectricityB { get; private set; }
+        public IPgAIAbility PetRatkinUndeadElectricityBurst { get; private set; }
+        public IPgAIAbility RakToxinBomb_Tolmar { get; private set; }
+        public IPgAIAbility HippoBiteAndHeal { get; private set; }
+        public IPgAIAbility TreantSlashA { get; private set; }
+        public IPgAIAbility TreantSlashB { get; private set; }
+        public IPgAIAbility TreantStomp { get; private set; }
+        public IPgAIAbility TreantDoT1 { get; private set; }
+        public IPgAIAbility RatTrapAttack { get; private set; }
+        public IPgAIAbility RatkinSwordSlash { get; private set; }
+        public IPgAIAbility RatkinSwordPierce { get; private set; }
+        public IPgAIAbility RatkinSwordFinisher { get; private set; }
+        public IPgAIAbility RatkinDeathsHold { get; private set; }
+        public IPgAIAbility RatkinDarknessBolt { get; private set; }
+        public IPgAIAbility RatkinLifeSteal { get; private set; }
+        public IPgAIAbility RatkinBossWaveOfDarkness { get; private set; }
+        public IPgAIAbility RatkinReverberatingStrike70 { get; private set; }
+        public IPgAIAbility RatkinHammer { get; private set; }
+        public IPgAIAbility RatkinHammerStun { get; private set; }
+        public IPgAIAbility RatkinUndeadElectricityA { get; private set; }
+        public IPgAIAbility RatkinUndeadElectricityB { get; private set; }
+        public IPgAIAbility RatkinUndeadElectricityBurst { get; private set; }
+        public IPgAIAbility RatBuffDarkness_Pet1 { get; private set; }
+        public IPgAIAbility RatBuffDarkness_Pet2 { get; private set; }
+        public IPgAIAbility RatBuffDarkness_Pet3 { get; private set; }
+        public IPgAIAbility RatBuffDarkness_Pet4 { get; private set; }
+        public IPgAIAbility RatBuffDarkness_Pet5 { get; private set; }
+        public IPgAIAbility RatBuffDarkness_Pet6 { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -3430,6 +3464,142 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PetUndeadRageReap = 
                    JsonObjectParser<AIAbility>.Parse("PetUndeadRageReap", value, errorInfo),
                 GetObject = () => PetUndeadRageReap as IObjectContentGenerator } },
+           { "ViperSpitPoison", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => ViperSpitPoison =
+                   JsonObjectParser<AIAbility>.Parse("ViperSpitPoison", value, errorInfo),
+                GetObject = () => ViperSpitPoison as IObjectContentGenerator } },
+           { "ViperBite", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => ViperBite =
+                   JsonObjectParser<AIAbility>.Parse("ViperBite", value, errorInfo),
+                GetObject = () => ViperBite as IObjectContentGenerator } },
+           { "Slime_SummonSlime6", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => Slime_SummonSlime6 =
+                   JsonObjectParser<AIAbility>.Parse("Slime_SummonSlime6", value, errorInfo),
+                GetObject = () => Slime_SummonSlime6 as IObjectContentGenerator } },
+           { "BossSlime_SummonSlime7Elite", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => BossSlime_SummonSlime7Elite =
+                   JsonObjectParser<AIAbility>.Parse("BossSlime_SummonSlime7Elite", value, errorInfo),
+                GetObject = () => BossSlime_SummonSlime7Elite as IObjectContentGenerator } },
+           { "SpiderBite_ProblemSpider", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SpiderBite_ProblemSpider =
+                   JsonObjectParser<AIAbility>.Parse("SpiderBite_ProblemSpider", value, errorInfo),
+                GetObject = () => SpiderBite_ProblemSpider as IObjectContentGenerator } },
+           { "PetRatkinUndeadElectricityA", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PetRatkinUndeadElectricityA =
+                   JsonObjectParser<AIAbility>.Parse("PetRatkinUndeadElectricityA", value, errorInfo),
+                GetObject = () => PetRatkinUndeadElectricityA as IObjectContentGenerator } },
+           { "PetRatkinUndeadElectricityB", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PetRatkinUndeadElectricityB =
+                   JsonObjectParser<AIAbility>.Parse("PetRatkinUndeadElectricityB", value, errorInfo),
+                GetObject = () => PetRatkinUndeadElectricityB as IObjectContentGenerator } },
+           { "PetRatkinUndeadElectricityBurst", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PetRatkinUndeadElectricityBurst =
+                   JsonObjectParser<AIAbility>.Parse("PetRatkinUndeadElectricityBurst", value, errorInfo),
+                GetObject = () => PetRatkinUndeadElectricityBurst as IObjectContentGenerator } },
+           { "RakToxinBomb_Tolmar", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RakToxinBomb_Tolmar =
+                   JsonObjectParser<AIAbility>.Parse("RakToxinBomb_Tolmar", value, errorInfo),
+                GetObject = () => RakToxinBomb_Tolmar as IObjectContentGenerator } },
+           { "HippoBiteAndHeal", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => HippoBiteAndHeal =
+                   JsonObjectParser<AIAbility>.Parse("HippoBiteAndHeal", value, errorInfo),
+                GetObject = () => HippoBiteAndHeal as IObjectContentGenerator } },
+           { "TreantSlashA", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => TreantSlashA =
+                   JsonObjectParser<AIAbility>.Parse("TreantSlashA", value, errorInfo),
+                GetObject = () => TreantSlashA as IObjectContentGenerator } },
+           { "TreantSlashB", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => TreantSlashB =
+                   JsonObjectParser<AIAbility>.Parse("TreantSlashB", value, errorInfo),
+                GetObject = () => TreantSlashB as IObjectContentGenerator } },
+           { "TreantStomp", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => TreantStomp =
+                   JsonObjectParser<AIAbility>.Parse("TreantStomp", value, errorInfo),
+                GetObject = () => TreantStomp as IObjectContentGenerator } },
+           { "TreantDoT1", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => TreantDoT1 =
+                   JsonObjectParser<AIAbility>.Parse("TreantDoT1", value, errorInfo),
+                GetObject = () => TreantDoT1 as IObjectContentGenerator } },
+           { "RatTrapAttack", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatTrapAttack =
+                   JsonObjectParser<AIAbility>.Parse("RatTrapAttack", value, errorInfo),
+                GetObject = () => RatTrapAttack as IObjectContentGenerator } },
+           { "RatkinSwordSlash", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinSwordSlash =
+                   JsonObjectParser<AIAbility>.Parse("RatkinSwordSlash", value, errorInfo),
+                GetObject = () => RatkinSwordSlash as IObjectContentGenerator } },
+           { "RatkinSwordPierce", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinSwordPierce =
+                   JsonObjectParser<AIAbility>.Parse("RatkinSwordPierce", value, errorInfo),
+                GetObject = () => RatkinSwordPierce as IObjectContentGenerator } },
+           { "RatkinSwordFinisher", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinSwordFinisher =
+                   JsonObjectParser<AIAbility>.Parse("RatkinSwordFinisher", value, errorInfo),
+                GetObject = () => RatkinSwordFinisher as IObjectContentGenerator } },
+           { "RatkinDeathsHold", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinDeathsHold =
+                   JsonObjectParser<AIAbility>.Parse("RatkinDeathsHold", value, errorInfo),
+                GetObject = () => RatkinDeathsHold as IObjectContentGenerator } },
+           { "RatkinDarknessBolt", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinDarknessBolt =
+                   JsonObjectParser<AIAbility>.Parse("RatkinDarknessBolt", value, errorInfo),
+                GetObject = () => RatkinDarknessBolt as IObjectContentGenerator } },
+           { "RatkinLifeSteal", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinLifeSteal =
+                   JsonObjectParser<AIAbility>.Parse("RatkinLifeSteal", value, errorInfo),
+                GetObject = () => RatkinLifeSteal as IObjectContentGenerator } },
+           { "RatkinBossWaveOfDarkness", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinBossWaveOfDarkness =
+                   JsonObjectParser<AIAbility>.Parse("RatkinBossWaveOfDarkness", value, errorInfo),
+                GetObject = () => RatkinBossWaveOfDarkness as IObjectContentGenerator } },
+           { "RatkinReverberatingStrike70", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinReverberatingStrike70 =
+                   JsonObjectParser<AIAbility>.Parse("RatkinReverberatingStrike70", value, errorInfo),
+                GetObject = () => RatkinReverberatingStrike70 as IObjectContentGenerator } },
+           { "RatkinHammer", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinHammer =
+                   JsonObjectParser<AIAbility>.Parse("RatkinHammer", value, errorInfo),
+                GetObject = () => RatkinHammer as IObjectContentGenerator } },
+           { "RatkinHammerStun", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinHammerStun =
+                   JsonObjectParser<AIAbility>.Parse("RatkinHammerStun", value, errorInfo),
+                GetObject = () => RatkinHammerStun as IObjectContentGenerator } },
+           { "RatkinUndeadElectricityA", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinUndeadElectricityA =
+                   JsonObjectParser<AIAbility>.Parse("RatkinUndeadElectricityA", value, errorInfo),
+                GetObject = () => RatkinUndeadElectricityA as IObjectContentGenerator } },
+           { "RatkinUndeadElectricityB", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinUndeadElectricityB =
+                   JsonObjectParser<AIAbility>.Parse("RatkinUndeadElectricityB", value, errorInfo),
+                GetObject = () => RatkinUndeadElectricityB as IObjectContentGenerator } },
+           { "RatkinUndeadElectricityBurst", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatkinUndeadElectricityBurst =
+                   JsonObjectParser<AIAbility>.Parse("RatkinUndeadElectricityBurst", value, errorInfo),
+                GetObject = () => RatkinUndeadElectricityBurst as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet1", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatBuffDarkness_Pet1 =
+                   JsonObjectParser<AIAbility>.Parse("RatBuffDarkness_Pet1", value, errorInfo),
+                GetObject = () => RatBuffDarkness_Pet1 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet2", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatBuffDarkness_Pet2 =
+                   JsonObjectParser<AIAbility>.Parse("RatBuffDarkness_Pet2", value, errorInfo),
+                GetObject = () => RatBuffDarkness_Pet2 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet3", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatBuffDarkness_Pet3 =
+                   JsonObjectParser<AIAbility>.Parse("RatBuffDarkness_Pet3", value, errorInfo),
+                GetObject = () => RatBuffDarkness_Pet3 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet4", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatBuffDarkness_Pet4 =
+                   JsonObjectParser<AIAbility>.Parse("RatBuffDarkness_Pet4", value, errorInfo),
+                GetObject = () => RatBuffDarkness_Pet4 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet5", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatBuffDarkness_Pet5 =
+                   JsonObjectParser<AIAbility>.Parse("RatBuffDarkness_Pet5", value, errorInfo),
+                GetObject = () => RatBuffDarkness_Pet5 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet6", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatBuffDarkness_Pet6 =
+                   JsonObjectParser<AIAbility>.Parse("RatBuffDarkness_Pet6", value, errorInfo),
+                GetObject = () => RatBuffDarkness_Pet6 as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4151,8 +4321,42 @@ namespace PgJsonObjects
             AddObject(DeerRageKick as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 680 * 4, StoredObjectTable);
             AddObject(PetUndeadReapPunch as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 681 * 4, StoredObjectTable);
             AddObject(PetUndeadRageReap as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 682 * 4, StoredObjectTable);
+            AddObject(ViperSpitPoison as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 683 * 4, StoredObjectTable);
+            AddObject(ViperBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 684 * 4, StoredObjectTable);
+            AddObject(Slime_SummonSlime6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 685 * 4, StoredObjectTable);
+            AddObject(BossSlime_SummonSlime7Elite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 686 * 4, StoredObjectTable);
+            AddObject(SpiderBite_ProblemSpider as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 687 * 4, StoredObjectTable);
+            AddObject(PetRatkinUndeadElectricityA as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 688 * 4, StoredObjectTable);
+            AddObject(PetRatkinUndeadElectricityB as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 689 * 4, StoredObjectTable);
+            AddObject(PetRatkinUndeadElectricityBurst as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 690 * 4, StoredObjectTable);
+            AddObject(RakToxinBomb_Tolmar as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 691 * 4, StoredObjectTable);
+            AddObject(HippoBiteAndHeal as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 692 * 4, StoredObjectTable);
+            AddObject(TreantSlashA as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 693 * 4, StoredObjectTable);
+            AddObject(TreantSlashB as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 694 * 4, StoredObjectTable);
+            AddObject(TreantStomp as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 695 * 4, StoredObjectTable);
+            AddObject(TreantDoT1 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 696 * 4, StoredObjectTable);
+            AddObject(RatTrapAttack as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 697 * 4, StoredObjectTable);
+            AddObject(RatkinSwordSlash as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 698 * 4, StoredObjectTable);
+            AddObject(RatkinSwordPierce as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 699 * 4, StoredObjectTable);
+            AddObject(RatkinSwordFinisher as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 700 * 4, StoredObjectTable);
+            AddObject(RatkinDeathsHold as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 701 * 4, StoredObjectTable);
+            AddObject(RatkinDarknessBolt as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 702 * 4, StoredObjectTable);
+            AddObject(RatkinLifeSteal as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 703 * 4, StoredObjectTable);
+            AddObject(RatkinBossWaveOfDarkness as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 704 * 4, StoredObjectTable);
+            AddObject(RatkinReverberatingStrike70 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 705 * 4, StoredObjectTable);
+            AddObject(RatkinHammer as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 706 * 4, StoredObjectTable);
+            AddObject(RatkinHammerStun as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 707 * 4, StoredObjectTable);
+            AddObject(RatkinUndeadElectricityA as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 708 * 4, StoredObjectTable);
+            AddObject(RatkinUndeadElectricityB as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 709 * 4, StoredObjectTable);
+            AddObject(RatkinUndeadElectricityBurst as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 710 * 4, StoredObjectTable);
+            AddObject(RatBuffDarkness_Pet1 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 711 * 4, StoredObjectTable);
+            AddObject(RatBuffDarkness_Pet2 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 712 * 4, StoredObjectTable);
+            AddObject(RatBuffDarkness_Pet3 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 713 * 4, StoredObjectTable);
+            AddObject(RatBuffDarkness_Pet4 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 714 * 4, StoredObjectTable);
+            AddObject(RatBuffDarkness_Pet5 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 715 * 4, StoredObjectTable);
+            AddObject(RatBuffDarkness_Pet6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 716 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 683 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 717 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -98,6 +98,7 @@
       <DependentUpon>SelectionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Selectors\EquipmentBoost_ItemEffectGearSelector.cs" />
+    <Compile Include="Selectors\ConsumedItemSelector.cs" />
     <Compile Include="Selectors\Planer_ItemEffectGearSelector.cs" />
     <Compile Include="Selectors\Temporary_ItemEffectGearSelector.cs" />
     <Compile Include="Selectors\TypeToTemplateNameSelector.cs" />

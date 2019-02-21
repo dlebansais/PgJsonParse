@@ -138,6 +138,16 @@ namespace PgJsonObjects
                         return null;
                     }
 
+                case OtherRequirementType.HangOutCompleted:
+                    if (RequirementHangOut != null)
+                        return new HangOutCompletedQuestRequirement(OtherRequirementType, RequirementHangOut);
+
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("QuestRequirement HangOut");
+                        return null;
+                    }
+
                 default:
                     ErrorInfo.AddInvalidObjectFormat("QuestRequirement (T=" + OtherRequirementType + ")");
                     return null;
@@ -181,6 +191,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = ParseInteractionFlag,
                 GetString = () => RequirementInteractionFlag } },
+            { "HangOut", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseHangOut,
+                GetString = () => RequirementHangOut } },
         }; } }
 
         private void ParseQuest(string value, ParseErrorInfo ErrorInfo)
@@ -270,6 +284,14 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement InteractionFlag (" + OtherRequirementType + ")");
         }
 
+        private void ParseHangOut(string value, ParseErrorInfo ErrorInfo)
+        {
+            if (OtherRequirementType == OtherRequirementType.HangOutCompleted)
+                RequirementHangOut = value;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement HangOut (" + OtherRequirementType + ")");
+        }
+
         protected OtherRequirementType OtherRequirementType;
         private Favor RequirementFavorLevel;
         private int? RawRequirementSkillLevel;
@@ -282,6 +304,7 @@ namespace PgJsonObjects
         private IPgQuestRequirementCollection RequirementOrList = new QuestRequirementCollection();
         private string RequirementRule;
         private string RequirementInteractionFlag;
+        private string RequirementHangOut;
         #endregion
 
         #region Indexing

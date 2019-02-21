@@ -39,5 +39,7 @@
         Oratory,
         Cartography,
         Gaming,
+        VeryExpensiveRecipe,
+        ShamanicInfusion,
     }
 }

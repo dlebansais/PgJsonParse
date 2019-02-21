@@ -685,5 +685,39 @@
         IPgAIAbility DeerRageKick { get; }
         IPgAIAbility PetUndeadReapPunch { get; }
         IPgAIAbility PetUndeadRageReap { get; }
+        IPgAIAbility ViperSpitPoison { get; }
+        IPgAIAbility ViperBite { get; }
+        IPgAIAbility Slime_SummonSlime6 { get; }
+        IPgAIAbility BossSlime_SummonSlime7Elite { get; }
+        IPgAIAbility SpiderBite_ProblemSpider { get; }
+        IPgAIAbility PetRatkinUndeadElectricityA { get; }
+        IPgAIAbility PetRatkinUndeadElectricityB { get; }
+        IPgAIAbility PetRatkinUndeadElectricityBurst { get; }
+        IPgAIAbility RakToxinBomb_Tolmar { get; }
+        IPgAIAbility HippoBiteAndHeal { get; }
+        IPgAIAbility TreantSlashA { get; }
+        IPgAIAbility TreantSlashB { get; }
+        IPgAIAbility TreantStomp { get; }
+        IPgAIAbility TreantDoT1 { get; }
+        IPgAIAbility RatTrapAttack { get; }
+        IPgAIAbility RatkinSwordSlash { get; }
+        IPgAIAbility RatkinSwordPierce { get; }
+        IPgAIAbility RatkinSwordFinisher { get; }
+        IPgAIAbility RatkinDeathsHold { get; }
+        IPgAIAbility RatkinDarknessBolt { get; }
+        IPgAIAbility RatkinLifeSteal { get; }
+        IPgAIAbility RatkinBossWaveOfDarkness { get; }
+        IPgAIAbility RatkinReverberatingStrike70 { get; }
+        IPgAIAbility RatkinHammer { get; }
+        IPgAIAbility RatkinHammerStun { get; }
+        IPgAIAbility RatkinUndeadElectricityA { get; }
+        IPgAIAbility RatkinUndeadElectricityB { get; }
+        IPgAIAbility RatkinUndeadElectricityBurst { get; }
+        IPgAIAbility RatBuffDarkness_Pet1 { get; }
+        IPgAIAbility RatBuffDarkness_Pet2 { get; }
+        IPgAIAbility RatBuffDarkness_Pet3 { get; }
+        IPgAIAbility RatBuffDarkness_Pet4 { get; }
+        IPgAIAbility RatBuffDarkness_Pet5 { get; }
+        IPgAIAbility RatBuffDarkness_Pet6 { get; }
     }
 }

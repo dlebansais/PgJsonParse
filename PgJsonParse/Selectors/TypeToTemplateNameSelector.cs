@@ -13,6 +13,9 @@ namespace PgJsonParse
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
+            if (item is ConsumedItemDirect)
+                return null;
+
             if (item as IObjectContentGenerator == null)
                 return null;
 

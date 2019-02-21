@@ -98,5 +98,6 @@
         AcidBomb,
         Stunned5Sec,
         FloatyHearts,
+        BuffGreen,
     }
 }

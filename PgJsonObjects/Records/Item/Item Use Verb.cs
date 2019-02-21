@@ -48,5 +48,7 @@
         ObtainTitle,
         HugBear,
         HugMonkey,
+        Chew,
+        TakeWaterSample,
     }
 }

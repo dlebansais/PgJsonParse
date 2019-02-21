@@ -28,5 +28,6 @@
         DruidScripted,
         Loot,
         ScriptedReceiveItem,
+        UseAbilityOnTargets,
     }
 }

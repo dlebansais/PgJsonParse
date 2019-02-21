@@ -144,5 +144,7 @@
         DeadlyGas,
         OverAgitation,
         LoveTap,
+        TreantSlash,
+        InsectSwarm,
     }
 }

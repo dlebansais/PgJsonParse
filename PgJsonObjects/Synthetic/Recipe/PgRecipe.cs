@@ -242,6 +242,10 @@ namespace PgJsonObjects
                         Result.Add(GetAdjustRecipeResultEffects(Item));
                         break;
 
+                    case RecipeEffect.GiveItemPower:
+                        Result.Add(GetGiveItemPowerEffects(Item));
+                        break;
+
                     default:
                         Result.Add(StringToEnumConversion<RecipeEffect>.ToString(Item.Effect, TextMaps.RecipeEffectStringMap));
                         break;
@@ -351,6 +355,16 @@ namespace PgJsonObjects
 
             Result += Item.AdjustedReuseTime.ToString() + ",";
             Result += StringToEnumConversion<MoonPhases>.ToString(Item.MoonPhase) + ")";
+
+            return Result;
+        }
+
+        private string GetGiveItemPowerEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "GiveTSysItem(";
+
+            Result += Item.Item != null ? Item.Item.InternalName : "unknown";
+            Result += ")";
 
             return Result;
         }

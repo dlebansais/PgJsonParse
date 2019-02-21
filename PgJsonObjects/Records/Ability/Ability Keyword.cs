@@ -511,5 +511,8 @@
         Minigolem,
         SummonDeer,
         SummonedSpider,
+        MoltenVeins,
+        Projectile,
+        ViperAttack,
     }
 }

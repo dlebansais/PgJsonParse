@@ -292,6 +292,12 @@
         <DataTemplate x:Key="AbilityRequirementInHotspotTemplate">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
+        <DataTemplate x:Key="AbilityRequirementNotInHotspotTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Not in hotspot:</TextBlock>
+                <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="AbilityRequirementInteractionFlagSetTemplate">
             <TextBlock Text="{Binding InteractionFlag}"/>
         </DataTemplate>
@@ -697,6 +703,18 @@
                         </Hyperlink>
                     </TextBlock>
                     <TextBlock>)</TextBlock>
+                </StackPanel>
+            </WrapPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="QuestObjectiveUseAbilityOnTargetsTemplate">
+            <WrapPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                    <TextBlock Text="{Binding Description}" Margin="0,0,5,0"/>
+                    <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                        <TextBlock>(x</TextBlock>
+                        <TextBlock Text="{Binding Number}"/>
+                        <TextBlock>)</TextBlock>
+                    </StackPanel>
                 </StackPanel>
             </WrapPanel>
         </DataTemplate>
@@ -1725,6 +1743,17 @@
                 <TextBlock>is active</TextBlock>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="HangOutCompletedQuestRequirementTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>HangOut</TextBlock>
+                <TextBlock Margin="5,0,5,0">
+                    <TextBlock.Text>
+                        <Binding Path="HangOut"/>
+                    </TextBlock.Text>
+                </TextBlock>
+                <TextBlock>is completed</TextBlock>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="IsLongTimeAnimalQuestRequirementTemplate">
             <TextBlock>Animal for a long time</TextBlock>
         </DataTemplate>
@@ -1740,14 +1769,14 @@
                 <TextBlock TextWrapping="Wrap">
                     <Hyperlink x:Name="hyperlink_MinFavorLevelQuestRequirement_FavorNpc" Click="OnRequestNavigate" NavigateUri="unused">
                         <Run>
-                            <Binding Path="FavorNpc.Name" Mode="OneWay"/>
+                            <Binding Path="FavorNpcParsedName" Mode="OneWay"/>
                         </Run>
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock Margin="5,0,5,0">in</TextBlock>
                 <TextBlock TextWrapping="Wrap">
                     <TextBlock.Text>
-                        <Binding Path="FavorNpc.AreaName" Converter="{StaticResource convEnumToText}" ConverterParameter="MapAreaNameTextMap"/>
+                        <Binding Path="AreaParsedName" Converter="{StaticResource convEnumToText}" ConverterParameter="MapAreaNameTextMap"/>
                     </TextBlock.Text>
                 </TextBlock>
             </StackPanel>
@@ -2140,7 +2169,7 @@
                     <ContentControl Content="{Binding ConsumedItem}" Grid.Column="1" Grid.Row="8" Margin="5,10,0,0">
                         <ContentControl.ContentTemplate>
                             <DataTemplate>
-                                <app:TypeToTemplateNameSelector Content="{Binding}"/>
+                                <app:ConsumedItemSelector Content="{Binding}"/>
                             </DataTemplate>
                         </ContentControl.ContentTemplate>
                     </ContentControl>

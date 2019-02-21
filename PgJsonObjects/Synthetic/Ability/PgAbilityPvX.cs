@@ -65,6 +65,7 @@ namespace PgJsonObjects
         public IPgAttributeCollection AttributesThatModRageList { get { return GetObjectList(108, ref _AttributesThatModRageList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModRageList;
         public IPgAttributeCollection AttributesThatDeltaRangeList { get { return GetObjectList(112, ref _AttributesThatDeltaRangeList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaRangeList;
         public IPgAttributeCollection AttributesThatDeltaDamageLastList { get { return GetObjectList(116, ref _AttributesThatDeltaDamageLastList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaDamageLastList;
+        public IPgAttributeCollection AttributesThatDeltaAccuracyList { get { return GetObjectList(112, ref _AttributesThatDeltaAccuracyList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatDeltaAccuracyList;
         public bool RawAttributesThatDeltaDamageListIsEmpty { get { return GetBool(120, 0).Value; } }
         public bool RawAttributesThatModDamageListIsEmpty { get { return GetBool(120, 2).Value; } }
         public bool RawAttributesThatModBaseDamageListIsEmpty { get { return GetBool(120, 4).Value; } }
@@ -74,6 +75,7 @@ namespace PgJsonObjects
         public bool RawAttributesThatModRageListIsEmpty { get { return GetBool(120, 12).Value; } }
         public bool RawAttributesThatDeltaRangeListIsEmpty { get { return GetBool(120, 14).Value; } }
         public bool RawAttributesThatDeltaDamageLastListIsEmpty { get { return GetBool(122, 0).Value; } }
+        public bool RawAttributesThatDeltaAccuracyListIsEmpty { get { return GetBool(120, 14).Value; } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Damage", new FieldParser() {
@@ -147,6 +149,14 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => AttributesThatDeltaRangeList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty } },
+            { "AttributesThatDeltaDamageLast", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => AttributesThatDeltaDamageLastList.ToKeyList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaDamageLastListIsEmpty } },
+            { "AttributesThatDeltaAccuracy", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => AttributesThatDeltaAccuracyList.ToKeyList,
+                GetArrayIsEmpty = () => RawAttributesThatDeltaAccuracyListIsEmpty } },
             { "SpecialValues", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => SpecialValueList } },
@@ -165,10 +175,6 @@ namespace PgJsonObjects
             { "DoTs", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => DoTList } },
-            { "AttributesThatDeltaDamageLast", new FieldParser() {
-                Type = FieldType.SimpleStringArray,
-                GetStringArray = () => AttributesThatDeltaDamageLastList.ToKeyList,
-                GetArrayIsEmpty = () => RawAttributesThatDeltaDamageLastListIsEmpty } },
         }; } }
 
         #region Indirect Properties

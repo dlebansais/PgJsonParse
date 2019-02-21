@@ -48,6 +48,7 @@ namespace PgJsonObjects
         IPgAttributeCollection AttributesThatModRageList { get; }
         IPgAttributeCollection AttributesThatDeltaRangeList { get; }
         IPgAttributeCollection AttributesThatDeltaDamageLastList { get; }
+        IPgAttributeCollection AttributesThatDeltaAccuracyList { get; }
         bool RawAttributesThatDeltaDamageListIsEmpty { get; }
         bool RawAttributesThatModDamageListIsEmpty { get; }
         bool RawAttributesThatModBaseDamageListIsEmpty { get; }
@@ -57,5 +58,6 @@ namespace PgJsonObjects
         bool RawAttributesThatModRageListIsEmpty { get; }
         bool RawAttributesThatDeltaRangeListIsEmpty { get; }
         bool RawAttributesThatDeltaDamageLastListIsEmpty { get; }
+        bool RawAttributesThatDeltaAccuracyListIsEmpty { get; }
     }
 }

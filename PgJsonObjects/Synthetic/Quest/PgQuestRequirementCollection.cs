@@ -38,6 +38,9 @@ namespace PgJsonObjects
                 case OtherRequirementType.InteractionFlagSet:
                     return new PgInteractionFlagSetQuestRequirement(data, ref offset);
 
+                case OtherRequirementType.HangOutCompleted:
+                    return new PgHangOutCompletedQuestRequirement(data, ref offset);
+
                 default:
                     throw new InvalidOperationException();
             }

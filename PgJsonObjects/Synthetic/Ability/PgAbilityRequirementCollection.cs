@@ -87,6 +87,10 @@ namespace PgJsonObjects
                     Result = PgAbilityRequirementIsNotGuest.CreateNew(data, ref offset);
                     break;
 
+                case OtherRequirementType.IsNotInHotspot:
+                    Result = PgAbilityRequirementNotInHotspot.CreateNew(data, ref offset);
+                    break;
+
                 default:
                     throw new InvalidOperationException();
             }

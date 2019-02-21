@@ -269,6 +269,11 @@
         //CraftingEnhanceItemSwordFlatDmg,
         //CraftingEnhanceItemKnifeFlatDmg,
         //CraftingEnhanceItemHammerFlatDmg,
+        Particle_Psychic,
+        DispelSpawnPremonitionsOnDeath,
+        SpawnPremonition_All_3sec,
+        SpawnPremonition_All_5sec,
+        SpawnPremonition_Undead_10sec,
 
         ExtractTSysPower,
         RepairItemDurability,
@@ -277,5 +282,6 @@
         AddItemTSysPower,
         BrewItem,
         AdjustRecipeReuseTime,
+        GiveItemPower,
     }
 }

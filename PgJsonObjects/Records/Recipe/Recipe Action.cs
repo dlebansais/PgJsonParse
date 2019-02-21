@@ -36,5 +36,6 @@
         //Grill,
         TapKeg,
         RendSpaceTime,
+        PerformTheRitual,
     }
 }

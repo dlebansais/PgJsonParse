@@ -20,6 +20,7 @@ namespace PgJsonObjects
         }
 
         public IPgSkill Skill { get { return GetObject(PropertiesOffset + 0, ref _Skill, PgSkill.CreateNew); } } private IPgSkill _Skill;
+        public string Target { get { return GetString(PropertiesOffset + 4); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
@@ -31,6 +32,9 @@ namespace PgJsonObjects
             { "Description", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => Description } },
+            { "Target", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Target } },
             { "Number", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => RawNumber } },

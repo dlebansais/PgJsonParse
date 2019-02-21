@@ -211,5 +211,11 @@
         PumpkinTurret,
         Pumpkinbomb,
         ToughHoofTagged,
+        GoblinPrecision,
+        TolmarCurse,
+        ProblemSpiderCurse,
+        RatkinKingCurse,
+        NatureDoT,
+        Cheese,
     }
 }

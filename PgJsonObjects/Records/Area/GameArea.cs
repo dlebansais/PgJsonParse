@@ -44,9 +44,6 @@ namespace PgJsonObjects
         {
             FriendlyName = value;
 
-            if (FriendlyName == "Red Wingo Casino")
-                FriendlyName = "Red Wing Casino";
-
             if (KeyArea != MapAreaName.Internal_None && FriendlyName != TextMaps.MapAreaNameTextMap[KeyArea])
                 ErrorInfo.AddInvalidObjectFormat("Area FriendlyName");
         }

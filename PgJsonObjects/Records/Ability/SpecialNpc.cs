@@ -32,5 +32,7 @@
         NPC_Halloween_Westley,
         NPC_Halloween_Deville,
         NPC_Halloween_ChafSpringfield,
+        NPC_GoblinDoorGuard,
+        NPC_Glortok,
     }
 }

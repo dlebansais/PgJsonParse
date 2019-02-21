@@ -42,6 +42,7 @@ namespace PgJsonObjects
         List<RecipeResultKey> BrewResultList { get; }
         int AdjustedReuseTime { get; }
         int? RawAdjustedReuseTime { get; }
+        IPgItem Item { get; }
         bool IsCamouflaged { get; }
         bool? RawIsCamouflaged { get; }
 

@@ -26,5 +26,7 @@
         InteractionFlagSet,
         IsVolunteerGuide,
         IsNotGuest,
+        IsNotInHotspot,
+        HangOutCompleted,
     }
 }

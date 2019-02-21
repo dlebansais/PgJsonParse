@@ -145,7 +145,7 @@ namespace PgJsonObjects
 
                 case QuestObjectiveType.BeAttacked:
                 case QuestObjectiveType.Bury:
-                    return new QuestObjectiveAnatomy(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, AnatomyType);
+                    return new QuestObjectiveAnatomy(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, InteractionTarget, AnatomyType);
 
                 case QuestObjectiveType.UseAbility:
                     return new QuestObjectiveUseAbility(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, AbilityTarget);
@@ -169,6 +169,12 @@ namespace PgJsonObjects
                 case QuestObjectiveType.ScriptedReceiveItem:
                     if (DeliverNpcArea != MapAreaName.Internal_None && DeliverNpcName != null)
                         return new QuestObjectiveScriptedReceiveItem(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, DeliverNpcArea, DeliverNpcId, DeliverNpcName, RawItemName);
+                    else
+                        return this;
+
+                case QuestObjectiveType.UseAbilityOnTargets:
+                    if (AbilityTarget != PgJsonObjects.AbilityKeyword.Internal_None)
+                        return new QuestObjectiveUseAbilityOnTargets(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, AbilityTarget);
                     else
                         return this;
 
@@ -338,6 +344,10 @@ namespace PgJsonObjects
                      Type == QuestObjectiveType.SayInChat)
                 InteractionTarget = RawTarget;
 
+            else if (Type == QuestObjectiveType.BeAttacked ||
+                     Type == QuestObjectiveType.UseAbilityOnTargets)
+                InteractionTarget = RawTarget;
+
             else if (Type == QuestObjectiveType.InteractionFlag)
                 return;
 
@@ -458,6 +468,8 @@ namespace PgJsonObjects
         {
             if (Type == QuestObjectiveType.Kill)
                 AbilityKeyword = value;
+            else if (Type == QuestObjectiveType.UseAbilityOnTargets)
+                AbilityTarget = StringToEnumConversion<AbilityKeyword>.Parse(value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective AbilityKeyword (Type)");
         }

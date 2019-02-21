@@ -316,6 +316,10 @@ namespace PgJsonObjects
                         Result.Add(GetAdjustRecipeResultEffects(Item));
                         break;
 
+                    case RecipeEffect.GiveItemPower:
+                        Result.Add(GetGiveItemPowerEffects(Item));
+                        break;
+
                     default:
                         Result.Add(StringToEnumConversion<RecipeEffect>.ToString(Item.Effect, TextMaps.RecipeEffectStringMap));
                         break;
@@ -399,6 +403,9 @@ namespace PgJsonObjects
                 return true;
 
             if (ParseAdjustRecipeReuseTime(value, ErrorInfo, ref NewResultEffect))
+                return true;
+
+            if (ParseGiveItemPower(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
             ErrorInfo.AddMissingEnum("RecipeEffect", value);
@@ -843,7 +850,38 @@ namespace PgJsonObjects
             string Result = "AdjustRecipeReuseTime(";
 
             Result += Item.AdjustedReuseTime.ToString() + ",";
-            Result += StringToEnumConversion<MoonPhases>.ToString(Item.MoonPhase) + ")";
+            Result += StringToEnumConversion<MoonPhases>.ToString(Item.MoonPhase);
+            Result += ")";
+
+            return Result;
+        }
+
+        private bool ParseGiveItemPower(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
+        {
+            string GiveItemPowerPattern = "GiveTSysItem(";
+            if (RawEffect.StartsWith(GiveItemPowerPattern) && RawEffect.EndsWith(")"))
+            {
+                RecipeEffect ConvertedRecipeEffect = RecipeEffect.GiveItemPower;
+                string Adjusted = RawEffect.Substring(GiveItemPowerPattern.Length, RawEffect.Length - GiveItemPowerPattern.Length - 1);
+                string[] AdjustedSplit = Adjusted.Split(',');
+
+                if (AdjustedSplit.Length == 1)
+                {
+                    NewResultEffect.Effect = ConvertedRecipeEffect;
+                    NewResultEffect.RawItemName = AdjustedSplit[0];
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private string GetGiveItemPowerEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "GiveTSysItem(";
+
+            Result += Item.Item != null ? Item.Item.InternalName : "unknown";
+            Result += ")";
 
             return Result;
         }
@@ -912,6 +950,7 @@ namespace PgJsonObjects
             bool IsConnected = false;
             Dictionary<string, IJsonKey> RecipeTable = AllTables[typeof(Recipe)];
             Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
+            Dictionary<string, IJsonKey> ItemTable = AllTables[typeof(Item)];
 
             foreach (RecipeItem Item in IngredientList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
@@ -942,6 +981,13 @@ namespace PgJsonObjects
 
             foreach (RecipeItem Item in ProtoResultItemList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
+
+            foreach (RecipeResultEffect Item in ResultEffectList)
+                if (Item.Effect == RecipeEffect.GiveItemPower)
+                {
+                    bool IsRawItemParsed = false;
+                    Item.Item = PgJsonObjects.Item.ConnectSingleProperty(ErrorInfo, ItemTable, Item.RawItemName, Item.Item, ref IsRawItemParsed, ref IsConnected, this);
+                }
 
             return IsConnected;
         }

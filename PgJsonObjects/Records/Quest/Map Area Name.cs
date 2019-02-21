@@ -27,5 +27,8 @@
         FaeRealm1,
         RanalonDen,
         Casino,
+        RahuCaves,
+        RahuSewer,
+        RahuSewers,
     }
 }

@@ -283,5 +283,12 @@
         GiantBatBoostPotion,
         RabbitBoostPotion,
         HolyWarmth,
+        RatkinDigestifA,
+        RatkinAparatif,
+        GoblinPrecision,
+        Rotskin,
+        DruidAuraBuffAccuracy,
+        TolmarCurse,
+        ProblemSpiderCurse,
     }
 }

@@ -25,5 +25,11 @@
         ShamanicFeetPsychologyBaseDmg,
         ShamanicRingMentalismBaseDmg,
         ShamanicNecklaceHealthWave,
+        ShamanicHeadRangedAccuracy,
+        ShamanicChestBurstAccuracy,
+        ShamanicHandsMeleeAccuracy,
+        ShamanicLegsUnarmedBaseDamage,
+        ShamanicRingFireMagicBaseDmg,
+        ShamanicNecklaceDruidBaseDmg,
     }
 }

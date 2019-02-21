@@ -44,6 +44,8 @@ namespace PgJsonObjects
         public List<RecipeResultKey> BrewResultList { get; set; } = new List<RecipeResultKey>();
         public int AdjustedReuseTime { get { return RawAdjustedReuseTime.HasValue ? RawAdjustedReuseTime.Value : 0; } }
         public int? RawAdjustedReuseTime { get; set; }
+        public string RawItemName { get; set; }
+        public IPgItem Item { get; set; }
         public bool IsCamouflaged { get { return RawIsCamouflaged.HasValue && RawIsCamouflaged.Value; } }
         public bool? RawIsCamouflaged { get; set; }
 
@@ -57,6 +59,7 @@ namespace PgJsonObjects
             int BitOffset = 0;
             int BaseOffset = offset;
             Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
+            Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
 
             AddEnum(Effect, data, ref offset, BaseOffset, 0);
             AddEnum(Boost, data, ref offset, BaseOffset, 2);
@@ -83,10 +86,11 @@ namespace PgJsonObjects
             AddEnumList(BrewPartList, data, ref offset, BaseOffset, 68, StoredEnumListTable);
             AddEnumList(BrewResultList, data, ref offset, BaseOffset, 72, StoredEnumListTable);
             AddInt(RawAdjustedReuseTime, data, ref offset, BaseOffset, 76);
-            AddBool(RawIsCamouflaged, data, ref offset, ref BitOffset, BaseOffset, 80, 0);
+            AddObject(Item as ISerializableJsonObject, data, ref offset, BaseOffset, 80, StoredObjectTable);
+            AddBool(RawIsCamouflaged, data, ref offset, ref BitOffset, BaseOffset, 84, 0);
             CloseBool(ref offset, ref BitOffset);
 
-            FinishSerializing(data, ref offset, BaseOffset, 82, null, null, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 86, null, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
     }

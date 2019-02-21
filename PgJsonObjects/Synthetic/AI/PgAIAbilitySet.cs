@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[683];
+        private PgAIAbility[] Abilities = new PgAIAbility[717];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -707,6 +707,40 @@ namespace PgJsonObjects
         public IPgAIAbility DeerRageKick { get { return GetAbilityObject(680); } }
         public IPgAIAbility PetUndeadReapPunch { get { return GetAbilityObject(681); } }
         public IPgAIAbility PetUndeadRageReap { get { return GetAbilityObject(682); } }
+        public IPgAIAbility ViperSpitPoison { get { return GetAbilityObject(683); } }
+        public IPgAIAbility ViperBite { get { return GetAbilityObject(684); } }
+        public IPgAIAbility Slime_SummonSlime6 { get { return GetAbilityObject(685); } }
+        public IPgAIAbility BossSlime_SummonSlime7Elite { get { return GetAbilityObject(686); } }
+        public IPgAIAbility SpiderBite_ProblemSpider { get { return GetAbilityObject(687); } }
+        public IPgAIAbility PetRatkinUndeadElectricityA { get { return GetAbilityObject(688); } }
+        public IPgAIAbility PetRatkinUndeadElectricityB { get { return GetAbilityObject(689); } }
+        public IPgAIAbility PetRatkinUndeadElectricityBurst { get { return GetAbilityObject(690); } }
+        public IPgAIAbility RakToxinBomb_Tolmar { get { return GetAbilityObject(691); } }
+        public IPgAIAbility HippoBiteAndHeal { get { return GetAbilityObject(692); } }
+        public IPgAIAbility TreantSlashA { get { return GetAbilityObject(693); } }
+        public IPgAIAbility TreantSlashB { get { return GetAbilityObject(694); } }
+        public IPgAIAbility TreantStomp { get { return GetAbilityObject(695); } }
+        public IPgAIAbility TreantDoT1 { get { return GetAbilityObject(696); } }
+        public IPgAIAbility RatTrapAttack { get { return GetAbilityObject(697); } }
+        public IPgAIAbility RatkinSwordSlash { get { return GetAbilityObject(698); } }
+        public IPgAIAbility RatkinSwordPierce { get { return GetAbilityObject(699); } }
+        public IPgAIAbility RatkinSwordFinisher { get { return GetAbilityObject(700); } }
+        public IPgAIAbility RatkinDeathsHold { get { return GetAbilityObject(701); } }
+        public IPgAIAbility RatkinDarknessBolt { get { return GetAbilityObject(702); } }
+        public IPgAIAbility RatkinLifeSteal { get { return GetAbilityObject(703); } }
+        public IPgAIAbility RatkinBossWaveOfDarkness { get { return GetAbilityObject(704); } }
+        public IPgAIAbility RatkinReverberatingStrike70 { get { return GetAbilityObject(705); } }
+        public IPgAIAbility RatkinHammer { get { return GetAbilityObject(706); } }
+        public IPgAIAbility RatkinHammerStun { get { return GetAbilityObject(707); } }
+        public IPgAIAbility RatkinUndeadElectricityA { get { return GetAbilityObject(708); } }
+        public IPgAIAbility RatkinUndeadElectricityB { get { return GetAbilityObject(709); } }
+        public IPgAIAbility RatkinUndeadElectricityBurst { get { return GetAbilityObject(710); } }
+        public IPgAIAbility RatBuffDarkness_Pet1 { get { return GetAbilityObject(711); } }
+        public IPgAIAbility RatBuffDarkness_Pet2 { get { return GetAbilityObject(712); } }
+        public IPgAIAbility RatBuffDarkness_Pet3 { get { return GetAbilityObject(713); } }
+        public IPgAIAbility RatBuffDarkness_Pet4 { get { return GetAbilityObject(714); } }
+        public IPgAIAbility RatBuffDarkness_Pet5 { get { return GetAbilityObject(715); } }
+        public IPgAIAbility RatBuffDarkness_Pet6 { get { return GetAbilityObject(716); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
@@ -2758,6 +2792,108 @@ namespace PgJsonObjects
            { "PetUndeadRageReap", new FieldParser() {
                Type = FieldType.Object,
                 GetObject = () => PetUndeadRageReap as IObjectContentGenerator } },
+           { "ViperSpitPoison", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ViperSpitPoison as IObjectContentGenerator } },
+           { "ViperBite", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ViperBite as IObjectContentGenerator } },
+           { "Slime_SummonSlime6", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => Slime_SummonSlime6 as IObjectContentGenerator } },
+           { "BossSlime_SummonSlime7Elite", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => BossSlime_SummonSlime7Elite as IObjectContentGenerator } },
+           { "SpiderBite_ProblemSpider", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => SpiderBite_ProblemSpider as IObjectContentGenerator } },
+           { "PetRatkinUndeadElectricityA", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => PetRatkinUndeadElectricityA as IObjectContentGenerator } },
+           { "PetRatkinUndeadElectricityB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => PetRatkinUndeadElectricityB as IObjectContentGenerator } },
+           { "PetRatkinUndeadElectricityBurst", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => PetRatkinUndeadElectricityBurst as IObjectContentGenerator } },
+           { "RakToxinBomb_Tolmar", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RakToxinBomb_Tolmar as IObjectContentGenerator } },
+           { "HippoBiteAndHeal", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => HippoBiteAndHeal as IObjectContentGenerator } },
+           { "TreantSlashA", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => TreantSlashA as IObjectContentGenerator } },
+           { "TreantSlashB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => TreantSlashB as IObjectContentGenerator } },
+           { "TreantStomp", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => TreantStomp as IObjectContentGenerator } },
+           { "TreantDoT1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => TreantDoT1 as IObjectContentGenerator } },
+           { "RatTrapAttack", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatTrapAttack as IObjectContentGenerator } },
+           { "RatkinSwordSlash", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinSwordSlash as IObjectContentGenerator } },
+           { "RatkinSwordPierce", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinSwordPierce as IObjectContentGenerator } },
+           { "RatkinSwordFinisher", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinSwordFinisher as IObjectContentGenerator } },
+           { "RatkinDeathsHold", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinDeathsHold as IObjectContentGenerator } },
+           { "RatkinDarknessBolt", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinDarknessBolt as IObjectContentGenerator } },
+           { "RatkinLifeSteal", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinLifeSteal as IObjectContentGenerator } },
+           { "RatkinBossWaveOfDarkness", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinBossWaveOfDarkness as IObjectContentGenerator } },
+           { "RatkinReverberatingStrike70", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinReverberatingStrike70 as IObjectContentGenerator } },
+           { "RatkinHammer", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinHammer as IObjectContentGenerator } },
+           { "RatkinHammerStun", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinHammerStun as IObjectContentGenerator } },
+           { "RatkinUndeadElectricityA", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinUndeadElectricityA as IObjectContentGenerator } },
+           { "RatkinUndeadElectricityB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinUndeadElectricityB as IObjectContentGenerator } },
+           { "RatkinUndeadElectricityBurst", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatkinUndeadElectricityBurst as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatBuffDarkness_Pet1 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatBuffDarkness_Pet2 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet3", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatBuffDarkness_Pet3 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet4", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatBuffDarkness_Pet4 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet5", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatBuffDarkness_Pet5 as IObjectContentGenerator } },
+           { "RatBuffDarkness_Pet6", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RatBuffDarkness_Pet6 as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

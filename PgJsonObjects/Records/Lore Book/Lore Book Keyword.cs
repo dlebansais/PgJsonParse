@@ -13,5 +13,6 @@
         AreaEltibule,
         Loot,
         AreaCasino,
+        AreaRahuCaves,
     }
 }

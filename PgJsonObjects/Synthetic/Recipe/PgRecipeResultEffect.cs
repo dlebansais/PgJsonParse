@@ -59,8 +59,9 @@ namespace PgJsonObjects
         public List<RecipeResultKey> BrewResultList { get { return GetEnumList(72, ref _BrewResultList); } } private List<RecipeResultKey> _BrewResultList;
         public int AdjustedReuseTime { get { return RawAdjustedReuseTime.HasValue ? RawAdjustedReuseTime.Value : 0; } }
         public int? RawAdjustedReuseTime { get { return GetInt(76); } }
+        public IPgItem Item { get { return GetObject(80, ref _Item, PgItem.CreateNew); } } private IPgItem _Item;
         public bool IsCamouflaged { get { return RawIsCamouflaged.HasValue && RawIsCamouflaged.Value; } }
-        public bool? RawIsCamouflaged { get { return GetBool(80, 0); } }
+        public bool? RawIsCamouflaged { get { return GetBool(84, 0); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
         protected override List<string> FieldTableOrder { get { return new List<string>(); } }
@@ -124,6 +125,9 @@ namespace PgJsonObjects
 
                 case RecipeEffect.AdjustRecipeReuseTime:
                     return "Adjust Recipe Reuse Time, " + item.AdjustedReuseTime + "s during " + item.MoonPhase;
+
+                case RecipeEffect.GiveItemPower:
+                    return "Give Power to " + (item.Item != null ? item.Item.Name : " unknown item");
             }
         }
     }

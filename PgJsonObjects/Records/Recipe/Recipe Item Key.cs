@@ -109,5 +109,6 @@
         Dirk,
         BardLute,
         BardHorn,
+        AstonishingHumanoidSkull,
     }
 }

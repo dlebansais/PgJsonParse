@@ -88,6 +88,9 @@ namespace PgJsonObjects
                 case OtherRequirementType.IsNotGuest:
                     return new AbilityRequirementIsNotGuest();
 
+                case OtherRequirementType.IsNotInHotspot:
+                    return new AbilityRequirementNotInHotspot(RawName);
+
                 default:
                     return null;
             }
@@ -162,6 +165,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawInteractionFlag = value,
                 GetString = () => RawInteractionFlag } },
+            { "HangOut", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => RawHangOut = value,
+                GetString  = () => RawHangOut } },
         }; } }
 
         private void ParseAllowedRace(string RawAllowedRace, ParseErrorInfo ErrorInfo)
@@ -222,6 +229,7 @@ namespace PgJsonObjects
         private double? RawMaxCount;
         private string RawRecipeKnown;
         private string RawName;
+        private string RawHangOut;
         private string RawItem;
         private List<string> RawAppearanceList { get; } = new List<string>();
         private string RawAppearance;
