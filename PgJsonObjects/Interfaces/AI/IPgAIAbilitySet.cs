@@ -719,5 +719,6 @@
         IPgAIAbility RatBuffDarkness_Pet4 { get; }
         IPgAIAbility RatBuffDarkness_Pet5 { get; }
         IPgAIAbility RatBuffDarkness_Pet6 { get; }
+        IPgAIAbility ViperRageBite { get; }
     }
 }

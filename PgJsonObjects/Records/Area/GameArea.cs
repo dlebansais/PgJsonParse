@@ -24,7 +24,11 @@ namespace PgJsonObjects
             base.InitializeKey(key, index, value, ErrorInfo);
 
             if (Key.StartsWith("Area"))
+            {
                 KeyArea = StringToEnumConversion<MapAreaName>.Parse(Key.Substring(4), TextMaps.MapAreaNameStringMap, ErrorInfo);
+                if (KeyArea == MapAreaName.RahuCaves || KeyArea == MapAreaName.RahuSewer)
+                    KeyArea = MapAreaName.RahuSewers;
+            }
             else
                 ErrorInfo.AddInvalidObjectFormat("Area Key");
         }

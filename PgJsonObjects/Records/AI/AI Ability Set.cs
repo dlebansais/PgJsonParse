@@ -724,6 +724,7 @@ namespace PgJsonObjects
         public IPgAIAbility RatBuffDarkness_Pet4 { get; private set; }
         public IPgAIAbility RatBuffDarkness_Pet5 { get; private set; }
         public IPgAIAbility RatBuffDarkness_Pet6 { get; private set; }
+        public IPgAIAbility ViperRageBite { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -3600,6 +3601,10 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RatBuffDarkness_Pet6 =
                    JsonObjectParser<AIAbility>.Parse("RatBuffDarkness_Pet6", value, errorInfo),
                 GetObject = () => RatBuffDarkness_Pet6 as IObjectContentGenerator } },
+           { "ViperRageBite", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => ViperRageBite =
+                   JsonObjectParser<AIAbility>.Parse("ViperRageBite", value, errorInfo),
+                GetObject = () => ViperRageBite as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4355,8 +4360,9 @@ namespace PgJsonObjects
             AddObject(RatBuffDarkness_Pet4 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 714 * 4, StoredObjectTable);
             AddObject(RatBuffDarkness_Pet5 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 715 * 4, StoredObjectTable);
             AddObject(RatBuffDarkness_Pet6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 716 * 4, StoredObjectTable);
+            AddObject(ViperRageBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 717 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 717 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 718 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion
