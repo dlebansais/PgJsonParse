@@ -102,6 +102,7 @@
             <obj:RecipeItemKey>EquipmentSlot_Feet</obj:RecipeItemKey>
             <obj:RecipeItemKey>EquipmentSlot_Ring</obj:RecipeItemKey>
             <obj:RecipeItemKey>EquipmentSlot_Necklace</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Waist</obj:RecipeItemKey>
         </app:CustomCompositeCollection>
         <app:CustomCompositeCollection x:Key="RecipeItemKey_Rarity">
             <obj:RecipeItemKey>Rarity_Common</obj:RecipeItemKey>
@@ -127,6 +128,7 @@
             <obj:RecipeItemKey>EquipmentSlot_Feet</obj:RecipeItemKey>
             <obj:RecipeItemKey>EquipmentSlot_Ring</obj:RecipeItemKey>
             <obj:RecipeItemKey>EquipmentSlot_Necklace</obj:RecipeItemKey>
+            <obj:RecipeItemKey>EquipmentSlot_Waist</obj:RecipeItemKey>
             <obj:RecipeItemKey>Rarity_Common</obj:RecipeItemKey>
             <obj:RecipeItemKey>Rarity_Uncommon</obj:RecipeItemKey>
             <obj:RecipeItemKey>Rarity_Rare</obj:RecipeItemKey>
@@ -5655,6 +5657,9 @@
                         </TabItem>
                         <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding OffHandSlotPlaner}">
                             <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding OffHandSlotPlaner}"/>
+                        </TabItem>
+                        <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding WaistSlotPlaner}">
+                            <ContentControl ContentTemplate="{StaticResource PlanerTemplate}" Content="{Binding WaistSlotPlaner}"/>
                         </TabItem>
                     </TabControl>
                 </DockPanel>

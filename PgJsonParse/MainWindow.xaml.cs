@@ -139,6 +139,7 @@ namespace PgJsonParse
             { ItemSlot.Necklace, "icon_17101" },
             { ItemSlot.MainHand, "icon_15014" },
             { ItemSlot.OffHand, "icon_5382" },
+            { ItemSlot.Waist, "icon_20001" },
         };
 
         private void InitCache()
@@ -170,6 +171,7 @@ namespace PgJsonParse
             NeckSlotPlaner = CreateSlotPlaner(ItemSlot.Necklace);
             MainHandSlotPlaner = CreateSlotPlaner(ItemSlot.MainHand);
             OffHandSlotPlaner = CreateSlotPlaner(ItemSlot.OffHand);
+            WaistSlotPlaner = CreateSlotPlaner(ItemSlot.Waist);
 
             WeightProfileList = new ObservableCollection<WeightProfile>();
             WeightProfileIndex = -1;
@@ -242,6 +244,7 @@ namespace PgJsonParse
         public SlotPlaner OffHandSlotPlaner { get; private set; }
         public SlotPlaner RingSlotPlaner { get; private set; }
         public SlotPlaner NeckSlotPlaner { get; private set; }
+        public SlotPlaner WaistSlotPlaner { get; private set; }
         public ObservableCollection<WeightProfile> WeightProfileList { get; private set; }
         public int WeightProfileIndex { get; set; }
         public bool IgnoreUnobtainable { get; set; }
@@ -1706,7 +1709,8 @@ namespace PgJsonParse
                 ItemSlot.Ring,
                 ItemSlot.Hands,
                 ItemSlot.MainHand,
-                ItemSlot.OffHand
+                ItemSlot.OffHand,
+                ItemSlot.Waist,
             };
 
             foreach (ItemSlot Slot in SlotList)

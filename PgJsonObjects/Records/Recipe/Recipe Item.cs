@@ -131,6 +131,7 @@ namespace PgJsonObjects
                             case RecipeItemKey.EquipmentSlot_Feet:
                             case RecipeItemKey.EquipmentSlot_Ring:
                             case RecipeItemKey.EquipmentSlot_Necklace:
+                            case RecipeItemKey.EquipmentSlot_Waist:
                             case RecipeItemKey.Rarity_Common:
                             case RecipeItemKey.Rarity_Uncommon:
                             case RecipeItemKey.Rarity_Rare:
