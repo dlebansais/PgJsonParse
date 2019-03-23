@@ -60,7 +60,6 @@
         EquipmentSlot_Feet,
         EquipmentSlot_Ring,
         EquipmentSlot_Necklace,
-        EquipmentSlot_Waist,
         Rarity_Common,
         Rarity_Uncommon,
         Rarity_Rare,
