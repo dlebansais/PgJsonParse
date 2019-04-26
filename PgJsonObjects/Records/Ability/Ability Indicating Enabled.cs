@@ -12,5 +12,6 @@
         PlayingSongOfResurgence,
         PlayingSongOfBravery,
         PlayingSongOfDiscord,
+        ShadowFeint,
     }
 }

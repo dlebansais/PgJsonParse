@@ -123,8 +123,8 @@
         MitigationBuff,
         Delayed,
         Injury,
-        Spider,
-        WebTrick,
+        //Spider,
+        //WebTrick,
         Stun,
         Mutation,
         Psychology,
@@ -217,5 +217,11 @@
         RatkinKingCurse,
         NatureDoT,
         Cheese,
+        TelkasTeeth,
+        DrugPenalty_TelkasTeeth,
+        Nightvision,
+        ShadowFeintBuff,
+        DispelledByAcid,
+        SpiderPuntEnabled,
     }
 }

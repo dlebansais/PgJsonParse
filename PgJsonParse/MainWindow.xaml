@@ -567,6 +567,11 @@
                 <TextBlock Text="{Binding Number}"/>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="QuestObjectiveIsHiddenTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Description}"/>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveSpecialTemplate">
             <WrapPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
@@ -4906,6 +4911,11 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="Non Combat Regen Health Modifier:" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding NonCombatRegenHealthMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
@@ -5033,6 +5043,16 @@
                     <TextBlock Grid.Column="1" Grid.Row="61" Text="{Binding CriticalHitDamage, Converter={StaticResource convPercent}}" Visibility="{Binding RawCriticalHitDamage, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                     <TextBlock Grid.Column="0" Grid.Row="62" Text="Monster Crit Chance:" Visibility="{Binding RawMonsterCritChance, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="62" Text="{Binding MonsterCritChance, Converter={StaticResource convPercent}}" Visibility="{Binding RawMonsterCritChance, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="63" Text="Evasion Chance (Projectile):" Visibility="{Binding RawEvasionChanceProjectile, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="63" Text="{Binding EvasionChanceProjectile, Converter={StaticResource convPercent}}" Visibility="{Binding RawEvasionChanceProjectile, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="64" Text="Evasion Chance (Melee):" Visibility="{Binding RawEvasionChanceMelee, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="64" Text="{Binding EvasionChanceMelee, Converter={StaticResource convPercent}}" Visibility="{Binding RawEvasionChanceMelee, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="65" Text="Critical Hit Damage on Rage Attack:" Visibility="{Binding RawModCriticalHitDamageRageAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="65" Text="{Binding ModCriticalHitDamageRageAttack, Converter={StaticResource convPercent}}" Visibility="{Binding RawModCriticalHitDamageRageAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="66" Text="Werewolf Health Regen Boost:" Visibility="{Binding RawBoostWerewolfMetabolismHeathRegen, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="66" Text="{Binding BoostWerewolfMetabolismHeathRegen, Converter={StaticResource convPercent}}" Visibility="{Binding RawBoostWerewolfMetabolismHeathRegen, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="64" Text="Werewolf Power Regen Boost:" Visibility="{Binding RawBoostWerewolfMetabolismPowerRegen, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="64" Text="{Binding BoostWerewolfMetabolismPowerRegen, Converter={StaticResource convPercent}}" Visibility="{Binding RawBoostWerewolfMetabolismPowerRegen, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>

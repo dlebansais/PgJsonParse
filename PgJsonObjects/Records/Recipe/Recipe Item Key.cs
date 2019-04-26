@@ -110,5 +110,7 @@
         BardLute,
         BardHorn,
         AstonishingHumanoidSkull,
+        ReusableBeerKeg,
+        ReusableHardLiquorBarrel,
     }
 }

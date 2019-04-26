@@ -154,6 +154,7 @@
         AlcoholTolerance,
         Priest,
         Gaming,
+        Safecracking,
     }
 }
 

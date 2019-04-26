@@ -103,6 +103,7 @@ namespace PgJsonObjects
         private PowerSkill RawWorkOrderSkill;
         private bool IsConnectedWorkOrderSkillParsed;
         private List<string> RawFollowUpQuestList = new List<string>();
+        private List<string> RawPreGiveEffectList { get; } = new List<string>();
         #endregion
 
         #region Indirect Properties
@@ -283,6 +284,10 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawFollowUpQuestList.Add(value),
                 GetStringArray = GetFollowUpQuestList } },
+            { "PreGiveEffects", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawPreGiveEffectList.Add(value),
+                GetStringArray = () => RawPreGiveEffectList } },
         }; } }
 
         private void ParseName(string value, ParseErrorInfo ErrorInfo)

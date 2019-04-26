@@ -34,5 +34,6 @@
         NPC_Halloween_ChafSpringfield,
         NPC_GoblinDoorGuard,
         NPC_Glortok,
+        NPC_InjuredRakshasa,
     }
 }

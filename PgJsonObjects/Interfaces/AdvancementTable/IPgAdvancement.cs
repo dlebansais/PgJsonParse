@@ -129,6 +129,16 @@ namespace PgJsonObjects
         double? RawShopHiringNumFree { get; }
         float CriticalHitDamage { get; }
         double? RawCriticalHitDamage { get; }
+        float EvasionChanceProjectile { get; }
+        double? RawEvasionChanceProjectile { get; }
+        float EvasionChanceMelee { get; }
+        double? RawEvasionChanceMelee { get; }
+        float ModCriticalHitDamageRageAttack { get; }
+        double? RawModCriticalHitDamageRageAttack { get; }
+        float BoostWerewolfMetabolismHeathRegen { get; }
+        double? RawBoostWerewolfMetabolismHeathRegen { get; }
+        float BoostWerewolfMetabolismPowerRegen { get; }
+        double? RawBoostWerewolfMetabolismPowerRegen { get; }
 
         List<string> VulnerabilityList { get; }
         List<string> MitigationList { get; }

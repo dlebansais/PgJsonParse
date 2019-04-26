@@ -720,5 +720,10 @@
         IPgAIAbility RatBuffDarkness_Pet5 { get; }
         IPgAIAbility RatBuffDarkness_Pet6 { get; }
         IPgAIAbility ViperRageBite { get; }
+        IPgAIAbility SlugBite { get; }
+        IPgAIAbility SlugWebDebuff { get; }
+        IPgAIAbility SmallishScorpionClawA { get; }
+        IPgAIAbility SmallishScorpionClawB { get; }
+        IPgAIAbility SmallishScorpionSting { get; }
     }
 }

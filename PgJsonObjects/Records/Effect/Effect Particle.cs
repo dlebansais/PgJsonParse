@@ -99,5 +99,10 @@
         Stunned5Sec,
         FloatyHearts,
         BuffGreen,
+        HealingParticleHuge,
+        GoodJob_Gold,
+        WebbedDebuff,
+        LocationCircle_White,
+        AcidShieldPerm,
     }
 }

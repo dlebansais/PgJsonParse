@@ -55,6 +55,8 @@ namespace PgJsonObjects
         private string InteractionTarget;
         protected QuestObjectiveRequirement QuestObjectiveRequirement;
         private int? RawNumToDeliver;
+        private bool? IsHiddenUntilEarlierObjectivesComplete;
+        private string InternalName;
         #endregion
 
         #region Indirect Properties
@@ -272,6 +274,14 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = ParseNumToDeliver,
                 GetInteger = () => RawNumToDeliver } },
+            { "IsHiddenUntilEarlierObjectivesComplete", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => IsHiddenUntilEarlierObjectivesComplete = value,
+                GetBool = () => IsHiddenUntilEarlierObjectivesComplete } },
+            { "InternalName", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => InternalName = value,
+                GetString = () => InternalName } },
         }; } }
 
         private void ParseTarget(string RawTarget, ParseErrorInfo ErrorInfo)

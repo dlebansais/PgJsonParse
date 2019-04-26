@@ -311,6 +311,9 @@ namespace PgJsonObjects
             { "Treant", "Treant" },
             { "NecroRat", "Necro Rat" },
             { "Goat", "Goat" },
+            { "TornadoSpider", "Tornado Spider" },
+            { "SandWorm", "Sand Worm" },
+            { "AmazingNpcRewardLoot", "Amazing Npc Reward Loot" },
         };
     }
 }

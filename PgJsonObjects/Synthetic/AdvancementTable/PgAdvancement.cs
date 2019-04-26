@@ -150,11 +150,22 @@ namespace PgJsonObjects
         public double? RawCriticalHitDamage { get { return GetDouble(248); } }
         public float MonsterCritChance { get { return (float)(RawMonsterCritChance.HasValue ? RawMonsterCritChance.Value : 0); } }
         public double? RawMonsterCritChance { get { return GetDouble(252); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(256, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
-        public List<int> VulnerabilityDataList { get { return GetIntList(260, ref _VulnerabilityDataList); } } private List<int> _VulnerabilityDataList;
-        public List<int> MitigationDataList { get { return GetIntList(264, ref _MitigationDataList); } } private List<int> _MitigationDataList;
-        public List<int> DirectModDataList { get { return GetIntList(268, ref _DirectModDataList); } } private List<int> _DirectModDataList;
-        public List<int> IndirectModDataList { get { return GetIntList(272, ref _IndirectModDataList); } } private List<int> _IndirectModDataList;
+        public float EvasionChanceProjectile { get { return (float)(RawEvasionChanceProjectile.HasValue ? RawEvasionChanceProjectile.Value : 0); } }
+        public double? RawEvasionChanceProjectile { get { return GetDouble(256); } }
+        public float EvasionChanceMelee { get { return (float)(RawEvasionChanceMelee.HasValue ? RawEvasionChanceMelee.Value : 0); } }
+        public double? RawEvasionChanceMelee { get { return GetDouble(260); } }
+        public float ModCriticalHitDamageRageAttack { get { return (float)(RawModCriticalHitDamageRageAttack.HasValue ? RawModCriticalHitDamageRageAttack.Value : 0); } }
+        public double? RawModCriticalHitDamageRageAttack { get { return GetDouble(264); } }
+        public float BoostWerewolfMetabolismHeathRegen { get { return (float)(RawBoostWerewolfMetabolismHeathRegen.HasValue ? RawBoostWerewolfMetabolismHeathRegen.Value : 0); } }
+        public double? RawBoostWerewolfMetabolismHeathRegen { get { return GetDouble(268); } }
+        public float BoostWerewolfMetabolismPowerRegen { get { return (float)(RawBoostWerewolfMetabolismPowerRegen.HasValue ? RawBoostWerewolfMetabolismPowerRegen.Value : 0); } }
+        public double? RawBoostWerewolfMetabolismPowerRegen { get { return GetDouble(272); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(276, ref _FieldTableOrder); } }
+        private List<string> _FieldTableOrder;
+        public List<int> VulnerabilityDataList { get { return GetIntList(280, ref _VulnerabilityDataList); } } private List<int> _VulnerabilityDataList;
+        public List<int> MitigationDataList { get { return GetIntList(284, ref _MitigationDataList); } } private List<int> _MitigationDataList;
+        public List<int> DirectModDataList { get { return GetIntList(288, ref _DirectModDataList); } } private List<int> _DirectModDataList;
+        public List<int> IndirectModDataList { get { return GetIntList(292, ref _IndirectModDataList); } } private List<int> _IndirectModDataList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "IGNORE_CHANCE_FEAR", new FieldParser() {
@@ -208,6 +219,21 @@ namespace PgJsonObjects
             { "EVASION_CHANCE", new FieldParser() {
                 Type = FieldType.Float,
                 GetFloat = () => RawEvasionChance } },
+            { "EVASION_CHANCE_PROJECTILE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawEvasionChanceProjectile } },
+            { "EVASION_CHANCE_MELEE", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawEvasionChanceMelee } },
+            { "MOD_CRITICAL_HIT_DAMAGE_RAGEATTACK", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawModCriticalHitDamageRageAttack } },
+            { "BOOST_WEREWOLFMETABOLISM_HEALTHREGEN", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawBoostWerewolfMetabolismHeathRegen } },
+            { "BOOST_WEREWOLFMETABOLISM_POWERREGEN", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawBoostWerewolfMetabolismPowerRegen } },
             { "LOOT_BOOST_CHANCE_UNCOMMON", new FieldParser() {
                 Type = FieldType.Float,
                 GetFloat = () => RawLootBoostChanceUncommon } },

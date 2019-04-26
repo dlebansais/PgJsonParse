@@ -514,5 +514,6 @@
         MoltenVeins,
         Projectile,
         ViperAttack,
+        SpiderPuntEnabled,
     }
 }

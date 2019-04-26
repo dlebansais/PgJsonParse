@@ -238,7 +238,8 @@
     <Compile Include="Records\Ability\DoT Special Rule.cs" />
     <Compile Include="Records\Ability\DoT.cs" />
     <Compile Include="Records\Ability\DoTCollection.cs" />
-    <Compile Include="Records\Ability\Pre Effect.cs" />
+    <Compile Include="Records\Ability\SelfEffect.cs" />
+    <Compile Include="Records\Ability\PreEffect.cs" />
     <Compile Include="Records\Ability\SpecialNpc.cs" />
     <Compile Include="Records\Ability\SpecialValueCollection.cs" />
     <Compile Include="Records\AI\Ability Cue.cs" />

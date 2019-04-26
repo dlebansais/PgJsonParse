@@ -27,5 +27,6 @@
         Trauma_direct,
         Poison_indirect,
         Trauma_indirect,
+        Burst,
     }
 }

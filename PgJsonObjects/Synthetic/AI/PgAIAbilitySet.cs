@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[718];
+        private PgAIAbility[] Abilities = new PgAIAbility[723];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -742,7 +742,12 @@ namespace PgJsonObjects
         public IPgAIAbility RatBuffDarkness_Pet5 { get { return GetAbilityObject(715); } }
         public IPgAIAbility RatBuffDarkness_Pet6 { get { return GetAbilityObject(716); } }
         public IPgAIAbility ViperRageBite { get { return GetAbilityObject(717); } }
-
+        public IPgAIAbility SlugBite { get { return GetAbilityObject(718); } }
+        public IPgAIAbility SlugWebDebuff { get { return GetAbilityObject(719); } }
+        public IPgAIAbility SmallishScorpionClawA { get { return GetAbilityObject(720); } }
+        public IPgAIAbility SmallishScorpionClawB { get { return GetAbilityObject(721); } }
+        public IPgAIAbility SmallishScorpionSting { get { return GetAbilityObject(722); } }
+        
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
                Type = FieldType.Object, 
@@ -2898,6 +2903,21 @@ namespace PgJsonObjects
            { "ViperRageBite", new FieldParser() {
                Type = FieldType.Object,
                 GetObject = () => ViperRageBite as IObjectContentGenerator } },
+           { "SlugBite", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => SlugBite as IObjectContentGenerator } },
+           { "SlugWebDebuff", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => SlugWebDebuff as IObjectContentGenerator } },
+           { "SmallishScorpionClawA", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => SmallishScorpionClawA as IObjectContentGenerator } },
+           { "SmallishScorpionClawB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => SmallishScorpionClawB as IObjectContentGenerator } },
+           { "SmallishScorpionSting", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => SmallishScorpionSting as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

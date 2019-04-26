@@ -2310,6 +2310,21 @@ namespace PgJsonObjects
                 //TODO
             }
 
+            else if (Tools.Scan(s, "Arthropods are knocked backwards", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "If you use Shadow Feint again within the next %d seconds (and are within %d meters of your Shadow Feint position) you blink back to this position", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For %d seconds, target is prone to random self-stuns", args))
+            {
+                //TODO
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);

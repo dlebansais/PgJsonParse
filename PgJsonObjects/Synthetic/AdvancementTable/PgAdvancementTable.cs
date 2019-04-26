@@ -135,7 +135,7 @@ namespace PgJsonObjects
                 }
             }
 
-            Debug.WriteLine(key);
+            //Debug.WriteLine(key);
             return null;
         }
 

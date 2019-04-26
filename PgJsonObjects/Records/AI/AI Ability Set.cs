@@ -725,6 +725,11 @@ namespace PgJsonObjects
         public IPgAIAbility RatBuffDarkness_Pet5 { get; private set; }
         public IPgAIAbility RatBuffDarkness_Pet6 { get; private set; }
         public IPgAIAbility ViperRageBite { get; private set; }
+        public IPgAIAbility SlugBite { get; private set; }
+        public IPgAIAbility SlugWebDebuff { get; private set; }
+        public IPgAIAbility SmallishScorpionClawA { get; private set; }
+        public IPgAIAbility SmallishScorpionClawB { get; private set; }
+        public IPgAIAbility SmallishScorpionSting { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -3605,6 +3610,26 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => ViperRageBite =
                    JsonObjectParser<AIAbility>.Parse("ViperRageBite", value, errorInfo),
                 GetObject = () => ViperRageBite as IObjectContentGenerator } },
+           { "SlugBite", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SlugBite =
+                   JsonObjectParser<AIAbility>.Parse("SlugBite", value, errorInfo),
+                GetObject = () => SlugBite as IObjectContentGenerator } },
+           { "SlugWebDebuff", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SlugWebDebuff =
+                   JsonObjectParser<AIAbility>.Parse("SlugWebDebuff", value, errorInfo),
+                GetObject = () => SlugWebDebuff as IObjectContentGenerator } },
+           { "SmallishScorpionClawA", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SmallishScorpionClawA =
+                   JsonObjectParser<AIAbility>.Parse("SmallishScorpionClawA", value, errorInfo),
+                GetObject = () => SmallishScorpionClawA as IObjectContentGenerator } },
+           { "SmallishScorpionClawB", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SmallishScorpionClawB =
+                   JsonObjectParser<AIAbility>.Parse("SmallishScorpionClawB", value, errorInfo),
+                GetObject = () => SmallishScorpionClawB as IObjectContentGenerator } },
+           { "SmallishScorpionSting", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SmallishScorpionSting =
+                   JsonObjectParser<AIAbility>.Parse("SmallishScorpionSting", value, errorInfo),
+                GetObject = () => SmallishScorpionSting as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4361,8 +4386,13 @@ namespace PgJsonObjects
             AddObject(RatBuffDarkness_Pet5 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 715 * 4, StoredObjectTable);
             AddObject(RatBuffDarkness_Pet6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 716 * 4, StoredObjectTable);
             AddObject(ViperRageBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 717 * 4, StoredObjectTable);
-
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 718 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            AddObject(SlugBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 718 * 4, StoredObjectTable);
+            AddObject(SlugWebDebuff as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 719 * 4, StoredObjectTable);
+            AddObject(SmallishScorpionClawA as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 720 * 4, StoredObjectTable);
+            AddObject(SmallishScorpionClawB as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 721 * 4, StoredObjectTable);
+            AddObject(SmallishScorpionSting as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 722 * 4, StoredObjectTable);
+            
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 723 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

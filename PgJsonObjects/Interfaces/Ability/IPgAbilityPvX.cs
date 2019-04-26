@@ -38,6 +38,8 @@ namespace PgJsonObjects
         int? RawRageCost { get; }
         double RageCostMod { get; }
         double? RawRageCostMod { get; }
+        double CritDamageMod { get; }
+        double? RawCritDamageMod { get; }
         List<PreEffect> SelfPreEffectList { get; }
         IPgAttributeCollection AttributesThatDeltaDamageList { get; }
         IPgAttributeCollection AttributesThatModDamageList { get; }
@@ -49,6 +51,7 @@ namespace PgJsonObjects
         IPgAttributeCollection AttributesThatDeltaRangeList { get; }
         IPgAttributeCollection AttributesThatDeltaDamageLastList { get; }
         IPgAttributeCollection AttributesThatDeltaAccuracyList { get; }
+        IPgAttributeCollection AttributesThatModCritDamageList { get; }
         bool RawAttributesThatDeltaDamageListIsEmpty { get; }
         bool RawAttributesThatModDamageListIsEmpty { get; }
         bool RawAttributesThatModBaseDamageListIsEmpty { get; }
@@ -59,5 +62,7 @@ namespace PgJsonObjects
         bool RawAttributesThatDeltaRangeListIsEmpty { get; }
         bool RawAttributesThatDeltaDamageLastListIsEmpty { get; }
         bool RawAttributesThatDeltaAccuracyListIsEmpty { get; }
+        bool RawAttributesThatModCritDamageListIsEmpty { get; }
+        List<SelfEffect> SelfEffectOnCritList { get; }
     }
 }

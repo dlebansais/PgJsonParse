@@ -42,6 +42,8 @@ namespace PgJsonObjects
         public int? RawRageCost { get; private set; }
         public double RageCostMod { get { return RawRageCostMod.HasValue ? RawRageCostMod.Value : 0; } }
         public double? RawRageCostMod { get; private set; }
+        public double CritDamageMod { get { return RawCritDamageMod.HasValue ? RawCritDamageMod.Value : 0; } }
+        public double? RawCritDamageMod { get; private set; }
         public List<PreEffect> SelfPreEffectList { get; } = new List<PreEffect>();
         public IPgAttributeCollection AttributesThatDeltaDamageList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatModDamageList { get; private set; } = null;
@@ -53,6 +55,8 @@ namespace PgJsonObjects
         public IPgAttributeCollection AttributesThatDeltaRangeList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaDamageLastList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaAccuracyList { get; private set; } = null;
+        public IPgAttributeCollection AttributesThatModCritDamageList { get; private set; } = null;
+        public List<SelfEffect> SelfEffectOnCritList { get; } = new List<SelfEffect>();
         #endregion
 
         #region Indirect Properties
@@ -173,6 +177,12 @@ namespace PgJsonObjects
                 SetArrayIsEmpty = () => RawAttributesThatDeltaAccuracyListIsEmpty = true,
                 GetStringArray = () => AttributesThatDeltaAccuracyList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaAccuracyListIsEmpty } },
+            { "AttributesThatModCritDamage", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatModCritDamageList.Add(value),
+                SetArrayIsEmpty = () => RawAttributesThatModCritDamageListIsEmpty = true,
+                GetStringArray = () => AttributesThatModCritDamageList.ToKeyList,
+                GetArrayIsEmpty = () => RawAttributesThatModCritDamageListIsEmpty } },
             { "SpecialValues", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<SpecialValue>.ParseList("SpecialValue", value, SpecialValueList, errorInfo),
@@ -197,6 +207,14 @@ namespace PgJsonObjects
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<DoT>.ParseList("DoTs", value, DoTList, errorInfo),
                 GetObjectArray = () => DoTList } },
+            { "CritDamageMod", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawCritDamageMod = value,
+                GetFloat = () => RawCritDamageMod } },
+            { "SelfEffectsOnCrit", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<SelfEffect>.ParseList(value, SelfEffectOnCritList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<SelfEffect>.ToStringList(SelfEffectOnCritList) } },
         }; } }
 
         private void ParseSelfPreEffects(string value, ParseErrorInfo errorInfo)
@@ -256,6 +274,8 @@ namespace PgJsonObjects
         public bool RawAttributesThatDeltaDamageLastListIsEmpty { get; private set; }
         private List<string> RawAttributesThatDeltaAccuracyList { get; } = new List<string>();
         public bool RawAttributesThatDeltaAccuracyListIsEmpty { get; private set; }
+        private List<string> RawAttributesThatModCritDamageList { get; } = new List<string>();
+        public bool RawAttributesThatModCritDamageListIsEmpty { get; private set; }
         #endregion
 
         #region Indexing
@@ -287,6 +307,9 @@ namespace PgJsonObjects
                 foreach (PreEffect Item in SelfPreEffectList)
                     AddWithFieldSeparator(ref Result, TextMaps.PreEffectTextMap[Item]);
 
+                foreach (SelfEffect Item in SelfEffectOnCritList)
+                    AddWithFieldSeparator(ref Result, TextMaps.SelfEffectTextMap[Item]);
+
                 return Result;
             }
         }
@@ -308,6 +331,7 @@ namespace PgJsonObjects
             AttributesThatDeltaRangeList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaRangeList, AttributesThatDeltaRangeList, ref IsConnected);
             AttributesThatDeltaDamageLastList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaDamageLastList, AttributesThatDeltaDamageLastList, ref IsConnected);
             AttributesThatDeltaAccuracyList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaAccuracyList, AttributesThatDeltaAccuracyList, ref IsConnected);
+            AttributesThatModCritDamageList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatModCritDamageList, AttributesThatModCritDamageList, ref IsConnected);
 
             foreach (SpecialValue Item in SpecialValueList)
                 IsConnected |= Item.Connect(ErrorInfo, Parent, AllTables);
@@ -382,19 +406,23 @@ namespace PgJsonObjects
             AddObjectList(AttributesThatDeltaRangeList, data, ref offset, BaseOffset, 112, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaDamageLastList, data, ref offset, BaseOffset, 116, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaAccuracyList, data, ref offset, BaseOffset, 120, StoredObjectListTable);
-            AddBool(RawAttributesThatDeltaDamageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 124, 0);
-            AddBool(RawAttributesThatModDamageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 124, 2);
-            AddBool(RawAttributesThatModBaseDamageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 124, 4);
-            AddBool(RawAttributesThatDeltaTauntListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 124, 6);
-            AddBool(RawAttributesThatModTauntListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 124, 8);
-            AddBool(RawAttributesThatDeltaRageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 124, 10);
-            AddBool(RawAttributesThatModRageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 124, 12);
-            AddBool(RawAttributesThatDeltaRangeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 124, 14);
-            AddBool(RawAttributesThatDeltaDamageLastListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 126, 0);
-            AddBool(RawAttributesThatDeltaAccuracyListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 126, 2);
+            AddObjectList(AttributesThatModCritDamageList, data, ref offset, BaseOffset, 124, StoredObjectListTable);
+            AddBool(RawAttributesThatDeltaDamageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 0);
+            AddBool(RawAttributesThatModDamageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 2);
+            AddBool(RawAttributesThatModBaseDamageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 4);
+            AddBool(RawAttributesThatDeltaTauntListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 6);
+            AddBool(RawAttributesThatModTauntListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 8);
+            AddBool(RawAttributesThatDeltaRageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 10);
+            AddBool(RawAttributesThatModRageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 12);
+            AddBool(RawAttributesThatDeltaRangeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 14);
+            AddBool(RawAttributesThatDeltaDamageLastListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 130, 0);
+            AddBool(RawAttributesThatDeltaAccuracyListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 130, 2);
+            AddBool(RawAttributesThatModCritDamageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 130, 4);
             CloseBool(ref offset, ref BitOffset);
+            AddDouble(RawCritDamageMod, data, ref offset, BaseOffset, 132);
+            AddEnumList(SelfEffectOnCritList, data, ref offset, BaseOffset, 136, StoredEnumListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 128, StoredStringtable, null, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 140, StoredStringtable, null, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion
