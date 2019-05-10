@@ -735,6 +735,7 @@ namespace PgJsonObjects
             { PreEffect.SuperZombie5, "Enhance Zombie #5" },
             { PreEffect.SuperZombie6, "Enhance Zombie #6" },
             { PreEffect.SuperZombie7, "Enhance Zombie #7" },
+            { PreEffect.EndBardSong, "End Bard Song" },
         };
 
         public static readonly Dictionary<SelfEffect, string> SelfEffectTextMap = new Dictionary<SelfEffect, string>()
@@ -4813,8 +4814,9 @@ namespace PgJsonObjects
             { TitleKeyword.Internal_None, "None" },
             { TitleKeyword.PlayerBestowedTitle, "Player Bestowed Title" },
             { TitleKeyword.BehaviorBadge, "Behavior Badge" },
-            { TitleKeyword.GuideTitle, "Guide Title" },
+            //{ TitleKeyword.GuideTitle, "Guide Title" },
             { TitleKeyword.Lint_NotObtainable, "Not Obtainable" },
+            { TitleKeyword.EventTitle, "Event Title" },
         };
 
         public static readonly Dictionary<AbilityCue, string> AbilityCueTextMap = new Dictionary<AbilityCue, string>()

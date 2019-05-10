@@ -19,5 +19,6 @@
         SuperZombie5,
         SuperZombie6,
         SuperZombie7,
+        EndBardSong,
     }
 }

@@ -5,7 +5,8 @@
         Internal_None,
         PlayerBestowedTitle,
         BehaviorBadge,
-        GuideTitle,
+        //GuideTitle,
         Lint_NotObtainable,
+        EventTitle,
     }
 }
