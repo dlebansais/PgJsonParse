@@ -730,6 +730,7 @@ namespace PgJsonObjects
         public IPgAIAbility SmallishScorpionClawA { get; private set; }
         public IPgAIAbility SmallishScorpionClawB { get; private set; }
         public IPgAIAbility SmallishScorpionSting { get; private set; }
+        public IPgAIAbility RootTrap { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -3630,6 +3631,10 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SmallishScorpionSting =
                    JsonObjectParser<AIAbility>.Parse("SmallishScorpionSting", value, errorInfo),
                 GetObject = () => SmallishScorpionSting as IObjectContentGenerator } },
+           { "RootTrap", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RootTrap =
+                   JsonObjectParser<AIAbility>.Parse("RootTrap", value, errorInfo),
+                GetObject = () => RootTrap as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4391,8 +4396,9 @@ namespace PgJsonObjects
             AddObject(SmallishScorpionClawA as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 720 * 4, StoredObjectTable);
             AddObject(SmallishScorpionClawB as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 721 * 4, StoredObjectTable);
             AddObject(SmallishScorpionSting as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 722 * 4, StoredObjectTable);
-            
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 723 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            AddObject(RootTrap as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 723 * 4, StoredObjectTable);
+
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 724 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

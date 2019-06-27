@@ -3,6 +3,7 @@ using Presentation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PgJsonObjects
 {
@@ -169,7 +170,7 @@ namespace PgJsonObjects
                 GetBool = () => RawIsCrafted } },
             { "Keywords", new FieldParser() {
                 Type = FieldType.StringArray,
-                ParseStringArray = ParseKeywords,
+                ParseStringArray = (string value, ParseErrorInfo errorInfo) => { bool Result = ParseKeywords(value, errorInfo); DisplayVeggieKeyword(); return Result; },
                 GetStringArray = () => RawKeywordList } },
             { "MacGuffinQuestName", new FieldParser() {
                 Type = FieldType.String,
@@ -189,7 +190,7 @@ namespace PgJsonObjects
                 GetInteger = () => RawMaxStackSize } },
             { "Name", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => Name = value,
+                ParseString = (string value, ParseErrorInfo errorInfo) => { Name = value; DisplayVeggieKeyword(); },
                 GetString = () => Name } },
             { "RequiredAppearance", new FieldParser() {
                 Type = FieldType.String,
@@ -434,6 +435,20 @@ namespace PgJsonObjects
                 PerfectCottonRatio = 1.0F;
             else
                 PerfectCottonRatio = float.NaN;
+        }
+
+        private void DisplayVeggieKeyword()
+        {
+            /*
+            if (!string.IsNullOrEmpty(Name) && KeywordTable.Count > 0)
+            {
+                foreach (KeyValuePair<ItemKeyword, List<float>> Entry in KeywordTable)
+                    if (Entry.Key == ItemKeyword.VegetarianDish)
+                    {
+                        Debug.WriteLine(Name);
+                        break;
+                    }
+            }*/
         }
 
         private bool ParseKeywords(string value, ParseErrorInfo errorInfo)

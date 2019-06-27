@@ -15,6 +15,8 @@ namespace PgJsonObjects
         bool? RawAuxCombat { get; }
         bool ParentSkillIsEmpty { get; }
         bool? RawParentSkillIsEmpty { get; }
+        bool IsFakeCombatSkill { get; }
+        bool? RawIsFakeCombatSkill { get; }
         bool IsAdvancementTableNull { get; }
         int Id { get; }
         int? RawId { get; }

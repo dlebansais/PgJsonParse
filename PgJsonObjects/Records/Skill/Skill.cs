@@ -19,6 +19,8 @@ namespace PgJsonObjects
         public bool? RawAuxCombat { get; private set; }
         public bool ParentSkillIsEmpty { get { return RawParentSkillIsEmpty.HasValue && RawParentSkillIsEmpty.Value; } }
         public bool? RawParentSkillIsEmpty { get; private set; }
+        public bool IsFakeCombatSkill { get { return RawIsFakeCombatSkill.HasValue && RawIsFakeCombatSkill.Value; } }
+        public bool? RawIsFakeCombatSkill { get; private set; }
         public bool IsAdvancementTableNull { get; private set; }
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; private set; }
@@ -257,6 +259,10 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawGuestLevelCap = value,
                 GetInteger = () => RawGuestLevelCap } },
+            { "IsFakeCombatSkill", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsFakeCombatSkill = value,
+                GetBool = () => RawIsFakeCombatSkill } },
         }; } }
 
         private void ParseAdvancementTable(string value, ParseErrorInfo errorInfo)
@@ -682,7 +688,8 @@ namespace PgJsonObjects
             AddBool(RawSkipBonusLevelsIfSkillUnlearned, data, ref offset, ref BitOffset, BaseOffset, 6, 4);
             AddBool(RawAuxCombat, data, ref offset, ref BitOffset, BaseOffset, 6, 6);
             AddBool(RawParentSkillIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 6, 8);
-            AddBool(IsAdvancementTableNull, data, ref offset, ref BitOffset, BaseOffset, 6, 10);
+            AddBool(RawIsFakeCombatSkill, data, ref offset, ref BitOffset, BaseOffset, 6, 10);
+            AddBool(IsAdvancementTableNull, data, ref offset, ref BitOffset, BaseOffset, 6, 12);
             CloseBool(ref offset, ref BitOffset);
             AddInt(RawId, data, ref offset, BaseOffset, 8);
             AddString(Description, data, ref offset, BaseOffset, 12, StoredStringtable);

@@ -104,5 +104,6 @@
         WebbedDebuff,
         LocationCircle_White,
         AcidShieldPerm,
+        Confetti2,
     }
 }

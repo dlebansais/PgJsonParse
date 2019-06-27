@@ -22,7 +22,7 @@
         Regeneration,
         //Knife,
         //Wolfbane,
-        Sonic,
+        //Sonic,
         Poison_direct,
         Trauma_direct,
         Poison_indirect,

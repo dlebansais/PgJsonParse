@@ -699,7 +699,7 @@ namespace PgJsonObjects
             { DamageType.Acid, "Acid" },
             { DamageType.Darkness, "Darkness" },
             { DamageType.Regeneration, "None" },
-            { DamageType.Sonic, "Sonic" },
+            //{ DamageType.Sonic, "Sonic" },
             { DamageType.Poison_direct, "Poison (direct)" },
             { DamageType.Trauma_direct, "Trauma (direct)" },
             { DamageType.Poison_indirect, "Poison (indirect)" },
@@ -736,6 +736,7 @@ namespace PgJsonObjects
             { PreEffect.SuperZombie6, "Enhance Zombie #6" },
             { PreEffect.SuperZombie7, "Enhance Zombie #7" },
             { PreEffect.EndBardSong, "End Bard Song" },
+            { PreEffect.MambaStrikeLowArmorDmgMod, "Mamba Strike Low Armor Damage Mod" },
         };
 
         public static readonly Dictionary<SelfEffect, string> SelfEffectTextMap = new Dictionary<SelfEffect, string>()
@@ -1596,6 +1597,7 @@ namespace PgJsonObjects
             { EffectParticle.WebbedDebuff, "Webbed Debuff" },
             { EffectParticle.LocationCircle_White, "Location Circle (White)" },
             { EffectParticle.AcidShieldPerm, "Acid Shield Permanent" },
+            { EffectParticle.Confetti2, "Confetti #2" },
         };
 
         public static readonly Dictionary<EffectStackingType, string> EffectStackingTypeTextMap = new Dictionary<EffectStackingType, string>()
@@ -1809,7 +1811,7 @@ namespace PgJsonObjects
             { EffectStackingType.Augury, "Augury" },
             { EffectStackingType.Perfume_Righteousness, "Righteousness Perfume" },
             { EffectStackingType.DanceSprint, "Sprint Dance" },
-            { EffectStackingType.PunchPoisonVuln, "Punch Poison Vulnerability" },
+            //{ EffectStackingType.PunchPoisonVuln, "Punch Poison Vulnerability" },
             { EffectStackingType.CloudSight, "Cloud Sight" },
             { EffectStackingType.WayOfTheHammer, "Way Of The Hammer" },
             { EffectStackingType.MindreaveBoostMajorHeal, "Major Heal Mindreave Boost" },
@@ -1902,6 +1904,8 @@ namespace PgJsonObjects
             { EffectStackingType.AnimalHandlingCostPotion, "Animal Handling Cost Potion" },
             { EffectStackingType.MinorHealReceiverPotion, "Minor Heal Receiver Potion" },
             { EffectStackingType.StomachExpanderPotion, "Stomach Expander Potion" },
+            { EffectStackingType.BruisingBlowPoisonVuln, "Bruising Blow Poison Vulnerability" },
+            { EffectStackingType.BruisingBlowTraumaVuln, "Bruising Blow Trauma Vulnerability" },
         };
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTextMap = new Dictionary<EffectKeyword, string>()
@@ -4121,6 +4125,8 @@ namespace PgJsonObjects
             { QuestObjectiveKillTarget.CaveHippo, "Cave Hippo" },
             { QuestObjectiveKillTarget.RahuSewerRat, "Rahu Sewer Rat" },
             { QuestObjectiveKillTarget.Ratkin, "Ratkin" },
+            { QuestObjectiveKillTarget.Torn3_Egg, "T-3 Egg" },
+            { QuestObjectiveKillTarget.Torn4_StormSpider, "T-4 Storm Spider" },
         };
 
         public static readonly Dictionary<MoonPhases, string> MoonPhasesTextMap = new Dictionary<MoonPhases, string>()

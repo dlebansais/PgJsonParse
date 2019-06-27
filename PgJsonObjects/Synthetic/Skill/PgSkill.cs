@@ -50,7 +50,9 @@ namespace PgJsonObjects
         public bool? RawAuxCombat { get { return GetBool(6, 6); } }
         public bool ParentSkillIsEmpty { get { return RawParentSkillIsEmpty.HasValue && RawParentSkillIsEmpty.Value; } }
         public bool? RawParentSkillIsEmpty { get { return GetBool(6, 8); } }
-        public bool IsAdvancementTableNull { get { return GetBool(6, 10).Value; } }
+        public bool IsFakeCombatSkill { get { return RawIsFakeCombatSkill.HasValue && RawIsFakeCombatSkill.Value; } }
+        public bool? RawIsFakeCombatSkill { get { return GetBool(6, 10); } }
+        public bool IsAdvancementTableNull { get { return GetBool(6, 12).Value; } }
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get { return GetInt(8); } }
         public string Description { get { return GetString(12); } }
@@ -136,6 +138,9 @@ namespace PgJsonObjects
             { "GuestLevelCap", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => RawGuestLevelCap } },
+            { "IsFakeCombatSkill", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsFakeCombatSkill } },
         }; } }
 
         private IObjectContentGenerator GetInteractionFlagLevelCaps()

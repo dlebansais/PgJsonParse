@@ -131,5 +131,7 @@
         CaveHippo,
         RahuSewerRat,
         Ratkin,
+        Torn3_Egg,
+        Torn4_StormSpider,
     }
 }

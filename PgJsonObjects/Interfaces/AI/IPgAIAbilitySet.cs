@@ -725,5 +725,6 @@
         IPgAIAbility SmallishScorpionClawA { get; }
         IPgAIAbility SmallishScorpionClawB { get; }
         IPgAIAbility SmallishScorpionSting { get; }
+        IPgAIAbility RootTrap { get; }
     }
 }

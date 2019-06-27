@@ -20,5 +20,6 @@
         SuperZombie6,
         SuperZombie7,
         EndBardSong,
+        MambaStrikeLowArmorDmgMod,
     }
 }

@@ -204,7 +204,7 @@
         Augury,
         Perfume_Righteousness,
         DanceSprint,
-        PunchPoisonVuln,
+        //PunchPoisonVuln,
         CloudSight,
         WayOfTheHammer,
         MindreaveBoostMajorHeal,
@@ -296,5 +296,7 @@
         AnimalHandlingCostPotion,
         MinorHealReceiverPotion,
         StomachExpanderPotion,
+        BruisingBlowPoisonVuln,
+        BruisingBlowTraumaVuln,
     }
 }
