@@ -38,7 +38,7 @@ namespace PgJsonParse
             InitializeComponent();
             DataContext = this;
 
-            Title = "Project Gorgon - Json Parser";
+            SetTitle();
             InitStartupPage();
             InitCache();
             InitBuildPlaner();
@@ -65,6 +65,15 @@ namespace PgJsonParse
             SubscribeToCommand("LevelUpCommand", OnLevelUp);
             SubscribeToCommand("LevelDownCommand", OnLevelDown);
         }
+
+        private void SetTitle()
+        {
+            string ParserVersion = PrologueWindow.PARSER_VERSION.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            Title = $"Project Gorgon - Json Parser v{ParserVersion}";
+
+            if (LoadedVersion != null)
+                Title += $" - File version: {LoadedVersion.Version}";
+        }
         #endregion
 
         #region Properties
@@ -83,7 +92,9 @@ namespace PgJsonParse
                 if (_LoadedVersion != value)
                 {
                     _LoadedVersion = value;
+                    SetTitle();
                     NotifyThisPropertyChanged();
+                    NotifyPropertyChanged(nameof(Title));
                 }
             }
         }

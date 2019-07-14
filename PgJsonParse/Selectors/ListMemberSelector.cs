@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 #else
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -67,23 +68,28 @@ namespace PgJsonParse
                 }
             }
 
-            DataTemplate Result;
+            DataTemplate Result = null;
 
-            if (IsFirst)
+            string FullTemplateName = null;
+
+            if (IsFirst && !IsLast)
             {
-                Result = FindTemplate(element, TemplateHostName + "_" + "ItemTemplateFirst");
-                if (Result != null)
-                    return Result;
+                FullTemplateName = $"{TemplateHostName}_ItemTemplateFirst";
+                Result = FindTemplate(element, FullTemplateName);
             }
 
             if (IsLast)
             {
-                Result = FindTemplate(element, TemplateHostName + "_" + "ItemTemplateLast");
-                if (Result != null)
-                    return Result;
+                FullTemplateName = $"{TemplateHostName}_ItemTemplateLast";
+                Result = FindTemplate(element, FullTemplateName);
             }
 
-            Result = FindTemplate(element, TemplateHostName + "_" + "ItemTemplate");
+            if (Result == null)
+            {
+                FullTemplateName = $"{TemplateHostName}_ItemTemplate";
+                Result = FindTemplate(element, FullTemplateName);
+            }
+
             if (Result != null)
                 return Result;
             else

@@ -1,6 +1,7 @@
 ﻿using System;
 using Presentation;
 using PgJsonObjects;
+using System.Diagnostics;
 #if CSHARP_XAML_FOR_HTML5
 using Windows.UI.Xaml;
 #else
@@ -16,8 +17,8 @@ namespace PgJsonParse
             if (item is ConsumedItemDirect)
                 return null;
 
-            if (item as IObjectContentGenerator == null)
-                return null;
+            /*if (item as IObjectContentGenerator == null)
+                return null;*/
 
             FrameworkElement element = container as FrameworkElement;
             Type ItemType = item.GetType();
