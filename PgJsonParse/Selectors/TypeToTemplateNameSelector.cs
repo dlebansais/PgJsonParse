@@ -17,6 +17,9 @@ namespace PgJsonParse
             if (item is ConsumedItemDirect)
                 return null;
 
+            if (item == null)
+                return null;
+
             /*if (item as IObjectContentGenerator == null)
                 return null;*/
 

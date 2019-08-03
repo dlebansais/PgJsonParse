@@ -9,5 +9,8 @@
         string FavorNpcId { get; }
         string FavorNpcName { get; }
         MapAreaName FavorNpcArea { get; }
+
+        string FavorNpcParsedName { get; }
+        MapAreaName AreaParsedName { get; }
     }
 }

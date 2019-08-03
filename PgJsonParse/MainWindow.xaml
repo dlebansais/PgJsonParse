@@ -451,7 +451,7 @@
                 <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
                     <Hyperlink x:Name="hyperlink_AbilityRequirementRecipeKnown_RecipeKnown" Click="OnRequestNavigate" NavigateUri="unused">
                         <Run>
-                            <Binding Path="RecipeKnown.Name" Mode="OneWay"/>
+                            <Binding Path="Recipe.Name" Mode="OneWay"/>
                         </Run>
                     </Hyperlink>
                 </TextBlock>

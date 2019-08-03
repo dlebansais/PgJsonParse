@@ -43,5 +43,26 @@ namespace PgJsonObjects
         {
             return new List<IBackLinkable>() { FavorNpc };
         }
+
+        public string FavorNpcParsedName
+        {
+            get
+            {
+                if (FavorNpc != null)
+                    return FavorNpc.Name;
+                else
+                    return FavorNpcName;
+            }
+        }
+        public MapAreaName AreaParsedName
+        {
+            get
+            {
+                if (FavorNpc != null)
+                    return FavorNpc.AreaName;
+                else
+                    return FavorNpcArea;
+            }
+        }
     }
 }
