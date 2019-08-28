@@ -162,7 +162,7 @@ namespace PgJsonParse
         #endregion
 
         #region Build Planer
-        public const int DefaultMaxLevel = 70;
+        public const int DefaultMaxLevel = 80;
 
         private void InitBuildPlaner()
         {
@@ -310,6 +310,7 @@ namespace PgJsonParse
 
                 if (PowerItem.RawSkill == PowerSkill.Internal_None ||
                     PowerItem.RawSkill == PowerSkill.AnySkill ||
+                    PowerItem.RawSkill == PowerSkill.ArmorPatching ||
                     PowerItem.RawSkill == PowerSkill.Endurance ||
                     PowerItem.RawSkill == PowerSkill.ShamanicInfusion)
                     continue;
