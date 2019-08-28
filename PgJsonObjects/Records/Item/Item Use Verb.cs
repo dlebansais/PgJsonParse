@@ -50,5 +50,7 @@
         HugMonkey,
         Chew,
         TakeWaterSample,
+        BreakIntoSmallerParts,
+        TurnIntoBoneMeal,
     }
 }

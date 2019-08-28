@@ -25,5 +25,8 @@
         SnackRecipe,
         Lint_MealCategory,
         Lint_IconId,
+        PixiePocket,
+        Lint_LevelTooHigh,
+        ShieldWax,
     }
 }

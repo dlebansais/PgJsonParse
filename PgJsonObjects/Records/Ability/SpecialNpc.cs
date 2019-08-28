@@ -35,5 +35,8 @@
         NPC_GoblinDoorGuard,
         NPC_Glortok,
         NPC_InjuredRakshasa,
+        //NPC_Felmer,
+        NPC_Uriana,
+        NPC_AgrashabGod,
     }
 }

@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[724];
+        private PgAIAbility[] Abilities = new PgAIAbility[786];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -748,6 +748,68 @@ namespace PgJsonObjects
         public IPgAIAbility SmallishScorpionClawB { get { return GetAbilityObject(721); } }
         public IPgAIAbility SmallishScorpionSting { get { return GetAbilityObject(722); } }
         public IPgAIAbility RootTrap { get { return GetAbilityObject(723); } }
+        public IPgAIAbility ElementalFireSlam { get { return GetAbilityObject(724); } }
+        public IPgAIAbility ElementalFireball { get { return GetAbilityObject(725); } }
+        public IPgAIAbility ElementalHateFireball { get { return GetAbilityObject(726); } }
+        public IPgAIAbility ElementalHateFireball2 { get { return GetAbilityObject(727); } }
+        public IPgAIAbility ElementalHateFireball3 { get { return GetAbilityObject(728); } }
+        public IPgAIAbility ElementalFireballB { get { return GetAbilityObject(729); } }
+        public IPgAIAbility FaeIceSpearA { get { return GetAbilityObject(730); } }
+        public IPgAIAbility FaeIceSpearB { get { return GetAbilityObject(731); } }
+        public IPgAIAbility FaeColdSphere { get { return GetAbilityObject(732); } }
+        public IPgAIAbility LethargyPuckFrostbite { get { return GetAbilityObject(733); } }
+        public IPgAIAbility LethargyPuckRage { get { return GetAbilityObject(734); } }
+        public IPgAIAbility BeeStab_Pet { get { return GetAbilityObject(735); } }
+        public IPgAIAbility BeeInject_Pet1 { get { return GetAbilityObject(736); } }
+        public IPgAIAbility BeeInject_Pet2 { get { return GetAbilityObject(737); } }
+        public IPgAIAbility BeeInject_Pet3 { get { return GetAbilityObject(738); } }
+        public IPgAIAbility BeeInject_Pet4 { get { return GetAbilityObject(739); } }
+        public IPgAIAbility BeeInject_Pet5 { get { return GetAbilityObject(740); } }
+        public IPgAIAbility BeeInject_Pet6 { get { return GetAbilityObject(741); } }
+        public IPgAIAbility BeeVuln_Pet1 { get { return GetAbilityObject(742); } }
+        public IPgAIAbility BeeVuln_Pet2 { get { return GetAbilityObject(743); } }
+        public IPgAIAbility BeeVuln_Pet3 { get { return GetAbilityObject(744); } }
+        public IPgAIAbility BeeVuln_Pet4 { get { return GetAbilityObject(745); } }
+        public IPgAIAbility WaspShoot_Pet { get { return GetAbilityObject(746); } }
+        public IPgAIAbility WaspBlast_Pet1 { get { return GetAbilityObject(747); } }
+        public IPgAIAbility WaspBlast_Pet2 { get { return GetAbilityObject(748); } }
+        public IPgAIAbility WaspBlast_Pet3 { get { return GetAbilityObject(749); } }
+        public IPgAIAbility WaspBlast_Pet4 { get { return GetAbilityObject(750); } }
+        public IPgAIAbility WaspBlast_Pet5 { get { return GetAbilityObject(751); } }
+        public IPgAIAbility WaspBlast_Pet6 { get { return GetAbilityObject(752); } }
+        public IPgAIAbility WaspSlow_Pet1 { get { return GetAbilityObject(753); } }
+        public IPgAIAbility WaspSlow_Pet2 { get { return GetAbilityObject(754); } }
+        public IPgAIAbility WaspSlow_Pet3 { get { return GetAbilityObject(755); } }
+        public IPgAIAbility WaspSlow_Pet4 { get { return GetAbilityObject(756); } }
+        public IPgAIAbility WaspStab_Pet { get { return GetAbilityObject(757); } }
+        public IPgAIAbility WaspDebuff_Pet1 { get { return GetAbilityObject(758); } }
+        public IPgAIAbility WaspDebuff_Pet2 { get { return GetAbilityObject(759); } }
+        public IPgAIAbility WaspDebuff_Pet3 { get { return GetAbilityObject(760); } }
+        public IPgAIAbility WaspDebuff_Pet4 { get { return GetAbilityObject(761); } }
+        public IPgAIAbility WaspDebuff_Pet5 { get { return GetAbilityObject(762); } }
+        public IPgAIAbility WaspDebuff_Pet6 { get { return GetAbilityObject(763); } }
+        public IPgAIAbility WaspBurst_Pet1 { get { return GetAbilityObject(764); } }
+        public IPgAIAbility WaspBurst_Pet2 { get { return GetAbilityObject(765); } }
+        public IPgAIAbility WaspBurst_Pet3 { get { return GetAbilityObject(766); } }
+        public IPgAIAbility WaspBurst_Pet4 { get { return GetAbilityObject(767); } }
+        public IPgAIAbility PhoenixPeck { get { return GetAbilityObject(768); } }
+        public IPgAIAbility PhoenixFireball { get { return GetAbilityObject(769); } }
+        public IPgAIAbility PhoenixBlast { get { return GetAbilityObject(770); } }
+        public IPgAIAbility BeeStab { get { return GetAbilityObject(771); } }
+        public IPgAIAbility BeeInject { get { return GetAbilityObject(772); } }
+        public IPgAIAbility BeeShoot { get { return GetAbilityObject(773); } }
+        public IPgAIAbility BeeShootB { get { return GetAbilityObject(774); } }
+        public IPgAIAbility WaspStab { get { return GetAbilityObject(775); } }
+        public IPgAIAbility WaspRageStab { get { return GetAbilityObject(776); } }
+        public IPgAIAbility WaspRangedDebuff { get { return GetAbilityObject(777); } }
+        public IPgAIAbility WaspRangedDebuffB { get { return GetAbilityObject(778); } }
+        public IPgAIAbility WaspRangedDebuffC { get { return GetAbilityObject(779); } }
+        public IPgAIAbility WaspShoot { get { return GetAbilityObject(780); } }
+        public IPgAIAbility WaspRageBurst { get { return GetAbilityObject(781); } }
+        public IPgAIAbility WaspSlowA { get { return GetAbilityObject(782); } }
+        public IPgAIAbility WaspSlowB { get { return GetAbilityObject(783); } }
+        public IPgAIAbility PixieSlash { get { return GetAbilityObject(784); } }
+        public IPgAIAbility PixieRageSlash { get { return GetAbilityObject(785); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
@@ -2922,6 +2984,193 @@ namespace PgJsonObjects
            { "RootTrap", new FieldParser() {
                Type = FieldType.Object,
                 GetObject = () => RootTrap as IObjectContentGenerator } },
+
+           { "ElementalFireSlam", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ElementalFireSlam as IObjectContentGenerator } },
+           { "ElementalFireball", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ElementalFireball as IObjectContentGenerator } },
+           { "ElementalHateFireball", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ElementalHateFireball as IObjectContentGenerator } },
+           { "ElementalHateFireball2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ElementalHateFireball2 as IObjectContentGenerator } },
+           { "ElementalHateFireball3", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ElementalHateFireball3 as IObjectContentGenerator } },
+           { "ElementalFireballB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ElementalFireballB as IObjectContentGenerator } },
+           { "FaeIceSpearA", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => FaeIceSpearA as IObjectContentGenerator } },
+           { "FaeIceSpearB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => FaeIceSpearB as IObjectContentGenerator } },
+           { "FaeColdSphere", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => FaeColdSphere as IObjectContentGenerator } },
+           { "LethargyPuckFrostbite", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => LethargyPuckFrostbite as IObjectContentGenerator } },
+           { "LethargyPuckRage", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => LethargyPuckRage as IObjectContentGenerator } },
+           { "BeeStab_Pet", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeStab_Pet as IObjectContentGenerator } },
+           { "BeeInject_Pet1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeInject_Pet1 as IObjectContentGenerator } },
+           { "BeeInject_Pet2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeInject_Pet2 as IObjectContentGenerator } },
+           { "BeeInject_Pet3", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeInject_Pet3 as IObjectContentGenerator } },
+           { "BeeInject_Pet4", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeInject_Pet4 as IObjectContentGenerator } },
+           { "BeeInject_Pet5", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeInject_Pet5 as IObjectContentGenerator } },
+           { "BeeInject_Pet6", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeInject_Pet6 as IObjectContentGenerator } },
+           { "BeeVuln_Pet1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeVuln_Pet1 as IObjectContentGenerator } },
+           { "BeeVuln_Pet2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeVuln_Pet2 as IObjectContentGenerator } },
+           { "BeeVuln_Pet3", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeVuln_Pet3 as IObjectContentGenerator } },
+           { "BeeVuln_Pet4", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeVuln_Pet4 as IObjectContentGenerator } },
+           { "WaspShoot_Pet", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspShoot_Pet as IObjectContentGenerator } },
+           { "WaspBlast_Pet1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBlast_Pet1 as IObjectContentGenerator } },
+           { "WaspBlast_Pet2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBlast_Pet2 as IObjectContentGenerator } },
+           { "WaspBlast_Pet3", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBlast_Pet3 as IObjectContentGenerator } },
+           { "WaspBlast_Pet4", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBlast_Pet4 as IObjectContentGenerator } },
+           { "WaspBlast_Pet5", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBlast_Pet5 as IObjectContentGenerator } },
+           { "WaspBlast_Pet6", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBlast_Pet6 as IObjectContentGenerator } },
+           { "WaspSlow_Pet1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspSlow_Pet1 as IObjectContentGenerator } },
+           { "WaspSlow_Pet2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspSlow_Pet2 as IObjectContentGenerator } },
+           { "WaspSlow_Pet3", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspSlow_Pet3 as IObjectContentGenerator } },
+           { "WaspSlow_Pet4", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspSlow_Pet4 as IObjectContentGenerator } },
+           { "WaspStab_Pet", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspStab_Pet as IObjectContentGenerator } },
+           { "WaspDebuff_Pet1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspDebuff_Pet1 as IObjectContentGenerator } },
+           { "WaspDebuff_Pet2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspDebuff_Pet2 as IObjectContentGenerator } },
+           { "WaspDebuff_Pet3", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspDebuff_Pet3 as IObjectContentGenerator } },
+           { "WaspDebuff_Pet4", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspDebuff_Pet4 as IObjectContentGenerator } },
+           { "WaspDebuff_Pet5", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspDebuff_Pet5 as IObjectContentGenerator } },
+           { "WaspDebuff_Pet6", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspDebuff_Pet6 as IObjectContentGenerator } },
+           { "WaspBurst_Pet1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBurst_Pet1 as IObjectContentGenerator } },
+           { "WaspBurst_Pet2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBurst_Pet2 as IObjectContentGenerator } },
+           { "WaspBurst_Pet3", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBurst_Pet3 as IObjectContentGenerator } },
+           { "WaspBurst_Pet4", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspBurst_Pet4 as IObjectContentGenerator } },
+           { "PhoenixPeck", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => PhoenixPeck as IObjectContentGenerator } },
+           { "PhoenixFireball", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => PhoenixFireball as IObjectContentGenerator } },
+           { "PhoenixBlast", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => PhoenixBlast as IObjectContentGenerator } },
+           { "BeeStab", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeStab as IObjectContentGenerator } },
+           { "BeeInject", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeInject as IObjectContentGenerator } },
+           { "BeeShoot", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeShoot as IObjectContentGenerator } },
+           { "BeeShootB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => BeeShootB as IObjectContentGenerator } },
+           { "WaspStab", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspStab as IObjectContentGenerator } },
+           { "WaspRageStab", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspRageStab as IObjectContentGenerator } },
+           { "WaspRangedDebuff", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspRangedDebuff as IObjectContentGenerator } },
+           { "WaspRangedDebuffB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspRangedDebuffB as IObjectContentGenerator } },
+           { "WaspRangedDebuffC", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspRangedDebuffC as IObjectContentGenerator } },
+           { "WaspShoot", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspShoot as IObjectContentGenerator } },
+           { "WaspRageBurst", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspRageBurst as IObjectContentGenerator } },
+           { "WaspSlowA", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspSlowA as IObjectContentGenerator } },
+           { "WaspSlowB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspSlowB as IObjectContentGenerator } },
+           { "PixieSlash", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => PixieSlash as IObjectContentGenerator } },
+           { "PixieRageSlash", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => PixieRageSlash as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

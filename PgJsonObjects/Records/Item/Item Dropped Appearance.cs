@@ -74,5 +74,7 @@
         AlchemyBulb5,
         StuffedBear,
         CymbalMonkey,
+        Mushroom14,
+        Mushroom15,
     }
 }

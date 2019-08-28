@@ -105,5 +105,10 @@
         LocationCircle_White,
         AcidShieldPerm,
         Confetti2,
+        IceDebuff,
+        BuffBlue,
+        AcidBite,
+        ElectricityPerm,
+        ElectricityHit,
     }
 }

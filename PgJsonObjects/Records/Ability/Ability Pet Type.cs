@@ -15,5 +15,6 @@
         SummonedSpider,
         PumpkinBomb,
         PumpkinTurret,
+        SummonedColdSphere,
     }
 }

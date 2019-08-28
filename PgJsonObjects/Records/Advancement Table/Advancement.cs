@@ -138,6 +138,10 @@ namespace PgJsonObjects
         public double? RawCriticalHitDamage { get; private set; }
         public float MonsterCritChance { get { return (float)(RawMonsterCritChance.HasValue ? RawMonsterCritChance.Value : 0); } }
         public double? RawMonsterCritChance { get; private set; }
+        public float AccuracyBoost { get { return (float)(RawAccuracyBoost.HasValue ? RawAccuracyBoost.Value : 0); } }
+        public double? RawAccuracyBoost { get; private set; }
+        public float BoostPoisonIndirect { get { return (float)(RawBoostPoisonIndirect.HasValue ? RawBoostPoisonIndirect.Value : 0); } }
+        public double? RawBoostPoisonIndirect { get; private set; }
         public float EvasionChanceProjectile { get { return (float)(RawEvasionChanceProjectile.HasValue ? RawEvasionChanceProjectile.Value : 0); } }
         public double? RawEvasionChanceProjectile { get; private set; }
         public float EvasionChanceMelee { get { return (float)(RawEvasionChanceMelee.HasValue ? RawEvasionChanceMelee.Value : 0); } }
@@ -456,6 +460,14 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawMonsterCritChance = value,
                 GetFloat = () => RawMonsterCritChance } },
+            { "ACCURACY_BOOST", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawAccuracyBoost = value,
+                GetFloat = () => RawAccuracyBoost } },
+            { "BOOST_POISON_INDIRECT", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawBoostPoisonIndirect = value,
+                GetFloat = () => RawBoostPoisonIndirect } },
         }; } }
 
         protected override bool IsCustomFieldParsed(string FieldKey, object FieldValue, ParseErrorInfo ErrorInfo)
@@ -685,12 +697,14 @@ namespace PgJsonObjects
             AddDouble(RawShopHiringNumFree, data, ref offset, BaseOffset, 244);
             AddDouble(RawCriticalHitDamage, data, ref offset, BaseOffset, 248);
             AddDouble(RawMonsterCritChance, data, ref offset, BaseOffset, 252);
-            AddDouble(RawEvasionChanceProjectile, data, ref offset, BaseOffset, 256);
-            AddDouble(RawEvasionChanceMelee, data, ref offset, BaseOffset, 260);
-            AddDouble(RawModCriticalHitDamageRageAttack, data, ref offset, BaseOffset, 264);
-            AddDouble(RawBoostWerewolfMetabolismHeathRegen, data, ref offset, BaseOffset, 268);
-            AddDouble(RawBoostWerewolfMetabolismPowerRegen, data, ref offset, BaseOffset, 272);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 276, StoredStringListTable);
+            AddDouble(RawAccuracyBoost, data, ref offset, BaseOffset, 256);
+            AddDouble(RawBoostPoisonIndirect, data, ref offset, BaseOffset, 260);
+            AddDouble(RawEvasionChanceProjectile, data, ref offset, BaseOffset, 264);
+            AddDouble(RawEvasionChanceMelee, data, ref offset, BaseOffset, 268);
+            AddDouble(RawModCriticalHitDamageRageAttack, data, ref offset, BaseOffset, 272);
+            AddDouble(RawBoostWerewolfMetabolismHeathRegen, data, ref offset, BaseOffset, 276);
+            AddDouble(RawBoostWerewolfMetabolismPowerRegen, data, ref offset, BaseOffset, 280);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 284, StoredStringListTable);
 
             List<int> VulnerabilityList = new List<int>();
             foreach (KeyValuePair<DamageType, double> Entry in VulnerabilityTable)
@@ -698,7 +712,7 @@ namespace PgJsonObjects
                 VulnerabilityList.Add((int)Entry.Key);
                 VulnerabilityList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
             }
-            AddIntList(VulnerabilityList, data, ref offset, BaseOffset, 280, StoredIntListTable);
+            AddIntList(VulnerabilityList, data, ref offset, BaseOffset, 288, StoredIntListTable);
 
             List<int> MitigationList = new List<int>();
             foreach (KeyValuePair<DamageType, double> Entry in MitigationTable)
@@ -706,7 +720,7 @@ namespace PgJsonObjects
                 MitigationList.Add((int)Entry.Key);
                 MitigationList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
             }
-            AddIntList(MitigationList, data, ref offset, BaseOffset, 284, StoredIntListTable);
+            AddIntList(MitigationList, data, ref offset, BaseOffset, 292, StoredIntListTable);
 
             List<int> DirectModList = new List<int>();
             foreach (KeyValuePair<DamageType, double> Entry in DirectModTable)
@@ -714,7 +728,7 @@ namespace PgJsonObjects
                 DirectModList.Add((int)Entry.Key);
                 DirectModList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
             }
-            AddIntList(DirectModList, data, ref offset, BaseOffset, 288, StoredIntListTable);
+            AddIntList(DirectModList, data, ref offset, BaseOffset, 296, StoredIntListTable);
 
             List<int> IndirectModList = new List<int>();
             foreach (KeyValuePair<DamageType, double> Entry in IndirectModTable)
@@ -722,9 +736,9 @@ namespace PgJsonObjects
                 IndirectModList.Add((int)Entry.Key);
                 IndirectModList.Add((int)Math.Round(Entry.Value * PgAdvancement.DamageMultiplier));
             }
-            AddIntList(IndirectModList, data, ref offset, BaseOffset, 292, StoredIntListTable);
+            AddIntList(IndirectModList, data, ref offset, BaseOffset, 300, StoredIntListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 296, StoredStringtable, null, null, null, StoredIntListTable, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 304, StoredStringtable, null, null, null, StoredIntListTable, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

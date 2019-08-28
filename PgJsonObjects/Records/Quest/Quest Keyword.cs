@@ -11,5 +11,10 @@
         Lint_CannotComplete,
         EventQuest,
         ChirrraSoloQuest,
+        Agrashab_1,
+        Agrashab_2,
+        Agrashab_3,
+        Agrashab_4,
+        Agrashab_5,
     }
 }

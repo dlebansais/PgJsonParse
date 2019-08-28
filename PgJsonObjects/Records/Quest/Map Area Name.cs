@@ -30,5 +30,7 @@
         RahuCaves,
         RahuSewer,
         RahuSewers,
+        Staging,
+        FaeRealm,
     }
 }

@@ -355,7 +355,8 @@ namespace PgJsonObjects
                 InteractionTarget = RawTarget;
 
             else if (Type == QuestObjectiveType.BeAttacked ||
-                     Type == QuestObjectiveType.UseAbilityOnTargets)
+                     Type == QuestObjectiveType.UseAbilityOnTargets ||
+                     Type == QuestObjectiveType.Bury)
                 InteractionTarget = RawTarget;
 
             else if (Type == QuestObjectiveType.InteractionFlag)

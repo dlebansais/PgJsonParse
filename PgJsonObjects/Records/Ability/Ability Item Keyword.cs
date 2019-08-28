@@ -41,5 +41,6 @@
         Dirk,
         Dagger,
         HolySymbol,
+        FairyChime,
     }
 }

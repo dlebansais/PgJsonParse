@@ -150,22 +150,26 @@ namespace PgJsonObjects
         public double? RawCriticalHitDamage { get { return GetDouble(248); } }
         public float MonsterCritChance { get { return (float)(RawMonsterCritChance.HasValue ? RawMonsterCritChance.Value : 0); } }
         public double? RawMonsterCritChance { get { return GetDouble(252); } }
+        public float AccuracyBoost { get { return (float)(RawAccuracyBoost.HasValue ? RawAccuracyBoost.Value : 0); } }
+        public double? RawAccuracyBoost { get { return GetDouble(256); } }
+        public float BoostPoisonIndirect { get { return (float)(RawBoostPoisonIndirect.HasValue ? RawBoostPoisonIndirect.Value : 0); } }
+        public double? RawBoostPoisonIndirect { get { return GetDouble(260); } }
         public float EvasionChanceProjectile { get { return (float)(RawEvasionChanceProjectile.HasValue ? RawEvasionChanceProjectile.Value : 0); } }
-        public double? RawEvasionChanceProjectile { get { return GetDouble(256); } }
+        public double? RawEvasionChanceProjectile { get { return GetDouble(264); } }
         public float EvasionChanceMelee { get { return (float)(RawEvasionChanceMelee.HasValue ? RawEvasionChanceMelee.Value : 0); } }
-        public double? RawEvasionChanceMelee { get { return GetDouble(260); } }
+        public double? RawEvasionChanceMelee { get { return GetDouble(268); } }
         public float ModCriticalHitDamageRageAttack { get { return (float)(RawModCriticalHitDamageRageAttack.HasValue ? RawModCriticalHitDamageRageAttack.Value : 0); } }
-        public double? RawModCriticalHitDamageRageAttack { get { return GetDouble(264); } }
+        public double? RawModCriticalHitDamageRageAttack { get { return GetDouble(272); } }
         public float BoostWerewolfMetabolismHeathRegen { get { return (float)(RawBoostWerewolfMetabolismHeathRegen.HasValue ? RawBoostWerewolfMetabolismHeathRegen.Value : 0); } }
-        public double? RawBoostWerewolfMetabolismHeathRegen { get { return GetDouble(268); } }
+        public double? RawBoostWerewolfMetabolismHeathRegen { get { return GetDouble(276); } }
         public float BoostWerewolfMetabolismPowerRegen { get { return (float)(RawBoostWerewolfMetabolismPowerRegen.HasValue ? RawBoostWerewolfMetabolismPowerRegen.Value : 0); } }
-        public double? RawBoostWerewolfMetabolismPowerRegen { get { return GetDouble(272); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(276, ref _FieldTableOrder); } }
+        public double? RawBoostWerewolfMetabolismPowerRegen { get { return GetDouble(280); } }
+        protected override List<string> FieldTableOrder { get { return GetStringList(284, ref _FieldTableOrder); } }
         private List<string> _FieldTableOrder;
-        public List<int> VulnerabilityDataList { get { return GetIntList(280, ref _VulnerabilityDataList); } } private List<int> _VulnerabilityDataList;
-        public List<int> MitigationDataList { get { return GetIntList(284, ref _MitigationDataList); } } private List<int> _MitigationDataList;
-        public List<int> DirectModDataList { get { return GetIntList(288, ref _DirectModDataList); } } private List<int> _DirectModDataList;
-        public List<int> IndirectModDataList { get { return GetIntList(292, ref _IndirectModDataList); } } private List<int> _IndirectModDataList;
+        public List<int> VulnerabilityDataList { get { return GetIntList(288, ref _VulnerabilityDataList); } } private List<int> _VulnerabilityDataList;
+        public List<int> MitigationDataList { get { return GetIntList(292, ref _MitigationDataList); } } private List<int> _MitigationDataList;
+        public List<int> DirectModDataList { get { return GetIntList(296, ref _DirectModDataList); } } private List<int> _DirectModDataList;
+        public List<int> IndirectModDataList { get { return GetIntList(300, ref _IndirectModDataList); } } private List<int> _IndirectModDataList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "IGNORE_CHANCE_FEAR", new FieldParser() {

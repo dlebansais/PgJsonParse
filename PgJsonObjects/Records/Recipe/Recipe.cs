@@ -38,6 +38,12 @@ namespace PgJsonObjects
         public IPgSkill RewardSkill { get; private set; }
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get; private set; }
+        public int RewardSkillXpDropOffLevel { get { return RawRewardSkillXpDropOffLevel.HasValue ? RawRewardSkillXpDropOffLevel.Value : 0; } }
+        public int? RawRewardSkillXpDropOffLevel { get; private set; }
+        public double RewardSkillXpDropOffPct { get { return RawRewardSkillXpDropOffPct.HasValue ? RawRewardSkillXpDropOffPct.Value : 0; } }
+        public double? RawRewardSkillXpDropOffPct { get; private set; }
+        public int RewardSkillXpDropOffRate { get { return RawRewardSkillXpDropOffRate.HasValue ? RawRewardSkillXpDropOffRate.Value : 0; } }
+        public int? RawRewardSkillXpDropOffRate { get; private set; }
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
         public int? RawRewardSkillXpFirstTime { get; private set; }
         public IPgRecipe SharesResetTimerWith { get; private set; }
@@ -54,6 +60,8 @@ namespace PgJsonObjects
         public bool? RawResultItemListIsEmpty { get; private set; }
         public bool ProtoResultItemListIsEmpty { get { return RawProtoResultItemListIsEmpty.HasValue && RawProtoResultItemListIsEmpty.Value; } }
         public bool? RawProtoResultItemListIsEmpty { get; private set; }
+        public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }
+        public bool? RawRewardAllowBonusXp { get; private set; }
         public ItemKeyword RecipeItemKeyword { get; private set; }
         public List<ItemKeyword> ValidationIngredientKeywordList { get; } = new List<ItemKeyword>();
         public IPgRecipeItemCollection ProtoResultItemList { get; } = new RecipeItemCollection();
@@ -186,6 +194,18 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardSkillXp = value,
                 GetInteger = () => RawRewardSkillXp } },
+            { "RewardSkillXpDropOffLevel", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardSkillXpDropOffLevel = value,
+                GetInteger = () => RawRewardSkillXpDropOffLevel } },
+            { "RewardSkillXpDropOffPct", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawRewardSkillXpDropOffPct = value,
+                GetFloat = () => RawRewardSkillXpDropOffPct } },
+            { "RewardSkillXpDropOffRate", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardSkillXpDropOffRate = value,
+                GetInteger = () => RawRewardSkillXpDropOffRate } },
             { "RewardSkillXpFirstTime", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawRewardSkillXpFirstTime = value,
@@ -228,6 +248,10 @@ namespace PgJsonObjects
                 SetArrayIsEmpty = () => RawProtoResultItemListIsEmpty = true ,
                 GetObjectArray = () => ProtoResultItemList,
                 GetArrayIsEmpty = () => ProtoResultItemListIsEmpty } },
+            { "RewardAllowBonusXp", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawRewardAllowBonusXp = value,
+                GetBool = () => RawRewardAllowBonusXp } },
         }; } }
 
         private void ParseDescription(string value, ParseErrorInfo ErrorInfo)
@@ -320,6 +344,10 @@ namespace PgJsonObjects
                         Result.Add(GetGiveItemPowerEffects(Item));
                         break;
 
+                    case RecipeEffect.AddItemTSysPowerWax:
+                        Result.Add(GetPowerWaxResultEffects(Item));
+                        break;
+
                     default:
                         Result.Add(StringToEnumConversion<RecipeEffect>.ToString(Item.Effect, TextMaps.RecipeEffectStringMap));
                         break;
@@ -406,6 +434,9 @@ namespace PgJsonObjects
                 return true;
 
             if (ParseGiveItemPower(value, ErrorInfo, ref NewResultEffect))
+                return true;
+
+            if (ParseAddItemPowerWax(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
             ErrorInfo.AddMissingEnum("RecipeEffect", value);
@@ -787,6 +818,49 @@ namespace PgJsonObjects
             }
 
             return false;
+        }
+
+        private bool ParseAddItemPowerWax(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
+        {
+            string AddItemPowerWaxPattern = "AddItemTSysPowerWax(";
+            if (RawEffect.StartsWith(AddItemPowerWaxPattern) && RawEffect.EndsWith(")"))
+            {
+                RecipeEffect ConvertedRecipeEffect = RecipeEffect.AddItemTSysPowerWax;
+                string PowerAdded = RawEffect.Substring(AddItemPowerWaxPattern.Length, RawEffect.Length - AddItemPowerWaxPattern.Length - 1);
+                string[] PowerAddedSplit = PowerAdded.Split(',');
+
+                if (PowerAddedSplit.Length == 3)
+                {
+                    PowerWaxType ConvertedSlot;
+                    int PowerLevel;
+                    int AdjustedReuseTime;
+                    if (StringToEnumConversion<PowerWaxType>.TryParse(PowerAddedSplit[0], out ConvertedSlot, ErrorInfo) &&
+                        int.TryParse(PowerAddedSplit[1], out PowerLevel) &&
+                        int.TryParse(PowerAddedSplit[2], out AdjustedReuseTime))
+                    {
+                        NewResultEffect.Effect = ConvertedRecipeEffect;
+                        NewResultEffect.PowerWaxType = ConvertedSlot;
+                        NewResultEffect.RawSlotPowerLevel = PowerLevel;
+                        NewResultEffect.RawAdjustedReuseTime = AdjustedReuseTime;
+                        return true;
+                    }
+                    else
+                        ErrorInfo.AddMissingEnum("ShamanicSlotPower", PowerAddedSplit[0]);
+                }
+            }
+
+            return false;
+        }
+
+        private string GetPowerWaxResultEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "AddItemTSysPowerWax(";
+
+            Result += StringToEnumConversion<PowerWaxType>.ToString(Item.PowerWaxType) + ",";
+            Result += Item.SlotPowerLevel.ToString() + ",";
+            Result += Item.AdjustedReuseTime.ToString() + ")";
+
+            return Result;
         }
 
         private string GetBrewItemResultEffects(IPgRecipeResultEffect Item)
@@ -1182,25 +1256,29 @@ namespace PgJsonObjects
             AddUInt(DyeColor, data, ref offset, BaseOffset, 80);
             AddObject(RewardSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 84, StoredObjectTable);
             AddInt(RawRewardSkillXp, data, ref offset, BaseOffset, 88);
-            AddInt(RawRewardSkillXpFirstTime, data, ref offset, BaseOffset, 92);
-            AddObject(SharesResetTimerWith as ISerializableJsonObject, data, ref offset, BaseOffset, 96, StoredObjectTable);
-            AddString(ItemMenuLabel, data, ref offset, BaseOffset, 100, StoredStringtable);
-            AddString(RawItemMenuCategory, data, ref offset, BaseOffset, 104, StoredStringtable);
-            AddInt(RawItemMenuCategoryLevel, data, ref offset, BaseOffset, 108);
-            AddObject(PrereqRecipe as ISerializableJsonObject, data, ref offset, BaseOffset, 112, StoredObjectTable);
-            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 116, StoredStringListTable);
-            AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 120, 0);
-            AddBool(RawIngredientListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 120, 2);
-            AddBool(RawResultItemListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 120, 4);
-            AddBool(RawProtoResultItemListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 120, 6);
+            AddInt(RawRewardSkillXpDropOffLevel, data, ref offset, BaseOffset, 92);
+            AddDouble(RawRewardSkillXpDropOffPct, data, ref offset, BaseOffset, 96);
+            AddInt(RawRewardSkillXpDropOffRate, data, ref offset, BaseOffset, 100);
+            AddInt(RawRewardSkillXpFirstTime, data, ref offset, BaseOffset, 104);
+            AddObject(SharesResetTimerWith as ISerializableJsonObject, data, ref offset, BaseOffset, 108, StoredObjectTable);
+            AddString(ItemMenuLabel, data, ref offset, BaseOffset, 112, StoredStringtable);
+            AddString(RawItemMenuCategory, data, ref offset, BaseOffset, 116, StoredStringtable);
+            AddInt(RawItemMenuCategoryLevel, data, ref offset, BaseOffset, 120);
+            AddObject(PrereqRecipe as ISerializableJsonObject, data, ref offset, BaseOffset, 124, StoredObjectTable);
+            AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 128, StoredStringListTable);
+            AddBool(RawIsItemMenuKeywordReqSufficient, data, ref offset, ref BitOffset, BaseOffset, 132, 0);
+            AddBool(RawIngredientListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 132, 2);
+            AddBool(RawResultItemListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 132, 4);
+            AddBool(RawProtoResultItemListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 132, 6);
+            AddBool(RawRewardAllowBonusXp, data, ref offset, ref BitOffset, BaseOffset, 132, 8);
             CloseBool(ref offset, ref BitOffset);
-            AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 122);
-            AddObjectList(SourceList, data, ref offset, BaseOffset, 124, StoredObjectListTable);
-            AddDouble(PerfectCottonRatio, data, ref offset, BaseOffset, 128);
-            AddEnumList(ValidationIngredientKeywordList, data, ref offset, BaseOffset, 132, StoredEnumListTable);
-            AddObjectList(ProtoResultItemList, data, ref offset, BaseOffset, 136, StoredObjectListTable);
+            AddEnum(RecipeItemKeyword, data, ref offset, BaseOffset, 134);
+            AddObjectList(SourceList, data, ref offset, BaseOffset, 136, StoredObjectListTable);
+            AddDouble(PerfectCottonRatio, data, ref offset, BaseOffset, 140);
+            AddEnumList(ValidationIngredientKeywordList, data, ref offset, BaseOffset, 144, StoredEnumListTable);
+            AddObjectList(ProtoResultItemList, data, ref offset, BaseOffset, 148, StoredObjectListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 140, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 152, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

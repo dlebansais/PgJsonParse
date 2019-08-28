@@ -18,7 +18,7 @@
         CivicPride,
         Industry,
         Transmutation,
-        TypicalNoncombatSkillEx,
+        //TypicalNoncombatSkillEx,
         Surveying,
         CorpseActionSkillExt,
         RetailManagement,
@@ -41,5 +41,7 @@
         Gaming,
         VeryExpensiveRecipe,
         ShamanicInfusion,
+        TypicalNoncombatSkill_CappedAt50,
+        TypicalNoncombatSkill_FastTo50,
     }
 }

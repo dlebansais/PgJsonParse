@@ -33,6 +33,12 @@ namespace PgJsonObjects
         IPgSkill RewardSkill { get; }
         int RewardSkillXp { get; }
         int? RawRewardSkillXp { get; }
+        int RewardSkillXpDropOffLevel { get; }
+        int? RawRewardSkillXpDropOffLevel { get; }
+        double RewardSkillXpDropOffPct { get; }
+        double? RawRewardSkillXpDropOffPct { get; }
+        int RewardSkillXpDropOffRate { get; }
+        int? RawRewardSkillXpDropOffRate { get; }
         int RewardSkillXpFirstTime { get; }
         int? RawRewardSkillXpFirstTime { get; }
         IPgRecipe SharesResetTimerWith { get; }
@@ -47,6 +53,8 @@ namespace PgJsonObjects
         bool? RawIngredientListIsEmpty { get; }
         bool ResultItemListIsEmpty { get; }
         bool? RawResultItemListIsEmpty { get; }
+        bool RewardAllowBonusXp { get; }
+        bool? RawRewardAllowBonusXp { get; }
         ItemKeyword RecipeItemKeyword { get; }
         List<ItemKeyword> ValidationIngredientKeywordList { get; }
         IPgRecipeItemCollection ProtoResultItemList { get; }

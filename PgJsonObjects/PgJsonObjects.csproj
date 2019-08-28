@@ -332,6 +332,7 @@
     <Compile Include="Records\Recipe\RecipeCollection.cs" />
     <Compile Include="Records\Recipe\RecipeItemCollection.cs" />
     <Compile Include="Records\Recipe\RecipeResultEffectCollection.cs" />
+    <Compile Include="Records\Recipe\PowerWaxType.cs" />
     <Compile Include="Records\SerializableJsonObject.cs" />
     <Compile Include="Records\Skill\LevelCapInteractionCollection.cs" />
     <Compile Include="Records\Skill\RewardCollection.cs" />
@@ -448,7 +449,7 @@
     <Compile Include="Records\Recipe\Recipe Result Key.cs" />
     <Compile Include="Records\Recipe\Recipe Usage Animation.cs" />
     <Compile Include="Records\Recipe\Recipe.cs" />
-    <Compile Include="Records\Recipe\Shamanic Slot Power.cs" />
+    <Compile Include="Records\Recipe\ShamanicSlotPower.cs" />
     <Compile Include="Records\Skill\Level Cap Interaction.cs" />
     <Compile Include="Records\Skill\Reward.cs" />
     <Compile Include="Records\Skill\Skill Category.cs" />

@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgRecipe(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 140;
+            offset += 152;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -77,28 +77,36 @@ namespace PgJsonObjects
         public IPgSkill RewardSkill { get { return GetObject(84, ref _RewardSkill, PgSkill.CreateNew); } } private IPgSkill _RewardSkill;
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get { return GetInt(88); } }
+        public int RewardSkillXpDropOffLevel { get { return RawRewardSkillXpDropOffLevel.HasValue ? RawRewardSkillXpDropOffLevel.Value : 0; } }
+        public int? RawRewardSkillXpDropOffLevel { get { return GetInt(92); } }
+        public double RewardSkillXpDropOffPct { get { return RawRewardSkillXpDropOffPct.HasValue ? RawRewardSkillXpDropOffPct.Value : 0; } }
+        public double? RawRewardSkillXpDropOffPct { get { return GetDouble(96); } }
+        public int RewardSkillXpDropOffRate { get { return RawRewardSkillXpDropOffRate.HasValue ? RawRewardSkillXpDropOffRate.Value : 0; } }
+        public int? RawRewardSkillXpDropOffRate { get { return GetInt(100); } }
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
-        public int? RawRewardSkillXpFirstTime { get { return GetInt(92); } }
-        public IPgRecipe SharesResetTimerWith { get { return GetObject(96, ref _SharesResetTimerWith, CreateNew); } } private IPgRecipe _SharesResetTimerWith;
-        public string ItemMenuLabel { get { return GetString(100); } }
-        public string RawItemMenuCategory { get { return GetString(104); } }
+        public int? RawRewardSkillXpFirstTime { get { return GetInt(104); } }
+        public IPgRecipe SharesResetTimerWith { get { return GetObject(108, ref _SharesResetTimerWith, CreateNew); } } private IPgRecipe _SharesResetTimerWith;
+        public string ItemMenuLabel { get { return GetString(112); } }
+        public string RawItemMenuCategory { get { return GetString(116); } }
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
-        public int? RawItemMenuCategoryLevel { get { return GetInt(108); } }
-        public IPgRecipe PrereqRecipe { get { return GetObject(112, ref _PrereqRecipe, CreateNew); } } private IPgRecipe _PrereqRecipe;
-        protected override List<string> FieldTableOrder { get { return GetStringList(116, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
+        public int? RawItemMenuCategoryLevel { get { return GetInt(120); } }
+        public IPgRecipe PrereqRecipe { get { return GetObject(124, ref _PrereqRecipe, CreateNew); } } private IPgRecipe _PrereqRecipe;
+        protected override List<string> FieldTableOrder { get { return GetStringList(128, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
-        public bool? RawIsItemMenuKeywordReqSufficient { get { return GetBool(120, 0); } }
+        public bool? RawIsItemMenuKeywordReqSufficient { get { return GetBool(132, 0); } }
         public bool IngredientListIsEmpty { get { return RawIngredientListIsEmpty.HasValue && RawIngredientListIsEmpty.Value; } }
-        public bool? RawIngredientListIsEmpty { get { return GetBool(120, 2); } }
+        public bool? RawIngredientListIsEmpty { get { return GetBool(132, 2); } }
         public bool ResultItemListIsEmpty { get { return RawResultItemListIsEmpty.HasValue && RawResultItemListIsEmpty.Value; } }
-        public bool? RawResultItemListIsEmpty { get { return GetBool(120, 4); } }
+        public bool? RawResultItemListIsEmpty { get { return GetBool(132, 4); } }
         public bool ProtoResultItemListIsEmpty { get { return RawProtoResultItemListIsEmpty.HasValue && RawProtoResultItemListIsEmpty.Value; } }
-        public bool? RawProtoResultItemListIsEmpty { get { return GetBool(120, 6); } }
-        public ItemKeyword RecipeItemKeyword { get { return GetEnum<ItemKeyword>(122); } }
-        public IPgGenericSourceCollection SourceList { get { return GetObjectList(124, ref _SourceList, (byte[] data, ref int offset) => PgGenericSourceCollection.CreateItem(this, data, ref offset), () => new PgGenericSourceCollection()); } } private PgGenericSourceCollection _SourceList;
-        public double? PerfectCottonRatio { get { return GetDouble(128); } }
-        public List<ItemKeyword> ValidationIngredientKeywordList { get { return GetEnumList(132, ref _ValidationIngredientKeywordList); } } private List<ItemKeyword> _ValidationIngredientKeywordList;
-        public IPgRecipeItemCollection ProtoResultItemList { get { return GetObjectList(136, ref _ProtoResultItemList, PgRecipeItemCollection.CreateItem, () => new PgRecipeItemCollection()); } } private IPgRecipeItemCollection _ProtoResultItemList;
+        public bool? RawProtoResultItemListIsEmpty { get { return GetBool(132, 6); } }
+        public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }
+        public bool? RawRewardAllowBonusXp { get { return GetBool(132, 8); } }
+        public ItemKeyword RecipeItemKeyword { get { return GetEnum<ItemKeyword>(134); } }
+        public IPgGenericSourceCollection SourceList { get { return GetObjectList(136, ref _SourceList, (byte[] data, ref int offset) => PgGenericSourceCollection.CreateItem(this, data, ref offset), () => new PgGenericSourceCollection()); } } private PgGenericSourceCollection _SourceList;
+        public double? PerfectCottonRatio { get { return GetDouble(140); } }
+        public List<ItemKeyword> ValidationIngredientKeywordList { get { return GetEnumList(144, ref _ValidationIngredientKeywordList); } } private List<ItemKeyword> _ValidationIngredientKeywordList;
+        public IPgRecipeItemCollection ProtoResultItemList { get { return GetObjectList(148, ref _ProtoResultItemList, PgRecipeItemCollection.CreateItem, () => new PgRecipeItemCollection()); } } private IPgRecipeItemCollection _ProtoResultItemList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Description", new FieldParser() {
@@ -173,6 +181,15 @@ namespace PgJsonObjects
             { "RewardSkillXp", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => RawRewardSkillXp } },
+            { "RewardSkillXpDropOffLevel", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardSkillXpDropOffLevel } },
+            { "RewardSkillXpDropOffPct", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawRewardSkillXpDropOffPct } },
+            { "RewardSkillXpDropOffRate", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawRewardSkillXpDropOffRate } },
             { "RewardSkillXpFirstTime", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => RawRewardSkillXpFirstTime } },
@@ -204,6 +221,9 @@ namespace PgJsonObjects
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => ProtoResultItemList,
                 GetArrayIsEmpty = () => ProtoResultItemListIsEmpty } },
+            { "RewardAllowBonusXp", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawRewardAllowBonusXp } },
         }; } }
 
         private List<string> GetResultEffects()
@@ -315,6 +335,17 @@ namespace PgJsonObjects
 
             Result += StringToEnumConversion<ShamanicSlotPower>.ToString(Item.SlotPower) + ",";
             Result += Item.SlotPowerLevel.ToString() + ")";
+
+            return Result;
+        }
+
+        private string GetPowerWaxResultEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "AddItemTSysPowerWax(";
+
+            Result += StringToEnumConversion<PowerWaxType>.ToString(Item.PowerWaxType) + ",";
+            Result += Item.SlotPowerLevel.ToString() + ")";
+            Result += Item.AdjustedReuseTime.ToString() + ")";
 
             return Result;
         }

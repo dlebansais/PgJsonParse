@@ -45,6 +45,7 @@ namespace PgJsonObjects
         IPgItem Item { get; }
         bool IsCamouflaged { get; }
         bool? RawIsCamouflaged { get; }
+        PowerWaxType PowerWaxType { get; }
 
         string CombinedEffect { get; }
     }

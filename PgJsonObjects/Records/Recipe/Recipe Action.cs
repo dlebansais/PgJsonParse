@@ -37,5 +37,6 @@
         TapKeg,
         RendSpaceTime,
         PerformTheRitual,
+        WaxShield,
     }
 }

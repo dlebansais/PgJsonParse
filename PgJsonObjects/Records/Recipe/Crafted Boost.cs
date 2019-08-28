@@ -62,5 +62,9 @@
         MasqueradeMaskNature,
         MasqueradeMaskCold,
         MasqueradeMaskElectricity,
+        CraftedNecklace,
+        CraftedPriestNecklace,
+        CraftedRing,
+        CraftedNecroNecklace,
     }
 }

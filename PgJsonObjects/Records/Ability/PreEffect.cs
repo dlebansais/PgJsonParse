@@ -21,5 +21,6 @@
         SuperZombie7,
         EndBardSong,
         MambaStrikeLowArmorDmgMod,
+        SuperZombie8,
     }
 }

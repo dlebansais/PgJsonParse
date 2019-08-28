@@ -112,5 +112,7 @@
         AstonishingHumanoidSkull,
         ReusableBeerKeg,
         ReusableHardLiquorBarrel,
+        BlueCheese,
+        ImpressiveHumanoidSkull,
     }
 }

@@ -223,5 +223,7 @@
         ShadowFeintBuff,
         DispelledByAcid,
         SpiderPuntEnabled,
+        PixieBuff,
+        LethargyPuckCurse,
     }
 }

@@ -3663,6 +3663,12 @@
                             <Binding Path="DisplayedLocation" Converter="{StaticResource convEnumToText}" ConverterParameter="MapAreaNameTextMap"/>
                         </TextBlock.Text>
                     </TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="18" TextAlignment="Right" Margin="0,10,0,0">Reward Allow Bonus Xp:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="18" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="RawRewardAllowBonusXp" Converter="{StaticResource convNullableBooleanToObject}" ConverterParameter="{StaticResource NoYesNull}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Favor Reward:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="0" TextWrapping="Wrap" Margin="5,0,0,0">
                         <TextBlock.Text>
@@ -3680,6 +3686,12 @@
                                 </Run>
                             </Hyperlink>
                         </TextBlock>
+                        <TextBlock Margin="5,0,5,0">, Drop Off:</TextBlock>
+                        <TextBlock Text="{Binding RewardSkillXpDropOffLevel}"/>
+                        <TextBlock Margin="5,0,5,0">, Percent:</TextBlock>
+                        <TextBlock Text="{Binding RewardSkillXpDropOffPct}"/>
+                        <TextBlock Margin="5,0,5,0">, Rate:</TextBlock>
+                        <TextBlock Text="{Binding RewardSkillXpDropOffRate}"/>
                     </StackPanel>
                     <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Right" Margin="0,10,0,0">Recipe Reward:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="2" TextWrapping="Wrap" Margin="5,10,0,0">
@@ -3922,6 +3934,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Description:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -4019,6 +4032,12 @@
                                 <Binding Path="PrereqRecipe.Name" Mode="OneWay"/>
                             </Run>
                         </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="14" TextAlignment="Right" Margin="0,10,0,0">Reward Allow Bonus Xp:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="14" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="RawRewardAllowBonusXp" Converter="{StaticResource convNullableBooleanToObject}" ConverterParameter="{StaticResource NoYesNull}"/>
+                        </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Usage Delay Message:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding UsageDelayMessage}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -5066,6 +5085,10 @@
                     <TextBlock Grid.Column="1" Grid.Row="66" Text="{Binding BoostWerewolfMetabolismHeathRegen, Converter={StaticResource convPercent}}" Visibility="{Binding RawBoostWerewolfMetabolismHeathRegen, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                     <TextBlock Grid.Column="0" Grid.Row="64" Text="Werewolf Power Regen Boost:" Visibility="{Binding RawBoostWerewolfMetabolismPowerRegen, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="64" Text="{Binding BoostWerewolfMetabolismPowerRegen, Converter={StaticResource convPercent}}" Visibility="{Binding RawBoostWerewolfMetabolismPowerRegen, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="62" Text="Accuracy Boost:" Visibility="{Binding RawAccuracyBoost, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="62" Text="{Binding AccuracyBoost, Converter={StaticResource convPercent}}" Visibility="{Binding RawAccuracyBoost, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="62" Text="Boost Poison Indirect:" Visibility="{Binding RawBoostPoisonIndirect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="62" Text="{Binding BoostPoisonIndirect, Converter={StaticResource convPercent}}" Visibility="{Binding RawBoostPoisonIndirect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>

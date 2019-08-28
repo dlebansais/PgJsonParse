@@ -298,5 +298,11 @@
         StomachExpanderPotion,
         BruisingBlowPoisonVuln,
         BruisingBlowTraumaVuln,
+        PrecisionBouquet,
+        GardeningLuck,
+        CottonLuck,
+        IceheartSustenance,
+        ElementalWardElectricity,
+        FieldProphylactic,
     }
 }

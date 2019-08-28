@@ -314,6 +314,16 @@ namespace PgJsonObjects
             { "TornadoSpider", "Tornado Spider" },
             { "SandWorm", "Sand Worm" },
             { "AmazingNpcRewardLoot", "Amazing Npc Reward Loot" },
+            { "Bee", "Bee" },
+            { "Pixie", "Pixie" },
+            { "Wasp", "Wasp" },
+            { "ElementalFire", "Fire Elemental" },
+            { "Phoenix", "Phoenix" },
+            { "FaeRealmEliteBoost1", "Fae Realm Elite #1" },
+            { "FaeRealmEliteBoost2", "Fae Realm Elite #2" },
+            { "FaeRealmBossBoost1", "Fae Realm Boss #1" },
+            { "FaeRealmBossBoost2", "Fae Realm Boss #2" },
+            { "PetBee", "Bee Pet" },
         };
     }
 }

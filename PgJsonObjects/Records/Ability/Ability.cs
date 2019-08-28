@@ -772,11 +772,11 @@ namespace PgJsonObjects
                 }
             }
 
-            else if (Tools.Scan(s, "You gain %d sprint speed and enhanced jump control for %d seconds", args))
+            else if (Tools.Scan(s, "You gain %f sprint speed and enhanced jump control for %d seconds", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.SprintSpeed, TimeSpan.FromSeconds((int)args[1]));
                 AdditionalResult.Target = AbilityEffectTarget.Self;
-                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0] });
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)(double)args[0] });
                 AddResult(AdditionalResult);
 
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.JumpControl, TimeSpan.FromSeconds((int)args[1]));
@@ -1308,11 +1308,11 @@ namespace PgJsonObjects
                 AddResult(AdditionalResult);
             }
 
-            else if (Tools.Scan(s, "For %d seconds, you gain %d sprint speed and all attacks taunt as if they did %d%% more damage", args))
+            else if (Tools.Scan(s, "For %d seconds, you gain %f sprint speed and all attacks taunt as if they did %d%% more damage", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.SprintSpeed, TimeSpan.FromSeconds((int)args[0]));
                 AdditionalResult.Target = AbilityEffectTarget.Self;
-                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[1] });
+                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)(double)args[1] });
                 AddResult(AdditionalResult);
 
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.Taunt, TimeSpan.FromSeconds((int)args[0]));
@@ -2326,6 +2326,41 @@ namespace PgJsonObjects
             }
 
             else if (Tools.Scan(s, "Deals %d% Trauma damage if target's armor is below 33%", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For 60 minutes, target gains +%d Trauma Mitigation, +%d Psychic Mitigation, and +%d Poison Mitigation", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Pet gains +%d speed and +%d damage for 10 seconds, and pet attempts to use its pet-specific Special Attack", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For the next %d seconds, any elemental damage will be negated (Fire, Cold, or Electricity)", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For %d seconds you become immune to knockbacks and stuns", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Gain %d% resistance to slashing, crushing, and piercing, %d% resistance to cold, and %d% resistance to electricity and trauma", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For 30 seconds, melee attacks that damage you deal %d poison damage to the attacker", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "%d% Chance to consume 1 Carrot", args))
             {
                 //TODO
             }

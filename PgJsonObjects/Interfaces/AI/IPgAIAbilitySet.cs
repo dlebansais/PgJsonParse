@@ -726,5 +726,67 @@
         IPgAIAbility SmallishScorpionClawB { get; }
         IPgAIAbility SmallishScorpionSting { get; }
         IPgAIAbility RootTrap { get; }
+        IPgAIAbility ElementalFireSlam { get; }
+        IPgAIAbility ElementalFireball { get; }
+        IPgAIAbility ElementalHateFireball { get; }
+        IPgAIAbility ElementalHateFireball2 { get; }
+        IPgAIAbility ElementalHateFireball3 { get; }
+        IPgAIAbility ElementalFireballB { get; }
+        IPgAIAbility FaeIceSpearA { get; }
+        IPgAIAbility FaeIceSpearB { get; }
+        IPgAIAbility FaeColdSphere { get; }
+        IPgAIAbility LethargyPuckFrostbite { get; }
+        IPgAIAbility LethargyPuckRage { get; }
+        IPgAIAbility BeeStab_Pet { get; }
+        IPgAIAbility BeeInject_Pet1 { get; }
+        IPgAIAbility BeeInject_Pet2 { get; }
+        IPgAIAbility BeeInject_Pet3 { get; }
+        IPgAIAbility BeeInject_Pet4 { get; }
+        IPgAIAbility BeeInject_Pet5 { get; }
+        IPgAIAbility BeeInject_Pet6 { get; }
+        IPgAIAbility BeeVuln_Pet1 { get; }
+        IPgAIAbility BeeVuln_Pet2 { get; }
+        IPgAIAbility BeeVuln_Pet3 { get; }
+        IPgAIAbility BeeVuln_Pet4 { get; }
+        IPgAIAbility WaspShoot_Pet { get; }
+        IPgAIAbility WaspBlast_Pet1 { get; }
+        IPgAIAbility WaspBlast_Pet2 { get; }
+        IPgAIAbility WaspBlast_Pet3 { get; }
+        IPgAIAbility WaspBlast_Pet4 { get; }
+        IPgAIAbility WaspBlast_Pet5 { get; }
+        IPgAIAbility WaspBlast_Pet6 { get; }
+        IPgAIAbility WaspSlow_Pet1 { get; }
+        IPgAIAbility WaspSlow_Pet2 { get; }
+        IPgAIAbility WaspSlow_Pet3 { get; }
+        IPgAIAbility WaspSlow_Pet4 { get; }
+        IPgAIAbility WaspStab_Pet { get; }
+        IPgAIAbility WaspDebuff_Pet1 { get; }
+        IPgAIAbility WaspDebuff_Pet2 { get; }
+        IPgAIAbility WaspDebuff_Pet3 { get; }
+        IPgAIAbility WaspDebuff_Pet4 { get; }
+        IPgAIAbility WaspDebuff_Pet5 { get; }
+        IPgAIAbility WaspDebuff_Pet6 { get; }
+        IPgAIAbility WaspBurst_Pet1 { get; }
+        IPgAIAbility WaspBurst_Pet2 { get; }
+        IPgAIAbility WaspBurst_Pet3 { get; }
+        IPgAIAbility WaspBurst_Pet4 { get; }
+        IPgAIAbility PhoenixPeck { get; }
+        IPgAIAbility PhoenixFireball { get; }
+        IPgAIAbility PhoenixBlast { get; }
+        IPgAIAbility BeeStab { get; }
+        IPgAIAbility BeeInject { get; }
+        IPgAIAbility BeeShoot { get; }
+        IPgAIAbility BeeShootB { get; }
+        IPgAIAbility WaspStab { get; }
+        IPgAIAbility WaspRageStab { get; }
+        IPgAIAbility WaspRangedDebuff { get; }
+        IPgAIAbility WaspRangedDebuffB { get; }
+        IPgAIAbility WaspRangedDebuffC { get; }
+        IPgAIAbility WaspShoot { get; }
+        IPgAIAbility WaspRageBurst { get; }
+        IPgAIAbility WaspSlowA { get; }
+        IPgAIAbility WaspSlowB { get; }
+        IPgAIAbility PixieSlash { get; }
+        IPgAIAbility PixieRageSlash { get; }
     }
 }

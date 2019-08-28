@@ -274,6 +274,11 @@
         SpawnPremonition_All_3sec,
         SpawnPremonition_All_5sec,
         SpawnPremonition_Undead_10sec,
+        ResearchFireMagic75,
+        ResearchFireMagic80,
+        ResearchIceMagic75,
+        ResearchIceMagic80,
+        TeleportToNearbyMushroomCircle,
 
         ExtractTSysPower,
         RepairItemDurability,
@@ -283,5 +288,6 @@
         BrewItem,
         AdjustRecipeReuseTime,
         GiveItemPower,
+        AddItemTSysPowerWax,
     }
 }

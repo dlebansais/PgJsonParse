@@ -155,6 +155,7 @@
         Priest,
         Gaming,
         Safecracking,
+        JewelryCrafting,
     }
 }
 
