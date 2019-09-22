@@ -25,7 +25,7 @@
         Guild,
         AuxCombatSkill,
         Lore,
-        AuxCombatSkillEx,
+        //AuxCombatSkillEx,
         AuxCraftingSkill,
         VeryCheapRecipe,
         CheapRecipe,
@@ -43,5 +43,6 @@
         ShamanicInfusion,
         TypicalNoncombatSkill_CappedAt50,
         TypicalNoncombatSkill_FastTo50,
+        AuxCombatSkill_FastTo50,
     }
 }

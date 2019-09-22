@@ -20,9 +20,9 @@ namespace PgJsonParse
 {
     public partial class PrologueWindow : RootControl, INotifyPropertyChanged
     {
-        public const double PARSER_VERSION = 324;
-        public const int PG_CACHE_VERSION = 324;
-        public const int PG_CACHE_SIZE = 40351188;
+        public const double PARSER_VERSION = 325;
+        public const int PG_CACHE_VERSION = 325;
+        public const int PG_CACHE_SIZE = 41169824;
 
         #region Init
         public PrologueWindow()

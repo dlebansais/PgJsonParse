@@ -66,5 +66,6 @@
         CraftedPriestNecklace,
         CraftedRing,
         CraftedNecroNecklace,
+        CraftedColdRing,
     }
 }

@@ -951,5 +951,8 @@
         ElvishStyle,
         Wand,
         FairyChime,
+        GoldenAcorn,
+        Parchment7,
+        SemiRealHassium,
     }
 }

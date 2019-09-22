@@ -8,7 +8,7 @@
         BroadcastCompletion,
         DruidGroup,
         WorkOrder,
-        Lint_CannotComplete,
+        //Lint_CannotComplete,
         EventQuest,
         ChirrraSoloQuest,
         Agrashab_1,

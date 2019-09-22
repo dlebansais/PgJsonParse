@@ -102,6 +102,8 @@ namespace PgJsonObjects
             { RecipeEffect.CreateMiningSurvey5X_MiningSurveyIlmari5X, "CreateMiningSurvey5X(MiningSurveyIlmari5X)" },
             { RecipeEffect.CreateMiningSurvey6X_MiningSurveyIlmari6X, "CreateMiningSurvey6X(MiningSurveyIlmari6X)" },
             { RecipeEffect.CreateMiningSurvey7X_MiningSurveyIlmari7X, "CreateMiningSurvey7X(MiningSurveyIlmari7X)" },
+            { RecipeEffect.CreateMiningSurvey7X_MiningSurveyGazluk7X, "CreateMiningSurvey7X(MiningSurveyGazluk7X)" },
+            { RecipeEffect.CreateMiningSurvey8X_MiningSurveyGazluk8X, "CreateMiningSurvey8X(MiningSurveyGazluk8X)" },
         };
 
         public static readonly Dictionary<RecipeAction, string> RecipeActionStringMap = new Dictionary<RecipeAction, string>()
@@ -1326,6 +1328,9 @@ namespace PgJsonObjects
             { AbilityKeyword.Projectile, "Projectile" },
             { AbilityKeyword.ViperAttack, "Viper Attack" },
             { AbilityKeyword.SpiderPuntEnabled, "Spider Punt Enabled" },
+            { AbilityKeyword.CombatRefreshTrigger, "Combat Refresh Trigger" },
+            { AbilityKeyword.MinorHealAttack, "Minor Heal Attack" },
+            { AbilityKeyword.MinorHealTargeted, "Minor Heal Targeted" },
         };
 
         public static readonly Dictionary<AbilityPetType, string> AbilityPetTypeTextMap = new Dictionary<AbilityPetType, string>()
@@ -1438,6 +1443,7 @@ namespace PgJsonObjects
             { WorkOrderSign.RahuWorkOrderSign, "Rahu Work Order Sign" },
             { WorkOrderSign.Desert1WorkOrderSign, "Ilmari Work Order Sign" },
             { WorkOrderSign.KurMountainsWorkOrderSign, "Kur Mountains Work Order Sign" },
+            { WorkOrderSign.FaeRealm1WorkOrderSign, "Fae Realm Work Order Sign" },
         };
 
         public static readonly Dictionary<AbilityTarget, string> AbilityTargetTextMap = new Dictionary<AbilityTarget, string>()
@@ -1484,6 +1490,7 @@ namespace PgJsonObjects
             { AbilityTargetParticle.AcidBomb, "Acid Bomb" },
             { AbilityTargetParticle.GroundImpact, "Ground Impact" },
             { AbilityTargetParticle.ElectricityHit, "Electricity Hit" },
+            { AbilityTargetParticle.CombatRefresh, "Combat Refresh" },
         };
 
         public static readonly Dictionary<TooltipsExtraKeywords, string> TooltipsExtraKeywordsTextMap = new Dictionary<TooltipsExtraKeywords, string>()
@@ -1509,7 +1516,7 @@ namespace PgJsonObjects
             { EffectParticle.Internal_None, "None" },
             { EffectParticle.ActionParticle, "Action Particle" },
             { EffectParticle.SFX_Coins, "Coins" },
-            { EffectParticle.CombatRefresh, "Combat Refresh" },
+            //{ EffectParticle.CombatRefresh, "Combat Refresh" },
             { EffectParticle.SmallBuff, "Small Buff" },
             { EffectParticle.HolyDefense, "Holy Defense" },
             { EffectParticle.Mezzed, "Mezzed" },
@@ -2160,6 +2167,12 @@ namespace PgJsonObjects
             { EffectKeyword.SpiderPuntEnabled, "Spider Punt Enabled" },
             { EffectKeyword.PixieBuff, "Pixie Buff" },
             { EffectKeyword.LethargyPuckCurse, "Lethargy Puck Curse" },
+            { EffectKeyword.LiveEvent_Crafting, "Live Event (Crafting)" },
+            { EffectKeyword.LiveEvent_CivilService, "Live Event (Civil Service)" },
+            { EffectKeyword.InnateArmorSetBonus, "Innate Armor Set Bonus" },
+            { EffectKeyword.LeatherArmorSuitTimeout, "Leather Armor Suit Timeout" },
+            { EffectKeyword.MetalArmorSuitTimeout, "Metal Armor Suit Timeout" },
+            { EffectKeyword.ClothArmorSuitTimeout, "Cloth Armor Suit Timeout" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -3229,6 +3242,9 @@ namespace PgJsonObjects
             { ItemKeyword.ElvishStyle, "Elvish Style" },
             { ItemKeyword.Wand, "Wand" },
             { ItemKeyword.FairyChime, "Fairy Chime" },
+            { ItemKeyword.GoldenAcorn, "Golden Acorn" },
+            { ItemKeyword.Parchment7, "Parchment #7" },
+            { ItemKeyword.SemiRealHassium, "Semi-Real Hassium" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -3364,7 +3380,7 @@ namespace PgJsonObjects
             { QuestKeyword.BroadcastCompletion, "Broadcast Completion" },
             { QuestKeyword.DruidGroup, "Druid Group" },
             { QuestKeyword.WorkOrder, "Work Order" },
-            { QuestKeyword.Lint_CannotComplete, "Cannot Complete" },
+            //{ QuestKeyword.Lint_CannotComplete, "Cannot Complete" },
             { QuestKeyword.EventQuest, "Event Quest" },
             { QuestKeyword.ChirrraSoloQuest, "Chirrra Solo Quest" },
             { QuestKeyword.Agrashab_1, "Agrashab #1" },
@@ -3426,11 +3442,13 @@ namespace PgJsonObjects
             { RecipeAction.Brew, "Brew" },
             { RecipeAction.PrepareCask, "Prepare Cask" },
             { RecipeAction.SortGrass, "Sort Grass" },
-            //{ RecipeAction.Grill, "Grill" },
             { RecipeAction.TapKeg, "Tap Keg" },
             { RecipeAction.RendSpaceTime, "Rend Space-Time" },
             { RecipeAction.PerformTheRitual, "Perform the Ritual" },
             { RecipeAction.WaxShield, "Wax Shield" },
+            { RecipeAction.Enhance, "Enhance" },
+            { RecipeAction.Combine, "Combine" },
+            { RecipeAction.Melt, "Melt" },
         };
 
         public static readonly Dictionary<RecipeUsageAnimation, string> RecipeUsageAnimationTextMap = new Dictionary<RecipeUsageAnimation, string>()
@@ -3728,6 +3746,8 @@ namespace PgJsonObjects
             { RecipeEffect.ResearchIceMagic75, "Research Ice Magic, Level 75" },
             { RecipeEffect.ResearchIceMagic80, "Research Ice Magic, Level 80" },
             { RecipeEffect.TeleportToNearbyMushroomCircle, "Teleport To Nearby Mushroom Circle" },
+            { RecipeEffect.CreateMiningSurvey7X_MiningSurveyGazluk7X, "Create Motherlode Mining Survey (Astounding, Gazluk)" },
+            { RecipeEffect.CreateMiningSurvey8X_MiningSurveyGazluk8X, "Create Motherlode Mining Survey (Superb, Gazluk)" },
         };
 
         public static readonly Dictionary<DecomposeMaterial, string> DecomposeMaterialTextMap = new Dictionary<DecomposeMaterial, string>()
@@ -3833,6 +3853,7 @@ namespace PgJsonObjects
             { CraftedBoost.CraftedPriestNecklace, "Crafted Priest Necklace" },
             { CraftedBoost.CraftedRing, "Crafted Ring" },
             { CraftedBoost.CraftedNecroNecklace, "Crafted Necro Necklace" },
+            { CraftedBoost.CraftedColdRing, "Crafted Cold Ring" },
         };
 
         public static readonly Dictionary<EnhancementEffect, string> EnhancementEffectTextMap = new Dictionary<EnhancementEffect, string>()
@@ -4003,6 +4024,9 @@ namespace PgJsonObjects
             { RecipeItemKey.ReusableHardLiquorBarrel, "Reusable Hard Liquor Barrel" },
             { RecipeItemKey.BlueCheese, "BlueC heese" },
             { RecipeItemKey.ImpressiveHumanoidSkull, "Impressive Humanoid Skull" },
+            { RecipeItemKey.OrganicPants, "Organic Pants" },
+            { RecipeItemKey.OrganicShirt, "Organic Shirt" },
+            { RecipeItemKey.Wand, "Wand" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
@@ -4030,7 +4054,7 @@ namespace PgJsonObjects
             { XpTableEnum.Guild, "Guild" },
             { XpTableEnum.AuxCombatSkill, "Aux Combat Skill" },
             { XpTableEnum.Lore, "Lore" },
-            { XpTableEnum.AuxCombatSkillEx, "Auxiliary Combat Skill #B" },
+            //{ XpTableEnum.AuxCombatSkillEx, "Auxiliary Combat Skill #B" },
             { XpTableEnum.AuxCraftingSkill, "Auxiliary Crafting Skill" },
             { XpTableEnum.VeryCheapRecipe, "Very Cheap Recipe" },
             { XpTableEnum.CheapRecipe, "Cheap Recipe" },
@@ -4048,6 +4072,7 @@ namespace PgJsonObjects
             { XpTableEnum.ShamanicInfusion, "Shamanic Infusion" },
             { XpTableEnum.TypicalNoncombatSkill_CappedAt50, "Typical Non-combat Skill, Capped At 50" },
             { XpTableEnum.TypicalNoncombatSkill_FastTo50, "Typical Non-combat Skill, Fast To 50" },
+            { XpTableEnum.AuxCombatSkill_FastTo50, "Aux Combat Skill, Fast To 50" },
         };
 
         public static readonly Dictionary<AbilityTypeTag, string> AbilityTypeTagTextMap = new Dictionary<AbilityTypeTag, string>()
@@ -4879,9 +4904,9 @@ namespace PgJsonObjects
             { SpecialNpc.NPC_GoblinDoorGuard, "Goblin Door Guard" },
             { SpecialNpc.NPC_Glortok, "Glortok" },
             { SpecialNpc.NPC_InjuredRakshasa, "Injured Rakshasa" },
-            //{ SpecialNpc.NPC_Felmer, "Felmer" },
             { SpecialNpc.NPC_Uriana, "Uriana" },
             { SpecialNpc.NPC_AgrashabGod, "Agrashab God" },
+            { SpecialNpc.NPC_AuShin, "Au Shin" },
         };
 
         public static readonly Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap = new Dictionary<LoreBookKeyword, string>()

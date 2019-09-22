@@ -10,5 +10,6 @@
         RahuWorkOrderSign,
         Desert1WorkOrderSign,
         KurMountainsWorkOrderSign,
+        FaeRealm1WorkOrderSign,
     }
 }

@@ -24,5 +24,6 @@
         AcidBomb,
         GroundImpact,
         ElectricityHit,
+        CombatRefresh,
     }
 }

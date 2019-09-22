@@ -5,7 +5,7 @@
         Internal_None,
         ActionParticle,
         SFX_Coins,
-        CombatRefresh,
+        //CombatRefresh,
         SmallBuff,
         HolyDefense,
         Mezzed,

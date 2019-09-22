@@ -33,10 +33,12 @@
         Brew,
         PrepareCask,
         SortGrass,
-        //Grill,
         TapKeg,
         RendSpaceTime,
         PerformTheRitual,
         WaxShield,
+        Enhance,
+        Combine,
+        Melt,
     }
 }

@@ -515,5 +515,8 @@
         Projectile,
         ViperAttack,
         SpiderPuntEnabled,
+        CombatRefreshTrigger,
+        MinorHealAttack,
+        MinorHealTargeted,
     }
 }

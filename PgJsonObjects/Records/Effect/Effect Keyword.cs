@@ -225,5 +225,11 @@
         SpiderPuntEnabled,
         PixieBuff,
         LethargyPuckCurse,
+        LiveEvent_Crafting,
+        LiveEvent_CivilService,
+        InnateArmorSetBonus,
+        LeatherArmorSuitTimeout,
+        MetalArmorSuitTimeout,
+        ClothArmorSuitTimeout,
     }
 }

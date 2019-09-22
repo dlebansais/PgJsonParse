@@ -205,7 +205,7 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawCombat = value,
                 GetBool = () => RawCombat } },
-            { "CompatibleCombatSkills", new FieldParser() {
+            { "TSysCompatibleCombatSkills", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<PowerSkill>.ParseList(value, CompatibleCombatSkillList, errorInfo),
                 GetStringArray = () => StringToEnumConversion<PowerSkill>.ToStringList(CompatibleCombatSkillList) } },

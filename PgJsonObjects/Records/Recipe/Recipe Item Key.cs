@@ -114,5 +114,8 @@
         ReusableHardLiquorBarrel,
         BlueCheese,
         ImpressiveHumanoidSkull,
+        OrganicPants,
+        OrganicShirt,
+        Wand,
     }
 }

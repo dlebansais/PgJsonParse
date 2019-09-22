@@ -98,7 +98,7 @@ namespace PgJsonObjects
             { "Combat", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawCombat } },
-            { "CompatibleCombatSkills", new FieldParser() {
+            { "TSysCompatibleCombatSkills", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => StringToEnumConversion<PowerSkill>.ToStringList(CompatibleCombatSkillList) } },
             { "MaxBonusLevels", new FieldParser() {

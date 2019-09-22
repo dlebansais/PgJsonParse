@@ -83,6 +83,7 @@ namespace PgJsonObjects
         public bool? RawIsQuestRequirementListNested { get; private set; }
         public bool IsLearnAbility { get { return RawIsLearnAbility.HasValue && RawIsLearnAbility.Value; } }
         public bool? RawIsLearnAbility { get; private set; }
+        public IPgSkill RewardXpSkill { get; private set; }
         public IPgQuestRewardCollection QuestRewardList { get; private set; } = new QuestRewardCollection();
         public List<string> RawRewardInteractionFlags { get; private set; } = new List<string>();
         public IPgPlayerTitle RewardTitle { get; private set; }
@@ -104,6 +105,8 @@ namespace PgJsonObjects
         private bool IsConnectedWorkOrderSkillParsed;
         private List<string> RawFollowUpQuestList = new List<string>();
         private List<string> RawPreGiveEffectList { get; } = new List<string>();
+        private PowerSkill RawRewardXpSkill;
+        private int RawRewardXpValue;
         #endregion
 
         #region Indirect Properties
@@ -653,6 +656,31 @@ namespace PgJsonObjects
                     {
                         RawIsLearnAbility = true;
                         this.RawRewardAbility = RawRewardLearnAbility;
+                        return true;
+                    }
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+
+                return false;
+            }
+
+            else if (RawRewardEffect.StartsWith("GiveXP("))
+            {
+                int IndexEnd = RawRewardEffect.IndexOf(')');
+                if (IndexEnd >= 7)
+                {
+                    string RawRewardGiveXp = RawRewardEffect.Substring(7, IndexEnd - 7);
+                    string[] Split = RawRewardGiveXp.Split(',');
+
+                    if (Split.Length == 2 && StringToEnumConversion<PowerSkill>.TryParse(Split[0], out PowerSkill ParsedSkill, ErrorInfo) && int.TryParse(Split[1], out int XpValue))
+                    {
+                        QuestRewardXp NewReward = new QuestRewardXp();
+                        NewReward.RawSkill = ParsedSkill;
+                        NewReward.RawXp = XpValue;
+                        RewardsXPList.Add(NewReward);
                         return true;
                     }
                     else

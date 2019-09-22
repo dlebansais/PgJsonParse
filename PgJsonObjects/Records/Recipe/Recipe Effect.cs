@@ -279,6 +279,8 @@
         ResearchIceMagic75,
         ResearchIceMagic80,
         TeleportToNearbyMushroomCircle,
+        CreateMiningSurvey7X_MiningSurveyGazluk7X,
+        CreateMiningSurvey8X_MiningSurveyGazluk8X,
 
         ExtractTSysPower,
         RepairItemDurability,
