@@ -1,12 +1,13 @@
 ﻿using Presentation;
+using System.Diagnostics;
 #if CSHARP_XAML_FOR_HTML5
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 #else
 using System;
 using System.Windows;
+using System.Windows.Threading;
 #endif
 
 namespace PgJsonParse
@@ -29,8 +30,15 @@ namespace PgJsonParse
                 Debug.WriteLine("App Exception: " + e.Message);
             }
 #else
+            DispatcherUnhandledException += OnDispatcherUnhandledException;
+
             StartupUri = new Uri("PrologueWindow.xaml", UriKind.Relative);
 #endif
+        }
+
+        void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            Debug.WriteLine($"Unhandled Exception: " + e.Exception.Message);
         }
 
         public static void SetMainWindow(RootControl window)
