@@ -516,8 +516,11 @@ namespace PgJsonParse
 
         private void LoadBuild()
         {
-            if (FileTools.OpenTextFile(ref BuildFileName, out string Content))
+            string LoadedBuildFileName = BuildFileName;
+            if (FileTools.OpenTextFile(ref LoadedBuildFileName, out string Content))
             {
+                BuildFileName = LoadedBuildFileName;
+
                 UpdateSelections(Content);
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => LoadBuild(Content)));
             }
@@ -728,7 +731,10 @@ namespace PgJsonParse
             using (StringWriter sw = new StringWriter())
             {
                 SaveBuild(sw);
-                FileTools.SaveTextFile(ref BuildFileName, sw.ToString());
+
+                string LoadedBuildFileName = BuildFileName;
+                FileTools.SaveTextFile(ref LoadedBuildFileName, sw.ToString());
+                BuildFileName = LoadedBuildFileName;
             }
         }
 
@@ -1018,7 +1024,20 @@ namespace PgJsonParse
         }
 
         private List<SlotPlaner> SlotPlanerList;
-        private string BuildFileName;
+
+        public string BuildFileName
+        {
+            get { return _BuildFileName; }
+            set
+            {
+                if (_BuildFileName != value)
+                {
+                    _BuildFileName = value;
+                    NotifyThisPropertyChanged();
+                }
+            }
+        }
+        public string _BuildFileName;
         #endregion
 
         #region Gear Planer

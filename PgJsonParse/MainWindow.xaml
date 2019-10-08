@@ -5680,9 +5680,17 @@
                             </Border>
                             <TextBlock Background="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,0,0,0" Padding="2,0,2,0">Gear Selection</TextBlock>
                         </Grid>
-                        <Button DockPanel.Dock="Right" Command="{StaticResource CopyBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0">Copy to Clipboard</Button>
-                        <Button DockPanel.Dock="Right" Command="{StaticResource SaveBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0">Save profile...</Button>
-                        <Button DockPanel.Dock="Right" Command="{StaticResource LoadBuildCommand}" VerticalAlignment="Top" Width="120" Height="24" Margin="0,22,10,0">Load profile...</Button>
+                        <DockPanel DockPanel.Dock="Right" VerticalAlignment="Top" Margin="0,22,10,0">
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <Button Command="{StaticResource CopyBuildCommand}" Width="120" Height="24">Copy to Clipboard</Button>
+                                <Button Command="{StaticResource SaveBuildCommand}" Width="120" Height="24" Margin="10,0,0,0">Save profile...</Button>
+                                <Button Command="{StaticResource LoadBuildCommand}" Width="120" Height="24" Margin="10,0,0,0">Load profile...</Button>
+                            </StackPanel>
+                            <DockPanel Margin="0,10,0,0">
+                                <TextBlock DockPanel.Dock="Left">Last loaded profile:</TextBlock>
+                                <TextBlock Text="{Binding BuildFileName}" Margin="10,0,0,0" TextTrimming="CharacterEllipsis"/>
+                            </DockPanel>
+                        </DockPanel>
                     </DockPanel>
                     <TabControl Loaded="OnTabControlLoaded" Margin="0,10,0,0">
                         <TabItem HeaderTemplate="{StaticResource PlanerHeaderTemplate}" Header="{Binding HeadSlotPlaner}">
