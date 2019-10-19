@@ -304,5 +304,10 @@
         IceheartSustenance,
         ElementalWardElectricity,
         FieldProphylactic,
+        ConditioningShockElectricityDebuff,
+        ConditioningShockFireDebuff,
+        CoordinatedAssaultAttacksCheaper,
+        CoordinatedAssaultMaxHealth,
+        CoordinatedAssaultMaxArmor,
     }
 }

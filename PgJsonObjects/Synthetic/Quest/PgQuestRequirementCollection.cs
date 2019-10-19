@@ -41,6 +41,12 @@ namespace PgJsonObjects
                 case OtherRequirementType.HangOutCompleted:
                     return new PgHangOutCompletedQuestRequirement(data, ref offset);
 
+                case OtherRequirementType.IsWarden:
+                    return new PgIsWardenQuestRequirement(data, ref offset);
+
+                case OtherRequirementType.AreaEventOn:
+                    return new PgAreaEventOnQuestRequirement(data, ref offset);
+
                 default:
                     throw new InvalidOperationException();
             }

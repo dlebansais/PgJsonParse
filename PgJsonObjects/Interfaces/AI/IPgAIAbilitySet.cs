@@ -788,5 +788,6 @@
         IPgAIAbility WaspSlowB { get; }
         IPgAIAbility PixieSlash { get; }
         IPgAIAbility PixieRageSlash { get; }
+        IPgAIAbility StunTrapExplode { get; }
     }
 }

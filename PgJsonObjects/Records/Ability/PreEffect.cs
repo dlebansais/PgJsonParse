@@ -22,5 +22,7 @@
         EndBardSong,
         MambaStrikeLowArmorDmgMod,
         SuperZombie8,
+        LethalForceAnimalDmgMod,
+        PrivacyFieldSetDmg,
     }
 }

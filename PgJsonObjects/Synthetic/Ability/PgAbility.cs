@@ -189,9 +189,9 @@ namespace PgJsonObjects
             { "CombatRefreshBaseAmount", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => RawCombatRefreshBaseAmount } },
-            { "CompatibleSkills", new FieldParser() {
+            /*{ "CompatibleSkills", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => StringToEnumConversion<PowerSkill>.ToSingleOrEmptyStringList(CompatibleSkill) } },
+                GetStringArray = () => StringToEnumConversion<PowerSkill>.ToSingleOrEmptyStringList(CompatibleSkill) } },*/
             { "ConsumedItemChance", new FieldParser() {
                 Type = FieldType.Float,
                 GetFloat = () => RawConsumedItemChance } },

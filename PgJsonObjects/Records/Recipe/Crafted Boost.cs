@@ -67,5 +67,6 @@
         CraftedRing,
         CraftedNecroNecklace,
         CraftedColdRing,
+        BatWitchHat,
     }
 }

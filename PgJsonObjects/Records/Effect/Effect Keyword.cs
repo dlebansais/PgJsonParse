@@ -231,5 +231,11 @@
         LeatherArmorSuitTimeout,
         MetalArmorSuitTimeout,
         ClothArmorSuitTimeout,
+        PigFlight,
+        ConfusingDoubleExtra1,
+        ConfusingDoubleExtra2,
+        StunTrapExtraA,
+        StunTrapExtraB,
+        Power,
     }
 }

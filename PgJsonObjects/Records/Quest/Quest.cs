@@ -87,6 +87,8 @@ namespace PgJsonObjects
         public IPgQuestRewardCollection QuestRewardList { get; private set; } = new QuestRewardCollection();
         public List<string> RawRewardInteractionFlags { get; private set; } = new List<string>();
         public IPgPlayerTitle RewardTitle { get; private set; }
+        public IPgQuestRewardCurrencyCollection RewardsCurrencyList { get; } = new QuestRewardCurrencyCollection();
+        public IPgQuestRewardItemCollection QuestMidwayGiveItemList { get; } = new QuestRewardItemCollection();
 
         private bool IsFavorNpcParsed;
         private string RawRewardAbility;
@@ -105,8 +107,8 @@ namespace PgJsonObjects
         private bool IsConnectedWorkOrderSkillParsed;
         private List<string> RawFollowUpQuestList = new List<string>();
         private List<string> RawPreGiveEffectList { get; } = new List<string>();
-        private PowerSkill RawRewardXpSkill;
-        private int RawRewardXpValue;
+        //private PowerSkill RawRewardXpSkill;
+        //private int RawRewardXpValue;
         #endregion
 
         #region Indirect Properties
@@ -154,6 +156,10 @@ namespace PgJsonObjects
                 Type = FieldType.Object,
                 ParseObject = ParseRewards_XP,
                 GetObject = GetXPRewards } },
+            { "Rewards_Currency", new FieldParser() {
+                Type = FieldType.Object,
+                ParseObject = ParseRewards_Currency,
+                GetObject = GetCurrencyRewards } },
             { "Rewards_Items", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<QuestRewardItem>.ParseList("RewardItems", value, QuestRewardsItemList, errorInfo),
@@ -291,6 +297,10 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawPreGiveEffectList.Add(value),
                 GetStringArray = () => RawPreGiveEffectList } },
+            { "MidwayGiveItems", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<QuestRewardItem>.ParseList("Quest MidwayGiveItem", value, QuestMidwayGiveItemList, errorInfo),
+                GetObjectArray = () => QuestMidwayGiveItemList } },
         }; } }
 
         private void ParseName(string value, ParseErrorInfo ErrorInfo)
@@ -336,6 +346,34 @@ namespace PgJsonObjects
 
             foreach (QuestRewardXp Item in RewardsXPList)
                 Rewards.SetFieldValue(Item.RawSkill, Item.Xp);
+
+            return Rewards;
+        }
+
+        private void ParseRewards_Currency(JsonObject value, ParseErrorInfo ErrorInfo)
+        {
+            foreach (KeyValuePair<string, IJsonValue> RawRewardCurrency in value)
+            {
+                Currency ParsedCurrency;
+                if (StringToEnumConversion<Currency>.TryParse(RawRewardCurrency.Key, out ParsedCurrency, ErrorInfo))
+                {
+                    JsonInteger AsJsonInteger;
+                    if ((AsJsonInteger = RawRewardCurrency.Value as JsonInteger) != null)
+                    {
+                        QuestRewardCurrency NewReward = new QuestRewardCurrency();
+                        NewReward.Currency = ParsedCurrency;
+                        NewReward.RawAmount = AsJsonInteger.Number;
+                        RewardsCurrencyList.Add(NewReward);
+                    }
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("Quest RewardsCurrency");
+                }
+            }
+        }
+
+        private IObjectContentGenerator GetCurrencyRewards()
+        {
+            XPReward Rewards = new XPReward();
 
             return Rewards;
         }
@@ -854,7 +892,7 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, Item.Description);
                 foreach (QuestRewardXp Reward in RewardsXPList)
                     AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Reward.RawSkill]);
-                foreach (QuestRewardItem Reward in QuestRewardsItemList)
+                foreach (IPgQuestRewardItem Reward in QuestRewardsItemList)
                     AddWithFieldSeparator(ref Result, Reward.QuestItem.Name);
                 if (FavorNpc != null)
                 {
@@ -877,9 +915,9 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, RewardSkill.Name);
                 if (RewardRecipe != null)
                     AddWithFieldSeparator(ref Result, RewardRecipe.Name);
-                foreach (QuestRewardItem Item in PreGiveItemList)
+                foreach (IPgQuestRewardItem Item in PreGiveItemList)
                     AddWithFieldSeparator(ref Result, Item.QuestItem.Name);
-                foreach (Recipe Item in PreGiveRecipeList)
+                foreach (IPgRecipe Item in PreGiveRecipeList)
                     AddWithFieldSeparator(ref Result, Item.Name);
                 foreach (QuestKeyword Keyword in KeywordList)
                     AddWithFieldSeparator(ref Result, TextMaps.QuestKeywordTextMap[Keyword]);
@@ -897,8 +935,12 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[RawWorkOrderSkill]);
                 if (DisplayedLocation != MapAreaName.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.MapAreaNameTextMap[DisplayedLocation]);
-                foreach (Quest Item in FollowUpQuestList)
+                foreach (IPgQuest Item in FollowUpQuestList)
                     AddWithFieldSeparator(ref Result, Item.Name);
+                foreach (IPgQuestRewardCurrency Reward in RewardsCurrencyList)
+                    AddWithFieldSeparator(ref Result, TextMaps.CurrencyTextMap[Reward.Currency]);
+                foreach (IPgQuestRewardItem Item in QuestMidwayGiveItemList)
+                    AddWithFieldSeparator(ref Result, Item.QuestItem.Name);
 
                 return Result;
             }
@@ -1029,6 +1071,9 @@ namespace PgJsonObjects
 
             if (RawRewardBestowTitle != null)
                 RewardTitle = PlayerTitle.ConnectSingleProperty(ErrorInfo, PlayerTitleTable, RawRewardBestowTitle, RewardTitle, ref IsRawTitleParsed, ref IsConnected, this);
+
+            foreach (QuestRewardItem Item in QuestMidwayGiveItemList)
+                IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
             return IsConnected;
         }
@@ -1163,8 +1208,10 @@ namespace PgJsonObjects
             AddObjectList(QuestRewardList, data, ref offset, BaseOffset, 176, StoredObjectListTable);
             AddStringList(RawRewardInteractionFlags, data, ref offset, BaseOffset, 180, StoredStringListTable);
             AddObject(RewardTitle as ISerializableJsonObject, data, ref offset, BaseOffset, 184, StoredObjectTable);
+            AddObjectList(RewardsCurrencyList, data, ref offset, BaseOffset, 188, StoredObjectListTable);
+            AddObjectList(QuestMidwayGiveItemList, data, ref offset, BaseOffset, 192, StoredObjectListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 188, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 196, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

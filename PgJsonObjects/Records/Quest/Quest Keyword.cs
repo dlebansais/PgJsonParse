@@ -16,5 +16,6 @@
         Agrashab_3,
         Agrashab_4,
         Agrashab_5,
+        WarCache,
     }
 }

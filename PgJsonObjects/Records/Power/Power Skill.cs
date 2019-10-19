@@ -156,6 +156,7 @@
         Gaming,
         Safecracking,
         JewelryCrafting,
+        Warden,
     }
 }
 

@@ -954,5 +954,11 @@
         GoldenAcorn,
         Parchment7,
         SemiRealHassium,
+        Gizmo,
+        LeatherworkingRecipe,
+        Nuts,
+        Pepper,
+        SweetRoastedPumpkin,
+        PumpkinSalad,
     }
 }

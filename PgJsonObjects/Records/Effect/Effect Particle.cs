@@ -110,5 +110,8 @@
         AcidBite,
         ElectricityPerm,
         ElectricityHit,
+        FlyCloud,
+        StormArmor,
+        ElectricityHit2,
     }
 }

@@ -28,5 +28,7 @@
         IsNotGuest,
         IsNotInHotspot,
         HangOutCompleted,
+        IsWarden,
+        AreaEventOn,
     }
 }

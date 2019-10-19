@@ -324,6 +324,7 @@ namespace PgJsonObjects
             { "FaeRealmBossBoost1", "Fae Realm Boss #1" },
             { "FaeRealmBossBoost2", "Fae Realm Boss #2" },
             { "PetBee", "Bee Pet" },
+            { "ShockMine", "Shock Mine" },
         };
     }
 }

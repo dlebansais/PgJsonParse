@@ -1762,6 +1762,9 @@
         <DataTemplate x:Key="IsLongTimeAnimalQuestRequirementTemplate">
             <TextBlock>Animal for a long time</TextBlock>
         </DataTemplate>
+        <DataTemplate x:Key="IsWardenQuestRequirementTemplate">
+            <TextBlock>Warden</TextBlock>
+        </DataTemplate>
         <DataTemplate x:Key="MinFavorLevelQuestRequirementTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="0,0,5,0">At least</TextBlock>
@@ -3325,6 +3328,23 @@
                 <TextBlock>)</TextBlock>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="SearchResultQuestContent_CurrencyReward_ItemTemplateFirst">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Currency, Converter={StaticResource convEnumToText}, ConverterParameter=CurrencyTextMap}"/>
+                <TextBlock Margin="5,0,0,0">(</TextBlock>
+                <TextBlock Text="{Binding Amount}"/>
+                <TextBlock>)</TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultQuestContent_CurrencyReward_ItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                <TextBlock Text="{Binding Currency, Converter={StaticResource convEnumToText}, ConverterParameter=CurrencyTextMap}"/>
+                <TextBlock Margin="5,0,0,0">(</TextBlock>
+                <TextBlock Text="{Binding Amount}"/>
+                <TextBlock>)</TextBlock>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="SearchResultQuestContent_ItemReward_ItemTemplateFirst">
             <StackPanel Orientation="Horizontal">
                 <TextBlock TextWrapping="Wrap">
@@ -3341,6 +3361,37 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="SearchResultQuestContent_ItemReward_ItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink x:Name="hyperlink_QuestRewardItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
+                        <Run>
+                            <Binding Path="QuestItem.Name" Mode="OneWay"/>
+                        </Run>
+                    </Hyperlink>
+                </TextBlock>
+                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                    <TextBlock>x</TextBlock>
+                    <TextBlock Text="{Binding StackSize}"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultQuestContent_MidwayGiveItem_ItemTemplateFirst">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink x:Name="hyperlink_QuestRewardItem_QuestItem" Click="OnRequestNavigate" NavigateUri="unused">
+                        <Run>
+                            <Binding Path="QuestItem.Name" Mode="OneWay"/>
+                        </Run>
+                    </Hyperlink>
+                </TextBlock>
+                <StackPanel Visibility="{Binding HasStackSize, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" Margin="5,0,0,0">
+                    <TextBlock>x</TextBlock>
+                    <TextBlock Text="{Binding StackSize}"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultQuestContent_MidwayGiveItem_ItemTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="0,0,5,0">,</TextBlock>
                 <TextBlock TextWrapping="Wrap">
@@ -3493,6 +3544,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -3669,6 +3721,21 @@
                             <Binding Path="RawRewardAllowBonusXp" Converter="{StaticResource convNullableBooleanToObject}" ConverterParameter="{StaticResource NoYesNull}"/>
                         </TextBlock.Text>
                     </TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Currency Rewards:</TextBlock>
+                    <Grid Grid.Column="1" Grid.Row="19" Margin="5,10,0,0">
+                        <ItemsControl x:Name="ctrl_SearchResultQuestContent_CurrencyReward" ItemsSource="{Binding RewardsCurrencyList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <app:ListMemberSelector x:Name="SearchResultQuestContent_CurrencyReward" Content="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
                     <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Favor Reward:</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="0" TextWrapping="Wrap" Margin="5,0,0,0">
                         <TextBlock.Text>
@@ -3831,6 +3898,21 @@
                             </Run>
                         </Hyperlink>
                     </TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="19" TextAlignment="Right" Margin="0,10,0,0">Midway Give Items:</TextBlock>
+                    <Grid Grid.Column="3" Grid.Row="19" Margin="5,10,0,0">
+                        <ItemsControl x:Name="ctrl_SearchResultQuestContent_MidwayGiveItem" ItemsSource="{Binding QuestMidwayGiveItemList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <app:ListMemberSelector x:Name="SearchResultQuestContent_MidwayGiveItem" Content="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
                 </Grid>
                 <Grid VerticalAlignment="Top" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>

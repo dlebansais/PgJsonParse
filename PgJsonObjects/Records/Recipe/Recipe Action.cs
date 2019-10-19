@@ -40,5 +40,6 @@
         Enhance,
         Combine,
         Melt,
+        AttuneMind,
     }
 }

@@ -129,9 +129,9 @@ namespace PgJsonObjects
             { "AuxCombat", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawAuxCombat } },
-            { "TSysCategories", new FieldParser() {
+            /*{ "TSysCategories", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
-                GetStringArray = () => StringToEnumConversion<SkillCategory>.ToStringList(TSysCategoryList) } },
+                GetStringArray = () => StringToEnumConversion<SkillCategory>.ToStringList(TSysCategoryList) } },*/
             { "RecipeIngredientKeywords", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(RecipeIngredientKeywordList) } },

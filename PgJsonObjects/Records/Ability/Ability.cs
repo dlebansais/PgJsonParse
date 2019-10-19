@@ -218,10 +218,10 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawCombatRefreshBaseAmount = value,
                 GetInteger = () => RawCombatRefreshBaseAmount } },
-            { "CompatibleSkills", new FieldParser() {
+            /*{ "CompatibleSkills", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => CompatibleSkill = StringToEnumConversion<PowerSkill>.Parse(value, errorInfo),
-                GetStringArray = () => StringToEnumConversion<PowerSkill>.ToSingleOrEmptyStringList(CompatibleSkill) } },
+                GetStringArray = () => StringToEnumConversion<PowerSkill>.ToSingleOrEmptyStringList(CompatibleSkill) } },*/
             { "ConsumedItemChance", new FieldParser() {
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawConsumedItemChance = value,
@@ -462,7 +462,14 @@ namespace PgJsonObjects
 
             s = s.Replace("vs.", "vs");
 
-            int Index = s.IndexOf(". ");
+            int Index = 0;
+
+            do
+            {
+                Index = s.IndexOf(". ", Index + 1);
+            }
+            while ((Index >= 0 && s.Length >= Index + 3 && s.Substring(Index, 3) == ". (") || (Index >= 6 && s.Substring(Index - 6, 7) == "approx."));
+
             if (Index >= 0)
             {
                 string s1 = s.Substring(0, Index);
@@ -541,7 +548,7 @@ namespace PgJsonObjects
             else if (s == "Target is pulled toward you")
                 AddResult(new AbilityAdditionalResult(AbilityEffect.Pull, TimeSpan.Zero));
 
-            else if (s == "Hits all targets within range")
+            else if (s == "Hits all targets within range. (But always consumes exactly 5 arrows.)")
                 AddResult(new AbilityAdditionalResult(AbilityEffect.PointBlankAoE, TimeSpan.Zero));
 
             else if (Tools.Scan(s, "Target becomes mesmerized for %d seconds, or until attacked", args))
@@ -748,7 +755,7 @@ namespace PgJsonObjects
                 AddResult(AdditionalResult);
             }
 
-            else if (Tools.Scan(s, "You mitigate %d damage from %{DamageType}, %{DamageType}, and %{DamageType} attacks", args))
+            else if (Tools.Scan(s, "You mitigate %d damage from %{DamageType}, %{DamageType}, and %{DamageType} attacks. (10 seconds)", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.Mitigation, TimeSpan.FromSeconds(666));
                 AdditionalResult.Target = AbilityEffectTarget.Self;
@@ -935,7 +942,7 @@ namespace PgJsonObjects
                 AddResult(AdditionalResult);
             }
 
-            else if (Tools.Scan(s, "Pet switches to Defend mode, and is directed to attack the foes that are focused on you", args))
+            else if (Tools.Scan(s, "Pet switches to Defend mode, and is directed to attack the foes that are focused on you. (How well the pet focuses on your enemies depends in part on the pet's Bond Level.)", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.DefendMode, TimeSpan.Zero);
                 AdditionalResult.Target = AbilityEffectTarget.Pet;
@@ -1451,15 +1458,12 @@ namespace PgJsonObjects
                 AddResult(AdditionalResult);
             }
 
-            else if (Tools.Scan(s, "For %d seconds, target's attacks have a %d%% chance to miss", args))
+            else if (Tools.Scan(s, "For %d seconds, target's attacks have a %d%% chance to miss. (This effect does not stack with other druids' castings.)", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.AccuracyBoost, TimeSpan.FromSeconds((int)args[0]));
                 AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[1], IsPercent = true });
                 AddResult(AdditionalResult);
             }
-
-            else if (Tools.Scan(s, "(This effect does not stack with other druids' castings.)", args))
-                return;
 
             else if (Tools.Scan(s, "%{DamageType}, %{DamageType}, %{DamageType}, and %{DamageType} attack mitigation %d, Speed %d%%", args))
             {
@@ -1599,15 +1603,12 @@ namespace PgJsonObjects
                 AddResult(AdditionalResult);
             }
 
-            else if (Tools.Scan(s, "Target's Evasion is reduced by %d for %d seconds", args))
+            else if (Tools.Scan(s, "Target's Evasion is reduced by %d for %d seconds. (This effect stacks with itself.)", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.EvasionVsAll, TimeSpan.FromSeconds((int)args[1]));
                 AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = -((int)args[0]) });
                 AddResult(AdditionalResult);
             }
-
-            else if (Tools.Scan(s, "(This effect stacks with itself.)", args))
-                return;
 
             else if (Tools.Scan(s, "You gain %d%% Melee Evasion for %d seconds", args))
             {
@@ -1791,14 +1792,6 @@ namespace PgJsonObjects
             else if (Tools.Scan(s, "Direct attacks deal %d extra damage", args))
             {
                 AdditionalResult = new AbilityAdditionalResult(AbilityEffect.DirectDamageBoost, TimeSpan.FromSeconds(666));
-                AdditionalResult.Target = AbilityEffectTarget.Self;
-                AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0] });
-                AddResult(AdditionalResult);
-            }
-
-            else if (Tools.Scan(s, "(But always consumes exactly %d arrows.)", args))
-            {
-                AdditionalResult = new AbilityAdditionalResult(AbilityEffect.ConsumeArrows, TimeSpan.Zero);
                 AdditionalResult.Target = AbilityEffectTarget.Self;
                 AdditionalResult.Parameters.Add(new AbilityEffectParameters() { Value = (int)args[0] });
                 AddResult(AdditionalResult);
@@ -2211,10 +2204,6 @@ namespace PgJsonObjects
                 //TODO
             }
 
-            else if (Tools.Scan(s, "(How well the pet focuses on your enemies depends in part on the pet's Bond Level.)", args))
-            {
-            }
-
             else if (Tools.Scan(s, "Targets are knocked back", args))
             {
                 //TODO
@@ -2361,6 +2350,36 @@ namespace PgJsonObjects
             }
 
             else if (Tools.Scan(s, "%d% Chance to consume 1 Carrot", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Target takes +%d% Electricity damage from future attacks for %d seconds", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Enemies is knocked forward", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Animals take -%d% damage", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Summoned trap exists for %d seconds or until triggered. (Base damage approx. %d)", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "You can fly for %d seconds", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Each allies' next Melee attack deals +%d damage", args))
             {
                 //TODO
             }

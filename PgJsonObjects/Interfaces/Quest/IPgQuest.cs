@@ -80,5 +80,8 @@ namespace PgJsonObjects
         bool? RawIsQuestRequirementListNested { get; }
         IPgQuestRewardCollection QuestRewardList { get; }
         List<string> RawRewardInteractionFlags { get; }
+        IPgPlayerTitle RewardTitle { get; }
+        IPgQuestRewardCurrencyCollection RewardsCurrencyList { get; }
+        IPgQuestRewardItemCollection QuestMidwayGiveItemList { get; }
     }
 }

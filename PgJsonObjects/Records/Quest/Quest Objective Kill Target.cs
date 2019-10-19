@@ -148,5 +148,16 @@
         FaeRealmElectricityDroach,
         FaeRealmBasilisk,
         FaeRealmWinterWarTroll,
+        ExtraTag_SunValeRanalon,
+        ExtraTag_SouthernValleyColdSlime,
+        ExtraTag_WardenQuestBarghest,
+        ExtraTag_WardenQuestMummy,
+        ExtraTag_WardenSpider,
+        ExtraTag_WardenSandDog,
+        ExtraTag_WardenNatureElementals,
+        KurHookBeast,
+        KurRazorslashPanther,
+        FlapSkull,
+        ExtraTag_HalloweenFaeSkeleton,
     }
 }

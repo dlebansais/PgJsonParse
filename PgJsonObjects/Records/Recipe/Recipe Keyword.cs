@@ -28,5 +28,7 @@
         PixiePocket,
         Lint_LevelTooHigh,
         ShieldWax,
+        PumpkinSoup,
+        PumpkinSalad,
     }
 }

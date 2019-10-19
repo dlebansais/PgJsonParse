@@ -281,6 +281,7 @@
         TeleportToNearbyMushroomCircle,
         CreateMiningSurvey7X_MiningSurveyGazluk7X,
         CreateMiningSurvey8X_MiningSurveyGazluk8X,
+        ShowWardenEvents,
 
         ExtractTSysPower,
         RepairItemDurability,

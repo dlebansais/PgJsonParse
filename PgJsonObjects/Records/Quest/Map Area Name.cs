@@ -32,5 +32,7 @@
         RahuSewers,
         Staging,
         FaeRealm,
+        SunValeTemp,
+        SacredGrotto,
     }
 }

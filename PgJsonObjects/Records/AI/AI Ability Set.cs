@@ -793,6 +793,7 @@ namespace PgJsonObjects
         public IPgAIAbility WaspSlowB { get; private set; }
         public IPgAIAbility PixieSlash { get; private set; }
         public IPgAIAbility PixieRageSlash { get; private set; }
+        public IPgAIAbility StunTrapExplode { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -3945,6 +3946,10 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PixieRageSlash =
                    JsonObjectParser<AIAbility>.Parse("PixieRageSlash", value, errorInfo),
                 GetObject = () => PixieRageSlash as IObjectContentGenerator } },
+           { "StunTrapExplode", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => StunTrapExplode =
+                   JsonObjectParser<AIAbility>.Parse("StunTrapExplode", value, errorInfo),
+                GetObject = () => StunTrapExplode as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4769,8 +4774,9 @@ namespace PgJsonObjects
             AddObject(WaspSlowB as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 783 * 4, StoredObjectTable);
             AddObject(PixieSlash as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 784 * 4, StoredObjectTable);
             AddObject(PixieRageSlash as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 785 * 4, StoredObjectTable);
+            AddObject(StunTrapExplode as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 786 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 786 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 787 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

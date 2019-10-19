@@ -25,5 +25,6 @@
         GroundImpact,
         ElectricityHit,
         CombatRefresh,
+        ElectricityHit2,
     }
 }

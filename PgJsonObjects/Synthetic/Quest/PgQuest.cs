@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgQuest(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 188;
+            offset += 196;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -41,6 +41,7 @@ namespace PgJsonObjects
             AddLinkBackCollection(QuestRequirementToSustainList, (IPgQuestRequirement value) => value.GetLinkBack());
             //AddLinkBackCollection(QuestRewardList);
             AddLinkBack(RewardTitle);
+            AddLinkBackCollection(QuestMidwayGiveItemList, (IPgQuestRewardItem value) => new List<IBackLinkable>() { value.QuestItem });
         }
 
         public override string Key { get { return GetString(0); } }
@@ -123,6 +124,8 @@ namespace PgJsonObjects
         public IPgQuestRewardCollection QuestRewardList { get { return GetObjectList(176, ref _QuestRewardList, PgQuestRewardCollection.CreateItem, () => new PgQuestRewardCollection()); } } private IPgQuestRewardCollection _QuestRewardList;
         public List<string> RawRewardInteractionFlags { get { return GetStringList(180, ref _RawRewardInteractionFlags); } } private List<string> _RawRewardInteractionFlags;
         public IPgPlayerTitle RewardTitle { get { return GetObject(184, ref _RewardTitle, PgPlayerTitle.CreateNew); } } private PgPlayerTitle _RewardTitle;
+        public IPgQuestRewardCurrencyCollection RewardsCurrencyList { get { return GetObjectList(188, ref _RewardsCurrencyList, PgQuestRewardCurrencyCollection.CreateItem, () => new PgQuestRewardCurrencyCollection()); } } private IPgQuestRewardCurrencyCollection _RewardsCurrencyList;
+        public IPgQuestRewardItemCollection QuestMidwayGiveItemList { get { return GetObjectList(192, ref _QuestMidwayGiveItemList, PgQuestRewardItemCollection.CreateItem, () => new PgQuestRewardItemCollection()); } } private IPgQuestRewardItemCollection _QuestMidwayGiveItemList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "InternalName", new FieldParser() {
@@ -153,6 +156,9 @@ namespace PgJsonObjects
             { "Rewards_XP", new FieldParser() {
                 Type = FieldType.Object,
                 GetObject = GetXPRewards } },
+            { "Rewards_Currency", new FieldParser() {
+                Type = FieldType.Object,
+                GetObject = GetCurrencyRewards } },
             { "Rewards_Items", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => QuestRewardsItemList,
@@ -251,6 +257,9 @@ namespace PgJsonObjects
             { "FollowUpQuests", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = GetFollowUpQuestList } },
+            { "MidwayGiveItems", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => QuestMidwayGiveItemList } },
         }; } }
 
         private IObjectContentGenerator GetXPRewards()
@@ -259,6 +268,13 @@ namespace PgJsonObjects
 
             foreach (IPgQuestRewardXp Item in RewardsXPList)
                 Rewards.SetFieldValue(Item.Skill.CombatSkill, Item.Xp);
+
+            return Rewards;
+        }
+
+        private IObjectContentGenerator GetCurrencyRewards()
+        {
+            XPReward Rewards = new XPReward();
 
             return Rewards;
         }

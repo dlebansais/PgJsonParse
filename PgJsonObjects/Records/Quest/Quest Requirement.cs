@@ -148,6 +148,18 @@ namespace PgJsonObjects
                         return null;
                     }
 
+                case OtherRequirementType.IsWarden:
+                    return new IsWardenQuestRequirement(OtherRequirementType);
+
+                case OtherRequirementType.AreaEventOn:
+                    if (RequirementArea != MapAreaName.Internal_None)
+                        return new AreaEventOnQuestRequirement(OtherRequirementType, RequirementArea);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("QuestRequirement Area Event");
+                        return null;
+                    }
+
                 default:
                     ErrorInfo.AddInvalidObjectFormat("QuestRequirement (T=" + OtherRequirementType + ")");
                     return null;
@@ -195,6 +207,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = ParseHangOut,
                 GetString = () => RequirementHangOut } },
+            { "AreaEvent", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseAreaEvent,
+                GetString = () => StringToEnumConversion<MapAreaName>.ToString(RequirementArea, null, MapAreaName.Internal_None) } },
         }; } }
 
         private void ParseQuest(string value, ParseErrorInfo ErrorInfo)
@@ -292,6 +308,34 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement HangOut (" + OtherRequirementType + ")");
         }
 
+        private void ParseAreaEvent(string value, ParseErrorInfo ErrorInfo)
+        {
+            if (OtherRequirementType == OtherRequirementType.AreaEventOn)
+            {
+                int AreaIndex = value.LastIndexOf('_');
+                if (AreaIndex > 0)
+                {
+                    int KeyIndex = value.LastIndexOf('_', AreaIndex - 1);
+                    if (KeyIndex > 0)
+                    {
+                        string AreaName = value.Substring(AreaIndex + 1);
+                        string KeyName = value.Substring(KeyIndex + 1, AreaIndex - KeyIndex - 1);
+                        string QuestName = value.Substring(0, KeyIndex);
+
+                        if (AreaName == "Ilmari")
+                            AreaName = "Desert1";
+                        else if (AreaName == "Kur")
+                            AreaName = "KurMountains";
+
+                        RequirementArea = StringToEnumConversion<MapAreaName>.Parse(AreaName, ErrorInfo);
+                        return;
+                    }
+                }
+            }
+
+            ErrorInfo.AddInvalidObjectFormat("QuestRequirement Area Event (" + OtherRequirementType + ")");
+        }
+
         protected OtherRequirementType OtherRequirementType;
         private Favor RequirementFavorLevel;
         private int? RawRequirementSkillLevel;
@@ -305,6 +349,7 @@ namespace PgJsonObjects
         private string RequirementRule;
         private string RequirementInteractionFlag;
         private string RequirementHangOut;
+        private MapAreaName RequirementArea;
         #endregion
 
         #region Indexing

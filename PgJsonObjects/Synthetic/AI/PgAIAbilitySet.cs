@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[786];
+        private PgAIAbility[] Abilities = new PgAIAbility[787];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -810,6 +810,7 @@ namespace PgJsonObjects
         public IPgAIAbility WaspSlowB { get { return GetAbilityObject(783); } }
         public IPgAIAbility PixieSlash { get { return GetAbilityObject(784); } }
         public IPgAIAbility PixieRageSlash { get { return GetAbilityObject(785); } }
+        public IPgAIAbility StunTrapExplode { get { return GetAbilityObject(786); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
@@ -3171,6 +3172,9 @@ namespace PgJsonObjects
            { "PixieRageSlash", new FieldParser() {
                Type = FieldType.Object,
                 GetObject = () => PixieRageSlash as IObjectContentGenerator } },
+           { "StunTrapExplode", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => StunTrapExplode as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

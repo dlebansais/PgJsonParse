@@ -150,7 +150,9 @@
     <Compile Include="Interfaces\Quest\IPgQuestRewardCollection.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRewardItem.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRewardItemCollection.cs" />
+    <Compile Include="Interfaces\Quest\IPgQuestRewardCurrency.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRewardXp.cs" />
+    <Compile Include="Interfaces\Quest\IPgQuestRewardCurrencyCollection.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRewardXpCollection.cs" />
     <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveUseAbilityOnTargets.cs" />
     <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveSimple.cs" />
@@ -172,6 +174,8 @@
     <Compile Include="Interfaces\Quest\QuestRequirement\IPgHasEffectKeywordQuestRequirement.cs" />
     <Compile Include="Interfaces\Quest\QuestRequirement\IPgHangOutCompletedQuestRequirement.cs" />
     <Compile Include="Interfaces\Quest\QuestRequirement\IPgInteractionFlagSetQuestRequirement.cs" />
+    <Compile Include="Interfaces\Quest\QuestRequirement\IPgAreaEventOnQuestRequirement.cs" />
+    <Compile Include="Interfaces\Quest\QuestRequirement\IPgIsWardenQuestRequirement.cs" />
     <Compile Include="Interfaces\Quest\QuestRequirement\IPgIsLongTimeAnimalQuestRequirement.cs" />
     <Compile Include="Interfaces\Quest\QuestRequirement\IPgMinFavorLevelQuestRequirement.cs" />
     <Compile Include="Interfaces\Quest\QuestRequirement\IPgMinSkillLevelQuestRequirement.cs" />
@@ -315,6 +319,8 @@
     <Compile Include="Records\Quest\Quest Requirements\HasEffectKeywordQuestRequirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\HangOutCompletedQuestRequirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\InteractionFlagSetQuestRequirement.cs" />
+    <Compile Include="Records\Quest\Quest Requirements\AreaEventOnQuestRequirement.cs" />
+    <Compile Include="Records\Quest\Quest Requirements\IsWardenQuestRequirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\IsLongTimeAnimalQuestRequirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\MinFavorLevelQuestRequirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\MinSkillLevelQuestRequirement.cs" />
@@ -322,10 +328,13 @@
     <Compile Include="Records\Quest\Quest Requirements\QuestCompletedQuestRequiremen.cs" />
     <Compile Include="Records\Quest\Quest Requirement.cs" />
     <Compile Include="Records\Quest\Quest Requirements\RunTimeBehaviorRuleSetQuestRequirement.cs" />
+    <Compile Include="Records\Quest\Quest Reward Currency.cs" />
     <Compile Include="Records\Quest\Quest Reward.cs" />
     <Compile Include="Records\Quest\QuestRewardCollection.cs" />
     <Compile Include="Records\Quest\QuestObjectiveCollection.cs" />
+    <Compile Include="Records\Quest\Currency.cs" />
     <Compile Include="Records\Quest\QuestRewardItemCollection.cs" />
+    <Compile Include="Records\Quest\QuestRewardCurrencyCollection.cs" />
     <Compile Include="Records\Quest\QuestRewardXpCollection.cs" />
     <Compile Include="Records\Quest\XP Reward.cs" />
     <Compile Include="Records\Recipe\Recipe Source.cs" />
@@ -562,10 +571,12 @@
     <Compile Include="Synthetic\Quest\PgQuestObjectiveRequirement.cs" />
     <Compile Include="Synthetic\Quest\PgQuestReward.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRewardItem.cs" />
+    <Compile Include="Synthetic\Quest\PgQuestRewardCurrency.cs" />
     <Compile Include="Synthetic\Quest\PgQuestRewardXp.cs" />
     <Compile Include="Records\Quest\QuestCollection.cs" />
     <Compile Include="Synthetic\Quest\PgQuestCollection.cs" />
     <Compile Include="Synthetic\Quest\PgQuestObjectiveCollection.cs" />
+    <Compile Include="Synthetic\Quest\PgQuestRewardCurrencyCollection.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveUseAbilityOnTargets.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveSimple.cs" />
     <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveAnatomy.cs" />
@@ -588,6 +599,8 @@
     <Compile Include="Synthetic\Quest\QuestRequirement\PgHasEffectKeywordQuestRequirement.cs" />
     <Compile Include="Synthetic\Quest\QuestRequirement\PgHangOutCompletedQuestRequirement.cs" />
     <Compile Include="Synthetic\Quest\QuestRequirement\PgInteractionFlagSetQuestRequirement.cs" />
+    <Compile Include="Synthetic\Quest\QuestRequirement\PgAreaEventOnQuestRequirement.cs" />
+    <Compile Include="Synthetic\Quest\QuestRequirement\PgIsWardenQuestRequirement.cs" />
     <Compile Include="Synthetic\Quest\QuestRequirement\PgIsLongTimeAnimalQuestRequirement.cs" />
     <Compile Include="Synthetic\Quest\QuestRequirement\PgMinFavorLevelQuestRequirement.cs" />
     <Compile Include="Synthetic\Quest\QuestRequirement\PgMinSkillLevelQuestRequirement.cs" />
