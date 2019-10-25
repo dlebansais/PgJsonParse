@@ -230,13 +230,6 @@ namespace PgJsonObjects
                     StringToEnumConversion<PreEffect>.ParseList(Enhancement, SelfPreEffectList, errorInfo);
                     return;
                 }
-                else if (Prefix == "PrivacyFieldSetDmg")
-                {
-                    string Enhancement = value.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
-                    SelfPreEffectList.Add(PreEffect.PrivacyFieldSetDmg);
-                    StringToEnumConversion<PreEffect>.SetCustomParsedEnum(PreEffect.PrivacyFieldSetDmg);
-                    return;
-                }
             }
 
             StringToEnumConversion<PreEffect>.ParseList(value, SelfPreEffectList, errorInfo);

@@ -2384,6 +2384,11 @@ namespace PgJsonObjects
                 //TODO
             }
 
+            else if (Tools.Scan(s, "Target is knocked forward", args))
+            {
+                //TODO
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);

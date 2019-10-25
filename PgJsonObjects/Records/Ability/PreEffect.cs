@@ -23,6 +23,5 @@
         MambaStrikeLowArmorDmgMod,
         SuperZombie8,
         LethalForceAnimalDmgMod,
-        PrivacyFieldSetDmg,
     }
 }

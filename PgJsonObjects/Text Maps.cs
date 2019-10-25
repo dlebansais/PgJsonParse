@@ -756,7 +756,6 @@ namespace PgJsonObjects
             { PreEffect.MambaStrikeLowArmorDmgMod, "Mamba Strike Low Armor Damage Mod" },
             { PreEffect.SuperZombie8, "Super Zombie #8" },
             { PreEffect.LethalForceAnimalDmgMod, "Lethal Force Animal Damage Mod" },
-            { PreEffect.PrivacyFieldSetDmg, "Privacy Field Set Damage" },
         };
 
         public static readonly Dictionary<SelfEffect, string> SelfEffectTextMap = new Dictionary<SelfEffect, string>()
@@ -2558,7 +2557,7 @@ namespace PgJsonObjects
             { ItemKeyword.DogMeat, "Dog Meat" },
             { ItemKeyword.DinosaurMeat, "Dinosaur Meat" },
             { ItemKeyword.Herb, "Herb" },
-            { ItemKeyword.GreenPepper, "Green Pepper" },
+            //{ ItemKeyword.GreenPepper, "Green Pepper" },
             { ItemKeyword.MeatDish, "Meat Dish" },
             { ItemKeyword.FruitDish, "Fruit Dish" },
             { ItemKeyword.FruitCocktail, "Fruit Cocktail" },
@@ -2628,7 +2627,7 @@ namespace PgJsonObjects
             { ItemKeyword.Vegetable, "Vegetable" },
             { ItemKeyword.Squash, "Squash" },
             { ItemKeyword.Pumpkin, "Pumpkin" },
-            { ItemKeyword.RedPepper, "Red Pepper" },
+            //{ ItemKeyword.RedPepper, "Red Pepper" },
             { ItemKeyword.Snack, "Snack" },
             { ItemKeyword.SirineCheese, "Sirine Cheese" },
             { ItemKeyword.VegetableDish, "Vegetable Dish" },
