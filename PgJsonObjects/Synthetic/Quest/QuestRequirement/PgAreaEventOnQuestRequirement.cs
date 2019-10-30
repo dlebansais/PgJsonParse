@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAreaEventOnQuestRequirement(data, ref offset);
         }
 
-        public MapAreaName AreaName { get { return GetEnum<MapAreaName>(0); } }
+        public MapAreaName AreaName { get { return GetEnum<MapAreaName>(PropertiesOffset + 0); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "T", new FieldParser() {
