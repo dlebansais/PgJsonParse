@@ -200,10 +200,13 @@ namespace PgJsonObjects
                         else
                             ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");
                     }
-
                     else if (RequirementType == "IsLongtimeAnimal")
                     {
                         InteractionFlagRequirement = "Long Time Animal";
+                    }
+                    else if (RequirementType == "IsWarden")
+                    {
+                        InteractionFlagRequirement = "Warden";
                     }
                     else
                         ErrorInfo.AddInvalidObjectFormat("StorageVault Requirements");

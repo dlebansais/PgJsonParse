@@ -38,5 +38,8 @@
         NPC_Uriana,
         NPC_AgrashabGod,
         //NPC_AuShin,
+        Flopsy,
+        Lopsy,
+        Boop,
     }
 }

@@ -89,6 +89,8 @@ namespace PgJsonObjects
         public IPgPlayerTitle RewardTitle { get; private set; }
         public IPgQuestRewardCurrencyCollection RewardsCurrencyList { get; } = new QuestRewardCurrencyCollection();
         public IPgQuestRewardItemCollection QuestMidwayGiveItemList { get; } = new QuestRewardItemCollection();
+        public IPgGameNpc QuestCompleteNpc { get; private set; }
+        public string QuestCompleteNpcName { get; private set; }
 
         private bool IsFavorNpcParsed;
         private string RawRewardAbility;
@@ -107,8 +109,8 @@ namespace PgJsonObjects
         private bool IsConnectedWorkOrderSkillParsed;
         private List<string> RawFollowUpQuestList = new List<string>();
         private List<string> RawPreGiveEffectList { get; } = new List<string>();
-        //private PowerSkill RawRewardXpSkill;
-        //private int RawRewardXpValue;
+        private string RawQuestCompleteNpc;
+        private bool IsQuestCompleteNpcParsed;
         #endregion
 
         #region Indirect Properties
@@ -705,6 +707,26 @@ namespace PgJsonObjects
                 return false;
             }
 
+            else if (RawRewardEffect.StartsWith("AdvanceScriptedQuestObjective("))
+            {
+                int IndexEnd = RawRewardEffect.IndexOf("_Complete)");
+                if (IndexEnd >= 30)
+                {
+                    string RawQuestCompleteNpc = RawRewardEffect.Substring(30, IndexEnd - 30);
+                    if (this.RawQuestCompleteNpc == null)
+                    {
+                        this.RawQuestCompleteNpc = RawQuestCompleteNpc;
+                        return true;
+                    }
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+
+                return false;
+            }
+
             else if (RawRewardEffect.StartsWith("GiveXP("))
             {
                 int IndexEnd = RawRewardEffect.IndexOf(')');
@@ -941,6 +963,10 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, TextMaps.CurrencyTextMap[Reward.Currency]);
                 foreach (IPgQuestRewardItem Item in QuestMidwayGiveItemList)
                     AddWithFieldSeparator(ref Result, Item.QuestItem.Name);
+                if (QuestCompleteNpc != null)
+                    AddWithFieldSeparator(ref Result, QuestCompleteNpc.Name);
+                else if (QuestCompleteNpcName != null)
+                    AddWithFieldSeparator(ref Result, QuestCompleteNpcName);
 
                 return Result;
             }
@@ -1074,6 +1100,14 @@ namespace PgJsonObjects
 
             foreach (QuestRewardItem Item in QuestMidwayGiveItemList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
+
+            QuestCompleteNpc = GameNpc.ConnectByKey(ErrorInfo, GameNpcTable, RawQuestCompleteNpc, QuestCompleteNpc, ref IsQuestCompleteNpcParsed, ref IsConnected, this);
+            if (RawQuestCompleteNpc != null && QuestCompleteNpc == null)
+            {
+                SpecialNpc ParsedSpecialNpc;
+                if (StringToEnumConversion<SpecialNpc>.TryParse(RawQuestCompleteNpc, out ParsedSpecialNpc, ErrorInfo))
+                    QuestCompleteNpcName = TextMaps.SpecialNpcTextMap[ParsedSpecialNpc];
+            }
 
             return IsConnected;
         }
@@ -1210,8 +1244,10 @@ namespace PgJsonObjects
             AddObject(RewardTitle as ISerializableJsonObject, data, ref offset, BaseOffset, 184, StoredObjectTable);
             AddObjectList(RewardsCurrencyList, data, ref offset, BaseOffset, 188, StoredObjectListTable);
             AddObjectList(QuestMidwayGiveItemList, data, ref offset, BaseOffset, 192, StoredObjectListTable);
+            AddObject(QuestCompleteNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 196, StoredObjectTable);
+            AddString(QuestCompleteNpcName, data, ref offset, BaseOffset, 200, StoredStringtable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 196, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 204, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

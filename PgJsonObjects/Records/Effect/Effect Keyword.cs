@@ -237,5 +237,7 @@
         StunTrapExtraA,
         StunTrapExtraB,
         Power,
+        LiveEvent_BunFu,
+        FreezingLogic,
     }
 }

@@ -57,6 +57,7 @@ namespace PgJsonObjects
         private int? RawNumToDeliver;
         private bool? IsHiddenUntilEarlierObjectivesComplete;
         private string InternalName;
+        private Appearance AppearanceRequirement;
         #endregion
 
         #region Indirect Properties
@@ -571,6 +572,32 @@ namespace PgJsonObjects
                                     NewRequirement.Keyword = EffectRequirement;
                                     NewRequirement.AddFieldTableOrder("T");
                                     NewRequirement.AddFieldTableOrder("Keyword");
+                                    QuestObjectiveRequirement = NewRequirement;
+                                }
+                                else
+                                    ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+                            }
+                            else
+                                ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+                        }
+                        else
+                            ErrorInfo.AddInvalidObjectFormat("QuestObjective Requirements");
+                    }
+                    else if (RequirementType == "Appearance")
+                    {
+                        if (RawRequirement.Has("Appearance"))
+                        {
+                            JsonString KeywordJValue;
+                            if ((KeywordJValue = RawRequirement["Appearance"] as JsonString) != null)
+                            {
+                                if (StringToEnumConversion<Appearance>.TryParse(KeywordJValue.String, out Appearance ParsedAppearance, ErrorInfo))
+                                {
+                                    AppearanceRequirement = ParsedAppearance;
+
+                                    QuestObjectiveRequirement NewRequirement = new QuestObjectiveRequirement(RequirementType);
+                                    NewRequirement.Keyword = EffectRequirement;
+                                    NewRequirement.AddFieldTableOrder("T");
+                                    NewRequirement.AddFieldTableOrder("Appearance");
                                     QuestObjectiveRequirement = NewRequirement;
                                 }
                                 else

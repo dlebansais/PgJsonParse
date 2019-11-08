@@ -641,6 +641,17 @@ namespace PgJsonObjects
             JsonObject AsJObject;
             if ((AsJObject = Value as JsonObject) != null)
                 ParseValue(AsJObject, ErrorInfo);
+            else if (Value is JsonArray AsArray)
+            {
+                foreach (IJsonValue Item in AsArray)
+                    if (Item is JsonObject AsJObjectItem)
+                        ParseValue(AsJObjectItem, ErrorInfo);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat(FieldName);
+                        break;
+                    }
+            }
             else
                 ErrorInfo.AddInvalidObjectFormat(FieldName);
         }

@@ -159,5 +159,7 @@
         KurRazorslashPanther,
         FlapSkull,
         ExtraTag_HalloweenFaeSkeleton,
+        MotUrak,
+        StarvingTundraWolf,
     }
 }

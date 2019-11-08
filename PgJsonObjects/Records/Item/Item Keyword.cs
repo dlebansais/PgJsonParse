@@ -689,7 +689,7 @@
         MinotaurHammer,
         ArmorPatchKit6,
         Meltable,
-        RabbitMeat,
+        //RabbitMeat,
         DeinonychusSkin,
         FlawlessDeinonychusSkin,
         FlawlessRabbitSkin,
@@ -960,5 +960,8 @@
         Pepper,
         SweetRoastedPumpkin,
         PumpkinSalad,
+        RawDeerMeat,
+        RawRabbitMeat,
+        Cranberries,
     }
 }

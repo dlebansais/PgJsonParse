@@ -2212,6 +2212,8 @@ namespace PgJsonObjects
             { EffectKeyword.StunTrapExtraA, "Stun Trap Extra #A" },
             { EffectKeyword.StunTrapExtraB, "Stun Trap Extra #B" },
             { EffectKeyword.Power, "Power" },
+            { EffectKeyword.LiveEvent_BunFu, "Live Event (Bun-Fu)" },
+            { EffectKeyword.FreezingLogic, "Freezing Logic" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -3019,7 +3021,7 @@ namespace PgJsonObjects
             { ItemKeyword.MinotaurHammer, "Minotaur Hammer" },
             { ItemKeyword.ArmorPatchKit6, "Armor Patch Kit #6" },
             { ItemKeyword.Meltable, "Meltable" },
-            { ItemKeyword.RabbitMeat, "Rabbit Meat" },
+            //{ ItemKeyword.RabbitMeat, "Rabbit Meat" },
             { ItemKeyword.DeinonychusSkin, "Deinonychus Skin" },
             { ItemKeyword.FlawlessDeinonychusSkin, "Flawless Deinonychus Skin" },
             { ItemKeyword.FlawlessRabbitSkin, "Flawless Rabbit Skin" },
@@ -3290,6 +3292,9 @@ namespace PgJsonObjects
             { ItemKeyword.Pepper, "Pepper" },
             { ItemKeyword.SweetRoastedPumpkin, "Sweet Roasted Pumpkin" },
             { ItemKeyword.PumpkinSalad, "Pumpkin Salad" },
+            { ItemKeyword.RawDeerMeat, "Raw Deer Meat" },
+            { ItemKeyword.RawRabbitMeat, "Raw Rabbit Meat" },
+            { ItemKeyword.Cranberries, "Cranberries" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -4314,6 +4319,8 @@ namespace PgJsonObjects
             { QuestObjectiveKillTarget.KurRazorslashPanther, "Kur Razorslash Panther" },
             { QuestObjectiveKillTarget.FlapSkull, "Flap Skull" },
             { QuestObjectiveKillTarget.ExtraTag_HalloweenFaeSkeleton, "Extra Tag (Halloween Fae Skeleton)" },
+            { QuestObjectiveKillTarget.MotUrak, "Mot-Urak" },
+            { QuestObjectiveKillTarget.StarvingTundraWolf, "Starving Tundra Wolf" },
         };
 
         public static readonly Dictionary<MoonPhases, string> MoonPhasesTextMap = new Dictionary<MoonPhases, string>()
@@ -4968,6 +4975,9 @@ namespace PgJsonObjects
             { SpecialNpc.NPC_Uriana, "Uriana" },
             { SpecialNpc.NPC_AgrashabGod, "Agrashab God" },
             //{ SpecialNpc.NPC_AuShin, "Au Shin" },
+            { SpecialNpc.Flopsy, "Flopsy" },
+            { SpecialNpc.Lopsy, "Lopsy" },
+            { SpecialNpc.Boop, "Boop" },
         };
 
         public static readonly Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap = new Dictionary<LoreBookKeyword, string>()

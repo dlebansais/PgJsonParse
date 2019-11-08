@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgQuest(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 196;
+            offset += 204;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -42,6 +42,7 @@ namespace PgJsonObjects
             //AddLinkBackCollection(QuestRewardList);
             AddLinkBack(RewardTitle);
             AddLinkBackCollection(QuestMidwayGiveItemList, (IPgQuestRewardItem value) => new List<IBackLinkable>() { value.QuestItem });
+            AddLinkBack(QuestCompleteNpc);
         }
 
         public override string Key { get { return GetString(0); } }
@@ -126,6 +127,8 @@ namespace PgJsonObjects
         public IPgPlayerTitle RewardTitle { get { return GetObject(184, ref _RewardTitle, PgPlayerTitle.CreateNew); } } private PgPlayerTitle _RewardTitle;
         public IPgQuestRewardCurrencyCollection RewardsCurrencyList { get { return GetObjectList(188, ref _RewardsCurrencyList, PgQuestRewardCurrencyCollection.CreateItem, () => new PgQuestRewardCurrencyCollection()); } } private IPgQuestRewardCurrencyCollection _RewardsCurrencyList;
         public IPgQuestRewardItemCollection QuestMidwayGiveItemList { get { return GetObjectList(192, ref _QuestMidwayGiveItemList, PgQuestRewardItemCollection.CreateItem, () => new PgQuestRewardItemCollection()); } } private IPgQuestRewardItemCollection _QuestMidwayGiveItemList;
+        public IPgGameNpc QuestCompleteNpc { get { return GetObject(196, ref _QuestCompleteNpc, PgGameNpc.CreateNew); } } private IPgGameNpc _QuestCompleteNpc;
+        public string QuestCompleteNpcName { get { return GetString(200); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "InternalName", new FieldParser() {

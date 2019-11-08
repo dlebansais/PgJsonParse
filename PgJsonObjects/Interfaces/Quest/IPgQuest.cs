@@ -83,5 +83,7 @@ namespace PgJsonObjects
         IPgPlayerTitle RewardTitle { get; }
         IPgQuestRewardCurrencyCollection RewardsCurrencyList { get; }
         IPgQuestRewardItemCollection QuestMidwayGiveItemList { get; }
+        IPgGameNpc QuestCompleteNpc { get; }
+        string QuestCompleteNpcName { get; }
     }
 }
