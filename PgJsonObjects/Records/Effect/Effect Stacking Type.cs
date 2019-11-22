@@ -309,5 +309,6 @@
         CoordinatedAssaultAttacksCheaper,
         CoordinatedAssaultMaxHealth,
         CoordinatedAssaultMaxArmor,
+        WardenBoostPotion,
     }
 }

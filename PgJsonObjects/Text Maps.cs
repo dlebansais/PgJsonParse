@@ -1968,6 +1968,7 @@ namespace PgJsonObjects
             { EffectStackingType.CoordinatedAssaultAttacksCheaper, "Coordinated Assault Attacks Cheaper" },
             { EffectStackingType.CoordinatedAssaultMaxHealth, "Coordinated Assault Max Health" },
             { EffectStackingType.CoordinatedAssaultMaxArmor, "Coordinated Assault Max Armor" },
+            { EffectStackingType.WardenBoostPotion, "Warden Boost Potion" },
         };
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTextMap = new Dictionary<EffectKeyword, string>()
@@ -4082,6 +4083,7 @@ namespace PgJsonObjects
             { RecipeItemKey.OrganicPants, "Organic Pants" },
             { RecipeItemKey.OrganicShirt, "Organic Shirt" },
             { RecipeItemKey.Wand, "Wand" },
+            { RecipeItemKey.DragonScale, "Dragon Scale" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()

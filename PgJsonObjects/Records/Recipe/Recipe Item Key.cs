@@ -117,5 +117,6 @@
         OrganicPants,
         OrganicShirt,
         Wand,
+        DragonScale,
     }
 }
