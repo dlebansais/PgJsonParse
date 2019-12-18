@@ -738,6 +738,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, "Is Skill Requirement The Default");
                 if (LintVendorNpc != WorkOrderSign.Internal_None)
                     AddWithFieldSeparator(ref Result, TextMaps.WorkOrderSignTextMap[LintVendorNpc]);
+                if (RawCraftingTargetLevel.HasValue)
+                    AddWithFieldSeparator(ref Result, "Crafting Target Level: " + RawCraftingTargetLevel.Value);
 
                 return Result;
             }
