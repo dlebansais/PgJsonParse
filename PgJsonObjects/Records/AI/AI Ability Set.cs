@@ -794,6 +794,24 @@ namespace PgJsonObjects
         public IPgAIAbility PixieSlash { get; private set; }
         public IPgAIAbility PixieRageSlash { get; private set; }
         public IPgAIAbility StunTrapExplode { get; private set; }
+        public IPgAIAbility SpiderIncubate1 { get; private set; }
+        public IPgAIAbility SpiderIncubate2 { get; private set; }
+        public IPgAIAbility RanalonHeal1 { get; private set; }
+        public IPgAIAbility RanalonHeal2 { get; private set; }
+        public IPgAIAbility RanalonSelfBuff1 { get; private set; }
+        public IPgAIAbility RanalonSelfBuff2 { get; private set; }
+        public IPgAIAbility ScrayStab1 { get; private set; }
+        public IPgAIAbility ScrayStab2 { get; private set; }
+        public IPgAIAbility WaspIceStab_Pet { get; private set; }
+        public IPgAIAbility WaspIceSlow_Pet1 { get; private set; }
+        public IPgAIAbility WaspIceSlow_Pet2 { get; private set; }
+        public IPgAIAbility WaspIceSlow_Pet3 { get; private set; }
+        public IPgAIAbility WaspIceSlow_Pet4 { get; private set; }
+        public IPgAIAbility WaspIceStab { get; private set; }
+        public IPgAIAbility WaspIceRageStab { get; private set; }
+        public IPgAIAbility WaspIceSlowA { get; private set; }
+        public IPgAIAbility WaspIceSlowB { get; private set; }
+        public IPgAIAbility PhoenixFlash { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -3950,6 +3968,78 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => StunTrapExplode =
                    JsonObjectParser<AIAbility>.Parse("StunTrapExplode", value, errorInfo),
                 GetObject = () => StunTrapExplode as IObjectContentGenerator } },
+           { "SpiderIncubate1", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SpiderIncubate1 =
+                   JsonObjectParser<AIAbility>.Parse("SpiderIncubate1", value, errorInfo),
+                GetObject = () => SpiderIncubate1 as IObjectContentGenerator } },
+           { "SpiderIncubate2", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SpiderIncubate2 =
+                   JsonObjectParser<AIAbility>.Parse("SpiderIncubate2", value, errorInfo),
+                GetObject = () => SpiderIncubate2 as IObjectContentGenerator } },
+           { "RanalonHeal1", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RanalonHeal1 =
+                   JsonObjectParser<AIAbility>.Parse("RanalonHeal1", value, errorInfo),
+                GetObject = () => RanalonHeal1 as IObjectContentGenerator } },
+           { "RanalonHeal2", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RanalonHeal2 =
+                   JsonObjectParser<AIAbility>.Parse("RanalonHeal2", value, errorInfo),
+                GetObject = () => RanalonHeal2 as IObjectContentGenerator } },
+           { "RanalonSelfBuff1", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RanalonSelfBuff1 =
+                   JsonObjectParser<AIAbility>.Parse("RanalonSelfBuff1", value, errorInfo),
+                GetObject = () => RanalonSelfBuff1 as IObjectContentGenerator } },
+           { "RanalonSelfBuff2", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RanalonSelfBuff2 =
+                   JsonObjectParser<AIAbility>.Parse("RanalonSelfBuff2", value, errorInfo),
+                GetObject = () => RanalonSelfBuff2 as IObjectContentGenerator } },
+           { "ScrayStab1", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => ScrayStab1 =
+                   JsonObjectParser<AIAbility>.Parse("ScrayStab1", value, errorInfo),
+                GetObject = () => ScrayStab1 as IObjectContentGenerator } },
+           { "ScrayStab2", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => ScrayStab2 =
+                   JsonObjectParser<AIAbility>.Parse("ScrayStab2", value, errorInfo),
+                GetObject = () => ScrayStab2 as IObjectContentGenerator } },
+           { "WaspIceStab_Pet", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WaspIceStab_Pet =
+                   JsonObjectParser<AIAbility>.Parse("WaspIceStab_Pet", value, errorInfo),
+                GetObject = () => WaspIceStab_Pet as IObjectContentGenerator } },
+           { "WaspIceSlow_Pet1", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WaspIceSlow_Pet1 =
+                   JsonObjectParser<AIAbility>.Parse("WaspIceSlow_Pet1", value, errorInfo),
+                GetObject = () => WaspIceSlow_Pet1 as IObjectContentGenerator } },
+           { "WaspIceSlow_Pet2", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WaspIceSlow_Pet2 =
+                   JsonObjectParser<AIAbility>.Parse("WaspIceSlow_Pet2", value, errorInfo),
+                GetObject = () => WaspIceSlow_Pet2 as IObjectContentGenerator } },
+           { "WaspIceSlow_Pet3", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WaspIceSlow_Pet3 =
+                   JsonObjectParser<AIAbility>.Parse("WaspIceSlow_Pet3", value, errorInfo),
+                GetObject = () => WaspIceSlow_Pet3 as IObjectContentGenerator } },
+           { "WaspIceSlow_Pet4", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WaspIceSlow_Pet4 =
+                   JsonObjectParser<AIAbility>.Parse("WaspIceSlow_Pet4", value, errorInfo),
+                GetObject = () => WaspIceSlow_Pet4 as IObjectContentGenerator } },
+           { "WaspIceStab", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WaspIceStab =
+                   JsonObjectParser<AIAbility>.Parse("WaspIceStab", value, errorInfo),
+                GetObject = () => WaspIceStab as IObjectContentGenerator } },
+           { "WaspIceRageStab", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WaspIceRageStab =
+                   JsonObjectParser<AIAbility>.Parse("WaspIceRageStab", value, errorInfo),
+                GetObject = () => WaspIceRageStab as IObjectContentGenerator } },
+           { "WaspIceSlowA", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WaspIceSlowA =
+                   JsonObjectParser<AIAbility>.Parse("WaspIceSlowA", value, errorInfo),
+                GetObject = () => WaspIceSlowA as IObjectContentGenerator } },
+           { "WaspIceSlowB", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => WaspIceSlowB =
+                   JsonObjectParser<AIAbility>.Parse("WaspIceSlowB", value, errorInfo),
+                GetObject = () => WaspIceSlowB as IObjectContentGenerator } },
+           { "PhoenixFlash", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PhoenixFlash =
+                   JsonObjectParser<AIAbility>.Parse("PhoenixFlash", value, errorInfo),
+                GetObject = () => PhoenixFlash as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4775,8 +4865,26 @@ namespace PgJsonObjects
             AddObject(PixieSlash as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 784 * 4, StoredObjectTable);
             AddObject(PixieRageSlash as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 785 * 4, StoredObjectTable);
             AddObject(StunTrapExplode as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 786 * 4, StoredObjectTable);
+            AddObject(SpiderIncubate1 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 787 * 4, StoredObjectTable);
+            AddObject(SpiderIncubate2 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 788 * 4, StoredObjectTable);
+            AddObject(RanalonHeal1 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 789 * 4, StoredObjectTable);
+            AddObject(RanalonHeal2 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 790 * 4, StoredObjectTable);
+            AddObject(RanalonSelfBuff1 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 791 * 4, StoredObjectTable);
+            AddObject(RanalonSelfBuff2 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 792 * 4, StoredObjectTable);
+            AddObject(ScrayStab1 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 793 * 4, StoredObjectTable);
+            AddObject(ScrayStab2 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 794 * 4, StoredObjectTable);
+            AddObject(WaspIceStab_Pet as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 795 * 4, StoredObjectTable);
+            AddObject(WaspIceSlow_Pet1 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 796 * 4, StoredObjectTable);
+            AddObject(WaspIceSlow_Pet2 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 797 * 4, StoredObjectTable);
+            AddObject(WaspIceSlow_Pet3 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 798 * 4, StoredObjectTable);
+            AddObject(WaspIceSlow_Pet4 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 799 * 4, StoredObjectTable);
+            AddObject(WaspIceStab as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 800 * 4, StoredObjectTable);
+            AddObject(WaspIceRageStab as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 801 * 4, StoredObjectTable);
+            AddObject(WaspIceSlowA as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 802 * 4, StoredObjectTable);
+            AddObject(WaspIceSlowB as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 803 * 4, StoredObjectTable);
+            AddObject(PhoenixFlash as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 804 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 787 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 805 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

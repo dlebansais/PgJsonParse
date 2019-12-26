@@ -46,6 +46,7 @@ namespace PgJsonObjects
         bool IsCamouflaged { get; }
         bool? RawIsCamouflaged { get; }
         PowerWaxType PowerWaxType { get; }
+        RecipeItemKey RecipeItemKey { get; }
 
         string CombinedEffect { get; }
     }

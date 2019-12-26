@@ -400,6 +400,16 @@ namespace PgJsonObjects
             return Result;
         }
 
+        private string GetConsumeItemUsesEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "ConsumeItemUses(";
+
+            Result += Item.Item != null ? Item.Item.InternalName : "unknown";
+            Result += ")";
+
+            return Result;
+        }
+
         private string GetItemMenuCategory()
         {
             if (RawItemMenuCategory == "Extract")

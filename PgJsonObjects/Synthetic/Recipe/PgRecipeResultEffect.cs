@@ -63,6 +63,7 @@ namespace PgJsonObjects
         public bool IsCamouflaged { get { return RawIsCamouflaged.HasValue && RawIsCamouflaged.Value; } }
         public bool? RawIsCamouflaged { get { return GetBool(84, 0); } }
         public PowerWaxType PowerWaxType { get { return GetEnum<PowerWaxType>(86); } }
+        public RecipeItemKey RecipeItemKey { get { return GetEnum<RecipeItemKey>(88); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser>(); } }
         protected override List<string> FieldTableOrder { get { return new List<string>(); } }
@@ -132,6 +133,9 @@ namespace PgJsonObjects
 
                 case RecipeEffect.AddItemTSysPowerWax:
                     return "Wax " + TextMaps.PowerWaxTypeTextMap[item.PowerWaxType] + " (Tier " + item.SlotPowerLevel + ", " + "..." + "), consuming 100 Craft Points";
+
+                case RecipeEffect.ConsumeItemUses:
+                    return "Consume Item Uses " + TextMaps.RecipeItemKeyTextMap[item.RecipeItemKey] + " (" + item.AdjustedReuseTime + ")";
             }
         }
     }

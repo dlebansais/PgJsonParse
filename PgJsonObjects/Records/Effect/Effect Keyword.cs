@@ -27,8 +27,7 @@
         ConcussionDamageCurse,
         Frostbite,
         Attack,
-        PerformanceAppreciation,
-        Lint_HardCodedUsage,
+        PerformanceAppreciation,Lint_HardCodedUsage,
         DanceAppreciation,
         Werewolf,
         WerewolfHowlMode,
@@ -239,5 +238,7 @@
         Power,
         LiveEvent_BunFu,
         FreezingLogic,
+        HotFlashCurse,
+        Bendith,
     }
 }

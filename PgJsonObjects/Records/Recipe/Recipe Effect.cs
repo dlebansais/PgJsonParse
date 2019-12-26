@@ -282,6 +282,7 @@
         CreateMiningSurvey7X_MiningSurveyGazluk7X,
         CreateMiningSurvey8X_MiningSurveyGazluk8X,
         ShowWardenEvents,
+        Calligraphy10D,
 
         ExtractTSysPower,
         RepairItemDurability,
@@ -292,5 +293,6 @@
         AdjustRecipeReuseTime,
         GiveItemPower,
         AddItemTSysPowerWax,
+        ConsumeItemUses,
     }
 }

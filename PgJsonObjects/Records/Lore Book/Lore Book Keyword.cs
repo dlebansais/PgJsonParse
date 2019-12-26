@@ -14,5 +14,6 @@
         Loot,
         AreaCasino,
         AreaRahuCaves,
+        AreaSunVale,
     }
 }

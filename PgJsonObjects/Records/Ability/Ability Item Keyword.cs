@@ -42,5 +42,6 @@
         Dagger,
         HolySymbol,
         FairyChime,
+        EnergyBow,
     }
 }

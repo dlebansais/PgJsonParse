@@ -15,6 +15,7 @@ namespace PgJsonObjects
         public bool? RawIsStationary { get; private set; }
         public bool? RawIsServerDriven { get; private set; }
         public bool? RawUseAbilitiesWithoutEnemyTarget { get; private set; }
+        public bool? RawSwimming { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -55,6 +56,10 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawUseAbilitiesWithoutEnemyTarget = value,
                 GetBool = () => RawUseAbilitiesWithoutEnemyTarget } },
+            { "Swimming", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawSwimming = value,
+                GetBool = () => RawSwimming } },
         }; } }
         #endregion
 
@@ -76,6 +81,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, "Is ServerDriven: " + (RawIsServerDriven.Value ? "Yes" : "No"));
                 if (RawUseAbilitiesWithoutEnemyTarget.HasValue)
                     AddWithFieldSeparator(ref Result, "Use Abilities Without Enemy Target: " + (RawUseAbilitiesWithoutEnemyTarget.Value ? "Yes" : "No"));
+                if (RawSwimming.HasValue)
+                    AddWithFieldSeparator(ref Result, "Swimming: " + (RawSwimming.Value ? "Yes" : "No"));
 
                 return Result;
             }
@@ -113,6 +120,7 @@ namespace PgJsonObjects
             AddBool(RawIsStationary, data, ref offset, ref BitOffset, BaseOffset, 20, 4);
             AddBool(RawIsServerDriven, data, ref offset, ref BitOffset, BaseOffset, 20, 6);
             AddBool(RawUseAbilitiesWithoutEnemyTarget, data, ref offset, ref BitOffset, BaseOffset, 20, 8);
+            AddBool(RawSwimming, data, ref offset, ref BitOffset, BaseOffset, 20, 10);
             CloseBool(ref offset, ref BitOffset);
 
             FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);

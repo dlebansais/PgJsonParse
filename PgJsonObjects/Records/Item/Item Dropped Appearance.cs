@@ -76,5 +76,6 @@
         CymbalMonkey,
         Mushroom14,
         Mushroom15,
+        Starfish,
     }
 }

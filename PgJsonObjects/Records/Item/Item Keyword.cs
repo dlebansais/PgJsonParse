@@ -963,5 +963,18 @@
         RawDeerMeat,
         RawRabbitMeat,
         Cranberries,
+        Seashell,
+        Starfish,
+        OysterKnife,
+        Lint_RecipeIngredientKeywords,
+        Flounder,
+        Amberjack,
+        FlawlessSharkSkin,
+        Pearl,
+        DrinkableRumBarrel,
+        EnergyBow,
+        Shrimp,
+        OysterKnife2,
+        SharkSkin,
     }
 }

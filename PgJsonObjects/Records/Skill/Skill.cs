@@ -255,6 +255,10 @@ namespace PgJsonObjects
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemKeyword>.ParseList(value, RecipeIngredientKeywordList, errorInfo),
                 GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(RecipeIngredientKeywordList) } },
+            { "_RecipeIngredientKeywords", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<ItemKeyword>.ParseList(value, RecipeIngredientKeywordList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<ItemKeyword>.ToStringList(RecipeIngredientKeywordList) } },
             { "GuestLevelCap", new FieldParser() {
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawGuestLevelCap = value,

@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[787];
+        private PgAIAbility[] Abilities = new PgAIAbility[805];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -811,6 +811,24 @@ namespace PgJsonObjects
         public IPgAIAbility PixieSlash { get { return GetAbilityObject(784); } }
         public IPgAIAbility PixieRageSlash { get { return GetAbilityObject(785); } }
         public IPgAIAbility StunTrapExplode { get { return GetAbilityObject(786); } }
+        public IPgAIAbility SpiderIncubate1 { get { return GetAbilityObject(787); } }
+        public IPgAIAbility SpiderIncubate2 { get { return GetAbilityObject(788); } }
+        public IPgAIAbility RanalonHeal1 { get { return GetAbilityObject(789); } }
+        public IPgAIAbility RanalonHeal2 { get { return GetAbilityObject(790); } }
+        public IPgAIAbility RanalonSelfBuff1 { get { return GetAbilityObject(791); } }
+        public IPgAIAbility RanalonSelfBuff2 { get { return GetAbilityObject(792); } }
+        public IPgAIAbility ScrayStab1 { get { return GetAbilityObject(793); } }
+        public IPgAIAbility ScrayStab2 { get { return GetAbilityObject(794); } }
+        public IPgAIAbility WaspIceStab_Pet { get { return GetAbilityObject(795); } }
+        public IPgAIAbility WaspIceSlow_Pet1 { get { return GetAbilityObject(796); } }
+        public IPgAIAbility WaspIceSlow_Pet2 { get { return GetAbilityObject(797); } }
+        public IPgAIAbility WaspIceSlow_Pet3 { get { return GetAbilityObject(798); } }
+        public IPgAIAbility WaspIceSlow_Pet4 { get { return GetAbilityObject(799); } }
+        public IPgAIAbility WaspIceStab { get { return GetAbilityObject(800); } }
+        public IPgAIAbility WaspIceRageStab { get { return GetAbilityObject(801); } }
+        public IPgAIAbility WaspIceSlowA { get { return GetAbilityObject(802); } }
+        public IPgAIAbility WaspIceSlowB { get { return GetAbilityObject(803); } }
+        public IPgAIAbility PhoenixFlash { get { return GetAbilityObject(804); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
@@ -3175,6 +3193,60 @@ namespace PgJsonObjects
            { "StunTrapExplode", new FieldParser() {
                Type = FieldType.Object,
                 GetObject = () => StunTrapExplode as IObjectContentGenerator } },
+           { "SpiderIncubate1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => SpiderIncubate1 as IObjectContentGenerator } },
+           { "SpiderIncubate2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => SpiderIncubate2 as IObjectContentGenerator } },
+           { "RanalonHeal1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RanalonHeal1 as IObjectContentGenerator } },
+           { "RanalonHeal2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RanalonHeal2 as IObjectContentGenerator } },
+           { "RanalonSelfBuff1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RanalonSelfBuff1 as IObjectContentGenerator } },
+           { "RanalonSelfBuff2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => RanalonSelfBuff2 as IObjectContentGenerator } },
+           { "ScrayStab1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ScrayStab1 as IObjectContentGenerator } },
+           { "ScrayStab2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => ScrayStab2 as IObjectContentGenerator } },
+           { "WaspIceStab_Pet", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspIceStab_Pet as IObjectContentGenerator } },
+           { "WaspIceSlow_Pet1", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspIceSlow_Pet1 as IObjectContentGenerator } },
+           { "WaspIceSlow_Pet2", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspIceSlow_Pet2 as IObjectContentGenerator } },
+           { "WaspIceSlow_Pet3", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspIceSlow_Pet3 as IObjectContentGenerator } },
+           { "WaspIceSlow_Pet4", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspIceSlow_Pet4 as IObjectContentGenerator } },
+           { "WaspIceStab", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspIceStab as IObjectContentGenerator } },
+           { "WaspIceRageStab", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspIceRageStab as IObjectContentGenerator } },
+           { "WaspIceSlowA", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspIceSlowA as IObjectContentGenerator } },
+           { "WaspIceSlowB", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => WaspIceSlowB as IObjectContentGenerator } },
+           { "PhoenixFlash", new FieldParser() {
+               Type = FieldType.Object,
+                GetObject = () => PhoenixFlash as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

@@ -789,5 +789,23 @@
         IPgAIAbility PixieSlash { get; }
         IPgAIAbility PixieRageSlash { get; }
         IPgAIAbility StunTrapExplode { get; }
+        IPgAIAbility SpiderIncubate1 { get; }
+        IPgAIAbility SpiderIncubate2 { get; }
+        IPgAIAbility RanalonHeal1 { get; }
+        IPgAIAbility RanalonHeal2 { get; }
+        IPgAIAbility RanalonSelfBuff1 { get; }
+        IPgAIAbility RanalonSelfBuff2 { get; }
+        IPgAIAbility ScrayStab1 { get; }
+        IPgAIAbility ScrayStab2 { get; }
+        IPgAIAbility WaspIceStab_Pet { get; }
+        IPgAIAbility WaspIceSlow_Pet1 { get; }
+        IPgAIAbility WaspIceSlow_Pet2 { get; }
+        IPgAIAbility WaspIceSlow_Pet3 { get; }
+        IPgAIAbility WaspIceSlow_Pet4 { get; }
+        IPgAIAbility WaspIceStab { get; }
+        IPgAIAbility WaspIceRageStab { get; }
+        IPgAIAbility WaspIceSlowA { get; }
+        IPgAIAbility WaspIceSlowB { get; }
+        IPgAIAbility PhoenixFlash { get; }
     }
 }

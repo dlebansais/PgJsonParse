@@ -310,5 +310,8 @@
         CoordinatedAssaultMaxHealth,
         CoordinatedAssaultMaxArmor,
         WardenBoostPotion,
+        WaterLung,
+        AlchemyMaxBreathBoost,
+        WardenStrengthDrink,
     }
 }

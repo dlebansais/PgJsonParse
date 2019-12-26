@@ -10,5 +10,6 @@
         bool? RawIsStationary { get; }
         bool? RawIsServerDriven { get; }
         bool? RawUseAbilitiesWithoutEnemyTarget { get; }
+        bool? RawSwimming { get; }
     }
 }

@@ -16,5 +16,6 @@
         PumpkinBomb,
         PumpkinTurret,
         SummonedColdSphere,
+        StunTrap,
     }
 }

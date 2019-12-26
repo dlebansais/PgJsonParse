@@ -348,6 +348,10 @@ namespace PgJsonObjects
                         Result.Add(GetPowerWaxResultEffects(Item));
                         break;
 
+                    case RecipeEffect.ConsumeItemUses:
+                        Result.Add(GetConsumeItemUsesEffects(Item));
+                        break;
+
                     default:
                         Result.Add(StringToEnumConversion<RecipeEffect>.ToString(Item.Effect, TextMaps.RecipeEffectStringMap));
                         break;
@@ -437,6 +441,9 @@ namespace PgJsonObjects
                 return true;
 
             if (ParseAddItemPowerWax(value, ErrorInfo, ref NewResultEffect))
+                return true;
+
+            if (ParseConsumeItemUses(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
             ErrorInfo.AddMissingEnum("RecipeEffect", value);
@@ -953,6 +960,42 @@ namespace PgJsonObjects
         private string GetGiveItemPowerEffects(IPgRecipeResultEffect Item)
         {
             string Result = "GiveTSysItem(";
+
+            Result += Item.Item != null ? Item.Item.InternalName : "unknown";
+            Result += ")";
+
+            return Result;
+        }
+
+        private bool ParseConsumeItemUses(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
+        {
+            string ConsumeItemUsesPattern = "ConsumeItemUses(";
+            if (RawEffect.StartsWith(ConsumeItemUsesPattern) && RawEffect.EndsWith(")"))
+            {
+                RecipeEffect ConvertedRecipeEffect = RecipeEffect.ConsumeItemUses;
+                string Adjusted = RawEffect.Substring(ConsumeItemUsesPattern.Length, RawEffect.Length - ConsumeItemUsesPattern.Length - 1);
+                string[] AdjustedSplit = Adjusted.Split(',');
+
+                if (AdjustedSplit.Length == 2)
+                {
+                    RecipeItemKey RecipeItemKey;
+                    int AdjustedReuseTime;
+                    if (StringToEnumConversion<RecipeItemKey>.TryParse(AdjustedSplit[0].Trim(), out RecipeItemKey, ErrorInfo) && int.TryParse(AdjustedSplit[1].Trim(), out AdjustedReuseTime))
+                    {
+                        NewResultEffect.Effect = ConvertedRecipeEffect;
+                        NewResultEffect.RecipeItemKey = RecipeItemKey;
+                        NewResultEffect.RawAdjustedReuseTime = AdjustedReuseTime;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private string GetConsumeItemUsesEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "ConsumeItemUses(";
 
             Result += Item.Item != null ? Item.Item.InternalName : "unknown";
             Result += ")";

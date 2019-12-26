@@ -68,5 +68,6 @@
         CraftedNecroNecklace,
         CraftedColdRing,
         BatWitchHat,
+        CraftedBardConch,
     }
 }

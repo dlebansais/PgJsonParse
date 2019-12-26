@@ -31,6 +31,7 @@ namespace PgJsonObjects
         public bool? RawIsStationary { get { return GetBool(20, 4); } }
         public bool? RawIsServerDriven { get { return GetBool(20, 6); } }
         public bool? RawUseAbilitiesWithoutEnemyTarget { get { return GetBool(20, 8); } }
+        public bool? RawSwimming { get { return GetBool(20, 10); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Abilities", new FieldParser() {
@@ -57,6 +58,9 @@ namespace PgJsonObjects
             { "UseAbilitiesWithoutEnemyTarget", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawUseAbilitiesWithoutEnemyTarget } },
+            { "Swimming", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawSwimming} },
         }; } }
 
         #region Indirect Properties

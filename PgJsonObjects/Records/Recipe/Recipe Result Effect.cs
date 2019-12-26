@@ -49,6 +49,7 @@ namespace PgJsonObjects
         public bool IsCamouflaged { get { return RawIsCamouflaged.HasValue && RawIsCamouflaged.Value; } }
         public bool? RawIsCamouflaged { get; set; }
         public PowerWaxType PowerWaxType { get; set; }
+        public RecipeItemKey RecipeItemKey { get; set; }
 
         public string CombinedEffect
         {
@@ -91,8 +92,9 @@ namespace PgJsonObjects
             AddBool(RawIsCamouflaged, data, ref offset, ref BitOffset, BaseOffset, 84, 0);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(PowerWaxType, data, ref offset, BaseOffset, 86);
+            AddEnum(RecipeItemKey, data, ref offset, BaseOffset, 88);
 
-            FinishSerializing(data, ref offset, BaseOffset, 88, null, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
+            FinishSerializing(data, ref offset, BaseOffset, 90, null, StoredObjectTable, null, StoredEnumListTable, null, null, null, null);
             AlignSerializedLength(ref offset);
         }
     }

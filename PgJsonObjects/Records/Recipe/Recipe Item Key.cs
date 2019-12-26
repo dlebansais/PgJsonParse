@@ -118,5 +118,6 @@
         OrganicShirt,
         Wand,
         DragonScale,
+        DrinkableRumBarrel,
     }
 }

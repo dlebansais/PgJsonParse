@@ -167,7 +167,6 @@ namespace PgJsonObjects
             { MapAreaName.RahuSewer, "Rahu Sewer" },
             { MapAreaName.RahuSewers, "Rahu Sewers" },
             { MapAreaName.FaeRealm, "Fae Realm" },
-            { MapAreaName.SunValeTemp, "Sun Vale Temporary" },
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
         };
 
@@ -822,6 +821,7 @@ namespace PgJsonObjects
             { AbilityItemKeyword.Dagger, "Dagger" },
             { AbilityItemKeyword.HolySymbol, "Holy Symbol" },
             { AbilityItemKeyword.FairyChime, "Fairy Chime" },
+            { AbilityItemKeyword.EnergyBow, "Energy Bow" },
         };
 
         public static readonly Dictionary<AbilityKeyword, string> AbilityKeywordTextMap = new Dictionary<AbilityKeyword, string>()
@@ -1371,6 +1371,7 @@ namespace PgJsonObjects
             { AbilityPetType.PumpkinBomb, "Pumpkin Bomb" },
             { AbilityPetType.PumpkinTurret, "Pumpkin Turret" },
             { AbilityPetType.SummonedColdSphere, "Summoned Cold Sphere" },
+            { AbilityPetType.StunTrap, "Stun Trap" },
         };
 
         public static readonly Dictionary<AbilityProjectile, string> AbilityProjectileTextMap = new Dictionary<AbilityProjectile, string>()
@@ -1969,6 +1970,9 @@ namespace PgJsonObjects
             { EffectStackingType.CoordinatedAssaultMaxHealth, "Coordinated Assault Max Health" },
             { EffectStackingType.CoordinatedAssaultMaxArmor, "Coordinated Assault Max Armor" },
             { EffectStackingType.WardenBoostPotion, "Warden Boost Potion" },
+            { EffectStackingType.WaterLung, "Water Lung" },
+            { EffectStackingType.AlchemyMaxBreathBoost, "Alchemy Max Breath Boost" },
+            { EffectStackingType.WardenStrengthDrink, "Warden Strength Drink" },
         };
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTextMap = new Dictionary<EffectKeyword, string>()
@@ -2215,6 +2219,8 @@ namespace PgJsonObjects
             { EffectKeyword.Power, "Power" },
             { EffectKeyword.LiveEvent_BunFu, "Live Event (Bun-Fu)" },
             { EffectKeyword.FreezingLogic, "Freezing Logic" },
+            { EffectKeyword.HotFlashCurse, "Hot Flash Curse" },
+            { EffectKeyword.Bendith, "Bendith" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -2293,6 +2299,7 @@ namespace PgJsonObjects
             { ItemDroppedAppearance.CymbalMonkey, "Cymbal Monkey" },
             { ItemDroppedAppearance.Mushroom14, "Mushroom #14" },
             { ItemDroppedAppearance.Mushroom15, "Mushroom #15" },
+            { ItemDroppedAppearance.Starfish, "Starfish" },
         };
 
         public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTextMap = new Dictionary<AppearanceSkin, string>()
@@ -3296,6 +3303,19 @@ namespace PgJsonObjects
             { ItemKeyword.RawDeerMeat, "Raw Deer Meat" },
             { ItemKeyword.RawRabbitMeat, "Raw Rabbit Meat" },
             { ItemKeyword.Cranberries, "Cranberries" },
+            { ItemKeyword.Seashell, "Seashell" },
+            { ItemKeyword.Starfish, "Starfish" },
+            { ItemKeyword.OysterKnife, "Oyster Knife" },
+            { ItemKeyword.Lint_RecipeIngredientKeywords, "Recipe Ingredient Keywords" },
+            { ItemKeyword.Flounder, "Flounder" },
+            { ItemKeyword.Amberjack, "Amberjack" },
+            { ItemKeyword.FlawlessSharkSkin, "Flawless Shark Skin" },
+            { ItemKeyword.Pearl, "Pearl" },
+            { ItemKeyword.DrinkableRumBarrel, "Drinkable Rum Barrel" },
+            { ItemKeyword.EnergyBow, "Energy Bow" },
+            { ItemKeyword.Shrimp, "Shrimp" },
+            { ItemKeyword.OysterKnife2, "Oyster Knife #2" },
+            { ItemKeyword.SharkSkin, "Shark Skin" },
         };
 
         public static readonly Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap = new Dictionary<ItemUseAnimation, string>()
@@ -3406,7 +3426,6 @@ namespace PgJsonObjects
             { MapAreaName.RahuSewers, "Rahu Sewers" },
             { MapAreaName.Staging, "Staging Area" },
             { MapAreaName.FaeRealm, "Fae Realm" },
-            { MapAreaName.SunValeTemp, "Sun Vale" },
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
         };
 
@@ -3803,6 +3822,8 @@ namespace PgJsonObjects
             { RecipeEffect.TeleportToNearbyMushroomCircle, "Teleport To Nearby Mushroom Circle" },
             { RecipeEffect.CreateMiningSurvey7X_MiningSurveyGazluk7X, "Create Motherlode Mining Survey (Astounding, Gazluk)" },
             { RecipeEffect.CreateMiningSurvey8X_MiningSurveyGazluk8X, "Create Motherlode Mining Survey (Superb, Gazluk)" },
+            { RecipeEffect.ShowWardenEvents, "Show Warden Events" },
+            { RecipeEffect.Calligraphy10D, "Calligraphy 10D" },
         };
 
         public static readonly Dictionary<DecomposeMaterial, string> DecomposeMaterialTextMap = new Dictionary<DecomposeMaterial, string>()
@@ -3910,6 +3931,7 @@ namespace PgJsonObjects
             { CraftedBoost.CraftedNecroNecklace, "Crafted Necro Necklace" },
             { CraftedBoost.CraftedColdRing, "Crafted Cold Ring" },
             { CraftedBoost.BatWitchHat, "Bat Witch Hat" },
+            { CraftedBoost.CraftedBardConch, "Crafted Bard Conch" },
         };
 
         public static readonly Dictionary<EnhancementEffect, string> EnhancementEffectTextMap = new Dictionary<EnhancementEffect, string>()
@@ -4084,6 +4106,7 @@ namespace PgJsonObjects
             { RecipeItemKey.OrganicShirt, "Organic Shirt" },
             { RecipeItemKey.Wand, "Wand" },
             { RecipeItemKey.DragonScale, "Dragon Scale" },
+            { RecipeItemKey.DrinkableRumBarrel, "Drinkable Rum Barrel" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
@@ -4996,6 +5019,7 @@ namespace PgJsonObjects
             { LoreBookKeyword.Loot, "Loot" },
             { LoreBookKeyword.AreaCasino, "Casino" },
             { LoreBookKeyword.AreaRahuCaves, "Rahu Caves" },
+            { LoreBookKeyword.AreaSunVale, "Sun Vale" },
         };
 
         public static readonly Dictionary<LoreBookVisibility, string> LoreBookVisibilityTextMap = new Dictionary<LoreBookVisibility, string>()
