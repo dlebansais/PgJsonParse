@@ -976,5 +976,10 @@
         Shrimp,
         OysterKnife2,
         SharkSkin,
+        CraftersGuild,
+        TreasureCluesSunValePoor,
+        TreasureCluesSunValeGood,
+        TreasureCluesSunValeGreat,
+        TreasureCluesSunValeAmazing,
     }
 }

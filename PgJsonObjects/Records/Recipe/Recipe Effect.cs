@@ -283,6 +283,10 @@
         CreateMiningSurvey8X_MiningSurveyGazluk8X,
         ShowWardenEvents,
         Calligraphy10D,
+        CreateSunValeTreasureMapPoor,
+        CreateSunValeTreasureMapGood,
+        CreateSunValeTreasureMapGreat,
+        CreateSunValeTreasureMapAmazing,
 
         ExtractTSysPower,
         RepairItemDurability,

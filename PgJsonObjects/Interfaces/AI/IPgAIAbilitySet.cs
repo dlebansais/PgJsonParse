@@ -807,5 +807,6 @@
         IPgAIAbility WaspIceSlowA { get; }
         IPgAIAbility WaspIceSlowB { get; }
         IPgAIAbility PhoenixFlash { get; }
+        IPgAIAbility KrakenRageCurse { get; }
     }
 }

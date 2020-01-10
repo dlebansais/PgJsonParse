@@ -164,7 +164,7 @@ namespace PgJsonObjects
             return null;
         }
 
-        public static GameNpc ConnectByName(ParseErrorInfo ErrorInfo, Dictionary<string, GameNpc> GameNpcTable, string RawNpcName, GameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, IBackLinkable LinkBack)
+        public static GameNpc ConnectByName(ParseErrorInfo ErrorInfo, Dictionary<string, IJsonKey> GameNpcTable, string RawNpcName, GameNpc ParsedGameNpc, ref bool IsRawGameNpcParsed, ref bool IsConnected, IBackLinkable LinkBack)
         {
             if (IsRawGameNpcParsed)
                 return ParsedGameNpc;
@@ -174,14 +174,16 @@ namespace PgJsonObjects
             if (RawNpcName == null)
                 return null;
 
-            foreach (KeyValuePair<string, GameNpc> Entry in GameNpcTable)
-                if (Entry.Value.Name == RawNpcName)
+            foreach (KeyValuePair<string, IJsonKey> Entry in GameNpcTable)
+            {
+                GameNpc NpcValue = Entry.Value as GameNpc;
+                if (NpcValue.Name == RawNpcName)
                 {
                     IsConnected = true;
-                    Entry.Value.AddLinkBack(LinkBack);
-                    return Entry.Value;
+                    NpcValue.AddLinkBack(LinkBack);
+                    return NpcValue;
                 }
-
+            }
             return null;
         }
         #endregion

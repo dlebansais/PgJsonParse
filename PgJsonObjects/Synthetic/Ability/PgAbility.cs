@@ -136,6 +136,8 @@ namespace PgJsonObjects
         public bool RawAttributesThatDeltaPowerCostListIsEmpty { get { return GetBool(180, 8).Value; } }
         public bool RawAttributesThatDeltaResetTimeListIsEmpty { get { return GetBool(180, 10).Value; } }
         public bool RawAttributesThatModPowerCostListIsEmpty { get { return GetBool(180, 12).Value; } }
+        public bool DelayLoopIsOnlyUsedInCombat { get { return RawDelayLoopIsOnlyUsedInCombat.HasValue && RawDelayLoopIsOnlyUsedInCombat.Value; } }
+        public bool? RawDelayLoopIsOnlyUsedInCombat { get { return GetBool(180, 14); } }
         public PowerSkill RawSkill { get { return GetEnum<PowerSkill>(182); } }
         public IPgGenericSourceCollection SourceList { get { return GetObjectList(184, ref _SourceList, (byte[] data, ref int offset) => PgGenericSourceCollection.CreateItem(this, data, ref offset), () => new PgGenericSourceCollection()); } } private PgGenericSourceCollection _SourceList;
         public IPgItem ConsumedItemDescription { get { return GetObject(188, ref _ConsumedItemDescription, PgItem.CreateNew); } } private IPgItem _ConsumedItemDescription;
@@ -322,6 +324,9 @@ namespace PgJsonObjects
             { "ConsumedItemDescription", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => ConsumedItemDescription != null ? ConsumedItemDescription.Name : null } },
+            { "DelayLoopIsOnlyUsedInCombat", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawDelayLoopIsOnlyUsedInCombat } },
         }; } }
 
         private string GetConsumedItemKeyword()

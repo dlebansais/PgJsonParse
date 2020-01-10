@@ -240,5 +240,6 @@
         FreezingLogic,
         HotFlashCurse,
         Bendith,
+        GeorgeCurse,
     }
 }

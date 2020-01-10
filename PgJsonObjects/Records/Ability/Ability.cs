@@ -94,6 +94,8 @@ namespace PgJsonObjects
         public PowerSkill RawSkill { get; private set; }
         public IPgGenericSourceCollection SourceList { get; private set; } = new PgGenericSourceCollection();
         public IPgItem ConsumedItemDescription { get; private set; }
+        public bool DelayLoopIsOnlyUsedInCombat { get { return RawDelayLoopIsOnlyUsedInCombat.HasValue && RawDelayLoopIsOnlyUsedInCombat.Value; } }
+        public bool? RawDelayLoopIsOnlyUsedInCombat { get; private set; }
 
         private List<PowerSkill> RawCompatibleSkillList = new List<PowerSkill>();
         private bool IsSkillParsed;
@@ -395,6 +397,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawConsumedItemDescription = value,
                 GetString = () => RawConsumedItemDescription } },
+            { "DelayLoopIsOnlyUsedInCombat", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawDelayLoopIsOnlyUsedInCombat = value,
+                GetBool = () => RawDelayLoopIsOnlyUsedInCombat } },
         }; } }
 
         private void ParseConsumedItemKeyword(string value, ParseErrorInfo errorInfo)
@@ -2478,6 +2484,8 @@ namespace PgJsonObjects
                 if (RawIgnoreEffectErrors.HasValue)
                     AddWithFieldSeparator(ref Result, "Ignore Effect Errors");
                 AddWithFieldSeparator(ref Result, RawConsumedItemDescription);
+                if (RawDelayLoopIsOnlyUsedInCombat.HasValue)
+                    AddWithFieldSeparator(ref Result, "Delay Loop Is Only Used In Combat");
 
                 return Result;
             }
@@ -2749,6 +2757,7 @@ namespace PgJsonObjects
             AddBool(RawAttributesThatDeltaPowerCostListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 8);
             AddBool(RawAttributesThatDeltaResetTimeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 10);
             AddBool(RawAttributesThatModPowerCostListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 180, 12);
+            AddBool(RawDelayLoopIsOnlyUsedInCombat, data, ref offset, ref BitOffset, BaseOffset, 180, 14);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(RawSkill, data, ref offset, BaseOffset, 182);
             AddObjectList(SourceList, data, ref offset, BaseOffset, 184, StoredObjectListTable);

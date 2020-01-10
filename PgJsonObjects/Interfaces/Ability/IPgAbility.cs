@@ -90,6 +90,8 @@ namespace PgJsonObjects
         PowerSkill RawSkill { get; }
         IPgGenericSourceCollection SourceList { get; }
         IPgItem ConsumedItemDescription { get; }
+        bool DelayLoopIsOnlyUsedInCombat { get; }
+        bool? RawDelayLoopIsOnlyUsedInCombat { get; }
 
         ConsumedItem ConsumedItem { get; }
         string DigitStrippedName { get; }

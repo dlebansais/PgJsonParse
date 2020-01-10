@@ -16,6 +16,7 @@ namespace PgJsonObjects
         public IPgQuestObjectiveCollection QuestObjectiveList { get; } = new QuestObjectiveCollection();
         public IPgQuestRewardXpCollection RewardsXPList { get; } = new QuestRewardXpCollection();
         public IPgQuestRewardItemCollection QuestRewardsItemList { get; } = new QuestRewardItemCollection();
+        public IPgQuestRewardFavorCollection RewardsFavorList { get; } = new QuestRewardFavorCollection();
         public TimeSpan? RawReuseTime { get; private set; }
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get; private set; }
@@ -752,6 +753,31 @@ namespace PgJsonObjects
                 return false;
             }
 
+            else if (RawRewardEffect.StartsWith("DeltaNpcFavor("))
+            {
+                int IndexEnd = RawRewardEffect.IndexOf(')');
+                if (IndexEnd >= 14)
+                {
+                    string RawRewardDeltaNpcFavor = RawRewardEffect.Substring(14, IndexEnd - 14);
+                    string[] Split = RawRewardDeltaNpcFavor.Split(',');
+
+                    if (Split.Length == 2 && int.TryParse(Split[1], out int FavorValue))
+                    {
+                        QuestRewardFavor NewReward = new QuestRewardFavor();
+                        NewReward.RawNpcName = Split[0];
+                        NewReward.RawFavor = FavorValue;
+                        RewardsFavorList.Add(NewReward);
+                        return true;
+                    }
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+
+                return false;
+            }
+
             else
             {
                 RawRewardEffects.Add(RawRewardEffect);
@@ -1003,6 +1029,12 @@ namespace PgJsonObjects
             foreach (QuestRewardItem Item in PreGiveItemList)
                 IsConnected |= Item.Connect(ErrorInfo, this, AllTables);
 
+            foreach (QuestRewardFavor Item in RewardsFavorList)
+                if (!Item.IsNpcParsed)
+                {
+                    Item.IsNpcParsed = true;
+                }
+
             RewardAbility = Ability.ConnectSingleProperty(ErrorInfo, AbilityTable, RawRewardAbility, RewardAbility, ref IsRawRewardAbilityParsed, ref IsConnected, this);
             RewardRecipe = Recipe.ConnectSingleProperty(ErrorInfo, RecipeTable, RawRewardRecipe, RewardRecipe, ref IsRawRewardRecipeParsed, ref IsConnected, this);
 
@@ -1246,8 +1278,9 @@ namespace PgJsonObjects
             AddObjectList(QuestMidwayGiveItemList, data, ref offset, BaseOffset, 192, StoredObjectListTable);
             AddObject(QuestCompleteNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 196, StoredObjectTable);
             AddString(QuestCompleteNpcName, data, ref offset, BaseOffset, 200, StoredStringtable);
+            AddObjectList(RewardsFavorList, data, ref offset, BaseOffset, 204, StoredObjectListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 204, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 208, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

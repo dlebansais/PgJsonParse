@@ -84,7 +84,14 @@ namespace PgJsonObjects
             Dictionary<string, IJsonKey> SkillTable = AllTables[typeof(Skill)];
 
             Skill = PgJsonObjects.Skill.ConnectPowerSkill(ErrorInfo, SkillTable, RawSkill, Skill, ref IsSkillParsed, ref IsConnected, Parent);
-            RecipeTargetList = PgJsonObjects.Recipe.ConnectByKeyword(ErrorInfo, RecipeTable, RecipeTarget, RecipeTargetList, ref IsRecipeTargetParsed, ref IsConnected, Parent);
+
+            IPgRecipe ParsedRecipe = null;
+            ParsedRecipe = PgJsonObjects.Recipe.ConnectSingleProperty(null, RecipeTable, RecipeTarget.ToString(), ParsedRecipe, ref IsRecipeTargetParsed, ref IsConnected, Parent);
+            if (ParsedRecipe != null)
+                RecipeTargetList = new RecipeCollection() { ParsedRecipe };
+            else
+                RecipeTargetList = PgJsonObjects.Recipe.ConnectByKeyword(ErrorInfo, RecipeTable, RecipeTarget, RecipeTargetList, ref IsRecipeTargetParsed, ref IsConnected, Parent);
+
             ResultItemList = PgJsonObjects.Item.ConnectByKeyword(ErrorInfo, ItemTable, ResultItemKeyword, ResultItemList, ref IsResultItemParsed, ref IsConnected, Parent);
 
             return IsConnected;

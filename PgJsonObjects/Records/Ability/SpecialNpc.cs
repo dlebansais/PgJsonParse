@@ -41,5 +41,17 @@
         Flopsy,
         Lopsy,
         Boop,
+        LiveNpc_Raim,
+        LiveNpc_Tantai,
+        LiveNpc_Kimoc,
+        LiveNpc_Serrold,
+        LiveNpc_Garad,
+        LiveNpc_Kalrod,
+        LiveNpc_Kinira,
+        LiveNpc_Rayar,
+        LiveNpc_Aceri,
+        LiveNpc_Loche,
+        LiveNpc_Delia,
+        LiveNpc_Moxie,
     }
 }
