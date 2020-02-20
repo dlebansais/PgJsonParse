@@ -487,6 +487,12 @@ namespace Presentation
             if (File.Exists(sourceFileName))
                 File.Copy(sourceFileName, destinationFileName, true);
         }
+
+        public static void DeleteFile(string fileName)
+        {
+            if (File.Exists(fileName))
+                File.Delete(fileName);
+        }
         #endregion
 
         #region Directory

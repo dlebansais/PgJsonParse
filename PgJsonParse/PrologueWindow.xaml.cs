@@ -1685,7 +1685,9 @@ namespace PgJsonParse
 
             try
             {
-                FileTools.DeleteDirectory(IconCacheFolder);
+                string[] FileNames = FileTools.DirectoryFiles(IconCacheFolder, "*");
+                foreach (string FileName in FileNames)
+                    FileTools.DeleteFile(FileName);
             }
             catch (Exception e)
             {
