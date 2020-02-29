@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PgJsonReader
 {
+    using System;
+    using System.IO;
 
     public interface IJsonWriter : IDisposable
     {
@@ -16,7 +13,7 @@ namespace PgJsonReader
         void ArrayStart();
         void ArrayEnd();
         void Value(int value);
-        void Value(string value);
+        void Value(string? value);
         void Value(float value);
         void Value(bool value);
         void Flush(Stream stream);
@@ -28,15 +25,17 @@ namespace PgJsonReader
         public static void Object(this IJsonWriter writer, JsonObject obj)
         {
             writer.ObjectStart();
-            foreach (var entry in obj.Entries)
+
+            foreach (KeyValuePair<string, IJsonValue?> Entry in obj.Entries)
             {
-                writer.ObjectKey(entry.Key);
-                writer.Value(entry.Value);
+                writer.ObjectKey(Entry.Key);
+                writer.Value(Entry.Value);
             }
+            
             writer.ObjectEnd();
         }
 
-        private static void Value(this IJsonWriter writer, IJsonValue value)
+        private static void Value(this IJsonWriter writer, IJsonValue? value)
         {
             if (value == null)
             {
@@ -49,9 +48,11 @@ namespace PgJsonReader
             else if (value.Type == Json.Type.Array)
             {
                 writer.ArrayStart();
-                var array = (JsonArray)value;
-                foreach (var child in array)
-                    writer.Value(child);
+
+                JsonValueCollection ArrayValue = (JsonValueCollection)value;
+                foreach (IJsonValue ChildValue in ArrayValue)
+                    writer.Value(ChildValue);
+
                 writer.ArrayEnd();
             }
             else if (value.Type == Json.Type.String)
@@ -70,11 +71,6 @@ namespace PgJsonReader
             {
                 writer.Value(((JsonBool)value).Value);
             }
-        }
-
-        public static void Serialize<T>(this IJsonWriter writer, T instance)
-        {
-
         }
     }
 }

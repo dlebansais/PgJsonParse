@@ -1,181 +1,223 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PgJsonReader
+﻿namespace PgJsonReader
 {
+    using System;
+    using System.IO;
+
     public class JsonTextWriter : IJsonWriter
     {
-
-        public IStringHandler StringHandler = new DefaultStringHandler();
-
-        private VirtualWriter writer;
-        private bool format;
-        private bool firstItem = true;
-        private bool openKey;
-        private int tabs;
-
+        #region Init
         public JsonTextWriter(bool format = true)
         {
-            writer = new VirtualWriter();
-            this.format = format;
+            Writer = new VirtualWriter();
+            Format = format;
         }
+        #endregion
 
-        public override string ToString()
-        {
-            return writer.ToString();
-        }
-
-        private void Tabs()
-        {
-            if (format)
-            {
-                for (int i = 0; i < tabs; i++)
-                    writer.Write('\t');
-            }
-        }
-
-        private void Space()
-        {
-            if (format)
-                writer.Write(' ');
-        }
-
-        private void Newline()
-        {
-            if (format)
-                writer.WriteNewLine();
-        }
-
-        private void Comma()
-        {
-            if (!firstItem)
-            {
-                writer.Write(',');
-                Newline();
-            }
-        }
-        
+        #region Client Interface
         public void ObjectStart()
         {
             Comma();
-            if (!openKey)
+            if (!IsOpenKey)
                 Tabs();
-            writer.Write('{');
+            Writer.Write('{');
             Newline();
-            
-            tabs++;
-            firstItem = true;
-            openKey = false;
+
+            TabCount++;
+            IsFirstItem = true;
+            IsOpenKey = false;
         }
 
         public void ObjectKey(string name)
         {
             Comma();
             Tabs();
-            writer.Write('"');
-            writer.Write(StringHandler.WriteString(name));
-            writer.Write('"');
-            writer.Write(':');
+            Writer.Write('"');
+            Writer.Write(StringHandler.WriteString(name));
+            Writer.Write('"');
+            Writer.Write(':');
             Space();
-            firstItem = true;
-            openKey = true;
+            IsFirstItem = true;
+            IsOpenKey = true;
         }
 
         public void ObjectEnd()
         {
-            tabs--;
+            TabCount--;
             Newline();
             Tabs();
-            writer.Write('}');
-            firstItem = false;
+            Writer.Write('}');
+            IsFirstItem = false;
         }
-        
+
         public void ArrayStart()
         {
             Comma();
-            if (!openKey)
+            if (!IsOpenKey)
                 Tabs();
-            writer.Write('[');
+            Writer.Write('[');
             Newline();
 
-            tabs++;
-            firstItem = true;
-            openKey = false;
+            TabCount++;
+            IsFirstItem = true;
+            IsOpenKey = false;
         }
 
         public void ArrayEnd()
         {
-            tabs--;
+            TabCount--;
             Newline();
             Tabs();
-            writer.Write(']');
-            firstItem = false;
+            Writer.Write(']');
+            IsFirstItem = false;
         }
 
-        public void Value(string value)
+        public void Value(string? value)
         {
             Comma();
-            if (!openKey)
+            if (!IsOpenKey)
                 Tabs();
             if (value == null)
-                writer.Write("null");
+                Writer.Write("null");
             else
             {
-                writer.Write('"');
-                writer.Write(StringHandler.WriteString(value));
-                writer.Write('"');
+                Writer.Write('"');
+                Writer.Write(StringHandler.WriteString(value));
+                Writer.Write('"');
             }
-            firstItem = false;
-            openKey = false;
+            IsFirstItem = false;
+            IsOpenKey = false;
         }
 
         public void Value(int value)
         {
             Comma();
-            if (!openKey)
+            if (!IsOpenKey)
                 Tabs();
-            writer.Write(value);
-            firstItem = false;
-            openKey = false;
+            Writer.Write(value);
+            IsFirstItem = false;
+            IsOpenKey = false;
         }
 
         public void Value(float value)
         {
             Comma();
-            if (!openKey)
+            if (!IsOpenKey)
                 Tabs();
-            writer.Write(value);
-            firstItem = false;
-            openKey = false;
+            Writer.Write(value);
+            IsFirstItem = false;
+            IsOpenKey = false;
         }
 
         public void Value(bool value)
         {
             Comma();
-            if (!openKey)
+            if (!IsOpenKey)
                 Tabs();
-            writer.Write(value ? "true" : "false");
-            firstItem = false;
-            openKey = false;
+            Writer.Write(value ? "true" : "false");
+            IsFirstItem = false;
+            IsOpenKey = false;
         }
 
         public void Flush(Stream stream)
         {
-            writer.Flush(stream);
+            Writer.Flush(stream);
         }
 
         public void Flush(StringWriter writer)
         {
-            this.writer.Flush(writer);
+            Writer.Flush(writer);
         }
 
+        public override string ToString()
+        {
+            return Writer.ToString();
+        }
+        #endregion
+
+        #region Implementation
+        private void Tabs()
+        {
+            if (Format)
+            {
+                for (int i = 0; i < TabCount; i++)
+                    Writer.Write('\t');
+            }
+        }
+
+        private void Space()
+        {
+            if (Format)
+                Writer.Write(' ');
+        }
+
+        private void Newline()
+        {
+            if (Format)
+                Writer.WriteNewLine();
+        }
+
+        private void Comma()
+        {
+            if (!IsFirstItem)
+            {
+                Writer.Write(',');
+                Newline();
+            }
+        }
+
+        private readonly IStringHandler StringHandler = new DefaultStringHandler();
+        private readonly VirtualWriter Writer;
+        private readonly bool Format;
+        private bool IsFirstItem = true;
+        private bool IsOpenKey;
+        private int TabCount;
+        #endregion
+
+        #region Implementation of IDisposable
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
+        /// <param name="isDisposing">Indicates if resources must be disposed now.</param>
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (!IsDisposed)
+            {
+                IsDisposed = true;
+
+                if (isDisposing)
+                    DisposeNow();
+            }
+        }
+
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
         public void Dispose()
         {
-            writer.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="JsonTextWriter"/> class.
+        /// </summary>
+        ~JsonTextWriter()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// True after <see cref="Dispose(bool)"/> has been invoked.
+        /// </summary>
+        private bool IsDisposed = false;
+
+        /// <summary>
+        /// Disposes of every reference that must be cleaned up.
+        /// </summary>
+        private void DisposeNow()
+        {
+            Writer.Dispose();
+        }
+        #endregion
     }
 }

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-
-namespace PgJsonReader
+﻿namespace PgJsonReader
 {
+    using System;
 
     public static class Json
     {
@@ -62,7 +54,7 @@ namespace PgJsonReader
                 return false;
             }
 
-            error = null;
+            error = string.Empty;
             return true;
         }
     }
@@ -86,14 +78,17 @@ namespace PgJsonReader
         }
     }
 
+    [AttributeUsage(validOn:AttributeTargets.Field)]
     public class JsonIgnoreAttribute : Attribute { }
+
+    [AttributeUsage(validOn: AttributeTargets.Field)]
     public class JsonPathAttribute : Attribute
     {
-        public string SerializedName;
-
         public JsonPathAttribute(string serializedName)
         {
             SerializedName = serializedName;
         }
+
+        public string SerializedName { get; }
     }
 }

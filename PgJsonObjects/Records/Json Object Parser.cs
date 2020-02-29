@@ -37,7 +37,7 @@ namespace PgJsonObjects
             Subitem.Init(SubitemName, 0, RawSubarray, false, ErrorInfo);
         }
 
-        public static void InitAsSublist(JsonArray RawSubarray, out List<T> Sublist, ParseErrorInfo ErrorInfo)
+        public static void InitAsSublist(JsonValueCollection RawSubarray, out List<T> Sublist, ParseErrorInfo ErrorInfo)
         {
             Sublist = new List<T>();
 

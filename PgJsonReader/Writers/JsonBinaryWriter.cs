@@ -1,99 +1,141 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PgJsonReader
+﻿namespace PgJsonReader
 {
+    using System;
+    using System.IO;
+
     public class JsonBinaryWriter : IJsonWriter
     {
-
-        public IStringHandler StringHandler = new DefaultStringHandler();
-        private BinaryWriter writer;
-
+        #region Init
         public JsonBinaryWriter(BinaryWriter writer)
         {
-            this.writer = writer;
+            Writer = writer;
         }
 
         public JsonBinaryWriter(Stream stream)
         {
-            writer = new BinaryWriter(stream);
+            Writer = new BinaryWriter(stream);
         }
+        #endregion
 
+        #region Client Interface
         public void ObjectStart()
         {
-            writer.Write((byte)Json.Token.ObjectStart);
+            Writer.Write((byte)Json.Token.ObjectStart);
         }
 
         public void ObjectKey(string name)
         {
-            writer.Write((byte)Json.Token.ObjectKey);
-            writer.Write(StringHandler.WriteString(name));
+            Writer.Write((byte)Json.Token.ObjectKey);
+            Writer.Write(StringHandler.WriteString(name));
         }
 
         public void ObjectEnd()
         {
-            writer.Write((byte)Json.Token.ObjectEnd);
+            Writer.Write((byte)Json.Token.ObjectEnd);
         }
 
         public void ArrayStart()
         {
-            writer.Write((byte)Json.Token.ArrayStart);
+            Writer.Write((byte)Json.Token.ArrayStart);
         }
 
         public void ArrayEnd()
         {
-            writer.Write((byte)Json.Token.ArrayEnd);
+            Writer.Write((byte)Json.Token.ArrayEnd);
         }
 
-        public void Value(string value)
+        public void Value(string? value)
         {
             if (value == null)
             {
-                writer.Write((byte)Json.Token.Null);
+                Writer.Write((byte)Json.Token.Null);
             }
             else
             {
-                writer.Write((byte)Json.Token.String);
-                writer.Write(StringHandler.WriteString(value));
+                Writer.Write((byte)Json.Token.String);
+                Writer.Write(StringHandler.WriteString(value));
             }
         }
 
         public void Value(int value)
         {
-            writer.Write((byte)Json.Token.Integer);
-            writer.Write(value);
+            Writer.Write((byte)Json.Token.Integer);
+            Writer.Write(value);
         }
 
         public void Value(float value)
         {
-            writer.Write((byte)Json.Token.Float);
-            writer.Write(value);
+            Writer.Write((byte)Json.Token.Float);
+            Writer.Write(value);
         }
 
         public void Value(bool value)
         {
-            writer.Write((byte)Json.Token.Boolean);
-            writer.Write(value);
+            Writer.Write((byte)Json.Token.Boolean);
+            Writer.Write(value);
         }
 
         public void Flush(Stream stream)
         {
-            writer.Flush();
+            Writer.Flush();
         }
 
         public void Flush(StringWriter writer)
         {
             writer.Flush();
         }
+        #endregion
 
-        public void Dispose()
+        #region Implementation
+        private readonly IStringHandler StringHandler = new DefaultStringHandler();
+        private readonly BinaryWriter Writer;
+        #endregion
+
+        #region Implementation of IDisposable
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
+        /// <param name="isDisposing">Indicates if resources must be disposed now.</param>
+        protected virtual void Dispose(bool isDisposing)
         {
-            writer.Dispose();
+            if (!IsDisposed)
+            {
+                IsDisposed = true;
+
+                if (isDisposing)
+                    DisposeNow();
+            }
         }
 
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="JsonBinaryWriter"/> class.
+        /// </summary>
+        ~JsonBinaryWriter()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// True after <see cref="Dispose(bool)"/> has been invoked.
+        /// </summary>
+        private bool IsDisposed = false;
+
+        /// <summary>
+        /// Disposes of every reference that must be cleaned up.
+        /// </summary>
+        private void DisposeNow()
+        {
+            Writer.Dispose();
+        }
+        #endregion
     }
 }

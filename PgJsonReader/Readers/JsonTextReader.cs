@@ -1,165 +1,212 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PgJsonReader
+﻿namespace PgJsonReader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Text;
+
     public class JsonTextReader : IJsonReader
     {
-
-        public IStringHandler StringHandler = new DefaultStringHandler();
-
-        private VirtualReader reader;
-        private Json.Token token;
-        private object value;
-
-        private StringBuilder builder = new StringBuilder();
-        private Stack<Json.Token> stack = new Stack<Json.Token>();
-        private bool lastIsKey = false;
-
+        #region Init
         public JsonTextReader(Stream stream)
         {
-            reader = new VirtualReader(stream);
+            Reader = new VirtualReader(stream);
         }
 
-        public JsonTextReader(StringReader reader)
+        public JsonTextReader(StringReader stringReader)
         {
-            this.reader = new VirtualReader(reader);
+            Reader = new VirtualReader(stringReader);
         }
 
         public JsonTextReader(string text)
         {
-            reader = new VirtualReader(text);
+            Reader = new VirtualReader(text);
         }
+        #endregion
 
-        public Json.Token CurrentToken { get { return token; } }
+        #region Properties
+        public Json.Token CurrentToken { get { return Token; } }
+        public object? CurrentValue { get { return Value; } }
+        #endregion
 
-        public object CurrentValue { get { return value; } }
-
+        #region Client Interface
         public Json.Token Read()
         {
-            if (token == Json.Token.EndOfFile)
-                return token;
+            if (Token == Json.Token.EndOfFile)
+                return Token;
 
-            int next;
-            while ((next = reader.Read()) >= 0)
+            int NextToken;
+            while ((NextToken = Reader.Read()) >= 0)
             {
-                char ch = Convert.ToChar(next);
-                if (ch == '{')
-                {
-                    lastIsKey = false;
-                    stack.Push(Json.Token.ObjectStart);
-                    value = null;
-                    return token = Json.Token.ObjectStart;
-                }
-                else if (ch == '}')
-                {
-                    stack.Pop();
-                    value = null;
-                    return token = Json.Token.ObjectEnd;
-                }
-                else if (ch == '"')
-                {
-                    var isKey = !lastIsKey && stack.Count > 0 && stack.Peek() == Json.Token.ObjectStart;
-                    lastIsKey = isKey;
+                char CharacterRead = Convert.ToChar(NextToken);
 
-                    value = ReadString();
-                    return token = isKey ? Json.Token.ObjectKey : Json.Token.String;
-                }
-                else if (ch == '[')
+                if (CharacterRead == '{')
                 {
-                    lastIsKey = false;
-                    stack.Push(Json.Token.ArrayStart);
-                    value = null;
-                    return token = Json.Token.ArrayStart;
+                    LastIsKey = false;
+                    Stack.Push(Json.Token.ObjectStart);
+                    Value = null;
+                    return Token = Json.Token.ObjectStart;
                 }
-                else if (ch == ']')
+                else if (CharacterRead == '}')
                 {
-                    stack.Pop();
-                    value = null;
-                    return token = Json.Token.ArrayEnd;
+                    Stack.Pop();
+                    Value = null;
+                    return Token = Json.Token.ObjectEnd;
                 }
-                else if (ch != ',' && ch != ':' && !Char.IsWhiteSpace(ch))
+                else if (CharacterRead == '"')
                 {
-                    lastIsKey = false;
-                    builder.Clear();
-                    builder.Append(ch);
+                    bool IsKey = !LastIsKey && Stack.Count > 0 && Stack.Peek() == Json.Token.ObjectStart;
+                    LastIsKey = IsKey;
 
-                    while ((next = reader.Peek()) >= 0)
+                    Value = ReadString();
+                    return Token = IsKey ? Json.Token.ObjectKey : Json.Token.String;
+                }
+                else if (CharacterRead == '[')
+                {
+                    LastIsKey = false;
+                    Stack.Push(Json.Token.ArrayStart);
+                    Value = null;
+                    return Token = Json.Token.ArrayStart;
+                }
+                else if (CharacterRead == ']')
+                {
+                    Stack.Pop();
+                    Value = null;
+                    return Token = Json.Token.ArrayEnd;
+                }
+                else if (CharacterRead != ',' && CharacterRead != ':' && !Char.IsWhiteSpace(CharacterRead))
+                {
+                    LastIsKey = false;
+                    Builder.Clear();
+                    Builder.Append(CharacterRead);
+
+                    while ((NextToken = Reader.Peek()) >= 0)
                     {
-                        ch = Convert.ToChar(next);
-                        if (ch != ']' && ch != '}' && ch != ',')
+                        CharacterRead = Convert.ToChar(NextToken);
+                        if (CharacterRead != ']' && CharacterRead != '}' && CharacterRead != ',')
                         {
-                            builder.Append(ch);
-                            reader.Read();
+                            Builder.Append(CharacterRead);
+                            Reader.Read();
                         }
                         else
                             break;
                     }
                     
-                    var str = builder.ToString();
-                    if (int.TryParse(str, out int integer))
+                    var StringRead = Builder.ToString();
+
+                    if (int.TryParse(StringRead, out int AsInteger))
                     {
-                        value = integer;
-                        return token = Json.Token.Integer;
+                        Value = AsInteger;
+                        return Token = Json.Token.Integer;
                     }
 #if CSHARP_XAML_FOR_HTML5
-                    else if (double.TryParse(str, out double single))
+                    else if (double.TryParse(StringRead, out double AsFloating))
 #else
-                    else if (double.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out double single))
+                    else if (double.TryParse(StringRead, NumberStyles.Float, CultureInfo.InvariantCulture, out double AsFloating))
 #endif
                     {
-                        value = (float)single;
-                        return token = Json.Token.Float;
+                        Value = (float)AsFloating;
+                        return Token = Json.Token.Float;
                     }
-                    else if (bool.TryParse(str, out bool truefalse))
+                    else if (bool.TryParse(StringRead, out bool AsBoolean))
                     {
-                        value = truefalse;
-                        return token = Json.Token.Boolean;
+                        Value = AsBoolean;
+                        return Token = Json.Token.Boolean;
                     }
                     else
                     {
-                        value = null;
-                        return token = Json.Token.Null;
+                        Value = null;
+                        return Token = Json.Token.Null;
                     }
                 }
             }
 
-            value = null;
-            return token = Json.Token.EndOfFile;
+            Value = null;
+            return Token = Json.Token.EndOfFile;
         }
+        #endregion
 
+        #region Implementation
         private string ReadString()
         {
-            builder.Clear();
+            Builder.Clear();
 
-            int next;
-            char last = char.MinValue;
-            while ((next = reader.Read()) >= 0)
+            int NextCharacter;
+            char LastCharacter = char.MinValue;
+
+            while ((NextCharacter = Reader.Read()) >= 0)
             {
-                var ch = Convert.ToChar(next);
+                var CharacterRead = Convert.ToChar(NextCharacter);
 
-                if (next == '"' && last != '\\')
+                if (NextCharacter == '"' && LastCharacter != '\\')
                     break;
-                else if (last == '\\')
-                    if (ch == 'n')
-                        ch = '\n';
+                else if (LastCharacter == '\\')
+                    if (CharacterRead == 'n')
+                        CharacterRead = '\n';
 
-                last = ch;
-                if (ch != '\\')
-                    builder.Append(ch);
+                LastCharacter = CharacterRead;
+                if (CharacterRead != '\\')
+                    Builder.Append(CharacterRead);
             }
 
-            return StringHandler.ReadString(builder.ToString());
+            return StringHandler.ReadString(Builder.ToString());
         }
 
+        private readonly IStringHandler StringHandler = new DefaultStringHandler();
+        private readonly VirtualReader Reader;
+        private Json.Token Token;
+        private object? Value;
+        private readonly StringBuilder Builder = new StringBuilder();
+        private readonly Stack<Json.Token> Stack = new Stack<Json.Token>();
+        private bool LastIsKey = false;
+        #endregion
+
+        #region Implementation of IDisposable
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
+        /// <param name="isDisposing">Indicates if resources must be disposed now.</param>
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (!IsDisposed)
+            {
+                IsDisposed = true;
+
+                if (isDisposing)
+                    DisposeNow();
+            }
+        }
+
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
         public void Dispose()
         {
-            reader.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="JsonTextReader"/> class.
+        /// </summary>
+        ~JsonTextReader()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// True after <see cref="Dispose(bool)"/> has been invoked.
+        /// </summary>
+        private bool IsDisposed = false;
+
+        /// <summary>
+        /// Disposes of every reference that must be cleaned up.
+        /// </summary>
+        private void DisposeNow()
+        {
+            Reader.Dispose();
+        }
+        #endregion
     }
 }

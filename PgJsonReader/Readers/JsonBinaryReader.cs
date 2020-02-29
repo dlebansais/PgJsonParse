@@ -1,60 +1,107 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PgJsonReader
+﻿namespace PgJsonReader
 {
+    using System;
+    using System.IO;
+
     public class JsonBinaryReader : IJsonReader
     {
-        public IStringHandler StringHandler = new DefaultStringHandler();
-
-        private BinaryReader reader;
-        private Json.Token token;
-        private object value;
-
-        public Json.Token CurrentToken { get { return token; } }
-        public object CurrentValue { get { return value; } }
-
+        #region Init
         public JsonBinaryReader(BinaryReader reader)
         {
-            this.reader = reader;
+            Reader = reader;
         }
 
         public JsonBinaryReader(Stream stream)
         {
-            reader = new BinaryReader(stream);
+            Reader = new BinaryReader(stream);
         }
 
         public JsonBinaryReader(byte[] buffer)
         {
-            reader = new BinaryReader(new MemoryStream(buffer));
+            Reader = new BinaryReader(new MemoryStream(buffer));
         }
+        #endregion
 
+        #region Properties
+        public BinaryReader Reader { get; }
+        public Json.Token CurrentToken { get { return Token; } }
+        public object? CurrentValue { get { return Value; } }
+        #endregion
+
+        #region Client Interface
         public Json.Token Read()
         {
-            if (reader.BaseStream.Position >= reader.BaseStream.Length)
-                return token = Json.Token.EndOfFile;
+            if (Reader.BaseStream.Position >= Reader.BaseStream.Length)
+                return Token = Json.Token.EndOfFile;
 
-            token = (Json.Token)reader.ReadByte();
-            if (token == Json.Token.ObjectKey || token == Json.Token.String)
-                value = StringHandler.ReadString(reader.ReadString());
-            else if (token == Json.Token.Float)
-                value = reader.ReadSingle();
-            else if (token == Json.Token.Integer)
-                value = reader.ReadInt32();
-            else if (token == Json.Token.Boolean)
-                value = reader.ReadBoolean();
-            else if (token == Json.Token.Null)
-                value = null;
-            return token;
+            Token = (Json.Token)Reader.ReadByte();
+
+            if (Token == Json.Token.ObjectKey || Token == Json.Token.String)
+                Value = StringHandler.ReadString(Reader.ReadString());
+            else if (Token == Json.Token.Float)
+                Value = Reader.ReadSingle();
+            else if (Token == Json.Token.Integer)
+                Value = Reader.ReadInt32();
+            else if (Token == Json.Token.Boolean)
+                Value = Reader.ReadBoolean();
+            else if (Token == Json.Token.Null)
+                Value = null;
+
+            return Token;
+        }
+        #endregion
+
+        #region Implementation
+        private readonly IStringHandler StringHandler = new DefaultStringHandler();
+        private Json.Token Token;
+        private object? Value;
+        #endregion
+
+        #region Implementation of IDisposable
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
+        /// <param name="isDisposing">Indicates if resources must be disposed now.</param>
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (!IsDisposed)
+            {
+                IsDisposed = true;
+
+                if (isDisposing)
+                    DisposeNow();
+            }
         }
 
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
         public void Dispose()
         {
-            reader.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="JsonBinaryReader"/> class.
+        /// </summary>
+        ~JsonBinaryReader()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// True after <see cref="Dispose(bool)"/> has been invoked.
+        /// </summary>
+        private bool IsDisposed = false;
+
+        /// <summary>
+        /// Disposes of every reference that must be cleaned up.
+        /// </summary>
+        private void DisposeNow()
+        {
+            Reader.Dispose();
+        }
+        #endregion
     }
 }

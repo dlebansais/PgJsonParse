@@ -1,12 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace PgJsonReader
+﻿namespace PgJsonReader
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
+#pragma warning disable CA1710 // Identifiers should have correct suffix
     public class JsonObject : IJsonValue, IEnumerable<KeyValuePair<string, IJsonValue>>
+#pragma warning restore CA1710 // Identifiers should have correct suffix
     {
         public Json.Type Type { get { return Json.Type.Object; } }
-        public Dictionary<string, IJsonValue> Entries = new Dictionary<string, IJsonValue>();
+        public Dictionary<string, IJsonValue?> Entries { get; } = new Dictionary<string, IJsonValue?>();
 
         public int Count
         {
@@ -18,81 +20,67 @@ namespace PgJsonReader
             return Entries.ContainsKey(name);
         }
 
-        public IJsonValue Get(string name)
+        public IJsonValue? Get(string name)
         {
-            IJsonValue value;
-            if (Entries.TryGetValue(name, out value))
-                return value;
+            if (Entries.TryGetValue(name, out IJsonValue? Value))
+                return Value;
+
             return null;
         }
 
         public T Get<T>(string name) where T : IJsonValue
         {
+#pragma warning disable CS8601 // Possible null reference assignment
             return (T)Get(name);
+#pragma warning restore CS8601 // Possible null reference assignment
         }
 
-        public IJsonValue this[string name]
+        public IJsonValue? this[string name]
         {
             get { return Get(name); }
         }
 
         public bool Bool(string name, bool defaultValue = false)
         {
-            IJsonValue value;
-            if (Entries.TryGetValue(name, out value))
-            {
-                var boolean = (value as JsonBool);
-                if (boolean != null)
-                    return boolean.Value;
-            }
+            if (Entries.TryGetValue(name, out IJsonValue? Value) && Value is JsonBool BooleanValue)
+                return BooleanValue.Value;
+
             return defaultValue;
         }
 
-        public string String(string name, string defaultValue = null)
+        public string? String(string name, string? defaultValue = null)
         {
-            IJsonValue value;
-            if (Entries.TryGetValue(name, out value))
-            {
-                var str = (value as JsonString);
-                if (str != null)
-                    return str.String;
-            }
+            if (Entries.TryGetValue(name, out IJsonValue? Value) && Value is JsonString StringValue)
+                return StringValue.String;
 
             return defaultValue;
         }
 
         public float Number(string name, float defaultValue = 0f)
         {
-            IJsonValue value;
-            if (Entries.TryGetValue(name, out value))
-            {
-                var num = (value as JsonFloat);
-                if (num != null)
-                    return num.Number;
-            }
+            if (Entries.TryGetValue(name, out IJsonValue? Value) && Value is JsonFloat FloatValue)
+                return FloatValue.Number;
 
             return defaultValue;
         }
 
-        public JsonArray Array(string name)
+        public JsonValueCollection? Array(string name)
         {
-            IJsonValue value;
-            if (Entries.TryGetValue(name, out value))
-                return (value as JsonArray);
+            if (Entries.TryGetValue(name, out IJsonValue? Value) && Value is JsonValueCollection ArrayValue)
+                return ArrayValue;
 
             return null;
         }
 
-        public JsonObject Object(string name)
+        public JsonObject? Object(string name)
         {
-            IJsonValue value;
-            if (Entries.TryGetValue(name, out value))
-                return (value as JsonObject);
+            if (Entries.TryGetValue(name, out IJsonValue? Value) && Value is JsonObject ObjectValue)
+                return ObjectValue;
 
             return null;
         }
 
-        public IJsonValue Add(string key, IJsonValue value)
+        public IJsonValue? Add(string key, IJsonValue? value)
         {
             Entries.Add(key, value);
             return value;
@@ -119,9 +107,9 @@ namespace PgJsonReader
             return obj;
         }
 
-        public JsonArray AddArray(string key)
+        public JsonValueCollection AddArray(string key)
         {
-            var arr = new JsonArray();
+            var arr = new JsonValueCollection();
             Entries.Add(key, arr);
             return arr;
         }

@@ -1,13 +1,12 @@
-﻿using System;
-
-namespace PgJsonReader
+﻿namespace PgJsonReader
 {
+    using System;
 
     public interface IJsonReader : IDisposable
     {
         Json.Token Read();
         Json.Token CurrentToken { get; }
-        object CurrentValue { get; }
+        object? CurrentValue { get; }
     }
 
     public static class JsonReader
@@ -19,37 +18,41 @@ namespace PgJsonReader
 
             else if (reader.CurrentToken == Json.Token.ObjectKey)
             {
-                JsonObject obj = new JsonObject();
+                JsonObject Object = new JsonObject();
 
-                string key = (string)reader.CurrentValue;
-                var value = reader.ParseValue();
-                obj.Add(key, value);
+                string? Key = (string?)reader.CurrentValue;
+                if (Key != null)
+                {
+                    IJsonValue? Value = reader.ParseValue();
+                    Object.Add(Key, Value);
+                }
 
-                return obj;
+                return Object;
             }
 
             else if (reader.CurrentToken == Json.Token.ArrayStart)
             {
-                JsonArray array = new JsonArray();
+                JsonValueCollection Array = new JsonValueCollection();
 
                 while (reader.CurrentToken != Json.Token.EndOfFile)
                 {
-                    var value = reader.ParseValue();
+                    IJsonValue? Value = reader.ParseValue();
                     if (reader.CurrentToken == Json.Token.ArrayEnd)
                     {
-                        if (array.Count > 0 || !(value is JsonArray))
+                        if (Array.Count > 0 || !(Value is JsonValueCollection))
                             break;
                         else
                         {
-                            if (array.Count > 0 || !(value is JsonArray))
+                            if (Array.Count > 0 || !(Value is JsonValueCollection))
                                 break;
                         }
                     }
 
-                    array.Add(value);
+                    if (Value != null)
+                        Array.Add(Value);
                 }
 
-                return array;
+                return Array;
             }
 
             else
@@ -63,11 +66,15 @@ namespace PgJsonReader
             {
                 if (reader.CurrentToken == Json.Token.ObjectStart)
                     continue;
+
                 if (reader.CurrentToken == Json.Token.ObjectKey)
                 {
-                    string key = (string)reader.CurrentValue;
-                    var value = reader.ParseValue();
-                    obj.Add(key, value);
+                    string? Key = (string?)reader.CurrentValue;
+                    if (Key != null)
+                    {
+                        IJsonValue? Value = reader.ParseValue();
+                        obj.Add(Key, Value);
+                    }
                 }
                 else if (reader.CurrentToken == Json.Token.ObjectEnd)
                     break;
@@ -75,46 +82,52 @@ namespace PgJsonReader
             return obj;
         }
 
-        private static IJsonValue ParseValue(this IJsonReader reader)
+        private static IJsonValue? ParseValue(this IJsonReader reader)
         {
             reader.Read();
 
             if (reader.CurrentToken == Json.Token.String)
             {
-                return new JsonString((string)reader.CurrentValue);
+                return new JsonString((string?)reader.CurrentValue);
             }
             else if (reader.CurrentToken == Json.Token.Integer)
             {
-                return new JsonInteger((int)reader.CurrentValue);
+                if (reader.CurrentValue != null)
+                    return new JsonInteger((int)reader.CurrentValue);
             }
             else if (reader.CurrentToken == Json.Token.Float)
             {
-                return new JsonFloat((float)reader.CurrentValue);
+                if (reader.CurrentValue != null)
+                    return new JsonFloat((float)reader.CurrentValue);
             }
             else if (reader.CurrentToken == Json.Token.Boolean)
             {
-                return new JsonBool((bool)reader.CurrentValue);
+                if (reader.CurrentValue != null)
+                    return new JsonBool((bool)reader.CurrentValue);
             }
             else if (reader.CurrentToken == Json.Token.ArrayStart)
             {
-                var array = new JsonArray();
+                var ArrayValue = new JsonValueCollection();
+
                 while (reader.CurrentToken != Json.Token.EndOfFile)
                 {
-                    var value = reader.ParseValue();
+                    IJsonValue? Value = reader.ParseValue();
+
                     if (reader.CurrentToken == Json.Token.ArrayEnd)
                     {
-                        if (array.Count > 0 || !(value is JsonArray))
+                        if (ArrayValue.Count > 0 || !(Value is JsonValueCollection))
                             break;
                         else
                         {
-                            if (array.Count > 0 || !(value is JsonArray))
+                            if (ArrayValue.Count > 0 || !(Value is JsonValueCollection))
                                 break;
                         }
                     }
 
-                    array.Add(value);
+                    if (Value != null)
+                        ArrayValue.Add(Value);
                 }
-                return array;
+                return ArrayValue;
             }
             else if (reader.CurrentToken == Json.Token.ObjectStart)
             {
@@ -127,12 +140,6 @@ namespace PgJsonReader
             }
 
             return null;
-        }
-
-        public static T Deserialize<T>(this IJsonReader reader)
-        {
-            var instance = Activator.CreateInstance<T>();
-            return instance;
         }
     }
 }

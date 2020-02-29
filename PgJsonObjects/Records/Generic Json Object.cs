@@ -313,10 +313,10 @@ namespace PgJsonObjects
         {
             foreach (KeyValuePair<string, IJsonValue> Field in JObjectFields)
             {
-                JsonArray AsArray;
+                JsonValueCollection AsArray;
                 IJsonValue AsValue;
 
-                if ((AsArray = Field.Value as JsonArray) != null)
+                if ((AsArray = Field.Value as JsonValueCollection) != null)
                     ParseFieldsInternalArray(Field.Key, AsArray, ErrorInfo);
 
                 else if ((AsValue = Field.Value as IJsonValue) != null)
@@ -327,7 +327,7 @@ namespace PgJsonObjects
             }
         }
 
-        private void ParseFieldsInternalArray(string Key, JsonArray AsArray, ParseErrorInfo ErrorInfo)
+        private void ParseFieldsInternalArray(string Key, JsonValueCollection AsArray, ParseErrorInfo ErrorInfo)
         {
             if (FieldTable.ContainsKey(Key))
             {
@@ -352,7 +352,7 @@ namespace PgJsonObjects
                 ErrorInfo.AddMissingField(FieldTableName + " Field: " + Key);
         }
 
-        protected void ParseStringTable(JsonArray RawArray, List<string> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
+        protected void ParseStringTable(JsonValueCollection RawArray, List<string> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
         {
             foreach (object Item in RawArray)
             {
@@ -367,7 +367,7 @@ namespace PgJsonObjects
             IsListEmpty = (RawList.Count == 0);
         }
 
-        protected void ParseIntTable(JsonArray RawArray, List<int> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
+        protected void ParseIntTable(JsonValueCollection RawArray, List<int> RawList, string FieldName, ParseErrorInfo ErrorInfo, out bool IsListEmpty)
         {
             foreach (object Item in RawArray)
             {
@@ -463,13 +463,13 @@ namespace PgJsonObjects
                 ParseField(Entry.Key, Entry.Value, ErrorInfo);
         }
 
-        protected virtual void ParseFields(JsonArray ArrayFields, ParseErrorInfo ErrorInfo)
+        protected virtual void ParseFields(JsonValueCollection ArrayFields, ParseErrorInfo ErrorInfo)
         {
             InitParsedFields();
             ParseFieldsInternal(ArrayFields, ErrorInfo);
         }
 
-        private void ParseFieldsInternal(JsonArray ArrayFields, ParseErrorInfo ErrorInfo)
+        private void ParseFieldsInternal(JsonValueCollection ArrayFields, ParseErrorInfo ErrorInfo)
         {
             foreach (object ArrayField in ArrayFields)
             {
@@ -496,8 +496,8 @@ namespace PgJsonObjects
 
         protected static void ParseFieldValueSimpleStringArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<string, ParseErrorInfo> ParseValue, Action ParserSetStringListEmpty)
         {
-            JsonArray AsArray;
-            if ((AsArray = Value as JsonArray) != null)
+            JsonValueCollection AsArray;
+            if ((AsArray = Value as JsonValueCollection) != null)
             {
                 if (AsArray.Count == 0 && ParserSetStringListEmpty != null)
                     ParserSetStringListEmpty();
@@ -521,8 +521,8 @@ namespace PgJsonObjects
 
         protected static void ParseFieldValueStringArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Func<string, ParseErrorInfo, bool> ParseValue, Action ParserSetStringListEmpty)
         {
-            JsonArray AsArray;
-            if ((AsArray = Value as JsonArray) != null)
+            JsonValueCollection AsArray;
+            if ((AsArray = Value as JsonValueCollection) != null)
             {
                 if (AsArray.Count == 0 && ParserSetStringListEmpty != null)
                     ParserSetStringListEmpty();
@@ -567,8 +567,8 @@ namespace PgJsonObjects
 
         protected static void ParseFieldValueSimpleIntegerArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Action<int, ParseErrorInfo> ParseValue)
         {
-            JsonArray AsArray;
-            if ((AsArray = Value as JsonArray) != null)
+            JsonValueCollection AsArray;
+            if ((AsArray = Value as JsonValueCollection) != null)
             {
                 foreach (IJsonValue Item in AsArray)
                 {
@@ -589,8 +589,8 @@ namespace PgJsonObjects
 
         protected static void ParseFieldValueIntegerArray(object Value, ParseErrorInfo ErrorInfo, string FieldName, Func<int, ParseErrorInfo, bool> ParseValue)
         {
-            JsonArray AsArray;
-            if ((AsArray = Value as JsonArray) != null)
+            JsonValueCollection AsArray;
+            if ((AsArray = Value as JsonValueCollection) != null)
             {
                 foreach (IJsonValue Item in AsArray)
                 {
@@ -641,7 +641,7 @@ namespace PgJsonObjects
             JsonObject AsJObject;
             if ((AsJObject = Value as JsonObject) != null)
                 ParseValue(AsJObject, ErrorInfo);
-            else if (Value is JsonArray AsArray)
+            else if (Value is JsonValueCollection AsArray)
             {
                 foreach (IJsonValue Item in AsArray)
                     if (Item is JsonObject AsJObjectItem)
@@ -664,7 +664,7 @@ namespace PgJsonObjects
                 ParserSetArrayIsSimple?.Invoke();
             }
 
-            else if (Value is JsonArray AsArray)
+            else if (Value is JsonValueCollection AsArray)
             {
                 if (AsArray.Count == 0 && ParserSetObjectListEmpty != null)
                     ParserSetObjectListEmpty();
@@ -691,7 +691,7 @@ namespace PgJsonObjects
                 ParserSetArrayIsSimple?.Invoke();
             }
 
-            else if (Value is JsonArray AsArray)
+            else if (Value is JsonValueCollection AsArray)
             {
                 if (AsArray.Count == 0 && ParserSetObjectListEmpty != null)
                     ParserSetObjectListEmpty();
@@ -700,7 +700,7 @@ namespace PgJsonObjects
                     foreach (IJsonValue Item in AsArray)
                         if (Item is JsonObject AsJObjectItem)
                             ParseValue(AsJObjectItem, ErrorInfo);
-                        else if (Item is JsonArray AsJArrayItem)
+                        else if (Item is JsonValueCollection AsJArrayItem)
                         {
                             ParserSetArrayIsNested?.Invoke();
                             ParseFieldValueObjectArray(AsJArrayItem, ErrorInfo, FieldName, ParseValue, ParserSetObjectListEmpty, ParserSetArrayIsSimple, null);

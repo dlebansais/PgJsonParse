@@ -52,7 +52,7 @@ namespace PgJsonObjects
                         if (RootValue is JsonObject RootObject)
                             Entries = RootObject.Entries;
 
-                        else if (RootValue is JsonArray RootArray)
+                        else if (RootValue is JsonValueCollection RootArray)
                         {
                             foreach (IJsonValue Item in RootArray)
                             {
@@ -78,7 +78,7 @@ namespace PgJsonObjects
                         foreach (KeyValuePair<string, IJsonValue> EntryRaw in Entries)
                             if (EntryRaw.Key != null && EntryRaw.Key.Length > 0)
                             {
-                                if ((loadAsArray || loadAsObject) && EntryRaw.Value is JsonArray ArrayValue)
+                                if ((loadAsArray || loadAsObject) && EntryRaw.Value is JsonValueCollection ArrayValue)
                                 {
                                     int Index = 0;
                                     foreach (object ObjectValue in ArrayValue)
