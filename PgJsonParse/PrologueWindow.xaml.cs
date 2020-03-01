@@ -505,7 +505,7 @@ namespace PgJsonParse
             Watch.Start();
 
             const string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
-            WebClientTool.DownloadText(this, RequestUri, Watch,
+            WebClientTool.DownloadText(RequestUri, Watch,
                                        (string content, Exception downloadException) => OnCheckVersion1(content, downloadException, RequestUri));
         }
 
@@ -666,7 +666,7 @@ namespace PgJsonParse
             IsParserUpdateChecked = true;
 
             NetTools.EnableSecurityProtocol(out object OldSecurityProtocol);
-            WebClientTool.DownloadText(this, ReleasePageAddress, null,
+            WebClientTool.DownloadText(ReleasePageAddress, null,
                                        (string Content, Exception DownloadException) => OnCheckParser1(Content, DownloadException, callback, OldSecurityProtocol));
         }
 
@@ -799,7 +799,7 @@ namespace PgJsonParse
         private void OnDownloadVersion(GameVersionInfo versionInfo)
         {
             IsGlobalInteractionEnabled = false;
-            SetTaskbarState(TaskbarStates.Normal);
+            SetTaskbarState(TaskbarState.Normal);
             versionInfo.ProgressChanged += OnFileDownloadProgressChanged;
 
             OnDownloadVersion0(versionInfo);
@@ -824,7 +824,7 @@ namespace PgJsonParse
 
             if (success)
             {
-                SetTaskbarState(TaskbarStates.NoProgress);
+                SetTaskbarState(TaskbarState.NoProgress);
                 StatusMessage = null;
                 LastExceptionMessage = null;
 
@@ -835,7 +835,7 @@ namespace PgJsonParse
             }
             else
             {
-                SetTaskbarState(TaskbarStates.Error);
+                SetTaskbarState(TaskbarState.Error);
                 StatusMessage = "Unable to download version files.";
                 LastExceptionMessage = exceptionMessage;
                 IsGlobalInteractionEnabled = true;
@@ -979,7 +979,7 @@ namespace PgJsonParse
             ParseCancellation = new Cancellation();
             ParseProgress = 0;
             ParseErrorInfo ErrorInfo = new ParseErrorInfo();
-            SetTaskbarState(TaskbarStates.Normal);
+            SetTaskbarState(TaskbarState.Normal);
             App.SetMainWindow(Dlg);
 
             string VersionFolder = Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
@@ -1104,7 +1104,7 @@ namespace PgJsonParse
 
         private void OnStart3(bool success, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder)
         {
-            SetTaskbarState(TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarState.NoProgress);
 
             IsParsing = false;
             IsParsingCancelable = false;
@@ -1590,7 +1590,7 @@ namespace PgJsonParse
         private void OnDownloadIcons0(GameVersionInfo versionInfo)
         {
             IsIconStateUpdated = true;
-            SetTaskbarState(TaskbarStates.Normal);
+            SetTaskbarState(TaskbarState.Normal);
 
             ExecuteDownloadIcons0(versionInfo, 
                                   (bool Success) => OnDownloadIcons1(Success, versionInfo));
@@ -1602,7 +1602,7 @@ namespace PgJsonParse
 
             if (success)
             {
-                SetTaskbarState(TaskbarStates.NoProgress);
+                SetTaskbarState(TaskbarState.NoProgress);
 
                 string IconFolder = ShareIconFiles ? IconCacheFolder : Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
                 string IconFile = Path.Combine(ApplicationFolder, "mainicon.png");
@@ -1622,7 +1622,7 @@ namespace PgJsonParse
             }
             else
             {
-                SetTaskbarState(TaskbarStates.Error);
+                SetTaskbarState(TaskbarState.Error);
                 StatusMessage = "Failed to download icons.";
             }
 
@@ -1710,13 +1710,13 @@ namespace PgJsonParse
         #region Events
         private void OnCheckVersion(object sender, EventArgs e)
         {
-            SetTaskbarState(TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarState.NoProgress);
             OnCheckVersion();
         }
 
         private void OnSelectVersion(object sender, EventArgs e)
         {
-            SetTaskbarState(TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarState.NoProgress);
             OnSelectVersion();
         }
 
@@ -1728,7 +1728,7 @@ namespace PgJsonParse
 
         private void OnDownloadVersion(object sender, EventArgs e)
         {
-            SetTaskbarState(TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarState.NoProgress);
             GameVersionInfo Version = VersionInfoFromControl(e);
             OnDownloadVersion(Version);
         }
@@ -1740,19 +1740,19 @@ namespace PgJsonParse
 
         private void OnDeleteVersion(object sender, EventArgs e)
         {
-            SetTaskbarState(TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarState.NoProgress);
             OnDeleteVersion(VersionInfoFromControl(e));
         }
 
         private void OnDeleteIcons(object sender, EventArgs e)
         {
-            SetTaskbarState(TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarState.NoProgress);
             OnDeleteIcons();
         }
 
         private void OnDownloadIcons(object sender, EventArgs e)
         {
-            SetTaskbarState(TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarState.NoProgress);
             OnDownloadIcons(VersionInfoFromControl(e));
         }
 
@@ -1763,7 +1763,7 @@ namespace PgJsonParse
 
         private void OnStart(object sender, EventArgs e)
         {
-            SetTaskbarState(TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarState.NoProgress);
             OnStart(VersionInfoFromControl(e));
         }
 
@@ -1811,7 +1811,7 @@ namespace PgJsonParse
 
         protected override void OnControlClosing(ref bool cancel)
         {
-            SetTaskbarState(TaskbarStates.NoProgress);
+            SetTaskbarState(TaskbarState.NoProgress);
 
             base.OnControlClosing(ref cancel);
         }

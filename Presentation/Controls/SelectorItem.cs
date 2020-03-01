@@ -49,7 +49,9 @@ namespace Presentation
         /// <summary>
         ///     Gets or sets the Value property.
         /// </summary>
+#pragma warning disable CA1721 // Property names should not match get methods
         public object Value
+#pragma warning restore CA1721 // Property names should not match get methods
         {
             get { return GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }

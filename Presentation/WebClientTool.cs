@@ -7,12 +7,12 @@ using Windows.UI.Xaml;
 
 namespace Presentation
 {
-    public class WebClientTool
+    public static class WebClientTool
     {
         #region Download Text
         public delegate void DownloadTextResultHandler(string content, Exception downloadException);
 
-        public static void DownloadText(IDispatcherSource dispatcherSource, string address, Stopwatch watch, DownloadTextResultHandler callback)
+        public static void DownloadText(string address, Stopwatch watch, DownloadTextResultHandler callback)
         {
             Download(address, "text_proxy", OnDownloadTextCompleted, DownloadTimerTickText, new Action<string, Exception>((string data, Exception exception) => ReturnDownloadedText(data, exception, callback)));
         }
@@ -36,7 +36,7 @@ namespace Presentation
         #region Download Binary
         public delegate void DownloadDataResultHandler(byte[] data, Exception downloadException);
 
-        public static void DownloadDataToFile(IDispatcherSource dispatcherSource, string address, DownloadDataResultHandler callback)
+        public static void DownloadDataToFile(string address, DownloadDataResultHandler callback)
         {
             Download(address, "data_proxy", OnDownloadDataCompleted, DownloadTimerTickData, new Action<string, Exception>((string data, Exception exception) => SaveDownloadedData(data, exception, callback)));
         }
@@ -166,6 +166,7 @@ namespace Presentation
 #else
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -174,12 +175,12 @@ using System.Windows.Threading;
 
 namespace Presentation
 {
-    public class WebClientTool
+    public static class WebClientTool
     {
         #region Download Text
         public delegate void DownloadTextResultHandler(string content, Exception downloadException);
 
-        public static void DownloadText(IDispatcherSource dispatcherSource, string address, Stopwatch watch, DownloadTextResultHandler callback)
+        public static void DownloadText(string address, Stopwatch watch, DownloadTextResultHandler callback)
         {
             Task<Tuple<string,Exception>> DownloadTask = new Task<Tuple<string, Exception>>(() => { return ExecuteDownloadText(address, watch); });
             DownloadTask.Start();
@@ -191,46 +192,40 @@ namespace Presentation
         {
             try
             {
-                HttpWebRequest Request = WebRequest.Create(address) as HttpWebRequest;
-                using (WebResponse Response = Request.GetResponse())
+                HttpWebRequest Request = WebRequest.Create(new Uri(address)) as HttpWebRequest;
+                using WebResponse Response = Request.GetResponse();
+                using Stream ResponseStream = Response.GetResponseStream();
+                Encoding Encoding = Encoding.ASCII;
+                string[] ContentTypeSplit = Response.ContentType.ToUpperInvariant().Split(';');
+                foreach (string s in ContentTypeSplit)
                 {
-                    using (Stream ResponseStream = Response.GetResponseStream())
+                    string Chunk = s.Trim();
+                    if (Chunk.StartsWith("CHARSET", StringComparison.InvariantCulture))
                     {
-                        Encoding Encoding = Encoding.ASCII;
-                        string[] ContentTypeSplit = Response.ContentType.ToLower().Split(';');
-                        foreach (string s in ContentTypeSplit)
-                        {
-                            string Chunk = s.Trim();
-                            if (Chunk.StartsWith("charset"))
-                            {
-                                string[] ChunkSplit = Chunk.Split('=');
-                                if (ChunkSplit.Length == 2)
-                                    if (ChunkSplit[0] == "charset")
-                                        if (ChunkSplit[1] == "utf8" || ChunkSplit[1] == "utf-8")
-                                        {
-                                            Encoding = Encoding.UTF8;
-                                            break;
-                                        }
-                            }
-                        }
-
-                        using (StreamReader Reader = new StreamReader(ResponseStream, Encoding))
-                        {
-                            string Content = Reader.ReadToEnd();
-
-                            bool IsReadToEnd = Reader.EndOfStream;
-                            if (IsReadToEnd)
-                            {
-                                if (watch != null)
-                                    UserUI.MinimalSleep(watch);
-
-                                return new Tuple<string, Exception>(Content, null);
-                            }
-                            else
-                                return new Tuple<string, Exception>(null, null);
-                        }
+                        string[] ChunkSplit = Chunk.Split('=');
+                        if (ChunkSplit.Length == 2)
+                            if (ChunkSplit[0] == "CHARSET")
+                                if (ChunkSplit[1] == "UTF8" || ChunkSplit[1] == "UTF-8")
+                                {
+                                    Encoding = Encoding.UTF8;
+                                    break;
+                                }
                     }
                 }
+
+                using StreamReader Reader = new StreamReader(ResponseStream, Encoding);
+                string Content = Reader.ReadToEnd();
+
+                bool IsReadToEnd = Reader.EndOfStream;
+                if (IsReadToEnd)
+                {
+                    if (watch != null)
+                        UserUI.MinimalSleep(watch);
+
+                    return new Tuple<string, Exception>(Content, null);
+                }
+                else
+                    return new Tuple<string, Exception>(null, null);
             }
             catch (Exception e)
             {
@@ -258,7 +253,7 @@ namespace Presentation
         #region Download Binary
         public delegate void DownloadDataResultHandler(byte[] data, Exception downloadException);
 
-        public static void DownloadDataToFile(IDispatcherSource dispatcherSource, string address, DownloadDataResultHandler callback)
+        public static void DownloadDataToFile(string address, DownloadDataResultHandler callback)
         {
             Task<Tuple<byte[], Exception>> DownloadTask = new Task<Tuple<byte[], Exception>>(() => { return ExecuteDownloadData(address); });
             DownloadTask.Start();
@@ -270,18 +265,12 @@ namespace Presentation
         {
             try
             {
-                HttpWebRequest Request = WebRequest.Create(address) as HttpWebRequest;
-                using (WebResponse Response = Request.GetResponse())
-                {
-                    using (Stream ResponseStream = Response.GetResponseStream())
-                    {
-                        using (BinaryReader Reader = new BinaryReader(ResponseStream))
-                        {
-                            byte[] Content = Reader.ReadBytes((int)Response.ContentLength);
-                            return new Tuple<byte[], Exception>(Content, null);
-                        }
-                    }
-                }
+                HttpWebRequest Request = WebRequest.Create(new Uri(address)) as HttpWebRequest;
+                using WebResponse Response = Request.GetResponse();
+                using Stream ResponseStream = Response.GetResponseStream();
+                using BinaryReader Reader = new BinaryReader(ResponseStream);
+                byte[] Content = Reader.ReadBytes((int)Response.ContentLength);
+                return new Tuple<byte[], Exception>(Content, null);
             }
             catch (Exception e)
             {
@@ -309,7 +298,7 @@ namespace Presentation
         #region Explorer
         public static void OpenFileExplorer(string folder)
         {
-            Process Explorer = new Process();
+            using Process Explorer = new Process();
             Explorer.StartInfo.FileName = "explorer.exe";
             Explorer.StartInfo.Arguments = folder;
             Explorer.StartInfo.UseShellExecute = true;

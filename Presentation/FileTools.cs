@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Presentation
 {
-    public class FileTools
+    public static class FileTools
     {
         #region File Dialog
         public static bool OpenTextFile(out string fileName, out string content)
@@ -377,7 +377,7 @@ using System.Text;
 
 namespace Presentation
 {
-    public class FileTools
+    public static class FileTools
     {
         #region File Dialog
         public static bool OpenTextFile(ref string fileName, out string content)
@@ -516,7 +516,7 @@ namespace Presentation
         public static string[] DirectoryFolders(string directoryName)
         {
             if (!Directory.Exists(directoryName))
-                return new string[0];
+                return Array.Empty<string>();
 
             return Directory.GetDirectories(directoryName);
         }
@@ -526,7 +526,7 @@ namespace Presentation
             searchPattern = "*." + searchPattern;
 
             if (!Directory.Exists(directoryName))
-                return new string[0];
+                return Array.Empty<string>();
 
             return Directory.GetFiles(directoryName, searchPattern);
         }

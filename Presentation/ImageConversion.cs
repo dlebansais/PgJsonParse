@@ -32,25 +32,25 @@ namespace Presentation
     {
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DeleteObject([In] IntPtr hObject);
+        private static extern bool DeleteObject([In] IntPtr hObject);
 
-        public static ImageSource IconFileToImageSource(string IconFile)
+        public static ImageSource IconFileToImageSource(string iconFile)
         {
-            if (!File.Exists(IconFile))
+            if (!File.Exists(iconFile))
                 return null;
 
-            Bitmap bmp = new Bitmap(IconFile);
-            var handle = bmp.GetHbitmap();
+            using Bitmap Bitmap = new Bitmap(iconFile);
+            IntPtr Handle = Bitmap.GetHbitmap();
             try
             {
-                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                return Imaging.CreateBitmapSourceFromHBitmap(Handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             }
-            finally { DeleteObject(handle); }
+            finally { DeleteObject(Handle); }
         }
 
-        public static void UpdateWindowIconUsingFile(Window window, string FileName)
+        public static void UpdateWindowIconUsingFile(Window window, string fileName)
         {
-            window.Icon = IconFileToImageSource(FileName);
+            window.Icon = IconFileToImageSource(fileName);
         }
     }
 }

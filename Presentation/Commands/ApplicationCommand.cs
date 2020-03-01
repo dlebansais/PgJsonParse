@@ -69,19 +69,19 @@ namespace Presentation
     {
         public static void SubscribeToGlobalCommand(string resourceName, EventHandler handler)
         {
-            ApplicationCommand Command = Application.Current.Resources[resourceName] as ApplicationCommand;
+            ApplicationCommand Command = (ApplicationCommand)Application.Current.Resources[resourceName];
             Command.Subscribe(handler);
         }
 
         public static void SubscribeToGuiCommand(string resourceName, EventHandler handler)
         {
-            ApplicationCommand Command = Application.Current.Resources[resourceName] as ApplicationCommand;
+            ApplicationCommand Command = (ApplicationCommand)Application.Current.Resources[resourceName];
             Command.Subscribe(handler);
         }
 
         public static void SubscribeToControlCommand(Control control, string resourceName, EventHandler handler)
         {
-            ApplicationCommand Command = control.Resources[resourceName] as ApplicationCommand;
+            ApplicationCommand Command = (ApplicationCommand)control.Resources[resourceName];
             Command.Subscribe(handler);
         }
 

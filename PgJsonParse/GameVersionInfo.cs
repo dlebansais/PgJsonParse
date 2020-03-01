@@ -177,7 +177,7 @@ namespace PgJsonParse
             }
 
             string RequestUri = $"http://cdn.projectgorgon.com/v{Version}/{sourceLocation}/{fileName}.{extension}";
-            WebClientTool.DownloadText(dispatcherSource, RequestUri, null,
+            WebClientTool.DownloadText(RequestUri, null,
                                        (string content, Exception downloadException) => { DownloadOneFile1(content, downloadException, fileName, extension, destinationFolder, callback); });
         }
 
@@ -344,7 +344,7 @@ namespace PgJsonParse
             {
                 string RequestUri = $"http://cdn.projectgorgon.com/v{Version}/{SourceLocation}/{IconName}.{Extension}";
                 string IconPath = Path.Combine(destinationFolder, IconName + "." + Extension);
-                WebClientTool.DownloadDataToFile(dispatcherSource, RequestUri, 
+                WebClientTool.DownloadDataToFile(RequestUri, 
                                                  (byte[] data, Exception downloadException) => { DownloadOneIcon1(data, downloadException, IconPath, 256, callback); });
             }
         }

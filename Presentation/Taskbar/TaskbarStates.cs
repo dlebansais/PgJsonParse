@@ -1,6 +1,6 @@
 ﻿namespace Presentation
 {
-    public enum TaskbarStates
+    public enum TaskbarState
     {
         NoProgress = 0,
         Indeterminate = 0x1,

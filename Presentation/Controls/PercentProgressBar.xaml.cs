@@ -155,7 +155,9 @@ namespace Presentation
         ///     Gets or sets the value.
         /// </summary>
         [Bindable(true)]
+#pragma warning disable CA1721 // Property names should not match get methods
         public double Value
+#pragma warning restore CA1721 // Property names should not match get methods
         {
             get { return (double)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
@@ -163,11 +165,11 @@ namespace Presentation
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            PercentProgressBar ctrl = (PercentProgressBar)d;
-            ctrl.OnValueChanged(e);
+            PercentProgressBar Control = (PercentProgressBar)d;
+            Control.OnValueChanged();
         }
 
-        private void OnValueChanged(DependencyPropertyChangedEventArgs e)
+        private void OnValueChanged()
         {
             NotifyPropertyChanged(nameof(Value));
         }

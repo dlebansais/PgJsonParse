@@ -110,7 +110,7 @@ namespace Presentation
         }
 
         #region Progress
-        public void SetTaskbarState(TaskbarStates taskbarState)
+        public void SetTaskbarState(TaskbarState taskbarState)
         {
         }
 
@@ -247,12 +247,12 @@ namespace Presentation
         }
 
 #region Progress
-        public void SetTaskbarState(TaskbarStates taskbarState)
+        public void SetTaskbarState(TaskbarState taskbarState)
         {
             Dispatcher.BeginInvoke(new Action(() => OnSetState(this, taskbarState)));
         }
 
-        public static void OnSetState(Window window, TaskbarStates taskbarState)
+        public static void OnSetState(Window window, TaskbarState taskbarState)
         {
             TaskbarProgress.SetState(window, taskbarState);
         }

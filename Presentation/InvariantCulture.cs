@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Media;
 
 namespace Presentation
 {
-    public class InvariantCulture
+    public static class InvariantCulture
     {
         #region Double
         public static bool TryParseDouble(string s, out double v)
@@ -221,9 +221,9 @@ using System.Globalization;
 
 namespace Presentation
 {
-    public class InvariantCulture
+    public static class InvariantCulture
     {
-#region Double
+        #region Double
         public static bool TryParseDouble(string s, out double v)
         {
             return double.TryParse(s, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out v);
@@ -238,9 +238,9 @@ namespace Presentation
         {
             return v.ToString(format, CultureInfo.InvariantCulture);
         }
-#endregion
+        #endregion
 
-#region Single
+        #region Single
         public static bool TryParseSingle(string s, out float v)
         {
             return float.TryParse(s, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out v);
@@ -255,9 +255,9 @@ namespace Presentation
         {
             return v.ToString(format, CultureInfo.InvariantCulture);
         }
-#endregion
+        #endregion
 
-#region Byte
+        #region Byte
         public static bool TryParseByteHex(string s, out byte v)
         {
             return byte.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out v);
@@ -267,9 +267,9 @@ namespace Presentation
         {
             return v.ToString(CultureInfo.InvariantCulture);
         }
-#endregion
+        #endregion
 
-#region Color
+        #region Color
         public static bool TryParseColor(string s, out uint Value)
         {
             if (s == null)
@@ -340,7 +340,7 @@ namespace Presentation
             byte G = (byte)((Value >> 8) & 0xFF);
             byte B = (byte)((Value >> 0) & 0xFF);
             Color c = Color.FromArgb(0xFF, R, G, B);
-            return c.R.ToString("X02") + c.G.ToString("X02") + c.B.ToString("X02");
+            return c.R.ToString("X02", CultureInfo.InvariantCulture) + c.G.ToString("X02", CultureInfo.InvariantCulture) + c.B.ToString("X02", CultureInfo.InvariantCulture);
         }
 
         public static System.Windows.Media.Brush ColorToBrush(uint? rgbColor)
@@ -356,9 +356,9 @@ namespace Presentation
             else
                 return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Transparent);
         }
-#endregion
+        #endregion
 
-#region Enum
+        #region Enum
         public static bool TryParseEnum<T>(string s, out T enumValue, out int enumIndex)
         {
             if (!string.IsNullOrEmpty(s))
@@ -394,11 +394,11 @@ namespace Presentation
             enumIndex = -1;
             return false;
         }
-#endregion
+        #endregion
 
-#region Misc
+        #region Misc
         public static string NewLine { get; } = "\r\n";
-#endregion
+        #endregion
     }
 }
 #endif

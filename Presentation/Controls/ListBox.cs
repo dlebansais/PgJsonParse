@@ -100,11 +100,11 @@ namespace Presentation
 
         private static void OnControlSelectedIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ListBox ctrl = (ListBox)d;
-            ctrl.OnControlSelectedIndexPropertyChanged(e);
+            ListBox Control = (ListBox)d;
+            Control.OnControlSelectedIndexPropertyChanged();
         }
 
-        private void OnControlSelectedIndexPropertyChanged(DependencyPropertyChangedEventArgs e)
+        private void OnControlSelectedIndexPropertyChanged()
         {
             if (SelectedIndex != ControlSelectedIndex)
                 SelectedIndex = ControlSelectedIndex;

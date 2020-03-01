@@ -158,7 +158,7 @@ namespace Presentation
 {
     public class SelectorControl : Grid
     {
-#region Initialization
+        #region Initialization
         public SelectorControl()
         {
             IsBindingSet = false;
@@ -166,13 +166,13 @@ namespace Presentation
             Loaded += OnLoaded;
             DataContextChanged += OnDataContextChanged;
         }
-#endregion
+        #endregion
 
-#region Properties
+        #region Properties
         public string Selector { get; set; }
-#endregion
+        #endregion
 
-#region Size
+        #region Size
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             //Debug.WriteLine((Selector == null ? "*" : Selector) + ": Size changed, Width: " + Width + ", Height: " + Height + ", ActualWidth: " + ActualWidth + ", ActualHeight: " + ActualHeight);
@@ -210,9 +210,9 @@ namespace Presentation
 
         private double SelectedWidth;
         private double SelectedHeight;
-#endregion
+        #endregion
 
-#region Binding
+        #region Binding
         private bool IsBindingPossible()
         {
             if (IsBindingSet)
@@ -224,7 +224,7 @@ namespace Presentation
                 return false;
             }
 
-            if (DataContext as string == "")
+            if (DataContext is string AsStringDataContext && AsStringDataContext.Length == 0)
             {
                 //Debug.WriteLine("************* " + (Selector == null ? "*" : Selector) + ": Stop because DataContext is empty");
                 return false;
@@ -268,7 +268,7 @@ namespace Presentation
 
         private bool IsSizeSet;
         private bool IsBindingSet;
-#endregion
+        #endregion
     }
 }
 #endif

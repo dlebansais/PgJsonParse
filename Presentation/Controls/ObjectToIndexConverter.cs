@@ -57,32 +57,31 @@ namespace Presentation
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool)
+            if (value is bool BooleanValue)
             {
-                bool BooleanValue = (bool)value;
-
-                bool BooleanExpectedValue;
+                bool ExpectedBooleanValue;
                 if (parameter is bool)
-                    BooleanExpectedValue = (bool)parameter;
+                    ExpectedBooleanValue = (bool)parameter;
+                else if (bool.TryParse(parameter as string, out bool ConvertedBooleanValue))
+                    ExpectedBooleanValue = ConvertedBooleanValue;
                 else
-                    bool.TryParse(parameter as string, out BooleanExpectedValue);
+                    ExpectedBooleanValue = false;
 
-                return BooleanValue == BooleanExpectedValue ? Visibility.Visible : Visibility.Collapsed;
+                return BooleanValue == ExpectedBooleanValue ? Visibility.Visible : Visibility.Collapsed;
             }
-
-            else if (value is int)
+            else if (value is int IntValue)
             {
-                int IntValue = (int)value;
+                int ExpectedIntValue;
 
-                int IntExpectedValue;
                 if (parameter is int)
-                    IntExpectedValue = (int)parameter;
+                    ExpectedIntValue = (int)parameter;
+                else if (int.TryParse(parameter as string, out int ConvertedIntValue))
+                    ExpectedIntValue = ConvertedIntValue;
                 else
-                    int.TryParse(parameter as string, out IntExpectedValue);
+                    ExpectedIntValue = 0;
 
-                return IntValue == IntExpectedValue ? Visibility.Visible : Visibility.Collapsed;
+                return IntValue == ExpectedIntValue ? Visibility.Visible : Visibility.Collapsed;
             }
-
             else
                 return ((value != null && parameter != null) || (value == null && parameter == null)) ? Visibility.Visible : Visibility.Collapsed;
         }

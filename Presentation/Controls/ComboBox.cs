@@ -131,8 +131,8 @@ namespace Presentation
 {
     public class ComboBox : System.Windows.Controls.ComboBox
     {
-#region Custom properties and events
-#region UseNativeComboBox
+        #region Custom properties and events
+        #region UseNativeComboBox
         /// <summary>
         ///     Identifies the <see cref="UseNativeComboBox"/> dependency property.
         /// </summary>
@@ -150,8 +150,8 @@ namespace Presentation
             get { return (bool)GetValue(UseNativeComboBoxProperty); }
             set { SetValue(UseNativeComboBoxProperty, value); }
         }
-#endregion
-#region ControlSelectedIndex
+        #endregion
+        #region ControlSelectedIndex
         /// <summary>
         ///     Identifies the <see cref="ControlSelectedIndex"/> dependency property.
         /// </summary>
@@ -172,17 +172,17 @@ namespace Presentation
 
         private static void OnControlSelectedIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ComboBox ctrl = (ComboBox)d;
-            ctrl.OnControlSelectedIndexPropertyChanged(e);
+            ComboBox Control = (ComboBox)d;
+            Control.OnControlSelectedIndexPropertyChanged();
         }
 
-        private void OnControlSelectedIndexPropertyChanged(DependencyPropertyChangedEventArgs e)
+        private void OnControlSelectedIndexPropertyChanged()
         {
             if (SelectedIndex != ControlSelectedIndex)
                 SelectedIndex = ControlSelectedIndex;
         }
-#endregion
-#endregion
+        #endregion
+        #endregion
 
         public ComboBox()
         {

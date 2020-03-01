@@ -2,7 +2,7 @@
 
 namespace Presentation
 {
-    public class AssemblyTools
+    public static class AssemblyTools
     {
 #if CSHTML5
         public static string GetCurrentAssemblyName()

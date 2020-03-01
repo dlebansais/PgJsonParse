@@ -32,9 +32,9 @@ namespace Presentation
 
             // ITaskbarList3
             [PreserveSig]
-            void SetProgressValue(IntPtr hwnd, UInt64 ullCompleted, UInt64 ullTotal);
+            int SetProgressValue(IntPtr hwnd, UInt64 ullCompleted, UInt64 ullTotal);
             [PreserveSig]
-            void SetProgressState(IntPtr hwnd, TaskbarStates state);
+            int SetProgressState(IntPtr hwnd, TaskbarState state);
         }
 
         [ComImport()]
@@ -44,24 +44,24 @@ namespace Presentation
         {
         }
 
-        private static ITaskbarList3 taskbarInstance = (ITaskbarList3)new TaskbarInstance();
-        private static bool taskbarSupported = Environment.OSVersion.Version >= new Version(6, 1);
+        private static readonly ITaskbarList3 TaskbarInstanceSingleton = (ITaskbarList3)new TaskbarInstance();
+        private static readonly bool IsTaskbarSupported = Environment.OSVersion.Version >= new Version(6, 1);
 
-        public static void SetState(Window window, TaskbarStates taskbarState)
+        public static void SetState(Window window, TaskbarState taskbarState)
         {
-            if (taskbarSupported)
+            if (IsTaskbarSupported)
             {
-                IntPtr windowHandle = new WindowInteropHelper(window).Handle;
-                taskbarInstance.SetProgressState(windowHandle, taskbarState);
+                IntPtr WindowHandle = new WindowInteropHelper(window).Handle;
+                var Result = TaskbarInstanceSingleton.SetProgressState(WindowHandle, taskbarState);
             }
         }
 
         public static void SetValue(Window window, double progressValue, double progressMax)
         {
-            if (taskbarSupported)
+            if (IsTaskbarSupported)
             {
-                IntPtr windowHandle = new WindowInteropHelper(window).Handle;
-                taskbarInstance.SetProgressValue(windowHandle, (ulong)progressValue, (ulong)progressMax);
+                IntPtr WindowHandle = new WindowInteropHelper(window).Handle;
+                var Result = TaskbarInstanceSingleton.SetProgressValue(WindowHandle, (ulong)progressValue, (ulong)progressMax);
             }
         }
     }

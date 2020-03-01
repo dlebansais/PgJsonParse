@@ -42,7 +42,7 @@ namespace Presentation
             return null;
         }
 
-        protected DataTemplate FindTemplate(FrameworkElement element, string resourceName)
+        protected static DataTemplate FindTemplate(FrameworkElement element, string resourceName)
         {
             while (element != null)
             {

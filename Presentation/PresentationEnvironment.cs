@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Media;
 
 namespace Presentation
 {
-    public class PresentationEnvironment
+    public static class PresentationEnvironment
     {
         public static string UserRootFolder { get { return "ApplicationData"; } }
 
@@ -36,7 +36,7 @@ using System.Windows.Media;
 
 namespace Presentation
 {
-    public class PresentationEnvironment
+    public static class PresentationEnvironment
     {
         public static string UserRootFolder { get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); } }
 

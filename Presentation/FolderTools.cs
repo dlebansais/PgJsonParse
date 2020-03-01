@@ -2,7 +2,7 @@
 
 namespace Presentation
 {
-    public class FolderTools
+    public static class FolderTools
     {
         public static void DeleteDirectory(string directoryName, bool recursive)
         {

@@ -1,7 +1,7 @@
 ﻿#if CSHTML5
 namespace Presentation
 {
-    public class NetTools
+    public static class NetTools
     {
         public static void EnableSecurityProtocol(out object oldSecurityProtocol)
         {
@@ -19,7 +19,7 @@ using System.Net;
 
 namespace Presentation
 {
-    public class NetTools
+    public static class NetTools
     {
         public static void EnableSecurityProtocol(out object oldSecurityProtocol)
         {

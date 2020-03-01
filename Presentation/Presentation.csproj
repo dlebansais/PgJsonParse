@@ -90,6 +90,7 @@
     <Compile Include="FileTools.cs" />
     <Compile Include="FolderTools.cs" />
     <Compile Include="GenericValueConverter.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ImageConversion.cs" />
     <Compile Include="NetTools.cs" />
     <Compile Include="Persistent.cs" />
