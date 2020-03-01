@@ -10,6 +10,6 @@
         IPgRecipe ConnectedRecipeEffect { get; }
         IPgQuest ConnectedQuest { get; }
         string EffectTypeId { get; }
-        SourceTypes Type { get; }
+        SourceType Type { get; }
     }
 }

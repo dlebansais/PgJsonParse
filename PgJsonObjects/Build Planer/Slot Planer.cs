@@ -534,7 +534,7 @@ namespace PgJsonObjects
             }
         }
 
-        public void RefreshGearList(ICollection<IPgItem> ItemList, ICollection<IPgAttribute> AttributeList, WeightProfile WeightProfile, bool IgnoreUnobtainable, bool IgnoreNoAttribute)
+        public void RefreshGearList(ICollection<IPgItem> ItemList, ICollection<IPgAttribute> attributeList, WeightProfile WeightProfile, bool IgnoreUnobtainable, bool IgnoreNoAttribute)
         {
             IPgItem OldSelectedGear = SelectedGearIndex >= 0 && SelectedGearIndex < SortedGearList.Count ? SortedGearList[SelectedGearIndex] : null;
 

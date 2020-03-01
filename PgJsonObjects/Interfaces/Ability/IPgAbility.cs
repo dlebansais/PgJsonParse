@@ -69,7 +69,7 @@ namespace PgJsonObjects
         AbilityTargetParticle TargetParticle { get; }
         IPgAbility UpgradeOf { get; }
         TooltipsExtraKeywords ExtraKeywordsForTooltips { get; }
-        ConsumedItems ConsumedItems { get; }
+        ConsumedItemCategory ConsumedItems { get; }
         IPgAbility AbilityGroup { get; }
         IPgAbilityRequirementCollection SpecialCasterRequirementList { get; }
         IPgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; }

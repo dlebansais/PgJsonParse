@@ -65,6 +65,7 @@
     <Compile Include="Build Planer\Weight Profile.cs" />
     <Compile Include="Custom Object.cs" />
     <Compile Include="Float Format.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementDruidEventState.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementEquippedItemKeyword.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementNotInHotspot.cs" />
@@ -364,7 +365,7 @@
     <Compile Include="Records\Source\Quest Source.cs" />
     <Compile Include="Records\Source\Recipe Effect Source.cs" />
     <Compile Include="Records\Source\Skillup Source.cs" />
-    <Compile Include="Records\Source\Source Types.cs" />
+    <Compile Include="Records\Source\SourceType.cs" />
     <Compile Include="Records\Ability\Consumed Item\Consumed Item By Keyword.cs" />
     <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementDruidEventState.cs" />
     <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementEquippedItemKeyword.cs" />

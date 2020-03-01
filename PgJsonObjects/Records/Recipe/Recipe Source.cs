@@ -16,7 +16,7 @@ namespace PgJsonObjects
         public string RawNpcId { get; private set; }
         public string RawNpcName { get; private set; }
         public string RawEffectTypeId { get; private set; }
-        public SourceTypes Type { get; private set; }
+        public SourceType Type { get; private set; }
 
         private int? RawRecipeId;
         private bool IsRecipeIdParsed;
@@ -48,7 +48,7 @@ namespace PgJsonObjects
         {
             switch (Type)
             {
-                case SourceTypes.AutomaticFromSkill:
+                case SourceType.AutomaticFromSkill:
                     if (SkillTypeId != null)
                         return new SkillupSource(SkillTypeId);
                     else
@@ -57,7 +57,7 @@ namespace PgJsonObjects
                         return null;
                     }
 
-                case SourceTypes.Item:
+                case SourceType.Item:
                     if (ConnectedItem != null)
                         return new ItemSource(ConnectedItem);
                     else
@@ -66,7 +66,7 @@ namespace PgJsonObjects
                         return null;
                     }
 
-                case SourceTypes.Training:
+                case SourceType.Training:
                     if (RawNpcName != null)
                         return new TrainingSource(RawNpcName, Npc);
                     else
@@ -75,7 +75,7 @@ namespace PgJsonObjects
                         return null;
                     }
 
-                case SourceTypes.Effect:
+                case SourceType.Effect:
                     if (ConnectedEffect != null)
                         return new EffectSource(ConnectedEffect);
                     else
@@ -84,7 +84,7 @@ namespace PgJsonObjects
                         return null;
                     }
 
-                case SourceTypes.Quest:
+                case SourceType.Quest:
                     if (ConnectedQuest != null)
                         return new QuestSource(ConnectedQuest);
                     else
@@ -93,7 +93,7 @@ namespace PgJsonObjects
                         return null;
                     }
 
-                case SourceTypes.Gift:
+                case SourceType.Gift:
                     if (RawNpcName != null)
                         return new GiftSource(RawNpcName, Npc);
                     else
@@ -102,7 +102,7 @@ namespace PgJsonObjects
                         return null;
                     }
 
-                case SourceTypes.HangOut:
+                case SourceType.HangOut:
                     if (RawNpcName != null)
                         return new HangOutSource(RawNpcName, Npc);
                     else
@@ -134,8 +134,8 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<SourceTypes>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<SourceTypes>.ToString(Type, null, SourceTypes.Internal_None) } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<SourceType>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<SourceType>.ToString(Type, null, SourceType.Internal_None) } },
             { "SkillTypeId", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = ParseSkillTypeId,
@@ -164,7 +164,7 @@ namespace PgJsonObjects
 
         private void ParseSkillTypeId(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == SourceTypes.AutomaticFromSkill)
+            if (Type == SourceType.AutomaticFromSkill)
                 RawSkillTypeId = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource RawSkillTypeId (type)");
@@ -172,7 +172,7 @@ namespace PgJsonObjects
 
         private void ParseItemTypeId(int value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == SourceTypes.Item)
+            if (Type == SourceType.Item)
                 RawItemTypeId = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource ItemTypeId (type)");
@@ -185,8 +185,10 @@ namespace PgJsonObjects
 
             string KeyId = ConnectedItem.Key.Substring(5);
 
-            int.TryParse(KeyId, out int Result);
-            return Result;
+            if (int.TryParse(KeyId, out int Result))
+                return Result;
+
+            return 0;
         }
 
         private void ParseNpc(string value, ParseErrorInfo ErrorInfo)
@@ -204,19 +206,19 @@ namespace PgJsonObjects
 
         private void ParseEffectName(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == SourceTypes.Effect)
+            if (Type == SourceType.Effect)
                 RawEffectName = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource EffectName (type)");
         }
 
-        private void ParseEffectTypeId(string value, ParseErrorInfo ErrorInfo)
+        private void ParseEffectTypeId(string value, ParseErrorInfo errorInfo)
         {
         }
 
         private void ParseQuestId(int value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == SourceTypes.Quest)
+            if (Type == SourceType.Quest)
                 RawQuestId = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("RecipeSource QuestId (type)");
@@ -229,8 +231,10 @@ namespace PgJsonObjects
 
             string KeyId = ConnectedQuest.Key.Substring(6);
 
-            int.TryParse(KeyId, out int Result);
-            return Result;
+            if (int.TryParse(KeyId, out int Result))
+                return Result;
+
+            return 0;
         }
         #endregion
 

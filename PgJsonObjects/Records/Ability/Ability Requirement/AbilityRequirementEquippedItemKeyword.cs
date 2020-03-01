@@ -4,7 +4,7 @@ namespace PgJsonObjects
 {
     public class AbilityRequirementEquippedItemKeyword : AbilityRequirement, IPgAbilityRequirementEquippedItemKeyword
     {
-        public AbilityRequirementEquippedItemKeyword(AbilityKeyword keyword, int? rawMinCount, int? rawMaxCount, ParseErrorInfo ErrorInfo)
+        public AbilityRequirementEquippedItemKeyword(AbilityKeyword keyword, int? rawMinCount, int? rawMaxCount, ParseErrorInfo errorInfo)
         {
             Keyword = keyword;
             RawMinCount = rawMinCount;

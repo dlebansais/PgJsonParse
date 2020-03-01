@@ -40,8 +40,10 @@ namespace PgJsonObjects
         public int? RawBrewPartCount { get; set; }
         public int BrewLevel { get { return RawBrewLevel.HasValue ? RawBrewLevel.Value : 0; } }
         public int? RawBrewLevel { get; set; }
-        public List<RecipeItemKey> BrewPartList { get; set; } = new List<RecipeItemKey>();
-        public List<RecipeResultKey> BrewResultList { get; set; } = new List<RecipeResultKey>();
+        public List<RecipeItemKey> BrewPartList { get; private set; } = new List<RecipeItemKey>();
+        public void SetBrewPartList(List<RecipeItemKey> newBrewPartList) { BrewPartList = newBrewPartList; }
+        public List<RecipeResultKey> BrewResultList { get; private set; } = new List<RecipeResultKey>();
+        public void SetResultList(List<RecipeResultKey> newResultList) { BrewResultList = newResultList; }
         public int AdjustedReuseTime { get { return RawAdjustedReuseTime.HasValue ? RawAdjustedReuseTime.Value : 0; } }
         public int? RawAdjustedReuseTime { get; set; }
         public string RawItemName { get; set; }

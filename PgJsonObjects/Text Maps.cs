@@ -686,13 +686,13 @@ namespace PgJsonObjects
             { Currency.WardenPoints, "Warden Points" },
         };
 
-        public static readonly Dictionary<ConsumedItems, string> ConsumedItemsTextMap = new Dictionary<ConsumedItems, string>()
+        public static readonly Dictionary<ConsumedItemCategory, string> ConsumedItemCategoryTextMap = new Dictionary<ConsumedItemCategory, string>()
         {
-            { ConsumedItems.Internal_None, "None" },
-            { ConsumedItems.Cheese, "Any cheese" },
-            { ConsumedItems.HumanoidSkull, "Any humanoid skull" },
-            { ConsumedItems.ImpressiveHumanoidSkull, "Any impressive humanoid skull" },
-            { ConsumedItems.RabbitFuel, "Any Rabbit Fuel" },
+            { ConsumedItemCategory.Internal_None, "None" },
+            { ConsumedItemCategory.Cheese, "Any cheese" },
+            { ConsumedItemCategory.HumanoidSkull, "Any humanoid skull" },
+            { ConsumedItemCategory.ImpressiveHumanoidSkull, "Any impressive humanoid skull" },
+            { ConsumedItemCategory.RabbitFuel, "Any Rabbit Fuel" },
         };
 
         public static readonly Dictionary<DamageType, string> DamageTypeTextMap = new Dictionary<DamageType, string>()
@@ -4449,16 +4449,16 @@ namespace PgJsonObjects
             { MoonPhases.WaxingCrescentMoon, "Waxing Crescent Moon" },
         };
 
-        public static readonly Dictionary<SourceTypes, string> SourceTypesTextMap = new Dictionary<SourceTypes, string>()
+        public static readonly Dictionary<SourceType, string> SourceTypesTextMap = new Dictionary<SourceType, string>()
         {
-            { SourceTypes.Internal_None, "" },
-            { SourceTypes.AutomaticFromSkill, "Automatic From Skill" },
-            { SourceTypes.Item, "Item" },
-            { SourceTypes.Training, "Training" },
-            { SourceTypes.Effect, "Effect" },
-            { SourceTypes.Quest, "Quest" },
-            { SourceTypes.Gift, "Gift" },
-            { SourceTypes.HangOut, "HangOut" },
+            { SourceType.Internal_None, "" },
+            { SourceType.AutomaticFromSkill, "Automatic From Skill" },
+            { SourceType.Item, "Item" },
+            { SourceType.Training, "Training" },
+            { SourceType.Effect, "Effect" },
+            { SourceType.Quest, "Quest" },
+            { SourceType.Gift, "Gift" },
+            { SourceType.HangOut, "HangOut" },
         };
 
         public static readonly Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap = new Dictionary<MonsterTypeTag, string>()

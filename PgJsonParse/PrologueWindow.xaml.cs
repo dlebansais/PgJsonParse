@@ -985,7 +985,7 @@ namespace PgJsonParse
             string VersionFolder = Path.Combine(VersionCacheFolder, versionInfo.Version.ToString());
             string IconFolder = ShareIconFiles ? IconCacheFolder : VersionFolder;
 
-            if (!ObjectDefinition.UseJson && versionInfo.Version == PG_CACHE_VERSION && OptimizeLoad)
+            if (!ObjectDefinition.ConstUseJson && versionInfo.Version == PG_CACHE_VERSION && OptimizeLoad)
                 if (LoadCachedData(versionInfo, ErrorInfo, VersionFolder, IconFolder))
                     return;
 
@@ -1081,7 +1081,7 @@ namespace PgJsonParse
                 success = ConnectTables(versionFolder, iconFolder, errorInfo);
 
             if (success)
-                if (!ObjectDefinition.UseJson && versionInfo.Version == PG_CACHE_VERSION)
+                if (!ObjectDefinition.ConstUseJson && versionInfo.Version == PG_CACHE_VERSION)
                 {
                     int offset;
 
@@ -1202,7 +1202,7 @@ namespace PgJsonParse
 
                 string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
 
-                if (ObjectDefinition.Verify && !FileVerifyer.Verify(FilePath, definition.VerifedObjectList, definition.LoadAsArray, definition.LoadAsObject, definition.UseJavaFormat))
+                if (ObjectDefinition.ConstVerify && !FileVerifyer.Verify(FilePath, definition.VerifedObjectList, definition.LoadAsArray, definition.LoadAsObject, definition.UseJavaFormat))
                     break;
             }
 

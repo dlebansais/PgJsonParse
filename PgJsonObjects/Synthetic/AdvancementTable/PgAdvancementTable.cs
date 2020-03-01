@@ -57,7 +57,7 @@ namespace PgJsonObjects
             return GetObject(8 + index * 4, ref Levels[index], PgAdvancement.CreateNew) as IObjectContentGenerator;
         }
 
-        public IPgAdvancement[] Levels;
+        public IPgAdvancement[] Levels { get; private set; }
         public override string Key { get { return GetString(0); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(4, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
 

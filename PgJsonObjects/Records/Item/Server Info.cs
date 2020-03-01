@@ -34,7 +34,7 @@ namespace PgJsonObjects
                 Item.SetLinkBack(LinkBack);
         }
 
-        public ServerInfoEffect ToSpecificServerInfoEffect(ParseErrorInfo ErrorInfo)
+        public ServerInfoEffect ToSpecificServerInfoEffect(ParseErrorInfo errorInfo)
         {
             switch (ServerInfoEffect)
             {

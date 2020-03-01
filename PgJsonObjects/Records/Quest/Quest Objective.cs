@@ -95,7 +95,7 @@ namespace PgJsonObjects
                 FieldTableOrder.Add(Key);
         }
 
-        public IPgQuestObjective ToSpecificQuestObjective(ParseErrorInfo ErrorInfo)
+        public IPgQuestObjective ToSpecificQuestObjective(ParseErrorInfo errorInfo)
         {
             switch (Type)
             {

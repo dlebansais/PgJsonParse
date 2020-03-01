@@ -217,9 +217,11 @@ namespace PgJsonObjects
             int i2 = s2.IndexOf(':');
 
             int l1 = 0;
-            int.TryParse(s1.Substring(5, i1 - 5), out l1);
+            if (int.TryParse(s1.Substring(5, i1 - 5), out int Parsed1))
+                l1 = Parsed1;
             int l2 = 0;
-            int.TryParse(s2.Substring(5, i2 - 5), out l2);
+            if (int.TryParse(s2.Substring(5, i2 - 5), out int Parsed2))
+                l2 = Parsed2;
 
             if (l1 > l2)
                 return 1;

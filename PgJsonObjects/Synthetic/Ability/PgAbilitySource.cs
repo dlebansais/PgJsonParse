@@ -34,12 +34,12 @@ namespace PgJsonObjects
         public string RawNpcId { get { return GetString(40); } }
         public string RawNpcName { get { return GetString(44); } }
         public string RawEffectName { get { return GetString(48); } }
-        public SourceTypes Type { get { return GetEnum<SourceTypes>(52); } }
+        public SourceType Type { get { return GetEnum<SourceType>(52); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
                 Type = FieldType.String,
-                GetString  = () => StringToEnumConversion<SourceTypes>.ToString(Type) } },
+                GetString  = () => StringToEnumConversion<SourceType>.ToString(Type) } },
             { "SkillTypeId", new FieldParser() {
                 Type = FieldType.String,
                 GetString  = () => SkillTypeId != null ? StringToEnumConversion<PowerSkill>.ToString(SkillTypeId.CombatSkill) : null } },
@@ -67,8 +67,10 @@ namespace PgJsonObjects
 
             string KeyId = ConnectedItem.Key.Substring(5);
 
-            int.TryParse(KeyId, out int Result);
-            return Result;
+            if (int.TryParse(KeyId, out int Result))
+                return Result;
+
+            return 0;
         }
 
         private int? GetQuestId()
@@ -78,8 +80,10 @@ namespace PgJsonObjects
 
             string KeyId = ConnectedQuest.Key.Substring(6);
 
-            int.TryParse(KeyId, out int Result);
-            return Result;
+            if (int.TryParse(KeyId, out int Result))
+                return Result;
+
+            return 0;
         }
 
         public override string SortingName { get { return null; } }

@@ -19,7 +19,9 @@ namespace PgJsonObjects
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get; private set; }
         public ServerInfoEffectType Type { get; private set; }
+#pragma warning disable CA1721 // Property names should not match get methods
         public IBackLinkable LinkBack { get; private set; }
+#pragma warning restore CA1721 // Property names should not match get methods
         public virtual string RawEffect
         {
             get

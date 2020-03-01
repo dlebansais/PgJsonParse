@@ -169,32 +169,30 @@ namespace PgJsonObjects
         {
             if (RawSkillRequirement == PowerSkill.Internal_None)
             {
-                PowerSkill ParsedSkill;
-                StringToEnumConversion<PowerSkill>.TryParse(SkillRequirementString, out ParsedSkill, ErrorInfo);
-                RawSkillRequirement = ParsedSkill;
-                return true;
+                if (StringToEnumConversion<PowerSkill>.TryParse(SkillRequirementString, out PowerSkill ParsedSkill, ErrorInfo))
+                {
+                    RawSkillRequirement = ParsedSkill;
+                    return true;
+                }
             }
-            else
-            {
-                ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(SkillPrereq)");
-                return false;
-            }
+
+            ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(SkillPrereq)");
+            return false;
         }
 
         private bool ParseKeywordAsEquipmentSlot(string EquipmentSlotString, ParseErrorInfo ErrorInfo)
         {
             if (SlotRequirement == ItemSlot.Internal_None)
             {
-                ItemSlot ParsedSlot;
-                StringToEnumConversion<ItemSlot>.TryParse(EquipmentSlotString, out ParsedSlot, ErrorInfo);
-                SlotRequirement = ParsedSlot;
-                return true;
+                if (StringToEnumConversion<ItemSlot>.TryParse(EquipmentSlotString, out ItemSlot ParsedSlot, ErrorInfo))
+                {
+                    SlotRequirement = ParsedSlot;
+                    return true;
+                }
             }
-            else
-            {
-                ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(EquipmentSlot)");
-                return false;
-            }
+
+            ErrorInfo.AddInvalidObjectFormat("NpcPreference Pref(EquipmentSlot)");
+            return false;
         }
 
         private bool ParseKeywordAsMinRarity(string MinRarityString, ParseErrorInfo ErrorInfo)

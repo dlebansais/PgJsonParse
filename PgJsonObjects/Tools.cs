@@ -3,7 +3,7 @@ using System;
 
 namespace PgJsonObjects
 {
-    public class Tools
+    public static class Tools
     {
         public static bool TryParseFloat(string s, out float Value, out FloatFormat Format)
         {

@@ -11,7 +11,7 @@ namespace PgJsonObjects
             this.Npc = Npc;
         }
 
-        protected override int Type { get { return (int)SourceTypes.Training; } }
+        protected override int Type { get { return (int)SourceType.Training; } }
         #endregion
 
         #region Properties

@@ -7,7 +7,7 @@ namespace PgJsonObjects
 {
     public abstract class SerializableJsonObject : ISerializableJsonObject
     {
-        protected static Dictionary<ISerializableJsonObject, int> SerializedObjectTable = new Dictionary<ISerializableJsonObject, int>();
+        protected static readonly Dictionary<ISerializableJsonObject, int> SerializedObjectTable = new Dictionary<ISerializableJsonObject, int>();
 
         public static void ResetSerializedObjectTable()
         {

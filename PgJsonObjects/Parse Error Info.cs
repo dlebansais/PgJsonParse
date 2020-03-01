@@ -27,7 +27,7 @@ namespace PgJsonObjects
         public List<int> IconList { get; private set; }
         private List<string> UnparsedFieldList;
         private List<string> MissingFieldList;
-        public bool IgnoreUnparsedEnums = false;
+        public bool IgnoreUnparsedEnums { get; set; } = false;
 
         public void AddInvalidObjectFormat(string ObjectFormatName)
         {

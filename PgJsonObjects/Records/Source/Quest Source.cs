@@ -10,7 +10,7 @@ namespace PgJsonObjects
             this.Quest = Quest;
         }
 
-        protected override int Type { get { return (int)SourceTypes.Quest; } }
+        protected override int Type { get { return (int)SourceType.Quest; } }
         #endregion
 
         #region Properties

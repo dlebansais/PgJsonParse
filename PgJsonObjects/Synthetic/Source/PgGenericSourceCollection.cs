@@ -27,36 +27,36 @@ namespace PgJsonObjects
                 else
                     IsRecipeEffect = false;
 
-                switch ((SourceTypes)SourceTypeValue)
+                switch ((SourceType)SourceTypeValue)
                 {
-                    case SourceTypes.AutomaticFromSkill:
+                    case SourceType.AutomaticFromSkill:
                         Result = new PgSkillupSource(data, ref offset);
                         break;
 
-                    case SourceTypes.Item:
+                    case SourceType.Item:
                         Result = new PgItemSource(data, ref offset);
                         break;
 
-                    case SourceTypes.Training:
+                    case SourceType.Training:
                         Result = new PgTrainingSource(data, ref offset);
                         break;
 
-                    case SourceTypes.Effect:
+                    case SourceType.Effect:
                         if (IsRecipeEffect)
                             Result = new PgRecipeEffectSource(data, ref offset);
                         else
                             Result = new PgEffectSource(data, ref offset);
                         break;
 
-                    case SourceTypes.Quest:
+                    case SourceType.Quest:
                         Result = new PgQuestSource(data, ref offset);
                         break;
 
-                    case SourceTypes.Gift:
+                    case SourceType.Gift:
                         Result = new PgGiftSource(data, ref offset);
                         break;
 
-                    case SourceTypes.HangOut:
+                    case SourceType.HangOut:
                         Result = new PgHangOutSource(data, ref offset);
                         break;
 

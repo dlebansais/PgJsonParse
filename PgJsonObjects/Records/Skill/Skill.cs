@@ -167,9 +167,10 @@ namespace PgJsonObjects
         {
             base.InitializeKey(key, index, value, ErrorInfo);
 
-            PowerSkill ParsedPowerSkill;
-            StringToEnumConversion<PowerSkill>.TryParse(Key, out ParsedPowerSkill, ErrorInfo);
-            CombatSkill = ParsedPowerSkill;
+            if (StringToEnumConversion<PowerSkill>.TryParse(Key, out PowerSkill ParsedPowerSkill, ErrorInfo))
+                CombatSkill = ParsedPowerSkill;
+            else
+                CombatSkill = PowerSkill.Internal_None;
         }
 
         public override void Init(string key, int index, IJsonValue value, bool loadAsArray, ParseErrorInfo ErrorInfo)

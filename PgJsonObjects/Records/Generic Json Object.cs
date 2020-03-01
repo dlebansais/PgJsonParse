@@ -7,7 +7,7 @@ namespace PgJsonObjects
 {
     public static class GenericJsonObject
     {
-        public static string NullString = "{3125D9C5-C81F-4507-A422-C9749749CB15}";
+        public const string NullString = "{3125D9C5-C81F-4507-A422-C9749749CB15}";
 
         #region Comparison
         public static int SortByName(IBackLinkable o1, IBackLinkable o2)
@@ -26,8 +26,6 @@ namespace PgJsonObjects
         public abstract string SortingName { get; }
         public Dictionary<Type, List<IBackLinkable>> LinkBackTable { get; } = new Dictionary<Type, List<IBackLinkable>>();
         public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
-
-        static List<Type> LinkBackTypeList = new List<Type>();
 
         public void AddLinkBack(IBackLinkable LinkBack)
         {
@@ -718,7 +716,7 @@ namespace PgJsonObjects
         protected abstract Dictionary<string, FieldParser> FieldTable { get; }
         protected abstract string FieldTableName { get; }
         protected abstract bool ConnectFields(ParseErrorInfo ErrorInfo, IBackLinkable Parent, Dictionary<Type, Dictionary<string, IJsonKey>> AllTables);
-        protected static Dictionary<string, bool> ParsedFields;
+        protected static Dictionary<string, bool> ParsedFields { get; private set; }
         protected List<string> FieldTableOrder { get; private set; } = new List<string>();
         #endregion
     }

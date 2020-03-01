@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public enum ConsumedItems
+    public enum ConsumedItemCategory
     {
         Internal_None,
         Cheese,

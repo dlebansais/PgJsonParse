@@ -4,7 +4,7 @@ namespace PgJsonObjects
 {
     public static class AdvancementFriendlyNames
     {
-        public static Dictionary<string, string> FriendlyNameTable = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> FriendlyNameTable = new Dictionary<string, string>()
         {
             { "Skeleton", "Skeleton" },
             { "Bear", "Bear" },

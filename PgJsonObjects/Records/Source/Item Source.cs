@@ -10,7 +10,7 @@ namespace PgJsonObjects
             this.Item = Item;
         }
 
-        protected override int Type { get { return (int)SourceTypes.Item; } }
+        protected override int Type { get { return (int)SourceType.Item; } }
         #endregion
 
         #region Properties

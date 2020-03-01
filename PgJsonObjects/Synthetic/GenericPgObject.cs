@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
+#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
     public class GenericPgObject
+#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
         public const int NoValueInt = 0x6B6B6B6B;
-        public static Dictionary<int, object> CreatedObjectTable = new Dictionary<int, object>();
+        public static readonly Dictionary<int, object> CreatedObjectTable = new Dictionary<int, object>();
 
         public static void ResetCreatedObjectTable()
         {
@@ -313,8 +314,6 @@ namespace PgJsonObjects
         public abstract string SortingName { get; }
         public Dictionary<Type, List<IBackLinkable>> LinkBackTable { get; } = new Dictionary<Type, List<IBackLinkable>>();
         public bool HasLinkBackTableEntries { get { return LinkBackTable.Count > 0; } }
-
-        static List<Type> LinkBackTypeList = new List<Type>();
 
         protected void AddLinkBackCollection<TI>(IList<TI> LinkBackCollection, Func<TI, IList<IBackLinkable>> getLinkBack)
         {

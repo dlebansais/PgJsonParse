@@ -10,7 +10,7 @@ namespace PgJsonObjects
             this.Recipe = Recipe;
         }
 
-        protected override int Type { get { return ((int)SourceTypes.Effect) | PgGenericSourceCollection.RecipeEffectTag; } }
+        protected override int Type { get { return ((int)SourceType.Effect) | PgGenericSourceCollection.RecipeEffectTag; } }
         #endregion
 
         #region Properties

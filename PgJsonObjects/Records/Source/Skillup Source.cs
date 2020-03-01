@@ -10,7 +10,7 @@ namespace PgJsonObjects
             this.Skill = Skill;
         }
 
-        protected override int Type { get { return (int)SourceTypes.AutomaticFromSkill; } }
+        protected override int Type { get { return (int)SourceType.AutomaticFromSkill; } }
         #endregion
 
         #region Properties

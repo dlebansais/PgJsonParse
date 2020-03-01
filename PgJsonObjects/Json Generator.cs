@@ -6,9 +6,12 @@ namespace PgJsonObjects
 {
     public class JsonGenerator : IDisposable
     {
-        public static char FieldSeparator = '§';
-        public static char ObjectSeparator = '|';
+        #region Constants
+        public const char FieldSeparator = '§';
+        public const char ObjectSeparator = '|';
+        #endregion
 
+        #region Init
         public JsonGenerator(bool useJavaFormat)
         {
             UseJavaFormat = useJavaFormat;
@@ -32,14 +35,14 @@ namespace PgJsonObjects
                 SpaceLine = "";
             }
         }
+        #endregion
 
-        private string NewLine;
-        private string TabLine;
-        private string SpaceLine;
-
+        #region Properties
         public bool UseJavaFormat { get; private set; }
         public string Content { get { return ReconstructedContent; } }
+        #endregion
 
+        #region Client Interface
         public void Begin()
         {
             ReconstructedContent = "{" + NewLine;
@@ -332,13 +335,9 @@ namespace PgJsonObjects
             else if (IsListEmpty)
                 AddEmptyArray(ArrayName);
         }
+        #endregion
 
-        private int NestingLevel;
-        private Stack<string> LastReconstructedContentStack;
-        private string ReconstructedContent;
-        private Stack<int> LastInsertedLineStack;
-        private int InsertedLines;
-
+        #region Implementation
         private string Indentation()
         {
             string Result = "";
@@ -365,12 +364,60 @@ namespace PgJsonObjects
             ReconstructedContent = LastReconstructedContentStack.Pop() + Current;
         }
 
-        public virtual void Dispose()
+        private readonly string NewLine;
+        private readonly string TabLine;
+        private readonly string SpaceLine;
+        private int NestingLevel;
+        private readonly Stack<string> LastReconstructedContentStack;
+        private string ReconstructedContent;
+        private readonly Stack<int> LastInsertedLineStack;
+        private int InsertedLines;
+        #endregion
+
+        #region Implementation of IDisposable
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
+        /// <param name="isDisposing">Indicates if resources must be disposed now.</param>
+        protected virtual void Dispose(bool isDisposing)
         {
+            if (!IsDisposed)
+            {
+                IsDisposed = true;
+
+                if (isDisposing)
+                    DisposeNow();
+            }
         }
 
-        protected virtual void Dispose(bool disposing)
+        /// <summary>
+        /// Called when an object should release its resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="JsonGenerator"/> class.
+        /// </summary>
+        ~JsonGenerator()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// True after <see cref="Dispose(bool)"/> has been invoked.
+        /// </summary>
+        private bool IsDisposed = false;
+
+        /// <summary>
+        /// Disposes of every reference that must be cleaned up.
+        /// </summary>
+        private void DisposeNow()
         {
         }
+        #endregion
     }
 }

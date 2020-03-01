@@ -73,7 +73,7 @@ namespace PgJsonObjects
         public AbilityTargetParticle TargetParticle { get; private set; }
         public IPgAbility UpgradeOf { get; private set; }
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; private set; }
-        public ConsumedItems ConsumedItems { get; private set; }
+        public ConsumedItemCategory ConsumedItems { get; private set; }
         public IPgAbility AbilityGroup { get; private set; }
         public IPgAbilityRequirementCollection SpecialCasterRequirementList { get; } = new AbilityRequirementCollection();
         public IPgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; private set; } = null;
@@ -97,7 +97,6 @@ namespace PgJsonObjects
         public bool DelayLoopIsOnlyUsedInCombat { get { return RawDelayLoopIsOnlyUsedInCombat.HasValue && RawDelayLoopIsOnlyUsedInCombat.Value; } }
         public bool? RawDelayLoopIsOnlyUsedInCombat { get; private set; }
 
-        private List<PowerSkill> RawCompatibleSkillList = new List<PowerSkill>();
         private bool IsSkillParsed;
         private bool IsRawConsumedItemKeywordParsed;
         private ItemKeyword ConsumedItemKeyword;
@@ -130,13 +129,13 @@ namespace PgJsonObjects
             ConsumedItem = CreateConsumedItem(ConsumedItemLink, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
         }
 
-        public static ConsumedItem CreateConsumedItem(IPgItem ConsumedItemLink, ConsumedItems ConsumedItems, int? RawConsumedItemCount, double? RawConsumedItemChance, double? RawConsumedItemChanceToStickInCorpse)
+        public static ConsumedItem CreateConsumedItem(IPgItem ConsumedItemLink, ConsumedItemCategory ConsumedItems, int? RawConsumedItemCount, double? RawConsumedItemChance, double? RawConsumedItemChanceToStickInCorpse)
         {
             ConsumedItem Result;
 
             if (ConsumedItemLink != null)
                 Result = new ConsumedItemDirect(ConsumedItemLink, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
-            else if (ConsumedItems != ConsumedItems.Internal_None)
+            else if (ConsumedItems != ConsumedItemCategory.Internal_None)
                 Result = new ConsumedItemByKeyword(ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
             else
                 Result = null;
@@ -405,8 +404,8 @@ namespace PgJsonObjects
 
         private void ParseConsumedItemKeyword(string value, ParseErrorInfo errorInfo)
         {
-            ConsumedItems = StringToEnumConversion<ConsumedItems>.Parse(value, null);
-            if (ConsumedItems == ConsumedItems.Internal_None)
+            ConsumedItems = StringToEnumConversion<ConsumedItemCategory>.Parse(value, null);
+            if (ConsumedItems == ConsumedItemCategory.Internal_None)
                 ConsumedItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, TextMaps.ItemKeywordStringMap, errorInfo);
         }
 
@@ -414,8 +413,8 @@ namespace PgJsonObjects
         {
             if (ConsumedItemLink != null)
                 return ConsumedItemLink.InternalName;
-            else if (ConsumedItems != ConsumedItems.Internal_None)
-                return StringToEnumConversion<ConsumedItems>.ToString(ConsumedItems);
+            else if (ConsumedItems != ConsumedItemCategory.Internal_None)
+                return StringToEnumConversion<ConsumedItemCategory>.ToString(ConsumedItems);
             else
                 return null;
         }

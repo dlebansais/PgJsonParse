@@ -117,7 +117,7 @@ namespace PgJsonObjects
         public AbilityTargetParticle TargetParticle { get { return GetEnum<AbilityTargetParticle>(134); } }
         public IPgAbility UpgradeOf { get { return GetObject(136, ref _UpgradeOf, CreateNew); } } private IPgAbility _UpgradeOf;
         public TooltipsExtraKeywords ExtraKeywordsForTooltips { get { return GetEnum<TooltipsExtraKeywords>(140); } }
-        public ConsumedItems ConsumedItems { get { return GetEnum<ConsumedItems>(142); } }
+        public ConsumedItemCategory ConsumedItems { get { return GetEnum<ConsumedItemCategory>(142); } }
         public IPgAbility AbilityGroup { get { return GetObject(144, ref _AbilityGroup, CreateNew); } } private IPgAbility _AbilityGroup;
         public IPgAbilityRequirementCollection SpecialCasterRequirementList { get { return GetObjectList(148, ref _SpecialCasterRequirementList, PgAbilityRequirementCollection.CreateItem, () => new PgAbilityRequirementCollection()); } } private IPgAbilityRequirementCollection _SpecialCasterRequirementList;
         public IPgAttributeCollection AttributesThatModAmmoConsumeChanceList { get { return GetObjectList(152, ref _AttributesThatModAmmoConsumeChanceList, PgAttributeCollection.CreateItem, () => new PgAttributeCollection()); } } private IPgAttributeCollection _AttributesThatModAmmoConsumeChanceList;
@@ -333,8 +333,8 @@ namespace PgJsonObjects
         {
             if (ConsumedItemLink != null)
                 return ConsumedItemLink.InternalName;
-            else if (ConsumedItems != ConsumedItems.Internal_None)
-                return StringToEnumConversion<ConsumedItems>.ToString(ConsumedItems);
+            else if (ConsumedItems != ConsumedItemCategory.Internal_None)
+                return StringToEnumConversion<ConsumedItemCategory>.ToString(ConsumedItems);
             else
                 return null;
         }

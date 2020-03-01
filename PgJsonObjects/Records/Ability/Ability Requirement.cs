@@ -207,16 +207,15 @@ namespace PgJsonObjects
         {
             if (DisallowedState == DisallowedState.Internal_None)
             {
-                DisallowedState ParsedDisallowedState;
-                StringToEnumConversion<DisallowedState>.TryParse(value, out ParsedDisallowedState, ErrorInfo);
-                DisallowedState = ParsedDisallowedState;
-                return true;
+                if (StringToEnumConversion<DisallowedState>.TryParse(value, out DisallowedState ParsedDisallowedState, ErrorInfo))
+                { 
+                    DisallowedState = ParsedDisallowedState;
+                    return true;
+                }
             }
-            else
-            {
-                ErrorInfo.AddInvalidObjectFormat("AbilityRequirement DisallowedStates");
-                return false;
-            }
+
+            ErrorInfo.AddInvalidObjectFormat("AbilityRequirement DisallowedStates");
+            return false;
         }
 
         public virtual OtherRequirementType Type { get; private set; }

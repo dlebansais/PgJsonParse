@@ -10,7 +10,7 @@ namespace PgJsonObjects
             this.Effect = Effect;
         }
 
-        protected override int Type { get { return (int)SourceTypes.Effect; } }
+        protected override int Type { get { return (int)SourceType.Effect; } }
         #endregion
 
         #region Properties

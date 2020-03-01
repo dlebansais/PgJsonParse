@@ -814,8 +814,8 @@ namespace PgJsonObjects
                                     NewResultEffect.Effect = ConvertedRecipeEffect;
                                     NewResultEffect.RawBrewPartCount = BrewPartCount;
                                     NewResultEffect.RawBrewLevel = BrewLevel;
-                                    NewResultEffect.BrewPartList = BrewPartList;
-                                    NewResultEffect.BrewResultList = BrewResultList;
+                                    NewResultEffect.SetBrewPartList(BrewPartList);
+                                    NewResultEffect.SetResultList(BrewResultList);
                                     return true;
                                 }
                             }
