@@ -6,10 +6,10 @@ namespace PgJsonParse
 {
     public class CrunchTarget
     {
-        public static double EffectiveRatio = 1.0;
-        public static double IneffectiveRatio = 1.0;
-        public static double VeryEffectiveRatio = 1.0;
-        public static double VeryIneffectiveRatio = 1.0;
+        public const double EffectiveRatio = 1.0;
+        public const double IneffectiveRatio = 1.0;
+        public const double VeryEffectiveRatio = 1.0;
+        public const double VeryIneffectiveRatio = 1.0;
 
         public CrunchTarget()
         {

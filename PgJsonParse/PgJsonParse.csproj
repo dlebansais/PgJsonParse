@@ -95,6 +95,7 @@
     <Compile Include="CustomCompositeCollection.cs" />
     <Compile Include="DownloadState.cs" />
     <Compile Include="GameVersionInfo.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MissingIconsAction.cs" />
     <Compile Include="PrologueWindow.xaml.cs">
       <DependentUpon>PrologueWindow.xaml</DependentUpon>
