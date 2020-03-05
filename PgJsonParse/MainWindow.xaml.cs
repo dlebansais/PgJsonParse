@@ -2015,7 +2015,7 @@ namespace PgJsonParse
             else if (ColumnName == "Value")
                 Favor.SortByValue();
         }
-#endif
+        #endif
 
         private ToggleButton XpTableButton;
         private ToggleButton FavorButton;

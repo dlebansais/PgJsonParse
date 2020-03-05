@@ -245,5 +245,10 @@ namespace PgJsonObjects
                 return "icon_" + IconId;
             }
         }
+
+        public override string ToString()
+        {
+            return Key;
+        }
     }
 }
