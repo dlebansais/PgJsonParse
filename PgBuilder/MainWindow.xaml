@@ -11,6 +11,12 @@
         <DataTemplate x:Key="SkillTemplate" DataType="{x:Type object:PgSkill}">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
+        <DataTemplate x:Key="ItemNameTemplate" DataType="{x:Type object:PgItem}">
+            <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="ModTemplate" DataType="{x:Type local:Mod}">
+            <TextBlock Text="{Binding Power.Prefix}"/>
+        </DataTemplate>
         <ContextMenu x:Key="AbilityContextMenu"/>
         <DataTemplate x:Key="AbilitySlotTemplate" DataType="{x:Type local:AbilitySlot}">
             <Image Source="{Binding Source}" ToolTip="{Binding AbilityName}" ContextMenu="{StaticResource AbilityContextMenu}" ContextMenuOpening="OnAbilityContextMenuOpening" Width="32" Height="32" Margin="5,0,5,0"/>
@@ -52,7 +58,13 @@
         <TabControl DockPanel.Dock="Top" ItemsSource="{Binding GearSlotList}" ItemTemplate="{StaticResource GearSlotTemplate}" SelectedIndex="0" Margin="0,10,0,0">
             <TabControl.ContentTemplate>
                 <ItemContainerTemplate>
-                    <Border Background="Blue" Width="40" Height="40"/>
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+                            <ComboBox ItemsSource="{Binding ItemList}" ItemTemplate="{StaticResource ItemNameTemplate}" SelectedIndex="{Binding SelectedItem, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnItemSelectionChanged" VerticalAlignment="Center" Width="200" Margin="0,0,0,0"/>
+                            <ItemsControl ItemsSource="{Binding SelectedModList}" ItemTemplate="{StaticResource ModTemplate}" VerticalAlignment="Center" Width="200" Margin="0,0,0,0"/>
+                        </DockPanel>
+                        <Grid/>
+                    </DockPanel>
                 </ItemContainerTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

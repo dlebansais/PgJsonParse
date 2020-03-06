@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace PgBuilder
+﻿namespace PgBuilder
 {
     using System.IO;
     using System.Windows.Media;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
+    using System.Collections.Generic;
     using PgJsonObjects;
     using Presentation;
     using System.Diagnostics;

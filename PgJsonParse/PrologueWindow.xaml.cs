@@ -1202,7 +1202,7 @@ namespace PgJsonParse
 
                 string FilePath = Path.Combine(versionFolder, definition.JsonFileName + ".json");
 
-                if (ObjectDefinition.ConstVerify && !FileVerifyer.Verify(FilePath, definition.VerifedObjectList, definition.LoadAsArray, definition.LoadAsObject, definition.UseJavaFormat))
+                if (ObjectDefinition.ConstVerify && !FileVerifyer.Verify(FilePath, definition.VerifiedObjectList, definition.LoadAsArray, definition.LoadAsObject, definition.UseJavaFormat))
                     break;
             }
 

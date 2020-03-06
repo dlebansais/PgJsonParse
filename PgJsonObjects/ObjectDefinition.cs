@@ -31,7 +31,7 @@ namespace PgJsonObjects
         bool LoadAsArray { get; }
         bool LoadAsObject { get; }
         bool UseJavaFormat { get; }
-        IList VerifedObjectList { get; }
+        IList VerifiedObjectList { get; }
     }
 
     public class ObjectDefinition<TJson, TPg, TI> : ObjectDefinition, IObjectDefinition
@@ -62,6 +62,6 @@ namespace PgJsonObjects
         public bool LoadAsArray { get; private set; }
         public bool LoadAsObject { get; private set; }
         public bool UseJavaFormat { get; private set; }
-        public IList VerifedObjectList { get { return UseJson ? JsonObjectList as IList : PgObjectList as IList; } }
+        public IList VerifiedObjectList { get { return UseJson ? JsonObjectList as IList : PgObjectList as IList; } }
     }
 }

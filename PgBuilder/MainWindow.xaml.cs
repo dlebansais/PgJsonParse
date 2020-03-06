@@ -165,7 +165,7 @@
         private void FillSkillList()
         {
             IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
-            IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifedObjectList;
+            IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifiedObjectList;
             List<IPgSkill> SkillList = new List<IPgSkill>();
 
             foreach (IPgPower PowerItem in PowerList)
@@ -250,7 +250,7 @@
             compatibleAbilityList.Clear();
 
             IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
-            IList<IPgAbility> AbilityList = (IList<IPgAbility>)AbilityDefinition.VerifedObjectList;
+            IList<IPgAbility> AbilityList = (IList<IPgAbility>)AbilityDefinition.VerifiedObjectList;
 
             foreach (IPgAbility Item in AbilityList)
                 if (Item.Skill == skill && (!Item.KeywordList.Contains(AbilityKeyword.Lint_NotLearnable) || Item.Name == "Sword Slash"))
@@ -409,6 +409,15 @@
         {
             FrameworkElement Control = (FrameworkElement)sender;
             CloseAbilityChoiceMenu(Control);
+        }
+
+        private void OnItemSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox Control = (ComboBox)sender;
+            GearSlot Slot = (GearSlot) Control.DataContext;
+
+            if (Slot.SelectedItem != Control.SelectedIndex)
+                Slot.SetSelectedItem(Control.SelectedIndex);
         }
         #endregion
 
