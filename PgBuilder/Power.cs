@@ -1,37 +1,50 @@
 ﻿namespace PgBuilder
 {
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
+    using PgJsonObjects;
 
-    public class Mod : INotifyPropertyChanged
+    public class Power : INotifyPropertyChanged
     {
-        public Mod(List<Power> availablePowerList)
+        public Power(IPgPower source)
         {
-            AvailablePowerList = availablePowerList;
-            SelectedPower = -1;
+            Source = source;
+            SelectedTier = 0;
         }
 
-        public List<Power> AvailablePowerList { get; }
-        public int SelectedPower { get; private set; }
+        public IPgPower Source { get; }
+        public int SelectedTier { get; private set; }
 
-        public void SetSelectedPower(int index)
+        public string Name
         {
-            SelectedPower = index;
-            NotifyPropertyChanged(nameof(SelectedPower));
-        }
-
-        public void IncrementTier()
-        {
-            if (SelectedPower >= 0 && SelectedPower < AvailablePowerList.Count)
-                AvailablePowerList[SelectedPower].IncrementTier();
+            get
+            {
+                if (SelectedTier >= 0 && SelectedTier < Source.CombinedTierList.Count)
+                    return Source.CombinedTierList[SelectedTier];
+                else
+                    return "<Unknown>";
+            }
         }
 
         public void DecrementTier()
         {
-            if (SelectedPower >= 0 && SelectedPower < AvailablePowerList.Count)
-                AvailablePowerList[SelectedPower].DecrementTier();
+            ChangeTier(-1);
+        }
+
+        public void IncrementTier()
+        {
+            ChangeTier(+1);
+        }
+
+        private void ChangeTier(int offset)
+        {
+            if (SelectedTier + offset >= 0 && SelectedTier + offset < Source.CombinedTierList.Count)
+            {
+                SelectedTier += offset;
+                NotifyPropertyChanged(nameof(SelectedTier));
+                NotifyPropertyChanged(nameof(Name));
+            }
         }
 
         #region Implementation of INotifyPropertyChanged

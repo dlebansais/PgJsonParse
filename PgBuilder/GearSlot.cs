@@ -29,16 +29,26 @@
         public ItemSlot Slot { get; }
         public List<IPgItem> ItemList { get; }
         public int SelectedItem { get; private set; }
-        public ObservableCollection<Mod> SelectedModList { get; } = new ObservableCollection<Mod>();
+        public ObservableCollection<Mod> ModList { get; } = new ObservableCollection<Mod>();
+        public List<Power> AvailablePowerList { get; } = new List<Power>();
 
-        public List<Mod> AvailableModList { get; } = new List<Mod>();
-
-        public void UpdateModList(IPgSkill skill, IList<IPgPower> powerList)
+        public void Reset(IPgSkill skill1, IPgSkill skill2)
         {
-            SelectedModList.Clear();
-            AvailableModList.Clear();
+            ModList.Clear();
+            AvailablePowerList.Clear();
 
-            foreach (IPgPower PowerItem in powerList)
+            if (skill1 != null)
+                UpdateModList(skill1);
+            if (skill2 != null)
+                UpdateModList(skill2);
+        }
+
+        public void UpdateModList(IPgSkill skill)
+        {
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
+            IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifiedObjectList;
+
+            foreach (IPgPower PowerItem in PowerList)
             {
                 if (PowerItem.Skill != skill)
                     continue;
@@ -54,14 +64,21 @@
                 if (!IsSlotCompatible)
                     continue;
 
-                AvailableModList.Add(new Mod(PowerItem));
+                AvailablePowerList.Add(new Power(PowerItem));
             }
         }
 
         public void SetSelectedItem(int index)
         {
-            SelectedItem = index;
+            if (index >= 0)
+                SelectedItem = index;
+
             NotifyPropertyChanged(nameof(SelectedItem));
+        }
+
+        public void AddMod()
+        {
+            ModList.Add(new Mod(AvailablePowerList));
         }
 
         #region Implementation of INotifyPropertyChanged

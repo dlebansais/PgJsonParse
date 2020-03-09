@@ -1,15 +1,18 @@
-﻿namespace PgBuilder
+﻿using Microsoft.Win32;
+using PgJsonReader;
+
+namespace PgBuilder
 {
     using System;
     using System.Diagnostics;
     using System.IO;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Windows;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
     using System.Windows.Controls;
+    using System.Windows.Input;
     using PgJsonObjects;
 
     public partial class MainWindow : Window, INotifyPropertyChanged
@@ -126,7 +129,7 @@
                         ObjectTable.Add(Item.Key, Item);
             }
 
-            Dictionary<string, IJsonKey> PowerTable = ObjectList.Definitions[typeof(Power)].ObjectTable;
+            Dictionary<string, IJsonKey> PowerTable = ObjectList.Definitions[typeof(PgJsonObjects.Power)].ObjectTable;
             Dictionary<string, IJsonKey> AttributeTable = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)].ObjectTable;
 
             foreach (KeyValuePair<string, IJsonKey> Entry in PowerTable)
@@ -164,7 +167,7 @@
         #region Implementation
         private void FillSkillList()
         {
-            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(Power)];
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
             IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifiedObjectList;
             List<IPgSkill> SkillList = new List<IPgSkill>();
 
@@ -228,6 +231,15 @@
             GearSlotList.Add(new GearSlot("Ring", ItemSlot.Ring));
             GearSlotList.Add(new GearSlot("Racial", ItemSlot.Racial));
             GearSlotList.Add(new GearSlot("Waist", ItemSlot.Waist));
+        }
+
+        private void ResetGearSlots()
+        {
+            IPgSkill Skill1 = SelectedSkill1 >= 0 ? Skill1List[SelectedSkill1] : null;
+            IPgSkill Skill2 = SelectedSkill2 >= 0 ? Skill2List[SelectedSkill2] : null;
+
+            foreach (GearSlot Item in GearSlotList)
+                Item.Reset(Skill1, Skill2);
         }
 
         private void FillAbilitySlotList()
@@ -362,6 +374,9 @@
 
                 ResetAbilitySlots(AbilitySlot1List);
                 FillEmptyAbilitySlots(Skill1List[SelectedSkill1], AbilitySlot1List, CompatibleAbility1List);
+                ResetGearSlots();
+
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -375,6 +390,9 @@
 
                 ResetAbilitySlots(AbilitySlot2List);
                 FillEmptyAbilitySlots(Skill2List[SelectedSkill2], AbilitySlot2List, CompatibleAbility2List);
+                ResetGearSlots();
+
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -418,6 +436,275 @@
 
             if (Slot.SelectedItem != Control.SelectedIndex)
                 Slot.SetSelectedItem(Control.SelectedIndex);
+        }
+
+        private void OnPowerSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox Control = (ComboBox)sender;
+            if (Control.Items.Count > 0)
+            {
+                Mod Mod = (Mod)Control.DataContext;
+
+                if (Mod.SelectedPower != Control.SelectedIndex)
+                    Mod.SetSelectedPower(Control.SelectedIndex);
+            }
+        }
+
+        private void CanAddMod(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = SelectedSkill1 >= 0 || SelectedSkill2 >= 0;
+        }
+
+        private void OnAddMod(object sender, ExecutedRoutedEventArgs e)
+        {
+            Button Control = (Button)e.OriginalSource;
+            GearSlot Slot = (GearSlot)Control.DataContext;
+            Slot.AddMod();
+        }
+
+        private void OnIncrementTier(object sender, ExecutedRoutedEventArgs e)
+        {
+            Button Control = (Button)e.OriginalSource;
+            Mod Mod = (Mod)Control.DataContext;
+            Mod.IncrementTier();
+        }
+
+        private void OnDecrementTier(object sender, ExecutedRoutedEventArgs e)
+        {
+            Button Control = (Button)e.OriginalSource;
+            Mod Mod = (Mod)Control.DataContext;
+            Mod.DecrementTier();
+        }
+
+        private void OnLoad(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenFileDialog Dlg = new OpenFileDialog();
+            Dlg.Filter = "Build File (*.txt)|*.txt";
+
+            bool? Result = Dlg.ShowDialog(this);
+            if (Result.Value && !string.IsNullOrEmpty(Dlg.FileName))
+                if (!LoadBuild(Dlg.FileName))
+                    MessageBox.Show("Invalid file format", "Error");
+        }
+
+        private void OnSave(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveFileDialog Dlg = new SaveFileDialog();
+            Dlg.Filter = "Build File (*.txt)|*.txt";
+
+            bool? Result = Dlg.ShowDialog(this);
+            if (Result.Value && !string.IsNullOrEmpty(Dlg.FileName))
+                SaveBuild(Dlg.FileName);
+        }
+        #endregion
+
+        #region Load
+        private bool LoadBuild(string fileName)
+        {
+            using (FileStream Stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                return LoadBuild(Stream);
+            }
+        }
+
+        private bool LoadBuild(FileStream stream)
+        {
+            JsonTextReader Reader = new JsonTextReader(stream);
+            
+            Reader.Read();
+            if (!(Reader.CurrentValue is string BuildKey && BuildKey  == "Build"))
+                return false;
+
+            Reader.Read();
+            if (Reader.CurrentToken != Json.Token.ObjectStart)
+                return false;
+
+            if (!LoadBuildSkills(Reader, out string SkillName1, out string SkillName2))
+                return false;
+
+            do
+                Reader.Read();
+            while (LoadBuildAbility(Reader, out int SkillIndex, out int AbilityIndex));
+
+            Reader.Read();
+            if (Reader.CurrentToken != Json.Token.ObjectEnd)
+                return false;
+
+            return true;
+        }
+
+        private bool LoadBuildSkills(JsonTextReader reader, out string skillName1, out string skillName2)
+        {
+            skillName1 = string.Empty;
+            skillName2 = string.Empty;
+
+            reader.Read();
+            if (!(reader.CurrentValue is string SkillKey1 && SkillKey1 == "Skill1"))
+                return false;
+
+            reader.Read();
+            if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string SkillValue1))
+                return false;
+
+            reader.Read();
+            if (!(reader.CurrentValue is string SkillKey2 && SkillKey2 == "Skill2"))
+                return false;
+
+            reader.Read();
+            if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string SkillValue2))
+                return false;
+
+            skillName1 = SkillValue1;
+            skillName2 = SkillValue2;
+
+            return true;
+        }
+
+        private bool LoadBuildAbility(JsonTextReader reader, out int skillIndex, out int abilityIndex)
+        {
+            skillIndex = -1;
+            abilityIndex = -1;
+
+            if (!(reader.CurrentValue is string Key))
+                return false;
+
+            string[] Split = Key.Split('_');
+            if (Split.Length != 3)
+                return false;
+
+            string KeyName = Split[0];
+            if (KeyName != "Ability")
+                return false;
+
+            if (!int.TryParse(Split[1], out skillIndex))
+                return false;
+
+            if (skillIndex < 0 || skillIndex >= 2)
+                return false;
+
+            if (!int.TryParse(Split[2], out abilityIndex))
+                return false;
+
+            if (skillIndex == 0)
+                if (abilityIndex < 0 || abilityIndex >= AbilitySlot1List.Count)
+                    return false;
+
+            if (skillIndex == 1)
+                if (abilityIndex < 0 || abilityIndex >= AbilitySlot2List.Count)
+                    return false;
+
+            reader.Read();
+            if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string AbilityValue))
+                return false;
+
+            return true;
+        }
+        #endregion
+
+        #region Save
+        private void SaveBuild(string fileName)
+        {
+            using (FileStream Stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            {
+                SaveBuild(Stream);
+            }
+        }
+
+        private void SaveBuild(FileStream stream)
+        {
+            JsonTextWriter Writer = new JsonTextWriter(true);
+            Writer.ObjectKey("Build");
+            Writer.ObjectStart();
+
+            SaveBuildSkills(Writer);
+
+            for (int i = 0; i < AbilitySlot1List.Count; i++)
+            {
+                AbilitySlot Item = AbilitySlot1List[i];
+                SaveBuildAbilitySlot(Writer, 0, i, Item);
+            }
+
+            for (int i = 0; i < AbilitySlot2List.Count; i++)
+            {
+                AbilitySlot Item = AbilitySlot2List[i];
+                SaveBuildAbilitySlot(Writer, 1, i, Item);
+            }
+
+            foreach (GearSlot Item in GearSlotList)
+                SaveBuildGearSlot(Writer, Item);
+
+            Writer.ObjectEnd();
+            Writer.Flush(stream);
+        }
+
+        private void SaveBuildSkills(JsonTextWriter writer)
+        {
+            string SkillName1 = SelectedSkill1 >= 0 ? Skill1List[SelectedSkill1].Name : string.Empty;
+            string SkillName2 = SelectedSkill2 >= 0 ? Skill2List[SelectedSkill2].Name : string.Empty;
+
+            writer.ObjectKey("Skill1");
+            writer.Value(SkillName1);
+
+            writer.ObjectKey("Skill2");
+            writer.Value(SkillName2);
+        }
+
+        private void SaveBuildAbilitySlot(JsonTextWriter writer, int skillIndex, int abilityIndex, AbilitySlot slot)
+        {
+            if (slot.IsEmpty)
+                return;
+
+            IPgAbility Ability = slot.Ability;
+            string Key = $"Ability_{skillIndex}_{abilityIndex}";
+            string Value = Ability.Key;
+
+            writer.ObjectKey(Key);
+            writer.Value(Value);
+        }
+
+        private void SaveBuildGearSlot(JsonTextWriter writer, GearSlot slot)
+        {
+            writer.ObjectKey(slot.Name);
+            writer.ObjectStart();
+
+            if (slot.SelectedItem >= 0 && slot.SelectedItem < slot.ItemList.Count)
+            {
+                writer.ObjectKey("Item");
+                writer.Value(slot.ItemList[slot.SelectedItem].Key);
+            }
+
+            for (int i = 0; i < slot.ModList.Count; i++)
+            {
+                Mod Mod = slot.ModList[i];
+                SaveBuildMod(writer, i, Mod);
+            }
+
+            writer.ObjectEnd();
+        }
+
+        private void SaveBuildMod(JsonTextWriter writer, int index, Mod mod)
+        {
+            if (mod.SelectedPower < 0 || mod.SelectedPower >= mod.AvailablePowerList.Count)
+                return;
+
+            Power Power = mod.AvailablePowerList[mod.SelectedPower];
+            SaveBuilPower(writer, index, Power);
+        }
+
+        private void SaveBuilPower(JsonTextWriter writer, int index, Power power)
+        {
+            if (power.SelectedTier < 0 || power.SelectedTier >= power.Source.CombinedTierList.Count)
+                return;
+
+            string KeyPower = $"Power_{index}";
+            string ValuePower = power.Source.Key;
+            string KeyTier = $"PowerTier_{index}";
+            int ValueTier = power.SelectedTier;
+
+            writer.ObjectKey(KeyPower);
+            writer.Value(ValuePower);
+            writer.ObjectKey(KeyTier);
+            writer.Value(ValueTier);
         }
         #endregion
 

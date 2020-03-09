@@ -14,19 +14,6 @@
         #endregion
 
         #region Client Interface
-        public void ObjectStart()
-        {
-            Comma();
-            if (!IsOpenKey)
-                Tabs();
-            Writer.Write('{');
-            Newline();
-
-            TabCount++;
-            IsFirstItem = true;
-            IsOpenKey = false;
-        }
-
         public void ObjectKey(string name)
         {
             Comma();
@@ -38,6 +25,19 @@
             Space();
             IsFirstItem = true;
             IsOpenKey = true;
+        }
+
+        public void ObjectStart()
+        {
+            Comma();
+            if (!IsOpenKey)
+                Tabs();
+            Writer.Write('{');
+            Newline();
+
+            TabCount++;
+            IsFirstItem = true;
+            IsOpenKey = false;
         }
 
         public void ObjectEnd()

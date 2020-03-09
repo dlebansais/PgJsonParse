@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mod.cs" />
+    <Compile Include="Power.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,6 +106,10 @@
     <ProjectReference Include="..\PgJsonObjects\PgJsonObjects.csproj">
       <Project>{2d9e943b-7d22-469b-8dbe-500d23877b55}</Project>
       <Name>PgJsonObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PgJsonReader\PgJsonReader.csproj">
+      <Project>{001249F7-BF13-4C71-8592-BA1F32D53A69}</Project>
+      <Name>PgJsonReader</Name>
     </ProjectReference>
     <ProjectReference Include="..\Presentation\Presentation.csproj">
       <Project>{bf57b40a-0e23-4cd8-af46-a9fe6bfb3818}</Project>

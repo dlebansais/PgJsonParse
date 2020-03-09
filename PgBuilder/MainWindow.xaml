@@ -8,14 +8,19 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
+        <RoutedCommand x:Key="AddModCommand"/>
+        <RoutedCommand x:Key="IncrementTierCommand"/>
+        <RoutedCommand x:Key="DecrementTierCommand"/>
+        <RoutedCommand x:Key="LoadCommand"/>
+        <RoutedCommand x:Key="SaveCommand"/>
         <DataTemplate x:Key="SkillTemplate" DataType="{x:Type object:PgSkill}">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
         <DataTemplate x:Key="ItemNameTemplate" DataType="{x:Type object:PgItem}">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
-        <DataTemplate x:Key="ModTemplate" DataType="{x:Type local:Mod}">
-            <TextBlock Text="{Binding Power.Prefix}"/>
+        <DataTemplate x:Key="ModNameTemplate" DataType="{x:Type local:Power}">
+            <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0"/>
         </DataTemplate>
         <ContextMenu x:Key="AbilityContextMenu"/>
         <DataTemplate x:Key="AbilitySlotTemplate" DataType="{x:Type local:AbilitySlot}">
@@ -24,44 +29,71 @@
         <DataTemplate x:Key="GearSlotTemplate" DataType="{x:Type local:GearSlot}">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
+        <DataTemplate x:Key="ModTemplate" DataType="{x:Type local:Mod}">
+            <DockPanel Background="White">
+                <Button DockPanel.Dock="Left" Command="{StaticResource IncrementTierCommand}" VerticalAlignment="Top" Width="20">+</Button>
+                <Button DockPanel.Dock="Left" Command="{StaticResource DecrementTierCommand}" VerticalAlignment="Top" Width="20" Margin="2,0,0,0">-</Button>
+                <ComboBox ItemsSource="{Binding AvailablePowerList}" ItemTemplate="{StaticResource ModNameTemplate}" SelectedIndex="{Binding SelectedPower, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnPowerSelectionChanged" Margin="5,0,0,0"/>
+            </DockPanel>
+        </DataTemplate>
     </Window.Resources>
-    <DockPanel>
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5">Primary Skill:</TextBlock>
-            <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="0,5,0,0">Secondary Skill:</TextBlock>
-            <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Skill1List}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1" VerticalAlignment="Center" Width="120" Margin="10,0,0,5"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Skill2List}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2" VerticalAlignment="Center" Width="120" Margin="10,0,0,5"/>
-            <ItemsControl Grid.Column="2" Grid.Row="0" ItemsSource="{Binding AbilitySlot1List}" ItemTemplate="{StaticResource AbilitySlotTemplate}" VerticalAlignment="Center" Margin="5,0,0,5">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-            <ItemsControl Grid.Column="2" Grid.Row="1" ItemsSource="{Binding AbilitySlot2List}" ItemTemplate="{StaticResource AbilitySlotTemplate}" VerticalAlignment="Center" Margin="5,0,0,5">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </Grid>
-        <TabControl DockPanel.Dock="Top" ItemsSource="{Binding GearSlotList}" ItemTemplate="{StaticResource GearSlotTemplate}" SelectedIndex="0" Margin="0,10,0,0">
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource AddModCommand}" CanExecute="CanAddMod" Executed="OnAddMod"/>
+        <CommandBinding Command="{StaticResource IncrementTierCommand}" Executed="OnIncrementTier"/>
+        <CommandBinding Command="{StaticResource DecrementTierCommand}" Executed="OnDecrementTier"/>
+        <CommandBinding Command="{StaticResource LoadCommand}" Executed="OnLoad"/>
+        <CommandBinding Command="{StaticResource SaveCommand}" Executed="OnSave"/>
+    </Window.CommandBindings>
+    <DockPanel Margin="0,10,0,0">
+        <DockPanel DockPanel.Dock="Top">
+            <StackPanel DockPanel.Dock="Right">
+                <Button Width="60" Height="20" Command="{StaticResource LoadCommand}" Margin="10,0,10,10">Load...</Button>
+                <Button Width="60" Height="20" Command="{StaticResource SaveCommand}" Margin="10,0,10,10">Save...</Button>
+            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,5">Primary Skill:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,5">Secondary Skill:</TextBlock>
+                <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Skill1List}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1" VerticalAlignment="Center" Width="120" Margin="5,0,0,5"/>
+                <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Skill2List}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2" VerticalAlignment="Center" Width="120" Margin="5,0,0,5"/>
+                <ItemsControl Grid.Column="2" Grid.Row="0" ItemsSource="{Binding AbilitySlot1List}" ItemTemplate="{StaticResource AbilitySlotTemplate}" VerticalAlignment="Center" Margin="5,0,0,5">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <ItemsControl Grid.Column="2" Grid.Row="1" ItemsSource="{Binding AbilitySlot2List}" ItemTemplate="{StaticResource AbilitySlotTemplate}" VerticalAlignment="Center" Margin="5,0,0,5">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DockPanel>
+        <TabControl DockPanel.Dock="Top" ItemsSource="{Binding GearSlotList}" ItemTemplate="{StaticResource GearSlotTemplate}" SelectedIndex="0" Margin="10,10,10,10">
             <TabControl.ContentTemplate>
                 <ItemContainerTemplate>
                     <DockPanel>
-                        <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-                            <ComboBox ItemsSource="{Binding ItemList}" ItemTemplate="{StaticResource ItemNameTemplate}" SelectedIndex="{Binding SelectedItem, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnItemSelectionChanged" VerticalAlignment="Center" Width="200" Margin="0,0,0,0"/>
-                            <ItemsControl ItemsSource="{Binding SelectedModList}" ItemTemplate="{StaticResource ModTemplate}" VerticalAlignment="Center" Width="200" Margin="0,0,0,0"/>
+                        <DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
+                            <ComboBox DockPanel.Dock="Left" ItemsSource="{Binding ItemList}" ItemTemplate="{StaticResource ItemNameTemplate}" SelectedIndex="{Binding SelectedItem, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnItemSelectionChanged" VerticalAlignment="Top" Width="200" Margin="10,0,0,10"/>
+                            <Grid Width="400" Margin="10,0,10,0">
+                                <Grid VerticalAlignment="Top">
+                                    <TextBlock Text="To add mods, click this button." TextAlignment="Right" VerticalAlignment="Center"/>
+                                    <Button Width="0" VerticalAlignment="Center"/>
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding ModList}" ItemTemplate="{StaticResource ModTemplate}" VerticalAlignment="Top"/>
+                            </Grid>
+                            <Button DockPanel.Dock="Right" Command="{StaticResource AddModCommand}" VerticalAlignment="Top" Width="60" Margin="0,0,10,10">Add Mod</Button>
                         </DockPanel>
                         <Grid/>
                     </DockPanel>
