@@ -26,5 +26,6 @@
         ElectricityHit,
         CombatRefresh,
         ElectricityHit2,
+        EnergyPillar,
     }
 }

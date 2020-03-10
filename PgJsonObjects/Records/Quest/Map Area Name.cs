@@ -33,5 +33,7 @@
         Staging,
         FaeRealm,
         SacredGrotto,
+        AreaFaeRealm1,
+        FaeRealm1Caves,
     }
 }

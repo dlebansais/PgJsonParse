@@ -104,5 +104,6 @@
         CraftedNecklace5,
         CraftedRing7,
         CraftedNecklace7,
+        ParasolMushroomFlakes,
     }
 }

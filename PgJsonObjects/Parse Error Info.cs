@@ -222,16 +222,6 @@ namespace PgJsonObjects
                 Result += "Unparsed special info:\r\n" + UnparsedSpecialInfo + "\r\n";
             }
 
-            if (UnparsedFieldList.Count > 0)
-            {
-                string UnparsedField = "";
-
-                foreach (string Field in UnparsedFieldList)
-                    UnparsedField += Field + "\r\n";
-
-                Result += "Unparsed field info:\r\n" + UnparsedField + "\r\n";
-            }
-
             if (MissingFieldList.Count > 0)
             {
                 string MissingField = "";
@@ -274,6 +264,16 @@ namespace PgJsonObjects
                 }
 
                 Result += AllNotEnumerated;
+            }
+
+            if (UnparsedFieldList.Count > 0)
+            {
+                string UnparsedField = "";
+
+                foreach (string Field in UnparsedFieldList)
+                    UnparsedField += Field + "\r\n";
+
+                Result += "Unparsed field info:\r\n" + UnparsedField + "\r\n";
             }
 
             return Result;

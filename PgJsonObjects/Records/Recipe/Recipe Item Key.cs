@@ -123,5 +123,7 @@
         TreasureCluesSunValeGood,
         TreasureCluesSunValeGreat,
         TreasureCluesSunValeAmazing,
+        Edible,
+        VendorTrash,
     }
 }

@@ -113,5 +113,8 @@
         FlyCloud,
         StormArmor,
         ElectricityHit2,
+        PsionicDebuff,
+        RageShield,
+        OnFireGreen,
     }
 }

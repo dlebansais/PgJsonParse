@@ -83,6 +83,7 @@
     <Compile Include="Converters\IntThresholdConverter.cs" />
     <Compile Include="Converters\IntToObjectConverter.cs" />
     <Compile Include="Converters\IsEnumInSetConverter.cs" />
+    <Compile Include="Converters\NullableDoubleConverter.cs" />
     <Compile Include="Converters\NullableTimeSpanToDurationConverter.cs" />
     <Compile Include="Converters\NullToObjectConverter.cs" />
     <Compile Include="Converters\NullableIntConverter.cs" />

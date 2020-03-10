@@ -529,5 +529,10 @@
         ControlledBurn,
         CoordinatedAssault,
         AggressionDeterrent,
+        FairyFire,
+        AstralStrike,
+        PixieFlare,
+        FaeConduit,
+        PetBasicAttack,
     }
 }

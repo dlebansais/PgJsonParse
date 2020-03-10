@@ -161,5 +161,9 @@
         ExtraTag_HalloweenFaeSkeleton,
         MotUrak,
         StarvingTundraWolf,
+        Panther_NewbieFaeRealm,
+        BitingVine,
+        ElementalFire,
+        RabidDeer,
     }
 }

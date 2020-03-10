@@ -85,5 +85,7 @@ namespace PgJsonObjects
         IPgQuestRewardItemCollection QuestMidwayGiveItemList { get; }
         IPgGameNpc QuestCompleteNpc { get; }
         string QuestCompleteNpcName { get; }
+        IPgQuestRewardFavorCollection RewardsFavorList { get; }
+        IPgQuestRewardLevelCollection RewardsLevelList { get; }
     }
 }

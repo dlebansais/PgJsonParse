@@ -41,5 +41,13 @@
         Combine,
         Melt,
         AttuneMind,
+        Icify,
+        CraftEnchantedKit,
+        CraftIceShield,
+        CraftIceSkinningKnife,
+        CraftIceButcherKnife,
+        CraftIceHandsaw,
+        Dustify,
+        OpenPortal,
     }
 }

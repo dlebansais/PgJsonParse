@@ -2394,6 +2394,26 @@ namespace PgJsonObjects
                 //TODO
             }
 
+            else if (Tools.Scan(s, "Target's Evasion is reduced by %d% (all Evasion types)", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "Allies recover %d Power every %d seconds while in area", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For 10 minutes, base Power cost of flight (out of combat) is -%d/sec and Fly-Sprint cost is -%d/sec", args))
+            {
+                //TODO
+            }
+
+            else if (Tools.Scan(s, "For 10 minutes, base Power cost of flight (out of combat) is -%d/sec", args))
+            {
+                //TODO
+            }
+
             else
             {
                 ErrorInfo.AddUnparsedSpecialInfo(s);

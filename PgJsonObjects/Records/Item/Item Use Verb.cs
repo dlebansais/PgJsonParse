@@ -52,5 +52,7 @@
         TakeWaterSample,
         BreakIntoSmallerParts,
         TurnIntoBoneMeal,
+        Lick,
+        OpenBagWithDyingBreath,
     }
 }

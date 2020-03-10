@@ -157,6 +157,8 @@
         Safecracking,
         JewelryCrafting,
         Warden,
+        FairyMagic,
+        Race_Fae,
     }
 }
 

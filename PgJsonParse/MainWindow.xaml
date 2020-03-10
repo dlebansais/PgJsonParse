@@ -14,6 +14,7 @@
         <conv:FileNameToBitmapImageConverter x:Key="convFileNameToBitmapImage"/>
         <conv:NullableIntConverter x:Key="convNullableInt"/>
         <conv:NullableBooleanToObjectConverter x:Key="convNullableBooleanToObject"/>
+        <conv:NullableDoubleConverter x:Key="convNullableDouble"/>
         <conv:FloatListToStringConverter x:Key="convFloatListToString"/>
         <conv:IntToObjectConverter x:Key="convIntToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
@@ -3561,6 +3562,35 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="SearchResultQuestContent_LevelReward_ItemTemplateFirst">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink x:Name="hyperlink_QuestRewardLevel_Skill" Click="OnRequestNavigate" NavigateUri="unused">
+                        <Run>
+                            <Binding Path="Skill.Name" Mode="OneWay"/>
+                        </Run>
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="5,0,0,0">(</TextBlock>
+                <TextBlock Text="{Binding Level}"/>
+                <TextBlock>)</TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultQuestContent_LevelReward_ItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0">,</TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink x:Name="hyperlink_QuestRewardLevel_Skill" Click="OnRequestNavigate" NavigateUri="unused">
+                        <Run>
+                            <Binding Path="Skill.Name" Mode="OneWay"/>
+                        </Run>
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="5,0,0,0">(</TextBlock>
+                <TextBlock Text="{Binding Level}"/>
+                <TextBlock>)</TextBlock>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="SearchResultQuestContentTemplate">
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top">
@@ -3771,6 +3801,21 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <app:ListMemberSelector x:Name="SearchResultQuestContent_FavorReward" Content="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
+                    <TextBlock Grid.Column="0" Grid.Row="20" TextAlignment="Right" Margin="0,10,0,0">Level Rewards:</TextBlock>
+                    <Grid Grid.Column="1" Grid.Row="20" Margin="5,10,0,0">
+                        <ItemsControl x:Name="ctrl_SearchResultQuestContent_LevelReward" ItemsSource="{Binding RewardsLevelList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <app:ListMemberSelector x:Name="SearchResultQuestContent_LevelReward" Content="{Binding}"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                             <ItemsControl.ItemsPanel>
@@ -4128,7 +4173,7 @@
                     <TextBlock Grid.Column="0" Grid.Row="9" TextAlignment="Right" Margin="0,10,0,0">Usage Delay:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="9" TextWrapping="Wrap" Margin="5,10,0,0">
                         <TextBlock.Text>
-                            <Binding Path="RawUsageDelay" Converter="{StaticResource convNullableInt}"/>
+                            <Binding Path="RawUsageDelay" Converter="{StaticResource convNullableDouble}"/>
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="10" TextAlignment="Right" FontStyle="Italic" Margin="0,10,0,0">Cotton cost:</TextBlock>

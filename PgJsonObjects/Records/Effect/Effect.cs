@@ -56,8 +56,8 @@ namespace PgJsonObjects
                 GetString = () => SpewText } },
             { "Particle", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => Particle = StringToEnumConversion<EffectParticle>.Parse(value, errorInfo),
-                GetString = () => StringToEnumConversion<EffectParticle>.ToString(Particle, null, EffectParticle.Internal_None) } },
+                ParseString = (string value, ParseErrorInfo errorInfo) => Particle = StringToEnumConversion<EffectParticle>.Parse(value, TextMaps.EffectParticleStringMap, errorInfo),
+                GetString = () => StringToEnumConversion<EffectParticle>.ToString(Particle, TextMaps.EffectParticleStringMap, EffectParticle.Internal_None) } },
             { "StackingType", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => StackingType = StringToEnumConversion<EffectStackingType>.Parse(value, TextMaps.StackingTypeStringMap, errorInfo),

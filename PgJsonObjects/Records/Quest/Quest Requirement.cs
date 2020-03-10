@@ -141,7 +141,6 @@ namespace PgJsonObjects
                 case OtherRequirementType.HangOutCompleted:
                     if (RequirementHangOut != null)
                         return new HangOutCompletedQuestRequirement(OtherRequirementType, RequirementHangOut);
-
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("QuestRequirement HangOut");
@@ -157,6 +156,15 @@ namespace PgJsonObjects
                     else
                     {
                         ErrorInfo.AddInvalidObjectFormat("QuestRequirement Area Event");
+                        return null;
+                    }
+
+                case OtherRequirementType.Race:
+                    if (RequirementDisallowedRace != null || RequirementAllowedRace != null)
+                        return new RaceQuestRequirement(OtherRequirementType, RequirementAllowedRace, RequirementDisallowedRace);
+                    else
+                    {
+                        ErrorInfo.AddInvalidObjectFormat("QuestRequirement Race");
                         return null;
                     }
 
@@ -211,6 +219,14 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = ParseAreaEvent,
                 GetString = () => StringToEnumConversion<MapAreaName>.ToString(RequirementArea, null, MapAreaName.Internal_None) } },
+            { "DisallowedRace", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseDisallowedRace,
+                GetString = () => RequirementDisallowedRace } },
+            { "AllowedRace", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = ParseAllowedRace,
+                GetString = () => RequirementAllowedRace } },
         }; } }
 
         private void ParseQuest(string value, ParseErrorInfo ErrorInfo)
@@ -308,6 +324,22 @@ namespace PgJsonObjects
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement HangOut (" + OtherRequirementType + ")");
         }
 
+        private void ParseDisallowedRace(string value, ParseErrorInfo ErrorInfo)
+        {
+            if (OtherRequirementType == OtherRequirementType.Race)
+                RequirementDisallowedRace = value;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Race (" + OtherRequirementType + ")");
+        }
+
+        private void ParseAllowedRace(string value, ParseErrorInfo ErrorInfo)
+        {
+            if (OtherRequirementType == OtherRequirementType.Race)
+                RequirementAllowedRace = value;
+            else
+                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Race (" + OtherRequirementType + ")");
+        }
+
         private void ParseAreaEvent(string value, ParseErrorInfo ErrorInfo)
         {
             if (OtherRequirementType == OtherRequirementType.AreaEventOn)
@@ -350,6 +382,8 @@ namespace PgJsonObjects
         private string RequirementInteractionFlag;
         private string RequirementHangOut;
         private MapAreaName RequirementArea;
+        private string RequirementDisallowedRace;
+        private string RequirementAllowedRace;
         #endregion
 
         #region Indexing

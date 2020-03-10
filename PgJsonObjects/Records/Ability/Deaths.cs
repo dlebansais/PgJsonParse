@@ -146,5 +146,6 @@
         LoveTap,
         TreantSlash,
         InsectSwarm,
+        FairyFire,
     }
 }

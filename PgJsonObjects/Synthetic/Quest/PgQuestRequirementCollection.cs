@@ -47,6 +47,9 @@ namespace PgJsonObjects
                 case OtherRequirementType.AreaEventOn:
                     return new PgAreaEventOnQuestRequirement(data, ref offset);
 
+                case OtherRequirementType.Race:
+                    return new PgRaceQuestRequirement(data, ref offset);
+
                 default:
                     throw new InvalidOperationException();
             }

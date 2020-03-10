@@ -16,7 +16,6 @@ namespace PgJsonObjects
         public IPgQuestObjectiveCollection QuestObjectiveList { get; } = new QuestObjectiveCollection();
         public IPgQuestRewardXpCollection RewardsXPList { get; } = new QuestRewardXpCollection();
         public IPgQuestRewardItemCollection QuestRewardsItemList { get; } = new QuestRewardItemCollection();
-        public IPgQuestRewardFavorCollection RewardsFavorList { get; } = new QuestRewardFavorCollection();
         public TimeSpan? RawReuseTime { get; private set; }
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get; private set; }
@@ -92,6 +91,8 @@ namespace PgJsonObjects
         public IPgQuestRewardItemCollection QuestMidwayGiveItemList { get; } = new QuestRewardItemCollection();
         public IPgGameNpc QuestCompleteNpc { get; private set; }
         public string QuestCompleteNpcName { get; private set; }
+        public IPgQuestRewardFavorCollection RewardsFavorList { get; } = new QuestRewardFavorCollection();
+        public IPgQuestRewardLevelCollection RewardsLevelList { get; } = new QuestRewardLevelCollection();
 
         private bool IsFavorNpcParsed;
         private string RawRewardAbility;
@@ -778,6 +779,30 @@ namespace PgJsonObjects
                 return false;
             }
 
+            else if (RawRewardEffect.StartsWith("RaiseSkillToLevel("))
+            {
+                int IndexEnd = RawRewardEffect.IndexOf(')');
+                if (IndexEnd >= 18)
+                { 
+                    string RawSkillToLevel = RawRewardEffect.Substring(18, IndexEnd - 18);
+                    string[] Split = RawSkillToLevel.Split(',');
+                    if (Split.Length == 2 && StringToEnumConversion<PowerSkill>.TryParse(Split[0], out PowerSkill ParsedSkill, ErrorInfo) && int.TryParse(Split[1], out int LevelValue))
+                    {
+                        QuestRewardLevel NewReward = new QuestRewardLevel();
+                        NewReward.RawSkill = ParsedSkill;
+                        NewReward.RawLevel = LevelValue;
+                        RewardsLevelList.Add(NewReward);
+                        return true;
+                    }
+                    else
+                        ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+                }
+                else
+                    ErrorInfo.AddInvalidObjectFormat("Quest RewardsEffects");
+
+                return false;
+            }
+
             else
             {
                 RawRewardEffects.Add(RawRewardEffect);
@@ -993,6 +1018,8 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, QuestCompleteNpc.Name);
                 else if (QuestCompleteNpcName != null)
                     AddWithFieldSeparator(ref Result, QuestCompleteNpcName);
+                foreach (QuestRewardLevel Reward in RewardsLevelList)
+                    AddWithFieldSeparator(ref Result, TextMaps.PowerSkillTextMap[Reward.RawSkill]);
 
                 return Result;
             }
@@ -1141,6 +1168,14 @@ namespace PgJsonObjects
                     QuestCompleteNpcName = TextMaps.SpecialNpcTextMap[ParsedSpecialNpc];
             }
 
+            foreach (QuestRewardLevel Item in RewardsLevelList)
+                if (!Item.IsSkillParsed)
+                {
+                    bool IsSkillParsed = false;
+                    Item.Skill = Skill.ConnectPowerSkill(ErrorInfo, SkillTable, Item.RawSkill, Item.Skill, ref IsSkillParsed, ref IsConnected, this);
+                    Item.IsSkillParsed = IsSkillParsed;
+                }
+
             return IsConnected;
         }
 
@@ -1279,8 +1314,9 @@ namespace PgJsonObjects
             AddObject(QuestCompleteNpc as ISerializableJsonObject, data, ref offset, BaseOffset, 196, StoredObjectTable);
             AddString(QuestCompleteNpcName, data, ref offset, BaseOffset, 200, StoredStringtable);
             AddObjectList(RewardsFavorList, data, ref offset, BaseOffset, 204, StoredObjectListTable);
+            AddObjectList(RewardsLevelList, data, ref offset, BaseOffset, 208, StoredObjectListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 208, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 212, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

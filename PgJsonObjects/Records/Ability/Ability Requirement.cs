@@ -91,6 +91,9 @@ namespace PgJsonObjects
                 case OtherRequirementType.IsNotInHotspot:
                     return new AbilityRequirementNotInHotspot(RawName);
 
+                case OtherRequirementType.Race:
+                    return new AbilityRequirementRace(RawName);
+
                 default:
                     return null;
             }

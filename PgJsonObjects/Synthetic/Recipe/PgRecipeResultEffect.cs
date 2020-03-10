@@ -136,6 +136,12 @@ namespace PgJsonObjects
 
                 case RecipeEffect.ConsumeItemUses:
                     return "Consume Item Uses " + TextMaps.RecipeItemKeyTextMap[item.RecipeItemKey] + " (" + item.AdjustedReuseTime + ")";
+
+                case RecipeEffect.DeltaCurFairyEnergy:
+                    return "Delta Cur Fairy Energy (" + item.BoostLevel + ")";
+
+                case RecipeEffect.Teleport:
+                    return "Teleport(" + ")";
             }
         }
     }

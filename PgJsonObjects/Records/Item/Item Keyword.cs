@@ -981,5 +981,15 @@
         TreasureCluesSunValeGood,
         TreasureCluesSunValeGreat,
         TreasureCluesSunValeAmazing,
+        CrystalIce,
+        NoGourmandBonus,
+        RawTopaz,
+        GenericTSysMunge,
+        FairyMagicTopaz,
+        NonFaeMetalArmor,
+        FaeMetalArmor,
+        Organic,
+        BeeRepellent,
+        MinRarity_Uncommon,
     }
 }

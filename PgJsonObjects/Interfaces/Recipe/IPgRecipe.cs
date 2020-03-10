@@ -17,8 +17,8 @@ namespace PgJsonObjects
         IPgRecipeResultEffectCollection ResultEffectList { get; }
         IPgSkill SortSkill { get; }
         List<RecipeKeyword> KeywordList { get; }
-        int UsageDelay { get; }
-        int? RawUsageDelay { get; }
+        double UsageDelay { get; }
+        double? RawUsageDelay { get; }
         string UsageDelayMessage { get; }
         RecipeAction ActionLabel { get; }
         RecipeUsageAnimation UsageAnimation { get; }

@@ -61,8 +61,8 @@ namespace PgJsonObjects
         public IPgRecipeResultEffectCollection ResultEffectList { get { return GetObjectList(36, ref _ResultEffectList, PgRecipeResultEffectCollection.CreateItem, () => new PgRecipeResultEffectCollection()); } } private IPgRecipeResultEffectCollection _ResultEffectList;
         public IPgSkill SortSkill { get { return GetObject(40, ref _SortSkill, PgSkill.CreateNew); } } private IPgSkill _SortSkill;
         public List<RecipeKeyword> KeywordList { get { return GetEnumList(44, ref _KeywordList); } } private List<RecipeKeyword> _KeywordList;
-        public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
-        public int? RawUsageDelay { get { return GetInt(48); } }
+        public double UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
+        public double? RawUsageDelay { get { return GetDouble(48); } }
         public string UsageDelayMessage { get { return GetString(52); } }
         public RecipeAction ActionLabel { get { return GetEnum<RecipeAction>(56); } }
         public RecipeUsageAnimation UsageAnimation { get { return GetEnum<RecipeUsageAnimation>(58); } }
@@ -148,8 +148,8 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<RecipeAction>.ToString(ActionLabel, TextMaps.RecipeActionStringMap, RecipeAction.Internal_None) } },
             { "UsageDelay", new FieldParser() {
-                Type = FieldType.Integer,
-                GetInteger = () => RawUsageDelay } },
+                Type = FieldType.Float,
+                GetFloat = () => RawUsageDelay } },
             { "UsageDelayMessage", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => UsageDelayMessage } },
@@ -405,6 +405,26 @@ namespace PgJsonObjects
             string Result = "ConsumeItemUses(";
 
             Result += Item.Item != null ? Item.Item.InternalName : "unknown";
+            Result += ")";
+
+            return Result;
+        }
+
+        private string GetDeltaCurFairyEnergyEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "DeltaCurFairyEnergy(";
+
+            Result += Item.BoostLevel;
+            Result += ")";
+
+            return Result;
+        }
+
+        private string GetTeleportEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "Teleport(";
+
+            //Result += Item.Item != null ? Item.Item.InternalName : "unknown";
             Result += ")";
 
             return Result;

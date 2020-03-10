@@ -36,7 +36,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "UseVerb", new FieldParser() {
                 Type = FieldType.String,
-                GetString = () => StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, TextMaps.UseVerbMap, ItemUseVerb.Internal_None) } },
+                GetString = () => StringToEnumConversion<ItemUseVerb>.ToString(UseVerb, TextMaps.UseVerbStringMap, ItemUseVerb.Internal_None) } },
             { "ServerInfo", new FieldParser() {
                 Type = FieldType.ObjectArray,
                 GetObjectArray = () => PgServerInfoCollection.CreateSingleOrEmptyList(ServerInfo),

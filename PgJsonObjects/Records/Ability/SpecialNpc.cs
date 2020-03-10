@@ -53,5 +53,9 @@
         LiveNpc_Loche,
         LiveNpc_Delia,
         LiveNpc_Moxie,
+        BeeHiveA,
+        BeeHiveB,
+        BeeHiveH,
+        BeeHiveL,
     }
 }

@@ -22,8 +22,8 @@ namespace PgJsonObjects
         public IPgRecipeResultEffectCollection ResultEffectList { get; } = new RecipeResultEffectCollection();
         public IPgSkill SortSkill { get; private set; }
         public List<RecipeKeyword> KeywordList { get; } = new List<RecipeKeyword>();
-        public int UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
-        public int? RawUsageDelay { get; private set; }
+        public double UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
+        public double? RawUsageDelay { get; private set; }
         public string UsageDelayMessage { get; private set; }
         public RecipeAction ActionLabel { get; private set; }
         public RecipeUsageAnimation UsageAnimation { get; private set; }
@@ -150,9 +150,9 @@ namespace PgJsonObjects
                 ParseString = (string value, ParseErrorInfo errorInfo) => ActionLabel = StringToEnumConversion<RecipeAction>.Parse(value, TextMaps.RecipeActionStringMap, errorInfo),
                 GetString = () => StringToEnumConversion<RecipeAction>.ToString(ActionLabel, TextMaps.RecipeActionStringMap, RecipeAction.Internal_None) } },
             { "UsageDelay", new FieldParser() {
-                Type = FieldType.Integer,
-                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawUsageDelay = value,
-                GetInteger = () => RawUsageDelay } },
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawUsageDelay = value,
+                GetFloat = () => RawUsageDelay } },
             { "UsageDelayMessage", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => UsageDelayMessage = value,
@@ -352,6 +352,10 @@ namespace PgJsonObjects
                         Result.Add(GetConsumeItemUsesEffects(Item));
                         break;
 
+                    case RecipeEffect.DeltaCurFairyEnergy:
+                        Result.Add(GetDeltaCurFairyEnergyEffects(Item));
+                        break;
+
                     default:
                         Result.Add(StringToEnumConversion<RecipeEffect>.ToString(Item.Effect, TextMaps.RecipeEffectStringMap));
                         break;
@@ -444,6 +448,12 @@ namespace PgJsonObjects
                 return true;
 
             if (ParseConsumeItemUses(value, ErrorInfo, ref NewResultEffect))
+                return true;
+
+            if (ParseDeltaCurFairyEnergy(value, ErrorInfo, ref NewResultEffect))
+                return true;
+
+            if (ParseTeleport(value, ErrorInfo, ref NewResultEffect))
                 return true;
 
             ErrorInfo.AddMissingEnum("RecipeEffect", value);
@@ -1002,6 +1012,75 @@ namespace PgJsonObjects
 
             return Result;
         }
+
+        private bool ParseDeltaCurFairyEnergy(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
+        {
+            string DeltaCurFairyEnergyPattern = "DeltaCurFairyEnergy(";
+            if (RawEffect.StartsWith(DeltaCurFairyEnergyPattern) && RawEffect.EndsWith(")"))
+            {
+                RecipeEffect ConvertedRecipeEffect = RecipeEffect.DeltaCurFairyEnergy;
+                string Adjusted = RawEffect.Substring(DeltaCurFairyEnergyPattern.Length, RawEffect.Length - DeltaCurFairyEnergyPattern.Length - 1);
+                string[] AdjustedSplit = Adjusted.Split(',');
+
+                if (AdjustedSplit.Length == 1)
+                {
+                    int BoostLevel;
+                    if (int.TryParse(AdjustedSplit[0].Trim(), out BoostLevel))
+                    {
+                        NewResultEffect.Effect = ConvertedRecipeEffect;
+                        NewResultEffect.RawBoostLevel = BoostLevel;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private string GetDeltaCurFairyEnergyEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "DeltaCurFairyEnergy(";
+
+            Result += Item.BoostLevel;
+            Result += ")";
+
+            return Result;
+        }
+
+        private bool ParseTeleport(string RawEffect, ParseErrorInfo ErrorInfo, ref RecipeResultEffect NewResultEffect)
+        {
+            string TeleportPattern = "Teleport(";
+            if (RawEffect.StartsWith(TeleportPattern) && RawEffect.EndsWith(")"))
+            {
+                RecipeEffect ConvertedRecipeEffect = RecipeEffect.Teleport;
+                string Adjusted = RawEffect.Substring(TeleportPattern.Length, RawEffect.Length - TeleportPattern.Length - 1);
+                string[] AdjustedSplit = Adjusted.Split(',');
+
+                if (AdjustedSplit.Length == 2)
+                {
+                    MapAreaName MapAreaName;
+                    if (StringToEnumConversion<MapAreaName>.TryParse(AdjustedSplit[0].Trim(), out MapAreaName, ErrorInfo))
+                    {
+                        NewResultEffect.Effect = ConvertedRecipeEffect;
+                        //NewResultEffect.MapAreaName = MapAreaName;
+                        //NewResultEffect.RawSpot = AdjustedSplit[1].Trim();
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private string GetTeleportEffects(IPgRecipeResultEffect Item)
+        {
+            string Result = "Teleport(";
+
+            //Result += Item.Item != null ? Item.Item.InternalName : "unknown";
+            Result += ")";
+
+            return Result;
+        }
         #endregion
 
         #region Indexing
@@ -1287,7 +1366,7 @@ namespace PgJsonObjects
             AddObjectList(ResultEffectList, data, ref offset, BaseOffset, 36, StoredObjectListTable);
             AddObject(SortSkill as ISerializableJsonObject, data, ref offset, BaseOffset, 40, StoredObjectTable);
             AddEnumList(KeywordList, data, ref offset, BaseOffset, 44, StoredEnumListTable);
-            AddInt(RawUsageDelay, data, ref offset, BaseOffset, 48);
+            AddDouble(RawUsageDelay, data, ref offset, BaseOffset, 48);
             AddString(UsageDelayMessage, data, ref offset, BaseOffset, 52, StoredStringtable);
             AddEnum(ActionLabel, data, ref offset, BaseOffset, 56);
             AddEnum(UsageAnimation, data, ref offset, BaseOffset, 58);

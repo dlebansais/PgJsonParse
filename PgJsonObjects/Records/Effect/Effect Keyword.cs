@@ -241,5 +241,8 @@
         HotFlashCurse,
         Bendith,
         GeorgeCurse,
+        ButterflyForm,
+        OrranInv,
+        FairyFire,
     }
 }

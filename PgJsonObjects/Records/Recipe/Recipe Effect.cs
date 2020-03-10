@@ -287,6 +287,13 @@
         CreateSunValeTreasureMapGood,
         CreateSunValeTreasureMapGreat,
         CreateSunValeTreasureMapAmazing,
+        DecomposeFoodIntoCrystalIce_IceConjuration,
+        DecomposeItemIntoCrystalIce,
+        DecomposeItemIntoFairyDust,
+        StoragePortal1,
+        StoragePortal2,
+        StoragePortal3,
+        SummonFairyLight,
 
         ExtractTSysPower,
         RepairItemDurability,
@@ -298,5 +305,7 @@
         GiveItemPower,
         AddItemTSysPowerWax,
         ConsumeItemUses,
+        DeltaCurFairyEnergy,
+        Teleport,
     }
 }

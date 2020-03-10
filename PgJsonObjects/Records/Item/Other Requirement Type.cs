@@ -30,5 +30,6 @@
         HangOutCompleted,
         IsWarden,
         AreaEventOn,
+        Race,
     }
 }

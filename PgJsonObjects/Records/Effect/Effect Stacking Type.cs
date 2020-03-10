@@ -313,5 +313,8 @@
         WaterLung,
         AlchemyMaxBreathBoost,
         WardenStrengthDrink,
+        FairyDustDebuff,
+        FreeFlutter,
+        FairyFire,
     }
 }
