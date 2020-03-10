@@ -96,6 +96,12 @@ namespace PgJsonObjects
         public IPgItem ConsumedItemDescription { get; private set; }
         public bool DelayLoopIsOnlyUsedInCombat { get { return RawDelayLoopIsOnlyUsedInCombat.HasValue && RawDelayLoopIsOnlyUsedInCombat.Value; } }
         public bool? RawDelayLoopIsOnlyUsedInCombat { get; private set; }
+        public string AmmoDescription { get; private set; }
+        public IPgAbilityAmmoCollection AmmoKeywordList { get; } = new AbilityAmmoCollection();
+        public double AmmoConsumeChance { get { return RawAmmoConsumeChance.HasValue ? RawAmmoConsumeChance.Value : 0; } }
+        public double? RawAmmoConsumeChance { get; private set; }
+        public double AmmoStickChance { get { return RawAmmoStickChance.HasValue ? RawAmmoStickChance.Value : 0; } }
+        public double? RawAmmoStickChance { get; private set; }
 
         private bool IsSkillParsed;
         private bool IsRawConsumedItemKeywordParsed;
@@ -339,6 +345,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => SelfParticle = value,
                 GetString = () => SelfParticle } },
+            { "AmmoDescription", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => AmmoDescription = value,
+                GetString = () => AmmoDescription } },
             { "SharesResetTimerWith", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RawSharesResetTimerWith = value,
@@ -400,6 +410,19 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawDelayLoopIsOnlyUsedInCombat = value,
                 GetBool = () => RawDelayLoopIsOnlyUsedInCombat } },
+            { "AmmoKeywords", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                ParseObjectArray = (JsonObject value, ParseErrorInfo errorInfo) => JsonObjectParser<AbilityAmmo>.ParseList("AmmoKeyword", value, AmmoKeywordList, errorInfo),
+                GetObjectArray = () => AmmoKeywordList,
+                SimplifyArray = true } },
+            { "AmmoConsumeChance", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawAmmoConsumeChance = value,
+                GetFloat = () => RawAmmoConsumeChance } },
+            { "AmmoStickChance", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawAmmoStickChance = value,
+                GetFloat = () => RawAmmoStickChance } },
         }; } }
 
         private void ParseConsumedItemKeyword(string value, ParseErrorInfo errorInfo)
@@ -2505,6 +2528,8 @@ namespace PgJsonObjects
                 AddWithFieldSeparator(ref Result, RawConsumedItemDescription);
                 if (RawDelayLoopIsOnlyUsedInCombat.HasValue)
                     AddWithFieldSeparator(ref Result, "Delay Loop Is Only Used In Combat");
+                if (AmmoDescription != null)
+                    AddWithFieldSeparator(ref Result, AmmoDescription);
 
                 return Result;
             }
@@ -2781,8 +2806,12 @@ namespace PgJsonObjects
             AddEnum(RawSkill, data, ref offset, BaseOffset, 182);
             AddObjectList(SourceList, data, ref offset, BaseOffset, 184, StoredObjectListTable);
             AddObject(ConsumedItemDescription as ISerializableJsonObject, data, ref offset, BaseOffset, 188, StoredObjectTable);
+            AddString(AmmoDescription, data, ref offset, BaseOffset, 192, StoredStringtable);
+            AddObjectList(AmmoKeywordList, data, ref offset, BaseOffset, 196, StoredObjectListTable);
+            AddDouble(RawAmmoConsumeChance, data, ref offset, BaseOffset, 200);
+            AddDouble(RawAmmoStickChance, data, ref offset, BaseOffset, 204);
 
-            FinishSerializing(data, ref offset, BaseOffset, 192, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
+            FinishSerializing(data, ref offset, BaseOffset, 208, StoredStringtable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, StoredObjectListTable);
             AlignSerializedLength(ref offset);
         }
         #endregion

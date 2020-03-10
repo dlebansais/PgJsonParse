@@ -92,6 +92,11 @@ namespace PgJsonObjects
         IPgItem ConsumedItemDescription { get; }
         bool DelayLoopIsOnlyUsedInCombat { get; }
         bool? RawDelayLoopIsOnlyUsedInCombat { get; }
+        string AmmoDescription { get; }
+        double AmmoConsumeChance { get; }
+        double? RawAmmoConsumeChance { get; }
+        double AmmoStickChance { get; }
+        double? RawAmmoStickChance { get; }
 
         ConsumedItem ConsumedItem { get; }
         string DigitStrippedName { get; }

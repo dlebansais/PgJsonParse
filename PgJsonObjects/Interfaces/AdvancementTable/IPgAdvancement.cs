@@ -139,6 +139,28 @@ namespace PgJsonObjects
         double? RawBoostWerewolfMetabolismHeathRegen { get; }
         float BoostWerewolfMetabolismPowerRegen { get; }
         double? RawBoostWerewolfMetabolismPowerRegen { get; }
+        int MonsterMatchOwnerSpeed { get; }
+        int? RawMonsterMatchOwnerSpeed { get; }
+        float ArmorMitigationMod { get; }
+        double? RawArmorMitigationMod { get; }
+        float AutoHealHealthMod { get; }
+        double? RawAutoHealHealthMod { get; }
+        float AutoHealArmorMod { get; }
+        double? RawAutoHealArmorMod { get; }
+        float ArmorMitigationRatio { get; }
+        double? RawArmorMitigationRatio { get; }
+        int ShowFairyEnergyIndicator { get; }
+        int? RawShowFairyEnergyIndicator { get; }
+        int BoostAbilityPetSpecialAttack { get; }
+        int? RawBoostAbilityPetSpecialAttack { get; }
+        int BoostAbilityPetSpecialTrick { get; }
+        int? RawBoostAbilityPetSpecialTrick { get; }
+        int BoostAbilityPetBasicAttack { get; }
+        int? RawBoostAbilityPetBasicAttack { get; }
+        float BoostAutoHealHealthSender { get; }
+        double? RawBoostAutoHealHealthSender { get; }
+        float BoostAutoHealArmorSender { get; }
+        double? RawBoostAutoHealArmorSender { get; }
 
         List<string> VulnerabilityList { get; }
         List<string> MitigationList { get; }

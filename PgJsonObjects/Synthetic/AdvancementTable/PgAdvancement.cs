@@ -164,12 +164,33 @@ namespace PgJsonObjects
         public double? RawBoostWerewolfMetabolismHeathRegen { get { return GetDouble(276); } }
         public float BoostWerewolfMetabolismPowerRegen { get { return (float)(RawBoostWerewolfMetabolismPowerRegen.HasValue ? RawBoostWerewolfMetabolismPowerRegen.Value : 0); } }
         public double? RawBoostWerewolfMetabolismPowerRegen { get { return GetDouble(280); } }
-        protected override List<string> FieldTableOrder { get { return GetStringList(284, ref _FieldTableOrder); } }
-        private List<string> _FieldTableOrder;
+        protected override List<string> FieldTableOrder { get { return GetStringList(284, ref _FieldTableOrder); } }  private List<string> _FieldTableOrder;
         public List<int> VulnerabilityDataList { get { return GetIntList(288, ref _VulnerabilityDataList); } } private List<int> _VulnerabilityDataList;
         public List<int> MitigationDataList { get { return GetIntList(292, ref _MitigationDataList); } } private List<int> _MitigationDataList;
         public List<int> DirectModDataList { get { return GetIntList(296, ref _DirectModDataList); } } private List<int> _DirectModDataList;
         public List<int> IndirectModDataList { get { return GetIntList(300, ref _IndirectModDataList); } } private List<int> _IndirectModDataList;
+        public int MonsterMatchOwnerSpeed { get { return RawMonsterMatchOwnerSpeed.HasValue ? RawMonsterMatchOwnerSpeed.Value : 0; } }
+        public int? RawMonsterMatchOwnerSpeed { get { return GetInt(304); } }
+        public float ArmorMitigationMod { get { return (float)(RawArmorMitigationMod.HasValue ? RawArmorMitigationMod.Value : 0); } }
+        public double? RawArmorMitigationMod { get { return GetInt(308); } }
+        public float AutoHealHealthMod { get { return (float)(RawAutoHealHealthMod.HasValue ? RawAutoHealHealthMod.Value : 0); } }
+        public double? RawAutoHealHealthMod { get { return GetInt(312); } }
+        public float AutoHealArmorMod { get { return (float)(RawAutoHealArmorMod.HasValue ? RawAutoHealArmorMod.Value : 0); } }
+        public double? RawAutoHealArmorMod { get { return GetInt(316); } }
+        public float ArmorMitigationRatio { get { return (float)(RawArmorMitigationRatio.HasValue ? RawArmorMitigationRatio.Value : 0); } }
+        public double? RawArmorMitigationRatio { get { return GetInt(320); } }
+        public int ShowFairyEnergyIndicator { get { return RawShowFairyEnergyIndicator.HasValue ? RawShowFairyEnergyIndicator.Value : 0; } }
+        public int? RawShowFairyEnergyIndicator { get { return GetInt(324); } }
+        public int BoostAbilityPetSpecialAttack { get { return RawBoostAbilityPetSpecialAttack.HasValue ? RawBoostAbilityPetSpecialAttack.Value : 0; } }
+        public int? RawBoostAbilityPetSpecialAttack { get { return GetInt(328); } }
+        public int BoostAbilityPetSpecialTrick { get { return RawBoostAbilityPetSpecialTrick.HasValue ? RawBoostAbilityPetSpecialTrick.Value : 0; } }
+        public int? RawBoostAbilityPetSpecialTrick { get { return GetInt(332); } }
+        public int BoostAbilityPetBasicAttack { get { return RawBoostAbilityPetBasicAttack.HasValue ? RawBoostAbilityPetBasicAttack.Value : 0; } }
+        public int? RawBoostAbilityPetBasicAttack { get { return GetInt(336); } }
+        public float BoostAutoHealHealthSender { get { return (float)(RawBoostAutoHealHealthSender.HasValue ? RawBoostAutoHealHealthSender.Value : 0); } }
+        public double? RawBoostAutoHealHealthSender { get { return GetInt(340); } }
+        public float BoostAutoHealArmorSender { get { return (float)(RawBoostAutoHealArmorSender.HasValue ? RawBoostAutoHealArmorSender.Value : 0); } }
+        public double? RawBoostAutoHealArmorSender { get { return GetInt(344); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "IGNORE_CHANCE_FEAR", new FieldParser() {
@@ -373,6 +394,39 @@ namespace PgJsonObjects
             { "MOD_CRITICAL_HIT_DAMAGE", new FieldParser() {
                 Type = FieldType.Float,
                 GetFloat = () => RawCriticalHitDamage } },
+            { "MONSTER_MATCH_OWNER_SPEED", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawMonsterMatchOwnerSpeed } },
+            { "ARMOR_MITIGATION_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawArmorMitigationMod } },
+            { "AUTOHEAL_HEALTH_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawAutoHealHealthMod } },
+            { "AUTOHEAL_ARMOR_MOD", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawAutoHealArmorMod } },
+            { "ARMOR_MITIGATION_RATIO", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawArmorMitigationRatio } },
+            { "SHOW_FAIRYENERGY_INDICATORS", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawShowFairyEnergyIndicator } },
+            { "BOOST_ABILITY_PET_SPECIALATTACK", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawBoostAbilityPetSpecialAttack } },
+            { "BOOST_ABILITY_PET_SPECIALTRICK", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawBoostAbilityPetSpecialTrick } },
+            { "BOOST_ABILITY_PET_BASICATTACK", new FieldParser() {
+                Type = FieldType.Integer,
+                GetInteger = () => RawBoostAbilityPetBasicAttack } },
+            { "BOOST_AUTOHEAL_HEALTH_SENDER", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawBoostAutoHealHealthSender } },
+            { "BOOST_AUTOHEAL_ARMOR_SENDER", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawBoostAutoHealArmorSender } },
         }; } }
 
         #region Json Reconstruction

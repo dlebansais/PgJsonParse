@@ -1319,6 +1319,10 @@ namespace PgJsonParse
                 if (KeyIndex < 0)
                     break;
 
+                int EndLineIndex = textContent.IndexOf('\n', MatchIndex + term.Length);
+                if (EndLineIndex < KeyIndex)
+                    break;
+
                 KeyIndex++;
 
                 string Key = "";

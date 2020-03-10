@@ -468,6 +468,18 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="AmmoKeywordTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0,0,0,0">
+                    <TextBlock.Text>
+                        <Binding Path="Keyword" Converter="{StaticResource convEnumToText}" ConverterParameter="ItemKeywordTextMap"/>
+                    </TextBlock.Text>
+                </TextBlock>
+                <TextBlock Margin="5,0,0,0">(</TextBlock>
+                <TextBlock Text="{Binding Count}"/>
+                <TextBlock>)</TextBlock>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="ConsumedItemDirectTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Count}" Visibility="{Binding RawCount, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="0,0,5,0"/>
@@ -2131,6 +2143,8 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Animation:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Margin="5,0,0,0">
@@ -2278,6 +2292,10 @@
                             </Run>
                         </Hyperlink>
                     </TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="21" TextAlignment="Right" Margin="0,10,0,0">Armor Description:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="21" Text="{Binding AmmoDescription}" TextWrapping="Wrap" Margin="5,10,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="22" TextAlignment="Right" Margin="0,10,0,0">Ammo Keywords:</TextBlock>
+                    <ItemsControl Grid.Column="1" Grid.Row="22" ItemsSource="{Binding AmmoKeywordList}" ItemTemplate="{StaticResource AmmoKeywordTemplate}" Margin="5,10,0,0"/>
                     <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Keywords:</TextBlock>
                     <Grid Grid.Column="3" Grid.Row="0" Margin="5,0,0,0">
                         <ItemsControl x:Name="ctrl_SearchResultAbilityContent_Keywords" ItemsSource="{Binding KeywordList}">
@@ -2414,6 +2432,18 @@
                     <TextBlock Grid.Column="3" Grid.Row="21" TextWrapping="Wrap" Margin="5,10,0,0">
                         <TextBlock.Text>
                             <Binding Path="RawDelayLoopIsOnlyUsedInCombat" Converter="{StaticResource convNullableBooleanToObject}" ConverterParameter="{StaticResource NoYesNull}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="22" TextAlignment="Right" Margin="0,10,0,0">Ammo Consume Chance:</TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="22" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="RawAmmoConsumeChance" Converter="{StaticResource convDouble}" ConverterParameter="%"/>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="23" TextAlignment="Right" Margin="0,10,0,0">Ammo Stick Chance:</TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="23" TextWrapping="Wrap" Margin="5,10,0,0">
+                        <TextBlock.Text>
+                            <Binding Path="RawAmmoStickChance" Converter="{StaticResource convDouble}" ConverterParameter="%"/>
                         </TextBlock.Text>
                     </TextBlock>
                 </Grid>
@@ -5129,6 +5159,24 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="Non Combat Regen Health Modifier:" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding NonCombatRegenHealthMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
@@ -5270,6 +5318,28 @@
                     <TextBlock Grid.Column="1" Grid.Row="62" Text="{Binding AccuracyBoost, Converter={StaticResource convPercent}}" Visibility="{Binding RawAccuracyBoost, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                     <TextBlock Grid.Column="0" Grid.Row="62" Text="Boost Poison Indirect:" Visibility="{Binding RawBoostPoisonIndirect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="62" Text="{Binding BoostPoisonIndirect, Converter={StaticResource convPercent}}" Visibility="{Binding RawBoostPoisonIndirect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="63" Text="Monster Match Owner Speed:" Visibility="{Binding RawMonsterMatchOwnerSpeed, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="63" Text="{Binding MonsterMatchOwnerSpeed}" Visibility="{Binding RawMonsterMatchOwnerSpeed, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="64" Text="Armor Mitigation Mod:" Visibility="{Binding RawArmorMitigationMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="64" Text="{Binding ArmorMitigationMod}" Visibility="{Binding RawArmorMitigationMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="65" Text="Auto Heal Health Mod:" Visibility="{Binding RawAutoHealHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="65" Text="{Binding AutoHealHealthMod}" Visibility="{Binding RawAutoHealHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="66" Text="Auto Heal Armor Mod:" Visibility="{Binding RawAutoHealArmorMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="66" Text="{Binding AutoHealArmorMod}" Visibility="{Binding RawAutoHealArmorMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="67" Text="Armor Mitigation Ratio:" Visibility="{Binding RawArmorMitigationRatio, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="67" Text="{Binding ArmorMitigationRatio}" Visibility="{Binding RawArmorMitigationRatio, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="68" Text="Show Fairy Energy Indicator:" Visibility="{Binding RawShowFairyEnergyIndicator, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="68" Text="{Binding ShowFairyEnergyIndicator}" Visibility="{Binding RawShowFairyEnergyIndicator, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="69" Text="Boost Ability Pet Special Attack:" Visibility="{Binding RawBoostAbilityPetSpecialAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="69" Text="{Binding BoostAbilityPetSpecialAttack}" Visibility="{Binding RawBoostAbilityPetSpecialAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="70" Text="Boost Ability Pet Special Trick:" Visibility="{Binding RawBoostAbilityPetSpecialTrick, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="70" Text="{Binding BoostAbilityPetSpecialTrick}" Visibility="{Binding RawBoostAbilityPetSpecialTrick, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="71" Text="Boost Ability Pet Basic Attack:" Visibility="{Binding RawBoostAbilityPetBasicAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="71" Text="{Binding BoostAbilityPetBasicAttack}" Visibility="{Binding RawBoostAbilityPetBasicAttack, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="72" Text="Boost Auto Heal Health Sender:" Visibility="{Binding RawBoostAutoHealHealthSender, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="72" Text="{Binding BoostAutoHealHealthSender}" Visibility="{Binding RawBoostAutoHealHealthSender, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="73" Text="Boost Auto Heal Armor Sender:" Visibility="{Binding RawBoostAutoHealArmorSender, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="73" Text="{Binding BoostAutoHealArmorSender}" Visibility="{Binding RawBoostAutoHealArmorSender, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>

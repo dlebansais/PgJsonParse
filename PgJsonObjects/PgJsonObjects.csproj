@@ -87,6 +87,8 @@
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementPetCount.cs" />
     <Compile Include="Interfaces\Ability\Ability Requirement\IPgAbilityRequirementRecipeKnown.cs" />
     <Compile Include="Interfaces\Ability\IPgAbility.cs" />
+    <Compile Include="Interfaces\Ability\IPgAbilityAmmo.cs" />
+    <Compile Include="Interfaces\Ability\IPgAbilityAmmoCollection.cs" />
     <Compile Include="Interfaces\Ability\IPgSpecialValueCollection.cs" />
     <Compile Include="Interfaces\Ability\IPgDoTCollection.cs" />
     <Compile Include="Interfaces\Ability\IPgAbilityRequirementCollection.cs" />
@@ -250,8 +252,10 @@
     <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementInteractionFlagSet.cs" />
     <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementIsNotGuest.cs" />
     <Compile Include="Records\Ability\Ability Requirement\AbilityRequirementIsVolunteerGuide.cs" />
+    <Compile Include="Records\Ability\AbilityAmmo.cs" />
     <Compile Include="Records\Ability\Ability Source.cs" />
     <Compile Include="Records\Ability\AbilityCollection.cs" />
+    <Compile Include="Records\Ability\AbilityAmmoCollection.cs" />
     <Compile Include="Records\Ability\AbilityRequirementCollection.cs" />
     <Compile Include="Records\Ability\DoT Special Rule.cs" />
     <Compile Include="Records\Ability\DoT.cs" />
@@ -516,6 +520,8 @@
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementOr.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementPetCount.cs" />
     <Compile Include="Synthetic\Ability\Ability Requirement\PgAbilityRequirementRecipeKnown.cs" />
+    <Compile Include="Synthetic\Ability\PgAbilityAmmo.cs" />
+    <Compile Include="Synthetic\Ability\PgAbilityAmmoCollection.cs" />
     <Compile Include="Synthetic\Ability\PgDoTCollection.cs" />
     <Compile Include="Synthetic\Ability\PgAbilityRequirementCollection.cs" />
     <Compile Include="Synthetic\Ability\PgAbility.cs" />

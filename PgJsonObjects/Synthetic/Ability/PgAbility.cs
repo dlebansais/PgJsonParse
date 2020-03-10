@@ -8,7 +8,7 @@ namespace PgJsonObjects
         public PgAbility(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 192;
+            offset += 208;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -141,6 +141,12 @@ namespace PgJsonObjects
         public PowerSkill RawSkill { get { return GetEnum<PowerSkill>(182); } }
         public IPgGenericSourceCollection SourceList { get { return GetObjectList(184, ref _SourceList, (byte[] data, ref int offset) => PgGenericSourceCollection.CreateItem(this, data, ref offset), () => new PgGenericSourceCollection()); } } private PgGenericSourceCollection _SourceList;
         public IPgItem ConsumedItemDescription { get { return GetObject(188, ref _ConsumedItemDescription, PgItem.CreateNew); } } private IPgItem _ConsumedItemDescription;
+        public string AmmoDescription { get { return GetString(192); } }
+        public IPgAbilityAmmoCollection AmmoKeywordList { get { return GetObjectList(196, ref _AmmoKeywordList, PgAbilityAmmoCollection.CreateItem, () => new PgAbilityAmmoCollection()); } } private IPgAbilityAmmoCollection _AmmoKeywordList;
+        public double AmmoConsumeChance { get { return RawAmmoConsumeChance.HasValue ? RawAmmoConsumeChance.Value : 0; } }
+        public double? RawAmmoConsumeChance { get { return GetDouble(200); } }
+        public double AmmoStickChance { get { return RawAmmoStickChance.HasValue ? RawAmmoStickChance.Value : 0; } }
+        public double? RawAmmoStickChance { get { return GetDouble(204); } }
 
         public ConsumedItem ConsumedItem { get; private set; }
         public IPgAbilityRequirementCollection CombinedRequirementList { get; private set; }
@@ -281,6 +287,9 @@ namespace PgJsonObjects
             { "SelfParticle", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => SelfParticle } },
+            { "AmmoDescription", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => AmmoDescription } },
             { "SharesResetTimerWith", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => SharesResetTimerWith != null ? SharesResetTimerWith.InternalName : null } },
@@ -327,6 +336,16 @@ namespace PgJsonObjects
             { "DelayLoopIsOnlyUsedInCombat", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawDelayLoopIsOnlyUsedInCombat } },
+            { "AmmoKeywords", new FieldParser() {
+                Type = FieldType.ObjectArray,
+                GetObjectArray = () => AmmoKeywordList,
+                SimplifyArray = true } },
+            { "AmmoConsumeChance", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawAmmoConsumeChance } },
+            { "AmmoStickChance", new FieldParser() {
+                Type = FieldType.Float,
+                GetFloat = () => RawAmmoStickChance } },
         }; } }
 
         private string GetConsumedItemKeyword()
