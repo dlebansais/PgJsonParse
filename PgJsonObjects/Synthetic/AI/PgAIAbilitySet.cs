@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[806];
+        private PgAIAbility[] Abilities = new PgAIAbility[812];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -830,6 +830,12 @@ namespace PgJsonObjects
         public IPgAIAbility WaspIceSlowB { get { return GetAbilityObject(803); } }
         public IPgAIAbility PhoenixFlash { get { return GetAbilityObject(804); } }
         public IPgAIAbility KrakenRageCurse { get { return GetAbilityObject(805); } }
+        public IPgAIAbility HealingAura { get { return GetAbilityObject(806); } }
+        public IPgAIAbility FaeConduitHeal { get { return GetAbilityObject(807); } }
+        public IPgAIAbility BigCatRoot_Pet5 { get { return GetAbilityObject(808); } }
+        public IPgAIAbility BigCatRoot_Pet6 { get { return GetAbilityObject(809); } }
+        public IPgAIAbility BearStun_Pet5 { get { return GetAbilityObject(810); } }
+        public IPgAIAbility BearStun_Pet6 { get { return GetAbilityObject(811); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
@@ -3251,6 +3257,24 @@ namespace PgJsonObjects
            { "KrakenRageCurse", new FieldParser() {
                Type = FieldType.Object,
                 GetObject = () => KrakenRageCurse as IObjectContentGenerator } },
+           { "HealingAura", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => HealingAura as IObjectContentGenerator } },
+           { "FaeConduitHeal", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => FaeConduitHeal as IObjectContentGenerator } },
+           { "BigCatRoot_Pet5", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => BigCatRoot_Pet5 as IObjectContentGenerator } },
+           { "BigCatRoot_Pet6", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => BigCatRoot_Pet6 as IObjectContentGenerator } },
+           { "BearStun_Pet5", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => BearStun_Pet5 as IObjectContentGenerator } },
+           { "BearStun_Pet6", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => BearStun_Pet6 as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

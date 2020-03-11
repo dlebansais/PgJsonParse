@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgAI(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 22;
+            offset += 24;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -28,10 +28,13 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool? RawIsMelee { get { return GetBool(20, 0); } }
         public bool? RawIsUncontrolledPet { get { return GetBool(20, 2); } }
-        public bool? RawIsStationary { get { return GetBool(20, 4); } }
+        //public bool? RawIsStationary { get { return GetBool(20, 4); } }
         public bool? RawIsServerDriven { get { return GetBool(20, 6); } }
         public bool? RawUseAbilitiesWithoutEnemyTarget { get { return GetBool(20, 8); } }
         public bool? RawSwimming { get { return GetBool(20, 10); } }
+        public bool? RawIsFlying { get { return GetBool(20, 12); } }
+        public bool? RawIsFollowClose { get { return GetBool(20, 14); } }
+        public MobilityType MobilityType { get { return GetEnum<MobilityType>(22); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Abilities", new FieldParser() {
@@ -43,9 +46,9 @@ namespace PgJsonObjects
             { "Comment", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => Comment } },
-            { "Stationary", new FieldParser() {
+            /*{ "Stationary", new FieldParser() {
                 Type = FieldType.Bool,
-                GetBool = () => RawIsStationary } },
+                GetBool = () => RawIsStationary } },*/
             { "UncontrolledPet", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawIsUncontrolledPet } },
@@ -61,6 +64,15 @@ namespace PgJsonObjects
             { "Swimming", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawSwimming} },
+            { "MobilityType", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => StringToEnumConversion<MobilityType>.ToString(MobilityType, null, MobilityType.Internal_None) } },
+            { "Flying", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsFlying } },
+            { "FollowClose", new FieldParser() {
+                Type = FieldType.Bool,
+                GetBool = () => RawIsFollowClose } },
         }; } }
 
         #region Indirect Properties

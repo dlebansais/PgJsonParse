@@ -268,6 +268,7 @@
     <Compile Include="Records\AI\AI Ability Set.cs" />
     <Compile Include="Records\AI\AI Ability.cs" />
     <Compile Include="Records\AI\AI.cs" />
+    <Compile Include="Records\AI\MobilityType.cs" />
     <Compile Include="Records\Area\GameArea.cs" />
     <Compile Include="Records\Attribute\DisplayRule.cs" />
     <Compile Include="Records\Attribute\AttributeCollection.cs" />

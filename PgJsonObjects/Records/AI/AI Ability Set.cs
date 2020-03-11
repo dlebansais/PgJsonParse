@@ -813,6 +813,12 @@ namespace PgJsonObjects
         public IPgAIAbility WaspIceSlowB { get; private set; }
         public IPgAIAbility PhoenixFlash { get; private set; }
         public IPgAIAbility KrakenRageCurse { get; private set; }
+        public IPgAIAbility HealingAura { get; private set; }
+        public IPgAIAbility FaeConduitHeal { get; private set; }
+        public IPgAIAbility BigCatRoot_Pet5 { get; private set; }
+        public IPgAIAbility BigCatRoot_Pet6 { get; private set; }
+        public IPgAIAbility BearStun_Pet5 { get; private set; }
+        public IPgAIAbility BearStun_Pet6 { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -4045,6 +4051,30 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => KrakenRageCurse =
                    JsonObjectParser<AIAbility>.Parse("KrakenRageCurse", value, errorInfo),
                 GetObject = () => KrakenRageCurse as IObjectContentGenerator } },
+           { "HealingAura", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => HealingAura =
+                   JsonObjectParser<AIAbility>.Parse("HealingAura", value, errorInfo),
+               GetObject = () => HealingAura as IObjectContentGenerator } },
+           { "FaeConduitHeal", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => FaeConduitHeal =
+                   JsonObjectParser<AIAbility>.Parse("FaeConduitHeal", value, errorInfo),
+               GetObject = () => FaeConduitHeal as IObjectContentGenerator } },
+           { "BigCatRoot_Pet5", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => BigCatRoot_Pet5 =
+                   JsonObjectParser<AIAbility>.Parse("BigCatRoot_Pet5", value, errorInfo),
+               GetObject = () => BigCatRoot_Pet5 as IObjectContentGenerator } },
+           { "BigCatRoot_Pet6", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => BigCatRoot_Pet6 =
+                   JsonObjectParser<AIAbility>.Parse("BigCatRoot_Pet6", value, errorInfo),
+               GetObject = () => BigCatRoot_Pet6 as IObjectContentGenerator } },
+           { "BearStun_Pet5", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => BearStun_Pet5 =
+                   JsonObjectParser<AIAbility>.Parse("BearStun_Pet5", value, errorInfo),
+               GetObject = () => BearStun_Pet5 as IObjectContentGenerator } },
+           { "BearStun_Pet6", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => BearStun_Pet6 =
+                   JsonObjectParser<AIAbility>.Parse("BearStun_Pet6", value, errorInfo),
+               GetObject = () => BearStun_Pet6 as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4889,8 +4919,14 @@ namespace PgJsonObjects
             AddObject(WaspIceSlowB as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 803 * 4, StoredObjectTable);
             AddObject(PhoenixFlash as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 804 * 4, StoredObjectTable);
             AddObject(KrakenRageCurse as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 805 * 4, StoredObjectTable);
+            AddObject(HealingAura as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 806 * 4, StoredObjectTable);
+            AddObject(FaeConduitHeal as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 807 * 4, StoredObjectTable);
+            AddObject(BigCatRoot_Pet5 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 808 * 4, StoredObjectTable);
+            AddObject(BigCatRoot_Pet6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 809 * 4, StoredObjectTable);
+            AddObject(BearStun_Pet5 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 810 * 4, StoredObjectTable);
+            AddObject(BearStun_Pet6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 811 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 806 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 812 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

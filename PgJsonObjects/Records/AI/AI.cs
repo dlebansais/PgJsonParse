@@ -12,10 +12,13 @@ namespace PgJsonObjects
         public float? RawMinDelayBetweenAbilities { get; private set; }
         public bool? RawIsMelee { get; private set; }
         public bool? RawIsUncontrolledPet { get; private set; }
-        public bool? RawIsStationary { get; private set; }
+        //public bool? RawIsStationary { get; private set; }
         public bool? RawIsServerDriven { get; private set; }
         public bool? RawUseAbilitiesWithoutEnemyTarget { get; private set; }
         public bool? RawSwimming { get; private set; }
+        public bool? RawIsFlying { get; private set; }
+        public bool? RawIsFollowClose { get; private set; }
+        public MobilityType MobilityType { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -36,10 +39,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Comment = value,
                 GetString = () => Comment } },
-            { "Stationary", new FieldParser() {
+            /*{ "Stationary", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsStationary = value,
-                GetBool = () => RawIsStationary } },
+                GetBool = () => RawIsStationary } },*/
             { "UncontrolledPet", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsUncontrolledPet = value,
@@ -60,6 +63,18 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawSwimming = value,
                 GetBool = () => RawSwimming } },
+            { "MobilityType", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => MobilityType = StringToEnumConversion<MobilityType>.Parse(value, errorInfo),
+                GetString = () => StringToEnumConversion<MobilityType>.ToString(MobilityType, null, MobilityType.Internal_None) } },
+            { "Flying", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsFlying = value,
+                GetBool = () => RawIsFlying } },
+            { "FollowClose", new FieldParser() {
+                Type = FieldType.Bool,
+                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsFollowClose = value,
+                GetBool = () => RawIsFollowClose } },
         }; } }
         #endregion
 
@@ -73,8 +88,8 @@ namespace PgJsonObjects
                 if (RawIsMelee.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Melee: " + (RawIsMelee.Value ? "Yes" : "No"));
                 AddWithFieldSeparator(ref Result, Comment);
-                if (RawIsStationary.HasValue)
-                    AddWithFieldSeparator(ref Result, "Is Stationary: " + (RawIsStationary.Value ? "Yes" : "No"));
+                /*if (RawIsStationary.HasValue)
+                    AddWithFieldSeparator(ref Result, "Is Stationary: " + (RawIsStationary.Value ? "Yes" : "No"));*/
                 if (RawIsUncontrolledPet.HasValue)
                     AddWithFieldSeparator(ref Result, "Is Uncontrolled Pet: " + (RawIsUncontrolledPet.Value ? "Yes" : "No"));
                 if (RawIsServerDriven.HasValue)
@@ -83,6 +98,10 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, "Use Abilities Without Enemy Target: " + (RawUseAbilitiesWithoutEnemyTarget.Value ? "Yes" : "No"));
                 if (RawSwimming.HasValue)
                     AddWithFieldSeparator(ref Result, "Swimming: " + (RawSwimming.Value ? "Yes" : "No"));
+                if (RawIsFlying.HasValue)
+                    AddWithFieldSeparator(ref Result, "Is Flying: " + (RawIsFlying.Value ? "Yes" : "No"));
+                if (RawIsFollowClose.HasValue)
+                    AddWithFieldSeparator(ref Result, "Follow Close: " + (RawIsFollowClose.Value ? "Yes" : "No"));
 
                 return Result;
             }
@@ -117,13 +136,17 @@ namespace PgJsonObjects
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 16, StoredStringListTable);
             AddBool(RawIsMelee, data, ref offset, ref BitOffset, BaseOffset, 20, 0);
             AddBool(RawIsUncontrolledPet, data, ref offset, ref BitOffset, BaseOffset, 20, 2);
-            AddBool(RawIsStationary, data, ref offset, ref BitOffset, BaseOffset, 20, 4);
+            //AddBool(RawIsStationary, data, ref offset, ref BitOffset, BaseOffset, 20, 4);
+            BitOffset += 2;
             AddBool(RawIsServerDriven, data, ref offset, ref BitOffset, BaseOffset, 20, 6);
             AddBool(RawUseAbilitiesWithoutEnemyTarget, data, ref offset, ref BitOffset, BaseOffset, 20, 8);
             AddBool(RawSwimming, data, ref offset, ref BitOffset, BaseOffset, 20, 10);
+            AddBool(RawIsFlying, data, ref offset, ref BitOffset, BaseOffset, 20, 12);
+            AddBool(RawIsFollowClose, data, ref offset, ref BitOffset, BaseOffset, 20, 14);
             CloseBool(ref offset, ref BitOffset);
+            AddEnum(MobilityType, data, ref offset, BaseOffset, 22);
 
-            FinishSerializing(data, ref offset, BaseOffset, 22, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 24, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

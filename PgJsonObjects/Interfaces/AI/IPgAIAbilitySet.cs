@@ -808,5 +808,11 @@
         IPgAIAbility WaspIceSlowB { get; }
         IPgAIAbility PhoenixFlash { get; }
         IPgAIAbility KrakenRageCurse { get; }
+        IPgAIAbility HealingAura { get; }
+        IPgAIAbility FaeConduitHeal { get; }
+        IPgAIAbility BigCatRoot_Pet5 { get; }
+        IPgAIAbility BigCatRoot_Pet6 { get; }
+        IPgAIAbility BearStun_Pet5 { get; }
+        IPgAIAbility BearStun_Pet6 { get; }
     }
 }

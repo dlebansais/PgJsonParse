@@ -2,11 +2,11 @@
 {
     public abstract class ConsumedItem
     {
-        public ConsumedItem(int? RawCount, double? RawConsumedChance, double? RawChanceToStickInCorpse)
+        public ConsumedItem(/*int? RawCount, double? RawConsumedChance, double? RawChanceToStickInCorpse*/)
         {
-            this.RawCount = (RawCount.HasValue && RawCount.Value > 1 ? RawCount : null);
+            /*this.RawCount = (RawCount.HasValue && RawCount.Value > 1 ? RawCount : null);
             this.RawConsumedChance = RawConsumedChance;
-            this.RawChanceToStickInCorpse = RawChanceToStickInCorpse;
+            this.RawChanceToStickInCorpse = RawChanceToStickInCorpse;*/
         }
 
         public int? RawCount { get; private set; }

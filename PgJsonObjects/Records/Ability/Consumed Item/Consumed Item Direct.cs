@@ -2,8 +2,8 @@
 {
     public class ConsumedItemDirect : ConsumedItem
     {
-        public ConsumedItemDirect(IPgItem Link, int? RawCount, double? RawConsumedChance, double? RawChanceToStickInCorpse)
-            : base(RawCount, RawConsumedChance, RawChanceToStickInCorpse)
+        public ConsumedItemDirect(IPgItem Link/*, int? RawCount, double? RawConsumedChance, double? RawChanceToStickInCorpse*/)
+            : base(/*RawCount, RawConsumedChance, RawChanceToStickInCorpse*/)
         {
             this.Link = Link;
         }

@@ -22,7 +22,7 @@
         Craft,
         Survey,
         CreateMap,
-        CraftIceBlade,
+        //CraftIceBlade,
         StudySkull,
         StudyEquipment,
         SayTheSooth,

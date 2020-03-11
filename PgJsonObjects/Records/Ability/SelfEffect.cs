@@ -4,7 +4,7 @@
     {
         Internal_None,
         MonsterCritHeal,
-        EliteMonsterCritHeal,
+        //EliteMonsterCritHeal,
         EliteMonsterCrit,
     }
 }

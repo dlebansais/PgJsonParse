@@ -28,12 +28,12 @@ namespace PgJsonObjects
         PowerSkill CompatibleSkill { get; }
         DamageType DamageType { get; }
         string SpecialCasterRequirementsErrorMessage { get; }
-        double ConsumedItemChance { get; }
-        double? RawConsumedItemChance { get; }
-        double ConsumedItemChanceToStickInCorpse { get; }
-        double? RawConsumedItemChanceToStickInCorpse { get; }
-        int ConsumedItemCount { get; }
-        int? RawConsumedItemCount { get; }
+        //double ConsumedItemChance { get; }
+        //double? RawConsumedItemChance { get; }
+        //double ConsumedItemChanceToStickInCorpse { get; }
+        //double? RawConsumedItemChanceToStickInCorpse { get; }
+        //int ConsumedItemCount { get; }
+        //int? RawConsumedItemCount { get; }
         string DelayLoopMessage { get; }
         double DelayLoopTime { get; }
         double? RawDelayLoopTime { get; }

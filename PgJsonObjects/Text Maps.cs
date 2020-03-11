@@ -114,7 +114,7 @@ namespace PgJsonObjects
             { RecipeAction.DistillItem, "Distill Item" },
             { RecipeAction.RepairItem, "Repair Item" },
             { RecipeAction.CreateMap, "Create Map" },
-            { RecipeAction.CraftIceBlade, "Craft Ice Blade" },
+            //{ RecipeAction.CraftIceBlade, "Craft Ice Blade" },
             { RecipeAction.StudySkull, "Study Skull" },
             { RecipeAction.StudyEquipment, "Study Equipment" },
             { RecipeAction.SayTheSooth, "Say the Sooth" },
@@ -776,7 +776,7 @@ namespace PgJsonObjects
         {
             { SelfEffect.Internal_None, "None" },
             { SelfEffect.MonsterCritHeal, "Monster Crit Heal" },
-            { SelfEffect.EliteMonsterCritHeal, "Elite Monster Crit Heal" },
+            //{ SelfEffect.EliteMonsterCritHeal, "Elite Monster Crit Heal" },
             { SelfEffect.EliteMonsterCrit, "Elite Monster Crit" },
         };
 
@@ -3630,7 +3630,7 @@ namespace PgJsonObjects
             { RecipeAction.Craft, "Craft" },
             { RecipeAction.Survey, "Survey" },
             { RecipeAction.CreateMap, "Create Map" },
-            { RecipeAction.CraftIceBlade, "Craft Ice Blade" },
+            //{ RecipeAction.CraftIceBlade, "Craft Ice Blade" },
             { RecipeAction.StudySkull, "Study Skull" },
             { RecipeAction.StudyEquipment, "Study Equipment" },
             { RecipeAction.SayTheSooth, "Say The Sooth" },

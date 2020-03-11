@@ -37,7 +37,7 @@ namespace PgJsonObjects
             foreach (IPgAbilityRequirement Item in SpecialCasterRequirementList)
                 CombinedRequirementList.Add(Item);
 
-            ConsumedItem = Ability.CreateConsumedItem(ConsumedItemLink, ConsumedItems, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse);
+            ConsumedItem = Ability.CreateConsumedItem(ConsumedItemLink, ConsumedItems/*, RawConsumedItemCount, RawConsumedItemChance, RawConsumedItemChanceToStickInCorpse*/);
 
             //AddLinkBackCollection(CostList);
             AddLinkBack(Prerequisite);
@@ -77,12 +77,12 @@ namespace PgJsonObjects
         public PowerSkill CompatibleSkill { get { return GetEnum<PowerSkill>(20); } }
         public DamageType DamageType { get { return GetEnum<DamageType>(22); } }
         public string SpecialCasterRequirementsErrorMessage { get { return GetString(24); } }
-        public double ConsumedItemChance { get { return RawConsumedItemChance.HasValue ? RawConsumedItemChance.Value : 0; } }
-        public double? RawConsumedItemChance { get { return GetDouble(28); } }
-        public double ConsumedItemChanceToStickInCorpse { get { return RawConsumedItemChanceToStickInCorpse.HasValue ? RawConsumedItemChanceToStickInCorpse.Value : 0; } }
-        public double? RawConsumedItemChanceToStickInCorpse { get { return GetDouble(32); } }
-        public int ConsumedItemCount { get { return RawConsumedItemCount.HasValue ? RawConsumedItemCount.Value : 0; } }
-        public int? RawConsumedItemCount { get { return GetInt(36); } }
+        //public double ConsumedItemChance { get { return RawConsumedItemChance.HasValue ? RawConsumedItemChance.Value : 0; } }
+        //public double? RawConsumedItemChance { get { return GetDouble(28); } }
+        //public double ConsumedItemChanceToStickInCorpse { get { return RawConsumedItemChanceToStickInCorpse.HasValue ? RawConsumedItemChanceToStickInCorpse.Value : 0; } }
+        //public double? RawConsumedItemChanceToStickInCorpse { get { return GetDouble(32); } }
+        //public int ConsumedItemCount { get { return RawConsumedItemCount.HasValue ? RawConsumedItemCount.Value : 0; } }
+        //public int? RawConsumedItemCount { get { return GetInt(36); } }
         public string DelayLoopMessage { get { return GetString(40); } }
         public double DelayLoopTime { get { return RawDelayLoopTime.HasValue ? RawDelayLoopTime.Value : 0; } }
         public double? RawDelayLoopTime { get { return GetDouble(44); } }
@@ -200,7 +200,7 @@ namespace PgJsonObjects
             /*{ "CompatibleSkills", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 GetStringArray = () => StringToEnumConversion<PowerSkill>.ToSingleOrEmptyStringList(CompatibleSkill) } },*/
-            { "ConsumedItemChance", new FieldParser() {
+            /*{ "ConsumedItemChance", new FieldParser() {
                 Type = FieldType.Float,
                 GetFloat = () => RawConsumedItemChance } },
             { "ConsumedItemChanceToStickInCorpse", new FieldParser() {
@@ -212,6 +212,9 @@ namespace PgJsonObjects
             { "ConsumedItemKeyword", new FieldParser() {
                 Type = FieldType.String,
                 GetString = GetConsumedItemKeyword } },
+            { "ConsumedItemDescription", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => ConsumedItemDescription != null ? ConsumedItemDescription.Name : null } },*/
             { "DamageType", new FieldParser() {
                 Type = FieldType.String,
                 GetString = () => StringToEnumConversion<DamageType>.ToString(DamageType, null, DamageType.Internal_None, DamageType.Internal_Empty) } },
@@ -330,9 +333,6 @@ namespace PgJsonObjects
             { "WorksWhileFalling", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawWorksWhileFalling } },
-            { "ConsumedItemDescription", new FieldParser() {
-                Type = FieldType.String,
-                GetString = () => ConsumedItemDescription != null ? ConsumedItemDescription.Name : null } },
             { "DelayLoopIsOnlyUsedInCombat", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawDelayLoopIsOnlyUsedInCombat } },
@@ -348,7 +348,7 @@ namespace PgJsonObjects
                 GetFloat = () => RawAmmoStickChance } },
         }; } }
 
-        private string GetConsumedItemKeyword()
+        /*private string GetConsumedItemKeyword()
         {
             if (ConsumedItemLink != null)
                 return ConsumedItemLink.InternalName;
@@ -356,7 +356,7 @@ namespace PgJsonObjects
                 return StringToEnumConversion<ConsumedItemCategory>.ToString(ConsumedItems);
             else
                 return null;
-        }
+        }*/
         #endregion
 
         public override string SortingName { get { return Name; } }
