@@ -33,7 +33,7 @@ namespace PgBuilder
         #region Data Load
         public void LoadCachedData()
         {
-            int Version = 332;
+            int Version = 333;
             string UserRootFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string ApplicationFolder = Path.Combine(UserRootFolder, "PgJsonParse");
             string VersionCacheFolder = Path.Combine(ApplicationFolder, "Versions");
@@ -265,8 +265,15 @@ namespace PgBuilder
             IList<IPgAbility> AbilityList = (IList<IPgAbility>)AbilityDefinition.VerifiedObjectList;
 
             foreach (IPgAbility Item in AbilityList)
-                if (Item.Skill == skill && (!Item.KeywordList.Contains(AbilityKeyword.Lint_NotLearnable) || Item.Name == "Sword Slash"))
+                if (AbilityBelongToSkill(skill, Item))
                     AddAbilityTier(compatibleAbilityList, Item);
+
+            if (skill.ParentSkill != null)
+            {
+                foreach (IPgAbility Item in AbilityList)
+                    if (AbilityBelongToSkill(skill.ParentSkill, Item))
+                        AddAbilityTier(compatibleAbilityList, Item);
+            }
 
             List<string> FilledSlotList = new List<string>();
             foreach (AbilitySlot Item in abilitySlotList)
@@ -276,9 +283,20 @@ namespace PgBuilder
             foreach (AbilitySlot Item in abilitySlotList)
                 if (Item.IsEmpty)
                 {
-                    FillEmptyAbilitySlot(compatibleAbilityList, skill, Item, FilledSlotList);
-                    FilledSlotList.Add(AbilitySlot.CuteDigitStrippedName(Item.Ability));
+                    if (FillEmptyAbilitySlot(compatibleAbilityList, skill, Item, FilledSlotList))
+                        FilledSlotList.Add(AbilitySlot.CuteDigitStrippedName(Item.Ability));
                 }
+        }
+
+        private static bool AbilityBelongToSkill(IPgSkill skill, IPgAbility item)
+        {
+            if (item.Skill != skill)
+                return false;
+
+            if (item.KeywordList.Contains(AbilityKeyword.Lint_NotLearnable) && item.Name != "Sword Slash")
+                return false;
+
+            return true;
         }
 
         private static void AddAbilityTier(List<AbilityTierList> compatibleAbilityList, IPgAbility ability)
@@ -293,14 +311,16 @@ namespace PgBuilder
             compatibleAbilityList.Add(new AbilityTierList(ability));
         }
 
-        private void FillEmptyAbilitySlot(List<AbilityTierList> compatibleAbilityList, IPgSkill skill, AbilitySlot abilitySlot, List<string> filledSlotList)
+        private bool FillEmptyAbilitySlot(List<AbilityTierList> compatibleAbilityList, IPgSkill skill, AbilitySlot abilitySlot, List<string> filledSlotList)
         {
             foreach (AbilityTierList Item in compatibleAbilityList)
                 if (!filledSlotList.Contains(AbilitySlot.CuteDigitStrippedName(Item.Source)))
                 {
                     abilitySlot.SetAbility(Item, IconFolder);
-                    return;
+                    return true;
                 }
+
+            return false;
         }
 
         private void DisplayAbilityChoiceMenu(FrameworkElement control, AbilitySlot slot, List<AbilityTierList> compatibleAbilityList)
@@ -522,11 +542,14 @@ namespace PgBuilder
             if (!LoadBuildSkills(Reader, out string SkillName1, out string SkillName2))
                 return false;
 
-            do
-                Reader.Read();
-            while (LoadBuildAbility(Reader, out int SkillIndex, out int AbilityIndex));
-
             Reader.Read();
+
+            while (LoadBuildAbility(Reader, out int SkillIndex, out int AbilityIndex))
+                Reader.Read();
+
+            while (LoadBuildGear(Reader, out string SlotName, out string ItemName))
+                Reader.Read();
+
             if (Reader.CurrentToken != Json.Token.ObjectEnd)
                 return false;
 
@@ -595,6 +618,85 @@ namespace PgBuilder
 
             reader.Read();
             if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string AbilityValue))
+                return false;
+
+            return true;
+        }
+
+        private bool LoadBuildGear(JsonTextReader reader, out string slotName, out string itemName)
+        {
+            slotName = string.Empty;
+            itemName = string.Empty;
+
+            if (!(reader.CurrentValue is string SlotKey))
+                return false;
+
+            slotName = SlotKey;
+
+            reader.Read();
+            if (reader.CurrentToken != Json.Token.ObjectStart)
+                return false;
+
+            reader.Read();
+            if (reader.CurrentValue is string GearKey1 && GearKey1 == "Item")
+            {
+                reader.Read();
+                if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string ItemValue))
+                    return false;
+
+                itemName = ItemValue;
+
+                reader.Read();
+            }
+
+            while (LoadBuildPower(reader, out int PowerIndex, out int TierIndex, out string PowerKey, out int TierLevel))
+                reader.Read();
+
+            if (reader.CurrentToken != Json.Token.ObjectEnd)
+                return false;
+
+            return true;
+        }
+
+        private bool LoadBuildPower(JsonTextReader reader, out int powerIndex, out int tierIndex, out string powerKey, out int tierLevel)
+        {
+            powerIndex = -1;
+            tierIndex = -1;
+            powerKey = string.Empty;
+            tierLevel = -1;
+
+            if (!(reader.CurrentValue is string Key))
+                return false;
+
+            string[] Split = Key.Split('_');
+            if (Split.Length != 2)
+                return false;
+
+            string KeyName = Split[0];
+
+            if (KeyName == "Power")
+            {
+                if (!int.TryParse(Split[1], out powerIndex))
+                    return false;
+
+                reader.Read();
+                if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string PowerValue))
+                    return false;
+
+                powerKey = PowerValue;
+            }
+            else if (KeyName == "PowerTier")
+            {
+                if (!int.TryParse(Split[1], out tierIndex))
+                    return false;
+
+                reader.Read();
+                if (reader.CurrentToken != Json.Token.Integer)
+                    return false;
+
+                tierLevel = (int)reader.CurrentValue;
+            }
+            else
                 return false;
 
             return true;

@@ -48,7 +48,14 @@
             IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
             IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifiedObjectList;
 
-            foreach (IPgPower PowerItem in PowerList)
+            UpdateModList(skill, PowerList);
+            if (skill.ParentSkill != null)
+                UpdateModList(skill.ParentSkill, PowerList);
+        }
+
+        public void UpdateModList(IPgSkill skill, IList<IPgPower> powerList)
+        {
+            foreach (IPgPower PowerItem in powerList)
             {
                 if (PowerItem.Skill != skill)
                     continue;
