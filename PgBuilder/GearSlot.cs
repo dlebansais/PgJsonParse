@@ -83,9 +83,32 @@
             NotifyPropertyChanged(nameof(SelectedItem));
         }
 
+        public void SetSelectedItem(string key)
+        {
+            foreach (IPgItem Item in ItemList)
+                if (Item.Key == key)
+                {
+                    SelectedItem = ItemList.IndexOf(Item);
+                    NotifyPropertyChanged(nameof(SelectedItem));
+                }
+        }
+
         public void AddMod()
         {
             ModList.Add(new Mod(AvailablePowerList));
+        }
+
+        public void ResetMods()
+        {
+            ModList.Clear();
+        }
+
+        public void AddMod(string key, int tier)
+        {
+            Mod NewMod = new Mod(AvailablePowerList, key, tier);
+
+            if (NewMod.SelectedPower >= 0)
+                ModList.Add(NewMod);
         }
 
         #region Implementation of INotifyPropertyChanged

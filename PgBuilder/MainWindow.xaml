@@ -62,8 +62,8 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,5">Primary Skill:</TextBlock>
                 <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,5">Secondary Skill:</TextBlock>
-                <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Skill1List}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1" VerticalAlignment="Center" Width="120" Margin="5,0,0,5"/>
-                <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Skill2List}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2" VerticalAlignment="Center" Width="120" Margin="5,0,0,5"/>
+                <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding SkillList}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1" VerticalAlignment="Center" Width="120" Margin="5,0,0,5"/>
+                <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding SkillList}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2" VerticalAlignment="Center" Width="120" Margin="5,0,0,5"/>
                 <ItemsControl Grid.Column="2" Grid.Row="0" ItemsSource="{Binding AbilitySlot1List}" ItemTemplate="{StaticResource AbilitySlotTemplate}" VerticalAlignment="Center" Margin="5,0,0,5">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

@@ -13,6 +13,19 @@
             SelectedPower = -1;
         }
 
+        public Mod(List<Power> availablePowerList, string key, int tier)
+        {
+            AvailablePowerList = availablePowerList;
+
+            foreach (Power Item in availablePowerList)
+                if (Item.Source.Key == key)
+                {
+                    SelectedPower = availablePowerList.IndexOf(Item);
+                    Item.SetTier(tier);
+                    break;
+                }
+        }
+
         public List<Power> AvailablePowerList { get; }
         public int SelectedPower { get; private set; }
 

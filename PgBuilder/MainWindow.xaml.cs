@@ -1,19 +1,19 @@
-﻿using Microsoft.Win32;
-using PgJsonReader;
-
-namespace PgBuilder
+﻿namespace PgBuilder
 {
     using System;
-    using System.Diagnostics;
-    using System.IO;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Windows;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Runtime.CompilerServices;
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Windows.Threading;
+    using Microsoft.Win32;
     using PgJsonObjects;
+    using PgJsonReader;
 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
@@ -141,23 +141,18 @@ namespace PgBuilder
 
         private static byte[] LoadBinaryFile(string fileName)
         {
-            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                using (BinaryReader br = new BinaryReader(fs))
-                {
-                    byte[] Result = br.ReadBytes((int)fs.Length);
-                    return Result;
-                }
-            }
+            using FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using BinaryReader br = new BinaryReader(fs);
+            byte[] Result = br.ReadBytes((int)fs.Length);
+            return Result;
         }
 
         private string IconFolder;
         #endregion
 
         #region Properties
-        public List<IPgSkill> Skill1List { get; } = new List<IPgSkill>();
+        public List<IPgSkill> SkillList { get; } = new List<IPgSkill>();
         public int SelectedSkill1 { get; private set; } = -1;
-        public List<IPgSkill> Skill2List { get; } = new List<IPgSkill>();
         public int SelectedSkill2 { get; private set; } = -1;
         public List<GearSlot> GearSlotList { get; } = new List<GearSlot>();
         public List<AbilitySlot> AbilitySlot1List { get; } = new List<AbilitySlot>();
@@ -169,7 +164,8 @@ namespace PgBuilder
         {
             IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
             IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifiedObjectList;
-            List<IPgSkill> SkillList = new List<IPgSkill>();
+            
+            SkillList.Clear();
 
             foreach (IPgPower PowerItem in PowerList)
             {
@@ -208,9 +204,6 @@ namespace PgBuilder
             }
 
             SkillList.Sort(SortByName);
-
-            Skill1List.AddRange(SkillList);
-            Skill2List.AddRange(SkillList);
         }
 
         private static int SortByName(IPgSkill skill1, IPgSkill skill2)
@@ -235,8 +228,8 @@ namespace PgBuilder
 
         private void ResetGearSlots()
         {
-            IPgSkill Skill1 = SelectedSkill1 >= 0 ? Skill1List[SelectedSkill1] : null;
-            IPgSkill Skill2 = SelectedSkill2 >= 0 ? Skill2List[SelectedSkill2] : null;
+            IPgSkill Skill1 = SelectedSkill1 >= 0 ? SkillList[SelectedSkill1] : null;
+            IPgSkill Skill2 = SelectedSkill2 >= 0 ? SkillList[SelectedSkill2] : null;
 
             foreach (GearSlot Item in GearSlotList)
                 Item.Reset(Skill1, Skill2);
@@ -355,17 +348,41 @@ namespace PgBuilder
 
                 Menu.Items.Add(NewMenuItem);
             }
+
+            Menu.Items.Add(new Separator());
+
+            MenuItem MenuItemClear = new MenuItem();
+            MenuItemClear.Header = "Clear";
+            MenuItemClear.Click += OnClearAbility;
+            MenuItemClear.DataContext = slot;
+
+            Menu.Items.Add(MenuItemClear);
         }
 
-        private void SelectAbility(AbilitySlot slot, string selectedName, List<AbilityTierList> compatibleAbilityList)
+        private void SelectAbilityByName(AbilitySlot slot, string selectedName, List<AbilityTierList> compatibleAbilityList)
         {
             foreach (AbilityTierList TierListItem in compatibleAbilityList)
                 foreach (IPgAbility AbilityItem in TierListItem)
                     if (AbilityItem.Name == selectedName)
                     {
                         slot.SetAbility(TierListItem, AbilityItem, IconFolder);
-                        break;
+                        return;
                     }
+
+            slot.Reset();
+        }
+
+        private void SelectAbilityByKey(AbilitySlot slot, string selectedKey, List<AbilityTierList> compatibleAbilityList)
+        {
+            foreach (AbilityTierList TierListItem in compatibleAbilityList)
+                foreach (IPgAbility AbilityItem in TierListItem)
+                    if (AbilityItem.Key == selectedKey)
+                    {
+                        slot.SetAbility(TierListItem, AbilityItem, IconFolder);
+                        return;
+                    }
+
+            slot.Reset();
         }
 
         private void CloseAbilityChoiceMenu(FrameworkElement control)
@@ -387,44 +404,53 @@ namespace PgBuilder
         private void OnSkillSelectionChanged1(object sender, SelectionChangedEventArgs e)
         {
             ComboBox Control = (ComboBox) sender;
-            if (SelectedSkill1 != Control.SelectedIndex)
-            {
-                SelectedSkill1 = Control.SelectedIndex;
-                NotifyPropertyChanged(nameof(SelectedSkill1));
+            OnSkillSelectionChanged1(Control.SelectedIndex);
+        }
 
-                ResetAbilitySlots(AbilitySlot1List);
-                FillEmptyAbilitySlots(Skill1List[SelectedSkill1], AbilitySlot1List, CompatibleAbility1List);
-                ResetGearSlots();
+        private void OnSkillSelectionChanged1(int index)
+        {
+            if (SelectedSkill1 == index)
+                return;
 
-                CommandManager.InvalidateRequerySuggested();
-            }
+            SelectedSkill1 = index;
+            NotifyPropertyChanged(nameof(SelectedSkill1));
+
+            ResetAbilitySlots(AbilitySlot1List);
+            FillEmptyAbilitySlots(SkillList[SelectedSkill1], AbilitySlot1List, CompatibleAbility1List);
+            ResetGearSlots();
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void OnSkillSelectionChanged2(object sender, SelectionChangedEventArgs e)
         {
             ComboBox Control = (ComboBox)sender;
-            if (SelectedSkill2 != Control.SelectedIndex)
-            {
-                SelectedSkill2 = Control.SelectedIndex;
-                NotifyPropertyChanged(nameof(SelectedSkill2));
+            OnSkillSelectionChanged2(Control.SelectedIndex);
+        }
 
-                ResetAbilitySlots(AbilitySlot2List);
-                FillEmptyAbilitySlots(Skill2List[SelectedSkill2], AbilitySlot2List, CompatibleAbility2List);
-                ResetGearSlots();
+        private void OnSkillSelectionChanged2(int index)
+        {
+            if (SelectedSkill2 == index)
+                return;
 
-                CommandManager.InvalidateRequerySuggested();
-            }
+            SelectedSkill2 = index;
+            NotifyPropertyChanged(nameof(SelectedSkill2));
+
+            ResetAbilitySlots(AbilitySlot2List);
+            FillEmptyAbilitySlots(SkillList[SelectedSkill2], AbilitySlot2List, CompatibleAbility2List);
+            ResetGearSlots();
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void OnAbilityContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             FrameworkElement Control = (FrameworkElement)sender;
             AbilitySlot Slot = (AbilitySlot)Control.DataContext;
-            IPgSkill Skill = Slot.Ability.Skill;
 
-            if (SelectedSkill1 >= 0 && Skill == Skill1List[SelectedSkill1])
+            if (AbilitySlot1List.Contains(Slot))
                 DisplayAbilityChoiceMenu(Control, Slot, CompatibleAbility1List);
-            else if (SelectedSkill2 >= 0 && Skill == Skill2List[SelectedSkill2])
+            else if (AbilitySlot2List.Contains(Slot))
                 DisplayAbilityChoiceMenu(Control, Slot, CompatibleAbility2List);
         }
 
@@ -434,19 +460,67 @@ namespace PgBuilder
             MenuItem MenuItem = (MenuItem)SubmenuItem.Parent;
             ContextMenu Menu = (ContextMenu)MenuItem.Parent;
             AbilitySlot Slot = (AbilitySlot)Menu.DataContext;
-            IPgSkill Skill = Slot.Ability.Skill;
             string SelectedName = (string)SubmenuItem.Header;
 
-            if (SelectedSkill1 >= 0 && Skill == Skill1List[SelectedSkill1])
-                SelectAbility(Slot, SelectedName, CompatibleAbility1List);
-            else if (SelectedSkill2 >= 0 && Skill == Skill2List[SelectedSkill2])
-                SelectAbility(Slot, SelectedName, CompatibleAbility2List);
+            if (AbilitySlot1List.Contains(Slot))
+                SelectAbilityByName(Slot, SelectedName, CompatibleAbility1List);
+            else if (AbilitySlot2List.Contains(Slot))
+                SelectAbilityByName(Slot, SelectedName, CompatibleAbility2List);
+        }
+
+        private void OnClearAbility(object sender, RoutedEventArgs e)
+        {
+            MenuItem Menu = (MenuItem)e.OriginalSource;
+            AbilitySlot Slot = (AbilitySlot)Menu.DataContext;
+
+            OnClearAbility(Slot);
+        }
+
+        private void OnClearAbility(AbilitySlot slot)
+        {
+            slot.Reset();
         }
 
         private void OnAbilityContextMenuClosing(object sender, ContextMenuEventArgs e)
         {
             FrameworkElement Control = (FrameworkElement)sender;
             CloseAbilityChoiceMenu(Control);
+        }
+
+        private void OnSelectAbilities1(List<string> abilityTable)
+        {
+            int Index;
+
+            for (Index = 0; Index < 6 && Index < abilityTable.Count; Index++)
+            {
+                AbilitySlot Slot = AbilitySlot1List[Index];
+                string SelectedKey = abilityTable[Index];
+                SelectAbilityByKey(Slot, SelectedKey, CompatibleAbility1List);
+            }
+
+            for (; Index < 6; Index++)
+            {
+                AbilitySlot Slot = AbilitySlot1List[Index];
+                OnClearAbility(Slot);
+            }
+        }
+
+        private void OnSelectAbilities2(List<string> abilityTable)
+        {
+            int Index;
+
+            for (Index = 0; Index < 6 && Index < abilityTable.Count; Index++)
+            {
+                AbilitySlot Slot = AbilitySlot2List[Index];
+                string SelectedKey = abilityTable[Index];
+                SelectAbilityByKey(Slot, SelectedKey, CompatibleAbility2List);
+            }
+
+            for (; Index < 6; Index++)
+            {
+                AbilitySlot Slot = AbilitySlot2List[Index];
+                OnClearAbility(Slot);
+            }
         }
 
         private void OnItemSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -456,6 +530,16 @@ namespace PgBuilder
 
             if (Slot.SelectedItem != Control.SelectedIndex)
                 Slot.SetSelectedItem(Control.SelectedIndex);
+        }
+
+        private void OnSelectGear(string gearSlotName, string itemKey)
+        {
+            foreach (GearSlot Item in GearSlotList)
+                if (Item.Name == gearSlotName)
+                {
+                    Item.SetSelectedItem(itemKey);
+                    break;
+                }
         }
 
         private void OnPowerSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -496,6 +580,24 @@ namespace PgBuilder
             Mod.DecrementTier();
         }
 
+        private void OnSelectGearMods(string gearSlotName, List<KeyValuePair<string, int>> modList)
+        {
+            foreach (GearSlot Item in GearSlotList)
+                if (Item.Name == gearSlotName)
+                {
+                    OnSelectGearMods(Item, modList);
+                    break;
+                }
+        }
+
+        private void OnSelectGearMods(GearSlot slot, List<KeyValuePair<string, int>> modList)
+        {
+            slot.ResetMods();
+
+            foreach (KeyValuePair<string, int> Item in modList)
+                slot.AddMod(Item.Key, Item.Value);
+        }
+
         private void OnLoad(object sender, ExecutedRoutedEventArgs e)
         {
             OpenFileDialog Dlg = new OpenFileDialog();
@@ -503,8 +605,23 @@ namespace PgBuilder
 
             bool? Result = Dlg.ShowDialog(this);
             if (Result.Value && !string.IsNullOrEmpty(Dlg.FileName))
-                if (!LoadBuild(Dlg.FileName))
+            {
+                if (!LoadBuild(Dlg.FileName, out IPgSkill Skill1, out IPgSkill Skill2, out List<string>[] AbilityTable, out Dictionary<string, string> GearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> GearModTable))
                     MessageBox.Show("Invalid file format", "Error");
+
+                Debug.Assert(AbilityTable.Length == 2);
+                Debug.Assert(SkillList.Contains(Skill1));
+                Debug.Assert(SkillList.Contains(Skill2));
+
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged1), SkillList.IndexOf(Skill1));
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged2), SkillList.IndexOf(Skill2));
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities1), AbilityTable[0]);
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities2), AbilityTable[1]);
+                foreach (KeyValuePair<string, string> Entry in GearItemTable)
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, string>(OnSelectGear), Entry.Key, Entry.Value);
+                foreach (KeyValuePair<string, List<KeyValuePair<string, int>>> Entry in GearModTable)
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, List<KeyValuePair<string, int>>>(OnSelectGearMods), Entry.Key, Entry.Value);
+            }
         }
 
         private void OnSave(object sender, ExecutedRoutedEventArgs e)
@@ -519,16 +636,24 @@ namespace PgBuilder
         #endregion
 
         #region Load
-        private bool LoadBuild(string fileName)
+        private bool LoadBuild(string fileName, out IPgSkill skill1, out IPgSkill skill2, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
         {
-            using (FileStream Stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-            {
-                return LoadBuild(Stream);
-            }
+            using FileStream Stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            return LoadBuild(Stream, out skill1, out skill2, out abilityTable, out gearItemTable, out gearModTable);
         }
 
-        private bool LoadBuild(FileStream stream)
+        private bool LoadBuild(FileStream stream, out IPgSkill skill1, out IPgSkill skill2, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
         {
+            skill1 = null;
+            skill2 = null;
+            abilityTable = new List<string>[2]
+            {
+                new List<string>(),
+                new List<string>(),
+            };
+            gearItemTable = new Dictionary<string, string>();
+            gearModTable = new Dictionary<string, List<KeyValuePair<string, int>>>();
+
             JsonTextReader Reader = new JsonTextReader(stream);
             
             Reader.Read();
@@ -539,16 +664,32 @@ namespace PgBuilder
             if (Reader.CurrentToken != Json.Token.ObjectStart)
                 return false;
 
-            if (!LoadBuildSkills(Reader, out string SkillName1, out string SkillName2))
+            if (!LoadBuildSkills(Reader, out skill1, out skill2))
                 return false;
 
             Reader.Read();
 
-            while (LoadBuildAbility(Reader, out int SkillIndex, out int AbilityIndex))
-                Reader.Read();
+            int SkillIndex = 0;
+            int AbilityIndex = 0;
+            while (LoadBuildAbility(Reader, ref SkillIndex, ref AbilityIndex, out string AbilityName))
+            {
+                if (SkillIndex < 0 || SkillIndex >= abilityTable.Length)
+                    return false;
 
-            while (LoadBuildGear(Reader, out string SlotName, out string ItemName))
+                abilityTable[SkillIndex].Add(AbilityName);
                 Reader.Read();
+            }
+
+            while (LoadBuildGear(Reader, out string SlotName, out string ItemName, out List<KeyValuePair<string, int>> ModTable))
+            {
+                if (gearItemTable.ContainsKey(SlotName) || gearModTable.ContainsKey(SlotName))
+                    return false;
+
+                gearItemTable.Add(SlotName, ItemName);
+                gearModTable.Add(SlotName, ModTable);
+
+                Reader.Read();
+            }
 
             if (Reader.CurrentToken != Json.Token.ObjectEnd)
                 return false;
@@ -556,10 +697,10 @@ namespace PgBuilder
             return true;
         }
 
-        private bool LoadBuildSkills(JsonTextReader reader, out string skillName1, out string skillName2)
+        private bool LoadBuildSkills(JsonTextReader reader, out IPgSkill skill1, out IPgSkill skill2)
         {
-            skillName1 = string.Empty;
-            skillName2 = string.Empty;
+            skill1 = null;
+            skill2 = null;
 
             reader.Read();
             if (!(reader.CurrentValue is string SkillKey1 && SkillKey1 == "Skill1"))
@@ -577,16 +718,29 @@ namespace PgBuilder
             if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string SkillValue2))
                 return false;
 
-            skillName1 = SkillValue1;
-            skillName2 = SkillValue2;
+            if (!TryParseSkill(SkillValue1, out skill1) || !TryParseSkill(SkillValue2, out skill2))
+                return false;
 
             return true;
         }
 
-        private bool LoadBuildAbility(JsonTextReader reader, out int skillIndex, out int abilityIndex)
+        private bool TryParseSkill(string skillName, out IPgSkill skill)
         {
-            skillIndex = -1;
-            abilityIndex = -1;
+            skill = null;
+
+            foreach (IPgSkill Item in SkillList)
+                if (Item.Name == skillName)
+                {
+                    skill = Item;
+                    return true;
+                }
+
+            return false;
+        }
+
+        private bool LoadBuildAbility(JsonTextReader reader, ref int skillIndex, ref int abilityIndex, out string abilityName)
+        {
+            abilityName = string.Empty;
 
             if (!(reader.CurrentValue is string Key))
                 return false;
@@ -599,34 +753,40 @@ namespace PgBuilder
             if (KeyName != "Ability")
                 return false;
 
-            if (!int.TryParse(Split[1], out skillIndex))
+            if (!int.TryParse(Split[1], out int SkillIndexValue))
                 return false;
 
-            if (skillIndex < 0 || skillIndex >= 2)
-                return false;
-
-            if (!int.TryParse(Split[2], out abilityIndex))
-                return false;
-
-            if (skillIndex == 0)
-                if (abilityIndex < 0 || abilityIndex >= AbilitySlot1List.Count)
+            if (SkillIndexValue != skillIndex)
+            {
+                if (SkillIndexValue != skillIndex + 1)
                     return false;
 
-            if (skillIndex == 1)
-                if (abilityIndex < 0 || abilityIndex >= AbilitySlot2List.Count)
-                    return false;
+                skillIndex++;
+                abilityIndex = 0;
+            }
+
+            if (!int.TryParse(Split[2], out int AbilityIndexValue))
+                return false;
+
+            if (abilityIndex != AbilityIndexValue)
+                return false;
+
+            abilityIndex++;
 
             reader.Read();
             if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string AbilityValue))
                 return false;
 
+            abilityName = AbilityValue;
+
             return true;
         }
 
-        private bool LoadBuildGear(JsonTextReader reader, out string slotName, out string itemName)
+        private bool LoadBuildGear(JsonTextReader reader, out string slotName, out string itemName, out List<KeyValuePair<string, int>> modTable)
         {
             slotName = string.Empty;
             itemName = string.Empty;
+            modTable = new List<KeyValuePair<string, int>>();
 
             if (!(reader.CurrentValue is string SlotKey))
                 return false;
@@ -649,8 +809,13 @@ namespace PgBuilder
                 reader.Read();
             }
 
-            while (LoadBuildPower(reader, out int PowerIndex, out int TierIndex, out string PowerKey, out int TierLevel))
+            int PowerIndex = 0;
+            int TierIndex = 0;
+            while (LoadBuildPower(reader, ref PowerIndex, ref TierIndex, out string PowerKey, out int TierLevel))
+            {
+                modTable.Add(new KeyValuePair<string, int>(PowerKey, TierLevel));
                 reader.Read();
+            }
 
             if (reader.CurrentToken != Json.Token.ObjectEnd)
                 return false;
@@ -658,46 +823,65 @@ namespace PgBuilder
             return true;
         }
 
-        private bool LoadBuildPower(JsonTextReader reader, out int powerIndex, out int tierIndex, out string powerKey, out int tierLevel)
+        private bool LoadBuildPower(JsonTextReader reader, ref int powerIndex, ref int tierIndex, out string powerKey, out int tierLevel)
         {
-            powerIndex = -1;
-            tierIndex = -1;
             powerKey = string.Empty;
             tierLevel = -1;
 
-            if (!(reader.CurrentValue is string Key))
+            if (!(reader.CurrentValue is string Key1))
                 return false;
 
-            string[] Split = Key.Split('_');
-            if (Split.Length != 2)
+            string[] Split1 = Key1.Split('_');
+            if (Split1.Length != 2)
                 return false;
 
-            string KeyName = Split[0];
+            string KeyName1 = Split1[0];
 
-            if (KeyName == "Power")
-            {
-                if (!int.TryParse(Split[1], out powerIndex))
-                    return false;
-
-                reader.Read();
-                if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string PowerValue))
-                    return false;
-
-                powerKey = PowerValue;
-            }
-            else if (KeyName == "PowerTier")
-            {
-                if (!int.TryParse(Split[1], out tierIndex))
-                    return false;
-
-                reader.Read();
-                if (reader.CurrentToken != Json.Token.Integer)
-                    return false;
-
-                tierLevel = (int)reader.CurrentValue;
-            }
-            else
+            if (KeyName1 != "Power")
                 return false;
+
+            if (!int.TryParse(Split1[1], out int PowerIndexValue))
+                return false;
+
+            if (powerIndex != PowerIndexValue)
+                return false;
+
+            reader.Read();
+            if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string PowerValue))
+                return false;
+
+            powerKey = PowerValue;
+            powerIndex++;
+
+            reader.Read();
+
+            if (!(reader.CurrentValue is string Key2))
+                return false;
+
+            string[] Split2 = Key2.Split('_');
+            if (Split2.Length != 2)
+                return false;
+
+            string KeyName2 = Split2[0];
+
+            if (KeyName2 != "PowerTier")
+                return false;
+
+            if (!int.TryParse(Split2[1], out int TierIndexValue))
+                return false;
+
+            if (tierIndex != TierIndexValue)
+                return false;
+
+            if (tierIndex >= powerIndex)
+                return false;
+
+            reader.Read();
+            if (reader.CurrentToken != Json.Token.Integer)
+                return false;
+
+            tierLevel = (int)reader.CurrentValue;
+            tierIndex++;
 
             return true;
         }
@@ -706,10 +890,8 @@ namespace PgBuilder
         #region Save
         private void SaveBuild(string fileName)
         {
-            using (FileStream Stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-            {
-                SaveBuild(Stream);
-            }
+            using FileStream Stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+            SaveBuild(Stream);
         }
 
         private void SaveBuild(FileStream stream)
@@ -741,8 +923,8 @@ namespace PgBuilder
 
         private void SaveBuildSkills(JsonTextWriter writer)
         {
-            string SkillName1 = SelectedSkill1 >= 0 ? Skill1List[SelectedSkill1].Name : string.Empty;
-            string SkillName2 = SelectedSkill2 >= 0 ? Skill2List[SelectedSkill2].Name : string.Empty;
+            string SkillName1 = SelectedSkill1 >= 0 ? SkillList[SelectedSkill1].Name : string.Empty;
+            string SkillName2 = SelectedSkill2 >= 0 ? SkillList[SelectedSkill2].Name : string.Empty;
 
             writer.ObjectKey("Skill1");
             writer.Value(SkillName1);
@@ -753,12 +935,8 @@ namespace PgBuilder
 
         private void SaveBuildAbilitySlot(JsonTextWriter writer, int skillIndex, int abilityIndex, AbilitySlot slot)
         {
-            if (slot.IsEmpty)
-                return;
-
-            IPgAbility Ability = slot.Ability;
             string Key = $"Ability_{skillIndex}_{abilityIndex}";
-            string Value = Ability.Key;
+            string Value = slot.IsEmpty ? string.Empty : slot.Ability.Key;
 
             writer.ObjectKey(Key);
             writer.Value(Value);

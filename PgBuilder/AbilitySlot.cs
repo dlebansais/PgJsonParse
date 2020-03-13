@@ -1,28 +1,39 @@
 ﻿namespace PgBuilder
 {
-    using System.IO;
-    using System.Windows.Media;
-    using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.CompilerServices;
-    using System.Collections.Generic;
     using PgJsonObjects;
     using Presentation;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
+    using System.Windows.Media;
 
     public class AbilitySlot : INotifyPropertyChanged
     {
         #region Init
+        static AbilitySlot()
+        {
+            Assembly CurrentAssembly = Assembly.GetExecutingAssembly();
+            string[] Names = CurrentAssembly.GetManifestResourceNames();
+
+            using Stream ResourceStream = CurrentAssembly.GetManifestResourceStream("PgBuilder.Resources.default.png");
+            DefaultAbilityImageSource = ImageConversion.IconStreamToImageSource(ResourceStream);
+        }
+
         public AbilitySlot()
         {
             AbilityTierList = null;
             Ability = null;
             AbilityName = null;
-            Source = null;
+            Source = DefaultAbilityImageSource;
         }
         #endregion
 
         #region Properties
+        public static ImageSource DefaultAbilityImageSource { get; }
         public AbilityTierList AbilityTierList { get; private set; }
         public IPgAbility Ability { get; private set; }
         public bool IsEmpty { get { return Ability == null; } }
@@ -53,6 +64,7 @@
 
         public void Reset()
         {
+            AbilityTierList = null;
             Ability = null;
 
             ResetName();
@@ -131,7 +143,7 @@
 
         private void ResetSource()
         {
-            Source = null;
+            Source = DefaultAbilityImageSource;
             NotifyPropertyChanged(nameof(Source));
         }
         #endregion

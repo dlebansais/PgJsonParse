@@ -29,19 +29,19 @@
 
         public void DecrementTier()
         {
-            ChangeTier(-1);
+            SetTier(SelectedTier - 1);
         }
 
         public void IncrementTier()
         {
-            ChangeTier(+1);
+            SetTier(SelectedTier + 1);
         }
 
-        private void ChangeTier(int offset)
+        public void SetTier(int tier)
         {
-            if (SelectedTier + offset >= 0 && SelectedTier + offset < Source.CombinedTierList.Count)
+            if (tier >= 0 && tier < Source.CombinedTierList.Count)
             {
-                SelectedTier += offset;
+                SelectedTier = tier;
                 NotifyPropertyChanged(nameof(SelectedTier));
                 NotifyPropertyChanged(nameof(Name));
             }

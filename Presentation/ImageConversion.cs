@@ -40,7 +40,18 @@ namespace Presentation
                 return null;
 
             using Bitmap Bitmap = new Bitmap(iconFile);
-            IntPtr Handle = Bitmap.GetHbitmap();
+            return IconBitmapToImageSource(Bitmap);
+        }
+
+        public static ImageSource IconStreamToImageSource(Stream stream)
+        {
+            using Bitmap Bitmap = new Bitmap(stream);
+            return IconBitmapToImageSource(Bitmap);
+        }
+
+        public static ImageSource IconBitmapToImageSource(Bitmap bitmap)
+        {
+            IntPtr Handle = bitmap.GetHbitmap();
             try
             {
                 return Imaging.CreateBitmapSourceFromHBitmap(Handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
