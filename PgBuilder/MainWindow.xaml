@@ -3,16 +3,94 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PgBuilder"
         xmlns:object="clr-namespace:PgJsonObjects;assembly=PgJsonObjects"
-        Title="Project: Gorgon - Builder"
+        xmlns:win="clr-namespace:System.Windows;assembly=PresentationCore"
+        xmlns:conv="clr-namespace:Converters;assembly=XamlConverterLibrary"
+        xmlns:convlocal="clr-namespace:Converters"
+        Title="{Binding TitleText}"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
+        <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
+        <conv:NullToObjectConverter x:Key="convNullToObject"/>
+        <convlocal:AbilityToIconConverter x:Key="convAbilityToIcon"/>
         <RoutedCommand x:Key="AddModCommand"/>
         <RoutedCommand x:Key="IncrementTierCommand"/>
         <RoutedCommand x:Key="DecrementTierCommand"/>
         <RoutedCommand x:Key="LoadCommand"/>
         <RoutedCommand x:Key="SaveCommand"/>
+        <CompositeCollection x:Key="CollapsedVisible">
+            <win:Visibility>Collapsed</win:Visibility>
+            <win:Visibility>Visible</win:Visibility>
+        </CompositeCollection>
+        <CompositeCollection x:Key="RedGreenWhite">
+            <SolidColorBrush>Red</SolidColorBrush>
+            <SolidColorBrush>Green</SolidColorBrush>
+            <SolidColorBrush>White</SolidColorBrush>
+        </CompositeCollection>
+        <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource {x:Type ToolTip}}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="HasDropShadow" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <ControlTemplate.Resources>
+                            <Style x:Key="{x:Type TextBlock}" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="Foreground" Value="White"/>
+                            </Style>
+                        </ControlTemplate.Resources>
+                        <DockPanel Visibility="{Binding AbilityName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Background="Black">
+                            <DockPanel DockPanel.Dock="Top" Margin="5,5,5,0">
+                                <Image Source="{Binding Ability, Converter={StaticResource convAbilityToIcon}}" Width="64" Height="64" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding AbilityName}" FontWeight="Bold" Foreground="Yellow" FontSize="24" Margin="2,0,0,0"/>
+                            </DockPanel>
+                            <TextBlock DockPanel.Dock="Top" Text="{Binding AbilityDescription}" TextWrapping="Wrap" TextAlignment="Left" MaxWidth="200" Margin="5,5,5,0"/>
+                            <StackPanel Margin="5,5,5,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold">Min Level:</TextBlock>
+                                    <TextBlock Text="{Binding AbilityMinLevel}" Foreground="{Binding AbilityMinLevelModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold">Power Cost:</TextBlock>
+                                    <TextBlock Text="{Binding AbilityPowerCost}" Foreground="{Binding AbilityPowerCostModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold">Reuse Time:</TextBlock>
+                                    <TextBlock Text="{Binding AbilityReuseTime}" Foreground="{Binding AbilityReuseTimeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                    <TextBlock Margin="5,0,0,0">seconds:</TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold">Range:</TextBlock>
+                                    <TextBlock Text="{Binding AbilityRange}" Foreground="{Binding AbilityRangeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                    <TextBlock Margin="5,0,0,0">meters:</TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold">Damage:</TextBlock>
+                                    <TextBlock Text="{Binding AbilityDamage}" Foreground="{Binding AbilityDamageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                    <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamageVulnerable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                                    <TextBlock FontWeight="Bold">Extra Dmg To Vulnerable Targets:</TextBlock>
+                                    <TextBlock Text="{Binding AbilityDamageVulnerable}" Foreground="{Binding AbilityDamageVulnerableModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                    <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold">Reduces Rage:</TextBlock>
+                                    <TextBlock Text="{Binding AbilityReduceRage}" Foreground="{Binding AbilityReduceRageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold">Enrages Target:</TextBlock>
+                                    <TextBlock Text="{Binding AbilityEnrageTarget}" Foreground="{Binding AbilityEnrageTargetModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                    <TextBlock>%</TextBlock>
+                                </StackPanel>
+                                <TextBlock FontWeight="Bold" Visibility="{Binding IsEpic, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is an Epic Attack.</TextBlock>
+                                <TextBlock FontWeight="Bold">Other Effects:</TextBlock>
+                            </StackPanel>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <DataTemplate x:Key="SkillTemplate" DataType="{x:Type object:PgSkill}">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
@@ -24,7 +102,7 @@
         </DataTemplate>
         <ContextMenu x:Key="AbilityContextMenu"/>
         <DataTemplate x:Key="AbilitySlotTemplate" DataType="{x:Type local:AbilitySlot}">
-            <Image Source="{Binding Source}" ToolTip="{Binding AbilityName}" ContextMenu="{StaticResource AbilityContextMenu}" ContextMenuOpening="OnAbilityContextMenuOpening" Width="32" Height="32" Margin="5,0,5,0"/>
+            <Image Source="{Binding Source}" ContextMenu="{StaticResource AbilityContextMenu}" ToolTip="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}" ContextMenuOpening="OnAbilityContextMenuOpening" Width="32" Height="32" Margin="5,0,5,0"/>
         </DataTemplate>
         <DataTemplate x:Key="GearSlotTemplate" DataType="{x:Type local:GearSlot}">
             <TextBlock Text="{Binding Name}"/>

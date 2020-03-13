@@ -39,6 +39,29 @@
         public bool IsEmpty { get { return Ability == null; } }
         public string AbilityName { get; private set; }
         public ImageSource Source { get; private set; }
+        public string AbilityDescription { get {return Ability?.Description; } }
+        public string AbilityMinLevel { get { return Ability != null ? Ability.Level.ToString() : string.Empty; } }
+        public bool? AbilityMinLevelModified { get { return null; } }
+        public string AbilityPowerCost { get { return Ability != null ? Ability.PvE.PowerCost.ToString() : string.Empty; } }
+        public bool? AbilityPowerCostModified { get { return null; } }
+        public string AbilityReuseTime { get { return Ability != null ? App.DoubleToString(Ability.ResetTime) : string.Empty; } }
+        public bool? AbilityReuseTimeModified { get { return null; } }
+        public string AbilityRange { get { return Ability != null ? Ability.PvE.Range.ToString() : string.Empty; } }
+        public bool? AbilityRangeModified { get { return null; } }
+        public string AbilityDamage { get { return Ability != null ? Ability.PvE.Damage.ToString() : string.Empty; } }
+        public bool? AbilityDamageModified { get { return null; } }
+        public string AbilityDamageType { get { return Ability != null ? Ability.DamageType.ToString() : string.Empty; } }
+        public bool? AbilityDamageTypeModified { get { return null; } }
+        public bool HasAbilityDamageVulnerable { get { return Ability != null && Ability.PvE.RawExtraDamageIfTargetVulnerable.HasValue; } }
+        public string AbilityDamageVulnerable { get { return Ability != null ? Ability.PvE.ExtraDamageIfTargetVulnerable.ToString() : string.Empty; } }
+        public bool? AbilityDamageVulnerableModified { get { return null; } }
+        public string AbilityReduceRage { get { return Ability != null ? Ability.PvE.RageBoost.ToString() : string.Empty; } }
+        public bool? AbilityReduceRageModified { get { return null; } }
+        public string AbilityEnrageTarget { get { return Ability != null ? ((int)(Ability.PvE.RageMultiplier * 100)).ToString() : string.Empty; } }
+        public bool? AbilityEnrageTargetModified { get { return null; } }
+        public string AbilityAccuracy { get { return Ability != null ? App.DoubleToString(Ability.PvE.Accuracy) : string.Empty; } }
+        public bool? AbilityAccuracyModified { get { return null; } }
+        public bool IsEpic { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.EpicAttack); } }
         #endregion
 
         #region Client Interface

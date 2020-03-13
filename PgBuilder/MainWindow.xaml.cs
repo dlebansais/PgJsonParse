@@ -27,6 +27,10 @@
             FillSkillList();
             FillGearSlotList();
             FillAbilitySlotList();
+
+            LoadSettings();
+
+            Closed += OnClosed;
         }
         #endregion
 
@@ -147,7 +151,7 @@
             return Result;
         }
 
-        private string IconFolder;
+        public static string IconFolder { get; private set; }
         #endregion
 
         #region Properties
@@ -157,6 +161,19 @@
         public List<GearSlot> GearSlotList { get; } = new List<GearSlot>();
         public List<AbilitySlot> AbilitySlot1List { get; } = new List<AbilitySlot>();
         public List<AbilitySlot> AbilitySlot2List { get; } = new List<AbilitySlot>();
+        public string LastBuildFile { get; private set; }
+
+        public string TitleText
+        {
+            get
+            {
+                string Result = "Project: Gorgon - Builder";
+                if (LastBuildFile != null)
+                    Result += $" - {LastBuildFile}";
+
+                return Result;
+            }
+        }
         #endregion
 
         #region Implementation
@@ -401,6 +418,11 @@
         #endregion
 
         #region Events
+        private void OnClosed(object sender, EventArgs e)
+        {
+            SaveSettings();
+        }
+
         private void OnSkillSelectionChanged1(object sender, SelectionChangedEventArgs e)
         {
             ComboBox Control = (ComboBox) sender;
@@ -601,32 +623,41 @@
         private void OnLoad(object sender, ExecutedRoutedEventArgs e)
         {
             OpenFileDialog Dlg = new OpenFileDialog();
+            Dlg.FileName = LastBuildFile;
             Dlg.Filter = "Build File (*.txt)|*.txt";
 
             bool? Result = Dlg.ShowDialog(this);
             if (Result.Value && !string.IsNullOrEmpty(Dlg.FileName))
-            {
-                if (!LoadBuild(Dlg.FileName, out IPgSkill Skill1, out IPgSkill Skill2, out List<string>[] AbilityTable, out Dictionary<string, string> GearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> GearModTable))
-                    MessageBox.Show("Invalid file format", "Error");
+                OnLoad(Dlg.FileName);
+        }
 
-                Debug.Assert(AbilityTable.Length == 2);
-                Debug.Assert(SkillList.Contains(Skill1));
-                Debug.Assert(SkillList.Contains(Skill2));
+        private void OnLoad(string filePath)
+        {
+            if (!LoadBuild(filePath, out IPgSkill Skill1, out IPgSkill Skill2, out List<string>[] AbilityTable, out Dictionary<string, string> GearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> GearModTable))
+                MessageBox.Show("Invalid file format", "Error");
 
-                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged1), SkillList.IndexOf(Skill1));
-                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged2), SkillList.IndexOf(Skill2));
-                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities1), AbilityTable[0]);
-                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities2), AbilityTable[1]);
-                foreach (KeyValuePair<string, string> Entry in GearItemTable)
-                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, string>(OnSelectGear), Entry.Key, Entry.Value);
-                foreach (KeyValuePair<string, List<KeyValuePair<string, int>>> Entry in GearModTable)
-                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, List<KeyValuePair<string, int>>>(OnSelectGearMods), Entry.Key, Entry.Value);
-            }
+            Debug.Assert(AbilityTable.Length == 2);
+            Debug.Assert(SkillList.Contains(Skill1));
+            Debug.Assert(SkillList.Contains(Skill2));
+
+            LastBuildFile = filePath;
+            NotifyPropertyChanged(nameof(LastBuildFile));
+            NotifyPropertyChanged(nameof(TitleText));
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged1), SkillList.IndexOf(Skill1));
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged2), SkillList.IndexOf(Skill2));
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities1), AbilityTable[0]);
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities2), AbilityTable[1]);
+            foreach (KeyValuePair<string, string> Entry in GearItemTable)
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, string>(OnSelectGear), Entry.Key, Entry.Value);
+            foreach (KeyValuePair<string, List<KeyValuePair<string, int>>> Entry in GearModTable)
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, List<KeyValuePair<string, int>>>(OnSelectGearMods), Entry.Key, Entry.Value);
         }
 
         private void OnSave(object sender, ExecutedRoutedEventArgs e)
         {
             SaveFileDialog Dlg = new SaveFileDialog();
+            Dlg.FileName = LastBuildFile;
             Dlg.Filter = "Build File (*.txt)|*.txt";
 
             bool? Result = Dlg.ShowDialog(this);
@@ -888,10 +919,14 @@
         #endregion
 
         #region Save
-        private void SaveBuild(string fileName)
+        private void SaveBuild(string filePath)
         {
-            using FileStream Stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+            using FileStream Stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
             SaveBuild(Stream);
+
+            LastBuildFile = filePath;
+            NotifyPropertyChanged(nameof(LastBuildFile));
+            NotifyPropertyChanged(nameof(TitleText));
         }
 
         private void SaveBuild(FileStream stream)
@@ -985,6 +1020,45 @@
             writer.Value(ValuePower);
             writer.ObjectKey(KeyTier);
             writer.Value(ValueTier);
+        }
+        #endregion
+
+        #region Settings
+        private const string LastBuildFileValueName = "LastBuildFile";
+
+        private void LoadSettings()
+        {
+            try
+            {
+                RegistryKey Key = Registry.CurrentUser.OpenSubKey(@"Software", true);
+                Key = Key.CreateSubKey("Project Gorgon Tools");
+                RegistryKey SettingKey = Key.CreateSubKey("PgBuilder");
+
+                string Value;
+
+                Value = SettingKey?.GetValue(LastBuildFileValueName) as string;
+                if (Value != null)
+                    if (File.Exists(Value))
+                        OnLoad(Value);
+            }
+            catch
+            {
+            }
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                RegistryKey Key = Registry.CurrentUser.OpenSubKey(@"Software", true);
+                Key = Key.CreateSubKey("Project Gorgon Tools");
+                RegistryKey SettingKey = Key.CreateSubKey("PgBuilder");
+
+                SettingKey?.SetValue(LastBuildFileValueName, LastBuildFile, RegistryValueKind.String);
+            }
+            catch
+            {
+            }
         }
         #endregion
 

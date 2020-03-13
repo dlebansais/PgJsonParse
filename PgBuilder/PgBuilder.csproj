@@ -48,6 +48,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XamlConverterLibrary">
+      <HintPath>..\dependencies\XamlConverterLibrary\$(Platform)\$(Configuration)\XamlConverterLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -56,6 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="AbilitySlot.cs" />
     <Compile Include="AbilityTierList.cs" />
+    <Compile Include="Converters\AbilityToIconConverter.cs" />
     <Compile Include="GearSlot.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
