@@ -1315,25 +1315,25 @@ namespace PgJsonParse
 
             while ((MatchIndex = textContent.IndexOf(term, MatchIndex + 1, Comparison)) >= 0)
             {
-                int KeyIndex = textContent.IndexOf(JsonGenerator.ObjectSeparator, MatchIndex + term.Length);
-                if (KeyIndex < 0)
+                int StartKeyIndex = textContent.IndexOf(JsonGenerator.ObjectKeyStart, MatchIndex + term.Length);
+                if (StartKeyIndex < 0)
                     break;
 
-                int EndLineIndex = textContent.IndexOf('\n', MatchIndex + term.Length);
-                if (EndLineIndex < KeyIndex)
+                int EndKeyIndex = textContent.IndexOf(JsonGenerator.ObjectKeyEnd, MatchIndex + term.Length);
+                if (EndKeyIndex < StartKeyIndex)
                     break;
 
-                KeyIndex++;
+                int KeyIndex = StartKeyIndex + 1;
 
                 string Key = "";
 
                 for (;;)
                 {
-                    if (KeyIndex >= textContent.Length)
+                    if (KeyIndex >= textContent.Length || Key.Length > 30)
                         break;
 
                     char c = textContent[KeyIndex++];
-                    if (c == '\r' || c == '\n')
+                    if (c == JsonGenerator.ObjectKeyEnd)
                         break;
 
                     Key += c;

@@ -151,7 +151,7 @@ namespace PgJsonObjects
                         string StringValue = Value.TextContent;
                         if (StringValue.Length > 0)
                         {
-                            string Line = StringValue + JsonGenerator.ObjectSeparator + Entry.Key + InvariantCulture.NewLine;
+                            string Line = StringValue + JsonGenerator.ObjectKeyStart + Entry.Key + JsonGenerator.ObjectKeyEnd + InvariantCulture.NewLine;
                             Builder.Append(Line);
                         }
                     }

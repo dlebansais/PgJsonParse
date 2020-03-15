@@ -8,7 +8,8 @@ namespace PgJsonObjects
     {
         #region Constants
         public const char FieldSeparator = '§';
-        public const char ObjectSeparator = '|';
+        public const char ObjectKeyStart = '|';
+        public const char ObjectKeyEnd = '‖';
         #endregion
 
         #region Init

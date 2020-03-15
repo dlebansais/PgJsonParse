@@ -438,7 +438,7 @@ namespace Presentation
         {
             using (FileStream fs = new FileStream(fileName, mode, FileAccess.Read, FileShare.Read))
             {
-                using (StreamReader sr = new StreamReader(fs))
+                using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
                 {
                     string Result = sr.ReadToEnd();
                     return Result;
@@ -450,7 +450,7 @@ namespace Presentation
         {
             using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                using (StreamWriter sw = new StreamWriter(fs, Encoding.ASCII))
+                using (StreamWriter sw = new StreamWriter(fs, Encoding.UTF8))
                 {
                     sw.Write(content);
                     return true;
