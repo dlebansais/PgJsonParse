@@ -40,27 +40,39 @@
         public string AbilityName { get; private set; }
         public ImageSource Source { get; private set; }
         public string AbilityDescription { get {return Ability?.Description; } }
+
         public string AbilityMinLevel { get { return Ability != null ? Ability.Level.ToString() : string.Empty; } }
         public bool? AbilityMinLevelModified { get { return null; } }
+        
         public string AbilityPowerCost { get { return Ability != null ? Ability.PvE.PowerCost.ToString() : string.Empty; } }
         public bool? AbilityPowerCostModified { get { return null; } }
+        
         public string AbilityReuseTime { get { return Ability != null ? App.DoubleToString(Ability.ResetTime) : string.Empty; } }
         public bool? AbilityReuseTimeModified { get { return null; } }
+        
         public string AbilityRange { get { return Ability != null ? Ability.PvE.Range.ToString() : string.Empty; } }
         public bool? AbilityRangeModified { get { return null; } }
-        public string AbilityDamage { get { return Ability != null ? Ability.PvE.Damage.ToString() : string.Empty; } }
-        public bool? AbilityDamageModified { get { return null; } }
+
+        private int DeltaDamage = 0;
+        public string AbilityDamage { get { return Ability != null ? (Ability.PvE.Damage + DeltaDamage).ToString() : string.Empty; } }
+        public bool? AbilityDamageModified { get { return App.IntModifier(DeltaDamage); } }
+        
         public string AbilityDamageType { get { return Ability != null ? Ability.DamageType.ToString() : string.Empty; } }
         public bool? AbilityDamageTypeModified { get { return null; } }
+        
         public bool HasAbilityDamageVulnerable { get { return Ability != null && Ability.PvE.RawExtraDamageIfTargetVulnerable.HasValue; } }
         public string AbilityDamageVulnerable { get { return Ability != null ? Ability.PvE.ExtraDamageIfTargetVulnerable.ToString() : string.Empty; } }
         public bool? AbilityDamageVulnerableModified { get { return null; } }
+
         public string AbilityReduceRage { get { return Ability != null ? Ability.PvE.RageBoost.ToString() : string.Empty; } }
         public bool? AbilityReduceRageModified { get { return null; } }
+
         public string AbilityEnrageTarget { get { return Ability != null ? ((int)(Ability.PvE.RageMultiplier * 100)).ToString() : string.Empty; } }
         public bool? AbilityEnrageTargetModified { get { return null; } }
+        
         public string AbilityAccuracy { get { return Ability != null ? App.DoubleToString(Ability.PvE.Accuracy) : string.Empty; } }
         public bool? AbilityAccuracyModified { get { return null; } }
+        
         public bool IsEpic { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.EpicAttack); } }
         #endregion
 
@@ -168,6 +180,141 @@
         {
             Source = DefaultAbilityImageSource;
             NotifyPropertyChanged(nameof(Source));
+        }
+        #endregion
+
+        #region Mods
+        public void ResetMods()
+        {
+            DeltaDamage = 0;
+        }
+
+        public void RecalculateMods(string key, float attributeEffect)
+        {
+            if (IsEmpty)
+                return;
+
+            if (HasAttributeKey(Ability.AttributesThatModAmmoConsumeChanceList, key))
+                RecalculateModAmmoConsumeChance(attributeEffect);
+
+            if (HasAttributeKey(Ability.AttributesThatDeltaDelayLoopTimeList, key))
+                RecalculateDeltaDelayLoopTime(attributeEffect);
+
+            if (HasAttributeKey(Ability.AttributesThatDeltaPowerCostList, key))
+                RecalculateDeltaPowerCost(attributeEffect);
+
+            if (HasAttributeKey(Ability.AttributesThatDeltaResetTimeList, key))
+                RecalculateDeltaResetTime(attributeEffect);
+
+            if (HasAttributeKey(Ability.AttributesThatModPowerCostList, key))
+                RecalculateModPowerCost(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatDeltaDamageList, key))
+                RecalculateDeltaDamage(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatModDamageList, key))
+                RecalculateModDamage(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatModBaseDamageList, key))
+                RecalculateModBaseDamage(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatDeltaTauntList, key))
+                RecalculateDeltaTaunt(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatModTauntList, key))
+                RecalculateModTaunt(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatDeltaRageList, key))
+                RecalculateDeltaRage(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatModRageList, key))
+                RecalculateModRage(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatDeltaRangeList, key))
+                RecalculateDeltaRange(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatDeltaDamageLastList, key))
+                RecalculateDeltaDamageLast(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatDeltaAccuracyList, key))
+                RecalculateDeltaAccuracy(attributeEffect);
+
+            if (HasAttributeKey(Ability.PvE.AttributesThatModCritDamageList, key))
+                RecalculateModCritDamage(attributeEffect);
+        }
+
+        private bool HasAttributeKey(IPgAttributeCollection attributeList, string key)
+        {
+            foreach (IPgAttribute Item in attributeList)
+                if (Item.Key == key)
+                    return true;
+
+            return false;
+        }
+
+        private void RecalculateModAmmoConsumeChance(float attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaDelayLoopTime(float attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaPowerCost(float attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaResetTime(float attributeEffect)
+        {
+        }
+
+        private void RecalculateModPowerCost(float attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaDamage(float attributeEffect)
+        {
+            DeltaDamage += (int)attributeEffect;
+        }
+
+        private void RecalculateModDamage(float attributeEffect)
+        {
+        }
+
+        private void RecalculateModBaseDamage(float attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaTaunt(float attributeEffect)
+        {
+        }
+
+        private void RecalculateModTaunt(float attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaRage(float attributeEffect)
+        {
+        }
+
+        private void RecalculateModRage(float attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaRange(float attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaDamageLast(float attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaAccuracy(float attributeEffect)
+        {
+        }
+
+        private void RecalculateModCritDamage(float attributeEffect)
+        {
         }
         #endregion
 

@@ -175,6 +175,14 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Attribute"; } }
+
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(Key))
+                return base.ToString();
+            else
+                return Key;
+        }
         #endregion
 
         #region Serializing

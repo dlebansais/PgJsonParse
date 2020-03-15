@@ -59,6 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="AbilitySlot.cs" />
     <Compile Include="AbilityTierList.cs" />
+    <Compile Include="Converters\ItemToIconConverter.cs" />
     <Compile Include="Converters\AbilityToIconConverter.cs" />
     <Compile Include="GearSlot.cs" />
     <Page Include="MainWindow.xaml">
@@ -75,6 +76,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ItemInfo.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Power.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -116,7 +118,9 @@
       <Name>Presentation</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\remove.png" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\default.png" />
   </ItemGroup>

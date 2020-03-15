@@ -14,94 +14,100 @@
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
         <convlocal:AbilityToIconConverter x:Key="convAbilityToIcon"/>
+        <convlocal:ItemToIconConverter x:Key="convItemToIcon"/>
         <RoutedCommand x:Key="AddModCommand"/>
         <RoutedCommand x:Key="IncrementTierCommand"/>
         <RoutedCommand x:Key="DecrementTierCommand"/>
         <RoutedCommand x:Key="LoadCommand"/>
         <RoutedCommand x:Key="SaveCommand"/>
+        <RoutedCommand x:Key="ClearItemCommand"/>
+        <RoutedCommand x:Key="ClearModCommand"/>
         <CompositeCollection x:Key="CollapsedVisible">
             <win:Visibility>Collapsed</win:Visibility>
             <win:Visibility>Visible</win:Visibility>
         </CompositeCollection>
         <CompositeCollection x:Key="RedGreenWhite">
             <SolidColorBrush>Red</SolidColorBrush>
-            <SolidColorBrush>Green</SolidColorBrush>
+            <SolidColorBrush>LightGreen</SolidColorBrush>
             <SolidColorBrush>White</SolidColorBrush>
         </CompositeCollection>
-        <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource {x:Type ToolTip}}">
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="HasDropShadow" Value="True" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <ControlTemplate.Resources>
-                            <Style x:Key="{x:Type TextBlock}" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                <Setter Property="Foreground" Value="White"/>
-                            </Style>
-                        </ControlTemplate.Resources>
-                        <DockPanel Visibility="{Binding AbilityName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Background="Black">
-                            <DockPanel DockPanel.Dock="Top" Margin="5,5,5,0">
-                                <Image Source="{Binding Ability, Converter={StaticResource convAbilityToIcon}}" Width="64" Height="64" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding AbilityName}" FontWeight="Bold" Foreground="Yellow" FontSize="24" Margin="2,0,0,0"/>
-                            </DockPanel>
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding AbilityDescription}" TextWrapping="Wrap" TextAlignment="Left" MaxWidth="200" Margin="5,5,5,0"/>
-                            <StackPanel Margin="5,5,5,0">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold">Min Level:</TextBlock>
-                                    <TextBlock Text="{Binding AbilityMinLevel}" Foreground="{Binding AbilityMinLevelModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold">Power Cost:</TextBlock>
-                                    <TextBlock Text="{Binding AbilityPowerCost}" Foreground="{Binding AbilityPowerCostModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold">Reuse Time:</TextBlock>
-                                    <TextBlock Text="{Binding AbilityReuseTime}" Foreground="{Binding AbilityReuseTimeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                    <TextBlock Margin="5,0,0,0">seconds:</TextBlock>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold">Range:</TextBlock>
-                                    <TextBlock Text="{Binding AbilityRange}" Foreground="{Binding AbilityRangeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                    <TextBlock Margin="5,0,0,0">meters:</TextBlock>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold">Damage:</TextBlock>
-                                    <TextBlock Text="{Binding AbilityDamage}" Foreground="{Binding AbilityDamageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                    <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamageVulnerable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                                    <TextBlock FontWeight="Bold">Extra Dmg To Vulnerable Targets:</TextBlock>
-                                    <TextBlock Text="{Binding AbilityDamageVulnerable}" Foreground="{Binding AbilityDamageVulnerableModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                    <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold">Reduces Rage:</TextBlock>
-                                    <TextBlock Text="{Binding AbilityReduceRage}" Foreground="{Binding AbilityReduceRageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold">Enrages Target:</TextBlock>
-                                    <TextBlock Text="{Binding AbilityEnrageTarget}" Foreground="{Binding AbilityEnrageTargetModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                    <TextBlock>%</TextBlock>
-                                </StackPanel>
-                                <TextBlock FontWeight="Bold" Visibility="{Binding IsEpic, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is an Epic Attack.</TextBlock>
-                                <TextBlock FontWeight="Bold">Other Effects:</TextBlock>
-                            </StackPanel>
-                        </DockPanel>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <BitmapImage x:Key="imgRemove" UriSource="/PgBuilder;component/Resources/remove.png"/>
         <DataTemplate x:Key="SkillTemplate" DataType="{x:Type object:PgSkill}">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
-        <DataTemplate x:Key="ItemNameTemplate" DataType="{x:Type object:PgItem}">
-            <TextBlock Text="{Binding Name}"/>
+        <DataTemplate x:Key="ItemNameTemplate" DataType="{x:Type local:ItemInfo}">
+            <TextBlock Text="{Binding ItemName}"/>
         </DataTemplate>
         <DataTemplate x:Key="ModNameTemplate" DataType="{x:Type local:Power}">
             <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0"/>
         </DataTemplate>
         <ContextMenu x:Key="AbilityContextMenu"/>
         <DataTemplate x:Key="AbilitySlotTemplate" DataType="{x:Type local:AbilitySlot}">
+            <DataTemplate.Resources>
+                <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource {x:Type ToolTip}}">
+                    <Setter Property="OverridesDefaultStyle" Value="true"/>
+                    <Setter Property="HasDropShadow" Value="True" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <ControlTemplate.Resources>
+                                    <Style x:Key="{x:Type TextBlock}" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Style>
+                                </ControlTemplate.Resources>
+                                <DockPanel Visibility="{Binding AbilityName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Background="Black">
+                                    <DockPanel DockPanel.Dock="Top" Margin="5,5,5,0">
+                                        <Image Source="{Binding Ability, Converter={StaticResource convAbilityToIcon}}" Width="64" Height="64" Margin="0,0,5,0"/>
+                                        <TextBlock Text="{Binding AbilityName}" FontWeight="Bold" Foreground="Yellow" FontSize="24" Margin="2,0,0,0"/>
+                                    </DockPanel>
+                                    <TextBlock DockPanel.Dock="Top" Text="{Binding AbilityDescription}" TextWrapping="Wrap" TextAlignment="Left" MaxWidth="200" Margin="5,5,5,0"/>
+                                    <StackPanel Margin="5,5,5,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold">Min Level:</TextBlock>
+                                            <TextBlock Text="{Binding AbilityMinLevel}" Foreground="{Binding AbilityMinLevelModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold">Power Cost:</TextBlock>
+                                            <TextBlock Text="{Binding AbilityPowerCost}" Foreground="{Binding AbilityPowerCostModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold">Reuse Time:</TextBlock>
+                                            <TextBlock Text="{Binding AbilityReuseTime}" Foreground="{Binding AbilityReuseTimeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                            <TextBlock Margin="5,0,0,0">seconds:</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold">Range:</TextBlock>
+                                            <TextBlock Text="{Binding AbilityRange}" Foreground="{Binding AbilityRangeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                            <TextBlock Margin="5,0,0,0">meters:</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold">Damage:</TextBlock>
+                                            <TextBlock Text="{Binding AbilityDamage}" Foreground="{Binding AbilityDamageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                            <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamageVulnerable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                                            <TextBlock FontWeight="Bold">Extra Dmg To Vulnerable Targets:</TextBlock>
+                                            <TextBlock Text="{Binding AbilityDamageVulnerable}" Foreground="{Binding AbilityDamageVulnerableModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                            <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold">Reduces Rage:</TextBlock>
+                                            <TextBlock Text="{Binding AbilityReduceRage}" Foreground="{Binding AbilityReduceRageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold">Enrages Target:</TextBlock>
+                                            <TextBlock Text="{Binding AbilityEnrageTarget}" Foreground="{Binding AbilityEnrageTargetModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                            <TextBlock>%</TextBlock>
+                                        </StackPanel>
+                                        <TextBlock FontWeight="Bold" Visibility="{Binding IsEpic, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is an Epic Attack.</TextBlock>
+                                        <TextBlock FontWeight="Bold">Other Effects:</TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataTemplate.Resources>
             <Image Source="{Binding Source}" ContextMenu="{StaticResource AbilityContextMenu}" ToolTip="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}" ContextMenuOpening="OnAbilityContextMenuOpening" Width="32" Height="32" Margin="5,0,5,0"/>
         </DataTemplate>
         <DataTemplate x:Key="GearSlotTemplate" DataType="{x:Type local:GearSlot}">
@@ -111,7 +117,14 @@
             <DockPanel Background="White">
                 <Button DockPanel.Dock="Left" Command="{StaticResource IncrementTierCommand}" VerticalAlignment="Top" Width="20">+</Button>
                 <Button DockPanel.Dock="Left" Command="{StaticResource DecrementTierCommand}" VerticalAlignment="Top" Width="20" Margin="2,0,0,0">-</Button>
-                <ComboBox ItemsSource="{Binding AvailablePowerList}" ItemTemplate="{StaticResource ModNameTemplate}" SelectedIndex="{Binding SelectedPower, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnPowerSelectionChanged" Margin="5,0,0,0"/>
+                <Button DockPanel.Dock="Right" Command="{StaticResource ClearModCommand}" VerticalAlignment="Center" Margin="5,0,0,0">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="{StaticResource imgRemove}" Width="16" Height="16"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <ComboBox ItemsSource="{Binding AvailablePowerList}" ItemTemplate="{StaticResource ModNameTemplate}" SelectedIndex="{Binding SelectedPower, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnPowerSelectionChanged" VerticalAlignment="Center" Margin="5,0,0,0"/>
             </DockPanel>
         </DataTemplate>
     </Window.Resources>
@@ -121,6 +134,8 @@
         <CommandBinding Command="{StaticResource DecrementTierCommand}" Executed="OnDecrementTier"/>
         <CommandBinding Command="{StaticResource LoadCommand}" Executed="OnLoad"/>
         <CommandBinding Command="{StaticResource SaveCommand}" Executed="OnSave"/>
+        <CommandBinding Command="{StaticResource ClearItemCommand}" Executed="OnClearItem"/>
+        <CommandBinding Command="{StaticResource ClearModCommand}" Executed="OnClearMod"/>
     </Window.CommandBindings>
     <DockPanel Margin="0,10,0,0">
         <DockPanel DockPanel.Dock="Top">
@@ -163,7 +178,42 @@
                 <ItemContainerTemplate>
                     <DockPanel>
                         <DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
-                            <ComboBox DockPanel.Dock="Left" ItemsSource="{Binding ItemList}" ItemTemplate="{StaticResource ItemNameTemplate}" SelectedIndex="{Binding SelectedItem, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnItemSelectionChanged" VerticalAlignment="Top" Width="200" Margin="10,0,0,10"/>
+                            <DockPanel DockPanel.Dock="Left" VerticalAlignment="Top" Margin="10,0,0,10">
+                                <Button DockPanel.Dock="Right" Command="{StaticResource ClearItemCommand}" VerticalAlignment="Center" Margin="5,0,0,0">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Image Source="{StaticResource imgRemove}" Width="16" Height="16"/>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Grid>
+                                    <Grid.Resources>
+                                        <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource {x:Type ToolTip}}">
+                                            <Setter Property="OverridesDefaultStyle" Value="true"/>
+                                            <Setter Property="HasDropShadow" Value="True" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate>
+                                                        <ControlTemplate.Resources>
+                                                            <Style x:Key="{x:Type TextBlock}" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                                                <Setter Property="Foreground" Value="White"/>
+                                                            </Style>
+                                                        </ControlTemplate.Resources>
+                                                        <DockPanel Visibility="{Binding SelectedItem, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Background="Black">
+                                                            <DockPanel DockPanel.Dock="Top" Margin="5,5,5,0">
+                                                                <Image Source="{Binding SelectedItem.Item, Converter={StaticResource convItemToIcon}}" Width="64" Height="64" Margin="0,0,5,0"/>
+                                                                <TextBlock Text="{Binding SelectedItem.ItemName}" FontWeight="Bold" Foreground="Yellow" FontSize="24" Margin="2,0,0,0"/>
+                                                            </DockPanel>
+                                                            <TextBlock Text="{Binding SelectedItem.ItemDescription}" TextWrapping="Wrap" TextAlignment="Left" MaxWidth="200" Margin="5,5,5,0"/>
+                                                        </DockPanel>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <ComboBox ItemsSource="{Binding ItemList}" ItemTemplate="{StaticResource ItemNameTemplate}" SelectedIndex="{Binding SelectedItemIndex, Mode=OneWay}" ToolTip="{Binding Path=SelectedItem}" IsReadOnly="True" SelectionChanged="OnItemSelectionChanged" VerticalAlignment="Center" Width="200"/>
+                                </Grid>
+                            </DockPanel>
                             <Grid Width="400" Margin="10,0,10,0">
                                 <Grid VerticalAlignment="Top">
                                     <TextBlock Text="To add mods, click this button." TextAlignment="Right" VerticalAlignment="Center"/>

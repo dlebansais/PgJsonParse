@@ -442,6 +442,7 @@
             ResetGearSlots();
 
             CommandManager.InvalidateRequerySuggested();
+            RecalculateMods();
         }
 
         private void OnSkillSelectionChanged2(object sender, SelectionChangedEventArgs e)
@@ -463,6 +464,7 @@
             ResetGearSlots();
 
             CommandManager.InvalidateRequerySuggested();
+            RecalculateMods();
         }
 
         private void OnAbilityContextMenuOpening(object sender, ContextMenuEventArgs e)
@@ -488,6 +490,8 @@
                 SelectAbilityByName(Slot, SelectedName, CompatibleAbility1List);
             else if (AbilitySlot2List.Contains(Slot))
                 SelectAbilityByName(Slot, SelectedName, CompatibleAbility2List);
+
+            RecalculateMods();
         }
 
         private void OnClearAbility(object sender, RoutedEventArgs e)
@@ -501,6 +505,7 @@
         private void OnClearAbility(AbilitySlot slot)
         {
             slot.Reset();
+            RecalculateMods();
         }
 
         private void OnAbilityContextMenuClosing(object sender, ContextMenuEventArgs e)
@@ -525,6 +530,8 @@
                 AbilitySlot Slot = AbilitySlot1List[Index];
                 OnClearAbility(Slot);
             }
+
+            RecalculateMods();
         }
 
         private void OnSelectAbilities2(List<string> abilityTable)
@@ -543,6 +550,8 @@
                 AbilitySlot Slot = AbilitySlot2List[Index];
                 OnClearAbility(Slot);
             }
+
+            RecalculateMods();
         }
 
         private void OnItemSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -550,8 +559,11 @@
             ComboBox Control = (ComboBox)sender;
             GearSlot Slot = (GearSlot) Control.DataContext;
 
-            if (Slot.SelectedItem != Control.SelectedIndex)
+            if (Slot.SelectedItemIndex != Control.SelectedIndex)
+            {
                 Slot.SetSelectedItem(Control.SelectedIndex);
+                RecalculateMods();
+            }
         }
 
         private void OnSelectGear(string gearSlotName, string itemKey)
@@ -560,6 +572,7 @@
                 if (Item.Name == gearSlotName)
                 {
                     Item.SetSelectedItem(itemKey);
+                    RecalculateMods();
                     break;
                 }
         }
@@ -572,7 +585,10 @@
                 Mod Mod = (Mod)Control.DataContext;
 
                 if (Mod.SelectedPower != Control.SelectedIndex)
+                {
                     Mod.SetSelectedPower(Control.SelectedIndex);
+                    RecalculateMods();
+                }
             }
         }
 
@@ -593,6 +609,7 @@
             Button Control = (Button)e.OriginalSource;
             Mod Mod = (Mod)Control.DataContext;
             Mod.IncrementTier();
+            RecalculateMods();
         }
 
         private void OnDecrementTier(object sender, ExecutedRoutedEventArgs e)
@@ -600,6 +617,7 @@
             Button Control = (Button)e.OriginalSource;
             Mod Mod = (Mod)Control.DataContext;
             Mod.DecrementTier();
+            RecalculateMods();
         }
 
         private void OnSelectGearMods(string gearSlotName, List<KeyValuePair<string, int>> modList)
@@ -610,6 +628,8 @@
                     OnSelectGearMods(Item, modList);
                     break;
                 }
+
+            RecalculateMods();
         }
 
         private void OnSelectGearMods(GearSlot slot, List<KeyValuePair<string, int>> modList)
@@ -663,6 +683,23 @@
             bool? Result = Dlg.ShowDialog(this);
             if (Result.Value && !string.IsNullOrEmpty(Dlg.FileName))
                 SaveBuild(Dlg.FileName);
+        }
+
+        private void OnClearItem(object sender, ExecutedRoutedEventArgs e)
+        {
+            Button Control = (Button) e.OriginalSource;
+            GearSlot Slot = (GearSlot) Control.DataContext;
+
+            Slot.ResetItem();
+        }
+
+        private void OnClearMod(object sender, ExecutedRoutedEventArgs e)
+        {
+            Button Control = (Button)e.OriginalSource;
+            Mod Mod = (Mod)Control.DataContext;
+            GearSlot Slot = Mod.ParentSlot;
+
+            Slot.RemoveMod(Mod);
         }
         #endregion
 
@@ -982,10 +1019,10 @@
             writer.ObjectKey(slot.Name);
             writer.ObjectStart();
 
-            if (slot.SelectedItem >= 0 && slot.SelectedItem < slot.ItemList.Count)
+            if (slot.SelectedItemIndex >= 0 && slot.SelectedItemIndex < slot.ItemList.Count)
             {
                 writer.ObjectKey("Item");
-                writer.Value(slot.ItemList[slot.SelectedItem].Key);
+                writer.Value(slot.ItemList[slot.SelectedItemIndex].ItemKey);
             }
 
             for (int i = 0; i < slot.ModList.Count; i++)
@@ -1059,6 +1096,71 @@
             catch
             {
             }
+        }
+        #endregion
+
+        #region Recalculate Mods
+        private void RecalculateMods()
+        {
+            ResetAllMods();
+            RecalculateAllMods();
+        }
+
+        private void ResetAllMods()
+        {
+            foreach (AbilitySlot Item in AbilitySlot1List)
+                Item.ResetMods();
+
+            foreach (AbilitySlot Item in AbilitySlot2List)
+                Item.ResetMods();
+        }
+
+        private void RecalculateAllMods()
+        {
+            foreach (GearSlot Item in GearSlotList)
+                RecalculateSlotMods(Item);
+        }
+
+        private void RecalculateSlotMods(GearSlot slot)
+        {
+            if (slot.SelectedItemIndex >= 0)
+            {
+                ItemInfo Item = slot.ItemList[slot.SelectedItemIndex];
+                RecalculateItemMods(Item);
+            }
+        }
+
+        private void RecalculateItemMods(ItemInfo gearItem)
+        {
+            foreach (IPgItemEffect Item in gearItem.Item.EffectDescriptionList)
+                switch (Item)
+                {
+                    case IPgItemAttributeLink AsItemAttributeLink:
+                        RecalculateAttributeMods(AsItemAttributeLink.Link, AsItemAttributeLink.AttributeEffect);
+                        break;
+
+                    case IPgItemSimpleEffect AsItemSimpleEffect:
+                        RecalculateSimpleEffectMods(AsItemSimpleEffect);
+                        break;
+
+                    default:
+                        Debug.Assert(false);
+                        break;
+                }
+        }
+
+        private void RecalculateAttributeMods(IPgAttribute attribute, float attributeEffect)
+        {
+            foreach (AbilitySlot Item in AbilitySlot1List)
+                Item.RecalculateMods(attribute.Key, attributeEffect);
+
+            foreach (AbilitySlot Item in AbilitySlot2List)
+                Item.RecalculateMods(attribute.Key, attributeEffect);
+        }
+
+        private void RecalculateSimpleEffectMods(IPgItemSimpleEffect itemSimpleEffect)
+        {
+            Debug.WriteLine($"Ignoring effect: {itemSimpleEffect.Description}");
         }
         #endregion
 

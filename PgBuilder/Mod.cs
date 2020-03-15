@@ -7,14 +7,16 @@
 
     public class Mod : INotifyPropertyChanged
     {
-        public Mod(List<Power> availablePowerList)
+        public Mod(GearSlot parentSlot, List<Power> availablePowerList)
         {
+            ParentSlot = parentSlot;
             AvailablePowerList = availablePowerList;
             SelectedPower = -1;
         }
 
-        public Mod(List<Power> availablePowerList, string key, int tier)
+        public Mod(GearSlot parentSlot, List<Power> availablePowerList, string key, int tier)
         {
+            ParentSlot = parentSlot;
             AvailablePowerList = availablePowerList;
 
             foreach (Power Item in availablePowerList)
@@ -26,6 +28,7 @@
                 }
         }
 
+        public GearSlot ParentSlot { get; }
         public List<Power> AvailablePowerList { get; }
         public int SelectedPower { get; private set; }
 

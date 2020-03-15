@@ -91,5 +91,13 @@ namespace PgJsonObjects
         }; } }
 
         public override string SortingName { get { return Label; } }
+
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(Key))
+                return base.ToString();
+            else
+                return Key;
+        }
     }
 }
