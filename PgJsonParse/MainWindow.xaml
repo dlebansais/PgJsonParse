@@ -1836,6 +1836,18 @@
                 <TextBlock Text="{Binding InteractionFlag}" Margin="5,0,5,0"/>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="RaceQuestRequirementTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Race:</TextBlock>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding AllowedRace, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
+                    <TextBlock Text="{Binding AllowedRace}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding DisallowedRace, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Margin="5,0,0,0">
+                    <TextBlock>not</TextBlock>
+                    <TextBlock Text="{Binding DisallowedRace}" Margin="5,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
         <ControlTemplate x:Key="XpTableToggleButton" TargetType="ToggleButton">
             <Grid>
                 <VisualStateManager.VisualStateGroups>
