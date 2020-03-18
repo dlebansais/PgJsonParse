@@ -1,5 +1,6 @@
 ﻿namespace PgBuilder
 {
+    using System;
     using System.Windows;
     using System.Globalization;
 
@@ -20,14 +21,11 @@
                 return null;
         }
 
-        public static double CalculateDamage(double baseDamage, double deltaDamage, double modDamage, double modBaseDamage, double modCriticalDamage)
+        public static int CalculateDamage(double baseDamage, double deltaDamage, double modDamage, double modBaseDamage, double modCriticalDamage)
         {
-            double SimpleDamage = 0;
-            double DamageDebuff = 1.0;
-            double VulnerabilityDebuff = 1.0;
-            double MoreDamageDebuff = 1.0;
-            double ConditionalFlatDamage = 0;
-            return ((((baseDamage + deltaDamage) * (1 + modDamage) + (baseDamage * modBaseDamage)) + SimpleDamage) * DamageDebuff * VulnerabilityDebuff) + (ConditionalFlatDamage * MoreDamageDebuff) + modCriticalDamage;
+            double Result = baseDamage * modBaseDamage;
+            //return ((((baseDamage + deltaDamage) * (1 + modDamage) + (baseDamage * modBaseDamage)) + SimpleDamage) * DamageDebuff * VulnerabilityDebuff) + (ConditionalFlatDamage * MoreDamageDebuff) + modCriticalDamage;
+            return (int)Math.Round(Result);
         }
     }
 }

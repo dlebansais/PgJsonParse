@@ -1,4 +1,6 @@
-﻿namespace PgBuilder
+﻿using System.Collections.Generic;
+
+namespace PgBuilder
 {
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
@@ -24,6 +26,20 @@
                     return Source.CombinedTierList[SelectedTier];
                 else
                     return "<Unknown>";
+            }
+        }
+
+        public IPgPowerTier Tier
+        {
+            get
+            {
+                if (SelectedTier >= 0 && SelectedTier < Source.CombinedTierList.Count)
+                {
+                    IList<IPgPowerTier> TierEffectList = Source.TierEffectList;
+                    return TierEffectList[SelectedTier];
+                }
+                else
+                    return null;
             }
         }
 

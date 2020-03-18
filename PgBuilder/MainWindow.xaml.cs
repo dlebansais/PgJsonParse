@@ -654,7 +654,10 @@
         private void OnLoad(string filePath)
         {
             if (!LoadBuild(filePath, out IPgSkill Skill1, out IPgSkill Skill2, out List<string>[] AbilityTable, out Dictionary<string, string> GearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> GearModTable))
+            { 
                 MessageBox.Show("Invalid file format", "Error");
+                return;
+            }
 
             Debug.Assert(AbilityTable.Length == 2);
             Debug.Assert(SkillList.Contains(Skill1));
@@ -672,6 +675,8 @@
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, string>(OnSelectGear), Entry.Key, Entry.Value);
             foreach (KeyValuePair<string, List<KeyValuePair<string, int>>> Entry in GearModTable)
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, List<KeyValuePair<string, int>>>(OnSelectGearMods), Entry.Key, Entry.Value);
+
+            RecalculateMods();
         }
 
         private void OnSave(object sender, ExecutedRoutedEventArgs e)
@@ -1025,38 +1030,41 @@
                 writer.Value(slot.ItemList[slot.SelectedItemIndex].ItemKey);
             }
 
-            for (int i = 0; i < slot.ModList.Count; i++)
+            int Index, PowerIndex;
+            for (Index = 0, PowerIndex = 0; Index < slot.ModList.Count; Index++)
             {
-                Mod Mod = slot.ModList[i];
-                SaveBuildMod(writer, i, Mod);
+                Mod Mod = slot.ModList[Index];
+                SaveBuildMod(writer, ref PowerIndex, Mod);
             }
 
             writer.ObjectEnd();
         }
 
-        private void SaveBuildMod(JsonTextWriter writer, int index, Mod mod)
+        private void SaveBuildMod(JsonTextWriter writer, ref int powerIndex, Mod mod)
         {
             if (mod.SelectedPower < 0 || mod.SelectedPower >= mod.AvailablePowerList.Count)
                 return;
 
             Power Power = mod.AvailablePowerList[mod.SelectedPower];
-            SaveBuilPower(writer, index, Power);
+            SaveBuilPower(writer, ref powerIndex, Power);
         }
 
-        private void SaveBuilPower(JsonTextWriter writer, int index, Power power)
+        private void SaveBuilPower(JsonTextWriter writer, ref int powerIndex, Power power)
         {
             if (power.SelectedTier < 0 || power.SelectedTier >= power.Source.CombinedTierList.Count)
                 return;
 
-            string KeyPower = $"Power_{index}";
+            string KeyPower = $"Power_{powerIndex}";
             string ValuePower = power.Source.Key;
-            string KeyTier = $"PowerTier_{index}";
+            string KeyTier = $"PowerTier_{powerIndex}";
             int ValueTier = power.SelectedTier;
 
             writer.ObjectKey(KeyPower);
             writer.Value(ValuePower);
             writer.ObjectKey(KeyTier);
             writer.Value(ValueTier);
+
+            powerIndex++;
         }
         #endregion
 
@@ -1102,8 +1110,21 @@
         #region Recalculate Mods
         private void RecalculateMods()
         {
+            if (RecalculateOperation == null || RecalculateOperation.Status == DispatcherOperationStatus.Completed)
+            {
+                Debug.WriteLine("Scheduling recalculate");
+                RecalculateOperation = Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(RecalculateModsNow));
+            }
+            else
+                Debug.WriteLine("Skipping recalculate");
+        }
+
+        private void RecalculateModsNow()
+        {
+            Debug.WriteLine("Starting recalculate");
             ResetAllMods();
             RecalculateAllMods();
+            Debug.WriteLine("Done with recalculate");
         }
 
         private void ResetAllMods()
@@ -1128,25 +1149,60 @@
                 ItemInfo Item = slot.ItemList[slot.SelectedItemIndex];
                 RecalculateItemMods(Item);
             }
+
+            foreach (Power Item in slot.AvailablePowerList)
+                RecalculatePowerMods(Item);
         }
 
         private void RecalculateItemMods(ItemInfo gearItem)
         {
             foreach (IPgItemEffect Item in gearItem.Item.EffectDescriptionList)
-                switch (Item)
-                {
-                    case IPgItemAttributeLink AsItemAttributeLink:
-                        RecalculateAttributeMods(AsItemAttributeLink.Link, AsItemAttributeLink.AttributeEffect);
-                        break;
+                RecalculateEffectMod(Item);
+        }
 
-                    case IPgItemSimpleEffect AsItemSimpleEffect:
-                        RecalculateSimpleEffectMods(AsItemSimpleEffect);
-                        break;
+        private void RecalculatePowerMods(Power power)
+        {
+            IPgPowerTier Tier = power.Tier;
+            if (Tier == null)
+                return;
+            foreach (IPgPowerEffect Item in Tier.EffectList)
+                RecalculateEffectMod(Item);
+        }
 
-                    default:
-                        Debug.Assert(false);
-                        break;
-                }
+        private void RecalculateEffectMod(IPgItemEffect effect)
+        {
+            switch (effect)
+            {
+                case IPgItemAttributeLink AsItemAttributeLink:
+                    RecalculateAttributeMods(AsItemAttributeLink.Link, AsItemAttributeLink.AttributeEffect);
+                    break;
+
+                case IPgItemSimpleEffect AsItemSimpleEffect:
+                    RecalculateSimpleEffectMods(AsItemSimpleEffect);
+                    break;
+
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
+        }
+
+        private void RecalculateEffectMod(IPgPowerEffect effect)
+        {
+            switch (effect)
+            {
+                case IPgPowerAttributeLink AsPowerAttributeLink:
+                    RecalculateAttributeMods(AsPowerAttributeLink.AttributeLink, AsPowerAttributeLink.AttributeEffect);
+                    break;
+
+                case IPgPowerSimpleEffect AsPowerSimpleEffect:
+                    RecalculateSimpleEffectMods(AsPowerSimpleEffect);
+                    break;
+
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
         }
 
         private void RecalculateAttributeMods(IPgAttribute attribute, float attributeEffect)
@@ -1160,8 +1216,15 @@
 
         private void RecalculateSimpleEffectMods(IPgItemSimpleEffect itemSimpleEffect)
         {
-            Debug.WriteLine($"Ignoring effect: {itemSimpleEffect.Description}");
+            Debug.WriteLine($"Ignoring item effect: {itemSimpleEffect.Description}");
         }
+
+        private void RecalculateSimpleEffectMods(IPgPowerSimpleEffect powerSimpleEffect)
+        {
+            Debug.WriteLine($"Ignoring power effect: {powerSimpleEffect.Description}");
+        }
+
+        private DispatcherOperation RecalculateOperation = null;
         #endregion
 
         #region Implementation of INotifyPropertyChanged

@@ -55,6 +55,8 @@
                 UpdateModList(skill1);
             if (skill2 != null)
                 UpdateModList(skill2);
+
+            UpdateModListWithGenericMod();
         }
 
         public void UpdateModList(IPgSkill skill)
@@ -72,6 +74,33 @@
             foreach (IPgPower PowerItem in powerList)
             {
                 if (PowerItem.Skill != skill)
+                    continue;
+
+                bool IsSlotCompatible = false;
+                foreach (ItemSlot SlotItem in PowerItem.SlotList)
+                    if (SlotItem == Slot)
+                    {
+                        IsSlotCompatible = true;
+                        break;
+                    }
+
+                if (!IsSlotCompatible)
+                    continue;
+
+                AvailablePowerList.Add(new Power(PowerItem));
+            }
+        }
+
+        public void UpdateModListWithGenericMod()
+        {
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
+            IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifiedObjectList;
+
+            foreach (IPgPower PowerItem in PowerList)
+            {
+                if (PowerItem.RawSkill != PowerSkill.AnySkill &&
+                    PowerItem.RawSkill != PowerSkill.Endurance &&
+                    PowerItem.RawSkill != PowerSkill.ShamanicInfusion)
                     continue;
 
                 bool IsSlotCompatible = false;

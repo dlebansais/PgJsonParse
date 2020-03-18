@@ -45,23 +45,27 @@
 
         public string AbilityMinLevel { get { return Ability != null ? Ability.Level.ToString() : string.Empty; } }
         public bool? AbilityMinLevelModified { get { return null; } }
-        
+
+        public bool HasAbilityPowerCost { get { return Ability != null && Ability.PvE.PowerCost != 0; } }
         public string AbilityPowerCost { get { return Ability != null ? Ability.PvE.PowerCost.ToString() : string.Empty; } }
         public bool? AbilityPowerCostModified { get { return null; } }
         
         public string AbilityReuseTime { get { return Ability != null ? App.DoubleToString(Ability.ResetTime) : string.Empty; } }
         public bool? AbilityReuseTimeModified { get { return null; } }
-        
+
+        public bool HasAbilityRange { get { return Ability != null && Ability.PvE.Range != 0; } }
         public string AbilityRange { get { return Ability != null ? Ability.PvE.Range.ToString() : string.Empty; } }
         public bool? AbilityRangeModified { get { return null; } }
 
+        public bool HasAbilityDamage{ get { return Ability != null && Ability.PvE.Damage != 0; } }
+        public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(Ability.PvE.Damage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage) : 0; } }
+        public string AbilityDamage { get { return Ability != null ? ModifiedAbilityDamage.ToString() : string.Empty; } }
+        public bool? AbilityDamageModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityDamage - Ability.PvE.Damage) : null; } }
         private int DeltaDamage;
         private double ModDamage;
         private double ModBaseDamage;
         private double ModCriticalDamage;
-        public string AbilityDamage { get { return Ability != null ? App.DoubleToString(App.CalculateDamage(Ability.PvE.Damage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage)) : string.Empty; } }
-        public bool? AbilityDamageModified { get { return App.IntModifier(DeltaDamage); } }
-        
+
         public string AbilityDamageType { get { return Ability != null ? Ability.DamageType.ToString() : string.Empty; } }
         public bool? AbilityDamageTypeModified { get { return null; } }
         
@@ -69,9 +73,11 @@
         public string AbilityDamageVulnerable { get { return Ability != null ? Ability.PvE.ExtraDamageIfTargetVulnerable.ToString() : string.Empty; } }
         public bool? AbilityDamageVulnerableModified { get { return null; } }
 
+        public bool HasAbilityReduceRage { get { return Ability != null && Ability.PvE.RageBoost != 0; } }
         public string AbilityReduceRage { get { return Ability != null ? Ability.PvE.RageBoost.ToString() : string.Empty; } }
         public bool? AbilityReduceRageModified { get { return null; } }
 
+        public bool HasAbilityEnrageTarget { get { return Ability != null && (int)(Ability.PvE.RageMultiplier * 100) != 100; } }
         public string AbilityEnrageTarget { get { return Ability != null ? ((int)(Ability.PvE.RageMultiplier * 100)).ToString() : string.Empty; } }
         public bool? AbilityEnrageTargetModified { get { return null; } }
         
@@ -201,6 +207,10 @@
         {
             if (IsEmpty)
                 return;
+
+            if (Ability.Name == "Chill 6")
+            {
+            }
 
             if (HasAttributeKey(Ability.AttributesThatModAmmoConsumeChanceList, key))
                 RecalculateModAmmoConsumeChance(attributeEffect);
