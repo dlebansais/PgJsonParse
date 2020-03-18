@@ -53,7 +53,7 @@ namespace PgJsonObjects
         public IPgAttributeCollection AttributesThatDeltaRageList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatModRageList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaRangeList { get; private set; } = null;
-        public IPgAttributeCollection AttributesThatDeltaDamageLastList { get; private set; } = null;
+        //public IPgAttributeCollection AttributesThatDeltaDamageLastList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatDeltaAccuracyList { get; private set; } = null;
         public IPgAttributeCollection AttributesThatModCritDamageList { get; private set; } = null;
         public List<SelfEffect> SelfEffectOnCritList { get; } = new List<SelfEffect>();
@@ -165,12 +165,12 @@ namespace PgJsonObjects
                 SetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true,
                 GetStringArray = () => AttributesThatDeltaRangeList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty } },
-            { "AttributesThatDeltaDamageLast", new FieldParser() {
+            /*{ "AttributesThatDeltaDamageLast", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDamageLastList.Add(value),
                 SetArrayIsEmpty = () => RawAttributesThatDeltaDamageLastListIsEmpty = true,
                 GetStringArray = () => AttributesThatDeltaDamageLastList.ToKeyList,
-                GetArrayIsEmpty = () => RawAttributesThatDeltaDamageLastListIsEmpty } },
+                GetArrayIsEmpty = () => RawAttributesThatDeltaDamageLastListIsEmpty } },*/
             { "AttributesThatDeltaAccuracy", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaAccuracyList.Add(value),
@@ -270,8 +270,8 @@ namespace PgJsonObjects
         public bool RawAttributesThatModRageListIsEmpty { get; private set; }
         private List<string> RawAttributesThatDeltaRangeList { get; } = new List<string>();
         public bool RawAttributesThatDeltaRangeListIsEmpty { get; private set; }
-        private List<string> RawAttributesThatDeltaDamageLastList { get; } = new List<string>();
-        public bool RawAttributesThatDeltaDamageLastListIsEmpty { get; private set; }
+        //private List<string> RawAttributesThatDeltaDamageLastList { get; } = new List<string>();
+        //public bool RawAttributesThatDeltaDamageLastListIsEmpty { get; private set; }
         private List<string> RawAttributesThatDeltaAccuracyList { get; } = new List<string>();
         public bool RawAttributesThatDeltaAccuracyListIsEmpty { get; private set; }
         private List<string> RawAttributesThatModCritDamageList { get; } = new List<string>();
@@ -329,7 +329,7 @@ namespace PgJsonObjects
             AttributesThatDeltaRageList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaRageList, AttributesThatDeltaRageList, ref IsConnected);
             AttributesThatModRageList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatModRageList, AttributesThatModRageList, ref IsConnected);
             AttributesThatDeltaRangeList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaRangeList, AttributesThatDeltaRangeList, ref IsConnected);
-            AttributesThatDeltaDamageLastList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaDamageLastList, AttributesThatDeltaDamageLastList, ref IsConnected);
+            //AttributesThatDeltaDamageLastList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaDamageLastList, AttributesThatDeltaDamageLastList, ref IsConnected);
             AttributesThatDeltaAccuracyList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatDeltaAccuracyList, AttributesThatDeltaAccuracyList, ref IsConnected);
             AttributesThatModCritDamageList = ConnectAttributes(ErrorInfo, AttributeTable, RawAttributesThatModCritDamageList, AttributesThatModCritDamageList, ref IsConnected);
 
@@ -404,7 +404,8 @@ namespace PgJsonObjects
             AddObjectList(AttributesThatDeltaRageList, data, ref offset, BaseOffset, 104, StoredObjectListTable);
             AddObjectList(AttributesThatModRageList, data, ref offset, BaseOffset, 108, StoredObjectListTable);
             AddObjectList(AttributesThatDeltaRangeList, data, ref offset, BaseOffset, 112, StoredObjectListTable);
-            AddObjectList(AttributesThatDeltaDamageLastList, data, ref offset, BaseOffset, 116, StoredObjectListTable);
+            //AddObjectList(AttributesThatDeltaDamageLastList, data, ref offset, BaseOffset, 116, StoredObjectListTable);
+            offset += 4;
             AddObjectList(AttributesThatDeltaAccuracyList, data, ref offset, BaseOffset, 120, StoredObjectListTable);
             AddObjectList(AttributesThatModCritDamageList, data, ref offset, BaseOffset, 124, StoredObjectListTable);
             AddBool(RawAttributesThatDeltaDamageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 0);
@@ -415,7 +416,8 @@ namespace PgJsonObjects
             AddBool(RawAttributesThatDeltaRageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 10);
             AddBool(RawAttributesThatModRageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 12);
             AddBool(RawAttributesThatDeltaRangeListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 128, 14);
-            AddBool(RawAttributesThatDeltaDamageLastListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 130, 0);
+            //AddBool(RawAttributesThatDeltaDamageLastListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 130, 0);
+            BitOffset += 2;
             AddBool(RawAttributesThatDeltaAccuracyListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 130, 2);
             AddBool(RawAttributesThatModCritDamageListIsEmpty, data, ref offset, ref BitOffset, BaseOffset, 130, 4);
             CloseBool(ref offset, ref BitOffset);

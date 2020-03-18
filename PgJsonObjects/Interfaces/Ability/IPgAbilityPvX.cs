@@ -49,7 +49,7 @@ namespace PgJsonObjects
         IPgAttributeCollection AttributesThatDeltaRageList { get; }
         IPgAttributeCollection AttributesThatModRageList { get; }
         IPgAttributeCollection AttributesThatDeltaRangeList { get; }
-        IPgAttributeCollection AttributesThatDeltaDamageLastList { get; }
+        //IPgAttributeCollection AttributesThatDeltaDamageLastList { get; }
         IPgAttributeCollection AttributesThatDeltaAccuracyList { get; }
         IPgAttributeCollection AttributesThatModCritDamageList { get; }
         bool RawAttributesThatDeltaDamageListIsEmpty { get; }
@@ -60,7 +60,7 @@ namespace PgJsonObjects
         bool RawAttributesThatDeltaRageListIsEmpty { get; }
         bool RawAttributesThatModRageListIsEmpty { get; }
         bool RawAttributesThatDeltaRangeListIsEmpty { get; }
-        bool RawAttributesThatDeltaDamageLastListIsEmpty { get; }
+        //bool RawAttributesThatDeltaDamageLastListIsEmpty { get; }
         bool RawAttributesThatDeltaAccuracyListIsEmpty { get; }
         bool RawAttributesThatModCritDamageListIsEmpty { get; }
         List<SelfEffect> SelfEffectOnCritList { get; }

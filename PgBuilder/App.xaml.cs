@@ -22,7 +22,12 @@
 
         public static double CalculateDamage(double baseDamage, double deltaDamage, double modDamage, double modBaseDamage, double modCriticalDamage)
         {
-            return (baseDamage + deltaDamage) * (1 + modDamage) + modBaseDamage + modCriticalDamage;
+            double SimpleDamage = 0;
+            double DamageDebuff = 1.0;
+            double VulnerabilityDebuff = 1.0;
+            double MoreDamageDebuff = 1.0;
+            double ConditionalFlatDamage = 0;
+            return ((((baseDamage + deltaDamage) * (1 + modDamage) + (baseDamage * modBaseDamage)) + SimpleDamage) * DamageDebuff * VulnerabilityDebuff) + (ConditionalFlatDamage * MoreDamageDebuff) + modCriticalDamage;
         }
     }
 }

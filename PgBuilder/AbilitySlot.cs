@@ -29,6 +29,8 @@
             Ability = null;
             AbilityName = null;
             Source = DefaultAbilityImageSource;
+
+            ResetMods();
         }
         #endregion
 
@@ -53,10 +55,10 @@
         public string AbilityRange { get { return Ability != null ? Ability.PvE.Range.ToString() : string.Empty; } }
         public bool? AbilityRangeModified { get { return null; } }
 
-        private int DeltaDamage = 0;
-        private int ModDamage = 0;
-        private int ModBaseDamage = 0;
-        private int ModCriticalDamage = 0;
+        private int DeltaDamage;
+        private double ModDamage;
+        private double ModBaseDamage;
+        private double ModCriticalDamage;
         public string AbilityDamage { get { return Ability != null ? App.DoubleToString(App.CalculateDamage(Ability.PvE.Damage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage)) : string.Empty; } }
         public bool? AbilityDamageModified { get { return App.IntModifier(DeltaDamage); } }
         
@@ -190,9 +192,9 @@
         public void ResetMods()
         {
             DeltaDamage = 0; // Damage +X
-            ModDamage = 0;   // Damage +(X*100)%
-            ModBaseDamage = 0; // Base Damage +(X*100)%
-            ModCriticalDamage = 0; // Critical Damage +(X*100)%
+            ModDamage = 1.0;   // Damage +(X*100)%
+            ModBaseDamage = 1.0; // Base Damage +(X*100)%
+            ModCriticalDamage = 1.0; // Critical Damage +(X*100)%
         }
 
         public void RecalculateMods(string key, float attributeEffect)
@@ -239,9 +241,6 @@
             if (HasAttributeKey(Ability.PvE.AttributesThatDeltaRangeList, key))
                 RecalculateDeltaRange(attributeEffect);
 
-            if (HasAttributeKey(Ability.PvE.AttributesThatDeltaDamageLastList, key))
-                RecalculateDeltaDamageLast(attributeEffect);
-
             if (HasAttributeKey(Ability.PvE.AttributesThatDeltaAccuracyList, key))
                 RecalculateDeltaAccuracy(attributeEffect);
 
@@ -285,12 +284,12 @@
 
         private void RecalculateModDamage(float attributeEffect)
         {
-            ModDamage += (int)attributeEffect;
+            ModDamage += attributeEffect;
         }
 
         private void RecalculateModBaseDamage(float attributeEffect)
         {
-            ModBaseDamage += (int)attributeEffect;
+            ModBaseDamage += attributeEffect;
         }
 
         private void RecalculateDeltaTaunt(float attributeEffect)
@@ -323,7 +322,7 @@
 
         private void RecalculateModCriticalDamage(float attributeEffect)
         {
-            ModCriticalDamage += (int)attributeEffect;
+            ModCriticalDamage += attributeEffect;
         }
         #endregion
 
