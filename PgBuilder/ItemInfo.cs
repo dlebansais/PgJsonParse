@@ -16,6 +16,7 @@
         public string ItemKey { get { return Item.Key; } }
         public string ItemName { get { return Item.Name; } }
         public string ItemDescription { get { return Item.Description; } }
+        public IPgItemEffectCollection ItemEffectDescriptionList { get { return Item.EffectDescriptionList; } }
 
         #region Implementation of INotifyPropertyChanged
         /// <summary>

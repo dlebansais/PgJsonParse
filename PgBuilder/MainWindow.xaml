@@ -5,7 +5,8 @@
         xmlns:object="clr-namespace:PgJsonObjects;assembly=PgJsonObjects"
         xmlns:win="clr-namespace:System.Windows;assembly=PresentationCore"
         xmlns:conv="clr-namespace:Converters;assembly=XamlConverterLibrary"
-        xmlns:convlocal="clr-namespace:Converters"
+        xmlns:localconv="clr-namespace:Converters"
+        xmlns:localsel="clr-namespace:Selectors"
         Title="{Binding TitleText}"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
@@ -13,8 +14,9 @@
     <Window.Resources>
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
-        <convlocal:AbilityToIconConverter x:Key="convAbilityToIcon"/>
-        <convlocal:ItemToIconConverter x:Key="convItemToIcon"/>
+        <localconv:AbilityToIconConverter x:Key="convAbilityToIcon"/>
+        <localconv:ItemToIconConverter x:Key="convItemToIcon"/>
+        <localsel:ItemEffectTemplateSelector x:Key="selItemEffectTemplate"/>
         <RoutedCommand x:Key="AddModCommand"/>
         <RoutedCommand x:Key="IncrementTierCommand"/>
         <RoutedCommand x:Key="DecrementTierCommand"/>
@@ -40,6 +42,12 @@
         </DataTemplate>
         <DataTemplate x:Key="ModNameTemplate" DataType="{x:Type local:Power}">
             <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0"/>
+        </DataTemplate>
+        <DataTemplate x:Key="ItemSimpleEffectTemplate" DataType="{x:Type object:IPgItemSimpleEffect}">
+            <TextBox Text="{Binding Description, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Foreground="White" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,1,0,1"/>
+        </DataTemplate>
+        <DataTemplate x:Key="ItemAttributeLinkTemplate" DataType="{x:Type object:IPgItemAttributeLink}">
+            <TextBox Text="{Binding FriendlyNameAndEffect, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Foreground="White" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,1,0,1"/>
         </DataTemplate>
         <ContextMenu x:Key="AbilityContextMenu"/>
         <DataTemplate x:Key="AbilitySlotTemplate" DataType="{x:Type local:AbilitySlot}">
@@ -204,7 +212,8 @@
                                                                 <Image Source="{Binding SelectedItem.Item, Converter={StaticResource convItemToIcon}}" Width="64" Height="64" Margin="0,0,5,0"/>
                                                                 <TextBlock Text="{Binding SelectedItem.ItemName}" FontWeight="Bold" Foreground="Yellow" FontSize="24" Margin="2,0,0,0"/>
                                                             </DockPanel>
-                                                            <TextBlock Text="{Binding SelectedItem.ItemDescription}" TextWrapping="Wrap" TextAlignment="Left" MaxWidth="200" Margin="5,5,5,0"/>
+                                                            <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedItem.ItemDescription}" TextWrapping="Wrap" TextAlignment="Left" MaxWidth="200" Margin="5,5,5,0"/>
+                                                            <ItemsControl ItemsSource="{Binding SelectedItem.ItemEffectDescriptionList}" ItemTemplateSelector="{StaticResource selItemEffectTemplate}" Margin="5,5,5,5"/>
                                                         </DockPanel>
                                                     </ControlTemplate>
                                                 </Setter.Value>

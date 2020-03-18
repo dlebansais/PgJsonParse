@@ -10,6 +10,7 @@
 
     public class GearSlot : INotifyPropertyChanged
     {
+        #region Init
         public GearSlot(string name, ItemSlot slot)
         {
             Name = name;
@@ -32,7 +33,9 @@
         {
             return string.Compare(item1.ItemName, item2.ItemName, StringComparison.InvariantCulture);
         }
+        #endregion
 
+        #region Properties
         public string Name { get; }
         public ItemSlot Slot { get; }
         public List<ItemInfo> ItemList { get; }
@@ -40,7 +43,9 @@
         public ItemInfo SelectedItem { get { return SelectedItemIndex >= 0 ? ItemList[SelectedItemIndex] : null; } }
         public ObservableCollection<Mod> ModList { get; } = new ObservableCollection<Mod>();
         public List<Power> AvailablePowerList { get; } = new List<Power>();
+        #endregion
 
+        #region Client Interface
         public void Reset(IPgSkill skill1, IPgSkill skill2)
         {
             ModList.Clear();
@@ -130,6 +135,7 @@
         {
             ModList.Clear();
         }
+        #endregion
 
         #region Implementation of INotifyPropertyChanged
         /// <summary>

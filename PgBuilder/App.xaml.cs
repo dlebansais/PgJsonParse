@@ -19,5 +19,10 @@
             else
                 return null;
         }
+
+        public static double CalculateDamage(double baseDamage, double deltaDamage, double modDamage, double modBaseDamage, double modCriticalDamage)
+        {
+            return (baseDamage + deltaDamage) * (1 + modDamage) + modBaseDamage + modCriticalDamage;
+        }
     }
 }
