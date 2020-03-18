@@ -242,9 +242,9 @@ namespace PgJsonObjects
         #endregion
 
         #region Crunching
-        public static bool IsValidForSlot(IPgPower power, PowerSkill RawSkill, ItemSlot Slot)
+        public static bool IsValidForSlot(IPgPower power, PowerSkill RawSkill, PowerSkill RawParentSkill, ItemSlot Slot)
         {
-            if (power.RawSkill != RawSkill)
+            if (power.RawSkill != RawSkill && power.RawSkill != RawParentSkill)
                 return false;
 
             if (power.IsUnavailable)

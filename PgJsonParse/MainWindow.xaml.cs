@@ -380,9 +380,22 @@ namespace PgJsonParse
             IList<IPgPower> PowerList = PowerDefinition.VerifiedObjectList as IList<IPgPower>;
             IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
             Dictionary<string, IJsonKey> AttributeTable = AttributeDefinition.ObjectTable;
+            IObjectDefinition SkillDefinition = ObjectList.Definitions[typeof(Skill)];
+            IList<IPgSkill> SkillList = SkillDefinition.VerifiedObjectList as IList<IPgSkill>;
+
+            PowerSkill FirstSkillParent = SelectAsFirst;
+            PowerSkill SecondSkillParent = SelectAsSecond;
+
+            foreach (IPgSkill Item in SkillList)
+            {
+                if (Item.CombatSkill == SelectAsFirst && Item.ParentSkill != null)
+                    FirstSkillParent = Item.ParentSkill.CombatSkill;
+                if (Item.CombatSkill == SelectAsSecond && Item.ParentSkill != null)
+                    SecondSkillParent = Item.ParentSkill.CombatSkill;
+            }
 
             foreach (SlotPlaner PlanerItem in SlotPlanerList)
-                PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, MaxLevelFirstSkill, SelectAsSecond, MaxLevelSecondSkill, DefaultMaxLevel);
+                PlanerItem.RefreshCombatSkillList(PowerList, AttributeTable, SelectAsFirst, FirstSkillParent, MaxLevelFirstSkill, SelectAsSecond, SecondSkillParent, MaxLevelSecondSkill, DefaultMaxLevel);
 
             NotifyPropertyChanged(nameof(IsSkillSelected));
         }
@@ -1752,11 +1765,15 @@ namespace PgJsonParse
             {
                 List<Power> PrimaryPowerListForSlot = new List<Power>();
                 List<Power> SecondaryPowerListForSlot = new List<Power>();
+                PowerSkill FirstSkill = primarySkill.CombatSkill;
+                PowerSkill SecondSkill = secondarySkill.CombatSkill;
+                PowerSkill FirstSkillParent = primarySkill.ParentSkill != null ? primarySkill.ParentSkill.CombatSkill : FirstSkill;
+                PowerSkill SecondSkillParent = secondarySkill.ParentSkill != null ? secondarySkill.ParentSkill.CombatSkill : SecondSkill;
 
                 foreach (Power PowerItem in PowerList)
-                    if (Power.IsValidForSlot(PowerItem, primarySkill.CombatSkill, Slot))
+                    if (Power.IsValidForSlot(PowerItem, FirstSkill, FirstSkillParent, Slot))
                         PrimaryPowerListForSlot.Add(PowerItem);
-                    else if (Power.IsValidForSlot(PowerItem, secondarySkill.CombatSkill, Slot))
+                    else if (Power.IsValidForSlot(PowerItem, SecondSkill, SecondSkillParent, Slot))
                         SecondaryPowerListForSlot.Add(PowerItem);
 
                 List<Power> PowerListForSlot = new List<Power>();

@@ -245,7 +245,7 @@
             if (HasAttributeKey(Ability.PvE.AttributesThatDeltaAccuracyList, key))
                 RecalculateDeltaAccuracy(attributeEffect);
 
-            if (HasAttributeKey(Ability.PvE.AttributesThatModCriticalDamageList, key))
+            if (HasAttributeKey(Ability.PvE.AttributesThatModCritDamageList, key))
                 RecalculateModCriticalDamage(attributeEffect);
         }
 

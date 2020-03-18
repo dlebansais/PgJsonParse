@@ -282,7 +282,7 @@ namespace PgJsonObjects
             }
         }
 
-        public void RefreshCombatSkillList(IList<IPgPower> PowerList, Dictionary<string, IJsonKey> AttributeTable, PowerSkill FirstSkill, int MaxLevelFirstSkill, PowerSkill SecondSkill, int MaxLevelSecondSkill, int MaxLevelGeneric)
+        public void RefreshCombatSkillList(IList<IPgPower> PowerList, Dictionary<string, IJsonKey> AttributeTable, PowerSkill FirstSkill, PowerSkill FirstSkillParent, int MaxLevelFirstSkill, PowerSkill SecondSkill, PowerSkill SecondSkillParent, int MaxLevelSecondSkill, int MaxLevelGeneric)
         {
             AvailablePowerList1.Clear();
             AvailablePowerList2.Clear();
@@ -306,23 +306,23 @@ namespace PgJsonObjects
             SelectedPowerIndex5 = -1;
 
             foreach (IPgPower PowerItem in PowerList)
-                if (Power.IsValidForSlot(PowerItem, FirstSkill, Slot))
+                if (Power.IsValidForSlot(PowerItem, FirstSkill, FirstSkillParent, Slot))
                     AvailablePowerList1.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelFirstSkill));
 
             foreach (IPgPower PowerItem in PowerList)
-                if (Power.IsValidForSlot(PowerItem, SecondSkill, Slot))
+                if (Power.IsValidForSlot(PowerItem, SecondSkill, SecondSkillParent, Slot))
                     AvailablePowerList2.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelSecondSkill));
 
             foreach (IPgPower PowerItem in PowerList)
-                if (Power.IsValidForSlot(PowerItem, PowerSkill.AnySkill, Slot))
+                if (Power.IsValidForSlot(PowerItem, PowerSkill.AnySkill, PowerSkill.AnySkill, Slot))
                     AvailablePowerList3.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelGeneric));
 
             foreach (IPgPower PowerItem in PowerList)
-                if (Power.IsValidForSlot(PowerItem, PowerSkill.Endurance, Slot))
+                if (Power.IsValidForSlot(PowerItem, PowerSkill.Endurance, PowerSkill.Endurance, Slot))
                     AvailablePowerList4.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelGeneric));
 
             foreach (IPgPower PowerItem in PowerList)
-                if (Power.IsValidForSlot(PowerItem, PowerSkill.ShamanicInfusion, Slot))
+                if (Power.IsValidForSlot(PowerItem, PowerSkill.ShamanicInfusion, PowerSkill.ShamanicInfusion, Slot))
                     AvailablePowerList5.Add(new PlanerSlotPower(PowerItem, AttributeTable, MaxLevelGeneric));
 
             NotifyPropertyChanged(nameof(ColorIndex));
