@@ -98,6 +98,18 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "PowerTier"; } }
+
+        public override string ToString()
+        {
+            IList<IPgPowerEffect> Effects = EffectList;
+
+            if (Effects.Count == 1)
+                return Effects[Effects.Count - 1].ToString();
+            else if (Effects.Count > 1)
+                return $"{Effects.Count} Effects";
+            else
+                return base.ToString();
+        }
         #endregion
 
         #region Serializing

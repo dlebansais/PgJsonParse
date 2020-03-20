@@ -53,6 +53,11 @@ namespace PgJsonObjects
             IsParsed = true;
         }
 
+        public override string ToString()
+        {
+            return $"{{{AttributeName}}}";
+        }
+
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {

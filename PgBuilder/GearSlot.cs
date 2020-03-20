@@ -100,6 +100,7 @@
             {
                 if (PowerItem.RawSkill != PowerSkill.AnySkill &&
                     PowerItem.RawSkill != PowerSkill.Endurance &&
+                    PowerItem.RawSkill != PowerSkill.ArmorPatching &&
                     PowerItem.RawSkill != PowerSkill.ShamanicInfusion)
                     continue;
 
@@ -151,7 +152,7 @@
         {
             Mod NewMod = new Mod(this, AvailablePowerList, key, tier);
 
-            if (NewMod.SelectedPower >= 0)
+            if (NewMod.SelectedPowerIndex >= 0)
                 ModList.Add(NewMod);
         }
 

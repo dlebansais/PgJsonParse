@@ -44,6 +44,18 @@ namespace PgJsonObjects
             return Result;
         }
 
+        public override string ToString()
+        {
+            IList<IPgPowerEffect> Effects = EffectList;
+
+            if (Effects.Count == 1)
+                return Effects[Effects.Count - 1].ToString();
+            else if (Effects.Count > 1)
+                return $"{Effects.Count} Effects";
+            else
+                return base.ToString();
+        }
+
         #region Indirect Properties
         public override string SortingName { get { return null; } }
         #endregion

@@ -49,6 +49,9 @@ namespace PgJsonObjects
             PgPower.FillcombinedTierList(CombinedTierList, attributeTable, TierEffectList, TierOffset);
         }
 
+        public int PowerId { get { return int.Parse(Key.Substring(6)) / 1000; } }
+        public int EffectId { get { return int.Parse(Key.Substring(6)) % 1000; } }
+
         public override string Key { get { return GetString(0); } }
         public string Prefix { get { return GetString(4); } }
         public string Suffix { get { return GetString(8); } }
@@ -229,6 +232,15 @@ namespace PgJsonObjects
                 return -1;
             else
                 return 0;
+        }
+
+        public override string ToString()
+        {
+            IList<IPgPowerTier> Tiers = TierEffectList;
+            if (Tiers.Count > 0)
+                return Tiers[Tiers.Count - 1].ToString();
+            else
+                return base.ToString();
         }
     }
 }

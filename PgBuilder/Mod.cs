@@ -1,4 +1,6 @@
-﻿namespace PgBuilder
+﻿using PgJsonObjects;
+
+namespace PgBuilder
 {
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -11,7 +13,7 @@
         {
             ParentSlot = parentSlot;
             AvailablePowerList = availablePowerList;
-            SelectedPower = -1;
+            SelectedPowerIndex = -1;
         }
 
         public Mod(GearSlot parentSlot, List<Power> availablePowerList, string key, int tier)
@@ -22,7 +24,7 @@
             foreach (Power Item in availablePowerList)
                 if (Item.Source.Key == key)
                 {
-                    SelectedPower = availablePowerList.IndexOf(Item);
+                    SelectedPowerIndex = availablePowerList.IndexOf(Item);
                     Item.SetTier(tier);
                     break;
                 }
@@ -30,24 +32,26 @@
 
         public GearSlot ParentSlot { get; }
         public List<Power> AvailablePowerList { get; }
-        public int SelectedPower { get; private set; }
+        public int SelectedPowerIndex { get; private set; }
+        public Power SelectedPower { get { return (SelectedPowerIndex >= 0 && SelectedPowerIndex < AvailablePowerList.Count) ? AvailablePowerList[SelectedPowerIndex] : null; } }
+        public IPgPowerTier SelectedTier { get { return (SelectedPowerIndex >= 0 && SelectedPowerIndex < AvailablePowerList.Count) ? AvailablePowerList[SelectedPowerIndex].Tier : null; } }
 
         public void SetSelectedPower(int index)
         {
-            SelectedPower = index;
-            NotifyPropertyChanged(nameof(SelectedPower));
+            SelectedPowerIndex = index;
+            NotifyPropertyChanged(nameof(SelectedPowerIndex));
         }
 
         public void IncrementTier()
         {
-            if (SelectedPower >= 0 && SelectedPower < AvailablePowerList.Count)
-                AvailablePowerList[SelectedPower].IncrementTier();
+            if (SelectedPowerIndex >= 0 && SelectedPowerIndex < AvailablePowerList.Count)
+                AvailablePowerList[SelectedPowerIndex].IncrementTier();
         }
 
         public void DecrementTier()
         {
-            if (SelectedPower >= 0 && SelectedPower < AvailablePowerList.Count)
-                AvailablePowerList[SelectedPower].DecrementTier();
+            if (SelectedPowerIndex >= 0 && SelectedPowerIndex < AvailablePowerList.Count)
+                AvailablePowerList[SelectedPowerIndex].DecrementTier();
         }
 
         #region Implementation of INotifyPropertyChanged

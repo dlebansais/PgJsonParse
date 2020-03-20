@@ -1,7 +1,5 @@
 ﻿namespace PgBuilder
 {
-    using PgJsonObjects;
-    using Presentation;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
@@ -10,6 +8,9 @@
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Windows.Media;
+    using System.Collections.ObjectModel;
+    using PgJsonObjects;
+    using Presentation;
 
     public class AbilitySlot : INotifyPropertyChanged
     {
@@ -83,8 +84,18 @@
         
         public string AbilityAccuracy { get { return Ability != null ? App.DoubleToString(Ability.PvE.Accuracy) : string.Empty; } }
         public bool? AbilityAccuracyModified { get { return null; } }
-        
-        public bool IsEpic { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.EpicAttack); } }
+
+        public bool IsEpicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.EpicAttack); } }
+        public string BasicAttackHealth { get { return $"+{App.DoubleToString(BasicAttackHealthModified)}"; } }
+        public string BasicAttackArmor { get { return $"+{App.DoubleToString(BasicAttackArmorModified)}"; } }
+        public string BasicAttackPower { get { return $"+{App.DoubleToString(BasicAttackPowerModified)}"; } }
+        private double BasicAttackHealthModified;
+        private double BasicAttackArmorModified;
+        private double BasicAttackPowerModified;
+
+        public bool IsBasicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.BasicAttack); } }
+
+        public ObservableCollection<IPgEffect> OtherEffectList { get; } = new ObservableCollection<IPgEffect>();
         #endregion
 
         #region Client Interface
@@ -201,6 +212,14 @@
             ModDamage = 1.0;   // Damage +(X*100)%
             ModBaseDamage = 1.0; // Base Damage +(X*100)%
             ModCriticalDamage = 1.0; // Critical Damage +(X*100)%
+            BasicAttackHealthModified = 0;
+            BasicAttackArmorModified = 0;
+            BasicAttackPowerModified = 0;
+
+            if (Ability != null)
+                BasicAttackPowerModified += Ability.CombatRefreshBaseAmount;
+
+            OtherEffectList.Clear();
         }
 
         public void RecalculateMods(string key, float attributeEffect)
@@ -210,6 +229,19 @@
 
             if (Ability.Name == "Chill 6")
             {
+            }
+
+            switch (key)
+            {
+                case "COMBAT_REFRESH_HEALTH_DELTA":
+                    BasicAttackHealthModified += attributeEffect;
+                    break;
+                case "COMBAT_REFRESH_ARMOR_DELTA":
+                    BasicAttackArmorModified += attributeEffect;
+                    break;
+                case "COMBAT_REFRESH_POWER_DELTA":
+                    BasicAttackPowerModified += attributeEffect;
+                    break;
             }
 
             if (HasAttributeKey(Ability.AttributesThatModAmmoConsumeChanceList, key))
@@ -333,6 +365,23 @@
         private void RecalculateModCriticalDamage(float attributeEffect)
         {
             ModCriticalDamage += attributeEffect;
+        }
+
+        public void AddEffect(Power power, string effectKey, int tier)
+        {
+                int EffectId = power.Source.EffectId;
+
+                string TierKey = (tier + 1).ToString("D3");
+                string Key = $"effect_{effectKey}{TierKey}";
+
+                IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
+                if (EffectDefinition.ObjectTable.ContainsKey(Key))
+                {
+                    IPgEffect Effect = (IPgEffect)EffectDefinition.ObjectTable[Key];
+                    OtherEffectList.Add(Effect);
+                }
+                else
+                    Debug.WriteLine($"Ignoring power effect: effect_{effectKey}");
         }
         #endregion
 

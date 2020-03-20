@@ -44,5 +44,10 @@ namespace PgJsonObjects
         {
             return null;
         }
+
+        public override string ToString()
+        {
+            return Description;
+        }
     }
 }

@@ -27,6 +27,7 @@
             FillSkillList();
             FillGearSlotList();
             FillAbilitySlotList();
+            //AnalyzeCachedData();
 
             LoadSettings();
 
@@ -152,6 +153,197 @@
         }
 
         public static string IconFolder { get; private set; }
+        #endregion
+
+        #region Data Analysis
+        void AnalyzeCachedData()
+        {
+            IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
+            List<IPgPower> SimplePowerList = new List<IPgPower>();
+
+            foreach (IPgPower Item in PowerDefinition.PgObjectList)
+            {
+                IList<IPgPowerTier> TierEffectList = Item.TierEffectList;
+
+                Debug.Assert(TierEffectList.Count > 0);
+
+                int AttributeCount = 0;
+                int SimpleCount = 0;
+
+                foreach (IPgPowerTier TierItem in TierEffectList)
+                {
+                    IList<IPgPowerEffect> ItemEffectList = TierItem.EffectList;
+
+                    int EffectListCount = ItemEffectList.Count;
+                    for (int i = 0; i < EffectListCount; i++)
+                    {
+                        IPgPowerEffect ItemEffect = ItemEffectList[i];
+
+                        Debug.Assert((ItemEffect is IPgPowerAttributeLink) || (ItemEffect is IPgPowerSimpleEffect));
+
+                        if (ItemEffect is IPgPowerAttributeLink)
+                        {
+                            AttributeCount++;
+                        }
+
+                        if (ItemEffect is IPgPowerSimpleEffect)
+                        {
+                            SimpleCount++;
+                        }
+                    }
+                }
+
+                Debug.Assert(AttributeCount == 0 || SimpleCount == 0);
+
+                if (AttributeCount > 0)
+                    continue;
+
+                Debug.Assert(Item.RawSkill == PowerSkill.Internal_None ||
+                             Item.RawSkill == PowerSkill.Unknown ||
+                             SkillList.Contains(Item.Skill) ||
+                             Item.RawSkill == PowerSkill.Gourmand ||
+                             Item.RawSkill == PowerSkill.AnySkill ||
+                             Item.RawSkill == PowerSkill.Endurance ||
+                             Item.RawSkill == PowerSkill.ArmorPatching ||
+                             Item.RawSkill == PowerSkill.ShamanicInfusion);
+
+                if (Item.RawSkill == PowerSkill.Internal_None || Item.RawSkill == PowerSkill.Gourmand)
+                    continue;
+
+                SimplePowerList.Add(Item);
+            }
+
+            foreach (IPgEffect Item in EffectDefinition.PgObjectList)
+            {
+                if (Item.Key.Length <= 12 || Item.Key[Item.Key.Length - 3] != '0')
+                    continue;
+
+                if (Item.AbilityKeywordList.Count == 0)
+                    continue;
+
+                if (!int.TryParse(Item.Key.Substring(Item.Key.Length - 3), out int TierIndex))
+                    continue;
+
+                if (TierIndex <= 0 || TierIndex >= 20)
+                    continue;
+
+                string Subkey = Item.Key.Substring(0, Item.Key.Length - 3);
+
+                if (MaxEffectTable.ContainsKey(Subkey))
+                {
+                    IPgEffect OtherEffect = MaxEffectTable[Subkey];
+                    if (string.Compare(OtherEffect.Key, Item.Key, StringComparison.InvariantCulture) < 0)
+                        MaxEffectTable[Subkey] = Item;
+                }
+                else
+                    MaxEffectTable.Add(Subkey, Item);
+            }
+
+            foreach (KeyValuePair<string, IPgEffect> Entry in MaxEffectTable)
+            {
+                IPgEffect Item = Entry.Value;
+
+                int FirstIndexDigit = 0;
+                while (FirstIndexDigit < Item.Desc.Length)
+                    if (char.IsDigit(Item.Desc[FirstIndexDigit]))
+                        break;
+                    else
+                        FirstIndexDigit++;
+
+                if (FirstIndexDigit >= Item.Desc.Length)
+                    continue;
+
+                string AfterDigit = Item.Desc.Substring(FirstIndexDigit);
+                CleanCase(ref AfterDigit);
+
+                if (SearchableEffectTable.ContainsKey(AfterDigit))
+                    continue;
+
+                SearchableEffectTable.Add(AfterDigit, Item);
+            }
+
+            foreach (IPgPower Item in SimplePowerList)
+            {
+                if (!SkillList.Contains(Item.Skill))
+                    continue;
+
+                IList<IPgPowerTier> TierEffectList = Item.TierEffectList;
+
+                if (TierEffectList.Count == 0)
+                    continue;
+
+                IPgPowerTier LastTier = TierEffectList[TierEffectList.Count - 1];
+                IPgPowerEffectCollection EffectList = LastTier.EffectList;
+
+                foreach (IPgPowerEffect ItemEffect in EffectList)
+                {
+                    if (ItemEffect is IPgPowerSimpleEffect AsSimpleEffect)
+                    {
+                        string Description = AsSimpleEffect.Description;
+
+                        int FirstIndexDigit = 0;
+                        while (FirstIndexDigit < Description.Length)
+                            if (char.IsDigit(Description[FirstIndexDigit]))
+                                break;
+                            else
+                                FirstIndexDigit++;
+
+                        if (FirstIndexDigit >= Description.Length)
+                        {
+                            //Debug.WriteLine(Description);
+                            continue;
+                        }
+
+                        string AfterDigit = Description.Substring(FirstIndexDigit);
+                        CleanCase(ref AfterDigit);
+
+                        if (!SearchableEffectTable.ContainsKey(AfterDigit))
+                        {
+                            //Debug.WriteLine(Description);
+                            continue;
+                        }
+
+                        PowerToEffectTable.Add(Item, SearchableEffectTable[AfterDigit]);
+                        break;
+                    }
+                }
+            }
+
+            foreach (KeyValuePair<IPgPower, IPgEffect> Entry in PowerToEffectTable)
+            {
+                IList<IPgPowerTier> TierEffectList = Entry.Key.TierEffectList;
+                IPgPowerTier LastTier = TierEffectList[TierEffectList.Count - 1];
+                IPgPowerEffectCollection EffectList = LastTier.EffectList;
+
+                foreach (IPgPowerEffect ItemEffect in EffectList)
+                {
+                    if (ItemEffect is IPgPowerSimpleEffect AsSimpleEffect)
+                    {
+                        IPgEffect Effect = Entry.Value;
+
+                        Debug.WriteLine("");
+                        Debug.WriteLine(AsSimpleEffect.Description);
+                        Debug.WriteLine(Effect.Desc);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void CleanCase(ref string s)
+        {
+            if (s.Contains(" health ") || s.EndsWith(" health"))
+                s = s.Replace(" health", " Health");
+            if (s.Contains(" armor ") || s.EndsWith(" armor"))
+                s = s.Replace(" armor", " Armor");
+            if (s.Contains(" power ") || s.EndsWith(" power"))
+                s = s.Replace(" power", " Power");
+        }
+
+        private Dictionary<string, IPgEffect> MaxEffectTable = new Dictionary<string, IPgEffect>();
+        private Dictionary<string, IPgEffect> SearchableEffectTable = new Dictionary<string, IPgEffect>();
+        private Dictionary<IPgPower, IPgEffect> PowerToEffectTable = new Dictionary<IPgPower, IPgEffect>();
         #endregion
 
         #region Properties
@@ -584,7 +776,7 @@
             {
                 Mod Mod = (Mod)Control.DataContext;
 
-                if (Mod.SelectedPower != Control.SelectedIndex)
+                if (Mod.SelectedPowerIndex != Control.SelectedIndex)
                 {
                     Mod.SetSelectedPower(Control.SelectedIndex);
                     RecalculateMods();
@@ -1042,10 +1234,10 @@
 
         private void SaveBuildMod(JsonTextWriter writer, ref int powerIndex, Mod mod)
         {
-            if (mod.SelectedPower < 0 || mod.SelectedPower >= mod.AvailablePowerList.Count)
+            if (mod.SelectedPowerIndex < 0 || mod.SelectedPowerIndex >= mod.AvailablePowerList.Count)
                 return;
 
-            Power Power = mod.AvailablePowerList[mod.SelectedPower];
+            Power Power = mod.AvailablePowerList[mod.SelectedPowerIndex];
             SaveBuilPower(writer, ref powerIndex, Power);
         }
 
@@ -1150,8 +1342,8 @@
                 RecalculateItemMods(Item);
             }
 
-            foreach (Power Item in slot.AvailablePowerList)
-                RecalculatePowerMods(Item);
+            foreach (Mod Item in slot.ModList)
+                RecalculateSelectedMods(Item);
         }
 
         private void RecalculateItemMods(ItemInfo gearItem)
@@ -1160,13 +1352,14 @@
                 RecalculateEffectMod(Item);
         }
 
-        private void RecalculatePowerMods(Power power)
+        private void RecalculateSelectedMods(Mod mod)
         {
-            IPgPowerTier Tier = power.Tier;
+            IPgPowerTier Tier = mod.SelectedTier;
             if (Tier == null)
                 return;
+
             foreach (IPgPowerEffect Item in Tier.EffectList)
-                RecalculateEffectMod(Item);
+                RecalculateEffectMod(mod.SelectedPower, mod.SelectedPower.SelectedTier, Item);
         }
 
         private void RecalculateEffectMod(IPgItemEffect effect)
@@ -1187,7 +1380,7 @@
             }
         }
 
-        private void RecalculateEffectMod(IPgPowerEffect effect)
+        private void RecalculateEffectMod(Power power, int tier, IPgPowerEffect effect)
         {
             switch (effect)
             {
@@ -1196,7 +1389,7 @@
                     break;
 
                 case IPgPowerSimpleEffect AsPowerSimpleEffect:
-                    RecalculateSimpleEffectMods(AsPowerSimpleEffect);
+                    RecalculateSimpleEffectMods(power, tier, AsPowerSimpleEffect);
                     break;
 
                 default:
@@ -1219,10 +1412,33 @@
             Debug.WriteLine($"Ignoring item effect: {itemSimpleEffect.Description}");
         }
 
-        private void RecalculateSimpleEffectMods(IPgPowerSimpleEffect powerSimpleEffect)
+        private void RecalculateSimpleEffectMods(Power power, int tier, IPgPowerSimpleEffect powerSimpleEffect)
         {
-            Debug.WriteLine($"Ignoring power effect: {powerSimpleEffect.Description}");
+            if (powerSimpleEffect.Description == "All Ice Magic attacks that hit a single target have a 33% chance to deal +48% damage")
+            {
+            }
+
+            foreach (KeyValuePair<string, string> Entry in PowerToEffectTable2)
+                if (powerSimpleEffect.Description.StartsWith(Entry.Key))
+                {
+                    RecalculateKnownEffectMods(power, Entry.Value, tier);
+                    break;
+                }
         }
+
+        private void RecalculateKnownEffectMods(Power power, string effectKey, int tier)
+        {
+            foreach (AbilitySlot Item in AbilitySlot1List)
+                Item.AddEffect(power, effectKey, tier);
+
+            foreach (AbilitySlot Item in AbilitySlot2List)
+                Item.AddEffect(power, effectKey, tier);
+        }
+
+        private static Dictionary<string, string> PowerToEffectTable2 { get; } = new Dictionary<string, string>()
+        {
+            { "All Ice Magic attacks that hit a single target have a 33% chance to deal", "50032" },
+        };
 
         private DispatcherOperation RecalculateOperation = null;
         #endregion

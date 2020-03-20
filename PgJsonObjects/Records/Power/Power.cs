@@ -101,6 +101,9 @@ namespace PgJsonObjects
         {
             return "Tier " + Level + ": " + s;
         }
+
+        public int PowerId { get { return int.Parse(Key.Substring(6)) / 1000;} }
+        public int EffectId { get { return int.Parse(Key.Substring(6)) % 1000; } }
         #endregion
 
         #region Parsing
@@ -262,6 +265,15 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Power"; } }
+
+        public override string ToString()
+        {
+            IList<IPgPowerTier> Tiers = TierEffectList;
+            if (Tiers.Count > 0)
+                return Tiers[Tiers.Count - 1].ToString();
+            else
+                return base.ToString();
+        }
         #endregion
 
         #region Serializing

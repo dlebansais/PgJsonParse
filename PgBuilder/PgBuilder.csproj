@@ -125,6 +125,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\default.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\basic_attack.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

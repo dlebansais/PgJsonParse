@@ -58,6 +58,11 @@ namespace PgJsonObjects
             return Result;
         }
 
+        public override string ToString()
+        {
+            return Description;
+        }
+
         #region Serializing
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {

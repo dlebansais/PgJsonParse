@@ -48,5 +48,10 @@ namespace PgJsonObjects
         {
             return new List<IBackLinkable>() { SkillLink };
         }
+
+        public override string ToString()
+        {
+            return $"{{{AttributeName}}}";
+        }
     }
 }

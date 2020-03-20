@@ -16,5 +16,7 @@ namespace PgJsonObjects
         int? RawTierOffset { get; }
         List<string> CombinedTierList { get; }
         void InitTierList(Dictionary<string, IJsonKey> attributeTable);
+        int PowerId { get; }
+        int EffectId { get; }
     }
 }
