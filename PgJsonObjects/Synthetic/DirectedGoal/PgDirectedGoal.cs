@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgDirectedGoal(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 32;
+            offset += 36;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -35,6 +35,7 @@ namespace PgJsonObjects
         public string LargeHint { get { return GetString(20); } }
         public string SmallHint { get { return GetString(24); } }
         public IPgDirectedGoal CategoryGate { get { return GetObject(28, ref _CategoryGate, PgDirectedGoal.CreateNew); } } private IPgDirectedGoal _CategoryGate;
+        public List<Race> ForRaceList { get { return GetEnumList(32, ref _ForRaceList); } } private List<Race> _ForRaceList;
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Id", new FieldParser() {
@@ -58,6 +59,9 @@ namespace PgJsonObjects
             { "CategoryGateId", new FieldParser() {
                 Type = FieldType.Integer,
                 GetInteger = () => CategoryGate != null ? CategoryGate.RawId : null } },
+            { "ForRaces", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                GetStringArray = () => StringToEnumConversion<Race>.ToStringList(ForRaceList) } },
         }; } }
 
         public override string SortingName { get { return Label; } }

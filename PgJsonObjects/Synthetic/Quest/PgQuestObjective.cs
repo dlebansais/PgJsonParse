@@ -6,7 +6,7 @@ namespace PgJsonObjects
     public abstract class PgQuestObjective<TPg> : GenericPgObject<TPg>, IPgQuestObjective
         where TPg : IDeserializablePgObject
     {
-        public const int PropertiesOffset = 24;
+        public const int PropertiesOffset = 28;
 
         public PgQuestObjective(byte[] data, int offset)
             : base(data, offset)
@@ -21,6 +21,8 @@ namespace PgJsonObjects
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;
         public bool MustCompleteEarlierObjectivesFirst { get { return RawMustCompleteEarlierObjectivesFirst.HasValue && RawMustCompleteEarlierObjectivesFirst.Value; } }
         public bool? RawMustCompleteEarlierObjectivesFirst { get { return GetBool(20, 0); } }
+        public int GroupId { get { return RawGroupId.HasValue ? RawGroupId.Value : 0; } }
+        public int? RawGroupId { get { return GetInt(24); } }
         public abstract IPgQuestObjectiveRequirement QuestObjectiveRequirement { get; }
 
         public void CopyFieldTableOrder(string key, List<string> fieldTableOrder)

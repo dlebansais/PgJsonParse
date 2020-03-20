@@ -244,5 +244,6 @@
         ButterflyForm,
         OrranInv,
         FairyFire,
+        LiveEvent_LostScapegoats,
     }
 }

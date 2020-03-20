@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PgJsonObjects
@@ -13,6 +14,7 @@ namespace PgJsonObjects
         public string LargeHint { get; private set; }
         public string SmallHint { get; private set; }
         public IPgDirectedGoal CategoryGate { get; private set; }
+        public List<Race> ForRaceList { get; private set; } = new List<Race>();
         #endregion
 
         #region Indirect Properties
@@ -51,6 +53,10 @@ namespace PgJsonObjects
                 Type = FieldType.Integer,
                 ParseInteger = (int value, ParseErrorInfo errorInfo) => RawCategoryGateId = value,
                 GetInteger = () => CategoryGate != null ? CategoryGate.RawId : null } },
+            { "ForRaces", new FieldParser() {
+                Type = FieldType.SimpleStringArray,
+                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => StringToEnumConversion<Race>.ParseList(value, ForRaceList, errorInfo),
+                GetStringArray = () => StringToEnumConversion<Race>.ToStringList(ForRaceList) } },
         }; } }
 
         private void ParseLabel(string RawLabel, ParseErrorInfo ErrorInfo)
@@ -78,6 +84,9 @@ namespace PgJsonObjects
 
                 if (RawIsCategoryGate.HasValue && RawIsCategoryGate.Value)
                     AddWithFieldSeparator(ref Result, "Is Category Gate");
+
+                foreach (Race Item in ForRaceList)
+                    AddWithFieldSeparator(ref Result, TextMaps.RaceTextMap[Item]);
 
                 return Result;
             }
@@ -140,20 +149,22 @@ namespace PgJsonObjects
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)
         {
             int BaseOffset = offset;
-            Dictionary<int, string> StoredStringtable = new Dictionary<int, string>();
+            Dictionary<int, string> StoredStringTable = new Dictionary<int, string>();
+            Dictionary<int, IList> StoredEnumListTable = new Dictionary<int, IList>();
             Dictionary<int, ISerializableJsonObject> StoredObjectTable = new Dictionary<int, ISerializableJsonObject>();
             Dictionary<int, List<string>> StoredStringListTable = new Dictionary<int, List<string>>();
 
-            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringtable);
+            AddString(Key, data, ref offset, BaseOffset, 0, StoredStringTable);
             AddStringList(FieldTableOrder, data, ref offset, BaseOffset, 4, StoredStringListTable);
             AddInt(RawId, data, ref offset, BaseOffset, 8);
-            AddString(Label, data, ref offset, BaseOffset, 12, StoredStringtable);
-            AddString(Zone, data, ref offset, BaseOffset, 16, StoredStringtable);
-            AddString(LargeHint, data, ref offset, BaseOffset, 20, StoredStringtable);
-            AddString(SmallHint, data, ref offset, BaseOffset, 24, StoredStringtable);
+            AddString(Label, data, ref offset, BaseOffset, 12, StoredStringTable);
+            AddString(Zone, data, ref offset, BaseOffset, 16, StoredStringTable);
+            AddString(LargeHint, data, ref offset, BaseOffset, 20, StoredStringTable);
+            AddString(SmallHint, data, ref offset, BaseOffset, 24, StoredStringTable);
             AddObject(CategoryGate as ISerializableJsonObject, data, ref offset, BaseOffset, 28, StoredObjectTable);
+            AddEnumList(ForRaceList, data, ref offset, BaseOffset, 32, StoredEnumListTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 32, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 36, StoredStringTable, StoredObjectTable, null, StoredEnumListTable, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

@@ -54,5 +54,6 @@
         TurnIntoBoneMeal,
         Lick,
         OpenBagWithDyingBreath,
+        Salvage,
     }
 }

@@ -57,5 +57,9 @@
         BeeHiveB,
         BeeHiveH,
         BeeHiveL,
+        MissGuided,
+        MissFire,
+        MissBehaved,
+        MissFits,
     }
 }

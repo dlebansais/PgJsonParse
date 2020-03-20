@@ -72,6 +72,7 @@ namespace PgJsonObjects
             { ItemUseVerb.BreakIntoSmallerParts, "Break Into Smaller Parts" },
             { ItemUseVerb.TurnIntoBoneMeal, "Turn into Bone Meal" },
             { ItemUseVerb.OpenBagWithDyingBreath, "Open Bag With Dying Breath" },
+            { ItemUseVerb.Salvage, "Salvage" },
         };
 
         public static readonly Dictionary<RecipeEffect, string> RecipeEffectStringMap = new Dictionary<RecipeEffect, string>()
@@ -175,6 +176,7 @@ namespace PgJsonObjects
             { MapAreaName.RahuSewers, "Rahu Sewers" },
             { MapAreaName.FaeRealm, "Fae Realm" },
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
+            { MapAreaName.ANewLife, "A New Life" },
         };
 
         public static readonly Dictionary<EffectStackingType, string> StackingTypeStringMap = new Dictionary<EffectStackingType, string>()
@@ -532,6 +534,7 @@ namespace PgJsonObjects
             { Deaths.TreantSlash, "Treant Slash" },
             { Deaths.InsectSwarm, "Insect Swarm" },
             { Deaths.FairyFire, "Fairy Fire" },
+            { Deaths.Scapegoated, "Scapegoated" },
         };
 
         public static readonly Dictionary<PowerSkill, string> PowerSkillTextMap = new Dictionary<PowerSkill, string>()
@@ -1540,6 +1543,7 @@ namespace PgJsonObjects
             { RecipeKeyword.CraftedRing7, "Crafted Ring #7" },
             { RecipeKeyword.CraftedNecklace7, "Crafted Necklace #7" },
             { RecipeKeyword.ParasolMushroomFlakes, "Parasol Mushroom Flakes" },
+            { RecipeKeyword.LargeConfettiBomb, "Large Confetti Bomb" },
         };
 
         public static readonly Dictionary<Appearance, string> AppearanceTextMap = new Dictionary<Appearance, string>()
@@ -2328,6 +2332,7 @@ namespace PgJsonObjects
             { EffectKeyword.ButterflyForm, "Butterfly Form" },
             { EffectKeyword.OrranInv, "Orran Inv" },
             { EffectKeyword.FairyFire, "Fairy Fire" },
+            { EffectKeyword.LiveEvent_LostScapegoats, "Live Event (Lost Scapegoats)" },
         };
 
         public static readonly Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap = new Dictionary<ItemDroppedAppearance, string>()
@@ -3553,6 +3558,7 @@ namespace PgJsonObjects
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
             { MapAreaName.AreaFaeRealm1, "Fae Realm" },
             { MapAreaName.FaeRealm1Caves, "Fae Realm?" },
+            { MapAreaName.ANewLife, "A New Life" },
         };
 
         public static readonly Dictionary<Favor, string> FavorTextMap = new Dictionary<Favor, string>()
@@ -5175,6 +5181,10 @@ namespace PgJsonObjects
             { SpecialNpc.BeeHiveB, "Bee Hive (B)" },
             { SpecialNpc.BeeHiveH, "Bee Hive (H)" },
             { SpecialNpc.BeeHiveL, "Bee Hive (L)" },
+            { SpecialNpc.MissGuided, "MissGuided," },
+            { SpecialNpc.MissFire, "MissFire" },
+            { SpecialNpc.MissBehaved, "MissBehaved" },
+            { SpecialNpc.MissFits, "MissFits" },
         };
 
         public static readonly Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap = new Dictionary<LoreBookKeyword, string>()

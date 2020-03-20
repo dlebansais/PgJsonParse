@@ -38,7 +38,7 @@
         #region Data Load
         public void LoadCachedData()
         {
-            int Version = 333;
+            int Version = 334;
             string UserRootFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string ApplicationFolder = Path.Combine(UserRootFolder, "PgJsonParse");
             string VersionCacheFolder = Path.Combine(ApplicationFolder, "Versions");

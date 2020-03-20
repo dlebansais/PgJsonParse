@@ -814,5 +814,9 @@
         IPgAIAbility BigCatRoot_Pet6 { get; }
         IPgAIAbility BearStun_Pet5 { get; }
         IPgAIAbility BearStun_Pet6 { get; }
+        IPgAIAbility PhoenixClaw { get; }
+        IPgAIAbility GoatBite { get; }
+        IPgAIAbility GoatKick { get; }
+        IPgAIAbility GoatSmite { get; }
     }
 }

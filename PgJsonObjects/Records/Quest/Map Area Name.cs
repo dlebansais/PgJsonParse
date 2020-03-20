@@ -35,5 +35,6 @@
         SacredGrotto,
         AreaFaeRealm1,
         FaeRealm1Caves,
+        ANewLife,
     }
 }

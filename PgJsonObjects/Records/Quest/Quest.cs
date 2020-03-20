@@ -712,6 +712,9 @@ namespace PgJsonObjects
             else if (RawRewardEffect.StartsWith("AdvanceScriptedQuestObjective("))
             {
                 int IndexEnd = RawRewardEffect.IndexOf("_Complete)");
+                if (IndexEnd < 0)
+                    IndexEnd = RawRewardEffect.IndexOf("_Done)");
+
                 if (IndexEnd >= 30)
                 {
                     string RawQuestCompleteNpc = RawRewardEffect.Substring(30, IndexEnd - 30);

@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[812];
+        private PgAIAbility[] Abilities = new PgAIAbility[816];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -836,6 +836,10 @@ namespace PgJsonObjects
         public IPgAIAbility BigCatRoot_Pet6 { get { return GetAbilityObject(809); } }
         public IPgAIAbility BearStun_Pet5 { get { return GetAbilityObject(810); } }
         public IPgAIAbility BearStun_Pet6 { get { return GetAbilityObject(811); } }
+        public IPgAIAbility PhoenixClaw { get { return GetAbilityObject(812); } }
+        public IPgAIAbility GoatBite { get { return GetAbilityObject(813); } }
+        public IPgAIAbility GoatKick { get { return GetAbilityObject(814); } }
+        public IPgAIAbility GoatSmite { get { return GetAbilityObject(815); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
@@ -3275,6 +3279,18 @@ namespace PgJsonObjects
            { "BearStun_Pet6", new FieldParser() {
                Type = FieldType.Object,
                GetObject = () => BearStun_Pet6 as IObjectContentGenerator } },
+           { "PhoenixClaw", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => PhoenixClaw as IObjectContentGenerator } },
+           { "GoatBite", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => GoatBite as IObjectContentGenerator } },
+           { "GoatKick", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => GoatKick as IObjectContentGenerator } },
+           { "GoatSmite", new FieldParser() {
+               Type = FieldType.Object,
+               GetObject = () => GoatSmite as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

@@ -147,5 +147,6 @@
         TreantSlash,
         InsectSwarm,
         FairyFire,
+        Scapegoated,
     }
 }

@@ -69,6 +69,9 @@ namespace PgJsonObjects
                 case QuestObjectiveType.UseAbilityOnTargets:
                     return new PgQuestObjectiveUseAbilityOnTargets(data, ref offset);
 
+                case QuestObjectiveType.CompleteQuest:
+                    return new PgQuestObjectiveCompleteQuest(data, ref offset);
+
                 default:
                     throw new InvalidOperationException();
             }

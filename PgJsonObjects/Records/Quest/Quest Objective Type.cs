@@ -29,5 +29,6 @@
         Loot,
         ScriptedReceiveItem,
         UseAbilityOnTargets,
+        CompleteQuest,
     }
 }

@@ -1,5 +1,7 @@
 namespace PgJsonObjects
 {
+    using System.Collections.Generic;
+
     public interface IPgDirectedGoal : IJsonKey, IObjectContentGenerator, IBackLinkable
     {
         int Id { get; }
@@ -9,5 +11,6 @@ namespace PgJsonObjects
         string LargeHint { get; }
         string SmallHint { get; }
         IPgDirectedGoal CategoryGate { get; }
+        List<Race> ForRaceList { get; }
     }
 }

@@ -30,8 +30,10 @@ namespace PgJsonObjects
         public bool? RawMustCompleteEarlierObjectivesFirst;
         public int? MinHour { get; private set; }
         public int? MaxHour { get; private set; }
+        public int? GroupId { get; private set; }
         private int? RawMinAmount;
         private int? RawMaxAmount;
+        private int? RawGroupId;
         private QuestObjectiveKillTarget KillTarget;
         private ItemKeyword ItemTarget;
         private RecipeKeyword RecipeTarget;
@@ -181,6 +183,9 @@ namespace PgJsonObjects
                     else
                         return this;
 
+                case QuestObjectiveType.CompleteQuest:
+                    return new QuestObjectiveCompleteQuest(Type, Description, RawNumber, RawMustCompleteEarlierObjectivesFirst, InteractionTarget);
+
                 default:
                     return null;
             }
@@ -201,7 +206,7 @@ namespace PgJsonObjects
                 GetString = () => Description } },
             { "Number", new FieldParser() {
                 Type = FieldType.Integer,
-                ParseInteger = ParseNumber,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawNumber = value,
                 GetInteger = () => RawNumber } },
             { "InteractionFlags", new FieldParser() {
                 Type = FieldType.StringArray,
@@ -283,6 +288,10 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => InternalName = value,
                 GetString = () => InternalName } },
+            { "GroupId", new FieldParser() {
+                Type = FieldType.Integer,
+                ParseInteger = (int value, ParseErrorInfo errorInfo) => RawGroupId = value,
+                GetInteger = () => RawGroupId } },
         }; } }
 
         private void ParseTarget(string RawTarget, ParseErrorInfo ErrorInfo)
@@ -357,6 +366,7 @@ namespace PgJsonObjects
 
             else if (Type == QuestObjectiveType.BeAttacked ||
                      Type == QuestObjectiveType.UseAbilityOnTargets ||
+                     Type == QuestObjectiveType.CompleteQuest ||
                      Type == QuestObjectiveType.Bury)
                 InteractionTarget = RawTarget;
 
@@ -634,6 +644,11 @@ namespace PgJsonObjects
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective NumToDeliver (Type)");
         }
+
+        private void ParseGroupId(int value, ParseErrorInfo ErrorInfo)
+        {
+            RawGroupId = value;
+        }
         #endregion
 
         #region Indexing
@@ -682,6 +697,7 @@ namespace PgJsonObjects
             AddBool(RawMustCompleteEarlierObjectivesFirst, data, ref offset, ref BitOffset, BaseOffset, 20, 0);
             CloseBool(ref offset, ref BitOffset);
             offset += 2;
+            AddInt(RawGroupId, data, ref offset, BaseOffset, 24);
         }
 
         protected override void SerializeJsonObjectInternal(byte[] data, ref int offset)

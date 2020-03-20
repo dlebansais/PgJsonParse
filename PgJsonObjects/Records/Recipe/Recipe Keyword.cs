@@ -105,5 +105,6 @@
         CraftedRing7,
         CraftedNecklace7,
         ParasolMushroomFlakes,
+        LargeConfettiBomb,
     }
 }

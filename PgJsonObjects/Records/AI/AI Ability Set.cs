@@ -819,6 +819,10 @@ namespace PgJsonObjects
         public IPgAIAbility BigCatRoot_Pet6 { get; private set; }
         public IPgAIAbility BearStun_Pet5 { get; private set; }
         public IPgAIAbility BearStun_Pet6 { get; private set; }
+        public IPgAIAbility PhoenixClaw { get; private set; }
+        public IPgAIAbility GoatBite { get; private set; }
+        public IPgAIAbility GoatKick { get; private set; }
+        public IPgAIAbility GoatSmite { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -4075,6 +4079,22 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => BearStun_Pet6 =
                    JsonObjectParser<AIAbility>.Parse("BearStun_Pet6", value, errorInfo),
                GetObject = () => BearStun_Pet6 as IObjectContentGenerator } },
+           { "PhoenixClaw", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => PhoenixClaw =
+                   JsonObjectParser<AIAbility>.Parse("PhoenixClaw", value, errorInfo),
+               GetObject = () => PhoenixClaw as IObjectContentGenerator } },
+           { "GoatBite", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => GoatBite =
+                   JsonObjectParser<AIAbility>.Parse("GoatBite", value, errorInfo),
+               GetObject = () => GoatBite as IObjectContentGenerator } },
+           { "GoatKick", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => GoatKick =
+                   JsonObjectParser<AIAbility>.Parse("GoatKick", value, errorInfo),
+               GetObject = () => GoatKick as IObjectContentGenerator } },
+           { "GoatSmite", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => GoatSmite =
+                   JsonObjectParser<AIAbility>.Parse("GoatSmite", value, errorInfo),
+               GetObject = () => GoatSmite as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4925,8 +4945,12 @@ namespace PgJsonObjects
             AddObject(BigCatRoot_Pet6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 809 * 4, StoredObjectTable);
             AddObject(BearStun_Pet5 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 810 * 4, StoredObjectTable);
             AddObject(BearStun_Pet6 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 811 * 4, StoredObjectTable);
+            AddObject(PhoenixClaw as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 812 * 4, StoredObjectTable);
+            AddObject(GoatBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 813 * 4, StoredObjectTable);
+            AddObject(GoatKick as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 814 * 4, StoredObjectTable);
+            AddObject(GoatSmite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 815 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 812 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 816 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

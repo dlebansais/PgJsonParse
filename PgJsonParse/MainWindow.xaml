@@ -876,6 +876,25 @@
                 <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
             </WrapPanel>
         </DataTemplate>
+        <DataTemplate x:Key="QuestObjectiveCompleteQuestTemplate">
+            <WrapPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                        <Expander VerticalAlignment="Center" Width="0"/>
+                        <TextBlock Text="{Binding Description}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding HasNumber, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}" Orientation="Horizontal" VerticalAlignment="Top" Margin="5,0,0,0">
+                        <Expander VerticalAlignment="Center" Width="0"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock>(x</TextBlock>
+                            <TextBlock Text="{Binding Number}"/>
+                            <TextBlock>)</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Text="{Binding TimeCompletion}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Center" Visibility="{Binding HasMinAndMaxHours, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}, FallbackValue=Collapsed}"/>
+            </WrapPanel>
+        </DataTemplate>
         <DataTemplate x:Key="QuestObjectiveLootTemplate">
             <WrapPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
@@ -2461,6 +2480,23 @@
                 </Grid>
             </DockPanel>
         </DataTemplate>
+        <DataTemplate x:Key="SearchResultDirectedGoalContent_ForRace_ItemTemplateFirst">
+            <TextBlock TextWrapping="Wrap">
+                <TextBlock.Text>
+                    <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="RaceTextMap"/>
+                </TextBlock.Text>
+            </TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchResultDirectedGoalContent_ForRace_ItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>,</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,0,0,0">
+                    <TextBlock.Text>
+                        <Binding Converter="{StaticResource convEnumToText}" ConverterParameter="RaceTextMap"/>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="SearchResultDirectedGoalTitleTemplate">
             <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
                 <Image Source="{Binding SearchResultIconFileName, Converter={StaticResource convFileNameToBitmapImage}}" VerticalAlignment="Center" Width="24" Height="24"/>
@@ -2488,6 +2524,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,0,0">Zone:</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Zone}" TextWrapping="Wrap" Margin="5,0,0,0"/>
@@ -2503,6 +2540,21 @@
                             </Run>
                         </Hyperlink>
                     </TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="4" TextAlignment="Right" Margin="0,10,0,0">For race(s):</TextBlock>
+                    <Grid Grid.Column="1" Grid.Row="4" Margin="5,10,0,0">
+                        <ItemsControl x:Name="ctrl_SearchResultDirectedGoalContent_ForRace" ItemsSource="{Binding ForRaceList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <app:ListMemberSelector x:Name="SearchResultDirectedGoalContent_ForRace" Content="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
                 </Grid>
             </DockPanel>
         </DataTemplate>

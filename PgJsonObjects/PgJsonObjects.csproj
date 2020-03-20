@@ -156,6 +156,7 @@
     <Compile Include="Interfaces\Quest\IPgQuestObjectiveRequirement.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRequirement.cs" />
     <Compile Include="Interfaces\Quest\IPgQuestRequirementCollection.cs" />
+    <Compile Include="Interfaces\Quest\QuestObjective\IPgQuestObjectiveCompleteQuest.cs" />
     <Compile Include="Interfaces\Quest\QuestReward\IPgQuestReward.cs" />
     <Compile Include="Interfaces\Quest\QuestReward\IPgQuestRewardCollection.cs" />
     <Compile Include="Interfaces\Quest\QuestReward\IPgQuestRewardItem.cs" />
@@ -330,6 +331,7 @@
     <Compile Include="Records\Power\PowerEffectCollection.cs" />
     <Compile Include="Records\Quest\Monster Type Tag.cs" />
     <Compile Include="Records\Quest\Quest Objective Requirement.cs" />
+    <Compile Include="Records\Quest\Quest Objectives\QuestObjectiveCompleteQuest.cs" />
     <Compile Include="Records\Quest\Quest Objectives\QuestObjectiveUseAbilityOnTargets.cs" />
     <Compile Include="Records\Quest\Quest Objectives\QuestObjectiveLoot.cs" />
     <Compile Include="Records\Quest\Quest Objectives\QuestObjectiveScriptedReceiveItem.cs" />
@@ -596,6 +598,7 @@
     <Compile Include="Synthetic\Quest\PgQuestRequirement.cs" />
     <Compile Include="Synthetic\Quest\PgQuestObjective.cs" />
     <Compile Include="Synthetic\Quest\PgQuestObjectiveRequirement.cs" />
+    <Compile Include="Synthetic\Quest\QuestObjective\PgQuestObjectiveCompleteQuest.cs" />
     <Compile Include="Synthetic\Quest\QuestReward\PgQuestReward.cs" />
     <Compile Include="Synthetic\Quest\QuestReward\PgQuestRewardItem.cs" />
     <Compile Include="Synthetic\Quest\QuestReward\PgQuestRewardCurrency.cs" />
