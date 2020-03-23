@@ -103,6 +103,8 @@
                     PowerItem.RawSkill != PowerSkill.ArmorPatching &&
                     PowerItem.RawSkill != PowerSkill.ShamanicInfusion)
                     continue;
+                if (PowerItem.IsUnavailable)
+                    continue;
 
                 bool IsSlotCompatible = false;
                 foreach (ItemSlot SlotItem in PowerItem.SlotList)

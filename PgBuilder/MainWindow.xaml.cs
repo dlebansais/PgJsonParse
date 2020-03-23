@@ -164,18 +164,88 @@ namespace PgBuilder
         #endregion
 
         #region Data Analysis
-        void AnalyzeCachedData()
+        private void AnalyzeCachedData()
         {
-            IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
-            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
-            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
-            IList<IPgAbility> AbilityList = (IList<IPgAbility>)AbilityDefinition.VerifiedObjectList;
+            FilterValidPowers(out List<IPgPower> PowerAttributeList, out List<IPgPower> PowerSimpleEffectList);
+            FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> AllEffectTable);
+            FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable);
 
-            GetAbilityNames(AbilityList, out List<string> AbilityNameList);
+            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in PowerToEffectTable)
+            {
+                IList<IPgPowerTier> TierEffectList = Entry.Key.TierEffectList;
+                IPgPowerTier LastTier = TierEffectList[TierEffectList.Count - 1];
+                IPgPowerEffectCollection EffectList = LastTier.EffectList;
 
-            List<IPgPower> PowerAttributeList = new List<IPgPower>();
-            List<IPgPower> PowerSimpleEffectList = new List<IPgPower>();
+                foreach (IPgPowerEffect ItemEffect in EffectList)
+                {
+                    if (ItemEffect is IPgPowerSimpleEffect AsSimpleEffect)
+                    {
+                        List<IPgEffect> TierList = Entry.Value;
+                        IPgEffect Effect = TierList[TierList.Count - 1];
+
+                        Debug.WriteLine("");
+                        Debug.WriteLine(AsSimpleEffect.Description);
+                        Debug.WriteLine(Effect.Desc);
+                        break;
+                    }
+                }
+            }
+
+            GetAbilityNames(out List<string> AbilityNameList);
+
             List<IPgPower> ParsedSimpleEffectList = new List<IPgPower>();
+
+            foreach (IPgPower Item in PowerSimpleEffectList)
+            {
+                if (PerfectMatch.ContainsKey(Item.ToString()))
+                    continue;
+
+                if (Item.ToString().EndsWith("and reduce the damage of the next attack that hits the target by 20%"))
+                    continue; // effect_14323
+                if (Item.ToString() == "Molten Veins causes any nearby Fire Walls to recover 117 health")
+                    continue; // Increase Fire Wall heal displayed
+                if (Item.ToString() == "While Unarmed skill is active: you gain +4% Melee Evasion and any time you Evade a Melee attack you recover 64 Armor")
+                    continue; // Increase evasion and armor regen
+                if (Item.ToString() == "While Unarmed skill is active: any time you Evade an attack, your next attack deals +133 damage")
+                    continue; // special effect
+                if (Item.ToString() == "While Unarmed skill is active: 18% of all Slashing, Piercing, and Crushing damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 260% rate")
+                    continue; // special effect
+                if (Item.ToString() == "While Unarmed skill is active: 25% of all Darkness and Psychic damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 300% rate")
+                    continue; // special effect
+                if (Item.ToString() == "While Unarmed skill active: 21% of all Acid, Poison, and Nature damage you take is mitigated and added to the damage done by your next Kick at a 280% rate")
+                    continue; // special effect
+                if (Item.ToString() == "Combo: Suppress+Any Melee+Any Melee+Headcracker: final step stuns the target while dealing +200 damage.")
+                    continue; // special effect
+                if (Item.ToString() == "You heal 22 health every other second while under the effect of Haste Concoction")
+                    continue; // special effect
+                if (Item.ToString() == "You heal 16 health and 16 armor every other second while under the effect of Haste Concoction")
+                    continue; // special effect
+                if (Item.ToString() == "You regain 8 Power every other second while under the effect of Haste Concoction")
+                    continue; // special effect
+                if (Item.ToString() == "While the Shield skill is active, you mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)")
+                    continue; // special effect
+                if (Item.ToString() == "When you are hit by a monster's Rage Attack, the current reuse timer of Stunning Bash is hastened by 1 second and your next Stunning Bash deals +80 damage")
+                    continue; // special effect
+
+                if (IsExtractable(AbilityNameList, Item))
+                    continue;
+
+                ParsedSimpleEffectList.Add(Item);
+            }
+        }
+
+        private void FilterValidPowers(out List<IPgPower> powerAttributeList, out List<IPgPower> powerSimpleEffectList)
+        {
+            powerAttributeList = new List<IPgPower>();
+            powerSimpleEffectList = new List<IPgPower>();
+
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
+
+            List<ItemSlot> ValidSlotList = new List<ItemSlot>();
+            foreach (GearSlot Item in GearSlotList)
+                ValidSlotList.Add(Item.Slot);
+
+            int TotalTierCount = 0;
 
             foreach (IPgPower Item in PowerDefinition.PgObjectList)
             {
@@ -211,14 +281,17 @@ namespace PgBuilder
 
                 Debug.Assert(AttributeCount == 0 || SimpleCount == 0);
 
-                if (AttributeCount > 0)
-                    PowerAttributeList.Add(Item);
-                else
-                    PowerSimpleEffectList.Add(Item);
-            }
+                bool IsSlotCompatible = false;
+                foreach (ItemSlot SlotItem in Item.SlotList)
+                    if (ValidSlotList.Contains(SlotItem))
+                    {
+                        IsSlotCompatible = true;
+                        break;
+                    }
 
-            foreach (IPgPower Item in PowerSimpleEffectList)
-            {
+                if (!IsSlotCompatible)
+                    continue;
+
                 Debug.Assert(Item.RawSkill == PowerSkill.Internal_None ||
                              Item.RawSkill == PowerSkill.Unknown ||
                              SkillList.Contains(Item.Skill) ||
@@ -233,47 +306,123 @@ namespace PgBuilder
                 if (Item.IsUnavailable)
                     continue;
 
-                if (PerfectMatch.ContainsKey(Item.ToString()))
+                if (AttributeCount > 0)
+                    powerAttributeList.Add(Item);
+                else
+                    powerSimpleEffectList.Add(Item);
+
+                TotalTierCount += TierEffectList.Count;
+            }
+
+            Debug.WriteLine($"{powerSimpleEffectList.Count + powerAttributeList.Count} powers, {powerAttributeList.Count} with attribute, {powerSimpleEffectList.Count} with description, Total: {TotalTierCount} mods");
+        }
+
+        private void FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable)
+        {
+            IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
+
+            allEffectTable = new Dictionary<string, Dictionary<string, List<IPgEffect>>>();
+
+            foreach (IPgEffect Item in EffectDefinition.PgObjectList)
+            {
+                if (Item.Key.Length <= 12 || Item.Key[Item.Key.Length - 3] != '0')
                     continue;
 
-                if (Item.ToString().EndsWith("and reduce the damage of the next attack that hits the target by 20%"))
-                    continue; // effect_14323
-                if (Item.ToString() == "Molten Veins causes any nearby Fire Walls to recover 117 health")
-                    continue; // Increase Fire Wall heal displayed
-                if (Item.ToString() == "While Unarmed skill is active: you gain +4% Melee Evasion and any time you Evade a Melee attack you recover 64 Armor")
-                    continue; // Increase evasion and armor regen
-                if (Item.ToString() == "While Unarmed skill is active: any time you Evade an attack, your next attack deals +133 damage")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill is active: 18% of all Slashing, Piercing, and Crushing damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 260% rate")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill is active: 25% of all Darkness and Psychic damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 300% rate")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill active: 21% of all Acid, Poison, and Nature damage you take is mitigated and added to the damage done by your next Kick at a 280% rate")
-                    continue; // special effect
-                if (Item.ToString() == "Combo: Suppress+Any Melee+Any Melee+Headcracker: final step stuns the target while dealing +200 damage.")
-                    continue; // special effect
-                if (Item.ToString() == "You heal 22 health every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "You heal 16 health and 16 armor every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "You regain 8 Power every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "While the Shield skill is active, you mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)")
-                    continue; // special effect
-                if (Item.ToString() == "When you are hit by a monster's Rage Attack, the current reuse timer of Stunning Bash is hastened by 1 second and your next Stunning Bash deals +80 damage")
-                    continue; // special effect
+                Debug.Assert(Item.AbilityKeywordList.Count > 0);
 
-                int DebugIndex = PowerDefinition.PgObjectList.IndexOf(Item);
+                bool IsIntSuffix = int.TryParse(Item.Key.Substring(Item.Key.Length - 3), out int TierIndex);
+                Debug.Assert(IsIntSuffix);
+                Debug.Assert(TierIndex >= 1 && TierIndex < 30);
 
-                if (IsExtractable(AbilityNameList, Item))
-                    continue;
+                string Subkey = Item.Key.Substring(0, Item.Key.Length - 3);
+                string PowerKey = Subkey.Substring(Subkey.Length - 3);
 
-                ParsedSimpleEffectList.Add(Item);
+                if (!allEffectTable.ContainsKey(PowerKey))
+                    allEffectTable.Add(PowerKey, new Dictionary<string, List<IPgEffect>>());
+                Dictionary<string, List<IPgEffect>> SameKeyTable = allEffectTable[PowerKey];
+
+                if (!SameKeyTable.ContainsKey(Subkey))
+                    SameKeyTable.Add(Subkey, new List<IPgEffect>());
+                SameKeyTable[Subkey].Add(Item);
             }
         }
 
-        private bool HasCommonIcon(IList<IPgAbility> abilityList, IPgPower power, List<IPgEffect> effectList)
+        private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, List<IPgPower> powerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
         {
+            IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
+            Dictionary<string, IPgEffect> SearchableEffectTable = new Dictionary<string, IPgEffect>();
+            powerToEffectTable = new Dictionary<IPgPower, List<IPgEffect>>();
+
+            foreach (IPgPower Item in powerSimpleEffectList)
+                if (FindPowersWithMatchingEffect(allEffectTable, Item, out List<IPgEffect> MatchingEffectList))
+                    powerToEffectTable.Add(Item, MatchingEffectList);
+        }
+
+        private bool FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, IPgPower power, out List<IPgEffect> matchingEffectList)
+        {
+            matchingEffectList = null;
+
+            string Key = power.Key;
+
+            if (Key.Length < 9)
+                return false;
+
+            string PowerKey = Key.Substring(Key.Length - 3);
+            if (!allEffectTable.ContainsKey(PowerKey))
+                return false;
+
+            Dictionary<string, List<IPgEffect>> SameKeyTable = allEffectTable[PowerKey];
+            IList<IPgPowerTier> TierEffectList = power.TierEffectList;
+            List<string> MatchingKeyList = new List<string>();
+            List<string> OneToOneMatchingKeyList = new List<string>();
+
+            foreach (KeyValuePair<string, List<IPgEffect>> Entry in SameKeyTable)
+            {
+                List<IPgEffect> TierList = Entry.Value;
+                if (TierEffectList.Count != TierList.Count)
+                    continue;
+
+                if (HasCommonIcon(power, TierList, out bool IsOneToOne))
+                {
+                    MatchingKeyList.Add(Entry.Key);
+
+                    if (IsOneToOne)
+                        OneToOneMatchingKeyList.Add(Entry.Key);
+                }
+            }
+
+            if (MatchingKeyList.Count == 0)
+                return false;
+
+            if (OneToOneMatchingKeyList.Count > 1)
+            {
+                Debug.WriteLine($"Possible mod bug: {power}");
+                return false;
+            }
+
+            if (OneToOneMatchingKeyList.Count == 0)
+            {
+                if (MatchingKeyList.Count > 1)
+                {
+                    Debug.WriteLine($"Possible mod bug ({OneToOneMatchingKeyList.Count}): {power}");
+                    matchingEffectList = SameKeyTable[MatchingKeyList[1]];
+                }
+                else
+                    matchingEffectList = SameKeyTable[MatchingKeyList[0]];
+            }
+            else
+                matchingEffectList = SameKeyTable[OneToOneMatchingKeyList[0]];
+
+            return true;
+        }
+
+
+
+        private bool HasCommonIcon(IPgPower power, List<IPgEffect> effectList, out bool isOneToOne)
+        {
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
+            IList<IPgAbility> AbilityList = (IList<IPgAbility>)AbilityDefinition.VerifiedObjectList;
+
             List<int> PowerIconList = new List<int>();
             List<int> EffectIconList = new List<int>();
 
@@ -316,7 +465,7 @@ namespace PgBuilder
                     PowerIconList.Add(108);
             }
 
-            foreach (IPgAbility AbilityItem in abilityList)
+            foreach (IPgAbility AbilityItem in AbilityList)
             {
                 bool KeywordMatch = false;
 
@@ -334,6 +483,8 @@ namespace PgBuilder
                 }
             }
 
+            isOneToOne = PowerIconList.Count == 1 && EffectIconList.Count == 1;
+
             foreach (int IconId in PowerIconList)
                 if (EffectIconList.Contains(IconId))
                     return true;
@@ -341,11 +492,14 @@ namespace PgBuilder
             return false;
         }
 
-        private void GetAbilityNames(IList<IPgAbility> abilityList, out List<string> abilityNameList)
+        private void GetAbilityNames(out List<string> abilityNameList)
         {
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
+            IList<IPgAbility> AbilityList = (IList<IPgAbility>)AbilityDefinition.VerifiedObjectList;
+
             abilityNameList = new List<string>();
 
-            foreach (IPgAbility Item in abilityList)
+            foreach (IPgAbility Item in AbilityList)
             {
                 if (!SkillList.Contains(Item.Skill))
                     continue;
@@ -967,11 +1121,15 @@ namespace PgBuilder
                 s = s.Replace(" power", " Power");
         }
 
-        private Dictionary<string, string> PerfectMatch = new Dictionary<string, string>()
+        private Dictionary<string, string> PerfectMatchWithAddition = new Dictionary<string, string>()
         {
             { "Nice Attacks deal +40 damage and cause the target's next Rage Attack to deal -25% damage (debuff cannot stack with itself)",
                 "Target's next Rage Attack deals -25% damage" },
 
+        };
+
+        private Dictionary<string, string> PerfectMatch = new Dictionary<string, string>()
+        {
             { "Nice Attacks deal +64 damage and hasten your current Combat Refresh delay by 1 second",
                 "Hastens your current Combat Refresh timer by 1 second" },
 
@@ -2015,7 +2173,7 @@ namespace PgBuilder
 
             { "Animal Handling pets taunt their opponents 32% less",
               "Taunt -32%" },
-/**/
+
             { "Animal Handling pets' damage-over-time effects (if any) deal +130% damage per tick",
               "Damage over Time +130% per tick" },
 
@@ -2120,7 +2278,7 @@ namespace PgBuilder
 
             { "Reckless Slam boosts your direct damage mitigation +16 for 5 seconds",
               "+16 direct damage mitigation for 5 seconds" },
-/**/
+
             { "Reckless Slam and Reverberating Strike boost your Nice Attack Damage +66 for 9 seconds",
               "Nice Attack Damage +66 for 9 seconds" },
 
@@ -2390,7 +2548,7 @@ namespace PgBuilder
 
             { "Song of Discord reduces targets' Rage by -130 every 2 seconds",
               "Reduces targets' Rage by -130 every 2 seconds" },
-/**/
+
             { "Song of Discord has a 45% chance to deal +25% damage to each target every 2 seconds",
               "45% chance to deal +25% damage to each target every 2 seconds" },
 
@@ -2997,9 +3155,6 @@ namespace PgBuilder
             { "Coordinated Assault grants all allies +8 direct-damage mitigation and +1.5 out-of-combat sprint speed for 30 seconds",
               "All allies gain +8 direct-damage mitigation and +1.5 out-of-combat sprint speed for 30 seconds" },
         };
-
-        private Dictionary<string, IPgEffect> SearchableEffectTable = new Dictionary<string, IPgEffect>();
-        private Dictionary<IPgPower, IPgEffect> PowerToEffectTable = new Dictionary<IPgPower, IPgEffect>();
         #endregion
 
         #region Properties

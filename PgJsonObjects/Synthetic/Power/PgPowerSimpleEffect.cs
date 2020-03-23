@@ -49,5 +49,7 @@ namespace PgJsonObjects
         {
             return Description;
         }
+
+        public IPgEffect PairedEffect { get; set; } = null;
     }
 }
