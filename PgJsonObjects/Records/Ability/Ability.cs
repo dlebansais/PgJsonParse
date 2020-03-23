@@ -2716,6 +2716,21 @@ namespace PgJsonObjects
         #region Debugging
         protected override string FieldTableName { get { return "Ability"; } }
 
+        public string BaseName
+        {
+            get
+            {
+                string Result = Name;
+
+                while (Result.Length > 0 && (Char.IsDigit(Result[Result.Length - 1]) || Result[Result.Length - 1] == '#'))
+                    Result = Result.Substring(0, Result.Length - 1);
+
+                Result = Result.Trim();
+
+                return Result;
+            }
+        }
+
         public override string ToString()
         {
             return Name;

@@ -101,5 +101,6 @@ namespace PgJsonObjects
         ConsumedItem ConsumedItem { get; }
         string DigitStrippedName { get; }
         int LineIndex { get; }
+        string BaseName { get; }
     }
 }

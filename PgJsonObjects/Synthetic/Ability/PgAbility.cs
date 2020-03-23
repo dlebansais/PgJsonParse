@@ -378,5 +378,25 @@ namespace PgJsonObjects
             if (!int.TryParse(LineIndexString, out lineIndex))
                 lineIndex = -1;
         }
+
+        public string BaseName
+        {
+            get
+            {
+                string Result = Name;
+
+                while (Result.Length > 0 && Char.IsDigit(Result[Result.Length - 1]))
+                    Result = Result.Substring(0, Result.Length - 1);
+
+                Result = Result.Trim();
+
+                return Result;
+            }
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -174,6 +174,11 @@ namespace PgJsonObjects
 
         #region Debugging
         protected override string FieldTableName { get { return "Effect"; } }
+
+        public override string ToString()
+        {
+            return Desc;
+        }
         #endregion
 
         #region Serializing
