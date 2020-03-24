@@ -170,6 +170,10 @@ namespace PgBuilder
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> AllEffectTable);
             FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable);
 
+            GetAbilityNames(out List<string> AbilityNameList);
+
+            AnalyzeMatchingEffects(AbilityNameList, PowerToEffectTable);
+
             foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in PowerToEffectTable)
             {
                 IList<IPgPowerTier> TierEffectList = Entry.Key.TierEffectList;
@@ -191,47 +195,7 @@ namespace PgBuilder
                 }
             }
 
-            GetAbilityNames(out List<string> AbilityNameList);
-
-            List<IPgPower> ParsedSimpleEffectList = new List<IPgPower>();
-
-            foreach (IPgPower Item in PowerSimpleEffectList)
-            {
-                if (PerfectMatch.ContainsKey(Item.ToString()))
-                    continue;
-
-                if (Item.ToString().EndsWith("and reduce the damage of the next attack that hits the target by 20%"))
-                    continue; // effect_14323
-                if (Item.ToString() == "Molten Veins causes any nearby Fire Walls to recover 117 health")
-                    continue; // Increase Fire Wall heal displayed
-                if (Item.ToString() == "While Unarmed skill is active: you gain +4% Melee Evasion and any time you Evade a Melee attack you recover 64 Armor")
-                    continue; // Increase evasion and armor regen
-                if (Item.ToString() == "While Unarmed skill is active: any time you Evade an attack, your next attack deals +133 damage")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill is active: 18% of all Slashing, Piercing, and Crushing damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 260% rate")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill is active: 25% of all Darkness and Psychic damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 300% rate")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill active: 21% of all Acid, Poison, and Nature damage you take is mitigated and added to the damage done by your next Kick at a 280% rate")
-                    continue; // special effect
-                if (Item.ToString() == "Combo: Suppress+Any Melee+Any Melee+Headcracker: final step stuns the target while dealing +200 damage.")
-                    continue; // special effect
-                if (Item.ToString() == "You heal 22 health every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "You heal 16 health and 16 armor every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "You regain 8 Power every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "While the Shield skill is active, you mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)")
-                    continue; // special effect
-                if (Item.ToString() == "When you are hit by a monster's Rage Attack, the current reuse timer of Stunning Bash is hastened by 1 second and your next Stunning Bash deals +80 damage")
-                    continue; // special effect
-
-                if (IsExtractable(AbilityNameList, Item))
-                    continue;
-
-                ParsedSimpleEffectList.Add(Item);
-            }
+            AnalyzeRemainingEffects(AbilityNameList, PowerSimpleEffectList);
         }
 
         private void FilterValidPowers(out List<IPgPower> powerAttributeList, out List<IPgPower> powerSimpleEffectList)
@@ -416,6 +380,73 @@ namespace PgBuilder
             return true;
         }
 
+        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
+        {
+            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
+            {
+                IPgPower ItemPower = Entry.Key;
+                List<IPgEffect> ItemEffectList = Entry.Value;
+                IList<IPgPowerTier> TierEffectList = ItemPower.TierEffectList;
+
+                Debug.Assert(TierEffectList.Count == ItemEffectList.Count);
+
+                IPgPowerTier ItemPowerTier = TierEffectList[TierEffectList.Count - 1];
+
+                foreach (IPgPowerEffect Item in ItemPowerTier.EffectList)
+                    if (Item is IPgPowerSimpleEffect AsSimpleEffect)
+                    {
+                        string Text = AsSimpleEffect.Description;
+
+                        ExtractAbilityName(abilityNameList, ref Text, out bool IsNameExtracted);
+                        ExtractKnownAttribute(ref Text, out bool IsAttributeExtracted);
+                        RemoveUnusedText(ref Text);
+
+                    }
+            }
+        }
+
+        private void AnalyzeRemainingEffects(List<string> abilityNameList, List<IPgPower> powerSimpleEffectList)
+        {
+            List<IPgPower> ParsedSimpleEffectList = new List<IPgPower>();
+
+            foreach (IPgPower Item in powerSimpleEffectList)
+            {
+                if (PerfectMatch.ContainsKey(Item.ToString()))
+                    continue;
+
+                if (Item.ToString().EndsWith("and reduce the damage of the next attack that hits the target by 20%"))
+                    continue; // effect_14323
+                if (Item.ToString() == "Molten Veins causes any nearby Fire Walls to recover 117 health")
+                    continue; // Increase Fire Wall heal displayed
+                if (Item.ToString() == "While Unarmed skill is active: you gain +4% Melee Evasion and any time you Evade a Melee attack you recover 64 Armor")
+                    continue; // Increase evasion and armor regen
+                if (Item.ToString() == "While Unarmed skill is active: any time you Evade an attack, your next attack deals +133 damage")
+                    continue; // special effect
+                if (Item.ToString() == "While Unarmed skill is active: 18% of all Slashing, Piercing, and Crushing damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 260% rate")
+                    continue; // special effect
+                if (Item.ToString() == "While Unarmed skill is active: 25% of all Darkness and Psychic damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 300% rate")
+                    continue; // special effect
+                if (Item.ToString() == "While Unarmed skill active: 21% of all Acid, Poison, and Nature damage you take is mitigated and added to the damage done by your next Kick at a 280% rate")
+                    continue; // special effect
+                if (Item.ToString() == "Combo: Suppress+Any Melee+Any Melee+Headcracker: final step stuns the target while dealing +200 damage.")
+                    continue; // special effect
+                if (Item.ToString() == "You heal 22 health every other second while under the effect of Haste Concoction")
+                    continue; // special effect
+                if (Item.ToString() == "You heal 16 health and 16 armor every other second while under the effect of Haste Concoction")
+                    continue; // special effect
+                if (Item.ToString() == "You regain 8 Power every other second while under the effect of Haste Concoction")
+                    continue; // special effect
+                if (Item.ToString() == "While the Shield skill is active, you mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)")
+                    continue; // special effect
+                if (Item.ToString() == "When you are hit by a monster's Rage Attack, the current reuse timer of Stunning Bash is hastened by 1 second and your next Stunning Bash deals +80 damage")
+                    continue; // special effect
+
+                if (IsExtractable(abilityNameList, Item))
+                    continue;
+
+                ParsedSimpleEffectList.Add(Item);
+            }
+        }
 
 
         private bool HasCommonIcon(IPgPower power, List<IPgEffect> effectList, out bool isOneToOne)
@@ -716,6 +747,7 @@ namespace PgBuilder
             ExtractSentence(ref text, "Deal %f% damage", ref isExtracted, out _);
             ExtractSentence(ref text, "Deal %f damage to health", ref isExtracted, out _);
             ExtractSentence(ref text, "All attacks deal %f damage", ref isExtracted, out _);
+            ExtractSentence(ref text, "Nice attacks deal %f damage", ref isExtracted, out _);
             ExtractSentence(ref text, "Deal %f damage", ref isExtracted, out _);
             ExtractSentence(ref text, "Deal %f damage", ref isExtracted, out _);//again
             ExtractSentence(ref text, "Deal %f indirect damage", ref isExtracted, out _);//again
@@ -1040,6 +1072,7 @@ namespace PgBuilder
             ReplaceCaseInsensitive(ref text, "(", " ");
             ReplaceCaseInsensitive(ref text, ")", " ");
             ReplaceCaseInsensitive(ref text, "meaning you recover this power every 5 second  in and out of combat", " ");
+            ReplaceCaseInsensitive(ref text, "debuff cannot stack with itself", " ");
             ReplaceCaseInsensitive(ref text, "when  deal damage", " ");
             ReplaceCaseInsensitive(ref text, "it also ignite the suspect", " ");
             ReplaceCaseInsensitive(ref text, "ignite all targets", " ");
