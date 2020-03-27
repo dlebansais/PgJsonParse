@@ -54,6 +54,21 @@ namespace PgBuilder
                 AvailablePowerList[SelectedPowerIndex].DecrementTier();
         }
 
+        public void MoveDown()
+        {
+            MovePosition(+1);
+        }
+
+        public void MoveUp()
+        {
+            MovePosition(-1);
+        }
+
+        private void MovePosition(int offset)
+        {
+            ParentSlot.MoveModPosition(this, offset);
+        }
+
         #region Implementation of INotifyPropertyChanged
         /// <summary>
         /// Implements the PropertyChanged event.

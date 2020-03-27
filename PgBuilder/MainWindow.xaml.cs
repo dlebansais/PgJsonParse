@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace PgBuilder
+﻿namespace PgBuilder
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +12,7 @@ namespace PgBuilder
     using System.Windows.Input;
     using System.Windows.Threading;
     using Microsoft.Win32;
+    using System.Globalization;
     using PgJsonObjects;
     using PgJsonReader;
 
@@ -168,34 +167,11 @@ namespace PgBuilder
         {
             FilterValidPowers(out List<IPgPower> PowerAttributeList, out List<IPgPower> PowerSimpleEffectList);
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> AllEffectTable);
-            FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable);
-
+            FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable, out List<IPgPower> UnmatchedPowerList);
             GetAbilityNames(out List<string> AbilityNameList);
 
             AnalyzeMatchingEffects(AbilityNameList, PowerToEffectTable);
-
-            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in PowerToEffectTable)
-            {
-                IList<IPgPowerTier> TierEffectList = Entry.Key.TierEffectList;
-                IPgPowerTier LastTier = TierEffectList[TierEffectList.Count - 1];
-                IPgPowerEffectCollection EffectList = LastTier.EffectList;
-
-                foreach (IPgPowerEffect ItemEffect in EffectList)
-                {
-                    if (ItemEffect is IPgPowerSimpleEffect AsSimpleEffect)
-                    {
-                        List<IPgEffect> TierList = Entry.Value;
-                        IPgEffect Effect = TierList[TierList.Count - 1];
-
-                        Debug.WriteLine("");
-                        Debug.WriteLine(AsSimpleEffect.Description);
-                        Debug.WriteLine(Effect.Desc);
-                        break;
-                    }
-                }
-            }
-
-            AnalyzeRemainingEffects(AbilityNameList, PowerSimpleEffectList);
+            AnalyzeRemainingEffects(AbilityNameList, UnmatchedPowerList);
         }
 
         private void FilterValidPowers(out List<IPgPower> powerAttributeList, out List<IPgPower> powerSimpleEffectList)
@@ -311,15 +287,18 @@ namespace PgBuilder
             }
         }
 
-        private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, List<IPgPower> powerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
+        private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, List<IPgPower> powerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable, out List<IPgPower> unmatchedPowerList)
         {
             IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
             Dictionary<string, IPgEffect> SearchableEffectTable = new Dictionary<string, IPgEffect>();
             powerToEffectTable = new Dictionary<IPgPower, List<IPgEffect>>();
+            unmatchedPowerList = new List<IPgPower>();
 
             foreach (IPgPower Item in powerSimpleEffectList)
                 if (FindPowersWithMatchingEffect(allEffectTable, Item, out List<IPgEffect> MatchingEffectList))
                     powerToEffectTable.Add(Item, MatchingEffectList);
+                else
+                    unmatchedPowerList.Add(Item);
         }
 
         private bool FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, IPgPower power, out List<IPgEffect> matchingEffectList)
@@ -327,9 +306,7 @@ namespace PgBuilder
             matchingEffectList = null;
 
             string Key = power.Key;
-
-            if (Key.Length < 9)
-                return false;
+            Debug.Assert(Key.Length >= 9);
 
             string PowerKey = Key.Substring(Key.Length - 3);
             if (!allEffectTable.ContainsKey(PowerKey))
@@ -364,6 +341,17 @@ namespace PgBuilder
                 return false;
             }
 
+            int MaxEffectSameTier = 0;
+            foreach (IPgPowerTier Item in TierEffectList)
+            {
+                IList<IPgPowerEffect> EffectList = Item.EffectList;
+                if (MaxEffectSameTier < EffectList.Count)
+                    MaxEffectSameTier = EffectList.Count;
+            }
+
+            if (MaxEffectSameTier > 1)
+                return false;
+
             if (OneToOneMatchingKeyList.Count == 0)
             {
                 if (MatchingKeyList.Count > 1)
@@ -379,75 +367,6 @@ namespace PgBuilder
 
             return true;
         }
-
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
-        {
-            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
-            {
-                IPgPower ItemPower = Entry.Key;
-                List<IPgEffect> ItemEffectList = Entry.Value;
-                IList<IPgPowerTier> TierEffectList = ItemPower.TierEffectList;
-
-                Debug.Assert(TierEffectList.Count == ItemEffectList.Count);
-
-                IPgPowerTier ItemPowerTier = TierEffectList[TierEffectList.Count - 1];
-
-                foreach (IPgPowerEffect Item in ItemPowerTier.EffectList)
-                    if (Item is IPgPowerSimpleEffect AsSimpleEffect)
-                    {
-                        string Text = AsSimpleEffect.Description;
-
-                        ExtractAbilityName(abilityNameList, ref Text, out bool IsNameExtracted);
-                        ExtractKnownAttribute(ref Text, out bool IsAttributeExtracted);
-                        RemoveUnusedText(ref Text);
-
-                    }
-            }
-        }
-
-        private void AnalyzeRemainingEffects(List<string> abilityNameList, List<IPgPower> powerSimpleEffectList)
-        {
-            List<IPgPower> ParsedSimpleEffectList = new List<IPgPower>();
-
-            foreach (IPgPower Item in powerSimpleEffectList)
-            {
-                if (PerfectMatch.ContainsKey(Item.ToString()))
-                    continue;
-
-                if (Item.ToString().EndsWith("and reduce the damage of the next attack that hits the target by 20%"))
-                    continue; // effect_14323
-                if (Item.ToString() == "Molten Veins causes any nearby Fire Walls to recover 117 health")
-                    continue; // Increase Fire Wall heal displayed
-                if (Item.ToString() == "While Unarmed skill is active: you gain +4% Melee Evasion and any time you Evade a Melee attack you recover 64 Armor")
-                    continue; // Increase evasion and armor regen
-                if (Item.ToString() == "While Unarmed skill is active: any time you Evade an attack, your next attack deals +133 damage")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill is active: 18% of all Slashing, Piercing, and Crushing damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 260% rate")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill is active: 25% of all Darkness and Psychic damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 300% rate")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill active: 21% of all Acid, Poison, and Nature damage you take is mitigated and added to the damage done by your next Kick at a 280% rate")
-                    continue; // special effect
-                if (Item.ToString() == "Combo: Suppress+Any Melee+Any Melee+Headcracker: final step stuns the target while dealing +200 damage.")
-                    continue; // special effect
-                if (Item.ToString() == "You heal 22 health every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "You heal 16 health and 16 armor every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "You regain 8 Power every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "While the Shield skill is active, you mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)")
-                    continue; // special effect
-                if (Item.ToString() == "When you are hit by a monster's Rage Attack, the current reuse timer of Stunning Bash is hastened by 1 second and your next Stunning Bash deals +80 damage")
-                    continue; // special effect
-
-                if (IsExtractable(abilityNameList, Item))
-                    continue;
-
-                ParsedSimpleEffectList.Add(Item);
-            }
-        }
-
 
         private bool HasCommonIcon(IPgPower power, List<IPgEffect> effectList, out bool isOneToOne)
         {
@@ -476,8 +395,8 @@ namespace PgBuilder
                     if (!AbilityKeywordList.Contains(Keyword))
                         AbilityKeywordList.Add(Keyword);
 
-            if (AbilityKeywordList.Contains(AbilityKeyword.NiceAttack) || 
-                AbilityKeywordList.Contains(AbilityKeyword.CoreAttack) || 
+            if (AbilityKeywordList.Contains(AbilityKeyword.NiceAttack) ||
+                AbilityKeywordList.Contains(AbilityKeyword.CoreAttack) ||
                 AbilityKeywordList.Contains(AbilityKeyword.BasicAttack) ||
                 AbilityKeywordList.Contains(AbilityKeyword.MajorHeal) ||
                 AbilityKeywordList.Contains(AbilityKeyword.MinorHealTargeted) ||
@@ -610,6 +529,146 @@ namespace PgBuilder
                 }
             }
         }
+        #endregion
+
+        #region Data Analysis, Matching
+        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
+        {
+            StringCompare.Algorithms.Levenshtein.LevenshteinAlgorithm Comparer = new StringCompare.Algorithms.Levenshtein.LevenshteinAlgorithm();
+            int DebugIndex = 0;
+
+            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
+            {
+                IPgPower ItemPower = Entry.Key;
+                List<IPgEffect> ItemEffectList = Entry.Value;
+                IList<IPgPowerTier> TierEffectList = ItemPower.TierEffectList;
+
+                Debug.Assert(TierEffectList.Count == ItemEffectList.Count);
+
+                IPgPowerTier LastPowerTier = TierEffectList[TierEffectList.Count - 1];
+                IList<IPgPowerEffect> EffectList = LastPowerTier.EffectList;
+                Debug.Assert(EffectList.Count == 1);
+
+                IPgPowerSimpleEffect AsSimpleEffect = (IPgPowerSimpleEffect)EffectList[0];
+                IPgEffect LastEffect = ItemEffectList[ItemEffectList.Count - 1];
+                DebugIndex++;
+
+                string Text = AsSimpleEffect.Description;
+                string EffectText = LastEffect.Desc;
+
+                RemoveAbilityReferences(ref Text);
+                RemoveDecorationText(ref Text);
+
+                double BasicDistance = Comparer.GetCompareResult(Text, EffectText);
+                double ImprovedDistance = BasicDistance;
+
+                if (BasicDistance < 0.74)
+                {
+                    ExtractAbilityName(abilityNameList, ref Text, out _);
+
+                    bool IsAttributeExtracted;
+                    do
+                    {
+                        ExtractFirstKnownAttribute(ref Text, out IsAttributeExtracted);
+                        ImprovedDistance = Comparer.GetCompareResult(Text, EffectText);
+                    }
+                    while (ImprovedDistance < 0.74 && IsAttributeExtracted);
+                }
+
+                if (ImprovedDistance < 0.74)
+                    continue;
+            }
+
+            DisplayParsingResult(powerToEffectTable);
+        }
+
+        private void DisplayParsingResult(Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
+        {
+            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
+            {
+                IList<IPgPowerTier> TierEffectList = Entry.Key.TierEffectList;
+                IPgPowerTier LastTier = TierEffectList[TierEffectList.Count - 1];
+                IPgPowerEffectCollection EffectList = LastTier.EffectList;
+
+                foreach (IPgPowerEffect ItemEffect in EffectList)
+                {
+                    if (ItemEffect is IPgPowerSimpleEffect AsSimpleEffect)
+                    {
+                        List<IPgEffect> TierList = Entry.Value;
+                        IPgEffect Effect = TierList[TierList.Count - 1];
+
+                        Debug.WriteLine("");
+                        Debug.WriteLine(AsSimpleEffect.Description);
+                        Debug.WriteLine(Effect.Desc);
+                        break;
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Data Analysis, Remaining
+        private void RemoveAbilityReferences(ref string text)
+        {
+            RemoveAbilityReference(ref text, "Nice Attacks");
+            RemoveAbilityReference(ref text, "Core Attacks");
+            RemoveAbilityReference(ref text, "Epic Attacks");
+            RemoveAbilityReference(ref text, "Basic Attacks");
+            RemoveAbilityReference(ref text, "Signature Support");
+            RemoveAbilityReference(ref text, "Signature Debuffs");
+            RemoveAbilityReference(ref text, "Major Healing");
+            RemoveAbilityReference(ref text, "Minor Heals");
+            RemoveDecorativeText(ref text, "Crossbow abilities");
+        }
+
+        private void RemoveAbilityReference(ref string text, string abilityText)
+        {
+            RemoveDecorativeText(ref text, abilityText + " abilities");
+            RemoveDecorativeText(ref text, abilityText);
+        }
+
+        private void AnalyzeRemainingEffects(List<string> abilityNameList, List<IPgPower> powerSimpleEffectList)
+        {
+            List<IPgPower> ParsedSimpleEffectList = new List<IPgPower>();
+
+            foreach (IPgPower Item in powerSimpleEffectList)
+            {
+                if (PerfectMatch.ContainsKey(Item.ToString()))
+                    continue;
+
+                if (Item.ToString().EndsWith("and reduce the damage of the next attack that hits the target by 20%"))
+                    continue; // effect_14323
+                if (Item.ToString() == "Molten Veins causes any nearby Fire Walls to recover 117 health")
+                    continue; // Increase Fire Wall heal displayed
+                if (Item.ToString() == "While Unarmed skill is active: you gain +4% Melee Evasion and any time you Evade a Melee attack you recover 64 Armor")
+                    continue; // Increase evasion and armor regen
+                if (Item.ToString() == "While Unarmed skill is active: any time you Evade an attack, your next attack deals +133 damage")
+                    continue; // special effect
+                if (Item.ToString() == "While Unarmed skill is active: 18% of all Slashing, Piercing, and Crushing damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 260% rate")
+                    continue; // special effect
+                if (Item.ToString() == "While Unarmed skill is active: 25% of all Darkness and Psychic damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 300% rate")
+                    continue; // special effect
+                if (Item.ToString() == "While Unarmed skill active: 21% of all Acid, Poison, and Nature damage you take is mitigated and added to the damage done by your next Kick at a 280% rate")
+                    continue; // special effect
+                if (Item.ToString() == "Combo: Suppress+Any Melee+Any Melee+Headcracker: final step stuns the target while dealing +200 damage.")
+                    continue; // special effect
+                if (Item.ToString() == "You heal 22 health every other second while under the effect of Haste Concoction")
+                    continue; // special effect
+                if (Item.ToString() == "You heal 16 health and 16 armor every other second while under the effect of Haste Concoction")
+                    continue; // special effect
+                if (Item.ToString() == "You regain 8 Power every other second while under the effect of Haste Concoction")
+                    continue; // special effect
+                if (Item.ToString() == "While the Shield skill is active, you mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)")
+                    continue; // special effect
+                if (Item.ToString() == "When you are hit by a monster's Rage Attack, the current reuse timer of Stunning Bash is hastened by 1 second and your next Stunning Bash deals +80 damage")
+                    continue; // special effect
+
+                if (IsExtractable(abilityNameList, Item))
+                    continue;
+
+                ParsedSimpleEffectList.Add(Item);
+            }
+        }
 
         private bool IsExtractable(List<string> abilityNameList, IPgPower power)
         {
@@ -634,8 +693,9 @@ namespace PgBuilder
         {
             string Text = simpleEffect.Description;
 
+            RemoveDecorationText(ref Text);
             ExtractAbilityName(abilityNameList, ref Text, out bool IsNameExtracted);
-            ExtractKnownAttribute(ref Text, out bool IsAttributeExtracted);
+            ExtractAllKnownAttributes(ref Text, out bool IsAttributeExtracted);
             RemoveUnusedText(ref Text);
 
             if (IsNameExtracted)
@@ -699,165 +759,214 @@ namespace PgBuilder
             }
         }
 
-        private void ExtractKnownAttribute(ref string text, out bool isExtracted)
+        private void ExtractFirstKnownAttribute(ref string text, out bool isExtracted)
+        {
+            ExtractKnownAttribute(ref text, true, out isExtracted);
+        }
+
+        private void ExtractAllKnownAttributes(ref string text, out bool isExtracted)
+        {
+            ExtractKnownAttribute(ref text, false, out isExtracted);
+        }
+
+        private void ExtractKnownAttribute(ref string text, bool stopIfExtracted, out bool isExtracted)
         {
             isExtracted = false;
 
+            RemoveDecorativeText(ref text);
             SimplifyBonus(ref text);
             SimplifySemantic(ref text);
             SimplifyGrammar(ref text);
             ExtractDamageChange(ref text);
             SimplifyDamageType(ref text);
             SimplifyMitigrationType(ref text, ref isExtracted);
-            ExtractSentence(ref text, "Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Gripjaw+Any Spider+Any Spider+Inject Venom:", ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Rip+Any Melee+Any Melee+Bat Stability:", ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step hit all enemies within %f meter", ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step deal %f% damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step hit all targets within %f meter", ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step stun the target and deal %f damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step boost base damage %f% for 10 second", ref isExtracted, out _);
-            ExtractSentence(ref text, "Whenever you take damage from an enemy", ref isExtracted, out _);
-            ExtractSentence(ref text, "If you are using the Priest skill", ref isExtracted, out _);
-            ExtractSentence(ref text, "You have not been attacked in the past %f second", ref isExtracted, out _);
-            ExtractSentence(ref text, "Each time they attack and damage you", ref isExtracted, out _);
-            ExtractSentence(ref text, "Incubated Spiders %f% chance to avoid being hit burst attacks", ref isExtracted, out _);
-            ExtractSentence(ref text, "Combat Refresh restore %f health", ref isExtracted, out _);
-            ExtractSentence(ref text, "If , , or  deal damage, that damage is boosted %f% per tick", ref isExtracted, out _);
-            ExtractSentence(ref text, "Boost your Nice Attack damage %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Boost your direct and indirect damage %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Plus %f Damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Base Damage %f%", ref isExtracted, out _);
-            ExtractSentence(ref text, "Causing %f Damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage %f%", ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage is %f% per tick", ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage is %f%", ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage is %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage is boosted %f%", ref isExtracted, out _);
-            ExtractSentence(ref text, "Suffer %f% damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reap %f% of the damage to you as healing", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reap %d% of the damage done", ref isExtracted, out _);
-            ExtractSentence(ref text, "Melee Attackers suffer %d indirect damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Up to a max of %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "The reap cap is %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f% damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f damage to health", ref isExtracted, out _);
-            ExtractSentence(ref text, "All attacks deal %f damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Nice attacks deal %f damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f damage", ref isExtracted, out _);//again
-            ExtractSentence(ref text, "Deal %f indirect damage", ref isExtracted, out _);//again
-            ExtractSentence(ref text, "Dealing %f damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Cause %f damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Take %f damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Over %f second", ref isExtracted, out _);
-            ExtractSentence(ref text, "For %f second after using ", ref isExtracted, out _);
-            ExtractSentence(ref text, "For %f second", ref isExtracted, out _);
-            ExtractSentence(ref text, "Within %f second", ref isExtracted, out _);
-            ExtractSentence(ref text, "For %f minute", ref isExtracted, out _);
-            ExtractSentence(ref text, "After a %f second delay", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reduce Rage %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reduce %f more Rage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate %f Rage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate %f% Rage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate %f less Rage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Lower Rage by %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Lower Rage %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Remove %f Rage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Lose %f Rage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Deplete %f Rage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate no Rage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate no Taunt", ref isExtracted, out _);
-            ExtractSentence(ref text, "Power Cost %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Power Cost is %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Power Regeneration is %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Cost %f% Power", ref isExtracted, out _);
-            ExtractSentence(ref text, "Cost %f Power", ref isExtracted, out _);
-            ExtractSentence(ref text, "The maximum Power restored  increase %d", ref isExtracted, out _);
-            ExtractSentence(ref text, "Max Armor %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Timer %f second", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Timer is %f second", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Timer is %f sec", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Timer is %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Time is %f second", ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Time %f second", ref isExtracted, out _);
-            ExtractSentence(ref text, "Taunt %f%", ref isExtracted, out _);
-            ExtractSentence(ref text, "Taunt %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "When you have %f% or less of your Armor left", ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f Health, Armor, and Power respectively", ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f Health, Armor, and Power", ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f Health/Armor", ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f health", ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f armor", ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f armor", ref isExtracted, out _);//again
-            ExtractSentence(ref text, "Restore %f Power", ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f to you", ref isExtracted, out _);
-            ExtractSentence(ref text, "Recover %f armor", ref isExtracted, out _);
-            ExtractSentence(ref text, "Recover %f health", ref isExtracted, out _);
-            ExtractSentence(ref text, "Recover %f power", ref isExtracted, out _);
-            ExtractSentence(ref text, "Cost no Power to cast", ref isExtracted, out _);
-            ExtractSentence(ref text, "Take %f second to channel", ref isExtracted, out _);
-            ExtractSentence(ref text, "Heal %f health", ref isExtracted, out _);
-            ExtractSentence(ref text, "Healing %f%", ref isExtracted, out _);
-            ExtractSentence(ref text, "Healing %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Heal %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Sprint Speed is %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Max Health %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "To your minions", ref isExtracted, out _);
-            ExtractSentence(ref text, "Attack Range is %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Range is %f meter", ref isExtracted, out _);
-            ExtractSentence(ref text, "Stun incorporeal enemies", ref isExtracted, out _);
-            ExtractSentence(ref text, "Resets the timer on", ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f% total damage against Demons", ref isExtracted, out _);
-            ExtractSentence(ref text, "While Shield skill active", ref isExtracted, out _);
-            ExtractSentence(ref text, "While Warden skill active", ref isExtracted, out _);
-            ExtractSentence(ref text, "While Cow skill active", ref isExtracted, out _);
-            ExtractSentence(ref text, "Mitigate %f% of all damage", ref isExtracted, out _);
-            ExtractSentence(ref text, "Stacks up to %f times", ref isExtracted, out _);
-            ExtractSentence(ref text, "Stacks up to %fx", ref isExtracted, out _);
-            ExtractSentence(ref text, "All Shield abilities", ref isExtracted, out _);
-            ExtractSentence(ref text, "Grant allies", ref isExtracted, out _);
-            ExtractSentence(ref text, "%f% evasion of burst attacks", ref isExtracted, out _);
-            ExtractSentence(ref text, "%f% mitigation of all physical attacks", ref isExtracted, out _);
-            ExtractSentence(ref text, "%f mitigation of all physical attacks", ref isExtracted, out _);
-            ExtractSentence(ref text, "Chance to Ignore Knockbacks %d%", ref isExtracted, out _);
-            ExtractSentence(ref text, "Chance to Ignore Stun %d%", ref isExtracted, out _);
-            ExtractSentence(ref text, "To targets whose Rage meter are at least %d% full", ref isExtracted, out _);
-            ExtractSentence(ref text, "Targets whose Rage meter is at least %f% full", ref isExtracted, out _);
-            ExtractSentence(ref text, "%f% chance to Knock Down", ref isExtracted, out _);
-            ExtractSentence(ref text, "%f% chance to", ref isExtracted, out _);
-            ExtractSentence(ref text, "When wielding two knives", ref isExtracted, out _);
-            ExtractSentence(ref text, "If the target is not focused on you", ref isExtracted, out _);
-            ExtractSentence(ref text, "If target is not focused on you", ref isExtracted, out _);
-            ExtractSentence(ref text, "To all melee attackers", ref isExtracted, out _);
-            ExtractSentence(ref text, "The first melee attacker is knocked away", ref isExtracted, out _);
-            ExtractSentence(ref text, "When a melee attack deal damage to you", ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal its damage when you are hit burst attacks", ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal its damage when you are hit ranged attacks", ref isExtracted, out _);
-            ExtractSentence(ref text, "A melee attack deal damage to you", ref isExtracted, out _);
-            ExtractSentence(ref text, "In addition, you can use the ability  %d", ref isExtracted, out _);
-            ExtractSentence(ref text, "In addition, you can use the ability", ref isExtracted, out _);
-            ExtractSentence(ref text, "Chance to consume grass is %f%", ref isExtracted, out _);
-            ExtractSentence(ref text, "You regenerate %f Health per tick (every 5 second, in and out of combat)", ref isExtracted, out _);
-            ExtractSentence(ref text, "Summoned Deer have %f health", ref isExtracted, out _);
-            ExtractSentence(ref text, "Summoned Deer have %f armor", ref isExtracted, out _);
-            ExtractSentence(ref text, "Summoned Deer attacks", ref isExtracted, out _);
-            ExtractSentence(ref text, "Summoned Deer", ref isExtracted, out _);
-            ExtractSentence(ref text, "Incubated Spiders have %f health", ref isExtracted, out _);
-            ExtractSentence(ref text, "Incubated Spiders have %f armor", ref isExtracted, out _);
-            ExtractSentence(ref text, "Incubated Spiders", ref isExtracted, out _);
-            ExtractSentence(ref text, "Per second", ref isExtracted, out _);
-            ExtractSentence(ref text, "While Spider skill is active", ref isExtracted, out _);
-            ExtractSentence(ref text, "Steals %f health", ref isExtracted, out _);
-            ExtractSentence(ref text, "Steals %f more health", ref isExtracted, out _);
-            ExtractSentence(ref text, "Ability's range is reduced to %fm", ref isExtracted, out _);
-            ExtractSentence(ref text, "Chance to consume carrot is %f%", ref isExtracted, out _);
-            ExtractSentence(ref text, "Lower aggro toward you %f", ref isExtracted, out _);
-            ExtractSentence(ref text, "Attack range %f meter", ref isExtracted, out _);
+            ExtractSentence(ref text, "Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Combo: Gripjaw+Any Spider+Any Spider+Inject Venom:", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Combo: Rip+Any Melee+Any Melee+Bat Stability:", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Final step hit all enemies within %f meter", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Final step deal %f% damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Final step hit all targets within %f meter", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Final step stun the target and deal %f damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Final step boost base damage %f% for 10 second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Whenever you take damage from an enemy", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "If you are using the Priest skill", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "You have not been attacked in the past %f second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Each time they attack and damage you", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Incubated Spiders %f% chance to avoid being hit burst attacks", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Combat Refresh restore %f health", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "If , , or  deal damage, that damage is boosted %f% per tick", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Boost your Nice Attack damage %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Boost your direct and indirect damage %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Plus %f Damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Base Damage %f%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Causing %f Damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Damage %f%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Damage %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Damage is %f% per tick", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Damage is %f%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Damage is %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Damage is boosted %f%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Suffer %f% damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reap %f% of the damage to you as healing", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reap %d% of the damage done", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Melee Attackers suffer %d indirect damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Up to a max of %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "The reap cap is %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Deal %f% damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Deal %f damage to health", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "All attacks deal %f damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Nice attacks deal %f damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Core attacks deal %f damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Deal %f damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Deal %f damage", stopIfExtracted, ref isExtracted, out _);//again
+            ExtractSentence(ref text, "Deal %f indirect damage", stopIfExtracted, ref isExtracted, out _);//again
+            ExtractSentence(ref text, "Dealing %f damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Cause %f damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Take %f damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Over %f second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "For %f second after using ", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "For %f second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Within %f second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "For %f minute", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "After a %f second delay", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reduce Rage %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reduce %f more Rage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Generate %f Rage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Generate %f% Rage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Generate %f less Rage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Lower Rage by %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Lower Rage %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Remove %f Rage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Lose %f Rage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Deplete %f Rage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Generate no Rage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Generate no Taunt", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Power Cost %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Power Cost is %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Power Regeneration is %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Cost %f% Power", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Cost %f Power", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "The maximum Power restored  increase %d", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Max Armor %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reuse Timer %f second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reuse Timer is %f second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reuse Timer is %f sec", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reuse Timer is %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reuse Time is %f second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Reuse Time %f second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Taunt %f%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Taunt %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "When you have %f% or less of your Armor left", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Restore %f Health, Armor, and Power respectively", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Restore %f Health, Armor, and Power", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Restore %f Health/Armor", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Restore %f health", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Restore %f armor", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Restore %f armor", stopIfExtracted, ref isExtracted, out _);//again
+            ExtractSentence(ref text, "Basic attacks restore %f Power", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Restore %f Power", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Restore %f to you", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Recover %f armor", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Recover %f health", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Recover %f power", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Cost no Power to cast", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Take %f second to channel", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Heal %f health", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Healing %f%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Healing %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Heal %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Sprint Speed is %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Max Health %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "To your minions", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Attack Range is %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Range is %f meter", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Stun incorporeal enemies", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Resets the timer on", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Deal %f% total damage against Demons", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "While Shield skill active", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "While Warden skill active", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "While Cow skill active", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Mitigate %f% of all damage", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Stacks up to %f times", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Stacks up to %fx", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "All Shield abilities", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Grant allies", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "%f% evasion of burst attacks", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "%f% mitigation of all physical attacks", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "%f mitigation of all physical attacks", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Chance to Ignore Knockbacks %d%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Chance to Ignore Stun %d%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "To targets whose Rage meter are at least %d% full", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Targets whose Rage meter is at least %f% full", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "%f% chance to Knock Down", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "%f% chance to", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "When wielding two knives", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "If the target is not focused on you", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "If target is not focused on you", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "To all melee attackers", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "The first melee attacker is knocked away", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "When a melee attack deal damage to you", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Deal its damage when you are hit burst attacks", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Deal its damage when you are hit ranged attacks", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "A melee attack deal damage to you", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "In addition, you can use the ability  %d", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "In addition, you can use the ability", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Chance to consume grass is %f%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "You regenerate %f Health per tick (every 5 second, in and out of combat)", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Summoned Deer have %f health", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Summoned Deer have %f armor", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Summoned Deer attacks", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Summoned Deer", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Incubated Spiders have %f health", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Incubated Spiders have %f armor", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Incubated Spiders", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Per second", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "While Spider skill is active", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Steals %f health", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Steals %f more health", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Ability's range is reduced to %fm", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Chance to consume carrot is %f%", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Lower aggro toward you %f", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Attack range %f meter", stopIfExtracted, ref isExtracted, out _);
+            ExtractSentence(ref text, "Debuff cannot stack with itself", stopIfExtracted, ref isExtracted, out _);
+        }
+
+        private void RemoveDecorativeText(ref string text)
+        {
+            RemoveDecorativeText(ref text, "(Equipping this item will teach you the ability if needed.)");
+        }
+
+        private void RemoveDecorativeText(ref string text, string pattern)
+        {
+            string LowerText = text.ToLowerInvariant();
+            string LowerPattern = pattern.ToLowerInvariant();
+            int Index = LowerText.IndexOf(LowerPattern);
+
+            if (Index >= 0 && IsStartingSentenceIndex(LowerText, Index) && IsEndingSentenceIndex(LowerText, Index + LowerPattern.Length))
+            {
+                string Prolog = text.Substring(0, Index).TrimEnd();
+                string Epilog = text.Substring(Index + pattern.Length).TrimStart();
+
+                if (Prolog.Length > 0 && Epilog.Length > 0)
+                    text = Prolog + " " + Epilog;
+                else if (Prolog.Length > 0)
+                    text = Prolog;
+                else
+                    text = Epilog;
+            }
+        }
+
+        private bool IsStartingSentenceIndex(string text, int index)
+        {
+            return index == 0 || text[index - 1] == ' ' || text[index - 1] == ',';
+        }
+
+        private bool IsEndingSentenceIndex(string text, int index)
+        {
+            return index + 1 >= text.Length || text[index] == ' ' || text[index] == ',' || text[index] == '.';
         }
 
         private void SimplifyBonus(ref string text)
@@ -989,6 +1098,16 @@ namespace PgBuilder
             ReplaceCaseInsensitive(ref text, "haven't ", "have not ");
         }
 
+        private void ExtractSentence(ref string text, string format, bool stopIfExtracted, ref bool isExtracted, out double data)
+        {
+            data = 0;
+
+            if (isExtracted && stopIfExtracted)
+                return;
+
+            ExtractSentence(ref text, format, ref isExtracted, out data);
+        }
+
         private void ExtractSentence(ref string text, string format, ref bool isExtracted, out double data)
         {
             data = 0;
@@ -1064,15 +1183,18 @@ namespace PgBuilder
             }
         }
 
-        private void RemoveUnusedText(ref string text)
+        private void RemoveDecorationText(ref string text)
         {
             ReplaceCaseInsensitive(ref text, "(wax) ", " ");
+        }
+
+        private void RemoveUnusedText(ref string text)
+        {
             ReplaceCaseInsensitive(ref text, ",", " ");
             ReplaceCaseInsensitive(ref text, ".", " ");
             ReplaceCaseInsensitive(ref text, "(", " ");
             ReplaceCaseInsensitive(ref text, ")", " ");
             ReplaceCaseInsensitive(ref text, "meaning you recover this power every 5 second  in and out of combat", " ");
-            ReplaceCaseInsensitive(ref text, "debuff cannot stack with itself", " ");
             ReplaceCaseInsensitive(ref text, "when  deal damage", " ");
             ReplaceCaseInsensitive(ref text, "it also ignite the suspect", " ");
             ReplaceCaseInsensitive(ref text, "ignite all targets", " ");
@@ -1102,7 +1224,6 @@ namespace PgBuilder
             ReplaceCaseInsensitive(ref text, "when you teleport via ", " ");
             ReplaceCaseInsensitive(ref text, "when you are hit a monster's rage attack", " ");
             ReplaceCaseInsensitive(ref text, "when you are hit", " ");
-            ReplaceCaseInsensitive(ref text, "equipping this item will teach you the ability if needed", " ");
             ReplaceCaseInsensitive(ref text, "while you are near ", " ");
             ReplaceCaseInsensitive(ref text, "you gain ", " ");
             ReplaceCaseInsensitive(ref text, " to you", " ");
@@ -1129,6 +1250,7 @@ namespace PgBuilder
             ReplaceCaseInsensitive(ref text, " gain ", " ");
             ReplaceCaseInsensitive(ref text, "if ", " ");
             ReplaceCaseInsensitive(ref text, "also ", " ");
+            ReplaceCaseInsensitive(ref text, "have a", " ");
             text = text.Trim();
         }
 
@@ -3654,6 +3776,20 @@ namespace PgBuilder
             Mod Mod = (Mod)Control.DataContext;
             Mod.DecrementTier();
             RecalculateMods();
+        }
+
+        private void OnMoveDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            Button Control = (Button)e.OriginalSource;
+            Mod Mod = (Mod)Control.DataContext;
+            Mod.MoveDown();
+        }
+
+        private void OnMoveUp(object sender, ExecutedRoutedEventArgs e)
+        {
+            Button Control = (Button)e.OriginalSource;
+            Mod Mod = (Mod)Control.DataContext;
+            Mod.MoveUp();
         }
 
         private void OnSelectGearMods(string gearSlotName, List<KeyValuePair<string, int>> modList)

@@ -163,6 +163,13 @@
             ModList.Remove(mod);
         }
 
+        public void MoveModPosition(Mod mod, int offset)
+        {
+            int CurrentPosition = ModList.IndexOf(mod);
+            if (CurrentPosition >= 0 && CurrentPosition + offset >= 0 && CurrentPosition + offset < ModList.Count)
+                ModList.Move(CurrentPosition, CurrentPosition + offset);
+        }
+
         public void ResetMods()
         {
             ModList.Clear();
