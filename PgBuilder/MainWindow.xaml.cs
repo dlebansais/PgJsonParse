@@ -740,6 +740,8 @@
             string EffectText = LastEffect.Desc;
             string ModText = AsSimpleEffect.Description;
 
+            HackEffectText(ref EffectText);
+
             AnalyzeText(abilityNameList, nameToKeyword, EffectText, out List<CombatEffect> EffectCombatList);
             AnalyzeText(abilityNameList, nameToKeyword, ModText, out List<CombatEffect> ModCombatList);
 
@@ -790,10 +792,23 @@
             }
         }
 
+        private void HackEffectText(ref string text)
+        {
+            if (text.EndsWith("for 20 seconds or until you teleport"))
+                text = text.Substring(0, text.Length - 22 - 15) + text.Substring(text.Length - 22);
+            else if (text.EndsWith("for 20 seconds or until you Feint"))
+                text = text.Substring(0, text.Length - 19 - 15) + text.Substring(text.Length - 19);
+            else if (text.StartsWith("Increases target's Max Rage by") && text.EndsWith("for 60 seconds"))
+                text = text.Substring(0, text.Length - 15);
+            else if (text.StartsWith("Indirect Poison +") && text.EndsWith(" for 5 seconds"))
+                text = text.Substring(0, text.Length - 14) + " per tick";
+        }
+
         private void AnalyzeText(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, string text, out List<CombatEffect> extractedCombatEffectList)
         {
             RemoveDecorationText(ref text);
             SimplifyGrammar(ref text);
+            SimplifyRandom(ref text);
 
             AbilityKeyword ModifiedAbilityKeyword = AbilityKeyword.Internal_None;
             RemoveWideAbilityReferences(ref text, ref ModifiedAbilityKeyword);
@@ -808,6 +823,9 @@
         {
             RemoveDecorativeText(ref text, "(wax) ", out _);
             RemoveDecorativeText(ref text, "(such as spiders, mantises, and beetles)", out _);
+            RemoveDecorativeText(ref text, ", requiring more Rage to use their Rage Abilities", out _);
+            RemoveDecorativeText(ref text, "(if any)", out _);
+            ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         }
 
         private Dictionary<string, AbilityKeyword> WideAbilityTable = new Dictionary<string, AbilityKeyword>()
@@ -851,7 +869,8 @@
             ReplaceCaseInsensitive(ref text, "stuns ", "stun ");
             ReplaceCaseInsensitive(ref text, "causes ", "cause ");
             ReplaceCaseInsensitive(ref text, "lowers ", "lower ");
-            ReplaceCaseInsensitive(ref text, "takes ", "take ");
+            ReplaceCaseInsensitive(ref text, "lowers ", "lower ");
+            ReplaceCaseInsensitive(ref text, "raises ", "raise ");
             ReplaceCaseInsensitive(ref text, "increases ", "increase ");
             ReplaceCaseInsensitive(ref text, " seconds", " second");
             ReplaceCaseInsensitive(ref text, " minutes", " minute");
@@ -870,6 +889,49 @@
                 text = text.Substring(0, Index) + replacementPattern + text.Substring(Index + searchPattern.Length);
                 LowerText = text.ToLowerInvariant();
             }
+        }
+
+        private void SimplifyRandom(ref string text)
+        {
+            int Index = text.IndexOf(" between ");
+            if (Index < 0)
+                return;
+
+            string Prolog = text.Substring(0, Index);
+
+            string MinString = string.Empty;
+            Index += 9;
+            while (Index < text.Length && char.IsDigit(text[Index]))
+                MinString += text[Index++];
+
+            if (MinString.Length == 0)
+                return;
+
+            if (Index + 5 >= text.Length || text.Substring(Index, 5) != " and ")
+                return;
+
+            string MaxString = string.Empty;
+            Index += 5;
+            while (Index < text.Length && char.IsDigit(text[Index]))
+                MaxString += text[Index++];
+
+            if (MaxString.Length == 0)
+                return;
+
+            if (text[Index++] != ' ')
+                return;
+
+            string Epilog = text.Substring(Index);
+
+            int Min = int.Parse(MinString);
+            int Max = int.Parse(MaxString);
+            int Interval = Max - Min;
+
+            string RandomlyDetermined = "(randomly determined)";
+            text = $"{Prolog} +Up to {Interval} {Epilog}";
+
+            if (!text.Contains(RandomlyDetermined))
+                text += " " + RandomlyDetermined;
         }
 
         private void RemoveWideAbilityReferences(ref string text, ref AbilityKeyword modifiedAbilityKeyword, string pattern, AbilityKeyword abilityKeyword)
@@ -995,17 +1057,20 @@
             bool IsAttributeExtracted;
             do
             {
-                IsAttributeExtracted = ExtractKnownAttribute(SkippedKeywordListCopy, ref text, out CombatEffect CombatEffect);
+                IsAttributeExtracted = ExtractKnownAttribute(SkippedKeywordListCopy, ref text, out List<CombatEffect> CombatEffectList);
 
                 if (IsAttributeExtracted)
                 {
-                    extractedCombatEffectList.Add(CombatEffect);
-                    SkippedKeywordListCopy.Add(CombatEffect.Keyword);
+                    extractedCombatEffectList.AddRange(CombatEffectList);
+                    foreach (CombatEffect Item in CombatEffectList)
+                    {
+                        SkippedKeywordListCopy.Add(Item.Keyword);
 
-                    if (CombatEffect.Keyword == CombatKeyword.UntilTrigger)
-                        HasUntiltrigger = true;
-                    if (CombatEffect.Keyword == CombatKeyword.EffectDuration)
-                        HasDuration = true;
+                        if (Item.Keyword == CombatKeyword.UntilTrigger)
+                            HasUntiltrigger = true;
+                        if (Item.Keyword == CombatKeyword.EffectDuration)
+                            HasDuration = true;
+                    }
                 }
             }
             while (IsAttributeExtracted);
@@ -1083,195 +1148,247 @@
             }
         }
 
-        private bool ExtractKnownAttribute(List<CombatKeyword> skippedKeywordList, ref string text, out CombatEffect extractedCombatEffect)
+        private bool ExtractKnownAttribute(List<CombatKeyword> skippedKeywordList, ref string text, out List<CombatEffect> extractedCombatEffectList)
         {
-            CombatKeyword ExtractedKeyword = CombatKeyword.None;
+            List<CombatKeyword> ExtractedKeywordList = new List<CombatKeyword>();
             double Data1 = double.NaN;
             double Data2 = double.NaN;
 
-            ExtractSentence("Next attack", CombatKeyword.NextAttack, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Deal %f damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("(Debuff cannot stack with itself)", CombatKeyword.NonStackingDebuff, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", CombatKeyword.Combo1, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Combo: Gripjaw+Any Spider+Any Spider+Inject Venom:", CombatKeyword.Combo2, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", CombatKeyword.Combo3, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", CombatKeyword.Combo4, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Combo: Rip+Any Melee+Any Melee+Bat Stability:", CombatKeyword.Combo5, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", CombatKeyword.Combo5, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Final step hit all enemies within %f meter", CombatKeyword.ComboFinalStepBurst, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Final step hit all targets within %f meter", CombatKeyword.ComboFinalStepBurst, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Final step deal %f% damage", CombatKeyword.ComboFinalStepDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Final step stun the target and deal %f damage", CombatKeyword.ComboFinalStepDamageAndStun, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Final step boost base damage %f% for 10 second", CombatKeyword.ComboFinalStepBoostBaseDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Whenever you take damage from an enemy", CombatKeyword.ReflectOnAnyAttack, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("If you are using the Priest skill", CombatKeyword.ActiveSkillPriest, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("You have not been attacked in the past %f second", CombatKeyword.NotAttackedRecently, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Incubated Spiders %f% chance to avoid being hit burst attacks", CombatKeyword.SpiderPetAvoidBurst, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Combat Refresh restore %f health", CombatKeyword.CombatRefreshRestoreHeatlth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("If , , or  deal damage, that damage is boosted %f% per tick", CombatKeyword.DamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Boost your Nice Attack damage %f", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Boost damage from %f", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Boost your direct and indirect damage %f", CombatKeyword.DamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Increase the damage of your by %f", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Plus %f Damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Base Damage %f%", CombatKeyword.BaseDamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Base Damage increase %f%", CombatKeyword.BaseDamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Causing %f Damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Damage %f%", CombatKeyword.DamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Damage %f", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Damage is %f% per tick", CombatKeyword.DamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Damage is %f%", CombatKeyword.DamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Damage is %f", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Damage is boosted %f%", CombatKeyword.DamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Suffer %f% damage", CombatKeyword.DamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reap %f% of the damage to you as healing", CombatKeyword.DrainHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reap %d% of the damage done", CombatKeyword.DrainHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Melee Attackers suffer %d indirect damage", CombatKeyword.ReflectMeleeIndirectDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Up to a max of %f", CombatKeyword.MaxOccurence, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("The reap cap is %f", CombatKeyword.DrainMax, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Deal %f% damage", CombatKeyword.DamagePercentageBoost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Deal %f damage to health", CombatKeyword.DealDirectHealthDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("All attacks deal %f damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Nice attacks deal %f damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Core attacks deal %f damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Deal %f damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            //ExtractSentence("Deal %f damage", CombatKeyword.NonStackingDebuff, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);//again
-            ExtractSentence("Deal %f indirect damage", CombatKeyword.DealIndirectDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);//again
-            ExtractSentence("Dealing %f damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Cause %f damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Take %f damage", CombatKeyword.DealDamage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Over %f second", CombatKeyword.EffectDuration, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("For %f second after using ", CombatKeyword.EffectDuration, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("For %f second", CombatKeyword.EffectDuration, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Within %f second", CombatKeyword.EffectDuration, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("For %f minute", CombatKeyword.EffectDurationMinute, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("After a %f second delay", CombatKeyword.EffectDelay, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reduce Rage %f", CombatKeyword.RemoveRage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reduce %f more Rage", CombatKeyword.RemoveRage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Generate %f Rage", CombatKeyword.AddRage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Generate %f% Rage", CombatKeyword.AddRagePercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Generate %f less Rage", CombatKeyword.RemoveRagePercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Lower Rage by %f", CombatKeyword.RemoveRagePercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Lower Rage %f", CombatKeyword.RemoveRage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Remove %f Rage", CombatKeyword.RemoveRage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Lose %f Rage", CombatKeyword.RemoveRage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Deplete %f Rage", CombatKeyword.RemoveRage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Generate no Rage", CombatKeyword.ZeroRage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Generate no Taunt", CombatKeyword.ZeroTaunt, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Power Cost %f", CombatKeyword.AddPowerCost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Power Cost is %f", CombatKeyword.AddPowerCost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reduce the Power cost of your %f", CombatKeyword.AddPowerCost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Power Regeneration is %f", CombatKeyword.AddPowerRegen, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Cost %f% Power", CombatKeyword.AddPowerCostPercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Cost %f Power", CombatKeyword.AddPowerCost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("The maximum Power restored  increase %d", CombatKeyword.AddPowerCostMax, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Max Armor %f", CombatKeyword.AddMaxArmor, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reuse Timer %f second", CombatKeyword.AddReuseTimer, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reuse Timer is %f second", CombatKeyword.AddReuseTimer, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reuse Timer is %f sec", CombatKeyword.AddReuseTimer, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reuse Timer is %f", CombatKeyword.AddReuseTimer, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reuse Time is %f second", CombatKeyword.AddReuseTimer, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reuse Time %f second", CombatKeyword.AddReuseTimer, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Reduce the taunt of all your attacks by %f%", CombatKeyword.RemoveTauntPercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Taunt %f%", CombatKeyword.AddTauntPercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Taunt %f", CombatKeyword.AddTaunt, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("When you have %f% or less of your Armor left", CombatKeyword.BelowArmorPercentage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Restore %f Health, Armor, and Power respectively", CombatKeyword.RestoreHealthArmorPower, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Restore %f Health, Armor, and Power", CombatKeyword.RestoreHealthArmorPower, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Restore %f Health/Armor", CombatKeyword.RestoreHealthArmor, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Restore %f health", CombatKeyword.RestoreHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("You regain %f health", CombatKeyword.RestoreHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Restore %f armor", CombatKeyword.RestoreArmor, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("You regain %f armor", CombatKeyword.RestoreArmor, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Basic attacks restore %f Power", CombatKeyword.RestorePower, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Restore %f Power", CombatKeyword.RestorePower, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Restore %f to you", CombatKeyword.RestoreAny, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Recover %f armor", CombatKeyword.RestoreArmor, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Recover %f health", CombatKeyword.RestoreHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Recover %f power", CombatKeyword.RestorePower, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("You regain %f power", CombatKeyword.RestorePower, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Cost no Power to cast", CombatKeyword.ZeroPowerCost, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Take %f second to channel", CombatKeyword.AddChannelTime, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Heal you for %f health", CombatKeyword.RestoreHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Heal you for %f armor", CombatKeyword.RestoreArmor, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Heal %f health", CombatKeyword.RestoreHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Healing %f%", CombatKeyword.RestoreHealthPercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Healing %f", CombatKeyword.RestoreHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Heal you %f", CombatKeyword.RestoreHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Heal %f", CombatKeyword.RestoreHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Sprint Speed is %f", CombatKeyword.AddSprintSpeed, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Max Health %f", CombatKeyword.AddMaxHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("To your minions", CombatKeyword.ApplyToNecroPet, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Attack Range is %f", CombatKeyword.AddRange, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Range is %f meter", CombatKeyword.AddRange, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Stun incorporeal enemies", CombatKeyword.StunIncorporeal, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Resets the timer on", CombatKeyword.ResetOtherAbilityTimer, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Deal %f% total damage against Demons", CombatKeyword.DamagePercentageBoostAgainstSpecie, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("While Shield skill active", CombatKeyword.ActiveSkillShield, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("While Warden skill active", CombatKeyword.ActiveSkillWarden, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("While Cow skill active", CombatKeyword.ActiveSkillCow, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Mitigate %f% of all damage", CombatKeyword.MitigationPercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Stacks up to %f times", CombatKeyword.MaxStack, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Stacks up to %fx", CombatKeyword.MaxStack, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("All Shield abilities", CombatKeyword.ApplyToAbilitiesShield, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Grant allies", CombatKeyword.ApplyToAllies, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("%f% evasion of burst attacks", CombatKeyword.AddEvasionBurstPercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("%f% mitigation of all physical attacks", CombatKeyword.AddMitigationUniversalPercent, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("%f mitigation of all physical attacks", CombatKeyword.AddMitigationUniversal, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Chance to Ignore Knockbacks %d%", CombatKeyword.AddChanceToIgnoreKnockback, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Chance to Ignore Stun %d%", CombatKeyword.AddChanceToIgnoreStun, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("To targets whose Rage meter are at least %d% full", CombatKeyword.AboveRagePercentage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Targets whose Rage meter is at least %f% full", CombatKeyword.AboveRagePercentage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("%f% chance to Knock Down", CombatKeyword.AddChanceToKnockdown, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("%f% chance to", CombatKeyword.ApplyWithChancePercentage, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("When wielding two knives", CombatKeyword.RequireTwoKnives, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("If the target is not focused on you", CombatKeyword.RequireNoAggro, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("If target is not focused on you", CombatKeyword.RequireNoAggro, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("To all melee attackers", CombatKeyword.ApplyToMeleeReflect, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("The first melee attacker is knocked away", CombatKeyword.ReflectKnockbackOnFirstMelee, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("When a melee attack deal damage to you", CombatKeyword.ReflectOnMelee, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Deal its damage when you are hit burst attacks", CombatKeyword.ReflectOnBurst, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Deal its damage when you are hit ranged attacks", CombatKeyword.ReflectOnRanged, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("A melee attack deal damage to you", CombatKeyword.ReflectOnMelee, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("In addition, you can use the ability  %d", CombatKeyword.EnableOtherAbility, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("In addition, you can use the ability", CombatKeyword.EnableOtherAbility, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Chance to consume grass is %f%", CombatKeyword.ChanceToConsume, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("You regenerate %f Health per tick (every 5 second, in and out of combat)", CombatKeyword.AddHealthRegen, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Summoned Deer attacks", CombatKeyword.ApplyToDeerPet, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Summoned Deer", CombatKeyword.ApplyToDeerPet, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Have %f health", CombatKeyword.AddMaxHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Have %f armor", CombatKeyword.AddMaxArmor, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Incubated Spiders", CombatKeyword.ApplyToSpiderPet, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Per second", CombatKeyword.Recurring, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("While Spider skill is active", CombatKeyword.ActiveSkillSpider, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Steals %f health", CombatKeyword.DrainHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Steals %f more health", CombatKeyword.DrainHealth, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Ability's range is reduced to %fm", CombatKeyword.RemoveRange, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Chance to consume carrot is %f%", CombatKeyword.ChanceToConsume, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Lower aggro toward you %f", CombatKeyword.RemoveTaunt, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Attack range %f meter", CombatKeyword.AddRange, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Until you trigger the teleport", CombatKeyword.UntilTrigger, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
-            ExtractSentence("Until you Feint", CombatKeyword.UntilTrigger, skippedKeywordList, ref text, ref ExtractedKeyword, ref Data1, ref Data2);
+            ExtractSentence("Boost your next attack %f", new List<CombatKeyword>() { CombatKeyword.DealDamage, CombatKeyword.NextAttack }, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost the damage of future Stampede attacks by %f", new List<CombatKeyword>() { CombatKeyword.DealDamage, CombatKeyword.NextAttack }, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Randomly determined", CombatKeyword.RandomDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Future Stampede attack", CombatKeyword.NextAttack, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Next attack", CombatKeyword.NextAttack, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Pet's Slashing attacks deal %f damage", CombatKeyword.AnimalPetSlashingAttackBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Pet's Slashing attacks %f damage", CombatKeyword.AnimalPetSlashingAttackBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Pet's Crushing attacks deal %f damage", CombatKeyword.AnimalPetCrushingAttackBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Pet's Crushing attacks %f damage", CombatKeyword.AnimalPetCrushingAttackBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Deal up to %f damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Deal %f damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("(Debuff cannot stack with itself)", CombatKeyword.NonStackingDebuff, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", CombatKeyword.Combo1, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Combo: Gripjaw+Any Spider+Any Spider+Inject Venom:", CombatKeyword.Combo2, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", CombatKeyword.Combo3, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", CombatKeyword.Combo4, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Combo: Rip+Any Melee+Any Melee+Bat Stability:", CombatKeyword.Combo5, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", CombatKeyword.Combo5, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Final step hit all enemies within %f meter", CombatKeyword.ComboFinalStepBurst, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Final step hit all targets within %f meter", CombatKeyword.ComboFinalStepBurst, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Final step deal %f% damage", CombatKeyword.ComboFinalStepDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Final step stun the target and deal %f damage", CombatKeyword.ComboFinalStepDamageAndStun, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Final step boost base damage %f% for 10 second", CombatKeyword.ComboFinalStepBoostBaseDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Whenever you take damage from an enemy", CombatKeyword.ReflectOnAnyAttack, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("If you are using the Priest skill", CombatKeyword.ActiveSkillPriest, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("You have not been attacked in the past %f second", CombatKeyword.NotAttackedRecently, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Incubated Spiders %f% chance to avoid being hit burst attacks", CombatKeyword.SpiderPetAvoidBurst, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Combat Refresh restore %f health", CombatKeyword.CombatRefreshRestoreHeatlth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("If , , or  deal damage, that damage is boosted %f% per tick", CombatKeyword.DamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost the damage of your Core and %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost your Nice Attack damage %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost the damage of your by %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost the damage of your %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost damage from %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost the damage from all kicks %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost your direct and indirect damage %f", CombatKeyword.DamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Increase the damage of your ranged attacks by %f%", CombatKeyword.DamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Increase the damage of your by %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Plus %f Damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Base Damage %f%", CombatKeyword.BaseDamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Base Damage by %f%", CombatKeyword.BaseDamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Base Damage increase %f%", CombatKeyword.BaseDamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Causing %f Damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost the target's fire damage-over-time by %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Damage %f%", CombatKeyword.DamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Damage %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Damage is %f% per tick", CombatKeyword.DamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Damage is %f%", CombatKeyword.DamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Damage is %f", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Damage is boosted %f%", CombatKeyword.DamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Suffer %f% damage", CombatKeyword.DamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reap %f% of the damage to you as healing", CombatKeyword.DrainHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reap %f% of the damage done", CombatKeyword.DrainHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Melee Attackers suffer %f indirect damage", CombatKeyword.ReflectMeleeIndirectDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Up to a max of %f", CombatKeyword.MaxOccurence, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("The reap cap is %f", CombatKeyword.DrainMax, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Deal %f% damage", CombatKeyword.DamagePercentageBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Deal %f damage to health", CombatKeyword.DealDirectHealthDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("+Up to %f extra damage", CombatKeyword.DealRandomDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("All attacks deal %f damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Nice attacks deal %f damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Core attacks deal %f damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Deal %f damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            //ExtractSentence("Deal %f damage", CombatKeyword.NonStackingDebuff, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);//again
+            ExtractSentence("Deal %f indirect damage", CombatKeyword.DealIndirectDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);//again
+            ExtractSentence("Dealing %f damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Cause %f damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Take %f damage", CombatKeyword.DealDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Over %f second", CombatKeyword.EffectDuration, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Lasts %f second", CombatKeyword.EffectDuration, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("For %f second after using ", CombatKeyword.EffectDuration, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("For %f second", CombatKeyword.EffectDuration, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Within %f second", CombatKeyword.EffectDuration, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("For %f minute", CombatKeyword.EffectDurationMinute, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("After a %f second delay", CombatKeyword.EffectDelay, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reduce Rage %f", CombatKeyword.AddRage, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reduce %f more Rage", CombatKeyword.AddRage, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Generate %f Rage", CombatKeyword.AddRage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Generate %f% Rage", CombatKeyword.AddRagePercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Generate %f less Rage", CombatKeyword.AddRagePercent, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Lower Rage by %f", CombatKeyword.AddRagePercent, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Lower Rage %f", CombatKeyword.AddRage, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Remove %f Rage", CombatKeyword.AddRage, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Lose %f Rage", CombatKeyword.AddRage, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Deplete %f Rage", CombatKeyword.AddRage, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Generate no Rage", CombatKeyword.ZeroRage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Raise target's Max Rage by %f", CombatKeyword.IncreaseMaxRage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Increase target's Max Rage by%f", CombatKeyword.IncreaseMaxRage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Generate no Taunt", CombatKeyword.ZeroTaunt, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Power Cost %f", CombatKeyword.AddPowerCost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Power Cost is %f", CombatKeyword.AddPowerCost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reduce the Power cost of your %f", CombatKeyword.AddPowerCost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Power Regeneration is %f", CombatKeyword.AddPowerRegen, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Cost %f% Power", CombatKeyword.AddPowerCostPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Cost %f Power", CombatKeyword.AddPowerCost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("The maximum Power restored  increase %f", CombatKeyword.AddPowerCostMax, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Max Armor %f", CombatKeyword.AddMaxArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Increase your Max Health by %f", CombatKeyword.AddMaxHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Increase your Max Armor by %f", CombatKeyword.AddMaxArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reuse Timer %f second", CombatKeyword.AddReuseTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reuse Timer is %f second", CombatKeyword.AddReuseTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reuse Timer is %f sec", CombatKeyword.AddReuseTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reuse Timer is %f", CombatKeyword.AddReuseTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reuse Time is %f second", CombatKeyword.AddReuseTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reuse Time %f second", CombatKeyword.AddReuseTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Reduce the taunt of all your attacks by %f%", CombatKeyword.AddTauntPercent, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Taunt %f%", CombatKeyword.AddTauntPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Taunt as if they did %f% more damage", CombatKeyword.AddTauntPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Taunt as if they did %f% additional damage", CombatKeyword.AddTauntPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Taunt %f", CombatKeyword.AddTaunt, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Taunt their opponents %f% less", CombatKeyword.AddTauntPercent, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("When you have %f% or less of your Armor left", CombatKeyword.BelowArmorPercentage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Restore %f Health, Armor, and Power respectively", CombatKeyword.RestoreHealthArmorPower, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Restore %f Health, Armor, and Power", CombatKeyword.RestoreHealthArmorPower, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("%f Health/Armor healing", CombatKeyword.RestoreHealthArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Heal you for %f Health/Armor", CombatKeyword.RestoreHealthArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Heal your pet for %f Health/Armor", CombatKeyword.RestoreHealthArmorToPet, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Restore %f Health/Armor to your pet", CombatKeyword.RestoreHealthArmorToPet, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Restore %f Health/Armor", CombatKeyword.RestoreHealthArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Restore %f health", CombatKeyword.RestoreHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Heal all targets for %f health", CombatKeyword.RestoreHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("You regain %f health", CombatKeyword.RestoreHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Heal %f armor", CombatKeyword.RestoreArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Restore %f armor", CombatKeyword.RestoreArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("You regain %f armor", CombatKeyword.RestoreArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Basic attacks restore %f Power", CombatKeyword.RestorePower, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Restore %f Power", CombatKeyword.RestorePower, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Restore %f to you", CombatKeyword.RestoreAny, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Recover %f armor", CombatKeyword.RestoreArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Recover %f health", CombatKeyword.RestoreHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Recover %f power", CombatKeyword.RestorePower, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("You regain %f power", CombatKeyword.RestorePower, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Cost no Power to cast", CombatKeyword.ZeroPowerCost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Take %f second to channel", CombatKeyword.AddChannelTime, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Heal you for %f health", CombatKeyword.RestoreHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Heal you for %f armor", CombatKeyword.RestoreArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Heal %f health", CombatKeyword.RestoreHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Healing %f%", CombatKeyword.RestoreHealthPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Healing %f", CombatKeyword.RestoreHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Heal you %f", CombatKeyword.RestoreHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Heal %f", CombatKeyword.RestoreHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Sprint Speed is %f", CombatKeyword.AddSprintSpeed, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Max Health %f", CombatKeyword.AddMaxHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("To your minions", CombatKeyword.ApplyToNecroPet, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Attack Range is %f", CombatKeyword.AddRange, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Range is %f meter", CombatKeyword.AddRange, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Stun incorporeal enemies", CombatKeyword.StunIncorporeal, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Resets the timer on", CombatKeyword.ResetOtherAbilityTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Deal %f% total damage against Demons", CombatKeyword.DamagePercentageBoostAgainstSpecie, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("While Shield skill active", CombatKeyword.ActiveSkillShield, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("While Warden skill active", CombatKeyword.ActiveSkillWarden, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("While Cow skill active", CombatKeyword.ActiveSkillCow, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost targets' mitigation %f", CombatKeyword.Mitigation, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Mitigate %f% of all damage", CombatKeyword.MitigationPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Stacks up to %f times", CombatKeyword.MaxStack, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Stacks up to %fx", CombatKeyword.MaxStack, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("All Shield abilities", CombatKeyword.ApplyToAbilitiesShield, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Grant allies", CombatKeyword.ApplyToAllies, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("%f% evasion of burst attacks", CombatKeyword.AddEvasionBurstPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("%f% mitigation of all physical attacks", CombatKeyword.AddMitigationUniversalPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("%f mitigation of all physical attacks", CombatKeyword.AddMitigationUniversal, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Chance to Ignore Knockbacks %f%", CombatKeyword.AddChanceToIgnoreKnockback, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("%f% chance to ignore Stun", CombatKeyword.AddChanceToIgnoreStun, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Chance to ignore Stun %f%", CombatKeyword.AddChanceToIgnoreStun, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("To targets whose Rage meter are at least %f% full", CombatKeyword.AboveRagePercentage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Targets whose Rage meter is at least %f% full", CombatKeyword.AboveRagePercentage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("%f% chance to Knock Down", CombatKeyword.AddChanceToKnockdown, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("%f% chance to", CombatKeyword.ApplyWithChancePercentage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("When wielding two knives", CombatKeyword.RequireTwoKnives, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("If the target is not focused on you", CombatKeyword.RequireNoAggro, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("If target is not focused on you", CombatKeyword.RequireNoAggro, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("To all melee attackers", CombatKeyword.ApplyToMeleeReflect, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("The first melee attacker is knocked away", CombatKeyword.ReflectKnockbackOnFirstMelee, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("When a melee attack deal damage to you", CombatKeyword.ReflectOnMelee, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Deal its damage when you are hit burst attacks", CombatKeyword.ReflectOnBurst, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Deal its damage when you are hit ranged attacks", CombatKeyword.ReflectOnRanged, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("A melee attack deal damage to you", CombatKeyword.ReflectOnMelee, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("In addition, you can use the ability  %f", CombatKeyword.EnableOtherAbility, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("In addition, you can use the ability", CombatKeyword.EnableOtherAbility, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Chance to consume grass is %f%", CombatKeyword.ChanceToConsume, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("You regenerate %f Health per tick (every 5 second, in and out of combat)", CombatKeyword.AddHealthRegen, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Summoned Deer attacks", CombatKeyword.ApplyToDeerPet, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Summoned Deer", CombatKeyword.ApplyToDeerPet, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Have %f health", CombatKeyword.AddMaxHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Have %f armor", CombatKeyword.AddMaxArmor, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Incubated Spiders", CombatKeyword.ApplyToSpiderPet, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Per second", CombatKeyword.Recurring, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("While Spider skill is active", CombatKeyword.ActiveSkillSpider, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Steals %f health", CombatKeyword.DrainHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Steals %f more health", CombatKeyword.DrainHealth, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Ability's range is reduced to %fm", CombatKeyword.AddRange, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Chance to consume carrot is %f%", CombatKeyword.ChanceToConsume, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Lower aggro toward you %f", CombatKeyword.AddTaunt, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Attack range %f meter", CombatKeyword.AddRange, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Until you trigger the teleport", CombatKeyword.UntilTrigger, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Until you Feint", CombatKeyword.UntilTrigger, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Boost your movement speed by %f", CombatKeyword.AddSprintSpeed, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Increase your movement speed by %f", CombatKeyword.AddSprintSpeed, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Speed is %f", CombatKeyword.AddSprintSpeed, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Movement speed %f", CombatKeyword.AddSprintSpeed, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
 
-            if (ExtractedKeyword != CombatKeyword.None)
+            extractedCombatEffectList = new List<CombatEffect>();
+
+            if (ExtractedKeywordList.Count > 0)
             {
-                extractedCombatEffect = new CombatEffect(ExtractedKeyword, Data1, Data2);
+                foreach (CombatKeyword Item in ExtractedKeywordList)
+                {
+                    CombatEffect ExtractedCombatEffect;
+                    if (extractedCombatEffectList.Count == 0)
+                        ExtractedCombatEffect = new CombatEffect(Item, Data1, Data2);
+                    else
+                        ExtractedCombatEffect = new CombatEffect(Item);
+
+                    extractedCombatEffectList.Add(ExtractedCombatEffect);
+                }
+
                 return true;
             }
             else
-            {
-                extractedCombatEffect = new CombatEffect();
                 return false;
-            }
         }
 
-        private void ExtractSentence(string format, CombatKeyword associatedKeyword, List<CombatKeyword> skippedKeywordList, ref string text, ref CombatKeyword extractedKeyword, ref double data1, ref double data2)
+        private void ExtractSentence(string format, CombatKeyword associatedKeyword, bool isNegated, List<CombatKeyword> skippedKeywordList, ref string text, List<CombatKeyword> extractedKeywordList, ref double data1, ref double data2)
         {
-            if (extractedKeyword != CombatKeyword.None)
+            ExtractSentence(format, new List<CombatKeyword>() { associatedKeyword }, isNegated, skippedKeywordList, ref text, extractedKeywordList, ref data1, ref data2);
+        }
+
+        private void ExtractSentence(string format, List<CombatKeyword> associatedKeywordList, bool isNegated, List<CombatKeyword> skippedKeywordList, ref string text, List<CombatKeyword> extractedKeywordList, ref double data1, ref double data2)
+        {
+            if (extractedKeywordList.Count > 0)
                 return;
-            if (skippedKeywordList.Contains(associatedKeyword))
-                return;
+            foreach (CombatKeyword Item in associatedKeywordList)
+                if (skippedKeywordList.Contains(Item))
+                    return;
 
             string LowerText = text.ToLowerInvariant();
             string LowerFormat = format.ToLowerInvariant();
@@ -1281,62 +1398,19 @@
             if (Index >= 0)
             {
                 char FormatType = LowerFormat[Index + 1];
-                string Pattern = LowerFormat.Substring(0, Index);
-                string AfterPattern = LowerFormat.Substring(Index + 2);
-                int PatternIndex;
 
-                if (Pattern.Length > 0)
-                    PatternIndex = LowerText.IndexOf(Pattern);
-                else
+                if (FormatType != 'f')
                 {
-                    PatternIndex = 0;
-                    while (PatternIndex < LowerText.Length && !char.IsDigit(LowerText[PatternIndex]))
-                        PatternIndex++;
-
-                    if (PatternIndex >= LowerText.Length)
-                        PatternIndex = -1;
-                }
-
-                if (PatternIndex < 0)
-                    return;
-
-                if (FormatType == 'f')
-                {
-                    int StartDataIndex = PatternIndex + Pattern.Length;
-                    int EndDataIndex = StartDataIndex;
-                    double Multiplier = 1.0;
-
-                    if (EndDataIndex < LowerText.Length)
-                    {
-                        if (LowerText[EndDataIndex] == '+')
-                        {
-                            StartDataIndex++;
-                            EndDataIndex++;
-                        }
-                        else if (LowerText[EndDataIndex] == '-')
-                        {
-                            StartDataIndex++;
-                            EndDataIndex++;
-                            Multiplier = -1.0;
-                        }
-                    }
-
-                    while (EndDataIndex < LowerText.Length && (char.IsDigit(LowerText[EndDataIndex]) || LowerText[EndDataIndex] == '.'))
-                        EndDataIndex++;
-
-                    if (EndDataIndex <= StartDataIndex)
-                        return;
-
-                    double Data = double.Parse(LowerText.Substring(StartDataIndex, EndDataIndex - StartDataIndex), NumberStyles.Float, CultureInfo.InvariantCulture);
-                    if (!LowerText.Substring(EndDataIndex).StartsWith(AfterPattern))
-                        return;
-
-                    data1 = Data * Multiplier;
-                    text = text.Substring(0, PatternIndex) + text.Substring(EndDataIndex + AfterPattern.Length).Trim();
-                    extractedKeyword = associatedKeyword;
-                }
-                else
                     Debug.WriteLine($"Format \"{format}\" contains % but for unsupported type {FormatType}");
+                    return;
+                }
+
+                string BeforePattern = LowerFormat.Substring(0, Index);
+                string AfterPattern = LowerFormat.Substring(Index + 2);
+
+                int StartIndex = 0;
+                while (ParseFormat(StartIndex, BeforePattern, AfterPattern, LowerText, associatedKeywordList, isNegated, ref text, extractedKeywordList, ref data1, ref data2, out int ParsedLength))
+                    StartIndex += ParsedLength;
             }
             else
             {
@@ -1345,8 +1419,73 @@
                     return;
 
                 text = text.Substring(0, PatternIndex) + text.Substring(PatternIndex + LowerFormat.Length).Trim();
-                extractedKeyword = associatedKeyword;
+                extractedKeywordList.AddRange(associatedKeywordList);
             }
+        }
+
+        private bool ParseFormat(int startIndex, string beforePattern, string afterPattern, string lowerText, List<CombatKeyword> associatedKeywordList, bool isNegated, ref string text, List<CombatKeyword> extractedKeywordList, ref double data1, ref double data2, out int parsedLength)
+        {
+            int PatternIndex;
+
+            if (beforePattern.Length > 0)
+                PatternIndex = lowerText.IndexOf(beforePattern, startIndex);
+            else
+            {
+                int AfterPatternIndex = lowerText.IndexOf(afterPattern, startIndex);
+                if (AfterPatternIndex > 0)
+                {
+                    PatternIndex = AfterPatternIndex - 1;
+                    while (PatternIndex > 0 && char.IsDigit(lowerText[PatternIndex - 1]))
+                        PatternIndex--;
+                }
+                else
+                    PatternIndex = -1;
+            }
+
+            if (PatternIndex < 0)
+            {
+                parsedLength = 0;
+                return false;
+            }
+
+            int StartDataIndex = PatternIndex + beforePattern.Length;
+            int EndDataIndex = StartDataIndex;
+            double Multiplier = isNegated ? -1.0 : 1.0;
+
+            if (EndDataIndex < lowerText.Length)
+            {
+                if (lowerText[EndDataIndex] == '+')
+                {
+                    StartDataIndex++;
+                    EndDataIndex++;
+                }
+                else if (lowerText[EndDataIndex] == '-')
+                {
+                    StartDataIndex++;
+                    EndDataIndex++;
+                    Multiplier = -Multiplier;
+                }
+            }
+
+            while (EndDataIndex < lowerText.Length && (char.IsDigit(lowerText[EndDataIndex]) || (lowerText[EndDataIndex] == '.' && EndDataIndex > StartDataIndex)))
+                EndDataIndex++;
+
+            parsedLength = StartDataIndex - startIndex;
+
+            if (EndDataIndex <= StartDataIndex)
+                return true;
+
+            double Data;
+            Data = double.Parse(lowerText.Substring(StartDataIndex, EndDataIndex - StartDataIndex), NumberStyles.Float, CultureInfo.InvariantCulture);
+
+            if (!lowerText.Substring(EndDataIndex).StartsWith(afterPattern))
+                return true;
+
+            data1 = Data * Multiplier;
+            text = text.Substring(0, PatternIndex) + text.Substring(EndDataIndex + afterPattern.Length).Trim();
+            extractedKeywordList.AddRange(associatedKeywordList);
+
+            return false;
         }
 
         private string CleanedUpText(string text)
