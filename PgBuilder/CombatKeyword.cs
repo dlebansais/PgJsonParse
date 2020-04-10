@@ -3,10 +3,11 @@
     public enum CombatKeyword
     {
         None,
-        DealDamage,
+        DamageBoost,
         DealRandomDamage,
         DealDirectHealthDamage,
         DealIndirectDamage,
+        DealArmorDamage,
         NextAttack,
         NonStackingDebuff,
         MaxStack,
@@ -100,6 +101,7 @@
         AnimalPetCrushingAttackBoost,
         RandomDamage,
         TargetNextRageAttack,
-        AddNextMinorHealPowerCost,
+        NextUse,
+        WithinDistance,
     }
 }
