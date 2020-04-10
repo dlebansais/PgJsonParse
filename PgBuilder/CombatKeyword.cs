@@ -77,7 +77,9 @@
         ApplyToDeerPet,
         ApplyToSpiderPet,
         AddRange,
+        Stun,
         StunIncorporeal,
+        Knockback,
         ResetOtherAbilityTimer,
         EnableOtherAbility,
         Mitigation,
@@ -103,5 +105,6 @@
         TargetNextRageAttack,
         NextUse,
         WithinDistance,
+        TargetAnatomyArthropods,
     }
 }
