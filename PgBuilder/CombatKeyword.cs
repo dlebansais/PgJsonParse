@@ -100,5 +100,6 @@
         AnimalPetCrushingAttackBoost,
         RandomDamage,
         TargetNextRageAttack,
+        AddNextMinorHealPowerCost,
     }
 }
