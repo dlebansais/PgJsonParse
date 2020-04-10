@@ -711,9 +711,16 @@
         {
             Comparer = new LevenshteinAlgorithm();
             int DebugIndex = 0;
+            int SkipIndex = 3;
 
             foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
             {
+                if (SkipIndex > 0)
+                {
+                    SkipIndex--;
+                    continue;
+                }
+
                 IPgPower ItemPower = Entry.Key;
                 List<IPgEffect> ItemEffectList = Entry.Value;
 
@@ -753,43 +760,18 @@
                 return;
             }
 
-            AbilityKeyword ModifiedAbilityKeyword = AbilityKeyword.Internal_None;
-            RemoveDecorationText(ref ModText);
-            SimplifyGrammar(ref ModText);
-            SimplifyGrammar(ref EffectText);
-            RemoveWideAbilityReferences(ref ModText, ref ModifiedAbilityKeyword);
-
-            string ComparedText = CleanedUpText(ModText);
-            string ComparedEffectText = CleanedUpText(EffectText);
-            double DirectDistance = StringDistance(ComparedText, ComparedEffectText);
-
-            if (DirectDistance < 0.05)
-                return;
-
-            List<AbilityKeyword> ExtractedAbilityList;
-            double ImprovedDistance;
-            List<CombatEffect> ExtractedCombatEffectList;
-
-            ExtractAttributesFull(abilityNameList, nameToKeyword, EffectText, ModText, out ExtractedAbilityList, out ImprovedDistance, out ExtractedCombatEffectList);
-
-            if (ImprovedDistance < 0.26 && ExtractedCombatEffectList.Count == 0)
-                return;
-
-            if (ExtractedCombatEffectList.Count == 0)
+            string ParsedString = string.Empty;
+            foreach (CombatEffect Item in EffectCombatList)
             {
-                Debug.WriteLine($"Unparsed: {AsSimpleEffect.Description}");
-                Debug.WriteLine($"      vs: {LastEffect.Desc}");
-                return;
+                if (ParsedString.Length > 0)
+                    ParsedString += ", ";
+
+                ParsedString += Item.ToString();
             }
 
-            ExtractAttributesPartial(abilityNameList, nameToKeyword, EffectText, ModText, out ImprovedDistance, ref ExtractedCombatEffectList);
-
-            if (ImprovedDistance >= 0.26)
-            {
-                Debug.WriteLine($"Unparsed: {AsSimpleEffect.Description}");
-                Debug.WriteLine($"      vs: {LastEffect.Desc}");
-                return;
-            }
+            Debug.WriteLine("");
+            Debug.WriteLine($"   Effect: {LastEffect.Desc}");
+            Debug.WriteLine($"Parsed as: {ParsedString}");
         }
 
         private void HackEffectText(ref string text)
@@ -869,7 +851,7 @@
             ReplaceCaseInsensitive(ref text, "stuns ", "stun ");
             ReplaceCaseInsensitive(ref text, "causes ", "cause ");
             ReplaceCaseInsensitive(ref text, "lowers ", "lower ");
-            ReplaceCaseInsensitive(ref text, "lowers ", "lower ");
+            ReplaceCaseInsensitive(ref text, "hastens ", "hasten ");
             ReplaceCaseInsensitive(ref text, "raises ", "raise ");
             ReplaceCaseInsensitive(ref text, "increases ", "increase ");
             ReplaceCaseInsensitive(ref text, " seconds", " second");
@@ -1159,6 +1141,7 @@
             ExtractSentence("Randomly determined", CombatKeyword.RandomDamage, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Future Stampede attack", CombatKeyword.NextAttack, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Next attack", CombatKeyword.NextAttack, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Target's next Rage Attack", CombatKeyword.TargetNextRageAttack, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Pet's Slashing attacks deal %f damage", CombatKeyword.AnimalPetSlashingAttackBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Pet's Slashing attacks %f damage", CombatKeyword.AnimalPetSlashingAttackBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Pet's Crushing attacks deal %f damage", CombatKeyword.AnimalPetCrushingAttackBoost, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
@@ -1260,6 +1243,8 @@
             ExtractSentence("Reuse Timer is %f", CombatKeyword.AddReuseTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Reuse Time is %f second", CombatKeyword.AddReuseTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Reuse Time %f second", CombatKeyword.AddReuseTimer, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Hasten your current Combat Refresh delay by %f second", CombatKeyword.AddCombatRefreshTimer, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
+            ExtractSentence("Hasten your current Combat Refresh timer by %f second", CombatKeyword.AddCombatRefreshTimer, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Reduce the taunt of all your attacks by %f%", CombatKeyword.AddTauntPercent, true, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Taunt %f%", CombatKeyword.AddTauntPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);
             ExtractSentence("Taunt as if they did %f% more damage", CombatKeyword.AddTauntPercent, false, skippedKeywordList, ref text, ExtractedKeywordList, ref Data1, ref Data2);

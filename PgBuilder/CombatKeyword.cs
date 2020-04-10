@@ -55,6 +55,7 @@
         AddMaxHealth,
         AddMaxArmor,
         AddReuseTimer,
+        AddCombatRefreshTimer,
         AddTaunt,
         AddTauntPercent,
         ZeroTaunt,
@@ -98,5 +99,6 @@
         AnimalPetSlashingAttackBoost,
         AnimalPetCrushingAttackBoost,
         RandomDamage,
+        TargetNextRageAttack,
     }
 }
