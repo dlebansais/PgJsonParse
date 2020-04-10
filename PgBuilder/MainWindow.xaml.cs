@@ -171,7 +171,7 @@
             FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable, out List<IPgPower> UnmatchedPowerList);
             GetAbilityNames(out List<string> AbilityNameList, out Dictionary<string, AbilityKeyword> NameToKeyword);
 
-            AnalyzeMatchingEffects(AbilityNameList, NameToKeyword, PowerToEffectTable);
+            AnalyzeMatchingEffects(NameToKeyword, PowerToEffectTable);
             //AnalyzeRemainingEffects(AbilityNameList, UnmatchedPowerList);
         }
 
@@ -707,7 +707,7 @@
         #endregion
 
         #region Data Analysis, Matching
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
+        private void AnalyzeMatchingEffects(Dictionary<string, AbilityKeyword> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
         {
             Comparer = new LevenshteinAlgorithm();
             int DebugIndex = 0;
@@ -724,14 +724,14 @@
                 IPgPower ItemPower = Entry.Key;
                 List<IPgEffect> ItemEffectList = Entry.Value;
 
-                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList);
+                AnalyzeMatchingEffects(nameToKeyword, ItemPower, ItemEffectList);
                 DebugIndex++;
             }
 
             DisplayParsingResult(powerToEffectTable);
         }
 
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, IPgPower itemPower, List<IPgEffect> itemEffectList)
+        private void AnalyzeMatchingEffects(Dictionary<string, AbilityKeyword> nameToKeyword, IPgPower itemPower, List<IPgEffect> itemEffectList)
         {
             IList<IPgPowerTier> TierEffectList = itemPower.TierEffectList;
 
@@ -749,8 +749,8 @@
 
             HackEffectText(ref EffectText);
 
-            AnalyzeText(abilityNameList, nameToKeyword, EffectText, out List<CombatEffect> EffectCombatList);
-            AnalyzeText(abilityNameList, nameToKeyword, ModText, out List<CombatEffect> ModCombatList);
+            AnalyzeText(nameToKeyword, EffectText, out List<CombatEffect> EffectCombatList);
+            AnalyzeText(nameToKeyword, ModText, out List<CombatEffect> ModCombatList);
 
             bool IsContained = CombatEffect.Contains(ModCombatList, EffectCombatList);
             if (!IsContained)
@@ -786,7 +786,7 @@
                 text = text.Substring(0, text.Length - 14) + " per tick";
         }
 
-        private void AnalyzeText(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, string text, out List<CombatEffect> extractedCombatEffectList)
+        private void AnalyzeText(Dictionary<string, AbilityKeyword> nameToKeyword, string text, out List<CombatEffect> extractedCombatEffectList)
         {
             RemoveDecorationText(ref text);
             SimplifyGrammar(ref text);
@@ -798,7 +798,7 @@
             List<AbilityKeyword> ExtractedAbilityList;
             double ImprovedDistance;
 
-            ExtractAttributesFull(abilityNameList, nameToKeyword, text, text, out ExtractedAbilityList, out ImprovedDistance, out extractedCombatEffectList);
+            ExtractAttributesFull(nameToKeyword, text, text, out ExtractedAbilityList, out ImprovedDistance, out extractedCombatEffectList);
         }
 
         private void RemoveDecorationText(ref string text)
@@ -971,64 +971,15 @@
             return index + 1 >= text.Length || text[index] == ' ' || text[index] == ',' || text[index] == '.';
         }
 
-        private void ExtractAttributesFull(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, string effectText, string text, out List<AbilityKeyword> extractedAbilityList, out double distance, out List<CombatEffect> extractedCombatEffectList)
+        private void ExtractAttributesFull(Dictionary<string, AbilityKeyword> nameToKeyword, string effectText, string text, out List<AbilityKeyword> extractedAbilityList, out double distance, out List<CombatEffect> extractedCombatEffectList)
         {
-            ExtractAbilityNames(abilityNameList, nameToKeyword, ref text, out extractedAbilityList);
+            ExtractAbilityNames(nameToKeyword, ref text, out extractedAbilityList);
 
             List<CombatKeyword> SkippedKeywordList = new List<CombatKeyword>();
-            ExtractAttributes(abilityNameList, nameToKeyword, effectText, text, SkippedKeywordList, extractedAbilityList, out distance, out extractedCombatEffectList);
+            ExtractAttributes(nameToKeyword, effectText, text, SkippedKeywordList, extractedAbilityList, out distance, out extractedCombatEffectList);
         }
 
-        private void ExtractAttributesPartial(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, string effectText, string text, out double improvedDistance, ref List<CombatEffect> combatEffectList)
-        {
-            Debug.Assert(combatEffectList.Count > 0);
-
-            List<CombatKeyword> KnownKeywordList = new List<CombatKeyword>();
-            foreach (CombatEffect Item in combatEffectList)
-            {
-                CombatKeyword Keyword = Item.Keyword;
-                Debug.Assert(!KnownKeywordList.Contains(Keyword));
-
-                KnownKeywordList.Add(Keyword);
-            }
-
-            Debug.Assert(KnownKeywordList.Count > 0 && KnownKeywordList.Count < sizeof(int) * 8);
-
-            ExtractAbilityNames(abilityNameList, nameToKeyword, ref text, out List<AbilityKeyword> ExtractedAbilityList);
-            
-            int LoopCount = 1 << KnownKeywordList.Count;
-            double BestDistance = double.NaN;
-            List<CombatEffect> BestCombatEffectList = combatEffectList;
-
-            for (int i = 0; i + 1 < LoopCount; i++)
-            {
-                List<CombatKeyword> SkippedKeywordList = new List<CombatKeyword>();
-
-                int Mask = i;
-                for (int j = 0; j < KnownKeywordList.Count; j++)
-                {
-                    if ((Mask & 1) == 1)
-                        SkippedKeywordList.Add(KnownKeywordList[j]);
-
-                    Mask >>= 1;
-                }
-
-                Debug.Assert(SkippedKeywordList.Count < KnownKeywordList.Count);
-
-                ExtractAttributes(abilityNameList, nameToKeyword, effectText, text, SkippedKeywordList, ExtractedAbilityList, out double Distance, out List<CombatEffect> ExtractedCombatEffectList);
-
-                if (double.IsNaN(BestDistance) || BestDistance > Distance)
-                {
-                    BestDistance = Distance;
-                    BestCombatEffectList = ExtractedCombatEffectList;
-                }
-            }
-
-            improvedDistance = BestDistance;
-            combatEffectList = BestCombatEffectList;
-        }
-
-        private void ExtractAttributes(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, string effectText, string text, List<CombatKeyword> skippedKeywordList, List<AbilityKeyword> extractedAbilityList, out double improvedDistance, out List<CombatEffect> extractedCombatEffectList)
+        private void ExtractAttributes(Dictionary<string, AbilityKeyword> nameToKeyword, string effectText, string text, List<CombatKeyword> skippedKeywordList, List<AbilityKeyword> extractedAbilityList, out double improvedDistance, out List<CombatEffect> extractedCombatEffectList)
         {
             extractedCombatEffectList = new List<CombatEffect>();
             List<CombatKeyword> SkippedKeywordListCopy = new List<CombatKeyword>(skippedKeywordList);
@@ -1066,7 +1017,7 @@
             improvedDistance = StringDistance(ComparedText, ComparedEffectText);
         }
 
-        private void ExtractAbilityNames(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, ref string text, out List<AbilityKeyword> extractedAbilityList)
+        private void ExtractAbilityNames(Dictionary<string, AbilityKeyword> nameToKeyword, ref string text, out List<AbilityKeyword> extractedAbilityList)
         {
             extractedAbilityList = new List<AbilityKeyword>();
 
