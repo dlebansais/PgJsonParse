@@ -169,7 +169,7 @@
             FilterValidPowers(out List<IPgPower> PowerAttributeList, out List<IPgPower> PowerSimpleEffectList);
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> AllEffectTable);
             FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable, out List<IPgPower> UnmatchedPowerList);
-            GetAbilityNames(out List<string> AbilityNameList, out Dictionary<string, AbilityKeyword> NameToKeyword);
+            GetAbilityNames(out List<string> AbilityNameList, out Dictionary<string, List<AbilityKeyword>> NameToKeyword);
 
             AnalyzeMatchingEffects(AbilityNameList, NameToKeyword, PowerToEffectTable);
             //AnalyzeRemainingEffects(AbilityNameList, UnmatchedPowerList);
@@ -541,32 +541,33 @@
             { "Rotflesh", "Rotskin" },
         };
 
-        private Dictionary<string, AbilityKeyword> WideAbilityTable = new Dictionary<string, AbilityKeyword>()
+        private Dictionary<string, List<AbilityKeyword>> WideAbilityTable = new Dictionary<string, List<AbilityKeyword>>()
         {
-            { "Nice Attack", AbilityKeyword.NiceAttack },
-            { "Core Attack", AbilityKeyword.CoreAttack },
-            { "Epic Attack", AbilityKeyword.EpicAttack },
-            { "Basic Attack", AbilityKeyword.BasicAttack },
-            { "Signature Support", AbilityKeyword.SignatureSupport },
-            { "Signature Debuff", AbilityKeyword.SignatureDebuff },
-            { "Major Healing", AbilityKeyword.MajorHeal },
-            { "Minor Heal", AbilityKeyword.MinorHeal },
-            { "Crossbow", AbilityKeyword.Crossbow },
-            { "Ranged Attack", AbilityKeyword.Ranged },
-            { "All Sword", AbilityKeyword.Sword },
-            { "All Fire spell", AbilityKeyword.FireSpell },
-            { "Unarmed attack", AbilityKeyword.Unarmed },
-            { "Kick attack", AbilityKeyword.Kick },
-            { "All bomb attack", AbilityKeyword.Bomb },
-            { "All Psi Wave Abilities", AbilityKeyword.PsiWave },
-            { "Hammer attack", AbilityKeyword.HammerAttack },
-            { "All Druid abilities", AbilityKeyword.Druid },
-            { "Knife abilities with 'Cut' in their name", AbilityKeyword.KnifeCut },
-            { "all Knife abilities WITHOUT 'Cut' in their name", AbilityKeyword.KnifeNonCut },
-            { "all Knife Fighting attack", AbilityKeyword.Knife },
-            { "Bard Songs", AbilityKeyword.BardSong },
-            { "All Major Healing abilities targeting you", AbilityKeyword.MajorHeal },
-            { "All Bun-Fu moves", AbilityKeyword.Rabbit },
+            { "Nice Attack", new List<AbilityKeyword>() { AbilityKeyword.NiceAttack } },
+            { "Core Attack", new List<AbilityKeyword>() { AbilityKeyword.CoreAttack } },
+            { "Epic Attack", new List<AbilityKeyword>() { AbilityKeyword.EpicAttack } },
+            { "Basic Attack", new List<AbilityKeyword>() { AbilityKeyword.BasicAttack } },
+            { "Nice and Epic Attack", new List<AbilityKeyword>() { AbilityKeyword.NiceAttack, AbilityKeyword.EpicAttack } },
+            { "Signature Support", new List<AbilityKeyword>() { AbilityKeyword.SignatureSupport } },
+            { "Signature Debuff", new List<AbilityKeyword>() { AbilityKeyword.SignatureDebuff } },
+            { "Major Healing", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
+            { "Minor Heal", new List<AbilityKeyword>() { AbilityKeyword.MinorHeal } },
+            { "Crossbow", new List<AbilityKeyword>() { AbilityKeyword.Crossbow } },
+            { "Ranged Attack", new List<AbilityKeyword>() { AbilityKeyword.Ranged } },
+            { "All Sword", new List<AbilityKeyword>() { AbilityKeyword.Sword } },
+            { "All Fire spell", new List<AbilityKeyword>() { AbilityKeyword.FireSpell } },
+            { "Unarmed attack", new List<AbilityKeyword>() { AbilityKeyword.Unarmed } },
+            { "Kick attack", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
+            { "All bomb attack", new List<AbilityKeyword>() { AbilityKeyword.Bomb } },
+            { "All Psi Wave Abilities", new List<AbilityKeyword>() { AbilityKeyword.PsiWave } },
+            { "Hammer attack", new List<AbilityKeyword>() { AbilityKeyword.HammerAttack } },
+            { "All Druid abilities", new List<AbilityKeyword>() { AbilityKeyword.Druid } },
+            { "Knife abilities with 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeCut } },
+            { "all Knife abilities WITHOUT 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
+            { "all Knife Fighting attack", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
+            { "Bard Songs", new List<AbilityKeyword>() { AbilityKeyword.BardSong } },
+            { "All Major Healing abilities targeting you", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
+            { "All Bun-Fu moves", new List<AbilityKeyword>() { AbilityKeyword.Rabbit } },
         };
 
         private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
@@ -597,7 +598,7 @@
             AbilityKeyword.Rabbit,
         };
 
-        private void GetAbilityNames(out List<string> abilityNameList, out Dictionary<string, AbilityKeyword> nameToKeyword)
+        private void GetAbilityNames(out List<string> abilityNameList, out Dictionary<string, List<AbilityKeyword>> nameToKeyword)
         {
             IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
             IList<IPgAbility> AbilityList = (IList<IPgAbility>)AbilityDefinition.VerifiedObjectList;
@@ -744,36 +745,52 @@
             Debug.Assert(!abilityNameList.Contains("Fire Walls'"));
             abilityNameList.Add("Fire Walls'");
 
-            nameToKeyword = new Dictionary<string, AbilityKeyword>();
+            nameToKeyword = new Dictionary<string, List<AbilityKeyword>>();
             foreach (KeyValuePair<AbilityKeyword, string> Entry in KeywordToName)
             {
                 Debug.Assert(abilityNameList.Contains(Entry.Value));
-                nameToKeyword.Add(Entry.Value, Entry.Key);
+                nameToKeyword.Add(Entry.Value, new List<AbilityKeyword>() { Entry.Key });
             }
 
-            nameToKeyword.Add("Fire Walls'", AbilityKeyword.SummonedFireWall);
+            nameToKeyword.Add("Fire Walls'", new List<AbilityKeyword>() { AbilityKeyword.SummonedFireWall });
 
-            Debug.Assert(GenericAbilityList.Count == WideAbilityTable.Count);
+            foreach (AbilityKeyword Keyword in GenericAbilityList)
+            {
+                bool IsInTable = false;
+                foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in WideAbilityTable)
+                    if (Entry.Value.Contains(Keyword))
+                    {
+                        IsInTable = true;
+                        break;
+                    }
 
-            foreach (KeyValuePair<string, AbilityKeyword> Entry in WideAbilityTable)
+                Debug.Assert(IsInTable);
+            }
+
+            foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in WideAbilityTable)
+                foreach (AbilityKeyword Keyword in Entry.Value)
+                    Debug.Assert(GenericAbilityList.Contains(Keyword));
+
+            foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in WideAbilityTable)
             {
                 string Pattern = Entry.Key;
                 string PatternWithAbilities = Pattern + " abilities";
                 string PatternWithAbility = Pattern + " ability";
-                AbilityKeyword Keyword = Entry.Value;
+                List<AbilityKeyword> KeywordList = Entry.Value;
 
-                Debug.Assert(GenericAbilityList.Contains(Keyword));
+                foreach (AbilityKeyword Keyword in KeywordList)
+                    Debug.Assert(GenericAbilityList.Contains(Keyword));
 
                 Debug.Assert(!nameToKeyword.ContainsKey(PatternWithAbilities));
-                nameToKeyword.Add(PatternWithAbilities, Keyword);
+                nameToKeyword.Add(PatternWithAbilities, KeywordList);
                 abilityNameList.Add(PatternWithAbilities);
 
                 Debug.Assert(!nameToKeyword.ContainsKey(PatternWithAbility));
-                nameToKeyword.Add(PatternWithAbility, Keyword);
+                nameToKeyword.Add(PatternWithAbility, KeywordList);
                 abilityNameList.Add(PatternWithAbility);
 
                 Debug.Assert(!nameToKeyword.ContainsKey(Pattern));
-                nameToKeyword.Add(Pattern, Keyword);
+                nameToKeyword.Add(Pattern, KeywordList);
                 abilityNameList.Add(Pattern);
             }
 
@@ -801,11 +818,11 @@
         #endregion
 
         #region Data Analysis, Matching
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
+        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
         {
             Comparer = new LevenshteinAlgorithm();
             int DebugIndex = 0;
-            int SkipIndex = 128;
+            int SkipIndex = 129;
 
             foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
             {
@@ -836,7 +853,7 @@
             }},
         };
 
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, IPgPower itemPower, List<IPgEffect> itemEffectList)
+        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPower itemPower, List<IPgEffect> itemEffectList)
         {
             IList<IPgPowerTier> TierEffectList = itemPower.TierEffectList;
 
@@ -911,7 +928,7 @@
             return false;
         }
 
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, IPgPowerTier powerTier, IPgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, bool displayAnalysisResult)
+        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPowerTier powerTier, IPgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, bool displayAnalysisResult)
         {
             extractedPowerTierKeywordList = new List<CombatKeyword>();
 
@@ -1037,7 +1054,7 @@
             return Result;
         }
 
-        private void AnalyzeText(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, string text, bool isMod, out List<AbilityKeyword> extractedAbilityList, out List<CombatEffect> extractedCombatEffectList, out List<AbilityKeyword> extractedTargetAbilityList)
+        private void AnalyzeText(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, string text, bool isMod, out List<AbilityKeyword> extractedAbilityList, out List<CombatEffect> extractedCombatEffectList, out List<AbilityKeyword> extractedTargetAbilityList)
         {
             RemoveDecorationText(ref text);
             SimplifyGrammar(ref text);
@@ -1050,7 +1067,7 @@
 
             ExtractAbilityList(abilityNameList, nameToKeyword, false, ref text, out extractedTargetAbilityList);
 
-            ExtractAttributesFull(nameToKeyword, text, text, extractedAbilityList, out extractedCombatEffectList);
+            ExtractAttributesFull(text, extractedAbilityList, out extractedCombatEffectList);
         }
 
         private void RemoveDecorationText(ref string text)
@@ -1065,7 +1082,7 @@
             ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         }
 
-        private void ExtractAbilityList(List<string> abilityNameList, Dictionary<string, AbilityKeyword> nameToKeyword, bool limitParsing, ref string text, out List<AbilityKeyword> extractedAbilityList)
+        private void ExtractAbilityList(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, bool limitParsing, ref string text, out List<AbilityKeyword> extractedAbilityList)
         {
             extractedAbilityList = new List<AbilityKeyword>();
 
@@ -1112,9 +1129,11 @@
 
                     string BestString = ExtractedTable[BestIndex];
                     Debug.Assert(nameToKeyword.ContainsKey(BestString));
-                    AbilityKeyword Keyword = nameToKeyword[BestString];
+                    List<AbilityKeyword> KeywordList = nameToKeyword[BestString];
 
-                    bool IsAbilityGeneric = GenericAbilityList.Contains(Keyword);
+                    bool IsAbilityGeneric = false;
+                    foreach (AbilityKeyword Keyword in KeywordList)
+                        IsAbilityGeneric |= GenericAbilityList.Contains(Keyword);
 
                     if (LastBestIndex == -1)
                         IsFirstAbilityGeneric = IsAbilityGeneric;
@@ -1144,23 +1163,23 @@
                     }
                     while(IsRemoved);
 
-                    extractedAbilityList.Add(nameToKeyword[Key]);
+                    extractedAbilityList.AddRange(nameToKeyword[Key]);
                 }
             }
         }
 
-        private bool RemoveWideAbilityReferences(ref string text, ref AbilityKeyword modifiedAbilityKeyword)
+        private bool RemoveWideAbilityReferences(ref string text, List<AbilityKeyword> modifiedAbilityKeyword)
         {
             int LowestIndex = text.Length;
             string EntryKey = string.Empty;
-            AbilityKeyword EntryValue = AbilityKeyword.Internal_None;
+            List<AbilityKeyword> EntryValue = new List<AbilityKeyword>();
 
-            foreach (KeyValuePair<string, AbilityKeyword> Entry in WideAbilityTable)
+            foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in WideAbilityTable)
             {
                 string SearchText = text;
-                AbilityKeyword SearchAbilityKeyword = modifiedAbilityKeyword;
+                List<AbilityKeyword> SearchAbilityKeyword = new List<AbilityKeyword>(modifiedAbilityKeyword);
 
-                if (RemoveWideAbilityReferences(ref SearchText, ref SearchAbilityKeyword, Entry.Key, Entry.Value, out int indexFound))
+                if (RemoveWideAbilityReferences(ref SearchText, SearchAbilityKeyword, Entry.Key, Entry.Value, out int indexFound))
                 {
                     if (LowestIndex > indexFound)
                     {
@@ -1171,9 +1190,9 @@
                 }
             }
 
-            if (EntryValue != AbilityKeyword.Internal_None)
+            if (EntryValue.Count > 0)
             {
-                RemoveWideAbilityReferences(ref text, ref modifiedAbilityKeyword, EntryKey, EntryValue, out _);
+                RemoveWideAbilityReferences(ref text, modifiedAbilityKeyword, EntryKey, EntryValue, out _);
                 return true;
             }
             else
@@ -1276,7 +1295,7 @@
                 text += " " + RandomlyDetermined;
         }
 
-        private bool RemoveWideAbilityReferences(ref string text, ref AbilityKeyword modifiedAbilityKeyword, string pattern, AbilityKeyword abilityKeyword, out int indexFound)
+        private bool RemoveWideAbilityReferences(ref string text, List<AbilityKeyword> modifiedAbilityKeywordList, string pattern, List<AbilityKeyword> abilityKeywordList, out int indexFound)
         {
             string PatternWithAbilities = pattern + " abilities";
             string PatternWithAbility = pattern + " ability";
@@ -1293,12 +1312,24 @@
                 Debug.WriteLine($"Double remove: {PatternWithAbilities} and {PatternWithAbility}");
             else if (IsRemovedAbilities || IsRemovedAbility || IsRemoved)
             {
-                if (modifiedAbilityKeyword != AbilityKeyword.Internal_None)
-                    Debug.WriteLine($"Ability already removed, for keyword {modifiedAbilityKeyword}");
+                if (modifiedAbilityKeywordList.Count > 0)
+                {
+                    string KeywordListString = string.Empty;
+
+                    foreach (AbilityKeyword Keyword in modifiedAbilityKeywordList)
+                    {
+                        if (KeywordListString.Length > 0)
+                            KeywordListString += ", ";
+
+                        KeywordListString += Keyword.ToString();
+                    }
+
+                    Debug.WriteLine($"Ability already removed, for keywords {KeywordListString}");
+                }
                 else
                 {
                     text = InputText;
-                    modifiedAbilityKeyword = abilityKeyword;
+                    modifiedAbilityKeywordList.AddRange(abilityKeywordList);
                     return true;
                 }
             }
@@ -1355,13 +1386,13 @@
             return index + 1 >= text.Length || text[index] == ' ' || text[index] == ',' || text[index] == '.';
         }
 
-        private void ExtractAttributesFull(Dictionary<string, AbilityKeyword> nameToKeyword, string effectText, string text, List<AbilityKeyword> extractedAbilityList, out List<CombatEffect> extractedCombatEffectList)
+        private void ExtractAttributesFull(string text, List<AbilityKeyword> extractedAbilityList, out List<CombatEffect> extractedCombatEffectList)
         {
             List<CombatKeyword> SkippedKeywordList = new List<CombatKeyword>();
-            ExtractAttributes(nameToKeyword, effectText, text, SkippedKeywordList, extractedAbilityList, out extractedCombatEffectList);
+            ExtractAttributes(text, SkippedKeywordList, extractedAbilityList, out extractedCombatEffectList);
         }
 
-        private void ExtractAttributes(Dictionary<string, AbilityKeyword> nameToKeyword, string effectText, string text, List<CombatKeyword> skippedKeywordList, List<AbilityKeyword> extractedAbilityList, out List<CombatEffect> extractedCombatEffectList)
+        private void ExtractAttributes(string text, List<CombatKeyword> skippedKeywordList, List<AbilityKeyword> extractedAbilityList, out List<CombatEffect> extractedCombatEffectList)
         {
             extractedCombatEffectList = new List<CombatEffect>();
             List<CombatKeyword> SkippedKeywordListCopy = new List<CombatKeyword>(skippedKeywordList);
@@ -2004,7 +2035,7 @@
 
         private string GrammarChanged(string text)
         {
-            foreach (KeyValuePair<string, AbilityKeyword> Entry in WideAbilityTable)
+            foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in WideAbilityTable)
                 text = GrammarChangedWithPlural(text, Entry.Key);
 
             return text;
