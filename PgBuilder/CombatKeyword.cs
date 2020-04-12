@@ -3,6 +3,7 @@
     public enum CombatKeyword
     {
         None,
+        Ignore,
         DamageBoost,
         DealRandomDamage,
         DealDirectHealthDamage,
@@ -95,6 +96,9 @@
         AddMitigationUniversal,
         AddMitigationUniversalPercent,
         AddMitigationFire,
+        AddMitigationPoison,
+        AddMitigationPhysical,
+        MitigationLimit,
         AddProtectionCold,
         AddChanceToKnockdown,
         AddChanceToIgnoreKnockback,
@@ -126,8 +130,17 @@
         ExtraTraumaDamage,
         AddColdVulnerability,
         AddIndirectFireVulnerability,
+        AddPyschicVulnerability,
+        AddDirectPyschicVulnerability,
+        AddPoisonVulnerability,
+        AddTraumaVulnerability,
         ChangeDamageTypeToDarkness,
+        ChangeDamageTypeToTrauma,
         DamageBoostTypeDarkness,
         IgnoreKnockback,
+        IncreaseXPGain,
+        MaxKillTime,
+        RemovePoisonEffects,
+        RemoveFireEffects,
     }
 }
