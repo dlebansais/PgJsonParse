@@ -3,7 +3,6 @@
     public enum GameDamageType
     {
         None,
-        Any,
         Crushing,
         Slashing,
         Nature,

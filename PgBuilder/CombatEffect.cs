@@ -13,6 +13,7 @@
             Data1 = double.NaN;
             Data2 = double.NaN;
             DamageType = GameDamageType.None;
+            CombatSkill = GameCombatSkill.None;
         }
 
         public CombatEffect(CombatKeyword keyword)
@@ -23,6 +24,7 @@
             Data1 = double.NaN;
             Data2 = double.NaN;
             DamageType = GameDamageType.None;
+            CombatSkill = GameCombatSkill.None;
         }
 
         public CombatEffect(CombatKeyword keyword, double data)
@@ -34,9 +36,10 @@
             Data1 = data;
             Data2 = double.NaN;
             DamageType = GameDamageType.None;
+            CombatSkill = GameCombatSkill.None;
         }
 
-        public CombatEffect(CombatKeyword keyword, double data1, double data2, GameDamageType damageType)
+        public CombatEffect(CombatKeyword keyword, double data1, double data2, GameDamageType damageType, GameCombatSkill combatSkill)
         {
             Debug.Assert(keyword != CombatKeyword.None);
             Debug.Assert((double.IsNaN(data1) && double.IsNaN(data2)) || !double.IsNaN(data1));
@@ -45,6 +48,7 @@
             Data1 = data1;
             Data2 = data2;
             DamageType = damageType;
+            CombatSkill = combatSkill;
         }
         #endregion
 
@@ -54,6 +58,7 @@
         public double Data1 { get; }
         public double Data2 { get; }
         public GameDamageType DamageType { get; }
+        public GameCombatSkill CombatSkill { get; }
         #endregion
 
         #region Client Interface
@@ -95,16 +100,12 @@
         #region Debugging
         public override string ToString()
         {
-            if (double.IsNaN(Data1))
-                return $"{Keyword}";
-            else
-            {
-                string Data1String = Data1.ToString(CultureInfo.InvariantCulture);
-                string Data2String = double.IsNaN(Data2) ? string.Empty : $", {Data2.ToString(CultureInfo.InvariantCulture)}";
-                string DamageTypeString = DamageType == GameDamageType.None ? string.Empty : $" ({DamageType})";
+            string Data1String = double.IsNaN(Data1) ? string.Empty : $": {Data1.ToString(CultureInfo.InvariantCulture)}";
+            string Data2String = double.IsNaN(Data2) ? string.Empty : $", {Data2.ToString(CultureInfo.InvariantCulture)}";
+            string DamageTypeString = DamageType == GameDamageType.None ? string.Empty : $" ({DamageType})";
+            string CombatSkillString = CombatSkill == GameCombatSkill.None ? string.Empty : $" ({CombatSkill})";
 
-                return $"{Keyword}: {Data1String}{Data2String}{DamageTypeString}";
-            }
+            return $"{Keyword}{Data1String}{Data2String}{DamageTypeString}{CombatSkillString}";
         }
         #endregion
     }
