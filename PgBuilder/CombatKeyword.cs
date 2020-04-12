@@ -127,6 +127,7 @@
         AddElementalDamageResistance,
         AddDarknessDamageResistance,
         Fear,
+        SetVulnerable,
         ExtraTraumaDamage,
         AddColdVulnerability,
         AddIndirectFireVulnerability,
@@ -142,5 +143,6 @@
         MaxKillTime,
         RemovePoisonEffects,
         RemoveFireEffects,
+        TargetAbilityBoost,
     }
 }

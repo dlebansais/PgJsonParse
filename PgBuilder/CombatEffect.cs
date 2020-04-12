@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
 
     public class CombatEffect
     {
@@ -92,9 +93,9 @@
             if (double.IsNaN(Data1))
                 return $"{Keyword}";
             else if (double.IsNaN(Data2))
-                return $"{Keyword}: {Data1}";
+                return $"{Keyword}: {Data1.ToString(CultureInfo.InvariantCulture)}";
             else
-                return $"{Keyword}: {Data1}, {Data2}";
+                return $"{Keyword}: {Data1.ToString(CultureInfo.InvariantCulture)}, {Data2.ToString(CultureInfo.InvariantCulture)}";
         }
         #endregion
     }
