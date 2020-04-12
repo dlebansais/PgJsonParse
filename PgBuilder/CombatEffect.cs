@@ -12,6 +12,7 @@
             Keyword = CombatKeyword.None;
             Data1 = double.NaN;
             Data2 = double.NaN;
+            DamageType = GameDamageType.None;
         }
 
         public CombatEffect(CombatKeyword keyword)
@@ -21,6 +22,7 @@
             Keyword = keyword;
             Data1 = double.NaN;
             Data2 = double.NaN;
+            DamageType = GameDamageType.None;
         }
 
         public CombatEffect(CombatKeyword keyword, double data)
@@ -31,9 +33,10 @@
             Keyword = keyword;
             Data1 = data;
             Data2 = double.NaN;
+            DamageType = GameDamageType.None;
         }
 
-        public CombatEffect(CombatKeyword keyword, double data1, double data2)
+        public CombatEffect(CombatKeyword keyword, double data1, double data2, GameDamageType damageType)
         {
             Debug.Assert(keyword != CombatKeyword.None);
             Debug.Assert((double.IsNaN(data1) && double.IsNaN(data2)) || !double.IsNaN(data1));
@@ -41,6 +44,7 @@
             Keyword = keyword;
             Data1 = data1;
             Data2 = data2;
+            DamageType = damageType;
         }
         #endregion
 
@@ -49,6 +53,7 @@
         public double Data { get { return Data1; } }
         public double Data1 { get; }
         public double Data2 { get; }
+        public GameDamageType DamageType { get; }
         #endregion
 
         #region Client Interface
@@ -92,10 +97,14 @@
         {
             if (double.IsNaN(Data1))
                 return $"{Keyword}";
-            else if (double.IsNaN(Data2))
-                return $"{Keyword}: {Data1.ToString(CultureInfo.InvariantCulture)}";
             else
-                return $"{Keyword}: {Data1.ToString(CultureInfo.InvariantCulture)}, {Data2.ToString(CultureInfo.InvariantCulture)}";
+            {
+                string Data1String = Data1.ToString(CultureInfo.InvariantCulture);
+                string Data2String = double.IsNaN(Data2) ? string.Empty : $", {Data2.ToString(CultureInfo.InvariantCulture)}";
+                string DamageTypeString = DamageType == GameDamageType.None ? string.Empty : $" ({DamageType})";
+
+                return $"{Keyword}: {Data1String}{Data2String}{DamageTypeString}";
+            }
         }
         #endregion
     }
