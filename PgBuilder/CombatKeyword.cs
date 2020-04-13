@@ -98,6 +98,7 @@
         AddMitigationUniversal,
         AddMitigationUniversalPercent,
         AddMitigationPhysical,
+        AddMitigationPhysicalPercent,
         AddMitigationDirect,
         MitigationLimit,
         AddProtectionCold,
@@ -114,6 +115,7 @@
         AnimalPetAttackBoost,
         RandomDamage,
         IfCrushing,
+        IfWerewolf,
         TargetSubsequentAttacks,
         TargetNextRageAttack,
         NextUse,
@@ -124,6 +126,7 @@
         TargetVulnerable,
         AddAccuracy,
         AddProjectileEvasion,
+        AddMeleeEvasion,
         AddPhysicalReflection,
         AddElementalDamageResistance,
         AddDamageResistance,
@@ -139,5 +142,6 @@
         MaxKillTime,
         RemoveEffects,
         TargetAbilityBoost,
+        NoYellForHelp,
     }
 }
