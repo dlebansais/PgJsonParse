@@ -66,7 +66,7 @@
     <Compile Include="CombatKeyword.cs" />
     <Compile Include="Converters\ItemToIconConverter.cs" />
     <Compile Include="Converters\AbilityToIconConverter.cs" />
-    <Compile Include="GameSkill.cs" />
+    <Compile Include="GameCombatSkill.cs" />
     <Compile Include="GameDamageType.cs" />
     <Compile Include="GearSlot.cs" />
     <Compile Include="Selectors\ItemEffectTemplateSelector.cs" />
