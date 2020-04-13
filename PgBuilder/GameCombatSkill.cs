@@ -30,5 +30,6 @@
         Priest,
         Warden,
         FairyMagic,
+        Lycanthropy,
     }
 }
