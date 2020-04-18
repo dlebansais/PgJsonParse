@@ -3,6 +3,10 @@
     public enum GameDamageType
     {
         None,
+        PsychicNature,
+        ElectricityAcidNature,
+        PsychicElectricityFire,
+        ColdFireElectricity,
         Crushing,
         Slashing,
         Nature,
