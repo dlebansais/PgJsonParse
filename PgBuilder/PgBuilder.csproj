@@ -69,6 +69,7 @@
     <Compile Include="GameCombatSkill.cs" />
     <Compile Include="GameDamageType.cs" />
     <Compile Include="GearSlot.cs" />
+    <Compile Include="NumericValue.cs" />
     <Compile Include="Selectors\ItemEffectTemplateSelector.cs" />
     <Compile Include="SignInterpretation.cs" />
     <Page Include="MainWindow.xaml">

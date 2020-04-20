@@ -7,6 +7,7 @@
         ElectricityAcidNature,
         PsychicElectricityFire,
         ColdFireElectricity,
+        CrushingSlashingPiercing,
         Crushing,
         Slashing,
         Nature,

@@ -10,8 +10,8 @@
         public CombatEffect()
         {
             Keyword = CombatKeyword.None;
-            Data1 = double.NaN;
-            Data2 = double.NaN;
+            Data1 = new NumericValue();
+            Data2 = new NumericValue();
             DamageType = GameDamageType.None;
             CombatSkill = GameCombatSkill.None;
         }
@@ -21,28 +21,28 @@
             Debug.Assert(keyword != CombatKeyword.None);
 
             Keyword = keyword;
-            Data1 = double.NaN;
-            Data2 = double.NaN;
+            Data1 = new NumericValue();
+            Data2 = new NumericValue();
             DamageType = GameDamageType.None;
             CombatSkill = GameCombatSkill.None;
         }
 
-        public CombatEffect(CombatKeyword keyword, double data)
+        public CombatEffect(CombatKeyword keyword, NumericValue data)
         {
             Debug.Assert(keyword != CombatKeyword.None);
-            Debug.Assert(!double.IsNaN(data));
+            Debug.Assert(data.IsValueSet);
 
             Keyword = keyword;
             Data1 = data;
-            Data2 = double.NaN;
+            Data2 = new NumericValue();
             DamageType = GameDamageType.None;
             CombatSkill = GameCombatSkill.None;
         }
 
-        public CombatEffect(CombatKeyword keyword, double data1, double data2, GameDamageType damageType, GameCombatSkill combatSkill)
+        public CombatEffect(CombatKeyword keyword, NumericValue data1, NumericValue data2, GameDamageType damageType, GameCombatSkill combatSkill)
         {
             Debug.Assert(keyword != CombatKeyword.None);
-            Debug.Assert((double.IsNaN(data1) && double.IsNaN(data2)) || !double.IsNaN(data1));
+            Debug.Assert((!data1.IsValueSet && !data2.IsValueSet) || data1.IsValueSet);
 
             Keyword = keyword;
             Data1 = data1;
@@ -54,9 +54,9 @@
 
         #region Properties
         public CombatKeyword Keyword { get; }
-        public double Data { get { return Data1; } }
-        public double Data1 { get; }
-        public double Data2 { get; }
+        public NumericValue Data { get { return Data1; } }
+        public NumericValue Data1 { get; }
+        public NumericValue Data2 { get; }
         public GameDamageType DamageType { get; }
         public GameCombatSkill CombatSkill { get; }
         #endregion
@@ -85,7 +85,7 @@
         {
             if (obj is CombatEffect Other)
                 if (Keyword == Other.Keyword)
-                    if (double.IsNaN(Data1) == double.IsNaN(Other.Data1) && double.IsNaN(Data2) == double.IsNaN(Other.Data2))
+                    if (Data1.IsValueSet == Other.Data1.IsValueSet && Data2.IsValueSet == Other.Data2.IsValueSet)
                         return true;
 
             return false;
@@ -100,8 +100,8 @@
         #region Debugging
         public override string ToString()
         {
-            string Data1String = double.IsNaN(Data1) ? string.Empty : $": {Data1.ToString(CultureInfo.InvariantCulture)}";
-            string Data2String = double.IsNaN(Data2) ? string.Empty : $", {Data2.ToString(CultureInfo.InvariantCulture)}";
+            string Data1String = Data1.IsValueSet ? $": {Data1}" : string.Empty;
+            string Data2String = Data2.IsValueSet ? $", {Data2}" : string.Empty;
             string DamageTypeString = DamageType == GameDamageType.None ? string.Empty : $" ({DamageType})";
             string CombatSkillString = CombatSkill == GameCombatSkill.None ? string.Empty : $" ({CombatSkill})";
 
