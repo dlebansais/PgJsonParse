@@ -102,7 +102,27 @@
         {
             string Data1String = Data1.IsValueSet ? $": {Data1}" : string.Empty;
             string Data2String = Data2.IsValueSet ? $", {Data2}" : string.Empty;
-            string DamageTypeString = DamageType == GameDamageType.None ? string.Empty : $" ({DamageType})";
+
+            string DamageTypeString = string.Empty;
+
+            if (DamageType != GameDamageType.None)
+            {
+                for (int i = 0; i + 1 < sizeof(int) * 8; i++)
+                {
+                    GameDamageType Value = (GameDamageType)(1 << i);
+
+                    if (DamageType.HasFlag(Value))
+                    {
+                        if (DamageTypeString.Length > 0)
+                            DamageTypeString += ", ";
+
+                        DamageTypeString += Value.ToString();
+                    }
+                }
+
+                DamageTypeString = $" ({DamageTypeString})";
+            }
+
             string CombatSkillString = CombatSkill == GameCombatSkill.None ? string.Empty : $" ({CombatSkill})";
 
             return $"{Keyword}{Data1String}{Data2String}{DamageTypeString}{CombatSkillString}";

@@ -855,7 +855,7 @@
         {
             Comparer = new LevenshteinAlgorithm();
             int DebugIndex = 0;
-            int SkipIndex = 369;
+            int SkipIndex = 380;
 
             foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
             {
@@ -1891,6 +1891,8 @@
             ExtractSentence("Resets the time on", CombatKeyword.ResetOtherAbilityTimer, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Deal %f total damage against Demons", CombatKeyword.DamageBoostAgainstSpecie, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Boost targets' mitigation %f", CombatKeyword.Mitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+            ExtractSentence("Boost #D mitigation %f", CombatKeyword.Mitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+            ExtractSentence("Reduce the damage you take from #D attack by %f", CombatKeyword.Mitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Target take %f less damage from attack", CombatKeyword.Mitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Target take %f less damage from #D attack", CombatKeyword.Mitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Target to take %f less damage from attack", CombatKeyword.Mitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
@@ -2271,12 +2273,70 @@
                 int LowestValue = 0;
                 int LowestLength = -1;
 
+                Dictionary<int, string> FoundTextMap = new Dictionary<int, string>();
+
                 foreach (KeyValuePair<int, string> Entry in textMap)
                 {
                     if (Entry.Key == 0)
                         continue;
 
-                    string ExtendedPattern = $"{BeforeTypePattern}{Entry.Value.ToLowerInvariant()}{AfterTypePattern}";
+                    string ValueText = Entry.Value.ToLowerInvariant();
+                    if (text.Contains(ValueText))
+                        FoundTextMap.Add(Entry.Key, ValueText);
+                }
+
+                List<int> FoundTextKey = new List<int>(FoundTextMap.Keys);
+                Dictionary<string, int> PossibleTextMap = new Dictionary<string, int>();
+                int Value;
+
+                switch (FoundTextMap.Count)
+                {
+                    case 3:
+                        Value = 0;
+                        for (int i = 0; i < 3; i++)
+                            Value |= FoundTextKey[i];
+
+                        for (int i = 0; i < 3; i++)
+                            for (int j = 0; j < 3; j++)
+                                if (j != i)
+                                    for (int k = 0; k < 3; k++)
+                                        if (k != i && k != j)
+                                        {
+                                            string KeyAnd = $"{FoundTextMap[FoundTextKey[i]]}, {FoundTextMap[FoundTextKey[j]]}, and {FoundTextMap[FoundTextKey[k]]}";
+                                            PossibleTextMap.Add(KeyAnd, Value);
+                                            string KeyOr = $"{FoundTextMap[FoundTextKey[i]]}, {FoundTextMap[FoundTextKey[j]]}, or {FoundTextMap[FoundTextKey[k]]}";
+                                            PossibleTextMap.Add(KeyOr, Value);
+                                        }
+                        break;
+                    case 2:
+                        Value = 0;
+                        for (int i = 0; i < 2; i++)
+                            Value |= FoundTextKey[i];
+
+                        for (int i = 0; i < 2; i++)
+                            for (int j = 0; j < 2; j++)
+                                if (j != i)
+                                    {
+                                        string KeyAnd = $"{textMap[FoundTextKey[i]]} and {textMap[FoundTextKey[j]]}";
+                                        PossibleTextMap.Add(KeyAnd, Value);
+                                        string KeyOr = $"{textMap[FoundTextKey[i]]} or {textMap[FoundTextKey[j]]}";
+                                        PossibleTextMap.Add(KeyOr, Value);
+                                    }
+                        break;
+
+                    case 0:
+                        break;
+
+                    default:
+                    case 1:
+                        Value = FoundTextKey[0];
+                        PossibleTextMap.Add(textMap[FoundTextKey[0]], Value);
+                        break;
+                }
+
+                foreach (KeyValuePair<string, int> Entry in PossibleTextMap)
+                {
+                    string ExtendedPattern = $"{BeforeTypePattern}{Entry.Key}{AfterTypePattern}";
                     int Index = text.IndexOf(ExtendedPattern, startIndex);
                     if (Index == -1)
                         continue;
@@ -2284,7 +2344,7 @@
                     if (LowestIndex == -1 || LowestIndex > Index)
                     {
                         LowestIndex = Index;
-                        LowestValue = Entry.Key;
+                        LowestValue = Entry.Value;
                         LowestLength = ExtendedPattern.Length;
                     }
                 }
@@ -2311,12 +2371,12 @@
         public static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
         {
             { (int)GameDamageType.None, "None" },
-            { (int)GameDamageType.PsychicNature, "Psychic and Nature" },
+            /*{ (int)GameDamageType.PsychicNature, "Psychic and Nature" },
             { (int)GameDamageType.ElectricityAcidNature, "Electricity, Acid, and Nature" },
             { (int)GameDamageType.PsychicElectricityFire, "Psychic, Electricity, or Fire" },
             { (int)GameDamageType.ColdFireElectricity, "Cold, Fire, and Electricity" },
             { (int)GameDamageType.CrushingSlashingPiercing, "Crushing, Slashing, or Piercing" },
-            { (int)GameDamageType.SlashingPiercing, "Slashing and Piercing" },
+            { (int)GameDamageType.SlashingPiercing, "Slashing and Piercing" },*/
             { (int)GameDamageType.Crushing, "Crushing" },
             { (int)GameDamageType.Slashing, "Slashing" },
             { (int)GameDamageType.Nature, "Nature" },

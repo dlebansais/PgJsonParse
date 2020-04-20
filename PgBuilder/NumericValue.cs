@@ -67,10 +67,16 @@
         public override string ToString()
         {
             if (IsValueSet)
+            {
+                string Text = Value.ToString(CultureInfo.InvariantCulture);
+
+                if (Value > 0)
+                    Text = $"+{Text}";
                 if (IsPercent)
-                    return $"{Value.ToString(CultureInfo.InvariantCulture)}%";
-                else
-                    return Value.ToString(CultureInfo.InvariantCulture);
+                    Text = $"{Text}%";
+
+                return Text;
+            }
             else
                 return string.Empty;
         }
