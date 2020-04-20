@@ -8,6 +8,7 @@
         PsychicElectricityFire,
         ColdFireElectricity,
         CrushingSlashingPiercing,
+        SlashingPiercing,
         Crushing,
         Slashing,
         Nature,
