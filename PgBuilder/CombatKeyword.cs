@@ -83,6 +83,7 @@
         ApplyToPetAndMaster,
         AddRange,
         Stun,
+        Concussion,
         StunIncorporeal,
         SelfStun,
         StunImmunity,
@@ -129,6 +130,7 @@
         TargetUnderEffect,
         TargetKnockedDown,
         AddAccuracy,
+        AddMeleeAccuracy,
         AddProjectileEvasion,
         AddMeleeEvasion,
         AddPhysicalReflection,
@@ -153,5 +155,6 @@
         AddEnthusiasm,
         AddDeathAvoidance,
         DamageOverTime,
+        SecondBlast,
     }
 }
