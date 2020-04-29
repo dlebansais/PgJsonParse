@@ -84,9 +84,11 @@
         public override bool Equals(object obj)
         {
             if (obj is CombatEffect Other)
-                if (Keyword == Other.Keyword)
+                if (Keyword == Other.Keyword || (Keyword == CombatKeyword.AddVulnerability && Other.Keyword == CombatKeyword.AddDirectVulnerability) || (Keyword == CombatKeyword.AddDirectVulnerability && Other.Keyword == CombatKeyword.AddVulnerability))
+                {
                     if (Data1.IsValueSet == Other.Data1.IsValueSet && Data2.IsValueSet == Other.Data2.IsValueSet)
                         return true;
+                }
 
             return false;
         }

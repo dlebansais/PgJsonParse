@@ -791,7 +791,6 @@
 
             Debug.Assert(!abilityNameList.Contains("Summoned Skeletal Swordsmen"));
             abilityNameList.Add("Summoned Skeletal Swordsmen");
-            //KeywordToName.Add(AbilityKeyword.SummonSkeletonSwordsman, "Summoned Skeletal Swordsmen");
 
             nameToKeyword = new Dictionary<string, List<AbilityKeyword>>();
             foreach (KeyValuePair<AbilityKeyword, string> Entry in KeywordToName)
@@ -801,6 +800,7 @@
             }
 
             nameToKeyword.Add("Fire Walls'", new List<AbilityKeyword>() { AbilityKeyword.SummonedFireWall });
+            nameToKeyword.Add("Summoned Skeletal Swordsmen", new List<AbilityKeyword>() { AbilityKeyword.SummonSkeletonSwordsman });
 
             foreach (AbilityKeyword Keyword in GenericAbilityList)
             {
@@ -882,10 +882,8 @@
                     continue;
                 }
 
-/*
-                Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count}");
-                Debug.WriteLine("");
-*/
+                //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count}");
+                //Debug.WriteLine("");
 
                 IPgPower ItemPower = Entry.Key;
                 List<IPgEffect> ItemEffectList = Entry.Value;
@@ -953,7 +951,7 @@
 
         private bool IsSameCombatKeywordList(List<CombatKeyword> list1, List<CombatKeyword> list2, bool allowIncomplete)
         {
-            if (list1.Count == 0 && list2.Count == 1 && list2[0] == CombatKeyword.ApplyWithChance)
+            if (list2.Count == list1.Count + 1 && list2[0] == CombatKeyword.ApplyWithChance)
                 return true;
 
             if ((!allowIncomplete && list1.Count != list2.Count) || (allowIncomplete && list1.Count < list2.Count))
@@ -1056,8 +1054,6 @@
                 effectText = effectText.Substring(0, effectText.Length - 15) + " (stacking up to 6 times)";
             else if (modText.EndsWith("% damage to health and armor") && effectText.EndsWith("% Armor damage"))
                 effectText = effectText.Substring(0, effectText.Length - 14) + "% Health and Armor damage";
-            else if (modText.StartsWith("Summoned Skeletal Swordsmen"))
-                modText = "";
             else if (modText.StartsWith("Astral Strike's "))
                 modText = "Astral Strike" + modText.Substring(15);
             else if (modText.StartsWith("Pixie Flare's "))
@@ -1163,7 +1159,8 @@
             ExtractAttributesFull(text, extractedAbilityList, out extractedCombatEffectList);
 
             if (RemoveCount > extractedAbilityList.Count && extractedAbilityList.Count > 0 && extractedTargetAbilityList.Count == 0)
-                extractedTargetAbilityList.Add(extractedAbilityList[extractedAbilityList.Count - 1]);
+                if (extractedAbilityList[extractedAbilityList.Count - 1] != AbilityKeyword.Chill)
+                    extractedTargetAbilityList.Add(extractedAbilityList[extractedAbilityList.Count - 1]);
         }
 
         private void RemoveDecorationText(ref string text)
@@ -1238,7 +1235,7 @@
                         IsFirstAbilityGeneric = IsAbilityGeneric;
                     else
                     {
-                        if (limitParsing && BestIndex > LastBestIndex + 29)
+                        if (limitParsing && BestIndex > LastBestIndex + 28)
                             break;
                         if (IsAbilityGeneric != IsFirstAbilityGeneric)
                             break;
@@ -1752,9 +1749,11 @@
             ExtractSentence("%f more damage from any #D attack", CombatKeyword.AddVulnerability, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Take %f damage from both #D", CombatKeyword.AddVulnerability, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("%f damage from #D", CombatKeyword.AddVulnerability, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+            ExtractSentence("But take %f damage from any #D attack", CombatKeyword.AddVulnerability, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("#D Vulnerability +infinity", CombatKeyword.DestroyedByDamageType, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Instantly destroyed by ANY #D Damage", CombatKeyword.DestroyedByDamageType, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Targets suffer %f damage from other #D attack", CombatKeyword.AddVulnerability, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+            ExtractSentence("Deal %f damage to Health and Armor", CombatKeyword.DamageBoostToHealthAndArmor, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Increase the damage of all targets' attack %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToAllies }, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("%f damage from all attack", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToAllies }, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Turning half of that into Trauma damage", CombatKeyword.ExtraTraumaDamage, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
@@ -1835,6 +1834,7 @@
             ExtractSentence("Indirect #D %f per tick", CombatKeyword.DealIndirectDamage, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Damage is %f per tick", CombatKeyword.DamageBoost, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Damage over Time %f per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+            ExtractSentence("Damage over Time deal %f damage per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Damage over Time deal %f per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Base Damage is %f", CombatKeyword.BaseDamageBoost, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Damage is %f", CombatKeyword.DamageBoost, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
@@ -1847,7 +1847,6 @@
             ExtractSentence("Melee Attackers suffer %f indirect damage", CombatKeyword.ReflectMeleeIndirectDamage, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Up to a max of %f", CombatKeyword.MaxOccurence, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("The reap cap is %f", CombatKeyword.DrainMax, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
-            ExtractSentence("Deal %f damage to Health and Armor", CombatKeyword.DamageBoostToHealthAndArmor, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Deal %f damage", CombatKeyword.DamageBoost, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Deal %f direct damage", CombatKeyword.DamageBoost, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Deal %f damage to Health", CombatKeyword.DealDirectHealthDamage, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
@@ -1936,8 +1935,8 @@
             ExtractSentence("Restore %f Health, Armor, and Power respectively", CombatKeyword.RestoreHealthArmorPower, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Restore %f Health, Armor, and Power", CombatKeyword.RestoreHealthArmorPower, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("%f Health/Armor healing", CombatKeyword.RestoreHealthArmor, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
-            ExtractSentence("Heal you for %f Health/Armor", CombatKeyword.RestoreHealthArmor, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
-            ExtractSentence("Heal you for %f Health", new List<CombatKeyword>() { CombatKeyword.RestoreHealth, CombatKeyword.TargetSelf}, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+            ExtractSentence("Heal you for %f Health/Armor", new List<CombatKeyword>() { CombatKeyword.RestoreHealthArmor, CombatKeyword.TargetSelf }, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+            ExtractSentence("Heal you for %f Health", new List<CombatKeyword>() { CombatKeyword.RestoreHealth, CombatKeyword.TargetSelf }, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Heal your pet for %f Health/Armor", CombatKeyword.RestoreHealthArmorToPet, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("You regain %f Health", new List<CombatKeyword>() { CombatKeyword.RestoreHealth, CombatKeyword.TargetSelf }, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Restore %f Health/Armor to your pet", CombatKeyword.RestoreHealthArmorToPet, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
@@ -2054,7 +2053,7 @@
             ExtractSentence("%f Mitigation from all attack", CombatKeyword.AddMitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("%f Mitigation from attack", CombatKeyword.AddMitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("%f mitigation vs #D", CombatKeyword.AddMitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
-            ExtractSentence("Mitigation vs #D attack %f", CombatKeyword.AddMitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+            ExtractSentence("Increase your Mitigation vs #D attack %f", CombatKeyword.AddMitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("%f mitigation from #D attack", CombatKeyword.AddMitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Direct #D mitigation %f", CombatKeyword.AddMitigation, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("%f direct damage mitigation", CombatKeyword.AddMitigationDirect, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
@@ -2337,7 +2336,7 @@
             int StartDataIndex = PatternIndex + PatternLengthBefore;
             int EndDataIndex = StartDataIndex;
 
-            if (EndDataIndex < lowerText.Length && (lowerText[EndDataIndex] == '+' || lowerText[EndDataIndex] == '-'))
+            if (EndDataIndex + 1 < lowerText.Length && (lowerText[EndDataIndex] == '+' || lowerText[EndDataIndex] == '-') && char.IsDigit(lowerText[EndDataIndex + 1]))
                 EndDataIndex++;
 
             while (EndDataIndex < lowerText.Length && (char.IsDigit(lowerText[EndDataIndex]) || (lowerText[EndDataIndex] == '.' && EndDataIndex > StartDataIndex)))
@@ -2441,29 +2440,43 @@
 
                 Dictionary<int, string> FoundTextMap = new Dictionary<int, string>();
 
+                bool IsAddedToFoundTextMap;
                 int BestFoundIndex = -1;
-                foreach (KeyValuePair<int, string> Entry in textMap)
+
+                do
                 {
-                    if (Entry.Key == 0)
-                        continue;
+                    IsAddedToFoundTextMap = false;
+                    int BestKey = -1;
+                    int BestKeyIndex = text.Length;
 
-                    string ValueText = Entry.Value.ToLowerInvariant();
-                    int FoundIndex = text.IndexOf(ValueText);
-                    if (FoundIndex >= 0 && (BestFoundIndex == -1 || BestFoundIndex > FoundIndex))
-                        BestFoundIndex = FoundIndex;
+                    foreach (KeyValuePair<int, string> Entry in textMap)
+                    {
+                        if (Entry.Key == 0)
+                            continue;
+
+                        if (FoundTextMap.ContainsKey(Entry.Key))
+                            continue;
+
+                        string ValueText = Entry.Value.ToLowerInvariant();
+                        int FoundIndex = text.IndexOf(ValueText);
+
+                        if (FoundIndex >= 0)
+                            if (BestKeyIndex > FoundIndex)
+                                if (BestFoundIndex == -1 || FoundIndex < BestFoundIndex + 15)
+                                {
+                                    BestKeyIndex = FoundIndex;
+                                    BestKey = Entry.Key;
+                                }
+                    }
+
+                    if (BestKey != -1)
+                    {
+                        FoundTextMap.Add(BestKey, textMap[BestKey].ToLowerInvariant());
+                        IsAddedToFoundTextMap = true;
+                        BestFoundIndex = BestKeyIndex;
+                    }
                 }
-
-                foreach (KeyValuePair<int, string> Entry in textMap)
-                {
-                    if (Entry.Key == 0)
-                        continue;
-
-                    string ValueText = Entry.Value.ToLowerInvariant();
-                    int FoundIndex = text.IndexOf(ValueText);
-
-                    if (FoundIndex >= 0 && FoundIndex < BestFoundIndex + 20)
-                        FoundTextMap.Add(Entry.Key, ValueText);
-                }
+                while (IsAddedToFoundTextMap);
 
                 List<int> FoundTextKey = new List<int>(FoundTextMap.Keys);
                 Dictionary<string, int> PossibleTextMap = new Dictionary<string, int>();
