@@ -165,7 +165,7 @@
         #region Data Analysis
         private void AnalyzeCachedData()
         {
-            FilterValidPowers(out List<IPgPower> PowerAttributeList, out List<IPgPower> PowerSimpleEffectList);
+            FilterValidPowers(out _, out List<IPgPower> PowerSimpleEffectList);
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> AllEffectTable);
             FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable, out List<IPgPower> UnmatchedPowerList);
             GetAbilityNames(out List<string> AbilityNameList, out Dictionary<string, List<AbilityKeyword>> NameToKeyword);
@@ -188,73 +188,76 @@
             int TotalTierCount = 0;
 
             foreach (IPgPower Item in PowerDefinition.PgObjectList)
-            {
-                IList<IPgPowerTier> TierEffectList = Item.TierEffectList;
-
-                Debug.Assert(TierEffectList.Count > 0);
-
-                int AttributeCount = 0;
-                int SimpleCount = 0;
-
-                foreach (IPgPowerTier TierItem in TierEffectList)
-                {
-                    IList<IPgPowerEffect> ItemEffectList = TierItem.EffectList;
-
-                    int EffectListCount = ItemEffectList.Count;
-                    for (int i = 0; i < EffectListCount; i++)
-                    {
-                        IPgPowerEffect ItemEffect = ItemEffectList[i];
-
-                        Debug.Assert((ItemEffect is IPgPowerAttributeLink) || (ItemEffect is IPgPowerSimpleEffect));
-
-                        if (ItemEffect is IPgPowerAttributeLink)
-                        {
-                            AttributeCount++;
-                        }
-
-                        if (ItemEffect is IPgPowerSimpleEffect)
-                        {
-                            SimpleCount++;
-                        }
-                    }
-                }
-
-                Debug.Assert(AttributeCount == 0 || SimpleCount == 0);
-
-                bool IsSlotCompatible = false;
-                foreach (ItemSlot SlotItem in Item.SlotList)
-                    if (ValidSlotList.Contains(SlotItem))
-                    {
-                        IsSlotCompatible = true;
-                        break;
-                    }
-
-                if (!IsSlotCompatible)
-                    continue;
-
-                Debug.Assert(Item.RawSkill == PowerSkill.Internal_None ||
-                             Item.RawSkill == PowerSkill.Unknown ||
-                             SkillList.Contains(Item.Skill) ||
-                             Item.RawSkill == PowerSkill.Gourmand ||
-                             Item.RawSkill == PowerSkill.AnySkill ||
-                             Item.RawSkill == PowerSkill.Endurance ||
-                             Item.RawSkill == PowerSkill.ArmorPatching ||
-                             Item.RawSkill == PowerSkill.ShamanicInfusion);
-
-                if (Item.RawSkill == PowerSkill.Internal_None || Item.RawSkill == PowerSkill.Unknown || Item.RawSkill == PowerSkill.Gourmand)
-                    continue;
-                if (Item.IsUnavailable)
-                    continue;
-
-                if (AttributeCount > 0)
-                    powerAttributeList.Add(Item);
-                else
-                    powerSimpleEffectList.Add(Item);
-
-                TotalTierCount += TierEffectList.Count;
-            }
+                FilterValidPowers(ValidSlotList, powerAttributeList, powerSimpleEffectList, Item, ref TotalTierCount);
 
             Debug.WriteLine($"{powerSimpleEffectList.Count + powerAttributeList.Count} powers, {powerAttributeList.Count} with attribute, {powerSimpleEffectList.Count} with description, Total: {TotalTierCount} mods");
+        }
+
+        private void FilterValidPowers(List<ItemSlot> validSlotList, List<IPgPower> powerAttributeList, List<IPgPower> powerSimpleEffectList, IPgPower power, ref int TotalTierCount)
+        {
+            IList<IPgPowerTier> TierEffectList = power.TierEffectList;
+
+            Debug.Assert(TierEffectList.Count > 0);
+
+            int AttributeCount = 0;
+            int SimpleCount = 0;
+
+            foreach (IPgPowerTier TierItem in TierEffectList)
+                CheckAttributeOrSimple(TierItem, ref AttributeCount, ref SimpleCount);
+
+            Debug.Assert(AttributeCount == 0 || SimpleCount == 0);
+
+            if (!IsSlotCompatible(validSlotList, power))
+                return;
+
+            Debug.Assert(power.RawSkill == PowerSkill.Internal_None ||
+                         power.RawSkill == PowerSkill.Unknown ||
+                         SkillList.Contains(power.Skill) ||
+                         power.RawSkill == PowerSkill.Gourmand ||
+                         power.RawSkill == PowerSkill.AnySkill ||
+                         power.RawSkill == PowerSkill.Endurance ||
+                         power.RawSkill == PowerSkill.ArmorPatching ||
+                         power.RawSkill == PowerSkill.ShamanicInfusion);
+
+            if (power.RawSkill == PowerSkill.Internal_None || power.RawSkill == PowerSkill.Unknown || power.RawSkill == PowerSkill.Gourmand)
+                return;
+            if (power.IsUnavailable)
+                return;
+
+            if (AttributeCount > 0)
+                powerAttributeList.Add(power);
+            else
+                powerSimpleEffectList.Add(power);
+
+            TotalTierCount += TierEffectList.Count;
+        }
+
+        private void CheckAttributeOrSimple(IPgPowerTier powerTier, ref int attributeCount, ref int simpleCount)
+        {
+            IList<IPgPowerEffect> ItemEffectList = powerTier.EffectList;
+
+            int EffectListCount = ItemEffectList.Count;
+            for (int i = 0; i < EffectListCount; i++)
+            {
+                IPgPowerEffect ItemEffect = ItemEffectList[i];
+
+                Debug.Assert((ItemEffect is IPgPowerAttributeLink) || (ItemEffect is IPgPowerSimpleEffect));
+
+                if (ItemEffect is IPgPowerAttributeLink)
+                    attributeCount++;
+
+                if (ItemEffect is IPgPowerSimpleEffect)
+                    simpleCount++;
+            }
+        }
+
+        private bool IsSlotCompatible(List<ItemSlot> validSlotList, IPgPower power)
+        {
+            foreach (ItemSlot SlotItem in power.SlotList)
+                if (validSlotList.Contains(SlotItem))
+                    return true;
+
+            return false;
         }
 
         private void FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable)
@@ -289,8 +292,6 @@
 
         private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, List<IPgPower> powerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable, out List<IPgPower> unmatchedPowerList)
         {
-            IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
-            Dictionary<string, IPgEffect> SearchableEffectTable = new Dictionary<string, IPgEffect>();
             powerToEffectTable = new Dictionary<IPgPower, List<IPgEffect>>();
             unmatchedPowerList = new List<IPgPower>();
 
@@ -725,71 +726,24 @@
                 }
             }
 
-            Debug.Assert(!abilityNameList.Contains("Werewolf Claw"));
-            abilityNameList.Add("Werewolf Claw");
-
-            Debug.Assert(!abilityNameList.Contains("Taunting Punch"));
-            abilityNameList.Add("Taunting Punch");
-            KeywordToName.Add(AbilityKeyword.GolemTauntingPunch, "Taunting Punch");
-
-            Debug.Assert(!abilityNameList.Contains("Poison Bomb"));
-            abilityNameList.Add("Poison Bomb");
-            KeywordToName.Add(AbilityKeyword.PoisonBombToss, "Poison Bomb");
-
-            Debug.Assert(!abilityNameList.Contains("Self Destruct"));
-            abilityNameList.Add("Self Destruct");
-            KeywordToName.Add(AbilityKeyword.GolemSelfDestruct, "Self Destruct");
-
-            Debug.Assert(!abilityNameList.Contains("Rage Acid Toss"));
-            abilityNameList.Add("Rage Acid Toss");
-            KeywordToName.Add(AbilityKeyword.GolemRageAcidToss, "Rage Acid Toss");
-
-            Debug.Assert(!abilityNameList.Contains("Doom Admixture"));
-            abilityNameList.Add("Doom Admixture");
-            KeywordToName.Add(AbilityKeyword.GolemDoomAdmixture, "Doom Admixture");
-
-            Debug.Assert(!abilityNameList.Contains("Rage Mist"));
-            abilityNameList.Add("Rage Mist");
-            KeywordToName.Add(AbilityKeyword.GolemRageMist, "Rage Mist");
-
-            Debug.Assert(!abilityNameList.Contains("Invigorating Mist"));
-            abilityNameList.Add("Invigorating Mist");
-            KeywordToName.Add(AbilityKeyword.GolemInvigoratingMist, "Invigorating Mist");
-
-            Debug.Assert(!abilityNameList.Contains("Self Sacrifice"));
-            abilityNameList.Add("Self Sacrifice");
-            KeywordToName.Add(AbilityKeyword.GolemSelfSacrifice, "Self Sacrifice");
-
-            Debug.Assert(!abilityNameList.Contains("Fire Balm"));
-            abilityNameList.Add("Fire Balm");
-            KeywordToName.Add(AbilityKeyword.GolemFireBalm, "Fire Balm");
-
-            Debug.Assert(!abilityNameList.Contains("Armor Wave"));
-            abilityNameList.Add("Armor Wave");
-
-            Debug.Assert(!abilityNameList.Contains("Health Wave"));
-            abilityNameList.Add("Health Wave");
-
-            Debug.Assert(!abilityNameList.Contains("Power Wave"));
-            abilityNameList.Add("Power Wave");
-
-            Debug.Assert(!abilityNameList.Contains("Fire Walls"));
-            abilityNameList.Add("Fire Walls");
-            KeywordToName.Add(AbilityKeyword.SummonedFireWall, "Fire Walls");
-
-            Debug.Assert(!abilityNameList.Contains("Fire Walls'"));
-            abilityNameList.Add("Fire Walls'");
-
-            Debug.Assert(!abilityNameList.Contains("Summoned Skeletons"));
-            abilityNameList.Add("Summoned Skeletons");
-            KeywordToName.Add(AbilityKeyword.SummonSkeleton, "Summoned Skeletons");
-
-            Debug.Assert(!abilityNameList.Contains("Summoned Skeletal Archers and Mages"));
-            abilityNameList.Add("Summoned Skeletal Archers and Mages");
-            KeywordToName.Add(AbilityKeyword.SummonSkeletonArcherOrMage, "Summoned Skeletal Archers and Mages");
-
-            Debug.Assert(!abilityNameList.Contains("Summoned Skeletal Swordsmen"));
-            abilityNameList.Add("Summoned Skeletal Swordsmen");
+            AddAbilityToNameList(abilityNameList, "Werewolf Claw");
+            AddAbilityToNameList(abilityNameList, "Armor Wave");
+            AddAbilityToNameList(abilityNameList, "Health Wave");
+            AddAbilityToNameList(abilityNameList, "Power Wave");
+            AddAbilityToNameList(abilityNameList, "Fire Walls'");
+            AddAbilityToNameList(abilityNameList, "Summoned Skeletal Swordsmen");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.GolemTauntingPunch, "Taunting Punch");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.PoisonBombToss, "Poison Bomb");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.GolemSelfDestruct, "Self Destruct");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.GolemRageAcidToss, "Rage Acid Toss");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.GolemDoomAdmixture, "Doom Admixture");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.GolemRageMist, "Rage Mist");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.GolemInvigoratingMist, "Invigorating Mist");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.GolemSelfSacrifice, "Self Sacrifice");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.GolemFireBalm, "Fire Balm");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.SummonedFireWall, "Fire Walls");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.SummonSkeleton, "Summoned Skeletons");
+            AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.SummonSkeletonArcherOrMage, "Summoned Skeletal Archers and Mages");
 
             nameToKeyword = new Dictionary<string, List<AbilityKeyword>>();
             foreach (KeyValuePair<AbilityKeyword, string> Entry in KeywordToName)
@@ -861,6 +815,21 @@
                     }
                 }
             }
+        }
+
+        private void AddAbilityToNameList(List<string> abilityNameList, string abilityName)
+        {
+            Debug.Assert(!abilityNameList.Contains(abilityName));
+
+            abilityNameList.Add(abilityName);
+        }
+
+        private void AddAbilityToNameListAndTable(List<string> abilityNameList, Dictionary<AbilityKeyword, string> keywordToName, AbilityKeyword keyword, string abilityName)
+        {
+            Debug.Assert(!abilityNameList.Contains(abilityName));
+
+            abilityNameList.Add(abilityName);
+            keywordToName.Add(keyword, abilityName);
         }
         #endregion
 
