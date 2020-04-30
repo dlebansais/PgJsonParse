@@ -39,7 +39,7 @@ namespace Presentation
                 SetHeaderFontWeight(Item, Item == SelectedItem ? FontWeights.Bold : FontWeights.Normal);
         }
 
-        private void SetHeaderFontWeight(TabItem item, FontWeight fontWeight)
+        private static void SetHeaderFontWeight(TabItem item, FontWeight fontWeight)
         {
             Control AsControl;
             if ((AsControl = item.Header as Control) != null)

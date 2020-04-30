@@ -15,7 +15,6 @@
     using System.Globalization;
     using PgJsonObjects;
     using PgJsonReader;
-    using StringCompare.Algorithms.Levenshtein;
 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
@@ -868,7 +867,6 @@
         #region Data Analysis, Matching
         private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
         {
-            Comparer = new LevenshteinAlgorithm();
             int DebugIndex = 0;
             int SkipIndex = 0;
             List<string[]> StringKeyTable = new List<string[]>();
@@ -2826,11 +2824,6 @@
                 return text;
         }
 
-        private double StringDistance(string text1, string text2)
-        {
-            return 1.0 - Comparer.GetCompareResult(text1.ToLowerInvariant(), text2.ToLowerInvariant());
-        }
-
         private void DisplayParsingResult(Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
         {
             foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
@@ -2854,8 +2847,6 @@
                 }
             }
         }
-
-        private LevenshteinAlgorithm Comparer;
         #endregion
 
         #region Data Analysis, Remaining
