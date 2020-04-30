@@ -573,15 +573,15 @@
             { "All Psi Wave Abilities", new List<AbilityKeyword>() { AbilityKeyword.PsiWave } },
             { "All types of shield Bash", new List<AbilityKeyword>() { AbilityKeyword.Bash } },
             { "Hammer attack", new List<AbilityKeyword>() { AbilityKeyword.HammerAttack } },
-            { "All Druid abilities", new List<AbilityKeyword>() { AbilityKeyword.Druid } },
+            { "All Druid ability", new List<AbilityKeyword>() { AbilityKeyword.Druid } },
             { "All Staff attack", new List<AbilityKeyword>() { AbilityKeyword.StaffAttack } },
-            { "All Ice Magic abilities", new List<AbilityKeyword>() { AbilityKeyword.IceMagic } },
-            { "Knife abilities with 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeCut } },
-            { "All Knife abilities WITHOUT 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
+            { "All Ice Magic ability", new List<AbilityKeyword>() { AbilityKeyword.IceMagic } },
+            { "Knife ability with 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeCut } },
+            { "All Knife ability WITHOUT 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
             { "All Knife Fighting attack", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
             { "Bard Songs", new List<AbilityKeyword>() { AbilityKeyword.BardSong } },
             { "Spider Skill", new List<AbilityKeyword>() { AbilityKeyword.Spider } },
-            { "All Major Healing abilities targeting you", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
+            { "All Major Healing ability targeting you", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
             { "All Bun-Fu moves", new List<AbilityKeyword>() { AbilityKeyword.Rabbit } },
             { "Survival Utility", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility } },
             { "Survival Utility and Major Heal", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility, AbilityKeyword.MajorHeal } },
@@ -775,16 +775,11 @@
             foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in WideAbilityTable)
             {
                 string Pattern = Entry.Key;
-                string PatternWithAbilities = Pattern + " abilities";
                 string PatternWithAbility = Pattern + " ability";
                 List<AbilityKeyword> KeywordList = Entry.Value;
 
                 foreach (AbilityKeyword Keyword in KeywordList)
                     Debug.Assert(GenericAbilityList.Contains(Keyword));
-
-                Debug.Assert(!nameToKeyword.ContainsKey(PatternWithAbilities));
-                nameToKeyword.Add(PatternWithAbilities, KeywordList);
-                abilityNameList.Add(PatternWithAbilities);
 
                 Debug.Assert(!nameToKeyword.ContainsKey(PatternWithAbility));
                 nameToKeyword.Add(PatternWithAbility, KeywordList);
@@ -1068,9 +1063,6 @@
 
             if (MissingKeywordList.Count == 0)
                 return true;
-
-            //if (MissingKeywordList.Count == 1 && MissingKeywordList[0] == CombatKeyword.DamageBoost && list1.Contains(CombatKeyword.DamagePercentageBoost) && list1.Count == list2.Count)
-            //    return true;
 
             if (MissingKeywordList.Count == 1 && MissingKeywordList[0] == CombatKeyword.ApplyWithChance && list1.Contains(CombatKeyword.DamageBoost) && list1.Count == list2.Count)
                 return true;
@@ -1465,6 +1457,7 @@
             ReplaceCaseInsensitive(ref text, " it's ", " it is ");
             ReplaceCaseInsensitive(ref text, "+Up ", "Add up ");
             ReplaceCaseInsensitive(ref text, " direct-damage ", " direct damage ");
+            ReplaceCaseInsensitive(ref text, " abilities", " ability ");
         }
 
         private void ReplaceCaseInsensitive(ref string text, string searchPattern, string replacementPattern)
@@ -1524,20 +1517,14 @@
 
         private bool RemoveWideAbilityReferences(ref string text, List<AbilityKeyword> modifiedAbilityKeywordList, string pattern, List<AbilityKeyword> abilityKeywordList, out int indexFound)
         {
-            string PatternWithAbilities = pattern + " abilities";
             string PatternWithAbility = pattern + " ability";
             string InputText = text;
             indexFound = text.Length;
 
-            RemoveDecorativeText(ref InputText, PatternWithAbilities, "@", out bool IsRemovedAbilities, ref indexFound);
             RemoveDecorativeText(ref InputText, PatternWithAbility, "@", out bool IsRemovedAbility, ref indexFound);
             RemoveDecorativeText(ref InputText, pattern, "@", out bool IsRemoved, ref indexFound);
 
-            if ((IsRemovedAbilities || IsRemovedAbility) && IsRemoved)
-                Debug.WriteLine($"Double remove: {pattern} and {PatternWithAbilities} (or {PatternWithAbility})");
-            else if (IsRemovedAbilities && IsRemovedAbility)
-                Debug.WriteLine($"Double remove: {PatternWithAbilities} and {PatternWithAbility}");
-            else if (IsRemovedAbilities || IsRemovedAbility || IsRemoved)
+            if (IsRemovedAbility || IsRemoved)
             {
                 if (modifiedAbilityKeywordList.Count > 0)
                 {
@@ -1662,54 +1649,6 @@
                 if (CombatEffect.Keyword == CombatKeyword.AddMitigationPhysical && CombatEffect.DamageType == GameDamageType.None)
                 {
                     extractedCombatEffectList[i] = new CombatEffect(CombatKeyword.AddMitigation, CombatEffect.Data1, CombatEffect.Data2, GameDamageType.Crushing | GameDamageType.Slashing | GameDamageType.Piercing, CombatEffect.CombatSkill);
-                }
-            }
-        }
-
-        private void ExtractAbilityNames(Dictionary<string, AbilityKeyword> nameToKeyword, ref string text, out List<AbilityKeyword> extractedAbilityList)
-        {
-            extractedAbilityList = new List<AbilityKeyword>();
-
-            List<AbilityKeyword> NewExtractedAbilityList = new List<AbilityKeyword>();
-            Dictionary<int, string> ExtractedTable = new Dictionary<int, string>();
-
-            foreach (KeyValuePair<string, AbilityKeyword> Entry in nameToKeyword)
-            {
-                string NewText = text;
-                int NewIndex = -1;
-
-                if (ExtractAbilityName(Entry.Key, Entry.Value, ref NewText, NewExtractedAbilityList, ref NewIndex) && !ExtractedTable.ContainsKey(NewIndex))
-                    ExtractedTable.Add(NewIndex, Entry.Key);
-            }
-
-            if (ExtractedTable.Count > 0)
-            {
-                List<string> KeyList = new List<string>();
-                int LastBestIndex = -1;
-
-                while (ExtractedTable.Count > 0)
-                {
-                    int BestIndex = -1;
-                    foreach (KeyValuePair<int, string> Entry in ExtractedTable)
-                        if (BestIndex == -1 || BestIndex > Entry.Key)
-                            BestIndex = Entry.Key;
-
-                    if (LastBestIndex != -1 && BestIndex > LastBestIndex + 44)
-                        break;
-
-                    string BestString = ExtractedTable[BestIndex];
-                    Debug.Assert(nameToKeyword.ContainsKey(BestString));
-                    KeyList.Add(BestString);
-
-                    ExtractedTable.Remove(BestIndex);
-                    LastBestIndex = BestIndex;
-                }
-
-                int UnusedIndex = -1;
-                foreach (string Key in KeyList)
-                {
-                    AbilityKeyword Value = nameToKeyword[Key];
-                    ExtractAbilityName(Key, Value, ref text, extractedAbilityList, ref UnusedIndex);
                 }
             }
         }
@@ -2138,7 +2077,7 @@
             ExtractSentence("when armor is empty, up to %f when armor is full", new List<CombatKeyword>() { CombatKeyword.VariableMitigation, CombatKeyword.ApplyToPet }, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Stacks up to %f times", CombatKeyword.MaxStack, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Stacks up to %fx", CombatKeyword.MaxStack, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
-            ExtractSentence("All Shield abilities", CombatKeyword.ApplyToAbilitiesShield, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+            ExtractSentence("All Shield ability", CombatKeyword.ApplyToAbilitiesShield, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("Grant allies", CombatKeyword.ApplyToAllies, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("To all allies", CombatKeyword.ApplyToAllies, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
             ExtractSentence("And your allies' attack", CombatKeyword.ApplyToAllies, SignInterpretation.Normal, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
@@ -2671,12 +2610,6 @@
         public static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
         {
             { (int)GameDamageType.None, "None" },
-            /*{ (int)GameDamageType.PsychicNature, "Psychic and Nature" },
-            { (int)GameDamageType.ElectricityAcidNature, "Electricity, Acid, and Nature" },
-            { (int)GameDamageType.PsychicElectricityFire, "Psychic, Electricity, or Fire" },
-            { (int)GameDamageType.ColdFireElectricity, "Cold, Fire, and Electricity" },
-            { (int)GameDamageType.CrushingSlashingPiercing, "Crushing, Slashing, or Piercing" },
-            { (int)GameDamageType.SlashingPiercing, "Slashing and Piercing" },*/
             { (int)GameDamageType.Crushing, "Crushing" },
             { (int)GameDamageType.Slashing, "Slashing" },
             { (int)GameDamageType.Nature, "Nature" },
