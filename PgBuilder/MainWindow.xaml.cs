@@ -991,6 +991,30 @@
             return Key;
         }
 
+        private void DisplayParsingResult(Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
+        {
+            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
+            {
+                IList<IPgPowerTier> TierEffectList = Entry.Key.TierEffectList;
+                IPgPowerTier LastTier = TierEffectList[TierEffectList.Count - 1];
+                IPgPowerEffectCollection EffectList = LastTier.EffectList;
+
+                foreach (IPgPowerEffect ItemEffect in EffectList)
+                {
+                    if (ItemEffect is IPgPowerSimpleEffect AsSimpleEffect)
+                    {
+                        List<IPgEffect> TierList = Entry.Value;
+                        IPgEffect Effect = TierList[TierList.Count - 1];
+
+                        Debug.WriteLine("");
+                        Debug.WriteLine(AsSimpleEffect.Description);
+                        Debug.WriteLine(Effect.Desc);
+                        break;
+                    }
+                }
+            }
+        }
+
         private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPower itemPower, List<IPgEffect> itemEffectList, out string[] stringKeyArray, out List<CombatEffect>[] modCombatListArray)
         {
             IList<IPgPowerTier> TierEffectList = itemPower.TierEffectList;
@@ -1703,6 +1727,403 @@
                 return false;
         }
 
+        private bool ExtractKnownAttribute(List<CombatKeyword> skippedKeywordList, ref string text, out List<CombatEffect> extractedCombatEffectList)
+        {
+            List<CombatKeyword> ExtractedKeywordList = new List<CombatKeyword>();
+            NumericValue Data1 = new NumericValue();
+            NumericValue Data2 = new NumericValue();
+            GameDamageType DamageType = GameDamageType.None;
+            GameCombatSkill CombatSkill = GameCombatSkill.None;
+            int ParsedIndex = -1;
+            string ModifiedText = text;
+
+            foreach (Sentence Item in SentenceList)
+                ExtractSentence(Item, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+
+            extractedCombatEffectList = new List<CombatEffect>();
+
+            if (ExtractedKeywordList.Count > 0)
+            {
+                text = ModifiedText;
+
+                foreach (CombatKeyword Item in ExtractedKeywordList)
+                {
+                    if (Item == CombatKeyword.Ignore)
+                        continue;
+
+                    CombatEffect ExtractedCombatEffect;
+                    if (extractedCombatEffectList.Count == 0)
+                        ExtractedCombatEffect = new CombatEffect(Item, Data1, Data2, DamageType, CombatSkill);
+                    else
+                        ExtractedCombatEffect = new CombatEffect(Item);
+
+                    extractedCombatEffectList.Add(ExtractedCombatEffect);
+                }
+
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
+        {
+            ExtractSentence(sentence.Format, sentence.AssociatedKeywordList, sentence.SignInterpretation, skippedKeywordList, text, ref modifiedText, extractedKeywordList, ref data1, ref data2, ref damageType, ref combatSkill, ref parsedIndex);
+        }
+
+        private void ExtractSentence(string format, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
+        {
+            string NewText = text;
+            List<CombatKeyword> NewExtractedKeywordList = new List<CombatKeyword>();
+            NumericValue NewData1 = new NumericValue();
+            NumericValue NewData2 = new NumericValue();
+            GameDamageType NewDamageType = GameDamageType.None;
+            GameCombatSkill NewCombatSkill = GameCombatSkill.None;
+            int NewParsedIndex = -1;
+
+            bool IsExtracted = ExtractNewSentence(format, associatedKeywordList, signInterpretation, skippedKeywordList, ref NewText, NewExtractedKeywordList, ref NewData1, ref NewData2, ref NewDamageType, ref NewCombatSkill, ref NewParsedIndex);
+
+            if (!IsExtracted)
+                return;
+
+            if (parsedIndex < 0 || NewParsedIndex < parsedIndex)
+            {
+                modifiedText = NewText;
+                extractedKeywordList.Clear();
+                extractedKeywordList.AddRange(NewExtractedKeywordList);
+                data1 = NewData1;
+                data2 = NewData2;
+                damageType = NewDamageType;
+                combatSkill = NewCombatSkill;
+                parsedIndex = NewParsedIndex;
+            }
+        }
+
+        private bool ExtractNewSentence(string format, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, List<CombatKeyword> skippedKeywordList, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
+        {
+            string LowerText = text.ToLowerInvariant();
+            string LowerFormat = format.ToLowerInvariant();
+
+            int Index = LowerFormat.IndexOf('%');
+
+            if (Index >= 0)
+            {
+                char FormatType = LowerFormat[Index + 1];
+
+                if (FormatType != 'f')
+                {
+                    Debug.WriteLine($"Format \"{format}\" contains % but for unsupported type {FormatType}");
+                    return false;
+                }
+
+                string BeforePattern = LowerFormat.Substring(0, Index);
+                string AfterPattern = LowerFormat.Substring(Index + 2);
+
+                int StartIndex = -1;
+                bool ContinueParsing;
+                do
+                {
+                    StartIndex++;
+                    ContinueParsing = ParseFormat(StartIndex, BeforePattern, AfterPattern, LowerText, associatedKeywordList, signInterpretation, ref text, extractedKeywordList, ref data1, ref data2, ref damageType, ref combatSkill, out int ParsedLength);
+                    StartIndex += ParsedLength;
+                }
+                while (ContinueParsing);
+
+                if (extractedKeywordList.Count > 0)
+                {
+                    parsedIndex = StartIndex;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+            {
+                int PatternIndex = FindPattern(LowerText, LowerFormat, 0, out GameDamageType ParsedDamageType, out GameCombatSkill ParsedCombatSkill, out int FormatLength);
+                if (PatternIndex < 0)
+                    return false;
+
+                text = text.Substring(0, PatternIndex) + text.Substring(PatternIndex + FormatLength).Trim();
+                extractedKeywordList.AddRange(associatedKeywordList);
+                damageType = ParsedDamageType;
+                combatSkill = ParsedCombatSkill;
+
+                parsedIndex = PatternIndex;
+                return true;
+            }
+        }
+
+        private bool ParseFormat(int startIndex, string beforePattern, string afterPattern, string lowerText, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, out int parsedLength)
+        {
+            int PatternIndex;
+            int AfterPatternIndex;
+            GameDamageType DamageTypeBefore;
+            GameCombatSkill CombatSkillBefore;
+            int PatternLengthBefore;
+            GameDamageType DamageTypeAfter;
+            GameCombatSkill CombatSkillAfter;
+            int PatternLengthAfter;
+
+            if (beforePattern.Length > 0)
+            {
+                PatternIndex = FindPattern(lowerText, beforePattern, startIndex, out DamageTypeBefore, out CombatSkillBefore, out PatternLengthBefore);
+                DamageTypeAfter = GameDamageType.None;
+                CombatSkillAfter = GameCombatSkill.None;
+                PatternLengthAfter = 0;
+            }
+            else
+            {
+                DamageTypeBefore = GameDamageType.None;
+                CombatSkillBefore = GameCombatSkill.None;
+                PatternLengthBefore = 0;
+
+                AfterPatternIndex = FindPattern(lowerText, afterPattern, startIndex, out DamageTypeAfter, out CombatSkillAfter, out PatternLengthAfter);
+                if (AfterPatternIndex > 0)
+                {
+                    PatternIndex = NumericValue.BackwardIndex(lowerText, AfterPatternIndex);
+                    if (PatternIndex >= 0)
+                        startIndex -= (AfterPatternIndex - PatternIndex);
+                }
+                else
+                    PatternIndex = -1;
+            }
+
+            if (PatternIndex < 0)
+            {
+                parsedLength = 0;
+                return false;
+            }
+
+            int StartDataIndex = PatternIndex + PatternLengthBefore;
+            int EndDataIndex = StartDataIndex;
+
+            if (EndDataIndex + 1 < lowerText.Length && (lowerText[EndDataIndex] == '+' || lowerText[EndDataIndex] == '-') && char.IsDigit(lowerText[EndDataIndex + 1]))
+                EndDataIndex++;
+
+            while (EndDataIndex < lowerText.Length && (char.IsDigit(lowerText[EndDataIndex]) || (lowerText[EndDataIndex] == '.' && EndDataIndex > StartDataIndex)))
+                EndDataIndex++;
+
+            if (EndDataIndex < lowerText.Length && lowerText[EndDataIndex] == '%')
+                EndDataIndex++;
+
+            parsedLength = PatternIndex - startIndex + 1;
+
+            if (EndDataIndex <= StartDataIndex)
+                return true;
+
+            NumericValue Data = NumericValue.Parse(lowerText.Substring(StartDataIndex, EndDataIndex - StartDataIndex));
+
+            AfterPatternIndex = FindPattern(lowerText, afterPattern, EndDataIndex, out DamageTypeAfter, out CombatSkillAfter, out PatternLengthAfter);
+            if (AfterPatternIndex != EndDataIndex)
+                return true;
+
+            Debug.Assert(DamageTypeBefore == GameDamageType.None || DamageTypeAfter == GameDamageType.None);
+            Debug.Assert(CombatSkillBefore == GameCombatSkill.None || CombatSkillAfter == GameCombatSkill.None);
+
+            data1 = Data;
+
+            switch (signInterpretation)
+            {
+                case SignInterpretation.Normal:
+                    break;
+                case SignInterpretation.Opposite:
+                    data1.ChangeSign();
+                    break;
+                case SignInterpretation.AlwaysNegative:
+                    if (data1.Value > 0)
+                        data1.ChangeSign();
+                    break;
+            }
+
+            text = text.Substring(0, PatternIndex) + text.Substring(EndDataIndex + PatternLengthAfter).Trim();
+            extractedKeywordList.AddRange(associatedKeywordList);
+
+            if (DamageTypeBefore != GameDamageType.None)
+                damageType = DamageTypeBefore;
+            else if (DamageTypeAfter != GameDamageType.None)
+                damageType = DamageTypeAfter;
+
+            if (CombatSkillBefore != GameCombatSkill.None)
+                combatSkill = CombatSkillBefore;
+            else if (CombatSkillAfter != GameCombatSkill.None)
+                combatSkill = CombatSkillAfter;
+
+            return false;
+        }
+
+        private int FindPattern(string text, string pattern, int startIndex, out GameDamageType damageType, out GameCombatSkill combatSkill, out int patternLength)
+        {
+            damageType = GameDamageType.None;
+            combatSkill = GameCombatSkill.None;
+
+            int Value;
+            int Index;
+
+            Debug.Assert(typeof(GameDamageType).GetEnumNames().Length == DamageTypeTextMap.Count);
+
+            Index = FindPattern("#D", DamageTypeTextMap, text, pattern, startIndex, out Value, out patternLength);
+            if (Index >= 0)
+            {
+                damageType = (GameDamageType)Value;
+                return Index;
+            }
+
+            Debug.Assert(typeof(GameCombatSkill).GetEnumNames().Length == SkillTextMap.Count);
+
+            Index = FindPattern("#S", SkillTextMap, text, pattern, startIndex, out Value, out patternLength);
+            if (Index >= 0)
+            {
+                combatSkill = (GameCombatSkill)Value;
+                return Index;
+            }
+
+            return -1;
+        }
+
+        private int FindPattern(string patternString, Dictionary<int, string> textMap, string text, string pattern, int startIndex, out int value, out int patternLength)
+        {
+            int DamageTypeIndex = pattern.IndexOf(patternString.ToLowerInvariant());
+
+            if (DamageTypeIndex < 0)
+            {
+                value = 0;
+                patternLength = pattern.Length;
+                return text.IndexOf(pattern, startIndex);
+            }
+            else
+            {
+                string BeforeTypePattern = pattern.Substring(0, DamageTypeIndex);
+                string AfterTypePattern = pattern.Substring(DamageTypeIndex + patternString.Length);
+
+                int LowestIndex = -1;
+                int LowestValue = 0;
+                int LowestLength = -1;
+
+                Dictionary<int, string> FoundTextMap = new Dictionary<int, string>();
+
+                bool IsAddedToFoundTextMap;
+                int BestFoundIndex = -1;
+
+                do
+                {
+                    IsAddedToFoundTextMap = false;
+                    int BestKey = -1;
+                    int BestKeyIndex = text.Length;
+
+                    foreach (KeyValuePair<int, string> Entry in textMap)
+                    {
+                        if (Entry.Key == 0)
+                            continue;
+
+                        if (FoundTextMap.ContainsKey(Entry.Key))
+                            continue;
+
+                        string ValueText = Entry.Value.ToLowerInvariant();
+                        int FoundIndex = text.IndexOf(ValueText);
+
+                        if (FoundIndex >= 0)
+                            if (BestKeyIndex > FoundIndex)
+                                if (BestFoundIndex == -1 || FoundIndex < BestFoundIndex + 15)
+                                {
+                                    BestKeyIndex = FoundIndex;
+                                    BestKey = Entry.Key;
+                                }
+                    }
+
+                    if (BestKey != -1)
+                    {
+                        FoundTextMap.Add(BestKey, textMap[BestKey].ToLowerInvariant());
+                        IsAddedToFoundTextMap = true;
+                        BestFoundIndex = BestKeyIndex;
+                    }
+                }
+                while (IsAddedToFoundTextMap);
+
+                List<int> FoundTextKey = new List<int>(FoundTextMap.Keys);
+                Dictionary<string, int> PossibleTextMap = new Dictionary<string, int>();
+                int Value;
+
+                switch (FoundTextMap.Count)
+                {
+                    case 3:
+                        Value = 0;
+                        for (int i = 0; i < 3; i++)
+                            Value |= FoundTextKey[i];
+
+                        for (int i = 0; i < 3; i++)
+                            for (int j = 0; j < 3; j++)
+                                if (j != i)
+                                    for (int k = 0; k < 3; k++)
+                                        if (k != i && k != j)
+                                        {
+                                            string KeyAnd = $"{FoundTextMap[FoundTextKey[i]]}, {FoundTextMap[FoundTextKey[j]]}, and {FoundTextMap[FoundTextKey[k]]}";
+                                            PossibleTextMap.Add(KeyAnd, Value);
+                                            string KeyOr = $"{FoundTextMap[FoundTextKey[i]]}, {FoundTextMap[FoundTextKey[j]]}, or {FoundTextMap[FoundTextKey[k]]}";
+                                            PossibleTextMap.Add(KeyOr, Value);
+                                            string KeySlash = $"{FoundTextMap[FoundTextKey[i]]}/{FoundTextMap[FoundTextKey[j]]}/{FoundTextMap[FoundTextKey[k]]}";
+                                            PossibleTextMap.Add(KeySlash, Value);
+                                        }
+                        break;
+                    case 2:
+                        Value = 0;
+                        for (int i = 0; i < 2; i++)
+                            Value |= FoundTextKey[i];
+
+                        for (int i = 0; i < 2; i++)
+                            for (int j = 0; j < 2; j++)
+                                if (j != i)
+                                    {
+                                        string KeyAnd = $"{FoundTextMap[FoundTextKey[i]]} and {FoundTextMap[FoundTextKey[j]]}";
+                                        PossibleTextMap.Add(KeyAnd, Value);
+                                        string KeyOr = $"{FoundTextMap[FoundTextKey[i]]} or {FoundTextMap[FoundTextKey[j]]}";
+                                        PossibleTextMap.Add(KeyOr, Value);
+                                    }
+                        break;
+
+                    case 0:
+                        break;
+
+                    default:
+                    case 1:
+                        Value = FoundTextKey[0];
+                        PossibleTextMap.Add(FoundTextMap[FoundTextKey[0]], Value);
+                        break;
+                }
+
+                foreach (KeyValuePair<string, int> Entry in PossibleTextMap)
+                {
+                    string ExtendedPattern = $"{BeforeTypePattern}{Entry.Key}{AfterTypePattern}";
+                    int Index = text.IndexOf(ExtendedPattern, startIndex);
+                    if (Index == -1)
+                        continue;
+
+                    if (LowestIndex == -1 || LowestIndex > Index)
+                    {
+                        LowestIndex = Index;
+                        LowestValue = Entry.Value;
+                        LowestLength = ExtendedPattern.Length;
+                    }
+                }
+
+                if (LowestIndex >= 0)
+                {
+                    Debug.Assert(LowestValue > 0);
+                    Debug.Assert(LowestLength > 0);
+
+                    value = LowestValue;
+                    patternLength = LowestLength;
+
+                    return LowestIndex;
+                }
+                else
+                {
+                    value = 0;
+                    patternLength = pattern.Length;
+                    return -1;
+                }
+            }
+        }
+
         private static List<Sentence> SentenceList = new List<Sentence>()
         {
             new Sentence("Place an extra trap", CombatKeyword.AnotherTrap),
@@ -2216,403 +2637,6 @@
             new Sentence("%f Body Heat", CombatKeyword.RestoreBodyHeat),
         };
 
-        private bool ExtractKnownAttribute(List<CombatKeyword> skippedKeywordList, ref string text, out List<CombatEffect> extractedCombatEffectList)
-        {
-            List<CombatKeyword> ExtractedKeywordList = new List<CombatKeyword>();
-            NumericValue Data1 = new NumericValue();
-            NumericValue Data2 = new NumericValue();
-            GameDamageType DamageType = GameDamageType.None;
-            GameCombatSkill CombatSkill = GameCombatSkill.None;
-            int ParsedIndex = -1;
-            string ModifiedText = text;
-
-            foreach (Sentence Item in SentenceList)
-                ExtractSentence(Item, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
-
-            extractedCombatEffectList = new List<CombatEffect>();
-
-            if (ExtractedKeywordList.Count > 0)
-            {
-                text = ModifiedText;
-
-                foreach (CombatKeyword Item in ExtractedKeywordList)
-                {
-                    if (Item == CombatKeyword.Ignore)
-                        continue;
-
-                    CombatEffect ExtractedCombatEffect;
-                    if (extractedCombatEffectList.Count == 0)
-                        ExtractedCombatEffect = new CombatEffect(Item, Data1, Data2, DamageType, CombatSkill);
-                    else
-                        ExtractedCombatEffect = new CombatEffect(Item);
-
-                    extractedCombatEffectList.Add(ExtractedCombatEffect);
-                }
-
-                return true;
-            }
-            else
-                return false;
-        }
-
-        private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
-        {
-            ExtractSentence(sentence.Format, sentence.AssociatedKeywordList, sentence.SignInterpretation, skippedKeywordList, text, ref modifiedText, extractedKeywordList, ref data1, ref data2, ref damageType, ref combatSkill, ref parsedIndex);
-        }
-
-        private void ExtractSentence(string format, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
-        {
-            string NewText = text;
-            List<CombatKeyword> NewExtractedKeywordList = new List<CombatKeyword>();
-            NumericValue NewData1 = new NumericValue();
-            NumericValue NewData2 = new NumericValue();
-            GameDamageType NewDamageType = GameDamageType.None;
-            GameCombatSkill NewCombatSkill = GameCombatSkill.None;
-            int NewParsedIndex = -1;
-
-            bool IsExtracted = ExtractNewSentence(format, associatedKeywordList, signInterpretation, skippedKeywordList, ref NewText, NewExtractedKeywordList, ref NewData1, ref NewData2, ref NewDamageType, ref NewCombatSkill, ref NewParsedIndex);
-
-            if (!IsExtracted)
-                return;
-
-            if (parsedIndex < 0 || NewParsedIndex < parsedIndex)
-            {
-                modifiedText = NewText;
-                extractedKeywordList.Clear();
-                extractedKeywordList.AddRange(NewExtractedKeywordList);
-                data1 = NewData1;
-                data2 = NewData2;
-                damageType = NewDamageType;
-                combatSkill = NewCombatSkill;
-                parsedIndex = NewParsedIndex;
-            }
-        }
-
-        private bool ExtractNewSentence(string format, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, List<CombatKeyword> skippedKeywordList, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
-        {
-            string LowerText = text.ToLowerInvariant();
-            string LowerFormat = format.ToLowerInvariant();
-
-            int Index = LowerFormat.IndexOf('%');
-
-            if (Index >= 0)
-            {
-                char FormatType = LowerFormat[Index + 1];
-
-                if (FormatType != 'f')
-                {
-                    Debug.WriteLine($"Format \"{format}\" contains % but for unsupported type {FormatType}");
-                    return false;
-                }
-
-                string BeforePattern = LowerFormat.Substring(0, Index);
-                string AfterPattern = LowerFormat.Substring(Index + 2);
-
-                int StartIndex = -1;
-                bool ContinueParsing;
-                do
-                {
-                    StartIndex++;
-                    ContinueParsing = ParseFormat(StartIndex, BeforePattern, AfterPattern, LowerText, associatedKeywordList, signInterpretation, ref text, extractedKeywordList, ref data1, ref data2, ref damageType, ref combatSkill, out int ParsedLength);
-                    StartIndex += ParsedLength;
-                }
-                while (ContinueParsing);
-
-                if (extractedKeywordList.Count > 0)
-                {
-                    parsedIndex = StartIndex;
-                    return true;
-                }
-                else
-                    return false;
-            }
-            else
-            {
-                int PatternIndex = FindPattern(LowerText, LowerFormat, 0, out GameDamageType ParsedDamageType, out GameCombatSkill ParsedCombatSkill, out int FormatLength);
-                if (PatternIndex < 0)
-                    return false;
-
-                text = text.Substring(0, PatternIndex) + text.Substring(PatternIndex + FormatLength).Trim();
-                extractedKeywordList.AddRange(associatedKeywordList);
-                damageType = ParsedDamageType;
-                combatSkill = ParsedCombatSkill;
-
-                parsedIndex = PatternIndex;
-                return true;
-            }
-        }
-
-        private bool ParseFormat(int startIndex, string beforePattern, string afterPattern, string lowerText, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, out int parsedLength)
-        {
-            int PatternIndex;
-            int AfterPatternIndex;
-            GameDamageType DamageTypeBefore;
-            GameCombatSkill CombatSkillBefore;
-            int PatternLengthBefore;
-            GameDamageType DamageTypeAfter;
-            GameCombatSkill CombatSkillAfter;
-            int PatternLengthAfter;
-
-            if (beforePattern.Length > 0)
-            {
-                PatternIndex = FindPattern(lowerText, beforePattern, startIndex, out DamageTypeBefore, out CombatSkillBefore, out PatternLengthBefore);
-                DamageTypeAfter = GameDamageType.None;
-                CombatSkillAfter = GameCombatSkill.None;
-                PatternLengthAfter = 0;
-            }
-            else
-            {
-                DamageTypeBefore = GameDamageType.None;
-                CombatSkillBefore = GameCombatSkill.None;
-                PatternLengthBefore = 0;
-
-                AfterPatternIndex = FindPattern(lowerText, afterPattern, startIndex, out DamageTypeAfter, out CombatSkillAfter, out PatternLengthAfter);
-                if (AfterPatternIndex > 0)
-                {
-                    PatternIndex = NumericValue.BackwardIndex(lowerText, AfterPatternIndex);
-                    if (PatternIndex >= 0)
-                        startIndex -= (AfterPatternIndex - PatternIndex);
-                }
-                else
-                    PatternIndex = -1;
-            }
-
-            if (PatternIndex < 0)
-            {
-                parsedLength = 0;
-                return false;
-            }
-
-            int StartDataIndex = PatternIndex + PatternLengthBefore;
-            int EndDataIndex = StartDataIndex;
-
-            if (EndDataIndex + 1 < lowerText.Length && (lowerText[EndDataIndex] == '+' || lowerText[EndDataIndex] == '-') && char.IsDigit(lowerText[EndDataIndex + 1]))
-                EndDataIndex++;
-
-            while (EndDataIndex < lowerText.Length && (char.IsDigit(lowerText[EndDataIndex]) || (lowerText[EndDataIndex] == '.' && EndDataIndex > StartDataIndex)))
-                EndDataIndex++;
-
-            if (EndDataIndex < lowerText.Length && lowerText[EndDataIndex] == '%')
-                EndDataIndex++;
-
-            parsedLength = PatternIndex - startIndex + 1;
-
-            if (EndDataIndex <= StartDataIndex)
-                return true;
-
-            NumericValue Data = NumericValue.Parse(lowerText.Substring(StartDataIndex, EndDataIndex - StartDataIndex));
-
-            AfterPatternIndex = FindPattern(lowerText, afterPattern, EndDataIndex, out DamageTypeAfter, out CombatSkillAfter, out PatternLengthAfter);
-            if (AfterPatternIndex != EndDataIndex)
-                return true;
-
-            Debug.Assert(DamageTypeBefore == GameDamageType.None || DamageTypeAfter == GameDamageType.None);
-            Debug.Assert(CombatSkillBefore == GameCombatSkill.None || CombatSkillAfter == GameCombatSkill.None);
-
-            data1 = Data;
-
-            switch (signInterpretation)
-            {
-                case SignInterpretation.Normal:
-                    break;
-                case SignInterpretation.Opposite:
-                    data1.ChangeSign();
-                    break;
-                case SignInterpretation.AlwaysNegative:
-                    if (data1.Value > 0)
-                        data1.ChangeSign();
-                    break;
-            }
-
-            text = text.Substring(0, PatternIndex) + text.Substring(EndDataIndex + PatternLengthAfter).Trim();
-            extractedKeywordList.AddRange(associatedKeywordList);
-
-            if (DamageTypeBefore != GameDamageType.None)
-                damageType = DamageTypeBefore;
-            else if (DamageTypeAfter != GameDamageType.None)
-                damageType = DamageTypeAfter;
-
-            if (CombatSkillBefore != GameCombatSkill.None)
-                combatSkill = CombatSkillBefore;
-            else if (CombatSkillAfter != GameCombatSkill.None)
-                combatSkill = CombatSkillAfter;
-
-            return false;
-        }
-
-        private int FindPattern(string text, string pattern, int startIndex, out GameDamageType damageType, out GameCombatSkill combatSkill, out int patternLength)
-        {
-            damageType = GameDamageType.None;
-            combatSkill = GameCombatSkill.None;
-
-            int Value;
-            int Index;
-
-            Debug.Assert(typeof(GameDamageType).GetEnumNames().Length == DamageTypeTextMap.Count);
-
-            Index = FindPattern("#D", DamageTypeTextMap, text, pattern, startIndex, out Value, out patternLength);
-            if (Index >= 0)
-            {
-                damageType = (GameDamageType)Value;
-                return Index;
-            }
-
-            Debug.Assert(typeof(GameCombatSkill).GetEnumNames().Length == SkillTextMap.Count);
-
-            Index = FindPattern("#S", SkillTextMap, text, pattern, startIndex, out Value, out patternLength);
-            if (Index >= 0)
-            {
-                combatSkill = (GameCombatSkill)Value;
-                return Index;
-            }
-
-            return -1;
-        }
-
-        private int FindPattern(string patternString, Dictionary<int, string> textMap, string text, string pattern, int startIndex, out int value, out int patternLength)
-        {
-            int DamageTypeIndex = pattern.IndexOf(patternString.ToLowerInvariant());
-
-            if (DamageTypeIndex < 0)
-            {
-                value = 0;
-                patternLength = pattern.Length;
-                return text.IndexOf(pattern, startIndex);
-            }
-            else
-            {
-                string BeforeTypePattern = pattern.Substring(0, DamageTypeIndex);
-                string AfterTypePattern = pattern.Substring(DamageTypeIndex + patternString.Length);
-
-                int LowestIndex = -1;
-                int LowestValue = 0;
-                int LowestLength = -1;
-
-                Dictionary<int, string> FoundTextMap = new Dictionary<int, string>();
-
-                bool IsAddedToFoundTextMap;
-                int BestFoundIndex = -1;
-
-                do
-                {
-                    IsAddedToFoundTextMap = false;
-                    int BestKey = -1;
-                    int BestKeyIndex = text.Length;
-
-                    foreach (KeyValuePair<int, string> Entry in textMap)
-                    {
-                        if (Entry.Key == 0)
-                            continue;
-
-                        if (FoundTextMap.ContainsKey(Entry.Key))
-                            continue;
-
-                        string ValueText = Entry.Value.ToLowerInvariant();
-                        int FoundIndex = text.IndexOf(ValueText);
-
-                        if (FoundIndex >= 0)
-                            if (BestKeyIndex > FoundIndex)
-                                if (BestFoundIndex == -1 || FoundIndex < BestFoundIndex + 15)
-                                {
-                                    BestKeyIndex = FoundIndex;
-                                    BestKey = Entry.Key;
-                                }
-                    }
-
-                    if (BestKey != -1)
-                    {
-                        FoundTextMap.Add(BestKey, textMap[BestKey].ToLowerInvariant());
-                        IsAddedToFoundTextMap = true;
-                        BestFoundIndex = BestKeyIndex;
-                    }
-                }
-                while (IsAddedToFoundTextMap);
-
-                List<int> FoundTextKey = new List<int>(FoundTextMap.Keys);
-                Dictionary<string, int> PossibleTextMap = new Dictionary<string, int>();
-                int Value;
-
-                switch (FoundTextMap.Count)
-                {
-                    case 3:
-                        Value = 0;
-                        for (int i = 0; i < 3; i++)
-                            Value |= FoundTextKey[i];
-
-                        for (int i = 0; i < 3; i++)
-                            for (int j = 0; j < 3; j++)
-                                if (j != i)
-                                    for (int k = 0; k < 3; k++)
-                                        if (k != i && k != j)
-                                        {
-                                            string KeyAnd = $"{FoundTextMap[FoundTextKey[i]]}, {FoundTextMap[FoundTextKey[j]]}, and {FoundTextMap[FoundTextKey[k]]}";
-                                            PossibleTextMap.Add(KeyAnd, Value);
-                                            string KeyOr = $"{FoundTextMap[FoundTextKey[i]]}, {FoundTextMap[FoundTextKey[j]]}, or {FoundTextMap[FoundTextKey[k]]}";
-                                            PossibleTextMap.Add(KeyOr, Value);
-                                            string KeySlash = $"{FoundTextMap[FoundTextKey[i]]}/{FoundTextMap[FoundTextKey[j]]}/{FoundTextMap[FoundTextKey[k]]}";
-                                            PossibleTextMap.Add(KeySlash, Value);
-                                        }
-                        break;
-                    case 2:
-                        Value = 0;
-                        for (int i = 0; i < 2; i++)
-                            Value |= FoundTextKey[i];
-
-                        for (int i = 0; i < 2; i++)
-                            for (int j = 0; j < 2; j++)
-                                if (j != i)
-                                    {
-                                        string KeyAnd = $"{FoundTextMap[FoundTextKey[i]]} and {FoundTextMap[FoundTextKey[j]]}";
-                                        PossibleTextMap.Add(KeyAnd, Value);
-                                        string KeyOr = $"{FoundTextMap[FoundTextKey[i]]} or {FoundTextMap[FoundTextKey[j]]}";
-                                        PossibleTextMap.Add(KeyOr, Value);
-                                    }
-                        break;
-
-                    case 0:
-                        break;
-
-                    default:
-                    case 1:
-                        Value = FoundTextKey[0];
-                        PossibleTextMap.Add(FoundTextMap[FoundTextKey[0]], Value);
-                        break;
-                }
-
-                foreach (KeyValuePair<string, int> Entry in PossibleTextMap)
-                {
-                    string ExtendedPattern = $"{BeforeTypePattern}{Entry.Key}{AfterTypePattern}";
-                    int Index = text.IndexOf(ExtendedPattern, startIndex);
-                    if (Index == -1)
-                        continue;
-
-                    if (LowestIndex == -1 || LowestIndex > Index)
-                    {
-                        LowestIndex = Index;
-                        LowestValue = Entry.Value;
-                        LowestLength = ExtendedPattern.Length;
-                    }
-                }
-
-                if (LowestIndex >= 0)
-                {
-                    Debug.Assert(LowestValue > 0);
-                    Debug.Assert(LowestLength > 0);
-
-                    value = LowestValue;
-                    patternLength = LowestLength;
-
-                    return LowestIndex;
-                }
-                else
-                {
-                    value = 0;
-                    patternLength = pattern.Length;
-                    return -1;
-                }
-            }
-        }
-
         public static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
         {
             { (int)GameDamageType.None, "None" },
@@ -2662,99 +2686,6 @@
             { (int)GameCombatSkill.FairyMagic, "Fairy Magic" },
             { (int)GameCombatSkill.Lycanthropy, "Lycanthropy" },
         };
-
-        private string CleanedUpText(string text)
-        {
-            bool IsCleanedUp;
-            do
-            {
-                IsCleanedUp = false;
-                text = CleanedUpText(text, "and", ref IsCleanedUp);
-                text = CleanedUpText(text, "cause", ref IsCleanedUp);
-                text = CleanedUpText(text, "the", ref IsCleanedUp);
-                text = CleanedUpText(text, "also", ref IsCleanedUp);
-                text = CleanedUpText(text, "have a", ref IsCleanedUp);
-            }
-            while (IsCleanedUp);
-
-            text = GrammarChanged(text);
-
-            return text;
-        }
-
-        private string CleanedUpText(string text, string pattern, ref bool isCleanedUp)
-        {
-            if (text.ToLowerInvariant().StartsWith(pattern.ToLowerInvariant() + " "))
-            {
-                isCleanedUp = true;
-                return text.Substring(pattern.Length).Trim();
-            }
-            else
-                return text;
-        }
-
-        private string GrammarChanged(string text)
-        {
-            foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in WideAbilityTable)
-                text = GrammarChangedWithPlural(text, Entry.Key);
-
-            return text;
-        }
-
-        private string GrammarChangedWithPlural(string text, string pattern)
-        {
-            Debug.Assert(pattern.Length > 1);
-
-            if (pattern.EndsWith("s"))
-                text = GrammarChanged(text, pattern.Substring(0, pattern.Length - 1));
-
-            text = GrammarChanged(text, pattern);
-
-            return text;
-        }
-
-        private string GrammarChanged(string text, string pattern)
-        {
-            text = GrammarChanged(text, pattern, "boost your ", " damage", "", " deal");
-
-            return text;
-        }
-
-        private string GrammarChanged(string text, string pattern, string patternProlog, string patternEpilog, string replacementProlog, string replacementEpilog)
-        {
-            string LowerText = text.ToLowerInvariant();
-            string PatternString = $"{patternProlog}{pattern.ToLowerInvariant()}{patternEpilog}";
-            int Index = LowerText.IndexOf(PatternString);
-
-            if (Index >= 0)
-                return text.Substring(0, Index) + $"{replacementProlog}{pattern}{replacementEpilog}" + text.Substring(Index + PatternString.Length);
-            else
-                return text;
-        }
-
-        private void DisplayParsingResult(Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
-        {
-            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
-            {
-                IList<IPgPowerTier> TierEffectList = Entry.Key.TierEffectList;
-                IPgPowerTier LastTier = TierEffectList[TierEffectList.Count - 1];
-                IPgPowerEffectCollection EffectList = LastTier.EffectList;
-
-                foreach (IPgPowerEffect ItemEffect in EffectList)
-                {
-                    if (ItemEffect is IPgPowerSimpleEffect AsSimpleEffect)
-                    {
-                        List<IPgEffect> TierList = Entry.Value;
-                        IPgEffect Effect = TierList[TierList.Count - 1];
-
-                        Debug.WriteLine("");
-                        Debug.WriteLine(AsSimpleEffect.Description);
-                        Debug.WriteLine(Effect.Desc);
-                        break;
-                    }
-                }
-            }
-        }
         #endregion
 
         #region Data Analysis, Remaining
