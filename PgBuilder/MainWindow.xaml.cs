@@ -860,6 +860,7 @@
 
             //WritePowerKeyToCompleteEffectFile(StringKeyTable, PowerKeyToCompleteEffectTable);
             CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, PowerKeyToCompleteEffectTable);
+            CheckAllSentencesUsed();
 
             DisplayParsingResult(powerToEffectTable);
         }
@@ -981,6 +982,13 @@
             {
                 Debug.WriteLine($"Line mistmatch for key {stringKey}");
             }
+        }
+
+        private void CheckAllSentencesUsed()
+        {
+            foreach (Sentence Item in SentenceList)
+                if (!Item.IsUsed)
+                    Debug.WriteLine($"Sentence '{Item.Format}' not used");
         }
 
         private string PowerEffectPairKey(IPgPower power, List<IPgEffect> effectList, int tierIndex)
@@ -1387,37 +1395,6 @@
             }
         }
 
-        private bool RemoveWideAbilityReferences(ref string text, List<AbilityKeyword> modifiedAbilityKeyword)
-        {
-            int LowestIndex = text.Length;
-            string EntryKey = string.Empty;
-            List<AbilityKeyword> EntryValue = new List<AbilityKeyword>();
-
-            foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in WideAbilityTable)
-            {
-                string SearchText = text;
-                List<AbilityKeyword> SearchAbilityKeyword = new List<AbilityKeyword>(modifiedAbilityKeyword);
-
-                if (RemoveWideAbilityReferences(ref SearchText, SearchAbilityKeyword, Entry.Key, Entry.Value, out int indexFound))
-                {
-                    if (LowestIndex > indexFound)
-                    {
-                        LowestIndex = indexFound;
-                        EntryKey = Entry.Key;
-                        EntryValue = Entry.Value;
-                    }
-                }
-            }
-
-            if (EntryValue.Count > 0)
-            {
-                RemoveWideAbilityReferences(ref text, modifiedAbilityKeyword, EntryKey, EntryValue, out _);
-                return true;
-            }
-            else
-                return false;
-        }
-
         private void SimplifyGrammar(ref string text)
         {
             ReplaceCaseInsensitive(ref text, "reduces ", "reduce ");
@@ -1677,56 +1654,6 @@
             }
         }
 
-        private bool ExtractAbilityName(string abilityName, AbilityKeyword keyword, ref string text, List<AbilityKeyword> extractedAbilityList, ref int startIndex)
-        {
-            bool IsExtracted = false;
-
-            if (text.StartsWith($"{abilityName}'s damage "))
-            {
-                text = text.Substring(abilityName.Length + 3);
-                startIndex = 0;
-                IsExtracted = true;
-            }
-            else if (text.StartsWith($"{abilityName}'s "))
-            {
-                text = text.Substring(abilityName.Length + 3);
-                startIndex = 0;
-                IsExtracted = true;
-            }
-            else if (text.StartsWith($"{abilityName} ") || text.StartsWith($"{abilityName},"))
-            {
-                text = text.Substring(abilityName.Length);
-                startIndex = 0;
-                IsExtracted = true;
-            }
-            else
-            {
-                int Index = text.IndexOf($" {abilityName} ", StringComparison.InvariantCulture);
-                if (Index < 0)
-                    Index = text.IndexOf($" {abilityName},", StringComparison.InvariantCulture);
-                if (Index < 0)
-                    Index = text.IndexOf($" {abilityName}.", StringComparison.InvariantCulture);
-                if (Index >= 0)
-                {
-                    startIndex = Index;
-                    text = text.Substring(0, Index + 1) + text.Substring(Index + abilityName.Length + 1);
-                    IsExtracted = true;
-                }
-            }
-
-            if (IsExtracted)
-            {
-                Debug.Assert(!extractedAbilityList.Contains(keyword));
-                extractedAbilityList.Add(keyword);
-
-                text = text.Trim();
-
-                return true;
-            }
-            else
-                return false;
-        }
-
         private bool ExtractKnownAttribute(List<CombatKeyword> skippedKeywordList, ref string text, out List<CombatEffect> extractedCombatEffectList)
         {
             List<CombatKeyword> ExtractedKeywordList = new List<CombatKeyword>();
@@ -1736,9 +1663,10 @@
             GameCombatSkill CombatSkill = GameCombatSkill.None;
             int ParsedIndex = -1;
             string ModifiedText = text;
+            Sentence SelectedSentence = null;
 
             foreach (Sentence Item in SentenceList)
-                ExtractSentence(Item, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex);
+                ExtractSentence(Item, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex, ref SelectedSentence);
 
             extractedCombatEffectList = new List<CombatEffect>();
 
@@ -1760,18 +1688,16 @@
                     extractedCombatEffectList.Add(ExtractedCombatEffect);
                 }
 
+                Debug.Assert(SelectedSentence != null);
+                SelectedSentence.SetUsed();
+
                 return true;
             }
             else
                 return false;
         }
 
-        private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
-        {
-            ExtractSentence(sentence.Format, sentence.AssociatedKeywordList, sentence.SignInterpretation, skippedKeywordList, text, ref modifiedText, extractedKeywordList, ref data1, ref data2, ref damageType, ref combatSkill, ref parsedIndex);
-        }
-
-        private void ExtractSentence(string format, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
+        private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence selectedSentence)
         {
             string NewText = text;
             List<CombatKeyword> NewExtractedKeywordList = new List<CombatKeyword>();
@@ -1781,7 +1707,7 @@
             GameCombatSkill NewCombatSkill = GameCombatSkill.None;
             int NewParsedIndex = -1;
 
-            bool IsExtracted = ExtractNewSentence(format, associatedKeywordList, signInterpretation, skippedKeywordList, ref NewText, NewExtractedKeywordList, ref NewData1, ref NewData2, ref NewDamageType, ref NewCombatSkill, ref NewParsedIndex);
+            bool IsExtracted = ExtractNewSentence(sentence, skippedKeywordList, ref NewText, NewExtractedKeywordList, ref NewData1, ref NewData2, ref NewDamageType, ref NewCombatSkill, ref NewParsedIndex);
 
             if (!IsExtracted)
                 return;
@@ -1796,11 +1722,16 @@
                 damageType = NewDamageType;
                 combatSkill = NewCombatSkill;
                 parsedIndex = NewParsedIndex;
+                selectedSentence = sentence;
             }
         }
 
-        private bool ExtractNewSentence(string format, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, List<CombatKeyword> skippedKeywordList, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
+        private bool ExtractNewSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
         {
+            string format = sentence.Format;
+            List<CombatKeyword> associatedKeywordList = sentence.AssociatedKeywordList;
+            SignInterpretation signInterpretation = sentence.SignInterpretation;
+
             string LowerText = text.ToLowerInvariant();
             string LowerFormat = format.ToLowerInvariant();
 
@@ -2139,7 +2070,7 @@
             new Sentence("Target ignore you", CombatKeyword.Ignored),
             new Sentence("Cause the target to ignore you", CombatKeyword.Ignored),
             new Sentence("Uniformly diminishes all targets' entire aggro lists by %f", CombatKeyword.ChangeTaunt),
-            new Sentence("This absorbed damage is added to your next @ attack at a %f rate", CombatKeyword.ReturnDamage),
+            //new Sentence("This absorbed damage is added to your next @ attack at a %f rate", CombatKeyword.ReturnDamage),
             new Sentence("This absorbed damage is added to your next @", CombatKeyword.ReturnDamage),
             new Sentence("Boost your next attack %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
             new Sentence("Future @ attack damage %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
@@ -2205,7 +2136,7 @@
             new Sentence("#D Vulnerability %f", CombatKeyword.AddVulnerability),
             new Sentence("%f more damage from any #D attack", CombatKeyword.AddVulnerability),
             new Sentence("Take %f damage from both #D", CombatKeyword.AddVulnerability),
-            new Sentence("%f damage from #D", CombatKeyword.AddVulnerability),
+            //new Sentence("%f damage from #D", CombatKeyword.AddVulnerability),
             new Sentence("But take %f damage from any #D attack", CombatKeyword.AddVulnerability),
             new Sentence("#D Vulnerability +infinity", CombatKeyword.DestroyedByDamageType),
             new Sentence("Instantly destroyed by ANY #D Damage", CombatKeyword.DestroyedByDamageType),
@@ -2214,18 +2145,18 @@
             new Sentence("Increase the damage of all targets' attack %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToAllies }),
             new Sentence("%f damage from all attack", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToAllies }),
             new Sentence("Turning half of that into Trauma damage", CombatKeyword.ExtraTraumaDamage),
-            new Sentence("Pet's #D attack deal %f damage", CombatKeyword.AnimalPetAttackBoost),
-            new Sentence("Pet's #D attack %f damage", CombatKeyword.AnimalPetAttackBoost),
+            //new Sentence("Pet's #D attack deal %f damage", CombatKeyword.AnimalPetAttackBoost),
+            //new Sentence("Pet's #D attack %f damage", CombatKeyword.AnimalPetAttackBoost),
             new Sentence("Rage attack deal %f damage", CombatKeyword.AnimalPetRageAttackBoost),
             new Sentence("Pet's Rage Attack Damage %f", CombatKeyword.AnimalPetRageAttackBoost),
             new Sentence("Deal up to %f damage", CombatKeyword.DamageBoost),
-            new Sentence("Add up to %f damage", CombatKeyword.DamageBoost),
+            //new Sentence("Add up to %f damage", CombatKeyword.DamageBoost),
             new Sentence("Add up to %f extra damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f Armor damage", CombatKeyword.DealArmorDamage),
             new Sentence("Deal %f immediate #D damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f #D damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f damage", CombatKeyword.DamageBoost),
-            new Sentence("Deal %f fire damage to you", CombatKeyword.SelfImmolation),
+            //new Sentence("Deal %f fire damage to you", CombatKeyword.SelfImmolation),
             new Sentence("Pet take %f #D damage", CombatKeyword.PetImmolation),
             new Sentence("Pet bleed for %f #D damage", CombatKeyword.PetImmolation),
             new Sentence("Cause your pet to bleed for %f #D damage", CombatKeyword.PetImmolation),
@@ -2234,33 +2165,33 @@
             new Sentence("(This buff does not stack with itself)", CombatKeyword.NonStackingDebuff),
             new Sentence("(Stacking up to %f times)", CombatKeyword.StackingDebuffLimit),
             new Sentence("(This effect does not stack with itself)", CombatKeyword.NonStackingDebuff),
-            new Sentence("Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", CombatKeyword.Combo1),
-            new Sentence("Combo: Gripjaw+Any Spider+Any Spider+Inject Venom:", CombatKeyword.Combo2),
-            new Sentence("Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", CombatKeyword.Combo3),
-            new Sentence("Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", CombatKeyword.Combo4),
-            new Sentence("Combo: Rip+Any Melee+Any Melee+Bat Stability:", CombatKeyword.Combo5),
-            new Sentence("Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", CombatKeyword.Combo5),
-            new Sentence("Final step hit all enemies within %f meter", CombatKeyword.ComboFinalStepBurst),
-            new Sentence("Final step hit all targets within %f meter", CombatKeyword.ComboFinalStepBurst),
-            new Sentence("Final step deal %f damage", CombatKeyword.ComboFinalStepDamage),
-            new Sentence("Final step stun the target and deal %f damage", CombatKeyword.ComboFinalStepDamageAndStun),
-            new Sentence("Final step boost base damage %f for 10 second", CombatKeyword.ComboFinalStepBoostBaseDamage),
-            new Sentence("Whenever you take damage from an enemy", CombatKeyword.ReflectOnAnyAttack),
-            new Sentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack),
-            new Sentence("If you are using the #S skill", CombatKeyword.ActiveSkill),
-            new Sentence("While #S skill active", CombatKeyword.ActiveSkill),
+            //new Sentence("Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", CombatKeyword.Combo1),
+            //new Sentence("Combo: Gripjaw+Any Spider+Any Spider+Inject Venom:", CombatKeyword.Combo2),
+            //new Sentence("Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", CombatKeyword.Combo3),
+            //new Sentence("Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", CombatKeyword.Combo4),
+            //new Sentence("Combo: Rip+Any Melee+Any Melee+Bat Stability:", CombatKeyword.Combo5),
+            //new Sentence("Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", CombatKeyword.Combo5),
+            //new Sentence("Final step hit all enemies within %f meter", CombatKeyword.ComboFinalStepBurst),
+            //new Sentence("Final step hit all targets within %f meter", CombatKeyword.ComboFinalStepBurst),
+            //new Sentence("Final step deal %f damage", CombatKeyword.ComboFinalStepDamage),
+            //new Sentence("Final step stun the target and deal %f damage", CombatKeyword.ComboFinalStepDamageAndStun),
+            //new Sentence("Final step boost base damage %f for 10 second", CombatKeyword.ComboFinalStepBoostBaseDamage),
+            //new Sentence("Whenever you take damage from an enemy", CombatKeyword.ReflectOnAnyAttack),
+            //new Sentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack),
+            //new Sentence("If you are using the #S skill", CombatKeyword.ActiveSkill),
+            //new Sentence("While #S skill active", CombatKeyword.ActiveSkill),
             new Sentence("While #S skill is active", CombatKeyword.ActiveSkill),
             new Sentence("(If #S skill is active)", CombatKeyword.ActiveSkill),
             new Sentence("Gain %f #S Skill Base Damage", CombatKeyword.BaseDamageBoost),
-            new Sentence("You have not been attacked in the past %f second", CombatKeyword.NotAttackedRecently),
+            //new Sentence("You have not been attacked in the past %f second", CombatKeyword.NotAttackedRecently),
             new Sentence("If you have less than half of your Health remaining", CombatKeyword.LessThanHalfMaxHealth),
-            new Sentence("Incubated Spiders %f chance to avoid being hit burst attack", CombatKeyword.SpiderPetAvoidBurst),
-            new Sentence("Combat Refresh restore %f health", CombatKeyword.CombatRefreshRestoreHeatlth),
+            //new Sentence("Incubated Spiders %f chance to avoid being hit burst attack", CombatKeyword.SpiderPetAvoidBurst),
+            //new Sentence("Combat Refresh restore %f health", CombatKeyword.CombatRefreshRestoreHeatlth),
             new Sentence("Healing from Combat Refreshes %f", CombatKeyword.CombatRefreshRestoreHeatlth),
             new Sentence("Boost the target's #D damage-over-time by %f per tick", CombatKeyword.DealIndirectDamage),
-            new Sentence("If , , or  deal damage, that damage is boosted %f per tick", CombatKeyword.DamageBoost),
+            //new Sentence("If , , or  deal damage, that damage is boosted %f per tick", CombatKeyword.DamageBoost),
             new Sentence("Take %f damage from #D", CombatKeyword.AddVulnerability),
-            new Sentence("Boost the damage of your Core and @ %f", CombatKeyword.DamageBoost),
+            //new Sentence("Boost the damage of your Core and @ %f", CombatKeyword.DamageBoost),
             new Sentence("Boost your @ damage %f", CombatKeyword.DamageBoost),
             new Sentence("Boost your #D attack damage %f", CombatKeyword.DamageBoost),
             new Sentence("Boost the damage of your @ by %f", CombatKeyword.DamageBoost),
@@ -2268,60 +2199,58 @@
             new Sentence("Boost the damage from @ %f", CombatKeyword.DamageBoost),
             new Sentence("Boost the damage of all your attack %f", CombatKeyword.DamageBoost),
             new Sentence("Boost damage from @ %f", CombatKeyword.DamageBoost),
-            new Sentence("Boost the damage from all kicks %f", CombatKeyword.DamageBoost),
-            new Sentence("Boost your direct and indirect damage %f", CombatKeyword.DamageBoost),
+            //new Sentence("Boost the damage from all kicks %f", CombatKeyword.DamageBoost),
+            //new Sentence("Boost your direct and indirect damage %f", CombatKeyword.DamageBoost),
             new Sentence("Boost #D damage %f", CombatKeyword.DamageBoost),
-            new Sentence("Increase the damage of your ranged attack by %f", CombatKeyword.DamageBoost),
+            //new Sentence("Increase the damage of your ranged attack by %f", CombatKeyword.DamageBoost),
             new Sentence("Increase the damage of your next attack by %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
             new Sentence("Increase the damage of your @ by %f", CombatKeyword.DamageBoost),
-            new Sentence("Increase the damage of your @ by %f", CombatKeyword.DamageBoost),
-            new Sentence("Plus %f Damage", CombatKeyword.DamageBoost),
+            //new Sentence("Plus %f Damage", CombatKeyword.DamageBoost),
             new Sentence("#S Base Damage %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Your #S Base Damage is %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Your #S Base Damage increase %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Base Damage %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Base Damage by %f", CombatKeyword.BaseDamageBoost),
-            new Sentence("Base Damage increase %f", CombatKeyword.BaseDamageBoost),
-            new Sentence("Causing %f Damage", CombatKeyword.DamageBoost),
-            new Sentence("Boost the target's fire damage-over-time by %f", CombatKeyword.DamageBoost),
+            //new Sentence("Base Damage increase %f", CombatKeyword.BaseDamageBoost),
+            //new Sentence("Causing %f Damage", CombatKeyword.DamageBoost),
+            //new Sentence("Boost the target's fire damage-over-time by %f", CombatKeyword.DamageBoost),
             new Sentence("Direct #D Damage %f", CombatKeyword.DamageBoost),
             new Sentence("Universal Indirect Damage %f", CombatKeyword.DealIndirectDamage),
             new Sentence("Boost targets' indirect damage %f", CombatKeyword.DealIndirectDamage),
             new Sentence("Indirect #D Damage %f", CombatKeyword.DealIndirectDamage),
             new Sentence("Indirect #D %f per tick", CombatKeyword.DealIndirectDamage),
-            new Sentence("Damage is %f per tick", CombatKeyword.DamageBoost),
+            //new Sentence("Damage is %f per tick", CombatKeyword.DamageBoost),
             new Sentence("Damage over Time %f per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
             new Sentence("Damage over Time deal %f damage per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
-            new Sentence("Damage over Time deal %f per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
-            new Sentence("Base Damage is %f", CombatKeyword.BaseDamageBoost),
-            new Sentence("Damage is %f", CombatKeyword.DamageBoost),
-            new Sentence("Damage is %f", CombatKeyword.DamageBoost),
+            //new Sentence("Damage over Time deal %f per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
+            //new Sentence("Base Damage is %f", CombatKeyword.BaseDamageBoost),
+            //new Sentence("Damage is %f", CombatKeyword.DamageBoost),
             new Sentence("Damage is boosted %f", CombatKeyword.DamageBoost),
-            new Sentence("Suffer %f damage", CombatKeyword.DamageBoost),
-            new Sentence("Reap %f of the damage to you as healing", CombatKeyword.DrainHealth),
-            new Sentence("Reap %f of the damage done", CombatKeyword.DrainHealth),
+            //new Sentence("Suffer %f damage", CombatKeyword.DamageBoost),
+            //new Sentence("Reap %f of the damage to you as healing", CombatKeyword.DrainHealth),
+            //new Sentence("Reap %f of the damage done", CombatKeyword.DrainHealth),
             new Sentence("Reap %f health", CombatKeyword.DrainHealth),
-            new Sentence("Melee Attackers suffer %f indirect damage", CombatKeyword.ReflectMeleeIndirectDamage),
-            new Sentence("Up to a max of %f", CombatKeyword.MaxOccurence),
-            new Sentence("The reap cap is %f", CombatKeyword.DrainMax),
-            new Sentence("Deal %f damage", CombatKeyword.DamageBoost),
+            //new Sentence("Melee Attackers suffer %f indirect damage", CombatKeyword.ReflectMeleeIndirectDamage),
+            //new Sentence("Up to a max of %f", CombatKeyword.MaxOccurence),
+            //new Sentence("The reap cap is %f", CombatKeyword.DrainMax),
+            //new Sentence("Deal %f damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f direct damage", CombatKeyword.DamageBoost),
-            new Sentence("Deal %f damage to Health", CombatKeyword.DealDirectHealthDamage),
+            //new Sentence("Deal %f damage to Health", CombatKeyword.DealDirectHealthDamage),
             new Sentence("%f direct health damage", CombatKeyword.DealDirectHealthDamage),
             new Sentence("+Up to %f extra damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.RandomDamage }),
             new Sentence("%f random damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.RandomDamage }),
             new Sentence("All attack deal %f damage", CombatKeyword.DamageBoost),
-            new Sentence("Nice attack deal %f damage", CombatKeyword.DamageBoost),
-            new Sentence("Core attack deal %f damage", CombatKeyword.DamageBoost),
-            new Sentence("Deal %f indirect damage", CombatKeyword.DealIndirectDamage),//again
+            //new Sentence("Nice attack deal %f damage", CombatKeyword.DamageBoost),
+            //new Sentence("Core attack deal %f damage", CombatKeyword.DamageBoost),
+            //new Sentence("Deal %f indirect damage", CombatKeyword.DealIndirectDamage),
             new Sentence("Dealing %f damage", CombatKeyword.DamageBoost),
             new Sentence("Cause %f damage", CombatKeyword.DamageBoost),
-            new Sentence("Take %f damage", CombatKeyword.DamageBoost),
+            //new Sentence("Take %f damage", CombatKeyword.DamageBoost),
             new Sentence("Over %f second", CombatKeyword.EffectDuration),
             new Sentence("Lasts %f second", CombatKeyword.EffectDuration),
             new Sentence("For %f second after using ", CombatKeyword.EffectDuration),
             new Sentence("For %f second", CombatKeyword.EffectDuration),
-            new Sentence("Within %f second", CombatKeyword.EffectDuration),
+            //new Sentence("Within %f second", CombatKeyword.EffectDuration),
             new Sentence("(%f second)", CombatKeyword.EffectDuration),
             new Sentence("For %f minute", CombatKeyword.EffectDurationMinute),
             new Sentence("After a %f second delay", CombatKeyword.EffectDelay),
@@ -2331,22 +2260,22 @@
             new Sentence("With each heal", CombatKeyword.EffectRecurrence),
             new Sentence("Remove (up to) %f more Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Reduce Rage by %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
-            new Sentence("Reduce Rage %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
-            new Sentence("Reduce %f more Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
+            //new Sentence("Reduce Rage %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
+            //new Sentence("Reduce %f more Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Reduce the target's Rage by %f", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
             new Sentence("Reduce target's Rage by %f", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
             new Sentence("Generate %f Rage", CombatKeyword.AddRage),
-            new Sentence("Generate %f less Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
-            new Sentence("Lower Rage by %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
-            new Sentence("Lower Rage %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
-            new Sentence("Remove %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
-            new Sentence("Lose %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
-            new Sentence("Deplete %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
-            new Sentence("Generate no Rage", CombatKeyword.ZeroRage),
+            //new Sentence("Generate %f less Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
+            //new Sentence("Lower Rage by %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
+            //new Sentence("Lower Rage %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
+            //new Sentence("Remove %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
+            //new Sentence("Lose %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
+            //new Sentence("Deplete %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
+            //new Sentence("Generate no Rage", CombatKeyword.ZeroRage),
             new Sentence("Raise the target's Max Rage by %f", CombatKeyword.IncreaseMaxRage),
             new Sentence("Raise target's Max Rage by %f", CombatKeyword.IncreaseMaxRage),
             new Sentence("Increase target's Max Rage by%f", CombatKeyword.IncreaseMaxRage),
-            new Sentence("Generate no Taunt", CombatKeyword.ZeroTaunt),
+            //new Sentence("Generate no Taunt", CombatKeyword.ZeroTaunt),
             new Sentence("Power Cost %f", CombatKeyword.AddPowerCost),
             new Sentence("Power Cost is %f", CombatKeyword.AddPowerCost),
             new Sentence("Reduce the Power cost of your @ %f", CombatKeyword.AddPowerCost),
@@ -2357,19 +2286,18 @@
             new Sentence("Armor Regeneration (in-combat) %f", CombatKeyword.AddArmorRegen),
             new Sentence("%f Armor Regeneration", CombatKeyword.AddArmorRegen),
             new Sentence("Recover %f Armor every five second", CombatKeyword.AddArmorRegen),
-            new Sentence("Power Regeneration is %f", CombatKeyword.AddPowerRegen),
+            //new Sentence("Power Regeneration is %f", CombatKeyword.AddPowerRegen),
             new Sentence("Cost %f Power", CombatKeyword.AddPowerCost),
             new Sentence("Regain %f Power", CombatKeyword.AddPowerRegen),
-            new Sentence("The maximum Power restored  increase %f", CombatKeyword.AddPowerCostMax),
+            //new Sentence("The maximum Power restored  increase %f", CombatKeyword.AddPowerCostMax),
             new Sentence("Max Armor %f", CombatKeyword.AddMaxArmor),
             new Sentence("Gain %f Armor", CombatKeyword.AddMaxArmor),
             new Sentence("Increase your Max Health by %f", CombatKeyword.AddMaxHealth),
             new Sentence("Increase your Max Armor by %f", CombatKeyword.AddMaxArmor),
-            new Sentence("Reuse Time %f second", CombatKeyword.AddReuseTimer),
+            //new Sentence("Reuse Time %f second", CombatKeyword.AddReuseTimer),
             new Sentence("Reuse Time is %f second", CombatKeyword.AddReuseTimer),
             new Sentence("Reuse Time is %f sec", CombatKeyword.AddReuseTimer),
-            new Sentence("Reuse Time is %f", CombatKeyword.AddReuseTimer),
-            new Sentence("Reuse Time %f second", CombatKeyword.AddReuseTimer),
+            //new Sentence("Reuse Time is %f", CombatKeyword.AddReuseTimer),
             new Sentence("Hasten current reuse time of @ by %f second", CombatKeyword.AddReuseTimer, SignInterpretation.AlwaysNegative),
             new Sentence("Hasten the current reuse time of @ by %f second", CombatKeyword.AddReuseTimer, SignInterpretation.AlwaysNegative),
             new Sentence("Hasten the current reset time of @ by %f second", CombatKeyword.AddReuseTimer, SignInterpretation.AlwaysNegative),
@@ -2389,8 +2317,8 @@
             new Sentence("%f Taunt", CombatKeyword.AddTaunt),
             new Sentence("When you have %f or less of your Armor left", CombatKeyword.BelowArmor),
             new Sentence("Have less than %f of their Armor", CombatKeyword.BelowArmor),
-            new Sentence("Restore %f Health, Armor, and Power respectively", CombatKeyword.RestoreHealthArmorPower),
-            new Sentence("Restore %f Health, Armor, and Power", CombatKeyword.RestoreHealthArmorPower),
+            //new Sentence("Restore %f Health, Armor, and Power respectively", CombatKeyword.RestoreHealthArmorPower),
+            //new Sentence("Restore %f Health, Armor, and Power", CombatKeyword.RestoreHealthArmorPower),
             new Sentence("%f Health/Armor healing", CombatKeyword.RestoreHealthArmor),
             new Sentence("Heal you for %f Health/Armor", new List<CombatKeyword>() { CombatKeyword.RestoreHealthArmor, CombatKeyword.TargetSelf }),
             new Sentence("Heal you for %f Health", new List<CombatKeyword>() { CombatKeyword.RestoreHealth, CombatKeyword.TargetSelf }),
@@ -2400,44 +2328,44 @@
             new Sentence("Restore %f Health/Armor", CombatKeyword.RestoreHealthArmor),
             new Sentence("Restore %f of your Max Health", CombatKeyword.RestoreMaxHealth),
             new Sentence("Restore %f health", CombatKeyword.RestoreHealth),
-            new Sentence("Healing Abilities %f", CombatKeyword.RestoreHealth),
+            //new Sentence("Healing Abilities %f", CombatKeyword.RestoreHealth),
             new Sentence("Boost the healing of your @ %f", CombatKeyword.RestoreHealth),
             new Sentence("Heal you for %f of your Max Health", CombatKeyword.RestoreMaxHealth),
             new Sentence("Heal all targets for %f health", CombatKeyword.RestoreHealth),
-            new Sentence("You regain %f health", CombatKeyword.RestoreHealth),
+            //new Sentence("You regain %f health", CombatKeyword.RestoreHealth),
             new Sentence("Heal %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Restore %f armor", CombatKeyword.RestoreArmor),
-            new Sentence("You regain %f armor", CombatKeyword.RestoreArmor),
-            new Sentence("Basic attack restore %f Power", CombatKeyword.RestorePower),
+            //new Sentence("You regain %f armor", CombatKeyword.RestoreArmor),
+            //new Sentence("Basic attack restore %f Power", CombatKeyword.RestorePower),
             new Sentence("Restore %f Power", CombatKeyword.RestorePower),
-            new Sentence("Restore %f to you", CombatKeyword.RestoreAny),
-            new Sentence("Recover %f armor", CombatKeyword.RestoreArmor),
+            //new Sentence("Restore %f to you", CombatKeyword.RestoreAny),
+            //new Sentence("Recover %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Recover %f health", CombatKeyword.RestoreHealth),
             new Sentence("Recover %f power", CombatKeyword.RestorePower),
             new Sentence("Restoration %f", CombatKeyword.RestoreHealth),
             new Sentence("You regain %f power", CombatKeyword.RestorePower),
-            new Sentence("Cost no Power to cast", CombatKeyword.ZeroPowerCost),
-            new Sentence("Take %f second to channel", CombatKeyword.AddChannelTime),
+            //new Sentence("Cost no Power to cast", CombatKeyword.ZeroPowerCost),
+            //new Sentence("Take %f second to channel", CombatKeyword.AddChannelTime),
             new Sentence("Boost the healing from your @ %f", CombatKeyword.TargetAbilityBoost),
-            new Sentence("Heal you for %f health", CombatKeyword.RestoreHealth),
+            //new Sentence("Heal you for %f health", CombatKeyword.RestoreHealth),
             new Sentence("Heal you for %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Heal %f health", CombatKeyword.RestoreHealth),
             new Sentence("Healing %f", CombatKeyword.RestoreHealth),
             new Sentence("Heal you %f", CombatKeyword.RestoreHealth),
             new Sentence("Heal %f", CombatKeyword.RestoreHealth),
             new Sentence("Restore %f Body Heat", CombatKeyword.RestoreBodyHeat),
-            new Sentence("Sprint Speed is %f", CombatKeyword.AddSprintSpeed),
+            //new Sentence("Sprint Speed is %f", CombatKeyword.AddSprintSpeed),
             new Sentence("Sprint Speed increase by %f", CombatKeyword.AddSprintSpeed),
             new Sentence("%f Sprint Speed", CombatKeyword.AddSprintSpeed),
             new Sentence("Max Health %f", CombatKeyword.AddMaxHealth),
             new Sentence("Max Health by %f", CombatKeyword.AddMaxHealth),
             new Sentence("%f Max Health", CombatKeyword.AddMaxHealth),
-            new Sentence("Max Armor %f", CombatKeyword.AddMaxArmor),
+            //new Sentence("Max Armor %f", CombatKeyword.AddMaxArmor),
             new Sentence("%f Max Armor", CombatKeyword.AddMaxArmor),
             new Sentence("Have %f Armor", CombatKeyword.AddMaxArmor),
-            new Sentence("To your minions", CombatKeyword.ApplyToNecroPet),
+            //new Sentence("To your minions", CombatKeyword.ApplyToNecroPet),
             new Sentence("Attack Range is %f", CombatKeyword.AddRange),
-            new Sentence("Range is %f meter", CombatKeyword.AddRange),
+            //new Sentence("Range is %f meter", CombatKeyword.AddRange),
             new Sentence("Stun you", CombatKeyword.SelfStun),
             new Sentence("Complete stun immunity", CombatKeyword.StunImmunity),
             new Sentence("Grant immunity to new stun", CombatKeyword.StunImmunity),
@@ -2450,7 +2378,7 @@
             new Sentence("Dispel any Slow or Root", CombatKeyword.RemoveSlowRoot),
             new Sentence("Target is prone to random self-stuns", CombatKeyword.Concussion),
             new Sentence("Stun targets", CombatKeyword.Stun),
-            new Sentence("Stun incorporeal enemies", CombatKeyword.StunIncorporeal),
+            //new Sentence("Stun incorporeal enemies", CombatKeyword.StunIncorporeal),
             new Sentence("Stun", CombatKeyword.Stun),
             new Sentence("Targets are Knock back", CombatKeyword.Knockback),
             new Sentence("Knock back targets", CombatKeyword.Knockback),
@@ -2462,7 +2390,7 @@
             new Sentence("Knock targets backward", CombatKeyword.Knockback),
             new Sentence("Knock them backward", CombatKeyword.Knockback),
             new Sentence("Reset the time on", CombatKeyword.ResetOtherAbilityTimer),
-            new Sentence("Deal %f total damage against Demons", CombatKeyword.DamageBoostAgainstSpecie),
+            //new Sentence("Deal %f total damage against Demons", CombatKeyword.DamageBoostAgainstSpecie),
             new Sentence("Boost targets' mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("#D mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("Grant %f Universal #D Mitigation", CombatKeyword.AddMitigation),
@@ -2473,9 +2401,9 @@
             new Sentence("Target take %f less damage from #D attack", CombatKeyword.AddMitigation),
             new Sentence("Target to take %f less damage from attack", CombatKeyword.AddMitigation),
             new Sentence("Target to take %f less damage from #D attack", CombatKeyword.AddMitigation),
-            new Sentence("Mitigate %f of all damage", CombatKeyword.AddMitigation),
-            new Sentence("Grant your pet %f mitigation versus direct attack", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.ApplyToPet }),
-            new Sentence("Your pet gain %f mitigation versus direct attack", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.ApplyToPet }),
+            //new Sentence("Mitigate %f of all damage", CombatKeyword.AddMitigation),
+            //new Sentence("Grant your pet %f mitigation versus direct attack", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.ApplyToPet }),
+            //new Sentence("Your pet gain %f mitigation versus direct attack", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.ApplyToPet }),
             new Sentence("Up to %f direct damage mitigation", new List<CombatKeyword>() { CombatKeyword.VariableMitigation, CombatKeyword.ApplyToPet }),
             new Sentence("#D Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
             new Sentence("Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
@@ -2489,12 +2417,12 @@
             new Sentence("Mitigate all damage over time by %f per tick", CombatKeyword.AddMitigationIndirect),
             new Sentence("when armor is empty, up to %f when armor is full", new List<CombatKeyword>() { CombatKeyword.VariableMitigation, CombatKeyword.ApplyToPet }),
             new Sentence("Stacks up to %f times", CombatKeyword.MaxStack),
-            new Sentence("Stacks up to %fx", CombatKeyword.MaxStack),
-            new Sentence("All Shield ability", CombatKeyword.ApplyToAbilitiesShield),
-            new Sentence("Grant allies", CombatKeyword.ApplyToAllies),
+            //new Sentence("Stacks up to %fx", CombatKeyword.MaxStack),
+            //new Sentence("All Shield ability", CombatKeyword.ApplyToAbilitiesShield),
+            //new Sentence("Grant allies", CombatKeyword.ApplyToAllies),
             new Sentence("To all allies", CombatKeyword.ApplyToAllies),
             new Sentence("And your allies' attack", CombatKeyword.ApplyToAllies),
-            new Sentence("%f evasion of burst attack", CombatKeyword.AddEvasionBurst),
+            //new Sentence("%f evasion of burst attack", CombatKeyword.AddEvasionBurst),
             new Sentence("Burst Evasion %f", CombatKeyword.AddEvasionBurst),
             new Sentence("%f Burst Evasion", CombatKeyword.AddEvasionBurst),
             new Sentence("Boost Burst Evasion by %f", CombatKeyword.AddEvasionBurst),
@@ -2502,7 +2430,7 @@
             new Sentence("%f Projectile Evasion", CombatKeyword.AddEvasionProjectile),
             new Sentence("Melee Evasion %f", CombatKeyword.AddEvasionMelee),
             new Sentence("%f Melee Evasion", CombatKeyword.AddEvasionMelee),
-            new Sentence("%f mitigation of all physical attack", CombatKeyword.AddMitigationPhysical),
+            //new Sentence("%f mitigation of all physical attack", CombatKeyword.AddMitigationPhysical),
             new Sentence("%f mitigation of any physical damage", CombatKeyword.AddMitigationPhysical),
             new Sentence("%f mitigation against physical attack", CombatKeyword.AddMitigationPhysical),
             new Sentence("%f mitigation from direct attack", CombatKeyword.AddMitigationDirect),
@@ -2525,42 +2453,42 @@
             new Sentence("%f Cold Protection (Direct and Indirect)", CombatKeyword.AddProtectionCold),
             new Sentence("%f Direct and Indirect Cold Protection", CombatKeyword.AddProtectionCold),
             new Sentence("Remove ongoing #D effects (up to %f dmg/sec)", CombatKeyword.RemoveEffects),
-            new Sentence("Chance to Ignore Knockbacks %f", CombatKeyword.AddChanceToIgnoreKnockback),
+            //new Sentence("Chance to Ignore Knockbacks %f", CombatKeyword.AddChanceToIgnoreKnockback),
             new Sentence("%f chance to ignore Stun", CombatKeyword.AddChanceToIgnoreStun),
             new Sentence("Chance to ignore Stun %f", CombatKeyword.AddChanceToIgnoreStun),
-            new Sentence("Targets whose Rage meter are at least %f full", CombatKeyword.AboveRage),
-            new Sentence("Targets whose Rage meter is at least %f full", CombatKeyword.AboveRage),
+            //new Sentence("Targets whose Rage meter are at least %f full", CombatKeyword.AboveRage),
+            //new Sentence("Targets whose Rage meter is at least %f full", CombatKeyword.AboveRage),
             new Sentence("If target's Rage is at least %f full", CombatKeyword.AboveRage),
             new Sentence("If target's Rage meter is at least %f full", CombatKeyword.AboveRage),
-            new Sentence("%f chance to Knock Down", CombatKeyword.AddChanceToKnockdown),
+            //new Sentence("%f chance to Knock Down", CombatKeyword.AddChanceToKnockdown),
             new Sentence("There's a %f chance", CombatKeyword.ApplyWithChance),
             new Sentence("%f chance to", CombatKeyword.ApplyWithChance),
-            new Sentence("When wielding two knives", CombatKeyword.RequireTwoKnives),
+            //new Sentence("When wielding two knives", CombatKeyword.RequireTwoKnives),
             new Sentence("If the target is not focused on you", CombatKeyword.RequireNoAggro),
             new Sentence("If they are not focused on you", CombatKeyword.RequireNoAggro),
-            new Sentence("If target is not focused on you", CombatKeyword.RequireNoAggro),
-            new Sentence("To all melee attackers", CombatKeyword.ApplyToMeleeReflect),
-            new Sentence("The first melee attacker is knocked away", CombatKeyword.ReflectKnockbackOnFirstMelee),
-            new Sentence("When a melee attack deal damage to you", CombatKeyword.ReflectOnMelee),
-            new Sentence("Deal its damage when you are hit burst attack", CombatKeyword.ReflectOnBurst),
-            new Sentence("Deal its damage when you are hit ranged attack", CombatKeyword.ReflectOnRanged),
-            new Sentence("A melee attack deal damage to you", CombatKeyword.ReflectOnMelee),
-            new Sentence("In addition, you can use the ability  %f", CombatKeyword.EnableOtherAbility),
-            new Sentence("In addition, you can use the ability", CombatKeyword.EnableOtherAbility),
-            new Sentence("Chance to consume grass is %f", CombatKeyword.ChanceToConsume),
-            new Sentence("You regenerate %f Health per tick (every 5 second, in and out of combat)", CombatKeyword.AddHealthRegen),
-            new Sentence("Summoned Deer attack", CombatKeyword.ApplyToDeerPet),
-            new Sentence("Summoned Deer", CombatKeyword.ApplyToDeerPet),
+            //new Sentence("If target is not focused on you", CombatKeyword.RequireNoAggro),
+            //new Sentence("To all melee attackers", CombatKeyword.ApplyToMeleeReflect),
+            //new Sentence("The first melee attacker is knocked away", CombatKeyword.ReflectKnockbackOnFirstMelee),
+            //new Sentence("When a melee attack deal damage to you", CombatKeyword.ReflectOnMelee),
+            //new Sentence("Deal its damage when you are hit burst attack", CombatKeyword.ReflectOnBurst),
+            //new Sentence("Deal its damage when you are hit ranged attack", CombatKeyword.ReflectOnRanged),
+            //new Sentence("A melee attack deal damage to you", CombatKeyword.ReflectOnMelee),
+            //new Sentence("In addition, you can use the ability  %f", CombatKeyword.EnableOtherAbility),
+            //new Sentence("In addition, you can use the ability", CombatKeyword.EnableOtherAbility),
+            //new Sentence("Chance to consume grass is %f", CombatKeyword.ChanceToConsume),
+            //new Sentence("You regenerate %f Health per tick (every 5 second, in and out of combat)", CombatKeyword.AddHealthRegen),
+            //new Sentence("Summoned Deer attack", CombatKeyword.ApplyToDeerPet),
+            //new Sentence("Summoned Deer", CombatKeyword.ApplyToDeerPet),
             new Sentence("Have %f health", CombatKeyword.AddMaxHealth),
-            new Sentence("Have %f armor", CombatKeyword.AddMaxArmor),
-            new Sentence("Incubated Spiders", CombatKeyword.ApplyToSpiderPet),
+            //new Sentence("Have %f armor", CombatKeyword.AddMaxArmor),
+            //new Sentence("Incubated Spiders", CombatKeyword.ApplyToSpiderPet),
             new Sentence("Per second", CombatKeyword.Recurring),
             new Sentence("Steal %f health", CombatKeyword.DrainHealth),
-            new Sentence("Steal %f more health", CombatKeyword.DrainHealth),
-            new Sentence("Ability's range is reduced to %fm", CombatKeyword.AddRange, SignInterpretation.Opposite),
-            new Sentence("Chance to consume carrot is %f", CombatKeyword.ChanceToConsume),
-            new Sentence("Lower aggro toward you %f", CombatKeyword.AddTaunt, SignInterpretation.Opposite),
-            new Sentence("Attack range %f meter", CombatKeyword.AddRange),
+            //new Sentence("Steal %f more health", CombatKeyword.DrainHealth),
+            //new Sentence("Ability's range is reduced to %fm", CombatKeyword.AddRange, SignInterpretation.Opposite),
+            //new Sentence("Chance to consume carrot is %f", CombatKeyword.ChanceToConsume),
+            //new Sentence("Lower aggro toward you %f", CombatKeyword.AddTaunt, SignInterpretation.Opposite),
+            //new Sentence("Attack range %f meter", CombatKeyword.AddRange),
             new Sentence("Until you trigger the teleport", CombatKeyword.UntilTrigger),
             new Sentence("Until you Feint", CombatKeyword.UntilTrigger),
             new Sentence("Boost your movement speed by %f", CombatKeyword.AddSprintSpeed),
@@ -2575,7 +2503,7 @@
             new Sentence("Sprint speed %f", CombatKeyword.AddSprintSpeed),
             new Sentence("Sprint speed by %f", CombatKeyword.AddSprintSpeed),
             new Sentence("%f Movement Speed", CombatKeyword.AddSprintSpeed),
-            new Sentence("%f Sprint Speed", CombatKeyword.AddSprintSpeed),
+            //new Sentence("%f Sprint Speed", CombatKeyword.AddSprintSpeed),
             new Sentence("Fly speed is boosted %f", CombatKeyword.AddFlySpeed),
             new Sentence("Fly Speed %f", CombatKeyword.AddFlySpeed),
             new Sentence("Swim Speed %f", CombatKeyword.AddSwimSpeed),
@@ -2585,8 +2513,8 @@
             new Sentence("Melee Accuracy %f", CombatKeyword.AddMeleeAccuracy),
             new Sentence("Accuracy %f", CombatKeyword.AddAccuracy),
             new Sentence("%f Accuracy", CombatKeyword.AddAccuracy),
-            new Sentence("%f projectile evasion", CombatKeyword.AddProjectileEvasion),
-            new Sentence("%f melee evasion", CombatKeyword.AddMeleeEvasion),
+            //new Sentence("%f projectile evasion", CombatKeyword.AddProjectileEvasion),
+            //new Sentence("%f melee evasion", CombatKeyword.AddMeleeEvasion),
             new Sentence("Boost melee evasion %f", CombatKeyword.AddMeleeEvasion),
             new Sentence("Lower targets' Evasion by %f", CombatKeyword.RemoveEvasion),
             new Sentence("%f more chance of missing", CombatKeyword.AddAccuracy, SignInterpretation.Opposite),
@@ -2606,9 +2534,8 @@
             new Sentence("#D damage %f", CombatKeyword.DamageBoost),
             new Sentence("%f health damage", CombatKeyword.DealDirectHealthDamage),
             new Sentence("%f #D health damage", CombatKeyword.DealDirectHealthDamage),
-            new Sentence("%f Direct #D Damage", CombatKeyword.DamageBoost),
+            //new Sentence("%f Direct #D Damage", CombatKeyword.DamageBoost),
             new Sentence("%f Health and Armor damage", CombatKeyword.DamageBoostToHealthAndArmor),
-            new Sentence("%f Direct Damage", CombatKeyword.DamageBoost),
             new Sentence("%f damage", CombatKeyword.DamageBoost),
             new Sentence("Damage %f", CombatKeyword.DamageBoost),
             new Sentence("%f armor damage", CombatKeyword.DealArmorDamage),
@@ -2633,8 +2560,9 @@
             new Sentence("Target suffer a second blast of #D damage", CombatKeyword.SecondBlast),
             new Sentence("Target take a second full blast of delayed #D damage", CombatKeyword.SecondBlast),
             new Sentence("#D damage no longer dispel", CombatKeyword.NoDispel),
-            new Sentence("Ignores mitigation from armor", CombatKeyword.IgnoreArmor),
+            //new Sentence("Ignores mitigation from armor", CombatKeyword.IgnoreArmor),
             new Sentence("%f Body Heat", CombatKeyword.RestoreBodyHeat),
+            new Sentence("Damage is %f", CombatKeyword.DamageBoost),
         };
 
         public static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()

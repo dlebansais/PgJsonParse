@@ -32,9 +32,14 @@
             SignInterpretation = signInterpretation;
         }
 
-        public string Format { get; set; }
-        public List<CombatKeyword> AssociatedKeywordList { get; set; }
-        public SignInterpretation SignInterpretation { get; set; }
-        
+        public string Format { get; }
+        public List<CombatKeyword> AssociatedKeywordList { get; }
+        public SignInterpretation SignInterpretation { get; }
+        public bool IsUsed { get; private set; }
+
+        public void SetUsed()
+        {
+            IsUsed = true;
+        }
     }
 }
