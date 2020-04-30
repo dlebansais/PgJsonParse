@@ -64,6 +64,23 @@
             return Index;
         }
 
+        public static bool IsEqualStrict(NumericValue v1, NumericValue v2)
+        {
+            if (v1.IsValueSet != v2.IsValueSet)
+                return false;
+
+            if (v1.IsValueSet)
+            {
+                if (v1.IsPercent != v2.IsPercent)
+                    return false;
+
+                if (v1.Value != v2.Value)
+                    return false;
+            }
+
+            return true;
+        }
+
         public override string ToString()
         {
             if (IsValueSet)

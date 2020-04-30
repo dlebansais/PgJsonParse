@@ -871,6 +871,8 @@
             Comparer = new LevenshteinAlgorithm();
             int DebugIndex = 0;
             int SkipIndex = 0;
+            List<string[]> StringKeyTable = new List<string[]>();
+            List<List<CombatEffect>[]> PowerKeyToCompleteEffectTable = new List<List<CombatEffect>[]>();
 
             foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
             {
@@ -888,20 +890,146 @@
                 IPgPower ItemPower = Entry.Key;
                 List<IPgEffect> ItemEffectList = Entry.Value;
 
-                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList);
+                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList, out string[] stringKeyArray, out List<CombatEffect>[] modCombatListArray);
+
+                StringKeyTable.Add(stringKeyArray);
+                PowerKeyToCompleteEffectTable.Add(modCombatListArray);
             }
+
+            //WritePowerKeyToCompleteEffectFile(StringKeyTable, PowerKeyToCompleteEffectTable);
+            CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, PowerKeyToCompleteEffectTable);
 
             DisplayParsingResult(powerToEffectTable);
         }
 
-        private Dictionary<string, Dictionary<string, string>> ValidatedMatchTable = new Dictionary<string, Dictionary<string, string>>()
+        private void WritePowerKeyToCompleteEffectFile(List<string[]> stringKeyTable, List<List<CombatEffect>[]> powerKeyToCompleteEffectTable)
         {
-            { "", new Dictionary<string, string>() {
-                { "", "" },
-            }},
-        };
+            using (FileStream fs = new FileStream("PowerKeyToCompleteEffect.cs", FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.WriteLine("namespace PgBuilder");
+                    sw.WriteLine("{");
+                    sw.WriteLine("    using System.Collections.Generic;");
+                    sw.WriteLine("");
+                    sw.WriteLine("    public static class PowerKeyToCompleteEffect");
+                    sw.WriteLine("    {");
+                    sw.WriteLine("        public static Dictionary<string, List<CombatEffect>> Table { get; } = new Dictionary<string, List<CombatEffect>>()");
+                    sw.WriteLine("        {");
 
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPower itemPower, List<IPgEffect> itemEffectList)
+                    Debug.Assert(stringKeyTable.Count == powerKeyToCompleteEffectTable.Count);
+
+                    for (int i = 0; i < stringKeyTable.Count; i++)
+                    {
+                        string[] StringKeyArray = stringKeyTable[i];
+                        List<CombatEffect>[] ModCombatListArray = powerKeyToCompleteEffectTable[i];
+
+                        Debug.Assert(StringKeyArray.Length == ModCombatListArray.Length);
+
+                        for (int j = 0; j < StringKeyArray.Length; j++)
+                        {
+                            string StringKey = StringKeyArray[j];
+                            List<CombatEffect> ModCombatList = ModCombatListArray[j];
+
+                            WritePowerKeyToCompleteEffectLine(sw, StringKey, ModCombatList);
+                        }
+                    }
+
+                    sw.WriteLine("        };");
+                    sw.WriteLine("    }");
+                    sw.WriteLine("}");
+                }
+            }
+        }
+
+        private void WritePowerKeyToCompleteEffectLine(StreamWriter sw, string stringKey, List<CombatEffect> modCombatList)
+        {
+            string CombatEffectListString = string.Empty;
+
+            for (int j = 0; j < modCombatList.Count; j++)
+            {
+                CombatEffect CombatEffect = modCombatList[j];
+
+                if (CombatEffectListString.Length > 0)
+                    CombatEffectListString += ", ";
+
+                string CombatEffectString;
+
+                if (!CombatEffect.Data1.IsValueSet && CombatEffect.DamageType == GameDamageType.None && CombatEffect.CombatSkill == GameCombatSkill.None)
+                    CombatEffectString = $"new CombatEffect(CombatKeyword.{CombatEffect.Keyword})";
+                else
+                {
+                    if (CombatEffect.Data1.IsValueSet)
+                    {
+                        string CreateMethod = CombatEffect.Data1.IsPercent ? "FromDoublePercent" : "FromDouble";
+                        string NumericValueString = $"NumericValue.{CreateMethod}({CombatEffect.Data1.Value.ToString(CultureInfo.InvariantCulture)})";
+
+                        if (CombatEffect.DamageType == GameDamageType.None && CombatEffect.CombatSkill == GameCombatSkill.None)
+                            CombatEffectString = $"new CombatEffect(CombatKeyword.{CombatEffect.Keyword}, {NumericValueString})";
+                        else
+                            CombatEffectString = $"new CombatEffect(CombatKeyword.{CombatEffect.Keyword}, {NumericValueString}, new NumericValue(), (GameDamageType){(int)CombatEffect.DamageType}, GameCombatSkill.{CombatEffect.CombatSkill})";
+                    }
+                    else
+                        CombatEffectString = $"new CombatEffect(CombatKeyword.{CombatEffect.Keyword}, new NumericValue(), new NumericValue(), (GameDamageType){(int)CombatEffect.DamageType}, GameCombatSkill.{CombatEffect.CombatSkill})";
+                }
+
+                CombatEffectListString += CombatEffectString;
+            }
+
+            if (CombatEffectListString.Length == 0)
+                CombatEffectListString = " ";
+            else
+                CombatEffectListString = $" {CombatEffectListString} ";
+
+            string Line = $"            {{ \"{stringKey}\", new List<CombatEffect>() {{{CombatEffectListString}}} }},";
+
+            sw.WriteLine(Line);
+        }
+
+        private void CompareWithPowerKeyToCompleteEffectTable(List<string[]> stringKeyTable, List<List<CombatEffect>[]> powerKeyToCompleteEffectTable)
+        {
+            Debug.Assert(stringKeyTable.Count == powerKeyToCompleteEffectTable.Count);
+
+            for (int i = 0; i < stringKeyTable.Count; i++)
+            {
+                string[] StringKeyArray = stringKeyTable[i];
+                List<CombatEffect>[] ModCombatListArray = powerKeyToCompleteEffectTable[i];
+
+                Debug.Assert(StringKeyArray.Length == ModCombatListArray.Length);
+
+                for (int j = 0; j < StringKeyArray.Length; j++)
+                {
+                    string StringKey = StringKeyArray[j];
+                    List<CombatEffect> ModCombatList = ModCombatListArray[j];
+
+                    CompareWithPowerKeyToCompleteEffectLine(StringKey, ModCombatList);
+                }
+            }
+        }
+
+        private void CompareWithPowerKeyToCompleteEffectLine(string stringKey, List<CombatEffect> modCombatList)
+        {
+            if (!PowerKeyToCompleteEffect.Table.ContainsKey(stringKey))
+            {
+                Debug.WriteLine($"Key missing: {stringKey}");
+                return;
+            }
+
+            if (!CombatEffect.IsEqualStrict(PowerKeyToCompleteEffect.Table[stringKey], modCombatList))
+            {
+                Debug.WriteLine($"Line mistmatch for key {stringKey}");
+            }
+        }
+
+        private string PowerEffectPairKey(IPgPower power, List<IPgEffect> effectList, int tierIndex)
+        {
+            string PowerTierString = (tierIndex + 1).ToString("D03");
+            string Key = $"{power.Key}_{PowerTierString}|{effectList[tierIndex].Key}";
+
+            return Key;
+        }
+
+        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPower itemPower, List<IPgEffect> itemEffectList, out string[] stringKeyArray, out List<CombatEffect>[] modCombatListArray)
         {
             IList<IPgPowerTier> TierEffectList = itemPower.TierEffectList;
 
@@ -914,17 +1042,21 @@
             if (TierEffectList.Count >= 4)
                 ValidationIndex = 2;
 
-            string ValidationKey = $"{TierEffectList[ValidationIndex]}|{itemEffectList[ValidationIndex]}";
-            if (ValidatedMatchTable.ContainsKey(ValidationKey))
-                return;
+            List<CombatKeyword>[] PowerTierKeywordListArray = new List<CombatKeyword>[TierEffectList.Count];
+            List<CombatKeyword>[] EffectKeywordListArray = new List<CombatKeyword>[TierEffectList.Count];
+            modCombatListArray = new List<CombatEffect>[TierEffectList.Count];
+            stringKeyArray = new string[TierEffectList.Count];
 
             int LastTierIndex = TierEffectList.Count - 1;
 
-            AnalyzeMatchingEffects(abilityNameList, nameToKeyword, TierEffectList[LastTierIndex], itemEffectList[LastTierIndex], out List<CombatKeyword> ExtractedPowerTierKeywordList, out List<CombatKeyword> ExtractedEffectKeywordList, true);
+            AnalyzeMatchingEffects(abilityNameList, nameToKeyword, TierEffectList[LastTierIndex], itemEffectList[LastTierIndex], out List<CombatKeyword> ExtractedPowerTierKeywordList, out List<CombatKeyword> ExtractedEffectKeywordList, out List<CombatEffect> ExtracteddModCombatList, true);
+            PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
+            EffectKeywordListArray[LastTierIndex] = ExtractedEffectKeywordList;
+            modCombatListArray[LastTierIndex] = ExtracteddModCombatList;
 
             for (int i = 0; i + 1 < TierEffectList.Count; i++)
             {
-                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, TierEffectList[i], itemEffectList[i], out List<CombatKeyword> ComparedPowerTierKeywordList, out List<CombatKeyword> ComparedEffectKeywordList, false);
+                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, TierEffectList[i], itemEffectList[i], out List<CombatKeyword> ComparedPowerTierKeywordList, out List<CombatKeyword> ComparedEffectKeywordList, out List<CombatEffect> ParsedModCombatList, false);
 
                 bool AllowIncomplete = i < ValidationIndex;
 
@@ -939,14 +1071,17 @@
                     Debug.WriteLine($"Mismatching effect at tier #{i}");
                     return;
                 }
+
+                PowerTierKeywordListArray[i] = ComparedPowerTierKeywordList;
+                EffectKeywordListArray[i] = ComparedEffectKeywordList;
+                modCombatListArray[i] = ParsedModCombatList;
             }
 
-/*
-            Debug.WriteLine($"{{ \"{ValidationKey}\", new Dictionary<string, string>() {{");
-            for (int i = 0; i + 1 < TierEffectList.Count; i++)
-                Debug.WriteLine($"    {{ \"{TierEffectList[i]}\", \"{itemEffectList[i]}\" }},");
-            Debug.WriteLine($"}}}},");
-*/
+            for (int i = 0; i < TierEffectList.Count; i++)
+            {
+                string Key = PowerEffectPairKey(itemPower, itemEffectList, i);
+                stringKeyArray[i] = Key;
+            }
         }
 
         private bool IsSameCombatKeywordList(List<CombatKeyword> list1, List<CombatKeyword> list2, bool allowIncomplete)
@@ -976,9 +1111,10 @@
             return false;
         }
 
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPowerTier powerTier, IPgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, bool displayAnalysisResult)
+        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPowerTier powerTier, IPgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out List<CombatEffect> parsedModCombatList, bool displayAnalysisResult)
         {
             extractedPowerTierKeywordList = new List<CombatKeyword>();
+            parsedModCombatList = new List<CombatEffect>();
 
             IList<IPgPowerEffect> EffectList = powerTier.EffectList;
             Debug.Assert(EffectList.Count == 1);
@@ -1025,6 +1161,8 @@
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");
                 return;
             }
+
+            parsedModCombatList = ModCombatList;
 
 /*
             if (displayAnalysisResult)

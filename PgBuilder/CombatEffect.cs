@@ -97,6 +97,38 @@
         {
             return base.GetHashCode();
         }
+
+        public static bool IsEqualStrict(List<CombatEffect> list1, List<CombatEffect> list2)
+        {
+            if (list1.Count != list2.Count)
+                return false;
+
+            for (int i = 0; i < list1.Count; i++)
+                if (!IsEqualStrict(list1[i], list2[i]))
+                    return false;
+
+            return true;
+        }
+
+        public static bool IsEqualStrict(CombatEffect combatEffect1, CombatEffect combatEffect2)
+        {
+            if (combatEffect1.Keyword != combatEffect2.Keyword)
+                return false;
+
+            if (!NumericValue.IsEqualStrict(combatEffect1.Data1, combatEffect2.Data1))
+                return false;
+
+            if (!NumericValue.IsEqualStrict(combatEffect1.Data2, combatEffect2.Data2))
+                return false;
+
+            if (combatEffect1.DamageType != combatEffect2.DamageType)
+                return false;
+
+            if (combatEffect1.CombatSkill != combatEffect2.CombatSkill)
+                return false;
+
+            return true;
+        }
         #endregion
 
         #region Debugging
