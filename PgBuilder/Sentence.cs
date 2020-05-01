@@ -41,5 +41,20 @@
         {
             IsUsed = true;
         }
+
+        public override string ToString()
+        {
+            string KeywordListString = string.Empty;
+            foreach (CombatKeyword Keyword in AssociatedKeywordList)
+            {
+                if (KeywordListString.Length > 0)
+                    KeywordListString += ", ";
+
+                KeywordListString += Keyword.ToString();
+            }
+
+            string SignInterpretationString = SignInterpretation == SignInterpretation.Normal ? string.Empty : $". Sign: {SignInterpretation}";
+            return $"{Format} -> {KeywordListString}{SignInterpretationString}";
+        }
     }
 }

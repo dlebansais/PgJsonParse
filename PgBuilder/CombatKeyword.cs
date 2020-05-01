@@ -5,6 +5,7 @@
         None,
         Ignore,
         DamageBoost,
+        DamageBoostDouble,
         DealDirectHealthDamage,
         DealIndirectDamage,
         DealArmorDamage,
@@ -180,5 +181,7 @@
         MendBrokenBone,
         ReduceCriticalChance,
         AnotherTrap,
+        AddChannelingTime,
+        Again,
     }
 }

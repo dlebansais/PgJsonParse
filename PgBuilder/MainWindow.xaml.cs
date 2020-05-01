@@ -572,15 +572,18 @@
             { "Bomb attack", new List<AbilityKeyword>() { AbilityKeyword.Bomb } },
             { "All Psi Wave Abilities", new List<AbilityKeyword>() { AbilityKeyword.PsiWave } },
             { "All types of shield Bash", new List<AbilityKeyword>() { AbilityKeyword.Bash } },
+            { "All Shield Bash ability", new List<AbilityKeyword>() { AbilityKeyword.Bash } },
             { "Hammer attack", new List<AbilityKeyword>() { AbilityKeyword.HammerAttack } },
             { "All Druid ability", new List<AbilityKeyword>() { AbilityKeyword.Druid } },
             { "All Staff attack", new List<AbilityKeyword>() { AbilityKeyword.StaffAttack } },
+            { "All Ice Magic ability that hit multiple", new List<AbilityKeyword>() { AbilityKeyword.IceMagicAoE } },
+            { "All Ice Magic attack that hit a single", new List<AbilityKeyword>() { AbilityKeyword.IceMagicSingleTarget } },
             { "All Ice Magic ability", new List<AbilityKeyword>() { AbilityKeyword.IceMagic } },
             { "Knife ability with 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeCut } },
             { "All Knife ability WITHOUT 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
             { "All Knife Fighting attack", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
             { "Bard Songs", new List<AbilityKeyword>() { AbilityKeyword.BardSong } },
-            { "Spider Skill", new List<AbilityKeyword>() { AbilityKeyword.Spider } },
+            //{ "Spider Skill", new List<AbilityKeyword>() { AbilityKeyword.Spider } },
             { "All Major Healing ability targeting you", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
             { "All Bun-Fu moves", new List<AbilityKeyword>() { AbilityKeyword.Rabbit } },
             { "Survival Utility", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility } },
@@ -592,6 +595,8 @@
             { "Stretchy Spine mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_StretchySpine } },
             { "Animal Handling pets", new List<AbilityKeyword>() { AbilityKeyword.StabledPet } },
             { "Allies' Combat Refreshes", new List<AbilityKeyword>() { AbilityKeyword.CombatRefresh } },
+            { "Raised Zombies", new List<AbilityKeyword>() { AbilityKeyword.SummonZombie } },
+            { "Major Heal", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
         };
 
         private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
@@ -617,12 +622,14 @@
             AbilityKeyword.HammerAttack,
             AbilityKeyword.Druid,
             AbilityKeyword.StaffAttack,
+            AbilityKeyword.IceMagicAoE,
+            AbilityKeyword.IceMagicSingleTarget,
             AbilityKeyword.IceMagic,
             AbilityKeyword.KnifeCut,
             AbilityKeyword.KnifeNonCut,
             AbilityKeyword.Knife,
             AbilityKeyword.BardSong,
-            AbilityKeyword.Spider,
+            //AbilityKeyword.Spider,
             AbilityKeyword.SurvivalUtility,
             AbilityKeyword.MajorHeal,
             AbilityKeyword.Rabbit,
@@ -632,6 +639,7 @@
             AbilityKeyword.Mutation_StretchySpine,
             AbilityKeyword.StabledPet,
             AbilityKeyword.CombatRefresh,
+            AbilityKeyword.SummonZombie,
         };
 
         private void GetAbilityNames(out List<string> abilityNameList, out Dictionary<string, List<AbilityKeyword>> nameToKeyword)
@@ -775,15 +783,19 @@
             foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in WideAbilityTable)
             {
                 string Pattern = Entry.Key;
-                string PatternWithAbility = Pattern + " ability";
                 List<AbilityKeyword> KeywordList = Entry.Value;
 
                 foreach (AbilityKeyword Keyword in KeywordList)
                     Debug.Assert(GenericAbilityList.Contains(Keyword));
 
-                Debug.Assert(!nameToKeyword.ContainsKey(PatternWithAbility));
-                nameToKeyword.Add(PatternWithAbility, KeywordList);
-                abilityNameList.Add(PatternWithAbility);
+                if (!Pattern.EndsWith(" ability"))
+                {
+                    string PatternWithAbility = Pattern + " ability";
+
+                    Debug.Assert(!nameToKeyword.ContainsKey(PatternWithAbility));
+                    nameToKeyword.Add(PatternWithAbility, KeywordList);
+                    abilityNameList.Add(PatternWithAbility);
+                }
 
                 Debug.Assert(!nameToKeyword.ContainsKey(Pattern));
                 nameToKeyword.Add(Pattern, KeywordList);
@@ -804,8 +816,9 @@
                     {
                         abilityNameList.RemoveAt(j);
                         abilityNameList.RemoveAt(i);
-                        abilityNameList.Insert(i, SmallName);
                         abilityNameList.Insert(i, LargeName);
+                        abilityNameList.Insert(i + 1, SmallName);
+                        i--;
                         break;
                     }
                 }
@@ -829,12 +842,27 @@
         #endregion
 
         #region Data Analysis, Matching
+        private Dictionary<string, ModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, ModEffect>();
+
         private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
         {
+            foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in PowerKeyToCompleteEffect.AbilityList)
+            {
+                string Key = Entry.Key;
+
+                List<AbilityKeyword> AbilityList = PowerKeyToCompleteEffect.AbilityList[Key];
+                List<CombatEffect> StaticCombatEffectList = PowerKeyToCompleteEffect.StaticCombatEffectList[Key];
+                List<CombatEffect> DynamicCombatEffectList = PowerKeyToCompleteEffect.DynamicCombatEffectList[Key];
+                List<AbilityKeyword> TargetAbilityList = PowerKeyToCompleteEffect.TargetAbilityList[Key];
+
+                ModEffect ModEffect = new ModEffect(AbilityList, StaticCombatEffectList, DynamicCombatEffectList, TargetAbilityList);
+                PowerKeyToCompleteEffectTable.Add(Key, ModEffect);
+            }
+
             int DebugIndex = 0;
             int SkipIndex = 0;
             List<string[]> StringKeyTable = new List<string[]>();
-            List<List<CombatEffect>[]> PowerKeyToCompleteEffectTable = new List<List<CombatEffect>[]>();
+            List<ModEffect[]> LocalPowerKeyToCompleteEffectTable = new List<ModEffect[]>();
 
             foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
             {
@@ -846,55 +874,119 @@
                     continue;
                 }
 
-                //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count}");
                 //Debug.WriteLine("");
+                //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count}");
 
                 IPgPower ItemPower = Entry.Key;
                 List<IPgEffect> ItemEffectList = Entry.Value;
 
-                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList, out string[] stringKeyArray, out List<CombatEffect>[] modCombatListArray);
+                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList, out string[] stringKeyArray, out ModEffect[] ModEffectArray);
 
                 StringKeyTable.Add(stringKeyArray);
-                PowerKeyToCompleteEffectTable.Add(modCombatListArray);
+                LocalPowerKeyToCompleteEffectTable.Add(ModEffectArray);
             }
 
-            //WritePowerKeyToCompleteEffectFile(StringKeyTable, PowerKeyToCompleteEffectTable);
-            CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, PowerKeyToCompleteEffectTable);
+            //WritePowerKeyToCompleteEffectFile(StringKeyTable, LocalPowerKeyToCompleteEffectTable);
+            CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, LocalPowerKeyToCompleteEffectTable);
             CheckAllSentencesUsed();
 
             DisplayParsingResult(powerToEffectTable);
         }
 
-        private void WritePowerKeyToCompleteEffectFile(List<string[]> stringKeyTable, List<List<CombatEffect>[]> powerKeyToCompleteEffectTable)
+        private void WritePowerKeyToCompleteEffectFile(List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
         {
             using (FileStream fs = new FileStream("PowerKeyToCompleteEffect.cs", FileMode.Create, FileAccess.Write))
             {
                 using (StreamWriter sw = new StreamWriter(fs))
                 {
+                    Debug.Assert(stringKeyTable.Count == powerKeyToCompleteEffectTable.Count);
+
                     sw.WriteLine("namespace PgBuilder");
                     sw.WriteLine("{");
                     sw.WriteLine("    using System.Collections.Generic;");
+                    sw.WriteLine("    using PgJsonObjects;");
                     sw.WriteLine("");
                     sw.WriteLine("    public static class PowerKeyToCompleteEffect");
                     sw.WriteLine("    {");
-                    sw.WriteLine("        public static Dictionary<string, List<CombatEffect>> Table { get; } = new Dictionary<string, List<CombatEffect>>()");
+                    sw.WriteLine("        public static Dictionary<string, List<AbilityKeyword>> AbilityList { get; } = new Dictionary<string, List<AbilityKeyword>>()");
                     sw.WriteLine("        {");
-
-                    Debug.Assert(stringKeyTable.Count == powerKeyToCompleteEffectTable.Count);
 
                     for (int i = 0; i < stringKeyTable.Count; i++)
                     {
                         string[] StringKeyArray = stringKeyTable[i];
-                        List<CombatEffect>[] ModCombatListArray = powerKeyToCompleteEffectTable[i];
+                        ModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
 
-                        Debug.Assert(StringKeyArray.Length == ModCombatListArray.Length);
+                        Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
 
                         for (int j = 0; j < StringKeyArray.Length; j++)
                         {
                             string StringKey = StringKeyArray[j];
-                            List<CombatEffect> ModCombatList = ModCombatListArray[j];
+                            ModEffect ModEffect = ModEffectArray[j];
 
-                            WritePowerKeyToCompleteEffectLine(sw, StringKey, ModCombatList);
+                            WritePowerKeyToCompleteEffectAbilityKeywordListLine(sw, StringKey, ModEffect.AbilityList);
+                        }
+                    }
+
+                    sw.WriteLine("        };");
+                    sw.WriteLine("");
+                    sw.WriteLine("        public static Dictionary<string, List<CombatEffect>> StaticCombatEffectList { get; } = new Dictionary<string, List<CombatEffect>>()");
+                    sw.WriteLine("        {");
+
+                    for (int i = 0; i < stringKeyTable.Count; i++)
+                    {
+                        string[] StringKeyArray = stringKeyTable[i];
+                        ModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+
+                        Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+
+                        for (int j = 0; j < StringKeyArray.Length; j++)
+                        {
+                            string StringKey = StringKeyArray[j];
+                            ModEffect ModEffect = ModEffectArray[j];
+
+                            WritePowerKeyToCompleteEffectCombatEffectListLine(sw, StringKey, ModEffect.StaticCombatEffectList);
+                        }
+                    }
+
+                    sw.WriteLine("        };");
+                    sw.WriteLine("");
+                    sw.WriteLine("        public static Dictionary<string, List<CombatEffect>> DynamicCombatEffectList { get; } = new Dictionary<string, List<CombatEffect>>()");
+                    sw.WriteLine("        {");
+
+                    for (int i = 0; i < stringKeyTable.Count; i++)
+                    {
+                        string[] StringKeyArray = stringKeyTable[i];
+                        ModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+
+                        Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+
+                        for (int j = 0; j < StringKeyArray.Length; j++)
+                        {
+                            string StringKey = StringKeyArray[j];
+                            ModEffect ModEffect = ModEffectArray[j];
+
+                            WritePowerKeyToCompleteEffectCombatEffectListLine(sw, StringKey, ModEffect.DynamicCombatEffectList);
+                        }
+                    }
+
+                    sw.WriteLine("        };");
+                    sw.WriteLine("");
+                    sw.WriteLine("        public static Dictionary<string, List<AbilityKeyword>> TargetAbilityList { get; } = new Dictionary<string, List<AbilityKeyword>>()");
+                    sw.WriteLine("        {");
+
+                    for (int i = 0; i < stringKeyTable.Count; i++)
+                    {
+                        string[] StringKeyArray = stringKeyTable[i];
+                        ModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+
+                        Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+
+                        for (int j = 0; j < StringKeyArray.Length; j++)
+                        {
+                            string StringKey = StringKeyArray[j];
+                            ModEffect ModEffect = ModEffectArray[j];
+
+                            WritePowerKeyToCompleteEffectAbilityKeywordListLine(sw, StringKey, ModEffect.TargetAbilityList);
                         }
                     }
 
@@ -905,82 +997,99 @@
             }
         }
 
-        private void WritePowerKeyToCompleteEffectLine(StreamWriter sw, string stringKey, List<CombatEffect> modCombatList)
+        private void WritePowerKeyToCompleteEffectAbilityKeywordListLine(StreamWriter sw, string stringKey, List<AbilityKeyword> abilityList)
+        {
+            string AbilityKeywordListString = AbilityKeywordListToLongString(abilityList);
+
+            sw.WriteLine($"            {{ \"{stringKey}\", new List<AbilityKeyword>() {AbilityKeywordListString} }},");
+        }
+
+        private void WritePowerKeyToCompleteEffectCombatEffectListLine(StreamWriter sw, string stringKey, List<CombatEffect> combatEffectList)
+        {
+            string CombatEffectListString = CombatEffectListToString(combatEffectList);
+
+            sw.WriteLine($"            {{ \"{stringKey}\", new List<CombatEffect>() {CombatEffectListString} }},");
+        }
+
+        private string CombatEffectListToString(List<CombatEffect> combatEffectList)
         {
             string CombatEffectListString = string.Empty;
 
-            for (int j = 0; j < modCombatList.Count; j++)
+            for (int j = 0; j < combatEffectList.Count; j++)
             {
-                CombatEffect CombatEffect = modCombatList[j];
+                CombatEffect CombatEffect = combatEffectList[j];
 
                 if (CombatEffectListString.Length > 0)
                     CombatEffectListString += ", ";
 
-                string CombatEffectString;
-
-                if (!CombatEffect.Data1.IsValueSet && CombatEffect.DamageType == GameDamageType.None && CombatEffect.CombatSkill == GameCombatSkill.None)
-                    CombatEffectString = $"new CombatEffect(CombatKeyword.{CombatEffect.Keyword})";
-                else
-                {
-                    if (CombatEffect.Data1.IsValueSet)
-                    {
-                        string CreateMethod = CombatEffect.Data1.IsPercent ? "FromDoublePercent" : "FromDouble";
-                        string NumericValueString = $"NumericValue.{CreateMethod}({CombatEffect.Data1.Value.ToString(CultureInfo.InvariantCulture)})";
-
-                        if (CombatEffect.DamageType == GameDamageType.None && CombatEffect.CombatSkill == GameCombatSkill.None)
-                            CombatEffectString = $"new CombatEffect(CombatKeyword.{CombatEffect.Keyword}, {NumericValueString})";
-                        else
-                            CombatEffectString = $"new CombatEffect(CombatKeyword.{CombatEffect.Keyword}, {NumericValueString}, new NumericValue(), (GameDamageType){(int)CombatEffect.DamageType}, GameCombatSkill.{CombatEffect.CombatSkill})";
-                    }
-                    else
-                        CombatEffectString = $"new CombatEffect(CombatKeyword.{CombatEffect.Keyword}, new NumericValue(), new NumericValue(), (GameDamageType){(int)CombatEffect.DamageType}, GameCombatSkill.{CombatEffect.CombatSkill})";
-                }
-
-                CombatEffectListString += CombatEffectString;
+                CombatEffectListString += CombatEffectToString(CombatEffect);
             }
 
             if (CombatEffectListString.Length == 0)
-                CombatEffectListString = " ";
+                CombatEffectListString = "{ }";
             else
-                CombatEffectListString = $" {CombatEffectListString} ";
+                CombatEffectListString = $"{{ {CombatEffectListString} }}";
 
-            string Line = $"            {{ \"{stringKey}\", new List<CombatEffect>() {{{CombatEffectListString}}} }},";
-
-            sw.WriteLine(Line);
+            return CombatEffectListString;
         }
 
-        private void CompareWithPowerKeyToCompleteEffectTable(List<string[]> stringKeyTable, List<List<CombatEffect>[]> powerKeyToCompleteEffectTable)
+        private string CombatEffectToString(CombatEffect combatEffect)
+        {
+            string CombatEffectString;
+
+            if (!combatEffect.Data1.IsValueSet && combatEffect.DamageType == GameDamageType.None && combatEffect.CombatSkill == GameCombatSkill.None)
+                CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword})";
+            else
+            {
+                if (combatEffect.Data1.IsValueSet)
+                {
+                    string CreateMethod = combatEffect.Data1.IsPercent ? "FromDoublePercent" : "FromDouble";
+                    string NumericValueString = $"NumericValue.{CreateMethod}({combatEffect.Data1.Value.ToString(CultureInfo.InvariantCulture)})";
+
+                    if (combatEffect.DamageType == GameDamageType.None && combatEffect.CombatSkill == GameCombatSkill.None)
+                        CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword}, {NumericValueString})";
+                    else
+                        CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword}, {NumericValueString}, new NumericValue(), (GameDamageType){(int)combatEffect.DamageType}, GameCombatSkill.{combatEffect.CombatSkill})";
+                }
+                else
+                    CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword}, new NumericValue(), new NumericValue(), (GameDamageType){(int)combatEffect.DamageType}, GameCombatSkill.{combatEffect.CombatSkill})";
+            }
+
+            return CombatEffectString;
+        }
+
+        private void CompareWithPowerKeyToCompleteEffectTable(List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
         {
             Debug.Assert(stringKeyTable.Count == powerKeyToCompleteEffectTable.Count);
 
             for (int i = 0; i < stringKeyTable.Count; i++)
             {
                 string[] StringKeyArray = stringKeyTable[i];
-                List<CombatEffect>[] ModCombatListArray = powerKeyToCompleteEffectTable[i];
+                ModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
 
-                Debug.Assert(StringKeyArray.Length == ModCombatListArray.Length);
+                Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
 
                 for (int j = 0; j < StringKeyArray.Length; j++)
                 {
                     string StringKey = StringKeyArray[j];
-                    List<CombatEffect> ModCombatList = ModCombatListArray[j];
+                    ModEffect ModEffect = ModEffectArray[j];
 
-                    CompareWithPowerKeyToCompleteEffectLine(StringKey, ModCombatList);
+                    CompareWithPowerKeyToCompleteEffectLine(i, StringKey, ModEffect);
                 }
             }
         }
 
-        private void CompareWithPowerKeyToCompleteEffectLine(string stringKey, List<CombatEffect> modCombatList)
+        private void CompareWithPowerKeyToCompleteEffectLine(int index, string stringKey, ModEffect modEffect)
         {
-            if (!PowerKeyToCompleteEffect.Table.ContainsKey(stringKey))
+            if (!PowerKeyToCompleteEffectTable.ContainsKey(stringKey))
             {
-                Debug.WriteLine($"Key missing: {stringKey}");
+                Debug.WriteLine($"Index #{index}, Key missing: {stringKey}");
                 return;
             }
 
-            if (!CombatEffect.IsEqualStrict(PowerKeyToCompleteEffect.Table[stringKey], modCombatList))
+            if (!ModEffect.IsEqualStrict(PowerKeyToCompleteEffectTable[stringKey], modEffect))
             {
-                Debug.WriteLine($"Line mistmatch for key {stringKey}");
+                Debug.WriteLine($"Index #{index}, Line mistmatch for key {stringKey}");
             }
         }
 
@@ -994,7 +1103,8 @@
         private string PowerEffectPairKey(IPgPower power, List<IPgEffect> effectList, int tierIndex)
         {
             string PowerTierString = (tierIndex + 1).ToString("D03");
-            string Key = $"{power.Key}_{PowerTierString}|{effectList[tierIndex].Key}";
+            //string Key = $"{power.Key}_{PowerTierString}|{effectList[tierIndex].Key}";
+            string Key = $"{power.Key}_{PowerTierString}";
 
             return Key;
         }
@@ -1023,7 +1133,7 @@
             }
         }
 
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPower itemPower, List<IPgEffect> itemEffectList, out string[] stringKeyArray, out List<CombatEffect>[] modCombatListArray)
+        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPower itemPower, List<IPgEffect> itemEffectList, out string[] stringKeyArray, out ModEffect[] ModEffectArray)
         {
             IList<IPgPowerTier> TierEffectList = itemPower.TierEffectList;
 
@@ -1038,19 +1148,19 @@
 
             List<CombatKeyword>[] PowerTierKeywordListArray = new List<CombatKeyword>[TierEffectList.Count];
             List<CombatKeyword>[] EffectKeywordListArray = new List<CombatKeyword>[TierEffectList.Count];
-            modCombatListArray = new List<CombatEffect>[TierEffectList.Count];
             stringKeyArray = new string[TierEffectList.Count];
+            ModEffectArray = new ModEffect[TierEffectList.Count];
 
             int LastTierIndex = TierEffectList.Count - 1;
 
-            AnalyzeMatchingEffects(abilityNameList, nameToKeyword, TierEffectList[LastTierIndex], itemEffectList[LastTierIndex], out List<CombatKeyword> ExtractedPowerTierKeywordList, out List<CombatKeyword> ExtractedEffectKeywordList, out List<CombatEffect> ExtracteddModCombatList, true);
+            AnalyzeMatchingEffects(abilityNameList, nameToKeyword, TierEffectList[LastTierIndex], itemEffectList[LastTierIndex], out List<CombatKeyword> ExtractedPowerTierKeywordList, out List<CombatKeyword> ExtractedEffectKeywordList, out ModEffect ExtractedModEffect, true);
             PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
             EffectKeywordListArray[LastTierIndex] = ExtractedEffectKeywordList;
-            modCombatListArray[LastTierIndex] = ExtracteddModCombatList;
+            ModEffectArray[LastTierIndex] = ExtractedModEffect;
 
             for (int i = 0; i + 1 < TierEffectList.Count; i++)
             {
-                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, TierEffectList[i], itemEffectList[i], out List<CombatKeyword> ComparedPowerTierKeywordList, out List<CombatKeyword> ComparedEffectKeywordList, out List<CombatEffect> ParsedModCombatList, false);
+                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, TierEffectList[i], itemEffectList[i], out List<CombatKeyword> ComparedPowerTierKeywordList, out List<CombatKeyword> ComparedEffectKeywordList, out ModEffect ParsedModEffect, false);
 
                 bool AllowIncomplete = i < ValidationIndex;
 
@@ -1068,7 +1178,7 @@
 
                 PowerTierKeywordListArray[i] = ComparedPowerTierKeywordList;
                 EffectKeywordListArray[i] = ComparedEffectKeywordList;
-                modCombatListArray[i] = ParsedModCombatList;
+                ModEffectArray[i] = ParsedModEffect;
             }
 
             for (int i = 0; i < TierEffectList.Count; i++)
@@ -1102,10 +1212,9 @@
             return false;
         }
 
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPowerTier powerTier, IPgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out List<CombatEffect> parsedModCombatList, bool displayAnalysisResult)
+        private bool AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPowerTier powerTier, IPgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out ModEffect modEffect, bool displayAnalysisResult)
         {
-            extractedPowerTierKeywordList = new List<CombatKeyword>();
-            parsedModCombatList = new List<CombatEffect>();
+            modEffect = null;
 
             IList<IPgPowerEffect> EffectList = powerTier.EffectList;
             Debug.Assert(EffectList.Count == 1);
@@ -1124,12 +1233,12 @@
             AnalyzeText(abilityNameList, nameToKeyword, EffectText, IsMod, out List<AbilityKeyword> EffectAbilityList, out List<CombatEffect> EffectCombatList, out List<AbilityKeyword> EffectTargetAbilityList);
 
             string ParsedEffectString = CombatEffectListToString(EffectCombatList, out extractedEffectKeywordList);
-            string ParsedEffectTargetAbilityList = AbilityKeywordListToString(EffectTargetAbilityList);
-            string ParsedAbilityList = AbilityKeywordListToString(ModAbilityList);
+            string ParsedEffectTargetAbilityList = AbilityKeywordListToShortString(EffectTargetAbilityList);
+            string ParsedAbilityList = AbilityKeywordListToShortString(ModAbilityList);
             string ParsedPowerString = CombatEffectListToString(ModCombatList, out extractedPowerTierKeywordList);
-            string ParsedModTargetAbilityList = AbilityKeywordListToString(ModTargetAbilityList);
+            string ParsedModTargetAbilityList = AbilityKeywordListToShortString(ModTargetAbilityList);
 
-            bool IsSameTarget = IsSameAbilityKeywordList(ModTargetAbilityList, EffectTargetAbilityList);
+            bool IsSameTarget = ModEffect.IsSameAbilityKeywordList(ModTargetAbilityList, EffectTargetAbilityList);
             if (!IsSameTarget)
             {
                 Debug.WriteLine("");
@@ -1138,10 +1247,10 @@
                 Debug.WriteLine($"Parsed as: {ParsedEffectString}, Target: {ParsedEffectTargetAbilityList}");
                 Debug.WriteLine($"    Power: {powerSimpleEffect.Description}");
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");
-                return;
+                return false;
             }
 
-            bool IsContained = CombatEffect.Contains(ModCombatList, EffectCombatList);
+            bool IsContained = CombatEffect.Contains(ModCombatList, EffectCombatList, out List<CombatEffect> StaticCombatEffectList, out List<CombatEffect> DynamicCombatEffectList);
             if (!IsContained)
             {
                 Debug.WriteLine("");
@@ -1150,21 +1259,20 @@
                 Debug.WriteLine($"Parsed as: {ParsedEffectString}, Target: {ParsedEffectTargetAbilityList}");
                 Debug.WriteLine($"    Power: {powerSimpleEffect.Description}");
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");
-                return;
+                return false;
             }
 
-            parsedModCombatList = ModCombatList;
-
-/*
             if (displayAnalysisResult)
             {
-                Debug.WriteLine("");
+                /*Debug.WriteLine("");
                 Debug.WriteLine($"   Effect: {effect.Desc}");
                 Debug.WriteLine($"Parsed as: {ParsedEffectString}, Target: {ParsedEffectTargetAbilityList}");
                 Debug.WriteLine($"    Power: {powerSimpleEffect.Description}");
-                Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");
+                Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");*/
             }
-*/
+
+            modEffect = new ModEffect(ModAbilityList, StaticCombatEffectList, DynamicCombatEffectList, ModTargetAbilityList);
+            return true;
         }
 
         private void HackEffectText(ref string modText, ref string effectText)
@@ -1223,19 +1331,27 @@
             effectText = effectText.Replace(oldText, newText);
         }
 
-        private bool IsSameAbilityKeywordList(List<AbilityKeyword> list1, List<AbilityKeyword> list2)
+        private string AbilityKeywordListToLongString(List<AbilityKeyword> list)
         {
-            if (list1.Count != list2.Count)
-                return false;
+            string Result = string.Empty;
 
-            for (int i = 0; i < list1.Count; i++)
-                if (list1[i] != list2[i])
-                    return false;
+            foreach (AbilityKeyword Keyword in list)
+            {
+                if (Result.Length > 0)
+                    Result += ", ";
 
-            return true;
+                Result += $"AbilityKeyword.{Keyword}";
+            }
+
+            if (Result.Length == 0)
+                Result = "{ }";
+            else
+                Result = $"{{ {Result} }}";
+
+            return Result;
         }
 
-        private string AbilityKeywordListToString(List<AbilityKeyword> list)
+        private string AbilityKeywordListToShortString(List<AbilityKeyword> list)
         {
             string Result = string.Empty;
 
@@ -1341,6 +1457,10 @@
 
             if (ExtractedTable.Count > 0)
             {
+                int SeparatingIndex = text.IndexOf("boost your");
+                if (SeparatingIndex < 0)
+                    SeparatingIndex = text.Length;
+
                 List<string> KeyList = new List<string>();
                 int LastBestIndex = -1;
                 bool IsFirstAbilityGeneric = false;
@@ -1364,7 +1484,7 @@
                         IsFirstAbilityGeneric = IsAbilityGeneric;
                     else
                     {
-                        if (limitParsing && BestIndex > LastBestIndex + 28)
+                        if (limitParsing && (BestIndex > LastBestIndex + 28 || BestIndex > SeparatingIndex))
                             break;
                         if (IsAbilityGeneric != IsFirstAbilityGeneric)
                             break;
@@ -1434,6 +1554,7 @@
             ReplaceCaseInsensitive(ref text, "suffers ", "suffer ");
             ReplaceCaseInsensitive(ref text, "triggers ", "trigger ");
             ReplaceCaseInsensitive(ref text, "makes ", "make ");
+            ReplaceCaseInsensitive(ref text, "debuffs ", "debuff ");
             ReplaceCaseInsensitive(ref text, "buffs ", "buff ");
             ReplaceCaseInsensitive(ref text, "repairs ", "repair ");
             ReplaceCaseInsensitive(ref text, "ignores ", "ignore ");
@@ -1458,7 +1579,7 @@
             ReplaceCaseInsensitive(ref text, " it's ", " it is ");
             ReplaceCaseInsensitive(ref text, "+Up ", "Add up ");
             ReplaceCaseInsensitive(ref text, " direct-damage ", " direct damage ");
-            ReplaceCaseInsensitive(ref text, " abilities", " ability ");
+            ReplaceCaseInsensitive(ref text, " abilities ", " ability ");
         }
 
         private void ReplaceCaseInsensitive(ref string text, string searchPattern, string replacementPattern)
@@ -1507,7 +1628,7 @@
 
             int Min = int.Parse(MinString);
             int Max = int.Parse(MaxString);
-            int Interval = Max - Min + 1;
+            int Interval = Min <= 1 ? Max : (Max - Min);
 
             string RandomlyDetermined = "(randomly determined)";
             text = $"{Prolog} Add up to {Interval} {Epilog}";
@@ -1712,7 +1833,7 @@
             if (!IsExtracted)
                 return;
 
-            if (parsedIndex < 0 || NewParsedIndex < parsedIndex)
+            if (parsedIndex < 0 || NewParsedIndex + 1 < parsedIndex)
             {
                 modifiedText = NewText;
                 extractedKeywordList.Clear();
@@ -1954,7 +2075,7 @@
 
                         if (FoundIndex >= 0)
                             if (BestKeyIndex > FoundIndex)
-                                if (BestFoundIndex == -1 || FoundIndex < BestFoundIndex + 15)
+                                if (BestFoundIndex == -1 || FoundIndex < BestFoundIndex + 17)
                                 {
                                     BestKeyIndex = FoundIndex;
                                     BestKey = Entry.Key;
@@ -2070,7 +2191,7 @@
             new Sentence("Target ignore you", CombatKeyword.Ignored),
             new Sentence("Cause the target to ignore you", CombatKeyword.Ignored),
             new Sentence("Uniformly diminishes all targets' entire aggro lists by %f", CombatKeyword.ChangeTaunt),
-            //new Sentence("This absorbed damage is added to your next @ attack at a %f rate", CombatKeyword.ReturnDamage),
+            new Sentence("This absorbed damage is added to your next @ attack at a %f rate", CombatKeyword.ReturnDamage),
             new Sentence("This absorbed damage is added to your next @", CombatKeyword.ReturnDamage),
             new Sentence("Boost your next attack %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
             new Sentence("Future @ attack damage %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
@@ -2081,6 +2202,7 @@
             new Sentence("(Randomly determined)", CombatKeyword.RandomDamage),
             new Sentence("(Random)", CombatKeyword.RandomDamage),
             new Sentence("If it is a #D attack", CombatKeyword.IfDamageType),
+            //new Sentence("If it's a #D attack", CombatKeyword.IfDamageType),
             new Sentence("Briefly terrifies the target", CombatKeyword.Fear),
             new Sentence("Cause all sentient targets to flee in terror", CombatKeyword.FearSentient),
             new Sentence("Trigger the target's Vulnerability", CombatKeyword.SetVulnerable),
@@ -2103,7 +2225,10 @@
             new Sentence("Give your pet", CombatKeyword.ApplyToPet),
             new Sentence("Grant your pet", CombatKeyword.ApplyToPet),
             new Sentence("To your pet", CombatKeyword.ApplyToPet),
+            new Sentence("To your undead", CombatKeyword.ApplyToPet),
             new Sentence("To the same target", CombatKeyword.SameTarget),
+            new Sentence("To you and your allies", CombatKeyword.ApplyToAllies),
+            new Sentence("To you and nearby allies", CombatKeyword.ApplyToAllies),
             new Sentence("To YOU", CombatKeyword.TargetSelf),
             new Sentence("If target is covered", CombatKeyword.TargetUnderEffect),
             new Sentence("To targets that are covered", CombatKeyword.TargetUnderEffect),
@@ -2147,6 +2272,7 @@
             new Sentence("Turning half of that into Trauma damage", CombatKeyword.ExtraTraumaDamage),
             //new Sentence("Pet's #D attack deal %f damage", CombatKeyword.AnimalPetAttackBoost),
             //new Sentence("Pet's #D attack %f damage", CombatKeyword.AnimalPetAttackBoost),
+            new Sentence("#D attack Deal %f damage", CombatKeyword.DamageBoost),
             new Sentence("Rage attack deal %f damage", CombatKeyword.AnimalPetRageAttackBoost),
             new Sentence("Pet's Rage Attack Damage %f", CombatKeyword.AnimalPetRageAttackBoost),
             new Sentence("Deal up to %f damage", CombatKeyword.DamageBoost),
@@ -2156,6 +2282,7 @@
             new Sentence("Deal %f immediate #D damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f #D damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f damage", CombatKeyword.DamageBoost),
+            new Sentence("Plus %f more damage", CombatKeyword.DamageBoost),
             //new Sentence("Deal %f fire damage to you", CombatKeyword.SelfImmolation),
             new Sentence("Pet take %f #D damage", CombatKeyword.PetImmolation),
             new Sentence("Pet bleed for %f #D damage", CombatKeyword.PetImmolation),
@@ -2192,8 +2319,11 @@
             //new Sentence("If , , or  deal damage, that damage is boosted %f per tick", CombatKeyword.DamageBoost),
             new Sentence("Take %f damage from #D", CombatKeyword.AddVulnerability),
             //new Sentence("Boost the damage of your Core and @ %f", CombatKeyword.DamageBoost),
+            new Sentence("Boost your #S damage %f", CombatKeyword.DamageBoost),
             new Sentence("Boost your @ damage %f", CombatKeyword.DamageBoost),
             new Sentence("Boost your #D attack damage %f", CombatKeyword.DamageBoost),
+            new Sentence("Boost #D attack damage %f", CombatKeyword.DamageBoost),
+            new Sentence("Boost #D attack %f", CombatKeyword.DamageBoost),
             new Sentence("Boost the damage of your @ by %f", CombatKeyword.DamageBoost),
             new Sentence("Boost the damage of your @ %f", CombatKeyword.DamageBoost),
             new Sentence("Boost the damage from @ %f", CombatKeyword.DamageBoost),
@@ -2206,11 +2336,13 @@
             new Sentence("Increase the damage of your next attack by %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
             new Sentence("Increase the damage of your @ by %f", CombatKeyword.DamageBoost),
             //new Sentence("Plus %f Damage", CombatKeyword.DamageBoost),
+            new Sentence("#S Skill Base Damage %f", CombatKeyword.BaseDamageBoost),
+            new Sentence("#S Base Damage by %f", CombatKeyword.BaseDamageBoost),
             new Sentence("#S Base Damage %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Your #S Base Damage is %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Your #S Base Damage increase %f", CombatKeyword.BaseDamageBoost),
-            new Sentence("Base Damage %f", CombatKeyword.BaseDamageBoost),
-            new Sentence("Base Damage by %f", CombatKeyword.BaseDamageBoost),
+            //new Sentence("Base Damage %f", CombatKeyword.BaseDamageBoost),
+            //new Sentence("Base Damage by %f", CombatKeyword.BaseDamageBoost),
             //new Sentence("Base Damage increase %f", CombatKeyword.BaseDamageBoost),
             //new Sentence("Causing %f Damage", CombatKeyword.DamageBoost),
             //new Sentence("Boost the target's fire damage-over-time by %f", CombatKeyword.DamageBoost),
@@ -2264,6 +2396,7 @@
             //new Sentence("Reduce %f more Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Reduce the target's Rage by %f", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
             new Sentence("Reduce target's Rage by %f", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
+            new Sentence("reduce targets' Rage by %f", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
             new Sentence("Generate %f Rage", CombatKeyword.AddRage),
             //new Sentence("Generate %f less Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             //new Sentence("Lower Rage by %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
@@ -2434,6 +2567,7 @@
             new Sentence("%f mitigation of any physical damage", CombatKeyword.AddMitigationPhysical),
             new Sentence("%f mitigation against physical attack", CombatKeyword.AddMitigationPhysical),
             new Sentence("%f mitigation from direct attack", CombatKeyword.AddMitigationDirect),
+            new Sentence("%f mitigation vs direct attack", CombatKeyword.AddMitigationDirect),
             new Sentence("%f mitigation against all attack", CombatKeyword.AddMitigation),
             new Sentence("%f Mitigation from all attack", CombatKeyword.AddMitigation),
             new Sentence("%f Mitigation from attack", CombatKeyword.AddMitigation),
@@ -2447,7 +2581,9 @@
             new Sentence("You take %f damage from #D attack", CombatKeyword.AddMitigation),
             new Sentence("%f #D mitigation", CombatKeyword.AddMitigation),
             new Sentence("Increase your #D Mitigation %f", CombatKeyword.AddMitigation),
+            new Sentence("Debuff their mitigation %f", CombatKeyword.AddMitigation, SignInterpretation.AlwaysNegative),
             new Sentence("%f Damage Mitigation", CombatKeyword.AddMitigation),
+            new Sentence("%f Direct Mitigation", CombatKeyword.AddMitigationDirect),
             new Sentence("Mitigate %f of all Slashing/Crushing/Piercing damage", CombatKeyword.AddMitigationPhysical),
             new Sentence("Mitigate %f of all physical damage", CombatKeyword.AddMitigationPhysical),
             new Sentence("%f Cold Protection (Direct and Indirect)", CombatKeyword.AddProtectionCold),
@@ -2560,9 +2696,13 @@
             new Sentence("Target suffer a second blast of #D damage", CombatKeyword.SecondBlast),
             new Sentence("Target take a second full blast of delayed #D damage", CombatKeyword.SecondBlast),
             new Sentence("#D damage no longer dispel", CombatKeyword.NoDispel),
-            //new Sentence("Ignores mitigation from armor", CombatKeyword.IgnoreArmor),
+            new Sentence("Ignore mitigation from armor", CombatKeyword.IgnoreArmor),
             new Sentence("%f Body Heat", CombatKeyword.RestoreBodyHeat),
             new Sentence("Damage is %f", CombatKeyword.DamageBoost),
+            new Sentence("Deal double damage", CombatKeyword.DamageBoostDouble),
+            new Sentence("Channeling time is %f second", CombatKeyword.AddChannelingTime),
+            new Sentence("Summons figment", CombatKeyword.AnotherTrap),
+            new Sentence("Reduce it by %f more", CombatKeyword.Again, SignInterpretation.AlwaysNegative),
         };
 
         public static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
