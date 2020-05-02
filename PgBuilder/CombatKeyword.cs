@@ -53,6 +53,7 @@
         AddPowerCost,
         AddPowerCostMax,
         AddHealthRegen,
+        AddArmor,
         AddArmorRegen,
         AddPowerRegen,
         AddMaxHealth,
@@ -183,5 +184,7 @@
         AnotherTrap,
         AddChannelingTime,
         Again,
+        OnEvade,
+        OnEvadeMelee,
     }
 }

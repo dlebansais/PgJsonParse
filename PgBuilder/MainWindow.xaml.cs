@@ -24,33 +24,52 @@
             InitializeComponent();
             DataContext = this;
 
-            LoadCachedData();
+            InitPowerKeyToCompleteEffectTable();
+            LoadCachedData(out int Version);
             FillSkillList();
             FillGearSlotList();
             FillAbilitySlotList();
-            AnalyzeCachedData();
+            AnalyzeCachedData(Version);
 
             LoadSettings();
 
             Closed += OnClosed;
         }
+
+        private void InitPowerKeyToCompleteEffectTable()
+        {
+            foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in PowerKeyToCompleteEffect.AbilityList)
+            {
+                string Key = Entry.Key;
+
+                List<AbilityKeyword> AbilityList = PowerKeyToCompleteEffect.AbilityList[Key];
+                List<CombatEffect> StaticCombatEffectList = PowerKeyToCompleteEffect.StaticCombatEffectList[Key];
+                List<CombatEffect> DynamicCombatEffectList = PowerKeyToCompleteEffect.DynamicCombatEffectList[Key];
+                List<AbilityKeyword> TargetAbilityList = PowerKeyToCompleteEffect.TargetAbilityList[Key];
+
+                ModEffect ModEffect = new ModEffect(AbilityList, StaticCombatEffectList, DynamicCombatEffectList, TargetAbilityList);
+                PowerKeyToCompleteEffectTable.Add(Key, ModEffect);
+            }
+        }
+
+        private Dictionary<string, ModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, ModEffect>();
         #endregion
 
         #region Data Load
-        public void LoadCachedData()
+        public void LoadCachedData(out int version)
         {
             string UserRootFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string ApplicationFolder = Path.Combine(UserRootFolder, "PgJsonParse");
             string VersionCacheFolder = Path.Combine(ApplicationFolder, "Versions");
 
-            int Version = 0;
+            version = 0;
             string[] VersionFolders = Directory.GetDirectories(VersionCacheFolder);
             foreach (string Item in VersionFolders)
-                if (int.TryParse(Path.GetFileName(Item), out int VersionValue) && Version < VersionValue)
-                    Version = VersionValue;
+                if (int.TryParse(Path.GetFileName(Item), out int VersionValue) && version < VersionValue)
+                    version = VersionValue;
 
             string IconCacheFolder = Path.Combine(ApplicationFolder, "Shared Icons");
-            string VersionFolder = Path.Combine(VersionCacheFolder, Version.ToString());
+            string VersionFolder = Path.Combine(VersionCacheFolder, version.ToString());
             IconFolder = IconCacheFolder;
 
             LoadCachedData(VersionFolder, IconFolder);
@@ -163,15 +182,17 @@
         #endregion
 
         #region Data Analysis
-        private void AnalyzeCachedData()
+        private void AnalyzeCachedData(int version)
         {
             FilterValidPowers(out _, out List<IPgPower> PowerSimpleEffectList);
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> AllEffectTable);
             FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable, out List<IPgPower> UnmatchedPowerList);
             GetAbilityNames(out List<string> AbilityNameList, out Dictionary<string, List<AbilityKeyword>> NameToKeyword);
 
-            AnalyzeMatchingEffects(AbilityNameList, NameToKeyword, PowerToEffectTable);
-            //AnalyzeRemainingEffects(AbilityNameList, UnmatchedPowerList);
+            AnalyzeMatchingEffects(version, AbilityNameList, NameToKeyword, PowerToEffectTable);
+            AnalyzeRemainingEffects(version, AbilityNameList, NameToKeyword, UnmatchedPowerList);
+
+            CheckAllSentencesUsed();
         }
 
         private void FilterValidPowers(out List<IPgPower> powerAttributeList, out List<IPgPower> powerSimpleEffectList)
@@ -842,22 +863,14 @@
         #endregion
 
         #region Data Analysis, Matching
-        private Dictionary<string, ModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, ModEffect>();
+        bool WriteFile = false;
+        bool CompareTable = false;
+        const int AnalyzedVersionMatching = 334;
 
-        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
+        private void AnalyzeMatchingEffects(int version, List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
         {
-            foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in PowerKeyToCompleteEffect.AbilityList)
-            {
-                string Key = Entry.Key;
-
-                List<AbilityKeyword> AbilityList = PowerKeyToCompleteEffect.AbilityList[Key];
-                List<CombatEffect> StaticCombatEffectList = PowerKeyToCompleteEffect.StaticCombatEffectList[Key];
-                List<CombatEffect> DynamicCombatEffectList = PowerKeyToCompleteEffect.DynamicCombatEffectList[Key];
-                List<AbilityKeyword> TargetAbilityList = PowerKeyToCompleteEffect.TargetAbilityList[Key];
-
-                ModEffect ModEffect = new ModEffect(AbilityList, StaticCombatEffectList, DynamicCombatEffectList, TargetAbilityList);
-                PowerKeyToCompleteEffectTable.Add(Key, ModEffect);
-            }
+            if (version <= AnalyzedVersionMatching)
+                return;
 
             int DebugIndex = 0;
             int SkipIndex = 0;
@@ -875,7 +888,7 @@
                 }
 
                 //Debug.WriteLine("");
-                //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count}");
+                //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count} (Matching)");
 
                 IPgPower ItemPower = Entry.Key;
                 List<IPgEffect> ItemEffectList = Entry.Value;
@@ -886,9 +899,10 @@
                 LocalPowerKeyToCompleteEffectTable.Add(ModEffectArray);
             }
 
-            //WritePowerKeyToCompleteEffectFile(StringKeyTable, LocalPowerKeyToCompleteEffectTable);
-            CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, LocalPowerKeyToCompleteEffectTable);
-            CheckAllSentencesUsed();
+            if (WriteFile)
+                WritePowerKeyToCompleteEffectFile(StringKeyTable, LocalPowerKeyToCompleteEffectTable);
+            if (CompareTable)
+                CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, LocalPowerKeyToCompleteEffectTable);
 
             DisplayParsingResult(powerToEffectTable);
         }
@@ -1100,10 +1114,9 @@
                     Debug.WriteLine($"Sentence '{Item.Format}' not used");
         }
 
-        private string PowerEffectPairKey(IPgPower power, List<IPgEffect> effectList, int tierIndex)
+        private string PowerEffectPairKey(IPgPower power, int tierIndex)
         {
             string PowerTierString = (tierIndex + 1).ToString("D03");
-            //string Key = $"{power.Key}_{PowerTierString}|{effectList[tierIndex].Key}";
             string Key = $"{power.Key}_{PowerTierString}";
 
             return Key;
@@ -1183,7 +1196,7 @@
 
             for (int i = 0; i < TierEffectList.Count; i++)
             {
-                string Key = PowerEffectPairKey(itemPower, itemEffectList, i);
+                string Key = PowerEffectPairKey(itemPower, i);
                 stringKeyArray[i] = Key;
             }
         }
@@ -2175,6 +2188,166 @@
                 }
             }
         }
+        #endregion
+
+        #region Data Analysis, Remaining
+        const int AnalyzedVersionRemaining = 333;
+
+        private void AnalyzeRemainingEffects(int version, List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<IPgPower> powerSimpleEffectList)
+        {
+            if (version <= AnalyzedVersionRemaining)
+                return;
+
+            int DebugIndex = 0;
+            int SkipIndex = 24;
+            List<string[]> StringKeyTable = new List<string[]>();
+            List<ModEffect[]> LocalPowerKeyToCompleteEffectTable = new List<ModEffect[]>();
+
+            foreach (IPgPower ItemPower in powerSimpleEffectList)
+            {
+                DebugIndex++;
+
+                if (SkipIndex > 0)
+                {
+                    SkipIndex--;
+                    continue;
+                }
+
+                Debug.WriteLine("");
+                Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerSimpleEffectList.Count} (Remaining)");
+
+                AnalyzeRemainingEffects(abilityNameList, nameToKeyword, ItemPower, out string[] stringKeyArray, out ModEffect[] ModEffectArray);
+
+                StringKeyTable.Add(stringKeyArray);
+                LocalPowerKeyToCompleteEffectTable.Add(ModEffectArray);
+            }
+        }
+
+        private void AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPower itemPower, out string[] stringKeyArray, out ModEffect[] ModEffectArray)
+        {
+            IList<IPgPowerTier> TierEffectList = itemPower.TierEffectList;
+
+            Debug.Assert(TierEffectList.Count > 0);
+
+            int ValidationIndex = 0;
+            if (TierEffectList.Count >= 2)
+                ValidationIndex = 1;
+            if (TierEffectList.Count >= 4)
+                ValidationIndex = 2;
+
+            List<CombatKeyword>[] PowerTierKeywordListArray = new List<CombatKeyword>[TierEffectList.Count];
+            stringKeyArray = new string[TierEffectList.Count];
+            ModEffectArray = new ModEffect[TierEffectList.Count];
+
+            int LastTierIndex = TierEffectList.Count - 1;
+
+            AnalyzeRemainingEffects(abilityNameList, nameToKeyword, TierEffectList[LastTierIndex], out List<CombatKeyword> ExtractedPowerTierKeywordList, out ModEffect ExtractedModEffect, true);
+            PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
+            ModEffectArray[LastTierIndex] = ExtractedModEffect;
+
+            for (int i = 0; i + 1 < TierEffectList.Count; i++)
+            {
+                AnalyzeRemainingEffects(abilityNameList, nameToKeyword, TierEffectList[i], out List<CombatKeyword> ComparedPowerTierKeywordList, out ModEffect ParsedModEffect, false);
+
+                bool AllowIncomplete = i < ValidationIndex;
+
+                if (!IsSameCombatKeywordList(ExtractedPowerTierKeywordList, ComparedPowerTierKeywordList, AllowIncomplete))
+                {
+                    Debug.WriteLine($"Mismatching power at tier #{i}");
+                    return;
+                }
+
+                PowerTierKeywordListArray[i] = ComparedPowerTierKeywordList;
+                ModEffectArray[i] = ParsedModEffect;
+            }
+
+            for (int i = 0; i < TierEffectList.Count; i++)
+            {
+                string Key = PowerEffectPairKey(itemPower, i);
+                stringKeyArray[i] = Key;
+            }
+        }
+
+        private bool AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPowerTier powerTier, out List<CombatKeyword> extractedPowerTierKeywordList, out ModEffect modEffect, bool displayAnalysisResult)
+        {
+            modEffect = null;
+
+            IList<IPgPowerEffect> EffectList = powerTier.EffectList;
+            Debug.Assert(EffectList.Count == 1);
+            IPgPowerSimpleEffect powerSimpleEffect = (IPgPowerSimpleEffect)EffectList[0];
+
+            string ModText = powerSimpleEffect.Description;
+
+            //HackEffectText(ref ModText, ref EffectText);
+
+            AnalyzeText(abilityNameList, nameToKeyword, ModText, true, out List<AbilityKeyword> ModAbilityList, out List<CombatEffect> ModCombatList, out List<AbilityKeyword> ModTargetAbilityList);
+
+            string ParsedAbilityList = AbilityKeywordListToShortString(ModAbilityList);
+            string ParsedPowerString = CombatEffectListToString(ModCombatList, out extractedPowerTierKeywordList);
+            string ParsedModTargetAbilityList = AbilityKeywordListToShortString(ModTargetAbilityList);
+
+            if (displayAnalysisResult)
+            {
+                Debug.WriteLine("");
+                Debug.WriteLine($"    Power: {powerSimpleEffect.Description}");
+                Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");
+            }
+
+            modEffect = new ModEffect(ModAbilityList, new List<CombatEffect>(), ModCombatList, ModTargetAbilityList);
+            return true;
+        }
+        #endregion
+
+        #region Tables
+        public static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
+        {
+            { (int)GameDamageType.None, "None" },
+            { (int)GameDamageType.Crushing, "Crushing" },
+            { (int)GameDamageType.Slashing, "Slashing" },
+            { (int)GameDamageType.Nature, "Nature" },
+            { (int)GameDamageType.Fire, "Fire" },
+            { (int)GameDamageType.Cold, "Cold" },
+            { (int)GameDamageType.Piercing, "Piercing" },
+            { (int)GameDamageType.Psychic, "Psychic" },
+            { (int)GameDamageType.Trauma, "Trauma" },
+            { (int)GameDamageType.Electricity, "Electricity" },
+            { (int)GameDamageType.Poison, "Poison" },
+            { (int)GameDamageType.Acid, "Acid" },
+            { (int)GameDamageType.Darkness, "Darkness" },
+        };
+
+        public static readonly Dictionary<int, string> SkillTextMap = new Dictionary<int, string>()
+        {
+            { (int)GameCombatSkill.None, "None" },
+            { (int)GameCombatSkill.Sword, "Sword" },
+            { (int)GameCombatSkill.FireMagic, "Fire Magic" },
+            { (int)GameCombatSkill.Unarmed, "Unarmed" },
+            { (int)GameCombatSkill.Psychology, "Psychology" },
+            { (int)GameCombatSkill.Staff, "Staff" },
+            { (int)GameCombatSkill.Mentalism, "Mentalism" },
+            { (int)GameCombatSkill.Archery, "Archery" },
+            { (int)GameCombatSkill.Shield, "Shield" },
+            { (int)GameCombatSkill.AnimalHandling, "Animal Handling" },
+            { (int)GameCombatSkill.Knife, "Knife" },
+            { (int)GameCombatSkill.Cow, "Cow" },
+            { (int)GameCombatSkill.Deer, "Deer" },
+            { (int)GameCombatSkill.Pig, "Pig" },
+            { (int)GameCombatSkill.Spider, "Spider" },
+            { (int)GameCombatSkill.Werewolf, "Werewolf" },
+            { (int)GameCombatSkill.BattleChemistry, "Battle Chemistry" },
+            { (int)GameCombatSkill.Necromancy, "Necromancy" },
+            { (int)GameCombatSkill.Hammer, "Hammer" },
+            { (int)GameCombatSkill.Druid, "Druid" },
+            { (int)GameCombatSkill.IceMagic, "Ice Magic" },
+            { (int)GameCombatSkill.GiantBat, "Giant Bat" },
+            { (int)GameCombatSkill.Axe, "Axe" },
+            { (int)GameCombatSkill.Bard, "Bard" },
+            { (int)GameCombatSkill.Rabbit, "Rabbit" },
+            { (int)GameCombatSkill.Priest, "Priest" },
+            { (int)GameCombatSkill.Warden, "Warden" },
+            { (int)GameCombatSkill.FairyMagic, "Fairy Magic" },
+            { (int)GameCombatSkill.Lycanthropy, "Lycanthropy" },
+        };
 
         private static List<Sentence> SentenceList = new List<Sentence>()
         {
@@ -2404,7 +2577,7 @@
             //new Sentence("Remove %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             //new Sentence("Lose %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             //new Sentence("Deplete %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
-            //new Sentence("Generate no Rage", CombatKeyword.ZeroRage),
+            new Sentence("Generate no Rage", CombatKeyword.ZeroRage),
             new Sentence("Raise the target's Max Rage by %f", CombatKeyword.IncreaseMaxRage),
             new Sentence("Raise target's Max Rage by %f", CombatKeyword.IncreaseMaxRage),
             new Sentence("Increase target's Max Rage by%f", CombatKeyword.IncreaseMaxRage),
@@ -2419,6 +2592,7 @@
             new Sentence("Armor Regeneration (in-combat) %f", CombatKeyword.AddArmorRegen),
             new Sentence("%f Armor Regeneration", CombatKeyword.AddArmorRegen),
             new Sentence("Recover %f Armor every five second", CombatKeyword.AddArmorRegen),
+            new Sentence("Recover %f Armor", CombatKeyword.AddArmor),
             //new Sentence("Power Regeneration is %f", CombatKeyword.AddPowerRegen),
             new Sentence("Cost %f Power", CombatKeyword.AddPowerCost),
             new Sentence("Regain %f Power", CombatKeyword.AddPowerRegen),
@@ -2529,6 +2703,7 @@
             new Sentence("Grant %f Universal #D Mitigation", CombatKeyword.AddMitigation),
             new Sentence("Universal Damage Mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("Reduce the damage you take from #D attack by %f", CombatKeyword.AddMitigation),
+            new Sentence("Reduce the damage of the next attack that hit the target by %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.NextAttack }),
             new Sentence("Take %f less damage from all attack", CombatKeyword.AddMitigation),
             new Sentence("Target take %f less damage from attack", CombatKeyword.AddMitigation),
             new Sentence("Target take %f less damage from #D attack", CombatKeyword.AddMitigation),
@@ -2703,2703 +2878,8 @@
             new Sentence("Channeling time is %f second", CombatKeyword.AddChannelingTime),
             new Sentence("Summons figment", CombatKeyword.AnotherTrap),
             new Sentence("Reduce it by %f more", CombatKeyword.Again, SignInterpretation.AlwaysNegative),
-        };
-
-        public static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
-        {
-            { (int)GameDamageType.None, "None" },
-            { (int)GameDamageType.Crushing, "Crushing" },
-            { (int)GameDamageType.Slashing, "Slashing" },
-            { (int)GameDamageType.Nature, "Nature" },
-            { (int)GameDamageType.Fire, "Fire" },
-            { (int)GameDamageType.Cold, "Cold" },
-            { (int)GameDamageType.Piercing, "Piercing" },
-            { (int)GameDamageType.Psychic, "Psychic" },
-            { (int)GameDamageType.Trauma, "Trauma" },
-            { (int)GameDamageType.Electricity, "Electricity" },
-            { (int)GameDamageType.Poison, "Poison" },
-            { (int)GameDamageType.Acid, "Acid" },
-            { (int)GameDamageType.Darkness, "Darkness" },
-        };
-
-        public static readonly Dictionary<int, string> SkillTextMap = new Dictionary<int, string>()
-        {
-            { (int)GameCombatSkill.None, "None" },
-            { (int)GameCombatSkill.Sword, "Sword" },
-            { (int)GameCombatSkill.FireMagic, "Fire Magic" },
-            { (int)GameCombatSkill.Unarmed, "Unarmed" },
-            { (int)GameCombatSkill.Psychology, "Psychology" },
-            { (int)GameCombatSkill.Staff, "Staff" },
-            { (int)GameCombatSkill.Mentalism, "Mentalism" },
-            { (int)GameCombatSkill.Archery, "Archery" },
-            { (int)GameCombatSkill.Shield, "Shield" },
-            { (int)GameCombatSkill.AnimalHandling, "Animal Handling" },
-            { (int)GameCombatSkill.Knife, "Knife" },
-            { (int)GameCombatSkill.Cow, "Cow" },
-            { (int)GameCombatSkill.Deer, "Deer" },
-            { (int)GameCombatSkill.Pig, "Pig" },
-            { (int)GameCombatSkill.Spider, "Spider" },
-            { (int)GameCombatSkill.Werewolf, "Werewolf" },
-            { (int)GameCombatSkill.BattleChemistry, "Battle Chemistry" },
-            { (int)GameCombatSkill.Necromancy, "Necromancy" },
-            { (int)GameCombatSkill.Hammer, "Hammer" },
-            { (int)GameCombatSkill.Druid, "Druid" },
-            { (int)GameCombatSkill.IceMagic, "Ice Magic" },
-            { (int)GameCombatSkill.GiantBat, "Giant Bat" },
-            { (int)GameCombatSkill.Axe, "Axe" },
-            { (int)GameCombatSkill.Bard, "Bard" },
-            { (int)GameCombatSkill.Rabbit, "Rabbit" },
-            { (int)GameCombatSkill.Priest, "Priest" },
-            { (int)GameCombatSkill.Warden, "Warden" },
-            { (int)GameCombatSkill.FairyMagic, "Fairy Magic" },
-            { (int)GameCombatSkill.Lycanthropy, "Lycanthropy" },
-        };
-        #endregion
-
-        #region Data Analysis, Remaining
-        /*
-        private void AnalyzeRemainingEffects(List<string> abilityNameList, List<IPgPower> powerSimpleEffectList)
-        {
-            List<IPgPower> ParsedSimpleEffectList = new List<IPgPower>();
-
-            foreach (IPgPower Item in powerSimpleEffectList)
-            {
-                if (PerfectMatch.ContainsKey(Item.ToString()))
-                    continue;
-
-                if (Item.ToString().EndsWith("and reduce the damage of the next attack that hits the target by 20%"))
-                    continue; // effect_14323
-                if (Item.ToString() == "Molten Veins causes any nearby Fire Walls to recover 117 health")
-                    continue; // Increase Fire Wall heal displayed
-                if (Item.ToString() == "While Unarmed skill is active: you gain +4% Melee Evasion and any time you Evade a Melee attack you recover 64 Armor")
-                    continue; // Increase evasion and armor regen
-                if (Item.ToString() == "While Unarmed skill is active: any time you Evade an attack, your next attack deals +133 damage")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill is active: 18% of all Slashing, Piercing, and Crushing damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 260% rate")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill is active: 25% of all Darkness and Psychic damage you take is mitigated and added to the damage done by your next Punch, Jab, or Infuriating Fist at a 300% rate")
-                    continue; // special effect
-                if (Item.ToString() == "While Unarmed skill active: 21% of all Acid, Poison, and Nature damage you take is mitigated and added to the damage done by your next Kick at a 280% rate")
-                    continue; // special effect
-                if (Item.ToString() == "Combo: Suppress+Any Melee+Any Melee+Headcracker: final step stuns the target while dealing +200 damage.")
-                    continue; // special effect
-                if (Item.ToString() == "You heal 22 health every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "You heal 16 health and 16 armor every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "You regain 8 Power every other second while under the effect of Haste Concoction")
-                    continue; // special effect
-                if (Item.ToString() == "While the Shield skill is active, you mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)")
-                    continue; // special effect
-                if (Item.ToString() == "When you are hit by a monster's Rage Attack, the current reuse timer of Stunning Bash is hastened by 1 second and your next Stunning Bash deals +80 damage")
-                    continue; // special effect
-
-                if (IsExtractable(abilityNameList, Item))
-                    continue;
-
-                ParsedSimpleEffectList.Add(Item);
-            }
-        }
-
-        private bool IsExtractable(List<string> abilityNameList, IPgPower power)
-        {
-            foreach (IPgPowerTier Item in power.TierEffectList)
-                if (!IsExtractable(abilityNameList, Item))
-                    return false;
-
-            return true;
-        }
-
-        private bool IsExtractable(List<string> abilityNameList, IPgPowerTier powerTier)
-        {
-            foreach (IPgPowerEffect Item in powerTier.EffectList)
-                if (Item is IPgPowerSimpleEffect AsSimpleEffect)
-                    if (!IsExtractable(abilityNameList, AsSimpleEffect))
-                        return false;
-
-            return true;
-        }
-
-        private bool IsExtractable(List<string> abilityNameList, IPgPowerSimpleEffect simpleEffect)
-        {
-            string Text = simpleEffect.Description;
-
-            RemoveDecorationText(ref Text);
-            ExtractAbilityName(abilityNameList, ref Text, out bool IsNameExtracted);
-            ExtractAllKnownAttributes(ref Text, out bool IsAttributeExtracted);
-            RemoveUnusedText(ref Text);
-
-            if (IsNameExtracted)
-                IsNameExtracted = true;
-
-            if (Text.Length == 0)
-                return true;
-
-            return false;
-        }
-
-        private void ExtractAbilityName(List<string> abilityNameList, ref string text, out bool isExtracted)
-        {
-            isExtracted = false;
-
-            foreach (string Name in abilityNameList)
-                ExtractAbilityName(Name, ref text, ref isExtracted);
-
-            ExtractAbilityName("Unarmed attacks", ref text, ref isExtracted);
-            ExtractAbilityName("All bomb attacks", ref text, ref isExtracted);
-            ExtractAbilityName("All Psi Wave Abilities", ref text, ref isExtracted);
-            ExtractAbilityName("Hammer attacks", ref text, ref isExtracted);
-            ExtractAbilityName("All Druid abilities", ref text, ref isExtracted);
-            ExtractAbilityName("Knife abilities with 'Cut' in their name", ref text, ref isExtracted);
-            ExtractAbilityName("all Knife abilities WITHOUT 'Cut' in their name", ref text, ref isExtracted);
-            ExtractAbilityName("all Knife Fighting attacks", ref text, ref isExtracted);
-            ExtractAbilityName("Bard Songs", ref text, ref isExtracted);
-            ExtractAbilityName("All Major Healing abilities targeting you", ref text, ref isExtracted);
-            ExtractAbilityName("All Bun-Fu moves", ref text, ref isExtracted);
-        }
-
-        private void ExtractAbilityName(string abilityName, ref string text, ref bool isExtracted)
-        {
-            if (text.StartsWith($"{abilityName}'s damage "))
-            {
-                text = text.Substring(abilityName.Length + 3);
-                isExtracted = true;
-            }
-            else if (text.StartsWith($"{abilityName}'s "))
-            {
-                text = text.Substring(abilityName.Length + 3);
-                isExtracted = true;
-            }
-            else if (text.StartsWith($"{abilityName} ") || text.StartsWith($"{abilityName},"))
-            {
-                text = text.Substring(abilityName.Length);
-                isExtracted = true;
-            }
-            else
-            {
-                int Index = text.IndexOf($" {abilityName} ", StringComparison.InvariantCulture);
-                if (Index < 0)
-                    Index = text.IndexOf($" {abilityName},", StringComparison.InvariantCulture);
-                if (Index < 0)
-                    Index = text.IndexOf($" {abilityName}.", StringComparison.InvariantCulture);
-                if (Index >= 0)
-                {
-                    text = text.Substring(0, Index + 1) + text.Substring(Index + abilityName.Length + 1);
-                    isExtracted = true;
-                }
-            }
-        }
-
-        private void ExtractAllKnownAttributes(ref string text, out bool isExtracted)
-        {
-            ExtractKnownAttribute(ref text, false, out isExtracted);
-        }
-
-        private void ExtractKnownAttribute(ref string text, bool stopIfExtracted, out bool isExtracted)
-        {
-            isExtracted = false;
-
-            RemoveDecorativeText(ref text, out bool IsDecorativeTextRemoved);
-            SimplifyBonus(ref text);
-            SimplifySemantic(ref text);
-            SimplifyGrammar(ref text);
-            ExtractDamageChange(ref text);
-            SimplifyDamageType(ref text);
-            SimplifyMitigrationType(ref text, ref isExtracted);
-            ExtractSentence(ref text, "Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Gripjaw+Any Spider+Any Spider+Inject Venom:", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Rip+Any Melee+Any Melee+Bat Stability:", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step hit all enemies within %f meter", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step deal %f% damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step hit all targets within %f meter", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step stun the target and deal %f damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Final step boost base damage %f% for 10 second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Whenever you take damage from an enemy", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "If you are using the Priest skill", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "You have not been attacked in the past %f second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Each time they attack and damage you", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Incubated Spiders %f% chance to avoid being hit burst attacks", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Combat Refresh restore %f health", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "If , , or  deal damage, that damage is boosted %f% per tick", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Boost your Nice Attack damage %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Boost your direct and indirect damage %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Plus %f Damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Base Damage %f%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Causing %f Damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage %f%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage is %f% per tick", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage is %f%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage is %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Damage is boosted %f%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Suffer %f% damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reap %f% of the damage to you as healing", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reap %d% of the damage done", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Melee Attackers suffer %d indirect damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Up to a max of %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "The reap cap is %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f% damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f damage to health", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "All attacks deal %f damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Nice attacks deal %f damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Core attacks deal %f damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f damage", stopIfExtracted, ref isExtracted, out _);//again
-            ExtractSentence(ref text, "Deal %f indirect damage", stopIfExtracted, ref isExtracted, out _);//again
-            ExtractSentence(ref text, "Dealing %f damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Cause %f damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Take %f damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Over %f second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "For %f second after using ", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "For %f second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Within %f second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "For %f minute", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "After a %f second delay", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reduce Rage %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reduce %f more Rage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate %f Rage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate %f% Rage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate %f less Rage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Lower Rage by %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Lower Rage %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Remove %f Rage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Lose %f Rage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Deplete %f Rage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate no Rage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Generate no Taunt", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Power Cost %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Power Cost is %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Power Regeneration is %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Cost %f% Power", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Cost %f Power", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "The maximum Power restored  increase %d", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Max Armor %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Timer %f second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Timer is %f second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Timer is %f sec", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Timer is %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Time is %f second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Reuse Time %f second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Taunt %f%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Taunt %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "When you have %f% or less of your Armor left", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f Health, Armor, and Power respectively", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f Health, Armor, and Power", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f Health/Armor", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f health", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f armor", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f armor", stopIfExtracted, ref isExtracted, out _);//again
-            ExtractSentence(ref text, "Basic attacks restore %f Power", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f Power", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Restore %f to you", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Recover %f armor", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Recover %f health", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Recover %f power", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Cost no Power to cast", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Take %f second to channel", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Heal %f health", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Healing %f%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Healing %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Heal %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Sprint Speed is %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Max Health %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "To your minions", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Attack Range is %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Range is %f meter", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Stun incorporeal enemies", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Resets the timer on", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal %f% total damage against Demons", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "While Shield skill active", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "While Warden skill active", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "While Cow skill active", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Mitigate %f% of all damage", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Stacks up to %f times", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Stacks up to %fx", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "All Shield abilities", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Grant allies", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "%f% evasion of burst attacks", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "%f% mitigation of all physical attacks", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "%f mitigation of all physical attacks", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Chance to Ignore Knockbacks %d%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Chance to Ignore Stun %d%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "To targets whose Rage meter are at least %d% full", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Targets whose Rage meter is at least %f% full", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "%f% chance to Knock Down", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "%f% chance to", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "When wielding two knives", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "If the target is not focused on you", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "If target is not focused on you", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "To all melee attackers", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "The first melee attacker is knocked away", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "When a melee attack deal damage to you", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal its damage when you are hit burst attacks", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Deal its damage when you are hit ranged attacks", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "A melee attack deal damage to you", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "In addition, you can use the ability  %d", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "In addition, you can use the ability", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Chance to consume grass is %f%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "You regenerate %f Health per tick (every 5 second, in and out of combat)", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Summoned Deer have %f health", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Summoned Deer have %f armor", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Summoned Deer attacks", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Summoned Deer", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Incubated Spiders have %f health", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Incubated Spiders have %f armor", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Incubated Spiders", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Per second", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "While Spider skill is active", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Steals %f health", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Steals %f more health", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Ability's range is reduced to %fm", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Chance to consume carrot is %f%", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Lower aggro toward you %f", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Attack range %f meter", stopIfExtracted, ref isExtracted, out _);
-            ExtractSentence(ref text, "Debuff cannot stack with itself", stopIfExtracted, ref isExtracted, out _);
-        }
-
-        private void RemoveDecorativeText(ref string text, out bool isRemoved)
-        {
-            RemoveDecorativeText(ref text, "(Equipping this item will teach you the ability if needed.)", out isRemoved);
-        }
-
-        private void SimplifyBonus(ref string text)
-        {
-            ReplaceCaseInsensitive(ref text, " +", " ");
-            ReplaceCaseInsensitive(ref text, " -", " ");
-        }
-
-        private void SimplifySemantic(ref string text)
-        {
-            ReplaceCaseInsensitive(ref text, " target's ", " ");
-            ReplaceCaseInsensitive(ref text, " is increased ", " ");
-            ReplaceCaseInsensitive(ref text, " increased ", " ");
-            ReplaceCaseInsensitive(ref text, " an additional ", " ");
-            ReplaceCaseInsensitive(ref text, " additional ", " ");
-            ReplaceCaseInsensitive(ref text, " sooner", " ");
-            ReplaceCaseInsensitive(ref text, " faster", " ");
-            ReplaceCaseInsensitive(ref text, " by ", " ");
-            ReplaceCaseInsensitive(ref text, " causes your minions to ", " ");
-            ReplaceCaseInsensitive(ref text, " causes the target to ", " ");
-            ReplaceCaseInsensitive(ref text, " raises ", " ");
-            ReplaceCaseInsensitive(ref text, " all allies ", " allies ");
-            ReplaceCaseInsensitive(ref text, " to all targets", " ");
-            ReplaceCaseInsensitive(ref text, " have a ", " ");
-            ReplaceCaseInsensitive(ref text, "after an ", "after a ");
-            ReplaceCaseInsensitive(ref text, "-second", " second");
-        }
-
-        string[] DamageNames = new string[]
-        {
-            "Crushing",
-            "Slashing",
-            "Nature",
-            "Fire",
-            "Cold",
-            "Piercing",
-            "Psychic",
-            "Trauma",
-            "Electricity",
-            "Poison",
-            "Acid",
-            "Darkness",
-            "Werewolf",
-            "Bard",
-            "Giant Bat"
-        };
-
-        private void ExtractDamageChange(ref string text)
-        {
-            foreach (string Item in DamageNames)
-                ExtractDamageChange(ref text, Item);
-        }
-
-        private void ExtractDamageChange(ref string text, string damageType)
-        {
-            ReplaceCaseInsensitive(ref text, $"damage become {damageType.ToLowerInvariant()} instead of crushing", " ");
-            ReplaceCaseInsensitive(ref text, $"damage become {damageType.ToLowerInvariant()} instead of electricity", " ");
-            ReplaceCaseInsensitive(ref text, $"damage type become {damageType.ToLowerInvariant()}", " ");
-            ReplaceCaseInsensitive(ref text, $"damage type is {damageType.ToLowerInvariant()} instead of trauma", " ");
-            ReplaceCaseInsensitive(ref text, $"deal {damageType.ToLowerInvariant()} damage instead of psychic", " ");
-            ReplaceCaseInsensitive(ref text, $"deal {damageType.ToLowerInvariant()} damage (instead of nature)", " ");
-            ReplaceCaseInsensitive(ref text, $"deal {damageType.ToLowerInvariant()} damage (instead of crushing)", " ");
-            ReplaceCaseInsensitive(ref text, $"deal {damageType.ToLowerInvariant()} damage (instead of psychic)", " ");
-            ReplaceCaseInsensitive(ref text, $"damage type is changed to {damageType.ToLowerInvariant()}", " ");
-        }
-
-        private void SimplifyDamageType(ref string text)
-        {
-            SimplifyDamageType(ref text, "indirect poison and indirect trauma");
-            SimplifyDamageType(ref text, "indirect nature and indirect electricity");
-            SimplifyDamageType(ref text, "health");
-            SimplifyDamageType(ref text, "direct");
-            SimplifyDamageType(ref text, "direct health");
-            SimplifyDamageType(ref text, "armor");
-
-            foreach (string Item in DamageNames)
-                SimplifyDamageType(ref text, Item);
-        }
-
-        private void SimplifyDamageType(ref string text, string damageType)
-        {
-            ReplaceCaseInsensitive(ref text, $"{damageType.ToLowerInvariant()} damage", "damage");
-            ReplaceCaseInsensitive(ref text, $"{damageType.ToLowerInvariant()} base damage", "base damage");
-        }
-
-        private void SimplifyMitigrationType(ref string text, ref bool isExtracted)
-        {
-            SimplifyMitigrationType(ref text, "Direct Poison and Acid", ref isExtracted);
-            SimplifyMitigrationType(ref text, "Indirect Poison and Acid", ref isExtracted);
-
-            foreach (string Item in DamageNames)
-                SimplifyMitigrationType(ref text, Item, ref isExtracted);
-        }
-
-        private void SimplifyMitigrationType(ref string text, string damageType, ref bool isExtracted)
-        {
-            ExtractSentence(ref text, $"Direct {damageType} Mitigation %f", ref isExtracted, out _);
-            ExtractSentence(ref text, $"Indirect {damageType} Mitigation %f", ref isExtracted, out _);
-            ExtractSentence(ref text, $"{damageType} Mitigation %f", ref isExtracted, out _);
-        }
-
-        private void SimplifyGrammar(ref string text)
-        {
-            ReplaceCaseInsensitive(ref text, "reduces ", "reduce ");
-            ReplaceCaseInsensitive(ref text, "removes ", "remove ");
-            ReplaceCaseInsensitive(ref text, "deals ", "deal ");
-            ReplaceCaseInsensitive(ref text, "generates ", "generate ");
-            ReplaceCaseInsensitive(ref text, "taunts ", "taunt ");
-            ReplaceCaseInsensitive(ref text, "costs ", "cost ");
-            ReplaceCaseInsensitive(ref text, "restores ", "restore ");
-            ReplaceCaseInsensitive(ref text, "becomes ", "become ");
-            ReplaceCaseInsensitive(ref text, "ignites ", "ignite ");
-            ReplaceCaseInsensitive(ref text, "boosts ", "boost ");
-            ReplaceCaseInsensitive(ref text, "heals ", "heal ");
-            ReplaceCaseInsensitive(ref text, "lowers ", "lower ");
-            ReplaceCaseInsensitive(ref text, "mitigates ", "mitigate ");
-            ReplaceCaseInsensitive(ref text, "grants ", "grant ");
-            ReplaceCaseInsensitive(ref text, "depletes ", "deplete ");
-            ReplaceCaseInsensitive(ref text, "reaps ", "reap ");
-            ReplaceCaseInsensitive(ref text, "hits ", "hit ");
-            ReplaceCaseInsensitive(ref text, "stuns ", "stun ");
-            ReplaceCaseInsensitive(ref text, "causes ", "cause ");
-            ReplaceCaseInsensitive(ref text, "lowers ", "lower ");
-            ReplaceCaseInsensitive(ref text, "takes ", "take ");
-            ReplaceCaseInsensitive(ref text, "increases ", "increase ");
-            ReplaceCaseInsensitive(ref text, " seconds", " second");
-            ReplaceCaseInsensitive(ref text, " minutes", " minute");
-            ReplaceCaseInsensitive(ref text, " meters", " meter");
-            ReplaceCaseInsensitive(ref text, "haven't ", "have not ");
-        }
-
-        private void ExtractSentence(ref string text, string format, bool stopIfExtracted, ref bool isExtracted, out double data)
-        {
-            data = 0;
-
-            if (isExtracted && stopIfExtracted)
-                return;
-
-            ExtractSentence(ref text, format, ref isExtracted, out data);
-        }
-
-        private void ExtractSentence(ref string text, string format, ref bool isExtracted, out double data)
-        {
-            data = 0;
-
-            string LowerText = text.ToLowerInvariant();
-            string LowerFormat = format.ToLowerInvariant();
-
-            int Index = LowerFormat.IndexOf('%');
-
-            if (Index >= 0)
-            {
-                char FormatType = LowerFormat[Index + 1];
-                string Pattern = LowerFormat.Substring(0, Index);
-                string AfterPattern = LowerFormat.Substring(Index + 2);
-                int PatternIndex;
-
-                if (Pattern.Length > 0)
-                    PatternIndex = LowerText.IndexOf(Pattern);
-                else
-                {
-                    PatternIndex = 0;
-                    while (PatternIndex < LowerText.Length && !char.IsDigit(LowerText[PatternIndex]))
-                        PatternIndex++;
-
-                    if (PatternIndex >= LowerText.Length)
-                        PatternIndex = -1;
-                }
-
-                if (PatternIndex < 0)
-                    return;
-
-                if (FormatType == 'd')
-                {
-                    int StartDataIndex = PatternIndex + Pattern.Length;
-                    int EndDataIndex = StartDataIndex;
-                    while (EndDataIndex < LowerText.Length && char.IsDigit(LowerText[EndDataIndex]))
-                        EndDataIndex++;
-
-                    if (EndDataIndex <= StartDataIndex)
-                        return;
-                    data = int.Parse(LowerText.Substring(StartDataIndex, EndDataIndex - StartDataIndex));
-                    if (!LowerText.Substring(EndDataIndex).StartsWith(AfterPattern))
-                        return;
-
-                    text = text.Substring(0, PatternIndex) + text.Substring(EndDataIndex + AfterPattern.Length);
-                    isExtracted = true;
-                }
-                else if (FormatType == 'f')
-                {
-                    int StartDataIndex = PatternIndex + Pattern.Length;
-                    int EndDataIndex = StartDataIndex;
-                    while (EndDataIndex < LowerText.Length && (char.IsDigit(LowerText[EndDataIndex]) || LowerText[EndDataIndex] == '.'))
-                        EndDataIndex++;
-
-                    if (EndDataIndex <= StartDataIndex)
-                        return;
-                    data = double.Parse(LowerText.Substring(StartDataIndex, EndDataIndex - StartDataIndex), NumberStyles.Float, CultureInfo.InvariantCulture);
-                    if (!LowerText.Substring(EndDataIndex).StartsWith(AfterPattern))
-                        return;
-
-                    text = text.Substring(0, PatternIndex) + text.Substring(EndDataIndex + AfterPattern.Length);
-                    isExtracted = true;
-                }
-            }
-            else
-            {
-                int PatternIndex = LowerText.IndexOf(LowerFormat);
-                if (PatternIndex < 0)
-                    return;
-
-                text = text.Substring(0, PatternIndex) + text.Substring(PatternIndex + LowerFormat.Length);
-                isExtracted = true;
-            }
-        }
-
-        private void RemoveUnusedText(ref string text)
-        {
-            ReplaceCaseInsensitive(ref text, ",", " ");
-            ReplaceCaseInsensitive(ref text, ".", " ");
-            ReplaceCaseInsensitive(ref text, "(", " ");
-            ReplaceCaseInsensitive(ref text, ")", " ");
-            ReplaceCaseInsensitive(ref text, "meaning you recover this power every 5 second  in and out of combat", " ");
-            ReplaceCaseInsensitive(ref text, "when  deal damage", " ");
-            ReplaceCaseInsensitive(ref text, "it also ignite the suspect", " ");
-            ReplaceCaseInsensitive(ref text, "ignite all targets", " ");
-            ReplaceCaseInsensitive(ref text, " and ability ", " ");
-            ReplaceCaseInsensitive(ref text, " and it ", " ");
-            ReplaceCaseInsensitive(ref text, " and also ", " ");
-            ReplaceCaseInsensitive(ref text, " and ", " ");
-            ReplaceCaseInsensitive(ref text, " but also ", " ");
-            ReplaceCaseInsensitive(ref text, " but ", " ");
-            ReplaceCaseInsensitive(ref text, " further ", " ");
-            ReplaceCaseInsensitive(ref text, " its ", " ");
-            ReplaceCaseInsensitive(ref text, " instead ", " ");
-            ReplaceCaseInsensitive(ref text, "returning it to you as armor", " ");
-            ReplaceCaseInsensitive(ref text, " in response to melee damage", " ");
-            ReplaceCaseInsensitive(ref text, " abilities", " ");
-            ReplaceCaseInsensitive(ref text, "crushing  slashing  or piercing", " ");
-            ReplaceCaseInsensitive(ref text, "your golem minion's ", " ");
-            ReplaceCaseInsensitive(ref text, "when you are near your fire wall", " ");
-            ReplaceCaseInsensitive(ref text, "ignite the target", " ");
-            ReplaceCaseInsensitive(ref text, "causing them to", " ");
-            ReplaceCaseInsensitive(ref text, " to melee attackers", " ");
-            ReplaceCaseInsensitive(ref text, "cause target to bleed", " ");
-            ReplaceCaseInsensitive(ref text, "cause targets to", " ");
-            ReplaceCaseInsensitive(ref text, "cause you to", " ");
-            ReplaceCaseInsensitive(ref text, "increase ", " ");
-            ReplaceCaseInsensitive(ref text, "suddenly ", " ");
-            ReplaceCaseInsensitive(ref text, "when you teleport via ", " ");
-            ReplaceCaseInsensitive(ref text, "when you are hit a monster's rage attack", " ");
-            ReplaceCaseInsensitive(ref text, "when you are hit", " ");
-            ReplaceCaseInsensitive(ref text, "while you are near ", " ");
-            ReplaceCaseInsensitive(ref text, "you gain ", " ");
-            ReplaceCaseInsensitive(ref text, " to you", " ");
-            ReplaceCaseInsensitive(ref text, " you ", " ");
-            ReplaceCaseInsensitive(ref text, "your ", " ");
-            ReplaceCaseInsensitive(ref text, "using ", " ");
-            ReplaceCaseInsensitive(ref text, " on an existing zombie", " ");
-            ReplaceCaseInsensitive(ref text, " is ", " ");
-            ReplaceCaseInsensitive(ref text, "this effect stacks with itself", " ");
-            ReplaceCaseInsensitive(ref text, "who then ", " ");
-            ReplaceCaseInsensitive(ref text, "plus it ", " ");
-            ReplaceCaseInsensitive(ref text, "every few second", " ");
-            ReplaceCaseInsensitive(ref text, "so it can be used again immediately", " ");
-            ReplaceCaseInsensitive(ref text, "cause melee attackers to ignite", " ");
-            ReplaceCaseInsensitive(ref text, "coats the target in stinging insects that", " ");
-            ReplaceCaseInsensitive(ref text, "covers the target in insects that", " ");
-            ReplaceCaseInsensitive(ref text, "cause  to", " ");
-            ReplaceCaseInsensitive(ref text, "infects the target", " ");
-            ReplaceCaseInsensitive(ref text, " the ", " ");
-            ReplaceCaseInsensitive(ref text, "cow's ", " ");
-            ReplaceCaseInsensitive(ref text, "inflicts bugs on target", " ");
-            ReplaceCaseInsensitive(ref text, "to target", " ");
-            ReplaceCaseInsensitive(ref text, "with each attack", " ");
-            ReplaceCaseInsensitive(ref text, " gain ", " ");
-            ReplaceCaseInsensitive(ref text, "if ", " ");
-            ReplaceCaseInsensitive(ref text, "also ", " ");
-            ReplaceCaseInsensitive(ref text, "have a", " ");
-            text = text.Trim();
-        }
-
-        private void ReplaceCaseInsensitive(ref string text, string searchPattern, string replacementPattern)
-        {
-            string LowerText = text.ToLowerInvariant();
-            int Index;
-
-            while ((Index = LowerText.IndexOf(searchPattern)) >= 0)
-            {
-                text = text.Substring(0, Index) + replacementPattern + text.Substring(Index + searchPattern.Length);
-                LowerText = text.ToLowerInvariant();
-            }
-        }
-
-        private void CleanCase(ref string s)
-        {
-            if (s.Contains(" health ") || s.EndsWith(" health"))
-                s = s.Replace(" health", " Health");
-            if (s.Contains(" armor ") || s.EndsWith(" armor"))
-                s = s.Replace(" armor", " Armor");
-            if (s.Contains(" power ") || s.EndsWith(" power"))
-                s = s.Replace(" power", " Power");
-        }
-        */
-        private Dictionary<string, string> PerfectMatchWithAddition = new Dictionary<string, string>()
-        {
-            { "Nice Attacks deal +40 damage and cause the target's next Rage Attack to deal -25% damage (debuff cannot stack with itself)",
-                "Target's next Rage Attack deals -25% damage" },
-
-        };
-
-        private Dictionary<string, string> PerfectMatch = new Dictionary<string, string>()
-        {
-            { "Nice Attacks deal +64 damage and hasten your current Combat Refresh delay by 1 second",
-                "Hastens your current Combat Refresh timer by 1 second" },
-
-            { "Core Attacks deal +32 damage and hasten your current Combat Refresh delay by 1 second",
-                "Hastens your current Combat Refresh timer by 1 second" },
-
-            { "Core Attacks deal +41 damage and reduce the Power cost of your next Minor Heal ability by -22",
-                "Reduce Power cost of your next Minor Heal by -22" },
-
-            { "Signature Support abilities restore 32 Power to all allies within 20 meters",
-                "Restores 32 Power to all allies within 20 meters" },
-
-            { "Basic Attacks restore 12 Power",
-                "Restores 12 Power" },
-
-            { "Signature Debuffs deal +25% damage and also deal 108 Armor damage",
-                "Deals 108 Armor damage" },
-
-            { "Major Healing abilities also restore 112 Armor",
-                "Restores 112 Armor" },
-
-            { "Major Healing abilities have a 65% chance to restore an additional 152 Health",
-                "65% chance to restore 152 Health" },
-
-            { "Signature Debuffs deal +80 damage and restore 96 Armor to you after a 10-second delay",
-                "Restores 96 Armor to you after a 10-second delay" },
-
-            { "Crossbow abilities boost your Epic Attack Damage +40% for 15 seconds",
-              "Epic Attacks deal +40% damage for 15 seconds" },
-
-            { "Signature Support abilities restore 80 Armor to all allies within 20 meters",
-                "Restores 80 Armor to all allies within 20 meters" },
-
-            { "Minor Heals restore 71 Armor",
-                "Restores 71 Armor" },
-
-            { "Melee attacks deal +50 damage to Pigs",
-                "Melee attacks deal +50 damage to Pigs" },
-
-            { "All sword abilities deal +17% damage when you have 33% or less of your Armor left",
-                "+17% damage when you have 33% or less of your Armor left" },
-
-            { "All Sword abilities have a 22% chance to restore 30 Health to you",
-                "22% chance to restore 30 Health" },
-
-            { "All fire spells deal up to +115 damage (randomly determined)",
-                "+up to 115 damage (random)" },
-
-            { "Unarmed attacks deal +9 damage and have +16 Accuracy (which cancels out the Evasion that certain monsters have)",
-                "+16 Accuracy" },
-
-            { "Crossbow abilities restore 240 health after a 15 second delay",
-              "Restores 240 health after 15 seconds" },
-
-            { "Crossbow abilities restore 272 armor after a 12 second delay",
-              "Restores 272 armor after 12 seconds" },
-
-            { "Sword Slash and Thrusting Blade restore 18 armor",
-              "Restores 18 Armor" },
-
-            { "Many Cuts deals +132 armor damage",
-              "+132 armor damage" },
-
-            { "Many Cuts deals +21% damage and stuns targets that have less than a third of their Armor remaining. However, Power cost is +33%",
-              "Stuns targets that have less than a third of their Armor remaining" },
-
-            { "Many Cuts knocks back targets that have less than a third of their Armor, also dealing +40 damage",
-              "Knocks back targets that have less than a third of their Armor, also dealing +40 damage" },
-
-            { "Many Cuts and Debilitating Blow deal +134 damage to Arthropods (such as spiders, mantises, and beetles)",
-              "+134 damage to Arthropods" },
-
-            { "Wind Strike hastens the current reuse timer of Finishing Blow by 6 seconds",
-              "Hastens current reuse timer of Finishing Blow by 6 seconds" },
-
-            { "Debilitating Blow hastens the current reuse timer of Decapitate by 8 seconds",
-              "Hastens current reuse timer of Decapitate by 8 seconds" },
-
-            { "Many Cuts hits all enemies within 5 meters, dealing +30 damage",
-              "Hits all enemies within 5 meters" },
-
-            { "Parry restores 26 health",
-              "Restores 26 Health" },
-
-            { "Parry hits all enemies within 5 meters, dealing an additional +30 damage",
-              "Hits all enemies within 5 meters" },
-
-            { "Riposte restores 53 armor",
-              "Restores 53 Armor" },
-
-            { "Wind Strike causes your next attack to deal +114 damage",
-              "Your next attack deals +114 damage" },
-
-            { "Wind Strike and Heart Piercer deal 124 armor damage",
-              "+124 armor damage" },
-
-            { "Wind Strike deals +38% damage and gives you +16 Accuracy for 10 seconds (Accuracy cancels out the Evasion that certain monsters have)",
-              "Accuracy +16 for 10 seconds" },
-
-            { "Finishing Blow gives you 25% resistance to Elemental damage (Fire, Cold, Electricity) for 10 seconds",
-              "+25% resistance to Elemental damage (Fire, Cold, Electricity) for 10 seconds" },
-
-            { "Wind Strike gives you +50% projectile evasion for 5 seconds",
-              "+50% projectile evasion for 5 seconds" },
-
-            { "Decapitate deals +80 damage and briefly terrifies the target",
-              "Briefly terrifies the target" },
-
-            { "Flashing Strike deals +25% damage and gives you 50% resistance to Darkness damage for 4 seconds",
-              "+50% resistance to Darkness damage for 4 seconds" },
-
-            { "Finishing Blow restores 42 Power to you",
-              "Restores 42 Power" },
-
-            { "Finishing Blow restores 104 armor to you",
-              "Restores 104 Armor" },
-
-            { "Decapitate restores 165 armor to you",
-              "Restores 165 Armor" },
-
-            { "Decapitate deals +425 damage to non-Elite targets",
-              "+425 damage to non-Elite targets" },
-
-            { "Flashing Strike heals you for 55 health",
-              "Restores 55 Health" },
-
-            { "Flashing Strike deals +217 damage to undead",
-              "+217 damage to undead" },
-
-            { "Heart Piercer heals you for 40 health",
-              "Restores 40 Health" },
-
-            { "Heart Piercer removes (up to) 212 more Rage, turning half of that into Trauma damage",
-              "Removes (up to) 212 more Rage, turning half of that into Trauma damage" },
-
-            { "Heart Piercer deals +18% piercing damage and heals you for 23 health",
-              "Restores 23 Health" },
-
-            { "Precision Pierce and Heart Piercer restore 18 Health to you",
-              "Restores 18 Health" },
-
-            { "For 6 seconds after using Precision Pierce, your Nice Attacks deal +64 damage",
-              "Nice Attack Damage +64 for 6 seconds" },
-
-            { "Debilitating Blow deals +40 damage and causes your Core Attacks to deal +75 damage for 7 seconds",
-              "Core Attack Damage +75 for 7 seconds" },
-
-            { "Fire Breath and Super Fireball deal +165 damage over 10 seconds",
-              "+165 damage over 10 seconds" },
-
-            { "Fire Breath deals +72 damage and grants you +24 mitigation vs Fire for 10 seconds",
-              "+24 Fire Mitigation for 10 seconds" },
-
-            { "Fire Breath hits all targets within 8 meters and deals +24.5% damage, but reuse timer is +3 seconds and Power cost is +33%",
-              "Hits all targets within 8 meters" },
-
-            { "Frostball, Scintillating Frost, and Defensive Chill boost your Nice Attack Damage +61 for 7 seconds",
-              "Nice Attack Damage +61 for 7 seconds" },
-
-            { "Calefaction causes target to take +45% damage from Cold for 12 seconds",
-              "Target takes +45% damage from Cold for 12 seconds" },
-
-            { "Room-Temperature Ball and Defensive Burst cause the target's attacks to deal -16 damage for 10 seconds",
-              "Target's attacks deal -16 damage for 10 seconds" },
-
-            { "Super Fireball causes the target to take +60% damage from indirect Fire (this effect does not stack with itself)",
-              "Target takes +60% indirect Fire damage (this effect does not stack with itself)" },
-
-            { "Flesh to Fuel boosts your Core Attack Damage +118 for 7 seconds",
-              "Core Attack Damage +118 for 7 seconds" },
-
-            { "Flesh to Fuel restores +62 Armor",
-              "Restores +62 Armor" },
-
-            { "Flesh to Fuel restores +34 Power but has a 5% chance to stun you",
-              "5% chance to stun YOU" },
-
-            { "Flesh to Fuel increases your Out of Combat Sprint speed +8 for 15 seconds",
-              "+8 Out of Combat Sprint Speed for 15 seconds" },
-
-            { "Room-Temperature Ball deals Darkness damage and causes +126 damage over 12 seconds",
-              "DamageType:Darkness; +126 Darkness damage over 12 seconds" },
-
-            { "You regain 20 Power when using Ring of Fire, Defensive Burst, or Defensive Chill",
-              "Restores 20 Power" },
-
-            { "You regain 31 Health when using Ring of Fire, Defensive Burst, or Defensive Chill",
-              "Restores 31 Health" },
-
-            { "Scintillating Flame restores 33 Health",
-              "Restores 33 Health" },
-
-            { "Scintillating Flame and Molten Veins boost your Core Attack Damage and Epic Attack Damage +39 for 15 seconds",
-              "Core Attack Damage and Epic Attack Damage +39 for 15 seconds" },
-
-            { "Scintillating Flame and Scintillating Frost stun and deal +100% damage to Vulnerable targets",
-              "Stun and +100% damage to Vulnerable targets" },
-
-            { "Ring of Fire deals +49% damage but has a 5% chance to deal 140 fire damage to YOU",
-              "5% chance to deal 140 fire damage to YOU" },
-
-            { "Scintillating Frost and Defensive Chill restore 31 Armor",
-              "Restores 31 Armor" },
-
-            { "Molten Veins restores 55 Armor",
-              "Restores 55 Armor" },
-
-            { "Calefaction restores 45 Health",
-              "Restores 45 Health" },
-
-            { "Fireball and Frostball Damage +36%",
-              "Fireball and Frostball Damage +36%" },
-
-            { "Frostball targets all enemies within 10 meters and deals +52 damage, but reuse timer is +3 seconds",
-              "Hits all enemies within 10 meters" },
-
-            { "Frostball slows target's movement by 25% and deals +16 damage",
-              "Slows target's movement by 25%" },
-
-            { "Defensive Burst deals +19% damage and raises Basic Attack Damage +28% for 10 seconds",
-              "Basic Attack Damage +28% for 10 seconds" },
-
-            { "Frostball, Scintillating Frost, and Defensive Chill grant +10 Direct and Indirect Cold Protection for 10 seconds",
-              "+10 Cold Protection (Direct and Indirect) for 10 seconds" },
-
-            { "Defensive Burst and Defensive Chill restore 42 Armor to you",
-              "Restores 42 Armor" },
-
-            { "Defensive Chill deals +46 damage and grants you 70% chance to ignore Knockback effects for 7 seconds",
-              "70% chance to ignore Knockback effects for 7 seconds" },
-
-            { "Fire Walls deal +53 damage per hit",
-              "+53 Direct Damage" },
-
-            { "Fire Walls have +176 Max Health",
-              "+176 Max Health" },
-
-            { "Fire Walls' attacks taunt +250%",
-              "Taunt +250%" },
-
-            { "Punch, Jab, and Infuriating Fist restore 18 Health to you",
-              "Restores 18 Health" },
-
-            { "Kick attacks restore 42 Armor",
-              "Restores 42 Armor" },
-
-            { "Kick attacks deal +13% damage and grant you 8% Physical Damage Reflection for 15 seconds",
-              "+8% Physical Damage Reflection for 15 seconds" },
-
-            { "Kick attacks deal +18% damage and slow target's movement speed by 45%",
-              "Slows target's movement by 45%" },
-
-            { "Kick attacks deal +34% damage when you have 33% or less of your Armor left",
-              "+34% damage when you have 33% or less of your Armor left" },
-
-            { "Barrage hits all enemies within 5 meters and deals +19% damage, but reuse timer is +3 seconds",
-              "Hits all enemies within 5 meters" },
-
-            { "Barrage and Headbutt make the target 19% more vulnerable to Psychic damage for 20 seconds (this effect does not stack with itself)",
-              "Target is 19% more vulnerable to Psychic damage for 20 seconds (this effect does not stack with itself)" },
-
-            { "Headbutt deals +20% damage and conjures a magical field that mitigates 15% of all physical damage you take for 10 seconds (or until 400 damage is mitigated)",
-              "Mitigates 15% of all Slashing/Crushing/Piercing damage for 10 seconds (or until 400 damage is mitigated)" },
-
-            { "Barrage costs -14 Power and restores 23 Armor to you",
-              "Restores 23 Armor" },
-
-            { "Hip Throw deals +226 armor damage",
-              "+226 armor damage" },
-
-            { "Hip Throw hits all enemies within 8 meters and deals +16% damage, but Power cost is +20",
-              "Hits all enemies within 8 meters" },
-
-            { "Bodyslam deals +37% damage and slows target's movement speed by 45%",
-              "Slows target's movement speed by 45%" },
-
-            { "Bruising Blow causes the target to take +24% damage from Poison for 20 seconds",
-              "Target's Poison Vulnerability +24% for 20 seconds" },
-
-            { "Bodyslam deals +435 damage to non-Elite enemies",
-              "+435 damage to non-Elite enemies" },
-
-            { "Bodyslam heals you for 130 health",
-              "Restores 130 Health" },
-
-            { "Cobra Strike and Mamba Strike boost your Nice Attack and Signature Debuff ability damage +55 for 7 seconds",
-              "Nice Attack and Signature Debuff Damage +55 for 7 seconds" },
-
-            { "Cobra Strike and Mamba Strike restore 40 Armor to you",
-              "Restores 40 Armor" },
-
-            { "Bruising Blow deals +28% damage and hastens the current reuse timer of Bodyslam by 5 seconds",
-              "Hastens the current reuse timer of Bodyslam by 5 second" },
-
-            { "Bruising Blow and Headbutt restore 28 Health",
-              "Restores 28 Health" },
-
-            { "Bruising Blow deals Trauma damage instead of Crushing, and targets suffer +12.5% damage from other Trauma attacks for 20 seconds",
-              "DamageType:Trauma; Target's Trauma Vulnerability +12.5% for 20 seconds" },
-
-            { "Slashing Strike and Claw Barrage boost damage from Epic attacks +74 for 10 seconds",
-              "Epic Attack Damage +74 for 10 seconds" },
-
-            { "Slashing Strike deals +15% damage and hastens the current reuse timer of Hip Throw by 2.5 seconds",
-              "Hastens the current reuse timer of Hip Throw by 2.5 seconds" },
-
-            { "Psychoanalyze deals between 160 and 360 extra damage",
-              "+Up to 200 extra damage (randomly determined)" },
-
-            { "Psychoanalyze restores 115 Health to you after a 15 second delay",
-              "Restores 115 Health after a 15 second delay" },
-
-            { "Psychoanalyze restores 172 Armor to you",
-              "Restores 172 Armor" },
-
-            { "Psychoanalyze causes the target to be worth 16% more XP if slain within 60 seconds",
-              "Target is worth 16% more XP if slain within 60 seconds" },
-
-            { "Psychoanalyze causes the target to take +20 damage from Psychic attacks for 60 seconds",
-              "Target takes +20 direct Psychic damage for 60 seconds" },
-
-            { "Tell Me About Your Mother restores 141 Armor to you",
-              "Restores 141 Armor" },
-
-            { "Tell Me About Your Mother causes target's attacks to deal -20 damage for 60 seconds",
-              "Target's attacks deal -20 damage for 60 seconds" },
-
-            { "Tell Me About Your Mother boosts your Epic Attack Damage +110 and reduces the Power cost of your Epic Attacks -19 for 15 seconds",
-              "Epic Attack Damage +110 and Epic Attack Power Cost -19 for 15 seconds" },
-
-            { "Strike a Nerve deals between 48 and 160 extra damage",
-              "+Up to 112 extra damage (randomly determined)" },
-
-            { "Strike a Nerve deals +132 armor damage",
-              "+132 armor damage" },
-
-            { "Pep Talk restores 47 Power",
-              "Restores 47 Power" },
-
-            { "Pep Talk removes ongoing Poison effects (up to 44 dmg/sec)",
-              "Removes ongoing Poison effects (up to 44 dmg/sec)" },
-
-            { "Pep Talk removes ongoing Fire effects (up to 48 dmg/sec)",
-              "Removes ongoing Fire effects (up to 48 dmg/sec)" },
-
-            { "Pep Talk restores 112 Armor",
-              "Restores 112 Armor" },
-
-            { "Fast Talk heals you for 37 health",
-              "Restores 37 Health" },
-
-            { "Fast Talk heals you for 58 armor",
-              "Restores 58 Armor" },
-
-            { "Positive Attitude boosts your Out-of-Combat Sprint Speed by 4 for 60 seconds",
-              "+4 Out-of-Combat Sprint Speed for 60 seconds" },
-
-            { "Positive Attitude increases your Poison Mitigation +16 for 30 seconds",
-              "+16 Poison Mitigation for 30 seconds" },
-
-            { "Positive Attitude increases your Core Attack Damage +98 for 15 seconds",
-              "Core Attack Damage +98 for 15 seconds" },
-
-            { "Inspire Confidence increases all targets' Accuracy +16 for 10 seconds",
-              "+16 Accuracy for 10 seconds" },
-
-            { "Inspire Confidence increases the damage of all targets' attacks +12 for 30 seconds",
-              "+12 damage from all attacks for 30 seconds" },
-
-            { "Inspire Confidence restores +119 Health after a 15 second delay",
-              "Restores 119 Health after a 15 second delay" },
-
-            { "Inspire Confidence restores +165 Health after a 25 second delay",
-              "Restores 165 Health after a 25 second delay" },
-
-            { "But I Love You deals +20% damage and stuns the target",
-              "Stuns the target" },
-
-            { "But I Love You boosts your Nice and Epic Attack Damage +75 for 8 seconds",
-              "Nice and Epic Attack Damage +75 for 8 seconds" },
-
-            { "You Were Adopted deals +33% damage and triggers the target's Vulnerability",
-              "Triggers the target's Vulnerability" },
-
-            { "Soothe boosts the healing from your Major Healing abilities +44 for 10 seconds",
-              "+44 Major Healing for 10 seconds" },
-
-            { "Ridicule boosts movement speed by 4.5 for 6 seconds",
-              "+4.5 Movement Speed for 6 seconds" },
-
-            { "All Staff attacks have a 5.5% chance to trigger the target's Vulnerability",
-              "5.5% chance to trigger the target's Vulnerability" },
-
-            { "Phoenix Strike costs -16 Power and boosts your Direct Fire Damage +20% for 30 seconds",
-              "Direct Fire Damage +20% for 30 seconds" },
-
-            { "Double Hit causes your next attack to deal +100 damage if it is a Crushing attack",
-              "Your next attack deals +100 damage if it is a Crushing attack" },
-
-            { "Pin heals you for 45 health",
-              "Restores 45 Health" },
-
-            { "Pin boosts Core Attack and Nice Attack Damage +83 for 7 seconds",
-              "Core Attack and Nice Attack Damage +83 for 7 seconds" },
-
-            { "Suppress and Heed the Stick have +35 Accuracy",
-              "+35 Accuracy" },
-
-            { "Double Hit costs -16 Power and makes the target 10% more vulnerable to Slashing for 15 seconds",
-              "Target is 10% more vulnerable to Slashing damage for 15 seconds" },
-
-            { "Blocking Stance boosts your Direct Cold Damage +15.5% for 30 seconds",
-              "Direct Cold Damage +15.5% for 30 seconds" },
-
-            { "Double Hit deals +36% damage and hastens the current reuse timer of Headcracker by 2 seconds",
-              "Hastens the current reuse timer of Headcracker by 2 second" },
-
-            { "Lunge deals +39% damage to health and armor",
-              "+39% Armor damage" },
-
-            { "Lunge hits all enemies within 5 meters, but deals -8% damage and reuse timer is +2 seconds",
-              "Hits all enemies within 5 meters" },
-
-            { "Lunge deals +55 damage and knocks the target backwards",
-              "Knocks the target backwards" },
-
-            { "Lunge deals +121 armor damage",
-              "+121 armor damage" },
-
-            { "Deflective Spin heals 108 Health over 60 seconds",
-              "Restores 108 Health over 60 seconds" },
-
-            { "Deflective Spin restores 42 Power after a 20 second delay",
-              "Restores 42 Power after a 20 second delay" },
-
-            { "If you have less than half of your Health remaining, Deflective Spin heals you for 31% of your Max Health",
-              "Restores 31% of your Max Health if you have less than half of your Health remaining" },
-
-            { "Pin deals +120 damage and has +25 Accuracy (which cancels out the Evasion that certain monsters have)",
-              "+25 Accuracy" },
-
-            { "Blocking Stance restores 38 Power to you",
-              "Restores 38 Power" },
-
-            { "For 30 seconds after using Blocking Stance, your Mentalism Base Damage is +12.5%",
-              "Your Mentalism Base Damage is +12.5% for 30 seconds" },
-
-            { "For 60 seconds after using Blocking Stance, First Aid heals you +68",
-              "First Aid Healing +68 for 60 seconds" },
-
-            { "For 60 seconds after using Redirect, First Aid heals you +75",
-              "First Aid Healing +75 for 60 seconds" },
-
-            { "Redirect deals +60 damage and stuns the target",
-              "Stuns the target" },
-
-            { "Strategic Thrust deals +48% damage, plus 40% more damage if the target is Vulnerable",
-              "+40% damage if the target is Vulnerable" },
-
-            { "If Strategic Thrust is used on a Vulnerable target, it deals +113 damage and restores 80 Health to you",
-              "+113 damage and restores 80 Health if target is Vulnerable" },
-
-            { "Heed The Stick heals you for 28 health (or armor if health is full)",
-              "Restores 28 health (or armor if health is full)" },
-
-            { "Heed The Stick gives you +17 mitigation from direct attacks for 10 seconds",
-              "+17 mitigation from direct attacks for 10 seconds" },
-
-            { "After using Headcracker, you take half damage from Psychic attacks for 15 seconds",
-              "Direct Psychic Mitigation +50% for 15 seconds" },
-
-            { "Pin causes target's attacks to deal -50% damage for 5 seconds",
-              "Target's attacks deal -50% damage for 5 seconds" },
-
-            { "For 30 seconds after using Phoenix Strike, your Survival Utility and Major Heal abilities restore 83 Health to you",
-              "Survival Utility and Major Heal abilities restore 83 Health (30 seconds)" },
-
-            { "Phoenix Strike deals +10% damage and triggers the target's Vulnerability",
-              "Triggers the target's Vulnerability" },
-
-            { "Suppress heals you for 45 health",
-              "Restores 45 Health" },
-
-            { "Werewolf Bite deals +19% damage and boosts your Nice Attack Damage +50 for 10 seconds",
-              "Nice Attack Damage +50 for 10 seconds" },
-
-            { "Claw and Double Claw restore 18 Health",
-              "Restores 18 Health" },
-
-            { "Bite restores 30 Health to you",
-              "Restores 30 Health" },
-
-            { "Werewolf Bite hits all enemies within 5 meters and deals +16% damage, but reuse timer is +2 seconds",
-              "Hits all enemies within 5 meters" },
-
-            { "Skulk boosts the damage of your Core and Nice Attacks +50 for 30 seconds",
-              "Core Attack Damage and Nice Attack Damage +50 for 30 seconds" },
-
-            { "Pouncing Rake deals +172 Armor damage",
-              "+172 armor damage" },
-
-            { "Blood of the Pack restores 90 Health over 10 seconds to you and your allies",
-              "Restores 90 Health over 10 seconds to all targets" },
-
-            { "Future Pack Attacks to the same target deal +80 damage",
-              "Future Pack Attacks to the same target deal +80 damage" },
-
-            { "After using Pack Attack, your Lycanthropy Base Damage increases +85% for 7 seconds or until you are attacked",
-              "Lycanthropy Base Damage +85% for 7 seconds or until you are attacked" },
-
-            { "Blood of the Pack causes you and your allies' attacks to deal +35 damage for 30 seconds",
-              "+35 Direct Damage (for all targets) for 30 seconds" },
-
-            { "Sanguine Fangs causes the target to take +14% damage from Slashing attacks for 15 seconds",
-              "Target takes +14% damage from Slashing attacks for 15 seconds" },
-
-            { "Sanguine Fangs deals +29% Crushing damage and doesn't cause the target to yell for help",
-              "Target does not yell for help because of this attack" },
-
-            { "See Red heals you for 38 health",
-              "Restores 38 Health" },
-
-            { "For 8 seconds after using See Red, all other Lycanthropy attacks deal 116 Trauma damage over 8 seconds",
-              "For 8 seconds, all Lycanthropy attacks deal 116 Trauma damage over 8 seconds" },
-
-            { "See Red increases the damage of your next attack by +95",
-              "Your next attack deals +95 damage" },
-
-            { "See Red grants you 14% melee evasion for 8 seconds",
-              "Gain 14% melee evasion for 8 seconds" },
-
-            { "Skulk grants you +24 Mitigation against all attacks",
-              "+24 Damage Mitigation" },
-
-            { "Shadow Feint raises your Lycanthropy Base Damage +52% until you trigger the teleport",
-              "Lycanthropy Base Damage +52% for 20 seconds or until you teleport" },
-
-            { "Shadow Feint causes your next attack to deal +192 damage if it is a Werewolf ability",
-              "Your next attack deals +192 damage if it is a Werewolf ability" },
-
-            { "Shadow Feint reduces the taunt of all your attacks by 46% until you trigger the teleport",
-              "All attacks taunt -46% for 20 seconds or until you Feint" },
-
-            { "When Skulk is used, you recover 52 Health and all enemies within 10 meters are taunted -700",
-              "Recover 52 Health; All enemies within 10 meters are taunted -700" },
-
-            { "Skulk causes your next attack to deal +43% damage if it is a Crushing attack",
-              "Your next attack deals +43% damage if it is a Crushing attack" },
-
-            { "Skulk grants you +70% Projectile Evasion",
-              "+70% Projectile Evasion" },
-
-            { "Freezing Mist restores 133 Armor to you",
-              "Restores 133 Armor" },
-
-            { "Healing Mist heals +82 Health",
-              "Restores 82 Health" },
-
-            { "Healing Mist heals +118 Armor",
-              "Restores 118 Armor" },
-
-            { "Healing Mist restores 40 power",
-              "Restores 40 Power" },
-
-            { "Healing Injection heals 90 Health after a 20 second delay",
-              "Restores 90 Health after a 20 second delay" },
-
-            { "Bomb attacks deal +55 damage and hasten the current reuse timer of Healing Mist by 2.5 seconds",
-              "Shortens the remaining reset time of Healing Mist by 2.5 seconds" },
-
-            { "Healing Mist hastens the remaining reset timer of Pep Talk by 10 seconds (if Pep Talk is not already ready to use)",
-              "Shortens the remaining reset time of Pep Talk by 10 seconds" },
-
-            { "Healing Mist hastens the remaining reset timer of Reconstruct by 10 seconds (if Reconstruct is not already ready to use)",
-              "Shortens the remaining reset time of Reconstruct by 10 seconds" },
-
-            { "Healing Mist hastens the remaining reset timer of Regrowth by 10 seconds (if Regrowth is not already ready to use)",
-              "Shortens the remaining reset time of Regrowth by 10 seconds" },
-
-            { "Your Knee Spikes mutation also causes kicks to restore 18 Health to the kicker",
-              "Causes kicks to restore 18 Health to the kicker" },
-
-            { "Your Knee Spikes mutation causes kicks to deal an additional +20% damage",
-              "Causes kicks to deal an additional +20% damage" },
-
-            { "Your Extra Skin mutation causes the target to heal 55 Health every 20 seconds",
-              "Causes the target to heal 55 Health every 20 seconds" },
-
-            { "Your Extra Skin mutation provides +18 mitigation from Slashing attacks",
-              "Provides +18 mitigation from Slashing attacks" },
-
-            { "Your Extra Skin mutation provides +18 mitigation from Piercing attacks",
-              "Provides +18 mitigation from Piercing attacks" },
-
-            { "Your Extra Heart mutation causes the target to regain +35 Power every 20 seconds",
-              "Causes the target to regain +35 Power every 20 seconds" },
-
-            { "Your Extra Heart and Stretchy Spine mutations grant the target +55 Max Health",
-              "Grant the target +55 Max Health" },
-
-            { "Your Stretchy Spine mutation randomly repairs broken bones twice as often",
-              "Randomly repairs broken bones twice as often" },
-
-            { "Spark of Death deals +49 damage and renders target 10% more vulnerable to Electricity damage for 30 seconds",
-              "Target takes 10% more damage from Electricity for 30 seconds" },
-
-            { "Summoned Skeletons deal +17% direct damage",
-              "+17% Direct Damage" },
-
-            { "Life Steal restores 34 Health",
-              "Restores 34 Health" },
-
-            { "Life Steal targets all enemies within 10 meters and steals +32 health, but reuse timer is +3 seconds and Power cost is +23",
-              "Reap 32 additional health, hits all enemies within 10 meters" },
-
-            { "Life Steal reaps 35 additional health",
-              "Reap 35 additional health" },
-
-            { "Deathgaze deals +95% damage and has +20 Accuracy (which cancels out the Evasion that certain monsters have)",
-              "+20 Accuracy" },
-
-            { "Deathgaze deals +84 damage and restores 83 armor to you",
-              "Restores 83 Armor" },
-
-            { "Deathgaze deals +118 damage and increases your sprint speed +2.5 for 15 seconds",
-              "+2.5 Sprint Speed for 15 seconds" },
-
-            { "Death's Hold causes target to take +14% damage from Slashing for 15 seconds",
-              "Target takes +14% damage from Slashing for 15 seconds" },
-
-            { "Death's Hold causes target to take +14% damage from Electricity for 15 seconds",
-              "Target takes +14% damage from Electricity for 15 seconds" },
-
-            { "Rebuild Undead restores 55 Health to you",
-              "Restores 55 Health to YOU" },
-
-            { "Rebuild Undead restores 110 health/armor to your undead after a 10 second delay",
-              "Restores 110 health/armor to your undead after a 10 second delay" },
-
-            { "Wave of Darkness deals +160 damage to sentient creatures",
-              "+160 damage to sentient creatures" },
-
-            { "Summoned Skeletons have +50 health",
-              "+50 Max Health" },
-
-            { "Summoned Skeletons have +76 armor",
-              "+76 Max Armor" },
-
-            { "Summoned Skeletal Archers and Mages deal +28 direct damage",
-              "+28 Direct Damage" },
-
-            { "Summoned Skeletal Swordsmen have +108 armor",
-              "+108 Max Armor" },
-
-            { "Summoned Skeletal Swordsmen taunt as if they did 850% more damage",
-              "Pets' Taunt +850%" },
-
-            { "Summoned Skeletal Swordsmen have -45% Max Rage, allowing them to use their stun attack more often",
-              " -45% Max Rage" },
-
-            { "Provoke Undead restores 52 Health to you and causes your attacks to taunt +20% for 10 seconds",
-              "Restores 52 Health to you; your Taunt is +20% for 10 seconds" },
-
-            { "Heal Undead restores +18 health/armor and grants target undead +13 Mitigation from all attacks for 8 seconds",
-              "Target undead gain +13 Mitigation from all attacks for 8 seconds" },
-
-            { "Heal Undead restores +24 Health/Armor and boosts your next attack +43 if it is a Darkness attack",
-              "Your next attack deals +43 damage if it is a Darkness attack" },
-
-            { "Heal Undead restores +20 and has a 25% chance to boost targets' mitigation +35 for 8 seconds",
-              "25% chance to boost targets' mitigation +35 for 8 seconds" },
-
-            { "Summoned Skeletons deal +18% direct damage, but take +150% more damage from any cold attacks",
-              "+18% Direct Damage, but Cold Vulnerability +150%" },
-
-            { "Summoned Skeletal Archers and Mages deal +20% direct damage, but take +50% damage from any slashing, piercing, or crushing attacks",
-              "+20% Direct Damage, but Slashing/Piercing/Crushing Vulnerability +50%" },
-
-            { "Summoned Skeletal Archers and Mages deal +13% direct damage, but are instantly destroyed by ANY Nature Damage",
-              "+13% Direct Damage, but Nature Vulnerability +Infinity" },
-
-            { "Raised Zombies deal +21% damage",
-              "+21% Direct Damage" },
-
-            { "Raised Zombies deal +39 damage and taunt as if they did +200% more damage",
-              "+39 Direct Damage and Taunt +200%" },
-
-            { "Raised Zombies deal +20 damage and speed is +10",
-              "+20 Direct Damage and Movement Speed +10" },
-
-            { "Electrify stuns the target and deals +32 damage",
-              "Stuns target" },
-
-            { "Electrify, System Shock, and Panic Charge restore 30 Health after a 15 second delay",
-              "Restores 30 Health after a 15 second delay" },
-
-            { "For 15 seconds after using Mindreave, your Major Healing abilities restore +48 Health (this effect does not stack with itself)",
-              "Major Healing +48 for 15 seconds (this effect does not stack with itself)" },
-
-            { "System Shock boosts the damage of your Signature Debuffs by +92 for 6 seconds",
-              "Signature Debuff Damage +92 for 6 seconds" },
-
-            { "System Shock restores 44 Armor to you",
-              "Restores 44 Armor" },
-
-            { "Reconstruct restores +23 Health and causes the target to take 24 less damage from attacks for 10 seconds",
-              "Target takes 24 less damage from attacks for 10 seconds" },
-
-            { "Revitalize restores +22 Health and causes the target to take 30 less damage from Psychic and Nature attacks for 10 seconds",
-              "Target takes 30 less damage from Psychic and Nature attacks for 10 seconds" },
-
-            { "Reconstruct restores 51 Power to the target",
-              "Restores 51 Power to the target" },
-
-            { "Revitalize restores +20 Health and removes ongoing Trauma effects (up to 26 dmg/sec)",
-              "Removes ongoing Trauma effects (up to 26 dmg/sec)" },
-
-            { "Reconstruct restores 35 power and boosts target's sprint speed by 4.5 for 10 seconds",
-              "Restores 35 Power and boosts target's sprint speed by 4.5 for 10 seconds" },
-
-            { "Revitalize restores 67 armor to YOU (regardless of the target of the ability)",
-              "Restores 67 Armor to YOU" },
-
-            { "Psi Health Wave and Psi Adrenaline Wave instantly heal all targets for 32 health",
-              "Instantly restores 32 Health to all targets" },
-
-            { "Psi Health Wave heals all targets for 74 health after a 25 second delay",
-              "Restores 74 Health to all targets after a 25 second delay" },
-
-            { "Psi Health Wave and Psi Armor Wave instantly heal you for 47 health",
-              "Instantly restores 47 Health to YOU" },
-
-            { "Psi Health Wave grants all targets +28 Mitigation vs. Electricity, Acid, and Nature attacks for 20 seconds",
-              "All targets gain +28 Mitigation vs. Electricity, Acid, and Nature attacks for 20 seconds" },
-
-            { "Psi Armor Wave instantly restores 52 armor to all targets",
-              "Instantly restores 52 Armor to all targets" },
-
-            { "Psi Armor Wave and Psi Adrenaline Wave restore 158 armor to all targets after a 25 second delay",
-              "Restores 158 Armor to all targets after a 25 second delay" },
-
-            { "Psi Health Wave and Psi Armor Wave instantly restore 84 armor to you",
-              "Instantly restores 84 Armor to YOU" },
-
-            { "Agonize deals +22% damage and conjures a magical field that mitigates 20% of all physical damage you take for 1 minute (or until 200 damage is mitigated).",
-              "Conjures a magical field that mitigates 20% of all physical damage you take for 1 minute (or until 200 damage is mitigated)." },
-
-            { "Psi Power Wave and Psi Adrenaline Wave restore 54 power to all targets after a 25 second delay",
-              "Restores 54 Power to all targets after a 25 second delay" },
-
-            { "Psi Power Wave instantly restores 31 power to all targets",
-              "Instantly restores 31 Power to all targets" },
-
-            { "Psi Power Wave and Psi Adrenaline Wave instantly restore 32 power to you",
-              "Instantly restores 32 power to YOU" },
-
-            { "Psi Power Wave and Psi Armor Wave cause all targets' melee attacks to cost -8 Power for 20 seconds",
-              "All targets' melee attacks cost -8 Power for 20 seconds" },
-
-            { "Psi Health Wave, Armor Wave, and Power Wave grant all targets +42 Psychic Damage for 60 seconds",
-              "All targets gain +42 Psychic Damage for 60 seconds" },
-
-            { "Psi Adrenaline Wave increases all targets' Slashing damage +9% for 20 seconds",
-              "All targets gain +9% Slashing Damage for 20 seconds" },
-
-            { "Psi Adrenaline Wave increases all targets' Electricity damage +9% for 20 seconds",
-              "All targets gain +9% Electricity Damage for 20 seconds" },
-
-            { "Psi Adrenaline Wave increases all targets' Crushing damage +9% for 20 seconds",
-              "All targets gain +9% Crushing Damage for 20 seconds" },
-
-            { "Agonize deals +70% damage and reuse timer is -11 seconds, but the ability deals 120 health damage to YOU",
-              "Deals 120 psychic health damage to YOU" },
-
-            { "Panic Charge boosts the damage of all your attacks +23 for 20 seconds",
-              "+23 Direct Damage for 20 seconds" },
-
-            { "Panic Charge knocks all targets back and restores 78 armor to you",
-              "Targets are knocked back; Restores 78 Armor" },
-
-            { "Pain Bubble deals +80 damage and restores 60 armor to you",
-              "Restores 60 Armor" },
-
-            { "Electrify restores 64 Health to you",
-              "Restores 64 Health" },
-
-            { "Electrify restores 40 power to you",
-              "Restores 40 Power" },
-
-            { "Pain Bubble increases the damage of your ranged attacks by 13% for 10 seconds",
-              "Ranged Attack Damage Damage +13% for 10 seconds" },
-
-            { "Fairy Fire causes your next attack to deal +98 damage if it's a Psychic, Electricity, or Fire attack",
-              "Fairy Fire causes your next attack to deal +98 damage if it's a Psychic, Electricity, or Fire attack" },
-
-            { "Astral Strike's reuse timer is -4 secs, and damage is boosted +80% vs Elite enemies",
-              "+80% damage vs Elites" },
-
-            { "Astral Strike's damage is +160 and all targets are Stunned",
-              "Targets are Stunned" },
-
-            { "Astral Strike causes all targets to suffer +102 damage from direct Cold attacks for 10 seconds",
-              "Targets' Direct Cold Mitigation -102 for 10 seconds" },
-
-            { "Pixie Flare's attack range is +5, and it deals +210 damage to targets that are covered in Fairy Fire",
-              "+210 damage if target is covered in Fairy Fire" },
-
-            { "Fae Conduit restores +8 Power every 5 seconds",
-              "Restores +8 Power every 5 seconds" },
-
-            { "Fae Conduit also heals 45 Health every 5 seconds",
-              "Restores +45 Health every 5 seconds" },
-
-            { "Fae Conduit also buffs targets' direct Cold, Fire, and Electricity damage +40 for 30 seconds (stacking up to 6 times)",
-              "Buffs targets' direct Cold, Fire, and Electricity damage +40 for 30 seconds every 5 seconds" },
-
-            { "Basic Shot and Aimed Shot heal you for 28 health",
-              "Restores 28 health" },
-
-            { "Aimed Shot deals 132 additional health damage over 12 seconds",
-              "+132 Trauma damage over 12 seconds" },
-
-            { "Aimed Shot boosts your Nice Attack Damage +108 for 10 seconds",
-              "Nice Attack Damage +108 for 10 seconds" },
-
-            { "Aimed Shot deals +30% damage and boosts your Accuracy +20 for 10 seconds",
-              "Accuracy +20 for 10 seconds" },
-
-            { "Multishot restores 70 Health to you after a 15 second delay",
-              "Restores 70 Health after a 15 second delay" },
-
-            { "Long Shot boosts your Epic Attack Damage +16% for 15 seconds",
-              "Epic Attack Damage +16% for 15 seconds" },
-
-            { "Long Shot boosts your Armor Regeneration (in-combat) +16 for 15 seconds",
-              "Armor Regeneration (in-combat) +16 for 15 seconds" },
-
-            { "Long Shot restores 49 health to you after a 15 second delay",
-              "Restores 49 Health after a 15 second delay" },
-
-            { "Blitz Shot and Basic Shot boost your healing from Combat Refreshes +8 for 30 seconds",
-              "Healing from Combat Refreshes +8 for 30 seconds" },
-
-            { "Poison Arrow increases the damage target takes from Poison by 19% for 10 seconds",
-              "Increases target's Poison Vulnerability +19% for 10 seconds" },
-
-            { "Poison Arrow makes target's attacks deal -10 damage for 20 seconds",
-              "Target's attacks deal -10 damage for 20 seconds" },
-
-            { "Snare Arrow boosts the healing of your Major Healing abilities +70 for 15 seconds",
-              "Major Healing Restoration +70 for 15 seconds" },
-
-            { "Snare Arrow raises target's Max Rage by 1200, requiring more Rage to use their Rage Abilities",
-              "Increases target's Max Rage by1200 for 60 seconds" },
-
-            { "Snare Arrow restores 43 Health and 43 Armor to you",
-              "Restores 43 Health and 43 Armor" },
-
-            { "Bow Bash gives you +8 mitigation of any physical damage for 20 seconds. (This effect does not stack with itself.)",
-              "+8 mitigation of any physical damage for 20 seconds. (This effect does not stack with itself.)" },
-
-            { "Bow Bash heals you for 16 health",
-              "Restores 16 Health" },
-
-            { "Bow Bash deals +180 damage and knocks the target backwards, but ability's reuse timer is +3 seconds",
-              "Knocks target backwards" },
-
-            { "Mangling Shot deals +43% damage and slows target's movement by 25%",
-              "Slows target's movement by 25%" },
-
-            { "Mangling Shot causes target to take +11.5% damage from Piercing for 10 seconds",
-              "Target takes +11.5% damage from Piercing for 10 seconds" },
-
-            { "Mangling Shot deals +16% damage and causes target's attacks to deal -16 damage for 20 seconds",
-              "Target's attacks deal -16 damage for 20 seconds" },
-
-            { "Restorative Arrow heals YOU for 90 Health",
-              "Restores 90 Health to YOU" },
-
-            { "Restorative Arrow restores an additional 126 Health over 30 seconds",
-              "Restores 126 Health over 30 seconds" },
-
-            { "Restorative Arrow boosts target's Nice Attack and Epic Attack Damage +144 for 10 seconds",
-              "Boosts target's Nice Attack and Epic Attack Damage +144 for 10 seconds" },
-
-            { "All types of shield Bash attacks restore 16 Armor",
-              "Restores 16 Armor" },
-
-            { "Infuriating Bash deals +48 damage and boosts your Indirect Acid Damage +54 for 7 seconds",
-              "Indirect Acid Damage +54 for 7 seconds" },
-
-            { "Strategic Preparation boosts your Indirect Acid Damage +25% for 20 seconds",
-              "Indirect Acid Damage +25% for 20 seconds" },
-
-            { "Strategic Preparation boosts your in-combat Armor regeneration +28 for 20 seconds",
-              "In-Combat Armor Regeneration +28 for 20 seconds" },
-
-            { "Strategic Preparation causes your next attack to deal +130 damage if it is a Crushing, Slashing, or Piercing attack",
-              "Next attack deals +130 damage if it is a Crushing, Slashing, or Piercing attack" },
-
-            { "Reinforce causes your Major Healing abilities to restore +52 for 10 seconds",
-              "Major Healing abilities restore +52 for 10 seconds" },
-
-            { "Disrupting Bash causes the target to take +10% damage from Crushing attacks for 8 seconds",
-              "Target's Crushing Vulnerability +10% for 8 seconds" },
-
-            { "Vigorous Defense boosts your Sprint Speed +7 for 15 seconds",
-              "Sprint Speed +7 for 15 seconds" },
-
-            { "Shield Team causes all targets' Survival Utility abilities to restore 100 Armor to them. Lasts 20 seconds",
-              "All targets' Survival Utility abilities restore 100 Armor for 20 seconds" },
-
-            { "Reinforce boosts your Nice Attack Damage +160 for 9 seconds",
-              "Nice Attack Damage +160 for 9 seconds" },
-
-            { "Take the Lead heals you for 96 Health after a 15 second delay",
-              "Restores 96 Health after a 15 second delay" },
-
-            { "Take the Lead boosts your sprint speed by an additional +5 and you recover 36 Power after a 15 second delay",
-              "+5 sprint speed and you recover 36 Power after a 15 second delay" },
-
-            { "Take the Lead boosts the taunt of all your attacks +160%",
-              "+160% Taunt for all attacks" },
-
-            { "Finish It Restores 62 Health",
-              "Restores 62 Health" },
-
-            { "All Shield Bash Abilities deal +50 damage and hasten the current reuse timer of Finish It by 2 seconds",
-              "Hastens current reuse timer of Finish It by 2 seconds" },
-
-            { "Fight Me You Fools boosts Core Attack Damage +200 for 6 seconds",
-              "Core Attack Damage +200 for 6 seconds" },
-
-            { "All Shield Bash Abilities deal +50 damage and hasten the current reuse timer of Fight Me You Fools by 2 seconds",
-              "Hastens current reuse timer of Fight Me You Fools by 2 seconds" },
-
-            { "Fire Shield boosts your direct and indirect Cold mitigation +16 for 20 seconds",
-              "Direct and Indirect Cold Mitigation +16" },
-
-            { "Fire Shield boosts your direct and indirect Fire mitigation +16 for 20 seconds",
-              "Direct and Indirect Fire Mitigation +16" },
-
-            { "Shrill Command deals +36% damage and hastens the current reuse timer of Clever Trick by 2 seconds",
-              "Hastens the current reuse timer of Clever Trick by 2 seconds" },
-
-            { "Shrill Command deals +34% damage and shortens the current reuse time of Sic 'Em by 1 second",
-              "Shortens the current reuse timer of Sic 'Em by 1 second" },
-
-            { "Shrill Command deals +25% damage and reduces the target's Rage by -350",
-              "Shrill Command deals +25% damage and reduces the target's Rage by -350" },
-
-            { "Monstrous Rage boosts your Slashing attack damage +18% for 8 seconds",
-              "Your Slashing attacks deal +18% damage for 8 seconds" },
-
-            { "Monstrous Rage boosts your Crushing attack damage +19% for 8 seconds",
-              "Your Crushing attacks deal +19% damage for 8 seconds" },
-
-            { "Monstrous Rage and Unnatural Wrath boost your pet's next attack damage +113",
-              "Your pet's next attack deals +113 damage" },
-
-            { "When you use Sic Em, your sprint speed increases by +9 for 10 seconds",
-              "+9 sprint speed for 10 seconds" },
-
-            { "Sic Em boosts your pet's Slashing attacks (if any) +85 damage for 10 seconds",
-              "Your pet's Slashing attacks (if any) deal +85 damage for 10 seconds" },
-
-            { "Sic Em boosts your pet's Crushing attacks (if any) +85 damage for 10 seconds",
-              "Your pet's Crushing attacks (if any) deal +85 damage for 10 seconds" },
-
-            { "Sic Em gives both you and your pet +32 Accuracy for 10 seconds",
-              "Both you and your pet gain +32 Accuracy for 10 seconds" },
-
-            { "Sic Em causes your pet's attacks to generate -221 Rage for 10 seconds",
-              "Your pet's attacks generate -221 Rage for 10 seconds" },
-
-            { "Sic 'Em restores 46 Health to both you and your pet",
-              "Restores 46 Health to both you and your pet" },
-
-            { "Get It Off Me increases your pet's Taunt an additional +280%",
-              "Your pet's attacks taunt +280%" },
-
-            { "Get It Off Me restores 114 Armor to you",
-              "Restores 114 Armor to you" },
-
-            { "Get It Off Me heals you for 160 Health after a 15 second delay",
-              "Restores 160 Health to you after a 15 second delay" },
-
-            { "Feed Pet restores 140 Health (or Armor if Health is full) to your pet after a 20 second delay",
-              "Restores 140 Health/Armor to your pet after a 20 second delay" },
-
-            { "Feed Pet restores 80 Armor to your pet and hastens the current reuse timer of Clever Trick by -4.5 second",
-              "Restores 80 Armor to your pet and hastens the current reuse timer of Clever Trick by -4.5 seconds" },
-
-            { "Wild Endurance heals your pet for 120 Health (or Armor if Health is full)",
-              "Restores 120 Health/Armor to your pet" },
-
-            { "Nimble Limbs heals your pet for 101 Health (or Armor if Health is full)",
-              "Restores 101 Health/Armor to your pet" },
-
-            { "Using Unnatural Wrath on your pet heals you for 38 Health (or Armor if Health is full)",
-              "Restores 38 Health/Armor to you" },
-
-            { "Unnatural Wrath causes your pet to bleed for 160 trauma damage over 10 seconds, but also deal +144 damage per attack during that time",
-              "Pet bleeds for 160 trauma damage over 10 seconds, but also deal +144 damage per attack during that time" },
-
-            { "Unnatural Wrath grants your pet +51% mitigation versus direct attacks for 14 seconds. After 15 seconds, the pet takes 160 psychic damage. (You can negate the latent psychic damage by using First Aid 4+ on your pet.)",
-              "Your pet gains +51% mitigation versus direct attacks for 14 seconds. After 15 seconds, the pet takes 160 psychic damage" },
-
-            { "Wild Endurance gives your pet complete stun immunity and +8 Health/Armor healing per second for 15 seconds",
-              "Your pet gains complete stun immunity and restores 8 Health/Armor per second for 15 seconds" },
-
-            { "After using Wild Endurance, your next use of Feed Pet restores +120 Health/Armor",
-              "Your next use of Feed Pet restores +120 Health/Armor" },
-
-            { "Nimble Limbs grants your pet +16 mitigation vs. physical (slashing, piercing, and crushing) attacks for 15 seconds",
-              "Your pet gains +16 mitigation vs. physical (slashing, piercing, and crushing) attacks for 15 seconds" },
-
-            { "That'll Do restores 72 Health to your pet and 32 Power to you",
-              "Restores 72 Health to your pet and 32 Power to you" },
-
-            { "Animal Handling pets have +118 Max Health",
-              "+118 Max Health" },
-
-            { "Animal Handling pets have +151 Max Armor",
-              "+151 Max Armor" },
-
-            { "Animal Handling pets' Sic 'Em and Clever Trick attacks deal +100 damage",
-              "Pet's Sic 'Em and Clever Trick direct damage +100" },
-
-            { "Animal Handling pets' Sic 'Em attacks deal +16% damage",
-              "Sic 'Em direct damage +16%" },
-
-            { "Animal Handling pets' Sic 'Em abilities taunt +1200",
-              "Pet's Sic 'Em taunts +1200" },
-
-            { "Animal Handling pets have +64 Enthusiasm (which boosts XP earned and critical-hit chance)",
-              "+64 Enthusiasm" },
-
-            { "Animal Handling pets taunt as if they did +160% additional damage",
-              "Taunt +160%" },
-
-            { "Animal Handling pets taunt their opponents 32% less",
-              "Taunt -32%" },
-
-            { "Animal Handling pets' damage-over-time effects (if any) deal +130% damage per tick",
-              "Damage over Time +130% per tick" },
-
-            { "Animal Handling pets absorb some direct damage based on their remaining Armor (absorbing 0% when armor is empty, up to 20% when armor is full)",
-              "Up to +20% direct damage mitigation based on remaining Armor" },
-
-            { "Animal Handling pets have +48% Death Avoidance (ignores a fatal attack once; resets after 15 minutes)",
-              "+48% Death Avoidance" },
-
-            { "Animal Handling pets recover +17 Armor every five seconds (whether in combat or not)",
-              "+17 Armor Regeneration" },
-
-            { "Animal Handling pets' healing abilities, if any, restore +45% health",
-              "Healing Abilities +45%" },
-
-            { "Nimble Limbs gives pet +19% melee evasion for 30 seconds",
-              "+19% Melee Evasion" },
-
-            { "Animal Handling pets' Clever Trick abilities deal +245 damage",
-              "Clever Trick direct damage +245" },
-
-            { "Animal Handling pets' Clever Trick abilities deal +20% damage",
-              "Clever Trick direct damage +20%" },
-
-            { "For 17 seconds after using Clever Trick, pets' basic attacks have a 15% chance to deal double damage",
-              "For 17 seconds, pets' basic attacks have a 15% chance to deal double damage" },
-
-            { "Animal Handling pets' basic attacks deal +13% damage",
-              "Pet basic attack direct damage +13%" },
-
-            { "Way of the Hammer boosts Slashing and Piercing Damage +34% for 10 seconds",
-              "Also boosts Slashing and Piercing Damage +34% for 10 seconds" },
-
-            { "Seismic Impact hits all targets within 8 meters and deals +17% damage",
-              "Hits all enemies within 8 meters" },
-
-            { "Seismic Impact restores 80 Armor to you",
-              "Restores 80 Armor" },
-
-            { "Seismic Impact deals +58% damage to targets that are Knocked Down",
-              "+58% damage to targets that are Knocked Down" },
-
-            { "Way of the Hammer restores 80 Armor to all targets",
-              "Restores 80 Armor to all targets" },
-
-            { "Pound To Slag restores 120 health to you",
-              "Restores 120 Health" },
-
-            { "Pound To Slag deals +32% damage and hits all enemies within 5 meters, but reuse time is +10 seconds and Power cost is +35%",
-              "Hits all enemies within 5 meters" },
-
-            { "Pound To Slag deals +110 damage and hastens the current reuse timer of Look at My Hammer by 5 seconds",
-              "Hastens the current reuse timer of Look at My Hammer by 5 seconds" },
-
-            { "Way of the Hammer boosts all targets' Electricity Damage +35% for 10 seconds",
-              "Also boosts Electricity Damage +35% for 10 seconds" },
-
-            { "Pound To Slag deals +512 damage if target's Rage is at least 66% full",
-              "+512 damage if target's Rage is at least 66% full" },
-
-            { "Look At My Hammer reduces the damage you take from Slashing, Piercing, and Crushing attacks by 42 for 5 seconds",
-              "Boosts Slashing, Piercing, and Crushing Mitigation +42 for 5 seconds" },
-
-            { "After using Look At My Hammer, all other Hammer attacks cost -10 Power for 8 seconds",
-              "After using Look At My Hammer, all other Hammer attacks cost -10 Power for 8 seconds" },
-
-            { "After using Look At My Hammer, all other Hammer attacks cost -9 Power for 10 seconds",
-              "After using Look At My Hammer, all other Hammer attacks cost -9 Power for 10 seconds" },
-
-            { "After using Look At My Hammer, all other Hammer attacks cost -8 Power for 12 seconds",
-              "After using Look At My Hammer, all other Hammer attacks cost -8 Power for 12 seconds" },
-
-            { "Leaping Smash and Latent Charge boost your Core Attack damage +91 for 6 seconds",
-              "Core Attack damage +91 for 6 seconds" },
-
-            { "Leaping Smash restores 52 Armor to you",
-              "Restores 52 Armor" },
-
-            { "Rib Shatter deals +170 damage to targets that are knocked down",
-              "+170 damage to targets that are knocked down" },
-
-            { "Way of the Hammer grants all targets +14 Direct Mitigation for 10 seconds",
-              "+14 Direct Mitigation for 10 seconds" },
-
-            { "Rib Shatter and Leaping Smash Damage +44% if target's Rage is at least 66% full",
-              "+44% damage if target's Rage is at least 66% full" },
-
-            { "Thunderstrike heals you for 39 health",
-              "Restores 39 Health" },
-
-            { "Thunderstrike deals +18% damage and knocks all targets back",
-              "Knocks all targets backward" },
-
-            { "Discharging Strike deals +8.5% damage plus 53% more damage if target's Rage meter is at least 66% full",
-              "+53% damage if target's Rage meter is at least 66% full" },
-
-            { "Discharging Strike and Latent Charge boost your Epic Attack damage +90 for 15 seconds",
-              "Epic Attack damage +90 for 15 seconds" },
-
-            { "Hurl Lightning deals +20% damage and applies Moderate Concussion status: target is prone to random self-stuns",
-              "Applies Moderate Concussion status: target is prone to random self-stuns" },
-
-            { "Reckless Slam boosts your direct damage mitigation +16 for 5 seconds",
-              "+16 direct damage mitigation for 5 seconds" },
-
-            { "Reckless Slam and Reverberating Strike boost your Nice Attack Damage +66 for 9 seconds",
-              "Nice Attack Damage +66 for 9 seconds" },
-
-            { "Latent Charge deals +80 direct damage. In addition, the target takes a second full blast of delayed Electricity damage after an 8-second delay",
-              "Target suffers a second blast of Electricity damage after 8 seconds" },
-
-            { "Pulse of Life restores 80 Health over 15 seconds",
-              "Restores 80 Health over 15 seconds" },
-
-            { "Heart Thorn restores 74 armor to you",
-              "Restores 74 Armor" },
-
-            { "Pulse of Life gives +18 Fire, Cold, and Electricity Mitigation (direct and indirect) for 15 seconds",
-              "Grants +18 Universal Fire, Cold, and Electricity Mitigation for 15 seconds" },
-
-            { "Rotskin hits all targets within 10 meters and further debuffs their mitigation -48",
-              "Hits all targets within 10 meters" },
-
-            { "Rotskin hastens the current reuse timer of Regrowth by 5 seconds",
-              "Hastens the current reuse timer of Regrowth by 5 seconds" },
-
-            { "Rotskin deals +20% damage and boosts your Nice Attack Damage +83 for 10 seconds",
-              "Nice Attack Damage +83 for 10 seconds" },
-
-            { "Brambleskin increases your Max Health by +69 for 30 seconds and heals 69 Health",
-              "Max Health +69 for 30 seconds (and restores 69 Health)" },
-
-            { "Brambleskin increases your Max Armor by +95 for 30 seconds and restores 95 Armor",
-              "Max Armor +95 for 30 seconds (and restores 95 Armor)" },
-
-            { "Brambleskin increases your Max Power by +40 for 30 seconds and restores 40 Power",
-              "Max Power +40 for 30 seconds (and restores 40 Power)" },
-
-            { "Cloud Sight causes target's attacks to have +5% more chance of missing, but Power cost is +15%",
-              "+5% Miss Chance" },
-
-            { "Cosmic Strike deals +15% damage and boosts your Major Healing +80 for 10 seconds",
-              "Major Healing Boost +80 for 10 seconds" },
-
-            { "Fill With Bile heals 76 health and 76 armor",
-              "Restores 76 Health and 76 Armor" },
-
-            { "Fill With Bile increases target's Max Health by +76 for 3 minutes and heals 76 health",
-              "Max Health by +76 for 3 minutes (and restores 76 Health)" },
-
-            { "Regrowth restores 48 Power",
-              "Restores 48 Power" },
-
-            { "Regrowth restores +44 Health and conjures a magical field on the target that mitigates 10% of all physical damage they take for 1 minute (or until 100 damage is mitigated)",
-              "Conjures a magical field on the target that mitigates 10% of all physical damage they take for 1 minute (or until 100 damage is mitigated)." },
-
-            { "Regrowth restores +35 Health and causes your Minor Heals to restore +46 Health for 10 seconds",
-              "Minor Healing Restores +46 Health for 10 seconds" },
-
-            { "Energize restores 97 armor to each target",
-              "Restores 97 Armor to each target" },
-
-            { "Energize restores +20 Health and conjures a magical field that mitigates 10% of all physical damage they take for 1 minute (or until 100 damage is mitigated).",
-              "Conjures a magical field that mitigates 10% of all physical damage they take for 1 minute (or until 100 damage is mitigated)." },
-
-            { "Your Healing Sanctuary restores +27 health with each heal",
-              "Sanctuary restores +27 Health with each heal" },
-
-            { "Your Healing Sanctuary restores +40 Armor with each heal",
-              "Sanctuary restores +40 Armor with each heal" },
-
-            { "Your Healing Sanctuary restores +16 Power with each heal",
-              "Sanctuary restores +16 Power with each heal" },
-
-            { "Fill With Bile increases target's direct Poison damage +51",
-              "Direct Poison damage +51" },
-
-            { "Your Healing Sanctuary heals +19 health and buffs Melee Accuracy +12",
-              "Sanctuary restores +19 health; Buffs Melee Accuracy +12" },
-
-            { "Ice Spear deals between +1 and +245 extra damage (randomly determined)",
-              "+1 to 245 damage (randomly determined)" },
-
-            { "Ice Spear heals you for 46 health after a 15 second delay",
-              "Restores 46 Health after a 15 second delay" },
-
-            { "All Ice Magic abilities that hit multiple targets have a 20% chance to deal +50% damage",
-              "20% chance to deal +50% damage" },
-
-            { "All Ice Magic attacks that hit a single target have a 33% chance to deal +48% damage",
-              "33% chance to deal +48% damage" },
-
-            { "Chill causes target to take +16% damage from Crushing attacks for 6 seconds, but reset time of Chill is increased +4 seconds",
-              "Target takes +16% damage from Crushing attacks for 6 seconds" },
-
-            { "You regain 23 Power after using Ice Nova or Shardblast",
-              "Restores 23 Power" },
-
-            { "You regain 36 Health when using Ice Nova or Shardblast",
-              "Restores 36 Health" },
-
-            { "Ice Nova restores 55 Armor to you",
-              "Restores 55 Armor" },
-
-            { "Ice Armor restores 170 Armor over 30 seconds",
-              "Restores 170 Armor over 30 seconds" },
-
-            { "Ice Armor restores 80 Power over 30 seconds",
-              "Restores 80 Power over 30 seconds" },
-
-            { "Ice Armor instantly restores 79 Armor, and Fire damage no longer dispels your Ice Armor",
-              "Restores 79 Armor; Fire damage no longer dispels Ice Armor" },
-
-            { "Ice Armor boosts direct and indirect Trauma Mitigation +42 and all attacks taunt +20%",
-              "Trauma Mitigation +42;  all attacks taunt +20%" },
-
-            { "Ice Armor boosts Cold attack damage +26",
-              "Cold attack damage +26" },
-
-            { "Freeze Solid restores 133 armor to you after a 15 second delay",
-              "Restores 133 Armor to you after a 15 second delay" },
-
-            { "Freeze Solid reduces the Power cost of all Ice Magic abilities -11 for 7 seconds",
-              "Reduces the Power cost of all Ice Magic abilities -11 for 7 seconds" },
-
-            { "Freeze Solid resets the timer on Ice Spear (so it can be used again immediately)",
-              "Resets the timer on Ice Spear (so it can be used again immediately)" },
-
-            { "Frostbite causes target's attacks to deal -18 damage",
-              "Target's attacks deal -18 damage" },
-
-            { "Frostbite deals +118 damage and raises the target's Max Rage by 67%, preventing them from using their Rage attacks as often",
-              "Raises the target's Max Rage by 67%, preventing them from using their Rage attacks as often" },
-
-            { "Frostbite debuffs target so that 11% of their attacks miss and have no effect",
-              "11% of target's attacks miss and have no effect" },
-
-            { "Tundra Spikes deals 220 armor damage and taunts +600",
-              "+220 armor damage" },
-
-            { "Tundra Spikes stuns all targets after a 10 second delay",
-              "Stuns all targets after a 10 second delay" },
-
-            { "Tundra Spikes deals +19% damage, gains +8 Accuracy, and lowers targets' Evasion by -16 for 20 seconds",
-              "+8 Accuracy; lowers targets' Evasion by -16 for 20 seconds" },
-
-            { "Blizzard has a 75% chance to cause all sentient targets to flee in terror",
-              "75% chance to cause all sentient targets to flee in terror" },
-
-            { "You regain 60 Health when using Blizzard",
-              "Restores 60 Health to you" },
-
-            { "Blizzard deals 248 armor damage and generates -120 Rage",
-              "+248 armor damage" },
-
-            { "Ice Lightning boosts your Core Attack Damage +85 for 7 seconds",
-              "Core Attack Damage +85 for 7 seconds" },
-
-            { "Ice Lightning causes the target to become 17% more vulnerable to Fire attacks for 7 seconds",
-              "Target's Direct Fire Vulnerability +17% for 7 seconds" },
-
-            { "Cryogenic Freeze restores 135 Health",
-              "Restores 135 Health" },
-
-            { "Cryogenic Freeze restores 201 Armor",
-              "Restores 201 Armor" },
-
-            { "Cryogenic Freeze restores 85 Power",
-              "Restores 85 Power" },
-
-            { "While in Cryogenic Freeze, you are 100% resistant to Fire damage",
-              "Fire Resistance +100%" },
-
-            { "While in Cryogenic Freeze, you are 100% resistant to Poison damage",
-              "Poison Resistance +100%" },
-
-            { "Ice Veins heals 120 Health over 10 seconds",
-              "Restores 120 Health over 10 seconds" },
-
-            { "Your Cold Sphere's attacks deal +26 damage and taunt -45%",
-              "Pet Damage +26 and Taunt -45%" },
-
-            { "Your Cold Sphere gains 128 Armor",
-              "+128 Max Armor" },
-
-            { "Your Cold Sphere's Rage attack deals +260 damage",
-              "Pet's Rage Attack Damage +260" },
-
-            { "Shardblast resets the timer on Ice Armor (so it can be used again immediately)",
-              "Resets the timer on Ice Armor (so it can be used again immediately)" },
-
-            { "Opening Thrust heals you for 14 health",
-              "Restores 14 Health" },
-
-            { "For 5 seconds after using Opening Thrust, all knife abilities with 'Cut' in their name deal +24 damage",
-              "For 5 seconds, all knife abilities with 'Cut' in their name deal +24 damage" },
-
-            { "Opening Thrust has a 25% chance to cause all Knife abilities WITHOUT 'Cut' in their name to have a 32.5% chance to deal +35% damage for 10 seconds",
-              "25% chance to cause all Knife abilities WITHOUT 'Cut' in their name to have a 32.5% chance to deal +35% damage for 10 seconds" },
-
-            { "Marking Cut causes target to take +24% damage from Trauma attacks for 10 seconds",
-              "Target takes +24% damage from Trauma attacks for 10 seconds" },
-
-            { "Marking Cut deals +52 armor damage and does not cause the target to shout for help",
-              "+52 armor damage; this attack does not cause the target to shout for help" },
-
-            { "Blur Cut restores 40 Health after a 15 second delay",
-              "Restores 40 Health after a 15 second delay" },
-
-            { "Blur Cut boosts Burst Evasion by 24% for 8 seconds",
-              "Burst Evasion +24% for 8 seconds" },
-
-            { "Blur Cut grants a 37% chance to ignore stuns for 8 seconds",
-              "Chance to Ignore Stuns +37% for 8 seconds" },
-
-            { "Poisoner's Cut has a 50% chance to deal +115% damage",
-              "50% chance to deal +115% damage" },
-
-            { "Poisoner's Cut boosts Indirect Poison Damage an additional +16 per tick",
-              "Indirect Poison +16 for 5 seconds" },
-
-            { "Fending Blade restores 24 Health to you immediately and reduces the target's Rage by 320 after a 5 second delay",
-              "Restores 24 Health; Reduces Rage by 320 after a 5 second delay" },
-
-            { "Fending Blade restores 22 Power",
-              "Restores 22 Power" },
-
-            { "Slice has a 40% chance to deal +45% damage and restore 85 armor",
-              "40% chance to deal +45% damage and restore 85 Armor" },
-
-            { "Slice ignores mitigation from armor and deals +76 damage",
-              "Ignores mitigation from armor" },
-
-            { "Venomstrike has a 46% chance to stun the target and deal +48 damage",
-              "46% chance to stun the target and deal +48 damage" },
-
-            { "Backstab steals 97 health from the target and gives it to you",
-              "Steals 97 Health from the target and gives it to you" },
-
-            { "Surge Cut restores +75 Health to you",
-              "Restores +75 Health" },
-
-            { "Surge Cut restores 96 Armor to you",
-              "Restores 96 Armor" },
-
-            { "Hamstring Throw deals +117 direct health damage",
-              "+117 direct health damage" },
-
-            { "Hamstring Throw deals +85 direct health damage and causes the target to take +15% damage from Trauma for 20 seconds",
-              "+85 direct health damage; target takes +15% damage from Trauma for 20 seconds" },
-
-            { "Surprise Throw deals +35% damage and stuns the target if they are not focused on you",
-              "Stuns the target if they are not focused on you" },
-
-            { "Surprise Throw restores 70 Power if the target is not focused on you",
-              "Restores 70 Power if the target is not focused on you" },
-
-            { "Fan of Blades deals +15% damage to all targets and knocks them backwards",
-              "Knocks targets backwards" },
-
-            { "Fan of Blades deals +76 damage and causes targets to take +20% damage from Poison for 30 seconds",
-              "Target's Poison Vulnerability +20% for 30 seconds" },
-
-            { "All bard songs restore 22 Health to YOU every 4 seconds",
-              "Restores +22 Health to YOU every 4 seconds" },
-
-            { "All bard songs restore 35 Armor to YOU every 4 seconds",
-              "Restores +35 Armor to YOU every 4 seconds" },
-
-            { "Song of Discord deals +21 damage and has a 5% chance to stun each target every 2 seconds",
-              "5% chance to stun each target every 2 seconds" },
-
-            { "Song of Discord reduces targets' Rage by -130 every 2 seconds",
-              "Reduces targets' Rage by -130 every 2 seconds" },
-
-            { "Song of Discord has a 45% chance to deal +25% damage to each target every 2 seconds",
-              "45% chance to deal +25% damage to each target every 2 seconds" },
-
-            { "Song of Resurgence also restores 8 Power every 4 seconds to each target in range",
-              "Restores 8 Power to each target in range every 4 seconds" },
-
-            { "While playing Song of Resurgence, your Major Healing abilities restore +50 Health",
-              "Major Healing abilities restore +50 Health" },
-
-            { "Song of Bravery has a 15% chance every 4 seconds to grant listeners a Moment of Bravery: all attacks deal +25% damage for 5 seconds",
-              "15% chance every 4 seconds to grant listeners a Moment of Bravery: all attacks deal +25% damage for 5 seconds" },
-
-            { "Song of Bravery boosts allies' Basic Attack and Core Attack damage +55",
-              "Allies' Basic Attack and Core Attack Damage +55" },
-
-            { "Song of Bravery causes allies' Combat Refreshes to restore +76 Armor",
-              "Allies' Combat Refreshes restore +76 Armor" },
-
-            { "Blast of Fury deals +42% damage and knocks the target back, but the ability's reuse timer is +2 seconds",
-              "Knocks targets backwards" },
-
-            { "Blast of Fury deals 160 Armor damage and restores 35 Armor to you",
-              "Deals 160 Armor damage, Restores 35 Armor to you" },
-
-            { "Blast of Despair causes your Nice Attacks to deal +115 damage for 10 seconds",
-              "Nice Attacks Damage +115 for 10 seconds" },
-
-            { "Blast of Despair restores 34 Armor to you",
-              "Restores 34 Armor" },
-
-            { "Thunderous Note causes the target to take +13% damage from Nature attacks for 15 seconds",
-              "Target takes +13% damage from Nature for 15 seconds" },
-
-            { "Rally restores 47 Power",
-              "Restores 47 Power" },
-
-            { "Rally restores 170 Armor after a 20 second delay",
-              "Restores 170 Armor after a 20 second delay" },
-
-            { "Anthem of Avoidance gives all targets +23% Burst Evasion for 8 seconds",
-              "Grants +23% Burst Evasion for 8 seconds" },
-
-            { "Anthem of Avoidance gives all targets +18% Melee Evasion for 8 seconds",
-              "Grants +18% Melee Evasion for 8 seconds" },
-
-            { "Anthem of Avoidance grants all targets immunity to Knockbacks for 8 seconds",
-              "Grants immunity to Knockbacks for 8 seconds" },
-
-            { "Anthem of Avoidance hastens the current reuse timer of Rally by 5 seconds",
-              "Hastens the current reuse timer of Rally by 5 seconds" },
-
-            { "Entrancing Lullaby deals 450 Trauma damage after a 20 second delay",
-              "Deals 450 Trauma damage after a 20 second delay" },
-
-            { "Virtuoso's Ballad restores 61 Power",
-              "Restores 61 Power" },
-
-            { "Virtuoso's Ballad restores 160 Armor",
-              "Restores 160 Armor" },
-
-            { "Moment of Resolve dispels any Stun effects on allies and grants them immunity to Stuns for 8 seconds",
-              "Dispels stuns and grants immunity to new stun effects for 8 seconds" },
-
-            { "Moment of Resolve dispels any Slow or Root effects on allies and grants them immunity to Slow and Root effects for 8 seconds",
-              "Dispels slow and root effects and grants immunity to new slow and root effects for 8 seconds" },
-
-            { "Moment of Resolve boosts targets' Movement Speed +3 for 8 seconds",
-              "Movement Speed +3 for 8 seconds" },
-
-            { "Disharmony causes target to deal -8 damage with their next attack",
-              "Target's next attack deals -8 damage" },
-
-            { "Cow's Front Kick has a 66% chance to deal +132 damage",
-              "66% chance to deal +132 damage" },
-
-            { "Stampede boosts the damage of future Stampede attacks by +38 for 60 seconds (stacks up to 15 times)",
-              "Future Stampede attack damage +38 for 60 seconds" },
-
-            { "Cow's Bash restores 33 Power to you",
-              "Restores 33 Power" },
-
-            { "Cow's Bash heals you for 50 health",
-              "Restores 50 Health" },
-
-            { "Cow's Front Kick has a 50% chance to hit all enemies within 5 meters and deal +68 damage",
-              "50% chance to hit all enemies within 5 meters and deal +68 damage" },
-
-            { "Cow's Front Kick causes the next attack that hits you to deal -39% damage",
-              "The next attack that hits you deals -39% damage" },
-
-            { "Cow's Bash boosts your Nice Attack damage +160 for 9 seconds",
-              "Nice Attack damage +160 for 9 seconds" },
-
-            { "Stampede boosts your Slashing/Crushing/Piercing Mitigation vs. Elites +6 for 30 seconds (stacks up to 5 times)",
-              "Slashing/Crushing/Piercing Mitigation vs. Elites +6 for 30 seconds (stacks up to 5 times)" },
-
-            { "Moo of Calm heals +80 health",
-              "Restores +80 Health" },
-
-            { "Moo of Calm restores +50 power",
-              "Restores +50 Power" },
-
-            { "Moo of Calm restores +100 armor",
-              "Restores +100 Armor" },
-
-            { "For 30 seconds after you use Moo of Calm, any internal (Poison/Trauma/Psychic) attacks that hit you are reduced by 32. This absorbed damage is added to your next Stampede attack at a 200% rate.",
-              "For 30 seconds, any internal (Poison/Trauma/Psychic) attacks that hit you are reduced by 32. This absorbed damage is added to your next Stampede attack at a 200% rate." },
-
-            { "Graze boosts your out-of-combat sprint speed by 8.5 for 30 seconds",
-              "Out-of-Combat Sprint Speed +8.5 for 30 seconds" },
-
-            { "Chew Cud increases your mitigation versus Crushing, Slashing, and Piercing attacks +14 for 10 seconds",
-              "Crushing/Slashing/Piercing Mitigation +14 for 10 seconds" },
-
-            { "Chew Cud increases your mitigation versus all attacks by Elites +14 for 10 seconds",
-              "Mitigation vs. Elites +14 for 10 seconds" },
-
-            { "Clobbering Hoof attacks have a 50% chance to deal +102% damage",
-              "50% chance to deal +102% damage" },
-
-            { "Moo of Determination restores +110 armor",
-              "Restores +110 Armor" },
-
-            { "Moo of Determination restores 144 Health over 9 seconds",
-              "Restores 144 Health over 9 seconds" },
-
-            { "For 30 seconds after you use Moo of Determination, any physical (Slashing/Piercing/Crushing) attacks that hit you are reduced by 24. This absorbed damage is added to your next Front Kick.",
-              "Any physical (Slashing/Piercing/Crushing) attacks that hit you are reduced by 24. This absorbed damage is added to your next Front Kick." },
-
-            { "Tough Hoof immediately restores 73 armor",
-              "Restores 73 Armor" },
-
-            { "Tough Hoof has a 66% chance to deal +78% damage and taunt +700",
-              "66% chance to deal +78% damage and taunt +700" },
-
-            { "Deadly Emission Damage +46 and Targets are Knocked Backwards",
-              "Knocks target backwards" },
-
-            { "Deer Kick implants insect eggs in the target. Future Deer Kicks by any deer cause target to take 310 Nature damage over 5 seconds",
-              "Subsequent Deer Kicks to this target deal 310 Nature damage over 5 seconds" },
-
-            { "Deer Bash deals +120 damage and knocks the enemy backwards",
-              "Knocks target backwards" },
-
-            { "Deer Bash has a 60% chance to deal +110% damage",
-              "60% chance to deal +110% damage" },
-
-            { "Deer Bash heals 38 health",
-              "Restores 38 Health" },
-
-            { "After using Doe Eyes, your next attack deals +169 damage",
-              "Your next attack deals +169 damage" },
-
-            { "Doe Eyes restores 95 armor",
-              "Restores 95 Armor" },
-
-            { "Doe Eyes restores 42 power",
-              "Restores 42 Power" },
-
-            { "Doe Eyes heals 64 health",
-              "Restores 64 Health" },
-
-            { "Cuteness Overload heals you for 84 health",
-              "Restores 84 Health" },
-
-            { "Cuteness Overload heals you for 72 health and increases your movement speed by +6 for 8 seconds",
-              "Restores 72 Health; Increases movement speed +6 for 8 seconds" },
-
-            { "Cuteness Overload restores 135 armor to you",
-              "Restores 135 Armor" },
-
-            { "King of the Forest has a 90% chance to deal +160 damage",
-              "90% chance to deal +160 damage" },
-
-            { "King of the Forest gives you +15 mitigation of any physical damage for 20 seconds",
-              "Slashing/Piercing/Crushing Mitigation +15 for 20 seconds" },
-
-            { "Pummeling Hooves has a 60% chance to deal +66% damage and taunt +400",
-              "60% chance to deal +66% damage and taunt +400" },
-
-            { "Bounding Escape heals you for 72 health",
-              "Restores 72 Health" },
-
-            { "Bounding Escape restores 117 armor to you",
-              "Restores 117 Armor" },
-
-            { "Bounding Escape restores 44 power to you",
-              "Restores 44 Power" },
-
-            { "Bounding Escape grants you +42% Projectile Evasion for 10 seconds",
-              "Projectile Evasion +42% for 10 seconds" },
-
-            { "Antler Slash restores 8 power to you",
-              "Restores 8 Power" },
-
-            { "Antler Slash heals you for 16 health",
-              "Restores 16 Health" },
-
-            { "Antler Slash has a 50% chance to restore 40 armor",
-              "50% chance to restore 40 Armor" },
-
-            { "Forest Challenge raises Max Health +52 for 60 seconds (and heals +52)",
-              "Max Health +52 for 60 seconds" },
-
-            { "Pig Bite has a 44% chance to deal +40 damage and hit all targets within 5 meters",
-              "44% chance to deal +40 damage and hit all targets within 5 meters" },
-
-            { "Pig Bite restores 16 Health",
-              "Restores 16 Health" },
-
-            { "Grunt of Abeyance restores 28 Power to all targets",
-              "Restores 28 Power to all targets" },
-
-            { "Grunt of Abeyance restores 61 Armor to all targets",
-              "Restores 61 Armor to all targets" },
-
-            { "Grunt of Abeyance grants all targets 20% mitigation from attacks, up to a maximum of 200 total mitigated damage.",
-              "All targets gain 20% mitigation from attacks, up to a maximum of 200 total mitigated damage." },
-
-            { "Strategic Chomp boosts your mitigation versus physical damage +8 for 20 seconds",
-              "Slashing/Piercing/Crushing Mitigation +8 for 20 seconds" },
-
-            { "Strategic Chomp restores 21 Power",
-              "Restores 21 Power" },
-
-            { "Pig Rend has a 60% chance to deal +84% damage",
-              "60% chance to deal +84% damage" },
-
-            { "Squeal boosts sprint speed by 10 for 10 seconds",
-              "Sprint Speed +10 for 10 seconds" },
-
-            { "Squeal uniformly diminishes all targets' entire aggro lists by 36%, making them less locked in to their aggro choices and more easily susceptible to additional taunts and detaunts",
-              "Uniformly diminishes all targets' entire aggro lists by 36%" },
-
-            { "Mudbath restores 121 armor to the target",
-              "Restores 121 Armor" },
-
-            { "Mudbath gives the target +12 absorption of any physical damage for 20 seconds",
-              "Physical Damage Mitigation +12 for 20 seconds" },
-
-            { "Mudbath causes the target to take 19% less damage from all attacks for 10 seconds",
-              "Universal Damage Mitigation +19% for 10 seconds" },
-
-            { "Harmlessness heals you for 81 health",
-              "Restores 81 Health" },
-
-            { "Harmlessness restores 126 armor to you",
-              "Restores 126 Armor" },
-
-            { "Harmlessness restores 52 power to you",
-              "Restores 52 Power" },
-
-            { "Harmlessness confuses the target about which enemy is which, permanently shuffling their hatred levels toward all enemies they know about",
-              "Confuses the target about which enemy is which, permanently shuffling their hatred levels toward all enemies they know about" },
-
-            { "Pig Punt causes the target to ignore you for 10 seconds, or until you attack it again",
-              "Target ignores you for 10 seconds, or until you attack it again" },
-
-            { "Pig Punt has a 35% chance to confuse the target about which enemy is which, permanently shuffling their hatred levels toward all enemies they know about",
-              "35% chance to confuse the target about which enemy is which, permanently shuffling their hatred levels toward all enemies they know about" },
-
-            { "Pig Punt deals +20 damage and slows target's movement by 45%",
-              "Slows target's movement by 45%" },
-
-            { "For 15 seconds, Frenzy boosts targets' receptivity to Major Heals so that they restore +51 Health",
-              "Healing from Major Heals +51 for 15 seconds" },
-
-            { "Frenzy restores 30 power to all targets",
-              "Restores 30 Power" },
-
-            { "Frenzy gives all targets +11 absorption of any physical damage for 20 seconds",
-              "Physical Damage Mitigation +11 for 20 seconds" },
-
-            { "For 10 seconds, Frenzy boosts targets' indirect damage +8",
-              "Universal Indirect Damage +8 for 10 seconds" },
-
-            { "Porcine Alertness gives all targets +39 Accuracy for 20 seconds",
-              "Accuracy +39 for 20 seconds" },
-
-            { "Porcine Alertness restores 55 armor to all targets",
-              "Restores 55 Armor" },
-
-            { "Porcine Alertness gives all targets +30% chance to ignore Stun effects for 20 seconds",
-              "Chance To Ignore Stuns +30% for 20 seconds" },
-
-            { "Porcine Alertness heals all targets for 52 health after a 15 second delay",
-              "Restores 52 Health after a 15 second delay" },
-
-            { "Premeditated Doom channeling time is -1 second and boosts your Indirect Poison damage +9 (per tick) for 20 seconds",
-              "Indirect Poison damage +9 (per tick) for 20 seconds" },
-
-            { "Spider Bite and Infinite Legs have a 50% chance to deal +40% damage",
-              "50% chance to deal +40% damage" },
-
-            { "Infinite Legs has a 20% chance to boost Spider Skill Base Damage +10% for 30 seconds",
-              "20% chance to boost Spider Skill Base Damage +10% for 30 seconds" },
-
-            { "Inject Venom has a 50% chance to deal +85% damage",
-              "50% chance to deal +85% damage" },
-
-            { "Inject Venom heals you for 40 health",
-              "Restores 40 Health" },
-
-            { "Web Trap boosts your movement speed by 8 for 10 seconds",
-              "Movement speed +8 for 10 seconds" },
-
-            { "Gripjaw restores 62 Armor to you",
-              "Restores 62 Armor" },
-
-            { "Gripjaw has a 70% chance to deal +87% damage",
-              "70% chance to deal +87% damage" },
-
-            { "Gripjaw deals +32% damage and hastens the current reset timer of Grappling Web by 5 seconds",
-              "Hastens the current reset timer of Grappling Web by 5 seconds" },
-
-            { "Spider Bite and Infinite Legs restore 16 Health",
-              "Restores 16 Health" },
-
-            { "For 12 seconds after using Infinite Legs, additional Infinite Legs attacks deal +28 damage",
-              "Infinite Legs Damage +28 For 12 seconds" },
-
-            { "Spit Acid causes your Signature Debuff abilities to deal +144 damage for 8 seconds",
-              "Signature Debuff Damage +144 for 8 seconds" },
-
-            { "Spit Acid deals +192 armor damage",
-              "+192 armor damage" },
-
-            { "Spit Acid raises your Poison Damage +27% for 30 seconds (this buff does not stack with itself)",
-              "Poison Damage +27% for 30 seconds (this buff does not stack with itself)" },
-
-            { "Terrifying Bite boosts sprint speed +8 for 10 seconds",
-              "Sprint speed +8 for 10 seconds" },
-
-            { "Terrifying Bite causes the target to take +16% damage from Poison attacks",
-              "Target takes +16% damage from Poison attacks" },
-
-            { "If you use Premeditated Doom while standing near your Web Trap, you gain +50% Spider Skill Base Damage for 20 seconds",
-              "If used while standing near your Web Trap, you gain +50% Spider Skill Base Damage for 20 seconds" },
-
-            { "Premeditated Doom boosts sprint speed +4.5 for 20 seconds",
-              "Sprint speed +4.5 for 20 seconds" },
-
-            { "After using Grappling Web, you are immune to Knockback effects for 12 seconds",
-              "Grants Knockback Immunity for 12 seconds" },
-
-            { "Grappling Web causes the target to take +16% damage from both Poison (both direct and indirect)",
-              "Target takes +16% damage from Poison" },
-
-            { "Rip deals +34 damage and restores 11 Power",
-              "Restores 11 Power" },
-
-            { "Rip restores 20 Armor",
-              "Restores 20 Armor" },
-
-            { "Tear has a 50% chance to deal +100% damage",
-              "50% chance to deal +100% damage" },
-
-            { "Tear has a 33% chance to deal +100% damage and reset the timer on Screech (so Screech can be used again immediately)",
-              "33% chance to deal +100% damage and reset the timer on Screech" },
-
-            { "Rip and Tear deal +33 damage and hasten the current reuse timer of Drink Blood by 1 second",
-              "Hastens the current reuse timer of Drink Blood by 1 second" },
-
-            { "Wing Vortex has a 70% chance to deal +25% damage and restore 55 Health to you",
-              "70% chance to deal +25% damage and restore 55 Health" },
-
-            { "Wing Vortex has a 30% chance to deal +38% damage and stun all targets",
-              "30% chance to deal +38% damage and stun all targets" },
-
-            { "Wing Vortex causes targets' next attack to deal -74 damage",
-              "Targets' next attack deals -74 damage" },
-
-            { "For 30 seconds after using Drink Blood, all Nature attacks deal +45 damage",
-              "Direct Nature Damage +45 for 30 seconds" },
-
-            { "For 30 seconds after using Drink Blood, you gain +26 mitigation vs. Psychic and Trauma damage",
-              "Psychic and Trauma Mitigation +26 for 30 seconds" },
-
-            { "Virulent Bite deals 192 Trauma damage over 12 seconds and also has a 25% chance to deal +76% immediate Piercing damage",
-              "25% chance to deal +76% Piercing damage" },
-
-            { "Bat Stability heals 78 health",
-              "Restores 78 Health" },
-
-            { "Bat Stability provides +45% Projectile Evasion for 10 seconds",
-              "Restores 12 Power" },
-
-            { "Screech has a 60% chance to deal +90% damage",
-              "60% chance to deal +90% damage" },
-
-            { "Sonic Burst has a 60% chance to deal +100% damage to all targets",
-              "60% chance to deal +100% damage" },
-
-            { "Confusing Double heals you for 123 health",
-              "Restores 123 Health" },
-
-            { "Confusing Double boosts your movement speed by 3 and your Giant Bat Base Damage by 40% for 15 seconds",
-              "Movement speed +3 and Giant Bat Base Damage +40% for 15 seconds" },
-
-            { "Confusing Double restores 112 Power after a 10 second delay",
-              "Restores 112 Power after a 10 second delay" },
-
-            { "Your Confusing Double deals +55% damage with each attack",
-              "Pet Damage +55%" },
-
-            { "Confusing Double summons an additional figment. Each figment deals +61 damage with each attack",
-              "Pet Damage +61" },
-
-            { "Deathscream has a 60% chance to deal +100% damage",
-              "60% chance to deal +100% damage" },
-
-            { "While Rabbit skill is active, any Kick ability boosts Melee Evasion +6.5% for 10 seconds",
-              "Boosts Melee Evasion +6.5% for 10 seconds (if Rabbit skill is active)" },
-
-            { "Rabbit Scratch deals Trauma damage (instead of Slashing), and deals up to +128 damage (randomly determined)",
-              "DamageType:Trauma; +128 random damage" },
-
-            { "Rabbit Scratch restores 16 Armor to you",
-              "Restores 16 Armor" },
-
-            { "Thump deals +31 damage and knocks the enemy backwards",
-              "Restores 42 Armor" },
-
-            { "Thump causes the target to take +16% damage from Cold attacks for 10 seconds",
-              "+8% Physical Damage Reflection for 15 seconds" },
-
-            { "Bun-Fu Blitz causes the target to take +16% damage from Trauma attacks for 20 seconds",
-              "Target takes +16% damage from Trauma attacks for 20 seconds" },
-
-            { "Bun-Fu Blitz deals +36 damage and hastens the current reset timer of Thump by 3 seconds",
-              "Hastens the current reset timer of Thump by 3 seconds" },
-
-            { "Rabbit's Foot grants you and nearby allies +19% Burst Evasion for 10 seconds",
-              "+19% Burst Evasion for 10 seconds" },
-
-            { "Rabbit's Foot grants you and nearby allies +9% Earned Combat XP for 20 seconds",
-              "+9% Earned Combat XP for 20 seconds" },
-
-            { "Rabbit's Foot restores 28 Power to you and nearby allies",
-              "Restores 28 Power" },
-
-            { "Rabbit's Foot restores 89 Health to you and nearby allies after a 15 second delay",
-              "Restores 89 Health after a 15 second delay" },
-
-            { "Hare Dash restores 102 Armor to you",
-              "Restores 102 Armor" },
-
-            { "Hare Dash causes your next attack to deal +235 damage if it is a Crushing attack",
-              "+235 Crushing damage for next attack" },
-
-            { "Hare Dash grants +12% Melee Evasion for 8 seconds and boosts jump height for 15 seconds",
-              "+12% Melee Evasion for 8 seconds, Boosts Jump Height for 15 seconds" },
-
-            { "Hare Dash restores 80 Power over 15 seconds",
-              "Restores 80 Power over 15 seconds" },
-
-            { "Play Dead restores 90 Health",
-              "Restores 90 Health" },
-
-            { "Play Dead boosts your Psychic attack damage +80 for 20 seconds",
-              "+80 Psychic Damage for 20 seconds" },
-
-            { "Play Dead causes all affected enemies to take 330 Psychic damage after a 10-second delay",
-              "Targets take 330 Psychic damage after a 10-second delay" },
-
-            { "Play Dead boosts your Nice Attack Damage +288 for 15 seconds",
-              "Nice Attack Damage +288 for 15 seconds" },
-
-            { "Long Ear grants you +18% Projectile Evasion for 15 seconds",
-              "+18% Projectile Evasion for 15 seconds" },
-
-            { "Carrot Power restores 144 Health after a 12 second delay",
-              "Restores 144 Health after a 12 second delay" },
-
-            { "Carrot Power restores 155 Armor",
-              "Restores 155 Armor" },
-
-            { "Carrot Power boosts your Cold Damage +32% for 10 seconds",
-              "Cold Damage +32% for 10 seconds" },
-
-            { "Carrot Power boosts the damage from all kicks +124 for 10 seconds",
-              "Kick damage +124 for 10 seconds" },
-
-            { "Carrot Power boosts your Crushing Damage +32% for 10 seconds",
-              "Crushing Damage +32% for 10 seconds" },
-
-            { "Bun-Fu Strike reduces target's rage by 480, then reduces it by 690 more after a 5 second delay",
-              "Reduces target's Rage by 690 after a 5 second delay" },
-
-            { "Bun-Fu Strike deals +20% damage and restores 48 Health to you after an 8 second delay",
-              "Restores 48 Health after an 8 second delay" },
-
-            { "Bun-Fu Strike deals +49 damage and hastens the current reset timer of Bun-Fu Blitz by 2.5 seconds",
-              "Hastens the current reset timer of Bun-Fu Blitz by 2.5 seconds" },
-
-            { "Bun-Fu Blast deals +96 damage and hastens the current reuse timer of Bun-Fu Strike by 3.5 seconds",
-              "Hastens the current reuse timer of Bun-Fu Strike by 3.5 seconds" },
-
-            { "Love Tap hastens the current reuse timer of Carrot Power by 3.5 seconds",
-              "Hastens the current reuse timer of Carrot Power by 3.5 seconds" },
-
-            { "Admonish boosts your Priest Damage +16 for 10 seconds (this effect does not stack with itself)",
-              "Boosts Priest Damage +16 for 10 seconds" },
-
-            { "Admonish makes the target 8% more vulnerable to Psychic damage for 10 seconds (this effect does not stack with itself)",
-              "Target is 8% more vulnerable to Psychic damage for 10 seconds (this effect does not stack with itself)" },
-
-            { "When Castigate is used on an undead target, it has a 25% chance to deal +300 damage and stun the target",
-              "Vs. Undead, 25% chance to deal +300 damage and stun the target" },
-
-            { "Castigate deals Fire damage instead of Psychic, and deals +72% damage to Aberrations",
-              "+72% damage to Aberrations" },
-
-            { "Castigate boosts your Nice Attack Damage +96 for 8 seconds",
-              "Nice Attack Damage +96 for 8 seconds" },
-
-            { "For 30 seconds after casting Exhilarate on a target, additional Exhilarates on the same target restore +35 Health",
-              "Repeated castings on same target restore +35 Health" },
-
-            { "Exhilarate restores 64 Armor over 8 seconds",
-              "Restores 64 Armor over 8 seconds" },
-
-            { "Mend Flesh gives the target +11 mitigation against physical attacks for 12 seconds",
-              "+11 slashing/crushing/piercing mitigation for 12 seconds" },
-
-            { "Unfetter grants immunity to Knockback effects for 13 seconds",
-              "Immunity to Knockbacks for 13 seconds" },
-
-            { "Unfetter allows free-form movement while leaping, and if the target can fly, fly speed is boosted +2.4 m/s for 20 seconds",
-              "Turn while leaping and Fly Speed +2.4 m/s for 20 seconds" },
-
-            { "Unfetter boosts swim speed +3.2 m/s for 20 seconds",
-              "Swim Speed +3.2 m/s for 20 seconds" },
-
-            { "Unfetter restores 51 Power over 9 seconds",
-              "Restores 51 Power over 9 seconds" },
-
-            { "Corrupt Hate causes the target to deal 288 Psychic damage to themselves the next time they use a Rage attack",
-              "Target deals 288 Psychic damage to themselves the next time they use a Rage attack" },
-
-            { "Triage gives the target +26.5% Melee Evasion for 10 seconds",
-              "Melee Evasion +26.5% for 10 seconds" },
-
-            { "Triage gives the target +33% Burst Evasion for 10 seconds",
-              "Burst Evasion +33% for 10 seconds" },
-
-            { "Triage restores 80 Health over 15 seconds",
-              "Restores 80 Health over 15 seconds" },
-
-            { "Remedy removes ongoing Fire effects (up to 33 dmg/sec)",
-              "Removes ongoing Fire effects (up to 33 dmg/sec)" },
-
-            { "Remedy restores 20 Armor and mitigates all damage over time by 8 per tick for 10 seconds",
-              "Universal Indirect Mitigation +8" },
-
-            { "Remedy costs -16 Power to cast, its reuse timer is -1 second, and it has a 25% chance to mend a broken bone in the target",
-              "25% chance to mend a broken bone in the target" },
-
-            { "Give Warmth restores 63 Health and +17 Body Heat",
-              "Restores +17 Body Heat" },
-
-            { "Give Warmth causes the target's next attack to deal +208 damage if it is a Fire attack",
-              "Boosts target's Fire Damage +208 for one attack" },
-
-            { "Give Warmth boosts the target's fire damage-over-time by +10 per tick for 60 seconds",
-              "Indirect Fire Damage +10" },
-
-            { "Warning Jolt restores 16 Armor and boosts the damage of your Core Attacks +49 for 8 seconds",
-              "Core Attack Damage +49 for 8 seconds" },
-
-            { "Conditioning Shock causes target's next ability to deal -48 damage",
-              "Target's next ability deals -48 direct damage" },
-
-            { "Conditioning Shock deals +68 damage and, if target is a monster, its chance to critically-hit is reduced by 25% for 10 seconds",
-              "Target's Critical Hit Chance reduced by 25% for 10 seconds" },
-
-            { "Apprehend causes your Nice Attacks to deal +112 damage for 8 seconds",
-              "Nice Attack Damage +112 for 8 seconds" },
-
-            { "Apprehend deals +40 damage and hastens the current reuse timer of Controlled Burn by 2 seconds (so it can be used again more quickly)",
-              "Hastens the current reuse timer of Controlled Burn by 2 seconds" },
-
-            { "Stun Trap deals +272 damage to all nearby targets (when it activates)",
-              "Trap Damage +272" },
-
-            { "Stun Trap deals +45% damage to all nearby targets (when it activates)",
-              "Trap Damage +45%" },
-
-            { "Stun Trap deals +122 damage, and there's a 50% chance you'll place an extra trap",
-              "Trap Damage +122" },
-
-            { "Coordinated Assault causes all allies' Melee attacks to cost -10 Power for 30 seconds",
-              "All allies' Melee attacks cost -10 Power for 30 seconds" },
-
-            { "Coordinated Assault increases all allies' Max Health +45 for 30 seconds",
-              "All allies' Max Health +45 for 30 seconds" },
-
-            { "Coordinated Assault increases all allies' Max Armor +67 for 30 seconds",
-              "All allies' Max Armor +67 for 30 seconds" },
-
-            { "Coordinated Assault causes all allies' melee attacks to deal up to +90 damage (randomly determined for each attack) for 30 seconds",
-              "Allies' melee attacks deal up to +90 damage (randomly determined) for 30 seconds" },
-
-            { "Coordinated Assault grants all allies +8 direct-damage mitigation and +1.5 out-of-combat sprint speed for 30 seconds",
-              "All allies gain +8 direct-damage mitigation and +1.5 out-of-combat sprint speed for 30 seconds" },
+            new Sentence("Any time you Evade a Melee attack", CombatKeyword.OnEvadeMelee),
+            new Sentence("Any time you Evade an attack", CombatKeyword.OnEvade),
         };
         #endregion
 
