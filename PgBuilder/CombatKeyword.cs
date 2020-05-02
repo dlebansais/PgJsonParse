@@ -41,6 +41,7 @@
         DamageBoostToHealthAndArmor,
         BaseDamageBoost,
         DrainHealth,
+        DrainArmor,
         DrainMax,
         ReflectMeleeIndirectDamage,
         MaxOccurence,
@@ -190,5 +191,7 @@
         MitigateReflect,
         MitigateReflectKick,
         ReflectRate,
+        ThickArmor,
+        DrainAsArmor,
     }
 }
