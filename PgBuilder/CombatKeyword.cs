@@ -22,6 +22,7 @@
         Combo4,
         Combo5,
         Combo6,
+        Combo7,
         ComboFinalStepBurst,
         ComboFinalStepDamage,
         ComboFinalStepDamageAndStun,
@@ -186,5 +187,8 @@
         Again,
         OnEvade,
         OnEvadeMelee,
+        MitigateReflect,
+        MitigateReflectKick,
+        ReflectRate,
     }
 }

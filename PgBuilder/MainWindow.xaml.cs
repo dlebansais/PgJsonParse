@@ -2199,7 +2199,7 @@
                 return;
 
             int DebugIndex = 0;
-            int SkipIndex = 24;
+            int SkipIndex = 101;
             List<string[]> StringKeyTable = new List<string[]>();
             List<ModEffect[]> LocalPowerKeyToCompleteEffectTable = new List<ModEffect[]>();
 
@@ -2470,11 +2470,12 @@
             //new Sentence("Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", CombatKeyword.Combo3),
             //new Sentence("Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", CombatKeyword.Combo4),
             //new Sentence("Combo: Rip+Any Melee+Any Melee+Bat Stability:", CombatKeyword.Combo5),
-            //new Sentence("Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", CombatKeyword.Combo5),
+            //new Sentence("Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", CombatKeyword.Combo6),
+            new Sentence("Combo: Suppress+Any Melee+Any Melee+Headcracker:", CombatKeyword.Combo7),
             //new Sentence("Final step hit all enemies within %f meter", CombatKeyword.ComboFinalStepBurst),
             //new Sentence("Final step hit all targets within %f meter", CombatKeyword.ComboFinalStepBurst),
             //new Sentence("Final step deal %f damage", CombatKeyword.ComboFinalStepDamage),
-            //new Sentence("Final step stun the target and deal %f damage", CombatKeyword.ComboFinalStepDamageAndStun),
+            new Sentence("Final step stun the target while dealing %f damage", CombatKeyword.ComboFinalStepDamageAndStun),
             //new Sentence("Final step boost base damage %f for 10 second", CombatKeyword.ComboFinalStepBoostBaseDamage),
             //new Sentence("Whenever you take damage from an enemy", CombatKeyword.ReflectOnAnyAttack),
             //new Sentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack),
@@ -2562,6 +2563,7 @@
             new Sentence("After an %f second delay", CombatKeyword.EffectDelay),
             new Sentence("After %f second", CombatKeyword.EffectDelay),
             new Sentence("Every %f second", CombatKeyword.EffectRecurrence),
+            new Sentence("Every other second", CombatKeyword.EffectRecurrence),
             new Sentence("With each heal", CombatKeyword.EffectRecurrence),
             new Sentence("Remove (up to) %f more Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Reduce Rage by %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
@@ -2880,6 +2882,11 @@
             new Sentence("Reduce it by %f more", CombatKeyword.Again, SignInterpretation.AlwaysNegative),
             new Sentence("Any time you Evade a Melee attack", CombatKeyword.OnEvadeMelee),
             new Sentence("Any time you Evade an attack", CombatKeyword.OnEvade),
+            new Sentence("%f of all #D damage you take is mitigated and added to the damage done by your next Kick", CombatKeyword.MitigateReflectKick),
+            new Sentence("%f of all #D damage you take is mitigated and added to the damage done by your next", CombatKeyword.MitigateReflect),
+            new Sentence("At a %f rate", CombatKeyword.ReflectRate),
+            new Sentence("Damage become #D", CombatKeyword.ChangeDamageType),
+            new Sentence("Cause targets to lose %f Rage", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
         };
         #endregion
 
