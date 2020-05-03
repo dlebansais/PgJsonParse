@@ -9,8 +9,8 @@
     public class Parser
     {
         #region Data Analysis
-        bool WriteFile = false;
-        bool CompareTable = true;
+        bool WriteFile = true;
+        bool CompareTable = false;
 
         public void AnalyzeCachedData(int version, List<ItemSlot> validSlotList, List<IPgSkill> skillList, Dictionary<string, ModEffect> existingPowerKeyToCompleteEffectTable)
         {
@@ -702,7 +702,9 @@
             abilityNameList.Add(abilityName);
             keywordToName.Add(keyword, abilityName);
         }
+        #endregion
 
+        #region Write File
         private void WritePowerKeyToCompleteEffectFile(string fileName, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
         {
             using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
@@ -718,6 +720,27 @@
                     sw.WriteLine("");
                     sw.WriteLine("    public static class PowerKeyToCompleteEffect");
                     sw.WriteLine("    {");
+                    sw.WriteLine("        public static Dictionary<string, string> EffectKey { get; } = new Dictionary<string, string>()");
+                    sw.WriteLine("        {");
+
+                    for (int i = 0; i < stringKeyTable.Count; i++)
+                    {
+                        string[] StringKeyArray = stringKeyTable[i];
+                        ModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+
+                        Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+
+                        for (int j = 0; j < StringKeyArray.Length; j++)
+                        {
+                            string StringKey = StringKeyArray[j];
+                            ModEffect ModEffect = ModEffectArray[j];
+
+                            WritePowerKeyToCompleteEffectKeyLine(sw, StringKey, ModEffect.EffectKey);
+                        }
+                    }
+
+                    sw.WriteLine("        };");
+                    sw.WriteLine("");
                     sw.WriteLine("        public static Dictionary<string, List<AbilityKeyword>> AbilityList { get; } = new Dictionary<string, List<AbilityKeyword>>()");
                     sw.WriteLine("        {");
 
@@ -805,6 +828,11 @@
                     sw.WriteLine("}");
                 }
             }
+        }
+
+        private void WritePowerKeyToCompleteEffectKeyLine(StreamWriter sw, string stringKey, string effectKey)
+        {
+            sw.WriteLine($"            {{ \"{stringKey}\", \"{effectKey}\" }},");
         }
 
         private void WritePowerKeyToCompleteEffectAbilityKeywordListLine(StreamWriter sw, string stringKey, List<AbilityKeyword> abilityList)
@@ -942,7 +970,7 @@
                     Debug.WriteLine($"Sentence '{Item.Format}' not used");
         }
 
-        private string PowerEffectPairKey(IPgPower power, int tierIndex)
+        public static string PowerEffectPairKey(IPgPower power, int tierIndex)
         {
             string PowerTierString = (tierIndex + 1).ToString("D03");
             string Key = $"{power.Key}_{PowerTierString}";
@@ -1112,7 +1140,7 @@
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");*/
             }
 
-            modEffect = new ModEffect(ModAbilityList, StaticCombatEffectList, DynamicCombatEffectList, ModTargetAbilityList);
+            modEffect = new ModEffect(effect.Key, ModAbilityList, StaticCombatEffectList, DynamicCombatEffectList, ModTargetAbilityList);
             return true;
         }
 
@@ -2115,7 +2143,7 @@
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");*/
             }
 
-            modEffect = new ModEffect(ModAbilityList, ModCombatList, new List<CombatEffect>(), ModTargetAbilityList);
+            modEffect = new ModEffect(string.Empty, ModAbilityList, ModCombatList, new List<CombatEffect>(), ModTargetAbilityList);
             return true;
         }
 

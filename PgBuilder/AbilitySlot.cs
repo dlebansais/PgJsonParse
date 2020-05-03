@@ -367,21 +367,21 @@
             ModCriticalDamage += attributeEffect;
         }
 
-        public void AddEffect(Power power, string effectKey, int tier)
+        public void AddEffect(ModEffect modEffect)
         {
-                int EffectId = power.Source.EffectId;
+            string EffectKey = modEffect.EffectKey;
 
-                string TierKey = (tier + 1).ToString("D3");
-                string Key = $"effect_{effectKey}{TierKey}";
-
+            if (EffectKey.Length > 0)
+            {
                 IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
-                if (EffectDefinition.ObjectTable.ContainsKey(Key))
+                if (EffectDefinition.ObjectTable.ContainsKey(EffectKey))
                 {
-                    IPgEffect Effect = (IPgEffect)EffectDefinition.ObjectTable[Key];
+                    IPgEffect Effect = (IPgEffect)EffectDefinition.ObjectTable[EffectKey];
                     OtherEffectList.Add(Effect);
                 }
                 else
-                    Debug.WriteLine($"Ignoring power effect: effect_{effectKey}");
+                    Debug.WriteLine($"Ignoring power effect: {EffectKey}");
+            }
         }
         #endregion
 

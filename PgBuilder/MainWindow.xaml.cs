@@ -18,7 +18,7 @@
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Constants
-        const int AnalyzedVersion = 333;
+        const int AnalyzedVersion = 334;
         #endregion
 
         #region Init
@@ -55,12 +55,13 @@
             {
                 string Key = Entry.Key;
 
+                string EffectKey = PowerKeyToCompleteEffect.EffectKey[Key];
                 List<AbilityKeyword> AbilityList = PowerKeyToCompleteEffect.AbilityList[Key];
                 List<CombatEffect> StaticCombatEffectList = PowerKeyToCompleteEffect.StaticCombatEffectList[Key];
                 List<CombatEffect> DynamicCombatEffectList = PowerKeyToCompleteEffect.DynamicCombatEffectList[Key];
                 List<AbilityKeyword> TargetAbilityList = PowerKeyToCompleteEffect.TargetAbilityList[Key];
 
-                ModEffect ModEffect = new ModEffect(AbilityList, StaticCombatEffectList, DynamicCombatEffectList, TargetAbilityList);
+                ModEffect ModEffect = new ModEffect(EffectKey , AbilityList, StaticCombatEffectList, DynamicCombatEffectList, TargetAbilityList);
                 PowerKeyToCompleteEffectTable.Add(Key, ModEffect);
             }
         }
@@ -1251,7 +1252,7 @@
                     break;
 
                 case IPgPowerSimpleEffect AsPowerSimpleEffect:
-                    RecalculateSimpleEffectMods(power, tier, AsPowerSimpleEffect);
+                    RecalculateSimpleEffectMods(power, tier);
                     break;
 
                 default:
@@ -1274,33 +1275,24 @@
             Debug.WriteLine($"Ignoring item effect: {itemSimpleEffect.Description}");
         }
 
-        private void RecalculateSimpleEffectMods(Power power, int tier, IPgPowerSimpleEffect powerSimpleEffect)
+        private void RecalculateSimpleEffectMods(Power power, int tier)
         {
-            if (powerSimpleEffect.Description == "All Ice Magic attacks that hit a single target have a 33% chance to deal +48% damage")
+            string Key = Parser.PowerEffectPairKey(power.Source, tier);
+
+            if (!PowerKeyToCompleteEffectTable.ContainsKey(Key))
             {
+                Debug.WriteLine($"Key '{Key}' not found");
+                return;
             }
 
-            foreach (KeyValuePair<string, string> Entry in PowerToEffectTable2)
-                if (powerSimpleEffect.Description.StartsWith(Entry.Key))
-                {
-                    RecalculateKnownEffectMods(power, Entry.Value, tier);
-                    break;
-                }
-        }
+            ModEffect ModEffect = PowerKeyToCompleteEffectTable[Key];
 
-        private void RecalculateKnownEffectMods(Power power, string effectKey, int tier)
-        {
             foreach (AbilitySlot Item in AbilitySlot1List)
-                Item.AddEffect(power, effectKey, tier);
+                Item.AddEffect(ModEffect);
 
             foreach (AbilitySlot Item in AbilitySlot2List)
-                Item.AddEffect(power, effectKey, tier);
+                Item.AddEffect(ModEffect);
         }
-
-        private static Dictionary<string, string> PowerToEffectTable2 { get; } = new Dictionary<string, string>()
-        {
-            { "All Ice Magic attacks that hit a single target have a 33% chance to deal", "50032" },
-        };
 
         private DispatcherOperation RecalculateOperation = null;
         #endregion

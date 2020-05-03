@@ -5,14 +5,16 @@
 
     public class ModEffect
     {
-        public ModEffect(List<AbilityKeyword> abilityList, List<CombatEffect> staticCombatEffectList, List<CombatEffect> dynamicCombatEffectList, List<AbilityKeyword> targetAbilityList)
+        public ModEffect(string effectKey, List<AbilityKeyword> abilityList, List<CombatEffect> staticCombatEffectList, List<CombatEffect> dynamicCombatEffectList, List<AbilityKeyword> targetAbilityList)
         {
+            EffectKey = effectKey;
             AbilityList = abilityList;
             StaticCombatEffectList = staticCombatEffectList;
             DynamicCombatEffectList = dynamicCombatEffectList;
             TargetAbilityList = targetAbilityList;
         }
 
+        public string EffectKey { get; }
         public List<AbilityKeyword> AbilityList { get; }
         public List<CombatEffect> StaticCombatEffectList { get; }
         public List<CombatEffect> DynamicCombatEffectList { get; }
