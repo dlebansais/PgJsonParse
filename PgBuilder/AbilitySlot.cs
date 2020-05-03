@@ -48,11 +48,15 @@
         public bool? AbilityMinLevelModified { get { return null; } }
 
         public bool HasAbilityPowerCost { get { return Ability != null && Ability.PvE.PowerCost != 0; } }
-        public string AbilityPowerCost { get { return Ability != null ? Ability.PvE.PowerCost.ToString() : string.Empty; } }
-        public bool? AbilityPowerCostModified { get { return null; } }
-        
-        public string AbilityReuseTime { get { return Ability != null ? App.DoubleToString(Ability.ResetTime) : string.Empty; } }
-        public bool? AbilityReuseTimeModified { get { return null; } }
+        public int ModifiedAbilityPowerCost { get { return Ability != null ? App.CalculatePowerCost(Ability.PvE.PowerCost, DeltaPowerCost) : 0; } }
+        public string AbilityPowerCost { get { return Ability != null ? ModifiedAbilityPowerCost.ToString() : string.Empty; } }
+        public bool? AbilityPowerCostModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityPowerCost - Ability.PvE.PowerCost) : null; } }
+        private double DeltaPowerCost;
+
+        public int ModifiedAbilityResetTime { get { return Ability != null ? App.CalculateResetTime(Ability.ResetTime, DeltaResetTime) : 0; } }
+        public string AbilityResetTime { get { return Ability != null ? ModifiedAbilityResetTime.ToString() : string.Empty; } }
+        public bool? AbilityResetTimeModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityResetTime - Ability.ResetTime) : null; } }
+        private double DeltaResetTime;
 
         public bool HasAbilityRange { get { return Ability != null && Ability.PvE.Range != 0; } }
         public string AbilityRange { get { return Ability != null ? Ability.PvE.Range.ToString() : string.Empty; } }
@@ -208,6 +212,9 @@
         #region Mods
         public void ResetMods()
         {
+            DeltaPowerCost = 0;
+            DeltaResetTime = 0;
+
             DeltaDamage = 0; // Damage +X
             ModDamage = 1.0;   // Damage +(X*100)%
             ModBaseDamage = 1.0; // Base Damage +(X*100)%
@@ -371,18 +378,164 @@
         {
             string EffectKey = modEffect.EffectKey;
 
-            if (EffectKey.Length > 0)
-            {
-                IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
-                if (EffectDefinition.ObjectTable.ContainsKey(EffectKey))
+            if (EffectKey.Length == 0)
+                return;
+
+            Debug.Assert(Ability != null);
+
+            bool IsAbilityModified = false;
+            foreach (AbilityKeyword Keyword in modEffect.AbilityList)
+                if (Ability.KeywordList.Contains(Keyword))
                 {
-                    IPgEffect Effect = (IPgEffect)EffectDefinition.ObjectTable[EffectKey];
-                    OtherEffectList.Add(Effect);
+                    IsAbilityModified = true;
+                    break;
                 }
-                else
-                    Debug.WriteLine($"Ignoring power effect: {EffectKey}");
+
+            if (!IsAbilityModified)
+                return;
+
+            List<CombatEffect> StaticCombatEffectList = modEffect.StaticCombatEffectList;
+            bool IsOtherEffect = false;
+            foreach (CombatEffect Item in StaticCombatEffectList)
+                AddEffect(modEffect, Item, ref IsOtherEffect);
+
+            if (!IsOtherEffect)
+                return;
+
+            IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
+            if (!EffectDefinition.ObjectTable.ContainsKey(EffectKey))
+            {
+                Debug.WriteLine($"Ignoring power effect: {EffectKey}");
+                return;
+            }
+
+            IPgEffect Effect = (IPgEffect)EffectDefinition.ObjectTable[EffectKey];
+            OtherEffectList.Add(Effect);
+        }
+
+        public bool HasSituationalModifier(List<CombatEffect> combatEffectList)
+        {
+            foreach (CombatEffect Item in combatEffectList)
+                switch (Item.Keyword)
+                {
+                    case CombatKeyword.ReflectOnBurst:
+                        return true;
+                    default:
+                        break;
+                }
+
+            return false;
+        }
+
+        public void AddEffect(ModEffect modEffect, CombatEffect combatEffect, ref bool isOtherEffect)
+        {
+            switch (combatEffect.Keyword)
+            {
+                case CombatKeyword.AddPowerCost:
+                    if (combatEffect.Data.IsValueSet)
+                        DeltaPowerCost += combatEffect.Data.Value;
+                    break;
+
+                case CombatKeyword.AddResetTimer:
+                    if (combatEffect.Data.IsValueSet)
+                        if (!HasSituationalModifier(modEffect.StaticCombatEffectList))
+                            DeltaResetTime += combatEffect.Data.Value;
+                    break;
+
+                default:
+                    isOtherEffect = true;
+                    break;
             }
         }
+
+/*
+DamageBoost
+RestorePower
+//AddPowerCost
+RestoreHealthArmor
+RestoreHealth
+//AddResetTimer
+AddRange
+TargetSubsequentAttacks
+EffectDuration
+AddChannelingTime
+AnotherTrap
+AddRage
+ChangeDamageType
+RestoreArmor
+AddMitigation
+NextAttack
+DealDirectHealthDamage
+ZeroRage
+EffectDelay
+Recurring
+ActiveSkill
+AddEvasionMelee
+OnEvadeMelee
+AddArmor
+OnEvade
+MitigateReflect
+ReflectRate
+MitigateReflectKick
+AddTaunt
+Combo7
+ComboFinalStepDamageAndStun
+TargetSelf
+AddSprintSpeed
+EffectRecurrence
+EffectDurationMinute
+AddMaxHealth
+CombatRefreshRestoreHeatlth
+RestoreHealthArmorPower
+StunIncorporeal
+ResetOtherAbilityTimer
+DamageBoostAgainstSpecie
+DealIndirectDamage
+ZeroTaunt
+ThickArmor
+ReflectOnBurst
+AddMitigationIndirect
+ReflectOnAnyAttack
+MaxStack
+AddEvasionBurst
+AddChanceToIgnoreKnockback
+AddChanceToIgnoreStun
+AboveRage
+AddChanceToKnockdown
+ApplyWithChance
+RequireTwoKnives
+RequireNoAggro
+BaseDamageBoost
+DrainHealth
+DrainMax
+DrainArmor
+MaxOccurence
+DrainAsArmor
+ChanceToConsume
+AddHealthRegen
+Combo1
+ComboFinalStepBurst
+AddMaxArmor
+Combo2
+ComboFinalStepDamage
+Combo3
+Combo4
+Stun
+Combo5
+Combo6
+NotAttackedRecently
+AddPowerRegen
+AddPowerCostMax
+ZeroPowerCost
+AddChannelTime
+AddIndirectVulnerability
+AddVulnerability
+ReflectKnockbackOnFirstMelee
+ReflectOnMelee
+ReflectOnRanged
+ReflectMeleeIndirectDamage
+
+ */
         #endregion
 
         #region Implementation of INotifyPropertyChanged

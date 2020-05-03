@@ -60,7 +60,7 @@
         AddPowerRegen,
         AddMaxHealth,
         AddMaxArmor,
-        AddReuseTimer,
+        AddResetTimer,
         AddCombatRefreshTimer,
         AddTaunt,
         ZeroTaunt,

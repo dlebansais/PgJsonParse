@@ -51,6 +51,10 @@
 
         private void InitPowerKeyToCompleteEffectTable()
         {
+            List<CombatKeyword> StaticKeywordList = new List<CombatKeyword>();
+            IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
+            List<string> StaticKeywordKeyList = new List<string>();
+
             foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in PowerKeyToCompleteEffect.AbilityList)
             {
                 string Key = Entry.Key;
@@ -63,6 +67,30 @@
 
                 ModEffect ModEffect = new ModEffect(EffectKey , AbilityList, StaticCombatEffectList, DynamicCombatEffectList, TargetAbilityList);
                 PowerKeyToCompleteEffectTable.Add(Key, ModEffect);
+
+                bool HasKeyword = false;
+                foreach (CombatEffect Item in StaticCombatEffectList)
+                    if (Item.Keyword == CombatKeyword.AddResetTimer)
+                        HasKeyword = true;
+
+                if (HasKeyword)
+                {
+                    string PowerKey = Key.Substring(0, Key.LastIndexOf('_'));
+                    if (!StaticKeywordKeyList.Contains(PowerKey))
+                        StaticKeywordKeyList.Add(PowerKey);
+                }
+            }
+
+            foreach (string PowerKey in StaticKeywordKeyList)
+            {
+                IPgPower Power = PowerDefinition.ObjectTable[PowerKey] as IPgPower;
+                IList<IPgPowerTier> TierEffectList = Power.TierEffectList;
+                IPgPowerTier PowerTier = TierEffectList[TierEffectList.Count - 1];
+                IList<IPgPowerEffect> EffectList = PowerTier.EffectList;
+                IPgPowerSimpleEffect SimpleEffect = (IPgPowerSimpleEffect)EffectList[0];
+                string Description = SimpleEffect.Description;
+
+                Debug.WriteLine(Description);
             }
         }
 

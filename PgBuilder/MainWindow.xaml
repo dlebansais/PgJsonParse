@@ -90,7 +90,7 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock FontWeight="Bold">Reuse Time:</TextBlock>
-                                            <TextBlock Text="{Binding AbilityReuseTime}" Foreground="{Binding AbilityReuseTimeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                                            <TextBlock Text="{Binding AbilityResetTime}" Foreground="{Binding AbilityResetTimeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
                                             <TextBlock Margin="5,0,0,0">seconds</TextBlock>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityRange, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
