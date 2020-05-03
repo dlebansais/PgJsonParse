@@ -182,6 +182,9 @@
         #endregion
 
         #region Data Analysis
+        bool WriteFile = false;
+        bool CompareTable = true;
+
         private void AnalyzeCachedData(int version)
         {
             FilterValidPowers(out _, out List<IPgPower> PowerSimpleEffectList);
@@ -189,10 +192,18 @@
             FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable, out List<IPgPower> UnmatchedPowerList);
             GetAbilityNames(out List<string> AbilityNameList, out Dictionary<string, List<AbilityKeyword>> NameToKeyword);
 
-            AnalyzeMatchingEffects(version, AbilityNameList, NameToKeyword, PowerToEffectTable);
-            AnalyzeRemainingEffects(version, AbilityNameList, NameToKeyword, UnmatchedPowerList);
+            List<string[]> StringKeyTable = new List<string[]>();
+            List<ModEffect[]> PowerKeyToCompleteEffectTable = new List<ModEffect[]>();
+            AnalyzeMatchingEffects(version, AbilityNameList, NameToKeyword, PowerToEffectTable, StringKeyTable, PowerKeyToCompleteEffectTable);
+            AnalyzeRemainingEffects(version, AbilityNameList, NameToKeyword, UnmatchedPowerList, StringKeyTable, PowerKeyToCompleteEffectTable);
 
             CheckAllSentencesUsed();
+
+            if (WriteFile)
+                WritePowerKeyToCompleteEffectFile("PowerKeyToCompleteEffect.cs", StringKeyTable, PowerKeyToCompleteEffectTable);
+
+            if (CompareTable)
+                CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, PowerKeyToCompleteEffectTable);
         }
 
         private void FilterValidPowers(out List<IPgPower> powerAttributeList, out List<IPgPower> powerSimpleEffectList)
@@ -872,19 +883,15 @@
         #endregion
 
         #region Data Analysis, Matching
-        bool WriteFile = false;
-        bool CompareTable = true;
         const int AnalyzedVersionMatching = 333;
 
-        private void AnalyzeMatchingEffects(int version, List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable)
+        private void AnalyzeMatchingEffects(int version, List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
         {
             if (version <= AnalyzedVersionMatching)
                 return;
 
             int DebugIndex = 0;
             int SkipIndex = 0;
-            List<string[]> StringKeyTable = new List<string[]>();
-            List<ModEffect[]> LocalPowerKeyToCompleteEffectTable = new List<ModEffect[]>();
 
             foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
             {
@@ -904,21 +911,16 @@
 
                 AnalyzeMatchingEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList, out string[] stringKeyArray, out ModEffect[] ModEffectArray);
 
-                StringKeyTable.Add(stringKeyArray);
-                LocalPowerKeyToCompleteEffectTable.Add(ModEffectArray);
+                stringKeyTable.Add(stringKeyArray);
+                powerKeyToCompleteEffectTable.Add(ModEffectArray);
             }
 
-            if (WriteFile)
-                WritePowerKeyToCompleteEffectFile(StringKeyTable, LocalPowerKeyToCompleteEffectTable);
-            if (CompareTable)
-                CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, LocalPowerKeyToCompleteEffectTable);
-
-            DisplayParsingResult(powerToEffectTable);
+            //DisplayParsingResult(powerToEffectTable);
         }
 
-        private void WritePowerKeyToCompleteEffectFile(List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
+        private void WritePowerKeyToCompleteEffectFile(string fileName, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
         {
-            using (FileStream fs = new FileStream("PowerKeyToCompleteEffect.cs", FileMode.Create, FileAccess.Write))
+            using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
                 using (StreamWriter sw = new StreamWriter(fs))
                 {
@@ -1500,7 +1502,8 @@
 
                     bool IsAbilityGeneric = false;
                     foreach (AbilityKeyword Keyword in KeywordList)
-                        IsAbilityGeneric |= GenericAbilityList.Contains(Keyword);
+                        if (Keyword != AbilityKeyword.PsiHealthWave && Keyword != AbilityKeyword.PsiArmorWave && Keyword != AbilityKeyword.PsiPowerWave)
+                            IsAbilityGeneric |= GenericAbilityList.Contains(Keyword);
 
                     if (LastBestIndex == -1)
                         IsFirstAbilityGeneric = IsAbilityGeneric;
@@ -2202,15 +2205,13 @@
         #region Data Analysis, Remaining
         const int AnalyzedVersionRemaining = 333;
 
-        private void AnalyzeRemainingEffects(int version, List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<IPgPower> powerSimpleEffectList)
+        private void AnalyzeRemainingEffects(int version, List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<IPgPower> powerSimpleEffectList, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
         {
             if (version <= AnalyzedVersionRemaining)
                 return;
 
             int DebugIndex = 0;
             int SkipIndex = 0;
-            List<string[]> StringKeyTable = new List<string[]>();
-            List<ModEffect[]> LocalPowerKeyToCompleteEffectTable = new List<ModEffect[]>();
 
             foreach (IPgPower ItemPower in powerSimpleEffectList)
             {
@@ -2227,8 +2228,8 @@
 
                 AnalyzeRemainingEffects(abilityNameList, nameToKeyword, ItemPower, out string[] stringKeyArray, out ModEffect[] ModEffectArray);
 
-                StringKeyTable.Add(stringKeyArray);
-                LocalPowerKeyToCompleteEffectTable.Add(ModEffectArray);
+                stringKeyTable.Add(stringKeyArray);
+                powerKeyToCompleteEffectTable.Add(ModEffectArray);
             }
         }
 
@@ -2493,7 +2494,7 @@
             new Sentence("Final step hit all targets within %f meter", CombatKeyword.ComboFinalStepBurst),
             new Sentence("Final step deal %f damage", CombatKeyword.ComboFinalStepDamage),
             new Sentence("Final step stun the target while dealing %f damage", CombatKeyword.ComboFinalStepDamageAndStun),
-            new Sentence("Final step boost base damage %f for 10 second", CombatKeyword.ComboFinalStepBoostBaseDamage),
+            //new Sentence("Final step boost base damage %f for 10 second", CombatKeyword.ComboFinalStepBoostBaseDamage),
             new Sentence("Whenever you take damage from an enemy", CombatKeyword.ReflectOnAnyAttack),
             //new Sentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack),
             new Sentence("If you are using the #S skill", CombatKeyword.ActiveSkill),
@@ -2665,6 +2666,7 @@
             new Sentence("Boost the healing of your @ %f", CombatKeyword.RestoreHealth),
             new Sentence("Heal you for %f of your Max Health", CombatKeyword.RestoreMaxHealth),
             new Sentence("Heal all targets for %f health", CombatKeyword.RestoreHealth),
+            //new Sentence("Instantly heal all target for %f health", CombatKeyword.RestoreHealth),
             //new Sentence("You regain %f health", CombatKeyword.RestoreHealth),
             new Sentence("Heal %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Restore %f armor", CombatKeyword.RestoreArmor),
@@ -2777,6 +2779,7 @@
             new Sentence("%f mitigation vs #D", CombatKeyword.AddMitigation),
             new Sentence("Increase your Mitigation vs #D attack %f", CombatKeyword.AddMitigation),
             new Sentence("%f mitigation from #D attack", CombatKeyword.AddMitigation),
+            new Sentence("Direct and Indirect #D mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("Indirect #D mitigation %f", CombatKeyword.AddMitigationIndirect),
             new Sentence("Direct #D mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("%f direct damage mitigation", CombatKeyword.AddMitigationDirect),
@@ -2788,7 +2791,7 @@
             new Sentence("Debuff their mitigation %f", CombatKeyword.AddMitigation, SignInterpretation.AlwaysNegative),
             new Sentence("%f Damage Mitigation", CombatKeyword.AddMitigation),
             new Sentence("%f Direct Mitigation", CombatKeyword.AddMitigationDirect),
-            new Sentence("Mitigate %f of all Slashing/Crushing/Piercing damage", CombatKeyword.AddMitigationPhysical),
+            //new Sentence("Mitigate %f of all Slashing/Crushing/Piercing damage", CombatKeyword.AddMitigationPhysical),
             new Sentence("Mitigate %f of all physical damage", CombatKeyword.AddMitigationPhysical),
             new Sentence("%f Cold Protection (Direct and Indirect)", CombatKeyword.AddProtectionCold),
             new Sentence("%f Direct and Indirect Cold Protection", CombatKeyword.AddProtectionCold),
