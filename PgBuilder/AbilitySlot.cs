@@ -59,8 +59,10 @@
         private double DeltaResetTime;
 
         public bool HasAbilityRange { get { return Ability != null && Ability.PvE.Range != 0; } }
-        public string AbilityRange { get { return Ability != null ? Ability.PvE.Range.ToString() : string.Empty; } }
-        public bool? AbilityRangeModified { get { return null; } }
+        public int ModifiedAbilityAbilityRange { get { return Ability != null ? App.CalculateRange(Ability.PvE.Range, DeltaAbilityRange) : 0; } }
+        public string AbilityRange { get { return Ability != null ? ModifiedAbilityAbilityRange.ToString() : string.Empty; } }
+        public bool? AbilityRangeModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityAbilityRange - Ability.PvE.Range) : null; } }
+        private double DeltaAbilityRange;
 
         public bool HasAbilityDamage{ get { return Ability != null && Ability.PvE.Damage != 0; } }
         public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(Ability.PvE.Damage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage) : 0; } }
@@ -214,6 +216,7 @@
         {
             DeltaPowerCost = 0;
             DeltaResetTime = 0;
+            DeltaAbilityRange = 0;
 
             DeltaDamage = 0; // Damage +X
             ModDamage = 1.0;   // Damage +(X*100)%
@@ -376,11 +379,6 @@
 
         public void AddEffect(ModEffect modEffect)
         {
-            string EffectKey = modEffect.EffectKey;
-
-            if (EffectKey.Length == 0)
-                return;
-
             Debug.Assert(Ability != null);
 
             bool IsAbilityModified = false;
@@ -395,11 +393,12 @@
                 return;
 
             List<CombatEffect> StaticCombatEffectList = modEffect.StaticCombatEffectList;
-            bool IsOtherEffect = false;
             foreach (CombatEffect Item in StaticCombatEffectList)
-                AddEffect(modEffect, Item, ref IsOtherEffect);
+                AddEffect(modEffect, Item);
 
-            if (!IsOtherEffect)
+            string EffectKey = modEffect.EffectKey;
+
+            if (EffectKey.Length == 0)
                 return;
 
             IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
@@ -427,7 +426,7 @@
             return false;
         }
 
-        public void AddEffect(ModEffect modEffect, CombatEffect combatEffect, ref bool isOtherEffect)
+        public void AddEffect(ModEffect modEffect, CombatEffect combatEffect)
         {
             if (HasSituationalModifier(modEffect.StaticCombatEffectList))
                 return;
@@ -445,8 +444,11 @@
                     DeltaResetTime += combatEffect.Data.Value;
                     break;
 
+                case CombatKeyword.AddRange:
+                    DeltaAbilityRange += combatEffect.Data.Value;
+                    break;
+
                 default:
-                    isOtherEffect = true;
                     break;
             }
         }

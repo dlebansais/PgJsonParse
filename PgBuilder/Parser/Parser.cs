@@ -2148,6 +2148,7 @@
         {
             modText = modText.Replace("Indirect Poison and Indirect Trauma damage", "Indirect Poison and Trauma damage");
             modText = modText.Replace("Indirect Nature and Indirect Electricity damage", "Indirect Nature and Electricity damage");
+            modText = modText.Replace(", but the ability's range is reduced to 12m", ", but range is reduced 18 meter");
         }
         #endregion
 
@@ -2490,6 +2491,7 @@
             new Sentence("Attack Range is %f", CombatKeyword.AddRange),
             new Sentence("Range is %f meter", CombatKeyword.AddRange),
             new Sentence("Range is increased %f meter", CombatKeyword.AddRange),
+            new Sentence("Range is reduced %f meter", CombatKeyword.AddRange, SignInterpretation.AlwaysNegative),
             new Sentence("Stun you", CombatKeyword.SelfStun),
             new Sentence("Complete stun immunity", CombatKeyword.StunImmunity),
             new Sentence("Grant immunity to new stun", CombatKeyword.StunImmunity),
@@ -2603,7 +2605,7 @@
             new Sentence("Per second", CombatKeyword.Recurring),
             new Sentence("Steal %f health", CombatKeyword.DrainHealth),
             new Sentence("Steal %f more health", CombatKeyword.DrainHealth),
-            new Sentence("Range is reduced to %fm", CombatKeyword.AddRange, SignInterpretation.AlwaysNegative),
+            //new Sentence("Range is reduced to %fm", CombatKeyword.AddRange, SignInterpretation.AlwaysNegative),
             new Sentence("Chance to consume carrot is %f", CombatKeyword.ChanceToConsume),
             new Sentence("Lower target's aggro toward you by %f", CombatKeyword.AddTaunt, SignInterpretation.Opposite),
             new Sentence("Until you trigger the teleport", CombatKeyword.UntilTrigger),

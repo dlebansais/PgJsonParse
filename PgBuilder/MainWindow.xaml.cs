@@ -70,7 +70,7 @@
 
                 bool HasKeyword = false;
                 foreach (CombatEffect Item in StaticCombatEffectList)
-                    if (Item.Keyword == CombatKeyword.AddResetTimer)
+                    if (Item.Keyword == CombatKeyword.AddRange)
                         HasKeyword = true;
 
                 if (HasKeyword)
