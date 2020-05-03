@@ -68,6 +68,7 @@
     <Compile Include="GearSlot.cs" />
     <Compile Include="ModEffect.cs" />
     <Compile Include="NumericValue.cs" />
+    <Compile Include="Parser\Parser.cs" />
     <Compile Include="PowerKeyToCompleteEffect.cs" />
     <Compile Include="Selectors\ItemEffectTemplateSelector.cs" />
     <Compile Include="Sentence.cs" />
