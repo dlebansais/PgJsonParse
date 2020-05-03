@@ -10,7 +10,7 @@
     {
         #region Data Analysis
         bool WriteFile = false;
-        bool CompareTable = false;
+        bool CompareTable = true;
 
         public void AnalyzeCachedData(int version, List<ItemSlot> validSlotList, List<IPgSkill> skillList, Dictionary<string, ModEffect> existingPowerKeyToCompleteEffectTable)
         {
@@ -21,8 +21,8 @@
 
             List<string[]> StringKeyTable = new List<string[]>();
             List<ModEffect[]> AnalyzedPowerKeyToCompleteEffectTable = new List<ModEffect[]>();
-            AnalyzeMatchingEffects(version, AbilityNameList, NameToKeyword, PowerToEffectTable, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
-            AnalyzeRemainingEffects(version, AbilityNameList, NameToKeyword, UnmatchedPowerList, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
+            AnalyzeMatchingEffects(AbilityNameList, NameToKeyword, PowerToEffectTable, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
+            AnalyzeRemainingEffects(AbilityNameList, NameToKeyword, UnmatchedPowerList, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
 
             CheckAllSentencesUsed();
 
@@ -440,7 +440,6 @@
             { "All Knife ability WITHOUT 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
             { "All Knife Fighting attack", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
             { "Bard Songs", new List<AbilityKeyword>() { AbilityKeyword.BardSong } },
-            //{ "Spider Skill", new List<AbilityKeyword>() { AbilityKeyword.Spider } },
             { "All Major Healing ability targeting you", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
             { "All Bun-Fu moves", new List<AbilityKeyword>() { AbilityKeyword.Rabbit } },
             { "Survival Utility", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility } },
@@ -703,38 +702,6 @@
             abilityNameList.Add(abilityName);
             keywordToName.Add(keyword, abilityName);
         }
-        #endregion
-
-        #region Data Analysis, Matching
-        private void AnalyzeMatchingEffects(int version, List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
-        {
-            int DebugIndex = 0;
-            int SkipIndex = 0;
-
-            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
-            {
-                DebugIndex++;
-
-                if (SkipIndex > 0)
-                {
-                    SkipIndex--;
-                    continue;
-                }
-
-                //Debug.WriteLine("");
-                //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count} (Matching)");
-
-                IPgPower ItemPower = Entry.Key;
-                List<IPgEffect> ItemEffectList = Entry.Value;
-
-                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList, out string[] stringKeyArray, out ModEffect[] ModEffectArray);
-
-                stringKeyTable.Add(stringKeyArray);
-                powerKeyToCompleteEffectTable.Add(ModEffectArray);
-            }
-
-            //DisplayParsingResult(powerToEffectTable);
-        }
 
         private void WritePowerKeyToCompleteEffectFile(string fileName, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
         {
@@ -852,6 +819,38 @@
             string CombatEffectListString = CombatEffectListToString(combatEffectList);
 
             sw.WriteLine($"            {{ \"{stringKey}\", new List<CombatEffect>() {CombatEffectListString} }},");
+        }
+        #endregion
+
+        #region Data Analysis, Matching
+        private void AnalyzeMatchingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
+        {
+            int DebugIndex = 0;
+            int SkipIndex = 0;
+
+            foreach (KeyValuePair<IPgPower, List<IPgEffect>> Entry in powerToEffectTable)
+            {
+                DebugIndex++;
+
+                if (SkipIndex > 0)
+                {
+                    SkipIndex--;
+                    continue;
+                }
+
+                //Debug.WriteLine("");
+                //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count} (Matching)");
+
+                IPgPower ItemPower = Entry.Key;
+                List<IPgEffect> ItemEffectList = Entry.Value;
+
+                AnalyzeMatchingEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList, out string[] stringKeyArray, out ModEffect[] ModEffectArray);
+
+                stringKeyTable.Add(stringKeyArray);
+                powerKeyToCompleteEffectTable.Add(ModEffectArray);
+            }
+
+            //DisplayParsingResult(powerToEffectTable);
         }
 
         private string CombatEffectListToString(List<CombatEffect> combatEffectList)
@@ -2021,7 +2020,7 @@
         #endregion
 
         #region Data Analysis, Remaining
-        private void AnalyzeRemainingEffects(int version, List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<IPgPower> powerSimpleEffectList, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
+        private void AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<IPgPower> powerSimpleEffectList, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
         {
             int DebugIndex = 0;
             int SkipIndex = 0;
@@ -2116,7 +2115,7 @@
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");*/
             }
 
-            modEffect = new ModEffect(ModAbilityList, new List<CombatEffect>(), ModCombatList, ModTargetAbilityList);
+            modEffect = new ModEffect(ModAbilityList, ModCombatList, new List<CombatEffect>(), ModTargetAbilityList);
             return true;
         }
 

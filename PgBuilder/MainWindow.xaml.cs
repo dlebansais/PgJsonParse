@@ -18,7 +18,7 @@
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Constants
-        const int AnalyzedVersion = 334;
+        const int AnalyzedVersion = 333;
         #endregion
 
         #region Init
