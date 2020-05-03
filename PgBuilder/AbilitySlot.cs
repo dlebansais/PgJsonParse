@@ -50,12 +50,12 @@
         public bool HasAbilityPowerCost { get { return Ability != null && Ability.PvE.PowerCost != 0; } }
         public int ModifiedAbilityPowerCost { get { return Ability != null ? App.CalculatePowerCost(Ability.PvE.PowerCost, DeltaPowerCost) : 0; } }
         public string AbilityPowerCost { get { return Ability != null ? ModifiedAbilityPowerCost.ToString() : string.Empty; } }
-        public bool? AbilityPowerCostModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityPowerCost - Ability.PvE.PowerCost) : null; } }
+        public bool? AbilityPowerCostModified { get { return Ability != null ? App.IntModifier(Ability.PvE.PowerCost - ModifiedAbilityPowerCost) : null; } }
         private double DeltaPowerCost;
 
         public int ModifiedAbilityResetTime { get { return Ability != null ? App.CalculateResetTime(Ability.ResetTime, DeltaResetTime) : 0; } }
         public string AbilityResetTime { get { return Ability != null ? ModifiedAbilityResetTime.ToString() : string.Empty; } }
-        public bool? AbilityResetTimeModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityResetTime - Ability.ResetTime) : null; } }
+        public bool? AbilityResetTimeModified { get { return Ability != null ? App.IntModifier(Ability.ResetTime - ModifiedAbilityResetTime) : null; } }
         private double DeltaResetTime;
 
         public bool HasAbilityRange { get { return Ability != null && Ability.PvE.Range != 0; } }
@@ -429,17 +429,20 @@
 
         public void AddEffect(ModEffect modEffect, CombatEffect combatEffect, ref bool isOtherEffect)
         {
+            if (HasSituationalModifier(modEffect.StaticCombatEffectList))
+                return;
+
+            if (!combatEffect.Data.IsValueSet)
+                return;
+
             switch (combatEffect.Keyword)
             {
                 case CombatKeyword.AddPowerCost:
-                    if (combatEffect.Data.IsValueSet)
-                        DeltaPowerCost += combatEffect.Data.Value;
+                    DeltaPowerCost += combatEffect.Data.Value;
                     break;
 
                 case CombatKeyword.AddResetTimer:
-                    if (combatEffect.Data.IsValueSet)
-                        if (!HasSituationalModifier(modEffect.StaticCombatEffectList))
-                            DeltaResetTime += combatEffect.Data.Value;
+                    DeltaResetTime += combatEffect.Data.Value;
                     break;
 
                 default:
