@@ -9,8 +9,7 @@
         public CombatEffect()
         {
             Keyword = CombatKeyword.None;
-            Data1 = new NumericValue();
-            Data2 = new NumericValue();
+            Data = new NumericValue();
             DamageType = GameDamageType.None;
             CombatSkill = GameCombatSkill.None;
         }
@@ -20,8 +19,7 @@
             Debug.Assert(keyword != CombatKeyword.None);
 
             Keyword = keyword;
-            Data1 = new NumericValue();
-            Data2 = new NumericValue();
+            Data = new NumericValue();
             DamageType = GameDamageType.None;
             CombatSkill = GameCombatSkill.None;
         }
@@ -32,20 +30,17 @@
             Debug.Assert(data.IsValueSet);
 
             Keyword = keyword;
-            Data1 = data;
-            Data2 = new NumericValue();
+            Data = data;
             DamageType = GameDamageType.None;
             CombatSkill = GameCombatSkill.None;
         }
 
-        public CombatEffect(CombatKeyword keyword, NumericValue data1, NumericValue data2, GameDamageType damageType, GameCombatSkill combatSkill)
+        public CombatEffect(CombatKeyword keyword, NumericValue data, GameDamageType damageType, GameCombatSkill combatSkill)
         {
             Debug.Assert(keyword != CombatKeyword.None);
-            Debug.Assert((!data1.IsValueSet && !data2.IsValueSet) || data1.IsValueSet);
 
             Keyword = keyword;
-            Data1 = data1;
-            Data2 = data2;
+            Data = data;
             DamageType = damageType;
             CombatSkill = combatSkill;
         }
@@ -53,9 +48,7 @@
 
         #region Properties
         public CombatKeyword Keyword { get; }
-        public NumericValue Data { get { return Data1; } }
-        public NumericValue Data1 { get; }
-        public NumericValue Data2 { get; }
+        public NumericValue Data { get; }
         public GameDamageType DamageType { get; }
         public GameCombatSkill CombatSkill { get; }
         #endregion
@@ -107,13 +100,10 @@
                     return false;
             }
 
-            if (Data1.IsValueSet != Other.Data1.IsValueSet || Data2.IsValueSet != Other.Data2.IsValueSet)
+            if (Data.IsValueSet != Other.Data.IsValueSet)
                 return false;
 
-            if (Data1.IsValueSet && Data1.Value != Other.Data1.Value)
-                return false;
-
-            if (Data2.IsValueSet && Data2.Value != Other.Data2.Value)
+            if (Data.IsValueSet && Data.Value != Other.Data.Value)
                 return false;
 
             return true;
@@ -141,10 +131,7 @@
             if (combatEffect1.Keyword != combatEffect2.Keyword)
                 return false;
 
-            if (!NumericValue.IsEqualStrict(combatEffect1.Data1, combatEffect2.Data1))
-                return false;
-
-            if (!NumericValue.IsEqualStrict(combatEffect1.Data2, combatEffect2.Data2))
+            if (!NumericValue.IsEqualStrict(combatEffect1.Data, combatEffect2.Data))
                 return false;
 
             if (combatEffect1.DamageType != combatEffect2.DamageType)
@@ -160,8 +147,7 @@
         #region Debugging
         public override string ToString()
         {
-            string Data1String = Data1.IsValueSet ? $": {Data1}" : string.Empty;
-            string Data2String = Data2.IsValueSet ? $", {Data2}" : string.Empty;
+            string DataString = Data.IsValueSet ? $": {Data}" : string.Empty;
 
             string DamageTypeString = string.Empty;
 
@@ -185,7 +171,7 @@
 
             string CombatSkillString = CombatSkill == GameCombatSkill.None ? string.Empty : $" ({CombatSkill})";
 
-            return $"{Keyword}{Data1String}{Data2String}{DamageTypeString}{CombatSkillString}";
+            return $"{Keyword}{DataString}{DamageTypeString}{CombatSkillString}";
         }
         #endregion
     }

@@ -907,22 +907,22 @@
         {
             string CombatEffectString;
 
-            if (!combatEffect.Data1.IsValueSet && combatEffect.DamageType == GameDamageType.None && combatEffect.CombatSkill == GameCombatSkill.None)
+            if (!combatEffect.Data.IsValueSet && combatEffect.DamageType == GameDamageType.None && combatEffect.CombatSkill == GameCombatSkill.None)
                 CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword})";
             else
             {
-                if (combatEffect.Data1.IsValueSet)
+                if (combatEffect.Data.IsValueSet)
                 {
-                    string CreateMethod = combatEffect.Data1.IsPercent ? "FromDoublePercent" : "FromDouble";
-                    string NumericValueString = $"NumericValue.{CreateMethod}({combatEffect.Data1.Value.ToString(CultureInfo.InvariantCulture)})";
+                    string CreateMethod = combatEffect.Data.IsPercent ? "FromDoublePercent" : "FromDouble";
+                    string NumericValueString = $"NumericValue.{CreateMethod}({combatEffect.Data.Value.ToString(CultureInfo.InvariantCulture)})";
 
                     if (combatEffect.DamageType == GameDamageType.None && combatEffect.CombatSkill == GameCombatSkill.None)
                         CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword}, {NumericValueString})";
                     else
-                        CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword}, {NumericValueString}, new NumericValue(), (GameDamageType){(int)combatEffect.DamageType}, GameCombatSkill.{combatEffect.CombatSkill})";
+                        CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword}, {NumericValueString}, (GameDamageType){(int)combatEffect.DamageType}, GameCombatSkill.{combatEffect.CombatSkill})";
                 }
                 else
-                    CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword}, new NumericValue(), new NumericValue(), (GameDamageType){(int)combatEffect.DamageType}, GameCombatSkill.{combatEffect.CombatSkill})";
+                    CombatEffectString = $"new CombatEffect(CombatKeyword.{combatEffect.Keyword}, new NumericValue(), (GameDamageType){(int)combatEffect.DamageType}, GameCombatSkill.{combatEffect.CombatSkill})";
             }
 
             return CombatEffectString;
@@ -1633,14 +1633,14 @@
 
             // Hack for Aimed Shot.
             if (extractedAbilityList.Count == 1 && extractedAbilityList[0] == AbilityKeyword.AimedShot && extractedCombatEffectList.Count > 0 && extractedCombatEffectList[0].Keyword == CombatKeyword.DealDirectHealthDamage)
-                extractedCombatEffectList[0] = new CombatEffect(CombatKeyword.DamageBoost, extractedCombatEffectList[0].Data, new NumericValue(), GameDamageType.Trauma, GameCombatSkill.None);
+                extractedCombatEffectList[0] = new CombatEffect(CombatKeyword.DamageBoost, extractedCombatEffectList[0].Data, GameDamageType.Trauma, GameCombatSkill.None);
 
             for (int i = 0; i < extractedCombatEffectList.Count; i++)
             {
                 CombatEffect CombatEffect = extractedCombatEffectList[i];
                 if (CombatEffect.Keyword == CombatKeyword.AddMitigationPhysical && CombatEffect.DamageType == GameDamageType.None)
                 {
-                    extractedCombatEffectList[i] = new CombatEffect(CombatKeyword.AddMitigation, CombatEffect.Data1, CombatEffect.Data2, GameDamageType.Crushing | GameDamageType.Slashing | GameDamageType.Piercing, CombatEffect.CombatSkill);
+                    extractedCombatEffectList[i] = new CombatEffect(CombatKeyword.AddMitigation, CombatEffect.Data, GameDamageType.Crushing | GameDamageType.Slashing | GameDamageType.Piercing, CombatEffect.CombatSkill);
                 }
             }
         }
@@ -1649,7 +1649,6 @@
         {
             List<CombatKeyword> ExtractedKeywordList = new List<CombatKeyword>();
             NumericValue Data1 = new NumericValue();
-            NumericValue Data2 = new NumericValue();
             GameDamageType DamageType = GameDamageType.None;
             GameCombatSkill CombatSkill = GameCombatSkill.None;
             int ParsedIndex = -1;
@@ -1657,7 +1656,7 @@
             Sentence SelectedSentence = null;
 
             foreach (Sentence Item in SentenceList)
-                ExtractSentence(Item, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref Data2, ref DamageType, ref CombatSkill, ref ParsedIndex, ref SelectedSentence);
+                ExtractSentence(Item, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref DamageType, ref CombatSkill, ref ParsedIndex, ref SelectedSentence);
 
             extractedCombatEffectList = new List<CombatEffect>();
 
@@ -1672,7 +1671,7 @@
 
                     CombatEffect ExtractedCombatEffect;
                     if (extractedCombatEffectList.Count == 0)
-                        ExtractedCombatEffect = new CombatEffect(Item, Data1, Data2, DamageType, CombatSkill);
+                        ExtractedCombatEffect = new CombatEffect(Item, Data1, DamageType, CombatSkill);
                     else
                         ExtractedCombatEffect = new CombatEffect(Item);
 
@@ -1688,17 +1687,16 @@
                 return false;
         }
 
-        private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence selectedSentence)
+        private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence selectedSentence)
         {
             string NewText = text;
             List<CombatKeyword> NewExtractedKeywordList = new List<CombatKeyword>();
             NumericValue NewData1 = new NumericValue();
-            NumericValue NewData2 = new NumericValue();
             GameDamageType NewDamageType = GameDamageType.None;
             GameCombatSkill NewCombatSkill = GameCombatSkill.None;
             int NewParsedIndex = -1;
 
-            bool IsExtracted = ExtractNewSentence(sentence, skippedKeywordList, ref NewText, NewExtractedKeywordList, ref NewData1, ref NewData2, ref NewDamageType, ref NewCombatSkill, ref NewParsedIndex);
+            bool IsExtracted = ExtractNewSentence(sentence, skippedKeywordList, ref NewText, NewExtractedKeywordList, ref NewData1, ref NewDamageType, ref NewCombatSkill, ref NewParsedIndex);
 
             if (!IsExtracted)
                 return;
@@ -1709,7 +1707,6 @@
                 extractedKeywordList.Clear();
                 extractedKeywordList.AddRange(NewExtractedKeywordList);
                 data1 = NewData1;
-                data2 = NewData2;
                 damageType = NewDamageType;
                 combatSkill = NewCombatSkill;
                 parsedIndex = NewParsedIndex;
@@ -1717,7 +1714,7 @@
             }
         }
 
-        private bool ExtractNewSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
+        private bool ExtractNewSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex)
         {
             string format = sentence.Format;
             List<CombatKeyword> associatedKeywordList = sentence.AssociatedKeywordList;
@@ -1746,7 +1743,7 @@
                 do
                 {
                     StartIndex++;
-                    ContinueParsing = ParseFormat(StartIndex, BeforePattern, AfterPattern, LowerText, associatedKeywordList, signInterpretation, ref text, extractedKeywordList, ref data1, ref data2, ref damageType, ref combatSkill, out int ParsedLength);
+                    ContinueParsing = ParseFormat(StartIndex, BeforePattern, AfterPattern, LowerText, associatedKeywordList, signInterpretation, ref text, extractedKeywordList, ref data1, ref damageType, ref combatSkill, out int ParsedLength);
                     StartIndex += ParsedLength;
                 }
                 while (ContinueParsing);
@@ -1775,7 +1772,7 @@
             }
         }
 
-        private bool ParseFormat(int startIndex, string beforePattern, string afterPattern, string lowerText, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref NumericValue data2, ref GameDamageType damageType, ref GameCombatSkill combatSkill, out int parsedLength)
+        private bool ParseFormat(int startIndex, string beforePattern, string afterPattern, string lowerText, List<CombatKeyword> associatedKeywordList, SignInterpretation signInterpretation, ref string text, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, out int parsedLength)
         {
             int PatternIndex;
             int AfterPatternIndex;
