@@ -58,6 +58,13 @@
         <DataTemplate x:Key="ItemAttributeLinkTemplate" DataType="{x:Type object:IPgItemAttributeLink}">
             <TextBox Text="{Binding FriendlyNameAndEffect, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Foreground="White" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,1,0,1"/>
         </DataTemplate>
+        <DataTemplate x:Key="SpecialValueTemplate">
+            <StackPanel Orientation="Horizontal" Visibility="{Binding IsDisplayed, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                <TextBlock Text="{Binding Label}" Foreground="White"/>
+                <TextBlock Text="{Binding AsString}" Foreground="{Binding IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                <TextBlock Text="{Binding Suffix}" Foreground="White" Margin="5,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
         <DataTemplate x:Key="SpecialEffectTemplate">
             <Grid>
                 <TextBlock Text="{Binding}" TextWrapping="Wrap" Foreground="White"/>
@@ -145,8 +152,10 @@
                         <TextBlock Text="{Binding RageMultiplier.AsString}" Foreground="{Binding RageMultiplier.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
                         <TextBlock>%</TextBlock>
                     </StackPanel>
+                    <ItemsControl ItemsSource="{Binding SpecialValueList}" ItemTemplate="{StaticResource SpecialValueTemplate}"/>
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsEpicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is an Epic Attack.</TextBlock>
-                    <ItemsControl ItemsSource="{Binding SpecialEffectList}" ItemTemplate="{StaticResource SpecialEffectTemplate}" Margin="0,0,0,5"/>
+                    <TextBlock FontWeight="Bold" Visibility="{Binding IsMinorHealing, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Minor Healing ability.</TextBlock>
+                    <ItemsControl ItemsSource="{Binding SpecialEffectList}" ItemTemplate="{StaticResource SpecialEffectTemplate}"/>
                     <StackPanel Visibility="{Binding IsBasicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">This is a Basic Attack.</TextBlock>
                         <DockPanel>

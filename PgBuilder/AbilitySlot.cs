@@ -88,6 +88,9 @@
         public bool? AbilityAccuracyModified { get { return null; } }
 
         public bool IsEpicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.EpicAttack); } }
+        public bool IsMinorHealing { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.MinorHeal); } }
+
+        public bool IsBasicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.BasicAttack); } }
         public string BasicAttackHealth { get { return $"+{App.DoubleToString(BasicAttackHealthModified)}"; } }
         public string BasicAttackArmor { get { return $"+{App.DoubleToString(BasicAttackArmorModified)}"; } }
         public string BasicAttackPower { get { return $"+{App.DoubleToString(BasicAttackPowerModified)}"; } }
@@ -95,10 +98,9 @@
         private double BasicAttackArmorModified;
         private double BasicAttackPowerModified;
 
-        public bool IsBasicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.BasicAttack); } }
-
-        public ObservableCollection<IPgEffect> OtherEffectList { get; } = new ObservableCollection<IPgEffect>();
+        public ObservableCollection<AbilitySlotSpecialValue> SpecialValueList { get; } = new ObservableCollection<AbilitySlotSpecialValue>();
         public ObservableCollection<string> SpecialEffectList { get; } = new ObservableCollection<string>();
+        public ObservableCollection<IPgEffect> OtherEffectList { get; } = new ObservableCollection<IPgEffect>();
 
         public List<AbilityTierList> CompatibleAbilityList { get; private set; }
 
@@ -240,8 +242,9 @@
             NotifyPropertyChanged(nameof(AbilityAccuracyModified));
 
             NotifyPropertyChanged(nameof(IsEpicAttack));
-            NotifyPropertyChanged(nameof(IsBasicAttack));
+            NotifyPropertyChanged(nameof(IsMinorHealing));
 
+            NotifyPropertyChanged(nameof(IsBasicAttack));
             NotifyPropertyChanged(nameof(BasicAttackHealth));
             NotifyPropertyChanged(nameof(BasicAttackArmor));
             NotifyPropertyChanged(nameof(BasicAttackPower));
@@ -330,6 +333,22 @@
 
         private void UpdateSpecialEffects()
         {
+            SpecialValueList.Clear();
+
+            foreach (IPgSpecialValue Item in Ability.PvE.SpecialValueList)
+            {
+                string Label = Item.Label;
+                string Suffix = Item.Suffix;
+                double BaseValue = Item.Value;
+                bool SkipIfZero = Item.SkipIfZero;
+
+                List<string> AttributesThatDeltaList = ToKeyList(Item.AttributesThatDeltaList);
+                List<string> AttributesThatModList = ToKeyList(Item.AttributesThatModList);
+                List<string> AttributesThatModBaseList = ToKeyList(Item.AttributesThatModBaseList);
+                AbilitySlotSpecialValue NewSpecialValue = new AbilitySlotSpecialValue(Label, Suffix, BaseValue, SkipIfZero, AttributesThatDeltaList, AttributesThatModList, AttributesThatModBaseList);
+                SpecialValueList.Add(NewSpecialValue);
+            }
+
             SpecialEffectList.Clear();
 
             if (Ability.SpecialInfo != null)
@@ -342,8 +361,19 @@
             }
         }
 
+        private List<string> ToKeyList(IPgAttributeCollection attributeCollection)
+        {
+            List<string> Result = new List<string>();
+
+            foreach (IPgAttribute Item in attributeCollection)
+                Result.Add(Item.Key);
+
+            return Result;
+        }
+
         private void ResetSpecialEffects()
         {
+            SpecialValueList.Clear();
             SpecialEffectList.Clear();
         }
         #endregion
@@ -434,6 +464,12 @@
 
             if (HasAttributeKey(Ability.PvE.AttributesThatModCritDamageList, key))
                 RecalculateModCriticalDamage(attributeEffect);
+
+            foreach (AbilitySlotSpecialValue Item in SpecialValueList)
+            {
+                if (Item.AttributesThatDeltaList.Contains(key))
+                    Item.AddDelta(attributeEffect);
+            }
         }
 
         private bool HasAttributeKey(IPgAttributeCollection attributeList, string key)
