@@ -325,8 +325,16 @@
         {
             for (int Index = 0; Index < 6; Index++)
             {
-                AbilitySlot1List.Add(new AbilitySlot());
-                AbilitySlot2List.Add(new AbilitySlot());
+                AbilitySlot Slot1 = new AbilitySlot();
+                Slot1.AbilityMenuClicked += OnAbilityMenuClicked;
+                Slot1.AbilityMenuCleared += OnAbilityMenuCleared;
+
+                AbilitySlot Slot2 = new AbilitySlot();
+                Slot2.AbilityMenuClicked += OnAbilityMenuClicked;
+                Slot2.AbilityMenuCleared += OnAbilityMenuCleared;
+
+                AbilitySlot1List.Add(Slot1);
+                AbilitySlot2List.Add(Slot2);
             }
         }
 
@@ -336,7 +344,7 @@
                 Item.Reset();
         }
 
-        private void FillEmptyAbilitySlots(IPgSkill skill, List<AbilitySlot> abilitySlotList, List<AbilityTierList> compatibleAbilityList)
+        private void UpdateAbilityCompatibilityList(IPgSkill skill, List<AbilitySlot> abilitySlotList, List<AbilityTierList> compatibleAbilityList)
         {
             compatibleAbilityList.Clear();
 
@@ -354,6 +362,12 @@
                         AddAbilityTier(compatibleAbilityList, Item);
             }
 
+            foreach (AbilitySlot Item in abilitySlotList)
+                Item.SetCompatibleAbilityList(compatibleAbilityList);
+        }
+
+        private void FillEmptyAbilitySlots(IPgSkill skill, List<AbilitySlot> abilitySlotList, List<AbilityTierList> compatibleAbilityList)
+        {
             List<string> FilledSlotList = new List<string>();
             foreach (AbilitySlot Item in abilitySlotList)
                 if (!Item.IsEmpty)
@@ -402,49 +416,6 @@
             return false;
         }
 
-        private void DisplayAbilityChoiceMenu(FrameworkElement control, AbilitySlot slot, List<AbilityTierList> compatibleAbilityList)
-        {
-            if (control.ContextMenu == null)
-                control.ContextMenu = new ContextMenu();
-            ContextMenu Menu = control.ContextMenu;
-
-            List<string> AbilityNameList = new List<string>();
-            Menu.Items.Clear();
-
-            foreach (AbilityTierList TierListItem in compatibleAbilityList)
-            {
-                if (AbilityNameList.Contains(TierListItem.Name))
-                    continue;
-                AbilityNameList.Add(TierListItem.Name);
-
-                string Name = TierListItem.Name;
-                MenuItem NewMenuItem = new MenuItem();
-                NewMenuItem.Header = Name;
-                NewMenuItem.IsChecked = TierListItem == slot.AbilityTierList;
-
-                foreach (IPgAbility AbilityItem in TierListItem)
-                {
-                    MenuItem NewSubmenuItem = new MenuItem();
-                    NewSubmenuItem.Header = AbilityItem.Name;
-                    NewSubmenuItem.IsChecked = AbilityItem == slot.Ability;
-                    NewSubmenuItem.Click += OnAbilityMenuClick;
-
-                    NewMenuItem.Items.Add(NewSubmenuItem);
-                }
-
-                Menu.Items.Add(NewMenuItem);
-            }
-
-            Menu.Items.Add(new Separator());
-
-            MenuItem MenuItemClear = new MenuItem();
-            MenuItemClear.Header = "Clear";
-            MenuItemClear.Click += OnClearAbility;
-            MenuItemClear.DataContext = slot;
-
-            Menu.Items.Add(MenuItemClear);
-        }
-
         private void SelectAbilityByName(AbilitySlot slot, string selectedName, List<AbilityTierList> compatibleAbilityList)
         {
             foreach (AbilityTierList TierListItem in compatibleAbilityList)
@@ -469,17 +440,6 @@
                     }
 
             slot.Reset();
-        }
-
-        private void CloseAbilityChoiceMenu(FrameworkElement control)
-        {
-            if (control.ContextMenu == null)
-                return;
-            ContextMenu Menu = control.ContextMenu;
-
-            foreach (MenuItem MenuItem in Menu.Items)
-                foreach (MenuItem SubmenuItem in MenuItem.Items)
-                    SubmenuItem.Click -= OnAbilityMenuClick;
         }
 
         private readonly List<AbilityTierList> CompatibleAbility1List = new List<AbilityTierList>();
@@ -507,6 +467,7 @@
             NotifyPropertyChanged(nameof(SelectedSkill1));
 
             ResetAbilitySlots(AbilitySlot1List);
+            UpdateAbilityCompatibilityList(SkillList[SelectedSkill1], AbilitySlot1List, CompatibleAbility1List);
             FillEmptyAbilitySlots(SkillList[SelectedSkill1], AbilitySlot1List, CompatibleAbility1List);
             ResetGearSlots();
 
@@ -529,6 +490,7 @@
             NotifyPropertyChanged(nameof(SelectedSkill2));
 
             ResetAbilitySlots(AbilitySlot2List);
+            UpdateAbilityCompatibilityList(SkillList[SelectedSkill2], AbilitySlot2List, CompatibleAbility2List);
             FillEmptyAbilitySlots(SkillList[SelectedSkill2], AbilitySlot2List, CompatibleAbility2List);
             ResetGearSlots();
 
@@ -536,18 +498,7 @@
             RecalculateMods();
         }
 
-        private void OnAbilityContextMenuOpening(object sender, ContextMenuEventArgs e)
-        {
-            FrameworkElement Control = (FrameworkElement)sender;
-            AbilitySlot Slot = (AbilitySlot)Control.DataContext;
-
-            if (AbilitySlot1List.Contains(Slot))
-                DisplayAbilityChoiceMenu(Control, Slot, CompatibleAbility1List);
-            else if (AbilitySlot2List.Contains(Slot))
-                DisplayAbilityChoiceMenu(Control, Slot, CompatibleAbility2List);
-        }
-
-        private void OnAbilityMenuClick(object sender, RoutedEventArgs e)
+        private void OnAbilityMenuClicked(object sender, RoutedEventArgs e)
         {
             MenuItem SubmenuItem = (MenuItem)sender;
             MenuItem MenuItem = (MenuItem)SubmenuItem.Parent;
@@ -563,7 +514,7 @@
             RecalculateMods();
         }
 
-        private void OnClearAbility(object sender, RoutedEventArgs e)
+        private void OnAbilityMenuCleared(object sender, RoutedEventArgs e)
         {
             MenuItem Menu = (MenuItem)e.OriginalSource;
             AbilitySlot Slot = (AbilitySlot)Menu.DataContext;
@@ -575,12 +526,6 @@
         {
             slot.Reset();
             RecalculateMods();
-        }
-
-        private void OnAbilityContextMenuClosing(object sender, ContextMenuEventArgs e)
-        {
-            FrameworkElement Control = (FrameworkElement)sender;
-            CloseAbilityChoiceMenu(Control);
         }
 
         private void OnSelectAbilities1(List<string> abilityTable)

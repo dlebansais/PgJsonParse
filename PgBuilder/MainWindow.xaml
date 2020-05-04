@@ -42,7 +42,6 @@
         </CompositeCollection>
         <BitmapImage x:Key="imgRemove" UriSource="/PgBuilder;component/Resources/remove.png"/>
         <BitmapImage x:Key="imgBasicAttack" UriSource="/PgBuilder;component/Resources/basic_attack.png"/>
-        <ContextMenu x:Key="AbilityContextMenu"/>
         <DataTemplate x:Key="SkillTemplate" DataType="{x:Type object:PgSkill}">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
@@ -103,6 +102,14 @@
                                             <TextBlock Text="{Binding Range.AsString}" Foreground="{Binding Range.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
                                             <TextBlock Margin="5,0,0,0">meters</TextBlock>
                                         </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Visibility="{Binding AoE.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                                            <TextBlock FontWeight="Bold">Range:</TextBlock>
+                                            <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                                                <TextBlock Margin="0,0,5,0">All targets within</TextBlock>
+                                                <TextBlock Text="{Binding AoE.AsString}" Foreground="{Binding AoE.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}"/>
+                                                <TextBlock Margin="5,0,0,0">meters</TextBlock>
+                                            </StackPanel>
+                                        </StackPanel>
                                         <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                                             <TextBlock FontWeight="Bold">Damage:</TextBlock>
                                             <TextBlock Text="{Binding AbilityDamage}" Foreground="{Binding AbilityDamageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
@@ -153,7 +160,7 @@
                                                 </StackPanel>
                                             </DockPanel>
                                         </StackPanel>
-                                        <TextBlock FontWeight="Bold">Other Effects:</TextBlock>
+                                        <TextBlock Visibility="{Binding HasOtherEffects, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Other Effects:</TextBlock>
                                     </StackPanel>
                                 </DockPanel>
                             </ControlTemplate>
@@ -161,7 +168,25 @@
                     </Setter>
                 </Style>
             </DataTemplate.Resources>
-            <Image Source="{Binding Source}" ContextMenu="{StaticResource AbilityContextMenu}" ToolTip="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}" ContextMenuOpening="OnAbilityContextMenuOpening" Width="32" Height="32" Margin="5,0,5,0"/>
+            <Image Source="{Binding Source}" ContextMenu="{Binding AbilityContextMenu}" ToolTip="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}" Width="32" Height="32" Margin="5,0,5,0">
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Style.Triggers>
+                            <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="ContextMenu.IsOpen">
+                                                <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                            </BooleanAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
         </DataTemplate>
         <DataTemplate x:Key="GearSlotTemplate" DataType="{x:Type local:GearSlot}">
             <TextBlock Text="{Binding Name}"/>

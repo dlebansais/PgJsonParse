@@ -11,6 +11,8 @@
     using System.Collections.ObjectModel;
     using PgJsonObjects;
     using Presentation;
+    using System.Windows.Controls;
+    using System.Windows;
 
     public class AbilitySlot : INotifyPropertyChanged
     {
@@ -31,6 +33,7 @@
                 PowerCost,
                 ResetTime,
                 Range,
+                AoE,
                 RageBoost,
                 RageMultiplier,
             };
@@ -58,10 +61,12 @@
 
         public AbilityModifier PowerCost { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.PowerCost);
         public AbilityModifier ResetTime { get; } = new AbilityModifier((IPgAbility ability) => ability.ResetTime);
-        public AbilityModifier Range { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.Range);
+        public AbilityModifier Range { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.AoE == 0 ? ability.PvE.Range : 0);
+        public AbilityModifier AoE { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.AoE);
         public AbilityModifier RageBoost { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.RageBoost);
         public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent((IPgAbility ability) => ability.PvE.RageMultiplier * 100);
         private List<AbilityModifier> ModifierList;
+        public bool HasOtherEffects { get { return ModifierList.Exists((AbilityModifier modifier) => modifier.HasValue); } }
 
         public bool HasAbilityDamage{ get { return Ability != null && Ability.PvE.Damage != 0; } }
         public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(Ability.PvE.Damage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage) : 0; } }
@@ -93,9 +98,75 @@
         public bool IsBasicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.BasicAttack); } }
 
         public ObservableCollection<IPgEffect> OtherEffectList { get; } = new ObservableCollection<IPgEffect>();
+
+        public List<AbilityTierList> CompatibleAbilityList { get; private set; }
+
+        public ContextMenu AbilityContextMenu
+        { 
+            get 
+            {
+                ContextMenu Menu = new ContextMenu();
+
+                List<string> AbilityNameList = new List<string>();
+                Menu.Items.Clear();
+
+                foreach (AbilityTierList TierListItem in CompatibleAbilityList)
+                {
+                    if (AbilityNameList.Contains(TierListItem.Name))
+                        continue;
+                    AbilityNameList.Add(TierListItem.Name);
+
+                    string Name = TierListItem.Name;
+                    MenuItem NewMenuItem = new MenuItem();
+                    NewMenuItem.Header = Name;
+                    NewMenuItem.IsChecked = TierListItem == AbilityTierList;
+
+                    foreach (IPgAbility AbilityItem in TierListItem)
+                    {
+                        MenuItem NewSubmenuItem = new MenuItem();
+                        NewSubmenuItem.Header = AbilityItem.Name;
+                        NewSubmenuItem.IsChecked = AbilityItem == Ability;
+                        NewSubmenuItem.Click += OnAbilityMenuClick;
+
+                        NewMenuItem.Items.Add(NewSubmenuItem);
+                    }
+
+                    Menu.Items.Add(NewMenuItem);
+                }
+
+                Menu.Items.Add(new Separator());
+
+                MenuItem MenuItemClear = new MenuItem();
+                MenuItemClear.Header = "Clear";
+                MenuItemClear.Click += OnClearAbility;
+                MenuItemClear.DataContext = this;
+
+                Menu.Items.Add(MenuItemClear);
+
+                return Menu;
+            }
+        }
+
+        private void OnAbilityMenuClick(object sender, RoutedEventArgs e)
+        {
+            AbilityMenuClicked?.Invoke(sender, e);
+        }
+
+        private void OnClearAbility(object sender, RoutedEventArgs e)
+        {
+            AbilityMenuCleared?.Invoke(sender, e);
+        }
+
+        public event RoutedEventHandler AbilityMenuClicked;
+        public event RoutedEventHandler AbilityMenuCleared;
         #endregion
 
         #region Client Interface
+        public void SetCompatibleAbilityList(List<AbilityTierList> compatibleAbilityList)
+        {
+            CompatibleAbilityList = compatibleAbilityList;
+        }
+
         public void SetAbility(AbilityTierList abilityTierList, string iconFolder)
         {
             AbilityTierList = abilityTierList;
@@ -183,6 +254,7 @@
         {
             AbilityName = Ability.Name;
             NotifyPropertyChanged(nameof(AbilityName));
+            NotifyPropertyChanged(nameof(HasOtherEffects));
         }
 
         private void ResetName()
