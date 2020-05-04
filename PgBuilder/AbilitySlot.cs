@@ -98,6 +98,7 @@
         public bool IsBasicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.BasicAttack); } }
 
         public ObservableCollection<IPgEffect> OtherEffectList { get; } = new ObservableCollection<IPgEffect>();
+        public ObservableCollection<string> SpecialEffectList { get; } = new ObservableCollection<string>();
 
         public List<AbilityTierList> CompatibleAbilityList { get; private set; }
 
@@ -120,6 +121,7 @@
                     MenuItem NewMenuItem = new MenuItem();
                     NewMenuItem.Header = Name;
                     NewMenuItem.IsChecked = TierListItem == AbilityTierList;
+                    NewMenuItem.DataContext = this;
 
                     foreach (IPgAbility AbilityItem in TierListItem)
                     {
@@ -127,6 +129,7 @@
                         NewSubmenuItem.Header = AbilityItem.Name;
                         NewSubmenuItem.IsChecked = AbilityItem == Ability;
                         NewSubmenuItem.Click += OnAbilityMenuClick;
+                        NewSubmenuItem.DataContext = this;
 
                         NewMenuItem.Items.Add(NewSubmenuItem);
                     }
@@ -142,6 +145,7 @@
                 MenuItemClear.DataContext = this;
 
                 Menu.Items.Add(MenuItemClear);
+                Menu.DataContext = this;
 
                 return Menu;
             }
@@ -175,6 +179,8 @@
 
             UpdateName();
             UpdateSource(iconFolder);
+            UpdateSpecialEffects();
+            NotifyPropertiesChanged();
         }
 
         public void SetAbility(AbilityTierList abilityTierList, IPgAbility ability, string iconFolder)
@@ -187,6 +193,8 @@
 
             UpdateName();
             UpdateSource(iconFolder);
+            UpdateSpecialEffects();
+            NotifyPropertiesChanged();
         }
 
         public void Reset()
@@ -197,6 +205,51 @@
 
             ResetName();
             ResetSource();
+            ResetSpecialEffects();
+            NotifyPropertiesChanged();
+        }
+
+        public void NotifyPropertiesChanged()
+        {
+            NotifyPropertyChanged(nameof(Ability));
+            NotifyPropertyChanged(nameof(AbilityDescription));
+            NotifyPropertyChanged(nameof(AbilityMinLevel));
+            NotifyPropertyChanged(nameof(AbilityMinLevelModified));
+            NotifyPropertyChanged(nameof(PowerCost));
+            NotifyPropertyChanged(nameof(ResetTime));
+            NotifyPropertyChanged(nameof(Range));
+            NotifyPropertyChanged(nameof(AoE));
+            NotifyPropertyChanged(nameof(RageBoost));
+            NotifyPropertyChanged(nameof(RageMultiplier));
+
+            NotifyPropertyChanged(nameof(HasOtherEffects));
+
+            NotifyPropertyChanged(nameof(HasAbilityDamage));
+            NotifyPropertyChanged(nameof(ModifiedAbilityDamage));
+            NotifyPropertyChanged(nameof(AbilityDamage));
+            NotifyPropertyChanged(nameof(AbilityDamageModified));
+
+            NotifyPropertyChanged(nameof(AbilityDamageType));
+            NotifyPropertyChanged(nameof(AbilityDamageTypeModified));
+
+            NotifyPropertyChanged(nameof(HasAbilityDamageVulnerable));
+            NotifyPropertyChanged(nameof(AbilityDamageVulnerable));
+            NotifyPropertyChanged(nameof(AbilityDamageVulnerableModified));
+
+            NotifyPropertyChanged(nameof(AbilityAccuracy));
+            NotifyPropertyChanged(nameof(AbilityAccuracyModified));
+
+            NotifyPropertyChanged(nameof(IsEpicAttack));
+            NotifyPropertyChanged(nameof(IsBasicAttack));
+
+            NotifyPropertyChanged(nameof(BasicAttackHealth));
+            NotifyPropertyChanged(nameof(BasicAttackArmor));
+            NotifyPropertyChanged(nameof(BasicAttackPower));
+            NotifyPropertyChanged(nameof(BasicAttackHealthModified));
+            NotifyPropertyChanged(nameof(BasicAttackArmorModified));
+            NotifyPropertyChanged(nameof(BasicAttackPowerModified));
+
+            NotifyPropertyChanged(nameof(AbilityContextMenu));
         }
 
         public static string CuteDigitStrippedName(IPgAbility ability)
@@ -273,6 +326,25 @@
         {
             Source = DefaultAbilityImageSource;
             NotifyPropertyChanged(nameof(Source));
+        }
+
+        private void UpdateSpecialEffects()
+        {
+            SpecialEffectList.Clear();
+
+            if (Ability.SpecialInfo != null)
+                SpecialEffectList.Add($"Special:  {Ability.SpecialInfo}");
+
+            if (Ability.CanBeOnSidebar && Ability.Skill != null)
+            {
+                string SkillName = Ability.Skill.Name;
+                SpecialEffectList.Add($"Special:  This ability can optionally be placed on your side-bar instead of your primary ability bars, but you must have the {SkillName} skill active to use it.");
+            }
+        }
+
+        private void ResetSpecialEffects()
+        {
+            SpecialEffectList.Clear();
         }
         #endregion
 

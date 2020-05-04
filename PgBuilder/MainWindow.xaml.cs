@@ -243,6 +243,8 @@
                 if (LastBuildFile != null)
                     Result += $" - {LastBuildFile}";
 
+                Result += " - Downloaded content copyright © 2017, Elder Game, LLC";
+
                 return Result;
             }
         }
@@ -1132,6 +1134,7 @@
         #endregion
 
         #region Settings
+        private const string IsLargeViewName = "IsLargeView";
         private const string LastBuildFileValueName = "LastBuildFile";
 
         private void LoadSettings()
@@ -1143,6 +1146,9 @@
                 RegistryKey SettingKey = Key.CreateSubKey("PgBuilder");
 
                 string Value;
+
+                Value = SettingKey?.GetValue(IsLargeViewName) as string;
+                IsLargeView = (Value == "Yes");
 
                 Value = SettingKey?.GetValue(LastBuildFileValueName) as string;
                 if (Value != null)
@@ -1162,6 +1168,7 @@
                 Key = Key.CreateSubKey("Project Gorgon Tools");
                 RegistryKey SettingKey = Key.CreateSubKey("PgBuilder");
 
+                SettingKey?.SetValue(IsLargeViewName, IsLargeView ? "Yes" : "No", RegistryValueKind.String);
                 SettingKey?.SetValue(LastBuildFileValueName, LastBuildFile, RegistryValueKind.String);
             }
             catch

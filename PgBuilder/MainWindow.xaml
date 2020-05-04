@@ -58,6 +58,12 @@
         <DataTemplate x:Key="ItemAttributeLinkTemplate" DataType="{x:Type object:IPgItemAttributeLink}">
             <TextBox Text="{Binding FriendlyNameAndEffect, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Foreground="White" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,1,0,1"/>
         </DataTemplate>
+        <DataTemplate x:Key="SpecialEffectTemplate">
+            <Grid>
+                <TextBlock Text="{Binding}" TextWrapping="Wrap" Foreground="White"/>
+                <TextBlock Background="Black" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top">Special:</TextBlock>
+            </Grid>
+        </DataTemplate>
         <DataTemplate x:Key="OtherEffectTemplate">
             <DockPanel>
                 <TextBlock DockPanel.Dock="Left" Foreground="White" Margin="0,0,5,0">•</TextBlock>
@@ -70,7 +76,24 @@
                     <Setter Property="Foreground" Value="White"/>
                 </Style>
             </DataTemplate.Resources>
-            <DockPanel Visibility="{Binding AbilityName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" LastChildFill="False" Background="Black" Width="350">
+            <DockPanel Visibility="{Binding AbilityName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" ContextMenu="{Binding AbilityContextMenu}" LastChildFill="False" Background="Black" Width="350">
+                <DockPanel.Style>
+                    <Style TargetType="{x:Type DockPanel}">
+                        <Style.Triggers>
+                            <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="ContextMenu.IsOpen">
+                                                <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                            </BooleanAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DockPanel.Style>
                 <DockPanel DockPanel.Dock="Top" Margin="5,5,5,0">
                     <Image Source="{Binding Ability, Converter={StaticResource convAbilityToIcon}}" Width="64" Height="64" Margin="0,0,5,0"/>
                     <TextBlock Text="{Binding AbilityName}" TextWrapping="Wrap" FontWeight="Bold" Foreground="Yellow" FontSize="24" Margin="2,0,0,0"/>
@@ -123,6 +146,7 @@
                         <TextBlock>%</TextBlock>
                     </StackPanel>
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsEpicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is an Epic Attack.</TextBlock>
+                    <ItemsControl ItemsSource="{Binding SpecialEffectList}" ItemTemplate="{StaticResource SpecialEffectTemplate}" Margin="0,0,0,5"/>
                     <StackPanel Visibility="{Binding IsBasicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">This is a Basic Attack.</TextBlock>
                         <DockPanel>
@@ -154,7 +178,7 @@
                         </DockPanel>
                     </StackPanel>
                     <TextBlock DockPanel.Dock="Top" Visibility="{Binding HasOtherEffects, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Other Effects:</TextBlock>
-                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding OtherEffectList}" ItemTemplate="{StaticResource OtherEffectTemplate}"/>
+                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding OtherEffectList}" ItemTemplate="{StaticResource OtherEffectTemplate}" Margin="0,0,0,5"/>
                 </StackPanel>
             </DockPanel>
         </DataTemplate>
@@ -225,7 +249,7 @@
     </Window.CommandBindings>
     <DockPanel Margin="0,10,0,0">
         <DockPanel DockPanel.Dock="Top">
-            <StackPanel DockPanel.Dock="Right">
+            <StackPanel DockPanel.Dock="Right" Margin="0,8,0,0">
                 <Button Width="60" Height="20" Command="{StaticResource LoadCommand}" Margin="10,0,10,10">Load...</Button>
                 <Button Width="60" Height="20" Command="{StaticResource SaveCommand}" Margin="10,0,10,10">Save...</Button>
             </StackPanel>
@@ -260,7 +284,7 @@
                     </Grid>
                 </GroupBox>
             </DockPanel>
-            <Grid>
+            <Grid Margin="0,8,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -284,8 +308,8 @@
         <TabControl DockPanel.Dock="Top" ItemsSource="{Binding GearSlotList}" ItemTemplate="{StaticResource GearSlotTemplate}" SelectedIndex="0" Margin="10,10,10,10">
             <TabControl.ContentTemplate>
                 <ItemContainerTemplate>
-                    <DockPanel>
-                        <DockPanel DockPanel.Dock="Top" Margin="0,10,0,0">
+                    <DockPanel LastChildFill="False">
+                        <DockPanel DockPanel.Dock="Top" Margin="0,10,0,0" LastChildFill="False">
                             <DockPanel DockPanel.Dock="Left" VerticalAlignment="Top" Margin="10,0,0,10">
                                 <Button DockPanel.Dock="Right" Command="{StaticResource ClearItemCommand}" VerticalAlignment="Center" Margin="5,0,0,0">
                                     <Button.Template>
@@ -323,16 +347,15 @@
                                     <ComboBox ItemsSource="{Binding ItemList}" ItemTemplate="{StaticResource ItemNameTemplate}" SelectedIndex="{Binding SelectedItemIndex, Mode=OneWay}" ToolTip="{Binding Path=SelectedItem}" IsReadOnly="True" SelectionChanged="OnItemSelectionChanged" VerticalAlignment="Center" Width="200"/>
                                 </Grid>
                             </DockPanel>
-                            <Grid Width="400" Margin="10,0,10,0">
+                            <Grid DockPanel.Dock="Left" Width="400" Margin="10,0,10,0">
                                 <Grid VerticalAlignment="Top">
-                                    <TextBlock Text="To add mods, click this button." TextAlignment="Right" VerticalAlignment="Center"/>
+                                    <TextBlock Text="To add mods, click this button." TextAlignment="Right" VerticalAlignment="Center" Margin="0,1,0,0"/>
                                     <Button Width="0" VerticalAlignment="Center"/>
                                 </Grid>
                                 <ItemsControl ItemsSource="{Binding ModList}" ItemTemplate="{StaticResource ModTemplate}" VerticalAlignment="Top"/>
                             </Grid>
-                            <Button DockPanel.Dock="Right" Command="{StaticResource AddModCommand}" VerticalAlignment="Top" Width="60" Margin="0,0,10,10">Add Mod</Button>
+                            <Button DockPanel.Dock="Left" Command="{StaticResource AddModCommand}" VerticalAlignment="Top" Width="60" Margin="0,0,10,10">Add Mod</Button>
                         </DockPanel>
-                        <Grid/>
                     </DockPanel>
                 </ItemContainerTemplate>
             </TabControl.ContentTemplate>
