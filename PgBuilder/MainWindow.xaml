@@ -17,6 +17,7 @@
         <localconv:AbilityToIconConverter x:Key="convAbilityToIcon"/>
         <localconv:ItemToIconConverter x:Key="convItemToIcon"/>
         <localsel:ItemEffectTemplateSelector x:Key="selItemEffectTemplate"/>
+        <localsel:AbilityTemplateSelector x:Key="selAbilityTemplate"/>
         <RoutedCommand x:Key="AddModCommand"/>
         <RoutedCommand x:Key="IncrementTierCommand"/>
         <RoutedCommand x:Key="DecrementTierCommand"/>
@@ -63,6 +64,100 @@
                 <TextBlock Text="{Binding Desc}" Foreground="LightGreen" FontWeight="Bold" TextWrapping="Wrap"/>
             </DockPanel>
         </DataTemplate>
+        <DataTemplate x:Key="AbilityBigImageTemplate" DataType="{x:Type local:AbilitySlot}">
+            <DataTemplate.Resources>
+                <Style x:Key="{x:Type TextBlock}" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+            </DataTemplate.Resources>
+            <DockPanel Visibility="{Binding AbilityName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" LastChildFill="False" Background="Black" Width="350">
+                <DockPanel DockPanel.Dock="Top" Margin="5,5,5,0">
+                    <Image Source="{Binding Ability, Converter={StaticResource convAbilityToIcon}}" Width="64" Height="64" Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding AbilityName}" TextWrapping="Wrap" FontWeight="Bold" Foreground="Yellow" FontSize="24" Margin="2,0,0,0"/>
+                </DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="{Binding AbilityDescription}" TextWrapping="Wrap" TextAlignment="Left" Margin="5,5,5,0"/>
+                <StackPanel DockPanel.Dock="Top" Margin="5,5,5,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Bold">Min Level:</TextBlock>
+                        <TextBlock Text="{Binding AbilityMinLevel}" Foreground="{Binding AbilityMinLevelModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding PowerCost.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Power Cost:</TextBlock>
+                        <TextBlock Text="{Binding PowerCost.AsString}" Foreground="{Binding PowerCost.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Bold">Reuse Time:</TextBlock>
+                        <TextBlock Text="{Binding ResetTime.AsString}" Foreground="{Binding ResetTime.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
+                        <TextBlock Margin="5,0,0,0">seconds</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Range.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Range:</TextBlock>
+                        <TextBlock Text="{Binding Range.AsString}" Foreground="{Binding Range.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                        <TextBlock Margin="5,0,0,0">meters</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding AoE.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Range:</TextBlock>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <TextBlock Margin="0,0,5,0">All targets within</TextBlock>
+                            <TextBlock Text="{Binding AoE.AsString}" Foreground="{Binding AoE.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}"/>
+                            <TextBlock Margin="5,0,0,0">meters</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Damage:</TextBlock>
+                        <TextBlock Text="{Binding AbilityDamage}" Foreground="{Binding AbilityDamageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                        <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamageVulnerable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Extra Dmg To Vulnerable Targets:</TextBlock>
+                        <TextBlock Text="{Binding AbilityDamageVulnerable}" Foreground="{Binding AbilityDamageVulnerableModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                        <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RageBoost.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Reduces Rage:</TextBlock>
+                        <TextBlock Text="{Binding RageBoost.AsString}" Foreground="{Binding RageBoost.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RageMultiplier.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Enrages Target:</TextBlock>
+                        <TextBlock Text="{Binding RageMultiplier.AsString}" Foreground="{Binding RageMultiplier.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
+                        <TextBlock>%</TextBlock>
+                    </StackPanel>
+                    <TextBlock FontWeight="Bold" Visibility="{Binding IsEpicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is an Epic Attack.</TextBlock>
+                    <StackPanel Visibility="{Binding IsBasicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">This is a Basic Attack.</TextBlock>
+                        <DockPanel>
+                            <Image DockPanel.Dock="Left" Source="{StaticResource imgBasicAttack}" Width="64" Height="64"/>
+                            <StackPanel Margin="10,0,0,0">
+                                <TextBlock TextWrapping="Wrap">Once every 15s, Basic Attacks generate a Combat Refresh that restores:</TextBlock>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,5,0">•</TextBlock>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding BasicAttackHealth}" TextAlignment="Right"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Margin="5,0,0,0">Health</TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,5,0">•</TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BasicAttackArmor}" TextAlignment="Right"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="2" Margin="5,0,0,0">Armor</TextBlock>
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,5,0">•</TextBlock>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding BasicAttackPower}" TextAlignment="Right"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="2" Margin="5,0,0,0">Power</TextBlock>
+                                </Grid>
+                            </StackPanel>
+                        </DockPanel>
+                    </StackPanel>
+                    <TextBlock DockPanel.Dock="Top" Visibility="{Binding HasOtherEffects, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Other Effects:</TextBlock>
+                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding OtherEffectList}" ItemTemplate="{StaticResource OtherEffectTemplate}"/>
+                </StackPanel>
+            </DockPanel>
+        </DataTemplate>
         <DataTemplate x:Key="AbilitySlotTemplate" DataType="{x:Type local:AbilitySlot}">
             <DataTemplate.Resources>
                 <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource {x:Type ToolTip}}">
@@ -70,99 +165,8 @@
                     <Setter Property="HasDropShadow" Value="True" />
                     <Setter Property="Template">
                         <Setter.Value>
-                            <ControlTemplate>
-                                <ControlTemplate.Resources>
-                                    <Style x:Key="{x:Type TextBlock}" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </Style>
-                                </ControlTemplate.Resources>
-                                <DockPanel Visibility="{Binding AbilityName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Background="Black" Width="350">
-                                    <DockPanel DockPanel.Dock="Top" Margin="5,5,5,0">
-                                        <Image Source="{Binding Ability, Converter={StaticResource convAbilityToIcon}}" Width="64" Height="64" Margin="0,0,5,0"/>
-                                        <TextBlock Text="{Binding AbilityName}" TextWrapping="Wrap" FontWeight="Bold" Foreground="Yellow" FontSize="24" Margin="2,0,0,0"/>
-                                    </DockPanel>
-                                    <TextBlock DockPanel.Dock="Top" Text="{Binding AbilityDescription}" TextWrapping="Wrap" TextAlignment="Left" Margin="5,5,5,0"/>
-                                    <ItemsControl ItemsSource="{Binding OtherEffectList}" ItemTemplate="{StaticResource OtherEffectTemplate}" DockPanel.Dock="Bottom"/>
-                                    <StackPanel Margin="5,5,5,0">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock FontWeight="Bold">Min Level:</TextBlock>
-                                            <TextBlock Text="{Binding AbilityMinLevel}" Foreground="{Binding AbilityMinLevelModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding PowerCost.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                                            <TextBlock FontWeight="Bold">Power Cost:</TextBlock>
-                                            <TextBlock Text="{Binding PowerCost.AsString}" Foreground="{Binding PowerCost.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock FontWeight="Bold">Reuse Time:</TextBlock>
-                                            <TextBlock Text="{Binding ResetTime.AsString}" Foreground="{Binding ResetTime.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
-                                            <TextBlock Margin="5,0,0,0">seconds</TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding Range.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                                            <TextBlock FontWeight="Bold">Range:</TextBlock>
-                                            <TextBlock Text="{Binding Range.AsString}" Foreground="{Binding Range.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                            <TextBlock Margin="5,0,0,0">meters</TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding AoE.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                                            <TextBlock FontWeight="Bold">Range:</TextBlock>
-                                            <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
-                                                <TextBlock Margin="0,0,5,0">All targets within</TextBlock>
-                                                <TextBlock Text="{Binding AoE.AsString}" Foreground="{Binding AoE.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}"/>
-                                                <TextBlock Margin="5,0,0,0">meters</TextBlock>
-                                            </StackPanel>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                                            <TextBlock FontWeight="Bold">Damage:</TextBlock>
-                                            <TextBlock Text="{Binding AbilityDamage}" Foreground="{Binding AbilityDamageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                            <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamageVulnerable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                                            <TextBlock FontWeight="Bold">Extra Dmg To Vulnerable Targets:</TextBlock>
-                                            <TextBlock Text="{Binding AbilityDamageVulnerable}" Foreground="{Binding AbilityDamageVulnerableModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                            <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding RageBoost.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                                            <TextBlock FontWeight="Bold">Reduces Rage:</TextBlock>
-                                            <TextBlock Text="{Binding RageBoost.AsString}" Foreground="{Binding RageBoost.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding RageMultiplier.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                                            <TextBlock FontWeight="Bold">Enrages Target:</TextBlock>
-                                            <TextBlock Text="{Binding RageMultiplier.AsString}" Foreground="{Binding RageMultiplier.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
-                                            <TextBlock>%</TextBlock>
-                                        </StackPanel>
-                                        <TextBlock FontWeight="Bold" Visibility="{Binding IsEpicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is an Epic Attack.</TextBlock>
-                                        <StackPanel Visibility="{Binding IsBasicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                                            <TextBlock FontWeight="Bold">This is a Basic Attack.</TextBlock>
-                                            <DockPanel>
-                                                <Image DockPanel.Dock="Left" Source="{StaticResource imgBasicAttack}" Width="64" Height="64"/>
-                                                <StackPanel Margin="10,0,0,0">
-                                                    <TextBlock TextWrapping="Wrap">Once every 15s, Basic Attacks generate a Combat Refresh that restores:</TextBlock>
-                                                    <Grid>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition/>
-                                                            <RowDefinition/>
-                                                            <RowDefinition/>
-                                                        </Grid.RowDefinitions>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,5,0">•</TextBlock>
-                                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding BasicAttackHealth}" TextAlignment="Right"/>
-                                                        <TextBlock Grid.Row="0" Grid.Column="2" Margin="5,0,0,0">Health</TextBlock>
-                                                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,5,0">•</TextBlock>
-                                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BasicAttackArmor}" TextAlignment="Right"/>
-                                                        <TextBlock Grid.Row="1" Grid.Column="2" Margin="5,0,0,0">Armor</TextBlock>
-                                                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,5,0">•</TextBlock>
-                                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding BasicAttackPower}" TextAlignment="Right"/>
-                                                        <TextBlock Grid.Row="2" Grid.Column="2" Margin="5,0,0,0">Power</TextBlock>
-                                                    </Grid>
-                                                </StackPanel>
-                                            </DockPanel>
-                                        </StackPanel>
-                                        <TextBlock Visibility="{Binding HasOtherEffects, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Other Effects:</TextBlock>
-                                    </StackPanel>
-                                </DockPanel>
+                            <ControlTemplate TargetType="{x:Type ToolTip}">
+                                <ContentControl ContentTemplate="{StaticResource AbilityBigImageTemplate}" Content="{TemplateBinding Content}"/>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -225,28 +229,50 @@
                 <Button Width="60" Height="20" Command="{StaticResource LoadCommand}" Margin="10,0,10,10">Load...</Button>
                 <Button Width="60" Height="20" Command="{StaticResource SaveCommand}" Margin="10,0,10,10">Save...</Button>
             </StackPanel>
+            <DockPanel DockPanel.Dock="Left" LastChildFill="False" Margin="10,0,10,0">
+                <GroupBox DockPanel.Dock="Top" Header="Skills">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0">Primary:</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="0,5,0,0">Secondary:</TextBlock>
+                        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding SkillList}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1" VerticalAlignment="Center" Width="120" Margin="5,0,0,0"/>
+                        <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding SkillList}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2" VerticalAlignment="Center" Width="120" Margin="5,5,0,0"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox DockPanel.Dock="Top" Header="View" Margin="0,10,0,0">
+                    <Grid Margin="5,5,5,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <RadioButton Grid.Row="0" Content="Large" IsChecked="{Binding IsLargeView, Mode=OneWay}" Checked="OnLargeViewChecked" Margin="0,0,0,0"/>
+                        <RadioButton Grid.Row="1" Content="Small" IsChecked="{Binding IsSmallView, Mode=OneWay}" Checked="OnSmallViewChecked" Margin="0,5,0,0"/>
+                    </Grid>
+                </GroupBox>
+            </DockPanel>
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,5">Primary Skill:</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,5">Secondary Skill:</TextBlock>
-                <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding SkillList}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1" VerticalAlignment="Center" Width="120" Margin="5,0,0,5"/>
-                <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding SkillList}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2" VerticalAlignment="Center" Width="120" Margin="5,0,0,5"/>
-                <ItemsControl Grid.Column="2" Grid.Row="0" ItemsSource="{Binding AbilitySlot1List}" ItemTemplate="{StaticResource AbilitySlotTemplate}" VerticalAlignment="Center" Margin="5,0,0,5">
+                <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{Binding AbilitySlot1List}" ItemTemplateSelector="{StaticResource selAbilityTemplate}" VerticalAlignment="Center" Margin="5,0,0,5">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
-                <ItemsControl Grid.Column="2" Grid.Row="1" ItemsSource="{Binding AbilitySlot2List}" ItemTemplate="{StaticResource AbilitySlotTemplate}" VerticalAlignment="Center" Margin="5,0,0,5">
+                <ItemsControl Grid.Column="0" Grid.Row="1" ItemsSource="{Binding AbilitySlot2List}" ItemTemplateSelector="{StaticResource selAbilityTemplate}" VerticalAlignment="Center" Margin="5,0,0,5">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>

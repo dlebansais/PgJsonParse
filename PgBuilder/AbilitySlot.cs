@@ -66,7 +66,7 @@
         public AbilityModifier RageBoost { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.RageBoost);
         public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent((IPgAbility ability) => ability.PvE.RageMultiplier * 100);
         private List<AbilityModifier> ModifierList;
-        public bool HasOtherEffects { get { return ModifierList.Exists((AbilityModifier modifier) => modifier.HasValue); } }
+        public bool HasOtherEffects { get { return OtherEffectList.Count > 0; } }
 
         public bool HasAbilityDamage{ get { return Ability != null && Ability.PvE.Damage != 0; } }
         public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(Ability.PvE.Damage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage) : 0; } }
@@ -254,7 +254,6 @@
         {
             AbilityName = Ability.Name;
             NotifyPropertyChanged(nameof(AbilityName));
-            NotifyPropertyChanged(nameof(HasOtherEffects));
         }
 
         private void ResetName()
@@ -294,6 +293,7 @@
                 BasicAttackPowerModified += Ability.CombatRefreshBaseAmount;
 
             OtherEffectList.Clear();
+            NotifyPropertyChanged(nameof(HasOtherEffects));
         }
 
         public void RecalculateMods(string key, float attributeEffect)
@@ -474,6 +474,8 @@
 
             IPgEffect Effect = (IPgEffect)EffectDefinition.ObjectTable[EffectKey];
             OtherEffectList.Add(Effect);
+
+            NotifyPropertyChanged(nameof(HasOtherEffects));
         }
 
         public bool HasSituationalModifier(List<CombatEffect> combatEffectList)

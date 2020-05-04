@@ -5,6 +5,7 @@
     using PgJsonReader;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
@@ -228,9 +229,11 @@
         public int SelectedSkill1 { get; private set; } = -1;
         public int SelectedSkill2 { get; private set; } = -1;
         public List<GearSlot> GearSlotList { get; } = new List<GearSlot>();
-        public List<AbilitySlot> AbilitySlot1List { get; } = new List<AbilitySlot>();
-        public List<AbilitySlot> AbilitySlot2List { get; } = new List<AbilitySlot>();
+        public ObservableCollection<AbilitySlot> AbilitySlot1List { get; } = new ObservableCollection<AbilitySlot>();
+        public ObservableCollection<AbilitySlot> AbilitySlot2List { get; } = new ObservableCollection<AbilitySlot>();
         public string LastBuildFile { get; private set; }
+        public bool IsLargeView { get; private set; } = true;
+        public bool IsSmallView { get { return !IsLargeView; } }
 
         public string TitleText
         {
@@ -338,13 +341,13 @@
             }
         }
 
-        private void ResetAbilitySlots(List<AbilitySlot> abilitySlotList)
+        private void ResetAbilitySlots(ICollection<AbilitySlot> abilitySlotList)
         {
             foreach (AbilitySlot Item in abilitySlotList)
                 Item.Reset();
         }
 
-        private void UpdateAbilityCompatibilityList(IPgSkill skill, List<AbilitySlot> abilitySlotList, List<AbilityTierList> compatibleAbilityList)
+        private void UpdateAbilityCompatibilityList(IPgSkill skill, ICollection<AbilitySlot> abilitySlotList, List<AbilityTierList> compatibleAbilityList)
         {
             compatibleAbilityList.Clear();
 
@@ -366,7 +369,7 @@
                 Item.SetCompatibleAbilityList(compatibleAbilityList);
         }
 
-        private void FillEmptyAbilitySlots(IPgSkill skill, List<AbilitySlot> abilitySlotList, List<AbilityTierList> compatibleAbilityList)
+        private void FillEmptyAbilitySlots(IPgSkill skill, ICollection<AbilitySlot> abilitySlotList, List<AbilityTierList> compatibleAbilityList)
         {
             List<string> FilledSlotList = new List<string>();
             foreach (AbilitySlot Item in abilitySlotList)
@@ -733,6 +736,38 @@
             GearSlot Slot = Mod.ParentSlot;
 
             Slot.RemoveMod(Mod);
+        }
+
+        private void OnLargeViewChecked(object sender, RoutedEventArgs e)
+        {
+            SetLargeView(true);
+        }
+
+        private void OnSmallViewChecked(object sender, RoutedEventArgs e)
+        {
+            SetLargeView(false);
+        }
+
+        private void SetLargeView(bool value)
+        {
+            if (IsLargeView == value)
+                return;
+
+            IsLargeView = value;
+            NotifyPropertyChanged(nameof(IsLargeView));
+            NotifyPropertyChanged(nameof(IsSmallView));
+
+            ReloadAbilitySlotList(AbilitySlot1List);
+            ReloadAbilitySlotList(AbilitySlot2List);
+        }
+
+        private void ReloadAbilitySlotList(Collection<AbilitySlot> list)
+        {
+            List<AbilitySlot> Copy = new List<AbilitySlot>(list);
+
+            list.Clear();
+            foreach (AbilitySlot Item in Copy)
+                list.Add(Item);
         }
         #endregion
 
