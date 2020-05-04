@@ -57,6 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AbilityBaseValueGetter.cs" />
+    <Compile Include="AbilityModifier.cs" />
+    <Compile Include="AbilityModifierPercent.cs" />
     <Compile Include="AbilitySlot.cs" />
     <Compile Include="AbilityTierList.cs" />
     <Compile Include="CombatEffect.cs" />

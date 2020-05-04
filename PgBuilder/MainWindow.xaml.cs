@@ -70,7 +70,7 @@
 
                 bool HasKeyword = false;
                 foreach (CombatEffect Item in StaticCombatEffectList)
-                    if (Item.Keyword == CombatKeyword.AddRange)
+                    if (Item.Keyword == CombatKeyword.AddRage)
                         HasKeyword = true;
 
                 if (HasKeyword)

@@ -26,6 +26,15 @@
 
         public AbilitySlot()
         {
+            ModifierList = new List<AbilityModifier>()
+            {
+                PowerCost,
+                ResetTime,
+                Range,
+                RageBoost,
+                RageMultiplier,
+            };
+
             AbilityTierList = null;
             Ability = null;
             AbilityName = null;
@@ -47,22 +56,12 @@
         public string AbilityMinLevel { get { return Ability != null ? Ability.Level.ToString() : string.Empty; } }
         public bool? AbilityMinLevelModified { get { return null; } }
 
-        public bool HasAbilityPowerCost { get { return Ability != null && Ability.PvE.PowerCost != 0; } }
-        public int ModifiedAbilityPowerCost { get { return Ability != null ? App.CalculatePowerCost(Ability.PvE.PowerCost, DeltaPowerCost) : 0; } }
-        public string AbilityPowerCost { get { return Ability != null ? ModifiedAbilityPowerCost.ToString() : string.Empty; } }
-        public bool? AbilityPowerCostModified { get { return Ability != null ? App.IntModifier(Ability.PvE.PowerCost - ModifiedAbilityPowerCost) : null; } }
-        private double DeltaPowerCost;
-
-        public int ModifiedAbilityResetTime { get { return Ability != null ? App.CalculateResetTime(Ability.ResetTime, DeltaResetTime) : 0; } }
-        public string AbilityResetTime { get { return Ability != null ? ModifiedAbilityResetTime.ToString() : string.Empty; } }
-        public bool? AbilityResetTimeModified { get { return Ability != null ? App.IntModifier(Ability.ResetTime - ModifiedAbilityResetTime) : null; } }
-        private double DeltaResetTime;
-
-        public bool HasAbilityRange { get { return Ability != null && Ability.PvE.Range != 0; } }
-        public int ModifiedAbilityAbilityRange { get { return Ability != null ? App.CalculateRange(Ability.PvE.Range, DeltaAbilityRange) : 0; } }
-        public string AbilityRange { get { return Ability != null ? ModifiedAbilityAbilityRange.ToString() : string.Empty; } }
-        public bool? AbilityRangeModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityAbilityRange - Ability.PvE.Range) : null; } }
-        private double DeltaAbilityRange;
+        public AbilityModifier PowerCost { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.PowerCost);
+        public AbilityModifier ResetTime { get; } = new AbilityModifier((IPgAbility ability) => ability.ResetTime);
+        public AbilityModifier Range { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.Range);
+        public AbilityModifier RageBoost { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.RageBoost);
+        public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent((IPgAbility ability) => ability.PvE.RageMultiplier * 100);
+        private List<AbilityModifier> ModifierList;
 
         public bool HasAbilityDamage{ get { return Ability != null && Ability.PvE.Damage != 0; } }
         public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(Ability.PvE.Damage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage) : 0; } }
@@ -79,14 +78,6 @@
         public bool HasAbilityDamageVulnerable { get { return Ability != null && Ability.PvE.RawExtraDamageIfTargetVulnerable.HasValue; } }
         public string AbilityDamageVulnerable { get { return Ability != null ? Ability.PvE.ExtraDamageIfTargetVulnerable.ToString() : string.Empty; } }
         public bool? AbilityDamageVulnerableModified { get { return null; } }
-
-        public bool HasAbilityReduceRage { get { return Ability != null && Ability.PvE.RageBoost != 0; } }
-        public string AbilityReduceRage { get { return Ability != null ? Ability.PvE.RageBoost.ToString() : string.Empty; } }
-        public bool? AbilityReduceRageModified { get { return null; } }
-
-        public bool HasAbilityEnrageTarget { get { return Ability != null && (int)(Ability.PvE.RageMultiplier * 100) != 100; } }
-        public string AbilityEnrageTarget { get { return Ability != null ? ((int)(Ability.PvE.RageMultiplier * 100)).ToString() : string.Empty; } }
-        public bool? AbilityEnrageTargetModified { get { return null; } }
         
         public string AbilityAccuracy { get { return Ability != null ? App.DoubleToString(Ability.PvE.Accuracy) : string.Empty; } }
         public bool? AbilityAccuracyModified { get { return null; } }
@@ -109,6 +100,7 @@
         {
             AbilityTierList = abilityTierList;
             Ability = abilityTierList.Source;
+            ModifierList.ForEach((AbilityModifier modifier) => modifier.SetAbility(Ability));
 
             UpdateName();
             UpdateSource(iconFolder);
@@ -120,6 +112,7 @@
 
             AbilityTierList = abilityTierList;
             Ability = ability;
+            ModifierList.ForEach((AbilityModifier modifier) => modifier.SetAbility(Ability));
 
             UpdateName();
             UpdateSource(iconFolder);
@@ -129,6 +122,7 @@
         {
             AbilityTierList = null;
             Ability = null;
+            ModifierList.ForEach((AbilityModifier modifier) => modifier.SetAbility(Ability));
 
             ResetName();
             ResetSource();
@@ -214,9 +208,7 @@
         #region Mods
         public void ResetMods()
         {
-            DeltaPowerCost = 0;
-            DeltaResetTime = 0;
-            DeltaAbilityRange = 0;
+            ModifierList.ForEach((AbilityModifier modifier) => modifier.Reset());
 
             DeltaDamage = 0; // Damage +X
             ModDamage = 1.0;   // Damage +(X*100)%
@@ -431,21 +423,33 @@
             if (HasSituationalModifier(modEffect.StaticCombatEffectList))
                 return;
 
-            if (!combatEffect.Data.IsValueSet)
-                return;
-
             switch (combatEffect.Keyword)
             {
                 case CombatKeyword.AddPowerCost:
-                    DeltaPowerCost += combatEffect.Data.Value;
+                    if (combatEffect.Data.IsValueSet)
+                        PowerCost.AddValue(combatEffect.Data.Value);
                     break;
 
                 case CombatKeyword.AddResetTimer:
-                    DeltaResetTime += combatEffect.Data.Value;
+                    if (combatEffect.Data.IsValueSet)
+                        ResetTime.AddValue(combatEffect.Data.Value);
                     break;
 
                 case CombatKeyword.AddRange:
-                    DeltaAbilityRange += combatEffect.Data.Value;
+                    if (combatEffect.Data.IsValueSet)
+                        Range.AddValue(combatEffect.Data.Value);
+                    break;
+
+                case CombatKeyword.AddRage:
+                    if (combatEffect.Data.IsValueSet)
+                        if (combatEffect.Data.IsPercent)
+                            RageMultiplier.AddValue(combatEffect.Data.Value);
+                        else
+                            RageBoost.AddValue(combatEffect.Data.Value);
+                    break;
+
+                case CombatKeyword.ZeroRage:
+                    RageMultiplier.SetValueZero();
                     break;
 
                 default:
@@ -460,18 +464,18 @@ RestorePower
 RestoreHealthArmor
 RestoreHealth
 //AddResetTimer
-AddRange
+//AddRange
 TargetSubsequentAttacks
 EffectDuration
 AddChannelingTime
 AnotherTrap
-AddRage
+//AddRage
 ChangeDamageType
 RestoreArmor
 AddMitigation
 NextAttack
 DealDirectHealthDamage
-ZeroRage
+//ZeroRage
 EffectDelay
 Recurring
 ActiveSkill

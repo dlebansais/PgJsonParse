@@ -21,33 +21,6 @@
                 return null;
         }
 
-        public static int CalculatePowerCost(double basePowerCost, double deltaPowerCost)
-        {
-            double Result = basePowerCost + deltaPowerCost;
-            if (Result < 0)
-                Result = 0;
-
-            return (int)Math.Round(Result);
-        }
-
-        public static int CalculateResetTime(double baseResetTime, double deltaResetTime)
-        {
-            double Result = baseResetTime + deltaResetTime;
-            if (Result < 0)
-                Result = 0;
-
-            return (int)Math.Round(Result);
-        }
-
-        public static int CalculateRange(double baseRange, double deltaRange)
-        {
-            double Result = baseRange + deltaRange;
-            if (Result < 0)
-                Result = 0;
-
-            return (int)Math.Round(Result);
-        }
-
         public static int CalculateDamage(double baseDamage, double deltaDamage, double modDamage, double modBaseDamage, double modCriticalDamage)
         {
             double Result = baseDamage * modBaseDamage;
