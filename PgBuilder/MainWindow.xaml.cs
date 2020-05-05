@@ -52,9 +52,11 @@
 
         private void InitPowerKeyToCompleteEffectTable()
         {
-            List<CombatKeyword> StaticKeywordList = new List<CombatKeyword>();
             IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
             List<string> StaticKeywordKeyList = new List<string>();
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
+            IList<IPgAbility> FullAbilityList = (IList<IPgAbility>)AbilityDefinition.VerifiedObjectList;
+            string LastSpecialValue = string.Empty;
 
             foreach (KeyValuePair<string, List<AbilityKeyword>> Entry in PowerKeyToCompleteEffect.AbilityList)
             {
@@ -71,7 +73,7 @@
 
                 bool HasKeyword = false;
                 foreach (CombatEffect Item in StaticCombatEffectList)
-                    if (Item.Keyword == CombatKeyword.AddRage)
+                    if (Item.Keyword == CombatKeyword.RestoreHealth)
                         HasKeyword = true;
 
                 if (HasKeyword)

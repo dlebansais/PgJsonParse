@@ -9,11 +9,12 @@
     public class Parser
     {
         #region Data Analysis
-        bool WriteFile = true;
-        bool CompareTable = false;
+        bool WriteFile = false;
+        bool CompareTable = true;
 
         public void AnalyzeCachedData(int version, List<ItemSlot> validSlotList, List<IPgSkill> skillList, Dictionary<string, ModEffect> existingPowerKeyToCompleteEffectTable)
         {
+            InitValidAbilityList();
             FilterValidPowers(validSlotList, skillList, out _, out List<IPgPower> PowerSimpleEffectList);
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> AllEffectTable);
             FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable, out List<IPgPower> UnmatchedPowerList);
@@ -31,6 +32,56 @@
 
             if (CompareTable)
                 CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, existingPowerKeyToCompleteEffectTable);
+        }
+
+        private void InitValidAbilityList()
+        {
+            ValidAbilityList = new List<IPgAbility>();
+
+            IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
+            IList<IPgAbility> AbilityList = (IList<IPgAbility>)AbilityDefinition.VerifiedObjectList;
+
+            foreach (IPgAbility Ability in AbilityList)
+            {
+                if (Ability.KeywordList.Contains(AbilityKeyword.Lint_NotLearnable))
+                    continue;
+
+                bool IsValid = false;
+                switch (Ability.RawSkill)
+                {
+                    case PowerSkill.AnimalHandling:
+                    case PowerSkill.Archery:
+                    case PowerSkill.BattleChemistry:
+                    case PowerSkill.Cow:
+                    case PowerSkill.Deer:
+                    case PowerSkill.Druid:
+                    case PowerSkill.FireMagic:
+                    case PowerSkill.GiantBat:
+                    case PowerSkill.Hammer:
+                    case PowerSkill.IceMagic:
+                    case PowerSkill.Knife:
+                    case PowerSkill.Mentalism:
+                    case PowerSkill.Necromancy:
+                    case PowerSkill.Pig:
+                    case PowerSkill.Psychology:
+                    case PowerSkill.Shield:
+                    case PowerSkill.Spider:
+                    case PowerSkill.Staff:
+                    case PowerSkill.Sword:
+                    case PowerSkill.Unarmed:
+                    case PowerSkill.Werewolf:
+                    case PowerSkill.Bard:
+                    case PowerSkill.Warden:
+                    case PowerSkill.FairyMagic:
+                        IsValid = true;
+                        break;
+                }
+
+                if (!IsValid)
+                    continue;
+
+                ValidAbilityList.Add(Ability);
+            }
         }
 
         private void FilterValidPowers(List<ItemSlot> validSlotList, List<IPgSkill> skillList, out List<IPgPower> powerAttributeList, out List<IPgPower> powerSimpleEffectList)
@@ -702,6 +753,185 @@
             abilityNameList.Add(abilityName);
             keywordToName.Add(keyword, abilityName);
         }
+
+        private void VerifyStaticEffects(List<AbilityKeyword> modAbilityList, List<CombatEffect> staticCombatEffectList)
+        {
+            foreach (AbilityKeyword Keyword in modAbilityList)
+                foreach (CombatEffect CombatEffect in staticCombatEffectList)
+                    VerifyStaticEffects(Keyword, staticCombatEffectList, CombatEffect);
+        }
+
+        List<CombatKeyword> TODO_KeywordList = new List<CombatKeyword>();
+
+        private void VerifyStaticEffects(AbilityKeyword keyword, List<CombatEffect> combatEffectList, CombatEffect combatEffect)
+        {
+            switch (combatEffect.Keyword)
+            {
+                // Handled directly in display.
+                case CombatKeyword.AddPowerCost:
+                case CombatKeyword.AddResetTimer:
+                case CombatKeyword.AddRange:
+                case CombatKeyword.AddRage:
+                case CombatKeyword.ZeroRage:
+                    break;
+
+                // Handled in special values.
+                case CombatKeyword.RestoreHealth:
+                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword);
+                    break;
+
+                // TODO
+                case CombatKeyword.DamageBoost:
+                case CombatKeyword.RestorePower:
+                case CombatKeyword.RestoreHealthArmor:
+                case CombatKeyword.TargetSubsequentAttacks:
+                case CombatKeyword.EffectDuration:
+                case CombatKeyword.AddChannelingTime:
+                case CombatKeyword.AnotherTrap:
+                case CombatKeyword.ChangeDamageType:
+                case CombatKeyword.RestoreArmor:
+                case CombatKeyword.AddMitigation:
+                case CombatKeyword.NextAttack:
+                case CombatKeyword.DealDirectHealthDamage:
+                case CombatKeyword.EffectDelay:
+                case CombatKeyword.Recurring:
+                case CombatKeyword.ActiveSkill:
+                case CombatKeyword.AddEvasionMelee:
+                case CombatKeyword.OnEvadeMelee:
+                case CombatKeyword.AddArmor:
+                case CombatKeyword.OnEvade:
+                case CombatKeyword.MitigateReflect:
+                case CombatKeyword.ReflectRate:
+                case CombatKeyword.MitigateReflectKick:
+                case CombatKeyword.AddTaunt:
+                case CombatKeyword.Combo7:
+                case CombatKeyword.ComboFinalStepDamageAndStun:
+                case CombatKeyword.TargetSelf:
+                case CombatKeyword.AddSprintSpeed:
+                case CombatKeyword.EffectRecurrence:
+                case CombatKeyword.EffectDurationMinute:
+                case CombatKeyword.AddMaxHealth:
+                case CombatKeyword.CombatRefreshRestoreHeatlth:
+                case CombatKeyword.RestoreHealthArmorPower:
+                case CombatKeyword.StunIncorporeal:
+                case CombatKeyword.ResetOtherAbilityTimer:
+                case CombatKeyword.DamageBoostAgainstSpecie:
+                case CombatKeyword.DealIndirectDamage:
+                case CombatKeyword.ZeroTaunt:
+                case CombatKeyword.ThickArmor:
+                case CombatKeyword.ReflectOnBurst:
+                case CombatKeyword.AddMitigationIndirect:
+                case CombatKeyword.ReflectOnAnyAttack:
+                case CombatKeyword.MaxStack:
+                case CombatKeyword.AddEvasionBurst:
+                case CombatKeyword.AddChanceToIgnoreKnockback:
+                case CombatKeyword.AddChanceToIgnoreStun:
+                case CombatKeyword.AboveRage:
+                case CombatKeyword.AddChanceToKnockdown:
+                case CombatKeyword.ApplyWithChance:
+                case CombatKeyword.RequireTwoKnives:
+                case CombatKeyword.RequireNoAggro:
+                case CombatKeyword.BaseDamageBoost:
+                case CombatKeyword.DrainHealth:
+                case CombatKeyword.DrainMax:
+                case CombatKeyword.DrainArmor:
+                case CombatKeyword.MaxOccurence:
+                case CombatKeyword.DrainAsArmor:
+                case CombatKeyword.ChanceToConsume:
+                case CombatKeyword.AddHealthRegen:
+                case CombatKeyword.Combo1:
+                case CombatKeyword.ComboFinalStepBurst:
+                case CombatKeyword.AddMaxArmor:
+                case CombatKeyword.Combo2:
+                case CombatKeyword.ComboFinalStepDamage:
+                case CombatKeyword.Combo3:
+                case CombatKeyword.Combo4:
+                case CombatKeyword.Stun:
+                case CombatKeyword.Combo5:
+                case CombatKeyword.Combo6:
+                case CombatKeyword.NotAttackedRecently:
+                case CombatKeyword.AddPowerRegen:
+                case CombatKeyword.AddPowerCostMax:
+                case CombatKeyword.ZeroPowerCost:
+                case CombatKeyword.AddChannelTime:
+                case CombatKeyword.AddIndirectVulnerability:
+                case CombatKeyword.AddVulnerability:
+                case CombatKeyword.ReflectKnockbackOnFirstMelee:
+                case CombatKeyword.ReflectOnMelee:
+                case CombatKeyword.ReflectOnRanged:
+                case CombatKeyword.ReflectMeleeIndirectDamage:
+                    if (!TODO_KeywordList.Contains(combatEffect.Keyword))
+                    {
+                        TODO_KeywordList.Add(combatEffect.Keyword);
+                        Debug.WriteLine($"TODO: verify keyword {combatEffect.Keyword}");
+                    }
+                    break;
+
+                default:
+                    Debug.WriteLine($"Unexpected keyword to verify: {combatEffect.Keyword}");
+                    break;
+            }
+        }
+
+        public static Dictionary<CombatKeyword, List<KeyValuePair<string, string>>> EffectVerificationTable = new Dictionary<CombatKeyword, List<KeyValuePair<string, string>>>()
+        {
+            { CombatKeyword.RestoreHealth, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Restore", "Health"),
+                    new KeyValuePair<string, string>("Restores", "Health"),
+                    new KeyValuePair<string, string>("Heal Target", "Health"),
+                    new KeyValuePair<string, string>("Restore", "Health (or Armor if Health is full) to nearby ally undead"),
+                    new KeyValuePair<string, string>("Nearby Firewalls Heal", ""),
+                    new KeyValuePair<string, string>("Restore", "Health to yourself"),
+                    new KeyValuePair<string, string>("Restores", "Health to yourself"),
+                    new KeyValuePair<string, string>("Restores", "Health after a 10-second delay"),
+                    new KeyValuePair<string, string>("Restores", "Health to Target"),
+                    new KeyValuePair<string, string>("Restore", "Health to you and nearby allies"),
+                    new KeyValuePair<string, string>("Restores", "Health (or Armor if Health is full) to Pet"),
+                    new KeyValuePair<string, string>("Existing Zombie is Healed", "Health"),
+                    new KeyValuePair<string, string>("You heal", "per second when near your web trap"),
+                    new KeyValuePair<string, string>("Restore", "Health to least-healthy ally"),
+                }
+            },
+        };
+
+        private void VerifyStaticEffectKeyword(AbilityKeyword keyword, List<CombatEffect> combatEffectList, CombatKeyword combatKeyword)
+        {
+            List<KeyValuePair<string, string>> VerificationTable = EffectVerificationTable[combatKeyword];
+
+            int UnverifiedCount = 0;
+
+            foreach (CombatEffect Item in combatEffectList)
+                if (Item.Keyword == CombatKeyword.EffectRecurrence || Item.Keyword == CombatKeyword.ReflectOnAnyAttack)
+                    return;
+
+            foreach (IPgAbility Ability in ValidAbilityList)
+                if (Ability.KeywordList.Contains(keyword))
+                {
+                    int VerificationCount = 0;
+
+                    foreach (IPgSpecialValue SpecialValue in Ability.PvE.SpecialValueList)
+                    {
+                        string Label = SpecialValue.Label;
+                        string Suffix = SpecialValue.Suffix;
+
+                        foreach (KeyValuePair<string, string> Entry in VerificationTable)
+                            if (Label == Entry.Key && Suffix == Entry.Value)
+                            {
+                                VerificationCount++;
+                                break;
+                            }
+                    }
+
+                    if (VerificationCount != 1)
+                        UnverifiedCount++;
+                }
+
+            if (UnverifiedCount > 0)
+                Debug.WriteLine($"Combat Keyword {combatKeyword}: {UnverifiedCount} unverified abilities");
+        }
+
+        private List<IPgAbility> ValidAbilityList;
         #endregion
 
         #region Write File
@@ -1141,6 +1371,8 @@
             }
 
             modEffect = new ModEffect(effect.Key, ModAbilityList, StaticCombatEffectList, DynamicCombatEffectList, ModTargetAbilityList);
+            VerifyStaticEffects(ModAbilityList, StaticCombatEffectList);
+
             return true;
         }
 
@@ -1188,6 +1420,7 @@
 
             BasicTextReplace(ref modText, ref effectText, "Sic Em", "Sic 'Em");
             BasicTextReplace(ref modText, ref effectText, "physical (slashing, piercing, and crushing)", "Crushing, Slashing, or Piercing");
+            BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' healing abilities", "Feed Pet");
             BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
             BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels Ice Armor", "Fire damage no longer dispels");
@@ -2141,6 +2374,8 @@
             }
 
             modEffect = new ModEffect(string.Empty, ModAbilityList, ModCombatList, new List<CombatEffect>(), ModTargetAbilityList);
+            VerifyStaticEffects(ModAbilityList, ModCombatList);
+
             return true;
         }
 
@@ -2149,6 +2384,7 @@
             modText = modText.Replace("Indirect Poison and Indirect Trauma damage", "Indirect Poison and Trauma damage");
             modText = modText.Replace("Indirect Nature and Indirect Electricity damage", "Indirect Nature and Electricity damage");
             modText = modText.Replace(", but the ability's range is reduced to 12m", ", but range is reduced 18 meter");
+            modText = modText.Replace("When you teleport via Shadow Feint", "When you teleport");
         }
         #endregion
 
@@ -2697,6 +2933,7 @@
             new Sentence("When you are hit", CombatKeyword.ReflectOnAnyAttack),
             new Sentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack),
             new Sentence("Returning it to you as armor", CombatKeyword.DrainAsArmor),
+            new Sentence("When you teleport", CombatKeyword.WhenTeleporting),
         };
         #endregion
     }

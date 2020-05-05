@@ -46,19 +46,27 @@
         public void AddDelta(double value)
         {
             DeltaValue += value;
-            NotifyPropertyChanged(nameof(ActualValue));
+            NotifyPropertiesChanged();
         }
 
         public void AddMod(double value)
         {
             ModValue += value;
-            NotifyPropertyChanged(nameof(ActualValue));
+            NotifyPropertiesChanged();
         }
 
         public void AddModBase(double value)
         {
             ModBaseValue += value;
+            NotifyPropertiesChanged();
+        }
+
+        public void NotifyPropertiesChanged()
+        {
             NotifyPropertyChanged(nameof(ActualValue));
+            NotifyPropertyChanged(nameof(IsModified));
+            NotifyPropertyChanged(nameof(IsDisplayed));
+            NotifyPropertyChanged(nameof(AsString));
         }
 
         #region Implementation of INotifyPropertyChanged

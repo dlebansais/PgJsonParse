@@ -193,5 +193,6 @@
         ReflectRate,
         ThickArmor,
         DrainAsArmor,
+        WhenTeleporting,
     }
 }

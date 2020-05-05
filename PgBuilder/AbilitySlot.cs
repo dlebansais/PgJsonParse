@@ -600,6 +600,34 @@
             return false;
         }
 
+        public void AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, double deltaValue)
+        {
+            List<KeyValuePair<string, string>> VerificationTable = Parser.EffectVerificationTable[combatKeyword];
+
+            bool IsFound = false;
+            foreach (AbilitySlotSpecialValue SpecialValue in SpecialValueList)
+            {
+                string Label = SpecialValue.Label;
+                string Suffix = SpecialValue.Suffix;
+
+                foreach (KeyValuePair<string, string> Entry in VerificationTable)
+                    if (Label == Entry.Key && Suffix == Entry.Value)
+                    {
+                        IsFound = true;
+                        break;
+                    }
+
+                if (IsFound)
+                {
+                    SpecialValue.AddDelta(deltaValue);
+                    break;
+                }
+            }
+
+            if (!IsFound)
+                Debug.WriteLine("Special value not found!");
+        }
+
         public void AddEffect(ModEffect modEffect, CombatEffect combatEffect)
         {
             if (HasSituationalModifier(modEffect.StaticCombatEffectList))
@@ -632,6 +660,11 @@
 
                 case CombatKeyword.ZeroRage:
                     RageMultiplier.SetValueZero();
+                    break;
+
+                case CombatKeyword.RestoreHealth:
+                    if (combatEffect.Data.IsValueSet)
+                        AddEffectToSpecialValueDelta(combatEffect.Keyword, combatEffect.Data.Value);
                     break;
 
                 default:
