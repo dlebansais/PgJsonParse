@@ -46,7 +46,7 @@ namespace PgJsonObjects
 
         public void InitTierList(Dictionary<string, IJsonKey> attributeTable)
         {
-            PgPower.FillcombinedTierList(CombinedTierList, attributeTable, TierEffectList, TierOffset);
+            PgPower.FillCombinedTierList(CombinedTierList, attributeTable, TierEffectList, TierOffset);
         }
 
         public int PowerId { get { return int.Parse(Key.Substring(6)) / 1000; } }
@@ -149,7 +149,67 @@ namespace PgJsonObjects
             }
         }
 
-        public static void FillcombinedTierList(List<string> combinedTierList, Dictionary<string, IJsonKey> attributeTable, IList<IPgPowerTier> tierEffectList, int TierOffset)
+        public static void FillCombinedTierAttribute(Dictionary<string, IJsonKey> attributeTable, IPgPowerAttributeLink AsPowerAttributeLink, out string TierString)
+        {
+            if (attributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
+            {
+                IPgAttribute PowerAttribute = attributeTable[AsPowerAttributeLink.AttributeName] as IPgAttribute;
+
+                bool IsPercent = PowerAttribute.IsLabelWithPercent;
+                string Label = PowerAttribute.LabelRippedOfPercent;
+                TierString = Label;
+
+                if (AsPowerAttributeLink.AttributeEffect != 0)
+                {
+                    float PowerValue = AsPowerAttributeLink.AttributeEffect;
+
+                    if (IsPercent)
+                    {
+                        string PowerValueString = Tools.FloatToString(PowerValue * 100, AsPowerAttributeLink.AttributeEffectFormat);
+
+                        if (PowerValue > 0)
+                            PowerValueString = "+" + PowerValueString;
+
+                        TierString += " " + PowerValueString + "%";
+                    }
+                    else
+                    {
+                        string PowerValueString = Tools.FloatToString(PowerValue, AsPowerAttributeLink.AttributeEffectFormat);
+
+                        if (PowerValue > 0)
+                            PowerValueString = "+" + PowerValueString;
+
+                        TierString += " " + PowerValueString;
+                    }
+                }
+            }
+            else
+                TierString = string.Empty;
+        }
+
+        public static void FillCombinedTierSimple(IPgPowerSimpleEffect AsPowerSimpleEffect, out string TierString)
+        {
+            TierString = AsPowerSimpleEffect.Description;
+        }
+
+        public static void FillCombinedTierEffect(Dictionary<string, IJsonKey> attributeTable, IPgPowerEffect Effect, out string TierString)
+        {
+            IPgPowerAttributeLink AsPowerAttributeLink;
+            IPgPowerSimpleEffect AsPowerSimpleEffect;
+            TierString = string.Empty;
+
+            if ((AsPowerAttributeLink = Effect as IPgPowerAttributeLink) != null)
+            {
+                FillCombinedTierAttribute(attributeTable, AsPowerAttributeLink, out TierString);
+            }
+
+            else if ((AsPowerSimpleEffect = Effect as IPgPowerSimpleEffect) != null)
+            {
+                FillCombinedTierSimple(AsPowerSimpleEffect, out TierString);
+            }
+        }
+
+        public static void FillCombinedTierList(List<string> combinedTierList, Dictionary<string, IJsonKey> attributeTable, IList<IPgPowerTier> tierEffectList, int TierOffset)
         {
             for (int i = 0; i < tierEffectList.Count; i++)
             {
@@ -158,51 +218,10 @@ namespace PgJsonObjects
 
                 foreach (IPgPowerEffect Effect in Item.EffectList)
                 {
-                    IPgPowerAttributeLink AsPowerAttributeLink;
-                    IPgPowerSimpleEffect AsPowerSimpleEffect;
+                    FillCombinedTierEffect(attributeTable, Effect, out string TierString);
 
-                    if ((AsPowerAttributeLink = Effect as IPgPowerAttributeLink) != null)
-                    {
-                        if (attributeTable.ContainsKey(AsPowerAttributeLink.AttributeName))
-                        {
-                            IPgAttribute PowerAttribute = attributeTable[AsPowerAttributeLink.AttributeName] as IPgAttribute;
-
-                            bool IsPercent = PowerAttribute.IsLabelWithPercent;
-                            string Label = PowerAttribute.LabelRippedOfPercent;
-                            string Name = Label;
-
-                            if (AsPowerAttributeLink.AttributeEffect != 0)
-                            {
-                                float PowerValue = AsPowerAttributeLink.AttributeEffect;
-
-                                if (IsPercent)
-                                {
-                                    string PowerValueString = Tools.FloatToString(PowerValue * 100, AsPowerAttributeLink.AttributeEffectFormat);
-
-                                    if (PowerValue > 0)
-                                        PowerValueString = "+" + PowerValueString;
-
-                                    Name += " " + PowerValueString + "%";
-                                }
-                                else
-                                {
-                                    string PowerValueString = Tools.FloatToString(PowerValue, AsPowerAttributeLink.AttributeEffectFormat);
-
-                                    if (PowerValue > 0)
-                                        PowerValueString = "+" + PowerValueString;
-
-                                    Name += " " + PowerValueString;
-                                }
-                            }
-
-                            combinedTierList.Add(PrepareTier(Tier, Name));
-                        }
-                    }
-
-                    else if ((AsPowerSimpleEffect = Effect as IPgPowerSimpleEffect) != null)
-                    {
-                        combinedTierList.Add(PrepareTier(Tier, AsPowerSimpleEffect.Description));
-                    }
+                    if (TierString.Length > 0)
+                        combinedTierList.Add(PrepareTier(Tier, TierString));
                 }
             }
 

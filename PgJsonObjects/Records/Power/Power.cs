@@ -70,7 +70,7 @@ namespace PgJsonObjects
         public override void SetIndirectProperties(Dictionary<Type, Dictionary<string, IJsonKey>> AllTables, ParseErrorInfo ErrorInfo)
         {
             Dictionary<string, IJsonKey> AttributeTable = AllTables[typeof(Attribute)];
-            PgPower.FillcombinedTierList(CombinedTierList, AttributeTable, TierEffectList, TierOffset);
+            PgPower.FillCombinedTierList(CombinedTierList, AttributeTable, TierEffectList, TierOffset);
         }
 
         public void InitTierList(Dictionary<string, IJsonKey> attributeTable)

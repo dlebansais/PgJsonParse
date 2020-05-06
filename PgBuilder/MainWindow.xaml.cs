@@ -73,7 +73,7 @@
 
                 bool HasKeyword = false;
                 foreach (CombatEffect Item in StaticCombatEffectList)
-                    if (Item.Keyword == CombatKeyword.RestoreHealth)
+                    if (Item.Keyword == CombatKeyword.RestoreArmor)
                         HasKeyword = true;
 
                 if (HasKeyword)

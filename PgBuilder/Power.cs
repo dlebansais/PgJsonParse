@@ -12,7 +12,8 @@ namespace PgBuilder
         public Power(IPgPower source)
         {
             Source = source;
-            SelectedTier = 0;
+            IList<IPgPowerTier> TierEffectList = Source.TierEffectList;
+            SelectedTier = TierEffectList.Count / 2;
         }
 
         public IPgPower Source { get; }
@@ -22,8 +23,30 @@ namespace PgBuilder
         {
             get
             {
-                if (SelectedTier >= 0 && SelectedTier < Source.CombinedTierList.Count)
-                    return Source.CombinedTierList[SelectedTier];
+                IList<IPgPowerTier> TierEffectList = Source.TierEffectList;
+                if (SelectedTier >= 0 && SelectedTier < TierEffectList.Count)
+                {
+                    string Result = string.Empty;
+                    IObjectDefinition AttributeDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)];
+
+                    foreach (IPgPowerEffect Effect in TierEffectList[SelectedTier].EffectList)
+                    {
+                        PgPower.FillCombinedTierEffect(AttributeDefinition.ObjectTable, Effect, out string TierString);
+
+                        if (TierString.Length > 0)
+                        {
+                            if (Result.Length > 0)
+                                Result += ", ";
+
+                            Result += TierString;
+                        }
+                    }
+
+                    if (Result.Length > 0)
+                        Result = $"Tier {SelectedTier}: {Result}";
+
+                    return Result;
+                }
                 else
                     return "<Unknown>";
             }
@@ -33,11 +56,9 @@ namespace PgBuilder
         {
             get
             {
-                if (SelectedTier >= 0 && SelectedTier < Source.CombinedTierList.Count)
-                {
-                    IList<IPgPowerTier> TierEffectList = Source.TierEffectList;
+                IList<IPgPowerTier> TierEffectList = Source.TierEffectList;
+                if (SelectedTier >= 0 && SelectedTier < TierEffectList.Count)
                     return TierEffectList[SelectedTier];
-                }
                 else
                     return null;
             }
@@ -55,7 +76,13 @@ namespace PgBuilder
 
         public void SetTier(int tier)
         {
-            if (tier >= 0 && tier < Source.CombinedTierList.Count)
+            IList<IPgPowerTier> TierEffectList = Source.TierEffectList;
+            if (tier < 0)
+                tier = 0;
+            if (tier >= TierEffectList.Count)
+                tier = TierEffectList.Count - 1;
+
+            if (SelectedTier != tier)
             {
                 SelectedTier = tier;
                 NotifyPropertyChanged(nameof(SelectedTier));

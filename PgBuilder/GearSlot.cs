@@ -127,6 +127,7 @@
                 SelectedItemIndex = index;
 
             NotifyPropertyChanged(nameof(SelectedItemIndex));
+            NotifyPropertyChanged(nameof(SelectedItem));
         }
 
         public void SetSelectedItem(string key)
@@ -136,6 +137,7 @@
                 {
                     SelectedItemIndex = ItemList.IndexOf(Item);
                     NotifyPropertyChanged(nameof(SelectedItemIndex));
+                    NotifyPropertyChanged(nameof(SelectedItem));
                 }
         }
 
@@ -143,6 +145,7 @@
         {
             SelectedItemIndex = -1;
             NotifyPropertyChanged(nameof(SelectedItemIndex));
+            NotifyPropertyChanged(nameof(SelectedItem));
         }
 
         public void AddMod()

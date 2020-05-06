@@ -663,8 +663,13 @@
                     break;
 
                 case CombatKeyword.RestoreHealth:
+                case CombatKeyword.RestorePower:
+                case CombatKeyword.RestoreArmor:
+                case CombatKeyword.RestoreHealthArmor:
+                case CombatKeyword.RestoreHealthArmorPower:
                     if (combatEffect.Data.IsValueSet)
-                        AddEffectToSpecialValueDelta(combatEffect.Keyword, combatEffect.Data.Value);
+                        if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList))
+                            AddEffectToSpecialValueDelta(combatEffect.Keyword, combatEffect.Data.Value);
                     break;
 
                 default:
@@ -674,19 +679,20 @@
 
 /*
 DamageBoost
-RestorePower
+//RestorePower
 //AddPowerCost
-RestoreHealthArmor
-RestoreHealth
+//RestoreHealthArmor
+//RestoreHealth
 //AddResetTimer
 //AddRange
+//RestoreHealthArmorPower
 TargetSubsequentAttacks
 EffectDuration
 AddChannelingTime
 AnotherTrap
 //AddRage
 ChangeDamageType
-RestoreArmor
+//RestoreArmor
 AddMitigation
 NextAttack
 DealDirectHealthDamage
@@ -710,7 +716,6 @@ EffectRecurrence
 EffectDurationMinute
 AddMaxHealth
 CombatRefreshRestoreHeatlth
-RestoreHealthArmorPower
 StunIncorporeal
 ResetOtherAbilityTimer
 DamageBoostAgainstSpecie

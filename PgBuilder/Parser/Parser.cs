@@ -777,19 +777,20 @@
 
                 // Handled in special values.
                 case CombatKeyword.RestoreHealth:
+                case CombatKeyword.RestorePower:
+                case CombatKeyword.RestoreArmor:
+                case CombatKeyword.RestoreHealthArmor:
+                case CombatKeyword.RestoreHealthArmorPower:
                     VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword);
                     break;
 
                 // TODO
                 case CombatKeyword.DamageBoost:
-                case CombatKeyword.RestorePower:
-                case CombatKeyword.RestoreHealthArmor:
                 case CombatKeyword.TargetSubsequentAttacks:
                 case CombatKeyword.EffectDuration:
                 case CombatKeyword.AddChannelingTime:
                 case CombatKeyword.AnotherTrap:
                 case CombatKeyword.ChangeDamageType:
-                case CombatKeyword.RestoreArmor:
                 case CombatKeyword.AddMitigation:
                 case CombatKeyword.NextAttack:
                 case CombatKeyword.DealDirectHealthDamage:
@@ -812,7 +813,6 @@
                 case CombatKeyword.EffectDurationMinute:
                 case CombatKeyword.AddMaxHealth:
                 case CombatKeyword.CombatRefreshRestoreHeatlth:
-                case CombatKeyword.RestoreHealthArmorPower:
                 case CombatKeyword.StunIncorporeal:
                 case CombatKeyword.ResetOtherAbilityTimer:
                 case CombatKeyword.DamageBoostAgainstSpecie:
@@ -893,17 +893,56 @@
                     new KeyValuePair<string, string>("Restore", "Health to least-healthy ally"),
                 }
             },
+            { CombatKeyword.RestorePower, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Restores", "Power"),
+                    new KeyValuePair<string, string>("Restore", "Power"),
+                    new KeyValuePair<string, string>("You recover", "Power per second when near your web trap"),
+                    new KeyValuePair<string, string>("Recover", "Power when melee attacks deal damage to you"),
+                }
+            },
+            { CombatKeyword.RestoreArmor, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Restores", "Armor"),
+                    new KeyValuePair<string, string>("Restore", "Armor"),
+                    new KeyValuePair<string, string>("Restores", "Armor after a 6-second delay"),
+                    new KeyValuePair<string, string>("Restores", "Armor after a 10-second delay"),
+                }
+            },
+            { CombatKeyword.RestoreHealthArmor, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Restore", "Health (or Armor if Health is full) to nearby ally undead"),
+                }
+            },
+            { CombatKeyword.RestoreHealthArmorPower, new List<KeyValuePair<string, string>>()
+                {
+                }
+            },
         };
+
+        public static Dictionary<CombatKeyword, List<KeyValuePair<string, string>>> UnverifiedTable = new Dictionary<CombatKeyword, List<KeyValuePair<string, string>>>()
+        {
+        };
+
+        public static bool HasNonSpecialValueEffect(List<CombatEffect> combatEffectList)
+        {
+            foreach (CombatEffect Item in combatEffectList)
+                if (Item.Keyword == CombatKeyword.EffectRecurrence || Item.Keyword == CombatKeyword.ReflectOnAnyAttack || Item.Keyword == CombatKeyword.ApplyWithChance)
+                    return true;
+
+            return false;
+        }
 
         private void VerifyStaticEffectKeyword(AbilityKeyword keyword, List<CombatEffect> combatEffectList, CombatKeyword combatKeyword)
         {
+            if (HasNonSpecialValueEffect(combatEffectList))
+                return;
+
+            if (!EffectVerificationTable.ContainsKey(combatKeyword))
+                EffectVerificationTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
             List<KeyValuePair<string, string>> VerificationTable = EffectVerificationTable[combatKeyword];
 
             int UnverifiedCount = 0;
-
-            foreach (CombatEffect Item in combatEffectList)
-                if (Item.Keyword == CombatKeyword.EffectRecurrence || Item.Keyword == CombatKeyword.ReflectOnAnyAttack)
-                    return;
 
             foreach (IPgAbility Ability in ValidAbilityList)
                 if (Ability.KeywordList.Contains(keyword))
@@ -928,7 +967,41 @@
                 }
 
             if (UnverifiedCount > 0)
-                Debug.WriteLine($"Combat Keyword {combatKeyword}: {UnverifiedCount} unverified abilities");
+            {
+                //Debug.WriteLine($"Combat Keyword {combatKeyword}: {UnverifiedCount} unverified abilities");
+                if (!UnverifiedTable.ContainsKey(combatKeyword))
+                    UnverifiedTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
+                List<KeyValuePair<string, string>> SpecificUnverifiedTable = UnverifiedTable[combatKeyword];
+
+                foreach (IPgAbility Ability in ValidAbilityList)
+                    if (Ability.KeywordList.Contains(keyword))
+                    {
+                        int VerificationCount = 0;
+
+                        foreach (IPgSpecialValue SpecialValue in Ability.PvE.SpecialValueList)
+                        {
+                            string Label = SpecialValue.Label;
+                            string Suffix = SpecialValue.Suffix;
+
+                            bool IsFound = false;
+                            foreach (KeyValuePair<string, string> Entry in SpecificUnverifiedTable)
+                                if (Entry.Key == Label && Entry.Value == Suffix)
+                                {
+                                    IsFound = true;
+                                    break;
+                                }
+
+                            if (!IsFound)
+                            {
+                                SpecificUnverifiedTable.Add(new KeyValuePair<string, string>(Label, Suffix));
+                                Debug.WriteLine($"new KeyValuePair<string, string>(\"{Label}\", \"{Suffix}\"),");
+                            }
+                        }
+
+                        if (VerificationCount != 1)
+                            UnverifiedCount++;
+                    }
+            }
         }
 
         private List<IPgAbility> ValidAbilityList;
