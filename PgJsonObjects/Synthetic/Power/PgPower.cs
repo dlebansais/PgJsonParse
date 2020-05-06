@@ -182,6 +182,9 @@ namespace PgJsonObjects
                         TierString += " " + PowerValueString;
                     }
                 }
+
+                if (AsPowerAttributeLink.SkillLink != null)
+                    TierString += $" when {AsPowerAttributeLink.SkillLink.Name} skill is active";
             }
             else
                 TierString = string.Empty;

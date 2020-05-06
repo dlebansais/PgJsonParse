@@ -59,14 +59,27 @@
         public string AbilityMinLevel { get { return Ability != null ? Ability.Level.ToString() : string.Empty; } }
         public bool? AbilityMinLevelModified { get { return null; } }
 
-        public AbilityModifier PowerCost { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.PowerCost);
-        public AbilityModifier ResetTime { get; } = new AbilityModifier((IPgAbility ability) => ability.ResetTime);
-        public AbilityModifier Range { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.AoE == 0 ? ability.PvE.Range : 0);
-        public AbilityModifier AoE { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.AoE);
-        public AbilityModifier RageBoost { get; } = new AbilityModifier((IPgAbility ability) => ability.PvE.RageBoost);
-        public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent((IPgAbility ability) => ability.PvE.RageMultiplier * 100);
+        public AbilityModifier PowerCost { get; } = new AbilityModifier("PowerCost", (IPgAbility ability) => ability.PvE.PowerCost, DefaultDisplayHandler);
+        public AbilityModifier ResetTime { get; } = new AbilityModifier("ResetTime", (IPgAbility ability) => ability.ResetTime, DefaultDisplayHandler);
+        public AbilityModifier Range { get; } = new AbilityModifier("Range", (IPgAbility ability) => ability.PvE.AoE == 0 ? ability.PvE.Range : 0, RangeDisplayHandler);
+        public AbilityModifier AoE { get; } = new AbilityModifier("AoE", (IPgAbility ability) => ability.PvE.AoE, DefaultDisplayHandler);
+        public AbilityModifier RageBoost { get; } = new AbilityModifier("RageBoost", (IPgAbility ability) => ability.PvE.RageBoost, DefaultDisplayHandler);
+        public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", (IPgAbility ability) => ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
         private List<AbilityModifier> ModifierList;
         public bool HasOtherEffects { get { return OtherEffectList.Count > 0; } }
+
+        public static string DefaultDisplayHandler(int n)
+        { 
+            return n.ToString(); 
+        }
+
+        public static string RangeDisplayHandler(int n)
+        {
+            if (n > 4)
+                return $"{n} meters";
+            else
+                return "Melee";
+        }
 
         public bool HasAbilityDamage{ get { return Ability != null && Ability.PvE.Damage != 0; } }
         public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(Ability.PvE.Damage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage) : 0; } }
@@ -87,8 +100,14 @@
         public string AbilityAccuracy { get { return Ability != null ? App.DoubleToString(Ability.PvE.Accuracy) : string.Empty; } }
         public bool? AbilityAccuracyModified { get { return null; } }
 
+        public bool IsNiceAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.NiceAttack); } }
+        public bool IsCoreAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.CoreAttack); } }
         public bool IsEpicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.EpicAttack); } }
-        public bool IsMinorHealing { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.MinorHeal); } }
+        public bool IsSignatureDebuff { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.SignatureDebuff); } }
+        public bool IsSignatureSupport { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.SignatureSupport); } }
+        public bool IsMajorHeal { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.MajorHeal); } }
+        public bool IsMinorHeal { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.MinorHeal); } }
+        public bool IsSurvivalUtility { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.SurvivalUtility); } }
 
         public bool IsBasicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.BasicAttack); } }
         public string BasicAttackHealth { get { return $"+{App.DoubleToString(BasicAttackHealthModified)}"; } }
@@ -241,8 +260,14 @@
             NotifyPropertyChanged(nameof(AbilityAccuracy));
             NotifyPropertyChanged(nameof(AbilityAccuracyModified));
 
+            NotifyPropertyChanged(nameof(IsNiceAttack));
+            NotifyPropertyChanged(nameof(IsCoreAttack));
             NotifyPropertyChanged(nameof(IsEpicAttack));
-            NotifyPropertyChanged(nameof(IsMinorHealing));
+            NotifyPropertyChanged(nameof(IsSignatureDebuff));
+            NotifyPropertyChanged(nameof(IsSignatureSupport));
+            NotifyPropertyChanged(nameof(IsMajorHeal));
+            NotifyPropertyChanged(nameof(IsMinorHeal));
+            NotifyPropertyChanged(nameof(IsSurvivalUtility));
 
             NotifyPropertyChanged(nameof(IsBasicAttack));
             NotifyPropertyChanged(nameof(BasicAttackHealth));
@@ -584,6 +609,11 @@
             OtherEffectList.Add(Effect);
 
             NotifyPropertyChanged(nameof(HasOtherEffects));
+        }
+
+        public void RecalculateModEnd()
+        {
+            NotifyPropertiesChanged();
         }
 
         public bool HasSituationalModifier(List<CombatEffect> combatEffectList)

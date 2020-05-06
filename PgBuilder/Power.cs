@@ -36,9 +36,9 @@ namespace PgBuilder
                         if (TierString.Length > 0)
                         {
                             if (Result.Length > 0)
-                                Result += ", ";
+                                TierString += ", ";
 
-                            Result += TierString;
+                            Result = TierString + Result;
                         }
                     }
 

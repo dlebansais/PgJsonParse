@@ -117,7 +117,6 @@
                     <StackPanel Orientation="Horizontal" Visibility="{Binding Range.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Range:</TextBlock>
                         <TextBlock Text="{Binding Range.AsString}" Foreground="{Binding Range.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                        <TextBlock Margin="5,0,0,0">meters</TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding AoE.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Range:</TextBlock>
@@ -147,15 +146,21 @@
                         <TextBlock>%</TextBlock>
                     </StackPanel>
                     <ItemsControl ItemsSource="{Binding SpecialValueList}" ItemTemplate="{StaticResource SpecialValueTemplate}"/>
+                    <TextBlock FontWeight="Bold" Visibility="{Binding IsNiceAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Nice Attack.</TextBlock>
+                    <TextBlock FontWeight="Bold" Visibility="{Binding IsCoreAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Core Attack.</TextBlock>
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsEpicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is an Epic Attack.</TextBlock>
-                    <TextBlock FontWeight="Bold" Visibility="{Binding IsMinorHealing, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Minor Healing ability.</TextBlock>
+                    <TextBlock FontWeight="Bold" Visibility="{Binding IsSignatureDebuff, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Signature Debuff ability.</TextBlock>
+                    <TextBlock FontWeight="Bold" Visibility="{Binding IsSignatureSupport, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Signature Support ability.</TextBlock>
+                    <TextBlock FontWeight="Bold" Visibility="{Binding IsMajorHeal, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Major Healing ability.</TextBlock>
+                    <TextBlock FontWeight="Bold" Visibility="{Binding IsMinorHeal, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Minor Healing ability.</TextBlock>
+                    <TextBlock FontWeight="Bold" Visibility="{Binding IsSurvivalUtility, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Survival-Utility ability.</TextBlock>
                     <ItemsControl ItemsSource="{Binding SpecialEffectList}" ItemTemplate="{StaticResource SpecialEffectTemplate}"/>
                     <StackPanel Visibility="{Binding IsBasicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">This is a Basic Attack.</TextBlock>
                         <DockPanel>
                             <Image DockPanel.Dock="Left" Source="{StaticResource imgBasicAttack}" Width="64" Height="64"/>
                             <StackPanel Margin="10,0,0,0">
-                                <TextBlock TextWrapping="Wrap">Once every 15s, Basic Attacks generate a Combat Refresh that restores:</TextBlock>
+                                <TextBlock TextWrapping="Wrap">Once every 15 seconds, Basic Attacks generate a Combat Refresh that restores:</TextBlock>
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>

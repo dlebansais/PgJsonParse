@@ -4,8 +4,8 @@
 
     public class AbilityModifierPercent : AbilityModifier
     {
-        public AbilityModifierPercent(AbilityBaseValueGetter getter)
-            : base(getter)
+        public AbilityModifierPercent(string name, AbilityBaseValueGetter getter, Func<int, string> displayHandler)
+            : base(name, getter, displayHandler)
         {
         }
 

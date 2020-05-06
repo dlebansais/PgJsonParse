@@ -1197,6 +1197,7 @@
             ResetAllMods();
             RecalculateAllMods();
             Debug.WriteLine("Done with recalculate");
+            RecalculateModEnd();
         }
 
         private void ResetAllMods()
@@ -1309,6 +1310,15 @@
 
             foreach (AbilitySlot Item in AbilitySlot2List)
                 Item.AddEffect(ModEffect);
+        }
+
+        private void RecalculateModEnd()
+        {
+            foreach (AbilitySlot Item in AbilitySlot1List)
+                Item.RecalculateModEnd();
+
+            foreach (AbilitySlot Item in AbilitySlot2List)
+                Item.RecalculateModEnd();
         }
 
         private DispatcherOperation RecalculateOperation = null;
