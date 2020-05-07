@@ -2004,6 +2004,13 @@
 
         private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence selectedSentence)
         {
+            if (sentence.Format == "Damage become #D")
+            {
+            }
+            if (sentence.Format == "Instead of #D")
+            {
+            }
+
             string NewText = text;
             List<CombatKeyword> NewExtractedKeywordList = new List<CombatKeyword>();
             NumericValue NewData1 = new NumericValue();
@@ -2229,6 +2236,10 @@
                 string BeforeTypePattern = pattern.Substring(0, DamageTypeIndex);
                 string AfterTypePattern = pattern.Substring(DamageTypeIndex + patternString.Length);
 
+                int MinStartIndex = text.IndexOf(BeforeTypePattern, startIndex);
+                if (MinStartIndex > startIndex)
+                    startIndex = MinStartIndex;
+
                 int LowestIndex = -1;
                 int LowestValue = 0;
                 int LowestLength = -1;
@@ -2373,6 +2384,10 @@
                 {
                     SkipIndex--;
                     continue;
+                }
+
+                if (ItemPower.Key == "power_9874")
+                {
                 }
 
                 //Debug.WriteLine("");
@@ -2578,7 +2593,7 @@
             new Sentence("To targets that are covered", CombatKeyword.TargetUnderEffect),
             new Sentence("To targets that are Knocked Down", CombatKeyword.TargetKnockedDown),
             new Sentence("Deal #D damage", CombatKeyword.ChangeDamageType),
-            new Sentence("Instead of Crushing", CombatKeyword.Ignore),
+            new Sentence("Instead of #D", CombatKeyword.Ignore),
             new Sentence("Next attack", CombatKeyword.NextAttack),
             new Sentence("Next ability", CombatKeyword.NextAttack),
             new Sentence("For one attack", CombatKeyword.NextAttack),

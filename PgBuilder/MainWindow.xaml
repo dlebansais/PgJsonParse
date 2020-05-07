@@ -18,6 +18,7 @@
         <localconv:ItemToIconConverter x:Key="convItemToIcon"/>
         <localsel:ItemEffectTemplateSelector x:Key="selItemEffectTemplate"/>
         <localsel:AbilityTemplateSelector x:Key="selAbilityTemplate"/>
+        <localsel:OtherEffectTemplateSelector x:Key="selOtherEffectTemplate"/>
         <RoutedCommand x:Key="AddModCommand"/>
         <RoutedCommand x:Key="IncrementTierCommand"/>
         <RoutedCommand x:Key="DecrementTierCommand"/>
@@ -40,6 +41,10 @@
             <SolidColorBrush>LightGreen</SolidColorBrush>
             <SolidColorBrush>Red</SolidColorBrush>
             <SolidColorBrush>White</SolidColorBrush>
+        </CompositeCollection>
+        <CompositeCollection x:Key="WhiteGreen">
+            <SolidColorBrush>White</SolidColorBrush>
+            <SolidColorBrush>LightGreen</SolidColorBrush>
         </CompositeCollection>
         <BitmapImage x:Key="imgRemove" UriSource="/PgBuilder;component/Resources/remove.png"/>
         <BitmapImage x:Key="imgBasicAttack" UriSource="/PgBuilder;component/Resources/basic_attack.png"/>
@@ -65,11 +70,19 @@
                 <TextBlock Background="Black" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top">Special:</TextBlock>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="OtherEffectTemplate">
+        <DataTemplate x:Key="OtherEffectSimpleTemplate">
             <DockPanel>
                 <TextBlock DockPanel.Dock="Left" Foreground="White" Margin="0,0,5,0">•</TextBlock>
-                <TextBlock Text="{Binding Desc}" Foreground="LightGreen" FontWeight="Bold" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding Description}" Foreground="LightGreen" FontWeight="Bold" TextWrapping="Wrap"/>
             </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="OtherEffectDoTTemplate">
+            <WrapPanel Orientation="Horizontal" Visibility="{Binding IsDisplayed, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                <TextBlock Foreground="White">•</TextBlock>
+                <TextBlock Text="{Binding Prefix}" Foreground="White" FontWeight="Normal" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                <TextBlock Text="{Binding Damage}" Foreground="LightGreen" FontWeight="Normal" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                <TextBlock Text="{Binding Suffix}" Foreground="White" FontWeight="Normal" TextWrapping="Wrap" Margin="5,0,0,0"/>
+            </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="AbilityBigImageTemplate" DataType="{x:Type local:AbilitySlot}">
             <DataTemplate.Resources>
@@ -129,7 +142,7 @@
                     <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Damage:</TextBlock>
                         <TextBlock Text="{Binding AbilityDamage}" Foreground="{Binding AbilityDamageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                        <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                        <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource WhiteGreen}}" Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamageVulnerable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Extra Dmg To Vulnerable Targets:</TextBlock>
@@ -150,6 +163,7 @@
                         <TextBlock Text="{Binding Accuracy.AsString}" Foreground="{Binding Accuracy.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
                     </StackPanel>
                     <ItemsControl ItemsSource="{Binding SpecialValueList}" ItemTemplate="{StaticResource SpecialValueTemplate}"/>
+                    <ItemsControl ItemsSource="{Binding SpecialEffectList}" ItemTemplate="{StaticResource SpecialEffectTemplate}"/>
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsNiceAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Nice Attack.</TextBlock>
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsCoreAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Core Attack.</TextBlock>
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsEpicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is an Epic Attack.</TextBlock>
@@ -158,7 +172,6 @@
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsMajorHeal, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Major Healing ability.</TextBlock>
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsMinorHeal, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Minor Healing ability.</TextBlock>
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsSurvivalUtility, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Survival-Utility ability.</TextBlock>
-                    <ItemsControl ItemsSource="{Binding SpecialEffectList}" ItemTemplate="{StaticResource SpecialEffectTemplate}"/>
                     <StackPanel Visibility="{Binding IsBasicAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">This is a Basic Attack.</TextBlock>
                         <DockPanel>
@@ -190,7 +203,7 @@
                         </DockPanel>
                     </StackPanel>
                     <TextBlock DockPanel.Dock="Top" Visibility="{Binding HasOtherEffects, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Other Effects:</TextBlock>
-                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding OtherEffectList}" ItemTemplate="{StaticResource OtherEffectTemplate}" Margin="0,0,0,5"/>
+                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding OtherEffectList}" ItemTemplateSelector="{StaticResource selOtherEffectTemplate}" Margin="0,0,0,5"/>
                 </StackPanel>
             </DockPanel>
         </DataTemplate>

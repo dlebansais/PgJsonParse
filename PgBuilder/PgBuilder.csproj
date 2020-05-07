@@ -72,9 +72,13 @@
     <Compile Include="GearSlot.cs" />
     <Compile Include="ModEffect.cs" />
     <Compile Include="NumericValue.cs" />
+    <Compile Include="OtherEffect.cs" />
+    <Compile Include="OtherEffectDoT.cs" />
+    <Compile Include="OtherEffectSimple.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="PowerKeyToCompleteEffect.cs" />
     <Compile Include="Selectors\AbilityTemplateSelector.cs" />
+    <Compile Include="Selectors\OtherEffectTemplateSelector.cs" />
     <Compile Include="Selectors\ItemEffectTemplateSelector.cs" />
     <Compile Include="Sentence.cs" />
     <Compile Include="SignInterpretation.cs" />

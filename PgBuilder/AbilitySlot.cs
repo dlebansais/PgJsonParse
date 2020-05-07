@@ -13,6 +13,9 @@
     using Presentation;
     using System.Windows.Controls;
     using System.Windows;
+    using System;
+    using System.Globalization;
+    using System.Windows.Navigation;
 
     public class AbilitySlot : INotifyPropertyChanged
     {
@@ -68,17 +71,27 @@
         public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", (IPgAbility ability) => ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
         public AbilityModifierPercent Accuracy { get; } = new AbilityModifierPercent("Accuracy", (IPgAbility ability) => ability.PvE.Accuracy * 100, DefaultDisplayHandler);
         private List<AbilityModifier> ModifierList;
-        public bool HasOtherEffects { get { return OtherEffectList.Count > 0; } }
-
-        public static string DefaultDisplayHandler(int n)
+        public bool HasOtherEffects 
         { 
-            return n.ToString(); 
+            get 
+            {
+                foreach (OtherEffect Item in OtherEffectList)
+                    if (Item.IsDisplayed)
+                        return true;
+
+                return false;
+            }
         }
 
-        public static string RangeDisplayHandler(int n)
+        public static string DefaultDisplayHandler(double d)
         {
-            if (n > 4)
-                return $"{n} meters";
+            return ((int)Math.Round(d)).ToString();
+        }
+
+        public static string RangeDisplayHandler(double d)
+        {
+            if (d > 4)
+                return $"{Math.Round(d, 1).ToString(CultureInfo.InvariantCulture)} meters";
             else
                 return "Melee";
         }
@@ -92,9 +105,21 @@
         private double ModBaseDamage;
         private double ModCriticalDamage;
 
-        public string AbilityDamageType { get { return Ability != null ? Ability.DamageType.ToString() : string.Empty; } }
-        public bool? AbilityDamageTypeModified { get { return null; } }
-        
+        public string AbilityDamageType
+        { 
+            get 
+            {
+                if (Ability == null)
+                    return string.Empty;
+
+                DamageType DamageType = ModifiedDamageType == DamageType.Internal_None ? Ability.DamageType : ModifiedDamageType;
+
+                return TextMaps.DamageTypeTextMap[DamageType];
+            }
+        }
+        public bool AbilityDamageTypeModified { get { return ModifiedDamageType != DamageType.Internal_None; } }
+        private DamageType ModifiedDamageType = DamageType.Internal_None;
+
         public bool HasAbilityDamageVulnerable { get { return Ability != null && Ability.PvE.RawExtraDamageIfTargetVulnerable.HasValue; } }
         public string AbilityDamageVulnerable { get { return Ability != null ? Ability.PvE.ExtraDamageIfTargetVulnerable.ToString() : string.Empty; } }
         public bool? AbilityDamageVulnerableModified { get { return null; } }
@@ -118,7 +143,7 @@
 
         public ObservableCollection<AbilitySlotSpecialValue> SpecialValueList { get; } = new ObservableCollection<AbilitySlotSpecialValue>();
         public ObservableCollection<string> SpecialEffectList { get; } = new ObservableCollection<string>();
-        public ObservableCollection<IPgEffect> OtherEffectList { get; } = new ObservableCollection<IPgEffect>();
+        public ObservableCollection<OtherEffect> OtherEffectList { get; } = new ObservableCollection<OtherEffect>();
 
         public List<AbilityTierList> CompatibleAbilityList { get; private set; }
 
@@ -413,11 +438,16 @@
             BasicAttackArmorModified = 0;
             BasicAttackPowerModified = 0;
 
+            OtherEffectList.Clear();
+
             if (Ability != null)
+            {
                 BasicAttackPowerModified += Ability.CombatRefreshBaseAmount;
 
-            OtherEffectList.Clear();
-            NotifyPropertyChanged(nameof(HasOtherEffects));
+                IList<IPgDoT> DoTList = Ability.PvE.DoTList;
+                foreach (IPgDoT Item in DoTList)
+                    OtherEffectList.Add(new OtherEffectDoT(Item));
+            }
         }
 
         public void RecalculateMods(string key, float attributeEffect)
@@ -612,13 +642,16 @@
             }
 
             IPgEffect Effect = (IPgEffect)EffectDefinition.ObjectTable[EffectKey];
-            OtherEffectList.Add(Effect);
-
-            NotifyPropertyChanged(nameof(HasOtherEffects));
+            OtherEffectList.Add(new OtherEffectSimple(Effect));
         }
 
         public void RecalculateModEnd()
         {
+            if (Ability != null && (Ability.DamageType == DamageType.Fire || ModifiedDamageType == DamageType.Fire))
+                RageMultiplier.SetMultiplier(2.0);
+            else
+                RageMultiplier.SetMultiplier(1.0);
+
             NotifyPropertiesChanged();
         }
 
@@ -668,6 +701,38 @@
                 Debug.WriteLine("Special value not found!");
         }
 
+        private DamageType ToDamageType(GameDamageType type)
+        {
+            if (type.HasFlag(GameDamageType.Crushing))
+                return DamageType.Crushing;
+            else if (type.HasFlag(GameDamageType.Slashing))
+                return DamageType.Slashing;
+            else if (type.HasFlag(GameDamageType.Nature))
+                return DamageType.Nature;
+            else if (type.HasFlag(GameDamageType.Fire))
+                return DamageType.Fire;
+            else if (type.HasFlag(GameDamageType.Cold))
+                return DamageType.Cold;
+            else if (type.HasFlag(GameDamageType.Piercing))
+                return DamageType.Piercing;
+            else if (type.HasFlag(GameDamageType.Piercing))
+                return DamageType.Piercing;
+            else if (type.HasFlag(GameDamageType.Psychic))
+                return DamageType.Psychic;
+            else if (type.HasFlag(GameDamageType.Trauma))
+                return DamageType.Trauma;
+            else if (type.HasFlag(GameDamageType.Electricity))
+                return DamageType.Electricity;
+            else if (type.HasFlag(GameDamageType.Poison))
+                return DamageType.Poison;
+            else if (type.HasFlag(GameDamageType.Acid))
+                return DamageType.Acid;
+            else if (type.HasFlag(GameDamageType.Darkness))
+                return DamageType.Darkness;
+            else
+                return DamageType.Internal_None;
+        }
+
         public void AddEffect(ModEffect modEffect, CombatEffect combatEffect)
         {
             if (HasSituationalModifier(modEffect.StaticCombatEffectList))
@@ -705,6 +770,11 @@
                 case CombatKeyword.AddAccuracy:
                     if (combatEffect.Data.IsValueSet)
                         RecalculateDeltaAccuracy(combatEffect.Data.Value);
+                    break;
+
+                case CombatKeyword.ChangeDamageType:
+                    if (combatEffect.DamageType != GameDamageType.None)
+                        ModifiedDamageType = ToDamageType(combatEffect.DamageType);
                     break;
 
                 case CombatKeyword.RestoreHealth:
