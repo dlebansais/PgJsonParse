@@ -140,14 +140,15 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
-                        <TextBlock FontWeight="Bold">Damage:</TextBlock>
+                        <TextBlock Visibility="{Binding HasAbilityNormalDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Damage:</TextBlock>
+                        <TextBlock Visibility="{Binding HasAbilityHealthDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Damage Health:</TextBlock>
                         <TextBlock Text="{Binding AbilityDamage}" Foreground="{Binding AbilityDamageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
                         <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource WhiteGreen}}" Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamageVulnerable, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Extra Dmg To Vulnerable Targets:</TextBlock>
                         <TextBlock Text="{Binding AbilityDamageVulnerable}" Foreground="{Binding AbilityDamageVulnerableModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
-                        <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                        <TextBlock Text="{Binding AbilityDamageType}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource WhiteGreen}}" Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RageBoost.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Reduces Rage:</TextBlock>

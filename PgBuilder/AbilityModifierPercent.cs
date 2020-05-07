@@ -4,11 +4,10 @@
 
     public class AbilityModifierPercent : AbilityModifier
     {
-        public AbilityModifierPercent(string name, AbilityBaseValueGetter getter, Func<double, string> displayHandler)
+        public AbilityModifierPercent(string name, int defaultValue, AbilityBaseValueGetter getter, Func<double, string> displayHandler)
             : base(name, getter, displayHandler)
         {
+            DefaultValue = defaultValue;
         }
-
-        protected override int DefaultValue { get { return 100; } }
     }
 }

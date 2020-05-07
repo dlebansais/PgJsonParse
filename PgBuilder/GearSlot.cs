@@ -22,7 +22,7 @@
             IList<IPgItem> VerifiedObjectList = (IList<IPgItem>)ItemDefinition.VerifiedObjectList;
             foreach (IPgItem Item in VerifiedObjectList)
             {
-                if (Item.EquipSlot == slot)
+                if (Item.EquipSlot == slot || (slot == ItemSlot.OffHand && Item.EquipSlot == ItemSlot.OffHandShield))
                     ItemList.Add(new ItemInfo(Item));
             }
 

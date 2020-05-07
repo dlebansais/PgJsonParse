@@ -1178,6 +1178,10 @@
                     continue;
                 }
 
+                if (Entry.Key.Key == "power_1042")
+                {
+                }
+
                 //Debug.WriteLine("");
                 //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count} (Matching)");
 
@@ -1590,6 +1594,15 @@
             if (RemoveCount > extractedAbilityList.Count && extractedAbilityList.Count > 0 && extractedTargetAbilityList.Count == 0)
                 if (extractedAbilityList[extractedAbilityList.Count - 1] != AbilityKeyword.Chill)
                     extractedTargetAbilityList.Add(extractedAbilityList[extractedAbilityList.Count - 1]);
+
+            // Hack for single abilities
+            if (extractedAbilityList.Count == 1)
+            {
+                if (extractedAbilityList[0] == AbilityKeyword.Parry)
+                    extractedAbilityList[0] = AbilityKeyword.OnlyParry;
+                else if (extractedAbilityList[0] == AbilityKeyword.Barrage)
+                    extractedAbilityList[0] = AbilityKeyword.BarrageOnly;
+            }
         }
 
         private void RemoveDecorationText(ref string text)
@@ -2386,7 +2399,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_9874")
+                if (ItemPower.Key == "power_1042")
                 {
                 }
 
@@ -2774,6 +2787,7 @@
             new Sentence("Shorten the remaining reset time of @ by %f second", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
             new Sentence("Shorten the current reuse time of @ by %f second", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
             new Sentence("Reuse time of @ is hastened by %f second", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
+            new Sentence("Its reuse time is increased %f second", CombatKeyword.AddResetTimer),
             new Sentence("Reset time of @ is increased %f second", CombatKeyword.AddCombatRefreshTimer),
             new Sentence("Reduce the taunt of all your attack by %f", CombatKeyword.AddTaunt, SignInterpretation.Opposite),
             new Sentence("Taunt %f", CombatKeyword.AddTaunt),

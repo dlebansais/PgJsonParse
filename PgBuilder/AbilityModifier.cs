@@ -29,20 +29,24 @@
         public double BaseValue { get; private set; }
         public Func<double, string> DisplayHandler { get; }
 
-        protected virtual int DefaultValue { get { return 0; } }
+        protected int DefaultValue { get; set; }
         public bool HasValue { get { return Ability != null && ModifiedValue != DefaultValue || DeltaValue != 0; } }
         public string AsString { get { return Ability != null ? DisplayHandler(ModifiedValue) : string.Empty; } }
         public bool? IsModified { get { return Ability != null ? IntModifier(ModifiedValue - BaseValue) : null; } }
 
-        public int ModifiedValue 
+        public double ModifiedValue 
         { 
             get 
             {
+                if (Name == "Accuracy" && Ability != null && Ability.Name == "Ice Spear 9")
+                {
+                }
+
                 if (Ability == null)
                     return DefaultValue;
 
                 double Result = (BaseValue + DeltaValue) * MultiplierValue;
-                return (int)Math.Round(Result);
+                return Result;
             }
         }
 

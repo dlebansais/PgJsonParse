@@ -15,7 +15,6 @@
     using System.Windows;
     using System;
     using System.Globalization;
-    using System.Windows.Navigation;
 
     public class AbilitySlot : INotifyPropertyChanged
     {
@@ -23,7 +22,6 @@
         static AbilitySlot()
         {
             Assembly CurrentAssembly = Assembly.GetExecutingAssembly();
-            string[] Names = CurrentAssembly.GetManifestResourceNames();
 
             using Stream ResourceStream = CurrentAssembly.GetManifestResourceStream("PgBuilder.Resources.default.png");
             DefaultAbilityImageSource = ImageConversion.IconStreamToImageSource(ResourceStream);
@@ -68,8 +66,9 @@
         public AbilityModifier Range { get; } = new AbilityModifier("Range", (IPgAbility ability) => ability.PvE.AoE == 0 ? ability.PvE.Range : 0, RangeDisplayHandler);
         public AbilityModifier AoE { get; } = new AbilityModifier("AoE", (IPgAbility ability) => ability.PvE.AoE, DefaultDisplayHandler);
         public AbilityModifier RageBoost { get; } = new AbilityModifier("RageBoost", (IPgAbility ability) => ability.PvE.RageBoost, DefaultDisplayHandler);
-        public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", (IPgAbility ability) => ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
-        public AbilityModifierPercent Accuracy { get; } = new AbilityModifierPercent("Accuracy", (IPgAbility ability) => ability.PvE.Accuracy * 100, DefaultDisplayHandler);
+        public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", 100, (IPgAbility ability) => ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
+        public AbilityModifierPercent Accuracy { get; } = new AbilityModifierPercent("Accuracy", 0, (IPgAbility ability) => ability.PvE.Accuracy * 100, DefaultDisplayHandler);
+
         private List<AbilityModifier> ModifierList;
         public bool HasOtherEffects 
         { 
@@ -96,10 +95,14 @@
                 return "Melee";
         }
 
-        public bool HasAbilityDamage{ get { return Ability != null && Ability.PvE.Damage != 0; } }
-        public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(Ability.PvE.Damage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage) : 0; } }
+        public bool HasAbilityDamage { get { return HasAbilityNormalDamage || HasAbilityHealthDamage; } }
+        public bool HasAbilityNormalDamage { get { return Ability != null && Ability.PvE.RawDamage != null; } }
+        public bool HasAbilityHealthDamage { get { return Ability != null && Ability.PvE.RawHealthSpecificDamage != null; } }
+        public int BaseValueDamage { get { return Ability != null ? (Ability.PvE.RawHealthSpecificDamage != null ? Ability.PvE.HealthSpecificDamage : Ability.PvE.Damage): 0; } }
+        public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(BaseValueDamage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage) : 0; } }
+
         public string AbilityDamage { get { return Ability != null ? ModifiedAbilityDamage.ToString() : string.Empty; } }
-        public bool? AbilityDamageModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityDamage - Ability.PvE.Damage) : null; } }
+        public bool? AbilityDamageModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityDamage - BaseValueDamage) : null; } }
         private int DeltaDamage;
         private double ModDamage;
         private double ModBaseDamage;
