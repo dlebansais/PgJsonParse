@@ -36,6 +36,7 @@
                 AoE,
                 RageBoost,
                 RageMultiplier,
+                Accuracy,
             };
 
             AbilityTierList = null;
@@ -65,6 +66,7 @@
         public AbilityModifier AoE { get; } = new AbilityModifier("AoE", (IPgAbility ability) => ability.PvE.AoE, DefaultDisplayHandler);
         public AbilityModifier RageBoost { get; } = new AbilityModifier("RageBoost", (IPgAbility ability) => ability.PvE.RageBoost, DefaultDisplayHandler);
         public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", (IPgAbility ability) => ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
+        public AbilityModifierPercent Accuracy { get; } = new AbilityModifierPercent("Accuracy", (IPgAbility ability) => ability.PvE.Accuracy * 100, DefaultDisplayHandler);
         private List<AbilityModifier> ModifierList;
         public bool HasOtherEffects { get { return OtherEffectList.Count > 0; } }
 
@@ -96,9 +98,6 @@
         public bool HasAbilityDamageVulnerable { get { return Ability != null && Ability.PvE.RawExtraDamageIfTargetVulnerable.HasValue; } }
         public string AbilityDamageVulnerable { get { return Ability != null ? Ability.PvE.ExtraDamageIfTargetVulnerable.ToString() : string.Empty; } }
         public bool? AbilityDamageVulnerableModified { get { return null; } }
-        
-        public string AbilityAccuracy { get { return Ability != null ? App.DoubleToString(Ability.PvE.Accuracy) : string.Empty; } }
-        public bool? AbilityAccuracyModified { get { return null; } }
 
         public bool IsNiceAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.NiceAttack); } }
         public bool IsCoreAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.CoreAttack); } }
@@ -242,6 +241,7 @@
             NotifyPropertyChanged(nameof(AoE));
             NotifyPropertyChanged(nameof(RageBoost));
             NotifyPropertyChanged(nameof(RageMultiplier));
+            NotifyPropertyChanged(nameof(Accuracy));
 
             NotifyPropertyChanged(nameof(HasOtherEffects));
 
@@ -256,9 +256,6 @@
             NotifyPropertyChanged(nameof(HasAbilityDamageVulnerable));
             NotifyPropertyChanged(nameof(AbilityDamageVulnerable));
             NotifyPropertyChanged(nameof(AbilityDamageVulnerableModified));
-
-            NotifyPropertyChanged(nameof(AbilityAccuracy));
-            NotifyPropertyChanged(nameof(AbilityAccuracyModified));
 
             NotifyPropertyChanged(nameof(IsNiceAttack));
             NotifyPropertyChanged(nameof(IsCoreAttack));
@@ -443,6 +440,9 @@
                 case "COMBAT_REFRESH_POWER_DELTA":
                     BasicAttackPowerModified += attributeEffect;
                     break;
+                case "ACCURACY_BOOST":
+                    RecalculateDeltaAccuracy(attributeEffect * 100);
+                    break;
             }
 
             if (HasAttributeKey(Ability.AttributesThatModAmmoConsumeChanceList, key))
@@ -479,7 +479,7 @@
                 RecalculateDeltaRage(attributeEffect);
 
             if (HasAttributeKey(Ability.PvE.AttributesThatModRageList, key))
-                RecalculateModRage(attributeEffect);
+                RecalculateModRage(attributeEffect *100);
 
             if (HasAttributeKey(Ability.PvE.AttributesThatDeltaRangeList, key))
                 RecalculateDeltaRange(attributeEffect);
@@ -506,72 +506,78 @@
             return false;
         }
 
-        private void RecalculateModAmmoConsumeChance(float attributeEffect)
+        private void RecalculateModAmmoConsumeChance(double attributeEffect)
         {
         }
 
-        private void RecalculateDeltaDelayLoopTime(float attributeEffect)
+        private void RecalculateDeltaDelayLoopTime(double attributeEffect)
         {
         }
 
-        private void RecalculateDeltaPowerCost(float attributeEffect)
+        private void RecalculateDeltaPowerCost(double attributeEffect)
+        {
+            PowerCost.AddValue(attributeEffect);
+        }
+
+        private void RecalculateModPowerCost(double attributeEffect)
         {
         }
 
-        private void RecalculateDeltaResetTime(float attributeEffect)
+        private void RecalculateDeltaResetTime(double attributeEffect)
         {
+            ResetTime.AddValue(attributeEffect);
         }
 
-        private void RecalculateModPowerCost(float attributeEffect)
-        {
-        }
-
-        private void RecalculateDeltaDamage(float attributeEffect)
+        private void RecalculateDeltaDamage(double attributeEffect)
         {
             DeltaDamage += (int)attributeEffect;
         }
 
-        private void RecalculateModDamage(float attributeEffect)
+        private void RecalculateModDamage(double attributeEffect)
         {
             ModDamage += attributeEffect;
         }
 
-        private void RecalculateModBaseDamage(float attributeEffect)
+        private void RecalculateModBaseDamage(double attributeEffect)
         {
             ModBaseDamage += attributeEffect;
         }
 
-        private void RecalculateDeltaTaunt(float attributeEffect)
+        private void RecalculateDeltaDamageLast(double attributeEffect)
         {
         }
 
-        private void RecalculateModTaunt(float attributeEffect)
-        {
-        }
-
-        private void RecalculateDeltaRage(float attributeEffect)
-        {
-        }
-
-        private void RecalculateModRage(float attributeEffect)
-        {
-        }
-
-        private void RecalculateDeltaRange(float attributeEffect)
-        {
-        }
-
-        private void RecalculateDeltaDamageLast(float attributeEffect)
-        {
-        }
-
-        private void RecalculateDeltaAccuracy(float attributeEffect)
-        {
-        }
-
-        private void RecalculateModCriticalDamage(float attributeEffect)
+        private void RecalculateModCriticalDamage(double attributeEffect)
         {
             ModCriticalDamage += attributeEffect;
+        }
+
+        private void RecalculateDeltaTaunt(double attributeEffect)
+        {
+        }
+
+        private void RecalculateModTaunt(double attributeEffect)
+        {
+        }
+
+        private void RecalculateDeltaRage(double attributeEffect)
+        {
+            RageBoost.AddValue(attributeEffect);
+        }
+
+        private void RecalculateModRage(double attributeEffect)
+        {
+            RageMultiplier.AddValue(attributeEffect);
+        }
+
+        private void RecalculateDeltaRange(double attributeEffect)
+        {
+            Range.AddValue(attributeEffect);
+        }
+
+        private void RecalculateDeltaAccuracy(double attributeEffect)
+        {
+            Accuracy.AddValue(attributeEffect);
         }
 
         public void AddEffect(ModEffect modEffect)
@@ -630,7 +636,7 @@
             return false;
         }
 
-        public void AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, double deltaValue)
+        public void AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, double deltaValue, bool hasRecurrence)
         {
             List<KeyValuePair<string, string>> VerificationTable = Parser.EffectVerificationTable[combatKeyword];
 
@@ -644,6 +650,10 @@
                     if (Label == Entry.Key && Suffix == Entry.Value)
                     {
                         IsFound = true;
+
+                        if (hasRecurrence && !(Suffix.Contains(" every ")))
+                            IsFound = false;
+
                         break;
                     }
 
@@ -667,29 +677,34 @@
             {
                 case CombatKeyword.AddPowerCost:
                     if (combatEffect.Data.IsValueSet)
-                        PowerCost.AddValue(combatEffect.Data.Value);
+                        RecalculateDeltaPowerCost(combatEffect.Data.Value);
                     break;
 
                 case CombatKeyword.AddResetTimer:
                     if (combatEffect.Data.IsValueSet)
-                        ResetTime.AddValue(combatEffect.Data.Value);
+                        RecalculateDeltaResetTime(combatEffect.Data.Value);
                     break;
 
                 case CombatKeyword.AddRange:
                     if (combatEffect.Data.IsValueSet)
-                        Range.AddValue(combatEffect.Data.Value);
+                        RecalculateDeltaRange(combatEffect.Data.Value);
                     break;
 
                 case CombatKeyword.AddRage:
                     if (combatEffect.Data.IsValueSet)
                         if (combatEffect.Data.IsPercent)
-                            RageMultiplier.AddValue(combatEffect.Data.Value);
+                            RecalculateModRage(combatEffect.Data.Value);
                         else
-                            RageBoost.AddValue(combatEffect.Data.Value);
+                            RecalculateDeltaRage(combatEffect.Data.Value);
                     break;
 
                 case CombatKeyword.ZeroRage:
                     RageMultiplier.SetValueZero();
+                    break;
+
+                case CombatKeyword.AddAccuracy:
+                    if (combatEffect.Data.IsValueSet)
+                        RecalculateDeltaAccuracy(combatEffect.Data.Value);
                     break;
 
                 case CombatKeyword.RestoreHealth:
@@ -698,8 +713,8 @@
                 case CombatKeyword.RestoreHealthArmor:
                 case CombatKeyword.RestoreHealthArmorPower:
                     if (combatEffect.Data.IsValueSet)
-                        if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList))
-                            AddEffectToSpecialValueDelta(combatEffect.Keyword, combatEffect.Data.Value);
+                        if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out bool HasRecurrence))
+                            AddEffectToSpecialValueDelta(combatEffect.Keyword, combatEffect.Data.Value, HasRecurrence);
                     break;
 
                 default:

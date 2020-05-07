@@ -18,6 +18,11 @@
         public string ItemDescription { get { return Item.Description; } }
         public IPgItemEffectCollection ItemEffectDescriptionList { get { return Item.EffectDescriptionList; } }
 
+        public override string ToString()
+        {
+            return Item.Name;
+        }
+
         #region Implementation of INotifyPropertyChanged
         /// <summary>
         /// Implements the PropertyChanged event.

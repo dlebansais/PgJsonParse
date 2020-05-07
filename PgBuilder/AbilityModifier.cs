@@ -29,7 +29,7 @@
         public Func<int, string> DisplayHandler { get; }
 
         protected virtual int DefaultValue { get { return 0; } }
-        public bool HasValue { get { return Ability != null && ModifiedValue != DefaultValue; } }
+        public bool HasValue { get { return Ability != null && ModifiedValue != DefaultValue || DeltaValue != 0; } }
         public int ModifiedValue { get { return Ability != null ? CalculateDifference(BaseValue, DeltaValue) : DefaultValue; } }
         public string AsString { get { return Ability != null ? DisplayHandler(ModifiedValue) : string.Empty; } }
         public bool? IsModified { get { return Ability != null ? IntModifier(ModifiedValue - BaseValue) : null; } }
@@ -37,7 +37,7 @@
 
         public void Reset()
         {
-            Debug.WriteLine($"({Name}) Reset");
+            //Debug.WriteLine($"({Name}) Reset");
 
             DeltaValue = 0;
         }
@@ -46,19 +46,19 @@
         {
             DeltaValue += value;
 
-            Debug.WriteLine($"({Name}) AddValue: {value}, new value: {DeltaValue}");
+            //Debug.WriteLine($"({Name}) AddValue: {value}, new value: {DeltaValue}");
         }
 
         public void SetValueZero()
         {
-            Debug.WriteLine($"({Name}) SetValueZero");
+            //Debug.WriteLine($"({Name}) SetValueZero");
 
             DeltaValue = -BaseValue;
         }
 
         public int CalculateDifference(double baseValue, double deltaValue)
         {
-            Debug.WriteLine($"({Name}) Base: {baseValue}, Delta: {deltaValue}");
+            //Debug.WriteLine($"({Name}) Base: {baseValue}, Delta: {deltaValue}");
 
             double Result = baseValue + deltaValue;
             return (int)Math.Round(Result);

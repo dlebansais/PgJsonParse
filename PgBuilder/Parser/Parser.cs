@@ -916,6 +916,9 @@
             },
             { CombatKeyword.RestoreHealthArmorPower, new List<KeyValuePair<string, string>>()
                 {
+                    new KeyValuePair<string, string>("Restore", "Armor every 3 seconds"),
+                    new KeyValuePair<string, string>("Restore", "Health every 4 seconds"),
+                    new KeyValuePair<string, string>("Restore", "Power every 8 seconds"),
                 }
             },
         };
@@ -924,18 +927,24 @@
         {
         };
 
-        public static bool HasNonSpecialValueEffect(List<CombatEffect> combatEffectList)
+        public static bool HasNonSpecialValueEffect(List<CombatEffect> combatEffectList, out bool hasRecurrence)
         {
+            hasRecurrence = false;
+
             foreach (CombatEffect Item in combatEffectList)
-                if (Item.Keyword == CombatKeyword.EffectRecurrence || Item.Keyword == CombatKeyword.ReflectOnAnyAttack || Item.Keyword == CombatKeyword.ApplyWithChance)
+            {
+                if (Item.Keyword == CombatKeyword.ReflectOnAnyAttack || Item.Keyword == CombatKeyword.ApplyWithChance)
                     return true;
+                if (Item.Keyword == CombatKeyword.EffectRecurrence)
+                    hasRecurrence = true;
+            }
 
             return false;
         }
 
         private void VerifyStaticEffectKeyword(AbilityKeyword keyword, List<CombatEffect> combatEffectList, CombatKeyword combatKeyword)
         {
-            if (HasNonSpecialValueEffect(combatEffectList))
+            if (HasNonSpecialValueEffect(combatEffectList, out bool HasRecurrence))
                 return;
 
             if (!EffectVerificationTable.ContainsKey(combatKeyword))
