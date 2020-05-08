@@ -33,6 +33,7 @@
             {
                 PowerCost,
                 ResetTime,
+                DelayLoopTime,
                 Range,
                 AoE,
                 RageBoost,
@@ -63,6 +64,7 @@
 
         public AbilityModifier PowerCost { get; } = new AbilityModifier("PowerCost", (IPgAbility ability) => ability.PvE.PowerCost, DefaultDisplayHandler);
         public AbilityModifier ResetTime { get; } = new AbilityModifier("ResetTime", (IPgAbility ability) => ability.ResetTime, DefaultDisplayHandler);
+        public AbilityModifier DelayLoopTime { get; } = new AbilityModifier("DelayLoopTime", (IPgAbility ability) => ability.DelayLoopTime, DefaultDisplayHandler);
         public AbilityModifier Range { get; } = new AbilityModifier("Range", (IPgAbility ability) => ability.PvE.AoE == 0 ? ability.PvE.Range : 0, RangeDisplayHandler);
         public AbilityModifier AoE { get; } = new AbilityModifier("AoE", (IPgAbility ability) => ability.PvE.AoE, DefaultDisplayHandler);
         public AbilityModifier RageBoost { get; } = new AbilityModifier("RageBoost", (IPgAbility ability) => ability.PvE.RageBoost, DefaultDisplayHandler);
@@ -143,6 +145,8 @@
         private double BasicAttackHealthModified;
         private double BasicAttackArmorModified;
         private double BasicAttackPowerModified;
+
+        public bool IsDelayLoopOnlyUsedInCombat { get { return Ability != null && Ability.DelayLoopIsOnlyUsedInCombat; } }
 
         public ObservableCollection<AbilitySlotSpecialValue> SpecialValueList { get; } = new ObservableCollection<AbilitySlotSpecialValue>();
         public ObservableCollection<string> SpecialEffectList { get; } = new ObservableCollection<string>();
@@ -265,6 +269,8 @@
             NotifyPropertyChanged(nameof(AbilityMinLevelModified));
             NotifyPropertyChanged(nameof(PowerCost));
             NotifyPropertyChanged(nameof(ResetTime));
+            NotifyPropertyChanged(nameof(DelayLoopTime));
+            NotifyPropertyChanged(nameof(IsDelayLoopOnlyUsedInCombat));
             NotifyPropertyChanged(nameof(Range));
             NotifyPropertyChanged(nameof(AoE));
             NotifyPropertyChanged(nameof(RageBoost));
@@ -545,6 +551,7 @@
 
         private void RecalculateDeltaDelayLoopTime(double attributeEffect)
         {
+            DelayLoopTime.AddValue(attributeEffect);
         }
 
         private void RecalculateDeltaPowerCost(double attributeEffect)
@@ -780,11 +787,18 @@
                         ModifiedDamageType = ToDamageType(combatEffect.DamageType);
                     break;
 
+                case CombatKeyword.AddChannelingTime:
+                    if (combatEffect.Data.IsValueSet)
+                        RecalculateDeltaDelayLoopTime(combatEffect.Data.Value);
+                    break;
+
                 case CombatKeyword.RestoreHealth:
                 case CombatKeyword.RestorePower:
                 case CombatKeyword.RestoreArmor:
                 case CombatKeyword.RestoreHealthArmor:
                 case CombatKeyword.RestoreHealthArmorPower:
+                case CombatKeyword.TargetSubsequentAttacks:
+                case CombatKeyword.EffectDuration:
                     if (combatEffect.Data.IsValueSet)
                         if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out bool HasRecurrence))
                             AddEffectToSpecialValueDelta(combatEffect.Keyword, combatEffect.Data.Value, HasRecurrence);
@@ -804,7 +818,7 @@ DamageBoost
 //AddResetTimer
 //AddRange
 //RestoreHealthArmorPower
-TargetSubsequentAttacks
+//TargetSubsequentAttacks
 EffectDuration
 AddChannelingTime
 AnotherTrap
@@ -874,7 +888,6 @@ NotAttackedRecently
 AddPowerRegen
 AddPowerCostMax
 ZeroPowerCost
-AddChannelTime
 AddIndirectVulnerability
 AddVulnerability
 ReflectKnockbackOnFirstMelee

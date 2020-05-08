@@ -781,15 +781,22 @@
                 case CombatKeyword.RestoreArmor:
                 case CombatKeyword.RestoreHealthArmor:
                 case CombatKeyword.RestoreHealthArmorPower:
-                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword);
+                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true);
+                    break;
+
+                // Empty
+                case CombatKeyword.AddChannelingTime:
+                case CombatKeyword.TargetSubsequentAttacks:
+                case CombatKeyword.EffectDuration:
+                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
+                    break;
+
+                case CombatKeyword.AnotherTrap:
+                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true, true);
                     break;
 
                 // TODO
                 case CombatKeyword.DamageBoost:
-                case CombatKeyword.TargetSubsequentAttacks:
-                case CombatKeyword.EffectDuration:
-                case CombatKeyword.AddChannelingTime:
-                case CombatKeyword.AnotherTrap:
                 case CombatKeyword.ChangeDamageType:
                 case CombatKeyword.AddMitigation:
                 case CombatKeyword.NextAttack:
@@ -853,7 +860,6 @@
                 case CombatKeyword.AddPowerRegen:
                 case CombatKeyword.AddPowerCostMax:
                 case CombatKeyword.ZeroPowerCost:
-                case CombatKeyword.AddChannelTime:
                 case CombatKeyword.AddIndirectVulnerability:
                 case CombatKeyword.AddVulnerability:
                 case CombatKeyword.ReflectKnockbackOnFirstMelee:
@@ -942,14 +948,19 @@
             return false;
         }
 
-        private void VerifyStaticEffectKeyword(AbilityKeyword keyword, List<CombatEffect> combatEffectList, CombatKeyword combatKeyword)
+        private void VerifyStaticEffectKeyword(AbilityKeyword keyword, List<CombatEffect> combatEffectList, CombatKeyword combatKeyword, bool expectTableWithEntries, bool showCandidates = false)
         {
-            if (HasNonSpecialValueEffect(combatEffectList, out bool HasRecurrence))
+            if (HasNonSpecialValueEffect(combatEffectList, out _))
                 return;
 
-            if (!EffectVerificationTable.ContainsKey(combatKeyword))
-                EffectVerificationTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
-            List<KeyValuePair<string, string>> VerificationTable = EffectVerificationTable[combatKeyword];
+            List<KeyValuePair<string, string>> VerificationTable = null;
+
+            if (expectTableWithEntries)
+            {
+                if (!EffectVerificationTable.ContainsKey(combatKeyword))
+                    EffectVerificationTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
+                VerificationTable = EffectVerificationTable[combatKeyword];
+            }
 
             int UnverifiedCount = 0;
 
@@ -958,17 +969,20 @@
                 {
                     int VerificationCount = 0;
 
-                    foreach (IPgSpecialValue SpecialValue in Ability.PvE.SpecialValueList)
+                    if (expectTableWithEntries)
                     {
-                        string Label = SpecialValue.Label;
-                        string Suffix = SpecialValue.Suffix;
+                        foreach (IPgSpecialValue SpecialValue in Ability.PvE.SpecialValueList)
+                        {
+                            string Label = SpecialValue.Label;
+                            string Suffix = SpecialValue.Suffix;
 
-                        foreach (KeyValuePair<string, string> Entry in VerificationTable)
-                            if (Label == Entry.Key && Suffix == Entry.Value)
-                            {
-                                VerificationCount++;
-                                break;
-                            }
+                            foreach (KeyValuePair<string, string> Entry in VerificationTable)
+                                if (Label == Entry.Key && Suffix == Entry.Value)
+                                {
+                                    VerificationCount++;
+                                    break;
+                                }
+                        }
                     }
 
                     if (VerificationCount != 1)
@@ -1003,7 +1017,9 @@
                             if (!IsFound)
                             {
                                 SpecificUnverifiedTable.Add(new KeyValuePair<string, string>(Label, Suffix));
-                                Debug.WriteLine($"new KeyValuePair<string, string>(\"{Label}\", \"{Suffix}\"),");
+
+                                if (showCandidates)
+                                    Debug.WriteLine($"new KeyValuePair<string, string>(\"{Label}\", \"{Suffix}\"),");
                             }
                         }
 
@@ -2829,7 +2845,7 @@
             new Sentence("Restoration %f", CombatKeyword.RestoreHealth),
             new Sentence("You regain %f power", CombatKeyword.RestorePower),
             new Sentence("Cost no Power to cast", CombatKeyword.ZeroPowerCost),
-            new Sentence("Take %f second to channel", CombatKeyword.AddChannelTime),
+            new Sentence("Take %f second to channel", CombatKeyword.AddChannelingTime),
             new Sentence("Boost the healing from your @ %f", CombatKeyword.TargetAbilityBoost),
             new Sentence("Heal you for %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Heal %f health", CombatKeyword.RestoreHealth),

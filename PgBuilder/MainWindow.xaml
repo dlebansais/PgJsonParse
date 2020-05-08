@@ -32,6 +32,10 @@
             <win:Visibility>Collapsed</win:Visibility>
             <win:Visibility>Visible</win:Visibility>
         </CompositeCollection>
+        <CompositeCollection x:Key="VisibleCollapsed">
+            <win:Visibility>Visible</win:Visibility>
+            <win:Visibility>Collapsed</win:Visibility>
+        </CompositeCollection>
         <CompositeCollection x:Key="RedGreenWhite">
             <SolidColorBrush>Red</SolidColorBrush>
             <SolidColorBrush>LightGreen</SolidColorBrush>
@@ -125,6 +129,12 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontWeight="Bold">Reuse Time:</TextBlock>
                         <TextBlock Text="{Binding ResetTime.AsString}" Foreground="{Binding ResetTime.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
+                        <TextBlock Margin="5,0,0,0">seconds</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding DelayLoopTime.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold" Visibility="{Binding IsDelayLoopOnlyUsedInCombat, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource VisibleCollapsed}}">Channeling Time:</TextBlock>
+                        <TextBlock FontWeight="Bold" Visibility="{Binding IsDelayLoopOnlyUsedInCombat, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">In-Combat Channeling Time:</TextBlock>
+                        <TextBlock Text="{Binding DelayLoopTime.AsString}" Foreground="{Binding DelayLoopTime.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
                         <TextBlock Margin="5,0,0,0">seconds</TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding Range.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">

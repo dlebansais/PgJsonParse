@@ -19,7 +19,7 @@
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Constants
-        const int AnalyzedVersion = 334;
+        const int AnalyzedVersion = 333;
         #endregion
 
         #region Init
@@ -73,7 +73,7 @@
 
                 bool HasKeyword = false;
                 foreach (CombatEffect Item in StaticCombatEffectList)
-                    if (Item.Keyword == CombatKeyword.RestoreArmor)
+                    if (Item.Keyword == CombatKeyword.EffectDuration)
                         HasKeyword = true;
 
                 if (HasKeyword)
