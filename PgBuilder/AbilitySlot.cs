@@ -106,6 +106,7 @@
         public string AbilityDamage { get { return Ability != null ? ModifiedAbilityDamage.ToString() : string.Empty; } }
         public bool? AbilityDamageModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityDamage - BaseValueDamage) : null; } }
         private int DeltaDamage;
+        private double DirectDamageMultiplier;
         private double ModDamage;
         private double ModBaseDamage;
         private double ModCriticalDamage;
@@ -445,6 +446,7 @@
             ModDamage = 1.0;   // Damage +(X*100)%
             ModBaseDamage = 1.0; // Base Damage +(X*100)%
             ModCriticalDamage = 1.0; // Critical Damage +(X*100)%
+            DirectDamageMultiplier = 1.0;
             BasicAttackHealthModified = 0;
             BasicAttackArmorModified = 0;
             BasicAttackPowerModified = 0;
@@ -461,14 +463,81 @@
             }
         }
 
+        public void RecalculateSuitMods(int metalArmorCount, int leatherArmorCount, int clothArmorCount, int organicArmorCount, bool isFairyCharacter)
+        {
+            if (metalArmorCount >= 3)
+            {
+                if (isFairyCharacter)
+                {
+                    if (metalArmorCount == 3)
+                        ApplyMetalSuitPenalty(0.1);
+                    else if (metalArmorCount == 4)
+                        ApplyMetalSuitPenalty(0.15);
+                    else
+                        ApplyMetalSuitPenalty(0.2);
+                }
+                else
+                    ApplyMetalSuitBonus();
+            }
+            else if (leatherArmorCount >= 3)
+                ApplyLeatherSuitBonus();
+            else if (clothArmorCount >= 3)
+                ApplyClothSuitBonus();
+            else if (organicArmorCount >= 3)
+                ApplyOrganicSuitBonus();
+        }
+
+        public void ApplyMetalSuitBonus()
+        {
+        }
+
+        public void ApplyMetalSuitPenalty(double penalty)
+        {
+            DirectDamageMultiplier -= penalty;
+        }
+
+        public void ApplySuitEffect(string key)
+        {
+            IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
+
+            if (!EffectDefinition.ObjectTable.ContainsKey(key))
+            {
+                Debug.WriteLine("SUIT EFFECT NOT FOUND!");
+                return;
+            }
+
+            IPgEffect SuitEffect = (IPgEffect)EffectDefinition.ObjectTable[key];
+            OtherEffectList.Add(new OtherEffectSimple(SuitEffect));
+        }
+
+        public void ApplyLeatherSuitBonus()
+        {
+            if (Ability == null || !Ability.KeywordList.Contains(AbilityKeyword.BasicAttack))
+                return;
+
+            ApplySuitEffect("effect_13306");
+        }
+
+        public void ApplyClothSuitBonus()
+        {
+            if (Ability == null || !Ability.KeywordList.Contains(AbilityKeyword.BasicAttack))
+                return;
+
+            ApplySuitEffect("effect_13305");
+        }
+
+        public void ApplyOrganicSuitBonus()
+        {
+            if (Ability == null || !Ability.KeywordList.Contains(AbilityKeyword.BasicAttack))
+                return;
+
+            RecalculateDeltaResetTime(-3.0);
+        }
+
         public void RecalculateMods(string key, float attributeEffect)
         {
             if (IsEmpty)
                 return;
-
-            if (Ability.Name == "Chill 6")
-            {
-            }
 
             switch (key)
             {

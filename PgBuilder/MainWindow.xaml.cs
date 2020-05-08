@@ -308,6 +308,7 @@
         public string LastBuildFile { get; private set; }
         public bool IsLargeView { get; private set; } = true;
         public bool IsSmallView { get { return !IsLargeView; } }
+        public bool IsFairyCharacter { get; private set; }
 
         public string TitleText
         {
@@ -849,6 +850,25 @@
             foreach (AbilitySlot Item in Copy)
                 list.Add(Item);
         }
+
+        private void SetIsFairyCharacter(bool value)
+        {
+            if (IsFairyCharacter != value)
+            {
+                IsFairyCharacter = value;
+                RecalculateMods();
+            }
+        }
+
+        private void OnFairyCharacterChecked(object sender, RoutedEventArgs e)
+        {
+            SetIsFairyCharacter(true);
+        }
+
+        private void OnFairyCharacterUnchecked(object sender, RoutedEventArgs e)
+        {
+            SetIsFairyCharacter(false);
+        }
         #endregion
 
         #region Load
@@ -1289,6 +1309,37 @@
         {
             foreach (GearSlot Item in GearSlotList)
                 RecalculateSlotMods(Item);
+
+            RecalculateSuitMods();
+        }
+
+        private void RecalculateSuitMods()
+        {
+            int MetalArmorCount = ArmorTypeCount(ItemKeyword.MetalArmor);
+            int LeatherArmorCount = ArmorTypeCount(ItemKeyword.LeatherArmor);
+            int ClothArmorCount = ArmorTypeCount(ItemKeyword.ClothArmor);
+            int OrganicArmorCount = ArmorTypeCount(ItemKeyword.OrganicArmor);
+
+            foreach (AbilitySlot Item in AbilitySlot1List)
+                Item.RecalculateSuitMods(MetalArmorCount, LeatherArmorCount, ClothArmorCount, OrganicArmorCount, IsFairyCharacter);
+
+            foreach (AbilitySlot Item in AbilitySlot2List)
+                Item.RecalculateSuitMods(MetalArmorCount, LeatherArmorCount, ClothArmorCount, OrganicArmorCount, IsFairyCharacter);
+        }
+
+        private int ArmorTypeCount(ItemKeyword keyword)
+        {
+            int ArmorTypeCount = 0;
+
+            foreach (GearSlot Item in GearSlotList)
+            {
+                ItemInfo ItemInfo = Item.SelectedItem;
+                if (ItemInfo != null)
+                    if (ItemInfo.Item.KeywordTable.ContainsKey(keyword))
+                        ArmorTypeCount++;
+            }
+
+            return ArmorTypeCount;
         }
 
         private void RecalculateSlotMods(GearSlot slot)
