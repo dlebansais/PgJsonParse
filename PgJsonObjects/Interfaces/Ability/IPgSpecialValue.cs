@@ -3,7 +3,7 @@
     public interface IPgSpecialValue
     {
         string Label { get; }
-        string Suffix { get; }
+        string Suffix { get; set; }
         double Value { get; }
         double? RawValue { get; }
         bool DisplayAsPercent { get; }

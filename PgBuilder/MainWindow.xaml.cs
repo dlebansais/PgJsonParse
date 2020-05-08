@@ -19,7 +19,7 @@
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Constants
-        const int AnalyzedVersion = 333;
+        const int AnalyzedVersion = 334;
         #endregion
 
         #region Init
@@ -73,8 +73,25 @@
 
                 bool HasKeyword = false;
                 foreach (CombatEffect Item in StaticCombatEffectList)
-                    if (Item.Keyword == CombatKeyword.EffectDuration)
-                        HasKeyword = true;
+                {
+                    switch (Item.Keyword)
+                    {
+                        case CombatKeyword.MaxOccurence:
+                        case CombatKeyword.ChanceToConsume:
+                        case CombatKeyword.AddHealthRegen:
+                        case CombatKeyword.Combo1:
+                        case CombatKeyword.ComboFinalStepBurst:
+                        case CombatKeyword.Combo2:
+                        case CombatKeyword.ComboFinalStepDamage:
+                        case CombatKeyword.Combo3:
+                        case CombatKeyword.Combo4:
+                        case CombatKeyword.Stun:
+                        case CombatKeyword.Combo5:
+                        case CombatKeyword.Combo6:
+                            HasKeyword = true;
+                            break;
+                    }
+                }
 
                 if (HasKeyword)
                 {

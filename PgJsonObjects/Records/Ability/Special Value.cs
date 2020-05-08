@@ -7,7 +7,7 @@ namespace PgJsonObjects
     {
         #region Direct Properties
         public string Label { get; private set; }
-        public string Suffix { get; private set; }
+        public string Suffix { get; set; }
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get; private set; }
         public bool DisplayAsPercent { get { return RawDisplayAsPercent.HasValue && RawDisplayAsPercent.Value; } }

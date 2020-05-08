@@ -42,7 +42,8 @@
         BaseDamageBoost,
         DrainHealth,
         DrainArmor,
-        DrainMax,
+        DrainHealthMax,
+        DrainArmorMax,
         ReflectMeleeIndirectDamage,
         MaxOccurence,
         EffectDuration,
@@ -55,7 +56,6 @@
         AddPowerCost,
         AddPowerCostMax,
         AddHealthRegen,
-        AddArmor,
         AddArmorRegen,
         AddPowerRegen,
         AddMaxHealth,
@@ -79,7 +79,6 @@
         RestoreHealthArmorToPet,
         RestoreBodyHeat,
         ZeroPowerCost,
-        AddChannelTime,
         AddSprintSpeed,
         AddFlySpeed,
         AddSwimSpeed,
@@ -126,7 +125,6 @@
         RequireNoAggro,
         ApplyToMeleeReflect,
         ChanceToConsume,
-        Recurring,
         UntilTrigger,
         AnimalPetAttackBoost,
         AnimalPetRageAttackBoost,
@@ -194,5 +192,7 @@
         ThickArmor,
         DrainAsArmor,
         WhenTeleporting,
+
+        AddArmor,
     }
 }

@@ -21,7 +21,8 @@ namespace PgJsonObjects
 
         public override string Key { get { return GetString(0); } }
         public string Label { get { return GetString(4); } }
-        public string Suffix { get { return GetString(8); } }
+        public string Suffix { get { return ChangedSuffix == null ? GetString(8) : ChangedSuffix; } set { ChangedSuffix = value; } }
+        private string ChangedSuffix = null;
         public double Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public double? RawValue { get { return GetDouble(12); } }
         protected override List<string> FieldTableOrder { get { return GetStringList(16, ref _FieldTableOrder); } } private List<string> _FieldTableOrder;

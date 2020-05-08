@@ -232,7 +232,7 @@
                     </Setter>
                 </Style>
             </DataTemplate.Resources>
-            <Image Source="{Binding Source}" ContextMenu="{Binding AbilityContextMenu}" ToolTip="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}" Width="32" Height="32" Margin="5,0,5,0">
+            <Image Source="{Binding Source}" ContextMenu="{Binding AbilityContextMenu}" ToolTip="{Binding Path=DataContext, RelativeSource={RelativeSource Self}}" Width="64" Height="64" Margin="5,0,5,0">
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
                         <Style.Triggers>
@@ -346,7 +346,7 @@
                 <ItemContainerTemplate>
                     <DockPanel LastChildFill="False">
                         <DockPanel DockPanel.Dock="Top" Margin="0,10,0,0" LastChildFill="False">
-                            <DockPanel DockPanel.Dock="Left" VerticalAlignment="Top" Margin="10,0,0,10" Width="220">
+                            <DockPanel DockPanel.Dock="Left" VerticalAlignment="Top" Margin="10,0,0,10" Width="260">
                                 <DockPanel DockPanel.Dock="Top">
                                     <DockPanel.Resources>
                                         <DataTemplate x:Key="ItemSimpleEffectTemplate" DataType="{x:Type object:IPgItemSimpleEffect}">

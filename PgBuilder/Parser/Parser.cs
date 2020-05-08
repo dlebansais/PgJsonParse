@@ -10,7 +10,7 @@
     {
         #region Data Analysis
         bool WriteFile = true;
-        bool CompareTable = true;
+        bool CompareTable = false;
 
         public void AnalyzeCachedData(int version, List<ItemSlot> validSlotList, List<IPgSkill> skillList, Dictionary<string, ModEffect> existingPowerKeyToCompleteEffectTable)
         {
@@ -353,6 +353,22 @@
                     return true;
 
             return false;
+        }
+
+        public static IList<IPgSpecialValue> GetSpecialValueList(IPgAbility ability)
+        {
+            IList<IPgSpecialValue> Result = new List<IPgSpecialValue>(ability.PvE.SpecialValueList);
+
+            bool IsChangedToArmor = false;
+            foreach (IPgSpecialValue Item in Result)
+                if (Item.Suffix == "of the Health damage done (up to the max)")
+                {
+                    if (IsChangedToArmor)
+                        Item.Suffix = "of the Armor damage done (up to the max)";
+                    else
+                        IsChangedToArmor = true;
+                }
+            return Result;
         }
 
         private List<AbilityKeyword> KeywordIgnoreList = new List<AbilityKeyword>()
@@ -781,6 +797,11 @@
                 case CombatKeyword.RestoreArmor:
                 case CombatKeyword.RestoreHealthArmor:
                 case CombatKeyword.RestoreHealthArmorPower:
+                case CombatKeyword.AddMaxHealth:
+                case CombatKeyword.DrainHealth:
+                case CombatKeyword.DrainArmor:
+                case CombatKeyword.DrainHealthMax:
+                case CombatKeyword.DrainArmorMax:
                     VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true);
                     break;
 
@@ -788,40 +809,30 @@
                 case CombatKeyword.AddChannelingTime:
                 case CombatKeyword.TargetSubsequentAttacks:
                 case CombatKeyword.EffectDuration:
-                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
-                    break;
-
                 case CombatKeyword.AnotherTrap:
-                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true, true);
-                    break;
-
-                // TODO
-                case CombatKeyword.DamageBoost:
                 case CombatKeyword.ChangeDamageType:
                 case CombatKeyword.AddMitigation:
                 case CombatKeyword.NextAttack:
                 case CombatKeyword.DealDirectHealthDamage:
                 case CombatKeyword.EffectDelay:
-                case CombatKeyword.Recurring:
+                case CombatKeyword.EffectRecurrence:
                 case CombatKeyword.ActiveSkill:
                 case CombatKeyword.AddEvasionMelee:
                 case CombatKeyword.OnEvadeMelee:
-                case CombatKeyword.AddArmor:
                 case CombatKeyword.OnEvade:
                 case CombatKeyword.MitigateReflect:
                 case CombatKeyword.ReflectRate:
                 case CombatKeyword.MitigateReflectKick:
-                case CombatKeyword.AddTaunt:
                 case CombatKeyword.Combo7:
                 case CombatKeyword.ComboFinalStepDamageAndStun:
                 case CombatKeyword.TargetSelf:
-                case CombatKeyword.AddSprintSpeed:
-                case CombatKeyword.EffectRecurrence:
-                case CombatKeyword.EffectDurationMinute:
-                case CombatKeyword.AddMaxHealth:
-                case CombatKeyword.CombatRefreshRestoreHeatlth:
                 case CombatKeyword.StunIncorporeal:
+                case CombatKeyword.AddTaunt:
+                case CombatKeyword.AddSprintSpeed:
+                case CombatKeyword.EffectDurationMinute:
+                case CombatKeyword.CombatRefreshRestoreHeatlth:
                 case CombatKeyword.ResetOtherAbilityTimer:
+                case CombatKeyword.AddMaxArmor:
                 case CombatKeyword.DamageBoostAgainstSpecie:
                 case CombatKeyword.DealIndirectDamage:
                 case CombatKeyword.ZeroTaunt:
@@ -839,16 +850,15 @@
                 case CombatKeyword.RequireTwoKnives:
                 case CombatKeyword.RequireNoAggro:
                 case CombatKeyword.BaseDamageBoost:
-                case CombatKeyword.DrainHealth:
-                case CombatKeyword.DrainMax:
-                case CombatKeyword.DrainArmor:
-                case CombatKeyword.MaxOccurence:
                 case CombatKeyword.DrainAsArmor:
+                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
+                    break;
+
+                case CombatKeyword.MaxOccurence:
                 case CombatKeyword.ChanceToConsume:
                 case CombatKeyword.AddHealthRegen:
                 case CombatKeyword.Combo1:
                 case CombatKeyword.ComboFinalStepBurst:
-                case CombatKeyword.AddMaxArmor:
                 case CombatKeyword.Combo2:
                 case CombatKeyword.ComboFinalStepDamage:
                 case CombatKeyword.Combo3:
@@ -856,6 +866,10 @@
                 case CombatKeyword.Stun:
                 case CombatKeyword.Combo5:
                 case CombatKeyword.Combo6:
+                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true, true);
+                    break;
+
+                // TODO
                 case CombatKeyword.NotAttackedRecently:
                 case CombatKeyword.AddPowerRegen:
                 case CombatKeyword.AddPowerCostMax:
@@ -866,6 +880,7 @@
                 case CombatKeyword.ReflectOnMelee:
                 case CombatKeyword.ReflectOnRanged:
                 case CombatKeyword.ReflectMeleeIndirectDamage:
+                case CombatKeyword.DamageBoost:
                     if (!TODO_KeywordList.Contains(combatEffect.Keyword))
                     {
                         TODO_KeywordList.Add(combatEffect.Keyword);
@@ -927,6 +942,31 @@
                     new KeyValuePair<string, string>("Restore", "Power every 8 seconds"),
                 }
             },
+            { CombatKeyword.AddMaxHealth, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Existing Zombie's Max Health", "for 60 seconds"),
+                }
+            },
+            { CombatKeyword.DrainHealth, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Reaps", "of the Health damage done (up to the max)"),
+                }
+            },
+            { CombatKeyword.DrainArmor, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Reaps", "of the Armor damage done (up to the max)"),
+                }
+            },
+            { CombatKeyword.DrainHealthMax, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Max Health Reaped", ""),
+                }
+            },
+            { CombatKeyword.DrainArmorMax, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Max Armor Reaped", ""),
+                }
+            },
         };
 
         public static Dictionary<CombatKeyword, List<KeyValuePair<string, string>>> UnverifiedTable = new Dictionary<CombatKeyword, List<KeyValuePair<string, string>>>()
@@ -958,8 +998,17 @@
             if (expectTableWithEntries)
             {
                 if (!EffectVerificationTable.ContainsKey(combatKeyword))
+                {
+                    Debug.WriteLine($"ERROR Combat Keyword {combatKeyword}: no entries?");
                     EffectVerificationTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
+                }
+
                 VerificationTable = EffectVerificationTable[combatKeyword];
+            }
+            else
+            {
+                if (EffectVerificationTable.ContainsKey(combatKeyword))
+                    Debug.WriteLine($"ERROR Combat Keyword {combatKeyword}: has entries?");
             }
 
             int UnverifiedCount = 0;
@@ -971,7 +1020,8 @@
 
                     if (expectTableWithEntries)
                     {
-                        foreach (IPgSpecialValue SpecialValue in Ability.PvE.SpecialValueList)
+                        IList<IPgSpecialValue> SpecialValueList = GetSpecialValueList(Ability);
+                        foreach (IPgSpecialValue SpecialValue in SpecialValueList)
                         {
                             string Label = SpecialValue.Label;
                             string Suffix = SpecialValue.Suffix;
@@ -1001,7 +1051,8 @@
                     {
                         int VerificationCount = 0;
 
-                        foreach (IPgSpecialValue SpecialValue in Ability.PvE.SpecialValueList)
+                        IList<IPgSpecialValue> SpecialValueList = GetSpecialValueList(Ability);
+                        foreach (IPgSpecialValue SpecialValue in SpecialValueList)
                         {
                             string Label = SpecialValue.Label;
                             string Suffix = SpecialValue.Suffix;
@@ -2008,6 +2059,10 @@
             string ModifiedText = text;
             Sentence SelectedSentence = null;
 
+            if (text.Contains("up to a max of"))
+            {
+            }
+
             foreach (Sentence Item in SentenceList)
                 ExtractSentence(Item, skippedKeywordList, text, ref ModifiedText, ExtractedKeywordList, ref Data1, ref DamageType, ref CombatSkill, ref ParsedIndex, ref SelectedSentence);
 
@@ -2042,9 +2097,6 @@
 
         private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref NumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence selectedSentence)
         {
-            if (sentence.Format == "Damage become #D")
-            {
-            }
             if (sentence.Format == "Instead of #D")
             {
             }
@@ -2741,8 +2793,8 @@
             new Sentence("Reap %f of the Armor damage done", CombatKeyword.DrainArmor),
             new Sentence("Reap %f health", CombatKeyword.DrainHealth),
             new Sentence("Melee Attackers suffer %f indirect #D damage", CombatKeyword.ReflectMeleeIndirectDamage),
-            new Sentence("Up to a max of %f", CombatKeyword.MaxOccurence),
-            new Sentence("The reap cap is %f", CombatKeyword.DrainMax),
+            new Sentence("(up to a max of %f)", CombatKeyword.DrainArmorMax),
+            new Sentence("The reap cap is %f", CombatKeyword.DrainHealthMax),
             new Sentence("Deal %f direct damage", CombatKeyword.DamageBoost),
             new Sentence("%f direct health damage", CombatKeyword.DealDirectHealthDamage),
             new Sentence("+Up to %f extra damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.RandomDamage }),
@@ -2790,7 +2842,7 @@
             new Sentence("Armor Regeneration (in-combat) %f", CombatKeyword.AddArmorRegen),
             new Sentence("%f Armor Regeneration", CombatKeyword.AddArmorRegen),
             new Sentence("Recover %f Armor every five second", CombatKeyword.AddArmorRegen),
-            new Sentence("Recover %f Armor", CombatKeyword.AddArmor),
+            new Sentence("Recover %f Armor", CombatKeyword.RestoreArmor),
             new Sentence("Power Regeneration is %f", CombatKeyword.AddPowerRegen),
             new Sentence("Cost %f Power", CombatKeyword.AddPowerCost),
             new Sentence("Regain %f Power", CombatKeyword.AddPowerRegen),
@@ -2974,10 +3026,9 @@
             new Sentence("Chance to consume grass is %f", CombatKeyword.ChanceToConsume),
             new Sentence("You regenerate %f Health per tick", CombatKeyword.AddHealthRegen),
             new Sentence("Have %f health", CombatKeyword.AddMaxHealth),
-            new Sentence("Per second", CombatKeyword.Recurring),
+            new Sentence("Per second", CombatKeyword.EffectRecurrence),
             new Sentence("Steal %f health", CombatKeyword.DrainHealth),
             new Sentence("Steal %f more health", CombatKeyword.DrainHealth),
-            //new Sentence("Range is reduced to %fm", CombatKeyword.AddRange, SignInterpretation.AlwaysNegative),
             new Sentence("Chance to consume carrot is %f", CombatKeyword.ChanceToConsume),
             new Sentence("Lower target's aggro toward you by %f", CombatKeyword.AddTaunt, SignInterpretation.Opposite),
             new Sentence("Until you trigger the teleport", CombatKeyword.UntilTrigger),

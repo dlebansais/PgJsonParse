@@ -391,7 +391,8 @@
         {
             SpecialValueList.Clear();
 
-            foreach (IPgSpecialValue Item in Ability.PvE.SpecialValueList)
+            IList<IPgSpecialValue> AbilitySpecialValueList = Parser.GetSpecialValueList(Ability);
+            foreach (IPgSpecialValue Item in AbilitySpecialValueList)
             {
                 string Label = Item.Label;
                 string Suffix = Item.Suffix;
@@ -681,7 +682,12 @@
 
         public void AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, double deltaValue, bool hasRecurrence)
         {
-            List<KeyValuePair<string, string>> VerificationTable = Parser.EffectVerificationTable[combatKeyword];
+            List<KeyValuePair<string, string>> VerificationTable;
+
+            if (Parser.EffectVerificationTable.ContainsKey(combatKeyword))
+                VerificationTable = Parser.EffectVerificationTable[combatKeyword];
+            else
+                VerificationTable = new List<KeyValuePair<string, string>>();
 
             bool IsFound = false;
             foreach (AbilitySlotSpecialValue SpecialValue in SpecialValueList)
@@ -707,7 +713,7 @@
                 }
             }
 
-            if (!IsFound)
+            if (!IsFound && VerificationTable.Count > 0)
                 Debug.WriteLine("Special value not found!");
         }
 
@@ -748,7 +754,9 @@
             if (HasSituationalModifier(modEffect.StaticCombatEffectList))
                 return;
 
-            switch (combatEffect.Keyword)
+            CombatKeyword Keyword = combatEffect.Keyword;
+
+            switch (Keyword)
             {
                 case CombatKeyword.AddPowerCost:
                     if (combatEffect.Data.IsValueSet)
@@ -798,104 +806,74 @@
                 case CombatKeyword.RestoreHealthArmor:
                 case CombatKeyword.RestoreHealthArmorPower:
                 case CombatKeyword.TargetSubsequentAttacks:
-                case CombatKeyword.EffectDuration:
+                case CombatKeyword.AnotherTrap:
+                case CombatKeyword.AddMitigation:
+                case CombatKeyword.NextAttack:
+                case CombatKeyword.DealDirectHealthDamage:
+                case CombatKeyword.EffectDelay:
+                case CombatKeyword.EffectRecurrence:
+                case CombatKeyword.ActiveSkill:
+                case CombatKeyword.AddEvasionMelee:
+                case CombatKeyword.OnEvadeMelee:
+                case CombatKeyword.OnEvade:
+                case CombatKeyword.MitigateReflect:
+                case CombatKeyword.ReflectRate:
+                case CombatKeyword.MitigateReflectKick:
+                case CombatKeyword.Combo7:
+                case CombatKeyword.ComboFinalStepDamageAndStun:
+                case CombatKeyword.TargetSelf:
+                case CombatKeyword.StunIncorporeal:
+                case CombatKeyword.AddTaunt:
+                case CombatKeyword.AddSprintSpeed:
+                case CombatKeyword.EffectDurationMinute:
+                case CombatKeyword.AddMaxHealth:
+                case CombatKeyword.CombatRefreshRestoreHeatlth:
+                case CombatKeyword.ResetOtherAbilityTimer:
+                case CombatKeyword.AddMaxArmor:
+                case CombatKeyword.DamageBoostAgainstSpecie:
+                case CombatKeyword.DealIndirectDamage:
+                case CombatKeyword.ZeroTaunt:
+                case CombatKeyword.ThickArmor:
+                case CombatKeyword.ReflectOnBurst:
+                case CombatKeyword.AddMitigationIndirect:
+                case CombatKeyword.ReflectOnAnyAttack:
+                case CombatKeyword.MaxStack:
+                case CombatKeyword.AddEvasionBurst:
+                case CombatKeyword.AddChanceToIgnoreKnockback:
+                case CombatKeyword.AddChanceToIgnoreStun:
+                case CombatKeyword.AboveRage:
+                case CombatKeyword.AddChanceToKnockdown:
+                case CombatKeyword.ApplyWithChance:
+                case CombatKeyword.RequireTwoKnives:
+                case CombatKeyword.RequireNoAggro:
+                case CombatKeyword.BaseDamageBoost:
+                case CombatKeyword.DrainHealth:
+                case CombatKeyword.DrainArmor:
+                case CombatKeyword.DrainHealthMax:
+                case CombatKeyword.DrainArmorMax:
+                case CombatKeyword.DrainAsArmor:
+                case CombatKeyword.MaxOccurence:
+                case CombatKeyword.ChanceToConsume:
+                case CombatKeyword.AddHealthRegen:
+                case CombatKeyword.Combo1:
+                case CombatKeyword.ComboFinalStepBurst:
+                case CombatKeyword.Combo2:
+                case CombatKeyword.ComboFinalStepDamage:
+                case CombatKeyword.Combo3:
+                case CombatKeyword.Combo4:
+                case CombatKeyword.Stun:
+                case CombatKeyword.Combo5:
+                case CombatKeyword.Combo6:
                     if (combatEffect.Data.IsValueSet)
                         if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out bool HasRecurrence))
-                            AddEffectToSpecialValueDelta(combatEffect.Keyword, combatEffect.Data.Value, HasRecurrence);
+                            AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
                     break;
 
                 default:
+                    //Debug.WriteLine($"Unexpected keyword in mod to add: {Keyword}");
                     break;
             }
         }
-
-/*
-DamageBoost
-//RestorePower
-//AddPowerCost
-//RestoreHealthArmor
-//RestoreHealth
-//AddResetTimer
-//AddRange
-//RestoreHealthArmorPower
-//TargetSubsequentAttacks
-EffectDuration
-AddChannelingTime
-AnotherTrap
-//AddRage
-ChangeDamageType
-//RestoreArmor
-AddMitigation
-NextAttack
-DealDirectHealthDamage
-//ZeroRage
-EffectDelay
-Recurring
-ActiveSkill
-AddEvasionMelee
-OnEvadeMelee
-AddArmor
-OnEvade
-MitigateReflect
-ReflectRate
-MitigateReflectKick
-AddTaunt
-Combo7
-ComboFinalStepDamageAndStun
-TargetSelf
-AddSprintSpeed
-EffectRecurrence
-EffectDurationMinute
-AddMaxHealth
-CombatRefreshRestoreHeatlth
-StunIncorporeal
-ResetOtherAbilityTimer
-DamageBoostAgainstSpecie
-DealIndirectDamage
-ZeroTaunt
-ThickArmor
-ReflectOnBurst
-AddMitigationIndirect
-ReflectOnAnyAttack
-MaxStack
-AddEvasionBurst
-AddChanceToIgnoreKnockback
-AddChanceToIgnoreStun
-AboveRage
-AddChanceToKnockdown
-ApplyWithChance
-RequireTwoKnives
-RequireNoAggro
-BaseDamageBoost
-DrainHealth
-DrainMax
-DrainArmor
-MaxOccurence
-DrainAsArmor
-ChanceToConsume
-AddHealthRegen
-Combo1
-ComboFinalStepBurst
-AddMaxArmor
-Combo2
-ComboFinalStepDamage
-Combo3
-Combo4
-Stun
-Combo5
-Combo6
-NotAttackedRecently
-AddPowerRegen
-AddPowerCostMax
-ZeroPowerCost
-AddIndirectVulnerability
-AddVulnerability
-ReflectKnockbackOnFirstMelee
-ReflectOnMelee
-ReflectOnRanged
-ReflectMeleeIndirectDamage
-
- */
         #endregion
 
         #region Implementation of INotifyPropertyChanged
