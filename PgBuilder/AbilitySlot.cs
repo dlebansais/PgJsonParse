@@ -397,12 +397,13 @@
                 string Label = Item.Label;
                 string Suffix = Item.Suffix;
                 double BaseValue = Item.Value;
+                bool DisplayAsPercent = Item.DisplayAsPercent;
                 bool SkipIfZero = Item.SkipIfZero;
 
                 List<string> AttributesThatDeltaList = ToKeyList(Item.AttributesThatDeltaList);
                 List<string> AttributesThatModList = ToKeyList(Item.AttributesThatModList);
                 List<string> AttributesThatModBaseList = ToKeyList(Item.AttributesThatModBaseList);
-                AbilitySlotSpecialValue NewSpecialValue = new AbilitySlotSpecialValue(Label, Suffix, BaseValue, SkipIfZero, AttributesThatDeltaList, AttributesThatModList, AttributesThatModBaseList);
+                AbilitySlotSpecialValue NewSpecialValue = new AbilitySlotSpecialValue(Label, Suffix, BaseValue, DisplayAsPercent, SkipIfZero, AttributesThatDeltaList, AttributesThatModList, AttributesThatModBaseList);
                 SpecialValueList.Add(NewSpecialValue);
             }
 
@@ -700,7 +701,7 @@
                     {
                         IsFound = true;
 
-                        if (hasRecurrence && !(Suffix.Contains(" every ")))
+                        if (hasRecurrence && !(Suffix.Contains(" every ") || Suffix.Contains("per second")))
                             IsFound = false;
 
                         break;
@@ -713,8 +714,8 @@
                 }
             }
 
-            if (!IsFound && VerificationTable.Count > 0)
-                Debug.WriteLine("Special value not found!");
+            //if (!IsFound && VerificationTable.Count > 0)
+            //    Debug.WriteLine("Special value not found!");
         }
 
         private DamageType ToDamageType(GameDamageType type)
@@ -864,6 +865,17 @@
                 case CombatKeyword.Stun:
                 case CombatKeyword.Combo5:
                 case CombatKeyword.Combo6:
+                case CombatKeyword.NotAttackedRecently:
+                case CombatKeyword.AddPowerRegen:
+                case CombatKeyword.AddPowerCostMax:
+                case CombatKeyword.ZeroPowerCost:
+                case CombatKeyword.AddIndirectVulnerability:
+                case CombatKeyword.AddVulnerability:
+                case CombatKeyword.ReflectKnockbackOnFirstMelee:
+                case CombatKeyword.ReflectOnMelee:
+                case CombatKeyword.ReflectOnRanged:
+                case CombatKeyword.ReflectMeleeIndirectDamage:
+                case CombatKeyword.DamageBoost:
                     if (combatEffect.Data.IsValueSet)
                         if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out bool HasRecurrence))
                             AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);

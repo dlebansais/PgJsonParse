@@ -1,8 +1,9 @@
-﻿using Presentation;
-using System.Collections.Generic;
-
-namespace PgJsonObjects
+﻿namespace PgJsonObjects
 {
+    using Presentation;
+    using System;
+    using System.Collections.Generic;
+
     public class PgRecipe : MainPgObject<PgRecipe>, IPgRecipe
     {
         public PgRecipe(byte[] data, ref int offset)
@@ -79,7 +80,7 @@ namespace PgJsonObjects
         public int? RawRewardSkillXp { get { return GetInt(88); } }
         public int RewardSkillXpDropOffLevel { get { return RawRewardSkillXpDropOffLevel.HasValue ? RawRewardSkillXpDropOffLevel.Value : 0; } }
         public int? RawRewardSkillXpDropOffLevel { get { return GetInt(92); } }
-        public double RewardSkillXpDropOffPct { get { return RawRewardSkillXpDropOffPct.HasValue ? RawRewardSkillXpDropOffPct.Value : 0; } }
+        public double RewardSkillXpDropOffPct { get { return RawRewardSkillXpDropOffPct.HasValue ? Math.Round(RawRewardSkillXpDropOffPct.Value, 2) : 0; } }
         public double? RawRewardSkillXpDropOffPct { get { return GetDouble(96); } }
         public int RewardSkillXpDropOffRate { get { return RawRewardSkillXpDropOffRate.HasValue ? RawRewardSkillXpDropOffRate.Value : 0; } }
         public int? RawRewardSkillXpDropOffRate { get { return GetInt(100); } }

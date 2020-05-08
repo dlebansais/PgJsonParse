@@ -7,11 +7,12 @@
 
     public class AbilitySlotSpecialValue : INotifyPropertyChanged
     {
-        public AbilitySlotSpecialValue(string label, string suffix, double baseValue, bool skipIfZero, List<string> attributesThatDeltaList, List<string> attributesThatModList, List<string> attributesThatModBaseList)
+        public AbilitySlotSpecialValue(string label, string suffix, double baseValue, bool displayAsPercent, bool skipIfZero, List<string> attributesThatDeltaList, List<string> attributesThatModList, List<string> attributesThatModBaseList)
         {
             Label = label;
             Suffix = suffix;
-            BaseValue = baseValue;
+            DisplayAsPercent = displayAsPercent;
+            BaseValue = DisplayAsPercent ? baseValue * 100 : baseValue;
             SkipIfZero = skipIfZero;
             AttributesThatDeltaList = attributesThatDeltaList;
             AttributesThatModList = attributesThatModList;
@@ -21,11 +22,23 @@
         public string Label { get; }
         public string Suffix { get; }
         public double BaseValue { get; }
+        public bool DisplayAsPercent { get; }
         public bool SkipIfZero { get; }
         public double ActualValue { get { return (BaseValue * ModBaseValue) + (DeltaValue * ModValue); } }
         public bool? IsModified { get { return IntModifier(ActualValue - BaseValue); } }
         public bool IsDisplayed { get { return !SkipIfZero || ActualValue != 0; } }
-        public string AsString { get { return ((int)ActualValue).ToString(); } }
+        public string AsString 
+        { 
+            get 
+            {
+                int Value = (int)ActualValue;
+
+                if (DisplayAsPercent)
+                    return $"{Value}%";
+                else
+                    return Value.ToString();
+            }
+        }
         public List<string> AttributesThatDeltaList { get; }
         public List<string> AttributesThatModList { get; }
         public List<string> AttributesThatModBaseList { get; }

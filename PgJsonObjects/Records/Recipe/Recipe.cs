@@ -40,7 +40,7 @@ namespace PgJsonObjects
         public int? RawRewardSkillXp { get; private set; }
         public int RewardSkillXpDropOffLevel { get { return RawRewardSkillXpDropOffLevel.HasValue ? RawRewardSkillXpDropOffLevel.Value : 0; } }
         public int? RawRewardSkillXpDropOffLevel { get; private set; }
-        public double RewardSkillXpDropOffPct { get { return RawRewardSkillXpDropOffPct.HasValue ? RawRewardSkillXpDropOffPct.Value : 0; } }
+        public double RewardSkillXpDropOffPct { get { return RawRewardSkillXpDropOffPct.HasValue ? Math.Round(RawRewardSkillXpDropOffPct.Value, 2) : 0; } }
         public double? RawRewardSkillXpDropOffPct { get; private set; }
         public int RewardSkillXpDropOffRate { get { return RawRewardSkillXpDropOffRate.HasValue ? RawRewardSkillXpDropOffRate.Value : 0; } }
         public int? RawRewardSkillXpDropOffRate { get; private set; }

@@ -802,6 +802,7 @@
                 case CombatKeyword.DrainArmor:
                 case CombatKeyword.DrainHealthMax:
                 case CombatKeyword.DrainArmorMax:
+                case CombatKeyword.DamageBoost:
                     VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true);
                     break;
 
@@ -851,9 +852,6 @@
                 case CombatKeyword.RequireNoAggro:
                 case CombatKeyword.BaseDamageBoost:
                 case CombatKeyword.DrainAsArmor:
-                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
-                    break;
-
                 case CombatKeyword.MaxOccurence:
                 case CombatKeyword.ChanceToConsume:
                 case CombatKeyword.AddHealthRegen:
@@ -866,10 +864,6 @@
                 case CombatKeyword.Stun:
                 case CombatKeyword.Combo5:
                 case CombatKeyword.Combo6:
-                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true, true);
-                    break;
-
-                // TODO
                 case CombatKeyword.NotAttackedRecently:
                 case CombatKeyword.AddPowerRegen:
                 case CombatKeyword.AddPowerCostMax:
@@ -880,13 +874,11 @@
                 case CombatKeyword.ReflectOnMelee:
                 case CombatKeyword.ReflectOnRanged:
                 case CombatKeyword.ReflectMeleeIndirectDamage:
-                case CombatKeyword.DamageBoost:
-                    if (!TODO_KeywordList.Contains(combatEffect.Keyword))
-                    {
-                        TODO_KeywordList.Add(combatEffect.Keyword);
-                        Debug.WriteLine($"TODO: verify keyword {combatEffect.Keyword}");
-                    }
+                    VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
                     break;
+
+                    //VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true, true);
+                    //break;
 
                 default:
                     Debug.WriteLine($"Unexpected keyword to verify: {combatEffect.Keyword}");
@@ -912,6 +904,7 @@
                     new KeyValuePair<string, string>("Existing Zombie is Healed", "Health"),
                     new KeyValuePair<string, string>("You heal", "per second when near your web trap"),
                     new KeyValuePair<string, string>("Restore", "Health to least-healthy ally"),
+                    new KeyValuePair<string, string>("For 8 seconds, each time target attacks and damages you, heal", "Health"),
                 }
             },
             { CombatKeyword.RestorePower, new List<KeyValuePair<string, string>>()
@@ -920,6 +913,7 @@
                     new KeyValuePair<string, string>("Restore", "Power"),
                     new KeyValuePair<string, string>("You recover", "Power per second when near your web trap"),
                     new KeyValuePair<string, string>("Recover", "Power when melee attacks deal damage to you"),
+                    new KeyValuePair<string, string>("Restores", "Power after a 12-second delay"),
                 }
             },
             { CombatKeyword.RestoreArmor, new List<KeyValuePair<string, string>>()
@@ -965,6 +959,18 @@
             { CombatKeyword.DrainArmorMax, new List<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair<string, string>("Max Armor Reaped", ""),
+                }
+            },
+            { CombatKeyword.DamageBoost, new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Deal", "Damage every 2 seconds"),
+                    new KeyValuePair<string, string>("Existing Zombie's Direct Damage", "for 60 seconds"),
+                    new KeyValuePair<string, string>("Existing Zombie's Direct Damage", "for 5 minutes"),
+                    new KeyValuePair<string, string>("Existing Zombie's Damage Boosted", "for 60 seconds"),
+                    new KeyValuePair<string, string>("Minion Damage", "for 10 seconds"),
+                    new KeyValuePair<string, string>("Minion Damage Boost", "for 10 seconds"),
+                    new KeyValuePair<string, string>("All your attacks deal", "damage for 10 seconds"),
+                    new KeyValuePair<string, string>("For 8 seconds, each time target attacks and damages you, they suffer", "Trauma damage"),
                 }
             },
         };

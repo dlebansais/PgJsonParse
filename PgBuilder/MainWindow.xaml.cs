@@ -71,23 +71,13 @@
                 ModEffect ModEffect = new ModEffect(EffectKey , AbilityList, StaticCombatEffectList, DynamicCombatEffectList, TargetAbilityList);
                 PowerKeyToCompleteEffectTable.Add(Key, ModEffect);
 
+                /*
                 bool HasKeyword = false;
                 foreach (CombatEffect Item in StaticCombatEffectList)
                 {
                     switch (Item.Keyword)
                     {
-                        case CombatKeyword.MaxOccurence:
-                        case CombatKeyword.ChanceToConsume:
-                        case CombatKeyword.AddHealthRegen:
-                        case CombatKeyword.Combo1:
-                        case CombatKeyword.ComboFinalStepBurst:
-                        case CombatKeyword.Combo2:
-                        case CombatKeyword.ComboFinalStepDamage:
-                        case CombatKeyword.Combo3:
-                        case CombatKeyword.Combo4:
-                        case CombatKeyword.Stun:
-                        case CombatKeyword.Combo5:
-                        case CombatKeyword.Combo6:
+                        case CombatKeyword.DamageBoost:
                             HasKeyword = true;
                             break;
                     }
@@ -99,6 +89,7 @@
                     if (!StaticKeywordKeyList.Contains(PowerKey))
                         StaticKeywordKeyList.Add(PowerKey);
                 }
+                */
             }
 
             foreach (string PowerKey in StaticKeywordKeyList)
@@ -112,6 +103,70 @@
 
                 Debug.WriteLine(Description);
             }
+
+            /*
+            Dictionary<CombatKeyword, List<AbilityKeyword>> ImpactedTable = new Dictionary<CombatKeyword, List<AbilityKeyword>>();
+            foreach (KeyValuePair<string, List<CombatEffect>> Entry in PowerKeyToCompleteEffect.StaticCombatEffectList)
+            {
+                List<AbilityKeyword> AssociatedAbilityKeywordList = PowerKeyToCompleteEffect.AbilityList[Entry.Key];
+
+                foreach (CombatEffect CombatEffect in Entry.Value)
+                {
+                    CombatKeyword Keyword = CombatEffect.Keyword;
+
+                    if (!ImpactedTable.ContainsKey(Keyword))
+                        ImpactedTable.Add(Keyword, new List<AbilityKeyword>());
+
+                    List<AbilityKeyword> ListValue = ImpactedTable[Keyword];
+                    foreach (AbilityKeyword Item in AssociatedAbilityKeywordList)
+                        if (!ListValue.Contains(Item))
+                            ListValue.Add(Item);
+                }
+            }
+
+            foreach (IPgAbility ItemAbility in FullAbilityList)
+            {
+                IList<IPgSpecialValue> SpecialValueList = Parser.GetSpecialValueList(ItemAbility);
+                foreach (IPgSpecialValue ItemSpecial in SpecialValueList)
+                {
+                    string Label = ItemSpecial.Label;
+                    string Suffix = ItemSpecial.Suffix;
+                    bool HasModifiers = ((IList<IPgAttribute>)ItemSpecial.AttributesThatDeltaList).Count > 0 ||
+                        ((IList<IPgAttribute>)ItemSpecial.AttributesThatModBaseList).Count > 0 ||
+                        ((IList<IPgAttribute>)ItemSpecial.AttributesThatModList).Count > 0;
+
+                    bool IsFound = false;
+                    bool CanMatch = false;
+                    foreach (KeyValuePair<CombatKeyword, List<KeyValuePair<string, string>>> Entry in Parser.EffectVerificationTable)
+                    {
+                        CombatKeyword Keyword = Entry.Key;
+                        List<KeyValuePair<string, string>> Pairs = Entry.Value;
+
+                        if (!ImpactedTable.ContainsKey(Keyword))
+                            continue;
+
+                        foreach (AbilityKeyword Item in ImpactedTable[Keyword])
+                            if (ItemAbility.KeywordList.Contains(Item))
+                            {
+                                CanMatch = true;
+                                break;
+                            }
+
+                        foreach (KeyValuePair<string, string> Item in Pairs)
+                            if (Label == Item.Key && Suffix == Item.Value)
+                            {
+                                IsFound = true;
+                                break;
+                            }
+
+                        if (IsFound)
+                            break;
+                    }
+
+                    if (!IsFound && HasModifiers && CanMatch)
+                        Debug.WriteLine($"Ability \"{ItemAbility.Name}\", special value \"{Label}\"...\"{Suffix}\" has no counterpart");
+                }
+            }*/
         }
 
         private Dictionary<string, ModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, ModEffect>();
@@ -748,6 +803,8 @@
             GearSlot Slot = (GearSlot) Control.DataContext;
 
             Slot.ResetItem();
+
+            RecalculateMods();
         }
 
         private void OnClearMod(object sender, ExecutedRoutedEventArgs e)
@@ -757,6 +814,8 @@
             GearSlot Slot = Mod.ParentSlot;
 
             Slot.RemoveMod(Mod);
+
+            RecalculateMods();
         }
 
         private void OnLargeViewChecked(object sender, RoutedEventArgs e)
