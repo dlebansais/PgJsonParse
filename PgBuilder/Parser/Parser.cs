@@ -9,7 +9,7 @@
     public class Parser
     {
         #region Data Analysis
-        bool WriteFile = false;
+        bool WriteFile = true;
         bool CompareTable = true;
 
         public void AnalyzeCachedData(int version, List<ItemSlot> validSlotList, List<IPgSkill> skillList, Dictionary<string, ModEffect> existingPowerKeyToCompleteEffectTable)
@@ -1178,7 +1178,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_1042")
+                if (Entry.Key.Key == "power_12303")
                 {
                 }
 
@@ -1417,6 +1417,14 @@
             AnalyzeText(abilityNameList, nameToKeyword, ModText, true, out List<AbilityKeyword> ModAbilityList, out List<CombatEffect> ModCombatList, out List<AbilityKeyword> ModTargetAbilityList);
             AnalyzeText(abilityNameList, nameToKeyword, EffectText, IsMod, out List<AbilityKeyword> EffectAbilityList, out List<CombatEffect> EffectCombatList, out List<AbilityKeyword> EffectTargetAbilityList);
 
+            // Hack for Animal Handling
+            if ((ModAbilityList.Contains(AbilityKeyword.SicEm) || ModAbilityList.Contains(AbilityKeyword.CleverTrick)) &&
+                EffectAbilityList.Count == 0 && 
+                (EffectTargetAbilityList.Contains( AbilityKeyword.SicEm) || EffectTargetAbilityList.Contains( AbilityKeyword.CleverTrick)))
+            {
+                EffectTargetAbilityList.Clear();
+            }
+
             string ParsedEffectString = CombatEffectListToString(EffectCombatList, out extractedEffectKeywordList);
             string ParsedEffectTargetAbilityList = AbilityKeywordListToShortString(EffectTargetAbilityList);
             string ParsedAbilityList = AbilityKeywordListToShortString(ModAbilityList);
@@ -1506,8 +1514,9 @@
 
             BasicTextReplace(ref modText, ref effectText, "Sic Em", "Sic 'Em");
             BasicTextReplace(ref modText, ref effectText, "physical (slashing, piercing, and crushing)", "Crushing, Slashing, or Piercing");
-            BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' healing abilities", "Feed Pet");
-            BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
+            BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' healing abilities", "Pet Healing");
+            BasicTextReplace(ref modText, ref effectText, "Pet basic attack", "Pet attack");
+            //BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
             BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels Ice Armor", "Fire damage no longer dispels");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels your Ice Armor", "Fire damage no longer dispels");
@@ -2399,7 +2408,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_1042")
+                if (ItemPower.Key == "power_12303")
                 {
                 }
 
