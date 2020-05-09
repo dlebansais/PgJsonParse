@@ -546,13 +546,7 @@
             SelectedSkill1 = index;
             NotifyPropertyChanged(nameof(SelectedSkill1));
 
-            ResetAbilitySlots(AbilitySlot1List);
-            UpdateAbilityCompatibilityList(SkillList[SelectedSkill1], AbilitySlot1List, CompatibleAbility1List);
-            FillEmptyAbilitySlots(SkillList[SelectedSkill1], AbilitySlot1List, CompatibleAbility1List);
-            ResetGearSlots();
-
-            CommandManager.InvalidateRequerySuggested();
-            RecalculateMods();
+            OnSkillSelectionChanged(SelectedSkill1, AbilitySlot1List, CompatibleAbility1List);
         }
 
         private void OnSkillSelectionChanged2(object sender, SelectionChangedEventArgs e)
@@ -569,9 +563,21 @@
             SelectedSkill2 = index;
             NotifyPropertyChanged(nameof(SelectedSkill2));
 
-            ResetAbilitySlots(AbilitySlot2List);
-            UpdateAbilityCompatibilityList(SkillList[SelectedSkill2], AbilitySlot2List, CompatibleAbility2List);
-            FillEmptyAbilitySlots(SkillList[SelectedSkill2], AbilitySlot2List, CompatibleAbility2List);
+            OnSkillSelectionChanged(SelectedSkill2, AbilitySlot2List, CompatibleAbility2List);
+        }
+
+        private void OnSkillSelectionChanged(int index, ObservableCollection<AbilitySlot> abilitySlotList, List<AbilityTierList> compatibleAbilityList)
+        {
+            ResetAbilitySlots(abilitySlotList);
+
+            if (index >= 0)
+            {
+                UpdateAbilityCompatibilityList(SkillList[index], abilitySlotList, compatibleAbilityList);
+                FillEmptyAbilitySlots(SkillList[index], abilitySlotList, compatibleAbilityList);
+            }
+            else
+                compatibleAbilityList.Clear();
+
             ResetGearSlots();
 
             CommandManager.InvalidateRequerySuggested();
@@ -796,6 +802,21 @@
             bool? Result = Dlg.ShowDialog(this);
             if (Result.Value && !string.IsNullOrEmpty(Dlg.FileName))
                 SaveBuild(Dlg.FileName);
+        }
+
+        private void OnClear(object sender, ExecutedRoutedEventArgs e)
+        {
+            LastBuildFile = string.Empty;
+            NotifyPropertyChanged(nameof(LastBuildFile));
+            NotifyPropertyChanged(nameof(TitleText));
+
+            foreach (GearSlot Slot in GearSlotList)
+                Slot.ResetItem();
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged1), -1);
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged2), -1);
+
+            RecalculateMods();
         }
 
         private void OnClearItem(object sender, ExecutedRoutedEventArgs e)
@@ -1233,8 +1254,9 @@
 
         #region Settings
         private const string IsLargeViewName = "IsLargeView";
+        private const string IsFairyCharacterName = "IsFairyCharacter";
         private const string LastBuildFileValueName = "LastBuildFile";
-
+        
         private void LoadSettings()
         {
             try
@@ -1247,6 +1269,9 @@
 
                 Value = SettingKey?.GetValue(IsLargeViewName) as string;
                 IsLargeView = (Value == "Yes");
+
+                Value = SettingKey?.GetValue(IsFairyCharacterName) as string;
+                IsFairyCharacter = (Value == "Yes");
 
                 Value = SettingKey?.GetValue(LastBuildFileValueName) as string;
                 if (Value != null)
@@ -1267,6 +1292,7 @@
                 RegistryKey SettingKey = Key.CreateSubKey("PgBuilder");
 
                 SettingKey?.SetValue(IsLargeViewName, IsLargeView ? "Yes" : "No", RegistryValueKind.String);
+                SettingKey?.SetValue(IsFairyCharacterName, IsFairyCharacter ? "Yes" : "No", RegistryValueKind.String);
                 SettingKey?.SetValue(LastBuildFileValueName, LastBuildFile, RegistryValueKind.String);
             }
             catch

@@ -40,7 +40,8 @@
         public ItemSlot Slot { get; }
         public List<ItemInfo> ItemList { get; }
         public int SelectedItemIndex { get; private set; }
-        public ItemInfo SelectedItem { get { return SelectedItemIndex >= 0 ? ItemList[SelectedItemIndex] : null; } }
+        public ItemInfo SelectedItem { get { return IsItemSelected ? ItemList[SelectedItemIndex] : null; } }
+        public bool IsItemSelected { get { return SelectedItemIndex >= 0; } }
         public ObservableCollection<Mod> ModList { get; } = new ObservableCollection<Mod>();
         public List<Power> AvailablePowerList { get; } = new List<Power>();
         #endregion
@@ -126,8 +127,7 @@
             if (index >= 0)
                 SelectedItemIndex = index;
 
-            NotifyPropertyChanged(nameof(SelectedItemIndex));
-            NotifyPropertyChanged(nameof(SelectedItem));
+            NotifyPropertiesChanged();
         }
 
         public void SetSelectedItem(string key)
@@ -136,16 +136,21 @@
                 if (Item.ItemKey == key)
                 {
                     SelectedItemIndex = ItemList.IndexOf(Item);
-                    NotifyPropertyChanged(nameof(SelectedItemIndex));
-                    NotifyPropertyChanged(nameof(SelectedItem));
+                    NotifyPropertiesChanged();
                 }
         }
 
         public void ResetItem()
         {
             SelectedItemIndex = -1;
+            NotifyPropertiesChanged();
+        }
+
+        public void NotifyPropertiesChanged()
+        {
             NotifyPropertyChanged(nameof(SelectedItemIndex));
             NotifyPropertyChanged(nameof(SelectedItem));
+            NotifyPropertyChanged(nameof(IsItemSelected));
         }
 
         public void AddMod()

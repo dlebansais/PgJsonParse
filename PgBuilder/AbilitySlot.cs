@@ -153,13 +153,19 @@
         public ObservableCollection<string> SpecialEffectList { get; } = new ObservableCollection<string>();
         public ObservableCollection<OtherEffect> OtherEffectList { get; } = new ObservableCollection<OtherEffect>();
 
-        public List<AbilityTierList> CompatibleAbilityList { get; private set; }
+        public List<AbilityTierList> CompatibleAbilityList { get; private set; } = new List<AbilityTierList>();
 
         public ContextMenu AbilityContextMenu
         { 
             get 
             {
                 ContextMenu Menu = new ContextMenu();
+
+                if (CompatibleAbilityList.Count == 0)
+                {
+                    Menu.Visibility = Visibility.Collapsed;
+                    return Menu;
+                }
 
                 List<string> AbilityNameList = new List<string>();
                 Menu.Items.Clear();
