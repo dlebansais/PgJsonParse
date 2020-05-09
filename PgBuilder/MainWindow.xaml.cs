@@ -314,13 +314,8 @@
         {
             get
             {
-                string Result = "Project: Gorgon - Builder";
-                if (LastBuildFile != null)
-                    Result += $" - {LastBuildFile}";
-
-                Result += " - Downloaded content copyright © 2017, Elder Game, LLC";
-
-                return Result;
+                string LastBuildFileInfo = (LastBuildFile != null) ? $" - {LastBuildFile}" : string.Empty;
+                return $"Project: Gorgon - Builder{LastBuildFileInfo} - Downloaded content (version {AnalyzedVersion}) copyright © 2017, Elder Game, LLC";
             }
         }
         #endregion
@@ -774,8 +769,8 @@
             }
 
             Debug.Assert(AbilityTable.Length == 2);
-            Debug.Assert(SkillList.Contains(Skill1));
-            Debug.Assert(SkillList.Contains(Skill2));
+            Debug.Assert(Skill1 == null || SkillList.Contains(Skill1));
+            Debug.Assert(Skill2 == null || SkillList.Contains(Skill2));
 
             LastBuildFile = filePath;
             NotifyPropertyChanged(nameof(LastBuildFile));
@@ -984,6 +979,9 @@
         private bool TryParseSkill(string skillName, out IPgSkill skill)
         {
             skill = null;
+
+            if (skillName.Length == 0)
+                return true;
 
             foreach (IPgSkill Item in SkillList)
                 if (Item.Name == skillName)

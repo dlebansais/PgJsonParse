@@ -21,10 +21,22 @@
                 return null;
         }
 
-        public static int CalculateDamage(double baseDamage, double deltaDamage, double modDamage, double modBaseDamage, double modCriticalDamage)
+        public static int CalculateDamage(double baseDamage, int deltaDamage, double modDamage, double modBaseDamage, double modCriticalDamage)
         {
-            double Result = baseDamage * modBaseDamage;
-            //return ((((baseDamage + deltaDamage) * (1 + modDamage) + (baseDamage * modBaseDamage)) + SimpleDamage) * DamageDebuff * VulnerabilityDebuff) + (ConditionalFlatDamage * MoreDamageDebuff) + modCriticalDamage;
+            if (baseDamage == 809.0)
+            {
+            }
+
+            float MB1 = (float)baseDamage * (float)modBaseDamage;
+            int ModifiedBase = (int)Math.Round(baseDamage * modBaseDamage);
+            float MA1 = (float)baseDamage + deltaDamage;
+            float MA2 = MA1 * (1.0F + (float)modDamage);
+            float M1 = MB1 + MA1;
+            int ModifedAbility = (int)Math.Round(((float)baseDamage + deltaDamage) * (1.0F + (float)modDamage));
+
+            float Result = (int)Math.Round(((float)baseDamage * (float)modBaseDamage) + ((float)baseDamage + deltaDamage) * (1.0F + (float)modDamage), MidpointRounding.AwayFromZero);
+
+            //return ((((baseDamage * modBaseDamage + (baseDamage + deltaDamage) * (1 + modDamage)) + SimpleDamage) * DamageDebuff * VulnerabilityDebuff) + (ConditionalFlatDamage * MoreDamageDebuff) + modCriticalDamage;
             if (Result < 0)
                 Result = 0;
 

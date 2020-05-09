@@ -287,6 +287,8 @@
             NotifyPropertyChanged(nameof(HasOtherEffects));
 
             NotifyPropertyChanged(nameof(HasAbilityDamage));
+            NotifyPropertyChanged(nameof(HasAbilityNormalDamage));
+            NotifyPropertyChanged(nameof(HasAbilityHealthDamage));
             NotifyPropertyChanged(nameof(ModifiedAbilityDamage));
             NotifyPropertyChanged(nameof(AbilityDamage));
             NotifyPropertyChanged(nameof(AbilityDamageModified));
@@ -448,10 +450,11 @@
         {
             ModifierList.ForEach((AbilityModifier modifier) => modifier.Reset());
 
-            DeltaDamage = 0; // Damage +X
-            ModDamage = 1.0;   // Damage +(X*100)%
-            ModBaseDamage = 1.0; // Base Damage +(X*100)%
-            ModCriticalDamage = 1.0; // Critical Damage +(X*100)%
+            if (Ability != null && Ability.Name.StartsWith("You Were")) Debug.WriteLine("DeltaDamage = 0");
+            DeltaDamage = 0;
+            ModDamage = 0;
+            ModBaseDamage = 0;
+            ModCriticalDamage = 1.0;
             DirectDamageMultiplier = 1.0;
             BasicAttackHealthModified = 0;
             BasicAttackArmorModified = 0;
@@ -647,6 +650,7 @@
 
         private void RecalculateDeltaDamage(double attributeEffect)
         {
+            if (Ability != null && Ability.Name.StartsWith("You Were")) Debug.WriteLine($"DeltaDamage += {(int)attributeEffect}");
             DeltaDamage += (int)attributeEffect;
         }
 
@@ -699,7 +703,8 @@
 
         public void AddEffect(ModEffect modEffect)
         {
-            Debug.Assert(Ability != null);
+            if (Ability == null)
+                return;
 
             bool IsAbilityModified = false;
             foreach (AbilityKeyword Keyword in modEffect.AbilityList)
@@ -831,6 +836,7 @@
                 return;
 
             CombatKeyword Keyword = combatEffect.Keyword;
+            bool HasRecurrence;
 
             switch (Keyword)
             {
@@ -950,10 +956,38 @@
                 case CombatKeyword.ReflectOnMelee:
                 case CombatKeyword.ReflectOnRanged:
                 case CombatKeyword.ReflectMeleeIndirectDamage:
+                    if (combatEffect.Data.IsValueSet)
+                        if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
+                            AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
+                    break;
+
                 case CombatKeyword.DamageBoost:
                     if (combatEffect.Data.IsValueSet)
-                        if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out bool HasRecurrence))
-                            AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
+                    {
+                        if (modEffect.AbilityList.Count > 0)
+                        {
+                            bool IsConcerned = false;
+                            foreach (AbilityKeyword Item in modEffect.AbilityList)
+                                if (Ability.KeywordList.Contains(Item))
+                                {
+                                    IsConcerned = true;
+                                    break;
+                                }
+
+                            if (IsConcerned)
+                            {
+                                if (combatEffect.Data.IsPercent)
+                                    RecalculateModDamage(combatEffect.Data.Value / 100.0);
+                                else
+                                    RecalculateDeltaDamage(combatEffect.Data.Value);
+                            }
+                        }
+                        else
+                        {
+                            if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
+                                AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
+                        }
+                    }
                     break;
 
                 default:

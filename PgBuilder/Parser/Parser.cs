@@ -503,8 +503,8 @@
             { "All Ice Magic ability that hit multiple", new List<AbilityKeyword>() { AbilityKeyword.IceMagicAoE } },
             { "All Ice Magic attack that hit a single", new List<AbilityKeyword>() { AbilityKeyword.IceMagicSingleTarget } },
             { "All Ice Magic ability", new List<AbilityKeyword>() { AbilityKeyword.IceMagic } },
-            { "Knife ability with 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeCut } },
-            { "All Knife ability WITHOUT 'Cut' in their name", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
+            { "Knife ability with 'Cut'", new List<AbilityKeyword>() { AbilityKeyword.KnifeCut } },
+            { "All Knife ability WITHOUT 'Cut'", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
             { "All Knife Fighting attack", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
             { "Bard Songs", new List<AbilityKeyword>() { AbilityKeyword.BardSong } },
             { "All Major Healing ability targeting you", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
@@ -1251,7 +1251,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_12303")
+                if (Entry.Key.Key == "power_4031")
                 {
                 }
 
@@ -1764,7 +1764,7 @@
                         IsFirstAbilityGeneric = IsAbilityGeneric;
                     else
                     {
-                        if (limitParsing && (BestIndex > LastBestIndex + 28 || BestIndex > SeparatingIndex))
+                        if (limitParsing && (BestIndex > LastBestIndex + 8 || BestIndex > SeparatingIndex))
                             break;
                         if (IsAbilityGeneric != IsFirstAbilityGeneric)
                             break;
@@ -1774,8 +1774,7 @@
 
                     ExtractedTable.Remove(BestIndex);
 
-
-                    LastBestIndex = BestIndex;
+                    LastBestIndex = BestIndex + BestString.Length;
                 }
 
                 int UnusedIndex = -1;
@@ -2482,7 +2481,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_12303")
+                if (ItemPower.Key == "power_4031")
                 {
                 }
 
