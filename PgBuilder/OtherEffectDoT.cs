@@ -27,6 +27,14 @@
         public bool RequireNoAggro { get { return DoT.SpecialRuleList.Contains(DoTSpecialRule.IfTargetNotLooking); } }
         public DamageType DamageType { get { return DoT.DamageType; } }
 
+        public override void Reset()
+        {
+            DeltaValue = 0;
+            MultiplierValue = 1.0;
+            BoostMultiplierValue = 1.0;
+            //Debug.WriteLine($"{AbilityName}: reset {DisplayedValue}");
+        }
+
         public void AddDelta(double value)
         {
             DeltaValue += value;

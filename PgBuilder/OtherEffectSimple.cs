@@ -11,6 +11,10 @@
 
         public override bool IsDisplayed { get { return true; } }
 
+        public override void Reset()
+        {
+        }
+
         public string Description { get; }
     }
 }

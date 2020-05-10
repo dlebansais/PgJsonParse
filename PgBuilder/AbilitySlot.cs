@@ -138,6 +138,8 @@
         private double BasicAttackPowerModified;
 
         public bool IsDelayLoopOnlyUsedInCombat { get { return Ability != null && Ability.DelayLoopIsOnlyUsedInCombat; } }
+        public bool IsConsumingAmmo { get { return Ability != null && Ability.AmmoDescription != null; } }
+        public string AmmoName { get { return Ability != null ? Ability.AmmoDescription : string.Empty; } }
 
         public ObservableCollection<AbilitySlotSpecialValue> SpecialValueList { get; } = new ObservableCollection<AbilitySlotSpecialValue>();
         public ObservableCollection<string> SpecialEffectList { get; } = new ObservableCollection<string>();
@@ -229,6 +231,8 @@
             UpdateName();
             UpdateSource(iconFolder);
             UpdateSpecialEffects();
+            UpdateOtherEffects();
+
             NotifyPropertiesChanged();
         }
 
@@ -243,6 +247,8 @@
             UpdateName();
             UpdateSource(iconFolder);
             UpdateSpecialEffects();
+            UpdateOtherEffects();
+
             NotifyPropertiesChanged();
         }
 
@@ -255,6 +261,8 @@
             ResetName();
             ResetSource();
             ResetSpecialEffects();
+            ResetOtherEffects();
+
             NotifyPropertiesChanged();
         }
 
@@ -419,6 +427,15 @@
             }
         }
 
+        private void UpdateOtherEffects()
+        {
+            BasicAttackPowerModified += Ability.CombatRefreshBaseAmount;
+
+            IList<IPgDoT> DoTList = Ability.PvE.DoTList;
+            foreach (IPgDoT Item in DoTList)
+                OtherEffectList.Add(new OtherEffectDoT(Ability.Name, Item));
+        }
+
         private List<string> ToKeyList(IPgAttributeCollection attributeCollection)
         {
             List<string> Result = new List<string>();
@@ -433,6 +450,11 @@
         {
             SpecialValueList.Clear();
             SpecialEffectList.Clear();
+        }
+
+        private void ResetOtherEffects()
+        {
+            OtherEffectList.Clear();
         }
         #endregion
 
@@ -449,6 +471,7 @@
             BasicAttackHealthModified = 0;
             BasicAttackArmorModified = 0;
             BasicAttackPowerModified = 0;
+            ModifiedDamageType = DamageType.Internal_None;
 
             OtherEffectList.Clear();
 
@@ -460,19 +483,71 @@
                 foreach (IPgDoT Item in DoTList)
                     OtherEffectList.Add(new OtherEffectDoT(Ability.Name, Item));
             }
+
+            foreach (OtherEffect OtherEffect in OtherEffectList)
+                OtherEffect.Reset();
+
+            foreach (AbilitySlotSpecialValue SpecialValue in SpecialValueList)
+                SpecialValue.Reset();
         }
 
-        public void RecalculateRaceMods(bool isFairyCharacter)
+        public void RecalculateMiscMods(int loreLevel)
         {
-            if (!isFairyCharacter)
+            IObjectDefinition SkillDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Skill)];
+            if (!SkillDefinition.ObjectTable.ContainsKey("Lore"))
                 return;
+            IPgSkill LoreSkill = SkillDefinition.ObjectTable["Lore"] as IPgSkill;
+            IPgAdvancementTable LoreAdvancementTable = LoreSkill.AdvancementTable;
 
-            if (AbilityDamageType == DamageType.Fire || AbilityDamageType == DamageType.Electricity || AbilityDamageType == DamageType.Darkness)
-                ModDamage += 0.01;
+            foreach (KeyValuePair<int, IPgAdvancement> Entry in LoreAdvancementTable.LevelTable)
+                if (Entry.Key <= loreLevel)
+                {
+                    IPgAdvancement Advancement = Entry.Value;
 
-            foreach (OtherEffect Item in OtherEffectList)
-                if (Item is OtherEffectDoT AsDot && AsDot.DamageType == DamageType.Fire)
-                    AsDot.AddBoostMultiplier(0.01);
+                    foreach (string Text in Advancement.DirectModList)
+                        RecalculateMiscModDirect(Text);
+                    foreach (string Text in Advancement.IndirectModList)
+                        RecalculateMiscModIndirect(Text);
+                }
+        }
+
+        public void RecalculateMiscModDirect(string text)
+        {
+            int EndDamageNameIndex = text.IndexOf(" Direct Damage");
+            int DataIndex = text.LastIndexOf(" ");
+
+            if (EndDamageNameIndex >= 0 && DataIndex > EndDamageNameIndex && text.EndsWith("%"))
+            {
+                if (ParseAttributeDamage(text.Substring(0, EndDamageNameIndex), out DamageType DamageType))
+                    if (AbilityDamageType == DamageType)
+                    {
+                        string DataText = text.Substring(DataIndex + 1, text.Length - DataIndex - 2);
+                        if (AbilityDamageType == DamageType && float.TryParse(DataText, NumberStyles.Float, CultureInfo.InvariantCulture, out float Value))
+                        {
+                            ModDamage += Value;
+                        }
+                    }
+            }
+        }
+
+        public void RecalculateMiscModIndirect(string text)
+        {
+            int EndDamageNameIndex = text.IndexOf(" Indirect Damage");
+            int DataIndex = text.LastIndexOf(" ");
+
+            if (EndDamageNameIndex >= 0 && DataIndex > EndDamageNameIndex && text.EndsWith("%"))
+            {
+                if (ParseAttributeDamage(text.Substring(0, EndDamageNameIndex), out DamageType DamageType))
+                {
+                    string DataText = text.Substring(DataIndex + 1, text.Length - DataIndex - 2);
+                    if (float.TryParse(DataText, NumberStyles.Float, CultureInfo.InvariantCulture, out float Value))
+                    {
+                        foreach (OtherEffect Item in OtherEffectList)
+                            if (Item is OtherEffectDoT AsDot && AsDot.DamageType == DamageType.Fire)
+                                AsDot.AddBoostMultiplier(0.01);
+                    }
+                }
+            }
         }
 
         public void RecalculateSuitMods(int metalArmorCount, int leatherArmorCount, int clothArmorCount, int organicArmorCount, bool isFairyCharacter)
@@ -583,7 +658,7 @@
         public bool ParseAttributeDamage(string text, out DamageType damageType)
         {
             foreach (KeyValuePair<DamageType, string> Entry in TextMaps.DamageTypeTextMap)
-                if (Entry.Value.ToUpperInvariant() == text)
+                if (Entry.Value.ToUpperInvariant() == text.ToUpperInvariant())
                 {
                     damageType = Entry.Key;
                     return true;

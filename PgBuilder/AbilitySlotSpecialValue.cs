@@ -56,6 +56,14 @@
                 return null;
         }
 
+        public void Reset()
+        {
+            DeltaValue = 0;
+            ModValue = 1.0;
+            ModBaseValue = 1.0;
+            NotifyPropertiesChanged();
+        }
+
         public void AddDelta(double value)
         {
             DeltaValue += value;

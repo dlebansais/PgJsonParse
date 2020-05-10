@@ -331,7 +331,8 @@
         public bool IsLargeView { get; private set; } = true;
         public bool IsSmallView { get { return !IsLargeView; } }
         public bool IsFairyCharacter { get; private set; }
-
+        public int LoreLevel { get; set; }
+        
         public string TitleText
         {
             get
@@ -1275,6 +1276,7 @@
         #region Settings
         private const string IsLargeViewName = "IsLargeView";
         private const string IsFairyCharacterName = "IsFairyCharacter";
+        private const string LoreLevelName = "LoreLevel";
         private const string LastBuildFileValueName = "LastBuildFile";
         
         private void LoadSettings()
@@ -1292,6 +1294,12 @@
 
                 Value = SettingKey?.GetValue(IsFairyCharacterName) as string;
                 IsFairyCharacter = (Value == "Yes");
+
+                Value = SettingKey?.GetValue(LoreLevelName) as string;
+                if (int.TryParse(Value, out int Level))
+                    LoreLevel = Level;
+                else
+                    LoreLevel = 0;
 
                 Value = SettingKey?.GetValue(LastBuildFileValueName) as string;
                 if (Value != null)
@@ -1313,6 +1321,7 @@
 
                 SettingKey?.SetValue(IsLargeViewName, IsLargeView ? "Yes" : "No", RegistryValueKind.String);
                 SettingKey?.SetValue(IsFairyCharacterName, IsFairyCharacter ? "Yes" : "No", RegistryValueKind.String);
+                SettingKey?.SetValue(LoreLevelName, LoreLevel.ToString(), RegistryValueKind.String);
                 SettingKey?.SetValue(LastBuildFileValueName, LastBuildFile, RegistryValueKind.String);
             }
             catch
@@ -1357,7 +1366,7 @@
                 RecalculateSlotMods(Item);
 
             RecalculateSuitMods();
-            RecalculateRaceMods();
+            RecalculateMiscMods();
         }
 
         private void RecalculateSuitMods()
@@ -1374,13 +1383,13 @@
                 Item.RecalculateSuitMods(MetalArmorCount, LeatherArmorCount, ClothArmorCount, OrganicArmorCount, IsFairyCharacter);
         }
 
-        private void RecalculateRaceMods()
+        private void RecalculateMiscMods()
         {
             foreach (AbilitySlot Item in AbilitySlot1List)
-                Item.RecalculateRaceMods(IsFairyCharacter);
+                Item.RecalculateMiscMods(LoreLevel);
 
             foreach (AbilitySlot Item in AbilitySlot2List)
-                Item.RecalculateRaceMods(IsFairyCharacter);
+                Item.RecalculateMiscMods(LoreLevel);
         }
 
         private int ArmorTypeCount(ItemKeyword keyword)

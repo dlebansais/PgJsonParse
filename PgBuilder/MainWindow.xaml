@@ -178,6 +178,10 @@
                         <TextBlock FontWeight="Bold">Accuracy:</TextBlock>
                         <TextBlock Text="{Binding Accuracy.AsString}" Foreground="{Binding Accuracy.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsConsumingAmmo, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Consumes:</TextBlock>
+                        <TextBlock Text="{Binding AmmoName}" Margin="5,0,0,0"/>
+                    </StackPanel>
                     <ItemsControl ItemsSource="{Binding SpecialValueList}" ItemTemplate="{StaticResource SpecialValueTemplate}"/>
                     <ItemsControl ItemsSource="{Binding SpecialEffectList}" ItemTemplate="{StaticResource SpecialEffectTemplate}"/>
                     <TextBlock FontWeight="Bold" Visibility="{Binding IsNiceAttack, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">This is a Nice Attack.</TextBlock>
@@ -344,8 +348,13 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <CheckBox IsChecked="{Binding IsFairyCharacter, Mode=OneWay}" Checked="OnFairyCharacterChecked" Unchecked="OnFairyCharacterUnchecked" Margin="0,0,0,0">Fairy character</CheckBox>
+                        <CheckBox Grid.Row="0" IsChecked="{Binding IsFairyCharacter, Mode=OneWay}" Checked="OnFairyCharacterChecked" Unchecked="OnFairyCharacterUnchecked" Margin="0,0,0,0">Fairy character</CheckBox>
+                        <DockPanel Grid.Row="1" Margin="0,0,0,0">
+                            <TextBlock VerticalAlignment="Center" Margin="0,0,5,0">Lore Level:</TextBlock>
+                            <TextBox Text="{Binding LoreLevel}" VerticalAlignment="Center"/>
+                        </DockPanel>
                     </Grid>
                 </GroupBox>
             </Grid>
