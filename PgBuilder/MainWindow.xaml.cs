@@ -19,7 +19,7 @@
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Constants
-        const int AnalyzedVersion = 334;
+        const int BUILDER_VERSION = 334;
         #endregion
 
         #region Init
@@ -34,7 +34,7 @@
             FillAbilitySlotList();
             InitPowerKeyToCompleteEffectTable();
 
-            if (Version > AnalyzedVersion)
+            if (Version > BUILDER_VERSION)
             {
                 Parser Parser = new Parser();
 
@@ -338,7 +338,7 @@
             get
             {
                 string LastBuildFileInfo = (LastBuildFile != null) ? $" - {LastBuildFile}" : string.Empty;
-                return $"Project: Gorgon - Builder{LastBuildFileInfo} - Downloaded content (version {AnalyzedVersion}) copyright © 2017, Elder Game, LLC";
+                return $"Project: Gorgon - Builder{LastBuildFileInfo} - Downloaded content (version {BUILDER_VERSION}) copyright © 2017, Elder Game, LLC";
             }
         }
         #endregion

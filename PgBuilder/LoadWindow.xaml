@@ -1,0 +1,11 @@
+﻿<Window x:Class="PgBuilder.LoadWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Topmost="True"
+        SizeToContent="WidthAndHeight">
+    <Border>
+        <TextBlock Margin="10,5,10,10">Loading, please wait...</TextBlock>
+    </Border>
+</Window>

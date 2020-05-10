@@ -868,6 +868,7 @@
 
         private void RecalculateModPowerCost(double attributeEffect)
         {
+            PowerCost.SetMultiplier(attributeEffect);
         }
 
         private void RecalculateDeltaResetTime(double attributeEffect)

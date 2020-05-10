@@ -70,6 +70,9 @@
     <Compile Include="GameCombatSkill.cs" />
     <Compile Include="GameDamageType.cs" />
     <Compile Include="GearSlot.cs" />
+    <Compile Include="LoadWindow.xaml.cs">
+      <DependentUpon>LoadWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ModEffect.cs" />
     <Compile Include="NumericValue.cs" />
     <Compile Include="OtherEffect.cs" />
@@ -82,6 +85,10 @@
     <Compile Include="Selectors\ItemEffectTemplateSelector.cs" />
     <Compile Include="Sentence.cs" />
     <Compile Include="SignInterpretation.cs" />
+    <Page Include="LoadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
