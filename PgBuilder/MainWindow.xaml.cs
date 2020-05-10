@@ -19,7 +19,8 @@
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Constants
-        const int BUILDER_VERSION = 334;
+        public static int BUILDER_VERSION = 334;
+        public static bool RUN_PARSER = false;
         #endregion
 
         #region Init
@@ -28,26 +29,33 @@
             InitializeComponent();
             DataContext = this;
 
-            LoadCachedData(out int Version);
-            FillSkillList();
-            FillGearSlotList();
-            FillAbilitySlotList();
-            InitPowerKeyToCompleteEffectTable();
-
-            if (Version > BUILDER_VERSION)
+            if (!LoadCachedData(BUILDER_VERSION))
             {
-                Parser Parser = new Parser();
-
-                List<ItemSlot> ValidSlotList = new List<ItemSlot>();
-                foreach (GearSlot Item in GearSlotList)
-                    ValidSlotList.Add(Item.Slot);
-
-                Parser.AnalyzeCachedData(Version, ValidSlotList, SkillList, PowerKeyToCompleteEffectTable);
+                MessageBox.Show($"This application can only use the data cache for version {BUILDER_VERSION}.");
+                Close();
             }
+            else
+            {
+                FillSkillList();
+                FillGearSlotList();
+                FillAbilitySlotList();
+                InitPowerKeyToCompleteEffectTable();
 
-            LoadSettings();
+                if (RUN_PARSER)
+                {
+                    Parser Parser = new Parser();
 
-            Closed += OnClosed;
+                    List<ItemSlot> ValidSlotList = new List<ItemSlot>();
+                    foreach (GearSlot Item in GearSlotList)
+                        ValidSlotList.Add(Item.Slot);
+
+                    Parser.AnalyzeCachedData(BUILDER_VERSION, ValidSlotList, SkillList, PowerKeyToCompleteEffectTable);
+                }
+
+                LoadSettings();
+
+                Closed += OnClosed;
+            }
         }
 
         private void InitPowerKeyToCompleteEffectTable()
@@ -191,30 +199,38 @@
             */
         }
 
-        private Dictionary<string, ModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, ModEffect>();
+        public Dictionary<string, ModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, ModEffect>();
         #endregion
 
         #region Data Load
-        public void LoadCachedData(out int version)
+        public bool LoadCachedData(int version)
         {
             string UserRootFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string ApplicationFolder = Path.Combine(UserRootFolder, "PgJsonParse");
             string VersionCacheFolder = Path.Combine(ApplicationFolder, "Versions");
 
-            version = 0;
             string[] VersionFolders = Directory.GetDirectories(VersionCacheFolder);
+            bool IsFound = false;
             foreach (string Item in VersionFolders)
-                if (int.TryParse(Path.GetFileName(Item), out int VersionValue) && version < VersionValue)
-                    version = VersionValue;
+                if (int.TryParse(Path.GetFileName(Item), out int VersionValue) && VersionValue == version)
+                {
+                    IsFound = true;
+                    break;
+                }
 
-            string VersionFolder = Path.Combine(VersionCacheFolder, version.ToString());
-            string IconCacheFolder = Path.Combine(ApplicationFolder, "Shared Icons");
-            IconFolder = IconCacheFolder;
+            if (IsFound)
+            {
+                string VersionFolder = Path.Combine(VersionCacheFolder, version.ToString());
+                string IconCacheFolder = Path.Combine(ApplicationFolder, "Shared Icons");
+                IconFolder = IconCacheFolder;
 
-            LoadCachedData(VersionFolder, IconCacheFolder);
+                return LoadCachedData(VersionFolder, IconCacheFolder);
+            }
+            else
+                return false;
         }
 
-        public void LoadCachedData(string versionFolder, string iconFolder)
+        public bool LoadCachedData(string versionFolder, string iconFolder)
         {
             try
             {
@@ -223,12 +239,16 @@
                 {
                     byte[] Data = LoadBinaryFile(CacheFileName);
                     DeserializeAll(versionFolder, iconFolder, Data);
+
+                    return true;
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
+
+            return false;
         }
 
         private void DeserializeAll(string versionFolder, string iconFolder, byte[] data)
@@ -1334,20 +1354,13 @@
         private void RecalculateMods()
         {
             if (RecalculateOperation == null || RecalculateOperation.Status == DispatcherOperationStatus.Completed)
-            {
-                Debug.WriteLine("Scheduling recalculate");
                 RecalculateOperation = Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(RecalculateModsNow));
-            }
-            else
-                Debug.WriteLine("Skipping recalculate");
         }
 
         private void RecalculateModsNow()
         {
-            Debug.WriteLine("Starting recalculate");
             ResetAllMods();
             RecalculateAllMods();
-            Debug.WriteLine("Done with recalculate");
             RecalculateModEnd();
         }
 

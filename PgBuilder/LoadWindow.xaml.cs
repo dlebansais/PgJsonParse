@@ -20,8 +20,11 @@
             MainWindow Dlg = new MainWindow();
             this.Close();
 
-            App.Current.MainWindow = Dlg;
-            Dlg.Show();
+            if (Dlg.PowerKeyToCompleteEffectTable.Count > 0)
+            {
+                App.Current.MainWindow = Dlg;
+                Dlg.Show();
+            }
         }
     }
 }
