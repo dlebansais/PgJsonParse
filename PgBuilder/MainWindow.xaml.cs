@@ -357,7 +357,7 @@
         {
             get
             {
-                string LastBuildFileInfo = (LastBuildFile != null) ? $" - {LastBuildFile}" : string.Empty;
+                string LastBuildFileInfo = string.IsNullOrEmpty(LastBuildFile) ? string.Empty : $" - {LastBuildFile}";
                 return $"Project: Gorgon - Builder{LastBuildFileInfo} - Downloaded content (version {BUILDER_VERSION}) copyright © 2017, Elder Game, LLC";
             }
         }

@@ -10,7 +10,7 @@
         Title="{Binding TitleText}"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <conv:BooleanToObjectConverter x:Key="convBooleanToObject"/>
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
