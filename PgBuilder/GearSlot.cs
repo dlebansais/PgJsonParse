@@ -132,12 +132,16 @@
 
         public void SetSelectedItem(string key)
         {
+            SelectedItemIndex = -1;
+
             foreach (ItemInfo Item in ItemList)
                 if (Item.ItemKey == key)
                 {
                     SelectedItemIndex = ItemList.IndexOf(Item);
-                    NotifyPropertiesChanged();
+                    break;
                 }
+
+            NotifyPropertiesChanged();
         }
 
         public void ResetItem()
@@ -181,6 +185,13 @@
         public void ResetMods()
         {
             ModList.Clear();
+        }
+        #endregion
+
+        #region Debugging
+        public override string ToString()
+        {
+            return Name;
         }
         #endregion
 

@@ -167,6 +167,28 @@
                         Debug.WriteLine($"Ability \"{ItemAbility.Name}\", special value \"{Label}\"...\"{Suffix}\" has no counterpart");
                 }
             }*/
+
+            /*
+            string LastToDisplay = string.Empty;
+            foreach (KeyValuePair<string, List<CombatEffect>> Entry in PowerKeyToCompleteEffect.StaticCombatEffectList)
+            {
+                List<AbilityKeyword> AssociatedAbilityKeywordList = PowerKeyToCompleteEffect.AbilityList[Entry.Key];
+
+                int CountDamageBoost = 0;
+                foreach (CombatEffect CombatEffect in Entry.Value)
+                {
+                    CombatKeyword Keyword = CombatEffect.Keyword;
+                    if (Keyword == CombatKeyword.DamageBoost)
+                        CountDamageBoost++;
+                }
+
+                if (CountDamageBoost > 1 && Entry.Key[Entry.Key.Length - 1] == '3')
+                {
+                    string ListString = Parser.CombatEffectListToString(Entry.Value);
+                    Debug.WriteLine($"{Entry.Key}: {ListString}");
+                }
+            }
+            */
         }
 
         private Dictionary<string, ModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, ModEffect>();
@@ -379,8 +401,8 @@
             GearSlotList.Add(new GearSlot("Head", ItemSlot.Head));
             GearSlotList.Add(new GearSlot("Chest", ItemSlot.Chest));
             GearSlotList.Add(new GearSlot("Legs", ItemSlot.Legs));
-            GearSlotList.Add(new GearSlot("Hands", ItemSlot.Hands));
             GearSlotList.Add(new GearSlot("Feet", ItemSlot.Feet));
+            GearSlotList.Add(new GearSlot("Hands", ItemSlot.Hands));
             GearSlotList.Add(new GearSlot("Neck", ItemSlot.Necklace));
             GearSlotList.Add(new GearSlot("Ring", ItemSlot.Ring));
             GearSlotList.Add(new GearSlot("Racial", ItemSlot.Racial));
@@ -1335,6 +1357,7 @@
                 RecalculateSlotMods(Item);
 
             RecalculateSuitMods();
+            RecalculateRaceMods();
         }
 
         private void RecalculateSuitMods()
@@ -1349,6 +1372,15 @@
 
             foreach (AbilitySlot Item in AbilitySlot2List)
                 Item.RecalculateSuitMods(MetalArmorCount, LeatherArmorCount, ClothArmorCount, OrganicArmorCount, IsFairyCharacter);
+        }
+
+        private void RecalculateRaceMods()
+        {
+            foreach (AbilitySlot Item in AbilitySlot1List)
+                Item.RecalculateRaceMods(IsFairyCharacter);
+
+            foreach (AbilitySlot Item in AbilitySlot2List)
+                Item.RecalculateRaceMods(IsFairyCharacter);
         }
 
         private int ArmorTypeCount(ItemKeyword keyword)

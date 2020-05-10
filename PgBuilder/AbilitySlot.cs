@@ -101,28 +101,18 @@
         public bool HasAbilityNormalDamage { get { return Ability != null && Ability.PvE.RawDamage != null; } }
         public bool HasAbilityHealthDamage { get { return Ability != null && Ability.PvE.RawHealthSpecificDamage != null; } }
         public int BaseValueDamage { get { return Ability != null ? (Ability.PvE.RawHealthSpecificDamage != null ? Ability.PvE.HealthSpecificDamage : Ability.PvE.Damage): 0; } }
-        public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(BaseValueDamage, DeltaDamage, ModDamage, ModBaseDamage, ModCriticalDamage) : 0; } }
+        public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(BaseValueDamage, DeltaDamage, ModDamage, ModBaseDamage, BoostDamage, ModCriticalDamage) : 0; } }
 
         public string AbilityDamage { get { return Ability != null ? ModifiedAbilityDamage.ToString() : string.Empty; } }
         public bool? AbilityDamageModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityDamage - BaseValueDamage) : null; } }
         private int DeltaDamage;
-        private double DirectDamageMultiplier;
         private double ModDamage;
         private double ModBaseDamage;
+        private double BoostDamage;
         private double ModCriticalDamage;
 
-        public string AbilityDamageType
-        { 
-            get 
-            {
-                if (Ability == null)
-                    return string.Empty;
-
-                DamageType DamageType = ModifiedDamageType == DamageType.Internal_None ? Ability.DamageType : ModifiedDamageType;
-
-                return TextMaps.DamageTypeTextMap[DamageType];
-            }
-        }
+        public string AbilityDamageTypeString { get { return (Ability != null) ? TextMaps.DamageTypeTextMap[AbilityDamageType] : string.Empty; } }
+        public DamageType AbilityDamageType { get { return ModifiedDamageType == DamageType.Internal_None ? Ability.DamageType : ModifiedDamageType; } }
         public bool AbilityDamageTypeModified { get { return ModifiedDamageType != DamageType.Internal_None; } }
         private DamageType ModifiedDamageType = DamageType.Internal_None;
 
@@ -294,6 +284,7 @@
             NotifyPropertyChanged(nameof(AbilityDamageModified));
 
             NotifyPropertyChanged(nameof(AbilityDamageType));
+            NotifyPropertyChanged(nameof(AbilityDamageTypeString));
             NotifyPropertyChanged(nameof(AbilityDamageTypeModified));
 
             NotifyPropertyChanged(nameof(HasAbilityDamageVulnerable));
@@ -450,12 +441,11 @@
         {
             ModifierList.ForEach((AbilityModifier modifier) => modifier.Reset());
 
-            if (Ability != null && Ability.Name.StartsWith("You Were")) Debug.WriteLine("DeltaDamage = 0");
             DeltaDamage = 0;
             ModDamage = 0;
             ModBaseDamage = 0;
+            BoostDamage = 0;
             ModCriticalDamage = 1.0;
-            DirectDamageMultiplier = 1.0;
             BasicAttackHealthModified = 0;
             BasicAttackArmorModified = 0;
             BasicAttackPowerModified = 0;
@@ -468,8 +458,21 @@
 
                 IList<IPgDoT> DoTList = Ability.PvE.DoTList;
                 foreach (IPgDoT Item in DoTList)
-                    OtherEffectList.Add(new OtherEffectDoT(Item));
+                    OtherEffectList.Add(new OtherEffectDoT(Ability.Name, Item));
             }
+        }
+
+        public void RecalculateRaceMods(bool isFairyCharacter)
+        {
+            if (!isFairyCharacter)
+                return;
+
+            if (AbilityDamageType == DamageType.Fire || AbilityDamageType == DamageType.Electricity || AbilityDamageType == DamageType.Darkness)
+                ModDamage += 0.01;
+
+            foreach (OtherEffect Item in OtherEffectList)
+                if (Item is OtherEffectDoT AsDot && AsDot.DamageType == DamageType.Fire)
+                    AsDot.AddBoostMultiplier(0.01);
         }
 
         public void RecalculateSuitMods(int metalArmorCount, int leatherArmorCount, int clothArmorCount, int organicArmorCount, bool isFairyCharacter)
@@ -502,7 +505,7 @@
 
         public void ApplyMetalSuitPenalty(double penalty)
         {
-            DirectDamageMultiplier -= penalty;
+            ModDamage -= penalty;
         }
 
         public void ApplySuitEffect(string key)
@@ -543,11 +546,8 @@
             RecalculateDeltaResetTime(-3.0);
         }
 
-        public void RecalculateMods(string key, float attributeEffect)
+        public bool RecalculateSpecificAttributes(string key, float attributeEffect)
         {
-            if (IsEmpty)
-                return;
-
             switch (key)
             {
                 case "COMBAT_REFRESH_HEALTH_DELTA":
@@ -562,57 +562,209 @@
                 case "ACCURACY_BOOST":
                     RecalculateDeltaAccuracy(attributeEffect * 100);
                     break;
+                case "BOOST_UNIVERSAL_DIRECT":
+                    RecalculateDeltaDamage(attributeEffect);
+                    break;
+                case "BOOST_UNIVERSAL_INDIRECT":
+                    IndirectDeltaDamage(attributeEffect);
+                    break;
+                case "BOOST_UNIVERSAL":
+                    RecalculateDeltaDamage(attributeEffect);
+                    IndirectDeltaDamage(attributeEffect);
+                    break;
+
+                default:
+                    return false;
             }
 
+            return true;
+        }
+
+        public bool ParseAttributeDamage(string text, out DamageType damageType)
+        {
+            foreach (KeyValuePair<DamageType, string> Entry in TextMaps.DamageTypeTextMap)
+                if (Entry.Value.ToUpperInvariant() == text)
+                {
+                    damageType = Entry.Key;
+                    return true;
+                }
+
+            damageType = DamageType.Internal_None;
+            return false;
+        }
+
+        public bool RecalculateGenericAttributes(string key, float attributeEffect)
+        {
+            DamageType DamageType;
+
+            if (key.StartsWith("MOD_"))
+            {
+                if (key.EndsWith("_DIRECT"))
+                {
+                    if (ParseAttributeDamage(key.Substring(4, key.Length - 7 - 4), out DamageType))
+                    {
+                        if (DamageType == AbilityDamageType)
+                            RecalculateModDamage(attributeEffect);
+                    }
+                }
+                else if (key.EndsWith("_INDIRECT"))
+                {
+                    if (ParseAttributeDamage(key.Substring(4, key.Length - 9 - 4), out DamageType))
+                    {
+                        IndirectModDamage(attributeEffect, DamageType);
+                    }
+                }
+                else if (ParseAttributeDamage(key.Substring(4, key.Length - 4), out DamageType))
+                {
+                    if (DamageType == AbilityDamageType)
+                        RecalculateModDamage(attributeEffect);
+
+                    IndirectModDamage(attributeEffect, DamageType);
+                }
+            }
+            else if (key.StartsWith("BOOST_"))
+            {
+                if (key.EndsWith("_DIRECT"))
+                {
+                    if (ParseAttributeDamage(key.Substring(6, key.Length - 7 - 6), out DamageType))
+                    {
+                        DirectDeltaDamage(attributeEffect);
+                    }
+                }
+                else if (key.EndsWith("_INDIRECT"))
+                {
+                    if (ParseAttributeDamage(key.Substring(6, key.Length - 9 - 6), out DamageType))
+                    {
+                        if (DamageType == AbilityDamageType)
+                            IndirectDeltaDamage(attributeEffect);
+                    }
+                }
+                else if (ParseAttributeDamage(key.Substring(6, key.Length - 6), out DamageType))
+                {
+                    if (DamageType == AbilityDamageType)
+                    {
+                        DirectDeltaDamage(attributeEffect);
+                        IndirectDeltaDamage(attributeEffect);
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public void RecalculateMods(string key, float attributeEffect)
+        {
+            if (IsEmpty)
+                return;
+
+            if (RecalculateSpecificAttributes(key, attributeEffect))
+                return;
+
+            bool IsHandled = false;
+
             if (HasAttributeKey(Ability.AttributesThatModAmmoConsumeChanceList, key))
+            {
                 RecalculateModAmmoConsumeChance(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.AttributesThatDeltaDelayLoopTimeList, key))
+            {
                 RecalculateDeltaDelayLoopTime(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.AttributesThatDeltaPowerCostList, key))
+            {
                 RecalculateDeltaPowerCost(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.AttributesThatDeltaResetTimeList, key))
+            {
                 RecalculateDeltaResetTime(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.AttributesThatModPowerCostList, key))
+            {
                 RecalculateModPowerCost(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatDeltaDamageList, key))
+            {
                 RecalculateDeltaDamage(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatModDamageList, key))
+            {
                 RecalculateModDamage(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatModBaseDamageList, key))
+            {
                 RecalculateModBaseDamage(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatDeltaTauntList, key))
+            {
                 RecalculateDeltaTaunt(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatModTauntList, key))
+            {
                 RecalculateModTaunt(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatDeltaRageList, key))
+            {
                 RecalculateDeltaRage(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatModRageList, key))
-                RecalculateModRage(attributeEffect *100);
+            {
+                RecalculateModRage(attributeEffect * 100);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatDeltaRangeList, key))
+            {
                 RecalculateDeltaRange(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatDeltaAccuracyList, key))
+            {
                 RecalculateDeltaAccuracy(attributeEffect);
+                IsHandled = true;
+            }
 
             if (HasAttributeKey(Ability.PvE.AttributesThatModCritDamageList, key))
+            {
                 RecalculateModCriticalDamage(attributeEffect);
+                IsHandled = true;
+            }
 
             foreach (AbilitySlotSpecialValue Item in SpecialValueList)
             {
                 if (Item.AttributesThatDeltaList.Contains(key))
+                {
                     Item.AddDelta(attributeEffect);
+                    IsHandled = true;
+                }
+            }
+
+            if (RecalculateGenericAttributes(key, attributeEffect))
+            {
+                if (IsHandled)
+                    Debug.WriteLine("ATTRIBUTE HANDLED TWICE!");
             }
         }
 
@@ -650,8 +802,26 @@
 
         private void RecalculateDeltaDamage(double attributeEffect)
         {
-            if (Ability != null && Ability.Name.StartsWith("You Were")) Debug.WriteLine($"DeltaDamage += {(int)attributeEffect}");
             DeltaDamage += (int)attributeEffect;
+        }
+
+        private void IndirectDeltaDamage(double attributeEffect)
+        {
+            foreach (OtherEffect Item in OtherEffectList)
+                if (Item is OtherEffectDoT AsDot)
+                    AsDot.AddDelta(attributeEffect);
+        }
+
+        private void DirectDeltaDamage(double attributeEffect)
+        {
+            BoostDamage += attributeEffect;
+        }
+
+        private void IndirectModDamage(double attributeEffect, DamageType damagetype)
+        {
+            foreach (OtherEffect Item in OtherEffectList)
+                if (Item is OtherEffectDoT AsDot && AsDot.DamageType == damagetype)
+                    AsDot.AddMultiplier(attributeEffect);
         }
 
         private void RecalculateModDamage(double attributeEffect)
@@ -706,6 +876,19 @@
             if (Ability == null)
                 return;
 
+            List<CombatEffect> StaticCombatEffectList = modEffect.StaticCombatEffectList;
+
+            if (Ability.KeywordList.Contains(AbilityKeyword.BasicAttack))
+            {
+                foreach (CombatEffect Item in StaticCombatEffectList)
+                    if (Item.Keyword == CombatKeyword.CombatRefreshRestoreHeatlth)
+                    {
+                        if (Item.Data.IsValueSet)
+                            BasicAttackHealthModified += Item.Data.Value;
+                        break;
+                    }
+            }
+
             bool IsAbilityModified = false;
             foreach (AbilityKeyword Keyword in modEffect.AbilityList)
                 if (Ability.KeywordList.Contains(Keyword))
@@ -717,9 +900,14 @@
             if (!IsAbilityModified)
                 return;
 
-            List<CombatEffect> StaticCombatEffectList = modEffect.StaticCombatEffectList;
+            int DamageBoostCount = 0;
             foreach (CombatEffect Item in StaticCombatEffectList)
-                AddEffect(modEffect, Item);
+                if (Item.Keyword == CombatKeyword.DamageBoost)
+                    DamageBoostCount++;
+
+            bool IsFirstDamageBoost = true;
+            foreach (CombatEffect Item in StaticCombatEffectList)
+                AddEffect(modEffect, Item, DamageBoostCount, ref IsFirstDamageBoost);
 
             string EffectKey = modEffect.EffectKey;
 
@@ -761,7 +949,7 @@
             return false;
         }
 
-        public void AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, double deltaValue, bool hasRecurrence)
+        public bool AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, double deltaValue, bool hasRecurrence)
         {
             List<KeyValuePair<string, string>> VerificationTable;
 
@@ -796,6 +984,8 @@
 
             //if (!IsFound && VerificationTable.Count > 0)
             //    Debug.WriteLine("Special value not found!");
+
+            return IsFound;
         }
 
         private DamageType ToDamageType(GameDamageType type)
@@ -830,7 +1020,7 @@
                 return DamageType.Internal_None;
         }
 
-        public void AddEffect(ModEffect modEffect, CombatEffect combatEffect)
+        public void AddEffect(ModEffect modEffect, CombatEffect combatEffect, int damageBoostCount, ref bool isFirstDamageBoost)
         {
             if (HasSituationalModifier(modEffect.StaticCombatEffectList))
                 return;
@@ -882,6 +1072,9 @@
                         RecalculateDeltaDelayLoopTime(combatEffect.Data.Value);
                     break;
 
+                case CombatKeyword.CombatRefreshRestoreHeatlth:
+                    break;
+
                 case CombatKeyword.RestoreHealth:
                 case CombatKeyword.RestorePower:
                 case CombatKeyword.RestoreArmor:
@@ -909,7 +1102,6 @@
                 case CombatKeyword.AddSprintSpeed:
                 case CombatKeyword.EffectDurationMinute:
                 case CombatKeyword.AddMaxHealth:
-                case CombatKeyword.CombatRefreshRestoreHeatlth:
                 case CombatKeyword.ResetOtherAbilityTimer:
                 case CombatKeyword.AddMaxArmor:
                 case CombatKeyword.DamageBoostAgainstSpecie:
@@ -964,29 +1156,58 @@
                 case CombatKeyword.DamageBoost:
                     if (combatEffect.Data.IsValueSet)
                     {
-                        if (modEffect.AbilityList.Count > 0)
-                        {
-                            bool IsConcerned = false;
-                            foreach (AbilityKeyword Item in modEffect.AbilityList)
-                                if (Ability.KeywordList.Contains(Item))
-                                {
-                                    IsConcerned = true;
-                                    break;
-                                }
+                        bool IsHandled = false;
+                        if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
+                            IsHandled  = AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
 
-                            if (IsConcerned)
+                        if (!IsHandled)
+                            if (modEffect.AbilityList.Count > 0)
                             {
-                                if (combatEffect.Data.IsPercent)
-                                    RecalculateModDamage(combatEffect.Data.Value / 100.0);
-                                else
-                                    RecalculateDeltaDamage(combatEffect.Data.Value);
+                                bool IsConcerned = false;
+                                foreach (AbilityKeyword Item in modEffect.AbilityList)
+                                    if (Ability.KeywordList.Contains(Item))
+                                    {
+                                        IsConcerned = true;
+                                        break;
+                                    }
+
+                                if (IsConcerned)
+                                {
+                                    if (damageBoostCount < 2 || !isFirstDamageBoost)
+                                    {
+                                        DamageType DamageType = ToDamageType(combatEffect.DamageType);
+                                        bool RequireNoAggro = false;
+
+                                        foreach (CombatEffect Item in modEffect.StaticCombatEffectList)
+                                            if (Item.Keyword == CombatKeyword.RequireNoAggro)
+                                                RequireNoAggro = true;
+
+                                        foreach (OtherEffect Item in OtherEffectList)
+                                            if (Item is OtherEffectDoT AsDot && AsDot.IsDisplayable)
+                                            {
+                                                if ((AsDot.DamageType == DamageType || DamageType == DamageType.Internal_None) && AsDot.RequireNoAggro == RequireNoAggro)
+                                                {
+                                                    if (combatEffect.Data.IsPercent)
+                                                        AsDot.AddBoostMultiplier(combatEffect.Data.Value / 100.0);
+                                                    else
+                                                        AsDot.AddDelta(combatEffect.Data.Value);
+                                                    IsHandled = true;
+                                                    break;
+                                                }
+                                            }
+                                    }
+
+                                    if (!IsHandled)
+                                    {
+                                        if (combatEffect.Data.IsPercent)
+                                            RecalculateModDamage(combatEffect.Data.Value / 100.0);
+                                        else
+                                            RecalculateDeltaDamage(combatEffect.Data.Value);
+                                    }
+                                }
                             }
-                        }
-                        else
-                        {
-                            if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
-                                AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
-                        }
+
+                        isFirstDamageBoost = false;
                     }
                     break;
 

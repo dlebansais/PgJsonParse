@@ -10,7 +10,7 @@
     {
         #region Data Analysis
         bool WriteFile = true;
-        bool CompareTable = false;
+        bool CompareTable = true;
 
         public void AnalyzeCachedData(int version, List<ItemSlot> validSlotList, List<IPgSkill> skillList, Dictionary<string, ModEffect> existingPowerKeyToCompleteEffectTable)
         {
@@ -215,6 +215,10 @@
             string Key = power.Key;
             Debug.Assert(Key.Length >= 9);
 
+            if (Key == "power_16004")
+            {
+            }
+
             string PowerKey = Key.Substring(Key.Length - 3);
             if (!allEffectTable.ContainsKey(PowerKey))
                 return false;
@@ -318,6 +322,9 @@
                 EffectIconList.Add(108);
 
             if (AbilityKeywordList.Contains(AbilityKeyword.Unarmed) && power.RawSkill == PowerSkill.Unarmed)
+                EffectIconList.Add(108);
+
+            if (AbilityKeywordList.Contains(AbilityKeyword.Knife) && power.RawSkill == PowerSkill.Knife)
                 EffectIconList.Add(108);
 
             if (AbilityKeywordList.Contains(AbilityKeyword.Melee))
@@ -1270,7 +1277,7 @@
             //DisplayParsingResult(powerToEffectTable);
         }
 
-        private string CombatEffectListToString(List<CombatEffect> combatEffectList)
+        public static string CombatEffectListToString(List<CombatEffect> combatEffectList)
         {
             string CombatEffectListString = string.Empty;
 
@@ -1292,7 +1299,7 @@
             return CombatEffectListString;
         }
 
-        private string CombatEffectToString(CombatEffect combatEffect)
+        public static string CombatEffectToString(CombatEffect combatEffect)
         {
             string CombatEffectString;
 
