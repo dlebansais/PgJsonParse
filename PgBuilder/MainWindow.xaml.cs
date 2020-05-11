@@ -206,8 +206,16 @@
         public bool LoadCachedData(int version)
         {
             string UserRootFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (!Directory.Exists(UserRootFolder))
+                return false;
+
             string ApplicationFolder = Path.Combine(UserRootFolder, "PgJsonParse");
+            if (!Directory.Exists(ApplicationFolder))
+                return false;
+
             string VersionCacheFolder = Path.Combine(ApplicationFolder, "Versions");
+            if (!Directory.Exists(VersionCacheFolder))
+                return false;
 
             string[] VersionFolders = Directory.GetDirectories(VersionCacheFolder);
             bool IsFound = false;
