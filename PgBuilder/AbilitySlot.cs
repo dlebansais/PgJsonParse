@@ -1003,7 +1003,7 @@
 
         public void RecalculateModEnd()
         {
-            if (Ability != null && (Ability.DamageType == DamageType.Fire || ModifiedDamageType == DamageType.Fire))
+            if (Ability != null && Ability.DamageType != DamageType.Fire && ModifiedDamageType == DamageType.Fire)
                 RageMultiplier.SetMultiplier(2.0);
             else
                 RageMultiplier.SetMultiplier(1.0);

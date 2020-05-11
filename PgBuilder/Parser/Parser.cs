@@ -881,11 +881,16 @@
                 case CombatKeyword.ReflectOnMelee:
                 case CombatKeyword.ReflectOnRanged:
                 case CombatKeyword.ReflectMeleeIndirectDamage:
+                case CombatKeyword.AddCombatRefreshTimer:
                     VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
                     break;
 
                     //VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true, true);
                     //break;
+
+                // Ignored
+                case CombatKeyword.But:
+                    break;
 
                 default:
                     Debug.WriteLine($"Unexpected keyword to verify: {combatEffect.Keyword}");
@@ -1258,7 +1263,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_4031")
+                if (Entry.Key.Key == "power_5062")
                 {
                 }
 
@@ -1600,6 +1605,9 @@
             BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels Ice Armor", "Fire damage no longer dispels");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels your Ice Armor", "Fire damage no longer dispels");
+
+            if (!modText.Contains("But I Love You"))
+                ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
         }
 
         private void BasicTextReplace(ref string modText, ref string effectText, string oldText, string newText)
@@ -2083,6 +2091,7 @@
             if (ExtractedKeywordList.Count > 0)
             {
                 text = ModifiedText;
+                bool IsDataSaved = false;
 
                 foreach (CombatKeyword Item in ExtractedKeywordList)
                 {
@@ -2090,8 +2099,16 @@
                         continue;
 
                     CombatEffect ExtractedCombatEffect;
-                    if (extractedCombatEffectList.Count == 0)
-                        ExtractedCombatEffect = new CombatEffect(Item, Data1, DamageType, CombatSkill);
+                    if (!IsDataSaved)
+                    {
+                        if (Item == CombatKeyword.But)
+                            ExtractedCombatEffect = new CombatEffect(Item);
+                        else
+                        {
+                            ExtractedCombatEffect = new CombatEffect(Item, Data1, DamageType, CombatSkill);
+                            IsDataSaved = true;
+                        }
+                    }
                     else
                         ExtractedCombatEffect = new CombatEffect(Item);
 
@@ -2584,6 +2601,9 @@
             modText = modText.Replace("Indirect Nature and Indirect Electricity damage", "Indirect Nature and Electricity damage");
             modText = modText.Replace(", but the ability's range is reduced to 12m", ", but range is reduced 18 meter");
             modText = modText.Replace("When you teleport via Shadow Feint", "When you teleport");
+
+            if (!modText.Contains("But I Love You"))
+                ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
         }
         #endregion
 
@@ -2723,7 +2743,7 @@
             new Sentence("#D Vulnerability %f", CombatKeyword.AddVulnerability),
             new Sentence("%f more damage from any #D attack", CombatKeyword.AddVulnerability),
             new Sentence("Take %f damage from both #D", CombatKeyword.AddVulnerability),
-            new Sentence("But take %f damage from any #D attack", CombatKeyword.AddVulnerability),
+            new Sentence("B*u*t take %f damage from any #D attack", new List<CombatKeyword>() { CombatKeyword.But, CombatKeyword.AddVulnerability }),
             new Sentence("#D Vulnerability +infinity", CombatKeyword.DestroyedByDamageType),
             new Sentence("Instantly destroyed by ANY #D Damage", CombatKeyword.DestroyedByDamageType),
             new Sentence("Targets suffer %f damage from other #D attack", CombatKeyword.AddVulnerability),
@@ -3133,6 +3153,7 @@
             new Sentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack),
             new Sentence("Returning it to you as armor", CombatKeyword.DrainAsArmor),
             new Sentence("When you teleport", CombatKeyword.WhenTeleporting),
+            new Sentence("b*u*t", CombatKeyword.But),
         };
         #endregion
     }

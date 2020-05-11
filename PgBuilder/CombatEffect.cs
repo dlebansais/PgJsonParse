@@ -76,14 +76,29 @@
                     return false;
             }
 
-            foreach (CombatEffect Item in list1)
-                if (!MatchList.Contains(Item))
-                    difference.Add(Item);
-                else
-                    break;
+            bool AddToDifference = true;
 
             foreach (CombatEffect Item in list1)
-                if (!difference.Contains(Item))
+                if (AddToDifference)
+                    if (!MatchList.Contains(Item))
+                    {
+                        if (Item.Keyword != CombatKeyword.But)
+                            difference.Add(Item);
+                    }
+                    else
+                        AddToDifference = false;
+                else if (Item.Keyword == CombatKeyword.But)
+                {
+                    AddToDifference = true;
+
+                    int ItemIndex = list1.IndexOf(Item);
+                    if (ItemIndex >= 2)
+                        if (list1[ItemIndex - 1].Keyword == CombatKeyword.DamageBoost)
+                            difference.Add(list1[ItemIndex - 1]);
+                }
+
+            foreach (CombatEffect Item in list1)
+                if (!difference.Contains(Item) && Item.Keyword != CombatKeyword.But)
                     union.Add(Item);
 
             return true;
