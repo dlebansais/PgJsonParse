@@ -543,7 +543,7 @@
                     if (float.TryParse(DataText, NumberStyles.Float, CultureInfo.InvariantCulture, out float Value))
                     {
                         foreach (OtherEffect Item in OtherEffectList)
-                            if (Item is OtherEffectDoT AsDot && AsDot.DamageType == DamageType.Fire)
+                            if (Item is OtherEffectDoT AsDot && AsDot.DamageType == DamageType)
                                 AsDot.AddBoostMultiplier(0.01);
                     }
                 }
@@ -1181,7 +1181,6 @@
                 case CombatKeyword.ResetOtherAbilityTimer:
                 case CombatKeyword.AddMaxArmor:
                 case CombatKeyword.DamageBoostAgainstSpecie:
-                case CombatKeyword.DealIndirectDamage:
                 case CombatKeyword.ZeroTaunt:
                 case CombatKeyword.ThickArmor:
                 case CombatKeyword.ReflectOnBurst:
@@ -1230,10 +1229,11 @@
                     break;
 
                 case CombatKeyword.DamageBoost:
+                case CombatKeyword.DealIndirectDamage:
                     if (combatEffect.Data.IsValueSet)
                     {
                         bool IsHandled = false;
-                        if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
+                        if (Keyword == CombatKeyword.DamageBoost && !Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
                             IsHandled  = AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
 
                         if (!IsHandled)

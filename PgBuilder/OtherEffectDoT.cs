@@ -73,8 +73,10 @@
             }
         }
 
-        public bool IsDisplayable { get { return !DoT.SpecialRuleList.Contains(DoTSpecialRule.BuffActivated) || DoT.SpecialRuleList.Contains(DoTSpecialRule.IfTargetNotLooking); } }
-        public override bool IsDisplayed { get { return IsDisplayable && (DisplayedValue != 0 || BaseValue != 0); } }
+        //public bool IsDisplayable { get { return !DoT.SpecialRuleList.Contains(DoTSpecialRule.BuffActivated) || DoT.SpecialRuleList.Contains(DoTSpecialRule.IfTargetNotLooking); } }
+        //public bool IsDisplayable { get { return !DoT.SpecialRuleList.Contains(DoTSpecialRule.BuffActivated) || BaseValue != 0; } }
+        public bool IsDisplayable { get { return true; } }
+        public override bool IsDisplayed { get { return IsDisplayable && (DeltaValue != 0 || BaseValue != 0); } }
 
         public string Damage { get { return DisplayedValue.ToString(); } }
 
