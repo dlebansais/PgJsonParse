@@ -67,11 +67,11 @@
             <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0"/>
         </DataTemplate>
         <DataTemplate x:Key="SpecialValueTemplate">
-            <StackPanel Orientation="Horizontal" Visibility="{Binding IsDisplayed, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+            <WrapPanel Orientation="Horizontal" Visibility="{Binding IsDisplayed, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                 <TextBlock Text="{Binding Label}" Foreground="White"/>
                 <TextBlock Text="{Binding AsString}" Foreground="{Binding IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
                 <TextBlock Text="{Binding Suffix}" Foreground="White" Margin="5,0,0,0"/>
-            </StackPanel>
+            </WrapPanel>
         </DataTemplate>
         <DataTemplate x:Key="SpecialEffectTemplate">
             <Grid>
