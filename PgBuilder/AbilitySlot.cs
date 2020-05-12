@@ -544,7 +544,7 @@
                     {
                         foreach (OtherEffect Item in OtherEffectList)
                             if (Item is OtherEffectDoT AsDot && AsDot.DamageType == DamageType)
-                                AsDot.AddBoostMultiplier(0.01);
+                                AsDot.AddBoostMultiplier(Value);
                     }
                 }
             }
@@ -641,11 +641,11 @@
                     RecalculateDeltaDamage(attributeEffect);
                     break;
                 case "BOOST_UNIVERSAL_INDIRECT":
-                    IndirectDeltaDamage(attributeEffect);
+                    IndirectDeltaDamage(attributeEffect, DamageType.Internal_None);
                     break;
                 case "BOOST_UNIVERSAL":
                     RecalculateDeltaDamage(attributeEffect);
-                    IndirectDeltaDamage(attributeEffect);
+                    IndirectDeltaDamage(attributeEffect, DamageType.Internal_None);
                     break;
 
                 default:
@@ -709,18 +709,14 @@
                 else if (key.EndsWith("_INDIRECT"))
                 {
                     if (ParseAttributeDamage(key.Substring(6, key.Length - 9 - 6), out DamageType))
-                    {
-                        if (DamageType == AbilityDamageType)
-                            IndirectDeltaDamage(attributeEffect);
-                    }
+                        IndirectDeltaDamage(attributeEffect, DamageType);
                 }
                 else if (ParseAttributeDamage(key.Substring(6, key.Length - 6), out DamageType))
                 {
                     if (DamageType == AbilityDamageType)
-                    {
                         DirectDeltaDamage(attributeEffect);
-                        IndirectDeltaDamage(attributeEffect);
-                    }
+
+                    IndirectDeltaDamage(attributeEffect, DamageType);
                 }
             }
 
@@ -881,10 +877,10 @@
             DeltaDamage += (int)attributeEffect;
         }
 
-        private void IndirectDeltaDamage(double attributeEffect)
+        private void IndirectDeltaDamage(double attributeEffect, DamageType damageType)
         {
             foreach (OtherEffect Item in OtherEffectList)
-                if (Item is OtherEffectDoT AsDot)
+                if (Item is OtherEffectDoT AsDot && (AsDot.DamageType == damageType || damageType == DamageType.Internal_None))
                     AsDot.AddDelta(attributeEffect);
         }
 
@@ -1261,7 +1257,7 @@
                                         foreach (OtherEffect Item in OtherEffectList)
                                             if (Item is OtherEffectDoT AsDot && AsDot.IsDisplayable)
                                             {
-                                                if ((AsDot.DamageType == DamageType || DamageType == DamageType.Internal_None) && AsDot.RequireNoAggro == RequireNoAggro)
+                                                if ((AsDot.DamageType == DamageType || (DamageType == DamageType.Internal_None && Ability.PvE.Damage == 0)) && AsDot.RequireNoAggro == RequireNoAggro)
                                                 {
                                                     if (combatEffect.Data.IsPercent)
                                                         AsDot.AddBoostMultiplier(combatEffect.Data.Value / 100.0);

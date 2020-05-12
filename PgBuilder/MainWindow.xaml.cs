@@ -813,7 +813,7 @@
 
         private void OnLoad(string filePath)
         {
-            if (!LoadBuild(filePath, out IPgSkill Skill1, out IPgSkill Skill2, out List<string>[] AbilityTable, out Dictionary<string, string> GearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> GearModTable))
+            if (!LoadBuild(filePath, out IPgSkill Skill1, out IPgSkill Skill2, out int BuildLoreLevel, out bool BuildIsFairyCharacter, out List<string>[] AbilityTable, out Dictionary<string, string> GearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> GearModTable))
             { 
                 MessageBox.Show("Invalid file format", "Error");
                 return;
@@ -829,12 +829,17 @@
 
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged1), SkillList.IndexOf(Skill1));
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged2), SkillList.IndexOf(Skill2));
+            LoreLevel = BuildLoreLevel;
+            IsFairyCharacter = BuildIsFairyCharacter;
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities1), AbilityTable[0]);
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities2), AbilityTable[1]);
             foreach (KeyValuePair<string, string> Entry in GearItemTable)
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, string>(OnSelectGear), Entry.Key, Entry.Value);
             foreach (KeyValuePair<string, List<KeyValuePair<string, int>>> Entry in GearModTable)
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, List<KeyValuePair<string, int>>>(OnSelectGearMods), Entry.Key, Entry.Value);
+
+            NotifyPropertyChanged(nameof(LoreLevel));
+            NotifyPropertyChanged(nameof(IsFairyCharacter));
 
             RecalculateMods();
         }
@@ -939,16 +944,18 @@
         #endregion
 
         #region Load
-        private bool LoadBuild(string fileName, out IPgSkill skill1, out IPgSkill skill2, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
+        private bool LoadBuild(string fileName, out IPgSkill skill1, out IPgSkill skill2, out int loreLevel, out bool isFairyCharacter, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
         {
             using FileStream Stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            return LoadBuild(Stream, out skill1, out skill2, out abilityTable, out gearItemTable, out gearModTable);
+            return LoadBuild(Stream, out skill1, out skill2, out loreLevel, out isFairyCharacter, out abilityTable, out gearItemTable, out gearModTable);
         }
 
-        private bool LoadBuild(FileStream stream, out IPgSkill skill1, out IPgSkill skill2, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
+        private bool LoadBuild(FileStream stream, out IPgSkill skill1, out IPgSkill skill2, out int loreLevel, out bool isFairyCharacter, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
         {
             skill1 = null;
             skill2 = null;
+            loreLevel = 0;
+            isFairyCharacter = false;
             abilityTable = new List<string>[2]
             {
                 new List<string>(),
@@ -971,6 +978,26 @@
                 return false;
 
             Reader.Read();
+
+            if (Reader.CurrentToken == Json.Token.ObjectKey && Reader.CurrentValue is string LoreLevelText && LoreLevelText == "LoreLevel")
+            {
+                Reader.Read();
+                if (Reader.CurrentToken != Json.Token.Integer || !(Reader.CurrentValue is int LoreLevelValue))
+                    return false;
+
+                loreLevel = LoreLevelValue;
+                Reader.Read();
+            }
+
+            if (Reader.CurrentToken == Json.Token.ObjectKey && Reader.CurrentValue is string IsFairyCharacterText && IsFairyCharacterText == "IsFairyCharacter")
+            {
+                Reader.Read();
+                if (Reader.CurrentToken != Json.Token.Boolean || !(Reader.CurrentValue is bool IsFairyCharacterValue))
+                    return false;
+
+                isFairyCharacter = IsFairyCharacterValue;
+                Reader.Read();
+            }
 
             int SkillIndex = 0;
             int AbilityIndex = 0;
@@ -1212,6 +1239,12 @@
 
             SaveBuildSkills(Writer);
 
+            Writer.ObjectKey("LoreLevel");
+            Writer.Value(LoreLevel);
+
+            Writer.ObjectKey("IsFairyCharacter");
+            Writer.Value(IsFairyCharacter);
+
             for (int i = 0; i < AbilitySlot1List.Count; i++)
             {
                 AbilitySlot Item = AbilitySlot1List[i];
@@ -1303,8 +1336,6 @@
 
         #region Settings
         private const string IsLargeViewName = "IsLargeView";
-        private const string IsFairyCharacterName = "IsFairyCharacter";
-        private const string LoreLevelName = "LoreLevel";
         private const string LastBuildFileValueName = "LastBuildFile";
         
         private void LoadSettings()
@@ -1319,15 +1350,6 @@
 
                 Value = SettingKey?.GetValue(IsLargeViewName) as string;
                 IsLargeView = (Value == "Yes");
-
-                Value = SettingKey?.GetValue(IsFairyCharacterName) as string;
-                IsFairyCharacter = (Value == "Yes");
-
-                Value = SettingKey?.GetValue(LoreLevelName) as string;
-                if (int.TryParse(Value, out int Level))
-                    LoreLevel = Level;
-                else
-                    LoreLevel = 0;
 
                 Value = SettingKey?.GetValue(LastBuildFileValueName) as string;
                 if (Value != null)
@@ -1348,8 +1370,6 @@
                 RegistryKey SettingKey = Key.CreateSubKey("PgBuilder");
 
                 SettingKey?.SetValue(IsLargeViewName, IsLargeView ? "Yes" : "No", RegistryValueKind.String);
-                SettingKey?.SetValue(IsFairyCharacterName, IsFairyCharacter ? "Yes" : "No", RegistryValueKind.String);
-                SettingKey?.SetValue(LoreLevelName, LoreLevel.ToString(), RegistryValueKind.String);
                 SettingKey?.SetValue(LastBuildFileValueName, LastBuildFile, RegistryValueKind.String);
             }
             catch
