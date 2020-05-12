@@ -644,7 +644,7 @@
                     IndirectDeltaDamage(attributeEffect, DamageType.Internal_None);
                     break;
                 case "BOOST_UNIVERSAL":
-                    RecalculateDeltaDamage(attributeEffect);
+                    DirectBoostDamage(attributeEffect);
                     IndirectDeltaDamage(attributeEffect, DamageType.Internal_None);
                     break;
 
@@ -703,7 +703,8 @@
                 {
                     if (ParseAttributeDamage(key.Substring(6, key.Length - 7 - 6), out DamageType))
                     {
-                        DirectDeltaDamage(attributeEffect);
+                        if (DamageType == AbilityDamageType)
+                            RecalculateDeltaDamage(attributeEffect);
                     }
                 }
                 else if (key.EndsWith("_INDIRECT"))
@@ -714,7 +715,7 @@
                 else if (ParseAttributeDamage(key.Substring(6, key.Length - 6), out DamageType))
                 {
                     if (DamageType == AbilityDamageType)
-                        DirectDeltaDamage(attributeEffect);
+                        DirectBoostDamage(attributeEffect);
 
                     IndirectDeltaDamage(attributeEffect, DamageType);
                 }
@@ -864,7 +865,7 @@
 
         private void RecalculateModPowerCost(double attributeEffect)
         {
-            PowerCost.SetMultiplier(attributeEffect);
+            PowerCost.AddMultiplier(attributeEffect);
         }
 
         private void RecalculateDeltaResetTime(double attributeEffect)
@@ -884,7 +885,7 @@
                     AsDot.AddDelta(attributeEffect);
         }
 
-        private void DirectDeltaDamage(double attributeEffect)
+        private void DirectBoostDamage(double attributeEffect)
         {
             BoostDamage += attributeEffect;
         }
@@ -1000,9 +1001,7 @@
         public void RecalculateModEnd()
         {
             if (Ability != null && Ability.DamageType != DamageType.Fire && ModifiedDamageType == DamageType.Fire)
-                RageMultiplier.SetMultiplier(2.0);
-            else
-                RageMultiplier.SetMultiplier(1.0);
+                RageMultiplier.AddMultiplier(1.0);
 
             NotifyPropertiesChanged();
         }
@@ -1104,7 +1103,10 @@
             {
                 case CombatKeyword.AddPowerCost:
                     if (combatEffect.Data.IsValueSet)
-                        RecalculateDeltaPowerCost(combatEffect.Data.Value);
+                        if (combatEffect.Data.IsPercent)
+                            RecalculateModPowerCost(combatEffect.Data.Value / 100);
+                        else
+                            RecalculateDeltaPowerCost(combatEffect.Data.Value);
                     break;
 
                 case CombatKeyword.AddResetTimer:

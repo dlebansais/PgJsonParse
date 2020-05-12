@@ -20,7 +20,37 @@
         public string AbilityName { get; }
         public IPgDoT DoT { get; }
         public int BaseValue { get; private set; }
-        public int DisplayedValue { get { return (int)Math.Round((((float)BaseValue + (float)DeltaValue) * (float)MultiplierValue) * (float)BoostMultiplierValue, MidpointRounding.AwayFromZero); } }
+        public int DisplayedValue 
+        { 
+            get 
+            {
+                if (AbilityName == "Righteous Flame 8")
+                {
+                }
+
+                if (AbilityName == "Fire Breath 7")
+                {
+                }
+
+                float TickBase = DoT.DamagePerTick;
+                TickBase = (float)Math.Floor(TickBase * (float)BoostMultiplierValue);
+                TickBase *= (float)MultiplierValue;
+
+                int TotalRounded;
+
+                if (DeltaValue != 0)
+                {
+                    float TickDelta = (float)Math.Floor((float)DeltaValue / DoT.NumTicks);
+                    TickDelta *= (float)MultiplierValue + (float)BoostMultiplierValue - 1.0F;
+
+                    TotalRounded = (int)Math.Floor(TickBase + TickDelta);
+                }
+                else
+                    TotalRounded = (int)Math.Ceiling(TickBase);
+
+                return TotalRounded * DoT.NumTicks;
+            }
+        }
         private double DeltaValue;
         private double MultiplierValue;
         private double BoostMultiplierValue;

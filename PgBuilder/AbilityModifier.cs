@@ -38,14 +38,14 @@
         { 
             get 
             {
-                if (Name == "Accuracy" && Ability != null && Ability.Name == "Ice Spear 9")
+                if (Name == "PowerCost" && Ability != null && Ability.Name == "Fire Breath 7")
                 {
                 }
 
                 if (Ability == null)
                     return DefaultValue;
 
-                double Result = (BaseValue + DeltaValue) * MultiplierValue;
+                double Result = Math.Floor((BaseValue + DeltaValue) * MultiplierValue);
                 return Result;
             }
         }
@@ -58,6 +58,7 @@
             //Debug.WriteLine($"({Name}) Reset");
 
             DeltaValue = 0;
+            MultiplierValue = 1.0;
         }
 
         public void AddValue(double value)
@@ -74,9 +75,9 @@
             DeltaValue = -BaseValue;
         }
 
-        public void SetMultiplier(double multiplierValue)
+        public void AddMultiplier(double multiplierValue)
         {
-            MultiplierValue = multiplierValue;
+            MultiplierValue += multiplierValue;
         }
 
         public int CalculateDifference(double baseValue, double deltaValue)
