@@ -36,6 +36,7 @@
                 DelayLoopTime,
                 Range,
                 AoE,
+                ExtraTaunt,
                 RageBoost,
                 RageMultiplier,
                 Accuracy,
@@ -67,6 +68,7 @@
         public AbilityModifier DelayLoopTime { get; } = new AbilityModifier("DelayLoopTime", (IPgAbility ability) => ability.DelayLoopTime, DefaultDisplayHandler);
         public AbilityModifier Range { get; } = new AbilityModifier("Range", (IPgAbility ability) => ability.PvE.AoE == 0 ? ability.PvE.Range : 0, RangeDisplayHandler);
         public AbilityModifier AoE { get; } = new AbilityModifier("AoE", (IPgAbility ability) => ability.PvE.AoE, DefaultDisplayHandler);
+        public AbilityModifier ExtraTaunt { get; } = new AbilityModifier("ExtraTaunt", (IPgAbility ability) => 0, DefaultDisplayHandler);
         public AbilityModifier RageBoost { get; } = new AbilityModifier("RageBoost", (IPgAbility ability) => ability.PvE.RageBoost, DefaultDisplayHandler);
         public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", 100, (IPgAbility ability) => ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
         public AbilityModifierPercent Accuracy { get; } = new AbilityModifierPercent("Accuracy", 0, (IPgAbility ability) => ability.PvE.Accuracy * 100, DefaultDisplayHandler);
@@ -278,6 +280,7 @@
             NotifyPropertyChanged(nameof(IsDelayLoopOnlyUsedInCombat));
             NotifyPropertyChanged(nameof(Range));
             NotifyPropertyChanged(nameof(AoE));
+            NotifyPropertyChanged(nameof(ExtraTaunt));
             NotifyPropertyChanged(nameof(RageBoost));
             NotifyPropertyChanged(nameof(RageMultiplier));
             NotifyPropertyChanged(nameof(Accuracy));
@@ -918,10 +921,12 @@
 
         private void RecalculateDeltaTaunt(double attributeEffect)
         {
+            ExtraTaunt.AddValue(attributeEffect);
         }
 
         private void RecalculateModTaunt(double attributeEffect)
         {
+            ExtraTaunt.AddMultiplier(attributeEffect);
         }
 
         private void RecalculateDeltaRage(double attributeEffect)
@@ -1109,6 +1114,14 @@
                             RecalculateDeltaPowerCost(combatEffect.Data.Value);
                     break;
 
+                case CombatKeyword.AddTaunt:
+                    if (combatEffect.Data.IsValueSet)
+                        if (combatEffect.Data.IsPercent)
+                            RecalculateModTaunt(combatEffect.Data.Value / 100);
+                        else
+                            RecalculateDeltaTaunt(combatEffect.Data.Value);
+                    break;
+
                 case CombatKeyword.AddResetTimer:
                     if (combatEffect.Data.IsValueSet)
                         RecalculateDeltaResetTime(combatEffect.Data.Value);
@@ -1172,7 +1185,6 @@
                 case CombatKeyword.ComboFinalStepDamageAndStun:
                 case CombatKeyword.TargetSelf:
                 case CombatKeyword.StunIncorporeal:
-                case CombatKeyword.AddTaunt:
                 case CombatKeyword.AddSprintSpeed:
                 case CombatKeyword.EffectDurationMinute:
                 case CombatKeyword.AddMaxHealth:

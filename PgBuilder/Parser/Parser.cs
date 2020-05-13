@@ -23,6 +23,7 @@
             List<string[]> StringKeyTable = new List<string[]>();
             List<ModEffect[]> AnalyzedPowerKeyToCompleteEffectTable = new List<ModEffect[]>();
             AnalyzeMatchingEffects(AbilityNameList, NameToKeyword, PowerToEffectTable, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
+
             AnalyzeRemainingEffects(AbilityNameList, NameToKeyword, UnmatchedPowerList, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
 
             CheckAllSentencesUsed();
@@ -1263,7 +1264,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_5062")
+                if (Entry.Key.Key == "power_15304")
                 {
                 }
 
@@ -2505,7 +2506,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_4031")
+                if (ItemPower.Key == "power_15304")
                 {
                 }
 
@@ -2905,6 +2906,7 @@
             new Sentence("Taunt as if they did %f damage", CombatKeyword.AddTaunt),
             new Sentence("Taunt their opponents %f less", CombatKeyword.AddTaunt, SignInterpretation.Opposite),
             new Sentence("Taunt of all your attack %f", CombatKeyword.AddTaunt),
+            new Sentence("Your Taunt is %f", CombatKeyword.AddTaunt),
             new Sentence("%f Taunt", CombatKeyword.AddTaunt),
             new Sentence("When you have %f or less of your Armor left", CombatKeyword.BelowArmor),
             new Sentence("Have less than %f of their Armor", CombatKeyword.BelowArmor),
@@ -3154,6 +3156,7 @@
             new Sentence("Returning it to you as armor", CombatKeyword.DrainAsArmor),
             new Sentence("When you teleport", CombatKeyword.WhenTeleporting),
             new Sentence("b*u*t", CombatKeyword.But),
+            new Sentence("However,", CombatKeyword.But),
         };
         #endregion
     }

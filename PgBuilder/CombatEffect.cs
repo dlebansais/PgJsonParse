@@ -60,6 +60,7 @@
             union = new List<CombatEffect>();
 
             List<CombatEffect> MatchList = new List<CombatEffect>();
+            List<CombatEffect> NoMatchList = new List<CombatEffect>();
 
             foreach (CombatEffect Item2 in list2)
             {
@@ -96,6 +97,20 @@
                         if (list1[ItemIndex - 1].Keyword == CombatKeyword.DamageBoost)
                             difference.Add(list1[ItemIndex - 1]);
                 }
+                else if (!MatchList.Contains(Item))
+                    NoMatchList.Add(Item);
+
+            if (NoMatchList.Count == 1 && difference.Count == 0)
+            {
+                CombatEffect NoMatch = NoMatchList[0];
+                switch (NoMatch.Keyword)
+                {
+                    case CombatKeyword.AddTaunt:
+                    case CombatKeyword.AddRage:
+                        difference.Add(NoMatch);
+                        break;
+                }
+            }
 
             foreach (CombatEffect Item in list1)
                 if (!difference.Contains(Item) && Item.Keyword != CombatKeyword.But)

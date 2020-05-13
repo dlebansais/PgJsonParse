@@ -165,6 +165,10 @@
                         <TextBlock Text="{Binding AbilityDamageVulnerable}" Foreground="{Binding AbilityDamageVulnerableModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
                         <TextBlock Text="{Binding AbilityDamageTypeString}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource WhiteGreen}}" Margin="5,0,0,0"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding ExtraTaunt.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Extra Taunt:</TextBlock>
+                        <TextBlock Text="{Binding ExtraTaunt.AsString}" Foreground="{Binding ExtraTaunt.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RageBoost.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Reduces Rage:</TextBlock>
                         <TextBlock Text="{Binding RageBoost.AsString}" Foreground="{Binding RageBoost.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
