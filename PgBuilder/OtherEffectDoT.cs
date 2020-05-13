@@ -2,10 +2,48 @@
 {
     using PgJsonObjects;
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
 
     public class OtherEffectDoT : OtherEffect
     {
+        public static bool DebugTrace { get; } = false;
+
+        /*
+         Fire Breath 7
+					"AttributesThatDelta": [
+						"BOOST_ABILITYDOT_FIREBREATH"
+					]
+         
+        Righteous Flame 8
+					"AttributesThatDelta": [
+						"BOOST_ABILITYDOT_RIGHTEOUSFLAME"
+					]
+
+            Flamestrike 8
+					"AttributesThatDelta": [
+						"BOOST_ABILITYDOT_FLAMESTRIKE"
+					]
+
+            Gut 8
+					"AttributesThatDelta": [
+						"BOOST_ABILITYDOT_GUT"
+					],
+					"AttributesThatMod": [
+						"MOD_ABILITYDOT_GUT"
+					]
+
+            Backstab 8
+					"AttributesThatDelta": [
+						"BOOST_ABILITYDOT_BACKSTAB"
+					]
+
+            Venomstrike 8
+					"AttributesThatDelta": [
+						"BOOST_ABILITYDOT_VENOMSTRIKE"
+					]
+
+         */
         public OtherEffectDoT(string abilityName, IPgDoT dot)
         {
             AbilityName = abilityName;
@@ -14,15 +52,20 @@
             DeltaValue = 0;
             MultiplierValue = 1.0;
             BoostMultiplierValue = 1.0;
-            //Debug.WriteLine($"{AbilityName}: base {DisplayedValue}");
+
+            if (DebugTrace)
+            {
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                Debug.WriteLine($"{AbilityName}: base, total {Result}");
+            }
         }
 
         public string AbilityName { get; }
         public IPgDoT DoT { get; }
         public int BaseValue { get; private set; }
-        public int DisplayedValue 
-        { 
-            get 
+        public int DisplayedValue
+        {
+            get
             {
                 if (AbilityName == "Righteous Flame 8")
                 {
@@ -32,23 +75,13 @@
                 {
                 }
 
-                float TickBase = DoT.DamagePerTick;
-                TickBase = (float)Math.Floor(TickBase * (float)BoostMultiplierValue);
-                TickBase *= (float)MultiplierValue;
-
-                int TotalRounded;
-
-                if (DeltaValue != 0)
+                if (AbilityName == "Gut 8")
                 {
-                    float TickDelta = (float)Math.Floor((float)DeltaValue / DoT.NumTicks);
-                    TickDelta *= (float)MultiplierValue + (float)BoostMultiplierValue - 1.0F;
-
-                    TotalRounded = (int)Math.Floor(TickBase + TickDelta);
                 }
-                else
-                    TotalRounded = (int)Math.Ceiling(TickBase);
 
-                return TotalRounded * DoT.NumTicks;
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+
+                return Result;
             }
         }
         private double DeltaValue;
@@ -56,31 +89,52 @@
         private double BoostMultiplierValue;
         public bool RequireNoAggro { get { return DoT.SpecialRuleList.Contains(DoTSpecialRule.IfTargetNotLooking); } }
         public DamageType DamageType { get { return DoT.DamageType; } }
+        public bool HasAttributesThatMod { get { return ((IList<IPgAttribute>)DoT.AttributesThatModList).Count > 0; } }
 
         public override void Reset()
         {
             DeltaValue = 0;
             MultiplierValue = 1.0;
             BoostMultiplierValue = 1.0;
-            //Debug.WriteLine($"{AbilityName}: reset {DisplayedValue}");
+
+            if (DebugTrace)
+            {
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                Debug.WriteLine($"{AbilityName}: reset, total {Result}");
+            }
         }
 
         public void AddDelta(double value)
         {
             DeltaValue += value;
-            //Debug.WriteLine($"{AbilityName}: add {(int)value}, total {DisplayedValue}");
+
+            if (DebugTrace)
+            {
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                Debug.WriteLine($"{AbilityName}: add {(int)value}, total {Result}");
+            }
         }
 
         public void AddMultiplier(double value)
         {
             MultiplierValue += value;
-            //Debug.WriteLine($"{AbilityName}: multiply {(int)(value * 100)}, total {DisplayedValue}");
+
+            if (DebugTrace)
+            {
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                Debug.WriteLine($"{AbilityName}: multiply {(int)value * 100}, total {Result}");
+            }
         }
 
         public void AddBoostMultiplier(double value)
         {
             BoostMultiplierValue += value;
-            //Debug.WriteLine($"{AbilityName}: boost multiply {(int)(value * 100)}, total {DisplayedValue}");
+
+            if (DebugTrace)
+            {
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                Debug.WriteLine($"{AbilityName}: boost multiply {(int)value * 100}, total {Result}");
+            }
         }
 
         public string Prefix
@@ -120,6 +174,55 @@
 
                 return $"{DamageTypeString} damage to {ChangedValue} over {Duration} seconds";
             }
+        }
+
+        public static int CalculateFinalValue(int numTicks, int baseDamagePerTick, float deltaDamage, float multiplierValue, float boostMultiplierValue, bool hasAttributesThatMod)
+        {
+            int Result;
+
+            if (hasAttributesThatMod)
+            {
+                float TickBase = baseDamagePerTick;
+                TickBase = (float)Math.Floor(TickBase * multiplierValue * boostMultiplierValue);
+
+                int TotalRounded;
+
+                if (deltaDamage != 0)
+                {
+                    float TickDelta = (float)Math.Floor(deltaDamage / numTicks);
+                    TickDelta = TickDelta * multiplierValue * boostMultiplierValue;
+
+                    TotalRounded = (int)Math.Floor(TickBase + TickDelta);
+                }
+                else
+                    TotalRounded = (int)Math.Ceiling(TickBase);
+
+                Result = TotalRounded * numTicks;
+            }
+            else
+            {
+                float TickBase = baseDamagePerTick;
+                TickBase = (float)Math.Floor(TickBase * boostMultiplierValue);
+                TickBase *= multiplierValue;
+
+                int TotalRounded;
+
+                if (deltaDamage != 0)
+                {
+                    float TickDelta = (float)Math.Floor(deltaDamage / numTicks);
+                    TickDelta *= multiplierValue + boostMultiplierValue - 1.0F;
+
+                    TotalRounded = (int)Math.Floor(TickBase + TickDelta);
+                }
+                else
+                    TotalRounded = (int)Math.Ceiling(TickBase);
+
+                Result = TotalRounded * numTicks;
+            }
+
+            int OldResult = (int)Math.Round((((numTicks * baseDamagePerTick) + deltaDamage) * multiplierValue) * boostMultiplierValue, MidpointRounding.AwayFromZero);
+
+            return Result;
         }
     }
 }
