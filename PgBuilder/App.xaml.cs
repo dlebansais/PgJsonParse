@@ -21,24 +21,28 @@
                 return null;
         }
 
-        public static int CalculateDamage(double baseDamage, int deltaDamage, double modDamage, double modBaseDamage, double boostDamage, double modCriticalDamage)
+        //return ((((baseDamage * modBaseDamage + (baseDamage + deltaDamage) * (1 + modDamage)) + SimpleDamage) * DamageDebuff * VulnerabilityDebuff) + (ConditionalFlatDamage * MoreDamageDebuff) + modCriticalDamage;
+        public static int CalculateDamage(double baseDamage, int deltaDamage, double modDamage, double modBaseDamage, double boostDamage, double modCriticalDamage, double fireballModDamage)
         {
-            if (baseDamage == 528.0)
+            if (baseDamage == 127.0)
             {
             }
 
-            float MB1 = (float)baseDamage * (float)modBaseDamage;
-            int ModifiedBase = (int)Math.Round(baseDamage * modBaseDamage);
-            float MA1 = (float)baseDamage + deltaDamage;
-            float MA2 = MA1 * (1.0F + (float)modDamage);
-            float M1 = MB1 + MA1;
-            int ModifedAbility = (int)Math.Round(((float)baseDamage + deltaDamage) * (1.0F + (float)modDamage));
+            float Result;
 
-            float Result = (((float)baseDamage * (float)modBaseDamage) + ((float)baseDamage + deltaDamage) * (1.0F + (float)modDamage)) + (float)boostDamage;
+            if (fireballModDamage != 0)
+            {
+                Result = (float)baseDamage * (float)modBaseDamage;
+                Result = (float)Math.Floor(Result) + (float)baseDamage + deltaDamage;
+                Result *= (float)(1.0 + fireballModDamage);
 
-            //return ((((baseDamage * modBaseDamage + (baseDamage + deltaDamage) * (1 + modDamage)) + SimpleDamage) * DamageDebuff * VulnerabilityDebuff) + (ConditionalFlatDamage * MoreDamageDebuff) + modCriticalDamage;
-
-            return (int)Math.Round(Result, MidpointRounding.AwayFromZero);
+                return (int)Math.Floor(Result);
+            }
+            else
+            {
+                Result = (((float)baseDamage * (float)modBaseDamage) + ((float)baseDamage + deltaDamage) * (1.0F + (float)modDamage)) + (float)boostDamage;
+                return (int)Math.Round(Result, MidpointRounding.AwayFromZero);
+            }
         }
     }
 }

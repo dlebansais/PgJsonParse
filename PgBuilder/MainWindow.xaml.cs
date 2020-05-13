@@ -1523,7 +1523,7 @@
 
         private void RecalculateSimpleEffectMods(IPgItemSimpleEffect itemSimpleEffect)
         {
-            Debug.WriteLine($"Ignoring item effect: {itemSimpleEffect.Description}");
+            //Debug.WriteLine($"Ignoring item effect: {itemSimpleEffect.Description}");
         }
 
         private void RecalculateSimpleEffectMods(Power power, int tier)

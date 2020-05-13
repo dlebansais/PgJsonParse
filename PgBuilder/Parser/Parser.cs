@@ -23,7 +23,6 @@
             List<string[]> StringKeyTable = new List<string[]>();
             List<ModEffect[]> AnalyzedPowerKeyToCompleteEffectTable = new List<ModEffect[]>();
             AnalyzeMatchingEffects(AbilityNameList, NameToKeyword, PowerToEffectTable, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
-
             AnalyzeRemainingEffects(AbilityNameList, NameToKeyword, UnmatchedPowerList, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
 
             CheckAllSentencesUsed();
@@ -1264,7 +1263,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_15304")
+                if (Entry.Key.Key == "power_2201")
                 {
                 }
 
@@ -1539,6 +1538,36 @@
                 Debug.WriteLine($"    Power: {powerSimpleEffect.Description}");
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");
                 return false;
+            }
+
+            if (IsMod && StaticCombatEffectList.Count == 0)
+            {
+                bool HasNonDisplayedEffect = false;
+                foreach (CombatEffect Item in DynamicCombatEffectList)
+                    switch (Item.Keyword)
+                    {
+                        case CombatKeyword.DamageBoost:
+                            break;
+
+                        default:
+                            HasNonDisplayedEffect = true;
+                            break;
+                    }
+
+                if (!HasNonDisplayedEffect)
+                {
+                    StaticCombatEffectList = DynamicCombatEffectList;
+                    DynamicCombatEffectList = new List<CombatEffect>();
+
+                    if (displayAnalysisResult)
+                    {
+                        /*Debug.WriteLine("");
+                        Debug.WriteLine($"   Effect: {effect.Desc}");
+                        Debug.WriteLine($"Parsed as: {ParsedEffectString}, Target: {ParsedEffectTargetAbilityList}");
+                        Debug.WriteLine($"    Power: {powerSimpleEffect.Description}");
+                        Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");*/
+                    }
+                }
             }
 
             if (displayAnalysisResult)

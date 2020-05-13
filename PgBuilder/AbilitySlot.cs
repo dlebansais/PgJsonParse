@@ -103,7 +103,7 @@
         public bool HasAbilityNormalDamage { get { return Ability != null && Ability.PvE.RawDamage != null; } }
         public bool HasAbilityHealthDamage { get { return Ability != null && Ability.PvE.RawHealthSpecificDamage != null; } }
         public int BaseValueDamage { get { return Ability != null ? (Ability.PvE.RawHealthSpecificDamage != null ? Ability.PvE.HealthSpecificDamage : Ability.PvE.Damage): 0; } }
-        public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(BaseValueDamage, DeltaDamage, ModDamage, ModBaseDamage, BoostDamage, ModCriticalDamage) : 0; } }
+        public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(BaseValueDamage, DeltaDamage, ModDamage, ModBaseDamage, BoostDamage, ModCriticalDamage, FireballModDamage) : 0; } }
 
         public string AbilityDamage { get { return Ability != null ? ModifiedAbilityDamage.ToString() : string.Empty; } }
         public bool? AbilityDamageModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityDamage - BaseValueDamage) : null; } }
@@ -112,6 +112,7 @@
         private double ModBaseDamage;
         private double BoostDamage;
         private double ModCriticalDamage;
+        private double FireballModDamage;
 
         public string AbilityDamageTypeString { get { return (Ability != null) ? TextMaps.DamageTypeTextMap[AbilityDamageType] : string.Empty; } }
         public DamageType AbilityDamageType { get { return ModifiedDamageType == DamageType.Internal_None ? Ability.DamageType : ModifiedDamageType; } }
@@ -471,6 +472,7 @@
             ModBaseDamage = 0;
             BoostDamage = 0;
             ModCriticalDamage = 1.0;
+            FireballModDamage = 0;
             BasicAttackHealthModified = 0;
             BasicAttackArmorModified = 0;
             BasicAttackPowerModified = 0;
@@ -1285,10 +1287,15 @@
 
                                     if (!IsHandled)
                                     {
-                                        if (combatEffect.Data.IsPercent)
-                                            RecalculateModDamage(combatEffect.Data.Value / 100.0);
+                                        if (modEffect.EffectKey.StartsWith("effect_37201"))
+                                            FireballModDamage += combatEffect.Data.Value / 100.0;
                                         else
-                                            RecalculateDeltaDamage(combatEffect.Data.Value);
+                                        {
+                                            if (combatEffect.Data.IsPercent)
+                                                RecalculateModDamage(combatEffect.Data.Value / 100.0);
+                                            else
+                                                RecalculateDeltaDamage(combatEffect.Data.Value);
+                                        }
                                     }
                                 }
                             }
