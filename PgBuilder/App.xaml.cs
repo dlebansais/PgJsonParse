@@ -24,7 +24,7 @@
         //return ((((baseDamage * modBaseDamage + (baseDamage + deltaDamage) * (1 + modDamage)) + SimpleDamage) * DamageDebuff * VulnerabilityDebuff) + (ConditionalFlatDamage * MoreDamageDebuff) + modCriticalDamage;
         public static int CalculateDamage(double baseDamage, int deltaDamage, double modDamage, double modBaseDamage, double boostDamage, double modCriticalDamage, double fireballModDamage)
         {
-            if (baseDamage == 127.0)
+            if (baseDamage == 214.0)
             {
             }
 

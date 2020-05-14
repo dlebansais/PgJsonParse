@@ -1176,7 +1176,6 @@
                 case CombatKeyword.AnotherTrap:
                 case CombatKeyword.AddMitigation:
                 case CombatKeyword.NextAttack:
-                case CombatKeyword.DealDirectHealthDamage:
                 case CombatKeyword.EffectDelay:
                 case CombatKeyword.EffectRecurrence:
                 case CombatKeyword.ActiveSkill:
@@ -1245,8 +1244,13 @@
 
                 case CombatKeyword.DamageBoost:
                 case CombatKeyword.DealIndirectDamage:
+                case CombatKeyword.DealDirectHealthDamage:
                     if (combatEffect.Data.IsValueSet)
                     {
+                        if (Keyword == CombatKeyword.DealDirectHealthDamage)
+                        {
+                        }
+
                         bool IsHandled = false;
                         if (Keyword == CombatKeyword.DamageBoost && !Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
                             IsHandled  = AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
@@ -1311,6 +1315,13 @@
                     //Debug.WriteLine($"Unexpected keyword in mod to add: {Keyword}");
                     break;
             }
+        }
+        #endregion
+
+        #region Debugging
+        public override string ToString()
+        {
+            return Ability != null ? Ability.Name : string.Empty;
         }
         #endregion
 
