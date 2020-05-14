@@ -579,6 +579,28 @@
             AbilityKeyword.SummonedSpider,
         };
 
+        private List<AbilityKeyword> BuffOrPetAbilityList = new List<AbilityKeyword>()
+        {
+            AbilityKeyword.SummonDeer,
+            AbilityKeyword.SummonedColdSphere,
+            AbilityKeyword.SummonedFireWall,
+            AbilityKeyword.SummonSkeleton,
+            AbilityKeyword.SummonSkeletonArcher,
+            AbilityKeyword.SummonSkeletonArcherOrMage,
+            AbilityKeyword.SummonSkeletonArcherOrSwordsman,
+            AbilityKeyword.SummonSkeletonMage,
+            AbilityKeyword.SummonSkeletonSwordsman,
+            AbilityKeyword.SummonSkeletonSwordsmanOrMage,
+            AbilityKeyword.SummonZombie,
+            AbilityKeyword.WebTrap,
+            AbilityKeyword.ConfusingDouble,
+            AbilityKeyword.StunTrap,
+            AbilityKeyword.SicEm,
+            AbilityKeyword.CleverTrick,
+            AbilityKeyword.FillWithBile,
+            AbilityKeyword.IceArmor,
+        };
+
         private void GetAbilityNames(List<IPgSkill> skillList, out List<string> abilityNameList, out Dictionary<string, List<AbilityKeyword>> nameToKeyword)
         {
             IObjectDefinition AbilityDefinition = ObjectList.Definitions[typeof(Ability)];
@@ -1263,7 +1285,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_2201")
+                if (Entry.Key.Key == "power_4002")
                 {
                 }
 
@@ -1730,6 +1752,24 @@
                 else if (extractedAbilityList[0] == AbilityKeyword.Barrage)
                     extractedAbilityList[0] = AbilityKeyword.BarrageOnly;
             }
+
+            bool IsRandom = false;
+            int i = 0;
+            while (i < extractedCombatEffectList.Count)
+            {
+                CombatEffect Item = extractedCombatEffectList[i];
+                if (Item.Keyword == CombatKeyword.RandomDamage)
+                    if (!IsRandom)
+                        IsRandom = true;
+                    else
+                    {
+                        extractedCombatEffectList.RemoveAt(i);
+                        continue;
+                    }
+
+                i++;
+            }
+
         }
 
         private void RemoveDecorationText(ref string text)
@@ -1952,10 +1992,12 @@
 
             int Min = int.Parse(MinString);
             int Max = int.Parse(MaxString);
-            int Interval = Min <= 1 ? Max : (Max - Min);
+            int RandomDamage = Min <= 1 ? Max : (Max - Min);
+
+            string ConstantDamage = Min.ToString();
 
             string RandomlyDetermined = "(randomly determined)";
-            text = $"{Prolog} Add up to {Interval} {Epilog}";
+            text = $"{Prolog} Deal {ConstantDamage} damage; Add up to {RandomDamage} {Epilog}";
 
             if (!text.Contains(RandomlyDetermined))
                 text += " " + RandomlyDetermined;
@@ -2535,7 +2577,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_15304")
+                if (ItemPower.Key == "power_4002")
                 {
                 }
 

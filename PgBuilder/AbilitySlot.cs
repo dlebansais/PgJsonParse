@@ -133,8 +133,11 @@
         public bool IsSurvivalUtility { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.SurvivalUtility); } }
 
         public bool IsBasicAttack { get { return Ability != null && Ability.KeywordList.Contains(AbilityKeyword.BasicAttack); } }
+        public bool HasBasicAttackHealth { get { return (int)BasicAttackHealthModified != 0; } }
         public string BasicAttackHealth { get { return $"+{App.DoubleToString(BasicAttackHealthModified)}"; } }
+        public bool HasBasicAttackArmor { get { return (int)BasicAttackArmorModified != 0; } }
         public string BasicAttackArmor { get { return $"+{App.DoubleToString(BasicAttackArmorModified)}"; } }
+        public bool HasBasicAttackPower { get { return (int)BasicAttackPowerModified != 0; } }
         public string BasicAttackPower { get { return $"+{App.DoubleToString(BasicAttackPowerModified)}"; } }
         private double BasicAttackHealthModified;
         private double BasicAttackArmorModified;
@@ -313,12 +316,12 @@
             NotifyPropertyChanged(nameof(IsSurvivalUtility));
 
             NotifyPropertyChanged(nameof(IsBasicAttack));
+            NotifyPropertyChanged(nameof(HasBasicAttackHealth));
             NotifyPropertyChanged(nameof(BasicAttackHealth));
+            NotifyPropertyChanged(nameof(HasBasicAttackArmor));
             NotifyPropertyChanged(nameof(BasicAttackArmor));
+            NotifyPropertyChanged(nameof(HasBasicAttackPower));
             NotifyPropertyChanged(nameof(BasicAttackPower));
-            NotifyPropertyChanged(nameof(BasicAttackHealthModified));
-            NotifyPropertyChanged(nameof(BasicAttackArmorModified));
-            NotifyPropertyChanged(nameof(BasicAttackPowerModified));
 
             NotifyPropertyChanged(nameof(AbilityContextMenu));
         }
