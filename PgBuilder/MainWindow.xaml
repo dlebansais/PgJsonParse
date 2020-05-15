@@ -19,6 +19,7 @@
         <localsel:ItemEffectTemplateSelector x:Key="selItemEffectTemplate"/>
         <localsel:AbilityTemplateSelector x:Key="selAbilityTemplate"/>
         <localsel:OtherEffectTemplateSelector x:Key="selOtherEffectTemplate"/>
+        <localsel:PowerTemplateSelector x:Key="selPowerTemplate"/>
         <RoutedCommand x:Key="AddModCommand"/>
         <RoutedCommand x:Key="IncrementTierCommand"/>
         <RoutedCommand x:Key="DecrementTierCommand"/>
@@ -64,7 +65,22 @@
             <TextBlock Text="{Binding ItemName}"/>
         </DataTemplate>
         <DataTemplate x:Key="ModNameTemplate" DataType="{x:Type local:Power}">
-            <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" MaxWidth="400" Margin="5,0,0,0"/>
+        </DataTemplate>
+        <DataTemplate x:Key="ModNameFirstTemplate" DataType="{x:Type local:Power}">
+            <StackPanel MaxWidth="400">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Separator Grid.Column="0" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding SkillName}" FontWeight="Bold"/>
+                    <Separator Grid.Column="2" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </Grid>
+                <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="SpecialValueTemplate">
             <WrapPanel Orientation="Horizontal" Visibility="{Binding IsDisplayed, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
@@ -292,7 +308,13 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <ComboBox ItemsSource="{Binding AvailablePowerList}" ItemTemplate="{StaticResource ModNameTemplate}" SelectedIndex="{Binding SelectedPowerIndex, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnPowerSelectionChanged" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                <ComboBox ItemsSource="{Binding AvailablePowerList}" ItemTemplateSelector="{StaticResource selPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnPowerSelectionChanged" VerticalAlignment="Center" Margin="5,0,0,0">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
             </DockPanel>
         </DataTemplate>
     </Window.Resources>

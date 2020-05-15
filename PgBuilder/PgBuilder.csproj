@@ -86,6 +86,7 @@
     <Compile Include="OtherEffectSimple.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="PowerKeyToCompleteEffect.cs" />
+    <Compile Include="Selectors\PowerTemplateSelector.cs" />
     <Compile Include="Selectors\AbilityTemplateSelector.cs" />
     <Compile Include="Selectors\OtherEffectTemplateSelector.cs" />
     <Compile Include="Selectors\ItemEffectTemplateSelector.cs" />

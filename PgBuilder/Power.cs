@@ -5,19 +5,49 @@ namespace PgBuilder
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
+    using System.Windows.Controls;
     using PgJsonObjects;
 
     public class Power : INotifyPropertyChanged
     {
-        public Power(IPgPower source)
+        public Power(IPgPower source, List<Power> parent)
         {
             Source = source;
+            Parent = parent;
             IList<IPgPowerTier> TierEffectList = Source.TierEffectList;
             SelectedTier = TierEffectList.Count / 2;
         }
 
         public IPgPower Source { get; }
+        public List<Power> Parent { get; }
         public int SelectedTier { get; private set; }
+        
+        public string SkillName 
+        {
+            get 
+            {
+                if (Source.Skill != null)
+                    return Source.Skill.Name;
+
+                return "Other";
+            }
+        }
+
+        public bool IsFirst 
+        { 
+            get 
+            {
+                int Index = Parent.IndexOf(this);
+                if (Index <= 0)
+                    return true;
+
+                IPgSkill PreviousSkill = Parent[Index - 1].Source.Skill;
+                if (PreviousSkill != Source.Skill)
+                    return true;
+
+                return false;
+            }
+        }
 
         public string Name
         {

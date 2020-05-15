@@ -57,7 +57,7 @@
             if (skill2 != null)
                 UpdateModList(skill2);
 
-            UpdateModListWithGenericMod();
+            UpdateModListWithGenericMods();
         }
 
         public void UpdateModList(IPgSkill skill)
@@ -65,12 +65,12 @@
             IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
             IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifiedObjectList;
 
-            UpdateModList(skill, PowerList);
             if (skill.ParentSkill != null)
-                UpdateModList(skill.ParentSkill, PowerList);
+                UpdateModListWithSkillMods(skill.ParentSkill, PowerList);
+            UpdateModListWithSkillMods(skill, PowerList);
         }
 
-        public void UpdateModList(IPgSkill skill, IList<IPgPower> powerList)
+        public void UpdateModListWithSkillMods(IPgSkill skill, IList<IPgPower> powerList)
         {
             foreach (IPgPower PowerItem in powerList)
             {
@@ -88,21 +88,26 @@
                 if (!IsSlotCompatible)
                     continue;
 
-                AvailablePowerList.Add(new Power(PowerItem));
+                AvailablePowerList.Add(new Power(PowerItem, AvailablePowerList));
             }
         }
 
-        public void UpdateModListWithGenericMod()
+        public void UpdateModListWithGenericMods()
+        {
+            UpdateModListWithGenericMods(PowerSkill.ShamanicInfusion);
+            UpdateModListWithGenericMods(PowerSkill.Endurance);
+            UpdateModListWithGenericMods(PowerSkill.ArmorPatching);
+            UpdateModListWithGenericMods(PowerSkill.AnySkill);
+        }
+
+        public void UpdateModListWithGenericMods(PowerSkill rawSkill)
         {
             IObjectDefinition PowerDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Power)];
             IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifiedObjectList;
 
             foreach (IPgPower PowerItem in PowerList)
             {
-                if (PowerItem.RawSkill != PowerSkill.AnySkill &&
-                    PowerItem.RawSkill != PowerSkill.Endurance &&
-                    PowerItem.RawSkill != PowerSkill.ArmorPatching &&
-                    PowerItem.RawSkill != PowerSkill.ShamanicInfusion)
+                if (PowerItem.RawSkill != rawSkill)
                     continue;
                 if (PowerItem.IsUnavailable)
                     continue;
@@ -118,7 +123,7 @@
                 if (!IsSlotCompatible)
                     continue;
 
-                AvailablePowerList.Add(new Power(PowerItem));
+                AvailablePowerList.Add(new Power(PowerItem, AvailablePowerList));
             }
         }
 
