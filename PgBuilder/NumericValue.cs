@@ -6,36 +6,46 @@
     {
         public NumericValue()
         {
-            Value = double.NaN;
+            Value = float.NaN;
             IsPercent = false;
         }
 
-        private NumericValue(double value, bool isPercent)
+        private NumericValue(float value, bool isPercent)
         {
             Value = value;
             IsPercent = isPercent;
         }
 
-        public double Value { get; set; }
+        public float Value { get; set; }
         public bool IsPercent { get; set; }
-        public bool IsValueSet { get { return !double.IsNaN(Value); } }
+        public bool IsValueSet { get { return !float.IsNaN(Value); } }
 
-        public static NumericValue FromDouble(double value)
+        public static NumericValue FromDouble(float value)
         {
             return new NumericValue(value, false);
         }
 
-        public static NumericValue FromDoublePercent(double value)
+        public static NumericValue FromDoublePercent(float value)
         {
             return new NumericValue(value, true);
+        }
+
+        public static NumericValue FromDouble(double value)
+        {
+            return new NumericValue((float)value, false);
+        }
+
+        public static NumericValue FromDoublePercent(double value)
+        {
+            return new NumericValue((float)value, true);
         }
 
         public static NumericValue Parse(string text)
         {
             if (text.EndsWith("%"))
-                return FromDoublePercent(double.Parse(text.Substring(0, text.Length - 1), NumberStyles.Float, CultureInfo.InvariantCulture));
+                return FromDoublePercent(float.Parse(text.Substring(0, text.Length - 1), NumberStyles.Float, CultureInfo.InvariantCulture));
             else
-                return FromDouble(double.Parse(text, NumberStyles.Float, CultureInfo.InvariantCulture));
+                return FromDouble(float.Parse(text, NumberStyles.Float, CultureInfo.InvariantCulture));
         }
 
         public void ChangeSign()

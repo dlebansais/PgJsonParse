@@ -50,12 +50,12 @@
             DoT = dot;
             BaseValue = dot.DamagePerTick * dot.NumTicks;
             DeltaValue = 0;
-            MultiplierValue = 1.0;
-            BoostMultiplierValue = 1.0;
+            MultiplierValue = 1.0F;
+            BoostMultiplierValue = 1.0F;
 
             if (DebugTrace)
             {
-                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, DeltaValue, MultiplierValue, BoostMultiplierValue, HasAttributesThatMod);
                 Debug.WriteLine($"{AbilityName}: base, total {Result}");
             }
         }
@@ -79,14 +79,14 @@
                 {
                 }
 
-                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, DeltaValue, MultiplierValue, BoostMultiplierValue, HasAttributesThatMod);
 
                 return Result;
             }
         }
-        private double DeltaValue;
-        private double MultiplierValue;
-        private double BoostMultiplierValue;
+        private float DeltaValue;
+        private float MultiplierValue;
+        private float BoostMultiplierValue;
         public bool RequireNoAggro { get { return DoT.SpecialRuleList.Contains(DoTSpecialRule.IfTargetNotLooking); } }
         public DamageType DamageType { get { return DoT.DamageType; } }
         public bool HasAttributesThatMod { get { return ((IList<IPgAttribute>)DoT.AttributesThatModList).Count > 0; } }
@@ -94,45 +94,45 @@
         public override void Reset()
         {
             DeltaValue = 0;
-            MultiplierValue = 1.0;
-            BoostMultiplierValue = 1.0;
+            MultiplierValue = 1.0F;
+            BoostMultiplierValue = 1.0F;
 
             if (DebugTrace)
             {
-                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, DeltaValue, MultiplierValue, BoostMultiplierValue, HasAttributesThatMod);
                 Debug.WriteLine($"{AbilityName}: reset, total {Result}");
             }
         }
 
-        public void AddDelta(double value)
+        public void AddDelta(float value)
         {
             DeltaValue += value;
 
             if (DebugTrace)
             {
-                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, DeltaValue, MultiplierValue, BoostMultiplierValue, HasAttributesThatMod);
                 Debug.WriteLine($"{AbilityName}: add {(int)value}, total {Result}");
             }
         }
 
-        public void AddMultiplier(double value)
+        public void AddMultiplier(float value)
         {
             MultiplierValue += value;
 
             if (DebugTrace)
             {
-                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, DeltaValue, MultiplierValue, BoostMultiplierValue, HasAttributesThatMod);
                 Debug.WriteLine($"{AbilityName}: multiply {(int)value * 100}, total {Result}");
             }
         }
 
-        public void AddBoostMultiplier(double value)
+        public void AddBoostMultiplier(float value)
         {
             BoostMultiplierValue += value;
 
             if (DebugTrace)
             {
-                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, (float)DeltaValue, (float)MultiplierValue, (float)BoostMultiplierValue, HasAttributesThatMod);
+                int Result = CalculateFinalValue(DoT.NumTicks, DoT.DamagePerTick, DeltaValue, MultiplierValue, BoostMultiplierValue, HasAttributesThatMod);
                 Debug.WriteLine($"{AbilityName}: boost multiply {(int)value * 100}, total {Result}");
             }
         }

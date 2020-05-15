@@ -64,14 +64,14 @@
         public bool? AbilityMinLevelModified { get { return null; } }
 
         public AbilityModifier PowerCost { get; } = new AbilityModifier("PowerCost", (IPgAbility ability) => ability.PvE.PowerCost, DefaultDisplayHandler);
-        public AbilityModifier ResetTime { get; } = new AbilityModifier("ResetTime", (IPgAbility ability) => ability.ResetTime, DefaultDisplayHandler);
-        public AbilityModifier DelayLoopTime { get; } = new AbilityModifier("DelayLoopTime", (IPgAbility ability) => ability.DelayLoopTime, DefaultDisplayHandler);
+        public AbilityModifier ResetTime { get; } = new AbilityModifier("ResetTime", (IPgAbility ability) => (float)ability.ResetTime, DefaultDisplayHandler);
+        public AbilityModifier DelayLoopTime { get; } = new AbilityModifier("DelayLoopTime", (IPgAbility ability) => (float)ability.DelayLoopTime, DefaultDisplayHandler);
         public AbilityModifier Range { get; } = new AbilityModifier("Range", (IPgAbility ability) => ability.PvE.AoE == 0 ? ability.PvE.Range : 0, RangeDisplayHandler);
         public AbilityModifier AoE { get; } = new AbilityModifier("AoE", (IPgAbility ability) => ability.PvE.AoE, DefaultDisplayHandler);
         public AbilityModifier ExtraTaunt { get; } = new AbilityModifier("ExtraTaunt", (IPgAbility ability) => 0, DefaultDisplayHandler);
         public AbilityModifier RageBoost { get; } = new AbilityModifier("RageBoost", (IPgAbility ability) => ability.PvE.RageBoost, DefaultDisplayHandler);
-        public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", 100, (IPgAbility ability) => ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
-        public AbilityModifierPercent Accuracy { get; } = new AbilityModifierPercent("Accuracy", 0, (IPgAbility ability) => ability.PvE.Accuracy * 100, DefaultDisplayHandler);
+        public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", 100, (IPgAbility ability) => (float)ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
+        public AbilityModifierPercent Accuracy { get; } = new AbilityModifierPercent("Accuracy", 0, (IPgAbility ability) => (float)ability.PvE.Accuracy * 100, DefaultDisplayHandler);
 
         private List<AbilityModifier> ModifierList;
         public bool HasOtherEffects 
@@ -86,12 +86,12 @@
             }
         }
 
-        public static string DefaultDisplayHandler(double d)
+        public static string DefaultDisplayHandler(float d)
         {
             return ((int)Math.Round(d)).ToString();
         }
 
-        public static string RangeDisplayHandler(double d)
+        public static string RangeDisplayHandler(float d)
         {
             if (d > 4)
                 return $"{Math.Round(d, 1).ToString(CultureInfo.InvariantCulture)} meters";
@@ -108,11 +108,11 @@
         public string AbilityDamage { get { return Ability != null ? ModifiedAbilityDamage.ToString() : string.Empty; } }
         public bool? AbilityDamageModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityDamage - BaseValueDamage) : null; } }
         private int DeltaDamage;
-        private double ModDamage;
-        private double ModBaseDamage;
-        private double BoostDamage;
-        private double ModCriticalDamage;
-        private double FireballModDamage;
+        private float ModDamage;
+        private float ModBaseDamage;
+        private float BoostDamage;
+        private float ModCriticalDamage;
+        private float FireballModDamage;
 
         public string AbilityDamageTypeString { get { return (Ability != null) ? TextMaps.DamageTypeTextMap[AbilityDamageType] : string.Empty; } }
         public DamageType AbilityDamageType { get { return ModifiedDamageType == DamageType.Internal_None ? Ability.DamageType : ModifiedDamageType; } }
@@ -139,9 +139,9 @@
         public string BasicAttackArmor { get { return $"+{App.DoubleToString(BasicAttackArmorModified)}"; } }
         public bool HasBasicAttackPower { get { return (int)BasicAttackPowerModified != 0; } }
         public string BasicAttackPower { get { return $"+{App.DoubleToString(BasicAttackPowerModified)}"; } }
-        private double BasicAttackHealthModified;
-        private double BasicAttackArmorModified;
-        private double BasicAttackPowerModified;
+        private float BasicAttackHealthModified;
+        private float BasicAttackArmorModified;
+        private float BasicAttackPowerModified;
 
         public bool IsDelayLoopOnlyUsedInCombat { get { return Ability != null && Ability.DelayLoopIsOnlyUsedInCombat; } }
         public bool IsConsumingAmmo { get { return Ability != null && Ability.AmmoDescription != null; } }
@@ -411,7 +411,7 @@
             {
                 string Label = Item.Label;
                 string Suffix = Item.Suffix;
-                double BaseValue = Item.Value;
+                float BaseValue = (float)Item.Value;
                 bool DisplayAsPercent = Item.DisplayAsPercent;
                 bool SkipIfZero = Item.SkipIfZero;
 
@@ -474,7 +474,7 @@
             ModDamage = 0;
             ModBaseDamage = 0;
             BoostDamage = 0;
-            ModCriticalDamage = 1.0;
+            ModCriticalDamage = 1.0F;
             FireballModDamage = 0;
             BasicAttackHealthModified = 0;
             BasicAttackArmorModified = 0;
@@ -565,11 +565,11 @@
                 if (isFairyCharacter)
                 {
                     if (metalArmorCount == 3)
-                        ApplyMetalSuitPenalty(0.1);
+                        ApplyMetalSuitPenalty(0.1F);
                     else if (metalArmorCount == 4)
-                        ApplyMetalSuitPenalty(0.15);
+                        ApplyMetalSuitPenalty(0.15F);
                     else
-                        ApplyMetalSuitPenalty(0.2);
+                        ApplyMetalSuitPenalty(0.2F);
                 }
                 else
                     ApplyMetalSuitBonus();
@@ -586,7 +586,7 @@
         {
         }
 
-        public void ApplyMetalSuitPenalty(double penalty)
+        public void ApplyMetalSuitPenalty(float penalty)
         {
             ModDamage -= penalty;
         }
@@ -626,7 +626,7 @@
             if (Ability == null || !Ability.KeywordList.Contains(AbilityKeyword.BasicAttack))
                 return;
 
-            RecalculateDeltaResetTime(-3.0);
+            RecalculateDeltaResetTime(-3.0F);
         }
 
         public bool RecalculateSpecificAttributes(string key, float attributeEffect)
@@ -857,99 +857,99 @@
             return false;
         }
 
-        private void RecalculateModAmmoConsumeChance(double attributeEffect)
+        private void RecalculateModAmmoConsumeChance(float attributeEffect)
         {
         }
 
-        private void RecalculateDeltaDelayLoopTime(double attributeEffect)
+        private void RecalculateDeltaDelayLoopTime(float attributeEffect)
         {
             DelayLoopTime.AddValue(attributeEffect);
         }
 
-        private void RecalculateDeltaPowerCost(double attributeEffect)
+        private void RecalculateDeltaPowerCost(float attributeEffect)
         {
             PowerCost.AddValue(attributeEffect);
         }
 
-        private void RecalculateModPowerCost(double attributeEffect)
+        private void RecalculateModPowerCost(float attributeEffect)
         {
             PowerCost.AddMultiplier(attributeEffect);
         }
 
-        private void RecalculateDeltaResetTime(double attributeEffect)
+        private void RecalculateDeltaResetTime(float attributeEffect)
         {
             ResetTime.AddValue(attributeEffect);
         }
 
-        private void RecalculateDeltaDamage(double attributeEffect)
+        private void RecalculateDeltaDamage(float attributeEffect)
         {
             DeltaDamage += (int)attributeEffect;
         }
 
-        private void IndirectDeltaDamage(double attributeEffect, DamageType damageType)
+        private void IndirectDeltaDamage(float attributeEffect, DamageType damageType)
         {
             foreach (OtherEffect Item in OtherEffectList)
                 if (Item is OtherEffectDoT AsDot && (AsDot.DamageType == damageType || damageType == DamageType.Internal_None))
                     AsDot.AddDelta(attributeEffect);
         }
 
-        private void DirectBoostDamage(double attributeEffect)
+        private void DirectBoostDamage(float attributeEffect)
         {
             BoostDamage += attributeEffect;
         }
 
-        private void IndirectModDamage(double attributeEffect, DamageType damagetype)
+        private void IndirectModDamage(float attributeEffect, DamageType damagetype)
         {
             foreach (OtherEffect Item in OtherEffectList)
                 if (Item is OtherEffectDoT AsDot && AsDot.DamageType == damagetype)
                     AsDot.AddMultiplier(attributeEffect);
         }
 
-        private void RecalculateModDamage(double attributeEffect)
+        private void RecalculateModDamage(float attributeEffect)
         {
             ModDamage += attributeEffect;
         }
 
-        private void RecalculateModBaseDamage(double attributeEffect)
+        private void RecalculateModBaseDamage(float attributeEffect)
         {
             ModBaseDamage += attributeEffect;
         }
 
-        private void RecalculateDeltaDamageLast(double attributeEffect)
+        private void RecalculateDeltaDamageLast(float attributeEffect)
         {
         }
 
-        private void RecalculateModCriticalDamage(double attributeEffect)
+        private void RecalculateModCriticalDamage(float attributeEffect)
         {
             ModCriticalDamage += attributeEffect;
         }
 
-        private void RecalculateDeltaTaunt(double attributeEffect)
+        private void RecalculateDeltaTaunt(float attributeEffect)
         {
             ExtraTaunt.AddValue(attributeEffect);
         }
 
-        private void RecalculateModTaunt(double attributeEffect)
+        private void RecalculateModTaunt(float attributeEffect)
         {
             ExtraTaunt.AddMultiplier(attributeEffect);
         }
 
-        private void RecalculateDeltaRage(double attributeEffect)
+        private void RecalculateDeltaRage(float attributeEffect)
         {
             RageBoost.AddValue(attributeEffect);
         }
 
-        private void RecalculateModRage(double attributeEffect)
+        private void RecalculateModRage(float attributeEffect)
         {
             RageMultiplier.AddValue(attributeEffect);
         }
 
-        private void RecalculateDeltaRange(double attributeEffect)
+        private void RecalculateDeltaRange(float attributeEffect)
         {
             Range.AddValue(attributeEffect);
         }
 
-        private void RecalculateDeltaAccuracy(double attributeEffect)
+        private void RecalculateDeltaAccuracy(float attributeEffect)
         {
             Accuracy.AddValue(attributeEffect);
         }
@@ -967,7 +967,7 @@
                     if (Item.Keyword == CombatKeyword.CombatRefreshRestoreHeatlth)
                     {
                         if (Item.Data.IsValueSet)
-                            BasicAttackHealthModified += Item.Data.Value;
+                            BasicAttackHealthModified += (float)Item.Data.Value;
                         break;
                     }
             }
@@ -1011,7 +1011,7 @@
         public void RecalculateModEnd()
         {
             if (Ability != null && Ability.DamageType != DamageType.Fire && ModifiedDamageType == DamageType.Fire)
-                RageMultiplier.AddMultiplier(1.0);
+                RageMultiplier.AddMultiplier(1.0F);
 
             NotifyPropertiesChanged();
         }
@@ -1030,7 +1030,7 @@
             return false;
         }
 
-        public bool AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, double deltaValue, bool hasRecurrence)
+        public bool AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, float deltaValue, bool hasRecurrence)
         {
             List<KeyValuePair<string, string>> VerificationTable;
 
@@ -1283,7 +1283,7 @@
                                                 if ((AsDot.DamageType == DamageType || (DamageType == DamageType.Internal_None && Ability.PvE.Damage == 0)) && AsDot.RequireNoAggro == RequireNoAggro)
                                                 {
                                                     if (combatEffect.Data.IsPercent)
-                                                        AsDot.AddBoostMultiplier(combatEffect.Data.Value / 100.0);
+                                                        AsDot.AddBoostMultiplier(combatEffect.Data.Value / 100);
                                                     else
                                                         AsDot.AddDelta(combatEffect.Data.Value);
                                                     IsHandled = true;
@@ -1295,11 +1295,11 @@
                                     if (!IsHandled)
                                     {
                                         if (modEffect.EffectKey.StartsWith("effect_37201"))
-                                            FireballModDamage += combatEffect.Data.Value / 100.0;
+                                            FireballModDamage += combatEffect.Data.Value / 100;
                                         else
                                         {
                                             if (combatEffect.Data.IsPercent)
-                                                RecalculateModDamage(combatEffect.Data.Value / 100.0);
+                                                RecalculateModDamage(combatEffect.Data.Value / 100);
                                             else
                                                 RecalculateDeltaDamage(combatEffect.Data.Value);
                                         }

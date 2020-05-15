@@ -1,4 +1,4 @@
 ﻿namespace PgBuilder
 {
-    public delegate double AbilityBaseValueGetter(PgJsonObjects.IPgAbility ability);
+    public delegate float AbilityBaseValueGetter(PgJsonObjects.IPgAbility ability);
 }

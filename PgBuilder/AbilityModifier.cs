@@ -6,7 +6,7 @@
 
     public class AbilityModifier
     {
-        public AbilityModifier(string name, AbilityBaseValueGetter getter, Func<double, string> displayHandler)
+        public AbilityModifier(string name, AbilityBaseValueGetter getter, Func<float, string> displayHandler)
         {
             Name = name;
             Getter = getter;
@@ -14,7 +14,7 @@
             Ability = null;
             BaseValue = 0;
             DeltaValue = 0;
-            MultiplierValue = 1.0;
+            MultiplierValue = 1.0F;
         }
 
         public void SetAbility(IPgAbility ability)
@@ -26,15 +26,15 @@
         public string Name { get; }
         public AbilityBaseValueGetter Getter { get; }
         public IPgAbility Ability { get; private set; }
-        public double BaseValue { get; private set; }
-        public Func<double, string> DisplayHandler { get; }
+        public float BaseValue { get; private set; }
+        public Func<float, string> DisplayHandler { get; }
 
         protected int DefaultValue { get; set; }
         public bool HasValue { get { return Ability != null && ModifiedValue != DefaultValue || DeltaValue != 0; } }
         public string AsString { get { return Ability != null ? DisplayHandler(ModifiedValue) : string.Empty; } }
         public bool? IsModified { get { return Ability != null ? IntModifier(ModifiedValue - BaseValue) : null; } }
 
-        public double ModifiedValue 
+        public float ModifiedValue 
         { 
             get 
             {
@@ -45,23 +45,23 @@
                 if (Ability == null)
                     return DefaultValue;
 
-                double Result = Math.Floor((BaseValue + DeltaValue) * MultiplierValue);
+                float Result = (float)Math.Floor((BaseValue + DeltaValue) * MultiplierValue);
                 return Result;
             }
         }
 
-        protected double DeltaValue { get; private set; }
-        protected double MultiplierValue { get; private set; }
+        protected float DeltaValue { get; private set; }
+        protected float MultiplierValue { get; private set; }
 
         public void Reset()
         {
             //Debug.WriteLine($"({Name}) Reset");
 
             DeltaValue = 0;
-            MultiplierValue = 1.0;
+            MultiplierValue = 1.0F;
         }
 
-        public void AddValue(double value)
+        public void AddValue(float value)
         {
             DeltaValue += value;
 
@@ -75,20 +75,20 @@
             DeltaValue = -BaseValue;
         }
 
-        public void AddMultiplier(double multiplierValue)
+        public void AddMultiplier(float multiplierValue)
         {
             MultiplierValue += multiplierValue;
         }
 
-        public int CalculateDifference(double baseValue, double deltaValue)
+        public int CalculateDifference(float baseValue, float deltaValue)
         {
             //Debug.WriteLine($"({Name}) Base: {baseValue}, Delta: {deltaValue}");
 
-            double Result = baseValue + deltaValue;
+            float Result = baseValue + deltaValue;
             return (int)Math.Round(Result);
         }
 
-        public bool? IntModifier(double value)
+        public bool? IntModifier(float value)
         {
             if (value > 0)
                 return true;
