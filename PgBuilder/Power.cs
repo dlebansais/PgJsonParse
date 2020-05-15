@@ -15,7 +15,7 @@ namespace PgBuilder
             Source = source;
             Parent = parent;
             IList<IPgPowerTier> TierEffectList = Source.TierEffectList;
-            SelectedTier = TierEffectList.Count / 2;
+            SelectedTier = TierEffectList.Count - 1;
         }
 
         public IPgPower Source { get; }
