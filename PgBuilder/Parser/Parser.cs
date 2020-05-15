@@ -1994,7 +1994,7 @@
             int Max = int.Parse(MaxString);
             int RandomDamage = Min <= 1 ? Max : (Max - Min);
 
-            string ConstantDamage = Min.ToString();
+            string ConstantDamage = Min <= 1 ? "0" : Min.ToString();
 
             string RandomlyDetermined = "(randomly determined)";
             text = $"{Prolog} Deal {ConstantDamage} damage; Add up to {RandomDamage} {Epilog}";

@@ -425,17 +425,17 @@
 
         private void FillGearSlotList()
         {
-            GearSlotList.Add(new GearSlot("Main Hand", ItemSlot.MainHand));
-            GearSlotList.Add(new GearSlot("Off Hand", ItemSlot.OffHand));
-            GearSlotList.Add(new GearSlot("Head", ItemSlot.Head));
-            GearSlotList.Add(new GearSlot("Chest", ItemSlot.Chest));
-            GearSlotList.Add(new GearSlot("Legs", ItemSlot.Legs));
-            GearSlotList.Add(new GearSlot("Feet", ItemSlot.Feet));
-            GearSlotList.Add(new GearSlot("Hands", ItemSlot.Hands));
-            GearSlotList.Add(new GearSlot("Neck", ItemSlot.Necklace));
-            GearSlotList.Add(new GearSlot("Ring", ItemSlot.Ring));
-            GearSlotList.Add(new GearSlot("Racial", ItemSlot.Racial));
-            GearSlotList.Add(new GearSlot("Waist", ItemSlot.Waist));
+            GearSlotList.Add(new GearSlot("Main Hand", ItemSlot.MainHand, false));
+            GearSlotList.Add(new GearSlot("Off Hand", ItemSlot.OffHand, false));
+            GearSlotList.Add(new GearSlot("Head", ItemSlot.Head, false));
+            GearSlotList.Add(new GearSlot("Chest", ItemSlot.Chest, true));
+            GearSlotList.Add(new GearSlot("Legs", ItemSlot.Legs, true));
+            GearSlotList.Add(new GearSlot("Feet", ItemSlot.Feet, false));
+            GearSlotList.Add(new GearSlot("Hands", ItemSlot.Hands, false));
+            GearSlotList.Add(new GearSlot("Neck", ItemSlot.Necklace, false));
+            GearSlotList.Add(new GearSlot("Ring", ItemSlot.Ring, false));
+            GearSlotList.Add(new GearSlot("Racial", ItemSlot.Racial, false));
+            GearSlotList.Add(new GearSlot("Waist", ItemSlot.Waist, false));
         }
 
         private void ResetGearSlots()
@@ -712,12 +712,13 @@
             }
         }
 
-        private void OnSelectGear(string gearSlotName, string itemKey)
+        private void OnSelectGear(string gearSlotName, string itemKey, List<int> enhancementList)
         {
             foreach (GearSlot Item in GearSlotList)
                 if (Item.Name == gearSlotName)
                 {
                     Item.SetSelectedItem(itemKey);
+                    Item.UpdateEnhancementList(enhancementList);
                     RecalculateMods();
                     break;
                 }
@@ -780,6 +781,26 @@
             Mod.MoveUp();
         }
 
+        private void OnIncrementEnhancement(object sender, ExecutedRoutedEventArgs e)
+        {
+            FrameworkElement Control = (FrameworkElement)e.OriginalSource;
+            int Index = (Grid.GetColumn(Control) < 3 ? 0 : 3) + Grid.GetRow(Control);
+            GearSlot Slot = (GearSlot)Control.DataContext;
+            Slot.IncrementEnhancement(Index);
+
+            RecalculateMods();
+        }
+
+        private void OnDecrementEnhancement(object sender, ExecutedRoutedEventArgs e)
+        {
+            FrameworkElement Control = (FrameworkElement)e.OriginalSource;
+            int Index = (Grid.GetColumn(Control) < 3 ? 0 : 3) + Grid.GetRow(Control);
+            GearSlot Slot = (GearSlot)Control.DataContext;
+            Slot.DecrementEnhancement(Index);
+
+            RecalculateMods();
+        }
+
         private void OnSelectGearMods(string gearSlotName, List<KeyValuePair<string, int>> modList)
         {
             foreach (GearSlot Item in GearSlotList)
@@ -813,7 +834,7 @@
 
         private void OnLoad(string filePath)
         {
-            if (!LoadBuild(filePath, out IPgSkill Skill1, out IPgSkill Skill2, out int BuildLoreLevel, out bool BuildIsFairyCharacter, out List<string>[] AbilityTable, out Dictionary<string, string> GearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> GearModTable))
+            if (!LoadBuild(filePath, out IPgSkill Skill1, out IPgSkill Skill2, out int BuildLoreLevel, out bool BuildIsFairyCharacter, out List<string>[] AbilityTable, out Dictionary<string, string> GearItemTable, out Dictionary<string, List<int>> GearEnhancementTable, out Dictionary<string, List<KeyValuePair<string, int>>> GearModTable))
             { 
                 MessageBox.Show("Invalid file format", "Error");
                 return;
@@ -834,7 +855,7 @@
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities1), AbilityTable[0]);
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities2), AbilityTable[1]);
             foreach (KeyValuePair<string, string> Entry in GearItemTable)
-                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, string>(OnSelectGear), Entry.Key, Entry.Value);
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, string, List<int>>(OnSelectGear), Entry.Key, Entry.Value, GearEnhancementTable[Entry.Key]);
             foreach (KeyValuePair<string, List<KeyValuePair<string, int>>> Entry in GearModTable)
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string, List<KeyValuePair<string, int>>>(OnSelectGearMods), Entry.Key, Entry.Value);
 
@@ -944,13 +965,13 @@
         #endregion
 
         #region Load
-        private bool LoadBuild(string fileName, out IPgSkill skill1, out IPgSkill skill2, out int loreLevel, out bool isFairyCharacter, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
+        private bool LoadBuild(string fileName, out IPgSkill skill1, out IPgSkill skill2, out int loreLevel, out bool isFairyCharacter, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<int>> gearEnhancementTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
         {
             using FileStream Stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            return LoadBuild(Stream, out skill1, out skill2, out loreLevel, out isFairyCharacter, out abilityTable, out gearItemTable, out gearModTable);
+            return LoadBuild(Stream, out skill1, out skill2, out loreLevel, out isFairyCharacter, out abilityTable, out gearItemTable, out gearEnhancementTable, out gearModTable);
         }
 
-        private bool LoadBuild(FileStream stream, out IPgSkill skill1, out IPgSkill skill2, out int loreLevel, out bool isFairyCharacter, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
+        private bool LoadBuild(FileStream stream, out IPgSkill skill1, out IPgSkill skill2, out int loreLevel, out bool isFairyCharacter, out List<string>[] abilityTable, out Dictionary<string, string> gearItemTable, out Dictionary<string, List<int>> gearEnhancementTable, out Dictionary<string, List<KeyValuePair<string, int>>> gearModTable)
         {
             skill1 = null;
             skill2 = null;
@@ -962,6 +983,7 @@
                 new List<string>(),
             };
             gearItemTable = new Dictionary<string, string>();
+            gearEnhancementTable = new Dictionary<string, List<int>>();
             gearModTable = new Dictionary<string, List<KeyValuePair<string, int>>>();
 
             JsonTextReader Reader = new JsonTextReader(stream);
@@ -1010,12 +1032,13 @@
                 Reader.Read();
             }
 
-            while (LoadBuildGear(Reader, out string SlotName, out string ItemName, out List<KeyValuePair<string, int>> ModTable))
+            while (LoadBuildGear(Reader, out string SlotName, out string ItemName, out List<int> EnhancementPointList, out List<KeyValuePair<string, int>> ModTable))
             {
                 if (gearItemTable.ContainsKey(SlotName) || gearModTable.ContainsKey(SlotName))
                     return false;
 
                 gearItemTable.Add(SlotName, ItemName);
+                gearEnhancementTable.Add(SlotName, EnhancementPointList);
                 gearModTable.Add(SlotName, ModTable);
 
                 Reader.Read();
@@ -1115,10 +1138,11 @@
             return true;
         }
 
-        private bool LoadBuildGear(JsonTextReader reader, out string slotName, out string itemName, out List<KeyValuePair<string, int>> modTable)
+        private bool LoadBuildGear(JsonTextReader reader, out string slotName, out string itemName, out List<int> enhancementPointList, out List<KeyValuePair<string, int>> modTable)
         {
             slotName = string.Empty;
             itemName = string.Empty;
+            enhancementPointList = new List<int>();
             modTable = new List<KeyValuePair<string, int>>();
 
             if (!(reader.CurrentValue is string SlotKey))
@@ -1131,13 +1155,34 @@
                 return false;
 
             reader.Read();
-            if (reader.CurrentValue is string GearKey1 && GearKey1 == "Item")
+            if (reader.CurrentValue is string GearKey && GearKey == "Item")
             {
                 reader.Read();
                 if (reader.CurrentToken != Json.Token.String || !(reader.CurrentValue is string ItemValue))
                     return false;
 
                 itemName = ItemValue;
+
+                reader.Read();
+            }
+
+            if (reader.CurrentValue is string GearEnhancement && GearEnhancement == "Enhancement")
+            {
+                reader.Read();
+                if (reader.CurrentToken != Json.Token.ArrayStart)
+                    return false;
+
+                for (;;)
+                {
+                    reader.Read();
+                    if (reader.CurrentToken == Json.Token.ArrayEnd)
+                        break;
+
+                    if (reader.CurrentToken != Json.Token.Integer || !(reader.CurrentValue is int EnhancementValue))
+                        return false;
+
+                    enhancementPointList.Add(EnhancementValue);
+                }
 
                 reader.Read();
             }
@@ -1295,6 +1340,14 @@
                 writer.ObjectKey("Item");
                 writer.Value(slot.ItemList[slot.SelectedItemIndex].ItemKey);
             }
+
+            writer.ObjectKey("Enhancement");
+            writer.ArrayStart();
+
+            for (int i = 0; i < slot.EnhancementList.Count; i++)
+                writer.Value(slot.EnhancementList[i].PointCount);
+
+            writer.ArrayEnd();
 
             int Index, PowerIndex;
             for (Index = 0, PowerIndex = 0; Index < slot.ModList.Count; Index++)
@@ -1454,6 +1507,12 @@
             {
                 ItemInfo Item = slot.ItemList[slot.SelectedItemIndex];
                 RecalculateItemMods(Item);
+            }
+
+            if (slot.HasEnhancement)
+            {
+                foreach (IPgItemAttributeLink Item in slot.EnhancementEffectDescriptionList)
+                    RecalculateAttributeMods(Item.Link, Item.AttributeEffect);
             }
 
             foreach (Mod Item in slot.ModList)

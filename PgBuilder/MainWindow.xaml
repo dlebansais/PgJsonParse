@@ -23,6 +23,8 @@
         <RoutedCommand x:Key="AddModCommand"/>
         <RoutedCommand x:Key="IncrementTierCommand"/>
         <RoutedCommand x:Key="DecrementTierCommand"/>
+        <RoutedCommand x:Key="IncrementEnhancementCommand"/>
+        <RoutedCommand x:Key="DecrementEnhancementCommand"/>
         <RoutedCommand x:Key="MoveDownCommand"/>
         <RoutedCommand x:Key="MoveUpCommand"/>
         <RoutedCommand x:Key="LoadCommand"/>
@@ -322,6 +324,8 @@
         <CommandBinding Command="{StaticResource AddModCommand}" CanExecute="CanAddMod" Executed="OnAddMod"/>
         <CommandBinding Command="{StaticResource IncrementTierCommand}" Executed="OnIncrementTier"/>
         <CommandBinding Command="{StaticResource DecrementTierCommand}" Executed="OnDecrementTier"/>
+        <CommandBinding Command="{StaticResource IncrementEnhancementCommand}" Executed="OnIncrementEnhancement"/>
+        <CommandBinding Command="{StaticResource DecrementEnhancementCommand}" Executed="OnDecrementEnhancement"/>
         <CommandBinding Command="{StaticResource MoveDownCommand}" Executed="OnMoveDown"/>
         <CommandBinding Command="{StaticResource MoveUpCommand}" Executed="OnMoveUp"/>
         <CommandBinding Command="{StaticResource LoadCommand}" Executed="OnLoad"/>
@@ -396,7 +400,7 @@
                 <ItemContainerTemplate>
                     <DockPanel LastChildFill="False">
                         <DockPanel DockPanel.Dock="Top" Margin="0,10,0,0" LastChildFill="False">
-                            <DockPanel DockPanel.Dock="Left" VerticalAlignment="Top" Margin="10,0,0,10" Width="260">
+                            <DockPanel DockPanel.Dock="Left" LastChildFill="False" VerticalAlignment="Top" Margin="10,0,0,10" Width="260">
                                 <DockPanel DockPanel.Dock="Top">
                                     <DockPanel.Resources>
                                         <DataTemplate x:Key="ItemSimpleEffectTemplate" DataType="{x:Type object:IPgItemSimpleEffect}">
@@ -451,7 +455,7 @@
                                         <ComboBox ItemsSource="{Binding ItemList}" ItemTemplate="{StaticResource ItemNameTemplate}" SelectedIndex="{Binding SelectedItemIndex, Mode=OneWay}" ToolTip="{Binding Path=SelectedItem}" IsReadOnly="True" SelectionChanged="OnItemSelectionChanged" VerticalAlignment="Center"/>
                                     </Grid>
                                 </DockPanel>
-                                <ItemsControl ItemsSource="{Binding SelectedItem.ItemEffectDescriptionList}" ItemTemplateSelector="{StaticResource selItemEffectTemplate}" Margin="5,5,5,5">
+                                <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding SelectedItem.ItemEffectDescriptionList}" ItemTemplateSelector="{StaticResource selItemEffectTemplate}" Margin="5,5,5,0">
                                     <ItemsControl.Resources>
                                         <DataTemplate x:Key="ItemSimpleEffectTemplate" DataType="{x:Type object:IPgItemSimpleEffect}">
                                             <TextBox Text="{Binding Description, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="0,1,0,1"/>
@@ -461,6 +465,55 @@
                                         </DataTemplate>
                                     </ItemsControl.Resources>
                                 </ItemsControl>
+                                <ItemsControl DockPanel.Dock="Top" Visibility="{Binding HasEnhancement, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" ItemsSource="{Binding EnhancementEffectDescriptionList}" ItemTemplateSelector="{StaticResource selItemEffectTemplate}" Margin="5,0,5,5">
+                                    <ItemsControl.Resources>
+                                        <DataTemplate x:Key="ItemAttributeLinkTemplate" DataType="{x:Type object:IPgItemAttributeLink}">
+                                            <TextBox Text="{Binding FriendlyNameAndEffect, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="0,1,0,1"/>
+                                        </DataTemplate>
+                                    </ItemsControl.Resources>
+                                </ItemsControl>
+                                <Expander Visibility="{Binding HasEnhancement, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,5,5,5">
+                                    <Expander.Header>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock>Enhancement points:</TextBlock>
+                                            <TextBlock Text="{Binding ConsumedEnhancementPoints}" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                    </Expander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Button Grid.Column="0" Grid.Row="0" Command="{StaticResource IncrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="0,5,0,0">+</Button>
+                                        <Button Grid.Column="1" Grid.Row="0" Command="{StaticResource DecrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="2,5,0,0">-</Button>
+                                        <TextBlock Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,10,0">Cold</TextBlock>
+                                        <Button Grid.Column="0" Grid.Row="1" Command="{StaticResource IncrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="0,5,0,0">+</Button>
+                                        <Button Grid.Column="1" Grid.Row="1" Command="{StaticResource DecrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="2,5,0,0">-</Button>
+                                        <TextBlock Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,10,0">Darkness</TextBlock>
+                                        <Button Grid.Column="0" Grid.Row="2" Command="{StaticResource IncrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="0,5,0,0">+</Button>
+                                        <Button Grid.Column="1" Grid.Row="2" Command="{StaticResource DecrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="2,5,0,0">-</Button>
+                                        <TextBlock Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,10,0">Electricity</TextBlock>
+                                        <Button Grid.Column="3" Grid.Row="0" Command="{StaticResource IncrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="0,5,0,0">+</Button>
+                                        <Button Grid.Column="4" Grid.Row="0" Command="{StaticResource DecrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="2,5,0,0">-</Button>
+                                        <TextBlock Grid.Column="5" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,0,0">Fire</TextBlock>
+                                        <Button Grid.Column="3" Grid.Row="1" Command="{StaticResource IncrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="0,5,0,0">+</Button>
+                                        <Button Grid.Column="4" Grid.Row="1" Command="{StaticResource DecrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="2,5,0,0">-</Button>
+                                        <TextBlock Grid.Column="5" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,0,0">Nature</TextBlock>
+                                        <Button Grid.Column="3" Grid.Row="2" Command="{StaticResource IncrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="0,5,0,0">+</Button>
+                                        <Button Grid.Column="4" Grid.Row="2" Command="{StaticResource DecrementEnhancementCommand}" VerticalAlignment="Center" Width="20" Margin="2,5,0,0">-</Button>
+                                        <TextBlock Grid.Column="5" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,0,0">Psychic</TextBlock>
+                                    </Grid>
+                                </Expander>
                             </DockPanel>
                             <Grid DockPanel.Dock="Left" Width="400" Margin="10,0,10,0">
                                 <Grid VerticalAlignment="Top">

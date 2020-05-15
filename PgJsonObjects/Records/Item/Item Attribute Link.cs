@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PgJsonObjects
 {
@@ -71,7 +72,7 @@ namespace PgJsonObjects
 
                 if (Link.IsLabelWithPercent)
                 {
-                    AttributeEffectString = Tools.FloatToString(AttributeEffect * 100, AttributeEffectFormat);
+                    AttributeEffectString = Tools.FloatToString((float)Math.Round(AttributeEffect * 100, 1), AttributeEffectFormat);
 
                     if (AttributeEffect > 0)
                         AttributeEffectString = "+" + AttributeEffectString;

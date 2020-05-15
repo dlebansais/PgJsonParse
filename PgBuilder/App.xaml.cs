@@ -22,27 +22,16 @@
         }
 
         //return ((((baseDamage * modBaseDamage + (baseDamage + deltaDamage) * (1 + modDamage)) + SimpleDamage) * DamageDebuff * VulnerabilityDebuff) + (ConditionalFlatDamage * MoreDamageDebuff) + modCriticalDamage;
-        public static int CalculateDamage(float baseDamage, int deltaDamage, float modDamage, float modBaseDamage, float boostDamage, float modCriticalDamage, float fireballModDamage)
+        public static int CalculateDamage(float baseDamage, int deltaDamage, float modDamage, float modBaseDamage, float boostDamage, float modCriticalDamage)
         {
-            if (baseDamage == 214.0)
+            if (baseDamage == 443.0)
             {
             }
 
             float Result;
 
-            if (fireballModDamage != 0)
-            {
-                Result = baseDamage * modBaseDamage;
-                Result = (float)Math.Floor(Result) + baseDamage + deltaDamage;
-                Result *= 1.0F + fireballModDamage;
-
-                return (int)Math.Floor(Result);
-            }
-            else
-            {
-                Result = ((baseDamage * modBaseDamage) + (baseDamage + deltaDamage) * (1.0F + modDamage)) + boostDamage;
-                return (int)Math.Round(Result, MidpointRounding.AwayFromZero);
-            }
+            Result = ((baseDamage * modBaseDamage) + (baseDamage + deltaDamage) * (1.0F + modDamage)) + boostDamage;
+            return (int)Math.Round(Result, MidpointRounding.AwayFromZero);
         }
     }
 }

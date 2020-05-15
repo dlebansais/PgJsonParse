@@ -73,6 +73,7 @@
     <Compile Include="CombatKeyword.cs" />
     <Compile Include="Converters\ItemToIconConverter.cs" />
     <Compile Include="Converters\AbilityToIconConverter.cs" />
+    <Compile Include="Enhancement.cs" />
     <Compile Include="GameCombatSkill.cs" />
     <Compile Include="GameDamageType.cs" />
     <Compile Include="GearSlot.cs" />
