@@ -378,6 +378,7 @@
             IList<IPgPower> PowerList = (IList<IPgPower>)PowerDefinition.VerifiedObjectList;
             
             SkillList.Clear();
+            List<IPgSkill> SubskillList = new List<IPgSkill>();
 
             foreach (IPgPower PowerItem in PowerList)
             {
@@ -411,11 +412,24 @@
                     PowerItem.RawSkill == PowerSkill.ShamanicInfusion)
                     continue;
 
-                if (!SkillList.Contains(PowerItem.Skill))
-                    SkillList.Add(PowerItem.Skill);
+                IPgSkill Skill = PowerItem.Skill;
+
+                if (!SkillList.Contains(Skill) && !SubskillList.Contains(Skill))
+                    if (Skill.ParentSkill != null)
+                        SubskillList.Add(Skill);
+                    else
+                        SkillList.Add(Skill);
             }
 
             SkillList.Sort(SortByName);
+
+            foreach (IPgSkill Item in SubskillList)
+            {
+                IPgSkill ParentSkill = Item.ParentSkill;
+                int ParentIndex = SkillList.IndexOf(ParentSkill);
+                if (ParentIndex >= 0)
+                    SkillList.Insert(ParentIndex + 1, Item);
+            }
         }
 
         private static int SortByName(IPgSkill skill1, IPgSkill skill2)

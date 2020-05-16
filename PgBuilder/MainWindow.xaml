@@ -20,6 +20,7 @@
         <localsel:AbilityTemplateSelector x:Key="selAbilityTemplate"/>
         <localsel:OtherEffectTemplateSelector x:Key="selOtherEffectTemplate"/>
         <localsel:PowerTemplateSelector x:Key="selPowerTemplate"/>
+        <localsel:SkillTemplateSelector x:Key="selSkillTemplate"/>
         <RoutedCommand x:Key="AddModCommand"/>
         <RoutedCommand x:Key="IncrementTierCommand"/>
         <RoutedCommand x:Key="DecrementTierCommand"/>
@@ -62,6 +63,9 @@
         <BitmapImage x:Key="imgBasicAttack" UriSource="/PgBuilder;component/Resources/basic_attack.png"/>
         <DataTemplate x:Key="SkillTemplate" DataType="{x:Type object:PgSkill}">
             <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="SubskillTemplate" DataType="{x:Type object:PgSkill}">
+            <TextBlock Text="{Binding Name}" FontStyle="Italic" Margin="10,0,0,0"/>
         </DataTemplate>
         <DataTemplate x:Key="ItemNameTemplate" DataType="{x:Type local:ItemInfo}">
             <TextBlock Text="{Binding ItemName}"/>
@@ -355,8 +359,8 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0">Primary:</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="0,5,0,0">Secondary:</TextBlock>
-                        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding SkillList}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1" VerticalAlignment="Center" Width="120" Margin="5,0,0,0"/>
-                        <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding SkillList}" ItemTemplate="{StaticResource SkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2" VerticalAlignment="Center" Width="120" Margin="5,5,0,0"/>
+                        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding SkillList}" ItemTemplateSelector="{StaticResource selSkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1" VerticalAlignment="Center" Width="120" Margin="5,0,0,0"/>
+                        <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding SkillList}" ItemTemplateSelector="{StaticResource selSkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2" VerticalAlignment="Center" Width="120" Margin="5,5,0,0"/>
                     </Grid>
                 </GroupBox>
                 <GroupBox Grid.Column="1" Header="View" MinWidth="120" Margin="10,0,0,0">
