@@ -91,6 +91,14 @@
             NotifyPropertyChanged(nameof(AsString));
         }
 
+        public override string ToString()
+        {
+            if (DisplayAsPercent)
+                return $"{Label} % {Suffix}";
+            else
+                return $"{Label} # {Suffix}";
+        }
+
         #region Implementation of INotifyPropertyChanged
         /// <summary>
         /// Implements the PropertyChanged event.

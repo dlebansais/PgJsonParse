@@ -2898,6 +2898,7 @@
             new Sentence("Indirect #D %f per tick", CombatKeyword.DealIndirectDamage),
             new Sentence("Damage over Time %f per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
             new Sentence("Damage over Time deal %f damage per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
+            new Sentence("The #D Damage is boosted %f", CombatKeyword.DamageBoost),
             new Sentence("Damage is boosted %f", CombatKeyword.DamageBoost),
             new Sentence("Reap %f of the Health damage to you as healing", CombatKeyword.DrainHealth),
             new Sentence("Reap %f of the Armor damage done", CombatKeyword.DrainArmor),
