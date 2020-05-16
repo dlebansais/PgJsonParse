@@ -1050,7 +1050,7 @@
             return false;
         }
 
-        public bool AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, float deltaValue, bool hasRecurrence)
+        public bool AddEffectToSpecialValueDelta(CombatKeyword combatKeyword, NumericValue value, bool hasRecurrence)
         {
             List<KeyValuePair<string, string>> VerificationTable;
 
@@ -1078,7 +1078,10 @@
 
                 if (IsFound)
                 {
-                    SpecialValue.AddDelta(deltaValue);
+                    if (value.IsPercent)
+                        SpecialValue.AddMod(value.Value / 100);
+                    else
+                        SpecialValue.AddDelta(value.Value);
                     break;
                 }
             }
@@ -1260,7 +1263,7 @@
                 case CombatKeyword.ReflectMeleeIndirectDamage:
                     if (combatEffect.Data.IsValueSet)
                         if (!Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
-                            AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
+                            AddEffectToSpecialValueDelta(Keyword, combatEffect.Data, HasRecurrence);
                     break;
 
                 case CombatKeyword.DamageBoost:
@@ -1270,7 +1273,7 @@
                     {
                         bool IsHandled = false;
                         if (Keyword == CombatKeyword.DamageBoost && !Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
-                            IsHandled  = AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
+                            IsHandled  = AddEffectToSpecialValueDelta(Keyword, combatEffect.Data, HasRecurrence);
 
                         if (!IsHandled)
                             if (modEffect.AbilityList.Count > 0)

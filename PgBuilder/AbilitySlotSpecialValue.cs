@@ -1,5 +1,6 @@
 ﻿namespace PgBuilder
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
@@ -7,7 +8,7 @@
 
     public class AbilitySlotSpecialValue : INotifyPropertyChanged
     {
-        public AbilitySlotSpecialValue(string label, string suffix, double baseValue, bool displayAsPercent, bool skipIfZero, List<string> attributesThatDeltaList, List<string> attributesThatModList, List<string> attributesThatModBaseList)
+        public AbilitySlotSpecialValue(string label, string suffix, float baseValue, bool displayAsPercent, bool skipIfZero, List<string> attributesThatDeltaList, List<string> attributesThatModList, List<string> attributesThatModBaseList)
         {
             Label = label;
             Suffix = suffix;
@@ -21,10 +22,10 @@
 
         public string Label { get; }
         public string Suffix { get; }
-        public double BaseValue { get; }
+        public float BaseValue { get; }
         public bool DisplayAsPercent { get; }
         public bool SkipIfZero { get; }
-        public double ActualValue { get { return (BaseValue * ModBaseValue) + (DeltaValue * ModValue); } }
+        public float ActualValue { get { return (BaseValue * ModBaseValue) + ((BaseValue + DeltaValue) * (1.0F + ModValue)); } }
         public bool? IsModified { get { return IntModifier(ActualValue - BaseValue); } }
         public bool IsDisplayed { get { return !SkipIfZero || ActualValue != 0; } }
         public string AsString 
@@ -42,11 +43,11 @@
         public List<string> AttributesThatDeltaList { get; }
         public List<string> AttributesThatModList { get; }
         public List<string> AttributesThatModBaseList { get; }
-        private double DeltaValue = 0;
-        private double ModValue = 1.0;
-        private double ModBaseValue = 1.0;
+        private float DeltaValue = 0;
+        private float ModValue = 0;
+        private float ModBaseValue = 0;
 
-        public bool? IntModifier(double value)
+        public bool? IntModifier(float value)
         {
             if (value > 0)
                 return true;
@@ -59,24 +60,24 @@
         public void Reset()
         {
             DeltaValue = 0;
-            ModValue = 1.0;
-            ModBaseValue = 1.0;
+            ModValue = 0;
+            ModBaseValue = 0;
             NotifyPropertiesChanged();
         }
 
-        public void AddDelta(double value)
+        public void AddDelta(float value)
         {
             DeltaValue += value;
             NotifyPropertiesChanged();
         }
 
-        public void AddMod(double value)
+        public void AddMod(float value)
         {
             ModValue += value;
             NotifyPropertiesChanged();
         }
 
-        public void AddModBase(double value)
+        public void AddModBase(float value)
         {
             ModBaseValue += value;
             NotifyPropertiesChanged();
