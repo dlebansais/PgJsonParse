@@ -116,6 +116,7 @@
         AddMitigationDirect,
         AddMitigationIndirect,
         MitigationLimit,
+        DebuffMitigation,
         AddProtectionCold,
         AddChanceToKnockdown,
         AddChanceToIgnoreKnockback,

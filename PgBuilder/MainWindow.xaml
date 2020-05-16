@@ -175,6 +175,7 @@
                     <StackPanel Orientation="Horizontal" Visibility="{Binding HasAbilityDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock Visibility="{Binding HasAbilityNormalDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Damage:</TextBlock>
                         <TextBlock Visibility="{Binding HasAbilityHealthDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Damage Health:</TextBlock>
+                        <TextBlock Visibility="{Binding HasAbilityArmorDamage, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}" FontWeight="Bold">Damage Armor:</TextBlock>
                         <TextBlock Text="{Binding AbilityDamage}" Foreground="{Binding AbilityDamageModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
                         <TextBlock Text="{Binding AbilityDamageTypeString}" Foreground="{Binding AbilityDamageTypeModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource WhiteGreen}}" Margin="5,0,0,0"/>
                     </StackPanel>

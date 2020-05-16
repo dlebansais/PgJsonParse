@@ -107,6 +107,7 @@
                 {
                     case CombatKeyword.AddTaunt:
                     case CombatKeyword.AddRage:
+                    case CombatKeyword.DebuffMitigation:
                         difference.Add(NoMatch);
                         break;
                 }

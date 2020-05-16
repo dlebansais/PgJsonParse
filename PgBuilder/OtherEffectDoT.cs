@@ -9,41 +9,6 @@
     {
         public static bool DebugTrace { get; } = false;
 
-        /*
-         Fire Breath 7
-					"AttributesThatDelta": [
-						"BOOST_ABILITYDOT_FIREBREATH"
-					]
-         
-        Righteous Flame 8
-					"AttributesThatDelta": [
-						"BOOST_ABILITYDOT_RIGHTEOUSFLAME"
-					]
-
-            Flamestrike 8
-					"AttributesThatDelta": [
-						"BOOST_ABILITYDOT_FLAMESTRIKE"
-					]
-
-            Gut 8
-					"AttributesThatDelta": [
-						"BOOST_ABILITYDOT_GUT"
-					],
-					"AttributesThatMod": [
-						"MOD_ABILITYDOT_GUT"
-					]
-
-            Backstab 8
-					"AttributesThatDelta": [
-						"BOOST_ABILITYDOT_BACKSTAB"
-					]
-
-            Venomstrike 8
-					"AttributesThatDelta": [
-						"BOOST_ABILITYDOT_VENOMSTRIKE"
-					]
-
-         */
         public OtherEffectDoT(string abilityName, IPgDoT dot)
         {
             AbilityName = abilityName;
@@ -71,7 +36,7 @@
                 {
                 }
 
-                if (AbilityName == "Fire Breath 7")
+                if (AbilityName == "Fire Arrow 8")
                 {
                 }
 
@@ -88,6 +53,7 @@
         private float MultiplierValue;
         private float BoostMultiplierValue;
         public bool RequireNoAggro { get { return DoT.SpecialRuleList.Contains(DoTSpecialRule.IfTargetNotLooking); } }
+        public bool DelayedDoT { get { return DoT.SpecialRuleList.Contains(DoTSpecialRule.DelayedDamage); } }
         public DamageType DamageType { get { return DoT.DamageType; } }
         public bool HasAttributesThatMod { get { return ((IList<IPgAttribute>)DoT.AttributesThatModList).Count > 0; } }
 
@@ -220,9 +186,12 @@
                 Result = TotalRounded * numTicks;
             }
 
-            int OldResult = (int)Math.Round((((numTicks * baseDamagePerTick) + deltaDamage) * multiplierValue) * boostMultiplierValue, MidpointRounding.AwayFromZero);
-
             return Result;
+        }
+
+        public override string ToString()
+        {
+            return AbilityName;
         }
     }
 }

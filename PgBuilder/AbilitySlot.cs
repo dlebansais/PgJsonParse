@@ -99,11 +99,26 @@
                 return "Melee";
         }
 
-        public bool HasAbilityDamage { get { return HasAbilityNormalDamage || HasAbilityHealthDamage; } }
+        public bool HasAbilityDamage { get { return HasAbilityNormalDamage || HasAbilityHealthDamage || HasAbilityArmorDamage; } }
         public bool HasAbilityNormalDamage { get { return Ability != null && Ability.PvE.RawDamage != null; } }
         public bool HasAbilityHealthDamage { get { return Ability != null && Ability.PvE.RawHealthSpecificDamage != null; } }
-        public int BaseValueDamage { get { return Ability != null ? (Ability.PvE.RawHealthSpecificDamage != null ? Ability.PvE.HealthSpecificDamage : Ability.PvE.Damage): 0; } }
+        public bool HasAbilityArmorDamage { get { return Ability != null && Ability.PvE.RawArmorSpecificDamage != null; } }
         public int ModifiedAbilityDamage { get { return Ability != null ? App.CalculateDamage(BaseValueDamage, DeltaDamage, ModDamage, ModBaseDamage, BoostDamage, ModCriticalDamage) : 0; } }
+
+        public int BaseValueDamage 
+        { 
+            get 
+            {
+                if (HasAbilityHealthDamage)
+                    return Ability.PvE.HealthSpecificDamage;
+                else if (HasAbilityArmorDamage)
+                    return Ability.PvE.ArmorSpecificDamage;
+                else if (HasAbilityNormalDamage)
+                    return Ability.PvE.Damage;
+                else
+                    return 0;
+            }
+        }
 
         public string AbilityDamage { get { return Ability != null ? ModifiedAbilityDamage.ToString() : string.Empty; } }
         public bool? AbilityDamageModified { get { return Ability != null ? App.IntModifier(ModifiedAbilityDamage - BaseValueDamage) : null; } }
@@ -293,6 +308,7 @@
             NotifyPropertyChanged(nameof(HasAbilityDamage));
             NotifyPropertyChanged(nameof(HasAbilityNormalDamage));
             NotifyPropertyChanged(nameof(HasAbilityHealthDamage));
+            NotifyPropertyChanged(nameof(HasAbilityArmorDamage));
             NotifyPropertyChanged(nameof(ModifiedAbilityDamage));
             NotifyPropertyChanged(nameof(AbilityDamage));
             NotifyPropertyChanged(nameof(AbilityDamageModified));
@@ -321,6 +337,9 @@
             NotifyPropertyChanged(nameof(BasicAttackArmor));
             NotifyPropertyChanged(nameof(HasBasicAttackPower));
             NotifyPropertyChanged(nameof(BasicAttackPower));
+
+            NotifyPropertyChanged(nameof(IsConsumingAmmo));
+            NotifyPropertyChanged(nameof(AmmoName));
 
             NotifyPropertyChanged(nameof(AbilityContextMenu));
         }
@@ -1176,6 +1195,7 @@
                 case CombatKeyword.TargetSubsequentAttacks:
                 case CombatKeyword.AnotherTrap:
                 case CombatKeyword.AddMitigation:
+                case CombatKeyword.DebuffMitigation:
                 case CombatKeyword.NextAttack:
                 case CombatKeyword.EffectDelay:
                 case CombatKeyword.EffectRecurrence:
@@ -1248,10 +1268,6 @@
                 case CombatKeyword.DealDirectHealthDamage:
                     if (combatEffect.Data.IsValueSet)
                     {
-                        if (Keyword == CombatKeyword.DealDirectHealthDamage)
-                        {
-                        }
-
                         bool IsHandled = false;
                         if (Keyword == CombatKeyword.DamageBoost && !Parser.HasNonSpecialValueEffect(modEffect.StaticCombatEffectList, out HasRecurrence))
                             IsHandled  = AddEffectToSpecialValueDelta(Keyword, combatEffect.Data.Value, HasRecurrence);
@@ -1273,15 +1289,18 @@
                                     {
                                         DamageType DamageType = ToDamageType(combatEffect.DamageType);
                                         bool RequireNoAggro = false;
+                                        bool DelayedDoT = false;
 
                                         foreach (CombatEffect Item in modEffect.StaticCombatEffectList)
                                             if (Item.Keyword == CombatKeyword.RequireNoAggro)
                                                 RequireNoAggro = true;
+                                            else if (Item.Keyword == CombatKeyword.EffectDelay)
+                                                DelayedDoT = true;
 
                                         foreach (OtherEffect Item in OtherEffectList)
                                             if (Item is OtherEffectDoT AsDot && AsDot.IsDisplayable)
                                             {
-                                                if ((AsDot.DamageType == DamageType || (DamageType == DamageType.Internal_None && Ability.PvE.Damage == 0)) && AsDot.RequireNoAggro == RequireNoAggro)
+                                                if ((AsDot.DamageType == DamageType || (DamageType == DamageType.Internal_None && BaseValueDamage == 0)) && AsDot.RequireNoAggro == RequireNoAggro && AsDot.DelayedDoT == DelayedDoT)
                                                 {
                                                     if (combatEffect.Data.IsPercent)
                                                         AsDot.AddBoostMultiplier(combatEffect.Data.Value / 100);
