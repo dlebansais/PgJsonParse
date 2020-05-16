@@ -2964,6 +2964,7 @@
             new Sentence("Increase your Max Armor by %f", CombatKeyword.AddMaxArmor),
             new Sentence("Reuse Time %f second", CombatKeyword.AddResetTimer),
             new Sentence("Reuse Time is %f second faster", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
+            new Sentence("Reuse Time is %f second sooner", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
             new Sentence("Reuse Time is %f second", CombatKeyword.AddResetTimer),
             new Sentence("Reuse Time is %f sec", CombatKeyword.AddResetTimer),
             new Sentence("Hasten current reuse time of @ by %f second", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
