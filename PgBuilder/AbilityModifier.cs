@@ -32,6 +32,7 @@
         protected int DefaultValue { get; set; }
         public bool HasValue { get { return Ability != null && ModifiedValue != DefaultValue || DeltaValue != 0; } }
         public string AsString { get { return Ability != null ? DisplayHandler(ModifiedValue) : string.Empty; } }
+        public string AsStringPercent { get { return Ability != null ? DisplayHandler(ModifiedValue) + "%" : string.Empty; } }
         public bool? IsModified { get { return Ability != null ? IntModifier(ModifiedValue - BaseValue) : null; } }
 
         public float ModifiedValue 

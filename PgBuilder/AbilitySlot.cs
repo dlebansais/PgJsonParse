@@ -37,6 +37,7 @@
                 Range,
                 AoE,
                 ExtraTaunt,
+                TauntFromDamage,
                 RageBoost,
                 RageMultiplier,
                 Accuracy,
@@ -69,6 +70,7 @@
         public AbilityModifier Range { get; } = new AbilityModifier("Range", (IPgAbility ability) => ability.PvE.AoE == 0 ? ability.PvE.Range : 0, RangeDisplayHandler);
         public AbilityModifier AoE { get; } = new AbilityModifier("AoE", (IPgAbility ability) => ability.PvE.AoE, DefaultDisplayHandler);
         public AbilityModifier ExtraTaunt { get; } = new AbilityModifier("ExtraTaunt", (IPgAbility ability) => 0, DefaultDisplayHandler);
+        public AbilityModifierPercent TauntFromDamage { get; } = new AbilityModifierPercent("TauntFromDamage", 100, (IPgAbility ability) => (ability.PvE.Damage != 0 || ability.PvE.ArmorSpecificDamage != 0 || ability.PvE.HealthSpecificDamage != 0 ? 100 : 0), DefaultDisplayHandler);
         public AbilityModifier RageBoost { get; } = new AbilityModifier("RageBoost", (IPgAbility ability) => ability.PvE.RageBoost, DefaultDisplayHandler);
         public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", 100, (IPgAbility ability) => (float)ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
         public AbilityModifierPercent Accuracy { get; } = new AbilityModifierPercent("Accuracy", 0, (IPgAbility ability) => (float)ability.PvE.Accuracy * 100, DefaultDisplayHandler);
@@ -299,6 +301,7 @@
             NotifyPropertyChanged(nameof(Range));
             NotifyPropertyChanged(nameof(AoE));
             NotifyPropertyChanged(nameof(ExtraTaunt));
+            NotifyPropertyChanged(nameof(TauntFromDamage));
             NotifyPropertyChanged(nameof(RageBoost));
             NotifyPropertyChanged(nameof(RageMultiplier));
             NotifyPropertyChanged(nameof(Accuracy));
@@ -672,6 +675,9 @@
                     DirectBoostDamage(attributeEffect);
                     IndirectDeltaDamage(attributeEffect, DamageType.Internal_None);
                     break;
+                case "TAUNT_MOD":
+                    RecalculateModTaunt(attributeEffect);
+                    break;
 
                 default:
                     return false;
@@ -948,7 +954,7 @@
 
         private void RecalculateModTaunt(float attributeEffect)
         {
-            ExtraTaunt.AddMultiplier(attributeEffect);
+            TauntFromDamage.AddMultiplier(attributeEffect);
         }
 
         private void RecalculateDeltaRage(float attributeEffect)

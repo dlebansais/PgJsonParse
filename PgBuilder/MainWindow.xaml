@@ -192,14 +192,17 @@
                         <TextBlock FontWeight="Bold">Extra Taunt:</TextBlock>
                         <TextBlock Text="{Binding ExtraTaunt.AsString}" Foreground="{Binding ExtraTaunt.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding TauntFromDamage.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
+                        <TextBlock FontWeight="Bold">Taunt From Damage:</TextBlock>
+                        <TextBlock Text="{Binding TauntFromDamage.AsStringPercent}" Foreground="{Binding TauntFromDamage.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RageBoost.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Reduces Rage:</TextBlock>
                         <TextBlock Text="{Binding RageBoost.AsString}" Foreground="{Binding RageBoost.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource RedGreenWhite}}" Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RageMultiplier.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Enrages Target:</TextBlock>
-                        <TextBlock Text="{Binding RageMultiplier.AsString}" Foreground="{Binding RageMultiplier.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
-                        <TextBlock>%</TextBlock>
+                        <TextBlock Text="{Binding RageMultiplier.AsStringPercent}" Foreground="{Binding RageMultiplier.IsModified, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource GreenRedWhite}}" Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding Accuracy.HasValue, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
                         <TextBlock FontWeight="Bold">Accuracy:</TextBlock>
