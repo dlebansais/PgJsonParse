@@ -46,6 +46,9 @@
 
         public static bool IsEqualStrict(ModEffect modEffect1, ModEffect modEffect2)
         {
+            if (modEffect1.EffectKey != modEffect2.EffectKey)
+                return false;
+
             if (!IsSameAbilityKeywordList(modEffect1.AbilityList, modEffect2.AbilityList))
                 return false;
 

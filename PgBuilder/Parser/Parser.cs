@@ -17,13 +17,13 @@
             InitValidAbilityList();
             FilterValidPowers(validSlotList, skillList, out _, out List<IPgPower> PowerSimpleEffectList);
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<IPgEffect>>> AllEffectTable);
-            FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable, out List<IPgPower> UnmatchedPowerList);
+            FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> PowerToEffectTable, out List<IPgPower> UnmatchedPowerList, out Dictionary<IPgPower, IPgEffect> CandidateEffectTable);
             GetAbilityNames(skillList, out List<string> AbilityNameList, out Dictionary<string, List<AbilityKeyword>> NameToKeyword);
 
             List<string[]> StringKeyTable = new List<string[]>();
             List<ModEffect[]> AnalyzedPowerKeyToCompleteEffectTable = new List<ModEffect[]>();
             AnalyzeMatchingEffects(AbilityNameList, NameToKeyword, PowerToEffectTable, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
-            AnalyzeRemainingEffects(AbilityNameList, NameToKeyword, UnmatchedPowerList, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
+            AnalyzeRemainingEffects(AbilityNameList, NameToKeyword, UnmatchedPowerList, CandidateEffectTable, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
 
             CheckAllSentencesUsed();
 
@@ -196,26 +196,43 @@
             }
         }
 
-        private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, List<IPgPower> powerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable, out List<IPgPower> unmatchedPowerList)
+        private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, List<IPgPower> powerSimpleEffectList, out Dictionary<IPgPower, List<IPgEffect>> powerToEffectTable, out List<IPgPower> unmatchedPowerList, out Dictionary<IPgPower, IPgEffect> candidateEffectTable)
         {
             powerToEffectTable = new Dictionary<IPgPower, List<IPgEffect>>();
             unmatchedPowerList = new List<IPgPower>();
+            candidateEffectTable = new Dictionary<IPgPower, IPgEffect>();
 
             foreach (IPgPower Item in powerSimpleEffectList)
-                if (FindPowersWithMatchingEffect(allEffectTable, Item, out List<IPgEffect> MatchingEffectList))
+                if (FindPowersWithMatchingEffect(allEffectTable, Item, out List<IPgEffect> MatchingEffectList, out IPgEffect CandidateSingleEffect))
                     powerToEffectTable.Add(Item, MatchingEffectList);
                 else
+                {
                     unmatchedPowerList.Add(Item);
+                    if (CandidateSingleEffect != null)
+                        candidateEffectTable.Add(Item, CandidateSingleEffect);
+                }
         }
 
-        private bool FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, IPgPower power, out List<IPgEffect> matchingEffectList)
+        private bool FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, IPgPower power, out List<IPgEffect> matchingEffectList, out IPgEffect candidateSingleEffect)
+        {
+            if (FindPowersWithMatchingEffectAllTiers(allEffectTable, power, out matchingEffectList))
+            {
+                candidateSingleEffect = null;
+                return true;
+            }
+
+            candidateSingleEffect = FindMatchingEffectOneTier(power);
+            return false;
+        }
+
+        private bool FindPowersWithMatchingEffectAllTiers(Dictionary<string, Dictionary<string, List<IPgEffect>>> allEffectTable, IPgPower power, out List<IPgEffect> matchingEffectList)
         {
             matchingEffectList = null;
 
             string Key = power.Key;
             Debug.Assert(Key.Length >= 9);
 
-            if (Key == "power_16004")
+            if (Key == "power_27052")
             {
             }
 
@@ -277,6 +294,51 @@
                 matchingEffectList = SameKeyTable[OneToOneMatchingKeyList[0]];
 
             return true;
+        }
+
+        private IPgEffect FindMatchingEffectOneTier(IPgPower power)
+        {
+            IPgEffect CandidateEffect = null;
+
+            if (power.Key == "power_27052")
+            {
+            }
+
+            IObjectDefinition EffectDefinition = ObjectList.Definitions[typeof(PgJsonObjects.Effect)];
+            List<string> MatchingKeyList = new List<string>();
+
+            foreach (IPgEffect Item in EffectDefinition.PgObjectList)
+            {
+                string Key = Item.Key;
+
+                if (Key.Length > 12)
+                    continue;
+
+                if (Item.AbilityKeywordList.Count != 1)
+                    continue;
+
+                if (Item.DisplayMode != EffectDisplayMode.AbilityModifier)
+                    continue;
+
+                if (!Item.KeywordList.Contains(EffectKeyword.Innate))
+                    continue;
+
+                if (Item.Desc.StartsWith("DamageType:"))
+                    continue;
+
+                AbilityKeyword EffectAbilityKeyword = Item.AbilityKeywordList[0];
+                if (GenericAbilityList.Contains(EffectAbilityKeyword) || BuffOrPetAbilityList.Contains(EffectAbilityKeyword))
+                    continue;
+
+                List<IPgEffect> TierList = new List<IPgEffect>() { Item };
+                if (HasCommonIcon(power, TierList, out bool IsOneToOne))
+                    MatchingKeyList.Add(Key);
+            }
+
+            if (MatchingKeyList.Count == 1)
+                CandidateEffect = (IPgEffect)EffectDefinition.ObjectTable[MatchingKeyList[0]];
+
+            return CandidateEffect;
         }
 
         private bool HasCommonIcon(IPgPower power, List<IPgEffect> effectList, out bool isOneToOne)
@@ -529,6 +591,7 @@
             { "Major Heal", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
             { "Summoned Deer", new List<AbilityKeyword>() { AbilityKeyword.SummonDeer } },
             { "Incubated Spiders", new List<AbilityKeyword>() { AbilityKeyword.SummonedSpider } },
+            { "Minor Healing (Targeted)", new List<AbilityKeyword>() { AbilityKeyword.MinorHealTargeted } },
         };
 
         private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
@@ -577,6 +640,7 @@
             AbilityKeyword.Shield,
             AbilityKeyword.SummonDeer,
             AbilityKeyword.SummonedSpider,
+            AbilityKeyword.MinorHealTargeted,
         };
 
         private List<AbilityKeyword> BuffOrPetAbilityList = new List<AbilityKeyword>()
@@ -1291,7 +1355,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_14053")
+                if (Entry.Key.Key == "power_27052")
                 {
                 }
 
@@ -2568,7 +2632,7 @@
         #endregion
 
         #region Data Analysis, Remaining
-        private void AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<IPgPower> powerSimpleEffectList, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
+        private void AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<IPgPower> powerSimpleEffectList, Dictionary<IPgPower, IPgEffect> candidateEffectTable, List<string[]> stringKeyTable, List<ModEffect[]> powerKeyToCompleteEffectTable)
         {
             int DebugIndex = 0;
             int SkipIndex = 0;
@@ -2583,21 +2647,21 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_14053")
+                if (ItemPower.Key == "power_27052")
                 {
                 }
 
                 //Debug.WriteLine("");
                 //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerSimpleEffectList.Count} (Remaining)");
 
-                AnalyzeRemainingEffects(abilityNameList, nameToKeyword, ItemPower, out string[] stringKeyArray, out ModEffect[] ModEffectArray);
+                AnalyzeRemainingEffects(abilityNameList, nameToKeyword, ItemPower, candidateEffectTable, out string[] stringKeyArray, out ModEffect[] ModEffectArray);
 
                 stringKeyTable.Add(stringKeyArray);
                 powerKeyToCompleteEffectTable.Add(ModEffectArray);
             }
         }
 
-        private void AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPower itemPower, out string[] stringKeyArray, out ModEffect[] ModEffectArray)
+        private void AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPower itemPower, Dictionary<IPgPower, IPgEffect> candidateEffectTable, out string[] stringKeyArray, out ModEffect[] ModEffectArray)
         {
             IList<IPgPowerTier> TierEffectList = itemPower.TierEffectList;
 
@@ -2614,14 +2678,14 @@
             ModEffectArray = new ModEffect[TierEffectList.Count];
 
             int LastTierIndex = TierEffectList.Count - 1;
-
-            AnalyzeRemainingEffects(abilityNameList, nameToKeyword, TierEffectList[LastTierIndex], out List<CombatKeyword> ExtractedPowerTierKeywordList, out ModEffect ExtractedModEffect, true);
+            IPgEffect CandidateEffect = candidateEffectTable.ContainsKey(itemPower) ? candidateEffectTable[itemPower] : null;
+            AnalyzeRemainingEffects(abilityNameList, nameToKeyword, TierEffectList[LastTierIndex], CandidateEffect, out List<CombatKeyword> ExtractedPowerTierKeywordList, out ModEffect ExtractedModEffect, true);
             PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
             ModEffectArray[LastTierIndex] = ExtractedModEffect;
 
             for (int i = 0; i + 1 < TierEffectList.Count; i++)
             {
-                AnalyzeRemainingEffects(abilityNameList, nameToKeyword, TierEffectList[i], out List<CombatKeyword> ComparedPowerTierKeywordList, out ModEffect ParsedModEffect, false);
+                AnalyzeRemainingEffects(abilityNameList, nameToKeyword, TierEffectList[i], CandidateEffect, out List<CombatKeyword> ComparedPowerTierKeywordList, out ModEffect ParsedModEffect, false);
 
                 bool AllowIncomplete = i < ValidationIndex;
 
@@ -2642,10 +2706,8 @@
             }
         }
 
-        private bool AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPowerTier powerTier, out List<CombatKeyword> extractedPowerTierKeywordList, out ModEffect modEffect, bool displayAnalysisResult)
+        private bool AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, IPgPowerTier powerTier,  IPgEffect candidateEffect, out List<CombatKeyword> extractedPowerTierKeywordList, out ModEffect modEffect, bool displayAnalysisResult)
         {
-            modEffect = null;
-
             IList<IPgPowerEffect> EffectList = powerTier.EffectList;
             Debug.Assert(EffectList.Count == 1);
             IPgPowerSimpleEffect powerSimpleEffect = (IPgPowerSimpleEffect)EffectList[0];
@@ -2655,6 +2717,22 @@
             HackModText(ref ModText);
 
             AnalyzeText(abilityNameList, nameToKeyword, ModText, true, out List<AbilityKeyword> ModAbilityList, out List<CombatEffect> ModCombatList, out List<AbilityKeyword> ModTargetAbilityList);
+
+            List<CombatEffect> EffectCombatList;
+            if (candidateEffect != null)
+            {
+                string EffectText = candidateEffect.Desc;
+                HackModText(ref EffectText);
+
+                AnalyzeText(abilityNameList, nameToKeyword, EffectText, false, out _, out EffectCombatList, out _);
+            }
+            else
+                EffectCombatList = new List<CombatEffect>();
+
+            string EffectKey = string.Empty;
+
+            if (EffectCombatList.Count > 0 && CombatEffect.Contains(ModCombatList, EffectCombatList, out _, out _))
+                EffectKey = candidateEffect.Key;
 
             string ParsedAbilityList = AbilityKeywordListToShortString(ModAbilityList);
             string ParsedPowerString = CombatEffectListToString(ModCombatList, out extractedPowerTierKeywordList);
@@ -2667,7 +2745,7 @@
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");*/
             }
 
-            modEffect = new ModEffect(string.Empty, ModAbilityList, ModCombatList, new List<CombatEffect>(), ModTargetAbilityList);
+            modEffect = new ModEffect(EffectKey, ModAbilityList, ModCombatList, new List<CombatEffect>(), ModTargetAbilityList);
             VerifyStaticEffects(ModAbilityList, ModCombatList);
 
             return true;
@@ -2821,6 +2899,7 @@
             new Sentence("#D Vulnerability %f", CombatKeyword.AddVulnerability),
             new Sentence("%f more damage from any #D attack", CombatKeyword.AddVulnerability),
             new Sentence("Take %f damage from both #D", CombatKeyword.AddVulnerability),
+            new Sentence("Target take %f #D damage from future attack", CombatKeyword.AddVulnerability),
             new Sentence("B*u*t take %f damage from any #D attack", new List<CombatKeyword>() { CombatKeyword.But, CombatKeyword.AddVulnerability }),
             new Sentence("#D Vulnerability +infinity", CombatKeyword.DestroyedByDamageType),
             new Sentence("Instantly destroyed by ANY #D Damage", CombatKeyword.DestroyedByDamageType),
