@@ -70,7 +70,7 @@
         public AbilityModifier Range { get; } = new AbilityModifier("Range", (IPgAbility ability) => ability.PvE.AoE == 0 ? ability.PvE.Range : 0, RangeDisplayHandler);
         public AbilityModifier AoE { get; } = new AbilityModifier("AoE", (IPgAbility ability) => ability.PvE.AoE, DefaultDisplayHandler);
         public AbilityModifier ExtraTaunt { get; } = new AbilityModifier("ExtraTaunt", (IPgAbility ability) => 0, DefaultDisplayHandler);
-        public AbilityModifierPercent TauntFromDamage { get; } = new AbilityModifierPercent("TauntFromDamage", 100, (IPgAbility ability) => (ability.PvE.Damage != 0 || ability.PvE.ArmorSpecificDamage != 0 || ability.PvE.HealthSpecificDamage != 0 ? 100 : 0), DefaultDisplayHandler);
+        public AbilityModifierPercent TauntFromDamage { get; } = new AbilityModifierPercent("TauntFromDamage", 100, (IPgAbility ability) => 100, DefaultDisplayHandler);
         public AbilityModifier RageBoost { get; } = new AbilityModifier("RageBoost", (IPgAbility ability) => ability.PvE.RageBoost, DefaultDisplayHandler);
         public AbilityModifierPercent RageMultiplier { get; } = new AbilityModifierPercent("RageMultiplier", 100, (IPgAbility ability) => (float)ability.PvE.RageMultiplier * 100, DefaultDisplayHandler);
         public AbilityModifierPercent Accuracy { get; } = new AbilityModifierPercent("Accuracy", 0, (IPgAbility ability) => (float)ability.PvE.Accuracy * 100, DefaultDisplayHandler);
