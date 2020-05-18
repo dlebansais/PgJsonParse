@@ -77,6 +77,9 @@
     <Compile Include="GameCombatSkill.cs" />
     <Compile Include="GameDamageType.cs" />
     <Compile Include="GearSlot.cs" />
+    <Compile Include="InitControl.xaml.cs">
+      <DependentUpon>InitControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoadWindow.xaml.cs">
       <DependentUpon>LoadWindow.xaml</DependentUpon>
     </Compile>
@@ -94,6 +97,11 @@
     <Compile Include="Selectors\ItemEffectTemplateSelector.cs" />
     <Compile Include="Sentence.cs" />
     <Compile Include="SignInterpretation.cs" />
+    <Compile Include="Validation\IndexValidationRule.cs" />
+    <Page Include="InitControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

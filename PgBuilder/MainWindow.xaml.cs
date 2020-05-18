@@ -355,12 +355,13 @@
         public List<GearSlot> GearSlotList { get; } = new List<GearSlot>();
         public ObservableCollection<AbilitySlot> AbilitySlot1List { get; } = new ObservableCollection<AbilitySlot>();
         public ObservableCollection<AbilitySlot> AbilitySlot2List { get; } = new ObservableCollection<AbilitySlot>();
-        public string LastBuildFile { get; private set; }
+        public string LastBuildFile { get; private set; } = string.Empty;
         public bool IsLargeView { get; private set; } = true;
         public bool IsSmallView { get { return !IsLargeView; } }
-        public bool IsFairyCharacter { get; private set; }
+        public bool? IsFairyCharacter { get; private set; } = null;
         public int LoreLevel { get; set; }
-        
+        private bool IsLoreLevelSet;
+
         public string TitleText
         {
             get
@@ -592,10 +593,26 @@
             SaveSettings();
         }
 
+        private void TurnOffInit(FrameworkElement control)
+        {
+            if (!(control.Parent is Grid GridParent))
+                return;
+
+            if (GridParent.Children.Count <= 1)
+                return;
+
+            if (!(GridParent.Children[GridParent.Children.Count - 1] is InitControl InitControl))
+                return;
+
+            InitControl.Visibility = Visibility.Collapsed;
+        }
+
         private void OnSkillSelectionChanged1(object sender, SelectionChangedEventArgs e)
         {
             ComboBox Control = (ComboBox) sender;
             OnSkillSelectionChanged1(Control.SelectedIndex);
+
+            TurnOffInit(Control);
         }
 
         private void OnSkillSelectionChanged1(int index)
@@ -613,6 +630,8 @@
         {
             ComboBox Control = (ComboBox)sender;
             OnSkillSelectionChanged2(Control.SelectedIndex);
+
+            TurnOffInit(Control);
         }
 
         private void OnSkillSelectionChanged2(int index)
@@ -864,8 +883,13 @@
 
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged1), SkillList.IndexOf(Skill1));
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged2), SkillList.IndexOf(Skill2));
+
             LoreLevel = BuildLoreLevel;
+            IsLoreLevelSet = true;
+            ctrlErrorLoreLevel.Visibility = Visibility.Collapsed;
             IsFairyCharacter = BuildIsFairyCharacter;
+            ctrlErrorFairyCharacter.Visibility = Visibility.Collapsed;
+
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities1), AbilityTable[0]);
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<List<string>>(OnSelectAbilities2), AbilityTable[1]);
             foreach (KeyValuePair<string, string> Entry in GearItemTable)
@@ -969,12 +993,34 @@
 
         private void OnFairyCharacterChecked(object sender, RoutedEventArgs e)
         {
+            CheckBox Control = (CheckBox)sender;
+            Control.IsThreeState = false;
+
             SetIsFairyCharacter(true);
+
+            TurnOffInit(Control);
         }
 
         private void OnFairyCharacterUnchecked(object sender, RoutedEventArgs e)
         {
+            CheckBox Control = (CheckBox)sender;
+            Control.IsThreeState = false;
+
             SetIsFairyCharacter(false);
+
+            TurnOffInit(Control);
+        }
+
+        private void OnLoreLevelChanged(object sender, TextChangedEventArgs e)
+        {
+            if (e.UndoAction == UndoAction.Create)
+                return;
+
+            IsLoreLevelSet = true;
+            RecalculateMods();
+
+            FrameworkElement Control = (FrameworkElement)sender;
+            TurnOffInit(Control);
         }
         #endregion
 
@@ -1302,7 +1348,7 @@
             Writer.Value(LoreLevel);
 
             Writer.ObjectKey("IsFairyCharacter");
-            Writer.Value(IsFairyCharacter);
+            Writer.Value(IsFairyCharacter.HasValue ? IsFairyCharacter.Value : false);
 
             for (int i = 0; i < AbilitySlot1List.Count; i++)
             {
@@ -1448,6 +1494,9 @@
         #region Recalculate Mods
         private void RecalculateMods()
         {
+            if (SelectedSkill1 < 0 || SelectedSkill2 < 0 || !IsFairyCharacter.HasValue || !IsLoreLevelSet)
+                return;
+
             if (RecalculateOperation == null || RecalculateOperation.Status == DispatcherOperationStatus.Completed)
                 RecalculateOperation = Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(RecalculateModsNow));
         }

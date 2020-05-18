@@ -7,6 +7,7 @@
         xmlns:conv="clr-namespace:Converters;assembly=XamlConverterLibrary"
         xmlns:localconv="clr-namespace:Converters"
         xmlns:localsel="clr-namespace:Selectors"
+        xmlns:localval="clr-namespace:Validation"
         Title="{Binding TitleText}"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
@@ -61,6 +62,12 @@
         </CompositeCollection>
         <BitmapImage x:Key="imgRemove" UriSource="/PgBuilder;component/Resources/remove.png"/>
         <BitmapImage x:Key="imgBasicAttack" UriSource="/PgBuilder;component/Resources/basic_attack.png"/>
+        <ControlTemplate x:Key="SkillValidationTemplate">
+            <DockPanel>
+                <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
         <DataTemplate x:Key="SkillTemplate" DataType="{x:Type object:PgSkill}">
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
@@ -362,8 +369,14 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0">Primary:</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="1" TextAlignment="Right" VerticalAlignment="Center" Margin="0,5,0,0">Secondary:</TextBlock>
-                        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding SkillList}" ItemTemplateSelector="{StaticResource selSkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1" VerticalAlignment="Center" Width="120" Margin="5,0,0,0"/>
-                        <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding SkillList}" ItemTemplateSelector="{StaticResource selSkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2" VerticalAlignment="Center" Width="120" Margin="5,5,0,0"/>
+                        <Grid Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Width="120" Margin="5,0,0,0">
+                            <ComboBox ItemsSource="{Binding SkillList}" ItemTemplateSelector="{StaticResource selSkillTemplate}" SelectedIndex="{Binding SelectedSkill1, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged1"/>
+                            <local:InitControl/>
+                        </Grid>
+                        <Grid Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Width="120" Margin="5,5,0,0">
+                            <ComboBox ItemsSource="{Binding SkillList}" ItemTemplateSelector="{StaticResource selSkillTemplate}" SelectedIndex="{Binding SelectedSkill2, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnSkillSelectionChanged2"/>
+                            <local:InitControl/>
+                        </Grid>
                     </Grid>
                 </GroupBox>
                 <GroupBox Grid.Column="1" Header="View" MinWidth="120" Margin="10,0,0,0">
@@ -380,7 +393,7 @@
                     </Grid>
                 </GroupBox>
                 <GroupBox Grid.Column="2" Header="Miscellaneous" Margin="10,0,0,0">
-                    <Grid Margin="5,5,5,5">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
@@ -388,10 +401,16 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <CheckBox Grid.Row="0" IsChecked="{Binding IsFairyCharacter, Mode=OneWay}" Checked="OnFairyCharacterChecked" Unchecked="OnFairyCharacterUnchecked" Margin="0,0,0,0">Fairy character</CheckBox>
-                        <DockPanel Grid.Row="1" Margin="0,0,0,0">
+                        <Grid Grid.Row="0" VerticalAlignment="Top">
+                            <CheckBox IsChecked="{Binding IsFairyCharacter, Mode=OneWay}" IsThreeState="True" Checked="OnFairyCharacterChecked" Unchecked="OnFairyCharacterUnchecked" Margin="5,5,5,5">Fairy character</CheckBox>
+                            <local:InitControl x:Name="ctrlErrorFairyCharacter"/>
+                        </Grid>
+                        <DockPanel Grid.Row="1" VerticalAlignment="Bottom" Margin="5,5,5,5">
                             <TextBlock VerticalAlignment="Center" Margin="0,0,5,0">Lore Level:</TextBlock>
-                            <TextBox Text="{Binding LoreLevel}" VerticalAlignment="Center"/>
+                            <Grid VerticalAlignment="Center">
+                                <TextBox Text="{Binding LoreLevel, UpdateSourceTrigger=PropertyChanged}" TextChanged="OnLoreLevelChanged"/>
+                                <local:InitControl x:Name="ctrlErrorLoreLevel"/>
+                            </Grid>
                         </DockPanel>
                     </Grid>
                 </GroupBox>

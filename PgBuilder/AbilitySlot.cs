@@ -131,7 +131,7 @@
         private float ModCriticalDamage;
 
         public string AbilityDamageTypeString { get { return (Ability != null) ? TextMaps.DamageTypeTextMap[AbilityDamageType] : string.Empty; } }
-        public DamageType AbilityDamageType { get { return ModifiedDamageType == DamageType.Internal_None ? Ability.DamageType : ModifiedDamageType; } }
+        public DamageType AbilityDamageType { get { return ModifiedDamageType == DamageType.Internal_None && Ability != null ? Ability.DamageType : ModifiedDamageType; } }
         public bool AbilityDamageTypeModified { get { return ModifiedDamageType != DamageType.Internal_None; } }
         private DamageType ModifiedDamageType = DamageType.Internal_None;
 
@@ -578,11 +578,11 @@
             }
         }
 
-        public void RecalculateSuitMods(int metalArmorCount, int leatherArmorCount, int clothArmorCount, int organicArmorCount, bool isFairyCharacter)
+        public void RecalculateSuitMods(int metalArmorCount, int leatherArmorCount, int clothArmorCount, int organicArmorCount, bool? isFairyCharacter)
         {
             if (metalArmorCount >= 3)
             {
-                if (isFairyCharacter)
+                if (isFairyCharacter.HasValue && isFairyCharacter.Value == true)
                 {
                     if (metalArmorCount == 3)
                         ApplyMetalSuitPenalty(0.1F);
