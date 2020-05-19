@@ -71,6 +71,7 @@
     <Compile Include="AbilityTierList.cs" />
     <Compile Include="CombatEffect.cs" />
     <Compile Include="CombatKeyword.cs" />
+    <Compile Include="Converters\FilePathConverter.cs" />
     <Compile Include="Converters\ItemToIconConverter.cs" />
     <Compile Include="Converters\AbilityToIconConverter.cs" />
     <Compile Include="Enhancement.cs" />

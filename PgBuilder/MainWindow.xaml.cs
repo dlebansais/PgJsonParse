@@ -10,9 +10,11 @@
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using System.Windows.Threading;
 
@@ -355,7 +357,10 @@
         public List<GearSlot> GearSlotList { get; } = new List<GearSlot>();
         public ObservableCollection<AbilitySlot> AbilitySlot1List { get; } = new ObservableCollection<AbilitySlot>();
         public ObservableCollection<AbilitySlot> AbilitySlot2List { get; } = new ObservableCollection<AbilitySlot>();
-        public string LastBuildFile { get; private set; } = string.Empty;
+        public ObservableCollection<string> BuildFileList { get; private set; } = new ObservableCollection<string>();
+        public int SelectedBuildFile { get; set; } = -1;
+        public string LastBuildFile { get { return SelectedBuildFile >= 0 && SelectedBuildFile < BuildFileList.Count ? BuildFileList[SelectedBuildFile] : string.Empty; } }
+        private string LastLoadedFile = string.Empty;
         public bool IsLargeView { get; private set; } = true;
         public bool IsSmallView { get { return !IsLargeView; } }
         public bool? IsFairyCharacter { get; private set; } = null;
@@ -369,6 +374,13 @@
                 string LastBuildFileInfo = string.IsNullOrEmpty(LastBuildFile) ? string.Empty : $" - {LastBuildFile}";
                 return $"Project: Gorgon - Builder{LastBuildFileInfo} - Downloaded content (version {BUILDER_VERSION}) copyright © 2017, Elder Game, LLC";
             }
+        }
+
+        private void UpdateBuildFileProperties()
+        {
+            NotifyPropertyChanged(nameof(SelectedBuildFile));
+            NotifyPropertyChanged(nameof(LastBuildFile));
+            NotifyPropertyChanged(nameof(TitleText));
         }
         #endregion
 
@@ -877,9 +889,20 @@
             Debug.Assert(Skill1 == null || SkillList.Contains(Skill1));
             Debug.Assert(Skill2 == null || SkillList.Contains(Skill2));
 
-            LastBuildFile = filePath;
-            NotifyPropertyChanged(nameof(LastBuildFile));
-            NotifyPropertyChanged(nameof(TitleText));
+            LastLoadedFile = filePath;
+
+            int UpdatedIndex = BuildFileList.IndexOf(filePath);
+            if (UpdatedIndex < 0)
+            {
+                BuildFileList.Add(filePath);
+                UpdatedIndex = BuildFileList.Count - 1;
+            }
+
+            if (SelectedBuildFile != UpdatedIndex)
+            {
+                SelectedBuildFile = UpdatedIndex;
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(UpdateBuildFileProperties));
+            }
 
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged1), SkillList.IndexOf(Skill1));
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<int>(OnSkillSelectionChanged2), SkillList.IndexOf(Skill2));
@@ -910,15 +933,36 @@
             Dlg.Filter = "Build File (*.txt)|*.txt";
 
             bool? Result = Dlg.ShowDialog(this);
-            if (Result.Value && !string.IsNullOrEmpty(Dlg.FileName))
-                SaveBuild(Dlg.FileName);
+            if (Result.Value && Dlg.FileName is string FilePath && !string.IsNullOrEmpty(FilePath))
+            {
+                if (!BuildFileList.Contains(FilePath))
+                {
+                    BuildFileList.Add(FilePath);
+                    SelectedBuildFile = BuildFileList.Count - 1;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(UpdateBuildFileProperties));
+                }
+
+                SaveBuild(FilePath);
+            }
         }
 
         private void OnClear(object sender, ExecutedRoutedEventArgs e)
         {
-            LastBuildFile = string.Empty;
-            NotifyPropertyChanged(nameof(LastBuildFile));
-            NotifyPropertyChanged(nameof(TitleText));
+            if (SelectedBuildFile >= 0 && SelectedBuildFile < BuildFileList.Count)
+            {
+                BuildFileList.RemoveAt(SelectedBuildFile);
+
+                if (SelectedBuildFile < 0 && BuildFileList.Count > 0)
+                    SelectedBuildFile = BuildFileList.Count - 1;
+
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(UpdateBuildFileProperties));
+
+                if (SelectedBuildFile >= 0)
+                {
+                    OnLoad(LastBuildFile);
+                    return;
+                }
+            }
 
             foreach (GearSlot Slot in GearSlotList)
                 Slot.ResetItem();
@@ -1021,6 +1065,19 @@
 
             FrameworkElement Control = (FrameworkElement)sender;
             TurnOffInit(Control);
+        }
+
+        private void OnBuildSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Selector Control = (Selector)sender;
+
+            int NewSelection = Control.SelectedIndex;
+            string NewBuildFile = NewSelection >= 0 && NewSelection < BuildFileList.Count ? BuildFileList[NewSelection] : string.Empty;
+
+            if (NewBuildFile.Length == 0 || LastLoadedFile == NewBuildFile)
+                return;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string>(OnLoad), NewBuildFile);
         }
         #endregion
 
@@ -1330,10 +1387,6 @@
         {
             using FileStream Stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
             SaveBuild(Stream);
-
-            LastBuildFile = filePath;
-            NotifyPropertyChanged(nameof(LastBuildFile));
-            NotifyPropertyChanged(nameof(TitleText));
         }
 
         private void SaveBuild(FileStream stream)
@@ -1449,8 +1502,9 @@
 
         #region Settings
         private const string IsLargeViewName = "IsLargeView";
+        private const string BuildFileName = "BuildFile";
         private const string LastBuildFileValueName = "LastBuildFile";
-        
+
         private void LoadSettings()
         {
             try
@@ -1464,10 +1518,25 @@
                 Value = SettingKey?.GetValue(IsLargeViewName) as string;
                 IsLargeView = (Value == "Yes");
 
-                Value = SettingKey?.GetValue(LastBuildFileValueName) as string;
-                if (Value != null)
+                for (int i = 0; ; i++)
+                {
+                    string BuildFileKey = $"{BuildFileName}#{i}";
+
+                    Value = SettingKey?.GetValue(BuildFileKey) as string;
+                    if (string.IsNullOrEmpty(Value))
+                        break;
+
                     if (File.Exists(Value))
-                        OnLoad(Value);
+                        BuildFileList.Add(Value);
+                }
+
+                Value = SettingKey?.GetValue(LastBuildFileValueName) as string;
+                if (Value != null && BuildFileList.Contains(Value))
+                    OnLoad(Value);
+                else
+                    SelectedBuildFile = -1;
+
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(UpdateBuildFileProperties));
             }
             catch
             {
@@ -1484,6 +1553,21 @@
 
                 SettingKey?.SetValue(IsLargeViewName, IsLargeView ? "Yes" : "No", RegistryValueKind.String);
                 SettingKey?.SetValue(LastBuildFileValueName, LastBuildFile, RegistryValueKind.String);
+
+                string[] ValueNames = SettingKey != null ? SettingKey.GetValueNames() : new string[0];
+                List<string> SavedKeyList = new List<string>();
+
+                for (int i = 0; i < BuildFileList.Count; i++)
+                {
+                    string BuildFileKey = $"{BuildFileName}#{i}";
+                    SettingKey?.SetValue(BuildFileKey, BuildFileList[i], RegistryValueKind.String);
+
+                    SavedKeyList.Add(BuildFileKey);
+                }
+
+                foreach (string ValueName in ValueNames)
+                    if (ValueName.StartsWith(BuildFileName) && !SavedKeyList.Contains(ValueName))
+                        SettingKey?.DeleteValue(ValueName);
             }
             catch
             {

@@ -17,6 +17,7 @@
         <conv:NullToObjectConverter x:Key="convNullToObject"/>
         <localconv:AbilityToIconConverter x:Key="convAbilityToIcon"/>
         <localconv:ItemToIconConverter x:Key="convItemToIcon"/>
+        <localconv:FilePathConverter x:Key="convFilePath"/>
         <localsel:ItemEffectTemplateSelector x:Key="selItemEffectTemplate"/>
         <localsel:AbilityTemplateSelector x:Key="selAbilityTemplate"/>
         <localsel:OtherEffectTemplateSelector x:Key="selOtherEffectTemplate"/>
@@ -121,6 +122,9 @@
                 <TextBlock Text="{Binding Damage}" Foreground="LightGreen" FontWeight="Normal" TextWrapping="Wrap" Margin="5,0,0,0"/>
                 <TextBlock Text="{Binding Suffix}" Foreground="White" FontWeight="Normal" TextWrapping="Wrap" Margin="5,0,0,0"/>
             </WrapPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="BuildFileTemplate">
+            <TextBlock Text="{Binding Converter={StaticResource convFilePath}}"/>
         </DataTemplate>
         <DataTemplate x:Key="AbilityCompleteImageTemplate" DataType="{x:Type local:AbilitySlot}">
             <DataTemplate.Resources>
@@ -420,6 +424,7 @@
                 <Button Width="60" Height="20" Command="{StaticResource SaveCommand}" Margin="10,10,10,0">Save...</Button>
                 <Button Width="60" Height="20" Command="{StaticResource ClearCommand}" Margin="10,10,10,0">Clear</Button>
             </StackPanel>
+            <ListBox DockPanel.Dock="Right" ItemsSource="{Binding BuildFileList}" ItemTemplate="{StaticResource BuildFileTemplate}" SelectedIndex="{Binding SelectedBuildFile}" SelectionChanged="OnBuildSelectionChanged" Width="200" Margin="10,8,0,0"/>
             <Grid/>
         </DockPanel>
         <TabControl DockPanel.Dock="Bottom" ItemsSource="{Binding GearSlotList}" ItemTemplate="{StaticResource GearSlotTemplate}" SelectedIndex="0" Margin="10,10,10,10">
