@@ -272,7 +272,7 @@
             </DataTemplate.Resources>
             <Grid>
                 <ContentControl ContentTemplate="{StaticResource AbilityCompleteImageTemplate}" Content="{TemplateBinding Content}"/>
-                <Border BorderBrush="LightGreen" BorderThickness="3" Visibility="{Binding AbilityName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}}" Margin="5,0,5,0"/>
+                <Border BorderBrush="LightGreen" BorderThickness="3" Visibility="{Binding AbilityName, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource VisibleCollapsed}}" Background="LightGray" CornerRadius="4" Margin="5,0,5,0"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="AbilitySlotTemplate" DataType="{x:Type local:AbilitySlot}">
