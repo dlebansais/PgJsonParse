@@ -23,6 +23,7 @@
         <localsel:OtherEffectTemplateSelector x:Key="selOtherEffectTemplate"/>
         <localsel:PowerTemplateSelector x:Key="selPowerTemplate"/>
         <localsel:SkillTemplateSelector x:Key="selSkillTemplate"/>
+        <localsel:ItemNameTemplateSelector x:Key="selItemNameTemplate"/>
         <RoutedCommand x:Key="AddModCommand"/>
         <RoutedCommand x:Key="IncrementTierCommand"/>
         <RoutedCommand x:Key="DecrementTierCommand"/>
@@ -63,6 +64,12 @@
         </CompositeCollection>
         <BitmapImage x:Key="imgRemove" UriSource="/PgBuilder;component/Resources/remove.png"/>
         <BitmapImage x:Key="imgBasicAttack" UriSource="/PgBuilder;component/Resources/basic_attack.png"/>
+        <Style TargetType="{x:Type ListBoxItem}" x:Key="ListBoxItemDragDrop">
+            <Setter Property="AllowDrop" Value="True" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <EventSetter Event="PreviewMouseMove" Handler="ListBoxItem_PreviewMouseMoveEvent"/>
+            <EventSetter Event="Drop" Handler="ListBoxItem_Drop" />
+        </Style>
         <ControlTemplate x:Key="SkillValidationTemplate">
             <DockPanel>
                 <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
@@ -75,15 +82,18 @@
         <DataTemplate x:Key="SubskillTemplate" DataType="{x:Type object:PgSkill}">
             <TextBlock Text="{Binding Name}" FontStyle="Italic" Margin="10,0,0,0"/>
         </DataTemplate>
+        <DataTemplate x:Key="ItemNameNoItemTemplate" DataType="{x:Type local:ItemInfo}">
+            <TextBlock Text="No Item Selected..." FontStyle="Italic"/>
+        </DataTemplate>
         <DataTemplate x:Key="ItemNameTemplate" DataType="{x:Type local:ItemInfo}">
             <TextBlock Text="{Binding ItemName}"/>
         </DataTemplate>
         <DataTemplate x:Key="ModNameTemplate" DataType="{x:Type local:Power}">
-            <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" MaxWidth="400" Margin="5,0,0,0"/>
+            <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" Margin="0,0,0,0"/>
         </DataTemplate>
         <DataTemplate x:Key="ModNameFirstTemplate" DataType="{x:Type local:Power}">
-            <StackPanel MaxWidth="400">
-                <Grid>
+            <DockPanel>
+                <Grid DockPanel.Dock="Top" Margin="0,0,5,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
@@ -93,8 +103,8 @@
                     <TextBlock Grid.Column="1" Text="{Binding SkillName}" FontWeight="Bold"/>
                     <Separator Grid.Column="2" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </Grid>
-                <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0"/>
-            </StackPanel>
+                <TextBox Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False"/>
+            </DockPanel>
         </DataTemplate>
         <DataTemplate x:Key="SpecialValueTemplate">
             <WrapPanel Orientation="Horizontal" Visibility="{Binding IsDisplayed, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource CollapsedVisible}}">
@@ -317,26 +327,7 @@
             <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
         <DataTemplate x:Key="ModTemplate" DataType="{x:Type local:Mod}">
-            <DockPanel Background="White">
-                <Button DockPanel.Dock="Left" Command="{StaticResource IncrementTierCommand}" VerticalAlignment="Top" Width="20">+</Button>
-                <Button DockPanel.Dock="Left" Command="{StaticResource DecrementTierCommand}" VerticalAlignment="Top" Width="20" Margin="2,0,0,0">-</Button>
-                <Button DockPanel.Dock="Left" Command="{StaticResource MoveDownCommand}" VerticalAlignment="Top" Width="20" Margin="2,0,0,0">↓</Button>
-                <Button DockPanel.Dock="Left" Command="{StaticResource MoveUpCommand}" VerticalAlignment="Top" Width="20" Margin="2,0,0,0">↑</Button>
-                <Button DockPanel.Dock="Right" Command="{StaticResource ClearModCommand}" VerticalAlignment="Center" Margin="5,0,0,0">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Source="{StaticResource imgRemove}" Width="16" Height="16"/>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <ComboBox ItemsSource="{Binding AvailablePowerList}" ItemTemplateSelector="{StaticResource selPowerTemplate}" SelectedIndex="{Binding SelectedPowerIndex, Mode=OneWay}" IsReadOnly="True" SelectionChanged="OnPowerSelectionChanged" VerticalAlignment="Center" Margin="5,0,0,0">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
-            </DockPanel>
+            <ContentControl Content="{Binding SelectedPower}" ContentTemplateSelector="{StaticResource selPowerTemplate}" VerticalAlignment="Center" Margin="5,0,0,0"/>
         </DataTemplate>
     </Window.Resources>
     <Window.CommandBindings>
@@ -431,7 +422,7 @@
             <TabControl.ContentTemplate>
                 <ItemContainerTemplate>
                     <DockPanel LastChildFill="False">
-                        <DockPanel DockPanel.Dock="Top" Margin="0,10,0,0" LastChildFill="False">
+                        <DockPanel DockPanel.Dock="Top" Margin="0,10,5,5" LastChildFill="False">
                             <DockPanel DockPanel.Dock="Left" LastChildFill="False" VerticalAlignment="Top" Margin="10,0,0,10" Width="260">
                                 <DockPanel DockPanel.Dock="Top">
                                     <DockPanel.Resources>
@@ -442,13 +433,6 @@
                                             <TextBox Text="{Binding FriendlyNameAndEffect, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Foreground="Red" Background="Transparent" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,1,0,1"/>
                                         </DataTemplate>
                                     </DockPanel.Resources>
-                                    <Button DockPanel.Dock="Right" Visibility="{Binding IsItemSelected, Converter={StaticResource convBooleanToObject}, ConverterParameter={StaticResource HiddenVisible}}" Command="{StaticResource ClearItemCommand}" VerticalAlignment="Center" Margin="5,0,0,0">
-                                        <Button.Template>
-                                            <ControlTemplate>
-                                                <Image Source="{StaticResource imgRemove}" Width="16" Height="16"/>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
                                     <Grid>
                                         <Grid.Resources>
                                             <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource {x:Type ToolTip}}">
@@ -484,7 +468,7 @@
                                                 </Setter>
                                             </Style>
                                         </Grid.Resources>
-                                        <ComboBox ItemsSource="{Binding ItemList}" ItemTemplate="{StaticResource ItemNameTemplate}" SelectedIndex="{Binding SelectedItemIndex, Mode=OneWay}" ToolTip="{Binding Path=SelectedItem}" IsReadOnly="True" SelectionChanged="OnItemSelectionChanged" VerticalAlignment="Center"/>
+                                        <ComboBox ItemsSource="{Binding ItemList}" ItemTemplateSelector="{StaticResource selItemNameTemplate}" SelectedIndex="{Binding SelectedItemIndex, Mode=OneWay}" ToolTip="{Binding Path=SelectedItem}" IsReadOnly="True" SelectionChanged="OnItemSelectionChanged" VerticalAlignment="Center"/>
                                     </Grid>
                                 </DockPanel>
                                 <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding SelectedItem.ItemEffectDescriptionList}" ItemTemplateSelector="{StaticResource selItemEffectTemplate}" Margin="5,5,5,0">
@@ -547,14 +531,37 @@
                                     </Grid>
                                 </Expander>
                             </DockPanel>
-                            <Grid DockPanel.Dock="Left" Width="400" Margin="10,0,10,0">
-                                <Grid VerticalAlignment="Top">
-                                    <TextBlock Text="To add mods, click this button." TextAlignment="Right" VerticalAlignment="Center" Margin="0,1,0,0"/>
-                                    <Button Width="0" VerticalAlignment="Center"/>
+                            <ListBox ItemsSource="{Binding ModList}" ItemTemplate="{StaticResource ModTemplate}" ItemContainerStyle="{StaticResource ListBoxItemDragDrop}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top" Width="300" Height="200" Margin="10,0,10,0"/>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock>Tier:</TextBlock>
+                                        <TextBlock Text="19" Width="16" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                    <Button Command="{StaticResource IncrementTierCommand}" VerticalAlignment="Top" Width="20" Margin="5,0,0,0">+</Button>
+                                    <Button Command="{StaticResource DecrementTierCommand}" VerticalAlignment="Top" Width="20" Margin="2,0,0,0">-</Button>
+                                </StackPanel>
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Row="0" Command="{StaticResource AddModCommand}" VerticalAlignment="Center" Width="60" Margin="0,0,0,5">Add</Button>
+                                    <Button Grid.Row="1" Command="{StaticResource AddModCommand}" VerticalAlignment="Center" Width="60" Margin="0,5,0,0">Remove</Button>
                                 </Grid>
-                                <ItemsControl ItemsSource="{Binding ModList}" ItemTemplate="{StaticResource ModTemplate}" VerticalAlignment="Top"/>
                             </Grid>
-                            <Button DockPanel.Dock="Left" Command="{StaticResource AddModCommand}" VerticalAlignment="Top" Width="60" Margin="0,0,10,10">Add Mod</Button>
+                            <ListBox ItemsSource="{Binding AvailablePowerList}" ItemTemplateSelector="{StaticResource selPowerTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top" Width="300" Height="200" Margin="10,0,0,0">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
                         </DockPanel>
                     </DockPanel>
                 </ItemContainerTemplate>

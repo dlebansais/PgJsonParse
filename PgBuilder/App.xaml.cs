@@ -33,5 +33,7 @@
             Result = ((baseDamage * modBaseDamage) + (baseDamage + deltaDamage) * (1.0F + modDamage)) + boostDamage;
             return (int)Math.Round(Result, MidpointRounding.AwayFromZero);
         }
+
+        public static string IconFolder { get; set; }
     }
 }

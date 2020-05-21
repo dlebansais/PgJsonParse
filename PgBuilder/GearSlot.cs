@@ -18,7 +18,7 @@
             Slot = slot;
             CanEnhance = canEnhance;
             ItemList = new List<ItemInfo>();
-            SelectedItemIndex = -1;
+            SelectedItemIndex = 0;
             ConsumedEnhancementPoints = 0;
 
             IObjectDefinition ItemDefinition = ObjectList.Definitions[typeof(Item)];
@@ -30,6 +30,7 @@
             }
 
             ItemList.Sort(SortByName);
+            ItemList.Insert(0, ItemInfo.NoItem);
         }
 
         private int SortByName(ItemInfo item1, ItemInfo item2)
@@ -45,8 +46,8 @@
         public bool HasEnhancement { get { return CanEnhance && IsItemSelected && SelectedItem.Item.KeywordTable.ContainsKey(ItemKeyword.ClothArmor); } }
         public List<ItemInfo> ItemList { get; }
         public int SelectedItemIndex { get; private set; }
-        public ItemInfo SelectedItem { get { return IsItemSelected ? ItemList[SelectedItemIndex] : null; } }
-        public bool IsItemSelected { get { return SelectedItemIndex >= 0; } }
+        public ItemInfo SelectedItem { get { return ItemList[SelectedItemIndex]; } }
+        public bool IsItemSelected { get { return SelectedItemIndex > 0; } }
         public ObservableCollection<Mod> ModList { get; } = new ObservableCollection<Mod>();
         public List<Power> AvailablePowerList { get; } = new List<Power>();
         public int ConsumedEnhancementPoints { get; private set; }
@@ -153,7 +154,7 @@
 
         public void SetSelectedItem(string key)
         {
-            SelectedItemIndex = -1;
+            SelectedItemIndex = 0;
 
             foreach (ItemInfo Item in ItemList)
                 if (Item.ItemKey == key)
@@ -167,7 +168,7 @@
 
         public void ResetItem()
         {
-            SelectedItemIndex = -1;
+            SelectedItemIndex = 0;
             NotifyPropertiesChanged();
         }
 

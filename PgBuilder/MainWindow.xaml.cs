@@ -16,6 +16,7 @@
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
+    using System.Windows.Media;
     using System.Windows.Threading;
 
     public partial class MainWindow : Window, INotifyPropertyChanged
@@ -31,33 +32,25 @@
             InitializeComponent();
             DataContext = this;
 
-            if (!LoadCachedData(BUILDER_VERSION))
+            FillSkillList();
+            FillGearSlotList();
+            FillAbilitySlotList();
+            InitPowerKeyToCompleteEffectTable();
+
+            if (RUN_PARSER)
             {
-                MessageBox.Show($"This application can only use the data cache for version {BUILDER_VERSION}.");
-                Close();
+                Parser Parser = new Parser();
+
+                List<ItemSlot> ValidSlotList = new List<ItemSlot>();
+                foreach (GearSlot Item in GearSlotList)
+                    ValidSlotList.Add(Item.Slot);
+
+                Parser.AnalyzeCachedData(BUILDER_VERSION, ValidSlotList, SkillList, PowerKeyToCompleteEffectTable);
             }
-            else
-            {
-                FillSkillList();
-                FillGearSlotList();
-                FillAbilitySlotList();
-                InitPowerKeyToCompleteEffectTable();
 
-                if (RUN_PARSER)
-                {
-                    Parser Parser = new Parser();
+            LoadSettings();
 
-                    List<ItemSlot> ValidSlotList = new List<ItemSlot>();
-                    foreach (GearSlot Item in GearSlotList)
-                        ValidSlotList.Add(Item.Slot);
-
-                    Parser.AnalyzeCachedData(BUILDER_VERSION, ValidSlotList, SkillList, PowerKeyToCompleteEffectTable);
-                }
-
-                LoadSettings();
-
-                Closed += OnClosed;
-            }
+            Closed += OnClosed;
         }
 
         private void InitPowerKeyToCompleteEffectTable()
@@ -202,152 +195,6 @@
         }
 
         public Dictionary<string, ModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, ModEffect>();
-        #endregion
-
-        #region Data Load
-        public bool LoadCachedData(int version)
-        {
-            string UserRootFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            if (!Directory.Exists(UserRootFolder))
-                return false;
-
-            string ApplicationFolder = Path.Combine(UserRootFolder, "PgJsonParse");
-            if (!Directory.Exists(ApplicationFolder))
-                return false;
-
-            string VersionCacheFolder = Path.Combine(ApplicationFolder, "Versions");
-            if (!Directory.Exists(VersionCacheFolder))
-                return false;
-
-            string[] VersionFolders = Directory.GetDirectories(VersionCacheFolder);
-            bool IsFound = false;
-            foreach (string Item in VersionFolders)
-                if (int.TryParse(Path.GetFileName(Item), out int VersionValue) && VersionValue == version)
-                {
-                    IsFound = true;
-                    break;
-                }
-
-            if (IsFound)
-            {
-                string VersionFolder = Path.Combine(VersionCacheFolder, version.ToString());
-                string IconCacheFolder = Path.Combine(ApplicationFolder, "Shared Icons");
-                IconFolder = IconCacheFolder;
-
-                return LoadCachedData(VersionFolder, IconCacheFolder);
-            }
-            else
-                return false;
-        }
-
-        public bool LoadCachedData(string versionFolder, string iconFolder)
-        {
-            try
-            {
-                string CacheFileName = Path.Combine(versionFolder, "cache.pg");
-                if (File.Exists(CacheFileName))
-                {
-                    byte[] Data = LoadBinaryFile(CacheFileName);
-                    DeserializeAll(versionFolder, iconFolder, Data);
-
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-
-            return false;
-        }
-
-        private void DeserializeAll(string versionFolder, string iconFolder, byte[] data)
-        {
-            SerializableJsonObject.ResetSerializedObjectTable();
-            GenericPgObject.ResetCreatedObjectTable();
-            byte[] CurrentOffset = new byte[4];
-
-            List<IObjectDefinition> DefinitionList = new List<IObjectDefinition>();
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-                DefinitionList.Add(Entry.Value);
-
-            for (int ProgressIndex = 0; ProgressIndex < DefinitionList.Count; ProgressIndex++)
-            {
-                DeserializeAll0(data, CurrentOffset, DefinitionList, ProgressIndex);
-            }
-
-            DeserializeAll2(versionFolder, iconFolder, data);
-        }
-
-        private bool DeserializeAll0(byte[] data, byte[] currentOffset, List<IObjectDefinition> definitionList, int progressIndex)
-        {
-            try
-            {
-                IObjectDefinition Definition = definitionList[progressIndex];
-                int Offset = BitConverter.ToInt32(currentOffset, 0);
-
-                Definition.JsonObjectList.Clear();
-
-                IMainPgObjectCollection PgObjectList = Definition.PgObjectList;
-                PgObjectList.Clear();
-
-                int Count = BitConverter.ToInt32(data, Offset);
-                Offset += 4;
-
-                int ObjectOffset = Offset;
-
-                for (int i = 0; i < Count; i++)
-                {
-                    Offset = BitConverter.ToInt32(data, ObjectOffset + i * 4);
-
-                    IMainPgObject Item = GenericPgObject.CreateMainObject(Definition.CreateNewObject, data, ref Offset);
-                    PgObjectList.Add(Item);
-                }
-
-                Offset = BitConverter.ToInt32(data, ObjectOffset + Count * 4);
-                Array.Copy(BitConverter.GetBytes(Offset), 0, currentOffset, 0, 4);
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return false;
-            }
-        }
-
-        private void DeserializeAll2(string versionFolder, string iconFolder, byte[] data)
-        {
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                IObjectDefinition Definition = Entry.Value;
-                Dictionary<string, IJsonKey> ObjectTable = Definition.ObjectTable;
-                IMainPgObjectCollection PgObjectList = Definition.PgObjectList;
-
-                if (ObjectTable.Count == 0)
-                    foreach (IJsonKey Item in PgObjectList)
-                        ObjectTable.Add(Item.Key, Item);
-            }
-
-            Dictionary<string, IJsonKey> PowerTable = ObjectList.Definitions[typeof(PgJsonObjects.Power)].ObjectTable;
-            Dictionary<string, IJsonKey> AttributeTable = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)].ObjectTable;
-
-            foreach (KeyValuePair<string, IJsonKey> Entry in PowerTable)
-            {
-                IPgPower Power = (IPgPower)Entry.Value;
-                Power.InitTierList(AttributeTable);
-            }
-        }
-
-        private static byte[] LoadBinaryFile(string fileName)
-        {
-            using FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using BinaryReader br = new BinaryReader(fs);
-            byte[] Result = br.ReadBytes((int)fs.Length);
-            return Result;
-        }
-
-        public static string IconFolder { get; private set; }
         #endregion
 
         #region Properties
@@ -562,7 +409,7 @@
             foreach (AbilityTierList Item in compatibleAbilityList)
                 if (!filledSlotList.Contains(AbilitySlot.CuteDigitStrippedName(Item.Source)))
                 {
-                    abilitySlot.SetAbility(Item, IconFolder);
+                    abilitySlot.SetAbility(Item, App.IconFolder);
                     return true;
                 }
 
@@ -575,7 +422,7 @@
                 foreach (IPgAbility AbilityItem in TierListItem)
                     if (AbilityItem.Name == selectedName)
                     {
-                        slot.SetAbility(TierListItem, AbilityItem, IconFolder);
+                        slot.SetAbility(TierListItem, AbilityItem, App.IconFolder);
                         return;
                     }
 
@@ -588,7 +435,7 @@
                 foreach (IPgAbility AbilityItem in TierListItem)
                     if (AbilityItem.Key == selectedKey)
                     {
-                        slot.SetAbility(TierListItem, AbilityItem, IconFolder);
+                        slot.SetAbility(TierListItem, AbilityItem, App.IconFolder);
                         return;
                     }
 
@@ -1078,6 +925,45 @@
                 return;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action<string>(OnLoad), NewBuildFile);
+        }
+
+        void ListBoxItem_PreviewMouseMoveEvent(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && sender is ListBoxItem)
+            {
+                ListBoxItem draggedItem = (ListBoxItem)sender;
+                DragDrop.DoDragDrop(draggedItem, draggedItem.DataContext, DragDropEffects.Move);
+                draggedItem.IsSelected = true;
+            }
+        }
+        
+        void ListBoxItem_Drop(object sender, DragEventArgs e)
+        {
+            object Target = ((ListBoxItem)(sender)).DataContext;
+            object Dropped = e.Data.GetData(Target.GetType());
+
+            DependencyObject Ancestor = (DependencyObject)sender;
+            while (Ancestor != null && !(Ancestor is ListBox))
+                Ancestor = VisualTreeHelper.GetParent(Ancestor);
+
+            ListBox container = (ListBox)Ancestor;
+
+            int RemoveIndex = container.Items.IndexOf(Dropped);
+            int TargetIndex = container.Items.IndexOf(Target);
+
+            System.Collections.IList IList = (System.Collections.IList)container.ItemsSource;
+
+            if (RemoveIndex < TargetIndex)
+            {
+                IList.Insert(TargetIndex + 1, Dropped);
+                IList.RemoveAt(RemoveIndex);
+            }
+            else
+                if (IList.Count > RemoveIndex)
+            {
+                IList.Insert(TargetIndex, Dropped);
+                IList.RemoveAt(RemoveIndex + 1);
+            }
         }
         #endregion
 
@@ -1640,7 +1526,7 @@
             foreach (GearSlot Item in GearSlotList)
             {
                 ItemInfo ItemInfo = Item.SelectedItem;
-                if (ItemInfo != null)
+                if (ItemInfo != ItemInfo.NoItem)
                     if (ItemInfo.Item.KeywordTable.ContainsKey(keyword))
                         ArmorTypeCount++;
             }
@@ -1650,9 +1536,9 @@
 
         private void RecalculateSlotMods(GearSlot slot)
         {
-            if (slot.SelectedItemIndex >= 0)
+            if (slot.IsItemSelected)
             {
-                ItemInfo Item = slot.ItemList[slot.SelectedItemIndex];
+                ItemInfo Item = slot.SelectedItem;
                 RecalculateItemMods(Item);
             }
 
@@ -1668,7 +1554,7 @@
 
         private void RecalculateItemMods(ItemInfo gearItem)
         {
-            foreach (IPgItemEffect Item in gearItem.Item.EffectDescriptionList)
+            foreach (IPgItemEffect Item in gearItem.ItemEffectDescriptionList)
                 RecalculateEffectMod(Item);
         }
 

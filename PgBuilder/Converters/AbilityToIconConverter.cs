@@ -16,7 +16,7 @@
             if (AbilityValue != null)
             {
                 int IconId = AbilityValue.IconId;
-                string IconFile = Path.Combine(MainWindow.IconFolder, $"icon_{IconId}.png");
+                string IconFile = Path.Combine(App.IconFolder, $"icon_{IconId}.png");
                 ImageSource Source = ImageConversion.IconFileToImageSource(IconFile);
 
                 return Source;

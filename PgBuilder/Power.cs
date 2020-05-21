@@ -72,6 +72,22 @@ namespace PgBuilder
                         }
                     }
 
+                    return Result;
+                }
+                else
+                    return "<Unknown>";
+            }
+        }
+
+        public string NameWithTier
+        {
+            get
+            {
+                IList<IPgPowerTier> TierEffectList = Source.TierEffectList;
+                if (SelectedTier >= 0 && SelectedTier < TierEffectList.Count)
+                {
+                    string Result = Name;
+
                     if (Result.Length > 0)
                         Result = $"Tier {SelectedTier}: {Result}";
 
