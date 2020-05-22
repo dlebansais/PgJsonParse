@@ -3,11 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        Topmost="False"
         SizeToContent="WidthAndHeight">
     <DockPanel Margin="10,10,10,10">
-        <ProgressBar DockPanel.Dock="Bottom" Value="{Binding Progress2, Mode=OneWay}" Height="16" Margin="0,10,0,0"/>
-        <ProgressBar DockPanel.Dock="Bottom" Value="{Binding Progress1, Mode=OneWay}" Height="16" Margin="0,10,0,0"/>
+        <ProgressBar DockPanel.Dock="Bottom" Value="{Binding Progress, Mode=OneWay}" Height="16" Margin="0,10,0,0"/>
         <TextBlock>Loading, please wait...</TextBlock>
     </DockPanel>
 </Window>

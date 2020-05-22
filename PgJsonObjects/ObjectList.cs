@@ -29,5 +29,74 @@ namespace PgJsonObjects
             { typeof(StorageVault), new ObjectDefinition<StorageVault, PgStorageVault, IPgStorageVault>("storagevaults", 0, PgStorageVault.CreateNew, false, false, true, true) },
             { typeof(ItemUses), new ObjectDefinition<ItemUses, PgItemUses, IPgItemUses>("itemuses", 0, PgItemUses.CreateNew, false, false, false, true) },
         };
+
+        public static void DeserializeObjects(byte[] data, byte[] currentOffset, List<IObjectDefinition> definitionList, int progressIndex)
+        {
+            IObjectDefinition Definition = definitionList[progressIndex];
+            int Offset = BitConverter.ToInt32(currentOffset, 0);
+
+            Definition.JsonObjectList.Clear();
+
+            IMainPgObjectCollection PgObjectList = Definition.PgObjectList;
+            PgObjectList.Clear();
+
+            int Count = BitConverter.ToInt32(data, Offset);
+            Offset += 4;
+
+            int ObjectOffset = Offset;
+
+            for (int i = 0; i < Count; i++)
+            {
+                Offset = BitConverter.ToInt32(data, ObjectOffset + i * 4);
+
+                IMainPgObject Item = GenericPgObject.CreateMainObject(Definition.CreateNewObject, data, ref Offset);
+                PgObjectList.Add(Item);
+            }
+
+            Offset = BitConverter.ToInt32(data, ObjectOffset + Count * 4);
+            Array.Copy(BitConverter.GetBytes(Offset), 0, currentOffset, 0, 4);
+        }
+
+        public static void FinalizeDeserializingObjects()
+        {
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            {
+                IObjectDefinition definition = Entry.Value;
+                IMainPgObjectCollection PgObjectList = definition.PgObjectList;
+
+                foreach (IGenericPgObject Item in PgObjectList)
+                    if (Item is IBackLinkable AsLinkBack)
+                        AsLinkBack.SortLinkBack();
+            }
+
+            foreach (KeyValuePair<Type, IObjectDefinition> Entry in Definitions)
+            {
+                IObjectDefinition Definition = Entry.Value;
+                Dictionary<string, IJsonKey> ObjectTable = Definition.ObjectTable;
+                IMainPgObjectCollection PgObjectList = Definition.PgObjectList;
+
+                if (ObjectTable.Count == 0)
+                    foreach (IJsonKey Item in PgObjectList)
+                        ObjectTable.Add(Item.Key, Item);
+            }
+
+            Dictionary<string, IJsonKey> NpcTable = Definitions[typeof(GameNpc)].ObjectTable;
+            Dictionary<string, IJsonKey> ItemTable = Definitions[typeof(Item)].ObjectTable;
+            Dictionary<string, IJsonKey> PowerTable = Definitions[typeof(PgJsonObjects.Power)].ObjectTable;
+            Dictionary<string, IJsonKey> AttributeTable = Definitions[typeof(PgJsonObjects.Attribute)].ObjectTable;
+
+            foreach (KeyValuePair<string, IJsonKey> Entry in NpcTable)
+            {
+                IPgGameNpc Npc = Entry.Value as IPgGameNpc;
+                foreach (IPgNpcPreference NpcPreference in Npc.PreferenceList)
+                    NpcPreference.InitFavorList(ItemTable);
+            }
+
+            foreach (KeyValuePair<string, IJsonKey> Entry in PowerTable)
+            {
+                IPgPower Power = (IPgPower)Entry.Value;
+                Power.InitTierList(AttributeTable);
+            }
+        }
     }
 }

@@ -1279,30 +1279,7 @@ namespace PgJsonParse
 
             try
             {
-                IObjectDefinition definition = definitionList[progressIndex];
-                int Offset = BitConverter.ToInt32(currentOffset, 0);
-
-                definition.JsonObjectList.Clear();
-
-                IMainPgObjectCollection PgObjectList = definition.PgObjectList;
-                PgObjectList.Clear();
-
-                int Count = BitConverter.ToInt32(data, Offset);
-                Offset += 4;
-
-                int ObjectOffset = Offset;
-                IMainPgObject Item;
-
-                for (int i = 0; i < Count; i++)
-                {
-                    Offset = BitConverter.ToInt32(data, ObjectOffset + i * 4);
-
-                    Item = GenericPgObject.CreateMainObject(definition.CreateNewObject, data, ref Offset);
-                    PgObjectList.Add(Item);
-                }
-
-                Offset = BitConverter.ToInt32(data, ObjectOffset + Count * 4);
-                Array.Copy(BitConverter.GetBytes(Offset), 0, currentOffset, 0, 4);
+                ObjectList.DeserializeObjects(data, currentOffset, definitionList, progressIndex);
 
                 ParseProgress = (progressIndex * 100.0) / ObjectList.Definitions.Count;
                 SetTaskbarProgressValue(ParseProgress, 100.0);
@@ -1325,54 +1302,13 @@ namespace PgJsonParse
                     StartTask(() => DeserializeAll0(data, currentOffset, definitionList, progressIndex),
                                 (bool nextStepSuccess) => DeserializeAll1(nextStepSuccess, versionInfo, errorInfo, versionFolder, iconFolder, data, callback, currentOffset, definitionList, progressIndex));
                 else
-                    DeserializeAll2(versionInfo, errorInfo, versionFolder, iconFolder, data, callback);
+                {
+                    ObjectList.FinalizeDeserializingObjects();
+                    callback(true, data);
+                }
             }
             else
                 callback(false, data);
-        }
-
-        private void DeserializeAll2(GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data, Action<bool, byte[]> callback)
-        {
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                IObjectDefinition definition = Entry.Value;
-                IMainPgObjectCollection PgObjectList = definition.PgObjectList;
-
-                foreach (IGenericPgObject Item in PgObjectList)
-                    if (Item is IBackLinkable AsLinkBack)
-                        AsLinkBack.SortLinkBack();
-            }
-
-            foreach (KeyValuePair<Type, IObjectDefinition> Entry in ObjectList.Definitions)
-            {
-                IObjectDefinition Definition = Entry.Value;
-                Dictionary<string, IJsonKey> ObjectTable = Definition.ObjectTable;
-                IMainPgObjectCollection PgObjectList = Definition.PgObjectList;
-
-                if (ObjectTable.Count == 0)
-                    foreach (IJsonKey Item in PgObjectList)
-                        ObjectTable.Add(Item.Key, Item);
-            }
-
-            Dictionary<string, IJsonKey> NpcTable = ObjectList.Definitions[typeof(GameNpc)].ObjectTable;
-            Dictionary<string, IJsonKey> ItemTable = ObjectList.Definitions[typeof(Item)].ObjectTable;
-            Dictionary<string, IJsonKey> PowerTable = ObjectList.Definitions[typeof(Power)].ObjectTable;
-            Dictionary<string, IJsonKey> AttributeTable = ObjectList.Definitions[typeof(PgJsonObjects.Attribute)].ObjectTable;
-
-            foreach (KeyValuePair<string, IJsonKey> Entry in NpcTable)
-            {
-                IPgGameNpc Npc = Entry.Value as IPgGameNpc;
-                foreach (IPgNpcPreference NpcPreference in Npc.PreferenceList)
-                    NpcPreference.InitFavorList(ItemTable);
-            }
-
-            foreach (KeyValuePair<string, IJsonKey> Entry in PowerTable)
-            {
-                IPgPower Power = Entry.Value as IPgPower;
-                Power.InitTierList(AttributeTable);
-            }
-
-            callback(true, data);
         }
 
         private void CompleteDeserializeCommit(bool succcess, GameVersionInfo versionInfo, ParseErrorInfo errorInfo, string versionFolder, string iconFolder, byte[] data)
