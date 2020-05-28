@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace PgBuilder
+﻿namespace PgBuilder
 {
+    using PgJsonObjects;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
-    using System.Windows.Controls;
-    using PgJsonObjects;
 
     public class Power : INotifyPropertyChanged
     {

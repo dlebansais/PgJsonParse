@@ -159,6 +159,71 @@ namespace PgJsonObjects
             else
                 SourceList.Add(Source);
         }
+
+        public static string CuteDigitStrippedName(IPgAbility ability)
+        {
+            string DigitStrippedName = ability.DigitStrippedName;
+            int Index;
+
+            Index = 0;
+            while (Index < DigitStrippedName.Length)
+                if (char.IsDigit(DigitStrippedName[Index]))
+                    DigitStrippedName = DigitStrippedName.Substring(0, Index) + DigitStrippedName.Substring(Index + 1);
+                else
+                    Index++;
+
+            if (IdenticalNameTable.ContainsKey(DigitStrippedName))
+                DigitStrippedName = IdenticalNameTable[DigitStrippedName];
+
+            Index = 0;
+            while (Index < DigitStrippedName.Length)
+            {
+                if (char.IsUpper(DigitStrippedName[Index]) && Index > 0)
+                {
+                    DigitStrippedName = DigitStrippedName.Substring(0, Index) + " " + DigitStrippedName.Substring(Index);
+                    Index++;
+                }
+
+                Index++;
+            }
+
+            return DigitStrippedName;
+        }
+
+        private static readonly Dictionary<string, string> IdenticalNameTable = new Dictionary<string, string>()
+        {
+            { "StabledPetLiving", "StabledPet" },
+            { "TameRat", "TameRat" },
+            { "TameCat", "TameRat" },
+            { "TameBear", "TameRat" },
+            { "TameBee", "TameRat" },
+            { "BasicShotB", "BasicShot" },
+            { "AimedShotB", "AimedShot" },
+            { "BlitzShotB", "BlitzShot" },
+            { "ToxinBombB", "MycotoxinFormula" },
+            { "ToxinBombC", "AcidBomb" },
+            { "FireWallB", "FireWall" },
+            { "IceVeinsB", "IceVeins" },
+            { "SliceB", "DuelistsSlash" },
+            { "WerewolfPounceB", "PouncingRend" },
+            { "WerewolfPounceBB", "PouncingRend" },
+        };
+
+        public static IList<IPgSpecialValue> GetSpecialValueList(IPgAbility ability)
+        {
+            IList<IPgSpecialValue> Result = new List<IPgSpecialValue>(ability.PvE.SpecialValueList);
+
+            bool IsChangedToArmor = false;
+            foreach (IPgSpecialValue Item in Result)
+                if (Item.Suffix == "of the Health damage done (up to the max)")
+                {
+                    if (IsChangedToArmor)
+                        Item.Suffix = "of the Armor damage done (up to the max)";
+                    else
+                        IsChangedToArmor = true;
+                }
+            return Result;
+        }
         #endregion
 
         #region Parsing
