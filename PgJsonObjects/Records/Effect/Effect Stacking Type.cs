@@ -316,5 +316,10 @@
         FairyDustDebuff,
         FreeFlutter,
         FairyFire,
+        SPAWN_VIEW_ALL,
+        SPAWN_VIEW_UNDEAD,
+        SPAWN_VIEW_RODENTS,
+        SPAWN_VIEW_FISH,
+        TSysBlindingFlash,
     }
 }

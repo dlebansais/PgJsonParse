@@ -231,7 +231,7 @@ namespace PgJsonObjects
 
         private void ParseQuest(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.QuestCompleted || OtherRequirementType == OtherRequirementType.GuildQuestCompleted)
+            if (OtherRequirementType == OtherRequirementType.QuestCompleted || OtherRequirementType == OtherRequirementType.GuildQuestCompleted || OtherRequirementType == OtherRequirementType.Internal_None)
                 RawRequirementQuestList.Add(value);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Quest (" + OtherRequirementType + ")");
@@ -239,7 +239,7 @@ namespace PgJsonObjects
 
         private void ParseKeyword(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.HasEffectKeyword)
+            if (OtherRequirementType == OtherRequirementType.HasEffectKeyword || OtherRequirementType == OtherRequirementType.Internal_None)
                 RequirementKeyword = StringToEnumConversion<EffectKeyword>.Parse(value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Keyword (" + OtherRequirementType + ")");
@@ -247,7 +247,7 @@ namespace PgJsonObjects
 
         private void ParseNpc(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.MinFavorLevel)
+            if (OtherRequirementType == OtherRequirementType.MinFavorLevel || OtherRequirementType == OtherRequirementType.Internal_None)
             {
                 MapAreaName ParsedArea;
                 string NpcId;
@@ -274,12 +274,19 @@ namespace PgJsonObjects
                 RawRequirementSkillLevel = IntegerValue.Number;
 
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + OtherRequirementType + ")");
+            {
+                if (value is JsonString AsStringValue && StringToEnumConversion<Favor>.TryParse(AsStringValue.String, out Favor FavorLevel, null))
+                    RequirementFavorLevel = FavorLevel;
+                else if (value is JsonInteger AsIntegerValue)
+                    RawRequirementSkillLevel = AsIntegerValue.Number;
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestRequirement Level (" + OtherRequirementType + ")");
+            }
         }
 
         private void ParseSkill(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.MinSkillLevel)
+            if (OtherRequirementType == OtherRequirementType.MinSkillLevel || OtherRequirementType == OtherRequirementType.Internal_None)
                 RequirementSkill = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Skill (" + OtherRequirementType + ")");
@@ -287,7 +294,7 @@ namespace PgJsonObjects
 
         private void ParseList(JsonObject RawList, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.Or)
+            if (OtherRequirementType == OtherRequirementType.Or || OtherRequirementType == OtherRequirementType.Internal_None)
             {
                 QuestRequirement ParsedQuestRequirement;
                 JsonObjectParser<QuestRequirement>.InitAsSubitem("List", RawList, out ParsedQuestRequirement, ErrorInfo);
@@ -302,7 +309,7 @@ namespace PgJsonObjects
 
         private void ParseRule(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.RuntimeBehaviorRuleSet)
+            if (OtherRequirementType == OtherRequirementType.RuntimeBehaviorRuleSet || OtherRequirementType == OtherRequirementType.Internal_None)
                 RequirementRule = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Rule (" + OtherRequirementType + ")");
@@ -310,7 +317,7 @@ namespace PgJsonObjects
 
         private void ParseInteractionFlag(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.InteractionFlagSet)
+            if (OtherRequirementType == OtherRequirementType.InteractionFlagSet || OtherRequirementType == OtherRequirementType.Internal_None)
                 RequirementInteractionFlag = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement InteractionFlag (" + OtherRequirementType + ")");
@@ -318,7 +325,7 @@ namespace PgJsonObjects
 
         private void ParseHangOut(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.HangOutCompleted)
+            if (OtherRequirementType == OtherRequirementType.HangOutCompleted || OtherRequirementType == OtherRequirementType.Internal_None)
                 RequirementHangOut = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement HangOut (" + OtherRequirementType + ")");
@@ -326,7 +333,7 @@ namespace PgJsonObjects
 
         private void ParseDisallowedRace(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.Race)
+            if (OtherRequirementType == OtherRequirementType.Race || OtherRequirementType == OtherRequirementType.Internal_None)
                 RequirementDisallowedRace = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Race (" + OtherRequirementType + ")");
@@ -334,7 +341,7 @@ namespace PgJsonObjects
 
         private void ParseAllowedRace(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.Race)
+            if (OtherRequirementType == OtherRequirementType.Race || OtherRequirementType == OtherRequirementType.Internal_None)
                 RequirementAllowedRace = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestRequirement Race (" + OtherRequirementType + ")");
@@ -342,7 +349,7 @@ namespace PgJsonObjects
 
         private void ParseAreaEvent(string value, ParseErrorInfo ErrorInfo)
         {
-            if (OtherRequirementType == OtherRequirementType.AreaEventOn)
+            if (OtherRequirementType == OtherRequirementType.AreaEventOn || OtherRequirementType == OtherRequirementType.Internal_None)
             {
                 int AreaIndex = value.LastIndexOf('_');
                 if (AreaIndex > 0)

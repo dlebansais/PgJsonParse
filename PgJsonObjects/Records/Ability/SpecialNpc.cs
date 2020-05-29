@@ -61,5 +61,13 @@
         MissFire,
         MissBehaved,
         MissFits,
+        BeeHiveC,
+        BeeHiveD,
+        BeeHiveE,
+        BeeHiveF,
+        BeeHiveG,
+        BeeHiveI,
+        BeeHiveJ,
+        BeeHiveK,
     }
 }

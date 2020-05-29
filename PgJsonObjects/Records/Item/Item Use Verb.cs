@@ -55,5 +55,6 @@
         Lick,
         OpenBagWithDyingBreath,
         Salvage,
+        OpenCrate,
     }
 }

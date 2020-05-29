@@ -7,7 +7,7 @@ namespace PgJsonObjects
         public PgAI(byte[] data, ref int offset)
             : base(data, offset)
         {
-            offset += 24;
+            offset += 28;
             SerializableJsonObject.AlignSerializedLength(ref offset);
         }
 
@@ -35,6 +35,7 @@ namespace PgJsonObjects
         public bool? RawIsFlying { get { return GetBool(20, 12); } }
         public bool? RawIsFollowClose { get { return GetBool(20, 14); } }
         public MobilityType MobilityType { get { return GetEnum<MobilityType>(22); } }
+        public string Description { get { return GetString(24); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Abilities", new FieldParser() {
@@ -73,6 +74,9 @@ namespace PgJsonObjects
             { "FollowClose", new FieldParser() {
                 Type = FieldType.Bool,
                 GetBool = () => RawIsFollowClose } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                GetString = () => Description } },
         }; } }
 
         #region Indirect Properties

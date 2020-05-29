@@ -245,5 +245,10 @@
         OrranInv,
         FairyFire,
         LiveEvent_LostScapegoats,
+        SpawnPremonition,
+        SpawnPremonition_Fish_10sec,
+        SunValePriestBuff,
+        SunValeAntiFaeBuff,
+        SacrificialScrayCurse,
     }
 }

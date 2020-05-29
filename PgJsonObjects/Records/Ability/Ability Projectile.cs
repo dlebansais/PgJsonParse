@@ -27,5 +27,6 @@
         Projectile_Lightning,
         Projectile_ElectricSpell,
         Projectile_ChaosMissile,
+        Attack_Taunt1,
     }
 }

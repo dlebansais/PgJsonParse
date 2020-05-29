@@ -159,6 +159,10 @@
         Warden,
         FairyMagic,
         Race_Fae,
+        Genetics_Arthropods,
+        Genetics_Cats,
+        Genetics_Ruminants,
+        Genetics,
     }
 }
 

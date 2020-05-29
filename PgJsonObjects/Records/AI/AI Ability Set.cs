@@ -823,6 +823,16 @@ namespace PgJsonObjects
         public IPgAIAbility GoatBite { get; private set; }
         public IPgAIAbility GoatKick { get; private set; }
         public IPgAIAbility GoatSmite { get; private set; }
+        public IPgAIAbility TurretCrystalZapMediumRange2 { get; private set; }
+        public IPgAIAbility TurretCrystalZapMediumRangeSlow { get; private set; }
+        public IPgAIAbility RanalonGuardianPull { get; private set; }
+        public IPgAIAbility ScrayStab3 { get; private set; }
+        public IPgAIAbility SharkBite { get; private set; }
+        public IPgAIAbility SharkMegaBite { get; private set; }
+        public IPgAIAbility SharkOpener { get; private set; }
+        public IPgAIAbility TrollHeal { get; private set; }
+        public IPgAIAbility TrollSwordA { get; private set; }
+        public IPgAIAbility TrollSwordB { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -4095,6 +4105,46 @@ namespace PgJsonObjects
                Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => GoatSmite =
                    JsonObjectParser<AIAbility>.Parse("GoatSmite", value, errorInfo),
                GetObject = () => GoatSmite as IObjectContentGenerator } },
+           { "TurretCrystalZapMediumRange2", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => TurretCrystalZapMediumRange2 =
+                   JsonObjectParser<AIAbility>.Parse("TurretCrystalZapMediumRange2", value, errorInfo),
+               GetObject = () => TurretCrystalZapMediumRange2 as IObjectContentGenerator } },
+           { "TurretCrystalZapMediumRangeSlow", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => TurretCrystalZapMediumRangeSlow =
+                   JsonObjectParser<AIAbility>.Parse("TurretCrystalZapMediumRangeSlow", value, errorInfo),
+               GetObject = () => TurretCrystalZapMediumRangeSlow as IObjectContentGenerator } },
+           { "RanalonGuardianPull", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => RanalonGuardianPull =
+                   JsonObjectParser<AIAbility>.Parse("RanalonGuardianPull", value, errorInfo),
+               GetObject = () => RanalonGuardianPull as IObjectContentGenerator } },
+           { "ScrayStab3", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => ScrayStab3 =
+                   JsonObjectParser<AIAbility>.Parse("ScrayStab3", value, errorInfo),
+               GetObject = () => ScrayStab3 as IObjectContentGenerator } },
+           { "SharkBite", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SharkBite =
+                   JsonObjectParser<AIAbility>.Parse("SharkBite", value, errorInfo),
+               GetObject = () => SharkBite as IObjectContentGenerator } },
+           { "SharkMegaBite", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SharkMegaBite =
+                   JsonObjectParser<AIAbility>.Parse("SharkMegaBite", value, errorInfo),
+               GetObject = () => SharkMegaBite as IObjectContentGenerator } },
+           { "SharkOpener", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => SharkOpener =
+                   JsonObjectParser<AIAbility>.Parse("SharkOpener", value, errorInfo),
+               GetObject = () => SharkOpener as IObjectContentGenerator } },
+           { "TrollHeal", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => TrollHeal =
+                   JsonObjectParser<AIAbility>.Parse("TrollHeal", value, errorInfo),
+               GetObject = () => TrollHeal as IObjectContentGenerator } },
+           { "TrollSwordA", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => TrollSwordA =
+                   JsonObjectParser<AIAbility>.Parse("TrollSwordA", value, errorInfo),
+               GetObject = () => TrollSwordA as IObjectContentGenerator } },
+           { "TrollSwordB", new FieldParser() {
+               Type = FieldType.Object, ParseObject = (JsonObject value, ParseErrorInfo errorInfo) => TrollSwordB =
+                   JsonObjectParser<AIAbility>.Parse("TrollSwordB", value, errorInfo),
+               GetObject = () => TrollSwordB as IObjectContentGenerator } },
         }; } }
         #endregion
 
@@ -4949,8 +4999,18 @@ namespace PgJsonObjects
             AddObject(GoatBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 813 * 4, StoredObjectTable);
             AddObject(GoatKick as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 814 * 4, StoredObjectTable);
             AddObject(GoatSmite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 815 * 4, StoredObjectTable);
+            AddObject(TurretCrystalZapMediumRange2 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 816 * 4, StoredObjectTable);
+            AddObject(TurretCrystalZapMediumRangeSlow as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 817 * 4, StoredObjectTable);
+            AddObject(RanalonGuardianPull as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 818 * 4, StoredObjectTable);
+            AddObject(ScrayStab3 as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 819 * 4, StoredObjectTable);
+            AddObject(SharkBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 820 * 4, StoredObjectTable);
+            AddObject(SharkMegaBite as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 821 * 4, StoredObjectTable);
+            AddObject(SharkOpener as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 822 * 4, StoredObjectTable);
+            AddObject(TrollHeal as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 823 * 4, StoredObjectTable);
+            AddObject(TrollSwordA as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 824 * 4, StoredObjectTable);
+            AddObject(TrollSwordB as ISerializableJsonObject, data, ref offset, BaseOffset, KeyOffset + 825 * 4, StoredObjectTable);
 
-            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 816 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, KeyOffset + 826 * 4, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

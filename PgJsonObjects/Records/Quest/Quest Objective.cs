@@ -194,7 +194,7 @@ namespace PgJsonObjects
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "Type", new FieldParser() {
                 Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => Type = StringToEnumConversion<QuestObjectiveType>.Parse(value, errorInfo),
+                ParseString = ParseType,
                 GetString = () => StringToEnumConversion<QuestObjectiveType>.ToString(Type, null, QuestObjectiveType.Internal_None) } },
             { "Target", new FieldParser() {
                 Type = FieldType.String,
@@ -294,6 +294,36 @@ namespace PgJsonObjects
                 GetInteger = () => RawGroupId } },
         }; } }
 
+        private void ParseType(string RawType, ParseErrorInfo ErrorInfo)
+        {
+            Type = StringToEnumConversion<QuestObjectiveType>.Parse(RawType, ErrorInfo);
+
+            switch (Type)
+            {
+                case QuestObjectiveType.Kill:
+                case QuestObjectiveType.KillElite:
+                    if (KillTarget != QuestObjectiveKillTarget.Internal_None)
+                        StringToEnumConversion<QuestObjectiveKillTarget>.SetCustomParsedEnum(KillTarget);
+                    break;
+                case QuestObjectiveType.UseRecipe:
+                    if (RecipeTarget != RecipeKeyword.Internal_None)
+                        StringToEnumConversion<RecipeKeyword>.SetCustomParsedEnum(RecipeTarget);
+                    break;
+                case QuestObjectiveType.Harvest:
+                case QuestObjectiveType.Collect:
+                case QuestObjectiveType.Have:
+                case QuestObjectiveType.Loot:
+                case QuestObjectiveType.UseItem:
+                    if (ItemTarget != ItemKeyword.Internal_None)
+                        StringToEnumConversion<ItemKeyword>.SetCustomParsedEnum(ItemTarget);
+                    break;
+                case QuestObjectiveType.Deliver:
+                    if (DeliverNpcArea != MapAreaName.Internal_None)
+                        StringToEnumConversion<MapAreaName>.SetCustomParsedEnum(DeliverNpcArea);
+                    break;
+            }
+        }
+
         private void ParseTarget(string RawTarget, ParseErrorInfo ErrorInfo)
         {
             if (Type == QuestObjectiveType.Kill || Type == QuestObjectiveType.KillElite)
@@ -373,6 +403,28 @@ namespace PgJsonObjects
             else if (Type == QuestObjectiveType.InteractionFlag)
                 return;
 
+            else if (Type == QuestObjectiveType.Internal_None)
+            {
+                if (StringToEnumConversion<QuestObjectiveKillTarget>.TryParse(RawTarget, TextMaps.KillTargetStringMap, out QuestObjectiveKillTarget RawKillTarget, null))
+                    KillTarget = RawKillTarget;
+                if (StringToEnumConversion<RecipeKeyword>.TryParse(RawTarget, out RecipeKeyword RawRecipeTarget, null))
+                    RecipeTarget = RawRecipeTarget;
+                if (StringToEnumConversion<ItemKeyword>.TryParse(RawTarget, TextMaps.ItemKeywordStringMap, out ItemKeyword RawItemTarget, null))
+                    ItemTarget = RawItemTarget;
+
+                MapAreaName ParsedArea;
+                string ParsedNpcId;
+                string ParsedNpcName;
+                if (Quest.TryParseNPC(RawTarget, out ParsedArea, out ParsedNpcId, out ParsedNpcName, ErrorInfo))
+                {
+                    DeliverNpcArea = ParsedArea;
+                    DeliverNpcId = ParsedNpcId;
+                    DeliverNpcName = ParsedNpcName;
+                }
+                else
+                    InteractionTarget = RawTarget;
+            }
+
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Target (Type)");
         }
@@ -384,7 +436,7 @@ namespace PgJsonObjects
 
         private bool ParseInteractionFlags(string RawInteractionFlag, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.MultipleInteractionFlags)
+            if (Type == QuestObjectiveType.MultipleInteractionFlags || Type == QuestObjectiveType.Internal_None)
             {
                 RawInteractionFlagList.Add(RawInteractionFlag);
                 return true;
@@ -404,7 +456,8 @@ namespace PgJsonObjects
                 Type == QuestObjectiveType.Harvest ||
                 Type == QuestObjectiveType.UseItem ||
                 Type == QuestObjectiveType.Loot ||
-                Type == QuestObjectiveType.GuildGiveItem)
+                Type == QuestObjectiveType.GuildGiveItem ||
+                Type == QuestObjectiveType.Internal_None)
                 RawItemName = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective ItemName (Type)");
@@ -412,7 +465,7 @@ namespace PgJsonObjects
 
         private void ParseInteractionFlag(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.InteractionFlag)
+            if (Type == QuestObjectiveType.InteractionFlag || Type == QuestObjectiveType.Internal_None)
                 RawInteractionFlag = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective InteractionFlag (Type)");
@@ -420,7 +473,7 @@ namespace PgJsonObjects
 
         private void ParseMinAmount(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.Special || Type == QuestObjectiveType.TipPlayer)
+            if (Type == QuestObjectiveType.Special || Type == QuestObjectiveType.TipPlayer || Type == QuestObjectiveType.Internal_None)
             {
                 int ParsedMinAmount;
                 if (int.TryParse(value, out ParsedMinAmount))
@@ -434,7 +487,7 @@ namespace PgJsonObjects
 
         private void ParseMinFavorReceived(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.GiveGift)
+            if (Type == QuestObjectiveType.GiveGift || Type == QuestObjectiveType.Internal_None)
             {
                 float ParsedMinFavorReceived;
                 FloatFormat Format;
@@ -449,7 +502,7 @@ namespace PgJsonObjects
 
         private void ParseMaxFavorReceived(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.GiveGift)
+            if (Type == QuestObjectiveType.GiveGift || Type == QuestObjectiveType.Internal_None)
             {
                 float ParsedMaxFavorReceived;
                 FloatFormat Format;
@@ -464,7 +517,7 @@ namespace PgJsonObjects
 
         private void ParseSkill(string RawSkill, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.UseRecipe)
+            if (Type == QuestObjectiveType.UseRecipe || Type == QuestObjectiveType.Internal_None)
                 Skill = StringToEnumConversion<PowerSkill>.Parse(RawSkill, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Skill (Type)");
@@ -472,7 +525,7 @@ namespace PgJsonObjects
 
         private void ParseStringParam(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.Special)
+            if (Type == QuestObjectiveType.Special || Type == QuestObjectiveType.Internal_None)
                 StringParam = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective StringParam (Type");
@@ -480,7 +533,7 @@ namespace PgJsonObjects
 
         private void ParseResultItemKeyword(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.UseRecipe)
+            if (Type == QuestObjectiveType.UseRecipe || Type == QuestObjectiveType.Internal_None)
                 ResultItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, TextMaps.ItemKeywordStringMap, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective ResultItemKeyword (Type)");
@@ -493,12 +546,17 @@ namespace PgJsonObjects
             else if (Type == QuestObjectiveType.UseAbilityOnTargets)
                 AbilityTarget = StringToEnumConversion<AbilityKeyword>.Parse(value, ErrorInfo);
             else
-                ErrorInfo.AddInvalidObjectFormat("QuestObjective AbilityKeyword (Type)");
+            {
+                if (StringToEnumConversion<AbilityKeyword>.TryParse(value, out AbilityKeyword RawAbilityTarget, null))
+                    AbilityTarget = RawAbilityTarget;
+                else
+                    ErrorInfo.AddInvalidObjectFormat("QuestObjective AbilityKeyword (Type)");
+            }
         }
 
         private void ParseMaxAmount(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.Special)
+            if (Type == QuestObjectiveType.Special || Type == QuestObjectiveType.Internal_None)
             {
                 int ParsedMaxAmount;
                 if (int.TryParse(value, out ParsedMaxAmount))
@@ -512,7 +570,7 @@ namespace PgJsonObjects
 
         private void ParseAnatomyType(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.BeAttacked || Type == QuestObjectiveType.Bury)
+            if (Type == QuestObjectiveType.BeAttacked || Type == QuestObjectiveType.Bury || Type == QuestObjectiveType.Internal_None)
                 AnatomyType = StringToEnumConversion<PowerSkill>.Parse("Anatomy_" + value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective AnatomyType (Type)");
@@ -520,7 +578,7 @@ namespace PgJsonObjects
 
         private void ParseItemKeyword(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.GuildGiveItem)
+            if (Type == QuestObjectiveType.GuildGiveItem || Type == QuestObjectiveType.Internal_None)
                 ItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, TextMaps.ItemKeywordStringMap, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective ItemKeyword (Type)");
@@ -528,7 +586,7 @@ namespace PgJsonObjects
 
         private void ParseMonsterTypeTag(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.Loot)
+            if (Type == QuestObjectiveType.Loot || Type == QuestObjectiveType.Internal_None)
                 MonsterTypeTag = StringToEnumConversion<MonsterTypeTag>.Parse(value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective MonsterTypeTag (Type)");
@@ -631,7 +689,7 @@ namespace PgJsonObjects
 
         private void ParseItem(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.ScriptedReceiveItem)
+            if (Type == QuestObjectiveType.ScriptedReceiveItem || Type == QuestObjectiveType.Internal_None)
                 RawItemName = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective Item (Type)");
@@ -639,7 +697,7 @@ namespace PgJsonObjects
 
         private void ParseNumToDeliver(int value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == QuestObjectiveType.Deliver)
+            if (Type == QuestObjectiveType.Deliver || Type == QuestObjectiveType.Internal_None)
                 RawNumToDeliver = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("QuestObjective NumToDeliver (Type)");

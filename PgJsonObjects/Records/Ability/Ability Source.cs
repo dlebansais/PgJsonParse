@@ -177,7 +177,7 @@ namespace PgJsonObjects
 
         private void ParseSkillTypeId(string value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == SourceType.AutomaticFromSkill)
+            if (Type == SourceType.AutomaticFromSkill || Type == SourceType.Internal_None)
                 RawSkillTypeId = StringToEnumConversion<PowerSkill>.Parse(value, ErrorInfo);
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource RawSkillTypeId (type)");
@@ -185,7 +185,7 @@ namespace PgJsonObjects
 
         private void ParseItemTypeId(int value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == SourceType.Item)
+            if (Type == SourceType.Item || Type == SourceType.Internal_None)
                 RawItemTypeId = (int)value;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource ItemTypeId (type)");
@@ -232,7 +232,7 @@ namespace PgJsonObjects
 
         private void ParseEffectName(string RawEffectName, ParseErrorInfo ErrorInfo)
         {
-            if (Type == SourceType.Effect)
+            if (Type == SourceType.Effect || Type == SourceType.Internal_None)
                 this.RawEffectName = RawEffectName;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource EffectName (type)");
@@ -240,7 +240,7 @@ namespace PgJsonObjects
 
         private void ParseQuestId(int value, ParseErrorInfo ErrorInfo)
         {
-            if (Type == SourceType.Quest)
+            if (Type == SourceType.Quest || Type == SourceType.Internal_None)
                 RawQuestId = value;
             else
                 ErrorInfo.AddInvalidObjectFormat("AbilitySource QuestId (type)");

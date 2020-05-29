@@ -5241,6 +5241,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="Non Combat Regen Health Modifier:" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding NonCombatRegenHealthMod, Converter={StaticResource convPercent}}" Visibility="{Binding RawNonCombatRegenHealthMod, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
@@ -5404,6 +5405,8 @@
                     <TextBlock Grid.Column="1" Grid.Row="72" Text="{Binding BoostAutoHealHealthSender}" Visibility="{Binding RawBoostAutoHealHealthSender, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                     <TextBlock Grid.Column="0" Grid.Row="73" Text="Boost Auto Heal Armor Sender:" Visibility="{Binding RawBoostAutoHealArmorSender, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="73" Text="{Binding BoostAutoHealArmorSender}" Visibility="{Binding RawBoostAutoHealArmorSender, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="74" Text="Boost Trauma Indirect:" Visibility="{Binding RawBoostTraumaIndirect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" TextAlignment="Right" Margin="0,0,0,0"/>
+                    <TextBlock Grid.Column="1" Grid.Row="74" Text="{Binding BoostTraumaIndirect, Converter={StaticResource convPercent}}" Visibility="{Binding RawBoostTraumaIndirect, Converter={StaticResource convNullToObject}, ConverterParameter={StaticResource CollapsedVisible}}" Margin="5,0,0,0"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>

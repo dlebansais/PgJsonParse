@@ -818,5 +818,16 @@
         IPgAIAbility GoatBite { get; }
         IPgAIAbility GoatKick { get; }
         IPgAIAbility GoatSmite { get; }
+        IPgAIAbility TurretCrystalZapMediumRange2 { get; }
+        IPgAIAbility TurretCrystalZapMediumRangeSlow { get; }
+        IPgAIAbility RanalonGuardianPull { get; }
+        IPgAIAbility ScrayStab3 { get; }
+        IPgAIAbility SharkBite { get; }
+        IPgAIAbility SharkMegaBite { get; }
+        IPgAIAbility SharkOpener { get; }
+        IPgAIAbility TrollHeal { get; }
+        IPgAIAbility TrollSwordA { get; }
+        IPgAIAbility TrollSwordB { get; }
+
     }
 }

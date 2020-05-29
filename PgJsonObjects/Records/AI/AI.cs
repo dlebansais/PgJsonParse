@@ -19,6 +19,7 @@ namespace PgJsonObjects
         public bool? RawIsFlying { get; private set; }
         public bool? RawIsFollowClose { get; private set; }
         public MobilityType MobilityType { get; private set; }
+        public string Description { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -75,6 +76,10 @@ namespace PgJsonObjects
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsFollowClose = value,
                 GetBool = () => RawIsFollowClose } },
+            { "Description", new FieldParser() {
+                Type = FieldType.String,
+                ParseString = (string value, ParseErrorInfo errorInfo) => Description = value,
+                GetString = () => Description } },
         }; } }
         #endregion
 
@@ -102,6 +107,7 @@ namespace PgJsonObjects
                     AddWithFieldSeparator(ref Result, "Is Flying: " + (RawIsFlying.Value ? "Yes" : "No"));
                 if (RawIsFollowClose.HasValue)
                     AddWithFieldSeparator(ref Result, "Follow Close: " + (RawIsFollowClose.Value ? "Yes" : "No"));
+                AddWithFieldSeparator(ref Result, Description);
 
                 return Result;
             }
@@ -145,8 +151,9 @@ namespace PgJsonObjects
             AddBool(RawIsFollowClose, data, ref offset, ref BitOffset, BaseOffset, 20, 14);
             CloseBool(ref offset, ref BitOffset);
             AddEnum(MobilityType, data, ref offset, BaseOffset, 22);
+            AddString(Description, data, ref offset, BaseOffset, 24, StoredStringtable);
 
-            FinishSerializing(data, ref offset, BaseOffset, 24, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 28, StoredStringtable, StoredObjectTable, null, null, null, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

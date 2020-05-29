@@ -174,6 +174,8 @@ namespace PgJsonObjects
         public double? RawBoostAutoHealHealthSender { get; private set; }
         public float BoostAutoHealArmorSender { get { return (float)(RawBoostAutoHealArmorSender.HasValue ? RawBoostAutoHealArmorSender.Value : 0); } }
         public double? RawBoostAutoHealArmorSender { get; private set; }
+        public float BoostTraumaIndirect { get { return (float)(RawBoostTraumaIndirect.HasValue ? RawBoostTraumaIndirect.Value : 0); } }
+        public double? RawBoostTraumaIndirect { get; private set; }
         #endregion
 
         #region Indirect Properties
@@ -534,6 +536,10 @@ namespace PgJsonObjects
                 Type = FieldType.Float,
                 ParseFloat = (float value, ParseErrorInfo errorInfo) => RawBoostAutoHealArmorSender = value,
                 GetFloat = () => RawBoostAutoHealArmorSender } },
+            { "BOOST_TRAUMA_INDIRECT", new FieldParser() {
+                Type = FieldType.Float,
+                ParseFloat = (float value, ParseErrorInfo errorInfo) => RawBoostTraumaIndirect = value,
+                GetFloat = () => RawBoostTraumaIndirect } },
         }; } }
 
         protected override bool IsCustomFieldParsed(string FieldKey, object FieldValue, ParseErrorInfo ErrorInfo)
@@ -815,8 +821,9 @@ namespace PgJsonObjects
             AddInt(BoostAbilityPetBasicAttack, data, ref offset, BaseOffset, 336);
             AddDouble(BoostAutoHealHealthSender, data, ref offset, BaseOffset, 340);
             AddDouble(BoostAutoHealArmorSender, data, ref offset, BaseOffset, 344);
+            AddDouble(RawBoostTraumaIndirect, data, ref offset, BaseOffset, 348);
 
-            FinishSerializing(data, ref offset, BaseOffset, 348, StoredStringtable, null, null, null, StoredIntListTable, null, StoredStringListTable, null);
+            FinishSerializing(data, ref offset, BaseOffset, 352, StoredStringtable, null, null, null, StoredIntListTable, null, StoredStringListTable, null);
             AlignSerializedLength(ref offset);
         }
         #endregion

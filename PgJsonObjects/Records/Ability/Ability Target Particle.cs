@@ -27,5 +27,6 @@
         CombatRefresh,
         ElectricityHit2,
         EnergyPillar,
+        HealingParticle_Silent,
     }
 }

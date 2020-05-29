@@ -116,5 +116,6 @@
         PsionicDebuff,
         RageShield,
         OnFireGreen,
+        BlindingFlash,
     }
 }

@@ -17,5 +17,6 @@
         Druid_DesertWatchers,
         Druid_Rotflowers,
         CasinoExcursion,
+        GeneticsTraining,
     }
 }

@@ -191,6 +191,8 @@ namespace PgJsonObjects
         public double? RawBoostAutoHealHealthSender { get { return GetInt(340); } }
         public float BoostAutoHealArmorSender { get { return (float)(RawBoostAutoHealArmorSender.HasValue ? RawBoostAutoHealArmorSender.Value : 0); } }
         public double? RawBoostAutoHealArmorSender { get { return GetInt(344); } }
+        public float BoostTraumaIndirect { get { return (float)(RawBoostTraumaIndirect.HasValue ? RawBoostTraumaIndirect.Value : 0); } }
+        public double? RawBoostTraumaIndirect { get { return GetDouble(348); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
             { "IGNORE_CHANCE_FEAR", new FieldParser() {

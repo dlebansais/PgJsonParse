@@ -19,7 +19,7 @@ namespace PgJsonObjects
             return new PgAIAbilitySet(data, ref offset);
         }
 
-        private PgAIAbility[] Abilities = new PgAIAbility[816];
+        private PgAIAbility[] Abilities = new PgAIAbility[826];
         private IPgAIAbility GetAbilityObject(int index) { return GetObject<PgAIAbility>(8 + (index * 4), ref Abilities[index], PgAIAbility.CreateNew); }
 
         public override string Key { get { return GetString(0); } }
@@ -840,6 +840,16 @@ namespace PgJsonObjects
         public IPgAIAbility GoatBite { get { return GetAbilityObject(813); } }
         public IPgAIAbility GoatKick { get { return GetAbilityObject(814); } }
         public IPgAIAbility GoatSmite { get { return GetAbilityObject(815); } }
+        public IPgAIAbility TurretCrystalZapMediumRange2 { get { return GetAbilityObject(816); } }
+        public IPgAIAbility TurretCrystalZapMediumRangeSlow { get { return GetAbilityObject(817); } }
+        public IPgAIAbility RanalonGuardianPull { get { return GetAbilityObject(818); } }
+        public IPgAIAbility ScrayStab3 { get { return GetAbilityObject(819); } }
+        public IPgAIAbility SharkBite { get { return GetAbilityObject(820); } }
+        public IPgAIAbility SharkMegaBite { get { return GetAbilityObject(821); } }
+        public IPgAIAbility SharkOpener { get { return GetAbilityObject(822); } }
+        public IPgAIAbility TrollHeal { get { return GetAbilityObject(823); } }
+        public IPgAIAbility TrollSwordA { get { return GetAbilityObject(824); } }
+        public IPgAIAbility TrollSwordB { get { return GetAbilityObject(825); } }
 
         protected override Dictionary<string, FieldParser> FieldTable { get { return new Dictionary<string, FieldParser> {
            { "AcidAuraBall1", new FieldParser() {
@@ -3291,6 +3301,36 @@ namespace PgJsonObjects
            { "GoatSmite", new FieldParser() {
                Type = FieldType.Object,
                GetObject = () => GoatSmite as IObjectContentGenerator } },
+           { "TurretCrystalZapMediumRange2", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => TurretCrystalZapMediumRange2 as IObjectContentGenerator } },
+           { "TurretCrystalZapMediumRangeSlow", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => TurretCrystalZapMediumRangeSlow as IObjectContentGenerator } },
+           { "RanalonGuardianPull", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => RanalonGuardianPull as IObjectContentGenerator } },
+           { "ScrayStab3", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => ScrayStab3 as IObjectContentGenerator } },
+           { "SharkBite", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => SharkBite as IObjectContentGenerator } },
+           { "SharkMegaBite", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => SharkMegaBite as IObjectContentGenerator } },
+           { "SharkOpener", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => SharkOpener as IObjectContentGenerator } },
+           { "TrollHeal", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => TrollHeal as IObjectContentGenerator } },
+           { "TrollSwordA", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => TrollSwordA as IObjectContentGenerator } },
+           { "TrollSwordB", new FieldParser() {
+               Type = FieldType.Object, 
+               GetObject = () => TrollSwordB as IObjectContentGenerator } },
         }; } }
 
         #region Indirect Properties

@@ -14,5 +14,6 @@
         bool? RawIsFlying { get; }
         bool? RawIsFollowClose { get; }
         MobilityType MobilityType { get; }
+        string Description { get; }
     }
 }

@@ -991,5 +991,10 @@
         Organic,
         BeeRepellent,
         MinRarity_Uncommon,
+        Molybdenum,
+        GeneAnalyzer_Arthropods,
+        GeneAnalyzer_Cats,
+        GeneAnalyzer_Ruminants,
+        GeneticsRelated,
     }
 }
