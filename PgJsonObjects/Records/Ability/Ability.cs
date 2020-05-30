@@ -526,7 +526,10 @@ namespace PgJsonObjects
                 KeywordList.Add(ParsedAbilityKeyword);
 
                 if (HasBasicAttack)
+                {
+                    StringToEnumConversion<AbilityKeyword>.SetCustomParsedEnum(AbilityKeyword.Internal_NonBasic);
                     PgJsonObjects.Skill.UpdateBasicAttackTable(RawSkill, this);
+                }
             }
         }
 

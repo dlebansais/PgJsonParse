@@ -534,5 +534,6 @@
         PixieFlare,
         FaeConduit,
         PetBasicAttack,
+        Internal_NonBasic,
     }
 }

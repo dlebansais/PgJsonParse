@@ -1382,6 +1382,7 @@ namespace PgJsonObjects
             { AbilityKeyword.PixieFlare, "Pixie Flare" },
             { AbilityKeyword.FaeConduit, "Fae Conduit" },
             { AbilityKeyword.PetBasicAttack, "Pet Basic Attack" },
+            { AbilityKeyword.Internal_NonBasic, "Non-Basic Attack" },
         };
 
         public static readonly Dictionary<AbilityPetType, string> AbilityPetTypeTextMap = new Dictionary<AbilityPetType, string>()
