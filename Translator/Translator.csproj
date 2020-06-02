@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{46DB8213-CD46-4940-ACCD-3D7756BB95C1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Translator</RootNamespace>
+    <AssemblyName>Translator</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>8.0</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\AbilityCue.cs" />
+    <Compile Include="Enums\AbilityTargetParticle.cs" />
+    <Compile Include="Enums\AbilityTarget.cs" />
+    <Compile Include="Enums\AbilityProjectile.cs" />
+    <Compile Include="Enums\AbilityKeyword.cs" />
+    <Compile Include="Enums\AbilityItemKeyword.cs" />
+    <Compile Include="Enums\AbilityPetType.cs" />
+    <Compile Include="Enums\AbilityIndicatingEnabled.cs" />
+    <Compile Include="Enums\AbilityAnimation.cs" />
+    <Compile Include="Enums\Appearance.cs" />
+    <Compile Include="Enums\AppearanceSkin.cs" />
+    <Compile Include="Enums\Augment.cs" />
+    <Compile Include="Enums\ConsumedItemCategory.cs" />
+    <Compile Include="Enums\CraftedBoost.cs" />
+    <Compile Include="Enums\Currency.cs" />
+    <Compile Include="Enums\DamageType.cs" />
+    <Compile Include="Enums\DecomposeSkill.cs" />
+    <Compile Include="Enums\DisallowedState.cs" />
+    <Compile Include="Enums\DisplayRule.cs" />
+    <Compile Include="Enums\DisplayType.cs" />
+    <Compile Include="Enums\DoTSpecialRule.cs" />
+    <Compile Include="Enums\EffectKeyword.cs" />
+    <Compile Include="Enums\EffectParticle.cs" />
+    <Compile Include="Enums\EffectDisplayMode.cs" />
+    <Compile Include="Enums\EffectStackingType.cs" />
+    <Compile Include="Enums\EnhancementEffect.cs" />
+    <Compile Include="Enums\Favor.cs" />
+    <Compile Include="Enums\FloatFormat.cs" />
+    <Compile Include="Enums\ItemRequiredHotspot.cs" />
+    <Compile Include="Enums\ItemUseVerb.cs" />
+    <Compile Include="Enums\ItemUseAnimation.cs" />
+    <Compile Include="Enums\ItemUseRequirement.cs" />
+    <Compile Include="Enums\ItemDroppedAppearance.cs" />
+    <Compile Include="Enums\ItemSlot.cs" />
+    <Compile Include="Enums\ItemKeyword.cs" />
+    <Compile Include="Enums\LoreBookCategory.cs" />
+    <Compile Include="Enums\LoreBookKeyword.cs" />
+    <Compile Include="Enums\LoreBookVisibility.cs" />
+    <Compile Include="Enums\MapAreaName.cs" />
+    <Compile Include="Enums\MobilityType.cs" />
+    <Compile Include="Enums\MonsterTypeTag.cs" />
+    <Compile Include="Enums\MoonPhases.cs" />
+    <Compile Include="Enums\OtherRequirementType.cs" />
+    <Compile Include="Enums\PowerSkill.cs" />
+    <Compile Include="Enums\PowerWaxType.cs" />
+    <Compile Include="Enums\PreEffect.cs" />
+    <Compile Include="Enums\QuestGroupingName.cs" />
+    <Compile Include="Enums\QuestKeyword.cs" />
+    <Compile Include="Enums\QuestObjectiveKillTarget.cs" />
+    <Compile Include="Enums\QuestObjectiveType.cs" />
+    <Compile Include="Enums\Race.cs" />
+    <Compile Include="Enums\RecipeCurrency.cs" />
+    <Compile Include="Enums\RecipeAction.cs" />
+    <Compile Include="Enums\RecipeUsageAnimation.cs" />
+    <Compile Include="Enums\RecipeResultKey.cs" />
+    <Compile Include="Enums\RecipeEffect.cs" />
+    <Compile Include="Enums\RecipeItemKey.cs" />
+    <Compile Include="Enums\RecipeKeyword.cs" />
+    <Compile Include="Enums\SelfEffect.cs" />
+    <Compile Include="Enums\ServerInfoEffectType.cs" />
+    <Compile Include="Enums\ShamanicSlotPower.cs" />
+    <Compile Include="Enums\SkillCategory.cs" />
+    <Compile Include="Enums\TargetEffectKeyword.cs" />
+    <Compile Include="Enums\TooltipsExtraKeywords.cs" />
+    <Compile Include="Enums\WorkOrderSign.cs" />
+    <Compile Include="Enums\XpTableCategory.cs" />
+    <Compile Include="FieldTables.cs" />
+    <Compile Include="FileType.cs" />
+    <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
+    <Compile Include="Objects\Ability\PgAbilityAmmoCollection.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDruidEventState.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementEquippedItemKeyword.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementHasEffectKeyword.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementHasInventorySpaceFor.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementInHotspot.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementInteractionFlagSet.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsFullMoon.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsHardcore.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsInGraveyard.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsLongtimeAnimal.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsLycanthrope.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsNotGuest.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsNotInCombat.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsVegetarian.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsVolunteerGuide.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementNotInHotspot.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementOr.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementPetCount.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementRace.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementRecipeKnown.cs" />
+    <Compile Include="Objects\Ability\PgAbilityCollection.cs" />
+    <Compile Include="Objects\Ability\PgAbilityRequirementCollection.cs" />
+    <Compile Include="Objects\Ability\PgAbilityRequirement.cs" />
+    <Compile Include="Objects\Ability\PgDoT.cs" />
+    <Compile Include="Objects\Ability\PgDoTCollection.cs" />
+    <Compile Include="Objects\Ability\PgAbilityPvX.cs" />
+    <Compile Include="Objects\Ability\PgAbility.cs" />
+    <Compile Include="Enums\Deaths.cs" />
+    <Compile Include="Objects\Ability\PgSpecialValue.cs" />
+    <Compile Include="Objects\Ability\PgSpecialValueCollection.cs" />
+    <Compile Include="Objects\AdvancementTable\PgAdvancement.cs" />
+    <Compile Include="Objects\AdvancementTable\PgAdvancementTable.cs" />
+    <Compile Include="Objects\AI\PgAIAbility.cs" />
+    <Compile Include="Objects\AI\PgAIAbilitySet.cs" />
+    <Compile Include="Objects\AI\PgAI.cs" />
+    <Compile Include="Objects\Area\PgArea.cs" />
+    <Compile Include="Objects\Attribute\PgAttribute.cs" />
+    <Compile Include="Objects\Attribute\PgAttributeCollection.cs" />
+    <Compile Include="Objects\DirectedGoal\PgDirectedGoal.cs" />
+    <Compile Include="Objects\Effect\PgEffect.cs" />
+    <Compile Include="Objects\Effect\PgEffectCollection.cs" />
+    <Compile Include="Objects\Item\PgItemUse.cs" />
+    <Compile Include="Objects\Item\PgItemCollection.cs" />
+    <Compile Include="Objects\Item\PgItemBehavior.cs" />
+    <Compile Include="Objects\Item\PgItemBehaviorCollection.cs" />
+    <Compile Include="Objects\Item\PgItemSkillLink.cs" />
+    <Compile Include="Objects\Item\ItemEffect\PgItemEffectAttribute.cs" />
+    <Compile Include="Objects\Item\ItemEffect\PgItemEffectSimple.cs" />
+    <Compile Include="Objects\Item\PgItemSkillLinkCollection.cs" />
+    <Compile Include="Objects\Item\PgItemEffect.cs" />
+    <Compile Include="Objects\Item\PgItemEffectCollection.cs" />
+    <Compile Include="Objects\Item\PgItem.cs" />
+    <Compile Include="Objects\LoreBookInfo\PgLoreBookInfoCategory.cs" />
+    <Compile Include="Objects\LoreBookInfo\PgLoreBookInfo.cs" />
+    <Compile Include="Objects\LoreBook\PgLoreBook.cs" />
+    <Compile Include="Objects\Npc\PgNpcPreference.cs" />
+    <Compile Include="Objects\Npc\PgNpcPreferenceCollection.cs" />
+    <Compile Include="Objects\Npc\PgNpc.cs" />
+    <Compile Include="Objects\PlayerTitle\PgPlayerTitle.cs" />
+    <Compile Include="Enums\TitleKeyword.cs" />
+    <Compile Include="Objects\Power\PgPowerTier.cs" />
+    <Compile Include="Objects\Power\PgPower.cs" />
+    <Compile Include="Objects\Power\PgPowerTierCollection.cs" />
+    <Compile Include="Objects\Power\PgPowerEffect.cs" />
+    <Compile Include="Objects\Power\PgPowerEffectCollection.cs" />
+    <Compile Include="Objects\Power\PowerEffect\PgPowerEffect ttribute.cs" />
+    <Compile Include="Objects\Power\PowerEffect\PgPowerEffectSimple.cs" />
+    <Compile Include="Objects\Quest\PgQuest.cs" />
+    <Compile Include="Objects\Quest\PgQuestCollection.cs" />
+    <Compile Include="Objects\Quest\PgQuestObjectiveRequirement.cs" />
+    <Compile Include="Objects\Quest\PgQuestObjective.cs" />
+    <Compile Include="Objects\Quest\PgQuestObjectiveCollection.cs" />
+    <Compile Include="Objects\Quest\PgQuestRequirement.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveAnatomy.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveCompleteQuest.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveDeliver.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveGiveGift.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveGuildGiveItem.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveInteractionFlag.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveItem.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveKill.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveLoot.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveMultipleInteractionFlags.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveScriptedReceiveItem.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveSimple.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveSpecial.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveTipPlayer.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveUseAbility.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveUseAbilityOnTargets.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveUseRecipe.cs" />
+    <Compile Include="Objects\Quest\PgQuestRequirementCollection.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementAreaEventOn.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementGuildQuestCompleted.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementHangOutCompleted.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementHasEffectKeyword.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementInteractionFlagSet.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementIsLongTimeAnimal.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementIsWarden.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementMinFavorLevel.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementMinSkillLevel.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementOr.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequiremenQuestCompleted.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementRace.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementRunTimeBehaviorRuleSet.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardCurrency.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardCurrencyCollection.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardXp.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardXpCollection.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardItem.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardItemCollection.cs" />
+    <Compile Include="Objects\Quest\PgQuestReward.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardCollection.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardFavor.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardFavorCollection.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardLevel.cs" />
+    <Compile Include="Objects\Quest\PgQuestRewardLevelCollection.cs" />
+    <Compile Include="Objects\Recipe\PgRecipe.cs" />
+    <Compile Include="Objects\Recipe\PgRecipeCollection.cs" />
+    <Compile Include="Objects\Recipe\PgRecipeItem.cs" />
+    <Compile Include="Objects\Recipe\PgRecipeItemCollection.cs" />
+    <Compile Include="Objects\Recipe\PgRecipeResultEffect.cs" />
+    <Compile Include="Objects\Recipe\PgRecipeResultEffectCollection.cs" />
+    <Compile Include="Objects\Recipe\PgRecipeCost.cs" />
+    <Compile Include="Objects\Recipe\PgRecipeCostCollection.cs" />
+    <Compile Include="Objects\Skill\PgRewardList.cs" />
+    <Compile Include="Objects\Skill\PgReport.cs" />
+    <Compile Include="Objects\Skill\PgAdvancementHint.cs" />
+    <Compile Include="Objects\Skill\PgLevelCapInteraction.cs" />
+    <Compile Include="Objects\Skill\PgLevelCapInteractionCollection.cs" />
+    <Compile Include="Objects\Skill\PgSkill.cs" />
+    <Compile Include="Objects\Skill\PgReward.cs" />
+    <Compile Include="Objects\Skill\PgRewardCollection.cs" />
+    <Compile Include="Objects\Source\PgSource.cs" />
+    <Compile Include="Objects\Source\PgSourceCollection.cs" />
+    <Compile Include="Objects\StorageVault\PgStorageRequirement.cs" />
+    <Compile Include="Objects\StorageVault\PgStorageFavorLevel.cs" />
+    <Compile Include="Objects\StorageVault\PgStorageVault.cs" />
+    <Compile Include="Objects\XpTable\PgXpTable.cs" />
+    <Compile Include="Objects\XpTable\PgXpTableLevel.cs" />
+    <Compile Include="Objects\XpTable\PgXpTableLevelCollection.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringOrInteger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PgJsonReader\PgJsonReader.csproj">
+      <Project>{001249f7-bf13-4c71-8592-ba1f32d53a69}</Project>
+      <Name>PgJsonReader</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

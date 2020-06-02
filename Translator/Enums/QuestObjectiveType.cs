@@ -1,0 +1,34 @@
+﻿namespace PgJsonObjects
+{
+    public enum QuestObjectiveType
+    {
+        Internal_None,
+        Kill,
+        Scripted,
+        MultipleInteractionFlags,
+        Collect,
+        InteractionFlag,
+        Deliver,
+        Have,
+        Harvest,
+        TipPlayer,
+        Special,
+        GiveGift,
+        UseItem,
+        UseRecipe,
+        KillElite,
+        SayInChat,
+        BeAttacked,
+        Bury,
+        UseAbility,
+        UniqueSpecial,
+        GuildGiveItem,
+        GuildKill,
+        DruidKill,
+        DruidScripted,
+        Loot,
+        ScriptedReceiveItem,
+        UseAbilityOnTargets,
+        CompleteQuest,
+    }
+}

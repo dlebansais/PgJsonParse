@@ -165,12 +165,6 @@ namespace PgJsonObjects
                 SetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty = true,
                 GetStringArray = () => AttributesThatDeltaRangeList.ToKeyList,
                 GetArrayIsEmpty = () => RawAttributesThatDeltaRangeListIsEmpty } },
-            /*{ "AttributesThatDeltaDamageLast", new FieldParser() {
-                Type = FieldType.SimpleStringArray,
-                ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaDamageLastList.Add(value),
-                SetArrayIsEmpty = () => RawAttributesThatDeltaDamageLastListIsEmpty = true,
-                GetStringArray = () => AttributesThatDeltaDamageLastList.ToKeyList,
-                GetArrayIsEmpty = () => RawAttributesThatDeltaDamageLastListIsEmpty } },*/
             { "AttributesThatDeltaAccuracy", new FieldParser() {
                 Type = FieldType.SimpleStringArray,
                 ParseSimpleStringArray = (string value, ParseErrorInfo errorInfo) => RawAttributesThatDeltaAccuracyList.Add(value),

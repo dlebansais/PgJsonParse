@@ -40,10 +40,6 @@ namespace PgJsonObjects
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => Comment = value,
                 GetString = () => Comment } },
-            /*{ "Stationary", new FieldParser() {
-                Type = FieldType.Bool,
-                ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsStationary = value,
-                GetBool = () => RawIsStationary } },*/
             { "UncontrolledPet", new FieldParser() {
                 Type = FieldType.Bool,
                 ParseBool = (bool value, ParseErrorInfo errorInfo) => RawIsUncontrolledPet = value,

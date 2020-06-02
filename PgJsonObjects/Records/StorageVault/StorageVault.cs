@@ -61,12 +61,6 @@ namespace PgJsonObjects
                 Type = FieldType.Object,
                 ParseObject = ParseLevels,
                 GetObject = GetLevels } },
-/*
-            { "RequiredItemKeyword", new FieldParser() {
-                Type = FieldType.String,
-                ParseString = (string value, ParseErrorInfo errorInfo) => RequiredItemKeyword = StringToEnumConversion<ItemKeyword>.Parse(value, TextMaps.ItemKeywordStringMap, errorInfo),
-                GetString = () => StringToEnumConversion<ItemKeyword>.ToString(RequiredItemKeyword, TextMaps.ItemKeywordStringMap, ItemKeyword.Internal_None) } },
-*/
             { "RequirementDescription", new FieldParser() {
                 Type = FieldType.String,
                 ParseString = (string value, ParseErrorInfo errorInfo) => RequirementDescription = value,

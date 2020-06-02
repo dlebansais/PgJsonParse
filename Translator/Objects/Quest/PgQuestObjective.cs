@@ -1,0 +1,16 @@
+﻿namespace PgJsonObjects
+{
+    public abstract class PgQuestObjective
+    {
+        public QuestObjectiveType Type { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public int Number { get { return RawNumber.HasValue ? RawNumber.Value : 1; } }
+        public bool HasNumber { get { return RawNumber.HasValue && RawNumber.Value != 1; } }
+        public int? RawNumber { get; set; }
+        public bool MustCompleteEarlierObjectivesFirst { get { return RawMustCompleteEarlierObjectivesFirst.HasValue && RawMustCompleteEarlierObjectivesFirst.Value; } }
+        public bool? RawMustCompleteEarlierObjectivesFirst;
+        public int? MinHour { get; set; }
+        public int? MaxHour { get; set; }
+        public int? GroupId { get; set; }
+    }
+}
