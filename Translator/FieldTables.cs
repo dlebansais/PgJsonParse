@@ -798,7 +798,7 @@
             { "XpAmounts", typeof(int[]) },
         };
 
-        public static Dictionary<Type, Dictionary<string, Type>> Table = new Dictionary<Type, Dictionary<string, Type>>()
+        private static Dictionary<Type, Dictionary<string, Type>> Tables = new Dictionary<Type, Dictionary<string, Type>>()
         {
             { typeof(PgAbility), TableAbility },
             { typeof(PgAbilityAmmo), TableAbilityAmmo },
@@ -869,5 +869,25 @@
 
             { typeof(PgXpTable), TableXpTable },
         };
+
+        private static Dictionary<Type, Dictionary<string, Type>> UsedTables = new Dictionary<Type, Dictionary<string, Type>>()
+        {
+        };
+
+        public static bool GetTable(Type type, out Dictionary<string, Type> table)
+        {
+            if (!Tables.ContainsKey(type))
+            {
+                table = new Dictionary<string, Type>();
+                return false;
+            }
+
+            table = Tables[type];
+
+            if (!UsedTables.ContainsKey(type))
+                UsedTables.Add(type, new Dictionary<string, Type>());
+
+            return true;
+        }
     }
 }

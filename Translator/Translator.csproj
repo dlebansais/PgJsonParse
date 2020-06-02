@@ -110,6 +110,7 @@
     <Compile Include="Enums\XpTableCategory.cs" />
     <Compile Include="FieldTables.cs" />
     <Compile Include="FileType.cs" />
+    <Compile Include="ItemFieldTable.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmoCollection.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDruidEventState.cs" />

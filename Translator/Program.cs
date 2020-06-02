@@ -100,10 +100,9 @@
             using FileStream Stream = new FileStream(FullPath, FileMode.Open, FileAccess.Read);
             JsonTextReader Reader = new JsonTextReader(Stream);
 
-            if (!FieldTables.Table.ContainsKey(itemType))
+            if (!FieldTables.GetTable(itemType, out Dictionary<string, Type> MainItemTable))
                 return ReportFailure($"Table doesn't contain type {itemType}");
 
-            Dictionary<string, Type> MainItemTable = FieldTables.Table[itemType];
             if (!ParseFile(Reader, MainItemTable, fileType))
                 return false;
 
@@ -347,10 +346,8 @@
                     if (fieldType.IsArray)
                         fieldType = fieldType.GetElementType();
 
-                    if (!FieldTables.Table.ContainsKey(fieldType))
-                        return ReportFailure($"{fieldType} expected for {fieldName} but file contains an object");
-
-                    Dictionary<string, Type> NestedTable = FieldTables.Table[fieldType];
+                    if (!FieldTables.GetTable(fieldType, out Dictionary<string, Type> NestedTable))
+                        return ReportFailure($"Table doesn't contain type {fieldType} expected for {fieldName}");
 
                     if (!ParseObject(reader, NestedTable))
                         return false;
