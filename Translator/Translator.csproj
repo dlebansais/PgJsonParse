@@ -108,9 +108,10 @@
     <Compile Include="Enums\TooltipsExtraKeywords.cs" />
     <Compile Include="Enums\WorkOrderSign.cs" />
     <Compile Include="Enums\XpTableCategory.cs" />
-    <Compile Include="FieldTables.cs" />
+    <Compile Include="FieldTables\FieldTableStore.cs" />
     <Compile Include="FileType.cs" />
-    <Compile Include="ItemFieldTable.cs" />
+    <Compile Include="FieldTables\FixedFieldTable.cs" />
+    <Compile Include="FieldTables\FieldTable.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmoCollection.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDruidEventState.cs" />
@@ -256,6 +257,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringOrInteger.cs" />
+    <Compile Include="FieldTables\VariadicFieldTable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

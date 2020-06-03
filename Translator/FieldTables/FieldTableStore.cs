@@ -3,8 +3,9 @@
     using PgJsonObjects;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
-    public class FieldTables
+    public class FieldTableStore
     {
         public static Dictionary<string, Type> TableAbility = new Dictionary<string, Type>()
         {
@@ -114,19 +115,11 @@
             { "Name", typeof(string) },
             { "Item", typeof(string) },
             { "MinCount", typeof(int) },
-            { "Health", typeof(float) },
-            { "AllowedRace", typeof(string) },
-            { "Appearance", typeof(string) },
-            { "List", typeof(PgAbilityRequirement[]) },
-            { "ErrorMsg", typeof(string) },
             { "DisallowedStates", typeof(string[]) },
             { "PetTypeTag", typeof(string) },
             { "MaxCount", typeof(float) },
             { "Recipe", typeof(string) },
-            { "TypeTag", typeof(string) },
-            { "Max", typeof(int) },
             { "InteractionFlag", typeof(string) },
-            { "HangOut", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableDoT = new Dictionary<string, Type>()
@@ -168,52 +161,20 @@
             { "VULN_ACID", typeof(float) },
             { "VULN_DARKNESS", typeof(float) },
             { "VULN_BURST", typeof(float) },
-
             { "MITIGATION_CRUSHING", typeof(float) },
             { "MITIGATION_SLASHING", typeof(float) },
             { "MITIGATION_NATURE", typeof(float) },
             { "MITIGATION_FIRE", typeof(float) },
-            { "MITIGATION_COLD", typeof(float) },
             { "MITIGATION_PIERCING", typeof(float) },
-            { "MITIGATION_PSYCHIC", typeof(float) },
-            { "MITIGATION_TRAUMA", typeof(float) },
             { "MITIGATION_TRAUMA_DIRECT", typeof(float) },
             { "MITIGATION_TRAUMA_INDIRECT", typeof(float) },
-            { "MITIGATION_ELECTRICITY", typeof(float) },
             { "MITIGATION_POISON", typeof(float) },
             { "MITIGATION_POISON_DIRECT", typeof(float) },
             { "MITIGATION_POISON_INDIRECT", typeof(float) },
-            { "MITIGATION_ACID", typeof(float) },
-            { "MITIGATION_DARKNESS", typeof(float) },
-
-            { "MOD_CRUSHING_DIRECT", typeof(float) },
-            { "MOD_SLASHING_DIRECT", typeof(float) },
-            { "MOD_NATURE_DIRECT", typeof(float) },
             { "MOD_FIRE_DIRECT", typeof(float) },
-            { "MOD_COLD_DIRECT", typeof(float) },
-            { "MOD_PIERCING_DIRECT", typeof(float) },
-            { "MOD_PSYCHIC_DIRECT", typeof(float) },
-            { "MOD_TRAUMA_DIRECT", typeof(float) },
             { "MOD_ELECTRICITY_DIRECT", typeof(float) },
-            { "MOD_POISON_DIRECT", typeof(float) },
-            { "MOD_ACID_DIRECT", typeof(float) },
             { "MOD_DARKNESS_DIRECT", typeof(float) },
-            { "MOD_BURST_DIRECT", typeof(float) },
-
-            { "MOD_CRUSHING_INDIRECT", typeof(float) },
-            { "MOD_SLASHING_INDIRECT", typeof(float) },
-            { "MOD_NATURE_INDIRECT", typeof(float) },
             { "MOD_FIRE_INDIRECT", typeof(float) },
-            { "MOD_COLD_INDIRECT", typeof(float) },
-            { "MOD_PIERCING_INDIRECT", typeof(float) },
-            { "MOD_PSYCHIC_INDIRECT", typeof(float) },
-            { "MOD_TRAUMA_INDIRECT", typeof(float) },
-            { "MOD_ELECTRICITY_INDIRECT", typeof(float) },
-            { "MOD_POISON_INDIRECT", typeof(float) },
-            { "MOD_ACID_INDIRECT", typeof(float) },
-            { "MOD_DARKNESS_INDIRECT", typeof(float) },
-            { "MOD_BURST_INDIRECT", typeof(float) },
-
             { "IGNORE_CHANCE_FEAR", typeof(float) },
             { "IGNORE_CHANCE_MEZ", typeof(float) },
             { "IGNORE_CHANCE_KNOCKBACK", typeof(float) },
@@ -226,8 +187,6 @@
             { "COMBAT_REGEN_ARMOR_MOD", typeof(float) },
             { "NONCOMBAT_REGEN_POWER_MOD", typeof(float) },
             { "COMBAT_REGEN_POWER_MOD", typeof(float) },
-            { "NONCOMBAT_REGEN_RAGE_MOD", typeof(float) },
-            { "COMBAT_REGEN_RAGE_MOD", typeof(float) },
             { "SPRINT_BOOST", typeof(float) },
             { "TAUNT_MOD", typeof(float) },
             { "EVASION_CHANCE", typeof(float) },
@@ -261,7 +220,6 @@
             { "NUM_INVENTORY_FOLDERS", typeof(int) },
             { "HIGH_CLEANLINESS_XP_EARNED_MOD", typeof(float) },
             { "LOW_CLEANLINESS_XP_EARNED_MOD", typeof(float) },
-            { "MAX_ARMOR_MITIGATION_RATIO", typeof(float) },
             { "SHOW_CLEANLINESS_INDICATORS", typeof(float) },
             { "HIGH_COMMUNITY_XP_EARNED_MOD", typeof(float) },
             { "LOW_COMMUNITY_XP_EARNED_MOD", typeof(float) },
@@ -298,11 +256,6 @@
             { "BOOST_TRAUMA_INDIRECT", typeof(float) },
         };
 
-        public static Dictionary<string, Type> TableAdvancementTable = new Dictionary<string, Type>()
-        {
-            { "", typeof(PgAdvancement) },
-        };
-
         public static Dictionary<string, Type> TableAI = new Dictionary<string, Type>()
         {
             { "Abilities", typeof(PgAIAbilitySet) },
@@ -317,11 +270,6 @@
             { "Flying", typeof(bool) },
             { "FollowClose", typeof(bool) },
             { "Description", typeof(string) },
-        };
-
-        public static Dictionary<string, Type> TableAIAbilitySet = new Dictionary<string, Type>()
-        {
-            { "", typeof(PgAIAbility) },
         };
 
         public static Dictionary<string, Type> TableAIAbility = new Dictionary<string, Type>()
@@ -418,11 +366,6 @@
             { "Lint_VendorNpc", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableItemSkillLink = new Dictionary<string, Type>()
-        {
-            { "", typeof(int) },
-        };
-
         public static Dictionary<string, Type> TableItemBehavior = new Dictionary<string, Type>()
         {
             { "UseVerb", typeof(string) },
@@ -497,11 +440,6 @@
             { "Slots", typeof(string[]) },
             { "Skill", typeof(string) },
             { "IsUnavailable", typeof(bool) },
-        };
-
-        public static Dictionary<string, Type> TablePowerTier = new Dictionary<string, Type>()
-        {
-            { "", typeof(PgPowerEffect) },
         };
 
         public static Dictionary<string, Type> TablePowerEffect = new Dictionary<string, Type>()
@@ -582,7 +520,6 @@
             { "Number", typeof(int) },
             { "InteractionFlags", typeof(string[]) },
             { "ItemName", typeof(string) },
-            { "MustCompleteEarlierObjectivesFirst", typeof(bool) },
             { "InteractionFlag", typeof(string) },
             { "MinAmount", typeof(string) },
             { "MinFavorReceived", typeof(string) },
@@ -610,16 +547,6 @@
             { "MaxHour", typeof(int) },
             { "Keyword", typeof(string) },
             { "Appearance", typeof(string) },
-        };
-
-        public static Dictionary<string, Type> TableQuestRewardXp = new Dictionary<string, Type>()
-        {
-            { "", typeof(int) },
-        };
-
-        public static Dictionary<string, Type> TableQuestRewardCurrency = new Dictionary<string, Type>()
-        {
-            { "", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableQuestRewardItem = new Dictionary<string, Type>()
@@ -720,32 +647,12 @@
             { "IsFakeCombatSkill", typeof(bool) },
         };
 
-        public static Dictionary<string, Type> TableLevelCapInteraction = new Dictionary<string, Type>()
-        {
-            { "", typeof(int) },
-        };
-
-        public static Dictionary<string, Type> TableAdvancementHint = new Dictionary<string, Type>()
-        {
-            { "", typeof(string) },
-        };
-
-        public static Dictionary<string, Type> TableRewardList = new Dictionary<string, Type>()
-        {
-            { "", typeof(PgReward) },
-        };
-
         public static Dictionary<string, Type> TableReward = new Dictionary<string, Type>()
         {
             { "Ability", typeof(string) },
             { "BonusToSkill", typeof(string) },
             { "Recipe", typeof(string) },
             { "Notes", typeof(string) },
-        };
-
-        public static Dictionary<string, Type> TableReport = new Dictionary<string, Type>()
-        {
-            { "", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableSource = new Dictionary<string, Type>()
@@ -798,96 +705,115 @@
             { "XpAmounts", typeof(int[]) },
         };
 
-        private static Dictionary<Type, Dictionary<string, Type>> Tables = new Dictionary<Type, Dictionary<string, Type>>()
+        private static Dictionary<Type, FieldTable> Tables = new Dictionary<Type, FieldTable>()
         {
-            { typeof(PgAbility), TableAbility },
-            { typeof(PgAbilityAmmo), TableAbilityAmmo },
-            { typeof(PgAbilityPvX), TableAbilityPvX },
-            { typeof(PgAbilityRequirement), TableAbilityRequirement },
-            { typeof(PgDoT), TableDoT },
-            { typeof(PgSpecialValue), TableSpecialValue },
-            { typeof(PgAdvancement), TableAdvancement },
-            { typeof(PgAdvancementTable), TableAdvancementTable },
+            { typeof(PgAbility), new FixedFieldTable(TableAbility) },
+            { typeof(PgAbilityAmmo), new FixedFieldTable(TableAbilityAmmo) },
+            { typeof(PgAbilityPvX), new FixedFieldTable(TableAbilityPvX) },
+            { typeof(PgAbilityRequirement), new FixedFieldTable(TableAbilityRequirement) },
+            { typeof(PgDoT), new FixedFieldTable(TableDoT) },
+            { typeof(PgSpecialValue), new FixedFieldTable(TableSpecialValue) },
+            { typeof(PgAdvancement), new FixedFieldTable(TableAdvancement) },
+            { typeof(PgAdvancementTable), new VariadicFieldTable(typeof(PgAdvancement)) },
 
-            { typeof(PgAI), TableAI },
-            { typeof(PgAIAbilitySet), TableAIAbilitySet },
-            { typeof(PgAIAbility), TableAIAbility },
+            { typeof(PgAI), new FixedFieldTable(TableAI) },
+            { typeof(PgAIAbilitySet), new VariadicFieldTable(typeof(PgAIAbility)) },
+            { typeof(PgAIAbility), new FixedFieldTable(TableAIAbility) },
 
-            { typeof(PgArea), TableArea },
+            { typeof(PgArea), new FixedFieldTable(TableArea) },
 
-            { typeof(PgAttribute), TableAttribute },
+            { typeof(PgAttribute), new FixedFieldTable(TableAttribute) },
 
-            { typeof(PgDirectedGoal), TableDirectedGoal },
+            { typeof(PgDirectedGoal), new FixedFieldTable(TableDirectedGoal) },
 
-            { typeof(PgEffect), TableEffect },
+            { typeof(PgEffect), new FixedFieldTable(TableEffect) },
 
-            { typeof(PgItem), TableItem },
-            { typeof(PgItemSkillLink), TableItemSkillLink },
-            { typeof(PgItemBehavior), TableItemBehavior },
+            { typeof(PgItem), new FixedFieldTable(TableItem) },
+            { typeof(PgItemSkillLink), new VariadicFieldTable(typeof(int)) },
+            { typeof(PgItemBehavior), new FixedFieldTable(TableItemBehavior) },
 
-            { typeof(PgItemUse), TableItemUse },
+            { typeof(PgItemUse), new FixedFieldTable(TableItemUse) },
 
-            { typeof(PgLoreBookInfo), TableLoreBookInfo },
-            { typeof(PgLoreBookInfoCategory), TableLoreBookInfoCategory },
+            { typeof(PgLoreBookInfo), new FixedFieldTable(TableLoreBookInfo) },
+            { typeof(PgLoreBookInfoCategory), new FixedFieldTable(TableLoreBookInfoCategory) },
 
-            { typeof(PgLoreBook), TableLoreBook },
+            { typeof(PgLoreBook), new FixedFieldTable(TableLoreBook) },
 
-            { typeof(PgNpc), TableNpc },
-            { typeof(PgNpcPreference), TableNpcPreference },
+            { typeof(PgNpc), new FixedFieldTable(TableNpc) },
+            { typeof(PgNpcPreference), new FixedFieldTable(TableNpcPreference) },
 
-            { typeof(PgPlayerTitle), TablePlayerTitle },
+            { typeof(PgPlayerTitle), new FixedFieldTable(TablePlayerTitle) },
 
-            { typeof(PgPower), TablePower },
-            { typeof(PgPowerTier), TablePowerTier },
-            { typeof(PgPowerEffect), TablePowerEffect },
+            { typeof(PgPower), new FixedFieldTable(TablePower) },
+            { typeof(PgPowerTier), new VariadicFieldTable(typeof(PgPowerEffect)) },
+            { typeof(PgPowerEffect), new FixedFieldTable(TablePowerEffect) },
 
-            { typeof(PgQuest), TableQuest },
-            { typeof(PgQuestRequirement), TableQuestRequirement },
-            { typeof(PgQuestObjective), TableQuestObjective },
-            { typeof(PgQuestObjectiveRequirement), TableQuestObjectiveRequirement },
-            { typeof(PgQuestRewardXp), TableQuestRewardXp },
-            { typeof(PgQuestRewardCurrency), TableQuestRewardCurrency },
-            { typeof(PgQuestRewardItem), TableQuestRewardItem },
-            { typeof(PgQuestReward), TableQuestReward },
+            { typeof(PgQuest), new FixedFieldTable(TableQuest) },
+            { typeof(PgQuestRequirement), new FixedFieldTable(TableQuestRequirement) },
+            { typeof(PgQuestObjective), new FixedFieldTable(TableQuestObjective) },
+            { typeof(PgQuestObjectiveRequirement), new FixedFieldTable(TableQuestObjectiveRequirement) },
+            { typeof(PgQuestRewardXp), new VariadicFieldTable(typeof(int)) },
+            { typeof(PgQuestRewardCurrency), new VariadicFieldTable(typeof(int)) },
+            { typeof(PgQuestRewardItem), new FixedFieldTable(TableQuestRewardItem) },
+            { typeof(PgQuestReward), new FixedFieldTable(TableQuestReward) },
 
-            { typeof(PgRecipe), TableRecipe },
-            { typeof(PgRecipeItem), TableRecipeItem },
-            { typeof(PgRecipeCost), TableRecipeCost },
+            { typeof(PgRecipe), new FixedFieldTable(TableRecipe) },
+            { typeof(PgRecipeItem), new FixedFieldTable(TableRecipeItem) },
+            { typeof(PgRecipeCost), new FixedFieldTable(TableRecipeCost) },
 
-            { typeof(PgSkill), TableSkill },
-            { typeof(PgLevelCapInteraction), TableLevelCapInteraction },
-            { typeof(PgAdvancementHint), TableAdvancementHint },
-            { typeof(PgRewardList), TableRewardList },
-            { typeof(PgReward), TableReward },
-            { typeof(PgReport), TableReport },
+            { typeof(PgSkill), new FixedFieldTable(TableSkill) },
+            { typeof(PgLevelCapInteraction), new VariadicFieldTable(typeof(int)) },
+            { typeof(PgAdvancementHint), new VariadicFieldTable(typeof(string)) },
+            { typeof(PgRewardList), new VariadicFieldTable(typeof(PgReward)) },
+            { typeof(PgReward), new FixedFieldTable(TableReward) },
+            { typeof(PgReport), new VariadicFieldTable(typeof(string)) },
 
-            { typeof(PgSource), TableSource },
+            { typeof(PgSource), new FixedFieldTable(TableSource) },
 
-            { typeof(PgStorageVault), TableStorageVault },
-            { typeof(PgStorageFavorLevel), TableStorageFavorLevel },
-            { typeof(PgStorageRequirement), TableStorageRequirement },
+            { typeof(PgStorageVault), new FixedFieldTable(TableStorageVault) },
+            { typeof(PgStorageFavorLevel), new FixedFieldTable(TableStorageFavorLevel) },
+            { typeof(PgStorageRequirement), new FixedFieldTable(TableStorageRequirement) },
 
-            { typeof(PgXpTable), TableXpTable },
+            { typeof(PgXpTable), new FixedFieldTable(TableXpTable) },
         };
 
-        private static Dictionary<Type, Dictionary<string, Type>> UsedTables = new Dictionary<Type, Dictionary<string, Type>>()
-        {
-        };
+        private static List<Type> UsedTableList = new List<Type>();
 
-        public static bool GetTable(Type type, out Dictionary<string, Type> table)
+        public static bool GetTable(Type type, out FieldTable table)
         {
             if (!Tables.ContainsKey(type))
             {
-                table = new Dictionary<string, Type>();
+                table = FixedFieldTable.Empty;
                 return false;
             }
 
             table = Tables[type];
 
-            if (!UsedTables.ContainsKey(type))
-                UsedTables.Add(type, new Dictionary<string, Type>());
+            if (!UsedTableList.Contains(type))
+                UsedTableList.Add(type);
 
             return true;
+        }
+
+        public static bool VerifyTablesCompletion()
+        {
+            bool Result = true;
+
+            foreach (KeyValuePair<Type, FieldTable> Entry in Tables)
+            {
+                Type Key = Entry.Key;
+
+                if (!UsedTableList.Contains(Key))
+                {
+                    Debug.WriteLine($"Type {Key} was not used during parsing");
+                    Result = false;
+                    continue;
+                }
+
+                Result &= Entry.Value.VerifyTableCompletion(Key);
+            }
+
+            return Result;
         }
     }
 }

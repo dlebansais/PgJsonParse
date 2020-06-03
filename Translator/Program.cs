@@ -78,6 +78,9 @@
             if (!ParseFile("xptables", typeof(PgXpTable), FileType.EmbeddedObjects))
                 return -1;
 
+            if (!FieldTableStore.VerifyTablesCompletion())
+                return -1;
+
             return 0;
         }
 
@@ -100,7 +103,7 @@
             using FileStream Stream = new FileStream(FullPath, FileMode.Open, FileAccess.Read);
             JsonTextReader Reader = new JsonTextReader(Stream);
 
-            if (!FieldTables.GetTable(itemType, out Dictionary<string, Type> MainItemTable))
+            if (!FieldTableStore.GetTable(itemType, out FieldTable MainItemTable))
                 return ReportFailure($"Table doesn't contain type {itemType}");
 
             if (!ParseFile(Reader, MainItemTable, fileType))
@@ -109,7 +112,7 @@
             return true;
         }
 
-        private static bool ParseFile(JsonTextReader reader, Dictionary<string, Type> rootItemTable, FileType fileType)
+        private static bool ParseFile(JsonTextReader reader, FieldTable rootItemTable, FileType fileType)
         {
             reader.Read();
 
@@ -129,7 +132,7 @@
             }
         }
 
-        private static bool ParseFileEmbeddedObjects(JsonTextReader reader, Dictionary<string, Type> rootItemTable)
+        private static bool ParseFileEmbeddedObjects(JsonTextReader reader, FieldTable rootItemTable)
         {
             if (reader.CurrentToken != Json.Token.ObjectStart)
                 return ReportFailure("First token must open an object");
@@ -150,7 +153,7 @@
             return true;
         }
 
-        private static bool ParseFileKeylessArray(JsonTextReader reader, Dictionary<string, Type> rootItemTable)
+        private static bool ParseFileKeylessArray(JsonTextReader reader, FieldTable rootItemTable)
         {
             if (reader.CurrentToken != Json.Token.ArrayStart)
                 return ReportFailure("First token must open an array");
@@ -171,7 +174,7 @@
             return true;
         }
 
-        private static bool ParseFileKeyedArray(JsonTextReader reader, Dictionary<string, Type> rootItemTable)
+        private static bool ParseFileKeyedArray(JsonTextReader reader, FieldTable rootItemTable)
         {
             if (reader.CurrentToken != Json.Token.ObjectStart)
                 return ReportFailure("First token must open an object");
@@ -192,7 +195,7 @@
             return true;
         }
 
-        private static bool ParseFileKeyedArrayItem(JsonTextReader reader, Dictionary<string, Type> rootItemTable)
+        private static bool ParseFileKeyedArrayItem(JsonTextReader reader, FieldTable rootItemTable)
         {
             if (reader.CurrentToken != Json.Token.ObjectKey)
                 return ReportFailure("First token in the array must be a key");
@@ -221,7 +224,7 @@
             return true;
         }
 
-        private static bool ParseRootObject(JsonTextReader reader, Dictionary<string, Type> rootItemTable)
+        private static bool ParseRootObject(JsonTextReader reader, FieldTable rootItemTable)
         {
             if (reader.CurrentToken != Json.Token.ObjectKey)
                 return ReportFailure("Object must have a key");
@@ -240,7 +243,7 @@
             return true;
         }
 
-        private static bool ParseObject(JsonTextReader reader, Dictionary<string, Type> fieldTable)
+        private static bool ParseObject(JsonTextReader reader, FieldTable fieldTable)
         {
             if (reader.CurrentToken != Json.Token.ObjectStart)
                 return ReportFailure("Object expected");
@@ -256,23 +259,20 @@
             return true;
         }
 
-        private static bool ParseField(JsonTextReader reader, Dictionary<string, Type> fieldTable)
+        private static bool ParseField(JsonTextReader reader, FieldTable fieldTable)
         {
             if (reader.CurrentToken != Json.Token.ObjectKey)
                 return ReportFailure("Key expected");
 
+            Type FieldType;
+
             if (reader.CurrentValue is string FieldName)
             {
-                if (!fieldTable.ContainsKey(FieldName))
-                    if (fieldTable.Count != 1 || !fieldTable.ContainsKey(string.Empty))
-                        return ReportFailure($"Missing key: {FieldName}");
-                    else
-                        FieldName = string.Empty;
+                if (!fieldTable.ContainsKey(FieldName, out FieldType))
+                    return ReportFailure($"Missing key: {FieldName}");
             }
             else
                 return ReportFailure("Unexpected failure");
-
-            Type FieldType = fieldTable[FieldName];
 
             reader.Read();
 
@@ -346,7 +346,7 @@
                     if (fieldType.IsArray)
                         fieldType = fieldType.GetElementType();
 
-                    if (!FieldTables.GetTable(fieldType, out Dictionary<string, Type> NestedTable))
+                    if (!FieldTableStore.GetTable(fieldType, out FieldTable NestedTable))
                         return ReportFailure($"Table doesn't contain type {fieldType} expected for {fieldName}");
 
                     if (!ParseObject(reader, NestedTable))
