@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public abstract class PgPowerEffect
+    public class PgPowerEffect
     {
     }
 }

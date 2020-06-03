@@ -1,0 +1,81 @@
+﻿namespace Translator
+{
+    using PgJsonObjects;
+    using System;
+    using System.Collections.Generic;
+
+    public static class MainParser
+    {
+        private static Dictionary<Type, Parser> Parsers = new Dictionary<Type, Parser>()
+        {
+            { typeof(bool), new ParserNative() },
+            { typeof(int), new ParserNative() },
+            { typeof(float), new ParserNative() },
+            { typeof(string), new ParserNative() },
+            { typeof(PgAbility), new ParserAbility() },
+            { typeof(PgAbilityAmmo), new ParserAbilityAmmo() },
+            { typeof(PgAbilityPvX), new ParserAbilityPvX() },
+            { typeof(PgAbilityRequirement), new ParserAbilityRequirement() },
+            { typeof(PgDoT), new ParserDoT() },
+            { typeof(PgSpecialValue), new ParserSpecialValue() },
+            { typeof(PgAdvancement), new ParserAdvancement() },
+            { typeof(PgAdvancementTable), new ParserAdvancement() },
+            { typeof(PgAI), new ParserAI() },
+            { typeof(PgAIAbilitySet), new ParserAIAbility() },
+            { typeof(PgAIAbility), new ParserAIAbility() },
+            { typeof(PgArea), new ParserArea() },
+            { typeof(PgAttribute), new ParserAttribute() },
+            { typeof(PgDirectedGoal), new ParserDirectedGoal() },
+            { typeof(PgEffect), new ParserEffect() },
+            { typeof(PgItem), new ParserItem() },
+            { typeof(PgItemSkillLink), new ParserItemSkillLink() },
+            { typeof(PgItemBehavior), new ParserItemBehavior() },
+            { typeof(PgItemUse), new ParserItemUse() },
+            { typeof(PgLoreBookInfo), new ParserLoreBookInfo() },
+            { typeof(PgLoreBookInfoCategory), new ParserLoreBookInfoCategory() },
+            { typeof(PgLoreBook), new ParserLoreBook() },
+            { typeof(PgNpc), new ParserNpc() },
+            { typeof(PgNpcPreference), new ParserNpcPreference() },
+            { typeof(PgPlayerTitle), new ParserPlayerTitle() },
+            { typeof(PgPower), new ParserPower() },
+            { typeof(PgPowerTier), new ParserPowerEffect() },
+            { typeof(PgPowerEffect), new ParserPowerEffect() },
+            { typeof(PgQuest), new ParserQuest() },
+            { typeof(PgQuestRequirement), new ParserQuestRequirement() },
+            { typeof(PgQuestObjective), new ParserQuestObjective() },
+            { typeof(PgQuestObjectiveRequirement), new ParserQuestObjectiveRequirement() },
+            { typeof(PgQuestRewardXp), new ParserQuestRewardXp() },
+            { typeof(PgQuestRewardCurrency), new ParserQuestRewardCurrency() },
+            { typeof(PgQuestRewardItem), new ParserQuestRewardItem() },
+            { typeof(PgQuestReward), new ParserQuestReward() },
+            { typeof(PgRecipe), new ParserRecipe() },
+            { typeof(PgRecipeItem), new ParserRecipeItem() },
+            { typeof(PgRecipeCost), new ParserRecipeCost() },
+            { typeof(PgSkill), new ParserSkill() },
+            { typeof(PgLevelCapInteraction), new ParserLevelCapInteraction() },
+            { typeof(PgAdvancementHint), new ParserAdvancementHint() },
+            { typeof(PgRewardList), new ParserReward() },
+            { typeof(PgReward), new ParserReward() },
+            { typeof(PgReport), new ParserReport() },
+            { typeof(PgSource), new ParserSource() },
+            { typeof(PgStorageVault), new ParserStorageVault() },
+            { typeof(PgStorageFavorLevel), new ParserStorageFavorLevel() },
+            { typeof(PgStorageRequirement), new ParserStorageRequirement() },
+            { typeof(PgXpTable), new ParserXpTable() },
+        };
+
+        public static bool GetParsingContext(Type type, FieldTable fieldTable, out ParsingContext context)
+        {
+            if (!Parsers.ContainsKey(type))
+            {
+                context = null;
+                return Program.ReportFailure($"Type {type} not found in parsers");
+            }
+
+            Parser Parser = Parsers[type];
+
+            context = new ParsingContext(Parser, fieldTable);
+            return true;
+        }
+    }
+}

@@ -715,39 +715,26 @@
             { typeof(PgSpecialValue), new FixedFieldTable(TableSpecialValue) },
             { typeof(PgAdvancement), new FixedFieldTable(TableAdvancement) },
             { typeof(PgAdvancementTable), new VariadicFieldTable(typeof(PgAdvancement)) },
-
             { typeof(PgAI), new FixedFieldTable(TableAI) },
             { typeof(PgAIAbilitySet), new VariadicFieldTable(typeof(PgAIAbility)) },
             { typeof(PgAIAbility), new FixedFieldTable(TableAIAbility) },
-
             { typeof(PgArea), new FixedFieldTable(TableArea) },
-
             { typeof(PgAttribute), new FixedFieldTable(TableAttribute) },
-
             { typeof(PgDirectedGoal), new FixedFieldTable(TableDirectedGoal) },
-
             { typeof(PgEffect), new FixedFieldTable(TableEffect) },
-
             { typeof(PgItem), new FixedFieldTable(TableItem) },
             { typeof(PgItemSkillLink), new VariadicFieldTable(typeof(int)) },
             { typeof(PgItemBehavior), new FixedFieldTable(TableItemBehavior) },
-
             { typeof(PgItemUse), new FixedFieldTable(TableItemUse) },
-
             { typeof(PgLoreBookInfo), new FixedFieldTable(TableLoreBookInfo) },
             { typeof(PgLoreBookInfoCategory), new FixedFieldTable(TableLoreBookInfoCategory) },
-
             { typeof(PgLoreBook), new FixedFieldTable(TableLoreBook) },
-
             { typeof(PgNpc), new FixedFieldTable(TableNpc) },
             { typeof(PgNpcPreference), new FixedFieldTable(TableNpcPreference) },
-
             { typeof(PgPlayerTitle), new FixedFieldTable(TablePlayerTitle) },
-
             { typeof(PgPower), new FixedFieldTable(TablePower) },
             { typeof(PgPowerTier), new VariadicFieldTable(typeof(PgPowerEffect)) },
             { typeof(PgPowerEffect), new FixedFieldTable(TablePowerEffect) },
-
             { typeof(PgQuest), new FixedFieldTable(TableQuest) },
             { typeof(PgQuestRequirement), new FixedFieldTable(TableQuestRequirement) },
             { typeof(PgQuestObjective), new FixedFieldTable(TableQuestObjective) },
@@ -756,24 +743,19 @@
             { typeof(PgQuestRewardCurrency), new VariadicFieldTable(typeof(int)) },
             { typeof(PgQuestRewardItem), new FixedFieldTable(TableQuestRewardItem) },
             { typeof(PgQuestReward), new FixedFieldTable(TableQuestReward) },
-
             { typeof(PgRecipe), new FixedFieldTable(TableRecipe) },
             { typeof(PgRecipeItem), new FixedFieldTable(TableRecipeItem) },
             { typeof(PgRecipeCost), new FixedFieldTable(TableRecipeCost) },
-
             { typeof(PgSkill), new FixedFieldTable(TableSkill) },
             { typeof(PgLevelCapInteraction), new VariadicFieldTable(typeof(int)) },
             { typeof(PgAdvancementHint), new VariadicFieldTable(typeof(string)) },
             { typeof(PgRewardList), new VariadicFieldTable(typeof(PgReward)) },
             { typeof(PgReward), new FixedFieldTable(TableReward) },
             { typeof(PgReport), new VariadicFieldTable(typeof(string)) },
-
             { typeof(PgSource), new FixedFieldTable(TableSource) },
-
             { typeof(PgStorageVault), new FixedFieldTable(TableStorageVault) },
             { typeof(PgStorageFavorLevel), new FixedFieldTable(TableStorageFavorLevel) },
             { typeof(PgStorageRequirement), new FixedFieldTable(TableStorageRequirement) },
-
             { typeof(PgXpTable), new FixedFieldTable(TableXpTable) },
         };
 

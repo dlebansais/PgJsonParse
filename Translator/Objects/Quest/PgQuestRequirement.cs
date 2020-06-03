@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public abstract class PgQuestRequirement
+    public class PgQuestRequirement
     {
     }
 }

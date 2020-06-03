@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public abstract class PgQuestObjective
+    public class PgQuestObjective
     {
         public QuestObjectiveType Type { get; set; }
         public string Description { get; set; } = string.Empty;
