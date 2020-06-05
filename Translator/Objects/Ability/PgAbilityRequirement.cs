@@ -2,6 +2,6 @@
 {
     public abstract class PgAbilityRequirement
     {
-        public abstract OtherRequirementType Type { get; }
+        public abstract OtherRequirementType Type { get; } // TODO: remove?
     }
 }

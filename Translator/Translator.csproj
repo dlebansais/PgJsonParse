@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Inserter.cs" />
     <Compile Include="Enums\AbilityCue.cs" />
     <Compile Include="Enums\AbilityTargetParticle.cs" />
     <Compile Include="Enums\AbilityTarget.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="FileType.cs" />
     <Compile Include="FieldTables\FixedFieldTable.cs" />
     <Compile Include="FieldTables\FieldTable.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\AbilityRequirementHandler.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmoCollection.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDruidEventState.cs" />
@@ -310,6 +312,7 @@
     <Compile Include="Parsers\XpTable\ParserXpTable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringToEnumConversion.cs" />
     <Compile Include="StringOrInteger.cs" />
     <Compile Include="FieldTables\VariadicFieldTable.cs" />
   </ItemGroup>

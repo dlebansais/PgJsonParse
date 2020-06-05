@@ -77,7 +77,16 @@
             if (!ParseFile("xptables", typeof(PgXpTable), FileType.EmbeddedObjects))
                 return -1;
 
+            LastParsedFile = string.Empty;
+            LastParsedKey = string.Empty;
+
             if (!FieldTableStore.VerifyTablesCompletion())
+                return -1;
+
+            if (!ParsingContext.FinalizeParsing())
+                return -1;
+
+            if (!ParserAbilityRequirement.FinalizeParsing())
                 return -1;
 
             return 0;
@@ -89,9 +98,24 @@
 
         public static bool ReportFailure(string text, [CallerLineNumber] int callingFileLineNumber = 0)
         {
-            Debug.WriteLine($"Error in '{LastParsedKey}' of {LastParsedFile}.json");
-            Debug.WriteLine($"{text} (Line: {callingFileLineNumber})");
+            WriteFailureLine(LastParsedFile, LastParsedKey, text, callingFileLineNumber);
             return false;
+        }
+
+        public static bool ReportFailure(string parsedFile, string parsedKey, string text, [CallerLineNumber] int callingFileLineNumber = 0)
+        {
+            WriteFailureLine(parsedFile, parsedKey, text, callingFileLineNumber);
+            return false;
+        }
+
+        public static void WriteFailureLine(string parsedFile, string parsedKey, string text, int callingFileLineNumber)
+        {
+            if (parsedFile.Length > 0 && parsedKey.Length > 0)
+                Debug.WriteLine($"Error in '{parsedKey}' of {parsedFile}.json");
+            else
+                Debug.WriteLine($"Error");
+
+            Debug.WriteLine($"{text} (Line: {callingFileLineNumber})");
         }
 
         private static bool ParseFile(string fileName, Type itemType, FileType fileType)
@@ -167,7 +191,7 @@
                 if (!ParseObject(reader, Context))
                     return false;
 
-                if (!Context.FinishItem())
+                if (!Context.RecordContext())
                     return false;
             }
 
@@ -218,15 +242,19 @@
 
             reader.Read();
 
+            int KeyIndex = 0;
             while (reader.CurrentToken != Json.Token.ArrayEnd)
             {
-                if (!MainParser.GetParsingContext(itemType, rootItemTable, out ParsingContext Context))
+                string ObjectKey = $"{Key}__{KeyIndex}";
+                KeyIndex++;
+
+                if (!MainParser.GetParsingContext(itemType, rootItemTable, ObjectKey, out ParsingContext Context))
                     return false;
 
                 if (!ParseObject(reader, Context))
                     return false;
 
-                if (!Context.FinishItem())
+                if (!Context.RecordContext())
                     return false;
             }
 
@@ -248,13 +276,13 @@
             else
                 return ReportFailure("Unexpected failure");
 
-            if (!MainParser.GetParsingContext(itemType, rootItemTable, out ParsingContext Context))
+            if (!MainParser.GetParsingContext(itemType, rootItemTable, Key, out ParsingContext Context))
                 return false;
 
             if (!ParseObject(reader, Context))
                 return false;
 
-            if (!Context.FinishItem())
+            if (!Context.RecordContext())
                 return false;
 
             return true;
@@ -290,6 +318,10 @@
             }
             else
                 return ReportFailure("Unexpected failure");
+
+            if (FieldName == "DoTs")
+            {
+            }
 
             reader.Read();
 
@@ -376,12 +408,12 @@
 
                     if (reader.CurrentToken == Json.Token.ArrayStart)
                     {
-                        if (!ParseNestedArray(reader, ElementType, fieldName, ArrayItemContext))
+                        if (!ParseNestedArray(reader, ElementType, ArrayItemContext))
                             return false;
                     }
                     else
                     {
-                        if (!ParseArray(reader, ElementType, fieldName, ArrayItemContext))
+                        if (!ParseArray(reader, ElementType, ArrayItemContext))
                             return false;
                     }
 
@@ -402,7 +434,10 @@
                     if (!ParseObject(reader, NestedContext))
                         return false;
 
-                    if (!NestedContext.FinishItem())
+                    if (!NestedContext.RecordContext())
+                        return false;
+
+                    if (!context.SetContent(fieldName, NestedContext.Item, Json.Token.Null))
                         return false;
                     break;
             }
@@ -410,11 +445,11 @@
             return true;
         }
 
-        private static bool ParseArray(JsonTextReader reader, Type elementType, string fieldName, ParsingContext context)
+        private static bool ParseArray(JsonTextReader reader, Type elementType, ParsingContext context)
         {
             while (reader.CurrentToken != Json.Token.ArrayEnd)
             {
-                if (!ParseFieldContent(reader, elementType, fieldName, context))
+                if (!ParseFieldContent(reader, elementType, string.Empty, context))
                     return false;
 
                 if (!context.FinishArrayItem())
@@ -426,11 +461,11 @@
             return true;
         }
 
-        private static bool ParseNestedArray(JsonTextReader reader, Type elementType, string fieldName, ParsingContext context)
+        private static bool ParseNestedArray(JsonTextReader reader, Type elementType, ParsingContext context)
         {
             reader.Read();
 
-            if (!ParseArray(reader, elementType, fieldName, context))
+            if (!ParseArray(reader, elementType, context))
                 return false;
 
             if (reader.CurrentToken != Json.Token.ArrayEnd)

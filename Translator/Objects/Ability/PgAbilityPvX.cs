@@ -22,14 +22,24 @@
         public int? RawArmorMitigationRatio { get; set; }
         public int AoE { get { return RawAoE.HasValue ? RawAoE.Value : 0; } }
         public int? RawAoE { get; set; }
+        public List<PreEffect> SelfPreEffectList { get; } = new List<PreEffect>();
         public int RageBoost { get { return RawRageBoost.HasValue ? RawRageBoost.Value : 0; } }
         public int? RawRageBoost { get; set; }
         public float RageMultiplier { get { return RawRageMultiplier.HasValue ? RawRageMultiplier.Value : 1.0F; } }
         public float? RawRageMultiplier { get; set; }
         public float Accuracy { get { return RawAccuracy.HasValue ? RawAccuracy.Value : 0; } }
         public float? RawAccuracy { get; set; }
+        public PgAttributeCollection AttributesThatDeltaDamageList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModDamageList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModBaseDamageList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaTauntList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModTauntList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaRageList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModRageList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaRangeList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaAccuracyList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModCritDamageList { get; } = new PgAttributeCollection();
         public PgSpecialValueCollection SpecialValueList { get; } = new PgSpecialValueCollection();
-        public PgDoTCollection DoTList { get; } = new PgDoTCollection();
         public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
         public int? RawTauntDelta { get; set; }
         public int TempTauntDelta { get { return RawTempTauntDelta.HasValue ? RawTempTauntDelta.Value : 0; } }
@@ -38,19 +48,9 @@
         public int? RawRageCost { get; set; }
         public float RageCostMod { get { return RawRageCostMod.HasValue ? RawRageCostMod.Value : 0; } }
         public float? RawRageCostMod { get; set; }
+        public PgDoTCollection DoTList { get; } = new PgDoTCollection();
         public float CritDamageMod { get { return RawCritDamageMod.HasValue ? RawCritDamageMod.Value : 0; } }
         public float? RawCritDamageMod { get; set; }
-        public List<PreEffect> SelfPreEffectList { get; } = new List<PreEffect>();
-        public PgAttributeCollection AttributesThatDeltaDamageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModDamageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModBaseDamageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaTauntList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModTauntList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaRageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModRageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaRangeList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaAccuracyList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModCritDamageList { get; set; } = new PgAttributeCollection();
         public List<SelfEffect> SelfEffectOnCritList { get; } = new List<SelfEffect>();
     }
 }

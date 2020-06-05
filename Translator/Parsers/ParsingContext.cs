@@ -1,19 +1,33 @@
 ﻿namespace Translator
 {
     using PgJsonReader;
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
 
     public class ParsingContext
     {
-        public ParsingContext(Parser parser, FieldTable fieldTable)
+        public ParsingContext(Parser parser, Type objectType, FieldTable fieldTable, string objectKey)
         {
             Parser = parser;
+            ObjectType = objectType;
             FieldTable = fieldTable;
+            ObjectKey = objectKey;
+            Item = Parser.CreateItem();
+
+            ParsedFile = Program.LastParsedFile;
+            Debug.Assert(ParsedFile.Length > 0);
+            ParsedKey = Program.LastParsedKey;
+            Debug.Assert(ParsedKey.Length > 0);
         }
 
         public Parser Parser { get; }
+        public Type ObjectType { get; }
         public FieldTable FieldTable { get; }
+        public string ObjectKey { get; }
+        public object Item { get; private set; }
+        public string ParsedFile { get; }
+        public string ParsedKey { get; }
         public Dictionary<string, object> ContentTable { get; } = new Dictionary<string, object>();
         public Dictionary<string, Json.Token> ContentTypeTable { get; } = new Dictionary<string, Json.Token>();
         public List<object> ItemCollection { get; } = new List<object>();
@@ -32,8 +46,33 @@
             return true;
         }
 
-        public bool FinishItem()
+        public bool RecordContext()
         {
+            ContextList.Add(this);
+
+            if (ObjectKey.Length > 0)
+            {
+                if (!ObjectKeyTable.ContainsKey(ObjectType))
+                    ObjectKeyTable.Add(ObjectType, new Dictionary<string, ParsingContext>());
+
+                Dictionary<string, ParsingContext> KeyTable = ObjectKeyTable[ObjectType];
+                if (KeyTable.ContainsKey(ObjectKey))
+                    return Program.ReportFailure($"Key '{ObjectKey}' already used for type '{ObjectType}'");
+
+                KeyTable.Add(ObjectKey, this);
+            }
+
+            return true;
+        }
+
+        private bool FinishItem()
+        {
+            object UpdatedItem = Item;
+
+            if (!Parser.FinishItem(ref UpdatedItem, ContentTable, ContentTypeTable, ItemCollection, LastItemType, ParsedFile, ParsedKey))
+                return false;
+
+            Item = UpdatedItem;
             return true;
         }
 
@@ -76,6 +115,18 @@
 
             ContentTable.Add(key, arrayContext.ItemCollection);
             ContentTypeTable.Add(key, arrayContext.LastItemType);
+
+            return true;
+        }
+
+        public static List<ParsingContext> ContextList { get; } = new List<ParsingContext>();
+        public static Dictionary<Type, Dictionary<string, ParsingContext>> ObjectKeyTable { get; } = new Dictionary<Type, Dictionary<string, ParsingContext>>();
+
+        public static bool FinalizeParsing()
+        {
+            foreach (ParsingContext Context in ContextList)
+                if (!Context.FinishItem())
+                    return false;
 
             return true;
         }

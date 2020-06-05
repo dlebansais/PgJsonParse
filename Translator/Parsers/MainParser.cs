@@ -66,6 +66,11 @@
 
         public static bool GetParsingContext(Type type, FieldTable fieldTable, out ParsingContext context)
         {
+            return GetParsingContext(type, fieldTable, string.Empty, out context);
+        }
+
+        public static bool GetParsingContext(Type type, FieldTable fieldTable, string objectKey, out ParsingContext context)
+        {
             if (!Parsers.ContainsKey(type))
             {
                 context = null;
@@ -74,7 +79,7 @@
 
             Parser Parser = Parsers[type];
 
-            context = new ParsingContext(Parser, fieldTable);
+            context = new ParsingContext(Parser, type, fieldTable, objectKey);
             return true;
         }
     }
