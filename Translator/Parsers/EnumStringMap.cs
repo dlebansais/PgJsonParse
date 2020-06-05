@@ -17,9 +17,28 @@
             { AbilityItemKeyword.form_Rabbit, "form:Rabbit" },
         };
 
+        public static readonly Dictionary<EffectStackingType, string> StackingTypeTable = new Dictionary<EffectStackingType, string>()
+        {
+            { EffectStackingType.LamiasGaze, "Lamia's Gaze" },
+            { EffectStackingType.One, "1" },
+        };
+
+        public static readonly Dictionary<EffectKeyword, string> EffectKeywordTable = new Dictionary<EffectKeyword, string>()
+        {
+            { EffectKeyword.Hyphen, "-" },
+        };
+
+        public static readonly Dictionary<EffectParticle, string> EffectParticleTable = new Dictionary<EffectParticle, string>()
+        {
+            { EffectParticle.OnFireGreen, "OnFire-Green"},
+        };
+
         public static Dictionary<Type, IDictionary> Tables = new Dictionary<Type, IDictionary>()
         {
             {  typeof(AbilityItemKeyword), AbilityItemKeywordTable },
+            {  typeof(EffectStackingType), StackingTypeTable },
+            {  typeof(EffectKeyword), EffectKeywordTable },
+            {  typeof(EffectParticle), EffectParticleTable },
         };
     }
 }
