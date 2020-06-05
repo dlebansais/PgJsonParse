@@ -7,7 +7,7 @@
     {
         public static bool SetItemByKey(Action<T> setter, object value, ErrorControl errorControl = ErrorControl.Normal)
         {
-            return SetItem(MatchingByKey, setter, value, errorControl);
+            return SetKeyedItem(MatchingByKey, setter, value, errorControl);
         }
 
         private static bool MatchingByKey(string key, ParsingContext context, string valueKey)
@@ -17,7 +17,7 @@
 
         public static bool SetItemByInternalName(Action<T> setter, object value, ErrorControl errorControl = ErrorControl.Normal)
         {
-            return SetItem(MatchingByInternalName, setter, value, errorControl);
+            return SetKeyedItem(MatchingByInternalName, setter, value, errorControl);
         }
 
         private static bool MatchingByInternalName(string key, ParsingContext context, string valueKey)
@@ -35,7 +35,7 @@
 
         public static bool SetItemByName(Action<T> setter, object value, ErrorControl errorControl = ErrorControl.Normal)
         {
-            return SetItem(MatchingByName, setter, value, errorControl);
+            return SetKeyedItem(MatchingByName, setter, value, errorControl);
         }
 
         private static bool MatchingByName(string key, ParsingContext context, string valueKey)
@@ -51,16 +51,16 @@
             return Name == valueKey;
         }
 
-        private static bool SetItem(Func<string, ParsingContext, string, bool> match, Action<T> setter, object value, ErrorControl errorControl)
+        private static bool SetKeyedItem(Func<string, ParsingContext, string, bool> match, Action<T> setter, object value, ErrorControl errorControl)
         {
             if (!(value is string ValueKey))
                 return Program.ReportFailure($"Value '{value}' was expected to be a string");
 
             Type LinkType = typeof(T);
-            if (!ParsingContext.ObjectKeyTable.ContainsKey(LinkType))
+            if (!ParsingContext.KeyedObjectTable.ContainsKey(LinkType))
                 return Program.ReportFailure($"Type {LinkType} does not have items with keys");
 
-            Dictionary<string, ParsingContext> KeyTable = ParsingContext.ObjectKeyTable[LinkType];
+            Dictionary<string, ParsingContext> KeyTable = ParsingContext.KeyedObjectTable[LinkType];
 
             string MatchingKey = string.Empty;
 
@@ -89,16 +89,66 @@
             return true;
         }
 
+        public static bool SetItemById(Action<T> setter, object value, ErrorControl errorControl = ErrorControl.Normal)
+        {
+            return SetKeylessItem(MatchingById, setter, value, errorControl);
+        }
+
+        private static bool MatchingById(ParsingContext context, int valueId)
+        {
+            Dictionary<string, object> ContentTable = context.ContentTable;
+
+            if (!ContentTable.ContainsKey("Id"))
+                return false;
+
+            if (!(ContentTable["Id"] is int Id))
+                return false;
+
+            return Id == valueId;
+        }
+
+        private static bool SetKeylessItem(Func<ParsingContext, int, bool> match, Action<T> setter, object value, ErrorControl errorControl)
+        {
+            if (!(value is int ValueId))
+                return Program.ReportFailure($"Value '{value}' was expected to be an Id");
+
+            Type LinkType = typeof(T);
+            if (!ParsingContext.KeylessObjectTable.ContainsKey(LinkType))
+                return Program.ReportFailure($"Type {LinkType} does not have recorded items");
+
+            List<ParsingContext> KeylessContextList = ParsingContext.KeylessObjectTable[LinkType];
+
+            ParsingContext MatchingContext = null;
+            foreach (ParsingContext Context in KeylessContextList)
+                if (match(Context, ValueId))
+                {
+                    MatchingContext = Context;
+                    break;
+                }
+
+            if (MatchingContext == null)
+                if (errorControl == ErrorControl.IgnoreIfNotFound)
+                    return false;
+                else
+                    return Program.ReportFailure($"'{ValueId}' is not a known ID");
+
+            if (!(MatchingContext.Item is T AsLink))
+                return Program.ReportFailure($"Key '{ValueId}' was found but for the wrong object type");
+
+            setter(AsLink);
+            return true;
+        }
+
         public static bool AddArray(List<T> linkList, object value)
         {
             if (!(value is List<object> ArrayKey))
                 return Program.ReportFailure($"Value '{value}' was expected to be a list");
 
             Type LinkType = typeof(T);
-            if (!ParsingContext.ObjectKeyTable.ContainsKey(LinkType))
+            if (!ParsingContext.KeyedObjectTable.ContainsKey(LinkType))
                 return Program.ReportFailure($"Type {LinkType} does not have items with keys");
 
-            Dictionary<string, ParsingContext> KeyTable = ParsingContext.ObjectKeyTable[LinkType];
+            Dictionary<string, ParsingContext> KeyTable = ParsingContext.KeyedObjectTable[LinkType];
 
             foreach (object Item in ArrayKey)
             {

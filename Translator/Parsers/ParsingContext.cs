@@ -52,14 +52,22 @@
 
             if (ObjectKey.Length > 0)
             {
-                if (!ObjectKeyTable.ContainsKey(ObjectType))
-                    ObjectKeyTable.Add(ObjectType, new Dictionary<string, ParsingContext>());
+                if (!KeyedObjectTable.ContainsKey(ObjectType))
+                    KeyedObjectTable.Add(ObjectType, new Dictionary<string, ParsingContext>());
 
-                Dictionary<string, ParsingContext> KeyTable = ObjectKeyTable[ObjectType];
+                Dictionary<string, ParsingContext> KeyTable = KeyedObjectTable[ObjectType];
                 if (KeyTable.ContainsKey(ObjectKey))
                     return Program.ReportFailure($"Key '{ObjectKey}' already used for type '{ObjectType}'");
 
                 KeyTable.Add(ObjectKey, this);
+            }
+            else
+            {
+                if (!KeylessObjectTable.ContainsKey(ObjectType))
+                    KeylessObjectTable.Add(ObjectType, new List<ParsingContext>());
+
+                List<ParsingContext> TypedContextList = KeylessObjectTable[ObjectType];
+                TypedContextList.Add(this);
             }
 
             return true;
@@ -120,7 +128,8 @@
         }
 
         public static List<ParsingContext> ContextList { get; } = new List<ParsingContext>();
-        public static Dictionary<Type, Dictionary<string, ParsingContext>> ObjectKeyTable { get; } = new Dictionary<Type, Dictionary<string, ParsingContext>>();
+        public static Dictionary<Type, Dictionary<string, ParsingContext>> KeyedObjectTable { get; } = new Dictionary<Type, Dictionary<string, ParsingContext>>();
+        public static Dictionary<Type, List<ParsingContext>> KeylessObjectTable { get; } = new Dictionary<Type, List<ParsingContext>>();
 
         public static bool FinalizeParsing()
         {

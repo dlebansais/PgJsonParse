@@ -8,9 +8,9 @@
         public int? RawId { get; set; }
         public string Label { get; set; } = string.Empty;
         public string Zone { get; set; } = string.Empty;
+        public PgDirectedGoal CategoryGate { get; set; }
         public string LargeHint { get; set; } = string.Empty;
         public string SmallHint { get; set; } = string.Empty;
-        public PgDirectedGoal CategoryGate { get; set; }
         public List<Race> ForRaceList { get; } = new List<Race>();
     }
 }
