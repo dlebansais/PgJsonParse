@@ -27,13 +27,11 @@
             { OtherRequirementType.HasInventorySpaceFor, FinishItemHasInventorySpaceFor },
             { OtherRequirementType.IsVegetarian, FinishItemIsVegetarian },
             { OtherRequirementType.InGraveyard, FinishItemIsInGraveyard },
-            //{ OtherRequirementType.Or, FinishItemOr },
             { OtherRequirementType.EquippedItemKeyword, FinishItemEquippedItemKeyword },
             { OtherRequirementType.InteractionFlagSet, FinishItemInteractionFlagSet },
             { OtherRequirementType.IsVolunteerGuide, FinishItemIsVolunteerGuide },
             { OtherRequirementType.IsNotGuest, FinishItemIsNotGuest },
             { OtherRequirementType.IsNotInHotspot, FinishItemNotInHotspot },
-            //{ OtherRequirementType.Race, FinishItemRace },
         };
 
         public static Dictionary<OtherRequirementType, List<string>> KnownFieldTable = new Dictionary<OtherRequirementType, List<string>>()
@@ -51,13 +49,11 @@
             { OtherRequirementType.HasInventorySpaceFor, new List<string>() { "T", "Item" } },
             { OtherRequirementType.IsVegetarian, new List<string>() { "T" } },
             { OtherRequirementType.InGraveyard, new List<string>() { "T" } },
-            //{ OtherRequirementType.Or, new List<string>() { "T", "ErrorMsg" } },
             { OtherRequirementType.EquippedItemKeyword, new List<string>() { "T", "MinCount", "MaxCount", "Keyword" } },
             { OtherRequirementType.InteractionFlagSet, new List<string>() { "T", "InteractionFlag" } },
             { OtherRequirementType.IsVolunteerGuide, new List<string>() { "T" } },
             { OtherRequirementType.IsNotGuest, new List<string>() { "T" } },
             { OtherRequirementType.IsNotInHotspot, new List<string>() { "T", "Name" } },
-            //{ OtherRequirementType.Race, new List<string>() { "T", "Name" } },
         };
 
         public static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
@@ -661,50 +657,7 @@
             else
                 return false;
         }
-/*
-        public static bool FinishItemOr(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
-        {
-            PgAbilityRequirementOr NewItem = new PgAbilityRequirementOr();
 
-            bool Result = true;
-
-            foreach (KeyValuePair<string, object> Entry in contentTable)
-            {
-                string Key = Entry.Key;
-                object Value = Entry.Value;
-
-                if (!knownFieldList.Contains(Key))
-                    Result = Program.ReportFailure($"Unknown field {Key}");
-                else
-                {
-                    usedFieldList.Add(Key);
-
-                    switch (Key)
-                    {
-                        case "T":
-                            break;
-                        case "ErrorMsg":
-                            Result = SetStringProperty((string valueString) => NewItem.ErrorMsg = valueString, Value);
-                            break;
-                        default:
-                            Result = Program.ReportFailure("Key not handled");
-                            break;
-                    }
-                }
-
-                if (!Result)
-                    break;
-            }
-
-            if (Result)
-            {
-                item = NewItem;
-                return true;
-            }
-            else
-                return false;
-        }
-*/
         public static bool FinishItemEquippedItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementEquippedItemKeyword NewItem = new PgAbilityRequirementEquippedItemKeyword();
@@ -919,49 +872,5 @@
             else
                 return false;
         }
-
-        /*
-        public static bool FinishItemRace(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
-        {
-            PgAbilityRequirementRace NewItem = new PgAbilityRequirementRace();
-
-            bool Result = true;
-
-            foreach (KeyValuePair<string, object> Entry in contentTable)
-            {
-                string Key = Entry.Key;
-                object Value = Entry.Value;
-
-                if (!knownFieldList.Contains(Key))
-                    Result = Program.ReportFailure($"Unknown field {Key}");
-                else
-                {
-                    usedFieldList.Add(Key);
-
-                    switch (Key)
-                    {
-                        case "T":
-                            break;
-                        case "Name":
-                            Result = SetStringProperty((string valueString) => NewItem.Name = valueString, Value);
-                            break;
-                        default:
-                            Result = Program.ReportFailure("Key not handled");
-                            break;
-                    }
-                }
-
-                if (!Result)
-                    break;
-            }
-
-            if (Result)
-            {
-                item = NewItem;
-                return true;
-            }
-            else
-                return false;
-        }*/
     }
 }

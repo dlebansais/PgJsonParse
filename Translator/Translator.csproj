@@ -132,9 +132,7 @@
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsVegetarian.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementIsVolunteerGuide.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementNotInHotspot.cs" />
-    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementOr.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementPetCount.cs" />
-    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementRace.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementRecipeKnown.cs" />
     <Compile Include="Objects\Ability\PgAbilityCollection.cs" />
     <Compile Include="Objects\Ability\PgAbilityRequirementCollection.cs" />
