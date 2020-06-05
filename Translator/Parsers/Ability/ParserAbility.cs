@@ -3,7 +3,6 @@
     using PgJsonObjects;
     using PgJsonReader;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     public class ParserAbility : Parser
     {
@@ -12,10 +11,12 @@
             return new PgAbility();
         }
 
-        public override bool FinishItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
         {
             if (!(item is PgAbility AsPgAbility))
                 return Program.ReportFailure("Unexpected failure");
+
+            AsPgAbility.Key = objectKey;
 
             return FinishItem(AsPgAbility, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
         }
@@ -200,7 +201,7 @@
                         Result = SetFloatProperty((float valueFloat) => item.RawAmmoStickChance = valueFloat, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure("Key not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                         break;
                 }
 

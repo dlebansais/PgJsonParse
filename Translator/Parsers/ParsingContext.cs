@@ -69,7 +69,7 @@
         {
             object UpdatedItem = Item;
 
-            if (!Parser.FinishItem(ref UpdatedItem, ContentTable, ContentTypeTable, ItemCollection, LastItemType, ParsedFile, ParsedKey))
+            if (!Parser.FinishItem(ref UpdatedItem, ObjectKey, ContentTable, ContentTypeTable, ItemCollection, LastItemType, ParsedFile, ParsedKey))
                 return false;
 
             Item = UpdatedItem;

@@ -58,7 +58,7 @@
 
         private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
 
-        public override bool FinishItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
         {
             if (item != null)
                 return Program.ReportFailure("Unexpected failure");
@@ -83,7 +83,7 @@
             List<string> KnownFieldList = KnownFieldTable[requirementType];
             List<string> UsedFieldList = new List<string>();
 
-            if (!Handler(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, KnownFieldList, UsedFieldList))
+            if (!Handler(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
                 return false;
 
             if (!HandledTable.ContainsKey(requirementType))
@@ -117,7 +117,7 @@
             return true;
         }
 
-        private static bool FinishItemIsLycanthrope(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsLycanthrope(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsLycanthrope NewItem = new PgAbilityRequirementIsLycanthrope();
 
@@ -157,7 +157,7 @@
                 return false;
         }
 
-        private static bool FinishItemHasEffectKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemHasEffectKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementHasEffectKeyword NewItem = new PgAbilityRequirementHasEffectKeyword();
 
@@ -182,7 +182,7 @@
                             Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -200,7 +200,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsFullMoon(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsFullMoon(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsFullMoon NewItem = new PgAbilityRequirementIsFullMoon();
 
@@ -222,7 +222,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -240,7 +240,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsHardcore(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsHardcore(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsHardcore NewItem = new PgAbilityRequirementIsHardcore();
 
@@ -262,7 +262,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -280,7 +280,7 @@
                 return false;
         }
 
-        private static bool FinishItemDruidEventState(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemDruidEventState(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementDruidEventState NewItem = new PgAbilityRequirementDruidEventState();
 
@@ -305,7 +305,7 @@
                             Result = Inserter<DisallowedState>.SetEnum((DisallowedState valueEnum) => NewItem.DisallowedState = valueEnum, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -323,7 +323,7 @@
                 return false;
         }
 
-        private static bool FinishItemPetCount(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemPetCount(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementPetCount NewItem = new PgAbilityRequirementPetCount();
 
@@ -351,7 +351,7 @@
                             Result = Inserter<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.PetTypeTag = valueEnum, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -369,7 +369,7 @@
                 return false;
         }
 
-        private static bool FinishItemRecipeKnown(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemRecipeKnown(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementRecipeKnown NewItem = new PgAbilityRequirementRecipeKnown();
 
@@ -394,7 +394,7 @@
                             Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe = valueRecipe, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -412,7 +412,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsNotInCombat(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsNotInCombat(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsNotInCombat NewItem = new PgAbilityRequirementIsNotInCombat();
 
@@ -434,7 +434,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -452,7 +452,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsLongtimeAnimal(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsLongtimeAnimal(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsLongtimeAnimal NewItem = new PgAbilityRequirementIsLongtimeAnimal();
 
@@ -474,7 +474,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -492,7 +492,7 @@
                 return false;
         }
 
-        private static bool FinishItemInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementInHotspot NewItem = new PgAbilityRequirementInHotspot();
 
@@ -517,7 +517,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.Name = valueString, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -535,7 +535,7 @@
                 return false;
         }
 
-        private static bool FinishItemHasInventorySpaceFor(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemHasInventorySpaceFor(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementHasInventorySpaceFor NewItem = new PgAbilityRequirementHasInventorySpaceFor();
 
@@ -560,7 +560,7 @@
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -578,7 +578,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsVegetarian(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsVegetarian(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsVegetarian NewItem = new PgAbilityRequirementIsVegetarian();
 
@@ -600,7 +600,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -618,7 +618,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsInGraveyard(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsInGraveyard(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsInGraveyard NewItem = new PgAbilityRequirementIsInGraveyard();
 
@@ -640,7 +640,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -658,7 +658,7 @@
                 return false;
         }
 
-        private static bool FinishItemEquippedItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemEquippedItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementEquippedItemKeyword NewItem = new PgAbilityRequirementEquippedItemKeyword();
 
@@ -689,7 +689,7 @@
                             Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -707,7 +707,7 @@
                 return false;
         }
 
-        private static bool FinishItemInteractionFlagSet(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemInteractionFlagSet(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementInteractionFlagSet NewItem = new PgAbilityRequirementInteractionFlagSet();
 
@@ -732,7 +732,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.InteractionFlag = valueString, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -750,7 +750,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsVolunteerGuide(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsVolunteerGuide(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsVolunteerGuide NewItem = new PgAbilityRequirementIsVolunteerGuide();
 
@@ -772,7 +772,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -790,7 +790,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsNotGuest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsNotGuest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsNotGuest NewItem = new PgAbilityRequirementIsNotGuest();
 
@@ -812,7 +812,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }
@@ -830,7 +830,7 @@
                 return false;
         }
 
-        private static bool FinishItemNotInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemNotInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementNotInHotspot NewItem = new PgAbilityRequirementNotInHotspot();
 
@@ -855,7 +855,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.Name = valueString, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure("Key not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                             break;
                     }
                 }

@@ -19,7 +19,7 @@
             { typeof(PgDoT), new ParserDoT() },
             { typeof(PgSpecialValue), new ParserSpecialValue() },
             { typeof(PgAdvancement), new ParserAdvancement() },
-            { typeof(PgAdvancementTable), new ParserAdvancement() },
+            { typeof(PgAdvancementTable), new ParserAdvancementTable() },
             { typeof(PgAI), new ParserAI() },
             { typeof(PgAIAbilitySet), new ParserAIAbility() },
             { typeof(PgAIAbility), new ParserAIAbility() },

@@ -319,10 +319,6 @@
             else
                 return ReportFailure("Unexpected failure");
 
-            if (FieldName == "DoTs")
-            {
-            }
-
             reader.Read();
 
             if (!ParseFieldContent(reader, FieldType, FieldName, context))

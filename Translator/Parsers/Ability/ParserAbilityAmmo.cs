@@ -11,7 +11,7 @@
             return new PgAbilityAmmo();
         }
 
-        public override bool FinishItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
         {
             if (!(item is PgAbilityAmmo AsPgAbilityAmmo))
                 return Program.ReportFailure("Unexpected failure");
@@ -37,7 +37,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawCount = valueInt, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure("Key not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
                         break;
                 }
 
