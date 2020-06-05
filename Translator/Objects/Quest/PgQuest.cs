@@ -37,9 +37,9 @@
         public int RewardGold { get { return RawRewardGold.HasValue ? RawRewardGold.Value : 0; } }
         public int? RawRewardGold { get; set; }
         public string RewardsNamedLootProfile { get; set; } = string.Empty;
-        public PgRecipeCollection PreGiveRecipeList { get; set; } = new PgRecipeCollection();
+        public PgRecipeCollection PreGiveRecipeList { get; } = new PgRecipeCollection();
         public List<QuestKeyword> KeywordList { get; } = new List<QuestKeyword>();
-        public PgEffectCollection RewardEffectList { get; set; } = new PgEffectCollection();
+        public PgEffectCollection RewardEffectList { get; } = new PgEffectCollection();
         public PgLoreBook RewardLoreBook { get; set; }
         public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
         public bool? RawIsCancellable { get; set; }
@@ -59,9 +59,9 @@
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get; set; }
         public PgSkill WorkOrderSkill { get; set; }
-        public PgQuestCollection FollowUpQuestList { get; set; } = new PgQuestCollection();
-        public PgQuestRequirementCollection QuestRequirementList { get; set; } = new PgQuestRequirementCollection();
-        public PgQuestRequirementCollection QuestRequirementToSustainList { get; set; } = new PgQuestRequirementCollection();
+        public PgQuestCollection FollowUpQuestList { get; } = new PgQuestCollection();
+        public PgQuestRequirementCollection QuestRequirementList { get; } = new PgQuestRequirementCollection();
+        public PgQuestRequirementCollection QuestRequirementToSustainList { get; } = new PgQuestRequirementCollection();
         public int? RawReuseTime_Minutes { get; set; }
         public int? RawReuseTime_Hours { get; set; }
         public int? RawReuseTime_Days { get; set; }
@@ -81,7 +81,7 @@
         public bool IsLearnAbility { get { return RawIsLearnAbility.HasValue && RawIsLearnAbility.Value; } }
         public bool? RawIsLearnAbility { get; set; }
         public PgSkill RewardXpSkill { get; set; }
-        public PgQuestRewardCollection QuestRewardList { get; set; } = new PgQuestRewardCollection();
+        public PgQuestRewardCollection QuestRewardList { get; } = new PgQuestRewardCollection();
         public List<string> RawRewardInteractionFlags { get; } = new List<string>();
         public PgPlayerTitle RewardTitle { get; set; }
         public PgQuestRewardCurrencyCollection RewardsCurrencyList { get; } = new PgQuestRewardCurrencyCollection();

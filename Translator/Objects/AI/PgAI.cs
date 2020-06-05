@@ -21,6 +21,6 @@
         public bool? RawIsFlying { get; set; }
         public bool IsFollowClose { get { return RawIsFollowClose.HasValue && RawIsFollowClose.Value; } }
         public bool? RawIsFollowClose { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
     }
 }

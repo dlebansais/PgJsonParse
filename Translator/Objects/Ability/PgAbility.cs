@@ -7,11 +7,11 @@
         public string Key { get; set; }
         public PgAbility AbilityGroup { get; set; }
         public AbilityAnimation Animation { get; set; }
-        public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaPowerCostList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaResetTimeList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModPowerCostList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaPowerCostList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaResetTimeList { get; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModPowerCostList { get; } = new PgAttributeCollection();
         public bool CanBeOnSidebar { get { return RawCanBeOnSidebar.HasValue && RawCanBeOnSidebar.Value; } }
         public bool? RawCanBeOnSidebar { get; set; }
         public bool CanSuppressMonsterShout { get { return RawCanSuppressMonsterShout.HasValue && RawCanSuppressMonsterShout.Value; } }

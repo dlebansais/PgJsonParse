@@ -2,6 +2,6 @@
 {
     public class PgQuestRequirementGuildQuestCompleted : PgQuestRequirement
     {
-        public PgQuestCollection QuestList { get; set; } = new PgQuestCollection();
+        public PgQuestCollection QuestList { get; } = new PgQuestCollection();
     }
 }

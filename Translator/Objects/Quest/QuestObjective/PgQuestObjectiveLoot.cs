@@ -2,9 +2,9 @@
 {
     public class PgQuestObjectiveLoot : PgQuestObjective
     {
-        public PgItem QuestItem { get; private set; }
-        public PgItemCollection ItemList { get; private set; } = new PgItemCollection();
-        public ItemKeyword ItemTarget { get; private set; }
-        public MonsterTypeTag MonsterTypeTag { get; private set; }
+        public PgItem QuestItem { get; set; }
+        public PgItemCollection ItemList { get; } = new PgItemCollection();
+        public ItemKeyword ItemTarget { get; set; }
+        public MonsterTypeTag MonsterTypeTag { get; set; }
     }
 }
