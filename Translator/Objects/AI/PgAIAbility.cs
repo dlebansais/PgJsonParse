@@ -2,12 +2,19 @@
 {
     public class PgAIAbility
     {
+        public string Key { get; set; }
+        public int MinLevel { get { return RawMinLevel.HasValue ? RawMinLevel.Value : 0; } }
         public int? RawMinLevel { get; set; }
+        public int MaxLevel { get { return RawMaxLevel.HasValue ? RawMaxLevel.Value : 0; } }
         public int? RawMaxLevel { get; set; }
+        public int MinDistance { get { return RawMinDistance.HasValue ? RawMinDistance.Value : 0; } }
         public int? RawMinDistance { get; set; }
+        public int MinRange { get { return RawMinRange.HasValue ? RawMinRange.Value : 0; } }
         public int? RawMinRange { get; set; }
+        public int MaxRange { get { return RawMaxRange.HasValue ? RawMaxRange.Value : 0; } }
         public int? RawMaxRange { get; set; }
-        public int? RawCueValue { get; set; }
         public AbilityCue Cue { get; set; }
+        public int CueValue { get { return RawCueValue.HasValue ? RawCueValue.Value : 0; } }
+        public int? RawCueValue { get; set; }
     }
 }

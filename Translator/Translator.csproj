@@ -147,6 +147,7 @@
     <Compile Include="Objects\Ability\PgSpecialValueCollection.cs" />
     <Compile Include="Objects\AdvancementTable\PgAdvancement.cs" />
     <Compile Include="Objects\AdvancementTable\PgAdvancementTable.cs" />
+    <Compile Include="Objects\AI\PgAIAbilityCollection.cs" />
     <Compile Include="Objects\AI\PgAIAbility.cs" />
     <Compile Include="Objects\AI\PgAIAbilitySet.cs" />
     <Compile Include="Objects\AI\PgAI.cs" />
