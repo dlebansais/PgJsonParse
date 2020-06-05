@@ -437,7 +437,7 @@
                     if (!NestedContext.RecordContext())
                         return false;
 
-                    if (!context.SetContent(fieldName, NestedContext.Item, Json.Token.Null))
+                    if (!context.SetContent(fieldName, NestedContext, Json.Token.Null))
                         return false;
                     break;
             }

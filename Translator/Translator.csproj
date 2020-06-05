@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\SelfParticle.cs" />
     <Compile Include="Inserter.cs" />
     <Compile Include="Enums\AbilityCue.cs" />
     <Compile Include="Enums\AbilityTargetParticle.cs" />
@@ -269,6 +270,8 @@
     <Compile Include="Parsers\Attribute\ParserAttribute.cs" />
     <Compile Include="Parsers\DirectedGoal\ParserDirectedGoal.cs" />
     <Compile Include="Parsers\Effect\ParserEffect.cs" />
+    <Compile Include="Parsers\EnumStringMap.cs" />
+    <Compile Include="Parsers\ErrorControl.cs" />
     <Compile Include="Parsers\Item\ParserItemUse.cs" />
     <Compile Include="Parsers\Item\ParserItemBehavior.cs" />
     <Compile Include="Parsers\Item\ParserItemSkillLink.cs" />

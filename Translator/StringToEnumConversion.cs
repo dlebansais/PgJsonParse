@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public static class StringToEnumConversion
     {
@@ -14,20 +15,19 @@
         #region Single
         public static bool TryParse(string stringValue, out T enumValue)
         {
-            return TryParse(stringValue, null, out enumValue);
+            Dictionary<T, string> stringMap = EnumStringMap.Tables.ContainsKey(typeof(T)) ? (Dictionary<T, string>)EnumStringMap.Tables[typeof(T)] : null;
+
+            return TryParse(stringValue, stringMap, default(T), default(T), out enumValue);
         }
 
-        public static bool TryParse(string stringValue, Dictionary<T, string> stringMap, out T enumValue)
+        public static bool TryParse(string stringValue, T defaultValue, T emptyValue, out T enumValue)
         {
-            return TryParse(stringValue, stringMap, default(T), out enumValue);
+            Dictionary<T, string> stringMap = EnumStringMap.Tables.ContainsKey(typeof(T)) ? (Dictionary<T, string>)EnumStringMap.Tables[typeof(T)] : null;
+
+            return TryParse(stringValue, stringMap, defaultValue, emptyValue, out enumValue);
         }
 
-        public static bool TryParse(string stringValue, Dictionary<T, string> stringMap, T defaultValue, out T enumValue)
-        {
-            return TryParse(stringValue, stringMap, defaultValue, defaultValue, out enumValue);
-        }
-
-        public static bool TryParse(string stringValue, Dictionary<T, string> stringMap, T defaultValue, T emptyValue, out T enumValue)
+        private static bool TryParse(string stringValue, Dictionary<T, string> stringMap, T defaultValue, T emptyValue, out T enumValue)
         {
             enumValue = defaultValue;
 
@@ -75,7 +75,10 @@
             if (MissingEnumList.Contains(stringValue))
                 MissingEnumList.Add(stringValue);
 
-            return Program.ReportFailure($"Enum {stringValue} not found for {typeof(T)}");
+            string Warning = $"Enum {stringValue} not found for {typeof(T)}"; 
+            //Debug.WriteLine(Warning);
+            //return true;
+            return Program.ReportFailure(Warning);
         }
 
         public static void SetCustomParsedEnum(T EnumValue)
@@ -98,11 +101,6 @@
         #region List
         public static bool TryParseList(object value, ICollection<T> list)
         {
-            return TryParseList(value, null, list);
-        }
-
-        public static bool TryParseList(object value, Dictionary<T, string> map, ICollection<T> list)
-        {
             if (!(value is List<object> StringArray))
                 return Program.ReportFailure($"Value {value} was expected to be a list");
 
@@ -111,7 +109,7 @@
                 if (!(Item is string StringItem))
                     return Program.ReportFailure($"Value {Item} was expected to be a string");
 
-                if (!TryParse(StringItem, map, out T Parsed))
+                if (!TryParse(StringItem, out T Parsed))
                     return false;
 
                 list.Add(Parsed);

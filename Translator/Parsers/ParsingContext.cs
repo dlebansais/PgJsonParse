@@ -65,7 +65,7 @@
             return true;
         }
 
-        private bool FinishItem()
+        public bool FinishItem()
         {
             object UpdatedItem = Item;
 

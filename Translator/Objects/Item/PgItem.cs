@@ -52,8 +52,8 @@
         public int? RawMaxStackSize { get; set; }
         public string Name { get; set; } = string.Empty;
         public PgItemSkillLinkCollection SkillRequirementList { get; } = new PgItemSkillLinkCollection();
-        public List<uint> StockDye { get; set; } = new List<uint>();
-        public List<string> StockDyeByName { get; set; } = new List<string>();
+        public List<uint> StockDye { get; } = new List<uint>();
+        public List<string> StockDyeByName { get; } = new List<string>();
         public float Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public float? RawValue { get; set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
@@ -65,8 +65,8 @@
         public Appearance RequiredAppearance { get; set; }
         public List<string> KeywordValueList { get; } = new List<string>();
         public PgRecipeCollection BestowRecipeList { get; set; } = null;
-        public List<string> AppearanceDetailList { get; set; } = new List<string>();
-        public List<string> RawKeywordList { get; set; } = new List<string>();
+        public List<string> AppearanceDetailList { get; } = new List<string>();
+        public List<string> RawKeywordList { get; } = new List<string>();
         public int UnknownSkillReqIndex { get { return RawUnknownSkillReqIndex.HasValue ? RawUnknownSkillReqIndex.Value : 0; } }
         public int? RawUnknownSkillReqIndex { get; set; }
         public WorkOrderSign LintVendorNpc { get; set; }

@@ -4,6 +4,6 @@
 
     public class PgItemUse
     {
-        public List<int> RecipesThatUseItem { get; set; } = new List<int>();
+        public List<int> RecipesThatUseItem { get; } = new List<int>();
     }
 }

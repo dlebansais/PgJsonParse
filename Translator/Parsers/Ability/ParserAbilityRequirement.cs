@@ -12,7 +12,7 @@
             return null;
         }
 
-        public static Dictionary<OtherRequirementType, AbilityRequirementHandler> HandlerTable = new Dictionary<OtherRequirementType, AbilityRequirementHandler>()
+        private static Dictionary<OtherRequirementType, AbilityRequirementHandler> HandlerTable = new Dictionary<OtherRequirementType, AbilityRequirementHandler>()
         {
             { OtherRequirementType.IsLycanthrope, FinishItemIsLycanthrope },
             { OtherRequirementType.HasEffectKeyword, FinishItemHasEffectKeyword },
@@ -34,7 +34,7 @@
             { OtherRequirementType.IsNotInHotspot, FinishItemNotInHotspot },
         };
 
-        public static Dictionary<OtherRequirementType, List<string>> KnownFieldTable = new Dictionary<OtherRequirementType, List<string>>()
+        private static Dictionary<OtherRequirementType, List<string>> KnownFieldTable = new Dictionary<OtherRequirementType, List<string>>()
         {
             { OtherRequirementType.IsLycanthrope, new List<string>() { "T" } },
             { OtherRequirementType.HasEffectKeyword, new List<string>() { "T", "Keyword" } },
@@ -56,7 +56,7 @@
             { OtherRequirementType.IsNotInHotspot, new List<string>() { "T", "Name" } },
         };
 
-        public static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
+        private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
 
         public override bool FinishItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
         {
@@ -117,7 +117,7 @@
             return true;
         }
 
-        public static bool FinishItemIsLycanthrope(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsLycanthrope(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementIsLycanthrope NewItem = new PgAbilityRequirementIsLycanthrope();
 
@@ -157,7 +157,7 @@
                 return false;
         }
 
-        public static bool FinishItemHasEffectKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemHasEffectKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementHasEffectKeyword NewItem = new PgAbilityRequirementHasEffectKeyword();
 
@@ -200,7 +200,7 @@
                 return false;
         }
 
-        public static bool FinishItemIsFullMoon(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsFullMoon(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementIsFullMoon NewItem = new PgAbilityRequirementIsFullMoon();
 
@@ -240,7 +240,7 @@
                 return false;
         }
 
-        public static bool FinishItemIsHardcore(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsHardcore(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementIsHardcore NewItem = new PgAbilityRequirementIsHardcore();
 
@@ -280,7 +280,7 @@
                 return false;
         }
 
-        public static bool FinishItemDruidEventState(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemDruidEventState(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementDruidEventState NewItem = new PgAbilityRequirementDruidEventState();
 
@@ -323,7 +323,7 @@
                 return false;
         }
 
-        public static bool FinishItemPetCount(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemPetCount(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementPetCount NewItem = new PgAbilityRequirementPetCount();
 
@@ -369,7 +369,7 @@
                 return false;
         }
 
-        public static bool FinishItemRecipeKnown(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemRecipeKnown(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementRecipeKnown NewItem = new PgAbilityRequirementRecipeKnown();
 
@@ -412,7 +412,7 @@
                 return false;
         }
 
-        public static bool FinishItemIsNotInCombat(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsNotInCombat(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementIsNotInCombat NewItem = new PgAbilityRequirementIsNotInCombat();
 
@@ -452,7 +452,7 @@
                 return false;
         }
 
-        public static bool FinishItemIsLongtimeAnimal(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsLongtimeAnimal(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementIsLongtimeAnimal NewItem = new PgAbilityRequirementIsLongtimeAnimal();
 
@@ -492,7 +492,7 @@
                 return false;
         }
 
-        public static bool FinishItemInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementInHotspot NewItem = new PgAbilityRequirementInHotspot();
 
@@ -535,7 +535,7 @@
                 return false;
         }
 
-        public static bool FinishItemHasInventorySpaceFor(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemHasInventorySpaceFor(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementHasInventorySpaceFor NewItem = new PgAbilityRequirementHasInventorySpaceFor();
 
@@ -578,7 +578,7 @@
                 return false;
         }
 
-        public static bool FinishItemIsVegetarian(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsVegetarian(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementIsVegetarian NewItem = new PgAbilityRequirementIsVegetarian();
 
@@ -618,7 +618,7 @@
                 return false;
         }
 
-        public static bool FinishItemIsInGraveyard(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsInGraveyard(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementIsInGraveyard NewItem = new PgAbilityRequirementIsInGraveyard();
 
@@ -658,7 +658,7 @@
                 return false;
         }
 
-        public static bool FinishItemEquippedItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemEquippedItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementEquippedItemKeyword NewItem = new PgAbilityRequirementEquippedItemKeyword();
 
@@ -707,7 +707,7 @@
                 return false;
         }
 
-        public static bool FinishItemInteractionFlagSet(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemInteractionFlagSet(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementInteractionFlagSet NewItem = new PgAbilityRequirementInteractionFlagSet();
 
@@ -750,7 +750,7 @@
                 return false;
         }
 
-        public static bool FinishItemIsVolunteerGuide(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsVolunteerGuide(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementIsVolunteerGuide NewItem = new PgAbilityRequirementIsVolunteerGuide();
 
@@ -790,7 +790,7 @@
                 return false;
         }
 
-        public static bool FinishItemIsNotGuest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemIsNotGuest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementIsNotGuest NewItem = new PgAbilityRequirementIsNotGuest();
 
@@ -830,7 +830,7 @@
                 return false;
         }
 
-        public static bool FinishItemNotInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
+        private static bool FinishItemNotInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList)
         {
             PgAbilityRequirementNotInHotspot NewItem = new PgAbilityRequirementNotInHotspot();
 

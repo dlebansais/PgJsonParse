@@ -82,7 +82,7 @@
         public bool? RawIsLearnAbility { get; set; }
         public PgSkill RewardXpSkill { get; set; }
         public PgQuestRewardCollection QuestRewardList { get; set; } = new PgQuestRewardCollection();
-        public List<string> RawRewardInteractionFlags { get; set; } = new List<string>();
+        public List<string> RawRewardInteractionFlags { get; } = new List<string>();
         public PgPlayerTitle RewardTitle { get; set; }
         public PgQuestRewardCurrencyCollection RewardsCurrencyList { get; } = new PgQuestRewardCurrencyCollection();
         public PgQuestRewardItemCollection QuestMidwayGiveItemList { get; } = new PgQuestRewardItemCollection();

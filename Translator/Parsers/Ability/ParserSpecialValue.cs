@@ -19,7 +19,7 @@
             return FinishItem(AsPgSpecialValue, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
         }
 
-        public bool FinishItem(PgSpecialValue item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgSpecialValue item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 

@@ -6,10 +6,10 @@
     {
         public int Damage { get { return RawDamage.HasValue ? RawDamage.Value : 0; } }
         public int? RawDamage { get; set; }
-        public int ExtraDamageIfTargetVulnerable { get { return RawExtraDamageIfTargetVulnerable.HasValue ? RawExtraDamageIfTargetVulnerable.Value : 0; } }
-        public int? RawExtraDamageIfTargetVulnerable { get; set; }
         public int HealthSpecificDamage { get { return RawHealthSpecificDamage.HasValue ? RawHealthSpecificDamage.Value : 0; } }
         public int? RawHealthSpecificDamage { get; set; }
+        public int ExtraDamageIfTargetVulnerable { get { return RawExtraDamageIfTargetVulnerable.HasValue ? RawExtraDamageIfTargetVulnerable.Value : 0; } }
+        public int? RawExtraDamageIfTargetVulnerable { get; set; }
         public int ArmorSpecificDamage { get { return RawArmorSpecificDamage.HasValue ? RawArmorSpecificDamage.Value : 0; } }
         public int? RawArmorSpecificDamage { get; set; }
         public int Range { get { return RawRange.HasValue ? RawRange.Value : 0; } }

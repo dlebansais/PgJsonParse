@@ -1,12 +1,225 @@
 ﻿namespace Translator
 {
     using PgJsonObjects;
+    using PgJsonReader;
+    using System.Collections.Generic;
+    using System.Diagnostics;
 
     public class ParserAbility : Parser
     {
         public override object CreateItem()
         {
             return new PgAbility();
+        }
+
+        public override bool FinishItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        {
+            if (!(item is PgAbility AsPgAbility))
+                return Program.ReportFailure("Unexpected failure");
+
+            return FinishItem(AsPgAbility, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+        }
+
+        private bool FinishItem(PgAbility item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        {
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                switch (Key)
+                {
+                    case "AbilityGroup":
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.AbilityGroup = valueAbility, Value);
+                        break;
+                    case "Animation":
+                        Result = Inserter<AbilityAnimation>.SetEnum((AbilityAnimation valueEnum) => item.Animation = valueEnum, Value);
+                        break;
+                    case "AttributesThatModAmmoConsumeChance":
+                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatModAmmoConsumeChanceList, Value);
+                        break;
+                    case "AttributesThatDeltaDelayLoopTime":
+                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatDeltaDelayLoopTimeList, Value);
+                        break;
+                    case "AttributesThatDeltaPowerCost":
+                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatDeltaPowerCostList, Value);
+                        break;
+                    case "AttributesThatDeltaResetTime":
+                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatDeltaResetTimeList, Value);
+                        break;
+                    case "AttributesThatModPowerCost":
+                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatModPowerCostList, Value);
+                        break;
+                    case "CanBeOnSidebar":
+                        Result = SetBoolProperty((bool valueBool) => item.RawCanBeOnSidebar = valueBool, Value);
+                        break;
+                    case "CanSuppressMonsterShout":
+                        Result = SetBoolProperty((bool valueBool) => item.RawCanSuppressMonsterShout = valueBool, Value);
+                        break;
+                    case "CanTargetUntargetableEnemies":
+                        Result = SetBoolProperty((bool valueBool) => item.RawCanTargetUntargetableEnemies = valueBool, Value);
+                        break;
+                    case "CausesOfDeath":
+                        Result = StringToEnumConversion<Deaths>.TryParseList(Value, item.CausesOfDeathList);
+                        break;
+                    case "Costs":
+                        Result = Inserter<PgRecipeCost>.AddKeylessArray(item.CostList, Value);
+                        break;
+                    case "CombatRefreshBaseAmount":
+                        Result = SetIntProperty((int valueInt) => item.RawCombatRefreshBaseAmount = valueInt, Value);
+                        break;
+                    case "DamageType":
+                        Result = Inserter<DamageType>.SetEnum((DamageType valueEnum) => item.DamageType = valueEnum, DamageType.Internal_None, DamageType.Internal_Empty, Value);
+                        break;
+                    case "DelayLoopIsAbortedIfAttacked":
+                        Result = SetBoolProperty((bool valueBool) => item.RawDelayLoopIsAbortedIfAttacked = valueBool, Value);
+                        break;
+                    case "DelayLoopMessage":
+                        Result = SetStringProperty((string valueString) => item.DelayLoopMessage = valueString, Value);
+                        break;
+                    case "DelayLoopTime":
+                        Result = SetFloatProperty((float valueFloat) => item.RawDelayLoopTime = valueFloat, Value);
+                        break;
+                    case "Description":
+                        Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
+                        break;
+                    case "EffectKeywordsIndicatingEnabled":
+                        Result = Inserter<AbilityIndicatingEnabled>.SetEnum((AbilityIndicatingEnabled valueEnum) => item.EffectKeywordsIndicatingEnabled = valueEnum, Value);
+                        break;
+                    case "ExtraKeywordsForTooltips":
+                        Result = Inserter<TooltipsExtraKeywords>.SetEnum((TooltipsExtraKeywords valueEnum) => item.ExtraKeywordsForTooltips = valueEnum, Value);
+                        break;
+                    case "IconID":
+                        Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
+                        break;
+                    case "IgnoreEffectErrors":
+                        Result = SetBoolProperty((bool valueBool) => item.RawIgnoreEffectErrors = valueBool, Value);
+                        break;
+                    case "InternalAbility":
+                        Result = SetBoolProperty((bool valueBool) => item.RawInternalAbility = valueBool, Value);
+                        break;
+                    case "InternalName":
+                        Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
+                        break;
+                    case "IsHarmless":
+                        Result = SetBoolProperty((bool valueBool) => item.RawIsHarmless = valueBool, Value);
+                        break;
+                    case "ItemKeywordReqErrorMessage":
+                        Result = SetStringProperty((string valueString) => item.ItemKeywordReqErrorMessage = valueString, Value);
+                        break;
+                    case "ItemKeywordReqs":
+                        Result = StringToEnumConversion<AbilityItemKeyword>.TryParseList(Value, item.ItemKeywordReqList);
+                        break;
+                    case "Keywords":
+                        Result = StringToEnumConversion<AbilityKeyword>.TryParseList(Value, item.KeywordList);
+                        break;
+                    case "Level":
+                        Result = SetIntProperty((int valueInt) => item.RawLevel = valueInt, Value);
+                        break;
+                    case "Name":
+                        Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
+                        break;
+                    case "PetTypeTagReq":
+                        Result = Inserter<AbilityPetType>.SetEnum((AbilityPetType valueEnum) => item.PetTypeTagReq = valueEnum, Value);
+                        break;
+                    case "PetTypeTagReqMax":
+                        Result = SetIntProperty((int valueInt) => item.RawPetTypeTagReqMax = valueInt, Value);
+                        break;
+                    case "Prerequisite":
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Prerequisite = valueAbility, Value);
+                        break;
+                    case "Projectile":
+                        Result = Inserter<AbilityProjectile>.SetEnum((AbilityProjectile valueEnum) => item.Projectile = valueEnum, Value);
+                        break;
+                    case "PvE":
+                        Result = Inserter<PgAbilityPvX>.SetItemProperty((PgAbilityPvX valueAbilityPvX) => item.PvE = valueAbilityPvX, Value);
+                        break;
+                    case "PvP":
+                        Result = Inserter<PgAbilityPvX>.SetItemProperty((PgAbilityPvX valueAbilityPvX) => item.PvP = valueAbilityPvX, Value);
+                        break;
+                    case "ResetTime":
+                        Result = SetFloatProperty((float valueFloat) => item.RawResetTime = valueFloat, Value);
+                        break;
+                    case "SelfParticle":
+                        Result = Inserter<SelfParticle>.SetEnum((SelfParticle valueEnum) => item.SelfParticle = valueEnum, Value);
+                        break;
+                    case "AmmoDescription":
+                        Result = SetStringProperty((string valueString) => item.AmmoDescription = valueString, Value);
+                        break;
+                    case "SharesResetTimerWith":
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.SharesResetTimerWith = valueAbility, Value);
+                        break;
+                    case "Skill":
+                        Result = ParseSkill(item, Value);
+                        break;
+                    case "SpecialCasterRequirements":
+                        Result = Inserter<PgAbilityRequirement>.AddKeylessArray(item.SpecialCasterRequirementList, Value);
+                        break;
+                    case "SpecialCasterRequirementsErrorMessage":
+                        Result = SetStringProperty((string valueString) => item.SpecialCasterRequirementsErrorMessage = valueString, Value);
+                        break;
+                    case "SpecialInfo":
+                        Result = SetStringProperty((string valueString) => item.SpecialInfo = valueString, Value);
+                        break;
+                    case "SpecialTargetingTypeReq":
+                        Result = SetIntProperty((int valueInt) => item.RawSpecialTargetingTypeReq = valueInt, Value);
+                        break;
+                    case "Target":
+                        Result = Inserter<AbilityTarget>.SetEnum((AbilityTarget valueEnum) => item.Target = valueEnum, Value);
+                        break;
+                    case "TargetEffectKeywordReq":
+                        Result = Inserter<TargetEffectKeyword>.SetEnum((TargetEffectKeyword valueEnum) => item.TargetEffectKeywordReq = valueEnum, Value);
+                        break;
+                    case "TargetParticle":
+                        Result = Inserter<AbilityTargetParticle>.SetEnum((AbilityTargetParticle valueEnum) => item.TargetParticle = valueEnum, Value);
+                        break;
+                    case "UpgradeOf":
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.UpgradeOf = valueAbility, Value);
+                        break;
+                    case "WorksInCombat":
+                        Result = SetBoolProperty((bool valueBool) => item.RawWorksInCombat = valueBool, Value);
+                        break;
+                    case "WorksUnderwater":
+                        Result = SetBoolProperty((bool valueBool) => item.RawWorksUnderwater = valueBool, Value);
+                        break;
+                    case "WorksWhileFalling":
+                        Result = SetBoolProperty((bool valueBool) => item.RawWorksWhileFalling = valueBool, Value);
+                        break;
+                    case "DelayLoopIsOnlyUsedInCombat":
+                        Result = SetBoolProperty((bool valueBool) => item.RawDelayLoopIsOnlyUsedInCombat = valueBool, Value);
+                        break;
+                    case "AmmoKeywords":
+                        Result = Inserter<PgAbilityAmmo>.AddKeylessArray(item.AmmoKeywordList, Value);
+                        break;
+                    case "AmmoConsumeChance":
+                        Result = SetFloatProperty((float valueFloat) => item.RawAmmoConsumeChance = valueFloat, Value);
+                        break;
+                    case "AmmoStickChance":
+                        Result = SetFloatProperty((float valueFloat) => item.RawAmmoStickChance = valueFloat, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Key not handled");
+                        break;
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            return Result;
+        }
+
+        private bool ParseSkill(PgAbility item, object value)
+        {
+            if (value is string AsString && AsString == "Unknown")
+            {
+                item.Skill = PgSkill.Unknown;
+                return true;
+            }
+            else
+                return Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.Skill = valueSkill, value);
         }
     }
 }

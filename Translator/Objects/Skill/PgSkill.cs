@@ -4,6 +4,8 @@
 
     public class PgSkill
     {
+        public static PgSkill Unknown { get; } = new PgSkill();
+
         public PowerSkill CombatSkill { get; set; }
         public bool HideWhenZero { get { return RawHideWhenZero.HasValue && RawHideWhenZero.Value; } }
         public bool? RawHideWhenZero { get; set; }
