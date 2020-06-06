@@ -380,17 +380,6 @@
         {
             { "RecipesThatUseItem", typeof(int[]) },
         };
-        /*
-        public static Dictionary<string, Type> TableLoreBookInfo = new Dictionary<string, Type>()
-        {
-            { "Gods", typeof(PgLoreBookInfoCategory) },
-            { "Misc", typeof(PgLoreBookInfoCategory) },
-            { "History", typeof(PgLoreBookInfoCategory) },
-            { "Plot", typeof(PgLoreBookInfoCategory) },
-            { "Stories", typeof(PgLoreBookInfoCategory) },
-            { "GuideProgram", typeof(PgLoreBookInfoCategory) },
-            { "NotesAndSigns", typeof(PgLoreBookInfoCategory) },
-        };*/
 
         public static Dictionary<string, Type> TableLoreBookInfoCategory = new Dictionary<string, Type>()
         {
