@@ -156,7 +156,7 @@
                     return Program.ReportFailure($"Value '{Item}' was expected to be a string");
 
                 if (!KeyTable.ContainsKey(ValueKey))
-                    return Program.ReportFailure($"Key '{Item} is not a known key");
+                    return Program.ReportFailure($"Key '{Item}' is not a known key");
 
                 if (!(KeyTable[ValueKey].Item is T AsLink))
                     return Program.ReportFailure($"Key '{Item}' was found but for the wrong object type");

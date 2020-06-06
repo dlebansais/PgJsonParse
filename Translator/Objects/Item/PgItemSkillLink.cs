@@ -1,10 +1,9 @@
 ﻿namespace PgJsonObjects
 {
+    using System.Collections.Generic;
+
     public class PgItemSkillLink
     {
-        public string SkillName { get; set; }
-        public int SkillLevel { get { return RawSkillLevel.HasValue ? RawSkillLevel.Value : 0; } }
-        public int? RawSkillLevel { get; set; }
-        public PgSkill Link { get; set; }
+        public Dictionary<PgSkill, int> SkillTable { get; } = new Dictionary<PgSkill, int>();
     }
 }

@@ -33,12 +33,84 @@
             { EffectParticle.OnFireGreen, "OnFire-Green"},
         };
 
+        public static readonly Dictionary<ItemKeyword, string> ItemKeywordTable = new Dictionary<ItemKeyword, string>()
+        {
+            { ItemKeyword.MinRarity_Uncommon, "MinRarity:Uncommon" },
+        };
+
+        public static readonly Dictionary<ItemUseVerb, string> ItemUseVerbTable = new Dictionary<ItemUseVerb, string>()
+        {
+            { ItemUseVerb.Place, "Place"},
+            { ItemUseVerb.Fill, "Fill"},
+            { ItemUseVerb.Drink, "Drink"},
+            { ItemUseVerb.Learn, "Learn"},
+            { ItemUseVerb.LearnWord, "Learn Word"},
+            { ItemUseVerb.BlowWhistle, "Blow Whistle"},
+            { ItemUseVerb.Read, "Read"},
+            { ItemUseVerb.Eat, "Eat"},
+            { ItemUseVerb.Delouse, "Delouse"},
+            { ItemUseVerb.RubGem, "Rub Gem"},
+            { ItemUseVerb.PlayGame, "Play Game"},
+            { ItemUseVerb.EmptyPurse, "Empty Purse"},
+            { ItemUseVerb.ActivateRune, "Activate Rune"},
+            { ItemUseVerb.EmptySack, "Empty Sack"},
+            { ItemUseVerb.ReadBook, "Read Book"},
+            { ItemUseVerb.Plant, "Plant"},
+            { ItemUseVerb.Appreciate, "Appreciate"},
+            { ItemUseVerb.Deploy, "Deploy"},
+            { ItemUseVerb.Appraise, "Appraise"},
+            { ItemUseVerb.StudyPoetry, "Study Poetry"},
+            { ItemUseVerb.LaunchFirework, "Launch Firework"},
+            { ItemUseVerb.PopConfetti, "Pop Confetti"},
+            { ItemUseVerb.BreakDown, "Break Down"},
+            { ItemUseVerb.Apply, "Apply"},
+            { ItemUseVerb.Swallow, "Swallow"},
+            { ItemUseVerb.Inhale, "Inhale"},
+            { ItemUseVerb.Inject, "Inject"},
+            { ItemUseVerb.Fish, "Fish"},
+            { ItemUseVerb.AgeCheese, "Age Cheese"},
+            { ItemUseVerb.AgeCream, "Age Cream"},
+            { ItemUseVerb.CheckSurvey, "Check Survey"},
+            { ItemUseVerb.CheckNotes, "Check Notes"},
+            { ItemUseVerb.CheckMap, "Check Map"},
+            { ItemUseVerb.Translate, "Translate"},
+            { ItemUseVerb.MemorizeWorkOrder, "Memorize Work Order"},
+            { ItemUseVerb.Equip, "Equip"},
+            { ItemUseVerb.HuddleForWarmth, "Huddle For Warmth"},
+            { ItemUseVerb.AgeLiquor, "Age Liquor"},
+            { ItemUseVerb.CleanOffDust, "Clean Off Dust" },
+            { ItemUseVerb.TakeSoilSample, "Take Soil Sample" },
+            { ItemUseVerb.EmptyBottle, "Empty Bottle" },
+            { ItemUseVerb.ObtainTitle, "Obtain Title" },
+            { ItemUseVerb.HugBear, "Hug Bear" },
+            { ItemUseVerb.HugMonkey, "Hug Monkey" },
+            { ItemUseVerb.Chew, "Chew" },
+            { ItemUseVerb.TakeWaterSample, "Take Water Sample" },
+            { ItemUseVerb.BreakIntoSmallerParts, "Break Into Smaller Parts" },
+            { ItemUseVerb.TurnIntoBoneMeal, "Turn into Bone Meal" },
+            { ItemUseVerb.OpenBagWithDyingBreath, "Open Bag With Dying Breath" },
+            { ItemUseVerb.Salvage, "Salvage" },
+            { ItemUseVerb.OpenCrate, "Open Crate" },
+        };
+
+        public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTable = new Dictionary<AppearanceSkin, string>()
+        {
+            { AppearanceSkin.Halloween_CofferItems, "Halloween-CofferItems" },
+            { AppearanceSkin.Medieval_Fruits, "Medieval-Fruits" },
+            { AppearanceSkin.Medieval_Vegetables, "Medieval-Vegetables" },
+            { AppearanceSkin.GF_Food, "GF-Food" },
+            { AppearanceSkin.GF_Dishes, "GF-Dishes" },
+        };
+
         public static Dictionary<Type, IDictionary> Tables = new Dictionary<Type, IDictionary>()
         {
             {  typeof(AbilityItemKeyword), AbilityItemKeywordTable },
             {  typeof(EffectStackingType), StackingTypeTable },
             {  typeof(EffectKeyword), EffectKeywordTable },
             {  typeof(EffectParticle), EffectParticleTable },
+            {  typeof(ItemKeyword), ItemKeywordTable },
+            {  typeof(ItemUseVerb), ItemUseVerbTable },
+            {  typeof(AppearanceSkin), AppearanceSkinTable },
         };
     }
 }

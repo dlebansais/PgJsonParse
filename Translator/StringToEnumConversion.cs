@@ -13,21 +13,21 @@
     public static class StringToEnumConversion<T>
     {
         #region Single
-        public static bool TryParse(string stringValue, out T enumValue)
+        public static bool TryParse(string stringValue, out T enumValue, ErrorControl errorControl = ErrorControl.Normal)
         {
             Dictionary<T, string> stringMap = EnumStringMap.Tables.ContainsKey(typeof(T)) ? (Dictionary<T, string>)EnumStringMap.Tables[typeof(T)] : null;
 
-            return TryParse(stringValue, stringMap, default(T), default(T), out enumValue);
+            return TryParse(stringValue, stringMap, default(T), default(T), out enumValue, errorControl);
         }
 
-        public static bool TryParse(string stringValue, T defaultValue, T emptyValue, out T enumValue)
+        public static bool TryParse(string stringValue, T defaultValue, T emptyValue, out T enumValue, ErrorControl errorControl = ErrorControl.Normal)
         {
             Dictionary<T, string> stringMap = EnumStringMap.Tables.ContainsKey(typeof(T)) ? (Dictionary<T, string>)EnumStringMap.Tables[typeof(T)] : null;
 
-            return TryParse(stringValue, stringMap, defaultValue, emptyValue, out enumValue);
+            return TryParse(stringValue, stringMap, defaultValue, emptyValue, out enumValue, errorControl);
         }
 
-        private static bool TryParse(string stringValue, Dictionary<T, string> stringMap, T defaultValue, T emptyValue, out T enumValue)
+        private static bool TryParse(string stringValue, Dictionary<T, string> stringMap, T defaultValue, T emptyValue, out T enumValue, ErrorControl errorControl)
         {
             enumValue = defaultValue;
 
@@ -67,18 +67,22 @@
                         return true;
                     }
 
-            if (!StringToEnumConversion.MissingEnumTable.ContainsKey(typeof(T)))
-                StringToEnumConversion.MissingEnumTable.Add(typeof(T), new List<string>());
+            if (errorControl == ErrorControl.Normal)
+            {
+                if (!StringToEnumConversion.MissingEnumTable.ContainsKey(typeof(T)))
+                    StringToEnumConversion.MissingEnumTable.Add(typeof(T), new List<string>());
 
+                List<string> MissingEnumList = StringToEnumConversion.MissingEnumTable[typeof(T)];
+                if (MissingEnumList.Contains(stringValue))
+                    MissingEnumList.Add(stringValue);
 
-            List<string> MissingEnumList = StringToEnumConversion.MissingEnumTable[typeof(T)];
-            if (MissingEnumList.Contains(stringValue))
-                MissingEnumList.Add(stringValue);
-
-            string Warning = $"Enum {stringValue} not found for {typeof(T)}"; 
-            //Debug.WriteLine(Warning);
-            //return true;
-            return Program.ReportFailure(Warning);
+                string Warning = $"Enum '{stringValue}' not found for {typeof(T)}";
+                //Debug.WriteLine(Warning);
+                //return true;
+                return Program.ReportFailure(Warning);
+            }
+            else
+                return false;
         }
 
         public static void SetCustomParsedEnum(T EnumValue)

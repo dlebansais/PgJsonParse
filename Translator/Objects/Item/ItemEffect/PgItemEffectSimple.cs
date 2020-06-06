@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgItemSimpleEffect : PgItemEffect
+    public class PgItemEffectSimple : PgItemEffect
     {
         public string Description { get; set; } = string.Empty;
     }
