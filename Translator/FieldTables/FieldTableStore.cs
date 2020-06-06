@@ -425,13 +425,13 @@
         {
             { "Prefix", typeof(string) },
             { "Suffix", typeof(string) },
-            { "Tiers", typeof(PgPowerTier) },
+            { "Tiers", typeof(PgPowerTierList) },
             { "Slots", typeof(string[]) },
             { "Skill", typeof(string) },
             { "IsUnavailable", typeof(bool) },
         };
 
-        public static Dictionary<string, Type> TablePowerEffect = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TablePowerTier = new Dictionary<string, Type>()
         {
             { "EffectDescs", typeof(string[]) },
             { "SkillLevelPrereq", typeof(int) },
@@ -722,8 +722,8 @@
             { typeof(PgNpcPreference), new FixedFieldTable(TableNpcPreference) },
             { typeof(PgPlayerTitle), new FixedFieldTable(TablePlayerTitle) },
             { typeof(PgPower), new FixedFieldTable(TablePower) },
-            { typeof(PgPowerTier), new VariadicFieldTable(typeof(PgPowerEffect)) },
-            { typeof(PgPowerEffect), new FixedFieldTable(TablePowerEffect) },
+            { typeof(PgPowerTierList), new VariadicFieldTable(typeof(PgPowerTier)) },
+            { typeof(PgPowerTier), new FixedFieldTable(TablePowerTier) },
             { typeof(PgQuest), new FixedFieldTable(TableQuest) },
             { typeof(PgQuestRequirement), new FixedFieldTable(TableQuestRequirement) },
             { typeof(PgQuestObjective), new FixedFieldTable(TableQuestObjective) },

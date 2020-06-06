@@ -60,7 +60,7 @@
                         Result = ParseDroppedAppearance(item, Value, parsedFile, parsedKey);
                         break;
                     case "EffectDescs":
-                        Result = ParseEffectDescriptionList(item, Value, parsedFile, parsedKey);
+                        Result = ParseEffectDescriptionList(item.EffectDescriptionList, Value, parsedFile, parsedKey);
                         break;
                     case "DyeColor":
                         Result = ParseDyeColor(item, Value, parsedFile, parsedKey);
@@ -258,7 +258,7 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"Unknown color in dropped appaearance detail '{detailValue}'");
         }
 
-        private bool ParseEffectDescriptionList(PgItem item, object value, string parsedFile, string parsedKey)
+        public static bool ParseEffectDescriptionList(PgItemEffectCollection effectDescriptionList, object value, string parsedFile, string parsedKey)
         {
             if (!(value is List<object> ObjectList))
                 return Program.ReportFailure($"Value '{value}' was expected to be a list");
@@ -268,20 +268,20 @@
                 if (!(Item is string EffectDescription))
                     return Program.ReportFailure($"Value '{Item}' was expected to be a string");
 
-                if (!ParseEffectDescription(item, EffectDescription, parsedFile, parsedKey))
+                if (!ParseEffectDescription(effectDescriptionList, EffectDescription, parsedFile, parsedKey))
                     return false;
             }
 
             return true;
         }
 
-        private bool ParseEffectDescription(PgItem item, string effectDescription, string parsedFile, string parsedKey)
+        private static bool ParseEffectDescription(PgItemEffectCollection effectDescriptionList, string effectDescription, string parsedFile, string parsedKey)
         {
             PgItemEffect ItemEffect;
             if (effectDescription.StartsWith("{") && effectDescription.EndsWith("}"))
             {
                 string EffectString = effectDescription.Substring(1, effectDescription.Length - 2);
-                if (!ParseItemEffectAttribute(item, EffectString, parsedFile, parsedKey, out ItemEffect))
+                if (!ParseItemEffectAttribute(EffectString, parsedFile, parsedKey, out ItemEffect))
                     return Program.ReportFailure(parsedFile, parsedKey, $"Invalid attribute format '{EffectString}'");
             }
             else if (effectDescription.Contains("{") || effectDescription.Contains("}"))
@@ -289,11 +289,11 @@
             else
                 ItemEffect = new PgItemEffectSimple() { Description = effectDescription };
 
-            item.EffectDescriptionList.Add(ItemEffect);
+            effectDescriptionList.Add(ItemEffect);
             return true;
         }
 
-        private static bool ParseItemEffectAttribute(PgItem item, string effectString, string parsedFile, string parsedKey, out PgItemEffect itemEffect)
+        private static bool ParseItemEffectAttribute(string effectString, string parsedFile, string parsedKey, out PgItemEffect itemEffect)
         {
             itemEffect = null;
 

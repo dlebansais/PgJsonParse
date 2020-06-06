@@ -178,9 +178,10 @@
     <Compile Include="Objects\Npc\PgNpc.cs" />
     <Compile Include="Objects\PlayerTitle\PgPlayerTitle.cs" />
     <Compile Include="Enums\TitleKeyword.cs" />
+    <Compile Include="Objects\Power\PgPowerTierList.cs" />
     <Compile Include="Objects\Power\PgPowerTier.cs" />
     <Compile Include="Objects\Power\PgPower.cs" />
-    <Compile Include="Objects\Power\PgPowerTierCollection.cs" />
+    <Compile Include="Objects\Power\PgPowerTierDictionary.cs" />
     <Compile Include="Objects\Power\PgPowerEffect.cs" />
     <Compile Include="Objects\Power\PgPowerEffectCollection.cs" />
     <Compile Include="Objects\Power\PowerEffect\PgPowerEffectAttribute.cs" />
@@ -289,7 +290,7 @@
     <Compile Include="Parsers\Parser.cs" />
     <Compile Include="Parsers\ParsingContext.cs" />
     <Compile Include="Parsers\PlayerTitle\ParserPlayerTitle.cs" />
-    <Compile Include="Parsers\Power\ParserPowerEffect.cs" />
+    <Compile Include="Parsers\Power\ParserPowerTierList.cs" />
     <Compile Include="Parsers\Power\ParserPowerTier.cs" />
     <Compile Include="Parsers\Power\ParserPower.cs" />
     <Compile Include="Parsers\Quest\ParserQuestRewardItem.cs" />
