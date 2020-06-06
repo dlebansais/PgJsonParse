@@ -67,7 +67,7 @@
                         Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

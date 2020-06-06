@@ -349,7 +349,7 @@
                         Result = ParseBoostIndirect(item, DamageType.Trauma, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

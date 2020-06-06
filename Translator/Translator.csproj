@@ -81,7 +81,6 @@
     <Compile Include="Enums\ItemDroppedAppearance.cs" />
     <Compile Include="Enums\ItemSlot.cs" />
     <Compile Include="Enums\ItemKeyword.cs" />
-    <Compile Include="Enums\LoreBookCategory.cs" />
     <Compile Include="Enums\LoreBookKeyword.cs" />
     <Compile Include="Enums\LoreBookVisibility.cs" />
     <Compile Include="Enums\MapAreaName.cs" />
@@ -170,6 +169,7 @@
     <Compile Include="Objects\Item\PgItemEffect.cs" />
     <Compile Include="Objects\Item\PgItemEffectCollection.cs" />
     <Compile Include="Objects\Item\PgItem.cs" />
+    <Compile Include="Objects\LoreBook\PgLoreBookInfoCategoryCollection.cs" />
     <Compile Include="Objects\LoreBook\PgLoreBookInfoCategory.cs" />
     <Compile Include="Objects\LoreBook\PgLoreBookInfo.cs" />
     <Compile Include="Objects\LoreBook\PgLoreBook.cs" />

@@ -55,7 +55,7 @@
                         Result = StringToEnumConversion<Race>.TryParseList(Value, item.ForRaceList);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

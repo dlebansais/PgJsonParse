@@ -52,7 +52,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawCueValue = valueInt, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

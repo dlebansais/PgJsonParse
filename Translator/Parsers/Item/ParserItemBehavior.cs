@@ -49,7 +49,7 @@
                         Result = SetFloatProperty((float valueFloat) => item.RawUseDelay = valueFloat, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

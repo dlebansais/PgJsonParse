@@ -34,7 +34,7 @@
                         Result = ParseRecipesThatUseItem(item, Value, parsedFile, parsedKey);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

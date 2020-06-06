@@ -55,7 +55,7 @@
                         Result = SetStringProperty((string valueString) => item.Preface = valueString, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

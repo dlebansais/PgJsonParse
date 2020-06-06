@@ -55,7 +55,7 @@
                         Result = SetBoolProperty((bool valueBool) => item.RawSkipIfZero = valueBool, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

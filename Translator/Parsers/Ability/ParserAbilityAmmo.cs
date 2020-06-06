@@ -37,7 +37,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawCount = valueInt, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

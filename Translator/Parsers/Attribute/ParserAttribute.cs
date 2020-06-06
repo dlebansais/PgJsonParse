@@ -52,7 +52,7 @@
                         Result = SetFloatProperty((float valueFloat) => item.RawDefaultValue = valueFloat, Value);
                         break;
                     default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
                 }
 

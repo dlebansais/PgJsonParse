@@ -380,7 +380,7 @@
         {
             { "RecipesThatUseItem", typeof(int[]) },
         };
-
+        /*
         public static Dictionary<string, Type> TableLoreBookInfo = new Dictionary<string, Type>()
         {
             { "Gods", typeof(PgLoreBookInfoCategory) },
@@ -390,7 +390,7 @@
             { "Stories", typeof(PgLoreBookInfoCategory) },
             { "GuideProgram", typeof(PgLoreBookInfoCategory) },
             { "NotesAndSigns", typeof(PgLoreBookInfoCategory) },
-        };
+        };*/
 
         public static Dictionary<string, Type> TableLoreBookInfoCategory = new Dictionary<string, Type>()
         {
@@ -726,7 +726,7 @@
             { typeof(PgItemSkillLink), new VariadicFieldTable(typeof(int)) },
             { typeof(PgItemBehavior), new FixedFieldTable(TableItemBehavior) },
             { typeof(PgItemUse), new FixedFieldTable(TableItemUse) },
-            { typeof(PgLoreBookInfo), new FixedFieldTable(TableLoreBookInfo) },
+            { typeof(PgLoreBookInfo), new VariadicFieldTable(typeof(PgLoreBookInfoCategory)) },
             { typeof(PgLoreBookInfoCategory), new FixedFieldTable(TableLoreBookInfoCategory) },
             { typeof(PgLoreBook), new FixedFieldTable(TableLoreBook) },
             { typeof(PgNpc), new FixedFieldTable(TableNpc) },

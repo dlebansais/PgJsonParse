@@ -182,7 +182,7 @@
                             Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -222,7 +222,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -262,7 +262,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -305,7 +305,7 @@
                             Result = Inserter<DisallowedState>.SetEnum((DisallowedState valueEnum) => NewItem.DisallowedState = valueEnum, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -351,7 +351,7 @@
                             Result = Inserter<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.PetTypeTag = valueEnum, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -394,7 +394,7 @@
                             Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe = valueRecipe, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -434,7 +434,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -474,7 +474,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -517,7 +517,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.Name = valueString, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -560,7 +560,7 @@
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -600,7 +600,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -640,7 +640,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -689,7 +689,7 @@
                             Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -732,7 +732,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.InteractionFlag = valueString, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -772,7 +772,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -812,7 +812,7 @@
                         case "T":
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
@@ -855,7 +855,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.Name = valueString, Value);
                             break;
                         default:
-                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}'not handled");
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                             break;
                     }
                 }
