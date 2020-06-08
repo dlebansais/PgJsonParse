@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgQuestRewardXp : PgQuestReward
+    public class PgQuestRewardSkillXp : PgQuestReward
     {
         public Dictionary<PgSkill, int> XpTable { get; } = new Dictionary<PgSkill, int>();
     }

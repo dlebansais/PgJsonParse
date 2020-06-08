@@ -62,16 +62,16 @@
                         Result = Inserter<PgQuestObjective>.AddKeylessArray(item.QuestObjectiveList, Value);
                         break;
                     case "Rewards_XP":
-                        Result = Inserter<PgQuestRewardXp>.AddKeylessArray(item.RewardsXPList, Value);
+                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
                         break;
                     case "Rewards_Currency":
-                        Result = Inserter<PgQuestRewardCurrency>.AddKeylessArray(item.RewardsCurrencyList, Value);
+                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
                         break;
                     case "Rewards_Items":
-                        Result = Inserter<PgQuestRewardItem>.AddKeylessArray(item.QuestRewardsItemList, Value);
+                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
                         break;
                     case "Reward_CombatXP":
-                        Result = SetIntProperty((int valueInt) => item.RawRewardCombatXP = valueInt, Value);
+                        Result = SetIntProperty((int valueInt) => item.QuestRewardList.Add(new PgQuestRewardCombatXp() { RawXp = valueInt }), Value);
                         break;
                     case "FavorNpc":
                         Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.FavorNpc = npcLocation, Value, parsedFile, parsedKey);
@@ -89,10 +89,10 @@
                         Result = Inserter<Favor>.SetEnum((Favor valueEnum) => item.PrerequisiteFavorLevel = valueEnum, Value);
                         break;
                     case "Rewards_Favor":
-                        Result = SetIntProperty((int valueInt) => item.RawRewardFavor = valueInt, Value);
+                        Result = SetIntProperty((int valueInt) => item.QuestRewardList.Add(new PgQuestRewardFavor() { RawFavor = valueInt }), Value);
                         break;
                     case "Rewards_Recipes":
-                        Result = Inserter<PgRecipe>.AddArrayByInternalName(item.RewardRecipeList, Value);
+                        Result = ParseRewardRecipes(item, Value, parsedFile, parsedKey);
                         break;
                     case "Rewards_Ability":
                         Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.RewardAbility = valueAbility, Value);
@@ -101,19 +101,19 @@
                         Result = Inserter<PgQuestRequirement>.AddKeylessArray(item.QuestRequirementList, Value);
                         break;
                     case "Reward_Favor":
-                        Result = SetIntProperty((int valueInt) => item.RawRewardFavor = valueInt, Value);
+                        Result = SetIntProperty((int valueInt) => item.QuestRewardList.Add(new PgQuestRewardFavor() { RawFavor = valueInt }), Value);
                         break;
                     case "Rewards":
                         Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
                         break;
                     case "PreGiveItems":
-                        Result = Inserter<PgQuestRewardItem>.AddKeylessArray(item.PreGiveItemList, Value);
+                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.PreGiveItemList, Value);
                         break;
                     case "TSysLevel":
                         Result = SetIntProperty((int valueInt) => item.RawTSysLevel = valueInt, Value);
                         break;
                     case "Reward_Gold":
-                        Result = SetIntProperty((int valueInt) => item.RawRewardGold = valueInt, Value);
+                        Result = SetIntProperty((int valueInt) => item.QuestRewardList.Add(new PgQuestRewardCurrency() { Currency = Currency.Gold, RawAmount = valueInt }), Value);
                         break;
                     case "Rewards_NamedLootProfile":
                         Result = SetStringProperty((string valueString) => item.RewardsNamedLootProfile = valueString, Value);
@@ -158,7 +158,7 @@
                         Result = ParsePreGiveEffects(item, Value, parsedFile, parsedKey);
                         break;
                     case "MidwayGiveItems":
-                        Result = Inserter<PgQuestRewardItem>.AddKeylessArray(item.QuestMidwayGiveItemList, Value);
+                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestMidwayGiveItemList, Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -170,6 +170,30 @@
             }
 
             return Result;
+        }
+
+        private bool ParseRewardRecipes(PgQuest item, object value, string parsedFile, string parsedKey)
+        {
+            if (!(value is List<object> ArrayKey))
+                return Program.ReportFailure($"Value '{value}' was expected to be a list");
+
+            Dictionary<string, ParsingContext> KeyTable = ParsingContext.ObjectInternalNameTable[typeof(PgRecipe)];
+
+            foreach (object Item in ArrayKey)
+            {
+                if (!(Item is string ValueKey))
+                    return Program.ReportFailure($"Value '{Item}' was expected to be a string");
+
+                if (!KeyTable.ContainsKey(ValueKey))
+                    return Program.ReportFailure($"Key '{Item}' is not a known Internal Name");
+
+                if (!(KeyTable[ValueKey].Item is PgRecipe AsLink))
+                    return Program.ReportFailure($"Key '{Item}' was found but for the wrong object type");
+
+                item.QuestRewardList.Add(new PgQuestRewardRecipe() { Recipe = AsLink });
+            }
+
+            return true;
         }
 
         private bool ParseRewardEffects(PgQuest item, object value, string parsedFile, string parsedKey)
@@ -205,7 +229,7 @@
                     Result = ParseRewardEffectSetInteractionFlag(item, EffectParameter, parsedFile, parsedKey);
                     break;
                 case "EnsureLoreBookKnown":
-                    Result = Inserter<PgLoreBook>.SetItemByInternalName((PgLoreBook valueLoreBook) => item.RewardLoreBook = valueLoreBook, EffectParameter);
+                    Result = Inserter<PgLoreBook>.SetItemByInternalName((PgLoreBook valueLoreBook) => item.QuestRewardList.Add(new PgQuestRewardLoreBook() { LoreBook = valueLoreBook }), EffectParameter);
                     break;
                 case "BestowTitle":
                     Result = ParseRewardEffectBestowTitle(item, EffectParameter, parsedFile, parsedKey);
@@ -228,7 +252,7 @@
                 default:
                     Result = Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => ParsedEffect = valueEffect, effectString);
                     if (Result)
-                        item.RewardEffectList.Add(ParsedEffect);
+                        item.QuestRewardList.Add(new PgQuestRewardEffect() { Effect = ParsedEffect });
                     break;
             }
 
@@ -249,7 +273,7 @@
             if (ParserPlayerTitle.TitleToKeyMap.ContainsKey(effectParameter))
                 effectParameter = ParserPlayerTitle.TitleToKeyMap[effectParameter];
 
-            return Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => item.RewardTitle = valuePlayerTitle, effectParameter);
+            return Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => item.QuestRewardList.Add(new PgQuestRewardPlayerTitle() { PlayerTitle = valuePlayerTitle }), effectParameter);
         }
 
         private bool ParseRewardEffectAdvanceScriptedQuestObjective(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
@@ -277,9 +301,9 @@
             if (!int.TryParse(Split[1], out int XpValue))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Skill XP reward '{effectParameter}': int expected");
 
-            PgQuestRewardXp NewReward = new PgQuestRewardXp();
+            PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp();
             NewReward.XpTable.Add(ParsedSkill, XpValue);
-            item.RewardsXPList.Add(NewReward);
+            item.QuestRewardList.Add(NewReward);
             return true;
         }
 
@@ -301,7 +325,7 @@
                 return false;
 
             NewReward.RawFavor = FavorValue;
-            item.RewardsFavorList.Add(NewReward);
+            item.QuestRewardList.Add(NewReward);
             return true;
         }
 
@@ -323,7 +347,7 @@
             PgQuestRewardLevel NewReward = new PgQuestRewardLevel();
             NewReward.Skill = ParsedSkill;
             NewReward.RawLevel = LevelValue;
-            item.RewardsLevelList.Add(NewReward);
+            item.QuestRewardList.Add(NewReward);
             return true;
         }
 

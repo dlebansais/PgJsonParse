@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgQuestRewardLevel
+    public class PgQuestRewardLevel : PgQuestReward
     {
         public PgSkill Skill { get; set; }
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }

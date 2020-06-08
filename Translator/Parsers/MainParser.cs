@@ -44,7 +44,7 @@
             { typeof(PgQuestRequirement), new ParserQuestRequirement() },
             { typeof(PgQuestObjective), new ParserQuestObjective() },
             { typeof(PgQuestObjectiveRequirement), new ParserQuestObjectiveRequirement() },
-            { typeof(PgQuestRewardXp), new ParserQuestRewardXp() },
+            { typeof(PgQuestRewardSkillXp), new ParserQuestRewardSkillXp() },
             { typeof(PgQuestRewardCurrency), new ParserQuestRewardCurrency() },
             { typeof(PgQuestRewardItem), new ParserQuestRewardItem() },
             { typeof(PgQuestReward), new ParserQuestReward() },

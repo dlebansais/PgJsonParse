@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgQuestRewardFavor
+    public class PgQuestRewardFavor : PgQuestReward
     {
         public int Favor { get { return RawFavor.HasValue ? RawFavor.Value : 0; } }
         public int? RawFavor { get; set; }

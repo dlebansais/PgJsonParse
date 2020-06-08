@@ -4,22 +4,22 @@
     using PgJsonReader;
     using System.Collections.Generic;
 
-    public class ParserQuestRewardXp : Parser
+    public class ParserQuestRewardSkillXp : Parser
     {
         public override object CreateItem()
         {
-            return new PgQuestRewardXp();
+            return new PgQuestRewardSkillXp();
         }
 
         public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgQuestRewardXp AsPgQuestRewardXp))
+            if (!(item is PgQuestRewardSkillXp AsPgQuestRewardSkillXp))
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgQuestRewardXp, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgQuestRewardSkillXp, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgQuestRewardXp item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgQuestRewardSkillXp item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
         {
             foreach (KeyValuePair<string, object> Entry in contentTable)
             {

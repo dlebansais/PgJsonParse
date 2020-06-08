@@ -4,7 +4,6 @@
     using PgJsonReader;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Windows.Media.Converters;
 
     public class ParserQuestObjective : Parser
     {
@@ -127,6 +126,9 @@
 
             switch (key)
             {
+                case "Description":
+                    Result = SetStringProperty((string valueString) => item.Description = valueString, value);
+                    break;
                 case "IsHiddenUntilEarlierObjectivesComplete":
                     Result = SetBoolProperty((bool valueBool) => item.RawMustCompleteEarlierObjectivesFirst = valueBool, value);
                     break;
@@ -171,15 +173,13 @@
                         case "Target":
                             Result = Inserter<QuestObjectiveKillTarget>.SetEnum((QuestObjectiveKillTarget valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "AbilityKeyword":
                             Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                         case "InternalName":
@@ -225,12 +225,10 @@
                     {
                         case "Type":
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
                             break;
+                        case "Description":
                         case "IsHiddenUntilEarlierObjectivesComplete":
                         case "GroupId":
                         case "Number":
@@ -276,12 +274,10 @@
                     {
                         case "Type":
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "InteractionFlags":
                             Result = ParseInteractionFlags(NewItem.InteractionFlagList, Value, parsedFile, parsedKey);
                             break;
+                        case "Description":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -328,12 +324,10 @@
                         case "Target":
                             Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ItemTarget = valueEnum, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                         case "InternalName":
@@ -382,12 +376,10 @@
                         case "Target":
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "InteractionFlag":
                             Result = SetStringProperty((string valueString) => NewItem.InteractionFlag = valueString, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -435,15 +427,13 @@
                         case "Target":
                             Result = Inserter<PgQuestObjectiveDeliver>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
                         case "NumToDeliver":
                             Result = SetIntProperty((int valueInt) => NewItem.RawNumToDeliver = valueInt, Value);
                             break;
+                        case "Description":
                         case "IsHiddenUntilEarlierObjectivesComplete":
                         case "Number":
                         case "InternalName":
@@ -492,12 +482,10 @@
                         case "Target":
                             Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ItemTarget = valueEnum, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -545,15 +533,13 @@
                         case "Target":
                             Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ItemTarget = valueEnum, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -598,12 +584,10 @@
                     {
                         case "Type":
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "MinAmount":
                             Result = SetIntProperty((int valueInt) => NewItem.RawMinAmount = valueInt, Value);
                             break;
+                        case "Description":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -650,9 +634,6 @@
                         case "Target":
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "MinAmount":
                             Result = SetIntProperty((int valueInt) => NewItem.RawMinAmount = valueInt, Value);
                             break;
@@ -665,6 +646,7 @@
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -709,15 +691,13 @@
                     {
                         case "Type":
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "MinFavorReceived":
                             Result = SetFloatProperty((float valueFloat) => NewItem.RawMinFavorReceived = valueFloat, Value);
                             break;
                         case "MaxFavorReceived":
                             Result = SetFloatProperty((float valueFloat) => NewItem.RawMaxFavorReceived = valueFloat, Value);
                             break;
+                        case "Description":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -764,15 +744,13 @@
                         case "Target":
                             Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ItemTarget = valueEnum, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -820,15 +798,13 @@
                         case "Target":
                             Result = Inserter<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.RecipeTarget = valueEnum, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "Skill":
                             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill = valueSkill, Value);
                             break;
                         case "ResultItemKeyword":
                             Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ResultItemKeyword = valueEnum, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -877,8 +853,6 @@
                             Result = Inserter<QuestObjectiveKillTarget>.SetEnum((QuestObjectiveKillTarget valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -926,11 +900,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
                         case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -977,12 +947,10 @@
                         case "Target":
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "AnatomyType":
                             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill = valueSkill, $"Anatomy_{Value}");
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -1030,12 +998,10 @@
                         case "Target":
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "AnatomyType":
                             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill = valueSkill, $"Anatomy_{Value}");
                             break;
+                        case "Description":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -1083,8 +1049,6 @@
                             Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.AbilityTarget = valueEnum, Value);
                             break;
                         case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -1132,8 +1096,6 @@
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
                         case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -1181,15 +1143,13 @@
                         case "Target":
                             Result = Inserter<PgQuestObjectiveDeliver>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
                         case "ItemKeyword":
                             Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ItemKeyword = valueEnum, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -1238,8 +1198,6 @@
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
                         case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -1288,8 +1246,6 @@
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
                         case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -1338,8 +1294,6 @@
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
                         case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -1386,15 +1340,13 @@
                         case "Target":
                             Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ItemTarget = valueEnum, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
                         case "MonsterTypeTag":
                             Result = Inserter<MonsterTypeTag>.SetEnum((MonsterTypeTag valueEnum) => NewItem.MonsterTypeTag = valueEnum, Value);
                             break;
+                        case "Description":
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
@@ -1442,12 +1394,10 @@
                         case "Target":
                             Result = Inserter<PgQuestObjectiveScriptedReceiveItem>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "Item":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
+                        case "Description":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -1494,12 +1444,10 @@
                         case "Target":
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
-                        case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "AbilityKeyword":
                             Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
+                        case "Description":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
@@ -1547,8 +1495,6 @@
                             Result = SetStringProperty((string valueString) => NewItem.InteractionTarget = valueString, Value);
                             break;
                         case "Description":
-                            Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
-                            break;
                         case "IsHiddenUntilEarlierObjectivesComplete":
                         case "GroupId":
                         case "Number":

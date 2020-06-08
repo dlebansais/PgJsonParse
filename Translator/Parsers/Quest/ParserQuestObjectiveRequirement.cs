@@ -99,8 +99,6 @@
                         case "MaxHour":
                             Result = SetIntProperty((int valueInt) => NewItem.RawMaxHour = valueInt, Value);
                             break;
-                        //case "Keyword":
-                        //case "Appearance":
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
                             break;
