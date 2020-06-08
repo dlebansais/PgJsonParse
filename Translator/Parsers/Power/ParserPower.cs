@@ -43,7 +43,7 @@
                         Result = StringToEnumConversion<ItemSlot>.TryParseList(Value, item.SlotList);
                         break;
                     case "Skill":
-                        Result = ParseSkill(item, Value, parsedFile, parsedKey);
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill = valueSkill, Value, parsedFile, parsedKey);
                         break;
                     case "IsUnavailable":
                         Result = SetBoolProperty((bool valueBool) => item.RawIsUnavailable = valueBool, Value);
@@ -58,25 +58,6 @@
             }
 
             return Result;
-        }
-
-        public static bool ParseSkill(PgPower item, object value, string parsedFile, string parsedKey)
-        {
-            if (!(value is string ValueKey))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-            if (ValueKey == "Unknown")
-            {
-                item.Skill = PgSkill.Unknown;
-                return true;
-            }
-            else if (ValueKey == "AnySkill")
-            {
-                item.Skill = PgSkill.AnySkill;
-                return true;
-            }
-            else
-                return Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.Skill = valueSkill, value);
         }
     }
 }

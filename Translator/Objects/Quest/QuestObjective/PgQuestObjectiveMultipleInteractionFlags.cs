@@ -4,6 +4,6 @@
 
     public class PgQuestObjectiveMultipleInteractionFlags : PgQuestObjective
     {
-        public List<string> InteractionFlagList { get; set; }
+        public List<string> InteractionFlagList { get; set; } = new List<string>();
     }
 }

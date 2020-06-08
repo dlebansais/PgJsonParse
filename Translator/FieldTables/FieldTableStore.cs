@@ -445,13 +445,13 @@
             { "Version", typeof(int) },
             { "RequirementsToSustain", typeof(PgQuestRequirement[]) },
             { "ReuseTime_Minutes", typeof(int) },
+            { "ReuseTime_Hours", typeof(int) },
+            { "ReuseTime_Days", typeof(int) },
             { "IsCancellable", typeof(bool) },
             { "Objectives", typeof(PgQuestObjective[]) },
             { "Rewards_XP", typeof(PgQuestRewardXp) },
             { "Rewards_Currency", typeof(PgQuestRewardCurrency) },
             { "Rewards_Items", typeof(PgQuestRewardItem[]) },
-            { "ReuseTime_Days", typeof(int) },
-            { "ReuseTime_Hours", typeof(int) },
             { "Reward_CombatXP", typeof(int) },
             { "FavorNpc", typeof(string) },
             { "PrefaceText", typeof(string) },
@@ -748,7 +748,23 @@
             { typeof(PgXpTable), new FixedFieldTable(TableXpTable) },
         };
 
+        private static List<Type> TypeWithNameList = new List<Type>()
+        {
+            typeof(PgEffect),
+        };
+
+        private static List<Type> TypeWithInternalNameList = new List<Type>()
+        {
+            typeof(PgAbility),
+            typeof(PgItem),
+            typeof(PgLoreBook),
+            typeof(PgQuest),
+            typeof(PgRecipe),
+        };
+
         private static List<Type> UsedTableList = new List<Type>();
+        private static List<Type> UsedNameList = new List<Type>();
+        private static List<Type> UsedInternalNameList = new List<Type>();
 
         public static bool GetTable(Type type, out FieldTable table)
         {
@@ -766,15 +782,51 @@
             return true;
         }
 
+        public static bool IsTypeWithName(Type type)
+        {
+            if (!TypeWithNameList.Contains(type))
+                return false;
+
+            if (!UsedNameList.Contains(type))
+                UsedNameList.Add(type);
+
+            return true;
+        }
+
+        public static bool IsTypeWithInternalName(Type type)
+        {
+            if (!TypeWithInternalNameList.Contains(type))
+                return false;
+
+            if (!UsedInternalNameList.Contains(type))
+                UsedInternalNameList.Add(type);
+
+            return true;
+        }
+
         public static bool VerifyTablesCompletion()
+        {
+            if (!VerifyTablesCompletion(Tables, UsedTableList))
+                return false;
+
+            if (!VerifyTablesCompletion(TypeWithNameList, UsedNameList))
+                return false;
+
+            if (!VerifyTablesCompletion(TypeWithInternalNameList, UsedInternalNameList))
+                return false;
+
+            return true;
+        }
+
+        public static bool VerifyTablesCompletion(Dictionary<Type, FieldTable> table, List<Type> usedList)
         {
             bool Result = true;
 
-            foreach (KeyValuePair<Type, FieldTable> Entry in Tables)
+            foreach (KeyValuePair<Type, FieldTable> Entry in table)
             {
                 Type Key = Entry.Key;
 
-                if (!UsedTableList.Contains(Key))
+                if (!usedList.Contains(Key))
                 {
                     Debug.WriteLine($"Type {Key} was not used during parsing");
                     Result = false;
@@ -783,6 +835,20 @@
 
                 Result &= Entry.Value.VerifyTableCompletion(Key);
             }
+
+            return Result;
+        }
+
+        public static bool VerifyTablesCompletion(List<Type> list, List<Type> usedList)
+        {
+            bool Result = true;
+
+            foreach (Type Key in list)
+                if (!usedList.Contains(Key))
+                {
+                    Debug.WriteLine($"Type {Key} was not used during parsing");
+                    Result = false;
+                }
 
             return Result;
         }

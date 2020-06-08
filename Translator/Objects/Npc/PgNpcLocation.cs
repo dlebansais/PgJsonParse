@@ -1,0 +1,11 @@
+﻿namespace PgJsonObjects
+{
+    public class PgNpcLocation
+    {
+        public MapAreaName NpcArea { get; set; }
+        public string NpcId { get; set; } = string.Empty;
+        public PgNpc Npc { get; set; }
+        public SpecialNpc NpcEnum { get; set; }
+        public string NpcName { get; set; } = string.Empty;
+    }
+}

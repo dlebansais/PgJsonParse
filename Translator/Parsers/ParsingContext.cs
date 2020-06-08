@@ -52,14 +52,16 @@
 
             if (ObjectKey.Length > 0)
             {
-                if (!KeyedObjectTable.ContainsKey(ObjectType))
-                    KeyedObjectTable.Add(ObjectType, new Dictionary<string, ParsingContext>());
+                if (!RecordContextInStringTable(ObjectKeyTable, ObjectKey, ErrorControl.Normal))
+                    return false;
 
-                Dictionary<string, ParsingContext> KeyTable = KeyedObjectTable[ObjectType];
-                if (KeyTable.ContainsKey(ObjectKey))
-                    return Program.ReportFailure($"Key '{ObjectKey}' already used for type '{ObjectType}'");
+                if (ContentTable.ContainsKey("Name") && FieldTableStore.IsTypeWithName(ObjectType))
+                    if (!RecordContextInStringTable(ObjectNameTable, ContentTable["Name"], ErrorControl.IgnoreIfFound))
+                        return false;
 
-                KeyTable.Add(ObjectKey, this);
+                if (ContentTable.ContainsKey("InternalName") && FieldTableStore.IsTypeWithInternalName(ObjectType))
+                    if (!RecordContextInStringTable(ObjectInternalNameTable, ContentTable["InternalName"], ErrorControl.Normal))
+                        return false;
             }
             else
             {
@@ -69,6 +71,49 @@
                 List<ParsingContext> TypedContextList = KeylessObjectTable[ObjectType];
                 TypedContextList.Add(this);
             }
+
+            if (ContentTable.ContainsKey("Id"))
+                if (!RecordContextInIntTable(ObjectIdTable, ContentTable["Id"]))
+                    return false;
+
+            return true;
+        }
+
+        public bool RecordContextInStringTable(Dictionary<Type, Dictionary<string, ParsingContext>> objectTable, object key, ErrorControl errorControl)
+        {
+            if (!(key is string KeyString))
+                return Program.ReportFailure($"Key '{key}' was expected to be a string");
+
+            if (!objectTable.ContainsKey(ObjectType))
+                objectTable.Add(ObjectType, new Dictionary<string, ParsingContext>());
+
+            Dictionary<string, ParsingContext> KeyTable = objectTable[ObjectType];
+            if (KeyTable.ContainsKey(KeyString))
+            {
+                if (errorControl == ErrorControl.IgnoreIfFound)
+                    return true;
+
+                return Program.ReportFailure($"Key '{KeyString}' already used for type '{ObjectType}'");
+            }
+
+            KeyTable.Add(KeyString, this);
+
+            return true;
+        }
+
+        public bool RecordContextInIntTable(Dictionary<Type, Dictionary<int, ParsingContext>> objectTable, object key)
+        {
+            if (!(key is int KeyInt))
+                return Program.ReportFailure($"Key '{key}' was expected to be an int");
+
+            if (!objectTable.ContainsKey(ObjectType))
+                objectTable.Add(ObjectType, new Dictionary<int, ParsingContext>());
+
+            Dictionary<int, ParsingContext> KeyTable = objectTable[ObjectType];
+            if (KeyTable.ContainsKey(KeyInt))
+                return Program.ReportFailure($"Key '{key}' already used for type '{ObjectType}'");
+
+            KeyTable.Add(KeyInt, this);
 
             return true;
         }
@@ -128,7 +173,10 @@
         }
 
         public static List<ParsingContext> ContextList { get; } = new List<ParsingContext>();
-        public static Dictionary<Type, Dictionary<string, ParsingContext>> KeyedObjectTable { get; } = new Dictionary<Type, Dictionary<string, ParsingContext>>();
+        public static Dictionary<Type, Dictionary<string, ParsingContext>> ObjectKeyTable { get; } = new Dictionary<Type, Dictionary<string, ParsingContext>>();
+        public static Dictionary<Type, Dictionary<string, ParsingContext>> ObjectNameTable { get; } = new Dictionary<Type, Dictionary<string, ParsingContext>>();
+        public static Dictionary<Type, Dictionary<string, ParsingContext>> ObjectInternalNameTable { get; } = new Dictionary<Type, Dictionary<string, ParsingContext>>();
+        public static Dictionary<Type, Dictionary<int, ParsingContext>> ObjectIdTable { get; } = new Dictionary<Type, Dictionary<int, ParsingContext>>();
         public static Dictionary<Type, List<ParsingContext>> KeylessObjectTable { get; } = new Dictionary<Type, List<ParsingContext>>();
 
         public static bool FinalizeParsing()

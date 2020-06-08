@@ -98,18 +98,33 @@
 
         public static bool ReportFailure(string text, [CallerLineNumber] int callingFileLineNumber = 0)
         {
-            WriteFailureLine(LastParsedFile, LastParsedKey, text, callingFileLineNumber);
+            WriteFailureLine(LastParsedFile, LastParsedKey, text, ErrorControl.Normal, callingFileLineNumber);
+            return false;
+        }
+
+        public static bool ReportFailure(string text, ErrorControl errorControl, [CallerLineNumber] int callingFileLineNumber = 0)
+        {
+            WriteFailureLine(LastParsedFile, LastParsedKey, text, errorControl, callingFileLineNumber);
             return false;
         }
 
         public static bool ReportFailure(string parsedFile, string parsedKey, string text, [CallerLineNumber] int callingFileLineNumber = 0)
         {
-            WriteFailureLine(parsedFile, parsedKey, text, callingFileLineNumber);
+            WriteFailureLine(parsedFile, parsedKey, text, ErrorControl.Normal, callingFileLineNumber);
             return false;
         }
 
-        public static void WriteFailureLine(string parsedFile, string parsedKey, string text, int callingFileLineNumber)
+        public static bool ReportFailure(string parsedFile, string parsedKey, string text, ErrorControl errorControl, [CallerLineNumber] int callingFileLineNumber = 0)
         {
+            WriteFailureLine(parsedFile, parsedKey, text, errorControl, callingFileLineNumber);
+            return false;
+        }
+
+        public static void WriteFailureLine(string parsedFile, string parsedKey, string text, ErrorControl errorControl, int callingFileLineNumber)
+        {
+            if (errorControl != ErrorControl.Normal)
+                return;
+
             if (parsedFile.Length > 0 && parsedKey.Length > 0)
                 Debug.WriteLine($"Error in '{parsedKey}' of {parsedFile}.json");
             else

@@ -2,6 +2,6 @@
 {
     public class PgQuestObjectiveCompleteQuest : PgQuestObjective
     {
-        public string Target { get; set; } = string.Empty;
+        public string InteractionTarget { get; set; } = string.Empty;
     }
 }

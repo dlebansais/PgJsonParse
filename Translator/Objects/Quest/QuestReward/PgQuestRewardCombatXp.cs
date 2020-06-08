@@ -1,8 +1,7 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgQuestRewardXp
+    public class PgQuestRewardCombatXp : PgQuestReward
     {
-        public PgSkill Skill { get; set; }
         public int Xp { get { return RawXp.HasValue ? RawXp.Value : 0; } }
         public int? RawXp { get; set; }
     }

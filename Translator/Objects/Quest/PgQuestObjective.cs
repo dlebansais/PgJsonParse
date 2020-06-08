@@ -11,6 +11,8 @@
         public bool? RawMustCompleteEarlierObjectivesFirst;
         public int? MinHour { get; set; }
         public int? MaxHour { get; set; }
-        public int? GroupId { get; set; }
+        public bool GroupId { get { return RawGroupId.HasValue && RawGroupId.Value != 1; } }
+        public int? RawGroupId { get; set; }
+        public string InternalName { get; set; } = string.Empty;
     }
 }

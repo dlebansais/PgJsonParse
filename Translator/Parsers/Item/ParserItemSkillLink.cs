@@ -29,14 +29,8 @@
                 string Key = Entry.Key;
                 object Value = Entry.Value;
 
-                if (Key == "Unknown" && Value is int ValueInt && ValueInt == 0 && item.SkillTable.Count == 0)
-                {
-                    item.SkillTable.Add(PgSkill.Unknown, 0);
-                    continue;
-                }
-
                 PgSkill ParsedSkill = null;
-                if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, Key))
+                if (!ParserSkill.Parse((PgSkill valueSkill) => ParsedSkill = valueSkill, Key, parsedFile, parsedKey))
                     return false;
 
                 int ParsedLevel = -1;

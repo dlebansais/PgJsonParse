@@ -164,5 +164,7 @@
         BitingVine,
         ElementalFire,
         RabidDeer,
+        FaeRealmFrostHippogriff,
+        FaeDeinonychus,
     }
 }

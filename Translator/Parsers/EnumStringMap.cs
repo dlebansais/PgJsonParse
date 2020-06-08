@@ -133,6 +133,11 @@
             { MapAreaName.ANewLife, "A New Life" },
         };
 
+        public static readonly Dictionary<QuestObjectiveKillTarget, string> QuestObjectiveKillTargetTable = new Dictionary<QuestObjectiveKillTarget, string>()
+        {
+            { QuestObjectiveKillTarget.Any, "*" },
+        };
+
         public static Dictionary<Type, IDictionary> Tables = new Dictionary<Type, IDictionary>()
         {
             {  typeof(AbilityItemKeyword), AbilityItemKeywordTable },
@@ -143,6 +148,7 @@
             {  typeof(ItemUseVerb), ItemUseVerbTable },
             {  typeof(AppearanceSkin), AppearanceSkinTable },
             {  typeof(MapAreaName), MapAreaNameTable },
+            {  typeof(QuestObjectiveKillTarget), QuestObjectiveKillTargetTable },
         };
     }
 }

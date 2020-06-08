@@ -46,10 +46,10 @@
                         Result = StringToEnumConversion<DoTSpecialRule>.TryParseList(Value, item.SpecialRuleList);
                         break;
                     case "AttributesThatDelta":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatDeltaList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaList, Value);
                         break;
                     case "AttributesThatMod":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatModList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModList, Value);
                         break;
                     case "Preface":
                         Result = SetStringProperty((string valueString) => item.Preface = valueString, Value);

@@ -16,7 +16,7 @@
         public TimeSpan? RawReuseTime { get; set; }
         public int RewardCombatXP { get { return RawRewardCombatXP.HasValue ? RawRewardCombatXP.Value : 0; } }
         public int? RawRewardCombatXP { get; set; }
-        public PgNpc FavorNpc { get; set; }
+        public PgNpcLocation FavorNpc { get; set; }
         public string PrefaceText { get; set; } = string.Empty;
         public string SuccessText { get; set; } = string.Empty;
         public string MidwayText { get; set; } = string.Empty;
@@ -26,7 +26,7 @@
         public PgSkill RewardSkill { get; set; }
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get; set; }
-        public PgRecipe RewardRecipe { get; set; }
+        public PgRecipeCollection RewardRecipeList { get; } = new PgRecipeCollection();
         public int RewardGuildXp { get { return RawRewardGuildXp.HasValue ? RawRewardGuildXp.Value : 0; } }
         public int? RawRewardGuildXp { get; set; }
         public int RewardGuildCredits { get { return RawRewardGuildCredits.HasValue ? RawRewardGuildCredits.Value : 0; } }
@@ -82,13 +82,15 @@
         public bool? RawIsLearnAbility { get; set; }
         public PgSkill RewardXpSkill { get; set; }
         public PgQuestRewardCollection QuestRewardList { get; } = new PgQuestRewardCollection();
-        public List<string> RawRewardInteractionFlags { get; } = new List<string>();
+        public List<string> RewardInteractionFlagList { get; } = new List<string>();
         public PgPlayerTitle RewardTitle { get; set; }
         public PgQuestRewardCurrencyCollection RewardsCurrencyList { get; } = new PgQuestRewardCurrencyCollection();
         public PgQuestRewardItemCollection QuestMidwayGiveItemList { get; } = new PgQuestRewardItemCollection();
-        public PgNpc QuestCompleteNpc { get; set; }
+        public PgNpcLocation QuestCompleteNpc { get; set; }
         public string QuestCompleteNpcName { get; set; } = string.Empty;
         public PgQuestRewardFavorCollection RewardsFavorList { get; } = new PgQuestRewardFavorCollection();
         public PgQuestRewardLevelCollection RewardsLevelList { get; } = new PgQuestRewardLevelCollection();
+
+        public List<string> PreGiveEffectList { get; } = new List<string>();
     }
 }

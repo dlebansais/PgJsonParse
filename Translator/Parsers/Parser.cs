@@ -31,6 +31,11 @@
                 setter(ValueInt);
                 return true;
             }
+            else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
+            {
+                setter(ValueIntFromString);
+                return true;
+            }
             else
                 return Program.ReportFailure($"Value {value} was expected to be an int");
         }
@@ -47,6 +52,11 @@
                 setter((float)ValueInt);
                 return true;
             }
+            else if (value is string ValueString && Tools.TryParseSingle(ValueString, out float ValueFloatFromString))
+            {
+                setter(ValueFloatFromString);
+                return true;
+            }
             else
                 return Program.ReportFailure($"Value {value} was expected to be a float");
         }
@@ -60,6 +70,23 @@
             }
             else
                 return Program.ReportFailure($"Value {value} was expected to be a string");
+        }
+
+        public static bool SetTimeProperty(Func<TimeSpan?> getter, Action<TimeSpan> setter, int multiplier, object value)
+        {
+            if (value is int ValueInt)
+            {
+                TimeSpan ValueTimeSpan = TimeSpan.FromMinutes(ValueInt * multiplier);
+
+                TimeSpan? OldValue = getter();
+                if (!OldValue.HasValue)
+                    OldValue = TimeSpan.Zero;
+
+                setter(OldValue.Value + ValueTimeSpan);
+                return true;
+            }
+            else
+                return Program.ReportFailure($"Value {value} was expected to be an int");
         }
     }
 }

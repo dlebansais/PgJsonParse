@@ -40,13 +40,13 @@
                         Result = SetFloatProperty((float valueFloat) => item.RawValue = valueFloat, Value);
                         break;
                     case "AttributesThatDelta":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatDeltaList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaList, Value);
                         break;
                     case "AttributesThatMod":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatModList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModList, Value);
                         break;
                     case "AttributesThatModBase":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatModBaseList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModBaseList, Value);
                         break;
                     case "DisplayType":
                         Result = Inserter<DisplayType>.SetEnum((DisplayType valueEnum) => item.DisplayType = valueEnum, Value);

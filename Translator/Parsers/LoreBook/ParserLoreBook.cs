@@ -71,10 +71,10 @@
             if (!(value is string ValueKey))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
 
-            if (!ParsingContext.KeyedObjectTable.ContainsKey(typeof(PgLoreBookInfo)))
+            if (!ParsingContext.ObjectKeyTable.ContainsKey(typeof(PgLoreBookInfo)))
                 return Program.ReportFailure(parsedFile, parsedKey, "No lore book info");
 
-            Dictionary<string, ParsingContext> Table = ParsingContext.KeyedObjectTable[typeof(PgLoreBookInfo)];
+            Dictionary<string, ParsingContext> Table = ParsingContext.ObjectKeyTable[typeof(PgLoreBookInfo)];
 
             if (!Table.ContainsKey("Categories"))
                 return Program.ReportFailure(parsedFile, parsedKey, "No lore book info categories");

@@ -2,8 +2,9 @@
 {
     public class PgQuestObjectiveKill : PgQuestObjective
     {
-        public string AbilityKeyword { get; set; } = string.Empty;
+        public AbilityKeyword Keyword { get; set; }
         public QuestObjectiveKillTarget Target { get; set; }
         public EffectKeyword EffectRequirement { get; set; }
+        public PgQuestObjectiveRequirement QuestObjectiveRequirement { get; set; }
     }
 }

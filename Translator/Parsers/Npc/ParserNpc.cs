@@ -2,6 +2,7 @@
 {
     using PgJsonObjects;
     using PgJsonReader;
+    using System;
     using System.Collections.Generic;
 
     public class ParserNpc : Parser

@@ -76,13 +76,11 @@
                 if (MissingEnumList.Contains(stringValue))
                     MissingEnumList.Add(stringValue);
 
-                string Warning = $"Enum '{stringValue}' not found for {typeof(T)}";
-                //Debug.WriteLine(Warning);
-                //return true;
-                return Program.ReportFailure(Warning);
+                //TODO: finalize
             }
-            else
-                return false;
+
+            string Warning = $"Enum '{stringValue}' not found for {typeof(T)}";
+            return Program.ReportFailure(Warning, errorControl);
         }
 
         public static void SetCustomParsedEnum(T EnumValue)

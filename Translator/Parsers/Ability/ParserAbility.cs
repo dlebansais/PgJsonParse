@@ -39,19 +39,19 @@
                         Result = Inserter<AbilityAnimation>.SetEnum((AbilityAnimation valueEnum) => item.Animation = valueEnum, Value);
                         break;
                     case "AttributesThatModAmmoConsumeChance":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatModAmmoConsumeChanceList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModAmmoConsumeChanceList, Value);
                         break;
                     case "AttributesThatDeltaDelayLoopTime":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatDeltaDelayLoopTimeList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaDelayLoopTimeList, Value);
                         break;
                     case "AttributesThatDeltaPowerCost":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatDeltaPowerCostList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaPowerCostList, Value);
                         break;
                     case "AttributesThatDeltaResetTime":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatDeltaResetTimeList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaResetTimeList, Value);
                         break;
                     case "AttributesThatModPowerCost":
-                        Result = Inserter<PgAttribute>.AddArray(item.AttributesThatModPowerCostList, Value);
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModPowerCostList, Value);
                         break;
                     case "CanBeOnSidebar":
                         Result = SetBoolProperty((bool valueBool) => item.RawCanBeOnSidebar = valueBool, Value);
@@ -153,7 +153,7 @@
                         Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.SharesResetTimerWith = valueAbility, Value);
                         break;
                     case "Skill":
-                        Result = ParseSkill(item, Value);
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill = valueSkill, Value, parsedFile, parsedKey);
                         break;
                     case "SpecialCasterRequirements":
                         Result = Inserter<PgAbilityRequirement>.AddKeylessArray(item.SpecialCasterRequirementList, Value);
@@ -210,17 +210,6 @@
             }
 
             return Result;
-        }
-
-        private bool ParseSkill(PgAbility item, object value)
-        {
-            if (value is string AsString && AsString == "Unknown")
-            {
-                item.Skill = PgSkill.Unknown;
-                return true;
-            }
-            else
-                return Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.Skill = valueSkill, value);
         }
     }
 }

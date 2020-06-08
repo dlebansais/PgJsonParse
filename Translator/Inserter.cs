@@ -1,5 +1,6 @@
 ﻿namespace Translator
 {
+    using PgJsonObjects;
     using System;
     using System.Collections.Generic;
 
@@ -7,82 +8,34 @@
     {
         public static bool SetItemByKey(Action<T> setter, object value, ErrorControl errorControl = ErrorControl.Normal)
         {
-            return SetKeyedItem(MatchingByKey, setter, value, errorControl);
-        }
-
-        private static bool MatchingByKey(string key, ParsingContext context, string valueKey)
-        {
-            return key == valueKey;
-        }
-
-        public static bool SetItemByInternalName(Action<T> setter, object value, ErrorControl errorControl = ErrorControl.Normal)
-        {
-            return SetKeyedItem(MatchingByInternalName, setter, value, errorControl);
-        }
-
-        private static bool MatchingByInternalName(string key, ParsingContext context, string valueKey)
-        {
-            Dictionary<string, object> ContentTable = context.ContentTable;
-
-            if (!ContentTable.ContainsKey("InternalName"))
-                return false;
-
-            if (!(ContentTable["InternalName"] is string InternalName))
-                return false;
-
-            return InternalName == valueKey;
+            return SetItemByStringKey(ParsingContext.ObjectKeyTable, setter, value, errorControl);
         }
 
         public static bool SetItemByName(Action<T> setter, object value, ErrorControl errorControl = ErrorControl.Normal)
         {
-            return SetKeyedItem(MatchingByName, setter, value, errorControl);
+            return SetItemByStringKey(ParsingContext.ObjectNameTable, setter, value, errorControl);
         }
 
-        private static bool MatchingByName(string key, ParsingContext context, string valueKey)
+        public static bool SetItemByInternalName(Action<T> setter, object value, ErrorControl errorControl = ErrorControl.Normal)
         {
-            Dictionary<string, object> ContentTable = context.ContentTable;
-
-            if (!ContentTable.ContainsKey("Name"))
-                return false;
-
-            if (!(ContentTable["Name"] is string Name))
-                return false;
-
-            return Name == valueKey;
+            return SetItemByStringKey(ParsingContext.ObjectInternalNameTable, setter, value, errorControl);
         }
 
-        private static bool SetKeyedItem(Func<string, ParsingContext, string, bool> match, Action<T> setter, object value, ErrorControl errorControl)
+        private static bool SetItemByStringKey(Dictionary<Type, Dictionary<string, ParsingContext>> table, Action<T> setter, object value, ErrorControl errorControl)
         {
             if (!(value is string ValueKey))
                 return Program.ReportFailure($"Value '{value}' was expected to be a string");
 
             Type LinkType = typeof(T);
-            if (!ParsingContext.KeyedObjectTable.ContainsKey(LinkType))
+            if (!table.ContainsKey(LinkType))
                 return Program.ReportFailure($"Type {LinkType} does not have items with keys");
 
-            Dictionary<string, ParsingContext> KeyTable = ParsingContext.KeyedObjectTable[LinkType];
+            Dictionary<string, ParsingContext> KeyTable = table[LinkType];
 
-            string MatchingKey = string.Empty;
+            if (!KeyTable.ContainsKey(ValueKey))
+                return Program.ReportFailure($"Key '{ValueKey}' is not a known key", errorControl);
 
-            foreach (KeyValuePair<string, ParsingContext> Entry in KeyTable)
-            {
-                string Key = Entry.Key;
-                ParsingContext Context = Entry.Value;
-
-                if (match(Key, Context, ValueKey))
-                {
-                    MatchingKey = Key;
-                    break;
-                }
-            }
-
-            if (MatchingKey.Length == 0)
-                if (errorControl == ErrorControl.IgnoreIfNotFound)
-                    return false;
-                else
-                    return Program.ReportFailure($"Key '{ValueKey}' is not a known key");
-
-            if (!(KeyTable[MatchingKey].Item is T AsLink))
+            if (!(KeyTable[ValueKey].Item is T AsLink))
                 return Program.ReportFailure($"Key '{ValueKey}' was found but for the wrong object type");
 
             setter(AsLink);
@@ -91,64 +44,55 @@
 
         public static bool SetItemById(Action<T> setter, object value, ErrorControl errorControl = ErrorControl.Normal)
         {
-            return SetKeylessItem(MatchingById, setter, value, errorControl);
+            return SetItemByIntKey(ParsingContext.ObjectIdTable, setter, value, errorControl);
         }
 
-        private static bool MatchingById(ParsingContext context, int valueId)
-        {
-            Dictionary<string, object> ContentTable = context.ContentTable;
-
-            if (!ContentTable.ContainsKey("Id"))
-                return false;
-
-            if (!(ContentTable["Id"] is int Id))
-                return false;
-
-            return Id == valueId;
-        }
-
-        private static bool SetKeylessItem(Func<ParsingContext, int, bool> match, Action<T> setter, object value, ErrorControl errorControl)
+        private static bool SetItemByIntKey(Dictionary<Type, Dictionary<int, ParsingContext>> table, Action<T> setter, object value, ErrorControl errorControl)
         {
             if (!(value is int ValueId))
                 return Program.ReportFailure($"Value '{value}' was expected to be an Id");
 
             Type LinkType = typeof(T);
-            if (!ParsingContext.KeylessObjectTable.ContainsKey(LinkType))
-                return Program.ReportFailure($"Type {LinkType} does not have recorded items");
+            if (!table.ContainsKey(LinkType))
+                return Program.ReportFailure($"Type {LinkType} does not have items with keys");
 
-            List<ParsingContext> KeylessContextList = ParsingContext.KeylessObjectTable[LinkType];
+            Dictionary<int, ParsingContext> KeyTable = table[LinkType];
 
-            ParsingContext MatchingContext = null;
-            foreach (ParsingContext Context in KeylessContextList)
-                if (match(Context, ValueId))
-                {
-                    MatchingContext = Context;
-                    break;
-                }
+            if (!KeyTable.ContainsKey(ValueId))
+                return Program.ReportFailure($"Key '{ValueId}' is not a known key", errorControl);
 
-            if (MatchingContext == null)
-                if (errorControl == ErrorControl.IgnoreIfNotFound)
-                    return false;
-                else
-                    return Program.ReportFailure($"'{ValueId}' is not a known ID");
-
-            if (!(MatchingContext.Item is T AsLink))
+            if (!(KeyTable[ValueId].Item is T AsLink))
                 return Program.ReportFailure($"Key '{ValueId}' was found but for the wrong object type");
 
             setter(AsLink);
             return true;
         }
 
-        public static bool AddArray(List<T> linkList, object value)
+        public static bool AddArrayByKey(List<T> linkList, object value)
+        {
+            return AddArrayByString(ParsingContext.ObjectKeyTable, linkList, value);
+        }
+
+        public static bool AddArrayByName(List<T> linkList, object value)
+        {
+            return AddArrayByString(ParsingContext.ObjectNameTable, linkList, value);
+        }
+
+        public static bool AddArrayByInternalName(List<T> linkList, object value)
+        {
+            return AddArrayByString(ParsingContext.ObjectInternalNameTable, linkList, value);
+        }
+
+        public static bool AddArrayByString(Dictionary<Type, Dictionary<string, ParsingContext>> table, List<T> linkList, object value)
         {
             if (!(value is List<object> ArrayKey))
                 return Program.ReportFailure($"Value '{value}' was expected to be a list");
 
             Type LinkType = typeof(T);
-            if (!ParsingContext.KeyedObjectTable.ContainsKey(LinkType))
+            if (!table.ContainsKey(LinkType))
                 return Program.ReportFailure($"Type {LinkType} does not have items with keys");
 
-            Dictionary<string, ParsingContext> KeyTable = ParsingContext.KeyedObjectTable[LinkType];
+            Dictionary<string, ParsingContext> KeyTable = table[LinkType];
 
             foreach (object Item in ArrayKey)
             {
@@ -249,6 +193,60 @@
                 return Program.ReportFailure($"Item was found but for the wrong object type");
 
             setter(AsItem);
+            return true;
+        }
+
+        public static bool SetNpc(Action<PgNpcLocation> setter, object value, string parsedFile, string parsedKey, ErrorControl errorControl = ErrorControl.Normal)
+        {
+            if (!(value is string ValueName))
+                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
+
+            if (ValueName.Length == 0)
+                return true;
+
+            string[] AreaNpc = ValueName.Split('/');
+            switch (AreaNpc.Length)
+            {
+                case 1:
+                    return SetNpcNoZone(setter, MapAreaName.Internal_None, ValueName, parsedFile, parsedKey, errorControl);
+                case 2:
+                    return SetNpcWithZone(setter, AreaNpc[0], AreaNpc[1], parsedFile, parsedKey, errorControl);
+                default:
+                    return Program.ReportFailure(parsedFile, parsedKey, $"'{value}' is not a NPC name", errorControl);
+            }
+        }
+
+        public static bool SetNpcWithZone(Action<PgNpcLocation> setter, string rawMapName, string npcId, string parsedFile, string parsedKey, ErrorControl errorControl)
+        {
+            if (!rawMapName.StartsWith("Area"))
+                return Program.ReportFailure(parsedFile, parsedKey, $"'{rawMapName}' does not contain an area name", errorControl);
+
+            string AreaName = rawMapName.Substring(4);
+            if (!StringToEnumConversion<MapAreaName>.TryParse(AreaName, out MapAreaName ParsedAreaName))
+                return false;
+
+            return SetNpcNoZone(setter, ParsedAreaName, npcId, parsedFile, parsedKey, errorControl);
+        }
+
+        public static bool SetNpcNoZone(Action<PgNpcLocation> setter, MapAreaName areaName, string npcId, string parsedFile, string parsedKey, ErrorControl errorControl)
+        {
+            PgNpc ParsedNpc = null;
+            string NpcName = string.Empty;
+            SpecialNpc NpcEnum = SpecialNpc.Internal_None;
+
+            PgNpcLocation NpcLocation = new PgNpcLocation();
+            NpcLocation.NpcId = npcId;
+
+            if (Inserter<PgNpc>.SetItemByKey((PgNpc valueNpc) => ParsedNpc = valueNpc, npcId, ErrorControl.IgnoreIfNotFound))
+                NpcLocation.Npc = ParsedNpc;
+            else if (StringToEnumConversion<SpecialNpc>.TryParse(npcId, out NpcEnum, ErrorControl.IgnoreIfNotFound))
+                NpcLocation.NpcEnum = NpcEnum;
+            else if (npcId.ToUpper().StartsWith("NPC_"))
+                NpcLocation.NpcName = npcId.Substring(4);
+            else
+                return Program.ReportFailure(parsedFile, parsedKey, $"'{npcId}' unknown NPC name", errorControl);
+
+            setter(NpcLocation);
             return true;
         }
     }

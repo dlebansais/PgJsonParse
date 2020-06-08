@@ -71,5 +71,16 @@
 
             return s;
         }
+
+        public static readonly Dictionary<string, string> TitleToKeyMap = new Dictionary<string, string>()
+        {
+            { "Event_Halloween_CultistOfZhiaLian", "Title_5009" },
+            { "Event_Halloween_SeniorCultistOfZhiaLian", "Title_5010" },
+            { "IncredibleGoblinKissAss", "Title_5012" },
+            { "GuideEvent_CivilServant", "Title_5210" },
+            { "GuideEvent_IKnowBunFu", "Title_5211" },
+            { "GuideEvent_SaviorOfTheGoats", "Title_5208" },
+            { "GuideEvent_AntiSaviorOfTheGoats", "Title_5216" },
+        };
     }
 }

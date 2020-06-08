@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgQuestRequirementIsLongTimeAnimal : PgQuestRequirement
+    public class PgQuestRequirementIsLongtimeAnimal : PgQuestRequirement
     {
     }
 }
