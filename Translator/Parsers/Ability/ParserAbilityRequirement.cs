@@ -12,7 +12,7 @@
             return null;
         }
 
-        private static Dictionary<OtherRequirementType, AbilityRequirementHandler> HandlerTable = new Dictionary<OtherRequirementType, AbilityRequirementHandler>()
+        private static Dictionary<OtherRequirementType, VariadicObjectHandler> HandlerTable = new Dictionary<OtherRequirementType, VariadicObjectHandler>()
         {
             { OtherRequirementType.IsLycanthrope, FinishItemIsLycanthrope },
             { OtherRequirementType.HasEffectKeyword, FinishItemHasEffectKeyword },
@@ -79,7 +79,7 @@
 
             Debug.Assert(KnownFieldTable.ContainsKey(requirementType));
 
-            AbilityRequirementHandler Handler = HandlerTable[requirementType];
+            VariadicObjectHandler Handler = HandlerTable[requirementType];
             List<string> KnownFieldList = KnownFieldTable[requirementType];
             List<string> UsedFieldList = new List<string>();
 
@@ -99,22 +99,7 @@
 
         public static bool FinalizeParsing()
         {
-            foreach (KeyValuePair<OtherRequirementType, AbilityRequirementHandler> Entry in HandlerTable)
-            {
-                OtherRequirementType Key = Entry.Key;
-
-                if (!HandledTable.ContainsKey(Key))
-                    return Program.ReportFailure($"Requirement {Key} was not handled");
-
-                List<string> ReportedFieldList = HandledTable[Key];
-                List<string> ExpectedFieldList = KnownFieldTable[Key];
-
-                foreach (string FieldName in ExpectedFieldList)
-                    if (!ReportedFieldList.Contains(FieldName))
-                        return Program.ReportFailure($"Field {FieldName} for object {Key} was expected but never handled");
-            }
-
-            return true;
+            return Finalizer<OtherRequirementType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
         }
 
         private static bool FinishItemIsLycanthrope(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)

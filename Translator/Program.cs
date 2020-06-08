@@ -3,6 +3,7 @@
     using PgJsonObjects;
     using PgJsonReader;
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Runtime.CompilerServices;
@@ -86,7 +87,14 @@
             if (!ParsingContext.FinalizeParsing())
                 return -1;
 
-            if (!ParserAbilityRequirement.FinalizeParsing())
+            bool FinalizingResult = true;
+            FinalizingResult &= ParserAbilityRequirement.FinalizeParsing();
+            FinalizingResult &= ParserQuestObjective.FinalizeParsing();
+            FinalizingResult &= ParserQuestObjectiveRequirement.FinalizeParsing();
+            FinalizingResult &= ParserQuestRequirement.FinalizeParsing();
+            FinalizingResult &= ParserQuestReward.FinalizeParsing();
+
+            if (!FinalizingResult)
                 return -1;
 
             return 0;

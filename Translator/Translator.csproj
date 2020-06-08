@@ -48,6 +48,7 @@
     <Compile Include="Enums\QuestRewardType.cs" />
     <Compile Include="Enums\SelfParticle.cs" />
     <Compile Include="Enums\SpecialNpc.cs" />
+    <Compile Include="Finalizer.cs" />
     <Compile Include="Inserter.cs" />
     <Compile Include="Enums\AbilityCue.cs" />
     <Compile Include="Enums\AbilityTargetParticle.cs" />
@@ -140,7 +141,7 @@
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardCombatXp.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardGuildCredits.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardRecipe.cs" />
-    <Compile Include="Parsers\Ability\AbilityRequirementHandler.cs" />
+    <Compile Include="VariadicObjectHandler.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmoCollection.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDruidEventState.cs" />
@@ -318,9 +319,6 @@
     <Compile Include="Parsers\Power\ParserPowerTierList.cs" />
     <Compile Include="Parsers\Power\ParserPowerTier.cs" />
     <Compile Include="Parsers\Power\ParserPower.cs" />
-    <Compile Include="Parsers\Quest\QuestRewardHandler.cs" />
-    <Compile Include="Parsers\Quest\QuestRequirementHandler.cs" />
-    <Compile Include="Parsers\Quest\QuestObjectiveHandler.cs" />
     <Compile Include="Parsers\Quest\ParserQuestRewardItem.cs" />
     <Compile Include="Parsers\Quest\ParserQuestRewardCurrency.cs" />
     <Compile Include="Parsers\Quest\ParserQuestRewardXp.cs" />

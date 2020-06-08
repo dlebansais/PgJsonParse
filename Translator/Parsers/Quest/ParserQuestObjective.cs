@@ -4,6 +4,7 @@
     using PgJsonReader;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Windows.Media.Converters;
 
     public class ParserQuestObjective : Parser
     {
@@ -12,7 +13,7 @@
             return null;
         }
 
-        private static Dictionary<QuestObjectiveType, QuestObjectiveHandler> HandlerTable = new Dictionary<QuestObjectiveType, QuestObjectiveHandler>()
+        private static Dictionary<QuestObjectiveType, VariadicObjectHandler> HandlerTable = new Dictionary<QuestObjectiveType, VariadicObjectHandler>()
         {
             { QuestObjectiveType.Kill, FinishItemKill },
             { QuestObjectiveType.Scripted, FinishItemScripted },
@@ -45,33 +46,33 @@
 
         private static Dictionary<QuestObjectiveType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveType, List<string>>()
         {
-            { QuestObjectiveType.Kill, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "ItemName", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", "InteractionFlags", "InteractionFlag", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.Deliver, new List<string>() { "Type", "Target", "Description", "ItemName", "NumToDeliver", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.Have, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.Harvest, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.TipPlayer, new List<string>() { "Type", "Description", "MinAmount", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.Special, new List<string>() { "Type", "Target", "Description", "MinAmount", "StringParam", "MaxAmount", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.GiveGift, new List<string>() { "Type", "Description", "MinFavorReceived", "MaxFavorReceived", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.UseItem, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.UseRecipe, new List<string>() { "Type", "Target", "Description", "Skill", "ResultItemKeyword", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.KillElite, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.SayInChat, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.BeAttacked, new List<string>() { "Type", "Target", "Description", "AnatomyType", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.Bury, new List<string>() { "Type", "Target", "Description", "AnatomyType", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.UseAbility, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.UniqueSpecial, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.GuildGiveItem, new List<string>() { "Type", "Target", "Description", "ItemName", "ItemKeyword", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.GuildKill, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.DruidKill, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.DruidScripted, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.Loot, new List<string>() { "Type", "Target", "Description", "ItemName", "MonsterTypeTag", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.ScriptedReceiveItem, new List<string>() { "Type", "Target", "Description", "Item", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.UseAbilityOnTargets, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.CompleteQuest, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
+            { QuestObjectiveType.Kill, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Requirements", "GroupId", "Number", "InternalName" } },
+            { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
+            { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "Number" } },
+            { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number", "InternalName" } },
+            { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", "InteractionFlag", "GroupId", "Number" } },
+            { QuestObjectiveType.Deliver, new List<string>() { "Type", "Target", "Description", "ItemName", "NumToDeliver", "IsHiddenUntilEarlierObjectivesComplete", "Number", "InternalName" } },
+            { QuestObjectiveType.Have, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number" } },
+            { QuestObjectiveType.Harvest, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "Number" } },
+            { QuestObjectiveType.TipPlayer, new List<string>() { "Type", "Description", "MinAmount", "Number" } },
+            { QuestObjectiveType.Special, new List<string>() { "Type", "Target", "Description", "MinAmount", "StringParam", "MaxAmount", "Requirements", "GroupId", "Number" } },
+            { QuestObjectiveType.GiveGift, new List<string>() { "Type", "Description", "MinFavorReceived", "MaxFavorReceived", "Number" } },
+            { QuestObjectiveType.UseItem, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "Number" } },
+            { QuestObjectiveType.UseRecipe, new List<string>() { "Type", "Target", "Description", "Skill", "ResultItemKeyword", "GroupId", "Number" } },
+            { QuestObjectiveType.KillElite, new List<string>() { "Type", "Target", "Description", "Number" } },
+            { QuestObjectiveType.SayInChat, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
+            { QuestObjectiveType.BeAttacked, new List<string>() { "Type", "Target", "Description", "AnatomyType", "GroupId", "Number" } },
+            { QuestObjectiveType.Bury, new List<string>() { "Type", "Target", "Description", "AnatomyType", "Number" } },
+            { QuestObjectiveType.UseAbility, new List<string>() { "Type", "Target", "Description", "Number" } },
+            { QuestObjectiveType.UniqueSpecial, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
+            { QuestObjectiveType.GuildGiveItem, new List<string>() { "Type", "Target", "Description", "ItemName", "ItemKeyword", "GroupId", "Number" } },
+            { QuestObjectiveType.GuildKill, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
+            { QuestObjectiveType.DruidKill, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
+            { QuestObjectiveType.DruidScripted, new List<string>() { "Type", "Target", "Description", "Number" } },
+            { QuestObjectiveType.Loot, new List<string>() { "Type", "Target", "Description", "ItemName", "MonsterTypeTag", "GroupId", "Number" } },
+            { QuestObjectiveType.ScriptedReceiveItem, new List<string>() { "Type", "Target", "Description", "Item", "Number" } },
+            { QuestObjectiveType.UseAbilityOnTargets, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Number" } },
+            { QuestObjectiveType.CompleteQuest, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
         };
 
         private static Dictionary<QuestObjectiveType, List<string>> HandledTable = new Dictionary<QuestObjectiveType, List<string>>();
@@ -97,7 +98,7 @@
 
             Debug.Assert(KnownFieldTable.ContainsKey(objectiveType));
 
-            QuestObjectiveHandler Handler = HandlerTable[objectiveType];
+            VariadicObjectHandler Handler = HandlerTable[objectiveType];
             List<string> KnownFieldList = KnownFieldTable[objectiveType];
             List<string> UsedFieldList = new List<string>();
 
@@ -117,22 +118,33 @@
 
         public static bool FinalizeParsing()
         {
-            foreach (KeyValuePair<QuestObjectiveType, QuestObjectiveHandler> Entry in HandlerTable)
+            return Finalizer<QuestObjectiveType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
+        }
+
+        private static bool ParseCommonFields(PgQuestObjective item, string key, object value)
+        {
+            bool Result = true;
+
+            switch (key)
             {
-                QuestObjectiveType Key = Entry.Key;
-
-                if (!HandledTable.ContainsKey(Key))
-                    return Program.ReportFailure($"Objective {Key} was not handled");
-
-                List<string> ReportedFieldList = HandledTable[Key];
-                List<string> ExpectedFieldList = KnownFieldTable[Key];
-
-                foreach (string FieldName in ExpectedFieldList)
-                    if (!ReportedFieldList.Contains(FieldName))
-                        return Program.ReportFailure($"Field {FieldName} for object {Key} was expected but never handled");
+                case "IsHiddenUntilEarlierObjectivesComplete":
+                    Result = SetBoolProperty((bool valueBool) => item.RawMustCompleteEarlierObjectivesFirst = valueBool, value);
+                    break;
+                case "GroupId":
+                    Result = SetIntProperty((int valueInt) => item.RawGroupId = valueInt, value);
+                    break;
+                case "Number":
+                    Result = SetIntProperty((int valueInt) => item.RawNumber = valueInt, value);
+                    break;
+                case "InternalName":
+                    Result = SetStringProperty((string valueString) => item.InternalName = valueString, value);
+                    break;
+                default:
+                    Result = Program.ReportFailure("Unexpected failure");
+                    break;
             }
 
-            return true;
+            return Result;
         }
 
         private static bool FinishItemKill(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
@@ -168,17 +180,10 @@
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
                         case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -227,16 +232,9 @@
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
                             break;
                         case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -284,17 +282,8 @@
                         case "InteractionFlags":
                             Result = ParseInteractionFlags(NewItem.InteractionFlagList, Value, parsedFile, parsedKey);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -343,20 +332,12 @@
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
                         case "ItemName":
-                            //Result = Inserter<PgItem>.SetItemProperty((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
                         case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -404,23 +385,12 @@
                         case "Description":
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
-                        case "InteractionFlags":
-                            Result = SetStringProperty((string valueString) => NewItem.InteractionFlag = valueString, Value);
-                            break;
                         case "InteractionFlag":
                             Result = SetStringProperty((string valueString) => NewItem.InteractionFlag = valueString, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -475,16 +445,9 @@
                             Result = SetIntProperty((int valueInt) => NewItem.RawNumToDeliver = valueInt, Value);
                             break;
                         case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
                         case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -533,23 +496,11 @@
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
                         case "ItemName":
-                            //Result = Inserter<PgItem>.SetItemProperty((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
-                        case "Requirements":
-                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
-                            break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -598,23 +549,14 @@
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
                         case "ItemName":
-                            //Result = Inserter<PgItem>.SetItemProperty((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -662,17 +604,8 @@
                         case "MinAmount":
                             Result = SetIntProperty((int valueInt) => NewItem.RawMinAmount = valueInt, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -732,17 +665,9 @@
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -793,17 +718,8 @@
                         case "MaxFavorReceived":
                             Result = SetFloatProperty((float valueFloat) => NewItem.RawMaxFavorReceived = valueFloat, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -852,23 +768,14 @@
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
                         case "ItemName":
-                            //Result = Inserter<PgItem>.SetItemProperty((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -922,17 +829,9 @@
                         case "ResultItemKeyword":
                             Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ResultItemKeyword = valueEnum, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -980,17 +879,8 @@
                         case "Description":
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1038,17 +928,11 @@
                         case "Description":
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
                             Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
                             break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1099,17 +983,9 @@
                         case "AnatomyType":
                             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill = valueSkill, $"Anatomy_{Value}");
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1160,17 +1036,8 @@
                         case "AnatomyType":
                             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill = valueSkill, $"Anatomy_{Value}");
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1218,17 +1085,8 @@
                         case "Description":
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1276,17 +1134,9 @@
                         case "Description":
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1335,23 +1185,14 @@
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
                         case "ItemName":
-                            //Result = Inserter<PgItem>.SetItemProperty((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
                         case "ItemKeyword":
                             Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ItemKeyword = valueEnum, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1399,17 +1240,9 @@
                         case "Description":
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1457,17 +1290,9 @@
                         case "Description":
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1515,17 +1340,8 @@
                         case "Description":
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1574,23 +1390,14 @@
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
                         case "ItemName":
-                            //Result = Inserter<PgItem>.SetItemProperty((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
                         case "MonsterTypeTag":
                             Result = Inserter<MonsterTypeTag>.SetEnum((MonsterTypeTag valueEnum) => NewItem.MonsterTypeTag = valueEnum, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1641,17 +1448,8 @@
                         case "Item":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.QuestItem = valueItem, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1702,17 +1500,8 @@
                         case "AbilityKeyword":
                             Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
-                        case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
-                        case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1761,16 +1550,9 @@
                             Result = SetStringProperty((string valueString) => NewItem.Description = valueString, Value);
                             break;
                         case "IsHiddenUntilEarlierObjectivesComplete":
-                            Result = SetBoolProperty((bool valueBool) => NewItem.RawMustCompleteEarlierObjectivesFirst = valueBool, Value);
-                            break;
                         case "GroupId":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawGroupId = valueInt, Value);
-                            break;
                         case "Number":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawNumber = valueInt, Value);
-                            break;
-                        case "InternalName":
-                            Result = SetStringProperty((string valueString) => NewItem.InternalName = valueString, Value);
+                            Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

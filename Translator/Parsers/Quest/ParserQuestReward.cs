@@ -12,7 +12,7 @@
             return null;
         }
 
-        private static Dictionary<QuestRewardType, QuestRewardHandler> HandlerTable = new Dictionary<QuestRewardType, QuestRewardHandler>()
+        private static Dictionary<QuestRewardType, VariadicObjectHandler> HandlerTable = new Dictionary<QuestRewardType, VariadicObjectHandler>()
         {
             { QuestRewardType.SkillXp, FinishItemSkillXp },
             { QuestRewardType.Recipe, FinishItemRecipe },
@@ -53,7 +53,7 @@
 
             Debug.Assert(KnownFieldTable.ContainsKey(rewardType));
 
-            QuestRewardHandler Handler = HandlerTable[rewardType];
+            VariadicObjectHandler Handler = HandlerTable[rewardType];
             List<string> KnownFieldList = KnownFieldTable[rewardType];
             List<string> UsedFieldList = new List<string>();
 
@@ -73,22 +73,7 @@
 
         public static bool FinalizeParsing()
         {
-            foreach (KeyValuePair<QuestRewardType, QuestRewardHandler> Entry in HandlerTable)
-            {
-                QuestRewardType Key = Entry.Key;
-
-                if (!HandledTable.ContainsKey(Key))
-                    return Program.ReportFailure($"Reward {Key} was not handled");
-
-                List<string> ReportedFieldList = HandledTable[Key];
-                List<string> ExpectedFieldList = KnownFieldTable[Key];
-
-                foreach (string FieldName in ExpectedFieldList)
-                    if (!ReportedFieldList.Contains(FieldName))
-                        return Program.ReportFailure($"Field {FieldName} for object {Key} was expected but never handled");
-            }
-
-            return true;
+            return Finalizer<QuestRewardType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
         }
 
         private static bool FinishItemSkillXp(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
