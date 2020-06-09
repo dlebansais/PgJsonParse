@@ -44,7 +44,7 @@
         public int? RawRewardSkillXpFirstTime { get; set; }
         public PgRecipe SharesResetTimerWith { get; set; }
         public string ItemMenuLabel { get; set; }
-        public string RawItemMenuCategory { get; set; }
+        public string ItemMenuCategory { get; set; }
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get; set; }
         public PgRecipe PrereqRecipe { get; set; }

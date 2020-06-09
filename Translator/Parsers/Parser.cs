@@ -88,5 +88,17 @@
             else
                 return Program.ReportFailure($"Value {value} was expected to be an int");
         }
+
+        public static bool SetColorProperty(Action<uint> setter, object value)
+        {
+            if (value is string ValueString && Tools.TryParseColor(ValueString, out uint Color))
+            {
+                setter(Color);
+                return true;
+            }
+            else
+                return Program.ReportFailure($"Value {value} was expected to be a color");
+        }
+
     }
 }

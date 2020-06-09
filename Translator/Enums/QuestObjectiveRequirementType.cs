@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public enum ObjectiveRequirementType
+    public enum QuestObjectiveRequirementType
     {
         Internal_None,
         TimeOfDay,

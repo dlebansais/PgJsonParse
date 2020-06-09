@@ -138,6 +138,69 @@
             { QuestObjectiveKillTarget.Any, "*" },
         };
 
+        public static readonly Dictionary<RecipeAction, string> RecipeActionTable = new Dictionary<RecipeAction, string>()
+        {
+            { RecipeAction.DecomposeItem, "Decompose Item" },
+            { RecipeAction.RemoveAugment, "Remove Augment" },
+            { RecipeAction.DistillItem, "Distill Item" },
+            { RecipeAction.RepairItem, "Repair Item" },
+            { RecipeAction.CreateMap, "Create Map" },
+            { RecipeAction.StudySkull, "Study Skull" },
+            { RecipeAction.StudyEquipment, "Study Equipment" },
+            { RecipeAction.SayTheSooth, "Say the Sooth" },
+            { RecipeAction.MixDye, "Mix Dye" },
+            { RecipeAction.InfuseSpirits, "Infuse Spirits" },
+            { RecipeAction.CreateSpiritBelt, "Create Spirit Belt" },
+            { RecipeAction.ApplyAugment, "Apply Augment" },
+            { RecipeAction.Brew, "Brew" },
+            { RecipeAction.PrepareCask, "Prepare Cask" },
+            { RecipeAction.SortGrass, "Sort Grass" },
+            { RecipeAction.TapKeg, "Tap Keg" },
+            { RecipeAction.RendSpaceTime, "Rend Space-Time" },
+            { RecipeAction.PerformTheRitual, "Perform the Ritual" },
+            { RecipeAction.WaxShield, "Wax Shield" },
+            { RecipeAction.AttuneMind, "Attune Mind" },
+            { RecipeAction.CraftEnchantedKit,"Craft Enchanted Kit" },
+            { RecipeAction.CraftIceShield,"Craft Ice Shield" },
+            { RecipeAction.CraftIceSkinningKnife,"Craft Ice Skinning Knife" },
+            { RecipeAction.CraftIceButcherKnife,"Craft Ice Butcher Knife" },
+            { RecipeAction.CraftIceHandsaw,"Craft Ice Handsaw" },
+            { RecipeAction.OpenPortal,"Open Portal" },
+        };
+
+        public static readonly Dictionary<RecipeEffect, string> RecipeEffectTable = new Dictionary<RecipeEffect, string>()
+        {
+            { RecipeEffect.CreateGeologySurveyRedwall_GeologySurveySerbule0, "CreateGeologySurveyRedwall(GeologySurveySerbule0)" },
+            { RecipeEffect.CreateGeologySurveyBlue_GeologySurveySerbule1, "CreateGeologySurveyBlue(GeologySurveySerbule1)" },
+            { RecipeEffect.CreateGeologySurveyGreen_GeologySurveySerbule2, "CreateGeologySurveyGreen(GeologySurveySerbule2)" },
+            { RecipeEffect.CreateGeologySurveyWhite_GeologySurveySerbule4, "CreateGeologySurveyWhite(GeologySurveySerbule4)" },
+            { RecipeEffect.CreateGeologySurveyRedwall_GeologySurveySouthSerbule0, "CreateGeologySurveyRedwall(GeologySurveySouthSerbule0)" },
+            { RecipeEffect.CreateGeologySurveyOrange_GeologySurveySouthSerbule3, "CreateGeologySurveyOrange(GeologySurveySouthSerbule3)" },
+            { RecipeEffect.CreateGeologySurveyWhite_GeologySurveySouthSerbule4, "CreateGeologySurveyWhite(GeologySurveySouthSerbule4)" },
+            { RecipeEffect.CreateGeologySurveyBlue_GeologySurveyEltibule1, "CreateGeologySurveyBlue(GeologySurveyEltibule1)" },
+            { RecipeEffect.CreateGeologySurveyGreen_GeologySurveyEltibule2, "CreateGeologySurveyGreen(GeologySurveyEltibule2)" },
+            { RecipeEffect.CreateGeologySurveyOrange_GeologySurveyEltibule3, "CreateGeologySurveyOrange(GeologySurveyEltibule3)" },
+            { RecipeEffect.CreateGeologySurveyBlue_GeologySurveyKurMountains1, "CreateGeologySurveyBlue(GeologySurveyKurMountains1)" },
+            { RecipeEffect.CreateGeologySurveyGreen_GeologySurveyKurMountains2, "CreateGeologySurveyGreen(GeologySurveyKurMountains2)" },
+            { RecipeEffect.CreateGeologySurveyOrange_GeologySurveyKurMountains3, "CreateGeologySurveyOrange(GeologySurveyKurMountains3)" },
+            { RecipeEffect.CreateGeologySurveyWhite_GeologySurveyKurMountains4, "CreateGeologySurveyWhite(GeologySurveyKurMountains4)" },
+            { RecipeEffect.CreateMiningSurvey1X_MiningSurveyKurMountains1X, "CreateMiningSurvey1X(MiningSurveyKurMountains1X)" },
+            { RecipeEffect.CreateMiningSurvey2X_MiningSurveyKurMountains2X, "CreateMiningSurvey2X(MiningSurveyKurMountains2X)" },
+            { RecipeEffect.CreateMiningSurvey3X_MiningSurveyKurMountains3X, "CreateMiningSurvey3X(MiningSurveyKurMountains3X)" },
+            { RecipeEffect.CreateMiningSurvey1_MiningSurveySouthSerbule1, "CreateMiningSurvey1(MiningSurveySouthSerbule1)" },
+            { RecipeEffect.CreateMiningSurvey2_MiningSurveySouthSerbule2, "CreateMiningSurvey2(MiningSurveySouthSerbule2)" },
+            { RecipeEffect.CreateMiningSurvey3_MiningSurveyEltibule3, "CreateMiningSurvey3(MiningSurveyEltibule3)" },
+            { RecipeEffect.CreateMiningSurvey4_MiningSurveyEltibule4, "CreateMiningSurvey4(MiningSurveyEltibule4)" },
+            { RecipeEffect.CreateMiningSurvey5_MiningSurveyEltibule5, "CreateMiningSurvey5(MiningSurveyEltibule5)" },
+            { RecipeEffect.CreateMiningSurvey6_MiningSurveyEltibule6, "CreateMiningSurvey6(MiningSurveyEltibule6)" },
+            { RecipeEffect.CreateMiningSurvey4X_MiningSurveyIlmari4X, "CreateMiningSurvey4X(MiningSurveyIlmari4X)" },
+            { RecipeEffect.CreateMiningSurvey5X_MiningSurveyIlmari5X, "CreateMiningSurvey5X(MiningSurveyIlmari5X)" },
+            { RecipeEffect.CreateMiningSurvey6X_MiningSurveyIlmari6X, "CreateMiningSurvey6X(MiningSurveyIlmari6X)" },
+            { RecipeEffect.CreateMiningSurvey7X_MiningSurveyIlmari7X, "CreateMiningSurvey7X(MiningSurveyIlmari7X)" },
+            { RecipeEffect.CreateMiningSurvey7X_MiningSurveyGazluk7X, "CreateMiningSurvey7X(MiningSurveyGazluk7X)" },
+            { RecipeEffect.CreateMiningSurvey8X_MiningSurveyGazluk8X, "CreateMiningSurvey8X(MiningSurveyGazluk8X)" },
+        };
+
         public static Dictionary<Type, IDictionary> Tables = new Dictionary<Type, IDictionary>()
         {
             {  typeof(AbilityItemKeyword), AbilityItemKeywordTable },
@@ -149,6 +212,8 @@
             {  typeof(AppearanceSkin), AppearanceSkinTable },
             {  typeof(MapAreaName), MapAreaNameTable },
             {  typeof(QuestObjectiveKillTarget), QuestObjectiveKillTargetTable },
+            {  typeof(RecipeAction), RecipeActionTable },
+            {  typeof(RecipeEffect), RecipeEffectTable },
         };
     }
 }

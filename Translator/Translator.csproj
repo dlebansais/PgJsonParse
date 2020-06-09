@@ -44,7 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\ObjectiveRequirementType.cs" />
+    <Compile Include="Enums\QuestObjectiveRequirementType.cs" />
+    <Compile Include="Enums\QuestRequirementType.cs" />
     <Compile Include="Enums\QuestRewardType.cs" />
     <Compile Include="Enums\SelfParticle.cs" />
     <Compile Include="Enums\SpecialNpc.cs" />
@@ -144,6 +145,19 @@
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardPlayerTitle.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardLoreBook.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardRecipe.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultAdjustRecipeReuseTime.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultTeleport.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultDeltaFairyEnergy.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultConsumeItemUses.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultGiveTSysItem.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultWaxItem.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultBrewItem.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultAddShamanicPower.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultEnhancedItem.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultCraftedEquipment.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultRepairItemDurability.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultExtractAugment.cs" />
+    <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultRecipeEffect.cs" />
     <Compile Include="VariadicObjectHandler.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmoCollection.cs" />

@@ -12,21 +12,21 @@
             return null;
         }
 
-        private static Dictionary<ObjectiveRequirementType, VariadicObjectHandler> HandlerTable = new Dictionary<ObjectiveRequirementType, VariadicObjectHandler>()
+        private static Dictionary<QuestObjectiveRequirementType, VariadicObjectHandler> HandlerTable = new Dictionary<QuestObjectiveRequirementType, VariadicObjectHandler>()
         {
-            { ObjectiveRequirementType.TimeOfDay, FinishItemTimeOfDay },
-            { ObjectiveRequirementType.HasEffectKeyword, FinishItemHasEffectKeyword },
-            { ObjectiveRequirementType.Appearance, FinishItemAppearance },
+            { QuestObjectiveRequirementType.TimeOfDay, FinishItemTimeOfDay },
+            { QuestObjectiveRequirementType.HasEffectKeyword, FinishItemHasEffectKeyword },
+            { QuestObjectiveRequirementType.Appearance, FinishItemAppearance },
         };
 
-        private static Dictionary<ObjectiveRequirementType, List<string>> KnownFieldTable = new Dictionary<ObjectiveRequirementType, List<string>>()
+        private static Dictionary<QuestObjectiveRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveRequirementType, List<string>>()
         {
-            { ObjectiveRequirementType.TimeOfDay, new List<string>() { "T", "MinHour", "MaxHour" } },
-            { ObjectiveRequirementType.HasEffectKeyword, new List<string>() { "T", "Keyword" } },
-            { ObjectiveRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
+            { QuestObjectiveRequirementType.TimeOfDay, new List<string>() { "T", "MinHour", "MaxHour" } },
+            { QuestObjectiveRequirementType.HasEffectKeyword, new List<string>() { "T", "Keyword" } },
+            { QuestObjectiveRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
         };
 
-        private static Dictionary<ObjectiveRequirementType, List<string>> HandledTable = new Dictionary<ObjectiveRequirementType, List<string>>();
+        private static Dictionary<QuestObjectiveRequirementType, List<string>> HandledTable = new Dictionary<QuestObjectiveRequirementType, List<string>>();
 
         public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
         {
@@ -41,7 +41,7 @@
             if (!(TypeValue is string AsTypeString))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Value {TypeValue} was expected to be a string");
 
-            if (!StringToEnumConversion<ObjectiveRequirementType>.TryParse(AsTypeString, out ObjectiveRequirementType requirementType))
+            if (!StringToEnumConversion<QuestObjectiveRequirementType>.TryParse(AsTypeString, out QuestObjectiveRequirementType requirementType))
                 return false;
 
             if (!HandlerTable.ContainsKey(requirementType))
@@ -69,7 +69,7 @@
 
         public static bool FinalizeParsing()
         {
-            return Finalizer<ObjectiveRequirementType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
+            return Finalizer<QuestObjectiveRequirementType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
         }
 
         private static bool FinishItemTimeOfDay(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)

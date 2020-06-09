@@ -12,41 +12,41 @@
             return null;
         }
 
-        private static Dictionary<OtherRequirementType, VariadicObjectHandler> HandlerTable = new Dictionary<OtherRequirementType, VariadicObjectHandler>()
+        private static Dictionary<QuestRequirementType, VariadicObjectHandler> HandlerTable = new Dictionary<QuestRequirementType, VariadicObjectHandler>()
         {
-            { OtherRequirementType.MinFavorLevel, FinishItemMinFavorLevel },
-            { OtherRequirementType.Race, FinishItemRace },
-            { OtherRequirementType.QuestCompleted, FinishItemQuestCompleted },
-            { OtherRequirementType.IsWarden, FinishItemIsWarden },
-            { OtherRequirementType.AreaEventOn, FinishItemAreaEventOn },
-            { OtherRequirementType.MinSkillLevel, FinishItemMinSkillLevel },
-            { OtherRequirementType.HangOutCompleted, FinishItemHangOutCompleted },
-            { OtherRequirementType.InteractionFlagSet, FinishItemInteractionFlagSet },
-            { OtherRequirementType.Or, FinishItemOr },
-            { OtherRequirementType.GuildQuestCompleted, FinishItemGuildQuestCompleted },
-            { OtherRequirementType.HasEffectKeyword, FinishItemHasEffectKeyword },
-            { OtherRequirementType.RuntimeBehaviorRuleSet, FinishItemRuntimeBehaviorRuleSet },
-            { OtherRequirementType.IsLongtimeAnimal, FinishItemIsLongtimeAnimal },
+            { QuestRequirementType.MinFavorLevel, FinishItemMinFavorLevel },
+            { QuestRequirementType.Race, FinishItemRace },
+            { QuestRequirementType.QuestCompleted, FinishItemQuestCompleted },
+            { QuestRequirementType.IsWarden, FinishItemIsWarden },
+            { QuestRequirementType.AreaEventOn, FinishItemAreaEventOn },
+            { QuestRequirementType.MinSkillLevel, FinishItemMinSkillLevel },
+            { QuestRequirementType.HangOutCompleted, FinishItemHangOutCompleted },
+            { QuestRequirementType.InteractionFlagSet, FinishItemInteractionFlagSet },
+            { QuestRequirementType.Or, FinishItemOr },
+            { QuestRequirementType.GuildQuestCompleted, FinishItemGuildQuestCompleted },
+            { QuestRequirementType.HasEffectKeyword, FinishItemHasEffectKeyword },
+            { QuestRequirementType.RuntimeBehaviorRuleSet, FinishItemRuntimeBehaviorRuleSet },
+            { QuestRequirementType.IsLongtimeAnimal, FinishItemIsLongtimeAnimal },
         };
 
-        private static Dictionary<OtherRequirementType, List<string>> KnownFieldTable = new Dictionary<OtherRequirementType, List<string>>()
+        private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
         {
-            { OtherRequirementType.MinFavorLevel, new List<string>() { "T", "Npc", "Level" } },
-            { OtherRequirementType.Race, new List<string>() { "T", "AllowedRace", "DisallowedRace" } },
-            { OtherRequirementType.QuestCompleted, new List<string>() { "T", "Quest" } },
-            { OtherRequirementType.IsWarden, new List<string>() { "T" } },
-            { OtherRequirementType.AreaEventOn, new List<string>() { "T", "AreaEvent" } },
-            { OtherRequirementType.MinSkillLevel, new List<string>() { "T", "Level", "Skill" } },
-            { OtherRequirementType.HangOutCompleted, new List<string>() { "T", "HangOut" } },
-            { OtherRequirementType.InteractionFlagSet, new List<string>() { "T", "InteractionFlag" } },
-            { OtherRequirementType.Or, new List<string>() { "T", "List" } },
-            { OtherRequirementType.GuildQuestCompleted, new List<string>() { "T", "Quest" } },
-            { OtherRequirementType.HasEffectKeyword, new List<string>() { "T", "Keyword" } },
-            { OtherRequirementType.RuntimeBehaviorRuleSet, new List<string>() { "T", "Rule" } },
-            { OtherRequirementType.IsLongtimeAnimal, new List<string>() { "T" } },
+            { QuestRequirementType.MinFavorLevel, new List<string>() { "T", "Npc", "Level" } },
+            { QuestRequirementType.Race, new List<string>() { "T", "AllowedRace", "DisallowedRace" } },
+            { QuestRequirementType.QuestCompleted, new List<string>() { "T", "Quest" } },
+            { QuestRequirementType.IsWarden, new List<string>() { "T" } },
+            { QuestRequirementType.AreaEventOn, new List<string>() { "T", "AreaEvent" } },
+            { QuestRequirementType.MinSkillLevel, new List<string>() { "T", "Level", "Skill" } },
+            { QuestRequirementType.HangOutCompleted, new List<string>() { "T", "HangOut" } },
+            { QuestRequirementType.InteractionFlagSet, new List<string>() { "T", "InteractionFlag" } },
+            { QuestRequirementType.Or, new List<string>() { "T", "List" } },
+            { QuestRequirementType.GuildQuestCompleted, new List<string>() { "T", "Quest" } },
+            { QuestRequirementType.HasEffectKeyword, new List<string>() { "T", "Keyword" } },
+            { QuestRequirementType.RuntimeBehaviorRuleSet, new List<string>() { "T", "Rule" } },
+            { QuestRequirementType.IsLongtimeAnimal, new List<string>() { "T" } },
         };
 
-        private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
+        private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
 
         public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
         {
@@ -61,7 +61,7 @@
             if (!(TypeValue is string AsTypeString))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Value {TypeValue} was expected to be a string");
 
-            if (!StringToEnumConversion<OtherRequirementType>.TryParse(AsTypeString, out OtherRequirementType requirementType))
+            if (!StringToEnumConversion<QuestRequirementType>.TryParse(AsTypeString, out QuestRequirementType requirementType))
                 return false;
 
             if (!HandlerTable.ContainsKey(requirementType))
@@ -89,7 +89,7 @@
 
         public static bool FinalizeParsing()
         {
-            return Finalizer<OtherRequirementType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
+            return Finalizer<QuestRequirementType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
         }
 
         private static bool FinishItemMinFavorLevel(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
