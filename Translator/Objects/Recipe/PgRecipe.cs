@@ -18,10 +18,10 @@
         public PgRecipeResultEffectCollection ResultEffectList { get; } = new PgRecipeResultEffectCollection();
         public PgSkill SortSkill { get; set; }
         public List<RecipeKeyword> KeywordList { get; } = new List<RecipeKeyword>();
+        public RecipeAction ActionLabel { get; set; }
         public double UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
         public double? RawUsageDelay { get; set; }
         public string UsageDelayMessage { get; set; }
-        public RecipeAction ActionLabel { get; set; }
         public RecipeUsageAnimation UsageAnimation { get; set; }
         public PgAbilityRequirementCollection OtherRequirementList { get; } = new PgAbilityRequirementCollection();
         public PgRecipeCostCollection CostList { get; } = new PgRecipeCostCollection();
@@ -44,22 +44,16 @@
         public int? RawRewardSkillXpFirstTime { get; set; }
         public PgRecipe SharesResetTimerWith { get; set; }
         public string ItemMenuLabel { get; set; }
+        public ItemKeyword RecipeItemKeyword { get; set; }
+        public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
+        public bool? RawIsItemMenuKeywordReqSufficient { get; set; }
         public string ItemMenuCategory { get; set; }
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get; set; }
         public PgRecipe PrereqRecipe { get; set; }
-        public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
-        public bool? RawIsItemMenuKeywordReqSufficient { get; set; }
-        public bool IngredientListIsEmpty { get { return RawIngredientListIsEmpty.HasValue && RawIngredientListIsEmpty.Value; } }
-        public bool? RawIngredientListIsEmpty { get; set; }
-        public bool ResultItemListIsEmpty { get { return RawResultItemListIsEmpty.HasValue && RawResultItemListIsEmpty.Value; } }
-        public bool? RawResultItemListIsEmpty { get; set; }
-        public bool ProtoResultItemListIsEmpty { get { return RawProtoResultItemListIsEmpty.HasValue && RawProtoResultItemListIsEmpty.Value; } }
-        public bool? RawProtoResultItemListIsEmpty { get; set; }
-        public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }
-        public bool? RawRewardAllowBonusXp { get; set; }
-        public ItemKeyword RecipeItemKeyword { get; set; }
         public List<ItemKeyword> ValidationIngredientKeywordList { get; } = new List<ItemKeyword>();
         public PgRecipeItemCollection ProtoResultItemList { get; } = new PgRecipeItemCollection();
+        public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }
+        public bool? RawRewardAllowBonusXp { get; set; }
     }
 }
