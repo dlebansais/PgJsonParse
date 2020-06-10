@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgSource
+    public abstract class PgSource
     {
     }
 }

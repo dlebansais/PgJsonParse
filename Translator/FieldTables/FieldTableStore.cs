@@ -751,6 +751,7 @@
         private static List<Type> TypeWithNameList = new List<Type>()
         {
             typeof(PgEffect),
+            typeof(PgRecipe),
         };
 
         private static List<Type> TypeWithInternalNameList = new List<Type>()

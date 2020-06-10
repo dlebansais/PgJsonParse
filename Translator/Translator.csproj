@@ -163,6 +163,14 @@
     <Compile Include="Objects\Skill\PgReportCollection.cs" />
     <Compile Include="Objects\Skill\PgReportList.cs" />
     <Compile Include="Objects\Skill\PgSkillCollection.cs" />
+    <Compile Include="Objects\Source\Source\PgSourceRecipe.cs" />
+    <Compile Include="Objects\Source\Source\PgSourceHangOut.cs" />
+    <Compile Include="Objects\Source\Source\PgSourceQuest.cs" />
+    <Compile Include="Objects\Source\Source\PgSourceEffect.cs" />
+    <Compile Include="Objects\Source\Source\PgSourceGift.cs" />
+    <Compile Include="Objects\Source\Source\PgSourceTraining.cs" />
+    <Compile Include="Objects\Source\Source\PgSourceItem.cs" />
+    <Compile Include="Objects\Source\Source\PgSourceAutomaticFromSkill.cs" />
     <Compile Include="Parsers\Skill\ParserLevelCapInteractionList.cs" />
     <Compile Include="VariadicObjectHandler.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
