@@ -744,7 +744,7 @@
             { typeof(PgSource), new FixedFieldTable(TableSource) },
             { typeof(PgStorageVault), new FixedFieldTable(TableStorageVault) },
             { typeof(PgStorageFavorLevel), new FixedFieldTable(TableStorageFavorLevel) },
-            { typeof(PgStorageRequirement), new FixedFieldTable(TableStorageRequirement) },
+            { typeof(PgStorageRequirement), new VariadicFieldTable(typeof(string)) },
             { typeof(PgXpTable), new FixedFieldTable(TableXpTable) },
         };
 

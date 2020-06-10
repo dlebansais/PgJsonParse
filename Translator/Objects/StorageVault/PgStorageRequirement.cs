@@ -1,6 +1,6 @@
 ﻿namespace PgJsonObjects
 {
-    public class PgStorageRequirement
+    public abstract class PgStorageRequirement
     {
     }
 }

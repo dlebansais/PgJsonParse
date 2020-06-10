@@ -93,6 +93,7 @@
             FinalizingResult &= ParserQuestObjectiveRequirement.FinalizeParsing();
             FinalizingResult &= ParserQuestRequirement.FinalizeParsing();
             FinalizingResult &= ParserQuestReward.FinalizeParsing();
+            FinalizingResult &= ParserStorageRequirement.FinalizeParsing();
 
             if (!FinalizingResult)
                 return -1;

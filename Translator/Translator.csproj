@@ -49,6 +49,7 @@
     <Compile Include="Enums\QuestRewardType.cs" />
     <Compile Include="Enums\SelfParticle.cs" />
     <Compile Include="Enums\SpecialNpc.cs" />
+    <Compile Include="Enums\StorageRequirementType.cs" />
     <Compile Include="Finalizer.cs" />
     <Compile Include="Inserter.cs" />
     <Compile Include="Enums\AbilityCue.cs" />
@@ -171,6 +172,9 @@
     <Compile Include="Objects\Source\Source\PgSourceTraining.cs" />
     <Compile Include="Objects\Source\Source\PgSourceItem.cs" />
     <Compile Include="Objects\Source\Source\PgSourceAutomaticFromSkill.cs" />
+    <Compile Include="Objects\StorageVault\StorageRequirement\PgStorageRequirementIsWarden.cs" />
+    <Compile Include="Objects\StorageVault\StorageRequirement\PgStorageRequirementIsLongtimeAnimal.cs" />
+    <Compile Include="Objects\StorageVault\StorageRequirement\PgStorageRequirementInteractionFlagSet.cs" />
     <Compile Include="Parsers\Skill\ParserLevelCapInteractionList.cs" />
     <Compile Include="VariadicObjectHandler.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
