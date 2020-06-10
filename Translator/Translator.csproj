@@ -310,8 +310,6 @@
     <Compile Include="Objects\StorageVault\PgStorageFavorLevel.cs" />
     <Compile Include="Objects\StorageVault\PgStorageVault.cs" />
     <Compile Include="Objects\XpTable\PgXpTable.cs" />
-    <Compile Include="Objects\XpTable\PgXpTableLevel.cs" />
-    <Compile Include="Objects\XpTable\PgXpTableLevelCollection.cs" />
     <Compile Include="Parsers\AdvancementTable\ParserAdvancementTable.cs" />
     <Compile Include="Parsers\AdvancementTable\ParserAdvancement.cs" />
     <Compile Include="Parsers\Ability\ParserSpecialValue.cs" />

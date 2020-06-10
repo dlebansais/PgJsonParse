@@ -1,9 +1,10 @@
 ﻿namespace PgJsonObjects
 {
+    using System.Collections.Generic;
+
     public class PgXpTable
     {
         public string InternalName { get; set; } = string.Empty;
-        public PgXpTableLevelCollection XpAmountList { get; } = new PgXpTableLevelCollection();
-        public XpTableCategory CategoryName { get; set; }
+        public List<int> XpAmountList { get; } = new List<int>();
     }
 }
