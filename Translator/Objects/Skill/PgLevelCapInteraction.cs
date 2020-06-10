@@ -2,10 +2,10 @@
 {
     public class PgLevelCapInteraction
     {
-        public int OtherLevel { get { return RawOtherLevel.Value; } }
-        public int? RawOtherLevel { get; private set; }
         public int Level { get { return RawLevel.Value; } }
-        public int? RawLevel { get; private set; }
-        public PgSkill Skill { get; private set; }
+        public int? RawLevel { get; set; }
+        public int OtherLevel { get { return RawOtherLevel.Value; } }
+        public int? RawOtherLevel { get; set; }
+        public PgSkill Skill { get; set; }
     }
 }

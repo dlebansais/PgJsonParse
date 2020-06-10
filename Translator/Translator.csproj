@@ -158,6 +158,12 @@
     <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultRepairItemDurability.cs" />
     <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultExtractAugment.cs" />
     <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultRecipeEffect.cs" />
+    <Compile Include="Objects\Skill\PgAdvancementHintCollection.cs" />
+    <Compile Include="Objects\Skill\PgLevelCapInteractionList.cs" />
+    <Compile Include="Objects\Skill\PgReportCollection.cs" />
+    <Compile Include="Objects\Skill\PgReportList.cs" />
+    <Compile Include="Objects\Skill\PgSkillCollection.cs" />
+    <Compile Include="Parsers\Skill\ParserLevelCapInteractionList.cs" />
     <Compile Include="VariadicObjectHandler.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmoCollection.cs" />
@@ -339,11 +345,10 @@
     <Compile Include="Parsers\Recipe\ParserRecipeCost.cs" />
     <Compile Include="Parsers\Recipe\ParserRecipeItem.cs" />
     <Compile Include="Parsers\Recipe\ParserRecipe.cs" />
-    <Compile Include="Parsers\Skill\ParserLevelCapInteraction.cs" />
     <Compile Include="Parsers\Skill\ParserAdvancementHint.cs" />
     <Compile Include="Parsers\Skill\ParserReward.cs" />
     <Compile Include="Parsers\Skill\ParserRewardList.cs" />
-    <Compile Include="Parsers\Skill\ParserReport.cs" />
+    <Compile Include="Parsers\Skill\ParserReportList.cs" />
     <Compile Include="Parsers\Skill\ParserSkill.cs" />
     <Compile Include="Parsers\Source\ParserSource.cs" />
     <Compile Include="Parsers\StorageVault\ParserStorageRequirement.cs" />
