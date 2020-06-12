@@ -9,7 +9,7 @@
 
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public bool HideWhenZero { get { return RawHideWhenZero.HasValue && RawHideWhenZero.Value; } }
         public bool? RawHideWhenZero { get; set; }
         public PgXpTable XpTable { get; set; }
@@ -23,7 +23,7 @@
         public PgAdvancementHintCollection AdvancementHintList { get; } = new PgAdvancementHintCollection();
         public PgRewardList RewardList { get; set; }
         public PgReportList ReportList { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public PgSkillCollection ParentSkillList { get; } = new PgSkillCollection();
         public bool SkipBonusLevelsIfSkillUnlearned { get { return RawSkipBonusLevelsIfSkillUnlearned.HasValue && RawSkipBonusLevelsIfSkillUnlearned.Value; } }
         public bool? RawSkipBonusLevelsIfSkillUnlearned { get; set; }

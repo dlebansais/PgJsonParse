@@ -98,6 +98,9 @@
             if (!FinalizingResult)
                 return -1;
 
+            List<object> ObjectList = ParsingContext.GetParsedObjectList();
+            Generate.Write(ObjectList);
+
             return 0;
         }
 

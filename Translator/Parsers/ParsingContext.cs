@@ -187,5 +187,15 @@
 
             return true;
         }
+
+        public static List<object> GetParsedObjectList()
+        {
+            List<object> Result = new List<object>();
+
+            foreach (ParsingContext Context in ContextList)
+                Result.Add(Context.Item);
+
+            return Result;
+        }
     }
 }

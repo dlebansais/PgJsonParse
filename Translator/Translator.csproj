@@ -51,6 +51,7 @@
     <Compile Include="Enums\SpecialNpc.cs" />
     <Compile Include="Enums\StorageRequirementType.cs" />
     <Compile Include="Finalizer.cs" />
+    <Compile Include="Generate.cs" />
     <Compile Include="Inserter.cs" />
     <Compile Include="Enums\AbilityCue.cs" />
     <Compile Include="Enums\AbilityTargetParticle.cs" />
