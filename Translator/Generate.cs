@@ -13,11 +13,28 @@
     {
         public static void Write(List<object> objectList)
         {
-            using FileStream Stream = new FileStream("Objects.cs", FileMode.Create, FileAccess.Write);
+            string CurrentDirectory = Environment.CurrentDirectory;
+
+            for(;;)
+            {
+                string Folder = Path.GetFileName(CurrentDirectory);
+
+                if (Folder == "Debug" || Folder == "Release" || Folder == "x64" || Folder == "bin")
+                    CurrentDirectory = Path.GetDirectoryName(CurrentDirectory);
+                else
+                    break;
+            }
+
+            string FilePath = Path.GetDirectoryName(CurrentDirectory);
+            FilePath = Path.Combine(FilePath, "Test");
+            FilePath = Path.Combine(FilePath, "Objects2.cs");
+
+            using FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
             using StreamWriter Writer = new StreamWriter(Stream);
 
             Writer.WriteLine("namespace PgObjects");
             Writer.WriteLine("{");
+            Writer.WriteLine("    using System;");
             Writer.WriteLine("    using System.Collections.Generic;");
             Writer.WriteLine("");
             Writer.WriteLine("    public class Objects");
@@ -54,10 +71,10 @@
             object Item = objectList[objectIndex];
             Type Type = Item.GetType();
             PropertyInfo[] Properties = Type.GetProperties();
-            string ObjectTypeName = Type.Name;
+            string ObjectTypeName = SimpleTypeName(Type);
             string ObjectName = ToObjectName(objectIndex);
 
-            string ItemHeader = $"public static {ObjectTypeName } {ObjectName} = new {ObjectTypeName }()";
+            string ItemHeader = $"public static {ObjectTypeName} {ObjectName} {{ get; }} = new {ObjectTypeName}()";
             writer.WriteLine(ItemHeader);
             writer.WriteLine("{");
 
@@ -117,7 +134,7 @@
         {
             bool? BoolValue = (bool?)value;
             if (BoolValue.HasValue)
-                return BoolValue.Value.ToString();
+                return BoolValue.Value.ToString().ToLower();
             else
                 return "null";
         }
@@ -144,7 +161,14 @@
         {
             float? FloatValue = (float?)value;
             if (FloatValue.HasValue)
-                return FloatValue.Value.ToString(CultureInfo.InvariantCulture);
+            {
+                string FloatValueString = FloatValue.Value.ToString(CultureInfo.InvariantCulture);
+
+                if (FloatValueString.Contains(".") || FloatValueString.Contains("E"))
+                    FloatValueString += "F";
+
+                return FloatValueString;
+            }
             else
                 return "null";
         }
@@ -164,13 +188,14 @@
             Debug.Assert(StringValue != null);
 
             StringValue = StringValue.Replace("\n", "\\n");
+            StringValue = StringValue.Replace("\"", "\\\"");
 
             return $"\"{StringValue}\"";
         }
 
         private static string GetEnumValueString(Type type, object value)
         {
-            string EnumTypeString = type.Name;
+            string EnumTypeString = SimpleTypeName(type);
             string EnumString = type.GetEnumName(value);
             return $"{EnumTypeString}.{EnumString}";
         }
@@ -199,6 +224,8 @@
                 return GetLocationValueString(type, AsLocation, objectList);
             else if (value is IDictionary AsDictionary)
                 return GetDictionaryValueString(type, AsDictionary, objectList);
+            else if (type.Name.StartsWith("List"))
+                return GetListValueString(type, value as IList, objectList);
             else if (value is ICollection AsCollection)
                 return GetCollectionValueString(type, AsCollection, objectList);
             else
@@ -215,7 +242,7 @@
             string NpcEnumString = GetEnumValueString(typeof(SpecialNpc), location.NpcEnum);
             string NpcNameString = GetStringValueString(location.NpcName);
 
-            return $"new PgNpcLocation() {{ NpcArea = {NpcAreaString}, NpcId = {NpcIdString}, Npc = {NpcString}, NpcEnum = {NpcEnumString}, NpcArea = {NpcAreaString}, NpcName = {NpcNameString} }}";
+            return $"new PgNpcLocation() {{ NpcArea = {NpcAreaString}, NpcId = {NpcIdString}, Npc = {NpcString}, NpcEnum = {NpcEnumString}, NpcName = {NpcNameString} }}";
         }
 
         private static string GetDictionaryValueString(Type type, IDictionary dictionary, List<object> objectList)
@@ -223,9 +250,12 @@
             Type[] GenericArguments = type.GetGenericArguments();
             Debug.Assert(GenericArguments.Length == 2);
             Type KeyType = GenericArguments[0];
-            string KeyTypeString = KeyType.Name;
+            string KeyTypeString = SimpleTypeName(KeyType);
             Type ValueType = GenericArguments[1];
-            string ValueTypeString = ValueType.Name;
+            string ValueTypeString = SimpleTypeName(ValueType);
+
+            if (KeyTypeString == "Int32")
+                KeyTypeString = "int";
 
             string Result = $"new Dictionary<{KeyTypeString}, {ValueTypeString}>()";
 
@@ -250,9 +280,33 @@
             return Result;
         }
 
+        private static string GetListValueString(Type type, IList list, List<object> objectList)
+        {
+            Type[] GenericArguments = type.GetGenericArguments();
+            Debug.Assert(GenericArguments.Length == 1);
+            Type ItemType = GenericArguments[0];
+            string ItemTypeString = SimpleTypeName(ItemType);
+
+            string Result = $"new List<{ItemTypeString}>()";
+
+            string ListContentString = string.Empty;
+
+            foreach (object Item in list)
+            {
+                if (ListContentString.Length > 0)
+                    ListContentString += ", ";
+
+                ListContentString += GetValueString(Item.GetType(), Item, objectList);
+            }
+
+            Result += $" {{ {ListContentString} }}";
+
+            return Result;
+        }
+
         private static string GetCollectionValueString(Type type, ICollection collection, List<object> objectList)
         {
-            string CollectionTypeString = type.Name;
+            string CollectionTypeString = SimpleTypeName(type);
 
             string Result = $"new {CollectionTypeString}()";
 
@@ -269,6 +323,16 @@
             Result += $" {{ {CollectionContentString} }}";
 
             return Result;
+        }
+
+        private static string SimpleTypeName(Type type)
+        {
+            if (type == typeof(Int32) || type == typeof(int))
+                return "int";
+            else if (type == typeof(string))
+                return "string";
+
+            return type.Name;
         }
     }
 }

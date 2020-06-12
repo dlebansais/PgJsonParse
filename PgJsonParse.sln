@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translator", "Translator\Translator.csproj", "{46DB8213-CD46-4940-ACCD-3D7756BB95C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{1C67A2C3-266C-4685-AE1B-9D19D96464AB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -44,10 +42,6 @@ Global
 		{46DB8213-CD46-4940-ACCD-3D7756BB95C1}.Debug|x64.Build.0 = Debug|x64
 		{46DB8213-CD46-4940-ACCD-3D7756BB95C1}.Release|x64.ActiveCfg = Release|x64
 		{46DB8213-CD46-4940-ACCD-3D7756BB95C1}.Release|x64.Build.0 = Release|x64
-		{1C67A2C3-266C-4685-AE1B-9D19D96464AB}.Debug|x64.ActiveCfg = Debug|x64
-		{1C67A2C3-266C-4685-AE1B-9D19D96464AB}.Debug|x64.Build.0 = Debug|x64
-		{1C67A2C3-266C-4685-AE1B-9D19D96464AB}.Release|x64.ActiveCfg = Release|x64
-		{1C67A2C3-266C-4685-AE1B-9D19D96464AB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
