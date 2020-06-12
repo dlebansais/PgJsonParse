@@ -99,7 +99,7 @@
                 return -1;
 
             List<object> ObjectList = ParsingContext.GetParsedObjectList();
-            Generate.Write(ObjectList);
+            Generate.Write(Version, ObjectList);
 
             return 0;
         }

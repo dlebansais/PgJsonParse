@@ -8,51 +8,53 @@
     using System.Globalization;
     using System.IO;
     using System.Reflection;
-
+    
     public class Generate
     {
-        public static void Write(List<object> objectList)
+        public static void Write(int version, List<object> objectList)
         {
-            string CurrentDirectory = Environment.CurrentDirectory;
+            string FilePath = Environment.CurrentDirectory;
 
             for(;;)
             {
-                string Folder = Path.GetFileName(CurrentDirectory);
+                string Folder = Path.GetFileName(FilePath);
 
                 if (Folder == "Debug" || Folder == "Release" || Folder == "x64" || Folder == "bin")
-                    CurrentDirectory = Path.GetDirectoryName(CurrentDirectory);
+                    FilePath = Path.GetDirectoryName(FilePath);
                 else
                     break;
             }
 
-            string FilePath = Path.GetDirectoryName(CurrentDirectory);
-            FilePath = Path.Combine(FilePath, "Test");
-            FilePath = Path.Combine(FilePath, "Objects2.cs");
+            FilePath = Path.GetDirectoryName(FilePath);
+            FilePath = Path.GetDirectoryName(FilePath);
+            FilePath = Path.Combine(FilePath, "PgObjects");
+            FilePath = Path.Combine(FilePath, $"v{version}");
+            FilePath = Path.Combine(FilePath, "Tables");
 
-            using FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
-            using StreamWriter Writer = new StreamWriter(Stream);
+            RootFolder = FilePath;
 
-            Writer.WriteLine("namespace PgObjects");
-            Writer.WriteLine("{");
-            Writer.WriteLine("    using System;");
-            Writer.WriteLine("    using System.Collections.Generic;");
-            Writer.WriteLine("");
-            Writer.WriteLine("    public class Objects");
-            Writer.WriteLine("    {");
+            Write(objectList);
 
-            Write(Writer, objectList);
+            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
+            {
+                using StreamWriter Writer = Entry.Value;
+                Writer.WriteLine("    }");
+                Writer.WriteLine("}");
+            }
 
-            Writer.WriteLine("    }");
-            Writer.WriteLine("}");
+            foreach (KeyValuePair<Type, FileStream> Entry in StreamTable)
+            {
+                using FileStream Stream = Entry.Value;
+            }
         }
 
-        private static void Write(StreamWriter writer, List<object> objectList)
+        private static void Write(List<object> objectList)
         {
             int LastDisplay = 10;
 
             for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
             {
-                WriteItem(writer, objectList, ObjectIndex);
+                WriteItem(objectList, ObjectIndex);
 
                 int Percent = (int)((((float)ObjectIndex) / objectList.Count) * 100);
 
@@ -66,17 +68,54 @@
             Debug.WriteLine($"100%");
         }
 
-        private static void WriteItem(StreamWriter writer, List<object> objectList, int objectIndex)
+        private static Dictionary<Type, FileStream> StreamTable = new Dictionary<Type, FileStream>();
+        private static Dictionary<Type, StreamWriter> WriterTable = new Dictionary<Type, StreamWriter>();
+        private static string RootFolder;
+
+        private static void AddTypeFile(Type type, out StreamWriter writer)
+        {
+            if (WriterTable.ContainsKey(type))
+            {
+                writer = WriterTable[type];
+                writer.WriteLine("");
+                return;
+            }
+
+            string TypeName = type.Name;
+            Debug.Assert(TypeName.StartsWith("Pg"));
+            string ClassName = $"{TypeName.Substring(2)}Objects";
+
+            string FilePath = Path.Combine(RootFolder, $"{ClassName}.cs");
+
+            FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
+            writer = new StreamWriter(Stream);
+
+            writer.WriteLine("namespace PgObjects");
+            writer.WriteLine("{");
+            writer.WriteLine("    using System;");
+            writer.WriteLine("    using System.Collections.Generic;");
+            writer.WriteLine("");
+            writer.WriteLine($"    public class {ClassName}");
+            writer.WriteLine("    {");
+
+            StreamTable.Add(type, Stream);
+            WriterTable.Add(type, writer);
+        }
+
+        private static void WriteItem(List<object> objectList, int objectIndex)
         {
             object Item = objectList[objectIndex];
             Type Type = Item.GetType();
+
+            AddTypeFile(Type, out StreamWriter Writer);
+
             PropertyInfo[] Properties = Type.GetProperties();
             string ObjectTypeName = SimpleTypeName(Type);
             string ObjectName = ToObjectName(objectIndex);
 
-            string ItemHeader = $"public static {ObjectTypeName} {ObjectName} {{ get; }} = new {ObjectTypeName}()";
-            writer.WriteLine(ItemHeader);
-            writer.WriteLine("{");
+            string ItemHeader = $"        public static {ObjectTypeName} {ObjectName} {{ get; }} = new {ObjectTypeName}()";
+            Writer.WriteLine(ItemHeader);
+            Writer.WriteLine("        {");
 
             string Line = string.Empty;
             foreach (PropertyInfo Property in Properties)
@@ -96,9 +135,9 @@
             }
 
             if (Line.Length > 0)
-                writer.WriteLine(Line);
+                Writer.WriteLine($"            {Line}");
 
-            writer.WriteLine("};");
+            Writer.WriteLine("        };");
         }
 
         private static string GetValueString(Type type, object value, List<object> objectList)
