@@ -1,6 +1,6 @@
 ﻿namespace Translator
 {
-    using PgJsonObjects;
+    using PgObjects;
     using PgJsonReader;
     using System.Collections.Generic;
 

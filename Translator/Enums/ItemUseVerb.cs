@@ -1,4 +1,4 @@
-﻿namespace PgJsonObjects
+﻿namespace PgObjects
 {
     public enum ItemUseVerb
     {

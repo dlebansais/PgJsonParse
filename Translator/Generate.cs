@@ -1,6 +1,6 @@
 ﻿namespace Translator
 {
-    using PgJsonObjects;
+    using PgObjects;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -18,6 +18,8 @@
 
             Writer.WriteLine("namespace PgObjects");
             Writer.WriteLine("{");
+            Writer.WriteLine("    using System.Collections.Generic;");
+            Writer.WriteLine("");
             Writer.WriteLine("    public class Objects");
             Writer.WriteLine("    {");
 
