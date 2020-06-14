@@ -7,6 +7,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Runtime.CompilerServices;
+    using System.Reflection;
 
     public class Program
     {
@@ -97,6 +98,8 @@
 
             if (!FinalizingResult)
                 return -1;
+
+            ParserSkill.FillAssociationTables();
 
             List<object> ObjectList = ParsingContext.GetParsedObjectList();
             Generate.Write(Version, ObjectList);
@@ -309,6 +312,8 @@
             if (!ParseObject(reader, Context))
                 return false;
 
+            SetItemKey(Context.Item, Key);
+
             if (!Context.RecordContext())
                 return false;
 
@@ -497,6 +502,17 @@
             reader.Read();
 
             return true;
+        }
+
+        private static void SetItemKey(object item, string key)
+        {
+            Debug.Assert(item != null);
+
+            PropertyInfo Property = item.GetType().GetProperty("Key");
+            Debug.Assert(Property != null);
+            Debug.Assert(Property.PropertyType == typeof(string));
+
+            Property.SetValue(item, key);
         }
     }
 }

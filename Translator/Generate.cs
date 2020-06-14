@@ -11,6 +11,8 @@
     
     public class Generate
     {
+        private static Dictionary<object, int> IndexTable = new Dictionary<object, int>();
+
         public static void Write(int version, List<object> objectList)
         {
             string FilePath = Environment.CurrentDirectory;
@@ -29,11 +31,17 @@
             FilePath = Path.GetDirectoryName(FilePath);
             FilePath = Path.Combine(FilePath, "PgObjects");
             FilePath = Path.Combine(FilePath, $"v{version}");
-            FilePath = Path.Combine(FilePath, "Tables");
 
             RootFolder = FilePath;
 
+            IndexTable.Clear();
+            for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
+                IndexTable.Add(objectList[ObjectIndex], ObjectIndex);
+
+            WriteGroupings(objectList);
             Write(objectList);
+            WriteKeys(objectList);
+            WriteDictionaries(objectList);
 
             foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
             {
@@ -68,6 +76,74 @@
             Debug.WriteLine($"100%");
         }
 
+        private static void WriteKeys(List<object> objectList)
+        {
+            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
+            {
+                StreamWriter Writer = Entry.Value;
+
+                Writer.WriteLine("");
+                Writer.WriteLine("        public static List<string> Keys { get { return new List<string>() {");
+            }
+
+            for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
+                WriteItemToKeys(objectList, ObjectIndex);
+
+            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
+            {
+                StreamWriter Writer = Entry.Value;
+                Writer.WriteLine("                                         }; } }");
+            }
+        }
+
+        private static void WriteDictionaries(List<object> objectList)
+        {
+            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
+            {
+                StreamWriter Writer = Entry.Value;
+
+                string TypeName = Entry.Key.Name;
+                Writer.WriteLine("");
+                Writer.WriteLine($"        private static Dictionary<string, {TypeName}> Table = new Dictionary<string, {TypeName}>();");
+                Writer.WriteLine("");
+                Writer.WriteLine($"        public static {TypeName} Get(string key)");
+                Writer.WriteLine($"        {{");
+                Writer.WriteLine($"            if (!Table.ContainsKey(key))");
+                Writer.WriteLine($"            {{");
+                Writer.WriteLine($"                switch (key)");
+                Writer.WriteLine($"                {{");
+            }
+
+            int LastDisplay = 10;
+
+            for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
+            {
+                WriteItemToDictionary(objectList, ObjectIndex);
+
+                int Percent = (int)((((float)ObjectIndex) / objectList.Count) * 100);
+
+                if (Percent >= LastDisplay)
+                {
+                    Debug.WriteLine($"{Percent}%");
+                    LastDisplay += 10;
+                }
+            }
+
+            Debug.WriteLine($"100%");
+
+            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
+            {
+                StreamWriter Writer = Entry.Value;
+                Writer.WriteLine($"                    default:");
+                Writer.WriteLine($"                        return null;");
+                Writer.WriteLine($"                }}");
+                Writer.WriteLine($"            }}");
+                Writer.WriteLine("");
+                Writer.WriteLine($"            return Table[key];");
+                Writer.WriteLine($"        }}");
+            }
+        }
+
         private static Dictionary<Type, FileStream> StreamTable = new Dictionary<Type, FileStream>();
         private static Dictionary<Type, StreamWriter> WriterTable = new Dictionary<Type, StreamWriter>();
         private static string RootFolder;
@@ -81,11 +157,8 @@
                 return;
             }
 
-            string TypeName = type.Name;
-            Debug.Assert(TypeName.StartsWith("Pg"));
-            string ClassName = $"{TypeName.Substring(2)}Objects";
-
-            string FilePath = Path.Combine(RootFolder, $"{ClassName}.cs");
+            string ClassName = ToClassName(type);
+            string FilePath = Path.Combine(RootFolder, "Tables", $"{ClassName}.cs");
 
             FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
             writer = new StreamWriter(Stream);
@@ -95,11 +168,34 @@
             writer.WriteLine("    using System;");
             writer.WriteLine("    using System.Collections.Generic;");
             writer.WriteLine("");
-            writer.WriteLine($"    public class {ClassName}");
+            writer.WriteLine($"    public static class {ClassName}");
             writer.WriteLine("    {");
 
             StreamTable.Add(type, Stream);
             WriterTable.Add(type, writer);
+        }
+
+        private static void WriteItemProlog(StreamWriter writer, string objectTypeName, string objectName)
+        {
+            writer.WriteLine($"        public static {objectTypeName} {objectName}");
+            writer.WriteLine($"        {{");
+            writer.WriteLine($"            get");
+            writer.WriteLine($"            {{");
+            //writer.WriteLine($"                Tools.DebugBreak();");
+            writer.WriteLine($"                if (_{objectName} == null)");
+            writer.WriteLine($"                {{");
+            writer.WriteLine($"                    _{objectName} = new {objectTypeName}();");
+            writer.WriteLine("");
+        }
+
+        private static void WriteItemEpilog(StreamWriter writer, string objectTypeName, string objectName)
+        {
+            writer.WriteLine($"                }}");
+            writer.WriteLine("");
+            writer.WriteLine($"                return _{objectName};");
+            writer.WriteLine($"            }}");
+            writer.WriteLine($"        }}");
+            writer.WriteLine($"        private static {objectTypeName} _{objectName};");
         }
 
         private static void WriteItem(List<object> objectList, int objectIndex)
@@ -113,42 +209,173 @@
             string ObjectTypeName = SimpleTypeName(Type);
             string ObjectName = ToObjectName(objectIndex);
 
-            string ItemHeader = $"        public static {ObjectTypeName} {ObjectName} {{ get; }} = new {ObjectTypeName}()";
-            Writer.WriteLine(ItemHeader);
-            Writer.WriteLine("        {");
+            WriteItemProlog(Writer, ObjectTypeName, ObjectName);
 
-            string Line = string.Empty;
             foreach (PropertyInfo Property in Properties)
             {
                 if (!Property.CanWrite)
                     continue;
-
-                if (Line.Length > 0)
-                    Line += ", ";
 
                 string PropertyName = Property.Name;
                 Type PropertyType = Property.PropertyType;
                 object PropertyValue = Property.GetValue(Item);
                 string ValueString = GetValueString(PropertyType, PropertyValue, objectList);
 
-                Line += $"{PropertyName} = {ValueString}";
+                Writer.WriteLine($"                    _{ObjectName}.{PropertyName} = {ValueString};");
             }
 
-            if (Line.Length > 0)
-                Writer.WriteLine($"            {Line}");
+            WriteItemEpilog(Writer, ObjectTypeName, ObjectName);
+        }
 
-            Writer.WriteLine("        };");
+        private static void WriteItemToKeys(List<object> objectList, int objectIndex)
+        {
+            object Item = objectList[objectIndex];
+            Type Type = Item.GetType();
+
+            PropertyInfo Property = Type.GetProperty("Key");
+            if (Property == null || Property.PropertyType != typeof(string))
+                return;
+
+            string Key = Property.GetValue(Item) as string;
+            Debug.Assert(Key != null);
+
+            string KeyValue = GetStringValueString(Key);
+            StreamWriter Writer = WriterTable[Type];
+
+            Writer.WriteLine($"                                             {KeyValue}, ");
+        }
+
+        private static void WriteItemToDictionary(List<object> objectList, int objectIndex)
+        {
+            object Item = objectList[objectIndex];
+            Type Type = Item.GetType();
+
+            PropertyInfo Property = Type.GetProperty("Key");
+            if (Property == null || Property.PropertyType != typeof(string))
+                return;
+
+            string Key = Property.GetValue(Item) as string;
+            Debug.Assert(Key != null);
+
+            string KeyValue = GetStringValueString(Key);
+            string LinkValue = ToObjectName(objectIndex);
+
+            Debug.Assert(WriterTable.ContainsKey(Type));
+            StreamWriter Writer = WriterTable[Type];
+
+            Writer.WriteLine($"                    case {KeyValue}:");
+            Writer.WriteLine($"                        Table.Add(key, {LinkValue});");
+            Writer.WriteLine($"                        break;");
+        }
+
+        private static void WriteGroupings(List<object> objectList)
+        {
+            string FilePath = Path.Combine(RootFolder, "Grouping.cs");
+
+            using FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
+            using StreamWriter Writer = new StreamWriter(Stream);
+
+            Writer.WriteLine("namespace PgObjects");
+            Writer.WriteLine("{");
+            Writer.WriteLine("    using System;");
+            Writer.WriteLine("    using System.Collections.Generic;");
+            Writer.WriteLine("");
+            Writer.WriteLine($"    public static class Groups");
+            Writer.WriteLine("    {");
+
+            WriteGroupingList(objectList, Writer, typeof(PgSkill), "CombatSkill", (object item) => IsCombatSkill((PgSkill)item));
+            WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), typeof(PgItem), "ItemBySlot", (object item) => ((PgItem)item).EquipSlot, (object key, object item) => IsItemForSlot((ItemSlot)key, (PgItem)item));
+
+            Writer.WriteLine("    }");
+            Writer.WriteLine("}");
+        }
+
+        private static bool IsCombatSkill(PgSkill skill)
+        {
+            return (skill.IsCombatSkill || skill.ParentSkillList.Exists((PgSkill item) => IsCombatSkill(item))) && skill.AssociationTablePower.Count > 0;
+        }
+
+        private static bool IsItemForSlot(ItemSlot slot, PgItem item)
+        {
+            return slot != ItemSlot.Internal_None && item.EquipSlot == slot;
+        }
+
+        private static void WriteGroupingList(List<object> objectList, StreamWriter writer, Type type, string groupingName, Func<object, bool> predicate)
+        {
+            PropertyInfo Property = type.GetProperty("Key");
+            Debug.Assert(Property != null);
+            Debug.Assert(Property.PropertyType == typeof(string));
+
+            writer.WriteLine($"        public static List<string> {groupingName}List = new List<string>()");
+            writer.WriteLine($"        {{");
+
+            foreach (object Item in objectList)
+                if (Item.GetType() == type && predicate(Item))
+                {
+                    string Key = Property.GetValue(Item) as string;
+                    Debug.Assert(Key != null);
+
+                    string KeyValue = GetStringValueString(Key);
+                    writer.WriteLine($"            {KeyValue},");
+                }
+
+            writer.WriteLine($"        }};");
+        }
+
+        private static void WriteGroupingDictionary(List<object> objectList, StreamWriter writer, Type keyType, Type type, string groupingName, Func<object, object> collect, Func<object, object, bool> predicate)
+        {
+            PropertyInfo Property = type.GetProperty("Key");
+            Debug.Assert(Property != null);
+            Debug.Assert(Property.PropertyType == typeof(string));
+
+            List<object> Keys = new List<object>();
+            foreach (object Item in objectList)
+                if (Item.GetType() == type)
+                {
+                    object Key = collect(Item);
+                    if (!Keys.Contains(Key))
+                        Keys.Add(Key);
+                }
+
+            string KeyTypeName = SimpleTypeName(keyType);
+
+            writer.WriteLine($"        public static Dictionary<{KeyTypeName}, List<string>> {groupingName}List = new Dictionary<{KeyTypeName}, List<string>>()");
+            writer.WriteLine($"        {{");
+
+            foreach (object Key in Keys)
+            {
+                string ValueListString = string.Empty;
+
+                foreach (object Item in objectList)
+                    if (Item.GetType() == type && predicate(Key, Item))
+                    {
+                        string ValueKey = Property.GetValue(Item) as string;
+                        Debug.Assert(ValueKey != null);
+
+                        if (ValueListString.Length > 0)
+                            ValueListString += ", ";
+
+                        string ValueKeyString = GetStringValueString(ValueKey);
+                        ValueListString += ValueKeyString;
+                    }
+
+                string KeyString = GetValueString(keyType, Key, objectList);
+
+                writer.WriteLine($"            {{ {KeyString}, new List<string>() {{ {ValueListString} }} }},");
+            }
+
+            writer.WriteLine($"        }};");
         }
 
         private static string GetValueString(Type type, object value, List<object> objectList)
         {
-            if (type == typeof(bool?))
+            if (type == typeof(bool?) || type == typeof(bool))
                 return GetBoolValueString(value);
             else if (type == typeof(int?) || type == typeof(int))
                 return GetIntValueString(value);
-            else if (type == typeof(uint?))
+            else if (type == typeof(uint?) || type == typeof(uint))
                 return GetUIntValueString(value);
-            else if (type == typeof(float?))
+            else if (type == typeof(float?) || type == typeof(float))
                 return GetFloatValueString(value);
             else if (type == typeof(TimeSpan?))
                 return GetTimeSpanValueString(value);
@@ -159,14 +386,29 @@
             else if (type.IsClass)
                 return GetReferenceValueString(type, value, objectList);
             else
-            {
-                return null;
-            }
+                throw new ArgumentException();
         }
 
         private static string ToObjectName(int index)
         {
             return $"Object_{index}";
+        }
+
+        private static string ToClassName(Type type)
+        {
+            string TypeName = type.Name;
+            Debug.Assert(TypeName.StartsWith("Pg"));
+            string ClassName = $"{TypeName.Substring(2)}Objects";
+
+            return ClassName;
+        }
+
+        private static string ToObjectName(Type type, int index)
+        {
+            string ClassPrefix = ToClassName(type);
+            string ObjectName = ToObjectName(index);
+
+            return $"{ClassPrefix}.{ObjectName}";
         }
 
         private static string GetBoolValueString(object value)
@@ -244,12 +486,8 @@
             if (value == null)
                 return "null";
 
-            int ItemIndex = objectList.IndexOf(value);
-            if (ItemIndex >= 0)
-            {
-                string ItemName = ToObjectName(ItemIndex);
-                return ItemName;
-            }
+            if (IndexTable.ContainsKey(value))
+                return ToObjectName(value.GetType(), IndexTable[value]);
             else if (type == typeof(PgSkill))
             {
                 Debug.Assert(value == PgSkill.Unknown || value == PgSkill.AnySkill);
@@ -259,8 +497,6 @@
                 else
                     return "PgSkill.AnySkill";
             }
-            else if (value is PgNpcLocation AsLocation)
-                return GetLocationValueString(type, AsLocation, objectList);
             else if (value is IDictionary AsDictionary)
                 return GetDictionaryValueString(type, AsDictionary, objectList);
             else if (type.Name.StartsWith("List"))
@@ -268,35 +504,29 @@
             else if (value is ICollection AsCollection)
                 return GetCollectionValueString(type, AsCollection, objectList);
             else
-            {
-                return null;
-            }
-        }
-
-        private static string GetLocationValueString(Type type, PgNpcLocation location, List<object> objectList)
-        {
-            string NpcAreaString = GetEnumValueString(typeof(MapAreaName), location.NpcArea);
-            string NpcIdString = GetStringValueString(location.NpcId);
-            string NpcString = GetReferenceValueString(typeof(PgNpc), location.Npc, objectList);
-            string NpcEnumString = GetEnumValueString(typeof(SpecialNpc), location.NpcEnum);
-            string NpcNameString = GetStringValueString(location.NpcName);
-
-            return $"new PgNpcLocation() {{ NpcArea = {NpcAreaString}, NpcId = {NpcIdString}, Npc = {NpcString}, NpcEnum = {NpcEnumString}, NpcName = {NpcNameString} }}";
+                throw new ArgumentException();
         }
 
         private static string GetDictionaryValueString(Type type, IDictionary dictionary, List<object> objectList)
         {
+            string Result;
+
             Type[] GenericArguments = type.GetGenericArguments();
-            Debug.Assert(GenericArguments.Length == 2);
-            Type KeyType = GenericArguments[0];
-            string KeyTypeString = SimpleTypeName(KeyType);
-            Type ValueType = GenericArguments[1];
-            string ValueTypeString = SimpleTypeName(ValueType);
+            if (GenericArguments.Length == 0)
+                Result = $"new {type.Name}()";
+            else
+            {
+                Debug.Assert(GenericArguments.Length == 2);
+                Type KeyType = GenericArguments[0];
+                string KeyTypeString = SimpleTypeName(KeyType);
+                Type ValueType = GenericArguments[1];
+                string ValueTypeString = SimpleTypeName(ValueType);
 
-            if (KeyTypeString == "Int32")
-                KeyTypeString = "int";
+                if (KeyTypeString == "Int32")
+                    KeyTypeString = "int";
 
-            string Result = $"new Dictionary<{KeyTypeString}, {ValueTypeString}>()";
+                Result = $"new Dictionary<{KeyTypeString}, {ValueTypeString}>()";
+            }
 
             string DictionaryContentString = string.Empty;
             ICollection DictionaryKeys = dictionary.Keys;
@@ -370,6 +600,14 @@
                 return "int";
             else if (type == typeof(string))
                 return "string";
+            else if (type.Name.StartsWith("List"))
+            {
+                Type[] GenericArguments = type.GetGenericArguments();
+                Debug.Assert(GenericArguments.Length == 1);
+                Type ItemType = GenericArguments[0];
+                string ItemTypeString = SimpleTypeName(ItemType);
+                return $"List<{ItemTypeString}>";
+            }
 
             return type.Name;
         }

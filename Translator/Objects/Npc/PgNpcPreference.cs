@@ -4,7 +4,7 @@
 
     public class PgNpcPreference
     {
-        public List<ItemKeyword> ItemKeywordList { get; } = new List<ItemKeyword>();
+        public List<ItemKeyword> ItemKeywordList { get; set; } = new List<ItemKeyword>();
         public int MinValueRequirement { get { return RawMinValueRequirement.HasValue ? RawMinValueRequirement.Value : 0; } }
         public int? RawMinValueRequirement { get; set; }
         public PgSkill SkillRequirement { get; set; }

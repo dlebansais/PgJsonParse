@@ -2,6 +2,6 @@
 {
     public class PgQuestRequirementOr : PgQuestRequirement
     {
-        public PgQuestRequirementCollection OrList { get; } = new PgQuestRequirementCollection();
+        public PgQuestRequirementCollection OrList { get; set; } = new PgQuestRequirementCollection();
     }
 }

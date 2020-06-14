@@ -11,6 +11,6 @@
         public PgDirectedGoal CategoryGate { get; set; }
         public string LargeHint { get; set; } = string.Empty;
         public string SmallHint { get; set; } = string.Empty;
-        public List<Race> ForRaceList { get; } = new List<Race>();
+        public List<Race> ForRaceList { get; set; } = new List<Race>();
     }
 }

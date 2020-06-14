@@ -246,6 +246,8 @@
             else
                 return Program.ReportFailure(parsedFile, parsedKey, $"'{npcId}' unknown NPC name", errorControl);
 
+            ParsingContext.AddSuplementaryObject(NpcLocation);
+
             setter(NpcLocation);
             return true;
         }

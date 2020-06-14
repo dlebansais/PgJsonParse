@@ -4,6 +4,6 @@
 
     public class PgQuestRewardSkillXp : PgQuestReward
     {
-        public Dictionary<PgSkill, int> XpTable { get; } = new Dictionary<PgSkill, int>();
+        public Dictionary<PgSkill, int> XpTable { get; set; } = new Dictionary<PgSkill, int>();
     }
 }

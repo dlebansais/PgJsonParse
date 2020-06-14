@@ -2,7 +2,7 @@
 {
     public class PgAIAbility
     {
-        public string Key { get; set; } = string.Empty;
+        public string AbilityKey { get; set; } = string.Empty;
         public int MinLevel { get { return RawMinLevel.HasValue ? RawMinLevel.Value : 0; } }
         public int? RawMinLevel { get; set; }
         public int MaxLevel { get { return RawMaxLevel.HasValue ? RawMaxLevel.Value : 0; } }

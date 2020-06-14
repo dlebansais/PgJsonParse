@@ -5,26 +5,27 @@
 
     public class PgRecipe
     {
+        public string Key { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         public int? RawIconId { get; set; }
-        public PgRecipeItemCollection IngredientList { get; } = new PgRecipeItemCollection();
+        public PgRecipeItemCollection IngredientList { get; set; } = new PgRecipeItemCollection();
         public string InternalName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public PgRecipeItemCollection ResultItemList { get; } = new PgRecipeItemCollection();
+        public PgRecipeItemCollection ResultItemList { get; set; } = new PgRecipeItemCollection();
         public PgSkill Skill { get; set; }
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; set; }
-        public PgRecipeResultEffectCollection ResultEffectList { get; } = new PgRecipeResultEffectCollection();
+        public PgRecipeResultEffectCollection ResultEffectList { get; set; } = new PgRecipeResultEffectCollection();
         public PgSkill SortSkill { get; set; }
-        public List<RecipeKeyword> KeywordList { get; } = new List<RecipeKeyword>();
+        public List<RecipeKeyword> KeywordList { get; set; } = new List<RecipeKeyword>();
         public RecipeAction ActionLabel { get; set; }
         public float UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
         public float? RawUsageDelay { get; set; }
         public string UsageDelayMessage { get; set; } = string.Empty;
         public RecipeUsageAnimation UsageAnimation { get; set; }
-        public PgAbilityRequirementCollection OtherRequirementList { get; } = new PgAbilityRequirementCollection();
-        public PgRecipeCostCollection CostList { get; } = new PgRecipeCostCollection();
+        public PgAbilityRequirementCollection OtherRequirementList { get; set; } = new PgAbilityRequirementCollection();
+        public PgRecipeCostCollection CostList { get; set; } = new PgRecipeCostCollection();
         public int NumResultItems { get { return RawNumResultItems.HasValue ? RawNumResultItems.Value : 0; } }
         public int? RawNumResultItems { get; set; }
         public string UsageAnimationEnd { get; set; } = string.Empty;
@@ -51,8 +52,8 @@
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get; set; }
         public PgRecipe PrereqRecipe { get; set; }
-        public List<ItemKeyword> ValidationIngredientKeywordList { get; } = new List<ItemKeyword>();
-        public PgRecipeItemCollection ProtoResultItemList { get; } = new PgRecipeItemCollection();
+        public List<ItemKeyword> ValidationIngredientKeywordList { get; set; } = new List<ItemKeyword>();
+        public PgRecipeItemCollection ProtoResultItemList { get; set; } = new PgRecipeItemCollection();
         public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }
         public bool? RawRewardAllowBonusXp { get; set; }
     }

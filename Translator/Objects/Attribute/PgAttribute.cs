@@ -4,8 +4,9 @@
 
     public class PgAttribute
     {
+        public string Key { get; set; } = string.Empty;
         public string Label { get; set; } = string.Empty;
-        public List<int> IconIdList { get; } = new List<int>();
+        public List<int> IconIdList { get; set; } = new List<int>();
         public string Tooltip { get; set; } = string.Empty;
         public DisplayType DisplayType { get; set; }
         public bool IsHidden { get { return RawIsHidden.HasValue && RawIsHidden.Value; } }

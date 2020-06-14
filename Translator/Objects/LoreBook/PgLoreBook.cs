@@ -4,10 +4,11 @@
 
     public class PgLoreBook
     {
+        public string Key { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string LocationHint { get; set; } = string.Empty;
         public PgLoreBookInfoCategory Category { get; set; }
-        public List<LoreBookKeyword> KeywordList { get; } = new List<LoreBookKeyword>();
+        public List<LoreBookKeyword> KeywordList { get; set; } = new List<LoreBookKeyword>();
         public bool IsClientLocal { get { return RawIsClientLocal.HasValue ? RawIsClientLocal.Value : false; } }
         public bool? RawIsClientLocal { get; set; }
         public LoreBookVisibility Visibility { get; set; }

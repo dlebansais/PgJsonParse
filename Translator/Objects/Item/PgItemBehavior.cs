@@ -5,7 +5,7 @@
     public class PgItemBehavior
     {
         public ItemUseVerb UseVerb { get; set; }
-        public List<ItemUseRequirement> UseRequirementList { get; } = new List<ItemUseRequirement>();
+        public List<ItemUseRequirement> UseRequirementList { get; set; } = new List<ItemUseRequirement>();
         public ItemUseAnimation UseAnimation { get; set; }
         public ItemUseAnimation UseDelayAnimation { get; set; }
         public int MetabolismCost { get { return RawMetabolismCost.HasValue ? RawMetabolismCost.Value : 0; } }

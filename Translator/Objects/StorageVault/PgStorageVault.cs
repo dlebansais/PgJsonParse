@@ -4,6 +4,7 @@
 
     public class PgStorageVault
     {
+        public string Key { get; set; } = string.Empty;
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; set; }
         public string NpcFriendlyName { get; set; } = string.Empty;
@@ -16,7 +17,7 @@
         public PgStorageRequirement Requirements { get; set; }
         public string RequirementDescription { get; set; } = string.Empty;
         public MapAreaName Grouping { get; set; }
-        public List<ItemKeyword> RequiredItemKeywordList { get; } = new List<ItemKeyword>();
+        public List<ItemKeyword> RequiredItemKeywordList { get; set; } = new List<ItemKeyword>();
         public string SlotAttribute { get; set; } = string.Empty;
     }
 }

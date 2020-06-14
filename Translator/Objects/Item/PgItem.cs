@@ -4,7 +4,8 @@
 
     public class PgItem
     {
-        public PgRecipeCollection BestowRecipeList { get; set; } = null;
+        public string Key { get; set; } = string.Empty;
+        public PgRecipeCollection BestowRecipeList { get; set; } = new PgRecipeCollection();
         public PgAbility BestowAbility { get; set; }
         public PgQuest BestowQuest { get; set; }
         public bool AllowPrefix { get { return RawAllowPrefix.HasValue && RawAllowPrefix.Value; } }
@@ -23,7 +24,7 @@
         public AppearanceSkin ItemAppearancePlate { get; set; }
         public uint ItemAppearanceColor { get { return RawItemAppearanceColor.HasValue ? RawItemAppearanceColor.Value : 0; } }
         public uint? RawItemAppearanceColor { get; set; }
-        public PgItemEffectCollection EffectDescriptionList { get; } = new PgItemEffectCollection();
+        public PgItemEffectCollection EffectDescriptionList { get; set; } = new PgItemEffectCollection();
         public uint DyeColor { get { return RawDyeColor.HasValue ? RawDyeColor.Value : 0; } }
         public uint? RawDyeColor { get; set; }
         public string EquipAppearance { get; set; } = string.Empty;
@@ -35,7 +36,7 @@
         public bool? RawIsTemporary { get; set; }
         public bool IsCrafted { get { return RawIsCrafted.HasValue && RawIsCrafted.Value; } }
         public bool? RawIsCrafted { get; set; }
-        public List<RecipeItemKey> RecipeItemKeyList { get; } = new List<RecipeItemKey>();
+        public List<RecipeItemKey> RecipeItemKeyList { get; set; } = new List<RecipeItemKey>();
         public PgQuest MacGuffinQuest { get; set; }
         public int MaxCarryable { get { return RawMaxCarryable.HasValue ? RawMaxCarryable.Value : 0; } }
         public int? RawMaxCarryable { get; set; }
@@ -45,21 +46,22 @@
         public int? RawMaxStackSize { get; set; }
         public string Name { get; set; } = string.Empty;
         public Appearance RequiredAppearance { get; set; }
-        public PgItemSkillLinkCollection SkillRequirementList { get; } = new PgItemSkillLinkCollection();
-        public List<uint> StockDye { get; } = new List<uint>();
-        public List<string> StockDyeByName { get; } = new List<string>();
+        public PgItemSkillLinkCollection SkillRequirementList { get; set; } = new PgItemSkillLinkCollection();
+        public List<uint> StockDye { get; set; } = new List<uint>();
+        public List<string> StockDyeByName { get; set; } = new List<string>();
         public float Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public float? RawValue { get; set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
         public int? RawNumUses { get; set; }
         public bool DestroyWhenUsedUp { get { return RawDestroyWhenUsedUp.HasValue && RawDestroyWhenUsedUp.Value; } }
         public bool? RawDestroyWhenUsedUp { get; set; }
-        public PgItemBehaviorCollection BehaviorList { get; } = new PgItemBehaviorCollection();
+        public PgItemBehaviorCollection BehaviorList { get; set; } = new PgItemBehaviorCollection();
         public string DynamicCraftingSummary { get; set; } = string.Empty;
         public bool IsSkillReqsDefaults { get { return RawIsSkillReqsDefaults.HasValue && RawIsSkillReqsDefaults.Value; } }
         public bool? RawIsSkillReqsDefaults { get; set; }
         public PgPlayerTitle BestowTitle { get; set; }
         public PgLoreBook BestowLoreBook { get; set; }
         public WorkOrderSign LintVendorNpc { get; set; }
+        public Dictionary<ItemKeyword, List<float>> KeywordTable { get; set; } = new Dictionary<ItemKeyword, List<float>>();
     }
 }

@@ -2,9 +2,8 @@
 {
     public class PgItemEffectAttribute : PgItemEffect
     {
-        public string AttributeName { get; set; } = string.Empty;
+        public PgAttribute Attribute { get; set; }
         public float AttributeEffect { get; set; }
         public FloatFormat AttributeEffectFormat { get; set; }
-        public PgAttribute Attribute { get; set; }
     }
 }

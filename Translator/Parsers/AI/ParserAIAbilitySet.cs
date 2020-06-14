@@ -29,13 +29,13 @@
                 if (!(Value is ParsingContext Context))
                     return Program.ReportFailure($"Value '{Value}' was expected to be a context");
 
-                if (item.AIAbilityList.Exists((PgAIAbility item) => item.Key == Key))
+                if (item.AIAbilityList.Exists((PgAIAbility item) => item.AbilityKey == Key))
                     return Program.ReportFailure($"AI Ability {Key} already added");
 
                 if (!(Context.Item is PgAIAbility AsAIAbility))
                     return Program.ReportFailure($"Object '{Value}' was unexpected");
 
-                AsAIAbility.Key = Key;
+                AsAIAbility.AbilityKey = Key;
                 item.AIAbilityList.Add(AsAIAbility);
             }
 

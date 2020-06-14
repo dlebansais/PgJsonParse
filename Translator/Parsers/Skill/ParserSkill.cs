@@ -149,5 +149,64 @@
 
             return Program.ReportFailure($"Advancement table '{TableString}' not found");
         }
+
+        public static void FillAssociationTables()
+        {
+            Dictionary<string, ParsingContext> SkillContextTable = ParsingContext.ObjectKeyTable[typeof(PgSkill)];
+
+            foreach (KeyValuePair<string, ParsingContext> Entry in SkillContextTable)
+                FillAssociationTable((PgSkill)Entry.Value.Item);
+        }
+
+        private static void FillAssociationTable(PgSkill skill)
+        {
+            FillAssociationTablePower(skill);
+            FillAssociationTableAbility(skill);
+        }
+
+        private static void FillAssociationTablePower(PgSkill skill)
+        {
+            Dictionary<string, ParsingContext> PowerContextTable = ParsingContext.ObjectKeyTable[typeof(PgPower)];
+
+            foreach (KeyValuePair<string, ParsingContext> Entry in PowerContextTable)
+            {
+                string PowerKey = Entry.Key;
+                PgPower Power = (PgPower)Entry.Value.Item;
+
+                if (Power.Skill != skill)
+                    continue;
+                if (Power.IsUnavailable)
+                    continue;
+                if (Power.PowerTierList.TierTable.Count == 0)
+                    continue;
+
+                foreach (ItemSlot Slot in Power.SlotList)
+                {
+                    if (!skill.AssociationTablePower.ContainsKey(Slot))
+                        skill.AssociationTablePower.Add(Slot, new List<string>());
+
+                    List<string> PowerListBySlot = skill.AssociationTablePower[Slot];
+                    PowerListBySlot.Add(PowerKey);
+                }
+            }
+        }
+
+        private static void FillAssociationTableAbility(PgSkill skill)
+        {
+            Dictionary<string, ParsingContext> AbilityContextTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];
+
+            foreach (KeyValuePair<string, ParsingContext> Entry in AbilityContextTable)
+            {
+                string AbilityKey = Entry.Key;
+                PgAbility Ability = (PgAbility)Entry.Value.Item;
+
+                if (Ability.Skill != skill)
+                    continue;
+                if (Ability.KeywordList.Contains(AbilityKeyword.Lint_NotLearnable) && Ability.Name != "Sword Slash")
+                    continue;
+
+                skill.AssociationListAbility.Add(AbilityKey);
+            }
+        }
     }
 }

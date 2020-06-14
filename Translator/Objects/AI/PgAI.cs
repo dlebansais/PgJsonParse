@@ -2,6 +2,7 @@
 {
     public class PgAI
     {
+        public string Key { get; set; } = string.Empty;
         public PgAIAbilitySet Abilities { get; set; }
         public bool IsMelee { get { return RawIsMelee.HasValue && RawIsMelee.Value; } }
         public bool? RawIsMelee { get; set; }

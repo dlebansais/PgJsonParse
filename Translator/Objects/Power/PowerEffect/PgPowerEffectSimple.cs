@@ -5,6 +5,6 @@
     public class PgPowerEffectSimple : PgPowerEffect
     {
         public string Description { get; set; } = string.Empty;
-        public List<int> IconIdList { get; set; }
+        public List<int> IconIdList { get; set; } = new List<int>();
     }
 }

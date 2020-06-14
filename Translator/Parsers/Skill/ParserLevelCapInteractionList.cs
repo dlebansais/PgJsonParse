@@ -75,6 +75,7 @@
             NewInteraction.RawOtherLevel = OtherLevel;
             NewInteraction.Skill = ParsedSkill;
 
+            ParsingContext.AddSuplementaryObject(NewInteraction);
             item.List.Add(NewInteraction);
             return true;
         }

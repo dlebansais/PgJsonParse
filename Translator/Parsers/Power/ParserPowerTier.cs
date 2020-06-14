@@ -67,19 +67,20 @@
 
         private static bool ParseEffectDescription(PgPowerEffectCollection effectDescriptionList, string effectDescription, string parsedFile, string parsedKey)
         {
-            PgPowerEffect ItemEffect;
+            PgPowerEffect PowerEffect;
             if (effectDescription.StartsWith("{") && effectDescription.EndsWith("}"))
             {
                 string EffectString = effectDescription.Substring(1, effectDescription.Length - 2);
-                if (!ParseItemEffectAttribute(EffectString, parsedFile, parsedKey, out ItemEffect))
+                if (!ParseItemEffectAttribute(EffectString, parsedFile, parsedKey, out PowerEffect))
                     return Program.ReportFailure(parsedFile, parsedKey, $"Invalid attribute format '{EffectString}'");
             }
             else if (effectDescription.Contains("{") || effectDescription.Contains("}"))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Invalid attribute format '{effectDescription}'");
             else
-                ItemEffect = new PgPowerEffectSimple() { Description = effectDescription };
+                PowerEffect = new PgPowerEffectSimple() { Description = effectDescription };
 
-            effectDescriptionList.Add(ItemEffect);
+            ParsingContext.AddSuplementaryObject(PowerEffect);
+            effectDescriptionList.Add(PowerEffect);
             return true;
         }
 
@@ -102,6 +103,10 @@
                 return false;
 
             if (AttributeName.Length == 0 || AttributeEffect.Length == 0)
+                return false;
+
+            PgAttribute ParsedAttribute = null;
+            if (!Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, AttributeName))
                 return false;
 
             if (Split.Length == 3)
@@ -131,10 +136,10 @@
                 else if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, AttributeSkill))
                     return false;
 
-                itemEffect = new PgPowerEffectAttribute() { AttributeName = AttributeName, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Skill = ParsedSkill };
+                itemEffect = new PgPowerEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Skill = ParsedSkill };
             }
             else
-                itemEffect = new PgPowerEffectAttribute() { AttributeName = AttributeName, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+                itemEffect = new PgPowerEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
 
             return true;
         }

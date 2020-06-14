@@ -2,6 +2,6 @@
 {
     public class PgRewardList
     {
-        public PgRewardCollection List { get; } = new PgRewardCollection();
+        public PgRewardCollection List { get; set; } = new PgRewardCollection();
     }
 }

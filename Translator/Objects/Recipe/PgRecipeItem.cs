@@ -9,7 +9,7 @@
         public int? RawStackSize { get; set; }
         public float PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 1.0F; } }
         public float? RawPercentChance { get; set; }
-        public List<RecipeItemKey> ItemKeyList { get; } = new List<RecipeItemKey>();
+        public List<RecipeItemKey> ItemKeyList { get; set; } = new List<RecipeItemKey>();
         public string Description { get; set; } = string.Empty;
         public float ChanceToConsume { get { return RawChanceToConsume.HasValue ? RawChanceToConsume.Value : 1.0F; } }
         public float? RawChanceToConsume { get; set; }

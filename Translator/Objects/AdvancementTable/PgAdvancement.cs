@@ -4,15 +4,15 @@
 
     public class PgAdvancement
     {
-        public Dictionary<DamageType, float> VulnerabilityTable { get; } = new Dictionary<DamageType, float>();
+        public Dictionary<DamageType, float> VulnerabilityTable { get; set; } = new Dictionary<DamageType, float>();
         public float VulnerabilityToBurst { get { return RawIgnoreChanceFear.HasValue ? RawIgnoreChanceFear.Value : 0; } }
         public float? RawVulnerabilityToBurst { get; set; }
-        public Dictionary<DamageType, float> MitigationTable { get; } = new Dictionary<DamageType, float>();
-        public Dictionary<DamageType, float> MitigationDirectTable { get; } = new Dictionary<DamageType, float>();
-        public Dictionary<DamageType, float> MitigationIndirectTable { get; } = new Dictionary<DamageType, float>();
-        public Dictionary<DamageType, float> ModDirectTable { get; } = new Dictionary<DamageType, float>();
-        public Dictionary<DamageType, float> ModIndirectTable { get; } = new Dictionary<DamageType, float>();
-        public Dictionary<DamageType, float> BoostIndirectTable { get; } = new Dictionary<DamageType, float>();
+        public Dictionary<DamageType, float> MitigationTable { get; set; } = new Dictionary<DamageType, float>();
+        public Dictionary<DamageType, float> MitigationDirectTable { get; set; } = new Dictionary<DamageType, float>();
+        public Dictionary<DamageType, float> MitigationIndirectTable { get; set; } = new Dictionary<DamageType, float>();
+        public Dictionary<DamageType, float> ModDirectTable { get; set; } = new Dictionary<DamageType, float>();
+        public Dictionary<DamageType, float> ModIndirectTable { get; set; } = new Dictionary<DamageType, float>();
+        public Dictionary<DamageType, float> BoostIndirectTable { get; set; } = new Dictionary<DamageType, float>();
         public float IgnoreChanceFear { get { return RawIgnoreChanceFear.HasValue ? RawIgnoreChanceFear.Value : 0; } }
         public float? RawIgnoreChanceFear { get; set; }
         public float IgnoreChanceMez { get { return RawIgnoreChanceMez.HasValue ? RawIgnoreChanceMez.Value : 0; } }

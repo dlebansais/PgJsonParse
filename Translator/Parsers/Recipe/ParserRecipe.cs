@@ -166,6 +166,7 @@
                 if (!ParseResultEffect(effectString, parsedFile, parsedKey, out PgRecipeResultEffect RecipeResult))
                     return false;
 
+                ParsingContext.AddSuplementaryObject(RecipeResult);
                 item.ResultEffectList.Add(RecipeResult);
             }
 

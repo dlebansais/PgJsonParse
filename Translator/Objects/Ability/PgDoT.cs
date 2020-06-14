@@ -11,9 +11,9 @@
         public int Duration { get { return RawDuration.HasValue ? RawDuration.Value : 0; } }
         public int? RawDuration { get; set; }
         public DamageType DamageType { get; set; }
-        public List<DoTSpecialRule> SpecialRuleList { get; } = new List<DoTSpecialRule>();
-        public PgAttributeCollection AttributesThatDeltaList { get; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModList { get; } = new PgAttributeCollection();
+        public List<DoTSpecialRule> SpecialRuleList { get; set; } = new List<DoTSpecialRule>();
+        public PgAttributeCollection AttributesThatDeltaList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModList { get; set; } = new PgAttributeCollection();
         public string Preface { get; set; } = string.Empty;
     }
 }

@@ -2,6 +2,7 @@
 {
     public class PgItemUse
     {
-        public PgRecipeCollection RecipeList { get; } = new PgRecipeCollection();
+        public string Key { get; set; } = string.Empty;
+        public PgRecipeCollection RecipeList { get; set; } = new PgRecipeCollection();
     }
 }

@@ -4,6 +4,6 @@
 
     public class PgStorageFavorLevel
     {
-        public Dictionary<Favor, int> LevelTable { get; } = new Dictionary<Favor, int>();
+        public Dictionary<Favor, int> LevelTable { get; set; } = new Dictionary<Favor, int>();
     }
 }

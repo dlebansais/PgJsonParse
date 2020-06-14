@@ -8,7 +8,7 @@
         public int? RawBrewPartCount { get; set; }
         public int BrewLevel { get { return RawBrewLevel.HasValue ? RawBrewLevel.Value : 0; } }
         public int? RawBrewLevel { get; set; }
-        public List<RecipeItemKey> BrewPartList { get; } = new List<RecipeItemKey>();
-        public List<RecipeResultKey> BrewResultList { get; } = new List<RecipeResultKey>();
+        public List<RecipeItemKey> BrewPartList { get; set; } = new List<RecipeItemKey>();
+        public List<RecipeResultKey> BrewResultList { get; set; } = new List<RecipeResultKey>();
     }
 }

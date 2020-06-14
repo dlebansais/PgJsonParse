@@ -178,6 +178,7 @@
         public static Dictionary<Type, Dictionary<string, ParsingContext>> ObjectInternalNameTable { get; } = new Dictionary<Type, Dictionary<string, ParsingContext>>();
         public static Dictionary<Type, Dictionary<int, ParsingContext>> ObjectIdTable { get; } = new Dictionary<Type, Dictionary<int, ParsingContext>>();
         public static Dictionary<Type, List<ParsingContext>> KeylessObjectTable { get; } = new Dictionary<Type, List<ParsingContext>>();
+        private static List<object> SuplementaryObjectList { get; } = new List<object>();
 
         public static bool FinalizeParsing()
         {
@@ -188,12 +189,19 @@
             return true;
         }
 
+        public static void AddSuplementaryObject(object item)
+        {
+            SuplementaryObjectList.Add(item);
+        }
+
         public static List<object> GetParsedObjectList()
         {
             List<object> Result = new List<object>();
 
             foreach (ParsingContext Context in ContextList)
                 Result.Add(Context.Item);
+
+            Result.AddRange(SuplementaryObjectList);
 
             return Result;
         }

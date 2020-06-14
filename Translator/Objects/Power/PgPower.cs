@@ -4,9 +4,10 @@
 
     public class PgPower
     {
+        public string Key { get; set; } = string.Empty;
         public string Prefix { get; set; } = string.Empty;
         public string Suffix { get; set; } = string.Empty;
-        public List<ItemSlot> SlotList { get; } = new List<ItemSlot>();
+        public List<ItemSlot> SlotList { get; set; } = new List<ItemSlot>();
         public PgSkill Skill { get; set; }
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; set; }

@@ -146,6 +146,8 @@
                     break;
             }
 
+            item.KeywordTable = KeywordTable;
+
             return Result;
         }
 
@@ -289,6 +291,7 @@
             else
                 ItemEffect = new PgItemEffectSimple() { Description = effectDescription };
 
+            ParsingContext.AddSuplementaryObject(ItemEffect);
             effectDescriptionList.Add(ItemEffect);
             return true;
         }
@@ -314,6 +317,10 @@
             if (AttributeName.Length == 0 || AttributeEffect.Length == 0)
                 return false;
 
+            PgAttribute ParsedAttribute = null;
+            if (!Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, AttributeName))
+                return false;
+
             float ParsedEffect;
             FloatFormat ParsedEffectFormat;
             if (!Tools.TryParseFloat(AttributeEffect, out ParsedEffect, out ParsedEffectFormat))
@@ -322,7 +329,7 @@
             if (ParsedEffectFormat != FloatFormat.Standard)
                 return false;
 
-            itemEffect = new PgItemEffectAttribute() { AttributeName = AttributeName, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+            itemEffect = new PgItemEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
             return true;
         }
 

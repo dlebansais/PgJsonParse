@@ -2,6 +2,6 @@
 {
     public class PgReportList
     {
-        public PgReportCollection List { get; } = new PgReportCollection();
+        public PgReportCollection List { get; set; } = new PgReportCollection();
     }
 }

@@ -32,7 +32,9 @@
                 if (!(Value is string EntryString))
                     return Program.ReportFailure($"Invalid report value '{Value}'");
 
-                item.List.Add(new PgReport() { RawReportLevel = EntryLevel, Text = EntryString });
+                PgReport NewReport = new PgReport() { RawReportLevel = EntryLevel, Text = EntryString };
+                ParsingContext.AddSuplementaryObject(NewReport);
+                item.List.Add(NewReport);
             }
 
             return true;
