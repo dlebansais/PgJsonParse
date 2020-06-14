@@ -77,16 +77,20 @@
             else if (effectDescription.Contains("{") || effectDescription.Contains("}"))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Invalid attribute format '{effectDescription}'");
             else
-                PowerEffect = new PgPowerEffectSimple() { Description = effectDescription };
+            {
+                if (!ParseItemEffectSimple(effectDescription, parsedFile, parsedKey, out PowerEffect))
+                    return Program.ReportFailure(parsedFile, parsedKey, $"Invalid attribute format '{effectDescription}'");
+
+            }
 
             ParsingContext.AddSuplementaryObject(PowerEffect);
             effectDescriptionList.Add(PowerEffect);
             return true;
         }
 
-        private static bool ParseItemEffectAttribute(string effectString, string parsedFile, string parsedKey, out PgPowerEffect itemEffect)
+        private static bool ParseItemEffectAttribute(string effectString, string parsedFile, string parsedKey, out PgPowerEffect powerEffect)
         {
-            itemEffect = null;
+            powerEffect = null;
 
             string[] Split = effectString.Split('{');
             if (Split.Length != 2 && Split.Length != 3)
@@ -136,11 +140,48 @@
                 else if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, AttributeSkill))
                     return false;
 
-                itemEffect = new PgPowerEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Skill = ParsedSkill };
+                powerEffect = new PgPowerEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Skill = ParsedSkill };
             }
             else
-                itemEffect = new PgPowerEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+                powerEffect = new PgPowerEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
 
+            return true;
+        }
+
+        private static bool ParseItemEffectSimple(string effectString, string parsedFile, string parsedKey, out PgPowerEffect powerEffect)
+        {
+            string Description = effectString.Trim();
+            List<int> IconIdList = new List<int>();
+            string IconIdPattern = "<icon=";
+
+            for (; ; )
+            {
+                if (IconIdList.Count > 0 && Description.Contains(IconIdPattern))
+                    Description = Description.Trim();
+
+                if (Description.Length < IconIdPattern.Length)
+                    break;
+
+                if (!Description.StartsWith(IconIdPattern))
+                    break;
+
+                int EndIndex = Description.IndexOf('>');
+                if (EndIndex < IconIdPattern.Length + 1)
+                    break;
+
+                string IdString = Description.Substring(IconIdPattern.Length, EndIndex - IconIdPattern.Length);
+
+                int Id;
+                if (!int.TryParse(IdString, out Id))
+                    break;
+
+                if (!IconIdList.Contains(Id))
+                    IconIdList.Add(Id);
+
+                Description = Description.Substring(EndIndex + 1);
+            }
+
+            powerEffect = new PgPowerEffectSimple() { Description = Description, IconIdList = IconIdList };
             return true;
         }
     }

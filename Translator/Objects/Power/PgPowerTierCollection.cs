@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgPowerTierDictionary : Dictionary<int, PgPowerTier>
+    public class PgPowerTierCollection : List<PgPowerTier>
     {
     }
 }

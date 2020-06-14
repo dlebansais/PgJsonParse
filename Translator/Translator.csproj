@@ -243,7 +243,7 @@
     <Compile Include="Objects\Power\PgPowerTierList.cs" />
     <Compile Include="Objects\Power\PgPowerTier.cs" />
     <Compile Include="Objects\Power\PgPower.cs" />
-    <Compile Include="Objects\Power\PgPowerTierDictionary.cs" />
+    <Compile Include="Objects\Power\PgPowerTierCollection.cs" />
     <Compile Include="Objects\Power\PgPowerEffect.cs" />
     <Compile Include="Objects\Power\PgPowerEffectCollection.cs" />
     <Compile Include="Objects\Power\PowerEffect\PgPowerEffectAttribute.cs" />

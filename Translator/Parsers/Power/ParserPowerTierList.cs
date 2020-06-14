@@ -35,10 +35,22 @@
                 if (!(Context.Item is PgPowerTier AsPowerTier))
                     return Program.ReportFailure($"Object '{Value}' was unexpected");
 
-                item.TierTable.Add(Level, AsPowerTier);
+                AsPowerTier.Level = Level;
+                item.TierList.Add(AsPowerTier);
             }
 
+            item.TierList.Sort(SortByLevel);
             return true;
+        }
+
+        private static int SortByLevel(PgPowerTier tier1, PgPowerTier tier2)
+        {
+            if (tier1.Level < tier2.Level)
+                return -1;
+            else if (tier1.Level > tier2.Level)
+                return 1;
+            else
+                return 0;
         }
     }
 }

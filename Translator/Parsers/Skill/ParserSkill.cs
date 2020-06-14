@@ -177,7 +177,7 @@
                     continue;
                 if (Power.IsUnavailable)
                     continue;
-                if (Power.PowerTierList.TierTable.Count == 0)
+                if (Power.PowerTierList.TierList.Count == 0)
                     continue;
 
                 foreach (ItemSlot Slot in Power.SlotList)

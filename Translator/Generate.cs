@@ -285,6 +285,7 @@
 
             WriteGroupingList(objectList, Writer, typeof(PgSkill), "CombatSkill", (object item) => IsCombatSkill((PgSkill)item));
             WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), typeof(PgItem), "ItemBySlot", (object item) => ((PgItem)item).EquipSlot, (object key, object item) => IsItemForSlot((ItemSlot)key, (PgItem)item));
+            WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), typeof(PgPower), "GenericPowerBySlot", (object item) => SlotFromPower((PgPower)item), (object key, object item) => IsGenericPowerForSlot((ItemSlot)key, (PgPower)item));
 
             Writer.WriteLine("    }");
             Writer.WriteLine("}");
@@ -297,7 +298,35 @@
 
         private static bool IsItemForSlot(ItemSlot slot, PgItem item)
         {
-            return slot != ItemSlot.Internal_None && item.EquipSlot == slot;
+            if (slot == ItemSlot.Internal_None)
+                return false;
+            
+            return item.EquipSlot == slot;
+        }
+
+        private static ItemSlot SlotFromPower(PgPower item)
+        {
+            if (item.SlotList.Count == 0)
+                return ItemSlot.Internal_None;
+            else
+                return item.SlotList[0];
+        }
+
+        private static bool IsGenericPowerForSlot(ItemSlot slot, PgPower power)
+        {
+            if (slot == ItemSlot.Internal_None)
+                return false;
+
+            if (power.Skill != PgSkill.AnySkill)
+                return false;
+
+            if (power.IsUnavailable)
+                return false;
+
+            if (power.PowerTierList.TierList.Count == 0)
+                return false;
+
+            return power.SlotList.Contains(slot);
         }
 
         private static void WriteGroupingList(List<object> objectList, StreamWriter writer, Type type, string groupingName, Func<object, bool> predicate)

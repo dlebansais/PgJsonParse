@@ -2,6 +2,6 @@
 {
     public class PgPowerTierList
     {
-        public PgPowerTierDictionary TierTable { get; set; } = new PgPowerTierDictionary();
+        public PgPowerTierCollection TierList { get; set; } = new PgPowerTierCollection();
     }
 }
