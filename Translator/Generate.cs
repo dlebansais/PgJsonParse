@@ -181,7 +181,6 @@
             writer.WriteLine($"        {{");
             writer.WriteLine($"            get");
             writer.WriteLine($"            {{");
-            //writer.WriteLine($"                Tools.DebugBreak();");
             writer.WriteLine($"                if (_{objectName} == null)");
             writer.WriteLine($"                {{");
             writer.WriteLine($"                    _{objectName} = new {objectTypeName}();");
@@ -283,12 +282,54 @@
             Writer.WriteLine($"    public static class Groups");
             Writer.WriteLine("    {");
 
-            WriteGroupingList(objectList, Writer, typeof(PgSkill), "CombatSkill", (object item) => IsCombatSkill((PgSkill)item));
-            WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), typeof(PgItem), "ItemBySlot", (object item) => ((PgItem)item).EquipSlot, (object key, object item) => IsItemForSlot((ItemSlot)key, (PgItem)item));
-            WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), typeof(PgPower), "GenericPowerBySlot", (object item) => SlotFromPower((PgPower)item), (object key, object item) => IsGenericPowerForSlot((ItemSlot)key, (PgPower)item));
+            WriteGroupingList(objectList, Writer, "CombatSkill", GetCombatSkillList);
+            WriteGroupingDictionary(objectList, Writer, typeof(string), "CombatSubskill", GetCombatSubskillTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), "ItemBySlot", GetItemBySlotTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), "ShamanicInfusionPowerBySlot", GetShamanicInfusionPowerBySlotTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), "EndurancePowerBySlot", GetEndurancePowerBySlotTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), "ArmorPatchingPowerBySlot", GetArmorPatchingPowerBySlotTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), "AnySkillPowerBySlot", GetAnySkillPowerBySlotTable);
 
             Writer.WriteLine("    }");
             Writer.WriteLine("}");
+        }
+
+        private static List<string> GetCombatSkillList(List<object> objectList)
+        {
+            List<string> KeyList = new List<string>();
+
+            foreach (object Item in objectList)
+                if (Item is PgSkill AsSkill && IsCombatSkill(AsSkill))
+                    KeyList.Add(AsSkill.Key);
+
+            return KeyList;
+        }
+
+        private static Dictionary<object, List<string>> GetCombatSubskillTable(List<object> objectList)
+        {
+            List<PgSkill> SubskillList = new List<PgSkill>();
+            List<PgSkill> CombatSkillList = new List<PgSkill>();
+            Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+            foreach (object Item in objectList)
+                if (Item is PgSkill AsSkill)
+                {
+                    if (IsCombatSkill(AsSkill))
+                        CombatSkillList.Add(AsSkill);
+
+                    if (IsCombatSubskill(AsSkill))
+                    {
+                        SubskillList.Add(AsSkill);
+                        KeyTable.Add(AsSkill.Key, new List<string>());
+                    }
+                }
+
+            foreach (PgSkill Subskill in SubskillList)
+                foreach (PgSkill Skill in CombatSkillList)
+                    if (Subskill.ParentSkillList.Contains(Skill))
+                        KeyTable[Subskill.Key].Add(Skill.Key);
+
+            return KeyTable;
         }
 
         private static bool IsCombatSkill(PgSkill skill)
@@ -296,12 +337,106 @@
             return (skill.IsCombatSkill || skill.ParentSkillList.Exists((PgSkill item) => IsCombatSkill(item))) && skill.AssociationTablePower.Count > 0;
         }
 
-        private static bool IsItemForSlot(ItemSlot slot, PgItem item)
+        private static bool IsCombatSubskill(PgSkill skill)
         {
-            if (slot == ItemSlot.Internal_None)
-                return false;
-            
-            return item.EquipSlot == slot;
+            return skill.ParentSkillList.Exists((PgSkill item) => IsCombatSkill(item)) && skill.AssociationTablePower.Count > 0;
+        }
+
+        private static bool IsCombatParentSkill(string subskillKey)
+        {
+            PgSkill Subskill = (PgSkill)ParsingContext.ObjectKeyTable[typeof(PgSkill)][subskillKey].Item;
+            return Subskill.ParentSkillList.Count > 0;
+        }
+
+        private static Dictionary<object, List<string>> GetItemBySlotTable(List<object> objectList)
+        {
+            Dictionary<ItemSlot, List<PgItem>> ItemTable = new Dictionary<ItemSlot, List<PgItem>>();
+            Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+            foreach (object Item in objectList)
+                if (Item is PgItem AsItem)
+                {
+                    ItemSlot Slot = AsItem.EquipSlot;
+
+                    if (Slot != ItemSlot.Internal_None)
+                    {
+                        if (Slot == ItemSlot.OffHandShield)
+                            Slot = ItemSlot.OffHand;
+
+                        if (!ItemTable.ContainsKey(Slot))
+                        {
+                            ItemTable.Add(Slot, new List<PgItem>());
+                            KeyTable.Add(Slot, new List<string>());
+                        }
+
+                        ItemTable[Slot].Add(AsItem);
+                    }
+                }
+
+            foreach (KeyValuePair<ItemSlot, List<PgItem>> Entry in ItemTable)
+            {
+                ItemSlot Slot = Entry.Key;
+
+                Entry.Value.Sort(SortItemByName);
+
+                foreach (PgItem Item in Entry.Value)
+                    KeyTable[Slot].Add(Item.Key);
+            }
+
+            return KeyTable;
+        }
+
+        private static int SortItemByName(PgItem item1, PgItem item2)
+        {
+            return string.Compare(item1.Name, item2.Name, StringComparison.InvariantCulture);
+        }
+
+        private static Dictionary<object, List<string>> GetShamanicInfusionPowerBySlotTable(List<object> objectList)
+        {
+            return GetPowerBySlotTable("ShamanicInfusion", objectList);
+        }
+
+        private static Dictionary<object, List<string>> GetEndurancePowerBySlotTable(List<object> objectList)
+        {
+            return GetPowerBySlotTable("Endurance", objectList);
+        }
+
+        private static Dictionary<object, List<string>> GetArmorPatchingPowerBySlotTable(List<object> objectList)
+        {
+            return GetPowerBySlotTable("ArmorPatching", objectList);
+        }
+
+        private static Dictionary<object, List<string>> GetAnySkillPowerBySlotTable(List<object> objectList)
+        {
+            return GetPowerBySlotTable("AnySkill", objectList);
+        }
+
+        private static Dictionary<object, List<string>> GetPowerBySlotTable(string skillKey, List<object> objectList)
+        {
+            Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+            foreach (object Item in objectList)
+                if (Item is PgPower AsPower)
+                    if (AsPower.Skill.Key == skillKey || (AsPower.Skill == PgSkill.AnySkill && skillKey == "AnySkill"))
+                    {
+                        foreach (ItemSlot Slot in AsPower.SlotList)
+                        {
+                            ItemSlot SlotKey = Slot;
+
+                            if (SlotKey != ItemSlot.Internal_None)
+                            {
+                                if (SlotKey == ItemSlot.OffHandShield)
+                                    SlotKey = ItemSlot.OffHand;
+
+                                if (!KeyTable.ContainsKey(SlotKey))
+                                    KeyTable.Add(SlotKey, new List<string>());
+
+                                KeyTable[SlotKey].Add(AsPower.Key);
+                            }
+                        }
+                    }
+
+            return KeyTable;
         }
 
         private static ItemSlot SlotFromPower(PgPower item)
@@ -329,66 +464,45 @@
             return power.SlotList.Contains(slot);
         }
 
-        private static void WriteGroupingList(List<object> objectList, StreamWriter writer, Type type, string groupingName, Func<object, bool> predicate)
+        private static void WriteGroupingList(List<object> objectList, StreamWriter writer, string groupingName, Func<List<object>, List<string>> getterList)
         {
-            PropertyInfo Property = type.GetProperty("Key");
-            Debug.Assert(Property != null);
-            Debug.Assert(Property.PropertyType == typeof(string));
-
             writer.WriteLine($"        public static List<string> {groupingName}List = new List<string>()");
             writer.WriteLine($"        {{");
 
-            foreach (object Item in objectList)
-                if (Item.GetType() == type && predicate(Item))
-                {
-                    string Key = Property.GetValue(Item) as string;
-                    Debug.Assert(Key != null);
+            List<string> KeyList = getterList(objectList);
 
-                    string KeyValue = GetStringValueString(Key);
-                    writer.WriteLine($"            {KeyValue},");
-                }
+            foreach (string Key in KeyList)
+            {
+                string KeyValue = GetStringValueString(Key);
+                writer.WriteLine($"            {KeyValue},");
+            }
 
             writer.WriteLine($"        }};");
         }
 
-        private static void WriteGroupingDictionary(List<object> objectList, StreamWriter writer, Type keyType, Type type, string groupingName, Func<object, object> collect, Func<object, object, bool> predicate)
+        private static void WriteGroupingDictionary(List<object> objectList, StreamWriter writer, Type keyType, string groupingName, Func<List<object>, Dictionary<object, List<string>>> getterTable)
         {
-            PropertyInfo Property = type.GetProperty("Key");
-            Debug.Assert(Property != null);
-            Debug.Assert(Property.PropertyType == typeof(string));
-
-            List<object> Keys = new List<object>();
-            foreach (object Item in objectList)
-                if (Item.GetType() == type)
-                {
-                    object Key = collect(Item);
-                    if (!Keys.Contains(Key))
-                        Keys.Add(Key);
-                }
-
             string KeyTypeName = SimpleTypeName(keyType);
 
             writer.WriteLine($"        public static Dictionary<{KeyTypeName}, List<string>> {groupingName}List = new Dictionary<{KeyTypeName}, List<string>>()");
             writer.WriteLine($"        {{");
 
-            foreach (object Key in Keys)
+            Dictionary<object, List<string>> KeyTable = getterTable(objectList);
+
+            foreach (KeyValuePair<object, List<string>> Entry in KeyTable)
             {
+                string KeyString = GetValueString(keyType, Entry.Key, objectList);
+
                 string ValueListString = string.Empty;
 
-                foreach (object Item in objectList)
-                    if (Item.GetType() == type && predicate(Key, Item))
-                    {
-                        string ValueKey = Property.GetValue(Item) as string;
-                        Debug.Assert(ValueKey != null);
+                foreach (string ValueKey in Entry.Value)
+                {
+                    if (ValueListString.Length > 0)
+                        ValueListString += ", ";
 
-                        if (ValueListString.Length > 0)
-                            ValueListString += ", ";
-
-                        string ValueKeyString = GetStringValueString(ValueKey);
-                        ValueListString += ValueKeyString;
-                    }
-
-                string KeyString = GetValueString(keyType, Key, objectList);
+                    string ValueKeyString = GetStringValueString(ValueKey);
+                    ValueListString += ValueKeyString;
+                }
 
                 writer.WriteLine($"            {{ {KeyString}, new List<string>() {{ {ValueListString} }} }},");
             }
