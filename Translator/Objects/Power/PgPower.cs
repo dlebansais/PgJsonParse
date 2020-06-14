@@ -11,7 +11,6 @@
         public PgSkill Skill { get; set; }
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; set; }
-        public PowerSkill RawSkill { get; set; }
         public PgPowerTierList PowerTierList { get; set; }
         public int TierOffset { get { return RawTierOffset.HasValue ? RawTierOffset.Value : 0; } }
         public int? RawTierOffset { get; set; }
