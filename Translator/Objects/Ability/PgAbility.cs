@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgAbility
+    public class PgAbility : PgObject
     {
         public string Key { get; set; } = string.Empty;
         public PgAbility AbilityGroup { get; set; }
@@ -81,5 +81,10 @@
         public float? RawAmmoConsumeChance { get; set; }
         public float AmmoStickChance { get { return RawAmmoStickChance.HasValue ? RawAmmoStickChance.Value : 0; } }
         public float? RawAmmoStickChance { get; set; }
+
+        public int FriendlyIconId { get; set; }
+
+        public override int ObjectIconId { get { return FriendlyIconId; } }
+        public override string ObjectName { get { return Name; } }
     }
 }

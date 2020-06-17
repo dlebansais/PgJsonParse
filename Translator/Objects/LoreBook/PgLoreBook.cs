@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgLoreBook
+    public class PgLoreBook : PgObject
     {
         public string Key { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
@@ -14,5 +14,8 @@
         public LoreBookVisibility Visibility { get; set; }
         public string InternalName { get; set; } = string.Empty;
         public string Text { get; set; } = string.Empty;
+
+        public override int ObjectIconId { get { return LoreBookIconId; } }
+        public override string ObjectName { get { return Title; } }
     }
 }

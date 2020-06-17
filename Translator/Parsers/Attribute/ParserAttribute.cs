@@ -3,6 +3,7 @@
     using PgObjects;
     using PgJsonReader;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public class ParserAttribute : Parser
     {
@@ -80,6 +81,28 @@
             }
 
             return true;
+        }
+
+        public static void UpdateIconsAndNames()
+        {
+            Dictionary<string, ParsingContext> AttributeParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAttribute)];
+            foreach (KeyValuePair<string, ParsingContext> Entry in AttributeParsingTable)
+            {
+                PgAttribute Attribute = (PgAttribute)Entry.Value.Item;
+
+                if (Attribute.IconIdList.Count > 0)
+                    Attribute.IconId = Attribute.IconIdList[0];
+                else
+                    Attribute.IconId = PgObject.AttributeIconId;
+
+                if (Attribute.Label.Length > 0)
+                    Attribute.ValidLabel = Attribute.Label;
+                else
+                    Attribute.ValidLabel = Attribute.Key;
+
+                Debug.Assert(Attribute.ObjectIconId != 0);
+                Debug.Assert(Attribute.ObjectName.Length > 0);
+            }
         }
     }
 }

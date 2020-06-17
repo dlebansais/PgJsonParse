@@ -31,7 +31,7 @@
                 switch (Key)
                 {
                     case "Item":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => item.QuestItem = valueItem, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => item.Item = valueItem, Value);
                         break;
                     case "StackSize":
                         Result = SetIntProperty((int valueInt) => item.RawStackSize = valueInt, Value);

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgPower
+    public class PgPower : PgObject
     {
         public string Key { get; set; } = string.Empty;
         public string Prefix { get; set; } = string.Empty;
@@ -14,5 +14,11 @@
         public PgPowerTierList PowerTierList { get; set; }
         public int TierOffset { get { return RawTierOffset.HasValue ? RawTierOffset.Value : 0; } }
         public int? RawTierOffset { get; set; }
+
+        public int IconId { get; set; }
+        public string ComposedName { get; set; } = string.Empty;
+
+        public override int ObjectIconId { get { return IconId; } }
+        public override string ObjectName { get { return ComposedName; } }
     }
 }

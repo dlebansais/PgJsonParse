@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.Xml.Schema;
+    using System.Diagnostics;
 
     public class ParserSkill : Parser
     {
@@ -207,6 +208,41 @@
 
                 skill.AssociationListAbility.Add(AbilityKey);
             }
+        }
+
+        public static void UpdateIconsAndNames()
+        {
+            Dictionary<string, ParsingContext> SkillParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSkill)];
+            foreach (KeyValuePair<string, ParsingContext> Entry in SkillParsingTable)
+            {
+                PgSkill Skill = (PgSkill)Entry.Value.Item;
+
+                Skill.IconId = SkillToIcon(Skill);
+
+                Debug.Assert(Skill.ObjectIconId != 0);
+                Debug.Assert(Skill.ObjectName.Length > 0);
+            }
+        }
+
+        public static int SkillToIcon(PgSkill skill)
+        {
+            int Result = 0;
+
+            Dictionary<string, ParsingContext> AbilityParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];
+            foreach (KeyValuePair<string, ParsingContext> Entry in AbilityParsingTable)
+            {
+                PgAbility Ability = (PgAbility)Entry.Value.Item;
+                if (Ability.Skill == skill && Ability.IconId != 0)
+                {
+                    if (Result == 0 || Ability.KeywordList.Contains(AbilityKeyword.BasicAttack))
+                    {
+                        Result = Ability.IconId;
+                        break;
+                    }
+                }
+            }
+
+            return Result;
         }
     }
 }

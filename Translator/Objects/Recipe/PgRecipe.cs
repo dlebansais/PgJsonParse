@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class PgRecipe
+    public class PgRecipe : PgObject
     {
         public string Key { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -56,5 +56,8 @@
         public PgRecipeItemCollection ProtoResultItemList { get; set; } = new PgRecipeItemCollection();
         public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }
         public bool? RawRewardAllowBonusXp { get; set; }
+
+        public override int ObjectIconId { get { return IconId; } }
+        public override string ObjectName { get { return Name; } }
     }
 }

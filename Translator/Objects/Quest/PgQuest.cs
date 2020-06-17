@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class PgQuest
+    public class PgQuest : PgObject
     {
         public string Key { get; set; } = string.Empty;
         public string InternalName { get; set; } = string.Empty;
@@ -22,7 +22,6 @@
         public string SuccessText { get; set; } = string.Empty;
         public string MidwayText { get; set; } = string.Empty;
         public Favor PrerequisiteFavorLevel { get; set; }
-        public PgAbility RewardAbility { get; set; }
         public PgQuestRequirementCollection QuestRequirementList { get; set; } = new PgQuestRequirementCollection();
         public PgQuestRewardCollection QuestRewardList { get; set; } = new PgQuestRewardCollection();
         public PgQuestRewardCollection PreGiveItemList { get; set; } = new PgQuestRewardCollection();
@@ -49,5 +48,10 @@
         public PgSkill WorkOrderSkill { get; set; }
         public MapAreaName DisplayedLocation { get; set; }
         public PgQuestRewardCollection QuestMidwayGiveItemList { get; set; } = new PgQuestRewardCollection();
+
+        public int IconId { get; set; }
+
+        public override int ObjectIconId { get { return IconId; } }
+        public override string ObjectName { get { return Name; } }
     }
 }

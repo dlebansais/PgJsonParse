@@ -3,6 +3,7 @@
     using PgObjects;
     using PgJsonReader;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public class ParserAbility : Parser
     {
@@ -210,6 +211,23 @@
             }
 
             return Result;
+        }
+
+        public static void UpdateIconsAndNames()
+        {
+            Dictionary<string, ParsingContext> AbilityParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];
+            foreach (KeyValuePair<string, ParsingContext> Entry in AbilityParsingTable)
+            {
+                PgAbility Ability = (PgAbility)Entry.Value.Item;
+
+                if (Ability.IconId > 0)
+                    Ability.FriendlyIconId = Ability.IconId;
+                else
+                    Ability.FriendlyIconId = PgObject.AbilityIconId;
+
+                Debug.Assert(Ability.ObjectIconId != 0);
+                Debug.Assert(Ability.ObjectName.Length > 0);
+            }
         }
     }
 }

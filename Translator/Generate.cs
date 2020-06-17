@@ -38,7 +38,7 @@
             for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
                 IndexTable.Add(objectList[ObjectIndex], ObjectIndex);
 
-            WriteGroupings(objectList);
+            WriteGroupings(version, objectList);
             Write(objectList);
             WriteKeys(objectList);
             WriteDictionaries(objectList);
@@ -267,7 +267,7 @@
             Writer.WriteLine($"                        break;");
         }
 
-        private static void WriteGroupings(List<object> objectList)
+        private static void WriteGroupings(int version, List<object> objectList)
         {
             string FilePath = Path.Combine(RootFolder, "Grouping.cs");
 
@@ -281,6 +281,8 @@
             Writer.WriteLine("");
             Writer.WriteLine($"    public static class Groups");
             Writer.WriteLine("    {");
+            Writer.WriteLine($"        public static string Version {{ get; }} = \"v{version}\";");
+            Writer.WriteLine("");
 
             WriteGroupingList(objectList, Writer, "CombatSkill", GetCombatSkillList);
             WriteGroupingDictionary(objectList, Writer, typeof(string), "CombatSubskill", GetCombatSubskillTable);

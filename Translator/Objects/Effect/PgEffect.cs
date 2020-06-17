@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgEffect
+    public class PgEffect : PgObject
     {
         public string Key { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
@@ -19,5 +19,11 @@
         public int? RawDuration { get; set; }
         public List<EffectKeyword> KeywordList { get; set; } = new List<EffectKeyword>();
         public List<AbilityKeyword> AbilityKeywordList { get; set; } = new List<AbilityKeyword>();
+
+        public int FriendlyIconId { get; set; }
+        public string FriendlyName { get; set; }
+
+        public override int ObjectIconId { get { return FriendlyIconId; } }
+        public override string ObjectName { get { return FriendlyName; } }
     }
 }

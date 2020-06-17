@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgSkill
+    public class PgSkill : PgObject
     {
         public static PgSkill Unknown { get; } = new PgSkill();
         public static PgSkill AnySkill { get; } = new PgSkill();
@@ -38,5 +38,10 @@
 
         public Dictionary<ItemSlot, List<string>> AssociationTablePower { get; set; } = new Dictionary<ItemSlot, List<string>>();
         public List<string> AssociationListAbility { get; set; } = new List<string>();
+
+        public int IconId { get; set; }
+
+        public override int ObjectIconId { get { return IconId; } }
+        public override string ObjectName { get { return Name; } }
     }
 }

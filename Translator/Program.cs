@@ -99,6 +99,12 @@
             if (!FinalizingResult)
                 return -1;
 
+            ParserAbility.UpdateIconsAndNames();
+            ParserAttribute.UpdateIconsAndNames();
+            ParserEffect.UpdateIconsAndNames();
+            ParserPower.UpdateIconsAndNames();
+            ParserQuest.UpdateIconsAndNames();
+
             ParserSkill.FillAssociationTables();
 
             List<object> ObjectList = ParsingContext.GetParsedObjectList();

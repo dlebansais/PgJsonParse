@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgItem
+    public class PgItem : PgObject
     {
         public string Key { get; set; } = string.Empty;
         public PgRecipeCollection BestowRecipeList { get; set; } = new PgRecipeCollection();
@@ -63,5 +63,8 @@
         public PgLoreBook BestowLoreBook { get; set; }
         public WorkOrderSign LintVendorNpc { get; set; }
         public Dictionary<ItemKeyword, List<float>> KeywordTable { get; set; } = new Dictionary<ItemKeyword, List<float>>();
+
+        public override int ObjectIconId { get { return IconId; } }
+        public override string ObjectName { get { return Name; } }
     }
 }

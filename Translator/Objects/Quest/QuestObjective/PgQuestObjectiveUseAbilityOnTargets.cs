@@ -2,7 +2,7 @@
 {
     public class PgQuestObjectiveUseAbilityOnTargets : PgQuestObjective
     {
-        public string InteractionTarget { get; set; } = string.Empty;
+        public string Target { get; set; } = string.Empty;
         public AbilityKeyword Keyword { get; set; }
     }
 }

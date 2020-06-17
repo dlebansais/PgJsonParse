@@ -123,6 +123,7 @@
     <Compile Include="FieldTables\FixedFieldTable.cs" />
     <Compile Include="FieldTables\FieldTable.cs" />
     <Compile Include="Objects\Npc\PgNpcLocation.cs" />
+    <Compile Include="Objects\PgObject.cs" />
     <Compile Include="Objects\Quest\PgQuestObjectiveRequirementCollection.cs" />
     <Compile Include="Objects\Quest\QuestObjectiveRequirement\PgQuestObjectiveRequirementAppearance.cs" />
     <Compile Include="Objects\Quest\QuestObjectiveRequirement\PgQuestObjectiveRequirementHasEffectKeyword.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardCombatXp.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardGuildCredits.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardEffect.cs" />
+    <Compile Include="Objects\Quest\QuestReward\PgQuestRewardAbility.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardPlayerTitle.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardLoreBook.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardRecipe.cs" />

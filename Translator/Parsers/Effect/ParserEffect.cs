@@ -3,6 +3,7 @@
     using PgObjects;
     using PgJsonReader;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public class ParserEffect : Parser
     {
@@ -87,6 +88,28 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"Value {value} was expected to be an int");
 
             return SetIntProperty((int valueInt) => item.RawDuration = valueInt, ValueInt);
+        }
+
+        public static void UpdateIconsAndNames()
+        {
+            Dictionary<string, ParsingContext> EffectParsingTable = ParsingContext.ObjectKeyTable[typeof(PgEffect)];
+            foreach (KeyValuePair<string, ParsingContext> Entry in EffectParsingTable)
+            {
+                PgEffect Effect = (PgEffect)Entry.Value.Item;
+
+                if (Effect.IconId != 0)
+                    Effect.FriendlyIconId = Effect.IconId;
+                else
+                    Effect.FriendlyIconId = PgObject.EffectIconId;
+
+                if (Effect.Name.Length > 0)
+                    Effect.FriendlyName = Effect.Name;
+                else
+                    Effect.FriendlyName = "(no name)";
+
+                Debug.Assert(Effect.ObjectIconId != 0);
+                Debug.Assert(Effect.ObjectName.Length > 0);
+            }
         }
     }
 }

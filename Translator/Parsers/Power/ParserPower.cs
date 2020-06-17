@@ -3,6 +3,7 @@
     using PgObjects;
     using PgJsonReader;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public class ParserPower : Parser
     {
@@ -58,6 +59,82 @@
             }
 
             return Result;
+        }
+
+        public static void UpdateIconsAndNames()
+        {
+            Dictionary<string, ParsingContext> PowerParsingTable = ParsingContext.ObjectKeyTable[typeof(PgPower)];
+            foreach (KeyValuePair<string, ParsingContext> Entry in PowerParsingTable)
+            {
+                PgPower Power = (PgPower)Entry.Value.Item;
+                UpdateIconsAndNames(Power);
+
+                Debug.Assert(Power.ObjectIconId != 0);
+                Debug.Assert(Power.ObjectName.Length > 0);
+            }
+        }
+
+        private static void UpdateIconsAndNames(PgPower power)
+        {
+            int IconId = 0;
+
+            UpdateIconWithPowerTiers(power, ref IconId);
+            if (IconId != 0)
+                power.IconId = IconId;
+            else
+                power.IconId = PgObject.PowerIconId;
+
+            string ComposedName = string.Empty;
+
+            if (power.Prefix.Length > 0 || power.Suffix.Length > 0)
+            {
+                ComposedName = string.Empty;
+
+                if (power.Prefix.Length > 0)
+                    ComposedName += power.Prefix;
+
+                if (power.Suffix.Length > 0)
+                {
+                    if (ComposedName.Length > 0)
+                        ComposedName += " ";
+
+                    ComposedName += power.Suffix;
+                }
+            }
+            else
+                ComposedName = "(no name)";
+
+            power.ComposedName = ComposedName;
+        }
+
+        private static void UpdateIconWithPowerTiers(PgPower power, ref int iconId)
+        {
+            if (power.PowerTierList != null && power.PowerTierList.TierList.Count > 0)
+            {
+                PgPowerTier PowerTier = power.PowerTierList.TierList[power.PowerTierList.TierList.Count - 1];
+                if (PowerTier.EffectList.Count > 0)
+                {
+                    foreach (PgPowerEffect PowerEffect in PowerTier.EffectList)
+                    {
+                        List<int> IconIdList = new List<int>();
+
+                        if (PowerEffect is PgPowerEffectSimple AsSimple)
+                            IconIdList = AsSimple.IconIdList;
+                        else if (PowerEffect is PgPowerEffectAttribute AsAttribute && AsAttribute.Attribute != null)
+                            IconIdList = AsAttribute.Attribute.IconIdList;
+
+                        foreach (int Id in IconIdList)
+                            if (Id > 0)
+                            {
+                                iconId = Id;
+                                break;
+                            }
+
+                        if (iconId > 0)
+                            break;
+                    }
+                }
+            }
         }
     }
 }

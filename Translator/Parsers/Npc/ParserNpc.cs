@@ -52,6 +52,9 @@
                     break;
             }
 
+            if (Result)
+                item.IconId = PgObject.NpcIconId;
+
             return Result;
         }
 

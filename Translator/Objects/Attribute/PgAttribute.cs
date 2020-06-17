@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgAttribute
+    public class PgAttribute : PgObject
     {
         public string Key { get; set; } = string.Empty;
         public string Label { get; set; } = string.Empty;
@@ -14,5 +14,11 @@
         public DisplayRule DisplayRule { get; set; }
         public float DefaultValue { get { return RawDefaultValue.HasValue ? RawDefaultValue.Value : 0; } }
         public float? RawDefaultValue { get; set; }
+
+        public int IconId { get; set; }
+        public string ValidLabel { get; set; }
+
+        public override int ObjectIconId { get { return IconId; } }
+        public override string ObjectName { get { return ValidLabel; } }
     }
 }
