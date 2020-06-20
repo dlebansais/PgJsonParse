@@ -226,23 +226,98 @@
 
         public static int SkillToIcon(PgSkill skill)
         {
-            int Result = 0;
+            int IconId = 0;
+
+            UpdateIconIdFromAbilities(skill, ref IconId);
+            UpdateIconIdFromRecipes(skill, ref IconId);
+            UpdateIconIdFromItems(skill, ref IconId);
+
+            if (IconId == 0)
+            {
+                if (skill.Key == "AlcoholTolerance")
+                    IconId = 3677;
+                else if (skill.Key.StartsWith("Anatomy"))
+                    IconId = 4004;
+                else if (skill.AdvancementTable == null)
+                    IconId = PgObject.AbilityIconId;
+                else
+                    IconId = PgObject.SkillIconId;
+            }
+
+            return IconId;
+        }
+
+        public static void UpdateIconIdFromAbilities(PgSkill skill, ref int iconId)
+        {
+            int LowestLevel = int.MaxValue;
+            int LowestLevelIconId = 0;
 
             Dictionary<string, ParsingContext> AbilityParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];
             foreach (KeyValuePair<string, ParsingContext> Entry in AbilityParsingTable)
             {
+                if (iconId != 0)
+                    break;
+
                 PgAbility Ability = (PgAbility)Entry.Value.Item;
                 if (Ability.Skill == skill && Ability.IconId != 0)
                 {
-                    if (Result == 0 || Ability.KeywordList.Contains(AbilityKeyword.BasicAttack))
+                    if (Ability.KeywordList.Contains(AbilityKeyword.BasicAttack))
+                        iconId = Ability.IconId;
+                    else if (LowestLevel > Ability.Level)
                     {
-                        Result = Ability.IconId;
-                        break;
+                        LowestLevel = Ability.Level;
+                        LowestLevelIconId = Ability.IconId;
                     }
                 }
             }
 
-            return Result;
+            if (iconId == 0 && LowestLevelIconId != 0)
+                iconId = LowestLevelIconId;
+        }
+
+        public static void UpdateIconIdFromRecipes(PgSkill skill, ref int iconId)
+        {
+            Dictionary<string, ParsingContext> RecipeParsingTable = ParsingContext.ObjectKeyTable[typeof(PgRecipe)];
+            foreach (KeyValuePair<string, ParsingContext> Entry in RecipeParsingTable)
+            {
+                if (iconId != 0)
+                    break;
+
+                PgRecipe Recipe = (PgRecipe)Entry.Value.Item;
+                if (Recipe.Skill == skill && Recipe.IconId != 0)
+                    iconId = Recipe.IconId;
+            }
+        }
+
+        public static void UpdateIconIdFromItems(PgSkill skill, ref int iconId)
+        {
+            int LowestLevel = int.MaxValue;
+            int LowestLevelIconId = 0;
+
+            Dictionary<string, ParsingContext> ItemParsingTable = ParsingContext.ObjectKeyTable[typeof(PgItem)];
+            foreach (KeyValuePair<string, ParsingContext> Entry in ItemParsingTable)
+            {
+                if (iconId != 0)
+                    break;
+
+                PgItem Item = (PgItem)Entry.Value.Item;
+                if (Item.IconId != 0)
+                {
+                    foreach (PgItemSkillLink Link in Item.SkillRequirementList)
+                        foreach (KeyValuePair<PgSkill, int> SkillEntry in Link.SkillTable)
+                            if (SkillEntry.Key == skill)
+                            {
+                                if (LowestLevel > SkillEntry.Value)
+                                {
+                                    LowestLevel = SkillEntry.Value;
+                                    LowestLevelIconId = Item.IconId;
+                                }
+                            }
+                }
+            }
+
+            if (iconId == 0 && LowestLevelIconId != 0)
+                iconId = LowestLevelIconId;
         }
     }
 }

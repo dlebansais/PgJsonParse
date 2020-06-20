@@ -104,6 +104,7 @@
             ParserEffect.UpdateIconsAndNames();
             ParserPower.UpdateIconsAndNames();
             ParserQuest.UpdateIconsAndNames();
+            ParserSkill.UpdateIconsAndNames();
 
             ParserSkill.FillAssociationTables();
 

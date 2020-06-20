@@ -344,12 +344,6 @@
             return skill.ParentSkillList.Exists((PgSkill item) => IsCombatSkill(item)) && skill.AssociationTablePower.Count > 0;
         }
 
-        private static bool IsCombatParentSkill(string subskillKey)
-        {
-            PgSkill Subskill = (PgSkill)ParsingContext.ObjectKeyTable[typeof(PgSkill)][subskillKey].Item;
-            return Subskill.ParentSkillList.Count > 0;
-        }
-
         private static Dictionary<object, List<string>> GetItemBySlotTable(List<object> objectList)
         {
             Dictionary<ItemSlot, List<PgItem>> ItemTable = new Dictionary<ItemSlot, List<PgItem>>();

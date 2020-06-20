@@ -386,4 +386,9 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if exist "$(ProjectDir)../../PgObjects/v335/Objects/" xcopy "$(ProjectDir)Objects" "$(ProjectDir)..\..\PgObjects\v335\Objects\" /s /y /q
+if exist "$(ProjectDir)../../PgObjects/v335/Enums/" xcopy "$(ProjectDir)Enums" "$(ProjectDir)..\..\PgObjects\v335\Enums\" /s /y /q
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

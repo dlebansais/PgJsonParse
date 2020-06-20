@@ -31,7 +31,7 @@
                 switch (Key)
                 {
                     case "Id":
-                        Result = SetIntProperty((int valueInt) => item.RawId = valueInt, Value);
+                        Result = SetIntProperty((int valueInt) => item.Key = valueInt.ToString(), Value);
                         break;
                     case "Label":
                         Result = SetStringProperty((string valueString) => item.Label = valueString, Value);

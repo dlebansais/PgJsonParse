@@ -11,6 +11,7 @@
         public static int PlayerTitleIconId { get; } = 5851;
         public static int PowerIconId { get; } = 108;
         public static int StorageVaultIconId { get; } = 5116;
+        public static int SkillIconId { get; } = 103;
         public static int KillIconId { get; } = 3402;
 
         public abstract int ObjectIconId { get; }

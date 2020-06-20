@@ -78,7 +78,7 @@
         {
             int IconId = 0;
 
-            UpdateIconWithPowerTiers(power, ref IconId);
+            UpdateIconFromPowerTiers(power, ref IconId);
             if (IconId != 0)
                 power.IconId = IconId;
             else
@@ -107,7 +107,7 @@
             power.ComposedName = ComposedName;
         }
 
-        private static void UpdateIconWithPowerTiers(PgPower power, ref int iconId)
+        private static void UpdateIconFromPowerTiers(PgPower power, ref int iconId)
         {
             if (power.PowerTierList != null && power.PowerTierList.TierList.Count > 0)
             {

@@ -4,8 +4,7 @@
 
     public class PgDirectedGoal : PgObject
     {
-        public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
-        public int? RawId { get; set; }
+        public string Key { get; set; } = string.Empty;
         public string Label { get; set; } = string.Empty;
         public string Zone { get; set; } = string.Empty;
         public PgDirectedGoal CategoryGate { get; set; }
