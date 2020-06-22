@@ -65,7 +65,6 @@
     <Compile Include="Enums\Appearance.cs" />
     <Compile Include="Enums\AppearanceSkin.cs" />
     <Compile Include="Enums\Augment.cs" />
-    <Compile Include="Enums\ConsumedItemCategory.cs" />
     <Compile Include="Enums\CraftedBoost.cs" />
     <Compile Include="Enums\Currency.cs" />
     <Compile Include="Enums\DamageType.cs" />
@@ -81,7 +80,6 @@
     <Compile Include="Enums\EnhancementEffect.cs" />
     <Compile Include="Enums\Favor.cs" />
     <Compile Include="Enums\FloatFormat.cs" />
-    <Compile Include="Enums\ItemRequiredHotspot.cs" />
     <Compile Include="Enums\ItemUseVerb.cs" />
     <Compile Include="Enums\ItemUseAnimation.cs" />
     <Compile Include="Enums\ItemUseRequirement.cs" />
@@ -95,7 +93,6 @@
     <Compile Include="Enums\MonsterTypeTag.cs" />
     <Compile Include="Enums\MoonPhases.cs" />
     <Compile Include="Enums\OtherRequirementType.cs" />
-    <Compile Include="Enums\PowerSkill.cs" />
     <Compile Include="Enums\PowerWaxType.cs" />
     <Compile Include="Enums\PreEffect.cs" />
     <Compile Include="Enums\QuestGroupingName.cs" />
@@ -111,13 +108,10 @@
     <Compile Include="Enums\RecipeItemKey.cs" />
     <Compile Include="Enums\RecipeKeyword.cs" />
     <Compile Include="Enums\SelfEffect.cs" />
-    <Compile Include="Enums\ServerInfoEffectType.cs" />
     <Compile Include="Enums\ShamanicSlotPower.cs" />
-    <Compile Include="Enums\SkillCategory.cs" />
     <Compile Include="Enums\TargetEffectKeyword.cs" />
     <Compile Include="Enums\TooltipsExtraKeywords.cs" />
     <Compile Include="Enums\WorkOrderSign.cs" />
-    <Compile Include="Enums\XpTableCategory.cs" />
     <Compile Include="FieldTables\FieldTableStore.cs" />
     <Compile Include="FileType.cs" />
     <Compile Include="FieldTables\FixedFieldTable.cs" />

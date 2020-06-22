@@ -67,7 +67,7 @@
                         Result = StringToEnumConversion<Deaths>.TryParseList(Value, item.CausesOfDeathList);
                         break;
                     case "Costs":
-                        Result = Inserter<PgRecipeCost>.AddKeylessArray(item.CostList, Value);
+                        Result = ParseCosts(item, Value, parsedFile, parsedKey);
                         break;
                     case "CombatRefreshBaseAmount":
                         Result = SetIntProperty((int valueInt) => item.RawCombatRefreshBaseAmount = valueInt, Value);
@@ -211,6 +211,20 @@
             }
 
             return Result;
+        }
+
+        private bool ParseCosts(PgAbility item, object value, string parsedFile, string parsedKey)
+        {
+            PgRecipeCostCollection CostList = new PgRecipeCostCollection();
+            if (!Inserter<PgRecipeCost>.AddKeylessArray(CostList, value))
+                return false;
+
+            if (CostList.Count > 1)
+                return Program.ReportFailure(parsedFile, parsedKey, $"Only one cost expected");
+            else if (CostList.Count == 1)
+                item.Cost = CostList[0];
+
+            return true;
         }
 
         public static void UpdateIconsAndNames()

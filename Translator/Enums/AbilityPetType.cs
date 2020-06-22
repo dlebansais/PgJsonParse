@@ -10,7 +10,6 @@
         Minigolem_Pet,
         StabledPet,
         SummonedSkeleton,
-        //SummonedCorpse,
         SummonedWebTrap,
         SummonedSpider,
         PumpkinBomb,

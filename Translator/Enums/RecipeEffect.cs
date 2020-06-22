@@ -2,6 +2,7 @@
 {
     public enum RecipeEffect
     {
+        Internal_None,
         CheckForBonusFishScales,
         ResearchFireMagic0,
         ResearchFireMagic5,
@@ -291,18 +292,5 @@
         StoragePortal2,
         StoragePortal3,
         SummonFairyLight,
-
-        ExtractTSysPower,
-        RepairItemDurability,
-        TSysCraftedEquipment,
-        CraftingEnhanceItem,
-        AddItemTSysPower,
-        BrewItem,
-        AdjustRecipeReuseTime,
-        GiveItemPower,
-        AddItemTSysPowerWax,
-        ConsumeItemUses,
-        DeltaCurFairyEnergy,
-        Teleport,
     }
 }

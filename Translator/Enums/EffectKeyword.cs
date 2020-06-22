@@ -1,6 +1,7 @@
 ﻿namespace PgObjects
 {
-    public enum EffectKeyword {
+    public enum EffectKeyword 
+    {
         Internal_None,
         Hyphen,
         Debuff,

@@ -19,7 +19,7 @@
         public bool CanTargetUntargetableEnemies { get { return RawCanTargetUntargetableEnemies.HasValue && RawCanTargetUntargetableEnemies.Value; } }
         public bool? RawCanTargetUntargetableEnemies { get; set; }
         public List<Deaths> CausesOfDeathList { get; set; } = new List<Deaths>();
-        public PgRecipeCostCollection CostList { get; set; } = new PgRecipeCostCollection();
+        public PgRecipeCost Cost { get; set; }
         public int CombatRefreshBaseAmount { get { return RawCombatRefreshBaseAmount.HasValue ? RawCombatRefreshBaseAmount.Value : 0; } }
         public int? RawCombatRefreshBaseAmount { get; set; }
         public DamageType DamageType { get; set; }
