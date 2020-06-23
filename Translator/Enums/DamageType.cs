@@ -20,10 +20,5 @@
         Acid,
         Darkness,
         Regeneration,
-        Poison_direct,
-        Trauma_direct,
-        Poison_indirect,
-        Trauma_indirect,
-        Burst,
     }
 }

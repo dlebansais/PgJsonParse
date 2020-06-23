@@ -8,6 +8,57 @@
     {
         public static Dictionary<Type, bool[]> KnownParsedEnumtable { get; } = new Dictionary<Type, bool[]>();
         public static Dictionary<Type, List<string>> MissingEnumTable { get; } = new Dictionary<Type, List<string>>();
+
+        public static bool FinalizeParsing()
+        {
+            if (KnownParsedEnumtable.Count != 67)
+            {
+                List<string> NameList = new List<string>();
+                foreach (KeyValuePair<Type, bool[]> Entry in KnownParsedEnumtable)
+                {
+                    string Name = Entry.Key.Name;
+                    NameList.Add(Name);
+                }
+
+                NameList.Sort();
+
+                foreach (string Name in NameList)
+                    Debug.WriteLine(Name);
+
+                return Program.ReportFailure("Some enum types are not used anymore");
+            }
+
+            string Result = string.Empty;
+
+            foreach (KeyValuePair<Type, bool[]> Entry in KnownParsedEnumtable)
+                FinalizeParsing(Entry.Key, Entry.Value, ref Result);
+
+            if (Result.Length > 0)
+                return Program.ReportFailure($"The following enums are not used.\n\n{Result}");
+
+            return true;
+        }
+
+        private static void FinalizeParsing(Type type, bool[] usedValues, ref string text)
+        {
+            Debug.Assert(type.IsEnum);
+
+            string[] EnumNames = type.GetEnumNames();
+            Debug.Assert(EnumNames.Length == usedValues.Length);
+
+            string EnumText = string.Empty;
+            for (int i = 1; i < usedValues.Length; i++)
+                if (!usedValues[i])
+                    EnumText += $"    {EnumNames[i]}\n";
+
+            if (EnumText.Length > 0)
+            {
+                if (text.Length > 0)
+                    text += "\n";
+
+                text += $"  {type.Name}:\n{EnumText}";
+            }
+        }
     }
 
     public static class StringToEnumConversion<T>

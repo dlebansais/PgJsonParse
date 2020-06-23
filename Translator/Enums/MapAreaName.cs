@@ -30,12 +30,9 @@
         RahuCaves,
         RahuSewer,
         RahuSewers,
-        Staging,
         FaeRealm,
         SacredGrotto,
         AreaFaeRealm1,
-        FaeRealm1Caves,
         ANewLife,
-        SunValeCaves,
     }
 }

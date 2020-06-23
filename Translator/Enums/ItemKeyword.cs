@@ -3,7 +3,6 @@
     public enum ItemKeyword
     {
         Internal_None,
-        Any,
         BottledItem,
         EmptyBottle,
         Ingredient,

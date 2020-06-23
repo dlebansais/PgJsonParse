@@ -3,12 +3,9 @@
     public enum SpecialNpc
     {
         Internal_None,
-        WerewolfAltar,
-        AdminTestNpc,
         CatCharmPedestal,
         BearCharmPedestal,
         GoblinFireResearchDesk1,
-        Altar_Druid,
         AlchemyBook,
         UkorgasWelcomeSign,
         HoplologyBook,

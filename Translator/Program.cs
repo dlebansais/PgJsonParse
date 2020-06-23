@@ -95,6 +95,7 @@
             FinalizingResult &= ParserQuestRequirement.FinalizeParsing();
             FinalizingResult &= ParserQuestReward.FinalizeParsing();
             FinalizingResult &= ParserStorageRequirement.FinalizeParsing();
+            FinalizingResult &= StringToEnumConversion.FinalizeParsing();
 
             if (!FinalizingResult)
                 return -1;

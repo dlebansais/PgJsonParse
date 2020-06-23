@@ -321,9 +321,7 @@
             if (!Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, AttributeName))
                 return false;
 
-            float ParsedEffect;
-            FloatFormat ParsedEffectFormat;
-            if (!Tools.TryParseFloat(AttributeEffect, out ParsedEffect, out ParsedEffectFormat))
+            if (!Tools.TryParseFloat(AttributeEffect, out float ParsedEffect, out FloatFormat ParsedEffectFormat))
                 return false;
 
             if (ParsedEffectFormat != FloatFormat.Standard)

@@ -425,6 +425,8 @@
             if (!int.TryParse(ConsumedEnhancementPointString, out int ConsumedEnhancementPoints))
                 return Program.ReportFailure($"Value '{ConsumedEnhancementPointString}' was expected to be an int");
 
+            StringToEnumConversion<EnhancementEffect>.SetCustomParsedEnum(enhancement);
+
             PgRecipeResultEnhancedItem RecipeResultEffect = new PgRecipeResultEnhancedItem();
             RecipeResultEffect.Enhancement = enhancement;
             RecipeResultEffect.RawAddedQuantity = AddedQuantity;

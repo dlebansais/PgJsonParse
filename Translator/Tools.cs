@@ -1,6 +1,7 @@
 ﻿namespace Translator
 {
     using PgObjects;
+    using System.Diagnostics;
     using System.Drawing;
     using System.Globalization;
 
@@ -24,22 +25,28 @@
 
         public static bool TryParseFloat(string s, out float Value, out FloatFormat Format)
         {
+            Debug.Assert(TryParseSingle(s, out Value));
+            Debug.Assert(s == SingleToString(Value));
+            Format = FloatFormat.Standard;
+            StringToEnumConversion<FloatFormat>.SetCustomParsedEnum(Format);
+            return true;
+            /*
             if (TryParseSingle(s, out Value))
             {
                 if (s == SingleToString(Value))
                     Format = FloatFormat.Standard;
-
                 else if (s == SingleToString(Value, "0.0#"))
                     Format = FloatFormat.WithEndingZero;
-
                 else
                     Format = FloatFormat.Other;
 
+                StringToEnumConversion<FloatFormat>.SetCustomParsedEnum(Format);
                 return true;
             }
 
             Format = FloatFormat.Other;
             return false;
+            */
         }
         #endregion
 

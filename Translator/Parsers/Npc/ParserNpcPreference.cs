@@ -113,18 +113,20 @@
             else
                 return Program.ReportFailure(parsedFile, parsedKey, $"Invalid minimum rarity '{value}'");
 
+            StringToEnumConversion<RecipeItemKey>.SetCustomParsedEnum(item.MinRarityRequirement);
             return true;
         }
 
         private bool ParseKeywordAsRarity(PgNpcPreference item, string value, string parsedFile, string parsedKey)
         {
-            if (value == "Common")
-                item.RarityRequirement = RecipeItemKey.Rarity_Common;
-            else if (value == "Uncommon")
+            if (value == "Uncommon")
                 item.RarityRequirement = RecipeItemKey.Rarity_Uncommon;
+            else if (value == "Common")
+                item.RarityRequirement = RecipeItemKey.Rarity_Common;
             else
                 return Program.ReportFailure(parsedFile, parsedKey, $"Invalid rarity '{value}'");
 
+            StringToEnumConversion<RecipeItemKey>.SetCustomParsedEnum(item.RarityRequirement);
             return true;
         }
     }

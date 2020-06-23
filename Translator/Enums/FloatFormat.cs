@@ -3,7 +3,7 @@
     public enum FloatFormat
     {
         Standard,
-        WithEndingZero,
-        Other,
+        //WithEndingZero,
+        //Other,
     }
 }
