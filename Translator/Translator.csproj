@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\InteractionFlag.cs" />
     <Compile Include="Enums\QuestObjectiveRequirementType.cs" />
     <Compile Include="Enums\QuestRequirementType.cs" />
     <Compile Include="Enums\QuestRewardType.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="FileType.cs" />
     <Compile Include="FieldTables\FixedFieldTable.cs" />
     <Compile Include="FieldTables\FieldTable.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDisallowedItemKeyword.cs" />
     <Compile Include="Objects\Npc\PgNpcLocation.cs" />
     <Compile Include="Objects\PgObject.cs" />
     <Compile Include="Objects\Quest\PgQuestObjectiveRequirementCollection.cs" />

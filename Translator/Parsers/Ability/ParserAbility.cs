@@ -210,6 +210,12 @@
                     break;
             }
 
+            if (Result)
+            {
+                if (item.PvE == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, $"PvE info missing");
+            }
+
             return Result;
         }
 

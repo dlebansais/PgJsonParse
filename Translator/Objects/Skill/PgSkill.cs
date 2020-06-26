@@ -4,8 +4,8 @@
 
     public class PgSkill : PgObject
     {
-        public static PgSkill Unknown { get; } = new PgSkill();
-        public static PgSkill AnySkill { get; } = new PgSkill();
+        public static PgSkill Unknown { get; } = new PgSkill() { Name = "Unknown" };
+        public static PgSkill AnySkill { get; } = new PgSkill() { Name = "Any Skill" };
 
         public string Key { get; set; } = string.Empty;
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }

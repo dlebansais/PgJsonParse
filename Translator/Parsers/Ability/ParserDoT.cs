@@ -63,7 +63,22 @@
                     break;
             }
 
-            return Result;
+            if (!Result)
+                return false;
+
+            if (item.RawDamagePerTick == null )
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unexpected empty damage per tick");
+
+            if (item.DamageType == DamageType.Internal_None || item.DamageType == DamageType.Internal_Empty)
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unexpected empty damage type");
+
+            if (item.RawNumTicks == null)
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unexpected empty num tick");
+
+            if (item.RawDuration == null)
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unexpected empty duration");
+
+            return true;
         }
     }
 }

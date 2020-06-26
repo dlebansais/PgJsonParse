@@ -330,7 +330,7 @@
                         case "T":
                             break;
                         case "MaxCount":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawMaxCount = valueInt, Value);
+                            Result = ParsePetCountMaxCount(Value, parsedFile, parsedKey);
                             break;
                         case "PetTypeTag":
                             Result = Inserter<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.PetTypeTag = valueEnum, Value);
@@ -352,6 +352,18 @@
             }
             else
                 return false;
+        }
+
+        private static bool ParsePetCountMaxCount(object value, string parsedFile, string parsedKey)
+        {
+            int ParsedMaxCount = 0;
+            if (!SetIntProperty((int valueInt) => ParsedMaxCount = valueInt, value))
+                return false;
+
+            if (ParsedMaxCount != 0)
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unexpected max count {ParsedMaxCount}");
+
+            return true;
         }
 
         private static bool FinishItemRecipeKnown(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
@@ -645,8 +657,31 @@
 
         private static bool FinishItemEquippedItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
-            PgAbilityRequirementEquippedItemKeyword NewItem = new PgAbilityRequirementEquippedItemKeyword();
+            bool Result;
+            PgAbilityRequirement NewItem;
 
+            if (contentTable.ContainsKey("MaxCount"))
+            {
+                NewItem = new PgAbilityRequirementDisallowedItemKeyword();
+                Result = FinishItemDisallowedItemKeyword((PgAbilityRequirementDisallowedItemKeyword)NewItem, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+            }
+            else
+            {
+                NewItem = new PgAbilityRequirementEquippedItemKeyword();
+                Result = FinishItemEquippedItemKeyword((PgAbilityRequirementEquippedItemKeyword)NewItem, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemEquippedItemKeyword(PgAbilityRequirementEquippedItemKeyword item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
             bool Result = true;
 
             foreach (KeyValuePair<string, object> Entry in contentTable)
@@ -665,13 +700,10 @@
                         case "T":
                             break;
                         case "MinCount":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawMinCount = valueInt, Value);
-                            break;
-                        case "MaxCount":
-                            Result = SetIntProperty((int valueInt) => NewItem.RawMaxCount = valueInt, Value);
+                            Result = SetIntProperty((int valueInt) => item.RawMinCount = valueInt, Value);
                             break;
                         case "Keyword":
-                            Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.Keyword = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -683,13 +715,58 @@
                     break;
             }
 
-            if (Result)
+            return Result;
+        }
+
+        private static bool FinishItemDisallowedItemKeyword(PgAbilityRequirementDisallowedItemKeyword item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
             {
-                item = NewItem;
-                return true;
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "MaxCount":
+                            Result = ParseEquippedItemKeywordMaxCount(Value, parsedFile, parsedKey);
+                            break;
+                        case "Keyword":
+                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.Keyword = valueEnum, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
             }
-            else
+
+            return Result;
+        }
+
+        private static bool ParseEquippedItemKeywordMaxCount(object value, string parsedFile, string parsedKey)
+        {
+            int ParsedMaxCount = 0;
+            if (!SetIntProperty((int valueInt) => ParsedMaxCount = valueInt, value))
                 return false;
+
+            if (ParsedMaxCount != 0)
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unexpected max count {ParsedMaxCount}");
+
+            return true;
         }
 
         private static bool FinishItemInteractionFlagSet(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
@@ -714,7 +791,7 @@
                         case "T":
                             break;
                         case "InteractionFlag":
-                            Result = SetStringProperty((string valueString) => NewItem.InteractionFlag = valueString, Value);
+                            Result = Inserter<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

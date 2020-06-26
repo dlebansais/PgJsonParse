@@ -11,7 +11,18 @@
 
         public static bool FinalizeParsing()
         {
-            if (KnownParsedEnumtable.Count != 67)
+            if (!FinalizeMissing())
+                return false;
+
+            if (!FinalizeKnownParsed())
+                return false;
+
+            return true;
+        }
+
+        private static bool FinalizeKnownParsed()
+        {
+            if (KnownParsedEnumtable.Count != 68)
             {
                 List<string> NameList = new List<string>();
                 foreach (KeyValuePair<Type, bool[]> Entry in KnownParsedEnumtable)
@@ -31,7 +42,7 @@
             string Result = string.Empty;
 
             foreach (KeyValuePair<Type, bool[]> Entry in KnownParsedEnumtable)
-                FinalizeParsing(Entry.Key, Entry.Value, ref Result);
+                FinalizeKnownParsed(Entry.Key, Entry.Value, ref Result);
 
             if (Result.Length > 0)
                 return Program.ReportFailure($"The following enums are not used.\n\n{Result}");
@@ -39,7 +50,7 @@
             return true;
         }
 
-        private static void FinalizeParsing(Type type, bool[] usedValues, ref string text)
+        private static void FinalizeKnownParsed(Type type, bool[] usedValues, ref string text)
         {
             Debug.Assert(type.IsEnum);
 
@@ -50,6 +61,39 @@
             for (int i = 1; i < usedValues.Length; i++)
                 if (!usedValues[i])
                     EnumText += $"    {EnumNames[i]}\n";
+
+            if (EnumText.Length > 0)
+            {
+                if (text.Length > 0)
+                    text += "\n";
+
+                text += $"  {type.Name}:\n{EnumText}";
+            }
+        }
+
+        private static bool FinalizeMissing()
+        {
+            string Result = string.Empty;
+
+            foreach (KeyValuePair<Type, List<string>> Entry in MissingEnumTable)
+                FinalizeMissing(Entry.Key, Entry.Value, ref Result);
+
+            if (Result.Length > 0)
+                return Program.ReportFailure($"The following enums are missing.\n\n{Result}");
+
+            return true;
+        }
+
+        private static void FinalizeMissing(Type type, List<string> missingValues, ref string text)
+        {
+            Debug.Assert(type.IsEnum);
+
+            string EnumText = string.Empty;
+            for (int i = 0; i < missingValues.Count; i++)
+            {
+                string EnumName = missingValues[i];
+                EnumText += $"    {EnumName},\n";
+            }
 
             if (EnumText.Length > 0)
             {
@@ -124,10 +168,10 @@
                     StringToEnumConversion.MissingEnumTable.Add(typeof(T), new List<string>());
 
                 List<string> MissingEnumList = StringToEnumConversion.MissingEnumTable[typeof(T)];
-                if (MissingEnumList.Contains(stringValue))
+                if (!MissingEnumList.Contains(stringValue))
                     MissingEnumList.Add(stringValue);
 
-                //TODO: finalize
+                return true;
             }
 
             string Warning = $"Enum '{stringValue}' not found for {typeof(T)}";

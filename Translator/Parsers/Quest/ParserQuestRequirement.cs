@@ -448,7 +448,7 @@
                         case "T":
                             break;
                         case "InteractionFlag":
-                            Result = SetStringProperty((string valueString) => NewItem.InteractionFlag = valueString, Value);
+                            Result = Inserter<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
