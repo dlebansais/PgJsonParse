@@ -2,6 +2,6 @@
 {
     public class PgQuestObjectiveUseAbility : PgQuestObjective
     {
-        public AbilityKeyword Target { get; set; }
+        public AbilityKeyword Keyword { get; set; }
     }
 }

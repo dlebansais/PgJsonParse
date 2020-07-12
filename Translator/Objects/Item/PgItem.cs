@@ -46,9 +46,8 @@
         public int? RawMaxStackSize { get; set; }
         public string Name { get; set; } = string.Empty;
         public Appearance RequiredAppearance { get; set; }
-        public PgItemSkillLinkCollection SkillRequirementList { get; set; } = new PgItemSkillLinkCollection();
-        public List<uint> StockDye { get; set; } = new List<uint>();
-        public List<string> StockDyeByName { get; set; } = new List<string>();
+        public Dictionary<PgSkill, int> SkillRequirementTable { get; set; } = new Dictionary<PgSkill, int>();
+        public PgItemDyeCollection StockDyeList { get; set; } = new PgItemDyeCollection();
         public float Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public float? RawValue { get; set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }

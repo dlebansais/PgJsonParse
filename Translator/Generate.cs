@@ -291,6 +291,12 @@
             WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), "EndurancePowerBySlot", GetEndurancePowerBySlotTable);
             WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), "ArmorPatchingPowerBySlot", GetArmorPatchingPowerBySlotTable);
             WriteGroupingDictionary(objectList, Writer, typeof(ItemSlot), "AnySkillPowerBySlot", GetAnySkillPowerBySlotTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(ItemKeyword), "ItemByKeyword", GetItemByKeywordTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(RecipeKeyword), "RecipeByKeyword", GetRecipeByKeywordTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(EffectKeyword), "EffectByKeyword", GetEffectByKeywordTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(AbilityKeyword), "AbilityByKeyword", GetAbilityByKeywordTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(InteractionFlag), "QuestByInteractionFlag", GetQuestByInteractionFlagTable);
+            WriteGroupingDictionary(objectList, Writer, typeof(RecipeItemKey), "ItemByRecipeKey", GetItemByRecipeKeyTable);
 
             Writer.WriteLine("    }");
             Writer.WriteLine("}");
@@ -382,9 +388,301 @@
             return KeyTable;
         }
 
+        private static Dictionary<object, List<string>> GetItemByKeywordTable(List<object> objectList)
+        {
+            Dictionary<ItemKeyword, List<PgItem>> ItemTable = new Dictionary<ItemKeyword, List<PgItem>>();
+            Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+            foreach (object Item in objectList)
+                if (Item is PgItem AsItem)
+                {
+                    foreach (KeyValuePair<ItemKeyword, List<float>> Entry in AsItem.KeywordTable)
+                    {
+                        ItemKeyword Keyword = Entry.Key;
+
+                        if (!ItemTable.ContainsKey(Keyword))
+                        {
+                            ItemTable.Add(Keyword, new List<PgItem>());
+                            KeyTable.Add(Keyword, new List<string>());
+                        }
+
+                        ItemTable[Keyword].Add(AsItem);
+                    }
+                }
+
+            foreach (KeyValuePair<ItemKeyword, List<PgItem>> Entry in ItemTable)
+            {
+                ItemKeyword Keyword = Entry.Key;
+
+                Entry.Value.Sort(SortItemByName);
+
+                foreach (PgItem Item in Entry.Value)
+                    KeyTable[Keyword].Add(Item.Key);
+            }
+
+            return KeyTable;
+        }
+
+        private static Dictionary<object, List<string>> GetItemByRecipeKeyTable(List<object> objectList)
+        {
+            Dictionary<RecipeItemKey, List<PgItem>> ItemTable = new Dictionary<RecipeItemKey, List<PgItem>>();
+            Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+            foreach (object Item in objectList)
+                if (Item is PgItem AsItem)
+                {
+                    List<RecipeItemKey> RecipeItemKeyList = new List<RecipeItemKey>(AsItem.RecipeItemKeyList);
+
+                    ItemSlot Slot = AsItem.EquipSlot;
+                    if (Slot != ItemSlot.Internal_None)
+                    {
+                        if (Slot == ItemSlot.OffHandShield)
+                            Slot = ItemSlot.OffHand;
+
+                        RecipeItemKey SlotRecipeKey = RecipeItemKey.Internal_None;
+
+                        switch (Slot)
+                        {
+                            case ItemSlot.MainHand:
+                                SlotRecipeKey = RecipeItemKey.EquipmentSlot_MainHand;
+                                break;
+                            case ItemSlot.OffHand:
+                                SlotRecipeKey = RecipeItemKey.EquipmentSlot_OffHand;
+                                break;
+                            case ItemSlot.Hands:
+                                SlotRecipeKey = RecipeItemKey.EquipmentSlot_Hands;
+                                break;
+                            case ItemSlot.Chest:
+                                SlotRecipeKey = RecipeItemKey.EquipmentSlot_Chest;
+                                break;
+                            case ItemSlot.Legs:
+                                SlotRecipeKey = RecipeItemKey.EquipmentSlot_Legs;
+                                break;
+                            case ItemSlot.Head:
+                                SlotRecipeKey = RecipeItemKey.EquipmentSlot_Head;
+                                break;
+                            case ItemSlot.Feet:
+                                SlotRecipeKey = RecipeItemKey.EquipmentSlot_Feet;
+                                break;
+                            case ItemSlot.Ring:
+                                SlotRecipeKey = RecipeItemKey.EquipmentSlot_Ring;
+                                break;
+                            case ItemSlot.Necklace:
+                                SlotRecipeKey = RecipeItemKey.EquipmentSlot_Necklace;
+                                break;
+                        }
+
+                        RecipeItemKeyList.Add(SlotRecipeKey);
+                    }
+
+                    foreach (RecipeItemKey Keyword in RecipeItemKeyList)
+                    {
+                        bool Ignore = false;
+
+                        switch (Keyword)
+                        {
+                            case RecipeItemKey.Rarity_Common:
+                            case RecipeItemKey.Rarity_Uncommon:
+                            case RecipeItemKey.Rarity_Rare:
+                            case RecipeItemKey.Rarity_Exceptional:
+                            case RecipeItemKey.MinRarity_Uncommon:
+                            case RecipeItemKey.MinRarity_Rare:
+                            case RecipeItemKey.MinRarity_Exceptional:
+                            case RecipeItemKey.MinRarity_Epic:
+                            case RecipeItemKey.MinTSysPrereq_0:
+                            case RecipeItemKey.MinTSysPrereq_31:
+                            case RecipeItemKey.MinTSysPrereq_61:
+                            case RecipeItemKey.MaxTSysPrereq_30:
+                            case RecipeItemKey.MaxTSysPrereq_60:
+                            case RecipeItemKey.MaxTSysPrereq_90:
+                                Ignore = true;
+                                break;
+                        }
+
+                        if (Ignore)
+                            continue;
+
+                        if (!ItemTable.ContainsKey(Keyword))
+                        {
+                            ItemTable.Add(Keyword, new List<PgItem>());
+                            KeyTable.Add(Keyword, new List<string>());
+                        }
+
+                        ItemTable[Keyword].Add(AsItem);
+                    }
+                }
+
+            foreach (KeyValuePair<RecipeItemKey, List<PgItem>> Entry in ItemTable)
+            {
+                RecipeItemKey Keyword = Entry.Key;
+
+                Entry.Value.Sort(SortItemByName);
+
+                foreach (PgItem Item in Entry.Value)
+                    KeyTable[Keyword].Add(Item.Key);
+            }
+
+            return KeyTable;
+        }
+
         private static int SortItemByName(PgItem item1, PgItem item2)
         {
             return string.Compare(item1.Name, item2.Name, StringComparison.InvariantCulture);
+        }
+
+        private static Dictionary<object, List<string>> GetRecipeByKeywordTable(List<object> objectList)
+        {
+            Dictionary<RecipeKeyword, List<PgRecipe>> RecipeTable = new Dictionary<RecipeKeyword, List<PgRecipe>>();
+            Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+            foreach (object Recipe in objectList)
+                if (Recipe is PgRecipe AsRecipe)
+                {
+                    foreach (RecipeKeyword Keyword in AsRecipe.KeywordList)
+                    {
+                        if (!RecipeTable.ContainsKey(Keyword))
+                        {
+                            RecipeTable.Add(Keyword, new List<PgRecipe>());
+                            KeyTable.Add(Keyword, new List<string>());
+                        }
+
+                        RecipeTable[Keyword].Add(AsRecipe);
+                    }
+                }
+
+            foreach (KeyValuePair<RecipeKeyword, List<PgRecipe>> Entry in RecipeTable)
+            {
+                RecipeKeyword Keyword = Entry.Key;
+
+                Entry.Value.Sort(SortRecipeByName);
+
+                foreach (PgRecipe Recipe in Entry.Value)
+                    KeyTable[Keyword].Add(Recipe.Key);
+            }
+
+            return KeyTable;
+        }
+
+        private static int SortRecipeByName(PgRecipe recipe1, PgRecipe recipe2)
+        {
+            return string.Compare(recipe1.Name, recipe2.Name, StringComparison.InvariantCulture);
+        }
+
+        private static Dictionary<object, List<string>> GetEffectByKeywordTable(List<object> objectList)
+        {
+            Dictionary<EffectKeyword, List<PgEffect>> EffectTable = new Dictionary<EffectKeyword, List<PgEffect>>();
+            Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+            foreach (object Effect in objectList)
+                if (Effect is PgEffect AsEffect)
+                {
+                    foreach (EffectKeyword Keyword in AsEffect.KeywordList)
+                    {
+                        if (!EffectTable.ContainsKey(Keyword))
+                        {
+                            EffectTable.Add(Keyword, new List<PgEffect>());
+                            KeyTable.Add(Keyword, new List<string>());
+                        }
+
+                        EffectTable[Keyword].Add(AsEffect);
+                    }
+                }
+
+            foreach (KeyValuePair<EffectKeyword, List<PgEffect>> Entry in EffectTable)
+            {
+                EffectKeyword Keyword = Entry.Key;
+
+                Entry.Value.Sort(SortEffectByName);
+
+                foreach (PgEffect Effect in Entry.Value)
+                    KeyTable[Keyword].Add(Effect.Key);
+            }
+
+            return KeyTable;
+        }
+
+        private static int SortEffectByName(PgEffect effect1, PgEffect effect2)
+        {
+            return string.Compare(effect1.Name, effect2.Name, StringComparison.InvariantCulture);
+        }
+
+        private static Dictionary<object, List<string>> GetAbilityByKeywordTable(List<object> objectList)
+        {
+            Dictionary<AbilityKeyword, List<PgAbility>> AbilityTable = new Dictionary<AbilityKeyword, List<PgAbility>>();
+            Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+            foreach (object Ability in objectList)
+                if (Ability is PgAbility AsAbility)
+                {
+                    foreach (AbilityKeyword Keyword in AsAbility.KeywordList)
+                    {
+                        if (!AbilityTable.ContainsKey(Keyword))
+                        {
+                            AbilityTable.Add(Keyword, new List<PgAbility>());
+                            KeyTable.Add(Keyword, new List<string>());
+                        }
+
+                        AbilityTable[Keyword].Add(AsAbility);
+                    }
+                }
+
+            foreach (KeyValuePair<AbilityKeyword, List<PgAbility>> Entry in AbilityTable)
+            {
+                AbilityKeyword Keyword = Entry.Key;
+
+                Entry.Value.Sort(SortAbilityByName);
+
+                foreach (PgAbility Ability in Entry.Value)
+                    KeyTable[Keyword].Add(Ability.Key);
+            }
+
+            return KeyTable;
+        }
+
+        private static int SortAbilityByName(PgAbility ability1, PgAbility ability2)
+        {
+            return string.Compare(ability1.Name, ability2.Name, StringComparison.InvariantCulture);
+        }
+
+        private static Dictionary<object, List<string>> GetQuestByInteractionFlagTable(List<object> objectList)
+        {
+            Dictionary<InteractionFlag, List<PgQuest>> QuestTable = new Dictionary<InteractionFlag, List<PgQuest>>();
+            Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+            foreach (object Quest in objectList)
+                if (Quest is PgQuest AsQuest)
+                {
+                    foreach (PgQuestReward Reward in AsQuest.QuestRewardList)
+                        if (Reward is PgQuestRewardInteractionFlag AsSetInteractionFlag)
+                        {
+                            InteractionFlag Keyword = AsSetInteractionFlag.InteractionFlag;
+
+                            if (!QuestTable.ContainsKey(Keyword))
+                            {
+                                QuestTable.Add(Keyword, new List<PgQuest>());
+                                KeyTable.Add(Keyword, new List<string>());
+                            }
+
+                            QuestTable[Keyword].Add(AsQuest);
+                        }
+                }
+
+            foreach (KeyValuePair<InteractionFlag, List<PgQuest>> Entry in QuestTable)
+            {
+                InteractionFlag Keyword = Entry.Key;
+
+                Entry.Value.Sort(SortQuestByName);
+
+                foreach (PgQuest Quest in Entry.Value)
+                    KeyTable[Keyword].Add(Quest.Key);
+            }
+
+            return KeyTable;
+        }
+
+        private static int SortQuestByName(PgQuest quest1, PgQuest quest2)
+        {
+            return string.Compare(quest1.Name, quest2.Name, StringComparison.InvariantCulture);
         }
 
         private static Dictionary<object, List<string>> GetShamanicInfusionPowerBySlotTable(List<object> objectList)
@@ -441,23 +739,6 @@
                 return ItemSlot.Internal_None;
             else
                 return item.SlotList[0];
-        }
-
-        private static bool IsGenericPowerForSlot(ItemSlot slot, PgPower power)
-        {
-            if (slot == ItemSlot.Internal_None)
-                return false;
-
-            if (power.Skill != PgSkill.AnySkill)
-                return false;
-
-            if (power.IsUnavailable)
-                return false;
-
-            if (power.PowerTierList.TierList.Count == 0)
-                return false;
-
-            return power.SlotList.Contains(slot);
         }
 
         private static void WriteGroupingList(List<object> objectList, StreamWriter writer, string groupingName, Func<List<object>, List<string>> getterList)

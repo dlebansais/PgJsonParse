@@ -3,6 +3,7 @@
     using PgJsonReader;
     using PgObjects;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
 
@@ -200,7 +201,10 @@
             List<object> Result = new List<object>();
 
             foreach (ParsingContext Context in ContextList)
-                Result.Add(Context.Item);
+                if (Context.Item is IEnumerable<object> AsObjects)
+                    Result.AddRange(AsObjects);
+                else
+                    Result.Add(Context.Item);
 
             Result.AddRange(SuplementaryObjectList);
 

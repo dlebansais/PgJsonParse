@@ -2,6 +2,7 @@
 {
     public class PgRecipeResultCraftedEquipment : PgRecipeResultEffect
     {
+        public CraftedBoost Boost { get; set; }
         public bool IsCamouflaged { get { return RawIsCamouflaged.HasValue && RawIsCamouflaged.Value; } }
         public bool? RawIsCamouflaged { get; set; }
         public int BoostLevel { get { return RawBoostLevel.HasValue ? RawBoostLevel.Value : 0; } }

@@ -94,7 +94,7 @@
                         case "T":
                             break;
                         case "InteractionFlag":
-                            Result = ParseInteractionFlag(NewItem, Value, parsedFile, parsedKey);
+                            Result = Inserter<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -113,30 +113,6 @@
             }
             else
                 return false;
-        }
-
-        private static bool ParseInteractionFlag(PgStorageRequirementInteractionFlagSet item, object value, string parsedFile, string parsedKey)
-        {
-            if (!(value is string InteractionString))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Value {value} was expected to be a string");
-
-            if (InteractionString == "Ivyn_Gave_Passcode")
-            {
-                item.InteractionFlag = "Ivyn Gave Passcode";
-                return true;
-            }
-            else if (InteractionString == "Serbule2_TapestryInnChest")
-            {
-                item.InteractionFlag = "Serbule Hills Tapestry Inn Chest";
-                return true;
-            }
-            else if (InteractionString == "Tomb1_StoryPuzzleComplete_Looted")
-            {
-                item.InteractionFlag = "Khyrulek's Crypt Story Puzzle Complete Looted";
-                return true;
-            }
-            else
-                return Program.ReportFailure(parsedFile, parsedKey, $"Unknown storage requirement");
         }
 
         private static bool FinishItemIsLongtimeAnimal(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)

@@ -150,5 +150,12 @@
                 return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Transparent);
         }
         #endregion
+
+        #region String
+        public static string CleanedUpString(string value)
+        {
+            return value.Replace("--", "—");
+        }
+        #endregion
     }
 }

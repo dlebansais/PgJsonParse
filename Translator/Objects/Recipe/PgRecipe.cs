@@ -29,8 +29,8 @@
         public int NumResultItems { get { return RawNumResultItems.HasValue ? RawNumResultItems.Value : 0; } }
         public int? RawNumResultItems { get; set; }
         public string UsageAnimationEnd { get; set; } = string.Empty;
-        public int ResetTimeInSeconds { get { return RawResetTimeInSeconds.HasValue ? RawResetTimeInSeconds.Value : 0; } }
-        public int? RawResetTimeInSeconds { get; set; }
+        public TimeSpan ResetTime { get { return RawResetTime.HasValue ? RawResetTime.Value : TimeSpan.Zero; } }
+        public TimeSpan? RawResetTime { get; set; }
         public uint? DyeColor { get; set; }
         public PgSkill RewardSkill { get; set; }
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }

@@ -43,10 +43,10 @@
                         Result = ParseIsCategoryGate(contentTable, parsedFile, parsedKey);
                         break;
                     case "LargeHint":
-                        Result = SetStringProperty((string valueString) => item.LargeHint = valueString, Value);
+                        Result = SetStringProperty((string valueString) => item.LargeHint = Tools.CleanedUpString(valueString), Value);
                         break;
                     case "SmallHint":
-                        Result = SetStringProperty((string valueString) => item.SmallHint = valueString, Value);
+                        Result = SetStringProperty((string valueString) => item.SmallHint = Tools.CleanedUpString(valueString), Value);
                         break;
                     case "CategoryGateId":
                         Result = ParseCategoryGateId(item, Value, contentTable, parsedFile, parsedKey);

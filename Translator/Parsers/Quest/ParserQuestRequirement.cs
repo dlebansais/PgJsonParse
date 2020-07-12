@@ -140,9 +140,9 @@
 
         private static bool FinishItemRace(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
-            PgQuestRequirementRace NewItem = new PgQuestRequirementRace();
-
             bool Result = true;
+            Race AllowedRace = Race.Internal_None;
+            Race DisallowedRace = Race.Internal_None;
 
             foreach (KeyValuePair<string, object> Entry in contentTable)
             {
@@ -160,10 +160,10 @@
                         case "T":
                             break;
                         case "AllowedRace":
-                            Result = Inserter<Race>.SetEnum((Race valueEnum) => NewItem.AllowedRace = valueEnum, Value);
+                            Result = Inserter<Race>.SetEnum((Race valueEnum) => AllowedRace = valueEnum, Value);
                             break;
                         case "DisallowedRace":
-                            Result = Inserter<Race>.SetEnum((Race valueEnum) => NewItem.DisallowedRace = valueEnum, Value);
+                            Result = Inserter<Race>.SetEnum((Race valueEnum) => DisallowedRace = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -177,8 +177,26 @@
 
             if (Result)
             {
-                item = NewItem;
-                return true;
+                if (AllowedRace != Race.Internal_None && DisallowedRace != Race.Internal_None)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Unexpected allowed and disallowed race");
+                else if (AllowedRace == Race.Internal_None && DisallowedRace == Race.Internal_None)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing race");
+                else if (AllowedRace != Race.Internal_None)
+                {
+                    Debug.Assert(DisallowedRace == Race.Internal_None);
+
+                    PgQuestRequirementAllowedRace NewItem = new PgQuestRequirementAllowedRace() { Race = AllowedRace };
+                    item = NewItem;
+                    return true;
+                }
+                else
+                {
+                    Debug.Assert(AllowedRace == Race.Internal_None);
+
+                    PgQuestRequirementDisallowedRace NewItem = new PgQuestRequirementDisallowedRace() { Race = DisallowedRace };
+                    item = NewItem;
+                    return true;
+                }
             }
             else
                 return false;

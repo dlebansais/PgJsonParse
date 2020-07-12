@@ -57,6 +57,9 @@
                     break;
             }
 
+            if (item.UseVerb == ItemUseVerb.Internal_None)
+                Result = Program.ReportFailure(parsedFile, parsedKey, "Behavior has no verb");
+
             return Result;
         }
     }

@@ -1,9 +1,8 @@
 ﻿namespace PgObjects
 {
-    public class PgQuestObjectiveHarvest : PgQuestObjective
+    public class PgQuestObjectiveHarvestItemKeyword : PgQuestObjective
     {
-        public ItemKeyword Target { get; set; }
-        public PgItem Item { get; set; }
+        public ItemKeyword Keyword { get; set; }
         public PgQuestObjectiveRequirementCollection QuestObjectiveRequirementList { get; set; } = new PgQuestObjectiveRequirementCollection();
     }
 }

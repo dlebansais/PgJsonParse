@@ -25,15 +25,11 @@
         public PgQuestRequirementCollection QuestRequirementList { get; set; } = new PgQuestRequirementCollection();
         public PgQuestRewardCollection QuestRewardList { get; set; } = new PgQuestRewardCollection();
         public PgQuestRewardCollection PreGiveItemList { get; set; } = new PgQuestRewardCollection();
-        public int TSysLevel { get { return RawTSysLevel.HasValue ? RawTSysLevel.Value : 0; } }
-        public int? RawTSysLevel { get; set; }
-        public string RewardsNamedLootProfile { get; set; } = string.Empty;
         public PgRecipeCollection PreGiveRecipeList { get; set; } = new PgRecipeCollection();
         public List<QuestKeyword> KeywordList { get; set; } = new List<QuestKeyword>();
-        public List<string> RewardInteractionFlagList { get; set; } = new List<string>();
         public PgNpcLocation QuestCompleteNpc { get; set; }
         public PgQuestCollection FollowUpQuestList { get; set; } = new PgQuestCollection();
-        public List<string> PreGiveEffectList { get; set; } = new List<string>();
+        public PgQuestPreGiveEffectCollection PreGiveEffectList { get; set; } = new PgQuestPreGiveEffectCollection();
         public bool IsAutoPreface { get { return RawIsAutoPreface.HasValue && RawIsAutoPreface.Value; } }
         public bool? RawIsAutoPreface { get; set; }
         public bool IsAutoWrapUp { get { return RawIsAutoWrapUp.HasValue && RawIsAutoWrapUp.Value; } }

@@ -56,7 +56,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawId = valueInt, Value);
                         break;
                     case "Description":
-                        Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
+                        Result = SetStringProperty((string valueString) => item.Description = Tools.CleanedUpString(valueString), Value);
                         break;
                     case "HideWhenZero":
                         Result = SetBoolProperty((bool valueBool) => item.RawHideWhenZero = valueBool, Value);
@@ -177,8 +177,6 @@
                 if (Power.Skill != skill)
                     continue;
                 if (Power.IsUnavailable)
-                    continue;
-                if (Power.PowerTierList.TierList.Count == 0)
                     continue;
 
                 foreach (ItemSlot Slot in Power.SlotList)
@@ -303,16 +301,15 @@
                 PgItem Item = (PgItem)Entry.Value.Item;
                 if (Item.IconId != 0)
                 {
-                    foreach (PgItemSkillLink Link in Item.SkillRequirementList)
-                        foreach (KeyValuePair<PgSkill, int> SkillEntry in Link.SkillTable)
-                            if (SkillEntry.Key == skill)
+                    foreach (KeyValuePair<PgSkill, int> SkillEntry in Item.SkillRequirementTable)
+                        if (SkillEntry.Key == skill)
+                        {
+                            if (LowestLevel > SkillEntry.Value)
                             {
-                                if (LowestLevel > SkillEntry.Value)
-                                {
-                                    LowestLevel = SkillEntry.Value;
-                                    LowestLevelIconId = Item.IconId;
-                                }
+                                LowestLevel = SkillEntry.Value;
+                                LowestLevelIconId = Item.IconId;
                             }
+                        }
                 }
             }
 

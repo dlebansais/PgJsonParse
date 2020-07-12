@@ -63,6 +63,33 @@
                     break;
             }
 
+            if (Result)
+            {
+                if (item.Item == null && item.ItemKeyList.Count == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing item or item keys");
+
+                if (item.Item != null && item.ItemKeyList.Count > 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item or item keys");
+
+                if (item.ItemKeyList.Count > 0 && item.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Empty Description");
+
+                if (item.ItemKeyList.Count == 0 && item.Description.Length > 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Unexpected Description");
+
+                if ((item.RawPercentChance.HasValue && item.RawChanceToConsume.HasValue) || (item.RawPercentChance.HasValue && item.RawDurabilityConsumed.HasValue) || (item.RawChanceToConsume.HasValue && item.RawDurabilityConsumed.HasValue))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent percentage");
+
+                if (item.RawPercentChance.HasValue)
+                    item.RawPercentChance = item.RawPercentChance.Value * 100;
+
+                if (item.RawChanceToConsume.HasValue)
+                    item.RawChanceToConsume = item.RawChanceToConsume.Value * 100;
+
+                if (item.RawDurabilityConsumed.HasValue)
+                    item.RawDurabilityConsumed = item.RawDurabilityConsumed.Value * 100;
+            }
+
             return Result;
         }
     }

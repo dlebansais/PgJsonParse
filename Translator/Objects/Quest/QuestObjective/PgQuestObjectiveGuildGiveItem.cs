@@ -4,6 +4,5 @@
     {
         public PgNpcLocation DeliverNpc { get; set; }
         public PgItem Item { get; set; }
-        public ItemKeyword ItemKeyword { get; set; }
     }
 }

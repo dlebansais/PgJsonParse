@@ -154,6 +154,8 @@
             PgQuestObjectiveKill NewItem = new PgQuestObjectiveKill();
 
             bool Result = true;
+            AbilityKeyword RequirementKeyword = AbilityKeyword.Internal_None;
+            PgQuestObjectiveRequirement Requirement = null;
 
             foreach (KeyValuePair<string, object> Entry in contentTable)
             {
@@ -174,10 +176,10 @@
                             Result = Inserter<QuestObjectiveKillTarget>.SetEnum((QuestObjectiveKillTarget valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "AbilityKeyword":
-                            Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => RequirementKeyword = valueEnum, Value);
                             break;
                         case "Requirements":
-                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
+                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => Requirement = valueQuestRequirement, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -197,6 +199,20 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (RequirementKeyword != AbilityKeyword.Internal_None)
+                {
+                    PgQuestObjectiveRequirementUseAbility NewRequirement = new PgQuestObjectiveRequirementUseAbility() { Keyword = RequirementKeyword };
+
+                    ParsingContext.AddSuplementaryObject(NewRequirement);
+                    NewItem.QuestObjectiveRequirementList.Add(NewRequirement);
+                }
+
+                if (Requirement != null)
+                    NewItem.QuestObjectiveRequirementList.Add(Requirement);
+
                 item = NewItem;
                 return true;
             }
@@ -246,6 +262,9 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
                 item = NewItem;
                 return true;
             }
@@ -275,7 +294,7 @@
                         case "Type":
                             break;
                         case "InteractionFlags":
-                            Result = ParseInteractionFlags(NewItem.InteractionFlagList, Value, parsedFile, parsedKey);
+                            Result = StringToEnumConversion<InteractionFlag>.TryParseList(Value, NewItem.InteractionFlagList);
                             break;
                         case "Description":
                         case "Number":
@@ -293,6 +312,9 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
                 item = NewItem;
                 return true;
             }
@@ -302,7 +324,19 @@
 
         private static bool FinishItemCollect(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
-            PgQuestObjectiveCollect NewItem = new PgQuestObjectiveCollect();
+            if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
+            else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
+            else if (contentTable.ContainsKey("ItemName"))
+                return FinishItemCollectItem(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+            else
+                return FinishItemCollectItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+        }
+
+        private static bool FinishItemCollectItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveCollectItem NewItem = new PgQuestObjectiveCollectItem();
 
             bool Result = true;
 
@@ -320,9 +354,6 @@
                     switch (Key)
                     {
                         case "Type":
-                            break;
-                        case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
@@ -345,6 +376,67 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("ItemName"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing item name");
+
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemCollectItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveCollectItemKeyword NewItem = new PgQuestObjectiveCollectItemKeyword();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "Type":
+                            break;
+                        case "Target":
+                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            break;
+                        case "Description":
+                        case "GroupId":
+                        case "Number":
+                        case "InternalName":
+                            Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("Target"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
                 item = NewItem;
                 return true;
             }
@@ -377,7 +469,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                             break;
                         case "InteractionFlag":
-                            Result = SetStringProperty((string valueString) => NewItem.InteractionFlag = valueString, Value);
+                            Result = Inserter<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -396,6 +488,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("InteractionFlag"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing interaction flag");
+
                 item = NewItem;
                 return true;
             }
@@ -451,6 +549,16 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (NewItem.DeliverNpc == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing NPC");
+                if (NewItem.Item == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing item");
+                if ((NewItem.RawNumToDeliver != null && NewItem.Number > 1) || (NewItem.RawNumToDeliver == null && NewItem.RawNumber.HasValue && NewItem.RawNumber.Value != 1))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent number to deliver");
+
                 item = NewItem;
                 return true;
             }
@@ -460,7 +568,19 @@
 
         private static bool FinishItemHave(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
-            PgQuestObjectiveHave NewItem = new PgQuestObjectiveHave();
+            if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
+            else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
+            else if (contentTable.ContainsKey("ItemName"))
+                return FinishItemHaveItem(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+            else
+                return FinishItemHaveItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+        }
+
+        private static bool FinishItemHaveItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveHaveItem NewItem = new PgQuestObjectiveHaveItem();
 
             bool Result = true;
 
@@ -478,9 +598,6 @@
                     switch (Key)
                     {
                         case "Type":
-                            break;
-                        case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
@@ -502,6 +619,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("ItemName"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing item name");
+
                 item = NewItem;
                 return true;
             }
@@ -509,9 +632,9 @@
                 return false;
         }
 
-        private static bool FinishItemHarvest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHaveItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
-            PgQuestObjectiveHarvest NewItem = new PgQuestObjectiveHarvest();
+            PgQuestObjectiveHaveItemKeyword NewItem = new PgQuestObjectiveHaveItemKeyword();
 
             bool Result = true;
 
@@ -531,7 +654,70 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Target = valueEnum, Value);
+                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            break;
+                        case "Description":
+                        case "GroupId":
+                        case "Number":
+                            Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("Target"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemHarvest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
+            else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
+            else if (contentTable.ContainsKey("ItemName"))
+                return FinishItemHarvestItem(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+            else
+                return FinishItemHarvestItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+        }
+
+        private static bool FinishItemHarvestItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveHarvestItem NewItem = new PgQuestObjectiveHarvestItem();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "Type":
                             break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
@@ -556,6 +742,69 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("ItemName"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing item name");
+
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemHarvestItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveHarvestItemKeyword NewItem = new PgQuestObjectiveHarvestItemKeyword();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "Type":
+                            break;
+                        case "Target":
+                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            break;
+                        case "Requirements":
+                            Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
+                            break;
+                        case "Description":
+                        case "GroupId":
+                        case "Number":
+                            Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("Target"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
                 item = NewItem;
                 return true;
             }
@@ -603,6 +852,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!NewItem.RawMinAmount.HasValue)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing min amount");
+
                 item = NewItem;
                 return true;
             }
@@ -638,7 +893,7 @@
                             Result = SetIntProperty((int valueInt) => NewItem.RawMinAmount = valueInt, Value);
                             break;
                         case "StringParam":
-                            Result = SetStringProperty((string valueString) => NewItem.StringParam = valueString, Value);
+                            Result = ParseStringParam(NewItem, Value, parsedFile, parsedKey);
                             break;
                         case "MaxAmount":
                             Result = SetIntProperty((int valueInt) => NewItem.RawMaxAmount = valueInt, Value);
@@ -663,11 +918,37 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (NewItem.RawMinAmount.HasValue)
+                {
+                    if (!NewItem.RawNumber.HasValue || (NewItem.RawMinAmount.Value != 1 && NewItem.RawMinAmount.Value != NewItem.RawNumber.Value))
+                        return Program.ReportFailure(parsedFile, parsedKey, "Invalid objective number");
+                }
+
                 item = NewItem;
                 return true;
             }
             else
                 return false;
+        }
+
+        private static bool ParseStringParam(PgQuestObjectiveSpecial item, object value, string parsedFile, string parsedKey)
+        {
+            if (!(value is string ValueString))
+                return Program.ReportFailure(parsedFile, parsedKey, $"{value} was expected to be string");
+
+            if (ValueString.StartsWith("Genetics_"))
+            {
+                string AnatomySkillName = "Anatomy_" + ValueString.Substring(9);
+                if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.AnatomySkill = valueSkill, AnatomySkillName))
+                    return false;
+            }
+            else
+                item.StringParam = ValueString;
+
+            return true;
         }
 
         private static bool FinishItemGiveGift(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
@@ -713,6 +994,14 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!NewItem.RawMinFavorReceived.HasValue && !NewItem.RawMaxFavorReceived.HasValue)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing favor");
+                if (NewItem.RawMinFavorReceived.HasValue && NewItem.RawMaxFavorReceived.HasValue)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Both min and max favor");
+
                 item = NewItem;
                 return true;
             }
@@ -721,6 +1010,18 @@
         }
 
         private static bool FinishItemUseItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
+            else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
+            else if (contentTable.ContainsKey("ItemName"))
+                return FinishItemUseItemLink(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+            else
+                return FinishItemUseItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+        }
+
+        private static bool FinishItemUseItemLink(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveUseItem NewItem = new PgQuestObjectiveUseItem();
 
@@ -740,9 +1041,6 @@
                     switch (Key)
                     {
                         case "Type":
-                            break;
-                        case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
@@ -767,6 +1065,69 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("ItemName"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing item name");
+
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemUseItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveUseItemKeyword NewItem = new PgQuestObjectiveUseItemKeyword();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "Type":
+                            break;
+                        case "Target":
+                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            break;
+                        case "Requirements":
+                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
+                            break;
+                        case "Description":
+                        case "GroupId":
+                        case "Number":
+                            Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("Target"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
                 item = NewItem;
                 return true;
             }
@@ -821,6 +1182,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if ((NewItem.Skill != null && NewItem.Target != RecipeKeyword.Internal_None) || (NewItem.Skill != null && NewItem.ResultItemKeyword != ItemKeyword.Internal_None) || (NewItem.ResultItemKeyword != ItemKeyword.Internal_None && NewItem.Target != RecipeKeyword.Internal_None))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent recipe");
+
                 item = NewItem;
                 return true;
             }
@@ -868,6 +1235,9 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
                 item = NewItem;
                 return true;
             }
@@ -916,6 +1286,9 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
                 item = NewItem;
                 return true;
             }
@@ -967,6 +1340,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (NewItem.Target.Length == 0 && NewItem.AnatomySkill == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target or skill");
+
                 item = NewItem;
                 return true;
             }
@@ -1017,6 +1396,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (NewItem.Target.Length == 0 && NewItem.AnatomySkill == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target or skill");
+
                 item = NewItem;
                 return true;
             }
@@ -1046,7 +1431,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Target = valueEnum, Value);
+                            Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Description":
                         case "Number":
@@ -1064,6 +1449,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("Target"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
                 item = NewItem;
                 return true;
             }
@@ -1112,6 +1503,9 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
                 item = NewItem;
                 return true;
             }
@@ -1120,6 +1514,18 @@
         }
 
         private static bool FinishItemGuildGiveItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("ItemKeyword"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
+            else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("ItemKeyword"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
+            else if (contentTable.ContainsKey("ItemName"))
+                return FinishItemGuildGiveItemLink(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+            else
+                return FinishItemGuildGiveItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+        }
+
+        private static bool FinishItemGuildGiveItemLink(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveGuildGiveItem NewItem = new PgQuestObjectiveGuildGiveItem();
 
@@ -1146,8 +1552,65 @@
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
                             break;
+                        case "Description":
+                        case "GroupId":
+                        case "Number":
+                            Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("ItemName"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing item name");
+
+                if (NewItem.DeliverNpc == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing deliver NPC");
+
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemGuildGiveItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveGuildGiveItemKeyword NewItem = new PgQuestObjectiveGuildGiveItemKeyword();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "Type":
+                            break;
+                        case "Target":
+                            Result = Inserter<PgQuestObjectiveDeliver>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
+                            break;
                         case "ItemKeyword":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ItemKeyword = valueEnum, Value);
+                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -1166,6 +1629,15 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("Target"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
+                if (NewItem.DeliverNpc == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing deliver NPC");
+
                 item = NewItem;
                 return true;
             }
@@ -1214,6 +1686,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (NewItem.Target.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
                 item = NewItem;
                 return true;
             }
@@ -1262,6 +1740,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (NewItem.Target.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
                 item = NewItem;
                 return true;
             }
@@ -1309,6 +1793,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (NewItem.Target.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
                 item = NewItem;
                 return true;
             }
@@ -1318,7 +1808,19 @@
 
         private static bool FinishItemLoot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
-            PgQuestObjectiveLoot NewItem = new PgQuestObjectiveLoot();
+            if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
+            else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
+                return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
+            else if (contentTable.ContainsKey("ItemName"))
+                return FinishItemLootItem(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+            else
+                return FinishItemLootItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+        }
+
+        private static bool FinishItemLootItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveLootItem NewItem = new PgQuestObjectiveLootItem();
 
             bool Result = true;
 
@@ -1336,9 +1838,6 @@
                     switch (Key)
                     {
                         case "Type":
-                            break;
-                        case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
@@ -1363,6 +1862,69 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("ItemName"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing item name");
+
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemLootItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveLootItemKeyword NewItem = new PgQuestObjectiveLootItemKeyword();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "Type":
+                            break;
+                        case "Target":
+                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            break;
+                        case "MonsterTypeTag":
+                            Result = Inserter<MonsterTypeTag>.SetEnum((MonsterTypeTag valueEnum) => NewItem.MonsterTypeTag = valueEnum, Value);
+                            break;
+                        case "Description":
+                        case "GroupId":
+                        case "Number":
+                            Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("Target"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target");
+
                 item = NewItem;
                 return true;
             }
@@ -1413,6 +1975,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (NewItem.DeliverNpc == null || NewItem.Item == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing target NPC or item");
+
                 item = NewItem;
                 return true;
             }
@@ -1463,6 +2031,12 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (!contentTable.ContainsKey("AbilityKeyword"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing ability keyword");
+
                 item = NewItem;
                 return true;
             }
@@ -1492,7 +2066,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
+                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.TargetQuest = valueQuest, Value);
                             break;
                         case "Description":
                         case "IsHiddenUntilEarlierObjectivesComplete":
@@ -1512,27 +2086,19 @@
 
             if (Result)
             {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                if (NewItem.TargetQuest == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing quest");
+                if (NewItem.RawNumber.HasValue && NewItem.RawNumber.Value > 1)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Too many quests");
+
                 item = NewItem;
                 return true;
             }
             else
                 return false;
-        }
-
-        private static bool ParseInteractionFlags(List<string> interactionFlagList, object value, string parsedFile, string parsedKey)
-        {
-            if (!(value is List<object> ArrayString))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a list");
-
-            foreach (object Item in ArrayString)
-            {
-                if (!(Item is string ValueString))
-                    return Program.ReportFailure(parsedFile, parsedKey, $"Value '{Item}' was expected to be a string");
-
-                interactionFlagList.Add(ValueString);
-            }
-
-            return true;
         }
     }
 }

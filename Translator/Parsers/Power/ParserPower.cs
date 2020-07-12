@@ -38,7 +38,7 @@
                         Result = SetStringProperty((string valueString) => item.Suffix = valueString, Value);
                         break;
                     case "Tiers":
-                        Result = Inserter<PgPowerTierList>.SetItemProperty((PgPowerTierList valuePowerTierList) => item.PowerTierList = valuePowerTierList, Value);
+                        Result = ParseTiers(item, Value, parsedFile, parsedKey);
                         break;
                     case "Slots":
                         Result = StringToEnumConversion<ItemSlot>.TryParseList(Value, item.SlotList);
@@ -59,6 +59,19 @@
             }
 
             return Result;
+        }
+
+        private static bool ParseTiers(PgPower item, object value, string parsedFile, string parsedKey)
+        {
+            PgPowerTierList PowerTierList = null;
+            if (!Inserter<PgPowerTierList>.SetItemProperty((PgPowerTierList valuePowerTierList) => PowerTierList = valuePowerTierList, value))
+                return false;
+
+            if (PowerTierList.TierList.Count == 0)
+                return Program.ReportFailure(parsedFile, parsedKey, $"Power with no tiers");
+
+            item.TierList = PowerTierList.TierList;
+            return true;
         }
 
         public static void UpdateIconsAndNames()
@@ -109,30 +122,29 @@
 
         private static void UpdateIconFromPowerTiers(PgPower power, ref int iconId)
         {
-            if (power.PowerTierList != null && power.PowerTierList.TierList.Count > 0)
+            Debug.Assert(power.TierList.Count > 0);
+
+            PgPowerTier PowerTier = power.TierList[power.TierList.Count - 1];
+            if (PowerTier.EffectList.Count > 0)
             {
-                PgPowerTier PowerTier = power.PowerTierList.TierList[power.PowerTierList.TierList.Count - 1];
-                if (PowerTier.EffectList.Count > 0)
+                foreach (PgPowerEffect PowerEffect in PowerTier.EffectList)
                 {
-                    foreach (PgPowerEffect PowerEffect in PowerTier.EffectList)
-                    {
-                        List<int> IconIdList = new List<int>();
+                    List<int> IconIdList = new List<int>();
 
-                        if (PowerEffect is PgPowerEffectSimple AsSimple)
-                            IconIdList = AsSimple.IconIdList;
-                        else if (PowerEffect is PgPowerEffectAttribute AsAttribute && AsAttribute.Attribute != null)
-                            IconIdList = AsAttribute.Attribute.IconIdList;
+                    if (PowerEffect is PgPowerEffectSimple AsSimple)
+                        IconIdList = AsSimple.IconIdList;
+                    else if (PowerEffect is PgPowerEffectAttribute AsAttribute && AsAttribute.Attribute != null)
+                        IconIdList = AsAttribute.Attribute.IconIdList;
 
-                        foreach (int Id in IconIdList)
-                            if (Id > 0)
-                            {
-                                iconId = Id;
-                                break;
-                            }
-
-                        if (iconId > 0)
+                    foreach (int Id in IconIdList)
+                        if (Id > 0)
+                        {
+                            iconId = Id;
                             break;
-                    }
+                        }
+
+                    if (iconId > 0)
+                        break;
                 }
             }
         }

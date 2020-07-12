@@ -3,6 +3,7 @@
     using PgObjects;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public static class Inserter<T>
     {
@@ -134,10 +135,13 @@
                 if (ItemContext.Item == null)
                     ItemContext.FinishItem();
 
-                if (!(ItemContext.Item is T ValueObject))
+                if (ItemContext.Item is T ValueObject)
+                    linkList.Add(ValueObject);
+                else if (ItemContext.Item is ICollection<T> ValueCollection)
+                    linkList.AddRange(ValueCollection);
+                else
                     return Program.ReportFailure($"Item was found but for the wrong object type");
 
-                linkList.Add(ValueObject);
             }
             else
                 return Program.ReportFailure($"Value '{value}' was expected to be a list");
@@ -218,6 +222,8 @@
 
         public static bool SetNpcWithZone(Action<PgNpcLocation> setter, string rawMapName, string npcId, string parsedFile, string parsedKey, ErrorControl errorControl)
         {
+            Debug.Assert(!string.IsNullOrEmpty(npcId));
+
             if (!rawMapName.StartsWith("Area"))
                 return Program.ReportFailure(parsedFile, parsedKey, $"'{rawMapName}' does not contain an area name", errorControl);
 
@@ -231,8 +237,8 @@
         public static bool SetNpcNoZone(Action<PgNpcLocation> setter, MapAreaName areaName, string npcId, string parsedFile, string parsedKey, ErrorControl errorControl)
         {
             PgNpc ParsedNpc = null;
-            string NpcName = string.Empty;
             SpecialNpc NpcEnum = SpecialNpc.Internal_None;
+            string NpcName = string.Empty;
 
             PgNpcLocation NpcLocation = new PgNpcLocation();
             NpcLocation.NpcId = npcId;
@@ -247,6 +253,9 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"'{npcId}' unknown NPC name", errorControl);
 
             ParsingContext.AddSuplementaryObject(NpcLocation);
+
+            Debug.Assert(!string.IsNullOrEmpty(NpcLocation.NpcId));
+            Debug.Assert(NpcLocation.Npc != null || NpcLocation.NpcEnum != SpecialNpc.Internal_None || NpcLocation.NpcName.Length > 0);
 
             setter(NpcLocation);
             return true;

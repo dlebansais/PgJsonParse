@@ -3,6 +3,7 @@
     using PgObjects;
     using PgJsonReader;
     using System.Collections.Generic;
+    using System;
 
     public class ParserRecipe : Parser
     {
@@ -31,7 +32,7 @@
                 switch (Key)
                 {
                     case "Description":
-                        Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
+                        Result = SetStringProperty((string valueString) => item.Description = Tools.CleanedUpString(valueString), Value);
                         break;
                     case "IconId":
                         Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
@@ -88,7 +89,7 @@
                         Result = SetStringProperty((string valueString) => item.UsageAnimationEnd = valueString, Value);
                         break;
                     case "ResetTimeInSeconds":
-                        Result = SetIntProperty((int valueInt) => item.RawResetTimeInSeconds = valueInt, Value);
+                        Result = SetIntProperty((int valueInt) => item.RawResetTime = TimeSpan.FromSeconds(valueInt), Value);
                         break;
                     case "DyeColor":
                         Result = SetColorProperty((uint valueColor) => item.DyeColor = valueColor, Value);
@@ -148,6 +149,46 @@
 
                 if (!Result)
                     break;
+            }
+
+            if (Result)
+            {
+                if (!item.RawRewardSkillXp.HasValue || !item.RawRewardSkillXpFirstTime.HasValue)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing reward XP");
+
+                if (item.RawRewardSkillXpDropOffLevel.HasValue)
+                {
+                    if (!item.RawRewardSkillXpDropOffPct.HasValue)
+                        return Program.ReportFailure(parsedFile, parsedKey, "Missing drop off percent");
+                    if (!item.RawRewardSkillXpDropOffRate.HasValue)
+                        return Program.ReportFailure(parsedFile, parsedKey, "Missing drop off rate");
+                }
+
+                foreach (PgRecipeResultEffect Effect in item.ResultEffectList)
+                    if (Effect is PgRecipeResultBrewItem AsBrewItem)
+                    {
+                        List<RecipeItemKey> BrewPartList = new List<RecipeItemKey>(AsBrewItem.BrewPartList);
+
+                        List<RecipeItemKey> IngredientList = new List<RecipeItemKey>();
+                        foreach (PgRecipeItem Ingredient in item.IngredientList)
+                            if (Ingredient.ItemKeyList.Count == 1)
+                                IngredientList.Add(Ingredient.ItemKeyList[0]);
+
+                        if (BrewPartList.Count != IngredientList.Count)
+                            return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent ingredient list");
+
+                        foreach (RecipeItemKey IngredientKey in IngredientList)
+                        {
+                            if (!BrewPartList.Contains(IngredientKey))
+                                return Program.ReportFailure(parsedFile, parsedKey, "Missing ingredient in brew result");
+
+                            BrewPartList.Remove(IngredientKey);
+                        }
+                        break;
+                    }
+
+                if (item.RawNumResultItems.HasValue && item.RawNumResultItems.Value != 1)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Unexpected number of items");
             }
 
             return Result;
@@ -273,7 +314,8 @@
             if (!StringToEnumConversion<Augment>.TryParse(AugmentString, out Augment Augment))
                 return false;
 
-            if (!StringToEnumConversion<DecomposeSkill>.TryParse(DecomposeSkillString, out DecomposeSkill Skill))
+            PgSkill ParsedSkill = null;
+            if (!ParserSkill.Parse((PgSkill valueSkill) => ParsedSkill = valueSkill, DecomposeSkillString, parsedFile, parsedKey))
                 return false;
 
             if (!int.TryParse(MinLevelString, out int MinLevel))
@@ -284,7 +326,7 @@
 
             PgRecipeResultExtractAugment RecipeResultEffect = new PgRecipeResultExtractAugment();
             RecipeResultEffect.Augment = Augment;
-            RecipeResultEffect.Skill = Skill;
+            RecipeResultEffect.Skill = ParsedSkill;
             RecipeResultEffect.RawMinLevel = MinLevel;
             RecipeResultEffect.RawMaxLevel = MaxLevel;
 
@@ -323,9 +365,9 @@
                 return Program.ReportFailure($"Value '{MaxLevelString}' was expected to be an int");
 
             PgRecipeResultRepairItemDurability RecipeResultEffect = new PgRecipeResultRepairItemDurability();
-            RecipeResultEffect.RawRepairMinEfficiency = RepairMinEfficiency;
-            RecipeResultEffect.RawRepairMaxEfficiency = RepairMaxEfficiency;
-            RecipeResultEffect.RawRepairCooldown = RepairCooldown;
+            RecipeResultEffect.RawRepairMinEfficiency = RepairMinEfficiency * 100;
+            RecipeResultEffect.RawRepairMaxEfficiency = RepairMaxEfficiency * 100;
+            RecipeResultEffect.RawRepairCooldown = TimeSpan.FromHours(RepairCooldown);
             RecipeResultEffect.RawMinLevel = MinLevel;
             RecipeResultEffect.RawMaxLevel = MaxLevel;
 
@@ -398,6 +440,7 @@
             }
 
             PgRecipeResultCraftedEquipment RecipeResultEffect = new PgRecipeResultCraftedEquipment();
+            RecipeResultEffect.Boost = Boost;
             RecipeResultEffect.RawIsCamouflaged = IsCamouflaged;
             RecipeResultEffect.RawBoostLevel = RawBoostLevel;
             RecipeResultEffect.RawAdditionalEnchantments = RawAdditionalEnchantments;
@@ -446,17 +489,17 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect AddItemTSysPower '{effectParameter}'");
 
             string SlotString = Splitted[0];
-            string PowerLevelString = Splitted[1];
+            string TierString = Splitted[1];
 
             if (!StringToEnumConversion<ShamanicSlotPower>.TryParse(SlotString, out ShamanicSlotPower Slot))
                 return false;
 
-            if (!int.TryParse(PowerLevelString, out int PowerLevel))
-                return Program.ReportFailure($"Value '{PowerLevelString}' was expected to be an int");
+            if (!int.TryParse(TierString, out int Tier))
+                return Program.ReportFailure($"Value '{TierString}' was expected to be an int");
 
             PgRecipeResultAddShamanicPower RecipeResultEffect = new PgRecipeResultAddShamanicPower();
             RecipeResultEffect.Slot = Slot;
-            RecipeResultEffect.RawPowerLevel = PowerLevel;
+            RecipeResultEffect.RawTier = Tier;
 
             recipeResult = RecipeResultEffect;
             return true;
@@ -471,15 +514,15 @@
             if (Splitted.Length != 3)
                 return Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect BrewItem '{effectParameter}'");
 
-            string BrewPartCountString = Splitted[0];
-            string BrewLevelString = Splitted[1];
+            string BrewLineString = Splitted[0];
+            string BrewStrengthString = Splitted[1];
             string AllPartString = Splitted[2];
 
-            if (!int.TryParse(BrewPartCountString, out int BrewPartCount))
-                return Program.ReportFailure($"Value '{BrewPartCountString}' was expected to be an int");
+            if (!int.TryParse(BrewLineString, out int BrewLine))
+                return Program.ReportFailure($"Value '{BrewLineString}' was expected to be an int");
 
-            if (!int.TryParse(BrewLevelString, out int BrewLevel))
-                return Program.ReportFailure($"Value '{BrewLevelString}' was expected to be an int");
+            if (!int.TryParse(BrewStrengthString, out int BrewStrength))
+                return Program.ReportFailure($"Value '{BrewStrengthString}' was expected to be an int");
 
             string[] PartSplit = AllPartString.Trim().Split('=');
 
@@ -511,8 +554,8 @@
             }
 
             PgRecipeResultBrewItem RecipeResultEffect = new PgRecipeResultBrewItem();
-            RecipeResultEffect.RawBrewPartCount = BrewPartCount;
-            RecipeResultEffect.RawBrewLevel = BrewLevel;
+            RecipeResultEffect.RawBrewLine = BrewLine;
+            RecipeResultEffect.RawBrewStrength = BrewStrength;
             RecipeResultEffect.BrewPartList.AddRange(BrewPartList);
             RecipeResultEffect.BrewResultList.AddRange(BrewResultList);
 
@@ -531,7 +574,7 @@
 
             string PowerWaxTypeString = Splitted[0];
             string PowerLevelString = Splitted[1];
-            string AdjustedReuseTimeString = Splitted[2];
+            string MaxHitCountString = Splitted[2];
 
             if (!StringToEnumConversion<PowerWaxType>.TryParse(PowerWaxTypeString, out PowerWaxType PowerWaxType))
                 return false;
@@ -539,13 +582,13 @@
             if (!int.TryParse(PowerLevelString, out int PowerLevel))
                 return Program.ReportFailure($"Value '{PowerLevelString}' was expected to be an int");
 
-            if (!int.TryParse(AdjustedReuseTimeString, out int AdjustedReuseTime))
-                return Program.ReportFailure($"Value '{AdjustedReuseTimeString}' was expected to be an int");
+            if (!int.TryParse(MaxHitCountString, out int MaxHitCount))
+                return Program.ReportFailure($"Value '{MaxHitCountString}' was expected to be an int");
 
             PgRecipeResultWaxItem RecipeResultEffect = new PgRecipeResultWaxItem();
             RecipeResultEffect.PowerWaxType = PowerWaxType;
             RecipeResultEffect.RawPowerLevel = PowerLevel;
-            RecipeResultEffect.RawAdjustedReuseTime = AdjustedReuseTime;
+            RecipeResultEffect.RawMaxHitCount = MaxHitCount;
 
             recipeResult = RecipeResultEffect;
             return true;
@@ -566,11 +609,14 @@
             if (!int.TryParse(AdjustedReuseTimeString, out int AdjustedReuseTime))
                 return Program.ReportFailure($"Value '{AdjustedReuseTimeString}' was expected to be an int");
 
+            if (AdjustedReuseTime >= 0)
+                return Program.ReportFailure($"Reuse time should be negative");
+
             if (!StringToEnumConversion<MoonPhases>.TryParse(MoonPhaseString, out MoonPhases MoonPhase))
                 return false;
 
             PgRecipeResultAdjustRecipeReuseTime RecipeResultEffect = new PgRecipeResultAdjustRecipeReuseTime();
-            RecipeResultEffect.RawAdjustedReuseTime = AdjustedReuseTime;
+            RecipeResultEffect.RawAdjustedReuseTime = TimeSpan.FromSeconds(-AdjustedReuseTime);
             RecipeResultEffect.MoonPhase = MoonPhase;
 
             recipeResult = RecipeResultEffect;
@@ -601,18 +647,18 @@
             if (Splitted.Length != 2)
                 return Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect ConsumeItemUses '{effectParameter}'");
 
-            string RecipeItemKeyString = Splitted[0];
-            string AdjustedReuseTimeString = Splitted[1];
+            string KeywordString = Splitted[0];
+            string ConsumedUseString = Splitted[1];
 
-            if (!StringToEnumConversion<RecipeItemKey>.TryParse(RecipeItemKeyString, out RecipeItemKey RecipeItemKey))
+            if (!StringToEnumConversion<ItemKeyword>.TryParse(KeywordString, out ItemKeyword Keyword))
                 return false;
 
-            if (!int.TryParse(AdjustedReuseTimeString, out int AdjustedReuseTime))
-                return Program.ReportFailure($"Value '{AdjustedReuseTimeString}' was expected to be an int");
+            if (!int.TryParse(ConsumedUseString, out int ConsumedUse))
+                return Program.ReportFailure($"Value '{ConsumedUseString}' was expected to be an int");
 
             PgRecipeResultConsumeItemUses RecipeResultEffect = new PgRecipeResultConsumeItemUses();
-            RecipeResultEffect.RecipeItemKey = RecipeItemKey;
-            RecipeResultEffect.RawAdjustedReuseTime = AdjustedReuseTime;
+            RecipeResultEffect.Keyword = Keyword;
+            RecipeResultEffect.RawConsumedUse = ConsumedUse;
 
             recipeResult = RecipeResultEffect;
             return true;
@@ -622,11 +668,14 @@
         {
             recipeResult = null;
 
-            if (!int.TryParse(effectParameter, out int BoostLevel))
+            if (!int.TryParse(effectParameter, out int Delta))
                 return Program.ReportFailure($"Value '{effectParameter}' was expected to be an int");
 
+            if (Delta >= 0)
+                return Program.ReportFailure($"Delta should be negative");
+
             PgRecipeResultDeltaFairyEnergy RecipeResultEffect = new PgRecipeResultDeltaFairyEnergy();
-            RecipeResultEffect.RawBoostLevel = BoostLevel;
+            RecipeResultEffect.RawDelta = -Delta;
 
             recipeResult = RecipeResultEffect;
             return true;
@@ -644,11 +693,16 @@
             string MapAreaNameString = Splitted[0];
             string OtherString = Splitted[1];
 
-            if (!StringToEnumConversion<MapAreaName>.TryParse(MapAreaNameString, out MapAreaName MapAreaName))
+            if (!StringToEnumConversion<MapAreaName>.TryParse(MapAreaNameString, out MapAreaName Area))
                 return false;
 
+            if (OtherString == " NewFairySpot")
+                OtherString = "New Fairy Spot";
+            else
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect Teleport location '{OtherString}'");
+
             PgRecipeResultTeleport RecipeResultEffect = new PgRecipeResultTeleport();
-            RecipeResultEffect.MapAreaName = MapAreaName;
+            RecipeResultEffect.Area = Area;
             RecipeResultEffect.Other = OtherString;
 
             recipeResult = RecipeResultEffect;

@@ -1,9 +1,9 @@
 ﻿namespace PgObjects
 {
-    using System.Collections.Generic;
-
     public class PgQuestRewardSkillXp : PgQuestReward
     {
-        public Dictionary<PgSkill, int> XpTable { get; set; } = new Dictionary<PgSkill, int>();
+        public PgSkill Skill { get; set; }
+        public int Xp { get { return RawXp.HasValue ? RawXp.Value : 0; } }
+        public int? RawXp { get; set; }
     }
 }

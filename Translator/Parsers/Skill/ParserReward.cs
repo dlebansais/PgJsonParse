@@ -40,7 +40,7 @@
                         Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.Recipe = valueRecipe, Value);
                         break;
                     case "Notes":
-                        Result = SetStringProperty((string valueString) => item.Notes = valueString, Value);
+                        Result = SetStringProperty((string valueString) => item.Notes = Tools.CleanedUpString(valueString), Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

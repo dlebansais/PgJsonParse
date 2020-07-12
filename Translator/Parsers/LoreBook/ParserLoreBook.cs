@@ -52,7 +52,7 @@
                         Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
                         break;
                     case "Text":
-                        Result = SetStringProperty((string valueString) => item.Text = valueString, Value);
+                        Result = SetStringProperty((string valueString) => item.Text = Tools.CleanedUpString(valueString), Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

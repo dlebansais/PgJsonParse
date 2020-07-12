@@ -22,7 +22,7 @@
 
         private static bool FinalizeKnownParsed()
         {
-            if (KnownParsedEnumtable.Count != 68)
+            if (KnownParsedEnumtable.Count != 69)
             {
                 List<string> NameList = new List<string>();
                 foreach (KeyValuePair<Type, bool[]> Entry in KnownParsedEnumtable)

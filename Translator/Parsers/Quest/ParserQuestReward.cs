@@ -81,8 +81,6 @@
             PgQuestRewardSkillXp NewItem = new PgQuestRewardSkillXp();
 
             bool Result = true;
-            PgSkill ParsedSkill = null;
-            int ParsedXp = 0;
 
             if (contentTable.Count < 3)
                 Result = Program.ReportFailure(parsedFile, parsedKey, "Missing fields in Skill Xp reward");
@@ -103,10 +101,10 @@
                         case "T":
                             break;
                         case "Skill":
-                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, Value);
+                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill = valueSkill, Value);
                             break;
                         case "Xp":
-                            Result = SetIntProperty((int valueInt) => ParsedXp = valueInt, Value);
+                            Result = SetIntProperty((int valueInt) => NewItem.RawXp = valueInt, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -120,7 +118,6 @@
 
             if (Result)
             {
-                NewItem.XpTable.Add(ParsedSkill, ParsedXp);
                 item = NewItem;
                 return true;
             }

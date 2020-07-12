@@ -2,7 +2,7 @@
 {
     public class PgRecipeResultTeleport : PgRecipeResultEffect
     {
-        public MapAreaName MapAreaName { get; set; }
+        public MapAreaName Area { get; set; }
         public string Other { get; set; } = string.Empty;
     }
 }

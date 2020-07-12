@@ -3,6 +3,7 @@
     using PgObjects;
     using PgJsonReader;
     using System.Collections.Generic;
+    using System;
 
     public class ParserItem : Parser
     {
@@ -24,6 +25,7 @@
             bool Result = true;
             Dictionary<ItemKeyword, List<float>> KeywordTable = new Dictionary<ItemKeyword, List<float>>();
             List<string> KeywordValueList = new List<string>();
+            Dictionary<PgSkill, int> SkillRequirementTable = new Dictionary<PgSkill, int>();
 
             foreach (KeyValuePair<string, object> Entry in contentTable)
             {
@@ -105,7 +107,7 @@
                         Result = Inserter<Appearance>.SetEnum((Appearance valueEnum) => item.RequiredAppearance = valueEnum, Value);
                         break;
                     case "SkillReqs":
-                        Result = Inserter<PgItemSkillLink>.AddKeylessArray(item.SkillRequirementList, Value);
+                        Result = ParseSkillRequirements(item, Value, SkillRequirementTable, parsedFile, parsedKey);
                         break;
                     case "StockDye":
                         Result = ParseStockDye(item, Value, parsedFile, parsedKey);
@@ -146,7 +148,11 @@
                     break;
             }
 
-            item.KeywordTable = KeywordTable;
+            if (Result)
+            {
+                item.KeywordTable = KeywordTable;
+                item.SkillRequirementTable = SkillRequirementTable;
+            }
 
             return Result;
         }
@@ -430,6 +436,24 @@
             return true;
         }
 
+        private bool ParseSkillRequirements(PgItem item, object value, Dictionary<PgSkill, int> skillRequirementTable, string parsedFile, string parsedKey)
+        {
+            List<PgItemSkillLink> SkillRequirementList = new List<PgItemSkillLink>();
+            if (!Inserter<PgItemSkillLink>.AddKeylessArray(SkillRequirementList, value))
+                return false;
+
+            foreach (PgItemSkillLink Item in SkillRequirementList)
+                foreach (KeyValuePair<PgSkill, int> Entry in Item.SkillTable)
+                {
+                    if (skillRequirementTable.ContainsKey(Entry.Key))
+                        return Program.ReportFailure($"Skill already added as requirement '{Entry.Key.Key}'");
+
+                    skillRequirementTable.Add(Entry.Key, Entry.Value);
+                }
+
+            return true;
+        }
+
         private bool ParseStockDye(PgItem item, object value, string parsedFile, string parsedKey)
         {
             if (!(value is string RawStockDye))
@@ -473,8 +497,10 @@
 
             for (int n = 0; n < ParsedColors.Length; n++)
             {
-                item.StockDye.Add(ParsedColors[n]);
-                item.StockDyeByName.Add(ParsedColorName[n]);
+                PgItemDye NewDye = new PgItemDye() { Color = ParsedColors[n], Name = ParsedColorName[n] };
+                ParsingContext.AddSuplementaryObject(NewDye);
+
+                item.StockDyeList.Add(NewDye);
             }
 
             return true;

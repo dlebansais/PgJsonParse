@@ -111,6 +111,9 @@
 
             if (Result)
             {
+                if (!NewItem.RawMinHour.HasValue || !NewItem.RawMaxHour.HasValue)
+                    Result = Program.ReportFailure(parsedFile, parsedKey, "Missing Min/Max hour");
+
                 item = NewItem;
                 return true;
             }

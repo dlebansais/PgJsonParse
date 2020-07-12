@@ -45,6 +45,12 @@
                     break;
             }
 
+            if (Result)
+            {
+                if (item.Currency == RecipeCurrency.Internal_None || !item.RawPrice.HasValue)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing cost info");
+            }
+
             return Result;
         }
     }

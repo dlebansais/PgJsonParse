@@ -53,7 +53,12 @@
             }
 
             if (Result)
+            {
+                if (item.AreaFriendlyName == null)
+                    return Program.ReportFailure(parsedFile, parsedKey, "No area friendly name");
+
                 item.IconId = PgObject.NpcIconId;
+            }
 
             return Result;
         }

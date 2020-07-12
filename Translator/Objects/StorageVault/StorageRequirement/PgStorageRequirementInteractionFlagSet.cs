@@ -2,6 +2,6 @@
 {
     public class PgStorageRequirementInteractionFlagSet : PgStorageRequirement
     {
-        public string InteractionFlag { get; set; } = string.Empty;
+        public InteractionFlag InteractionFlag { get; set; }
     }
 }
