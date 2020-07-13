@@ -70,9 +70,12 @@
             if (!int.TryParse(Split[i], out OtherLevel) || OtherLevel <= 0)
                 return Program.ReportFailure($"Invalid level cap interaction '{interaction}'");
 
+            if (OtherLevel != level + 10)
+                return Program.ReportFailure("Inconsistent interaction level cap");
+
             PgLevelCapInteraction NewInteraction = new PgLevelCapInteraction();
             NewInteraction.RawLevel = level;
-            NewInteraction.RawOtherLevel = OtherLevel;
+            NewInteraction.RawRangeUnlock = OtherLevel - level;
             NewInteraction.Skill = ParsedSkill;
 
             ParsingContext.AddSuplementaryObject(NewInteraction);

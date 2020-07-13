@@ -31,7 +31,7 @@
                 switch (Key)
                 {
                     case "InternalName":
-                        Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
+                        Result = ParseInternamName(item, Value, parsedFile, parsedKey);
                         break;
                     case "XpAmounts":
                         Result = ParseXpAmounts(item, Value, parsedFile, parsedKey);
@@ -48,17 +48,37 @@
             return Result;
         }
 
+        private bool ParseInternamName(PgXpTable item, object value, string parsedFile, string parsedKey)
+        {
+            if (!(value is string ValueString))
+                return Program.ReportFailure($"Value '{value}' was expected to be a string");
+
+            item.InternalName = ValueString;
+            Inserter<XpTableEnum>.SetEnum((XpTableEnum valueEnum) => item.AsEnum = valueEnum, value);
+
+            return true;
+        }
+
         private bool ParseXpAmounts(PgXpTable item, object value, string parsedFile, string parsedKey)
         {
             if (!(value is List<object> ArrayAmount))
                 return Program.ReportFailure($"Value '{value}' was expected to be a list");
+
+            int Level = 0;
+            int TotalXp = 0;
 
             foreach (object Item in ArrayAmount)
             {
                 if (!(Item is int ValueAmount))
                     return Program.ReportFailure($"Value '{Item}' was expected to be an int");
 
-                item.XpAmountList.Add(ValueAmount);
+                TotalXp += ValueAmount;
+                Level++;
+
+                PgXpTableLevel NewLevel = new PgXpTableLevel() { RawLevel = Level, RawXp = ValueAmount, RawTotalXp = TotalXp };
+
+                ParsingContext.AddSuplementaryObject(NewLevel);
+                item.XpAmountList.Add(NewLevel);
             }
 
             return true;

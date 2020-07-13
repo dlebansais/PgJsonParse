@@ -34,7 +34,7 @@
                         Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Ability = valueAbility, Value);
                         break;
                     case "BonusToSkill":
-                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.BonusSkill = valueSkill, Value, parsedFile, parsedKey);
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.BonusLevelSkill = valueSkill, Value, parsedFile, parsedKey);
                         break;
                     case "Recipe":
                         Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.Recipe = valueRecipe, Value);
@@ -51,6 +51,11 @@
                     break;
             }
 
+            if (Result)
+            {
+                if (item.Ability == null && item.BonusLevelSkill == null && item.Recipe == null && item.Notes.Length == 0)
+                    Result = Program.ReportFailure(parsedFile, parsedKey, "Not enough rewards");
+            }
             return Result;
         }
     }

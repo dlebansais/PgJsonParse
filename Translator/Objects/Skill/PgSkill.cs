@@ -14,16 +14,13 @@
         public bool HideWhenZero { get { return RawHideWhenZero.HasValue && RawHideWhenZero.Value; } }
         public bool? RawHideWhenZero { get; set; }
         public PgXpTable XpTable { get; set; }
-        public PgAdvancementTable AdvancementTable { get; set; }
         public bool IsCombatSkill { get { return RawIsCombatSkill.HasValue && RawIsCombatSkill.Value; } }
         public bool? RawIsCombatSkill { get; set; }
         public PgSkillCollection CompatibleCombatSkillList { get; set; } = new PgSkillCollection();
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
         public int? RawMaxBonusLevels { get; set; }
-        public PgLevelCapInteractionList InteractionFlagLevelCapList { get; set; }
-        public PgAdvancementHintCollection AdvancementHintList { get; set; } = new PgAdvancementHintCollection();
-        public PgRewardList RewardList { get; set; }
-        public PgReportList ReportList { get; set; }
+        public PgSkillAdvancementCollection SkillAdvancementList { get; set; } = new PgSkillAdvancementCollection();
+        public PgReportCollection ReportList { get; set; } = new PgReportCollection();
         public string Name { get; set; } = string.Empty;
         public PgSkillCollection ParentSkillList { get; set; } = new PgSkillCollection();
         public bool SkipBonusLevelsIfSkillUnlearned { get { return RawSkipBonusLevelsIfSkillUnlearned.HasValue && RawSkipBonusLevelsIfSkillUnlearned.Value; } }

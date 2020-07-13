@@ -1,10 +1,9 @@
 ﻿namespace Translator
 {
-    using PgObjects;
     using PgJsonReader;
+    using PgObjects;
     using System;
     using System.Collections.Generic;
-    using System.Xml.Schema;
     using System.Diagnostics;
 
     public class ParserSkill : Parser
@@ -71,22 +70,22 @@
                         Result = SetBoolProperty((bool valueBool) => item.RawIsCombatSkill = valueBool, Value);
                         break;
                     case "TSysCompatibleCombatSkills":
-                        Result = Inserter<PgSkill>.AddArrayByKey(item.CompatibleCombatSkillList, Value);
+                        Result = ParseCompatibleCombatSkills(item, Value, parsedFile, parsedKey);
                         break;
                     case "MaxBonusLevels":
                         Result = SetIntProperty((int valueInt) => item.RawMaxBonusLevels = valueInt, Value);
                         break;
                     case "InteractionFlagLevelCaps":
-                        Result = Inserter<PgLevelCapInteractionList>.SetItemProperty((PgLevelCapInteractionList valueLevelCapInteractionList) => item.InteractionFlagLevelCapList = valueLevelCapInteractionList, Value);
+                        Result = ParseInteractionFlagLevelCaps(item, Value, parsedFile, parsedKey);
                         break;
                     case "AdvancementHints":
-                        Result = Inserter<PgAdvancementHint>.AddKeylessArray(item.AdvancementHintList, Value);
+                        Result = ParseAdvancementHints(item, Value, parsedFile, parsedKey);
                         break;
                     case "Rewards":
-                        Result = Inserter<PgRewardList>.SetItemProperty((PgRewardList valueRewardList) => item.RewardList = valueRewardList, Value);
+                        Result = ParseRewards(item, Value, parsedFile, parsedKey);
                         break;
                     case "Reports":
-                        Result = Inserter<PgReportList>.SetItemProperty((PgReportList valueReportList) => item.ReportList = valueReportList, Value);
+                        Result = ParseReports(item, Value, parsedFile, parsedKey);
                         break;
                     case "Name":
                         Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
@@ -121,7 +120,22 @@
                     break;
             }
 
+            if (Result)
+            {
+                item.SkillAdvancementList.Sort(SortSkillAdvancementByLevel);
+            }
+
             return Result;
+        }
+
+        private static int SortSkillAdvancementByLevel(PgSkillAdvancement item1, PgSkillAdvancement item2)
+        {
+            if (item1.Level > item2.Level)
+                return 1;
+            else if (item1.Level < item2.Level)
+                return -1;
+            else
+                return 0;
         }
 
         private bool ParseAdvancementTable(PgSkill item, object value, string parsedFile, string parsedKey)
@@ -143,12 +157,145 @@
 
                 if (AsAdvancementTable.InternalName == TableString)
                 {
-                    item.AdvancementTable = AsAdvancementTable;
+                    foreach (KeyValuePair<int, PgAdvancement> AdvancementEntry in AsAdvancementTable.LevelTable)
+                    {
+                        int Level = AdvancementEntry.Key;
+                        PgAdvancement Advancement = AdvancementEntry.Value;
+
+                        foreach (PgAdvancementEffectAttribute EffectAttribute in Advancement.EffectAttributeList)
+                        {
+                            PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardAdvancement() { RawLevel = Level, EffectAttribute = EffectAttribute };
+
+                            ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
+                            item.SkillAdvancementList.Add(NewSkillAdvancement);
+                        }
+                    }
+
                     return true;
                 }
             }
 
             return Program.ReportFailure($"Advancement table '{TableString}' not found");
+        }
+
+        private bool ParseCompatibleCombatSkills(PgSkill item, object value, string parsedFile, string parsedKey)
+        {
+            if (!Inserter<PgSkill>.AddArrayByKey(item.CompatibleCombatSkillList, value))
+                return false;
+
+            item.CompatibleCombatSkillList.Sort(SortSkillByKey);
+            return true;
+        }
+
+        private static int SortSkillByKey(PgSkill skill1, PgSkill skill2)
+        {
+            return string.Compare(skill1.Key, skill2.Key);
+        }
+
+        private bool ParseInteractionFlagLevelCaps(PgSkill item, object value, string parsedFile, string parsedKey)
+        {
+            PgLevelCapInteractionList ParsedLevelCapInteractionList = null;
+            if (!Inserter<PgLevelCapInteractionList>.SetItemProperty((PgLevelCapInteractionList valueLevelCapInteractionList) => ParsedLevelCapInteractionList = valueLevelCapInteractionList, value))
+                return false;
+
+            foreach (PgLevelCapInteraction Item in ParsedLevelCapInteractionList.List)
+            {
+                int Level = Item.Level;
+                PgSkill Skill = Item.Skill;
+
+                PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementLevelCapInteraction() { RawLevel = Level, Skill = Skill };
+
+                ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
+                item.SkillAdvancementList.Add(NewSkillAdvancement);
+            }
+
+            return true;
+        }
+
+        private bool ParseAdvancementHints(PgSkill item, object value, string parsedFile, string parsedKey)
+        {
+            PgAdvancementHintCollection AdvancementHintList = new PgAdvancementHintCollection();
+            if (!Inserter<PgAdvancementHint>.AddKeylessArray(AdvancementHintList, value))
+                return false;
+
+            foreach (PgAdvancementHint AdvancementHint in AdvancementHintList)
+            {
+                foreach (KeyValuePair<int, string> Entry in AdvancementHint.HintTable)
+                {
+                    int Level = Entry.Key;
+                    string Hint = Entry.Value;
+
+                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementHint() { RawLevel = Level, Hint = Hint };
+
+                    ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
+                    item.SkillAdvancementList.Add(NewSkillAdvancement);
+                }
+            }
+
+            return true;
+        }
+
+        private bool ParseRewards(PgSkill item, object value, string parsedFile, string parsedKey)
+        {
+            PgRewardList ParsedRewardList = null;
+            if (!Inserter<PgRewardList>.SetItemProperty((PgRewardList valueRewardList) => ParsedRewardList = valueRewardList, value))
+                return false;
+
+            foreach (PgReward Reward in ParsedRewardList.List)
+            {
+                int Level = Reward.RewardLevel;
+                List<Race> RaceRestrictionList = Reward.RaceRestrictionList;
+                PgAbility Ability = Reward.Ability;
+                PgSkill BonusLevelSkill = Reward.BonusLevelSkill;
+                PgRecipe Recipe = Reward.Recipe;
+                string Notes = Reward.Notes;
+
+                if (Ability != null)
+                {
+                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardAbility() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, Ability = Ability };
+
+                    ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
+                    item.SkillAdvancementList.Add(NewSkillAdvancement);
+                }
+
+                if (BonusLevelSkill != null)
+                {
+                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardBonusLevel() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, BonusLevelSkill = BonusLevelSkill };
+
+                    ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
+                    item.SkillAdvancementList.Add(NewSkillAdvancement);
+                }
+
+                if (Recipe != null)
+                {
+                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardRecipe() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, Recipe = Recipe };
+
+                    ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
+                    item.SkillAdvancementList.Add(NewSkillAdvancement);
+                }
+
+                if (Notes.Length > 0)
+                {
+                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementNotes() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, Text = Notes };
+
+                    ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
+                    item.SkillAdvancementList.Add(NewSkillAdvancement);
+                }
+            }
+
+            return true;
+        }
+
+        private bool ParseReports(PgSkill item, object value, string parsedFile, string parsedKey)
+        {
+            PgReportList ParsedPeportList = null;
+            if (!Inserter<PgReportList>.SetItemProperty((PgReportList valueReportList) => ParsedPeportList = valueReportList, value))
+                return false;
+
+            foreach (PgReport Report in ParsedPeportList.List)
+                item.ReportList.Add(Report);
+
+            return true;
         }
 
         public static void FillAssociationTables()
@@ -236,10 +383,14 @@
                     IconId = 3677;
                 else if (skill.Key.StartsWith("Anatomy"))
                     IconId = 4004;
-                else if (skill.AdvancementTable == null)
-                    IconId = PgObject.AbilityIconId;
                 else
-                    IconId = PgObject.SkillIconId;
+                {
+                    foreach (PgSkillAdvancement Item in skill.SkillAdvancementList)
+                        if (Item is PgSkillAdvancementRewardAdvancement)
+                            IconId = PgObject.SkillIconId;
+
+                    IconId = PgObject.AbilityIconId;
+                }
             }
 
             return IconId;

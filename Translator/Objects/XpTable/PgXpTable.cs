@@ -1,11 +1,10 @@
 ﻿namespace PgObjects
 {
-    using System.Collections.Generic;
-
     public class PgXpTable
     {
         public string Key { get; set; } = string.Empty;
-        public string InternalName { get; set; } = string.Empty;
-        public List<int> XpAmountList { get; set; } = new List<int>();
+        public string InternalName { get; set; }
+        public XpTableEnum AsEnum { get; set; }
+        public PgXpTableLevelCollection XpAmountList { get; set; } = new PgXpTableLevelCollection();
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="Enums\SelfParticle.cs" />
     <Compile Include="Enums\SpecialNpc.cs" />
     <Compile Include="Enums\StorageRequirementType.cs" />
+    <Compile Include="Enums\XpTableEnum.cs" />
     <Compile Include="Finalizer.cs" />
     <Compile Include="Generate.cs" />
     <Compile Include="Inserter.cs" />
@@ -119,6 +120,8 @@
     <Compile Include="FieldTables\FixedFieldTable.cs" />
     <Compile Include="FieldTables\FieldTable.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDisallowedItemKeyword.cs" />
+    <Compile Include="Objects\AdvancementTable\PgAdvancementEffectAttribute.cs" />
+    <Compile Include="Objects\AdvancementTable\PgAdvancementEffectAttributeCollection.cs" />
     <Compile Include="Objects\Item\PgItemDye.cs" />
     <Compile Include="Objects\Item\PgItemDyeCollection.cs" />
     <Compile Include="Objects\Npc\PgNpcLocation.cs" />
@@ -175,11 +178,21 @@
     <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultRepairItemDurability.cs" />
     <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultExtractAugment.cs" />
     <Compile Include="Objects\Recipe\RecipeResult\PgRecipeResultRecipeEffect.cs" />
+    <Compile Include="Objects\Skill\PgAdvancementHint.cs" />
+    <Compile Include="Objects\Skill\PgSkillAdvancement.cs" />
     <Compile Include="Objects\Skill\PgAdvancementHintCollection.cs" />
     <Compile Include="Objects\Skill\PgLevelCapInteractionList.cs" />
     <Compile Include="Objects\Skill\PgReportCollection.cs" />
     <Compile Include="Objects\Skill\PgReportList.cs" />
     <Compile Include="Objects\Skill\PgSkillCollection.cs" />
+    <Compile Include="Objects\Skill\PgSkillAdvancementCollection.cs" />
+    <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementNotes.cs" />
+    <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementRewardAdvancement.cs" />
+    <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementRewardRecipe.cs" />
+    <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementRewardBonusLevel.cs" />
+    <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementRewardAbility.cs" />
+    <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementLevelCapInteraction.cs" />
+    <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementHint.cs" />
     <Compile Include="Objects\Source\Source\PgSourceRecipe.cs" />
     <Compile Include="Objects\Source\Source\PgSourceHangOut.cs" />
     <Compile Include="Objects\Source\Source\PgSourceQuest.cs" />
@@ -191,7 +204,9 @@
     <Compile Include="Objects\StorageVault\StorageRequirement\PgStorageRequirementIsWarden.cs" />
     <Compile Include="Objects\StorageVault\StorageRequirement\PgStorageRequirementIsLongtimeAnimal.cs" />
     <Compile Include="Objects\StorageVault\StorageRequirement\PgStorageRequirementInteractionFlagSet.cs" />
+    <Compile Include="Objects\XpTable\PgXpTableLevelCollection.cs" />
     <Compile Include="Parsers\Skill\ParserLevelCapInteractionList.cs" />
+    <Compile Include="Objects\XpTable\PgXpTableLevel.cs" />
     <Compile Include="VariadicObjectHandler.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmo.cs" />
     <Compile Include="Objects\Ability\PgAbilityAmmoCollection.cs" />
@@ -314,7 +329,6 @@
     <Compile Include="Objects\Recipe\PgRecipeCostCollection.cs" />
     <Compile Include="Objects\Skill\PgRewardList.cs" />
     <Compile Include="Objects\Skill\PgReport.cs" />
-    <Compile Include="Objects\Skill\PgAdvancementHint.cs" />
     <Compile Include="Objects\Skill\PgLevelCapInteraction.cs" />
     <Compile Include="Objects\Skill\PgLevelCapInteractionCollection.cs" />
     <Compile Include="Objects\Skill\PgSkill.cs" />
