@@ -23,7 +23,7 @@
             if (!(contentTable["Type"] is string TypeString))
                 return Program.ReportFailure("Source type was expected to be a string");
 
-            bool Result = false;
+            bool Result;
 
             switch (TypeString)
             {

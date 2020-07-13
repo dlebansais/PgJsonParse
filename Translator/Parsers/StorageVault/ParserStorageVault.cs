@@ -50,7 +50,7 @@
                         Result = Inserter<PgStorageFavorLevel>.SetItemProperty((PgStorageFavorLevel valueStorageFavorLevel) => item.Levels = valueStorageFavorLevel, Value);
                         break;
                     case "Requirements":
-                        Result = Inserter<PgStorageRequirement>.SetItemProperty((PgStorageRequirement valueStorageRequirement) => item.Requirements = valueStorageRequirement, Value);
+                        Result = Inserter<PgStorageRequirement>.SetItemProperty((PgStorageRequirement valueStorageRequirement) => item.Requirement = valueStorageRequirement, Value);
                         break;
                     case "RequirementDescription":
                         Result = SetStringProperty((string valueString) => item.RequirementDescription = valueString, Value);
@@ -62,7 +62,7 @@
                         Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.RequiredItemKeywordList);
                         break;
                     case "SlotAttribute":
-                        Result = SetStringProperty((string valueString) => item.SlotAttribute = valueString, Value);
+                        Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.SlotAttribute = valueAttribute, Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -71,6 +71,12 @@
 
                 if (!Result)
                     break;
+            }
+
+            if (Result)
+            {
+                if (!item.RawHasAssociatedNpc.HasValue || item.HasAssociatedNpc)
+                    Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.AssociatedNpc = npcLocation, item.Key, parsedFile, parsedKey, ErrorControl.IgnoreIfNotFound);
             }
 
             return Result;

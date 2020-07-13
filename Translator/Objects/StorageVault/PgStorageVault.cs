@@ -13,12 +13,13 @@
         public int? RawNumSlots { get; set; }
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
         public bool? RawHasAssociatedNpc { get; set; }
+        public PgNpcLocation AssociatedNpc { get; set; }
         public PgStorageFavorLevel Levels { get; set; }
-        public PgStorageRequirement Requirements { get; set; }
+        public PgStorageRequirement Requirement { get; set; }
         public string RequirementDescription { get; set; } = string.Empty;
         public MapAreaName Grouping { get; set; }
         public List<ItemKeyword> RequiredItemKeywordList { get; set; } = new List<ItemKeyword>();
-        public string SlotAttribute { get; set; } = string.Empty;
+        public PgAttribute SlotAttribute { get; set; }
 
         public override int ObjectIconId { get { return PgObject.StorageVaultIconId; } }
         public override string ObjectName { get { return NpcFriendlyName; } }
