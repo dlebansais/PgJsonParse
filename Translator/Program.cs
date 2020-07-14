@@ -97,6 +97,9 @@
             FinalizingResult &= ParserStorageRequirement.FinalizeParsing();
             FinalizingResult &= StringToEnumConversion.FinalizeParsing();
 
+            FinalizingResult &= ParserAbility.UpdateSource();
+            FinalizingResult &= ParserRecipe.UpdateSource();
+
             if (!FinalizingResult)
                 return -1;
 

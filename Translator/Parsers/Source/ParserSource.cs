@@ -55,6 +55,9 @@
 
             Debug.Assert(!Result || item is PgSource);
 
+            if (item is PgSource NewItem)
+                NewItem.SourceKey = parsedKey;
+
             return Result;
         }
 
@@ -173,7 +176,7 @@
 
             if (EffectNameString == "Learn Ability")
             {
-                item = new PgSourceEffect() { RawIsMiscEffect = true };
+                item = new PgSourceLearnAbility();
                 return true;
             }
 

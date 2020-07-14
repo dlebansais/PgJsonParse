@@ -11,6 +11,10 @@
     
     public class Generate
     {
+        public const char FieldSeparator = '§';
+        public const char ObjectKeyStart = '|';
+        public const char ObjectKeyEnd = '‖';
+
         private static Dictionary<object, int> IndexTable = new Dictionary<object, int>();
 
         public static void Write(int version, List<object> objectList)
@@ -42,6 +46,7 @@
             Write(objectList);
             WriteKeys(objectList);
             WriteDictionaries(objectList);
+            WriteIndexes(objectList);
 
             foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
             {
@@ -142,6 +147,164 @@
                 Writer.WriteLine($"            return Table[key];");
                 Writer.WriteLine($"        }}");
             }
+        }
+
+        private static void WriteIndexes(List<object> objectList)
+        {
+            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
+            {
+                StreamWriter Writer = Entry.Value;
+
+                string TypeName = Entry.Key.Name;
+                Writer.WriteLine("");
+                Writer.WriteLine($"        public static string Index = @\"");
+            }
+
+            int LastDisplay = 10;
+            Dictionary<Type, List<string>> TypeIndexTable = new Dictionary<Type, List<string>>();
+
+            for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
+            {
+                GetItemIndexContent(objectList, ObjectIndex, TypeIndexTable);
+
+                int Percent = (int)((((float)ObjectIndex) / objectList.Count) * 100);
+
+                if (Percent >= LastDisplay)
+                {
+                    Debug.WriteLine($"{Percent}%");
+                    LastDisplay += 10;
+                }
+            }
+
+            Debug.WriteLine($"100%");
+
+            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
+            {
+                StreamWriter Writer = Entry.Value;
+                Writer.WriteLine($"        \";");
+            }
+
+            WriteSearchIndex(TypeIndexTable);
+            WriteSearchIndexResources(TypeIndexTable);
+        }
+
+        private static void WriteSearchIndex(Dictionary<Type, List<string>> typeIndexTable)
+        {
+            string FilePath = Path.Combine(RootFolder, "SearchIndex.cs");
+
+            using FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
+            using StreamWriter Writer = new StreamWriter(Stream);
+
+            Writer.WriteLine("namespace PgObjects");
+            Writer.WriteLine("{");
+            Writer.WriteLine("    using System;");
+            Writer.WriteLine("    using System.Collections.Generic;");
+            Writer.WriteLine("    using PgObjects.Properties;");
+            Writer.WriteLine("");
+            Writer.WriteLine($"    public static class SearchIndex");
+            Writer.WriteLine("    {");
+            Writer.WriteLine("        public static Dictionary<Func<string, PgObject>, string> Table { get; } = new Dictionary<Func<string, PgObject>, string>()");
+            Writer.WriteLine("        {");
+
+            foreach (KeyValuePair<Type, List<string>> Entry in typeIndexTable)
+            {
+                if (Entry.Key.BaseType != typeof(PgObject))
+                    continue;
+
+                string ClassPrefix = ToClassName(Entry.Key);
+                Writer.WriteLine($"            {{ (string key) => {ClassPrefix}.Get(key), Indexes.{ClassPrefix} }},");
+            }
+
+            Writer.WriteLine("        };");
+            Writer.WriteLine("    }");
+            Writer.WriteLine("}");
+        }
+
+        private static void WriteSearchIndexResources(Dictionary<Type, List<string>> typeIndexTable)
+        {
+            string FilePath = Path.Combine(RootFolder, "Properties", "Indexes.resx");
+
+            using FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
+            using StreamWriter Writer = new StreamWriter(Stream);
+
+            Writer.WriteLine(@"<?xml version=""1.0"" encoding=""utf-8""?>
+<root>
+  <xsd:schema id=""root"" xmlns="""" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:msdata=""urn:schemas-microsoft-com:xml-msdata"">
+    <xsd:import namespace=""http://www.w3.org/XML/1998/namespace"" />
+    <xsd:element name=""root"" msdata:IsDataSet=""true"">
+      <xsd:complexType>
+        <xsd:choice maxOccurs=""unbounded"">
+          <xsd:element name=""metadata"">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name=""value"" type=""xsd:string"" minOccurs=""0"" />
+              </xsd:sequence>
+              <xsd:attribute name=""name"" use=""required"" type=""xsd:string"" />
+              <xsd:attribute name=""type"" type=""xsd:string"" />
+              <xsd:attribute name=""mimetype"" type=""xsd:string"" />
+              <xsd:attribute ref=""xml:space"" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name=""assembly"">
+            <xsd:complexType>
+              <xsd:attribute name=""alias"" type=""xsd:string"" />
+              <xsd:attribute name=""name"" type=""xsd:string"" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name=""data"">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name=""value"" type=""xsd:string"" minOccurs=""0"" msdata:Ordinal=""1"" />
+                <xsd:element name=""comment"" type=""xsd:string"" minOccurs=""0"" msdata:Ordinal=""2"" />
+              </xsd:sequence>
+              <xsd:attribute name=""name"" type=""xsd:string"" use=""required"" msdata:Ordinal=""1"" />
+              <xsd:attribute name=""type"" type=""xsd:string"" msdata:Ordinal=""3"" />
+              <xsd:attribute name=""mimetype"" type=""xsd:string"" msdata:Ordinal=""4"" />
+              <xsd:attribute ref=""xml:space"" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name=""resheader"">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name=""value"" type=""xsd:string"" minOccurs=""0"" msdata:Ordinal=""1"" />
+              </xsd:sequence>
+              <xsd:attribute name=""name"" type=""xsd:string"" use=""required"" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name=""resmimetype"">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name=""version"">
+    <value>2.0</value>
+  </resheader>
+  <resheader name=""reader"">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name=""writer"">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>");
+
+            foreach (KeyValuePair<Type, List<string>> Entry in typeIndexTable)
+            {
+                if (Entry.Key.BaseType != typeof(PgObject))
+                    continue;
+
+                string ClassPrefix = ToClassName(Entry.Key);
+                Writer.WriteLine($"  <data name=\"{ClassPrefix}\" xml:space=\"preserve\">");
+                Writer.WriteLine($"    <value>");
+
+                foreach (string Line in Entry.Value)
+                    Writer.WriteLine($"{Line}\r\n");
+
+                Writer.WriteLine($"</value>");
+                Writer.WriteLine($"  </data>");
+            }
+
+            Writer.WriteLine("</root>");
         }
 
         private static Dictionary<Type, FileStream> StreamTable = new Dictionary<Type, FileStream>();
@@ -265,6 +428,50 @@
             Writer.WriteLine($"                    case {KeyValue}:");
             Writer.WriteLine($"                        Table.Add(key, {LinkValue});");
             Writer.WriteLine($"                        break;");
+        }
+
+        private static void GetItemIndexContent(List<object> objectList, int objectIndex, Dictionary<Type, List<string>> typeIndexTable)
+        {
+            object Item = objectList[objectIndex];
+            Type Type = Item.GetType();
+
+            if (Type.GetProperty("Key") == null)
+                return;
+
+            if (!typeIndexTable.ContainsKey(Type))
+                typeIndexTable.Add(Type, new List<string>());
+
+            string Key = null;
+            string Content = string.Empty;
+            PropertyInfo[] Properties = Type.GetProperties();
+            foreach (PropertyInfo Property in Properties)
+            {
+                string PropertyTypeName = Property.PropertyType.ToString();
+
+                switch (PropertyTypeName)
+                {
+                    case "System.String":
+                        string StringValue = Property.GetValue(Item) as string;
+                        Debug.Assert(StringValue != null);
+
+                        if (Property.Name == "Key")
+                            Key = StringValue;
+                        else
+                        {
+                            StringValue = StringValue.Replace("\n", "\\n");
+                            StringValue = StringValue.Replace("&", "&#38;");
+                            StringValue = StringValue.Replace("<", "&lt;");
+                            StringValue = StringValue.Replace(">", "&gt;");
+                           
+                            Content += $"{StringValue}{FieldSeparator}";
+                        }
+                        break;
+                }
+            }
+
+            Debug.Assert(Key != null);
+
+            typeIndexTable[Type].Add($"{Content}{ObjectKeyStart}{Key}{ObjectKeyEnd}");
         }
 
         private static void WriteGroupings(int version, List<object> objectList)

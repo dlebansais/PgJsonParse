@@ -249,5 +249,28 @@
                 Debug.Assert(Ability.ObjectName.Length > 0);
             }
         }
+
+        public static bool UpdateSource()
+        {
+            Dictionary<string, ParsingContext> SourceParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSource)];
+            Dictionary<string, ParsingContext> AbilityParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];
+
+            foreach (KeyValuePair<string, ParsingContext> Entry in SourceParsingTable)
+            {
+                PgSource AbilitySource = (PgSource)Entry.Value.Item;
+                string Key = AbilitySource.SourceKey;
+
+                if (Key.StartsWith("ability_"))
+                {
+                    if (!AbilityParsingTable.ContainsKey(Key))
+                        return Program.ReportFailure($"Source for '{Key}' but no such object");
+
+                    PgAbility Ability = (PgAbility)AbilityParsingTable[Key].Item;
+                    Ability.SourceList.Add(AbilitySource);
+                }
+            }
+
+            return true;
+        }
     }
 }

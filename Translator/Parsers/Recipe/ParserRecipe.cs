@@ -723,5 +723,28 @@
 
             return true;
         }
+
+        public static bool UpdateSource()
+        {
+            Dictionary<string, ParsingContext> SourceParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSource)];
+            Dictionary<string, ParsingContext> RecipeParsingTable = ParsingContext.ObjectKeyTable[typeof(PgRecipe)];
+
+            foreach (KeyValuePair<string, ParsingContext> Entry in SourceParsingTable)
+            {
+                PgSource RecipeSource = (PgSource)Entry.Value.Item;
+                string Key = RecipeSource.SourceKey;
+
+                if (Key.StartsWith("recipe_"))
+                {
+                    if (!RecipeParsingTable.ContainsKey(Key))
+                        return Program.ReportFailure($"Source for '{Key}' but no such object");
+
+                    PgRecipe Recipe = (PgRecipe)RecipeParsingTable[Key].Item;
+                    Recipe.SourceList.Add(RecipeSource);
+                }
+            }
+
+            return true;
+        }
     }
 }

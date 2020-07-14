@@ -193,6 +193,7 @@
     <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementRewardAbility.cs" />
     <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementLevelCapInteraction.cs" />
     <Compile Include="Objects\Skill\SkillAdvancement\PgSkillAdvancementHint.cs" />
+    <Compile Include="Objects\Source\Source\PgSourceLearnAbility.cs" />
     <Compile Include="Objects\Source\Source\PgSourceRecipe.cs" />
     <Compile Include="Objects\Source\Source\PgSourceHangOut.cs" />
     <Compile Include="Objects\Source\Source\PgSourceQuest.cs" />
