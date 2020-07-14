@@ -60,5 +60,6 @@
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }
+        public override string ToString() { return Name; }
     }
 }

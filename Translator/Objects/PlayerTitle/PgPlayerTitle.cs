@@ -11,5 +11,6 @@
 
         public override int ObjectIconId { get { return PlayerTitleIconId; } }
         public override string ObjectName { get { return Title; } }
+        public override string ToString() { return Title; }
     }
 }

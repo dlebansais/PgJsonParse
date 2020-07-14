@@ -1,9 +1,10 @@
-﻿namespace Translator
+﻿namespace PgObjects
 {
-    using PgObjects;
+    using System;
     using System.Diagnostics;
     using System.Drawing;
     using System.Globalization;
+    using Translator;
 
     public static class Tools
     {
@@ -155,6 +156,12 @@
         public static string CleanedUpString(string value)
         {
             return value.Replace("--", "—");
+        }
+        #endregion
+
+        #region Misc
+        public static void VerifyTables(Type type)
+        {
         }
         #endregion
     }

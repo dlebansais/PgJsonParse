@@ -23,5 +23,6 @@
 
         public override int ObjectIconId { get { return PgObject.StorageVaultIconId; } }
         public override string ObjectName { get { return NpcFriendlyName; } }
+        public override string ToString() { return NpcFriendlyName; }
     }
 }

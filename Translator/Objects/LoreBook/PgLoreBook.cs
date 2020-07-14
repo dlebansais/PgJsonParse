@@ -17,5 +17,6 @@
 
         public override int ObjectIconId { get { return LoreBookIconId; } }
         public override string ObjectName { get { return Title; } }
+        public override string ToString() { return Title; }
     }
 }

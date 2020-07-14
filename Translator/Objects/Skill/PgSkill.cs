@@ -40,5 +40,6 @@
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name.Length > 0 ? Name : Key; } }
+        public override string ToString() { return Name.Length > 0 ? Name : Key; }
     }
 }

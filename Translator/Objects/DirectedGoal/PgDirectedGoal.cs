@@ -14,5 +14,6 @@
 
         public override int ObjectIconId { get { return DirectedGoalIconId; } }
         public override string ObjectName { get { return Label; } }
+        public override string ToString() { return Label; }
     }
 }

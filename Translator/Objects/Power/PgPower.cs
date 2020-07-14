@@ -18,5 +18,6 @@
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return ComposedName; } }
+        public override string ToString() { return ComposedName; }
     }
 }

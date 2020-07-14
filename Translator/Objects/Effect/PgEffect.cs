@@ -25,5 +25,6 @@
 
         public override int ObjectIconId { get { return FriendlyIconId; } }
         public override string ObjectName { get { return FriendlyName; } }
+        public override string ToString() { return FriendlyName; }
     }
 }

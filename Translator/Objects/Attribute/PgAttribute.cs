@@ -20,5 +20,6 @@
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return ValidLabel; } }
+        public override string ToString() { return ValidLabel; }
     }
 }

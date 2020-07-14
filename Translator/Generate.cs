@@ -7,6 +7,7 @@
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     
     public class Generate
@@ -445,37 +446,156 @@
             if (!typeIndexTable.ContainsKey(Type))
                 typeIndexTable.Add(Type, new List<string>());
 
-            string Key = null;
-            string Content = string.Empty;
-            PropertyInfo[] Properties = Type.GetProperties();
+            if (GetObjectIndexContent(Item, Type, 2, out string Key, out string Content))
+            {
+                Debug.Assert(Key != null);
+
+                typeIndexTable[Type].Add($"{Content}{ObjectKeyStart}{Key}{ObjectKeyEnd}");
+            }
+        }
+
+        private static bool GetObjectIndexContent(object item, Type type, int recursion, out string key, out string content)
+        {
+            key = null;
+            content = string.Empty;
+
+            if (recursion == 0)
+                return false;
+
+            PropertyInfo[] Properties = type.GetProperties();
             foreach (PropertyInfo Property in Properties)
             {
-                string PropertyTypeName = Property.PropertyType.ToString();
+                if (!Property.CanWrite)
+                    continue;
+                if (Property.Name == "AssociationListAbility" || Property.Name == "AssociationTablePower")
+                    continue;
 
-                switch (PropertyTypeName)
+                Type PropertyType = Property.PropertyType;
+                if (PropertyType == typeof(string))
                 {
-                    case "System.String":
-                        string StringValue = Property.GetValue(Item) as string;
-                        Debug.Assert(StringValue != null);
+                    string StringValue = Property.GetValue(item) as string;
+                    Debug.Assert(StringValue != null);
 
-                        if (Property.Name == "Key")
-                            Key = StringValue;
-                        else
+                    if (Property.Name == "Key")
+                        key = StringValue;
+                    else if (Property.Name == "SourceKey")
+                    {
+                    }
+                    else
+                        content += GeStringIndexContent(StringValue);
+                }
+                else if (PropertyType.BaseType == typeof(PgObject))
+                {
+                    PgObject ObjectValue = Property.GetValue(item) as PgObject;
+                    if (ObjectValue != null)
+                        content += GetPgObjectIndexContent(ObjectValue);
+                }
+                else if (PropertyType.IsEnum)
+                {
+                    content += GetEnumIndexContent(PropertyType, Property.GetValue(item));
+                }
+                else if (IsTypeIgnoredForIndex(PropertyType))
+                {
+                }
+                else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
+                {
+                }
+                else if (PropertyType.GetInterface(typeof(ICollection).Name) != null)
+                {
+                    ICollection ObjectCollection = Property.GetValue(item) as ICollection;
+                    Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
+
+                    Debug.Assert(CollectionType.IsGenericType);
+                    Type[] GenericArguments = CollectionType.GetGenericArguments();
+                    Debug.Assert(GenericArguments.Length == 1);
+                    Type ItemType = GenericArguments[0];
+                    Debug.Assert(ItemType != null);
+
+                    if (ItemType.BaseType == typeof(PgObject))
+                    {
+                        foreach (PgObject ObjectValue in ObjectCollection)
                         {
-                            StringValue = StringValue.Replace("\n", "\\n");
-                            StringValue = StringValue.Replace("&", "&#38;");
-                            StringValue = StringValue.Replace("<", "&lt;");
-                            StringValue = StringValue.Replace(">", "&gt;");
-                           
-                            Content += $"{StringValue}{FieldSeparator}";
+                            Debug.Assert(ObjectValue != null);
+                            content += GetPgObjectIndexContent(ObjectValue);
                         }
-                        break;
+                    }
+                    else if (ItemType.IsEnum)
+                    {
+                        foreach (object EnumValue in ObjectCollection)
+                            content += GetEnumIndexContent(ItemType, EnumValue);
+                    }
+                    else if (ItemType.Name.StartsWith("Pg"))
+                    {
+                        foreach (object ItemValue in ObjectCollection)
+                            content += GetReferenceIndexContent(ItemValue.GetType(), ItemValue, recursion);
+                    }
+                    else if (IsTypeIgnoredForIndex(ItemType))
+                    {
+                    }
+                    else
+                    {
+                    }
+                }
+                else if (PropertyType.Name.StartsWith("Pg"))
+                {
+                    content += GetReferenceIndexContent(PropertyType, Property.GetValue(item), recursion);
+                }
+                else
+                {
                 }
             }
 
-            Debug.Assert(Key != null);
+            return content.Length > 0;
+        }
 
-            typeIndexTable[Type].Add($"{Content}{ObjectKeyStart}{Key}{ObjectKeyEnd}");
+        private static bool IsTypeIgnoredForIndex(Type type)
+        {
+            return (type == typeof(int) | type == typeof(int?) ||
+                    type == typeof(uint) | type == typeof(uint?) ||
+                    type == typeof(float) | type == typeof(float?) ||
+                    type == typeof(bool) | type == typeof(bool?) ||
+                    type == typeof(TimeSpan) | type == typeof(TimeSpan?));
+        }
+
+        private static string GeStringIndexContent(string value)
+        {
+            value = value.Replace("\n", "\\n");
+            value = value.Replace("&", "&#38;");
+            value = value.Replace("<", "&lt;");
+            value = value.Replace(">", "&gt;");
+
+            return $"{value}{FieldSeparator}";
+        }
+
+        private static string GetPgObjectIndexContent(PgObject item)
+        {
+            string ItemName = item.ToString();
+            return GeStringIndexContent(ItemName);
+        }
+
+        private static string GetReferenceIndexContent(Type referenceType, object value, int recursion)
+        {
+            if (value != null && GetObjectIndexContent(value, referenceType, recursion - 1, out string _, out string ValueContent))
+                return ValueContent;
+            else
+                return string.Empty;
+        }
+
+        private static string GetEnumIndexContent(Type enumType, object value)
+        {
+            Debug.Assert(StringToEnumConversion.KnownParsedEnumtable.ContainsKey(enumType));
+
+            string EnumTextMapName = $"{enumType.Name}TextMap";
+            PropertyInfo EnumTextMapProperty = typeof(TextMaps).GetProperty(EnumTextMapName);
+            if (EnumTextMapProperty != null)
+            {
+                IDictionary EnumTextMap = EnumTextMapProperty.GetValue(null) as IDictionary;
+                Debug.Assert(EnumTextMap != null);
+                string EnumText = EnumTextMap[value] as string;
+                return GeStringIndexContent(EnumText);
+            }
+            else
+                return string.Empty;
         }
 
         private static void WriteGroupings(int version, List<object> objectList)
