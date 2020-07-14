@@ -149,6 +149,7 @@
         private static bool ParseItemEffectSimple(string effectString, string parsedFile, string parsedKey, out PgPowerEffect powerEffect)
         {
             string Description = effectString.Trim();
+
             List<int> IconIdList = new List<int>();
             string IconIdPattern = "<icon=";
 
@@ -179,8 +180,41 @@
                 Description = Description.Substring(EndIndex + 1);
             }
 
-            powerEffect = new PgPowerEffectSimple() { Description = Description, IconIdList = IconIdList };
+            if (IsBuggedDescription(Description, IconIdList, out PgPowerEffect FixedEffect))
+                powerEffect = FixedEffect;
+            else
+                powerEffect = new PgPowerEffectSimple() { Description = Description, IconIdList = IconIdList };
+
             return true;
+        }
+
+        private static bool IsBuggedDescription(string description, List<int> iconIdList, out PgPowerEffect fixedEffect)
+        {
+            if (IsBuggedDescription(description, iconIdList, "Tough Hoof deals ", " Trauma damage to the target each time they attack and damage you (within 8 seconds)", "BOOST_ABILITYDOT_TOUGHHOOF", out fixedEffect))
+                return true;
+
+            return false;
+        }
+
+        private static bool IsBuggedDescription(string description, List<int> iconIdList, string startPattern, string endPattern, string attributeKey, out PgPowerEffect fixedEffect)
+        {
+            int StartIndex = description.IndexOf(startPattern);
+            int EndIndex = description.LastIndexOf(endPattern);
+            PgAttribute ParsedAttribute = null;
+
+            if (StartIndex == 0 && 
+                EndIndex > startPattern.Length &&
+                Tools.TryParseFloat(description.Substring(startPattern.Length, EndIndex - startPattern.Length), out float ParsedEffect, out FloatFormat ParsedEffectFormat) &&
+                Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, attributeKey))
+            {
+                fixedEffect = new PgPowerEffectAttribute() { Description = description, IconIdList = iconIdList, Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+                return true;
+            }
+            else
+            {
+                fixedEffect = null;
+                return false;
+            }
         }
     }
 }

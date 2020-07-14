@@ -203,6 +203,10 @@
             Writer.WriteLine("");
             Writer.WriteLine($"    public static class SearchIndex");
             Writer.WriteLine("    {");
+            Writer.WriteLine($"        public const char FieldSeparator = '{FieldSeparator}';");
+            Writer.WriteLine($"        public const char ObjectKeyStart = '{ObjectKeyStart}';");
+            Writer.WriteLine($"        public const char ObjectKeyEnd = '{ObjectKeyEnd}';");
+            Writer.WriteLine("");
             Writer.WriteLine("        public static Dictionary<Func<string, PgObject>, string> Table { get; } = new Dictionary<Func<string, PgObject>, string>()");
             Writer.WriteLine("        {");
 
