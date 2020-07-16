@@ -15,6 +15,7 @@
             { AbilityItemKeyword.form_Spider, "form:Spider" },
             { AbilityItemKeyword.form_GiantBat, "form:GiantBat" },
             { AbilityItemKeyword.form_Rabbit, "form:Rabbit" },
+            { AbilityItemKeyword.form_Fox, "form:Fox" },
         };
 
         public static readonly Dictionary<EffectStackingType, string> StackingTypeTable = new Dictionary<EffectStackingType, string>()

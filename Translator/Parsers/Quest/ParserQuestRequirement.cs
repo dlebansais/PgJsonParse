@@ -20,6 +20,7 @@
             { QuestRequirementType.IsWarden, FinishItemIsWarden },
             { QuestRequirementType.AreaEventOn, FinishItemAreaEventOn },
             { QuestRequirementType.MinSkillLevel, FinishItemMinSkillLevel },
+            { QuestRequirementType.MoonPhase, FinishItemMoonPhase },
             { QuestRequirementType.HangOutCompleted, FinishItemHangOutCompleted },
             { QuestRequirementType.InteractionFlagSet, FinishItemInteractionFlagSet },
             { QuestRequirementType.Or, FinishItemOr },
@@ -37,6 +38,7 @@
             { QuestRequirementType.IsWarden, new List<string>() { "T" } },
             { QuestRequirementType.AreaEventOn, new List<string>() { "T", "AreaEvent" } },
             { QuestRequirementType.MinSkillLevel, new List<string>() { "T", "Level", "Skill" } },
+            { QuestRequirementType.MoonPhase, new List<string>() { "T", "MoonPhase" } },
             { QuestRequirementType.HangOutCompleted, new List<string>() { "T", "HangOut" } },
             { QuestRequirementType.InteractionFlagSet, new List<string>() { "T", "InteractionFlag" } },
             { QuestRequirementType.Or, new List<string>() { "T", "List" } },
@@ -381,6 +383,49 @@
                             break;
                         case "Skill":
                             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill = valueSkill, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemMoonPhase(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestRequirementMoonPhase NewItem = new PgQuestRequirementMoonPhase();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "MoonPhase":
+                            Result = Inserter<MoonPhases>.SetEnum((MoonPhases valueEnum) => NewItem.MoonPhase = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

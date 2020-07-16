@@ -22,7 +22,7 @@
         public int? RawArmorMitigationRatio { get; set; }
         public int AoE { get { return RawAoE.HasValue ? RawAoE.Value : 0; } }
         public int? RawAoE { get; set; }
-        public List<PreEffect> SelfPreEffectList { get; set; } = new List<PreEffect>();
+        public PgSelfPreEffectCollection SelfPreEffectList { get; set; } = new PgSelfPreEffectCollection();
         public int RageBoost { get { return RawRageBoost.HasValue ? RawRageBoost.Value : 0; } }
         public int? RawRageBoost { get; set; }
         public float RageMultiplier { get { return RawRageMultiplier.HasValue ? RawRageMultiplier.Value : 1.0F; } }

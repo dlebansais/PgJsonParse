@@ -984,5 +984,7 @@
         GeneAnalyzer_Cats,
         GeneAnalyzer_Ruminants,
         GeneticsRelated,
+        RawLapisLazuli,
+        SpiritFoxLapisLazuli,
     }
 }

@@ -16,5 +16,7 @@
         PumpkinTurret,
         SummonedColdSphere,
         StunTrap,
+        PowerGlyph,
+        SummonedFox,
     }
 }

@@ -43,5 +43,6 @@
         HolySymbol,
         FairyChime,
         EnergyBow,
+        form_Fox,
     }
 }

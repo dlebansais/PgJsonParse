@@ -163,6 +163,10 @@
             if (!IsSlotCompatible(validSlotList, power))
                 return;
 
+            if (power.Skill.Key == "SpiritFox")
+            {
+            }
+
             Debug.Assert(power.Skill == PgSkill.Unknown ||
                          IsSkillInList(skillList, power.Skill) ||
                          power.Skill.Key == "Gourmand" ||
@@ -1092,6 +1096,7 @@
                 case CombatKeyword.ReflectOnRanged:
                 case CombatKeyword.ReflectMeleeIndirectDamage:
                 case CombatKeyword.AddCombatRefreshTimer:
+                case CombatKeyword.WithinDistance:
                     VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
                     break;
 
@@ -3497,6 +3502,7 @@
             { (int)GameCombatSkill.Warden, "Warden" },
             //{ (int)GameCombatSkill.FairyMagic, "Fairy Magic" },
             { (int)GameCombatSkill.Lycanthropy, "Lycanthropy" },
+            //{ (int)GameCombatSkill.SpiritFox, "Spirit Fox" },
         };
 
         private static List<Sentence> SentenceList = new List<Sentence>()
@@ -3584,7 +3590,7 @@
             new Sentence("Take %f damage from #D attack", CombatKeyword.AddVulnerability),
             new Sentence("#D Vulnerability %f", CombatKeyword.AddVulnerability),
             new Sentence("%f more damage from any #D attack", CombatKeyword.AddVulnerability),
-            new Sentence("Take %f damage from both #D", CombatKeyword.AddVulnerability),
+            //new Sentence("Take %f damage from both #D", CombatKeyword.AddVulnerability),
             new Sentence("Target take %f #D damage from future attack", CombatKeyword.AddVulnerability),
             new Sentence("B*u*t take %f damage from any #D attack", new List<CombatKeyword>() { CombatKeyword.But, CombatKeyword.AddVulnerability }),
             new Sentence("#D Vulnerability +infinity", CombatKeyword.DestroyedByDamageType),

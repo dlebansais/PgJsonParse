@@ -146,18 +146,19 @@
                 if (!(StringItem is string SelfPreEffectString))
                     return Program.ReportFailure($"Value {StringItem} was expected to be a string");
 
-                if (!ParseSelfPreEffect(item, SelfPreEffectString, out PreEffect selfPreEffect))
+                if (!ParseSelfPreEffect(item, SelfPreEffectString, out PgSelfPreEffect selfPreEffect))
                     return false;
 
+                ParsingContext.AddSuplementaryObject(selfPreEffect);
                 item.SelfPreEffectList.Add(selfPreEffect);
             }
 
             return true;
         }
 
-        private bool ParseSelfPreEffect(PgAbilityPvX item, string value, out PreEffect enumValue)
+        private bool ParseSelfPreEffect(PgAbilityPvX item, string value, out PgSelfPreEffect selfPreEffect)
         {
-            enumValue = PreEffect.Internal_None;
+            selfPreEffect = null;
 
             int StartIndex = value.IndexOf('(');
             int EndIndex = value.IndexOf(')');
@@ -167,16 +168,31 @@
                 if (Prefix == "EnhanceZombie")
                 {
                     string Enhancement = value.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
-                    if (!StringToEnumConversion<PreEffect>.TryParse(Enhancement, out enumValue))
+                    if (!StringToEnumConversion<PreEffect>.TryParse(Enhancement, out PreEffect enumValue))
                         return false;
+
+                    selfPreEffect = new PgSelfPreEffectEnhanceZombie() { Value = enumValue };
+                }
+                else if (Prefix == "ConfigGalvanize")
+                {
+                    if (value[StartIndex + 1] != ',')
+                        return Program.ReportFailure($"Symbol ',' was expected");
+
+                    string Enhancement = value.Substring(StartIndex + 2, EndIndex - StartIndex - 2);
+                    if (!int.TryParse(Enhancement, out int Value))
+                        return Program.ReportFailure($"Value {Enhancement} was expected to be an int");
+
+                    selfPreEffect = new PgSelfPreEffectConfigGalvanize() { RawValue = Value };
                 }
                 else
                     return Program.ReportFailure($"Invalid SelfPreEffect format {Prefix}");
             }
             else
             {
-                if (!StringToEnumConversion<PreEffect>.TryParse(value, out enumValue))
+                if (!StringToEnumConversion<PreEffect>.TryParse(value, out PreEffect enumValue))
                     return false;
+
+                selfPreEffect = new PgSelfPreEffectSimple() { Value = enumValue };
             }
 
             return true;

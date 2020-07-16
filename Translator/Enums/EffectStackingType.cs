@@ -312,5 +312,8 @@
         SPAWN_VIEW_RODENTS,
         SPAWN_VIEW_FISH,
         TSysBlindingFlash,
+        DimensionalSnareDarknessVuln,
+        DimensionalSnarePoisonVuln,
+        DimensionalSnareCrushingVuln,
     }
 }

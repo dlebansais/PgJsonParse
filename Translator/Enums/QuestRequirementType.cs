@@ -15,5 +15,6 @@
         HasEffectKeyword,
         RuntimeBehaviorRuleSet,
         IsLongtimeAnimal,
+        MoonPhase,
     }
 }

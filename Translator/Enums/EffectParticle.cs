@@ -115,5 +115,6 @@
         RageShield,
         OnFireGreen,
         BlindingFlash,
+        EnergyTrap,
     }
 }

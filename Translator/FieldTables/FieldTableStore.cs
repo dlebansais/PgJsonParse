@@ -268,7 +268,6 @@
             { "Swimming", typeof(bool) },
             { "MobilityType", typeof(string) },
             { "Flying", typeof(bool) },
-            { "FollowClose", typeof(bool) },
             { "Description", typeof(string) },
         };
 
@@ -499,6 +498,7 @@
             { "AreaEvent", typeof(string) },
             { "DisallowedRace", typeof(string) },
             { "AllowedRace", typeof(string) },
+            { "MoonPhase", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableQuestObjective = new Dictionary<string, Type>()
@@ -830,8 +830,7 @@
 
                 if (!usedList.Contains(Key))
                 {
-                    Debug.WriteLine($"Type {Key} was not used during parsing");
-                    Result = false;
+                    Result &= Program.ReportFailure($"Type {Key} was not used during parsing");
                     continue;
                 }
 
@@ -847,10 +846,7 @@
 
             foreach (Type Key in list)
                 if (!usedList.Contains(Key))
-                {
-                    Debug.WriteLine($"Type {Key} was not used during parsing");
-                    Result = false;
-                }
+                    Result &= Program.ReportFailure($"Type {Key} was not used during parsing");
 
             return Result;
         }

@@ -126,6 +126,11 @@
     <Compile Include="FieldTables\FixedFieldTable.cs" />
     <Compile Include="FieldTables\FieldTable.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDisallowedItemKeyword.cs" />
+    <Compile Include="Objects\Ability\PgSelfPreEffectCollection.cs" />
+    <Compile Include="Objects\Ability\PgSelfPreEffect.cs" />
+    <Compile Include="Objects\Ability\SelfPreEffect\PgSelfPreEffectConfigGalvanize.cs" />
+    <Compile Include="Objects\Ability\SelfPreEffect\PgSelfPreEffectSimple.cs" />
+    <Compile Include="Objects\Ability\SelfPreEffect\PgSelfPreEffectEnhanceZombie.cs" />
     <Compile Include="Objects\AdvancementTable\PgAdvancementEffectAttribute.cs" />
     <Compile Include="Objects\AdvancementTable\PgAdvancementEffectAttributeCollection.cs" />
     <Compile Include="Objects\Combat\PgCombatEffectCollection.cs" />
@@ -165,6 +170,7 @@
     <Compile Include="Objects\Quest\QuestPreGiveEffect\PgQuestPreGiveEffectItem.cs" />
     <Compile Include="Objects\Quest\QuestPreGiveEffect\PgQuestPreGiveEffectSimple.cs" />
     <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementAllowedRace.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementMoonPhase.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardNamedLootProfile.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardInteractionFlag.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardGuildXp.cs" />
@@ -426,9 +432,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if exist "$(ProjectDir)../../PgObjects/v335/Objects/" xcopy "$(ProjectDir)Objects" "$(ProjectDir)..\..\PgObjects\v335\Objects\" /s /y /q
-if exist "$(ProjectDir)../../PgObjects/v335/Enums/" xcopy "$(ProjectDir)Enums" "$(ProjectDir)..\..\PgObjects\v335\Enums\" /s /y /q
-if exist "$(ProjectDir)../../PgObjects/v335/" copy "$(ProjectDir)TextMaps.cs" "$(ProjectDir)..\..\PgObjects\v335\" /y
+    <PostBuildEvent>if exist "$(ProjectDir)../../PgObjects/v336/Objects/" xcopy "$(ProjectDir)Objects" "$(ProjectDir)..\..\PgObjects\v336\Objects\" /s /y /q
+if exist "$(ProjectDir)../../PgObjects/v336/Enums/" xcopy "$(ProjectDir)Enums" "$(ProjectDir)..\..\PgObjects\v336\Enums\" /s /y /q
+if exist "$(ProjectDir)../../PgObjects/v336/" copy "$(ProjectDir)TextMaps.cs" "$(ProjectDir)..\..\PgObjects\v336\" /y
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

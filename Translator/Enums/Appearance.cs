@@ -10,5 +10,6 @@
         Werewolf,
         GiantBat,
         Rabbit,
+        Fox,
     }
 }

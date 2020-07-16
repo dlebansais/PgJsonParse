@@ -28,5 +28,6 @@
         ElectricityHit2,
         EnergyPillar,
         HealingParticle_Silent,
+        LightSlash,
     }
 }

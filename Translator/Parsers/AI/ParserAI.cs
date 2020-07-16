@@ -60,9 +60,6 @@
                     case "Flying":
                         Result = SetBoolProperty((bool valueBool) => item.RawIsFlying = valueBool, Value);
                         break;
-                    case "FollowClose":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsFollowClose = valueBool, Value);
-                        break;
                     case "Description":
                         Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                         break;

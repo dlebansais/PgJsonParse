@@ -233,6 +233,7 @@
             { AbilityItemKeyword.HolySymbol, "Holy Symbol" },
             { AbilityItemKeyword.FairyChime, "Fairy Chime" },
             { AbilityItemKeyword.EnergyBow, "Energy Bow" },
+            { AbilityItemKeyword.form_Fox, "Fox only" },
         };
 
         public static Dictionary<AbilityKeyword, string> AbilityKeywordTextMap {get; } = new Dictionary<AbilityKeyword, string>()
@@ -732,6 +733,17 @@
             { AbilityKeyword.PixieFlare, "Pixie Flare" },
             { AbilityKeyword.FaeConduit, "Fae Conduit" },
             { AbilityKeyword.PetBasicAttack, "Pet Basic Attack" },
+            { AbilityKeyword.Nip, "Nip" },
+            { AbilityKeyword.SoulBite, "Soul Bite" },
+            { AbilityKeyword.SpiritPounce, "Spirit Pounce" },
+            { AbilityKeyword.BlurStep, "Blur Step" },
+            { AbilityKeyword.PowerGlyph, "Power Glyph" },
+            { AbilityKeyword.Galvanize, "Galvanize" },
+            { AbilityKeyword.ParadoxTrot, "Paradox Trot" },
+            { AbilityKeyword.DimensionalSnare, "Dimensional Snare" },
+            { AbilityKeyword.SpiritBolt, "Spirit Bolt" },
+            { AbilityKeyword.TrickFox, "Trick Fox" },
+            { AbilityKeyword.FoxIllusionForm, "FoxIllusion Form" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap {get; } = new Dictionary<AbilityPetType, string>()
@@ -750,6 +762,8 @@
             { AbilityPetType.PumpkinTurret, "Pumpkin Turret" },
             { AbilityPetType.SummonedColdSphere, "Summoned Cold Sphere" },
             { AbilityPetType.StunTrap, "Stun Trap" },
+            { AbilityPetType.PowerGlyph, "Power Glyph" },
+            { AbilityPetType.SummonedFox, "Summoned Fox" },
         };
 
         public static Dictionary<AbilityProjectile, string> AbilityProjectileTextMap {get; } = new Dictionary<AbilityProjectile, string>()
@@ -822,6 +836,7 @@
             { AbilityTargetParticle.ElectricityHit2, "Electricity Hit #2" },
             { AbilityTargetParticle.EnergyPillar, "Energy Pillar" },
             { AbilityTargetParticle.HealingParticle_Silent, "Healing Particle (Silent)" },
+            { AbilityTargetParticle.LightSlash, "Light Slash" },
         };
 
         public static Dictionary<Appearance, string> AppearanceTextMap {get; } = new Dictionary<Appearance, string>()
@@ -834,6 +849,7 @@
             { Appearance.Werewolf, "Werewolf" },
             { Appearance.GiantBat, "Giant Bat" },
             { Appearance.Rabbit, "Rabbit" },
+            { Appearance.Fox, "Fox" },
         };
 
         public static Dictionary<AppearanceSkin, string> AppearanceSkinTextMap {get; } = new Dictionary<AppearanceSkin, string>()
@@ -965,7 +981,7 @@
             { DamageType.Regeneration, "None" },
         };
 
-        public static Dictionary<Deaths, string> DeathsTextMap {get; } = new Dictionary<Deaths, string>()
+        public static Dictionary<Deaths, string> DeathsTextMap { get; } = new Dictionary<Deaths, string>()
         {
             { Deaths.Internal_None, "" },
             { Deaths.PunchingDamage, "Punching Damage" },
@@ -1113,7 +1129,10 @@
             { Deaths.InsectSwarm, "Insect Swarm" },
             { Deaths.FairyFire, "Fairy Fire" },
             { Deaths.Scapegoated, "Scapegoated" },
-        };
+            { Deaths.ImaginaryFoxBite, "Imaginary Fox Bite" },
+            { Deaths.FoxBite, "Fox Bite" },
+            { Deaths.SoulDamage, "Soul Damage" },
+            };
 
         public static Dictionary<DisallowedState, string> DisallowedStateTextMap {get; } = new Dictionary<DisallowedState, string>()
         {
@@ -1413,6 +1432,10 @@
             { EffectKeyword.SunValePriestBuff, "Sun Vale Priest Buff" },
             { EffectKeyword.SunValeAntiFaeBuff, "Sun Vale Anti Fae Buff" },
             { EffectKeyword.SacrificialScrayCurse, "Sacrificial Scray Curse" },
+            { EffectKeyword.FlutterButter, "Flutter Butter" },
+            { EffectKeyword.BirdieButter, "Birdie Butter" },
+            { EffectKeyword.BatButter, "Bat Butter" },
+            { EffectKeyword.BlurStep, "Blur Step" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap {get; } = new Dictionary<EffectParticle, string>()
@@ -1530,6 +1553,7 @@
             { EffectParticle.RageShield, "Rage Shield" },
             { EffectParticle.OnFireGreen, "On Fire (Green)"},
             { EffectParticle.BlindingFlash, "Blinding Flash"},
+            { EffectParticle.EnergyTrap, "Energy Trap" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap {get; } = new Dictionary<EffectStackingType, string>()
@@ -1844,6 +1868,9 @@
             { EffectStackingType.SPAWN_VIEW_RODENTS, "Spawn View Rodent" },
             { EffectStackingType.SPAWN_VIEW_FISH, "Spawn View Fish" },
             { EffectStackingType.TSysBlindingFlash, "Blinding Flash" },
+            { EffectStackingType.DimensionalSnareDarknessVuln, "Dimensional Snare Darkness Vulnerability" },
+            { EffectStackingType.DimensionalSnarePoisonVuln, "Dimensional Snare Poison Vulnerability" },
+            { EffectStackingType.DimensionalSnareCrushingVuln, "Dimensional Snare Crushing Vulnerability" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap {get; } = new Dictionary<EnhancementEffect, string>()
@@ -3090,6 +3117,8 @@
             { ItemKeyword.GeneAnalyzer_Cats, "Gene Analyzer (Cats)" },
             { ItemKeyword.GeneAnalyzer_Ruminants, "Gene Analyzer (Ruminants)" },
             { ItemKeyword.GeneticsRelated, "Genetics Related" },
+            { ItemKeyword.RawLapisLazuli, "Raw Lapis Lazuli" },
+            { ItemKeyword.SpiritFoxLapisLazuli, "Spirit Fox Lapis Lazuli" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap {get; } = new Dictionary<ItemSlot, string>()

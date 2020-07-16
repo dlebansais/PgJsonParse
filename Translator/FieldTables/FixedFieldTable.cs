@@ -44,10 +44,7 @@
             {
                 string Key = Entry.Key;
                 if (!UsedKeyList.Contains(Key))
-                {
-                    Result = false;
-                    Debug.WriteLine($"Entry {Key} for type {baseType} was not used during parsing");
-                }
+                    Result &= Program.ReportFailure($"Entry {Key} for type {baseType} was not used during parsing");
             }
 
             return Result;

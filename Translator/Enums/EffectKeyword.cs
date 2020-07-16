@@ -249,5 +249,9 @@
         SunValePriestBuff,
         SunValeAntiFaeBuff,
         SacrificialScrayCurse,
+        FlutterButter,
+        BirdieButter,
+        BatButter,
+        BlurStep,
     }
 }

@@ -498,5 +498,16 @@
         PixieFlare,
         FaeConduit,
         PetBasicAttack,
+        Nip,
+        SoulBite,
+        SpiritPounce,
+        BlurStep,
+        PowerGlyph,
+        Galvanize,
+        ParadoxTrot,
+        DimensionalSnare,
+        SpiritBolt,
+        TrickFox,
+        FoxIllusionForm,
     }
 }

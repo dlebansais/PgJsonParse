@@ -21,10 +21,7 @@
         public override bool VerifyTableCompletion(Type baseType)
         {
             if (!IsTableUsed)
-            {
-                Debug.WriteLine($"No entry for type {baseType} was not used during parsing");
-                return false;
-            }
+                return Program.ReportFailure($"No entry for type {baseType} was not used during parsing");
             else
                 return true;
         }

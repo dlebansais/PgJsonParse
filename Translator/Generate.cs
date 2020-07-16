@@ -342,7 +342,11 @@
             }
 
             string ClassName = ToClassName(type);
-            string FilePath = Path.Combine(RootFolder, "Tables", $"{ClassName}.cs");
+            string FileFolderPath = Path.Combine(RootFolder, "Tables");
+            string FilePath = Path.Combine(FileFolderPath, $"{ClassName}.cs");
+
+            if (!Directory.Exists(FileFolderPath))
+                Directory.CreateDirectory(FileFolderPath);
 
             FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
             writer = new StreamWriter(Stream);

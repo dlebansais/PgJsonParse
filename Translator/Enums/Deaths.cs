@@ -148,5 +148,8 @@
         InsectSwarm,
         FairyFire,
         Scapegoated,
+        ImaginaryFoxBite,
+        FoxBite,
+        SoulDamage,
     }
 }
