@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CombatParser\CombatParser.cs" />
+    <Compile Include="CombatParser\Sentence.cs" />
+    <Compile Include="CombatParser\SignInterpretation.cs" />
+    <Compile Include="Enums\CombatKeyword.cs" />
+    <Compile Include="Enums\GameCombatSkill.cs" />
+    <Compile Include="Enums\GameDamageType.cs" />
     <Compile Include="Enums\InteractionFlag.cs" />
     <Compile Include="Enums\NamedLootProfile.cs" />
     <Compile Include="Enums\QuestGroup.cs" />
@@ -122,6 +128,10 @@
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDisallowedItemKeyword.cs" />
     <Compile Include="Objects\AdvancementTable\PgAdvancementEffectAttribute.cs" />
     <Compile Include="Objects\AdvancementTable\PgAdvancementEffectAttributeCollection.cs" />
+    <Compile Include="Objects\Combat\PgCombatEffectCollection.cs" />
+    <Compile Include="Objects\Combat\PgNumericValue.cs" />
+    <Compile Include="Objects\Combat\PgCombatEffect.cs" />
+    <Compile Include="Objects\Combat\PgModEffect.cs" />
     <Compile Include="Objects\Item\PgItemDye.cs" />
     <Compile Include="Objects\Item\PgItemDyeCollection.cs" />
     <Compile Include="Objects\Npc\PgNpcLocation.cs" />

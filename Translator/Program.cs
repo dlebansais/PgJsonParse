@@ -95,13 +95,9 @@
             FinalizingResult &= ParserQuestRequirement.FinalizeParsing();
             FinalizingResult &= ParserQuestReward.FinalizeParsing();
             FinalizingResult &= ParserStorageRequirement.FinalizeParsing();
-            FinalizingResult &= StringToEnumConversion.FinalizeParsing();
 
             FinalizingResult &= ParserAbility.UpdateSource();
             FinalizingResult &= ParserRecipe.UpdateSource();
-
-            if (!FinalizingResult)
-                return -1;
 
             ParserAbility.UpdateIconsAndNames();
             ParserAttribute.UpdateIconsAndNames();
@@ -112,7 +108,33 @@
 
             ParserSkill.FillAssociationTables();
 
+            CombatParser CombatParser = new CombatParser();
+            List<ItemSlot> ValidSlotList = new List<ItemSlot>()
+            {
+                ItemSlot.MainHand,
+                ItemSlot.OffHand,
+                ItemSlot.Head,
+                ItemSlot.Chest,
+                ItemSlot.Legs,
+                ItemSlot.Feet,
+                ItemSlot.Hands,
+                ItemSlot.Necklace,
+                ItemSlot.Ring,
+                ItemSlot.Racial,
+                ItemSlot.Waist,
+            };
             List<object> ObjectList = ParsingContext.GetParsedObjectList();
+
+            Dictionary<string, PgModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, PgModEffect>();
+            Dictionary<string, PgModEffect> EffectKeyToCompleteEffectTable = new Dictionary<string, PgModEffect>();
+            CombatParser.AnalyzeCachedData(ValidSlotList, ObjectList, PowerKeyToCompleteEffectTable, EffectKeyToCompleteEffectTable);
+
+            FinalizingResult &= StringToEnumConversion.FinalizeParsing();
+
+            if (!FinalizingResult)
+                return -1;
+
+            ObjectList = ParsingContext.GetParsedObjectList();
             Generate.Write(Version, ObjectList);
 
             return 0;

@@ -6,5 +6,10 @@
     {
         public string Description { get; set; } = string.Empty;
         public List<int> IconIdList { get; set; } = new List<int>();
+
+        public override string ToString()
+        {
+            return Description;
+        }
     }
 }

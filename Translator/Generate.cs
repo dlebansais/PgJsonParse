@@ -7,9 +7,8 @@
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
-    
+
     public class Generate
     {
         public const char FieldSeparator = '§';
@@ -137,6 +136,8 @@
 
             Debug.WriteLine($"100%");
 
+            LastDisplay = 10;
+
             foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
             {
                 StreamWriter Writer = Entry.Value;
@@ -148,6 +149,21 @@
                 Writer.WriteLine($"            return Table[key];");
                 Writer.WriteLine($"        }}");
             }
+
+            for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
+            {
+                WriteItemAdder(objectList, ObjectIndex);
+
+                int Percent = (int)((((float)ObjectIndex) / objectList.Count) * 100);
+
+                if (Percent >= LastDisplay)
+                {
+                    Debug.WriteLine($"{Percent}%");
+                    LastDisplay += 10;
+                }
+            }
+
+            Debug.WriteLine($"100%");
         }
 
         private static void WriteIndexes(List<object> objectList)
@@ -370,6 +386,14 @@
             object Item = objectList[objectIndex];
             Type Type = Item.GetType();
 
+            if (Item is PgModEffect AsModEffect)
+            {
+            }
+
+            if (Item is PgCombatEffect AsCombatEffect)
+            {
+            }
+
             AddTypeFile(Type, out StreamWriter Writer);
 
             PropertyInfo[] Properties = Type.GetProperties();
@@ -431,8 +455,33 @@
             StreamWriter Writer = WriterTable[Type];
 
             Writer.WriteLine($"                    case {KeyValue}:");
-            Writer.WriteLine($"                        Table.Add(key, {LinkValue});");
+            Writer.WriteLine($"                        Add_{LinkValue}(Table, key);");
             Writer.WriteLine($"                        break;");
+        }
+
+        private static void WriteItemAdder(List<object> objectList, int objectIndex)
+        {
+            object Item = objectList[objectIndex];
+            Type Type = Item.GetType();
+
+            PropertyInfo Property = Type.GetProperty("Key");
+            if (Property == null || Property.PropertyType != typeof(string))
+                return;
+
+            string Key = Property.GetValue(Item) as string;
+            Debug.Assert(Key != null);
+
+            string LinkValue = ToObjectName(objectIndex);
+
+            Debug.Assert(WriterTable.ContainsKey(Type));
+            StreamWriter Writer = WriterTable[Type];
+            string TypeName = Type.Name;
+
+            Writer.WriteLine("");
+            Writer.WriteLine($"        public static void Add_{LinkValue}(Dictionary<string, {TypeName}> table, string key)");
+            Writer.WriteLine("        {");
+            Writer.WriteLine($"            table.Add(key, {LinkValue});");
+            Writer.WriteLine("        }");
         }
 
         private static void GetItemIndexContent(List<object> objectList, int objectIndex, Dictionary<Type, List<string>> typeIndexTable)
@@ -592,7 +641,10 @@
                 IDictionary EnumTextMap = EnumTextMapProperty.GetValue(null) as IDictionary;
                 Debug.Assert(EnumTextMap != null);
                 string EnumText = EnumTextMap[value] as string;
-                return GeStringIndexContent(EnumText);
+                if (EnumText != null)
+                    return GeStringIndexContent(EnumText);
+                else
+                    return string.Empty;
             }
             else
                 return string.Empty;
@@ -628,6 +680,7 @@
             WriteGroupingDictionary(objectList, Writer, typeof(AbilityKeyword), "AbilityByKeyword", GetAbilityByKeywordTable);
             WriteGroupingDictionary(objectList, Writer, typeof(InteractionFlag), "QuestByInteractionFlag", GetQuestByInteractionFlagTable);
             WriteGroupingDictionary(objectList, Writer, typeof(RecipeItemKey), "ItemByRecipeKey", GetItemByRecipeKeyTable);
+            WriteGroupingList(objectList, Writer, "Buff", GetBuffList);
 
             Writer.WriteLine("    }");
             Writer.WriteLine("}");
@@ -640,6 +693,17 @@
             foreach (object Item in objectList)
                 if (Item is PgSkill AsSkill && IsCombatSkill(AsSkill))
                     KeyList.Add(AsSkill.Key);
+
+            return KeyList;
+        }
+
+        private static List<string> GetBuffList(List<object> objectList)
+        {
+            List<string> KeyList = new List<string>();
+
+            foreach (object Item in objectList)
+                if (Item is PgModEffect ModEffect && ModEffect.EffectKey.Length > 0 && ModEffect.EffectKey == ModEffect.Key && ParsingContext.ObjectKeyTable[typeof(PgEffect)].ContainsKey(ModEffect.EffectKey))
+                    KeyList.Add(ModEffect.EffectKey);
 
             return KeyList;
         }
@@ -671,7 +735,7 @@
             return KeyTable;
         }
 
-        private static bool IsCombatSkill(PgSkill skill)
+        public static bool IsCombatSkill(PgSkill skill)
         {
             return (skill.IsCombatSkill || skill.ParentSkillList.Exists((PgSkill item) => IsCombatSkill(item))) && skill.AssociationTablePower.Count > 0;
         }
@@ -1064,14 +1128,6 @@
             return KeyTable;
         }
 
-        private static ItemSlot SlotFromPower(PgPower item)
-        {
-            if (item.SlotList.Count == 0)
-                return ItemSlot.Internal_None;
-            else
-                return item.SlotList[0];
-        }
-
         private static void WriteGroupingList(List<object> objectList, StreamWriter writer, string groupingName, Func<List<object>, List<string>> getterList)
         {
             writer.WriteLine($"        public static List<string> {groupingName}List = new List<string>()");
@@ -1229,7 +1285,11 @@
         {
             string EnumTypeString = SimpleTypeName(type);
             string EnumString = type.GetEnumName(value);
-            return $"{EnumTypeString}.{EnumString}";
+
+            if (EnumString == null)
+                return $"({EnumTypeString}){(int)value}";
+            else
+                return $"{EnumTypeString}.{EnumString}";
         }
 
         private static string GetReferenceValueString(Type type, object value, List<object> objectList)
