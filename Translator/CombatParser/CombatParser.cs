@@ -88,41 +88,7 @@
             {
                 PgAbility Ability = (PgAbility)ParsingContext.ObjectKeyTable[typeof(PgAbility)][Key].Item;
 
-                bool IsValid = false;
-                switch (Ability.Skill.Key)
-                {
-                    case "AnimalHandling":
-                    case "Archery":
-                    case "BattleChemistry":
-                    case "Cow":
-                    case "Deer":
-                    case "Druid":
-                    case "FireMagic":
-                    case "GiantBat":
-                    case "Hammer":
-                    case "IceMagic":
-                    case "Knife":
-                    case "Mentalism":
-                    case "Necromancy":
-                    case "Pig":
-                    case "Psychology":
-                    case "Shield":
-                    case "Spider":
-                    case "Staff":
-                    case "Sword":
-                    case "Unarmed":
-                    case "Werewolf":
-                    case "Bard":
-                    case "Warden":
-                    case "FairyMagic":
-                    case "Rabbit":
-                    case "Priest":
-                    case "Crossbow":
-                        IsValid = true;
-                        break;
-                }
-
-                if (!IsValid)
+                if (!Generate.IsCombatSkill(Ability.Skill) && Ability.Skill.Key != "Crossbow")
                     continue;
 
                 ValidAbilityList.Add(Ability);
@@ -657,6 +623,7 @@
             { "Basic Attack", new List<AbilityKeyword>() { AbilityKeyword.BasicAttack } },
             { "Nice and Epic Attack", new List<AbilityKeyword>() { AbilityKeyword.NiceAttack, AbilityKeyword.EpicAttack } },
             { "Core and Nice Attack", new List<AbilityKeyword>() { AbilityKeyword.CoreAttack, AbilityKeyword.NiceAttack } },
+            { "Basic, Core, and Nice Attack", new List<AbilityKeyword>() { AbilityKeyword.BasicAttack, AbilityKeyword.CoreAttack, AbilityKeyword.NiceAttack } },
             { "Signature Support", new List<AbilityKeyword>() { AbilityKeyword.SignatureSupport } },
             { "Signature Debuff", new List<AbilityKeyword>() { AbilityKeyword.SignatureDebuff } },
             { "Major Healing", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
@@ -706,6 +673,7 @@
             { "Minor Healing (Targeted)", new List<AbilityKeyword>() { AbilityKeyword.MinorHealTargeted } },
             { "All Mentalism and Psychology attack", new List<AbilityKeyword>() { AbilityKeyword.MentalismAttack, AbilityKeyword.PsychologyAttack } },
             { "All non-basic attack", new List<AbilityKeyword>() { Internal_NonBasic } },
+            { "Trick Foxes", new List<AbilityKeyword>() { AbilityKeyword.StabledPet } },
         };
 
         private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
@@ -2088,11 +2056,14 @@
                 modText = "Pixie Flare" + modText.Substring(13);
             else if (effectText.StartsWith("Kick damage ") && modText.Contains("all kicks"))
                 effectText = "All kicks damage " + effectText.Substring(12);
+            else if (modText.StartsWith("While Blur Step is active, "))
+                modText = modText.Substring(27) + " while Blur Step is active";
 
             int IndexFound = 0;
             RemoveDecorativeText(ref modText, "have less than a third of their Armor", "have less than 33% of their Armor", out _, ref IndexFound);
             RemoveDecorativeText(ref effectText, "have less than a third of their Armor", "have less than 33% of their Armor", out _, ref IndexFound);
             RemoveDecorativeText(ref modText, "you take half damage from", "you take 50% damage from", out _, ref IndexFound);
+            RemoveDecorativeText(ref modText, "and Paradox Trot boosts Sprint Speed +1", out _, ref IndexFound);
 
             int NegateIndex = modText.IndexOf(". (You can negate the latent psychic damage by using");
             if (NegateIndex >= 0)
@@ -3524,6 +3495,7 @@
             new Sentence("This absorbed damage is added to your next @", CombatKeyword.ReturnDamage),
             new Sentence("Boost your next attack %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
             new Sentence("Future @ attack damage %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
+            new Sentence("Boost the damage of @ by %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost }),
             new Sentence("Boost the damage of future @ attack by %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
             new Sentence("Until %f damage is mitigated", CombatKeyword.MitigationLimit),
             new Sentence("Up to a maximum of %f total mitigated damage", CombatKeyword.MitigationLimit),
@@ -3604,6 +3576,7 @@
             new Sentence("#D attack Deal %f damage", CombatKeyword.DamageBoost),
             new Sentence("Rage attack deal %f damage", CombatKeyword.AnimalPetRageAttackBoost),
             new Sentence("Pet's Rage Attack Damage %f", CombatKeyword.AnimalPetRageAttackBoost),
+            new Sentence("Rage Attack Damage %f", CombatKeyword.AnimalPetRageAttackBoost),
             new Sentence("Deal up to %f damage", CombatKeyword.DamageBoost),
             new Sentence("Add up to %f extra damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f Armor damage", CombatKeyword.DealArmorDamage),
@@ -3657,6 +3630,7 @@
             new Sentence("Boost damage from @ %f", CombatKeyword.DamageBoost),
             new Sentence("Boost #D damage %f", CombatKeyword.DamageBoost),
             new Sentence("Increase the damage of your next attack by %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
+            new Sentence("Reduce the damage of the target's next attack by %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }, SignInterpretation.AlwaysNegative),
             new Sentence("Increase the damage of your @ by %f", CombatKeyword.DamageBoost),
             new Sentence("#S Skill Base Damage %f", CombatKeyword.BaseDamageBoost),
             new Sentence("#S Base Damage by %f", CombatKeyword.BaseDamageBoost),
@@ -3675,6 +3649,7 @@
             new Sentence("Damage over Time deal %f damage per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
             new Sentence("The #D Damage is boosted %f", CombatKeyword.DamageBoost),
             new Sentence("Damage is boosted %f", CombatKeyword.DamageBoost),
+            new Sentence("Boost the damage of @ %f", CombatKeyword.DamageBoost),
             new Sentence("Reap %f of the Health damage to you as healing", CombatKeyword.DrainHealth),
             new Sentence("Reap %f of the Armor damage done", CombatKeyword.DrainArmor),
             new Sentence("Reap %f health", CombatKeyword.DrainHealth),
