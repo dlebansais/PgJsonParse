@@ -37,7 +37,7 @@
             InitValidAbilityList();
             FilterValidPowers(validSlotList, SkillList, out _, out List<PgPower> PowerSimpleEffectList);
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<PgEffect>>> AllEffectTable);
-            FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> PowerToEffectTable, out List<PgPower> UnmatchedPowerList, out List<PgEffect> UnmatchedEffectList, out Dictionary<PgPower, PgEffect> CandidateEffectTable);
+            FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> PowerToEffectTable, out List<PgPower> UnmatchedPowerList, out List<PgEffect> UnmatchedEffectList, out Dictionary<PgPower, List<PgEffect>> CandidateEffectTable);
             GetAbilityNames(SkillList, out List<string> AbilityNameList, out Dictionary<string, List<AbilityKeyword>> NameToKeyword);
 
             List<string[]> StringKeyTable = new List<string[]>();
@@ -70,6 +70,12 @@
                         string StringKey = StringKeyArray[j];
                         PgModEffect ModEffect = ModEffectArray[j];
                         ModEffect.Key = StringKey;
+
+                        if (ModEffect.SecondaryModEffect != null)
+                        {
+                            ModEffect.SecondaryModEffect.Key = StringKey + "_secondary";
+                            WriteModEffect(ModEffect.SecondaryModEffect);
+                        }
 
                         WriteModEffect(ModEffect);
                     }
@@ -235,12 +241,12 @@
             }
         }
 
-        private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, List<PgPower> powerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> powerToEffectTable, out List<PgPower> unmatchedPowerList, out List<PgEffect> unmatchedEffectList, out Dictionary<PgPower, PgEffect> candidateEffectTable)
+        private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, List<PgPower> powerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> powerToEffectTable, out List<PgPower> unmatchedPowerList, out List<PgEffect> unmatchedEffectList, out Dictionary<PgPower, List<PgEffect>> candidateEffectTable)
         {
             powerToEffectTable = new Dictionary<PgPower, List<PgEffect>>();
             unmatchedPowerList = new List<PgPower>();
             unmatchedEffectList = new List<PgEffect>();
-            candidateEffectTable = new Dictionary<PgPower, PgEffect>();
+            candidateEffectTable = new Dictionary<PgPower, List<PgEffect>>();
 
             foreach (string EffectKey in EffectObjectKeyList)
             {
@@ -249,7 +255,7 @@
             }
 
             foreach (PgPower Item in powerSimpleEffectList)
-                if (FindPowersWithMatchingEffect(allEffectTable, Item, out List<PgEffect> MatchingEffectList, out PgEffect CandidateSingleEffect))
+                if (FindPowersWithMatchingEffect(allEffectTable, Item, out List<PgEffect> MatchingEffectList, out List<PgEffect> CandidateSingleEffectList))
                 {
                     foreach (PgEffect Effect in MatchingEffectList)
                         unmatchedEffectList.Remove(Effect);
@@ -259,20 +265,20 @@
                 else
                 {
                     unmatchedPowerList.Add(Item);
-                    if (CandidateSingleEffect != null)
-                        candidateEffectTable.Add(Item, CandidateSingleEffect);
+                    if (CandidateSingleEffectList.Count > 0)
+                        candidateEffectTable.Add(Item, CandidateSingleEffectList);
                 }
         }
 
-        private bool FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, PgPower power, out List<PgEffect> matchingEffectList, out PgEffect candidateSingleEffect)
+        private bool FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, PgPower power, out List<PgEffect> matchingEffectList, out List<PgEffect> candidateSingleEffectList)
         {
             if (FindPowersWithMatchingEffectAllTiers(allEffectTable, power, out matchingEffectList))
             {
-                candidateSingleEffect = null;
+                candidateSingleEffectList = null;
                 return true;
             }
 
-            candidateSingleEffect = FindMatchingEffectOneTier(power);
+            candidateSingleEffectList = FindMatchingEffectOneTier(power);
             return false;
         }
 
@@ -283,7 +289,7 @@
             string Key = power.Key;
             Debug.Assert(Key.Length >= 9);
 
-            if (Key == "power_20354" || Key == "power_20355")
+            if (Key == "power_28161")
             {
             }
 
@@ -375,11 +381,9 @@
             return true;
         }
 
-        private PgEffect FindMatchingEffectOneTier(PgPower power)
+        private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
         {
-            PgEffect CandidateEffect = null;
-
-            if (power.Key == "power_20354" || power.Key == "power_20355")
+            if (power.Key == "power_28161")
             {
             }
 
@@ -415,10 +419,14 @@
                     MatchingKeyList.Add(Key);
             }
 
-            if (MatchingKeyList.Count == 1)
-                CandidateEffect = (PgEffect)ParsingContext.ObjectKeyTable[typeof(PgEffect)][MatchingKeyList[0]].Item;
+            List<PgEffect> Result = new List<PgEffect>();
+            foreach (string Key in MatchingKeyList)
+            {
+                PgEffect CandidateEffect = (PgEffect)ParsingContext.ObjectKeyTable[typeof(PgEffect)][Key].Item;
+                Result.Add(CandidateEffect);
+            }
 
-            return CandidateEffect;
+            return Result;
         }
 
         private bool HasCommonIcon(PgPower power, List<PgEffect> effectList, out bool isOneToOne)
@@ -673,7 +681,6 @@
             { "Minor Healing (Targeted)", new List<AbilityKeyword>() { AbilityKeyword.MinorHealTargeted } },
             { "All Mentalism and Psychology attack", new List<AbilityKeyword>() { AbilityKeyword.MentalismAttack, AbilityKeyword.PsychologyAttack } },
             { "All non-basic attack", new List<AbilityKeyword>() { Internal_NonBasic } },
-            { "Trick Foxes", new List<AbilityKeyword>() { AbilityKeyword.StabledPet } },
         };
 
         private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
@@ -992,6 +999,7 @@
                 case CombatKeyword.DrainArmorMax:
                 case CombatKeyword.DamageBoost:
                 case CombatKeyword.DebuffMitigation:
+                case CombatKeyword.AddSprintSpeed:
                     VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true);
                     break;
 
@@ -1018,7 +1026,6 @@
                 case CombatKeyword.TargetSelf:
                 case CombatKeyword.StunIncorporeal:
                 case CombatKeyword.AddTaunt:
-                case CombatKeyword.AddSprintSpeed:
                 case CombatKeyword.EffectDurationMinute:
                 case CombatKeyword.CombatRefreshRestoreHeatlth:
                 case CombatKeyword.ResetOtherAbilityTimer:
@@ -1065,6 +1072,7 @@
                 case CombatKeyword.ReflectMeleeIndirectDamage:
                 case CombatKeyword.AddCombatRefreshTimer:
                 case CombatKeyword.WithinDistance:
+                case CombatKeyword.Knockback:
                     VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
                     break;
 
@@ -1105,17 +1113,17 @@
 
             if (expectTableWithEntries)
             {
-                if (!EffectVerificationTable.ContainsKey(combatKeyword))
+                if (!EffectVerification.EffectVerificationTable.ContainsKey(combatKeyword))
                 {
                     Debug.WriteLine($"ERROR Combat Keyword {combatKeyword}: no entries?");
-                    EffectVerificationTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
+                    EffectVerification.EffectVerificationTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
                 }
 
-                VerificationTable = EffectVerificationTable[combatKeyword];
+                VerificationTable = EffectVerification.EffectVerificationTable[combatKeyword];
             }
             else
             {
-                if (EffectVerificationTable.ContainsKey(combatKeyword))
+                if (EffectVerification.EffectVerificationTable.ContainsKey(combatKeyword))
                     Debug.WriteLine($"ERROR Combat Keyword {combatKeyword}: has entries?");
             }
 
@@ -1187,100 +1195,6 @@
                     }
             }
         }
-
-        public static Dictionary<CombatKeyword, List<KeyValuePair<string, string>>> EffectVerificationTable = new Dictionary<CombatKeyword, List<KeyValuePair<string, string>>>()
-        {
-            { CombatKeyword.RestoreHealth, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Restore", "Health"),
-                    new KeyValuePair<string, string>("Restores", "Health"),
-                    new KeyValuePair<string, string>("Heal Target", "Health"),
-                    new KeyValuePair<string, string>("Restore", "Health (or Armor if Health is full) to nearby ally undead"),
-                    new KeyValuePair<string, string>("Nearby Firewalls Heal", ""),
-                    new KeyValuePair<string, string>("Restore", "Health to yourself"),
-                    new KeyValuePair<string, string>("Restores", "Health to yourself"),
-                    new KeyValuePair<string, string>("Restores", "Health after a 10-second delay"),
-                    new KeyValuePair<string, string>("Restores", "Health to Target"),
-                    new KeyValuePair<string, string>("Restore", "Health to you and nearby allies"),
-                    new KeyValuePair<string, string>("Restores", "Health (or Armor if Health is full) to Pet"),
-                    new KeyValuePair<string, string>("Existing Zombie is Healed", "Health"),
-                    new KeyValuePair<string, string>("You heal", "per second when near your web trap"),
-                    new KeyValuePair<string, string>("Restore", "Health to least-healthy ally"),
-                    new KeyValuePair<string, string>("For 8 seconds, each time target attacks and damages you, heal", "Health"),
-                }
-            },
-            { CombatKeyword.RestorePower, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Restores", "Power"),
-                    new KeyValuePair<string, string>("Restore", "Power"),
-                    new KeyValuePair<string, string>("You recover", "Power per second when near your web trap"),
-                    new KeyValuePair<string, string>("Recover", "Power when melee attacks deal damage to you"),
-                    new KeyValuePair<string, string>("Restores", "Power after a 12-second delay"),
-                }
-            },
-            { CombatKeyword.RestoreArmor, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Restores", "Armor"),
-                    new KeyValuePair<string, string>("Restore", "Armor"),
-                    new KeyValuePair<string, string>("Restores", "Armor after a 6-second delay"),
-                    new KeyValuePair<string, string>("Restores", "Armor after a 10-second delay"),
-                }
-            },
-            { CombatKeyword.RestoreHealthArmor, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Restore", "Health (or Armor if Health is full) to nearby ally undead"),
-                }
-            },
-            { CombatKeyword.RestoreHealthArmorPower, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Restore", "Armor every 3 seconds"),
-                    new KeyValuePair<string, string>("Restore", "Health every 4 seconds"),
-                    new KeyValuePair<string, string>("Restore", "Power every 8 seconds"),
-                }
-            },
-            { CombatKeyword.AddMaxHealth, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Existing Zombie's Max Health", "for 60 seconds"),
-                }
-            },
-            { CombatKeyword.DrainHealth, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Reaps", "of the Health damage done (up to the max)"),
-                }
-            },
-            { CombatKeyword.DrainArmor, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Reaps", "of the Armor damage done (up to the max)"),
-                }
-            },
-            { CombatKeyword.DrainHealthMax, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Max Health Reaped", ""),
-                }
-            },
-            { CombatKeyword.DrainArmorMax, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Max Armor Reaped", ""),
-                }
-            },
-            { CombatKeyword.DamageBoost, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Deal", "Damage every 2 seconds"),
-                    new KeyValuePair<string, string>("Existing Zombie's Direct Damage", "for 60 seconds"),
-                    new KeyValuePair<string, string>("Existing Zombie's Direct Damage", "for 5 minutes"),
-                    new KeyValuePair<string, string>("Existing Zombie's Damage Boosted", "for 60 seconds"),
-                    new KeyValuePair<string, string>("Minion Damage", "for 10 seconds"),
-                    new KeyValuePair<string, string>("Minion Damage Boost", "for 10 seconds"),
-                    new KeyValuePair<string, string>("All your attacks deal", "damage for 10 seconds"),
-                    new KeyValuePair<string, string>("For 8 seconds, each time target attacks and damages you, they suffer", "Trauma damage"),
-                }
-            },
-            { CombatKeyword.DebuffMitigation, new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Target's mitigation reduced", "for 30 seconds"),
-                }
-            },
-        };
 
         public static Dictionary<CombatKeyword, List<KeyValuePair<string, string>>> UnverifiedTable = new Dictionary<CombatKeyword, List<KeyValuePair<string, string>>>()
         {
@@ -1523,7 +1437,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_20354" || Entry.Key.Key == "power_20355")
+                if (Entry.Key.Key == "power_28161")
                 {
                 }
 
@@ -1946,7 +1860,23 @@
                 DynamicCombatEffectList = DynamicCombatEffectList,
                 TargetAbilityList = ModTargetAbilityList,
             };
-        VerifyStaticEffects(ModAbilityList, StaticCombatEffectList);
+
+            // Such an ugly hack...
+            if (powerSimpleEffect.Description.EndsWith(", and Paradox Trot boosts Sprint Speed +1"))
+            {
+                PgModEffect SecondaryModEffect = new PgModEffect()
+                {
+                    EffectKey = "",
+                    AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ParadoxTrot },
+                    StaticCombatEffectList = new PgCombatEffectCollection() { new PgCombatEffect() { Keyword = CombatKeyword.AddSprintSpeed, Data = new PgNumericValue() { RawValue = 1 } } },
+                    DynamicCombatEffectList = new PgCombatEffectCollection(),
+                    TargetAbilityList = new List<AbilityKeyword>(),
+                };
+
+                modEffect.SecondaryModEffect = SecondaryModEffect;
+            }
+
+            VerifyStaticEffects(ModAbilityList, StaticCombatEffectList);
 
             return true;
         }
@@ -1966,6 +1896,51 @@
                 return false;
 
             return true;
+        }
+
+        public static bool CombatEffectContains(List<PgCombatEffect> list, List<PgCombatEffectCollection> candidateList, out int candidateIndex, out PgCombatEffectCollection difference, out PgCombatEffectCollection union)
+        {
+            Debug.Assert(candidateList.Count > 0);
+
+            List<bool> ContainList = new List<bool>();
+            List<PgCombatEffectCollection> DifferenceList = new List<PgCombatEffectCollection>();
+            List<PgCombatEffectCollection> UnionList = new List<PgCombatEffectCollection>();
+            List<int> UnionCountList = new List<int>();
+            candidateIndex = -1;
+
+            for (int i = 0; i < candidateList.Count; i++)
+            {
+                bool ContainValue = CombatEffectContains(list, candidateList[i], out PgCombatEffectCollection DifferenceValue, out PgCombatEffectCollection UnionValue);
+
+                ContainList.Add(ContainValue);
+                DifferenceList.Add(DifferenceValue);
+                UnionList.Add(UnionValue);
+                int UnionCount = UnionValue.Count;
+                UnionCountList.Add(UnionCount);
+
+                if (ContainValue)
+                {
+                    if (candidateIndex < 0)
+                        candidateIndex = i;
+                    else if (UnionCount > UnionCountList[candidateIndex])
+                        candidateIndex = i;
+                    else if (UnionCount == UnionCountList[candidateIndex])
+                        Debug.WriteLine("Multiple candidates found for a single matching effect");
+                }
+            }
+
+            if (candidateIndex >= 0)
+            {
+                difference = DifferenceList[candidateIndex];
+                union = UnionList[candidateIndex];
+                return true;
+            }
+            else
+            {
+                difference = new PgCombatEffectCollection();
+                union = new PgCombatEffectCollection();
+                return false;
+            }
         }
 
         public static bool CombatEffectContains(List<PgCombatEffect> list1, List<PgCombatEffect> list2, out PgCombatEffectCollection difference, out PgCombatEffectCollection union)
@@ -2087,6 +2062,7 @@
             BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels Ice Armor", "Fire damage no longer dispels");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels your Ice Armor", "Fire damage no longer dispels");
+            BasicTextReplace(ref modText, ref effectText, "Trick Foxes", "Trick Fox");
 
             if (!modText.Contains("But I Love You"))
                 ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
@@ -3055,7 +3031,7 @@
         #endregion
 
         #region Data Analysis, Remaining Powers
-        private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<PgPower> powerSimpleEffectList, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, PgEffect> candidateEffectTable, List<string[]> stringKeyTable, List<PgModEffect[]> powerKeyToCompleteEffectTable)
+        private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<PgPower> powerSimpleEffectList, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, List<PgEffect>> candidateEffectTable, List<string[]> stringKeyTable, List<PgModEffect[]> powerKeyToCompleteEffectTable)
         {
             int DebugIndex = 0;
             int SkipIndex = 0;
@@ -3070,7 +3046,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_20354" || ItemPower.Key == "power_20355")
+                if (ItemPower.Key == "power_28161")
                 {
                 }
 
@@ -3084,7 +3060,7 @@
             }
         }
 
-        private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, PgEffect> candidateEffectTable, out string[] stringKeyArray, out PgModEffect[] ModEffectArray)
+        private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, List<PgEffect>> candidateEffectTable, out string[] stringKeyArray, out PgModEffect[] ModEffectArray)
         {
             PgPowerTierCollection TierList = itemPower.TierList;
 
@@ -3103,14 +3079,14 @@
             int LastTierIndex = TierList.Count - 1;
             PgPowerTier LastTier = TierList[LastTierIndex];
 
-            PgEffect CandidateEffect = candidateEffectTable.ContainsKey(itemPower) ? candidateEffectTable[itemPower] : null;
-            AnalyzeRemainingPowers(abilityNameList, nameToKeyword, LastTier, unmatchedEffectList, CandidateEffect, out List<CombatKeyword> ExtractedPowerTierKeywordList, out PgModEffect ExtractedModEffect, true);
+            List<PgEffect> CandidateEffectList = candidateEffectTable.ContainsKey(itemPower) ? candidateEffectTable[itemPower] : null;
+            AnalyzeRemainingPowers(abilityNameList, nameToKeyword, LastTier, unmatchedEffectList, CandidateEffectList, out List<CombatKeyword> ExtractedPowerTierKeywordList, out PgModEffect ExtractedModEffect, true);
             PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
             ModEffectArray[LastTierIndex] = ExtractedModEffect;
 
             for (int i = 0; i + 1 < TierList.Count; i++)
             {
-                AnalyzeRemainingPowers(abilityNameList, nameToKeyword, TierList[i], null, CandidateEffect, out List<CombatKeyword> ComparedPowerTierKeywordList, out PgModEffect ParsedModEffect, false);
+                AnalyzeRemainingPowers(abilityNameList, nameToKeyword, TierList[i], null, CandidateEffectList, out List<CombatKeyword> ComparedPowerTierKeywordList, out PgModEffect ParsedModEffect, false);
 
                 bool AllowIncomplete = i < ValidationIndex;
 
@@ -3131,7 +3107,7 @@
             }
         }
 
-        private bool AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, List<PgEffect> unmatchedEffectList, PgEffect candidateEffect, out List<CombatKeyword> extractedPowerTierKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
+        private bool AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, List<PgEffect> unmatchedEffectList, List<PgEffect> candidateEffectList, out List<CombatKeyword> extractedPowerTierKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
         {
             IList<PgPowerEffect> EffectList = powerTier.EffectList;
             Debug.Assert(EffectList.Count == 1);
@@ -3143,25 +3119,30 @@
 
             AnalyzeText(abilityNameList, nameToKeyword, ModText, true, out List<AbilityKeyword> ModAbilityList, out PgCombatEffectCollection ModCombatList, out List<AbilityKeyword> ModTargetAbilityList);
 
-            PgCombatEffectCollection EffectCombatList;
-            if (candidateEffect != null)
+            List<PgCombatEffectCollection> EffectCombatList = new List<PgCombatEffectCollection>();
+            if (candidateEffectList != null)
             {
-                string EffectText = candidateEffect.Description;
-                HackModText(ref EffectText);
+                foreach (PgEffect CandidateEffect in candidateEffectList)
+                {
+                    string EffectText = CandidateEffect.Description;
+                    HackModText(ref EffectText);
 
-                AnalyzeText(abilityNameList, nameToKeyword, EffectText, false, out _, out EffectCombatList, out _);
+                    AnalyzeText(abilityNameList, nameToKeyword, EffectText, false, out _, out PgCombatEffectCollection EffectCombatCollection, out _);
+                    EffectCombatList.Add(EffectCombatCollection);
+                }
             }
             else
-                EffectCombatList = new PgCombatEffectCollection();
+                EffectCombatList = new List<PgCombatEffectCollection>();
 
             string EffectKey = string.Empty;
 
-            if (EffectCombatList.Count > 0 && CombatEffectContains(ModCombatList, EffectCombatList, out _, out _))
+            if (EffectCombatList.Count > 0 && CombatEffectContains(ModCombatList, EffectCombatList, out int CandidateIndex, out _, out _))
             {
-                EffectKey = candidateEffect.Key;
+                PgEffect CandidateEffect = candidateEffectList[CandidateIndex];
+                EffectKey = CandidateEffect.Key;
 
                 if (unmatchedEffectList != null)
-                    unmatchedEffectList.Remove(candidateEffect);
+                    unmatchedEffectList.Remove(CandidateEffect);
             }
 
             string ParsedAbilityList = AbilityKeywordListToShortString(ModAbilityList);
@@ -3175,7 +3156,29 @@
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");*/
             }
 
-            modEffect = new PgModEffect() { EffectKey = EffectKey, AbilityList = ModAbilityList, StaticCombatEffectList = ModCombatList, TargetAbilityList = ModTargetAbilityList };
+            modEffect = new PgModEffect() 
+            { 
+                EffectKey = EffectKey, 
+                AbilityList = ModAbilityList, 
+                StaticCombatEffectList = ModCombatList, 
+                TargetAbilityList = ModTargetAbilityList 
+            };
+
+            // Such an ugly hack...
+            if (powerSimpleEffect.Description.EndsWith(", and Paradox Trot boosts Sprint Speed +1"))
+            {
+                PgModEffect SecondaryModEffect = new PgModEffect()
+                {
+                    EffectKey = "",
+                    AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ParadoxTrot },
+                    StaticCombatEffectList = new PgCombatEffectCollection() { new PgCombatEffect() { Keyword = CombatKeyword.AddSprintSpeed, Data = new PgNumericValue() { RawValue = 1 } } },
+                    DynamicCombatEffectList = new PgCombatEffectCollection(),
+                    TargetAbilityList = new List<AbilityKeyword>(),
+                };
+
+                modEffect.SecondaryModEffect = SecondaryModEffect;
+            }
+
             VerifyStaticEffects(ModAbilityList, ModCombatList);
 
             return true;
@@ -3187,6 +3190,7 @@
             modText = modText.Replace("Indirect Nature and Indirect Electricity damage", "Indirect Nature and Electricity damage");
             modText = modText.Replace(", but the ability's range is reduced to 12m", ", but range is reduced 18 meter");
             modText = modText.Replace("When you teleport via Shadow Feint", "When you teleport");
+            modText = modText.Replace("and Paradox Trot boosts Sprint Speed +1", "");
 
             if (!modText.Contains("But I Love You"))
                 ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
@@ -3529,7 +3533,7 @@
             new Sentence("To your undead", CombatKeyword.ApplyToPet),
             new Sentence("To the same target", CombatKeyword.SameTarget),
             new Sentence("To you and your allies", CombatKeyword.ApplyToAllies),
-            new Sentence("To you and nearby allies", CombatKeyword.ApplyToAllies),
+            new Sentence("Affects caster as well as allies", CombatKeyword.ApplyToAllies),
             new Sentence("To YOU", CombatKeyword.TargetSelf),
             new Sentence("If target is covered", CombatKeyword.TargetUnderEffect),
             new Sentence("To targets that are covered", CombatKeyword.TargetUnderEffect),
@@ -3796,6 +3800,7 @@
             new Sentence("Stun incorporeal enemies", CombatKeyword.StunIncorporeal),
             new Sentence("Stun", CombatKeyword.Stun),
             new Sentence("Targets are Knock back", CombatKeyword.Knockback),
+            new Sentence("Target is Knock back", CombatKeyword.Knockback),
             new Sentence("Knock back targets", CombatKeyword.Knockback),
             new Sentence("Knock all targets back", CombatKeyword.Knockback),
             new Sentence("Knock the target backward", CombatKeyword.Knockback),

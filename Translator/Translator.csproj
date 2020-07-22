@@ -47,6 +47,7 @@
     <Compile Include="CombatParser\CombatParser.cs" />
     <Compile Include="CombatParser\Sentence.cs" />
     <Compile Include="CombatParser\SignInterpretation.cs" />
+    <Compile Include="EffectVerification.cs" />
     <Compile Include="Enums\CombatKeyword.cs" />
     <Compile Include="Enums\GameCombatSkill.cs" />
     <Compile Include="Enums\GameDamageType.cs" />
@@ -435,6 +436,7 @@
     <PostBuildEvent>if exist "$(ProjectDir)../../PgObjects/v336/Objects/" xcopy "$(ProjectDir)Objects" "$(ProjectDir)..\..\PgObjects\v336\Objects\" /s /y /q
 if exist "$(ProjectDir)../../PgObjects/v336/Enums/" xcopy "$(ProjectDir)Enums" "$(ProjectDir)..\..\PgObjects\v336\Enums\" /s /y /q
 if exist "$(ProjectDir)../../PgObjects/v336/" copy "$(ProjectDir)TextMaps.cs" "$(ProjectDir)..\..\PgObjects\v336\" /y
+if exist "$(ProjectDir)../../PgObjects/v336/" copy "$(ProjectDir)EffectVerification.cs" "$(ProjectDir)..\..\PgObjects\v336\" /y
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

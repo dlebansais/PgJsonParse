@@ -10,6 +10,7 @@
         public PgCombatEffectCollection StaticCombatEffectList { get; set; } = new PgCombatEffectCollection();
         public PgCombatEffectCollection DynamicCombatEffectList { get; set; } = new PgCombatEffectCollection();
         public List<AbilityKeyword> TargetAbilityList { get; set; } = new List<AbilityKeyword>();
+        public PgModEffect SecondaryModEffect { get; set; }
 
         public override string ToString()
         {
