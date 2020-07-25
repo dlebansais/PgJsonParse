@@ -166,39 +166,67 @@
             writer.WriteLine($"        private static {typeName} Get{prefix}(Dictionary<string, {typeName}> table, string key)");
             writer.WriteLine($"        {{");
 
+            int CaseCount = table.Count;
+
             if (table.ContainsKey('\0'))
             {
                 int ObjectIndex = ((Dictionary<int, int>)table['\0'])[0];
                 string LinkValue = ToObjectName(ObjectIndex);
 
-                writer.WriteLine($"            if (key.Length == {rank})");
-                writer.WriteLine($"            {{");
-                writer.WriteLine($"                table.Add(key, {LinkValue});");
-                writer.WriteLine($"                return {LinkValue};");
-                writer.WriteLine($"            }}");
-                writer.WriteLine("");
+                if (CaseCount > 1)
+                {
+                    writer.WriteLine($"            if (key.Length == {rank})");
+                    writer.WriteLine($"            {{");
+                    writer.WriteLine($"                table.Add(key, {LinkValue});");
+                    writer.WriteLine($"                return {LinkValue};");
+                    writer.WriteLine($"            }}");
+                }
+                else
+                {
+                    writer.WriteLine($"            table.Add(key, {LinkValue});");
+                    writer.WriteLine($"            return {LinkValue};");
+                }
+
+                CaseCount--;
             }
 
-            writer.WriteLine($"            if (key.Length <= {rank})");
-            writer.WriteLine($"                return null;");
             writer.WriteLine("");
-            writer.WriteLine($"            switch (key[{rank}])");
-            writer.WriteLine($"            {{");
 
-            foreach (KeyValuePair<char, IDictionary> Entry in table)
+            if (CaseCount > 1)
             {
-                char c = Entry.Key;
+                writer.WriteLine($"            switch (key[{rank}])");
+                writer.WriteLine($"            {{");
 
-                if (c != '\0')
+                foreach (KeyValuePair<char, IDictionary> Entry in table)
                 {
-                    writer.WriteLine($"                case '{c}':");
-                    writer.WriteLine($"                    return Get{prefix}{ToValidChar(c)}(table, key);");
+                    char c = Entry.Key;
+
+                    if (c != '\0')
+                    {
+                        writer.WriteLine($"                case '{c}':");
+                        writer.WriteLine($"                    return Get{prefix}{ToValidChar(c)}(table, key);");
+                    }
+                }
+
+                writer.WriteLine($"                default:");
+                writer.WriteLine($"                    return null;");
+                writer.WriteLine($"            }}");
+            }
+            else if (CaseCount == 1)
+            {
+                foreach (KeyValuePair<char, IDictionary> Entry in table)
+                {
+                    char c = Entry.Key;
+
+                    if (c != '\0')
+                    {
+                        writer.WriteLine($"            return Get{prefix}{ToValidChar(c)}(table, key);");
+                    }
                 }
             }
+            else if (table.Count == 0)
+                writer.WriteLine($"            return null;");
 
-            writer.WriteLine($"                default:");
-            writer.WriteLine($"                    return null;");
-            writer.WriteLine($"            }}");
             writer.WriteLine($"        }}");
 
             foreach (KeyValuePair<char, IDictionary> Entry in table)
